@@ -9,7 +9,7 @@ import request from 'request';
 import progress from 'progress-stream';
 import os from 'os';
 import path from 'path';
-import { remote, ipcRenderer, shell } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import { spawn } from 'child_process';
 import { promisify } from 'util';
 import routes from '../constants/routes.json';
@@ -167,10 +167,17 @@ class LoadingScreen extends Component<Props, LoadingScreenState> {
     }
 
     // Check for the params
+    // const params = [
+    //   { name: 'sapling-output.params', url: 'https://params.zecwallet.co/params/sapling-output.params' },
+    //   { name: 'sapling-spend.params', url: 'https://params.zecwallet.co/params/sapling-spend.params' },
+    //   { name: 'sprout-groth16.params', url: 'https://params.zecwallet.co/params/sprout-groth16.params' }
+    // ];
     const params = [
-      { name: 'sapling-output.params', url: 'https://params.zecwallet.co/params/sapling-output.params' },
-      { name: 'sapling-spend.params', url: 'https://params.zecwallet.co/params/sapling-spend.params' },
-      { name: 'sprout-groth16.params', url: 'https://params.zecwallet.co/params/sprout-groth16.params' }
+      { name: 'sapling-output.params', url: 'https://z.cash/downloads/sapling-output.params' },
+      { name: 'sapling-spend.params', url: 'https://z.cash/downloads/sapling-spend.params' },
+      { name: 'sprout-groth16.params', url: 'https://z.cash/downloads/sprout-groth16.params' },
+      { name: 'sprout-proving.key', url: 'https://z.cash/downloads/sprout-proving.key' },
+      { name: 'sprout-verifying.key', url: 'https://z.cash/downloads/sprout-verifying.key' }
     ];
 
     // eslint-disable-next-line no-plusplus
@@ -435,9 +442,8 @@ class LoadingScreen extends Component<Props, LoadingScreenState> {
                 >
                   <div>
                     Pastel Fullnode will download the{' '}
-                    <span className={cstyles.highlight}>entire Pastel Blockchain
-                    </span>
-                    </div>
+                    <span className={cstyles.highlight}>entire Pastel Blockchain</span>
+                  </div>
                 </div>
 
                 <div className={cstyles.left} style={{ width: '75%', marginLeft: '15%' }}>
