@@ -45,7 +45,7 @@ const AddressBlock = ({
     if (currencyName === 'LSP') {
       shell.openExternal(`https://chain.so/address/PSLTEST/${address}`);
     } else {
-      shell.openExternal(`https://zcha.in/accounts/${address}`);
+      shell.openExternal(`https://explorer.pastel.network/address/${address}`);
     }
   };
 

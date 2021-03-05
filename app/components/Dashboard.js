@@ -100,18 +100,19 @@ export default class Home extends Component<Props> {
           />
 
           <BalanceBlock
-          topLabel="Shielded"
-          pslValue={totalBalance.private}
-          usdValue={Utils.getZecToUsdString(info.pslPrice, totalBalance.private)}
-          currencyName={info.currencyName}
-        />
-
-          <BalanceBlock
           topLabel="Transparent"
           pslValue={totalBalance.transparent}
           usdValue={Utils.getZecToUsdString(info.pslPrice, totalBalance.transparent)}
           currencyName={info.currencyName}
         />
+
+
+        <BalanceBlock
+        topLabel="Shielded"
+        pslValue={totalBalance.private}
+        usdValue={Utils.getZecToUsdString(info.pslPrice, totalBalance.private)}
+        currencyName={info.currencyName}
+      />
 
 
         </div>

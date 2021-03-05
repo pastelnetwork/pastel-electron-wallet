@@ -47,9 +47,9 @@ const TxModalInternal = ({ modalIsOpen, tx, info, closeModal, currencyName, pslP
 
   const openTxid = () => {
     if (currencyName === 'LSP') {
-      shell.openExternal(`https://chain.so/tx/PSLTEST/${txid}`);
+      shell.openExternal(`https://explorer.pastel.network/tx/PSLTEST/${txid}`);
     } else {
-      shell.openExternal(`https://zcha.in/transactions/${txid}`);
+      shell.openExternal(`https://explorer.pastel.network/tx/${txid}`);
     }
   };
 
