@@ -166,12 +166,6 @@ class LoadingScreen extends Component<Props, LoadingScreenState> {
       fs.mkdirSync(dir);
     }
 
-    // Check for the params
-    // const params = [
-    //   { name: 'sapling-output.params', url: 'https://params.zecwallet.co/params/sapling-output.params' },
-    //   { name: 'sapling-spend.params', url: 'https://params.zecwallet.co/params/sapling-spend.params' },
-    //   { name: 'sprout-groth16.params', url: 'https://params.zecwallet.co/params/sprout-groth16.params' }
-    // ];
     const params = [
       { name: 'sapling-output.params', url: 'https://z.cash/downloads/sapling-output.params' },
       { name: 'sapling-spend.params', url: 'https://z.cash/downloads/sapling-spend.params' },
