@@ -617,6 +617,12 @@ class Sidebar extends PureComponent<Props, State> {
             currentRoute={location.pathname}
             iconname="fa-address-book"
           />
+          <SidebarMenuItem
+            name="PastelID"
+            routeName={routes.PASTELID}
+            currentRoute={location.pathname}
+            iconname="fa-fingerprint"
+          />
         </div>
 
         <div className={cstyles.center}>
