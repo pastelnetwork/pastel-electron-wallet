@@ -6,12 +6,12 @@ export const NO_CONNECTION: string = 'Could not connect to pasteld';
 export default class Utils {
   static isSapling(addr: string): boolean {
     if (!addr) return false;
-    return new RegExp('^ps[a-z0-9]{76}$').test(addr) || new RegExp('^ztestsapling[a-z0-9]{76}$').test(addr);
+    return new RegExp('^ps[a-z0-9]{76}$').test(addr) || new RegExp('^ptestsapling[a-z0-9]{76}$').test(addr);
   }
 
   static isSprout(addr: string): boolean {
     if (!addr) return false;
-    return new RegExp('^ps[a-zA-Z0-9]{93}$').test(addr);
+    return new RegExp('^P[a-zA-Z0-9]{94}$').test(addr);
   }
 
   static isZaddr(addr: string): boolean {
@@ -60,7 +60,7 @@ export default class Utils {
     return s;
   }
 
-  static splitZecAmountIntoBigSmall(pslValue: number) {
+  static splitPslAmountIntoBigSmall(pslValue: number) {
     if (!pslValue) {
       return { bigPart: pslValue, smallPart: '' };
     }
@@ -134,7 +134,7 @@ export default class Utils {
     return 'Thanks for supporting Pastelwallet!';
   }
 
-  static getZecToUsdString(price: number | null, pslValue: number | null): string {
+  static getPslToUsdString(price: number | null, pslValue: number | null): string {
     if (!price || !pslValue) {
       return 'USD --';
     }

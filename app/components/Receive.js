@@ -68,7 +68,7 @@ const AddressBlock = ({
             <div className={[cstyles.padtopsmall].join(' ')}>
               {currencyName} {balance}
             </div>
-            <div className={[cstyles.padtopsmall].join(' ')}>{Utils.getZecToUsdString(pslPrice, balance)}</div>
+            <div className={[cstyles.padtopsmall].join(' ')}>{Utils.getPslToUsdString(pslPrice, balance)}</div>
 
             <div className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}>
               {privateKey && (

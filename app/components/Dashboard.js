@@ -19,7 +19,7 @@ import ScrollPane from './ScrollPane';
 
 // $FlowFixMe
 export const BalanceBlockHighlight = ({ pslValue, usdValue, currencyName }) => {
-  const { bigPart, smallPart } = Utils.splitZecAmountIntoBigSmall(pslValue);
+  const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(pslValue);
 
   return (
     <div style={{ padding: '1em' }}>
@@ -36,7 +36,7 @@ export const BalanceBlockHighlight = ({ pslValue, usdValue, currencyName }) => {
 
 // eslint-disable-next-line react/prop-types
 const BalanceBlock = ({ pslValue, usdValue, topLabel, currencyName }) => {
-  const { bigPart, smallPart } = Utils.splitZecAmountIntoBigSmall(pslValue);
+  const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(pslValue);
 
   return (
     <div className={cstyles.padall}>
@@ -53,7 +53,7 @@ const BalanceBlock = ({ pslValue, usdValue, topLabel, currencyName }) => {
 };
 
 const AddressBalanceItem = ({ currencyName, pslPrice, item }) => {
-  const { bigPart, smallPart } = Utils.splitZecAmountIntoBigSmall(Math.abs(item.balance));
+  const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(Math.abs(item.balance));
 
   return (
     <AccordionItem key={item.label} className={[cstyles.well, cstyles.margintopsmall].join(' ')} uuid={item.address}>
@@ -69,7 +69,7 @@ const AddressBalanceItem = ({ currencyName, pslPrice, item }) => {
                 <span className={[cstyles.small, cstyles.pslsmallpart].join(' ')}>{smallPart}</span>
               </div>
               <div className={[cstyles.sublight, cstyles.small, cstyles.padtopsmall].join(' ')}>
-                {Utils.getZecToUsdString(pslPrice, Math.abs(item.balance))}
+                {Utils.getPslToUsdString(pslPrice, Math.abs(item.balance))}
               </div>
             </div>
           </div>
@@ -95,14 +95,14 @@ export default class Home extends Component<Props> {
         <div className={[cstyles.well, styles.balancebox].join(' ')}>
           <BalanceBlockHighlight
             pslValue={totalBalance.total}
-            usdValue={Utils.getZecToUsdString(info.pslPrice, totalBalance.total)}
+            usdValue={Utils.getPslToUsdString(info.pslPrice, totalBalance.total)}
             currencyName={info.currencyName}
           />
 
           <BalanceBlock
           topLabel="Transparent"
           pslValue={totalBalance.transparent}
-          usdValue={Utils.getZecToUsdString(info.pslPrice, totalBalance.transparent)}
+          usdValue={Utils.getPslToUsdString(info.pslPrice, totalBalance.transparent)}
           currencyName={info.currencyName}
         />
 
@@ -110,7 +110,7 @@ export default class Home extends Component<Props> {
         <BalanceBlock
         topLabel="Shielded"
         pslValue={totalBalance.private}
-        usdValue={Utils.getZecToUsdString(info.pslPrice, totalBalance.private)}
+        usdValue={Utils.getPslToUsdString(info.pslPrice, totalBalance.private)}
         currencyName={info.currencyName}
       />
 

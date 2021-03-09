@@ -97,6 +97,53 @@ const ImportPrivKeyModal = ({ modalIsOpen, modalInput, setModalInput, closeModal
   );
 };
 
+const ImportANIPrivKeyModal = ({ modalIsOpen, modalInput, setModalInput, closeModal, doImportANIPrivKeys }) => {
+  return (
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={closeModal}
+      className={cstyles.modal}
+      overlayClassName={cstyles.modalOverlay}
+    >
+      <div className={[cstyles.verticalflex].join(' ')}>
+        <div className={cstyles.marginbottomlarge} style={{ textAlign: 'center' }}>
+          Import ANI (Animecoin) Private Keys
+        </div>
+
+        <div className={cstyles.marginbottomlarge} style={{ textAlign: 'center' }}>
+          Please paste your ANI private keys here, one line per key. <br /> (NOTE: Don't use this unless you
+          participated in the original fork of Animecoin!)
+        </div>
+
+        <div className={cstyles.well} style={{ textAlign: 'center' }}>
+          <TextareaAutosize
+            className={cstyles.inputbox}
+            placeholder="ANI Private Keys"
+            value={modalInput}
+            onChange={e => setModalInput(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className={cstyles.buttoncontainer}>
+        <button
+          type="button"
+          className={cstyles.primarybutton}
+          onClick={() => {
+            doImportANIPrivKeys();
+            closeModal();
+          }}
+        >
+          Import
+        </button>
+        <button type="button" className={cstyles.primarybutton} onClick={closeModal}>
+          Cancel
+        </button>
+      </div>
+    </Modal>
+  );
+};
+
 const PayURIModal = ({
   modalIsOpen,
   modalInput,
@@ -186,6 +233,7 @@ type Props = {
   setSendTo: (targets: PastelURITarget[] | PastelURITarget) => void,
   getPrivKeyAsString: (address: string) => string,
   importPrivKeys: (keys: string[]) => void,
+  importANIPrivKeys: (keys: string[]) => void,
   history: PropTypes.object.isRequired,
   openErrorModal: (title: string, body: string | Element<'div'> | Element<'span'>) => void,
   closeErrorModal: () => void
@@ -195,7 +243,9 @@ type State = {
   uriModalIsOpen: boolean,
   uriModalInputValue: string | null,
   privKeyModalIsOpen: boolean,
+  ANIprivKeyModalIsOpen: boolean,
   privKeyInputValue: string | null,
+  ANIprivKeyInputValue: string | null,
   exportPrivKeysModalIsOpen: boolean,
   exportedPrivKeys: string[] | null
 };
@@ -207,6 +257,7 @@ class Sidebar extends PureComponent<Props, State> {
       uriModalIsOpen: false,
       uriModalInputValue: null,
       privKeyModalIsOpen: false,
+      ANIprivKeyModalIsOpen: false,
       exportPrivKeysModalIsOpen: false,
       exportedPrivKeys: null,
       privKeyInputValue: null
@@ -261,6 +312,11 @@ class Sidebar extends PureComponent<Props, State> {
     // Import Private Keys
     ipcRenderer.on('import', () => {
       this.openImportPrivKeyModal(null);
+    });
+
+    // Import ANI Private Keys
+    ipcRenderer.on('importani', () => {
+      this.openImportANIPrivKeyModal(null);
     });
 
     // Export All Transactions
@@ -354,8 +410,17 @@ class Sidebar extends PureComponent<Props, State> {
     this.setState({ privKeyModalIsOpen: true, privKeyInputValue });
   };
 
+  openImportANIPrivKeyModal = (defaultValue: string | null) => {
+    const ANIprivKeyInputValue = defaultValue || '';
+    this.setState({ ANIprivKeyModalIsOpen: true, ANIprivKeyInputValue });
+  };
+
   setImprovPrivKeyInputValue = (privKeyInputValue: string) => {
     this.setState({ privKeyInputValue });
+  };
+
+  setImportANIPrivKeyInputValue = (ANIprivKeyInputValue: string) => {
+    this.setState({ ANIprivKeyInputValue });
   };
 
   closeImportPrivKeyModal = () => {
@@ -365,6 +430,10 @@ class Sidebar extends PureComponent<Props, State> {
   openURIModal = (defaultValue: string | null) => {
     const uriModalInputValue = defaultValue || '';
     this.setState({ uriModalIsOpen: true, uriModalInputValue });
+  };
+
+  closeImportANIPrivKeyModal = () => {
+    this.setState({ ANIprivKeyModalIsOpen: false });
   };
 
   doImportPrivKeys = () => {
@@ -391,6 +460,26 @@ class Sidebar extends PureComponent<Props, State> {
       }
 
       importPrivKeys(keys);
+    }
+  };
+
+  doImportANIPrivKeys = () => {
+    const { importANIPrivKeys, openErrorModal } = this.props;
+    const { ANIprivKeyInputValue } = this.state;
+
+    // eslint-disable-next-line no-control-regex
+    if (ANIprivKeyInputValue) {
+      // eslint-disable-next-line no-control-regex
+      let keys = ANIprivKeyInputValue.split(new RegExp('[\n\r]+'));
+      if (!keys || keys.length === 0) {
+        openErrorModal('No ANI Keys Imported', 'No ANI keys were specified, so none were imported');
+        return;
+      }
+
+      // Filter out empty lines and clean up the private keys
+      keys = keys.filter(k => !(k.trim().startsWith('#') || k.trim().length === 0));
+
+      importANIPrivKeys(keys);
     }
   };
 
@@ -438,6 +527,8 @@ class Sidebar extends PureComponent<Props, State> {
       uriModalInputValue,
       privKeyModalIsOpen,
       privKeyInputValue,
+      ANIprivKeyModalIsOpen,
+      ANIprivKeyInputValue,
       exportPrivKeysModalIsOpen,
       exportedPrivKeys
     } = this.state;
@@ -473,6 +564,15 @@ class Sidebar extends PureComponent<Props, State> {
           modalInput={privKeyInputValue}
           closeModal={this.closeImportPrivKeyModal}
           doImportPrivKeys={this.doImportPrivKeys}
+        />
+
+        {/* Import ANI Private Key Modal */}
+        <ImportANIPrivKeyModal
+          modalIsOpen={ANIprivKeyModalIsOpen}
+          setModalInput={this.setImportANIPrivKeyInputValue}
+          modalInput={ANIprivKeyInputValue}
+          closeModal={this.closeImportANIPrivKeyModal}
+          doImportANIPrivKeys={this.doImportANIPrivKeys}
         />
 
         {/* Exported (all) Private Keys */}

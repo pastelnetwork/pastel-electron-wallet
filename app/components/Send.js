@@ -86,7 +86,7 @@ const ToAddrBox = ({
     setSendButtonEnable(buttonstate);
   }, 10);
 
-  const usdValue = Utils.getZecToUsdString(pslPrice, toaddr.amount);
+  const usdValue = Utils.getPslToUsdString(pslPrice, toaddr.amount);
 
   const addReplyTo = () => {
     if (toaddr.memo.endsWith(fromAddress)) {
@@ -193,7 +193,7 @@ function getSendManyJSON(sendPageState: SendPageState, info: Info): [] {
 }
 
 const ConfirmModalToAddr = ({ toaddr, info }) => {
-  const { bigPart, smallPart } = Utils.splitZecAmountIntoBigSmall(toaddr.amount);
+  const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(toaddr.amount);
 
   const memo: string = toaddr.memo ? toaddr.memo : '';
 
@@ -212,7 +212,7 @@ const ConfirmModalToAddr = ({ toaddr, info }) => {
               <span className={[cstyles.small, styles.pslsmallpart].join(' ')}>{smallPart}</span>
             </div>
           </div>
-          <div>{Utils.getZecToUsdString(info.pslPrice, toaddr.amount)}</div>
+          <div>{Utils.getPslToUsdString(info.pslPrice, toaddr.amount)}</div>
         </div>
       </div>
       <div className={[cstyles.sublight, cstyles.breakword].join(' ')}>{memo}</div>
@@ -234,7 +234,7 @@ const ConfirmModalInternal = ({
   const sendingTotal =
     sendPageState.toaddrs.reduce((s, t) => parseFloat(s) + parseFloat(t.amount), 0.0) +
     Utils.getDefaultFee(info.latestBlock);
-  const { bigPart, smallPart } = Utils.splitZecAmountIntoBigSmall(sendingTotal);
+  const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(sendingTotal);
 
   const sendButton = () => {
     // First, close the confirm modal.
@@ -294,7 +294,7 @@ const ConfirmModalInternal = ({
                 <span className={[cstyles.small, styles.pslsmallpart].join(' ')}>{smallPart}</span>
               </div>
 
-              <div className={cstyles.normal}>{Utils.getZecToUsdString(info.pslPrice, sendingTotal)}</div>
+              <div className={cstyles.normal}>{Utils.getPslToUsdString(info.pslPrice, sendingTotal)}</div>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default class RPC {
 
   fnSetAllAddresses: (string[]) => void;
 
-  fnSetZecPrice: number => void;
+  fnSetPslPrice: number => void;
 
   fnSetDisconnected: string => void;
 
@@ -57,7 +57,7 @@ export default class RPC {
     fnSetTransactionsList: (Transaction[]) => void,
     fnSetAllAddresses: (string[]) => void,
     fnSetInfo: Info => void,
-    fnSetZecPrice: number => void,
+    fnSetPslPrice: number => void,
     fnSetDisconnected: () => void
   ) {
     this.fnSetTotalBalance = fnSetTotalBalance;
@@ -65,7 +65,7 @@ export default class RPC {
     this.fnSetTransactionsList = fnSetTransactionsList;
     this.fnSetAllAddresses = fnSetAllAddresses;
     this.fnSetInfo = fnSetInfo;
-    this.fnSetZecPrice = fnSetZecPrice;
+    this.fnSetPslPrice = fnSetPslPrice;
     this.fnSetDisconnected = fnSetDisconnected;
 
     this.opids = new Set();
@@ -83,7 +83,7 @@ export default class RPC {
     }
 
     if (!this.priceTimerID) {
-      this.priceTimerID = setTimeout(() => this.getZecPrice(), 1000);
+      this.priceTimerID = setTimeout(() => this.getPslPrice(), 1000);
     }
   }
 
@@ -138,38 +138,6 @@ export default class RPC {
       return;
     }
 
-    // Temporary fix for pasteld stalls at 903001 issue (https://github.com/pastel/pastel/issues/4620)
-    if (latestBlockHeight === 903001) {
-      console.log('Looks like we stalled');
-      // If it is stalled at this height after 5 seconds, we will do invalidate / reconsider
-      setTimeout(async () => {
-        const newHeight = await this.fetchInfo();
-        if (newHeight !== 903001) {
-          return;
-        }
-
-        console.log('Confirmed stalled');
-        // First, clear the banned peers
-        await RPC.doRPC('clearbanned', [], this.rpcConfig);
-        // Then invalidate block
-        await RPC.doRPC(
-          'invalidateblock',
-          ['00000000006e4d348d0addad1b43ae09744f9c76a0724be4a3f5e08bdb1121ac'],
-          this.rpcConfig
-        );
-        console.log('Invalidated block');
-
-        // And then, 2 seconds later, reconsider the block
-        setTimeout(async () => {
-          await RPC.doRPC(
-            'reconsiderblock',
-            ['00000000006e4d348d0addad1b43ae09744f9c76a0724be4a3f5e08bdb1121ac'],
-            this.rpcConfig
-          );
-          console.log('Reconsidered block');
-        }, 2 * 1000);
-      }, 5 * 1000);
-    }
 
     if (!lastBlockHeight || lastBlockHeight < latestBlockHeight) {
       try {
@@ -222,7 +190,7 @@ export default class RPC {
 
   async doImportPrivKey(key: string, rescan: boolean) {
     // Z address
-    if (key.startsWith('L') || key.startsWith('K') || key.startsWith('p-secret')) {
+    if (key.startsWith('p-secret-extended-key')) {
       try {
         const r = await RPC.doRPC('z_importkey', [key, rescan ? 'yes' : 'no'], this.rpcConfig);
         console.log(r.result);
@@ -246,6 +214,29 @@ export default class RPC {
       } catch (err) {
         return err;
       }
+    }
+  }
+
+  async doImportANIPrivKey(key: string, rescan: boolean) {
+    // ingest ani2psl_secret <ANI private key>
+    if (key.startsWith('P') && key.length === 52) {
+      try {
+        const psl_secret_key = await RPC.doRPC('ingest', ['ani2psl_secret', key], this.rpcConfig);
+        console.log(psl_secret_key.result);
+        console.log('Done converting ANI private key into the corresponding PSL private key.');
+        // current_date = new Date().toLocaleString();
+        // const r = await RPC.doRPC('importprivkey', [psl_secret_key.result, 'imported from ANI private key on '.concat(current_date), rescan], this.rpcConfig);
+        // console.log(r.result);
+        // return '';
+        // console.log('Now attempting to import the PSL private key...')
+        // const r = await doImportPrivKey(psl_secret_key: string, rescan: boolean)
+        // console.log('Done importing private key!')
+        return psl_secret_key.result;
+      } catch (err) {
+        return err;
+      }
+    } else {
+      console.log('Error: The entered ANI private key was the wrong length or did not start with the character "p"!');
     }
   }
 
@@ -503,12 +494,12 @@ export default class RPC {
     this.setupNextOpidSatusFetch();
   }
 
-  setupNextZecPriceRefresh(retryCount: number, timeout: number) {
+  setupNextPslPriceRefresh(retryCount: number, timeout: number) {
     // Every hour
-    this.priceTimerID = setTimeout(() => this.getZecPrice(retryCount), timeout);
+    this.priceTimerID = setTimeout(() => this.getPslPrice(retryCount), timeout);
   }
 
-  async getZecPrice(retryCount: number) {
+  async getPslPrice(retryCount: number) {
     if (!retryCount) {
       // eslint-disable-next-line no-param-reassign
       retryCount = 0;
@@ -528,24 +519,24 @@ export default class RPC {
       const pslData = response.data;
       if (pslData) {
         // TODO: Get Real PSL price!!!
-        this.fnSetZecPrice(0.0025);
-        this.setupNextZecPriceRefresh(0, 1000 * 60 * 60); // Every hour
+        this.fnSetPslPrice(0.0025);
+        this.setupNextPslPriceRefresh(0, 1000 * 60 * 60); // Every hour
       } else {
-        this.fnSetZecPrice(null);
+        this.fnSetPslPrice(null);
         let timeout = 1000 * 60; // 1 minute
         if (retryCount > 5) {
           timeout = 1000 * 60 * 60; // an hour later
         }
-        this.setupNextZecPriceRefresh(retryCount + 1, timeout);
+        this.setupNextPslPriceRefresh(retryCount + 1, timeout);
       }
     } catch (err) {
       console.log(err);
-      this.fnSetZecPrice(null);
+      this.fnSetPslPrice(null);
       let timeout = 1000 * 60; // 1 minute
       if (retryCount > 5) {
         timeout = 1000 * 60 * 60; // an hour later
       }
-      this.setupNextZecPriceRefresh(retryCount + 1, timeout);
+      this.setupNextPslPriceRefresh(retryCount + 1, timeout);
     }
   }
 }

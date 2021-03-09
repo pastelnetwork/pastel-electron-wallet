@@ -109,6 +109,12 @@ export default class MenuBuilder {
           }
         },
         {
+          label: '&Import ANI Private Keys',
+          click: () => {
+            mainWindow.webContents.send('importani');
+          }
+        },
+        {
           label: '&Export All Private Keys',
           click: () => {
             mainWindow.webContents.send('exportall');
@@ -230,6 +236,12 @@ export default class MenuBuilder {
             label: '&Import Private Keys...',
             click: () => {
               mainWindow.webContents.send('import');
+            }
+          },
+          {
+            label: '&Import ANI Private Keys...',
+            click: () => {
+              mainWindow.webContents.send('importani');
             }
           },
           {

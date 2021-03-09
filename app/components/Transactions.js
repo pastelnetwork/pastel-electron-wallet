@@ -78,7 +78,7 @@ const TxModalInternal = ({ modalIsOpen, tx, info, closeModal, currencyName, pslP
           {type}
           <BalanceBlockHighlight
             pslValue={amount}
-            usdValue={Utils.getZecToUsdString(pslPrice, Math.abs(amount))}
+            usdValue={Utils.getPslToUsdString(pslPrice, Math.abs(amount))}
             currencyName={currencyName}
           />
         </div>
@@ -122,7 +122,7 @@ const TxModalInternal = ({ modalIsOpen, tx, info, closeModal, currencyName, pslP
         <hr />
 
         {detailedTxns.map(txdetail => {
-          const { bigPart, smallPart } = Utils.splitZecAmountIntoBigSmall(Math.abs(txdetail.amount));
+          const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(Math.abs(txdetail.amount));
 
           let { address } = txdetail;
           const { memo } = txdetail;
@@ -207,7 +207,7 @@ const TxItemBlock = ({ transaction, currencyName, pslPrice, txClicked, addressBo
         </div>
         <div className={styles.txaddressamount}>
           {transaction.detailedTxns.map(txdetail => {
-            const { bigPart, smallPart } = Utils.splitZecAmountIntoBigSmall(Math.abs(txdetail.amount));
+            const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(Math.abs(txdetail.amount));
 
             let { address } = txdetail;
             const { memo } = txdetail;
@@ -235,7 +235,7 @@ const TxItemBlock = ({ transaction, currencyName, pslPrice, txClicked, addressBo
                     <span className={[cstyles.small, cstyles.pslsmallpart].join(' ')}>{smallPart}</span>
                   </div>
                   <div className={[cstyles.sublight, cstyles.small, cstyles.padtopsmall].join(' ')}>
-                    {Utils.getZecToUsdString(pslPrice, Math.abs(txdetail.amount))}
+                    {Utils.getPslToUsdString(pslPrice, Math.abs(txdetail.amount))}
                   </div>
                 </div>
               </div>

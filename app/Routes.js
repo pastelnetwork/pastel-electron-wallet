@@ -78,7 +78,7 @@ export default class RouteApp extends React.Component<Props, AppState> {
         this.setTransactionList,
         this.setAllAddresses,
         this.setInfo,
-        this.setZecPrice,
+        this.setPslPrice,
         this.setDisconnected
       );
     }
@@ -200,7 +200,7 @@ export default class RouteApp extends React.Component<Props, AppState> {
           <span>
             The import process for the private keys has started.
             <br />
-            This will take a long time, up to 6 hours!
+            This will take a long time, up to 1 hour!
             <br />
             Please be patient!
           </span>
@@ -221,6 +221,43 @@ export default class RouteApp extends React.Component<Props, AppState> {
           </span>
         );
 
+        return;
+      }
+    }
+  };
+
+  importANIPrivKeys = async (keys: string[]) => {
+    console.log(keys);
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < keys.length; i++) {
+      // The last doImport will take forever, because it will trigger the rescan. So, show
+      // the dialog. If the last one fails, there will be an error displayed anyways
+      if (i === keys.length - 1) {
+        this.openErrorModal(
+          'ANI Key Import Started',
+          <span>
+            The import process for the private keys has started.
+            <br />
+            This will take a long time, up to 1 hour!
+            <br />
+            Please be patient!
+          </span>
+        );
+      }
+
+      // eslint-disable-next-line no-await-in-loop
+      const result = await this.rpc.doImportANIPrivKey(keys[i], i === keys.length - 1);
+      if (result !== '') {
+        this.openErrorModal(
+          'Success! Your ANI private key converted into PSL',
+          <span>
+            <br /> The corresponding PSL Private Key is as follows (copy this someplace secure!): <br />
+
+            {result}
+
+            <br /> Copy this key and paste it into the "Import Private Keys..." menu item. <br />
+          </span>
+        );
         return;
       }
     }
@@ -264,7 +301,7 @@ export default class RouteApp extends React.Component<Props, AppState> {
     this.rpc.configure(rpcConfig);
   };
 
-  setZecPrice = (price: number | null) => {
+  setPslPrice = (price: number | null) => {
     console.log(`Price = ${price}`);
     const { info } = this.state;
 
@@ -404,6 +441,7 @@ export default class RouteApp extends React.Component<Props, AppState> {
                 setSendTo={this.setSendTo}
                 getPrivKeyAsString={this.getPrivKeyAsString}
                 importPrivKeys={this.importPrivKeys}
+                importANIPrivKeys={this.importANIPrivKeys}
                 addresses={addresses}
                 transactions={transactions}
                 {...standardProps}
