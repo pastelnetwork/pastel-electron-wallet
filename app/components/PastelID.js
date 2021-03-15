@@ -34,8 +34,6 @@ type Props = {
 function passphraseStatusColor(validation: PassphraseValidation) {
   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green];
 
-  console.log(validation.id, colors[validation.id]);
-
   if (!colors[validation.id]) {
     return cstyles.red;
   }
@@ -78,30 +76,35 @@ export default class PastelID extends Component<Props, State> {
   }
 
   async onCreate() {
-    const { passphrase, selectedAddress } = this.state;
-    const { createNewAddress, createNewPastelID } = this.props;
+    try {
+      const { passphrase, selectedAddress } = this.state;
+      const { createNewAddress, createNewPastelID } = this.props;
 
-    if (!this.valid) {
-      return;
+      if (!this.valid) {
+        return;
+      }
+
+      this.setState({ loading: true });
+
+      if (!selectedAddress) {
+        const newAddress = await createNewAddress(false);
+        const newSelectedAddress: OptionType = {
+          value: newAddress,
+          label: newAddress
+        };
+
+        this.setState({
+          selectedAddress: newSelectedAddress
+        });
+      }
+
+      await createNewPastelID(passphrase);
+
+      this.setState({ loading: false });
+    } catch (e) {
+      // TODO log errors to a central logger so we can address them later.
+      console.warn(e);
     }
-
-    this.setState({ loading: true });
-
-    if (!selectedAddress) {
-      const newAddress = await createNewAddress(false);
-      const newSelectedAddress: OptionType = {
-        value: newAddress,
-        label: newAddress
-      };
-
-      this.setState({
-        selectedAddress: newSelectedAddress
-      });
-    }
-
-    await createNewPastelID(passphrase);
-
-    this.setState({ loading: false });
   }
 
   get valid(): boolean {
