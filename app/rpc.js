@@ -2,7 +2,15 @@
 import axios from 'axios';
 import _ from 'underscore';
 import hex from 'hex-string';
-import { TotalBalance, AddressBalance, Transaction, RPCConfig, TxDetail, Info } from './components/AppState';
+import {
+  TotalBalance,
+  AddressBalance,
+  Transaction,
+  RPCConfig,
+  TxDetail,
+  Info,
+  SinglePastelID
+} from './components/AppState';
 import Utils, { NO_CONNECTION } from './utils/utils';
 import SentTxStore from './utils/SentTxStore';
 
@@ -138,7 +146,6 @@ export default class RPC {
       return;
     }
 
-
     if (!lastBlockHeight || lastBlockHeight < latestBlockHeight) {
       try {
         const balP = this.fetchTotalBalance();
@@ -217,21 +224,21 @@ export default class RPC {
     }
   }
 
-  async doImportANIPrivKey(key: string, rescan: boolean) {
+  async doImportANIPrivKey(key: string) {
     // ingest ani2psl_secret <ANI private key>
     if (key.startsWith('P') && key.length === 52) {
       try {
-        const psl_secret_key = await RPC.doRPC('ingest', ['ani2psl_secret', key], this.rpcConfig);
-        console.log(psl_secret_key.result);
+        const pslSecretKey = await RPC.doRPC('ingest', ['ani2psl_secret', key], this.rpcConfig);
+        console.log(pslSecretKey.result);
         console.log('Done converting ANI private key into the corresponding PSL private key.');
         // current_date = new Date().toLocaleString();
-        // const r = await RPC.doRPC('importprivkey', [psl_secret_key.result, 'imported from ANI private key on '.concat(current_date), rescan], this.rpcConfig);
+        // const r = await RPC.doRPC('importprivkey', [pslSecretKey.result, 'imported from ANI private key on '.concat(current_date), rescan], this.rpcConfig);
         // console.log(r.result);
         // return '';
         // console.log('Now attempting to import the PSL private key...')
-        // const r = await doImportPrivKey(psl_secret_key: string, rescan: boolean)
+        // const r = await doImportPrivKey(pslSecretKey: string, rescan: boolean)
         // console.log('Done importing private key!')
-        return psl_secret_key.result;
+        return pslSecretKey.result;
       } catch (err) {
         return err;
       }
@@ -538,5 +545,34 @@ export default class RPC {
       }
       this.setupNextPslPriceRefresh(retryCount + 1, timeout);
     }
+  }
+
+  async createNewPastelID(passphrase: string): SinglePastelID {
+    const resp = await RPC.doRPC('pastelid', ['newkey', passphrase], this.rpcConfig);
+    const res = new SinglePastelID(resp.result.pastelid);
+    return res;
+  }
+
+  async getPastelIDs(): SinglePastelID[] {
+    let resp: { result: [{ PasteID: string }] } = [];
+    try {
+      resp = await RPC.doRPC('pastelid', ['list'], this.rpcConfig);
+    } catch (error) {
+      if (
+        // this happens when there is no PastelIDs created yet, therefore this is a valid state.
+        String(error).indexOf(
+          'boost::filesystem::directory_iterator::construct: The system cannot find the path specified'
+        ) !== -1
+      ) {
+        return [];
+      }
+    }
+
+    // TODO RPC calls "pastel list" and "pastel newkey <pass>" return inconsistent results:
+    // one returns [{ PastelID: string }] and the other { pastelid: string }. This difference in keys must be fixed on RPC side.
+    // The loop below is a workaroud to translate the [{ PastelID: string }] of "pastel list" into [{ pastelid: string }].
+    return resp.result.map((id: { PastelID: string }) => {
+      return new SinglePastelID(id.PastelID);
+    });
   }
 }
