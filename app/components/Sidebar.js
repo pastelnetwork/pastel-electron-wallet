@@ -111,7 +111,7 @@ const ImportANIPrivKeyModal = ({ modalIsOpen, modalInput, setModalInput, closeMo
         </div>
 
         <div className={cstyles.marginbottomlarge} style={{ textAlign: 'center' }}>
-          Please paste your ANI private keys here, one line per key. <br /> (NOTE: Don't use this unless you
+          Please paste your ANI private keys here, one line per key. <br /> (NOTE: Don&apos;t use this unless you
           participated in the original fork of Animecoin!)
         </div>
 
@@ -268,8 +268,7 @@ class Sidebar extends PureComponent<Props, State> {
 
   // Handle menu items
   setupMenuHandlers = async () => {
-    const { info, setSendTo, history, openErrorModal, closeErrorModal } = this.props;
-    const { testnet } = info;
+    const { history, openErrorModal, closeErrorModal } = this.props;
 
     // About
     ipcRenderer.on('about', () => {
@@ -302,7 +301,6 @@ class Sidebar extends PureComponent<Props, State> {
         </div>
       );
     });
-
 
     // Pay URI
     ipcRenderer.on('payuri', (event, uri) => {
@@ -618,8 +616,8 @@ class Sidebar extends PureComponent<Props, State> {
             iconname="fa-address-book"
           />
           <SidebarMenuItem
-            name="PastelID"
-            routeName={routes.PASTELID}
+            name="Pastel ID"
+            routeName={routes.PASTEL_ID}
             currentRoute={location.pathname}
             iconname="fa-fingerprint"
           />

@@ -548,7 +548,7 @@ export default class RouteApp extends React.Component<Props, AppState> {
               <Route path={routes.PASTELD} render={() => <Pasteld info={info} refresh={this.doRefresh} />} />
 
               <Route
-                path={routes.PASTELID}
+                path={routes.PASTEL_ID}
                 render={() => (
                   <PastelID
                     getPastelIDs={this.getPastelIDs.bind(this)}

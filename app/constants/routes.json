@@ -7,6 +7,6 @@
   "TRANSACTIONS": "/transactions",
   "SETTINGS": "/settings",
   "PASTELD": "/pasteld",
-  "PASTELID": "/pastelid",
+  "PASTEL_ID": "/pastel_id",
   "CONNECTMOBILE": "/connectmobile"
 }
