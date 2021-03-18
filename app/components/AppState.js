@@ -151,6 +151,14 @@ export class ConnectedCompanionApp {
   lastSeen: number;
 }
 
+export class SinglePastelID {
+  pastelid: string;
+
+  constructor(pastelid: string) {
+    this.pastelid = pastelid;
+  }
+}
+
 // eslint-disable-next-line max-classes-per-file
 export default class AppState {
   // The total confirmed and unconfirmed balance in this wallet
@@ -190,4 +198,7 @@ export default class AppState {
 
   // The last seen connected companion app
   connectedCompanionApp: ConnectedCompanionApp;
+
+  // PastelIDs
+  pastelIDs: PastelID[];
 }

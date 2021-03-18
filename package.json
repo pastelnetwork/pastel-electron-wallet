@@ -307,6 +307,7 @@
     "@fortawesome/fontawesome-free": "^5.12.0",
     "@hot-loader/react-dom": "^16.11.0",
     "axios": "^0.21.1",
+    "check-password-strength": "^2.0.2",
     "dateformat": "^3.0.3",
     "electron-debug": "^3.0.1",
     "electron-log": "^4.0.0",
@@ -332,6 +333,7 @@
     "source-map-support": "^0.5.16",
     "typeface-roboto": "^0.0.75",
     "underscore": "^1.9.2",
+    "uuid": "^8.3.2",
     "ws": "^7.2.1"
   },
   "devEngines": {

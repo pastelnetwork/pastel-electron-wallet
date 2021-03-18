@@ -33,6 +33,7 @@ import AddressbookImpl from './utils/AddressbookImpl';
 import Sidebar from './components/Sidebar';
 import Transactions from './components/Transactions';
 import CompanionAppListener from './companion';
+import PastelID from './components/PastelID';
 import WormholeConnection from './components/WormholeConnection';
 
 type Props = {};
@@ -59,7 +60,8 @@ export default class RouteApp extends React.Component<Props, AppState> {
       info: new Info(),
       location: null,
       errorModalData: new ErrorModalData(),
-      connectedCompanionApp: null
+      connectedCompanionApp: null,
+      pastelIDs: []
     };
 
     // Create the initial ToAddr box
@@ -252,10 +254,8 @@ export default class RouteApp extends React.Component<Props, AppState> {
           'Success! Your ANI private key converted into PSL',
           <span>
             <br /> The corresponding PSL Private Key is as follows (copy this someplace secure!): <br />
-
             {result}
-
-            <br /> Copy this key and paste it into the "Import Private Keys..." menu item. <br />
+            <br /> Copy this key and paste it into the &quot;Import Private Keys...&quot; menu item. <br />
           </span>
         );
         return;
@@ -375,7 +375,7 @@ export default class RouteApp extends React.Component<Props, AppState> {
     this.setState({ addressBook: newAddressBook });
   };
 
-  createNewAddress = async (zaddress: boolean) => {
+  createNewAddress = async (zaddress: boolean): string => {
     // Create a new address
     const newaddress = await this.rpc.createNewAddress(zaddress);
     console.log(`Created new Address ${newaddress}`);
@@ -391,6 +391,7 @@ export default class RouteApp extends React.Component<Props, AppState> {
     newReceivePageState.rerenderKey = newRerenderKey;
 
     this.setState({ receivePageState: newReceivePageState });
+    return newaddress;
   };
 
   updateConnectedCompanionApp = (connectedCompanionApp: ConnectedCompanionApp | null) => {
@@ -399,6 +400,38 @@ export default class RouteApp extends React.Component<Props, AppState> {
 
   doRefresh = () => {
     this.rpc.refresh();
+  };
+
+  async getPastelIDs() {
+    try {
+      const ids = await this.rpc.getPastelIDs();
+      this.setState({
+        pastelIDs: ids
+      });
+    } catch (e) {
+      this.openErrorModal(
+        'Can not fetch Pastel IDs',
+        "We cound't fetch existing Pastel IDs for some reason. Please restart the wallet to try again."
+      );
+      // TODO log errors to a central logger so we can address them later.
+      console.warn(e);
+    }
+  }
+
+  createNewPastelID = async (passphrase: string) => {
+    try {
+      const res = await this.rpc.createNewPastelID(passphrase);
+      this.setState(prevState => ({
+        pastelIDs: [...prevState.pastelIDs, res]
+      }));
+    } catch (e) {
+      this.openErrorModal(
+        'Can not create new Pastel ID',
+        "We cound't create a new Pastel ID for some reason. Please restart the wallet and try again."
+      );
+      // TODO log errors to a central logger so we can address them later.
+      console.warn(e);
+    }
   };
 
   render() {
@@ -414,7 +447,8 @@ export default class RouteApp extends React.Component<Props, AppState> {
       receivePageState,
       info,
       errorModalData,
-      connectedCompanionApp
+      connectedCompanionApp,
+      pastelIDs
     } = this.state;
 
     const standardProps = {
@@ -512,6 +546,19 @@ export default class RouteApp extends React.Component<Props, AppState> {
               />
 
               <Route path={routes.PASTELD} render={() => <Pasteld info={info} refresh={this.doRefresh} />} />
+
+              <Route
+                path={routes.PASTEL_ID}
+                render={() => (
+                  <PastelID
+                    getPastelIDs={this.getPastelIDs.bind(this)}
+                    addressesWithBalance={addressesWithBalance}
+                    createNewAddress={this.createNewAddress}
+                    createNewPastelID={this.createNewPastelID.bind(this)}
+                    pastelIDs={pastelIDs}
+                  />
+                )}
+              />
 
               <Route
                 path={routes.CONNECTMOBILE}
