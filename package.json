@@ -7,10 +7,7 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "lint": "eslint --ext .ts .",
-    "package:mac": "electron-builder build --mac --publish=never",
-    "package:linux": "electron-builder build --linux --publish=never",
-    "package:win": "electron-builder build --win --publish=never"
+    "lint": "eslint --ext .ts ."
   },
   "keywords": [],
   "author": {
@@ -21,6 +18,8 @@
   "config": {
     "forge": {
       "packagerConfig": {
+        "name": "pastelwallet",
+        "asar": true,
         "extraResource": [
           "./static/bin/pasteld-linux",
           "./static/bin/pasteld-mac",
@@ -82,7 +81,6 @@
     "@typescript-eslint/parser": "^4.0.1",
     "css-loader": "^4.2.1",
     "electron": "12.0.1",
-    "electron-builder": "^22.10.5",
     "electron-debug": "^3.2.0",
     "electron-devtools-installer": "^3.1.1",
     "eslint": "^7.6.0",

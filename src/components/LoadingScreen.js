@@ -22,8 +22,7 @@ import styles from "./LoadingScreen.module.css";
 import { NO_CONNECTION } from "../utils/utils";
 import Logo from "../assets/img/pastel-logo.png";
 import pasteldlogo from "../assets/img/pastel-logo2.png";
-import process from 'process';
-
+import process from "process";
 
 const locatePastelConfDir = () => {
   if (os.platform() === "darwin") {
@@ -58,8 +57,6 @@ const pasteldBasePath = () => {
 };
 
 const locatePasteld = () => {
-  console.log("===> pasteld path", pasteldBasePath());
-  
   if (os.platform() === "darwin") {
     return path.join(pasteldBasePath(), "pasteld-mac");
   }

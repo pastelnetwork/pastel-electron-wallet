@@ -1,26 +1,42 @@
 /* eslint-disable max-classes-per-file */
-import axios from 'axios';
-import _ from 'underscore';
-import hex from 'hex-string';
-import { TotalBalance, AddressBalance, Transaction, RPCConfig, TxDetail, Info, SinglePastelID } from './components/AppState';
-import Utils, { NO_CONNECTION } from './utils/utils';
-import SentTxStore from './utils/SentTxStore';
+import axios from "axios";
+import _ from "underscore";
+import hex from "hex-string";
+import {
+  TotalBalance,
+  AddressBalance,
+  Transaction,
+  RPCConfig,
+  TxDetail,
+  Info,
+  SinglePastelID,
+} from "./components/AppState";
+import Utils, { NO_CONNECTION } from "./utils/utils";
+import SentTxStore from "./utils/SentTxStore";
 
-const parseMemo = memoHex => {
+const parseMemo = (memoHex) => {
   if (!memoHex || memoHex.length < 2) return null; // First, check if this is a memo (first byte is less than 'f6' (246))
 
   if (parseInt(memoHex.substr(0, 2), 16) >= 246) return null; // Else, parse as Hex string
 
   const textDecoder = new TextDecoder();
   const memo = textDecoder.decode(hex.decode(memoHex));
-  if (memo === '') return null;
+  if (memo === "") return null;
   return memo;
 };
 
 class OpidMonitor {}
 
 export default class RPC {
-  constructor(fnSetTotalBalance, fnSetAddressesWithBalance, fnSetTransactionsList, fnSetAllAddresses, fnSetInfo, fnSetPslPrice, fnSetDisconnected) {
+  constructor(
+    fnSetTotalBalance,
+    fnSetAddressesWithBalance,
+    fnSetTransactionsList,
+    fnSetAllAddresses,
+    fnSetInfo,
+    fnSetPslPrice,
+    fnSetDisconnected
+  ) {
     this.fnSetTotalBalance = fnSetTotalBalance;
     this.fnSetAddressesWithBalance = fnSetAddressesWithBalance;
     this.fnSetTransactionsList = fnSetTransactionsList;
@@ -48,15 +64,14 @@ export default class RPC {
   }
 
   setupNextFetch(lastBlockHeight) {
-    this.refreshTimerID = setTimeout(() => this.refresh(lastBlockHeight), 60 * 1000);
+    this.refreshTimerID = setTimeout(
+      () => this.refresh(lastBlockHeight),
+      60 * 1000
+    );
   }
 
   static async doRPC(method, params, rpcConfig) {
-    const {
-      url,
-      username,
-      password
-    } = rpcConfig;
+    const { url, username, password } = rpcConfig;
     console.log(rpcConfig);
     console.log(url);
     console.log(username);
@@ -65,28 +80,29 @@ export default class RPC {
     const response = await new Promise((resolve, reject) => {
       axios(url, {
         data: {
-          jsonrpc: '2.0',
-          id: 'curltest',
+          jsonrpc: "2.0",
+          id: "curltest",
           method,
-          params
+          params,
         },
-        method: 'POST',
+        method: "POST",
         auth: {
           username,
-          password
-        }
-      }).then(r => resolve(r.data)).catch(err => {
-        const e = { ...err
-        };
-        console.log(e);
+          password,
+        },
+      })
+        .then((r) => resolve(r.data))
+        .catch((err) => {
+          const e = { ...err };
+          console.log(e);
 
-        if (e.response && e.response.data) {
-          reject(e.response.data.error.message);
-        } else {
-          // eslint-disable-next-line prefer-promise-reject-errors
-          reject(NO_CONNECTION);
-        }
-      });
+          if (e.response && e.response.data) {
+            reject(e.response.data.error.message);
+          } else {
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject(NO_CONNECTION);
+          }
+        });
     });
     return response;
   }
@@ -121,54 +137,65 @@ export default class RPC {
       }
     } else {
       // Still at the latest block
-      console.log('Already have latest block, waiting for next refresh');
+      console.log("Already have latest block, waiting for next refresh");
     }
 
     this.setupNextFetch(latestBlockHeight);
   } // Special method to get the Info object. This is used both internally and by the Loading screen
 
-
   static async getInfoObject(rpcConfig) {
-    const infoResult = await RPC.doRPC('getinfo', [], rpcConfig);
+    const infoResult = await RPC.doRPC("getinfo", [], rpcConfig);
     const info = new Info();
     info.testnet = infoResult.result.testnet;
     info.latestBlock = infoResult.result.blocks;
     info.connections = infoResult.result.connections;
     info.version = infoResult.result.version;
-    info.currencyName = info.testnet ? 'LSP' : 'PSL';
+    info.currencyName = info.testnet ? "LSP" : "PSL";
     info.pslPrice = null; // Setting this to null will copy over the existing price
 
     info.disconnected = false;
-    const blkInfoResult = await RPC.doRPC('getblockchaininfo', [], rpcConfig);
+    const blkInfoResult = await RPC.doRPC("getblockchaininfo", [], rpcConfig);
     info.verificationProgress = blkInfoResult.result.verificationprogress;
-    const solps = await RPC.doRPC('getnetworksolps', [], rpcConfig);
+    const solps = await RPC.doRPC("getnetworksolps", [], rpcConfig);
     info.solps = solps.result;
     return info;
   }
 
   async doImportPrivKey(key, rescan) {
     // Z address
-    if (key.startsWith('p-secret-extended-key')) {
+    if (key.startsWith("p-secret-extended-key")) {
       try {
-        const r = await RPC.doRPC('z_importkey', [key, rescan ? 'yes' : 'no'], this.rpcConfig);
+        const r = await RPC.doRPC(
+          "z_importkey",
+          [key, rescan ? "yes" : "no"],
+          this.rpcConfig
+        );
         console.log(r.result);
-        return '';
+        return "";
       } catch (err) {
         return err;
       }
-    } else if (key.startsWith('zxview')) {
+    } else if (key.startsWith("zxview")) {
       try {
-        const r = await RPC.doRPC('z_importviewingkey', [key, rescan ? 'yes' : 'no'], this.rpcConfig);
+        const r = await RPC.doRPC(
+          "z_importviewingkey",
+          [key, rescan ? "yes" : "no"],
+          this.rpcConfig
+        );
         console.log(r.result);
-        return '';
+        return "";
       } catch (err) {
         return err;
       }
     } else {
       try {
-        const r = await RPC.doRPC('importprivkey', [key, 'imported', rescan], this.rpcConfig);
+        const r = await RPC.doRPC(
+          "importprivkey",
+          [key, "imported", rescan],
+          this.rpcConfig
+        );
         console.log(r.result);
-        return '';
+        return "";
       } catch (err) {
         return err;
       }
@@ -177,11 +204,17 @@ export default class RPC {
 
   async doImportANIPrivKey(key) {
     // ingest ani2psl_secret <ANI private key>
-    if (key.startsWith('P') && key.length === 52) {
+    if (key.startsWith("P") && key.length === 52) {
       try {
-        const pslSecretKey = await RPC.doRPC('ingest', ['ani2psl_secret', key], this.rpcConfig);
+        const pslSecretKey = await RPC.doRPC(
+          "ingest",
+          ["ani2psl_secret", key],
+          this.rpcConfig
+        );
         console.log(pslSecretKey.result);
-        console.log('Done converting ANI private key into the corresponding PSL private key.'); // current_date = new Date().toLocaleString();
+        console.log(
+          "Done converting ANI private key into the corresponding PSL private key."
+        ); // current_date = new Date().toLocaleString();
         // const r = await RPC.doRPC('importprivkey', [pslSecretKey.result, 'imported from ANI private key on '.concat(current_date), rescan], this.rpcConfig);
         // console.log(r.result);
         // return '';
@@ -194,7 +227,9 @@ export default class RPC {
         return err;
       }
     } else {
-      console.log('Error: The entered ANI private key was the wrong length or did not start with the character "p"!');
+      console.log(
+        'Error: The entered ANI private key was the wrong length or did not start with the character "p"!'
+      );
     }
   }
 
@@ -204,9 +239,8 @@ export default class RPC {
     return info.latestBlock;
   } // This method will get the total balances
 
-
   async fetchTotalBalance() {
-    const response = await RPC.doRPC('z_gettotalbalance', [0], this.rpcConfig);
+    const response = await RPC.doRPC("z_gettotalbalance", [0], this.rpcConfig);
     const balance = new TotalBalance();
     balance.total = response.result.total;
     balance.private = response.result.private;
@@ -216,21 +250,21 @@ export default class RPC {
 
   async createNewAddress(zaddress) {
     if (zaddress) {
-      const newaddress = await RPC.doRPC('z_getnewaddress', [], this.rpcConfig);
+      const newaddress = await RPC.doRPC("z_getnewaddress", [], this.rpcConfig);
       return newaddress.result; // eslint-disable-next-line no-else-return
     } else {
-      const newaddress = await RPC.doRPC('getnewaddress', [''], this.rpcConfig);
+      const newaddress = await RPC.doRPC("getnewaddress", [""], this.rpcConfig);
       return newaddress.result;
     }
   }
 
   async getPrivKeyAsString(address) {
-    let method = '';
+    let method = "";
 
     if (Utils.isZaddr(address)) {
-      method = 'z_exportkey';
+      method = "z_exportkey";
     } else if (Utils.isTransparent(address)) {
-      method = 'dumpprivkey';
+      method = "dumpprivkey";
     }
 
     const response = await RPC.doRPC(method, [address], this.rpcConfig);
@@ -238,51 +272,55 @@ export default class RPC {
   }
 
   async getViewKeyAsString(address) {
-    let method = '';
+    let method = "";
 
     if (Utils.isZaddr(address)) {
-      method = 'z_exportviewingkey';
+      method = "z_exportviewingkey";
     } else {
-      return '';
+      return "";
     }
 
     const response = await RPC.doRPC(method, [address], this.rpcConfig);
     return response.result;
   } // Fetch all addresses and their associated balances
 
-
   async fetchTandZAddressesWithBalances() {
-    const zresponse = RPC.doRPC('z_listunspent', [0], this.rpcConfig);
-    const tresponse = RPC.doRPC('listunspent', [0], this.rpcConfig); // Do the Z addresses
+    const zresponse = RPC.doRPC("z_listunspent", [0], this.rpcConfig);
+    const tresponse = RPC.doRPC("listunspent", [0], this.rpcConfig); // Do the Z addresses
     // response.result has all the unspent notes.
 
     const unspentNotes = (await zresponse).result;
 
-    const zgroups = _.groupBy(unspentNotes, 'address');
+    const zgroups = _.groupBy(unspentNotes, "address");
 
-    const zaddresses = Object.keys(zgroups).map(address => {
-      const balance = zgroups[address].reduce((prev, obj) => prev + obj.amount, 0);
+    const zaddresses = Object.keys(zgroups).map((address) => {
+      const balance = zgroups[address].reduce(
+        (prev, obj) => prev + obj.amount,
+        0
+      );
       return new AddressBalance(address, Number(balance.toFixed(5)));
     }); // Do the T addresses
 
     const unspentTXOs = (await tresponse).result;
 
-    const tgroups = _.groupBy(unspentTXOs, 'address');
+    const tgroups = _.groupBy(unspentTXOs, "address");
 
-    const taddresses = Object.keys(tgroups).map(address => {
-      const balance = tgroups[address].reduce((prev, obj) => prev + obj.amount, 0);
+    const taddresses = Object.keys(tgroups).map((address) => {
+      const balance = tgroups[address].reduce(
+        (prev, obj) => prev + obj.amount,
+        0
+      );
       return new AddressBalance(address, Number(balance.toFixed(5)));
     });
     const addresses = zaddresses.concat(taddresses);
     this.fnSetAddressesWithBalance(addresses);
   } // Fetch all T and Z transactions
 
-
   async fetchTandZTransactions() {
-    const tresponse = await RPC.doRPC('listtransactions', [], this.rpcConfig);
-    const zaddressesPromise = RPC.doRPC('z_listaddresses', [], this.rpcConfig);
+    const tresponse = await RPC.doRPC("listtransactions", [], this.rpcConfig);
+    const zaddressesPromise = RPC.doRPC("z_listaddresses", [], this.rpcConfig);
     const senttxstorePromise = SentTxStore.loadSentTxns();
-    const ttxlist = tresponse.result.map(tx => {
+    const ttxlist = tresponse.result.map((tx) => {
       const transaction = new Transaction();
       transaction.address = tx.address;
       transaction.type = tx.category;
@@ -298,65 +336,85 @@ export default class RPC {
     }); // Now get Z txns
 
     const zaddresses = await zaddressesPromise;
-    const alltxnsPromise = zaddresses.result.map(async zaddr => {
+    const alltxnsPromise = zaddresses.result.map(async (zaddr) => {
       // For each zaddr, get the list of incoming transactions
-      const incomingTxns = await RPC.doRPC('z_listreceivedbyaddress', [zaddr, 0], this.rpcConfig);
-      const txns = incomingTxns.result.filter(itx => !itx.change).map(incomingTx => {
-        return {
-          address: zaddr,
-          txid: incomingTx.txid,
-          memo: parseMemo(incomingTx.memo),
-          amount: incomingTx.amount,
-          index: incomingTx.outindex
-        };
-      });
+      const incomingTxns = await RPC.doRPC(
+        "z_listreceivedbyaddress",
+        [zaddr, 0],
+        this.rpcConfig
+      );
+      const txns = incomingTxns.result
+        .filter((itx) => !itx.change)
+        .map((incomingTx) => {
+          return {
+            address: zaddr,
+            txid: incomingTx.txid,
+            memo: parseMemo(incomingTx.memo),
+            amount: incomingTx.amount,
+            index: incomingTx.outindex,
+          };
+        });
       return txns;
     });
     const alltxns = (await Promise.all(alltxnsPromise)).flat(); // Now, for each tx in the array, call gettransaction
 
-    const ztxlist = await Promise.all(alltxns.map(async tx => {
-      const txresponse = await RPC.doRPC('gettransaction', [tx.txid], this.rpcConfig);
-      const transaction = new Transaction();
-      transaction.address = tx.address;
-      transaction.type = 'receive';
-      transaction.amount = tx.amount;
-      transaction.confirmations = txresponse.result.confirmations;
-      transaction.txid = tx.txid;
-      transaction.time = txresponse.result.time;
-      transaction.index = tx.index || 0;
-      transaction.detailedTxns = [new TxDetail()];
-      transaction.detailedTxns[0].address = tx.address;
-      transaction.detailedTxns[0].amount = tx.amount; // eslint-disable-next-line no-control-regex
+    const ztxlist = await Promise.all(
+      alltxns.map(async (tx) => {
+        const txresponse = await RPC.doRPC(
+          "gettransaction",
+          [tx.txid],
+          this.rpcConfig
+        );
+        const transaction = new Transaction();
+        transaction.address = tx.address;
+        transaction.type = "receive";
+        transaction.amount = tx.amount;
+        transaction.confirmations = txresponse.result.confirmations;
+        transaction.txid = tx.txid;
+        transaction.time = txresponse.result.time;
+        transaction.index = tx.index || 0;
+        transaction.detailedTxns = [new TxDetail()];
+        transaction.detailedTxns[0].address = tx.address;
+        transaction.detailedTxns[0].amount = tx.amount; // eslint-disable-next-line no-control-regex
 
-      transaction.detailedTxns[0].memo = tx.memo ? tx.memo.replace(/\u0000/g, '') : tx.memo;
-      return transaction;
-    })); // Get transactions from the sent tx store
+        transaction.detailedTxns[0].memo = tx.memo
+          ? tx.memo.replace(/\u0000/g, "")
+          : tx.memo;
+        return transaction;
+      })
+    ); // Get transactions from the sent tx store
 
     const sentTxns = await senttxstorePromise; // Now concat the t and z transactions, and call the update function again
 
-    const alltxlist = ttxlist.concat(ztxlist).concat(sentTxns).sort((tx1, tx2) => {
-      if (tx1.time && tx2.time) {
-        return tx2.time - tx1.time;
-      }
+    const alltxlist = ttxlist
+      .concat(ztxlist)
+      .concat(sentTxns)
+      .sort((tx1, tx2) => {
+        if (tx1.time && tx2.time) {
+          return tx2.time - tx1.time;
+        }
 
-      return tx1.confirmations - tx2.confirmations;
-    });
+        return tx1.confirmations - tx2.confirmations;
+      });
     this.fnSetTransactionsList(alltxlist);
   } // Get all Addresses, including T and Z addresses
 
-
   async fetchAllAddresses() {
-    const zaddrsPromise = RPC.doRPC('z_listaddresses', [], this.rpcConfig);
-    const taddrsPromise = RPC.doRPC('getaddressesbyaccount', [''], this.rpcConfig);
+    const zaddrsPromise = RPC.doRPC("z_listaddresses", [], this.rpcConfig);
+    const taddrsPromise = RPC.doRPC(
+      "getaddressesbyaccount",
+      [""],
+      this.rpcConfig
+    );
     const allZ = (await zaddrsPromise).result;
     const allT = (await taddrsPromise).result;
     this.fnSetAllAddresses(allZ.concat(allT));
   } // Send a transaction using the already constructed sendJson structure
 
-
   async sendTransaction(sendJson, fnOpenSendErrorModal) {
     try {
-      const opid = (await RPC.doRPC('z_sendmany', sendJson, this.rpcConfig)).result;
+      const opid = (await RPC.doRPC("z_sendmany", sendJson, this.rpcConfig))
+        .result;
       const monitor = new OpidMonitor();
       monitor.opid = opid;
       monitor.fnOpenSendErrorModal = fnOpenSendErrorModal;
@@ -368,7 +426,6 @@ export default class RPC {
       throw err;
     }
   } // Start monitoring the given opid
-
 
   async addOpidToMonitor(monitor) {
     this.opids.add(monitor);
@@ -386,21 +443,29 @@ export default class RPC {
   async refreshOpStatus() {
     if (this.opids.size > 0) {
       // Get all the operation statuses.
-      [...this.opids].map(async monitor => {
+      [...this.opids].map(async (monitor) => {
         try {
-          const resultJson = await RPC.doRPC('z_getoperationstatus', [[monitor.opid]], this.rpcConfig);
+          const resultJson = await RPC.doRPC(
+            "z_getoperationstatus",
+            [[monitor.opid]],
+            this.rpcConfig
+          );
           const result = resultJson.result[0];
 
-          if (result.status === 'success') {
-            const {
-              txid
-            } = result.result;
-            monitor.fnOpenSendErrorModal('Successfully Broadcast Transaction', `Transaction was successfully broadcast. TXID: ${txid}`);
+          if (result.status === "success") {
+            const { txid } = result.result;
+            monitor.fnOpenSendErrorModal(
+              "Successfully Broadcast Transaction",
+              `Transaction was successfully broadcast. TXID: ${txid}`
+            );
             this.opids.delete(monitor); // And force a refresh to update the balances etc...
 
             this.refresh(null);
-          } else if (result.status === 'failed') {
-            monitor.fnOpenSendErrorModal('Error Sending Transaction', `Opid ${monitor.opid} Failed. ${result.error.message}`);
+          } else if (result.status === "failed") {
+            monitor.fnOpenSendErrorModal(
+              "Error Sending Transaction",
+              `Opid ${monitor.opid} Failed. ${result.error.message}`
+            );
             this.opids.delete(monitor);
           }
         } catch (err) {
@@ -426,11 +491,13 @@ export default class RPC {
 
     try {
       const response = await new Promise((resolve, reject) => {
-        axios('https://api.coincap.io/v2/rates/pastel', {
-          method: 'GET'
-        }).then(r => resolve(r.data)).catch(err => {
-          reject(err);
-        });
+        axios("https://api.coincap.io/v2/rates/pastel", {
+          method: "GET",
+        })
+          .then((r) => resolve(r.data))
+          .catch((err) => {
+            reject(err);
+          });
       });
       const pslData = response.data;
 
@@ -462,7 +529,11 @@ export default class RPC {
   }
 
   async createNewPastelID(passphrase) {
-    const resp = await RPC.doRPC('pastelid', ['newkey', passphrase], this.rpcConfig);
+    const resp = await RPC.doRPC(
+      "pastelid",
+      ["newkey", passphrase],
+      this.rpcConfig
+    );
     const res = new SinglePastelID(resp.result.pastelid);
     return res;
   }
@@ -471,20 +542,26 @@ export default class RPC {
     let resp = [];
 
     try {
-      resp = await RPC.doRPC('pastelid', ['list'], this.rpcConfig);
+      resp = await RPC.doRPC("pastelid", ["list"], this.rpcConfig);
     } catch (error) {
-      if ( // this happens when there is no PastelIDs created yet, therefore this is a valid state.
-      String(error).indexOf('boost::filesystem::directory_iterator::construct: The system cannot find the path specified') !== -1) {
+      if (
+        // this happens when there is no PastelIDs created yet, therefore this is a valid state.
+        String(error).indexOf(
+          "boost::filesystem::directory_iterator::construct: The system cannot find the path specified"
+        ) !== -1
+      ) {
         return [];
       }
     } // TODO RPC calls "pastel list" and "pastel newkey <pass>" return inconsistent results:
     // one returns [{ PastelID: string }] and the other { pastelid: string }. This difference in keys must be fixed on RPC side.
     // The loop below is a workaroud to translate the [{ PastelID: string }] of "pastel list" into [{ pastelid: string }].
 
+    if (resp.result === null || resp.result.length === 0) {
+      return [];
+    }
 
-    return resp.result.map(id => {
+    return resp.result.map((id) => {
       return new SinglePastelID(id.PastelID);
     });
   }
-
 }
