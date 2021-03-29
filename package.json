@@ -16,57 +16,6 @@
     "email": "max.a.pimenov@gmail.com"
   },
   "license": "MIT",
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "name": "pastelwallet",
-        "asar": true,
-        "extraResource": [
-          "./static/bin/pasteld-linux",
-          "./static/bin/pasteld-mac",
-          "./static/bin/pasteld-win.exe"
-        ]
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-zip"
-        },
-        {
-          "name": "@electron-forge/maker-squirrel"
-        },
-        {
-          "name": "@electron-forge/maker-dmg",
-          "config": {
-            "icon:": "./static/icons/icon.icns"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "options": {
-            "icon": "./static/icons/icon.png"
-          }
-        }
-      ],
-      "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
-            "mainConfig": "./webpack.main.config.js",
-            "renderer": {
-              "config": "./webpack.renderer.config.js",
-              "entryPoints": [
-                {
-                  "html": "./src/index.html",
-                  "js": "./src/renderer.ts",
-                  "name": "main_window"
-                }
-              ]
-            }
-          }
-        ]
-      ]
-    }
-  },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
     "@electron-forge/maker-deb": "^6.0.0-beta.54",
