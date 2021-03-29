@@ -22,9 +22,9 @@
     "forge": {
       "packagerConfig": {
         "extraResource": [
-          "./static/bin/linux/pasteld",
-          "./static/bin/mac/pasteld",
-          "./static/bin/win/pasteld.exe"
+          "./static/bin/pasteld-linux",
+          "./static/bin/pasteld-mac",
+          "./static/bin/pasteld-win.exe"
         ]
       },
       "makers": [
@@ -37,11 +37,7 @@
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
-            "icon:": "./static/icons/icon.icns",
-            "contents": {
-              "type": "link",
-              "path": "/Applications"
-            }
+            "icon:": "./static/icons/icon.icns"
           }
         },
         {
