@@ -8,9 +8,9 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "lint": "eslint --ext .ts .",
-    "package:mac": "electron-builder build --mac --publish=never",
-    "package:linux": "electron-builder build --linux --publish=never",
-    "package:win": "electron-builder build --win --publish=never"
+    "build:mac": "electron-builder build --mac --publish=never",
+    "build:linux": "electron-builder build --linux --publish=never",
+    "build:win": "electron-builder build --win --publish=never"
   },
   "keywords": [],
   "author": {
