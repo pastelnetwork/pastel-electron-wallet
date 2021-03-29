@@ -22,6 +22,7 @@ import styles from "./LoadingScreen.module.css";
 import { NO_CONNECTION } from "../utils/utils";
 import Logo from "../assets/img/pastel-logo.png";
 import pasteldlogo from "../assets/img/pastel-logo2.png";
+import process from "process";
 
 const locatePastelConfDir = () => {
   if (os.platform() === "darwin") {
@@ -49,7 +50,7 @@ const locatePastelConf = () => {
 
 const pasteldBasePath = () => {
   if (remote.app.isPackaged) {
-    return path.join(remote.app.getAppPath(), "..", "..", "static", "bin");
+    return process.resourcesPath;
   }
 
   return path.join(remote.app.getAppPath(), "static", "bin");
@@ -57,14 +58,14 @@ const pasteldBasePath = () => {
 
 const locatePasteld = () => {
   if (os.platform() === "darwin") {
-    return path.join(pasteldBasePath(), "mac", "pasteld");
+    return path.join(pasteldBasePath(), "pasteld-mac");
   }
 
   if (os.platform() === "linux") {
-    return path.join(pasteldBasePath(), "linux", "pasteld");
+    return path.join(pasteldBasePath(), "pasteld-linux");
   }
 
-  return path.join(pasteldBasePath(), "win", "pasteld.exe");
+  return path.join(pasteldBasePath(), "pasteld-win.exe");
 };
 
 const locatePastelParamsDir = () => {

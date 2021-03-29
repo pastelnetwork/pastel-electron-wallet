@@ -2,9 +2,9 @@ PastelWallet Fullnode is a z-Addr first, Sapling compatible wallet and full node
 
 # Installation
 
-### Windows
+### Getting started
 
-Download and run the `.msi` installer and follow the prompts. Alternately, you can download the release binary, unzip it and double click on `pastelwallet.exe` to start.
+Download the release binary for your OS from the releases page, unzip it and double click on the exectable to start.
 
 ## pasteld
 
@@ -23,11 +23,10 @@ git clone https://github.com/PastelNetwork/Pastel_Electron_Wallet.git
 cd Pastel_Electron_Wallet
 
 yarn install
-yarn package
-yarn build:win (or build:mac, build:linux depending on your OS)
+yarn make
 ```
 
-The resulting binaries would be located at `dist` folder.
+The resulting binaries would be located at `out` folder.
 
 #### Pre-Requisits
 
