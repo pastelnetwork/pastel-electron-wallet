@@ -8,5 +8,6 @@
   "SETTINGS": "/settings",
   "PASTELD": "/pasteld",
   "PASTEL_ID": "/pastel_id",
+  "WRAPPED_PSL": "/wrapped_psl",
   "CONNECTMOBILE": "/connectmobile"
 }

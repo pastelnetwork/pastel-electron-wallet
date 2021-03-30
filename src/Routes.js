@@ -38,6 +38,8 @@ import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import PastelID from './components/PastelID'
 import WormholeConnection from './components/WormholeConnection'
+import { WrappedPSL } from './components/WrappedPSL'
+
 export default class RouteApp extends React.Component {
   constructor(props) {
     super(props)
@@ -532,6 +534,7 @@ export default class RouteApp extends React.Component {
                   />
                 )}
               />
+              <Route path={routes.WRAPPED_PSL} render={() => <WrappedPSL />} />
               <Route
                 path={routes.DASHBOARD} // eslint-disable-next-line react/jsx-props-no-spreading
                 render={() => (

@@ -703,6 +703,12 @@ class Sidebar extends PureComponent {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
+          <SidebarMenuItem
+            name='Wrapped PSL'
+            routeName={routes.WRAPPED_PSL}
+            currentRoute={location.pathname}
+            iconname='fa-gift'
+          />
         </div>
 
         <div className={cstyles.center}>
