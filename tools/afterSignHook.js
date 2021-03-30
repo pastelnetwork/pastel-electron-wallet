@@ -1,35 +1,35 @@
 /* eslint-disable camelcase */
-const fs = require('fs');
-const electron_notarize = require('electron-notarize');
+const fs = require('fs')
+const electron_notarize = require('electron-notarize')
 
-module.exports = async function(params) {
+module.exports = async function (params) {
   // Only notarize the app on Mac OS only.
   if (process.platform !== 'darwin') {
-    return;
+    return
   }
   // console.log('afterSign hook triggered', params);
 
   // Same appId in electron-builder.
-  const appId = 'co.pastelwallet.fullnode';
+  const appId = 'co.pastelwallet.fullnode'
 
-  const appPath = params.artifactPaths.find(p => p.endsWith('.dmg'));
+  const appPath = params.artifactPaths.find(p => p.endsWith('.dmg'))
 
   if (!fs.existsSync(appPath)) {
-    throw new Error(`Cannot find application at: ${appPath}`);
+    throw new Error(`Cannot find application at: ${appPath}`)
   }
 
-  console.log(`Notarizing ${appId} found at ${appPath}`);
+  console.log(`Notarizing ${appId} found at ${appPath}`)
 
   try {
     await electron_notarize.notarize({
       appBundleId: appId,
       appPath,
       appleId: process.env.appleId,
-      appleIdPassword: process.env.appleIdPassword
-    });
+      appleIdPassword: process.env.appleIdPassword,
+    })
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 
-  console.log(`Done notarizing ${appId}`);
-};
+  console.log(`Done notarizing ${appId}`)
+}

@@ -1,50 +1,50 @@
 /* eslint global-require: off */
-import { app, shell, BrowserWindow, ipcMain } from "electron";
-import log from "electron-log";
-import MenuBuilder from "./menu";
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import log from 'electron-log'
+import MenuBuilder from './menu'
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any;
-declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any;
+declare const MAIN_WINDOW_WEBPACK_ENTRY: any
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any
 
 export default class AppUpdater {
   constructor() {
-    log.transports.file.level = "info";
+    log.transports.file.level = 'info'
   }
 }
-let mainWindow = null;
+let mainWindow = null
 
-if (process.env.NODE_ENV === "production") {
-  const sourceMapSupport = require("source-map-support");
+if (process.env.NODE_ENV === 'production') {
+  const sourceMapSupport = require('source-map-support')
 
-  sourceMapSupport.install();
+  sourceMapSupport.install()
 }
 
 if (
-  process.env.NODE_ENV === "development" ||
-  process.env.DEBUG_PROD === "true"
+  process.env.NODE_ENV === 'development' ||
+  process.env.DEBUG_PROD === 'true'
 ) {
-  require("electron-debug")();
+  require('electron-debug')()
 }
 
 const installExtensions = async () => {
-  const installer = require("electron-devtools-installer");
+  const installer = require('electron-devtools-installer')
 
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ["REACT_DEVELOPER_TOOLS", "REDUX_DEVTOOLS"];
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS
+  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS']
   return Promise.all(
-    extensions.map((name) => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
-};
+    extensions.map(name => installer.default(installer[name], forceDownload)),
+  ).catch(console.log)
+}
 
-let waitingForClose = false;
-let proceedToClose = false;
+let waitingForClose = false
+let proceedToClose = false
 
 const createWindow = async () => {
   if (
-    process.env.NODE_ENV === "development" ||
-    process.env.DEBUG_PROD === "true"
+    process.env.NODE_ENV === 'development' ||
+    process.env.DEBUG_PROD === 'true'
   ) {
-    await installExtensions();
+    await installExtensions()
   }
 
   mainWindow = new BrowserWindow({
@@ -61,88 +61,88 @@ const createWindow = async () => {
       enableRemoteModule: true,
       webSecurity: false,
     },
-  });
+  })
 
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
   if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools()
   }
 
-  app.on("web-contents-created", (event, contents) => {
-    contents.on("new-window", async (eventInner, navigationUrl) => {
+  app.on('web-contents-created', (event, contents) => {
+    contents.on('new-window', async (eventInner, navigationUrl) => {
       // In this example, we'll ask the operating system
       // to open this event's url in the default browser.
-      console.log("attempting to open window", navigationUrl);
-      eventInner.preventDefault();
-      await shell.openExternal(navigationUrl);
-    });
-  });
+      console.log('attempting to open window', navigationUrl)
+      eventInner.preventDefault()
+      await shell.openExternal(navigationUrl)
+    })
+  })
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  mainWindow.webContents.on("did-finish-load", () => {
+  mainWindow.webContents.on('did-finish-load', () => {
     if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined');
+      throw new Error('"mainWindow" is not defined')
     }
 
     if (process.env.START_MINIMIZED) {
-      mainWindow.minimize();
+      mainWindow.minimize()
     } else {
-      mainWindow.show();
-      mainWindow.focus();
+      mainWindow.show()
+      mainWindow.focus()
     }
-  });
-  mainWindow.on("close", (event) => {
+  })
+  mainWindow.on('close', event => {
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
-      console.log("proceed to close, so closing");
-      return;
+      console.log('proceed to close, so closing')
+      return
     }
 
     // If we're already waiting for close, then don't allow another close event to actually close the window
     if (waitingForClose) {
-      console.log("Waiting for close... Timeout in 10s");
-      event.preventDefault();
-      return;
+      console.log('Waiting for close... Timeout in 10s')
+      event.preventDefault()
+      return
     }
 
-    waitingForClose = true;
-    event.preventDefault();
-    ipcMain.on("appquitdone", () => {
-      waitingForClose = false;
-      proceedToClose = true;
-      app.quit();
-    });
+    waitingForClose = true
+    event.preventDefault()
+    ipcMain.on('appquitdone', () => {
+      waitingForClose = false
+      proceedToClose = true
+      app.quit()
+    })
     // $FlowFixMe
-    mainWindow.webContents.send("appquitting");
+    mainWindow.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
     setTimeout(() => {
-      waitingForClose = false;
-      proceedToClose = true;
-      console.log("Timeout, quitting");
-      app.quit();
-    }, 10 * 1000);
-  });
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+      waitingForClose = false
+      proceedToClose = true
+      console.log('Timeout, quitting')
+      app.quit()
+    }, 10 * 1000)
+  })
+  mainWindow.on('closed', () => {
+    mainWindow = null
+  })
+  const menuBuilder = new MenuBuilder(mainWindow)
+  menuBuilder.buildMenu()
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
-  new AppUpdater();
-};
+  new AppUpdater()
+}
 
 /**
  * Add event listeners...
  */
-app.on("window-all-closed", () => {
-  app.quit();
-});
-app.on("ready", createWindow);
-app.on("activate", () => {
+app.on('window-all-closed', () => {
+  app.quit()
+})
+app.on('ready', createWindow)
+app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) createWindow();
-});
+  if (mainWindow === null) createWindow()
+})

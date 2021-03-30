@@ -3,19 +3,19 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { Component } from 'react';
-import Modal from 'react-modal';
-import dateformat from 'dateformat';
-import { shell } from 'electron';
-import { withRouter } from 'react-router';
-import { BalanceBlockHighlight } from './Dashboard';
-import styles from './Transactions.module.css';
-import cstyles from './Common.module.css';
-import { Transaction, Info } from './AppState';
-import ScrollPane from './ScrollPane';
-import Utils from '../utils/utils';
-import AddressBook from './Addressbook';
-import routes from '../constants/routes.json';
+import React, { Component } from 'react'
+import Modal from 'react-modal'
+import dateformat from 'dateformat'
+import { shell } from 'electron'
+import { withRouter } from 'react-router'
+import { BalanceBlockHighlight } from './Dashboard'
+import styles from './Transactions.module.css'
+import cstyles from './Common.module.css'
+import { Transaction, Info } from './AppState'
+import ScrollPane from './ScrollPane'
+import Utils from '../utils/utils'
+import AddressBook from './Addressbook'
+import routes from '../constants/routes.json'
 
 const TxModalInternal = ({
   modalIsOpen,
@@ -25,65 +25,82 @@ const TxModalInternal = ({
   currencyName,
   pslPrice,
   setSendTo,
-  history
+  history,
 }) => {
-  let txid = '';
-  let type = '';
-  let typeIcon = '';
-  let typeColor = '';
-  let confirmations = 0;
-  let detailedTxns = [];
-  let amount = 0;
-  let datePart = '';
-  let timePart = '';
+  let txid = ''
+  let type = ''
+  let typeIcon = ''
+  let typeColor = ''
+  let confirmations = 0
+  let detailedTxns = []
+  let amount = 0
+  let datePart = ''
+  let timePart = ''
 
   if (tx) {
-    txid = tx.txid;
-    type = tx.type;
+    txid = tx.txid
+    type = tx.type
 
     if (tx.type === 'receive') {
-      typeIcon = 'fa-arrow-circle-down';
-      typeColor = 'green';
+      typeIcon = 'fa-arrow-circle-down'
+      typeColor = 'green'
     } else {
-      typeIcon = 'fa-arrow-circle-up';
-      typeColor = 'red';
+      typeIcon = 'fa-arrow-circle-up'
+      typeColor = 'red'
     }
 
-    datePart = dateformat(tx.time * 1000, 'mmm dd, yyyy');
-    timePart = dateformat(tx.time * 1000, 'hh:MM tt');
-    confirmations = tx.confirmations;
-    detailedTxns = tx.detailedTxns;
-    amount = Math.abs(tx.amount);
+    datePart = dateformat(tx.time * 1000, 'mmm dd, yyyy')
+    timePart = dateformat(tx.time * 1000, 'hh:MM tt')
+    confirmations = tx.confirmations
+    detailedTxns = tx.detailedTxns
+    amount = Math.abs(tx.amount)
   }
 
   const openTxid = () => {
     if (currencyName === 'LSP') {
-      shell.openExternal(`https://explorer.pastel.network/tx/PSLTEST/${txid}`);
+      shell.openExternal(`https://explorer.pastel.network/tx/PSLTEST/${txid}`)
     } else {
-      shell.openExternal(`https://explorer.pastel.network/tx/${txid}`);
+      shell.openExternal(`https://explorer.pastel.network/tx/${txid}`)
     }
-  };
+  }
 
   const doReply = address => {
-    setSendTo(new PastelURITarget(address, Utils.getDefaultFee(info.latestBlock), null));
-    closeModal();
-    history.push(routes.SEND);
-  };
+    setSendTo(
+      new PastelURITarget(address, Utils.getDefaultFee(info.latestBlock), null),
+    )
+    closeModal()
+    history.push(routes.SEND)
+  }
 
-  return <Modal isOpen={modalIsOpen} onRequestClose={closeModal} className={styles.txmodal} overlayClassName={styles.txmodalOverlay}>
+  return (
+    <Modal
+      isOpen={modalIsOpen}
+      onRequestClose={closeModal}
+      className={styles.txmodal}
+      overlayClassName={styles.txmodalOverlay}
+    >
       <div className={[cstyles.verticalflex].join(' ')}>
-        <div className={[cstyles.marginbottomlarge, cstyles.center].join(' ')}>Transaction Status</div>
+        <div className={[cstyles.marginbottomlarge, cstyles.center].join(' ')}>
+          Transaction Status
+        </div>
 
         <div className={[cstyles.center].join(' ')}>
-          <i className={['fas', typeIcon].join(' ')} style={{
-          fontSize: '96px',
-          color: typeColor
-        }} />
+          <i
+            className={['fas', typeIcon].join(' ')}
+            style={{
+              fontSize: '96px',
+              color: typeColor,
+            }}
+          />
         </div>
 
         <div className={[cstyles.center].join(' ')}>
           {type}
-          <BalanceBlockHighlight pslValue={amount} usdValue={Utils.getPslToUsdString(pslPrice, Math.abs(amount))} currencyName={currencyName} />
+          <BalanceBlockHighlight
+            pslValue={amount}
+            usdValue={Utils.getPslToUsdString(pslPrice, Math.abs(amount))}
+            currencyName={currencyName}
+          />
         </div>
 
         <div className={[cstyles.flexspacebetween].join(' ')}>
@@ -94,10 +111,12 @@ const TxModalInternal = ({
             </div>
           </div>
 
-          {type === 'send' && <div>
+          {type === 'send' && (
+            <div>
               <div className={[cstyles.sublight].join(' ')}>Fees</div>
               <div>PSL {Utils.maxPrecisionTrimmed(tx.fee)}</div>
-            </div>}
+            </div>
+          )}
 
           <div>
             <div className={[cstyles.sublight].join(' ')}>Confirmations</div>
@@ -123,32 +142,32 @@ const TxModalInternal = ({
         <hr />
 
         {detailedTxns.map(txdetail => {
-        const {
-          bigPart,
-          smallPart
-        } = Utils.splitPslAmountIntoBigSmall(Math.abs(txdetail.amount));
-        let {
-          address
-        } = txdetail;
-        const {
-          memo
-        } = txdetail;
+          const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(
+            Math.abs(txdetail.amount),
+          )
+          let { address } = txdetail
+          const { memo } = txdetail
 
-        if (!address) {
-          address = '(Shielded)';
-        }
-
-        let replyTo = null;
-
-        if (tx.type === 'receive' && memo) {
-          const split = memo.split(/[ :\n\r\t]+/);
-
-          if (split && split.length > 0 && Utils.isSapling(split[split.length - 1])) {
-            replyTo = split[split.length - 1];
+          if (!address) {
+            address = '(Shielded)'
           }
-        }
 
-        return <div key={address} className={cstyles.verticalflex}>
+          let replyTo = null
+
+          if (tx.type === 'receive' && memo) {
+            const split = memo.split(/[ :\n\r\t]+/)
+
+            if (
+              split &&
+              split.length > 0 &&
+              Utils.isSapling(split[split.length - 1])
+            ) {
+              replyTo = split[split.length - 1]
+            }
+          }
+
+          return (
+            <div key={address} className={cstyles.verticalflex}>
               <div className={[cstyles.sublight].join(' ')}>Address</div>
               <div>{Utils.splitStringIntoChunks(address, 6).join(' ')}</div>
 
@@ -159,78 +178,108 @@ const TxModalInternal = ({
                 <span>
                   {currencyName} {bigPart}
                 </span>
-                <span className={[cstyles.small, cstyles.pslsmallpart].join(' ')}>{smallPart}</span>
+                <span
+                  className={[cstyles.small, cstyles.pslsmallpart].join(' ')}
+                >
+                  {smallPart}
+                </span>
               </div>
 
               <div className={cstyles.margintoplarge} />
 
-              {memo && <div>
+              {memo && (
+                <div>
                   <div className={[cstyles.sublight].join(' ')}>Memo</div>
                   <div className={[cstyles.flexspacebetween].join(' ')}>
                     <div>{memo}</div>
-                    {replyTo && <div className={cstyles.primarybutton} onClick={() => doReply(replyTo)}>
+                    {replyTo && (
+                      <div
+                        className={cstyles.primarybutton}
+                        onClick={() => doReply(replyTo)}
+                      >
                         Reply
-                      </div>}
+                      </div>
+                    )}
                   </div>
-                </div>}
+                </div>
+              )}
 
               <hr />
-            </div>;
-      })}
+            </div>
+          )
+        })}
 
         <div className={[cstyles.center, cstyles.margintoplarge].join(' ')}>
-          <button type="button" className={cstyles.primarybutton} onClick={closeModal}>
+          <button
+            type='button'
+            className={cstyles.primarybutton}
+            onClick={closeModal}
+          >
             Close
           </button>
         </div>
       </div>
-    </Modal>;
-};
+    </Modal>
+  )
+}
 
-const TxModal = withRouter(TxModalInternal);
+const TxModal = withRouter(TxModalInternal)
 
 const TxItemBlock = ({
   transaction,
   currencyName,
   pslPrice,
   txClicked,
-  addressBookMap
+  addressBookMap,
 }) => {
-  const txDate = new Date(transaction.time * 1000);
-  const datePart = dateformat(txDate, 'mmm dd, yyyy');
-  const timePart = dateformat(txDate, 'hh:MM tt');
-  return <div>
-      <div className={[cstyles.small, cstyles.sublight, styles.txdate].join(' ')}>{datePart}</div>
-      <div className={[cstyles.well, styles.txbox].join(' ')} onClick={() => {
-      txClicked(transaction);
-    }}>
+  const txDate = new Date(transaction.time * 1000)
+  const datePart = dateformat(txDate, 'mmm dd, yyyy')
+  const timePart = dateformat(txDate, 'hh:MM tt')
+  return (
+    <div>
+      <div
+        className={[cstyles.small, cstyles.sublight, styles.txdate].join(' ')}
+      >
+        {datePart}
+      </div>
+      <div
+        className={[cstyles.well, styles.txbox].join(' ')}
+        onClick={() => {
+          txClicked(transaction)
+        }}
+      >
         <div className={styles.txtype}>
           <div>{transaction.type}</div>
-          <div className={[cstyles.padtopsmall, cstyles.sublight].join(' ')}>{timePart}</div>
+          <div className={[cstyles.padtopsmall, cstyles.sublight].join(' ')}>
+            {timePart}
+          </div>
         </div>
         <div className={styles.txaddressamount}>
           {transaction.detailedTxns.map(txdetail => {
-          const {
-            bigPart,
-            smallPart
-          } = Utils.splitPslAmountIntoBigSmall(Math.abs(txdetail.amount));
-          let {
-            address
-          } = txdetail;
-          const {
-            memo
-          } = txdetail;
+            const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(
+              Math.abs(txdetail.amount),
+            )
+            let { address } = txdetail
+            const { memo } = txdetail
 
-          if (!address) {
-            address = '(Shielded)';
-          }
+            if (!address) {
+              address = '(Shielded)'
+            }
 
-          const label = addressBookMap[address] || '';
-          return <div key={address} className={cstyles.padtopsmall}>
+            const label = addressBookMap[address] || ''
+            return (
+              <div key={address} className={cstyles.padtopsmall}>
                 <div className={styles.txaddress}>
                   <div className={cstyles.highlight}>{label}</div>
                   <div>{Utils.splitStringIntoChunks(address, 6).join(' ')}</div>
-                  <div className={[cstyles.small, cstyles.sublight, cstyles.padtopsmall, styles.txmemo].join(' ')}>
+                  <div
+                    className={[
+                      cstyles.small,
+                      cstyles.sublight,
+                      cstyles.padtopsmall,
+                      styles.txmemo,
+                    ].join(' ')}
+                  >
                     {memo}
                   </div>
                 </div>
@@ -239,97 +288,142 @@ const TxItemBlock = ({
                     <span>
                       {currencyName} {bigPart}
                     </span>
-                    <span className={[cstyles.small, cstyles.pslsmallpart].join(' ')}>{smallPart}</span>
+                    <span
+                      className={[cstyles.small, cstyles.pslsmallpart].join(
+                        ' ',
+                      )}
+                    >
+                      {smallPart}
+                    </span>
                   </div>
-                  <div className={[cstyles.sublight, cstyles.small, cstyles.padtopsmall].join(' ')}>
-                    {Utils.getPslToUsdString(pslPrice, Math.abs(txdetail.amount))}
+                  <div
+                    className={[
+                      cstyles.sublight,
+                      cstyles.small,
+                      cstyles.padtopsmall,
+                    ].join(' ')}
+                  >
+                    {Utils.getPslToUsdString(
+                      pslPrice,
+                      Math.abs(txdetail.amount),
+                    )}
                   </div>
                 </div>
-              </div>;
-        })}
+              </div>
+            )
+          })}
         </div>
       </div>
-    </div>;
-};
+    </div>
+  )
+}
 
 export default class Transactions extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       clickedTx: null,
       modalIsOpen: false,
-      numTxnsToShow: 100
-    };
+      numTxnsToShow: 100,
+    }
   }
 
   txClicked = tx => {
     // Show the modal
-    if (!tx) return;
+    if (!tx) return
     this.setState({
       clickedTx: tx,
-      modalIsOpen: true
-    });
-  };
+      modalIsOpen: true,
+    })
+  }
   closeModal = () => {
     this.setState({
       clickedTx: null,
-      modalIsOpen: false
-    });
-  };
+      modalIsOpen: false,
+    })
+  }
   show100MoreTxns = () => {
-    const {
-      numTxnsToShow
-    } = this.state;
+    const { numTxnsToShow } = this.state
     this.setState({
-      numTxnsToShow: numTxnsToShow + 100
-    });
-  };
-
-  render() {
-    const {
-      transactions,
-      info,
-      addressBook,
-      setSendTo
-    } = this.props;
-    const {
-      clickedTx,
-      modalIsOpen,
-      numTxnsToShow
-    } = this.state;
-    const isLoadMoreEnabled = transactions && numTxnsToShow < transactions.length;
-    const addressBookMap = addressBook.reduce((map, obj) => {
-      // eslint-disable-next-line no-param-reassign
-      map[obj.address] = obj.label;
-      return map;
-    }, {});
-    return <div>
-        <div className={[cstyles.xlarge, cstyles.padall, cstyles.center].join(' ')}>Transactions</div>
-
-        {
-        /* Change the hardcoded height */
-      }
-        <ScrollPane offsetHeight={100}>
-          {
-        /* If no transactions, show the "loading..." text */
-        !transactions && <div className={[cstyles.center, cstyles.margintoplarge].join(' ')}>Loading...</div>}
-
-          {transactions && transactions.length === 0 && <div className={[cstyles.center, cstyles.margintoplarge].join(' ')}>No Transactions Yet</div>}
-          {transactions && transactions.slice(0, numTxnsToShow).map(t => {
-          const key = t.type + t.txid + t.address + t.index;
-          return <TxItemBlock key={key} transaction={t} currencyName={info.currencyName} pslPrice={info.pslPrice} txClicked={this.txClicked} addressBookMap={addressBookMap} />;
-        })}
-
-          {isLoadMoreEnabled && <div style={{
-          marginLeft: '45%',
-          width: '100px'
-        }} className={cstyles.primarybutton} onClick={this.show100MoreTxns}>
-              Load more
-            </div>}
-        </ScrollPane>
-
-        <TxModal modalIsOpen={modalIsOpen} tx={clickedTx} info={info} closeModal={this.closeModal} currencyName={info.currencyName} pslPrice={info.pslPrice} setSendTo={setSendTo} />
-      </div>;
+      numTxnsToShow: numTxnsToShow + 100,
+    })
   }
 
+  render() {
+    const { transactions, info, addressBook, setSendTo } = this.props
+    const { clickedTx, modalIsOpen, numTxnsToShow } = this.state
+    const isLoadMoreEnabled =
+      transactions && numTxnsToShow < transactions.length
+    const addressBookMap = addressBook.reduce((map, obj) => {
+      // eslint-disable-next-line no-param-reassign
+      map[obj.address] = obj.label
+      return map
+    }, {})
+    return (
+      <div>
+        <div
+          className={[cstyles.xlarge, cstyles.padall, cstyles.center].join(' ')}
+        >
+          Transactions
+        </div>
+
+        {/* Change the hardcoded height */}
+        <ScrollPane offsetHeight={100}>
+          {
+            /* If no transactions, show the "loading..." text */
+            !transactions && (
+              <div
+                className={[cstyles.center, cstyles.margintoplarge].join(' ')}
+              >
+                Loading...
+              </div>
+            )
+          }
+
+          {transactions && transactions.length === 0 && (
+            <div className={[cstyles.center, cstyles.margintoplarge].join(' ')}>
+              No Transactions Yet
+            </div>
+          )}
+          {transactions &&
+            transactions.slice(0, numTxnsToShow).map(t => {
+              const key = t.type + t.txid + t.address + t.index
+              return (
+                <TxItemBlock
+                  key={key}
+                  transaction={t}
+                  currencyName={info.currencyName}
+                  pslPrice={info.pslPrice}
+                  txClicked={this.txClicked}
+                  addressBookMap={addressBookMap}
+                />
+              )
+            })}
+
+          {isLoadMoreEnabled && (
+            <div
+              style={{
+                marginLeft: '45%',
+                width: '100px',
+              }}
+              className={cstyles.primarybutton}
+              onClick={this.show100MoreTxns}
+            >
+              Load more
+            </div>
+          )}
+        </ScrollPane>
+
+        <TxModal
+          modalIsOpen={modalIsOpen}
+          tx={clickedTx}
+          info={info}
+          closeModal={this.closeModal}
+          currencyName={info.currencyName}
+          pslPrice={info.pslPrice}
+          setSendTo={setSendTo}
+        />
+      </div>
+    )
+  }
 }
