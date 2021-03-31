@@ -18,7 +18,8 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "format": "prettier --ignore-path=.gitignore --loglevel=error --write .",
-    "lint": "eslint --ext .ts,.tsx .",
+    "check-eslint": "eslint --ignore-path=.gitignore --max-warnings=0 --ext .ts,.tsx .",
+    "check-type-coverage": "type-coverage --strict --ignoreCatch --atLeast=100",
     "postinstall": "husky install"
   },
   "dependencies": {
@@ -99,6 +100,7 @@
     "source-map-support": "0.5.19",
     "style-loader": "1.2.1",
     "ts-loader": "8.0.2",
+    "type-coverage": "2.17.0",
     "typescript": "4.0.2",
     "url-loader": "4.1.1",
     "webpack-cli": "4.6.0"
