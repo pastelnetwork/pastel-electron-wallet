@@ -1,5 +1,5 @@
-@import "@fortawesome/fontawesome-free/css/all.css";
-@import "typeface-roboto/index.css";
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import 'typeface-roboto/index.css';
 
 html {
   overflow: hidden;
@@ -92,7 +92,7 @@ input[disabled] {
 }
 
 .react-tabs__tab:focus::after {
-  content: "";
+  content: '';
   position: absolute;
   height: 5px;
   left: -4px;
@@ -133,8 +133,8 @@ a:hover {
   cursor: pointer;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }

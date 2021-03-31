@@ -1,21 +1,32 @@
 /* eslint-disable react/prop-types */
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { AccordionItemButton, AccordionItem, AccordionItemHeading, AccordionItemPanel, Accordion } from 'react-accessible-accordion';
-import styles from './Addressbook.module.css';
-import cstyles from './Common.module.css';
-import { AddressBookEntry } from './AppState';
-import ScrollPane from './ScrollPane';
-import Utils from '../utils/utils';
-import routes from '../constants/routes.json'; // Internal because we're using withRouter just below
+import React, { Component } from 'react'
+import { withRouter } from 'react-router-dom'
+import {
+  AccordionItemButton,
+  AccordionItem,
+  AccordionItemHeading,
+  AccordionItemPanel,
+  Accordion,
+} from 'react-accessible-accordion'
+import styles from './Addressbook.module.css'
+import cstyles from './Common.module.css'
+import { AddressBookEntry } from './AppState'
+import ScrollPane from './ScrollPane'
+import Utils from '../utils/utils'
+import routes from '../constants/routes.json' // Internal because we're using withRouter just below
 
 const AddressBookItemInteral = ({
   item,
   removeAddressBookEntry,
   setSendTo,
-  history
+  history,
 }) => {
-  return <AccordionItem key={item.label} className={[cstyles.well, cstyles.margintopsmall].join(' ')} uuid={item.label}>
+  return (
+    <AccordionItem
+      key={item.label}
+      className={[cstyles.well, cstyles.margintopsmall].join(' ')}
+      uuid={item.label}
+    >
       <AccordionItemHeading>
         <AccordionItemButton className={cstyles.accordionHeader}>
           <div className={[cstyles.flexspacebetween].join(' ')}>
@@ -25,150 +36,200 @@ const AddressBookItemInteral = ({
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel>
-        <div className={[cstyles.well, styles.addressbookentrybuttons].join(' ')}>
-          <button type="button" className={cstyles.primarybutton} onClick={() => {
-          setSendTo(new PastelURITarget(item.address, null, null));
-          history.push(routes.SEND);
-        }}>
+        <div
+          className={[cstyles.well, styles.addressbookentrybuttons].join(' ')}
+        >
+          <button
+            type='button'
+            className={cstyles.primarybutton}
+            onClick={() => {
+              setSendTo(new PastelURITarget(item.address, null, null))
+              history.push(routes.SEND)
+            }}
+          >
             Send To
           </button>
-          <button type="button" className={cstyles.primarybutton} onClick={() => removeAddressBookEntry(item.label)}>
+          <button
+            type='button'
+            className={cstyles.primarybutton}
+            onClick={() => removeAddressBookEntry(item.label)}
+          >
             Delete
           </button>
         </div>
       </AccordionItemPanel>
-    </AccordionItem>;
-};
+    </AccordionItem>
+  )
+}
 
-const AddressBookItem = withRouter(AddressBookItemInteral);
+const AddressBookItem = withRouter(AddressBookItemInteral)
 export default class AddressBook extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       currentLabel: '',
       currentAddress: '',
-      addButtonEnabled: false
-    };
+      addButtonEnabled: false,
+    }
   }
 
   updateLabel = currentLabel => {
     // Don't update the field if it is longer than 20 chars
-    if (currentLabel.length > 20) return;
-    const {
-      currentAddress
-    } = this.state;
+    if (currentLabel.length > 20) return
+    const { currentAddress } = this.state
     this.setState({
-      currentLabel
-    });
-    const {
-      labelError,
-      addressIsValid
-    } = this.validate(currentLabel, currentAddress);
-    this.setAddButtonEnabled(!labelError && addressIsValid && currentLabel !== '' && currentAddress !== '');
-  };
-  updateAddress = currentAddress => {
-    const {
-      currentLabel
-    } = this.state;
-    this.setState({
-      currentAddress
-    });
-    const {
-      labelError,
-      addressIsValid
-    } = this.validate(currentLabel, currentAddress);
-    this.setAddButtonEnabled(!labelError && addressIsValid && currentLabel !== '' && currentAddress !== '');
-  };
-  addButtonClicked = () => {
-    const {
-      addAddressBookEntry
-    } = this.props;
-    const {
       currentLabel,
-      currentAddress
-    } = this.state;
-    addAddressBookEntry(currentLabel, currentAddress);
-    this.setState({
-      currentLabel: '',
-      currentAddress: ''
-    });
-  };
-  setAddButtonEnabled = addButtonEnabled => {
-    this.setState({
-      addButtonEnabled
-    });
-  };
-  validate = (currentLabel, currentAddress) => {
-    const {
-      addressBook
-    } = this.props;
-    let labelError = addressBook.find(i => i.label === currentLabel) ? 'Duplicate Label' : null;
-    labelError = currentLabel.length > 12 ? 'Label is too long' : labelError;
-    const addressIsValid = currentAddress === '' || Utils.isZaddr(currentAddress) || Utils.isTransparent(currentAddress);
-    return {
-      labelError,
-      addressIsValid
-    };
-  };
-
-  render() {
-    const {
-      addressBook,
-      removeAddressBookEntry,
-      setSendTo
-    } = this.props;
-    const {
+    })
+    const { labelError, addressIsValid } = this.validate(
       currentLabel,
       currentAddress,
-      addButtonEnabled
-    } = this.state;
-    const {
+    )
+    this.setAddButtonEnabled(
+      !labelError &&
+        addressIsValid &&
+        currentLabel !== '' &&
+        currentAddress !== '',
+    )
+  }
+  updateAddress = currentAddress => {
+    const { currentLabel } = this.state
+    this.setState({
+      currentAddress,
+    })
+    const { labelError, addressIsValid } = this.validate(
+      currentLabel,
+      currentAddress,
+    )
+    this.setAddButtonEnabled(
+      !labelError &&
+        addressIsValid &&
+        currentLabel !== '' &&
+        currentAddress !== '',
+    )
+  }
+  addButtonClicked = () => {
+    const { addAddressBookEntry } = this.props
+    const { currentLabel, currentAddress } = this.state
+    addAddressBookEntry(currentLabel, currentAddress)
+    this.setState({
+      currentLabel: '',
+      currentAddress: '',
+    })
+  }
+  setAddButtonEnabled = addButtonEnabled => {
+    this.setState({
+      addButtonEnabled,
+    })
+  }
+  validate = (currentLabel, currentAddress) => {
+    const { addressBook } = this.props
+    let labelError = addressBook.find(i => i.label === currentLabel)
+      ? 'Duplicate Label'
+      : null
+    labelError = currentLabel.length > 12 ? 'Label is too long' : labelError
+    const addressIsValid =
+      currentAddress === '' ||
+      Utils.isZaddr(currentAddress) ||
+      Utils.isTransparent(currentAddress)
+    return {
       labelError,
-      addressIsValid
-    } = this.validate(currentLabel, currentAddress);
-    return <div>
-        <div className={[cstyles.xlarge, cstyles.padall, cstyles.center].join(' ')}>Address Book</div>
+      addressIsValid,
+    }
+  }
+
+  render() {
+    const { addressBook, removeAddressBookEntry, setSendTo } = this.props
+    const { currentLabel, currentAddress, addButtonEnabled } = this.state
+    const { labelError, addressIsValid } = this.validate(
+      currentLabel,
+      currentAddress,
+    )
+    return (
+      <div>
+        <div
+          className={[cstyles.xlarge, cstyles.padall, cstyles.center].join(' ')}
+        >
+          Address Book
+        </div>
 
         <div className={styles.addressbookcontainer}>
           <div className={[cstyles.well].join(' ')}>
             <div className={[cstyles.flexspacebetween].join(' ')}>
               <div className={cstyles.sublight}>Label</div>
               <div className={cstyles.validationerror}>
-                {!labelError ? <i className={[cstyles.green, 'fas', 'fa-check'].join(' ')} /> : <span className={cstyles.red}>{labelError}</span>}
+                {!labelError ? (
+                  <i className={[cstyles.green, 'fas', 'fa-check'].join(' ')} />
+                ) : (
+                  <span className={cstyles.red}>{labelError}</span>
+                )}
               </div>
             </div>
-            <input type="text" value={currentLabel} className={[cstyles.inputbox, cstyles.margintopsmall].join(' ')} onChange={e => this.updateLabel(e.target.value)} />
+            <input
+              type='text'
+              value={currentLabel}
+              className={[cstyles.inputbox, cstyles.margintopsmall].join(' ')}
+              onChange={e => this.updateLabel(e.target.value)}
+            />
 
             <div className={cstyles.margintoplarge} />
 
             <div className={[cstyles.flexspacebetween].join(' ')}>
               <div className={cstyles.sublight}>Address</div>
               <div className={cstyles.validationerror}>
-                {addressIsValid ? <i className={[cstyles.green, 'fas', 'fa-check'].join(' ')} /> : <span className={cstyles.red}>Invalid Address</span>}
+                {addressIsValid ? (
+                  <i className={[cstyles.green, 'fas', 'fa-check'].join(' ')} />
+                ) : (
+                  <span className={cstyles.red}>Invalid Address</span>
+                )}
               </div>
             </div>
-            <input type="text" value={currentAddress} className={[cstyles.inputbox, cstyles.margintopsmall].join(' ')} onChange={e => this.updateAddress(e.target.value)} />
+            <input
+              type='text'
+              value={currentAddress}
+              className={[cstyles.inputbox, cstyles.margintopsmall].join(' ')}
+              onChange={e => this.updateAddress(e.target.value)}
+            />
 
             <div className={cstyles.margintoplarge} />
 
-            <button type="button" className={cstyles.primarybutton} disabled={!addButtonEnabled} onClick={this.addButtonClicked}>
+            <button
+              type='button'
+              className={cstyles.primarybutton}
+              disabled={!addButtonEnabled}
+              onClick={this.addButtonClicked}
+            >
               Add
             </button>
           </div>
 
           <ScrollPane offsetHeight={300}>
             <div className={styles.addressbooklist}>
-              <div className={[cstyles.flexspacebetween, cstyles.tableheader, cstyles.sublight].join(' ')}>
+              <div
+                className={[
+                  cstyles.flexspacebetween,
+                  cstyles.tableheader,
+                  cstyles.sublight,
+                ].join(' ')}
+              >
                 <div>Label</div>
                 <div>Address</div>
               </div>
-              {addressBook && <Accordion>
-                  {addressBook.map(item => <AddressBookItem key={item.label} item={item} removeAddressBookEntry={removeAddressBookEntry} setSendTo={setSendTo} />)}
-                </Accordion>}
+              {addressBook && (
+                <Accordion>
+                  {addressBook.map(item => (
+                    <AddressBookItem
+                      key={item.label}
+                      item={item}
+                      removeAddressBookEntry={removeAddressBookEntry}
+                      setSendTo={setSendTo}
+                    />
+                  ))}
+                </Accordion>
+              )}
             </div>
           </ScrollPane>
         </div>
-      </div>;
+      </div>
+    )
   }
-
 }
