@@ -3,7 +3,7 @@
     "allowJs": true,
     "checkJs": false,
     "target": "ESNext",
-    "module": "ESNext",
+    "module": "CommonJS",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "noImplicitAny": true,

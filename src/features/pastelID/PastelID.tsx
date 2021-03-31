@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import {
   passwordStrength,
   TPasswordStrengthResult,
@@ -10,7 +10,16 @@ import cstyles from "../../components/Common.module.css";
 import List from "../../components/List";
 import ListItem from "../../components/ListItem";
 import LoadingOverlay from "../../components/LoadingOverlay";
-import { TPastelID } from "./pastelIDSlice";
+import { createPastelID, fetchPastelIDs, TPastelID } from "./pastelIDSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { RPCConfig } from "../../api/pastel-rpc";
+import { openErrorModal } from "../errorModal";
+
+const pastelConfig: RPCConfig = {
+  url: "http://127.0.0.1:9932",
+  password: "2ij3eq3ma2j",
+  username: "pastelwallet",
+};
 
 function passphraseStatusColor(validation: TPasswordStrengthResult) {
   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green];
@@ -25,70 +34,54 @@ function passphraseStatusColor(validation: TPasswordStrengthResult) {
 type Props = {
   addressesWithBalance: Array<string>;
   pastelIDs: Array<TPastelID>;
-  getPastelIDs: () => any;
   createNewAddress: (v: boolean) => any;
-  createNewPastelID: (a: string) => any;
 };
 
-type State = {
-  passphrase: string;
-  selectedAddress: {
-    value: string;
-    label: string;
-  };
-  loading: boolean;
-  passphraseValidation: TPasswordStrengthResult;
+type TSelectedAddress = {
+  value: string;
+  label: string;
 };
 
-export default class PastelID extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      passphrase: "",
-      selectedAddress: {
-        value: "",
-        label: "",
-      },
-      loading: false,
-      passphraseValidation: {
-        id: 0,
-        value: "Too weak",
-      },
-    };
-  }
+function PastelID(props: Props): JSX.Element {
+  const { addressesWithBalance, createNewAddress } = props;
 
-  componentDidMount(): void {
-    const { getPastelIDs } = this.props;
-    getPastelIDs();
-  }
+  const [passphraseValidation, setPassphraseValidation] = useState({
+    id: 0,
+    value: "Too weak",
+  });
+  const [passphrase, setPassphrase] = useState("");
+  const [selectedAddress, setSelectedAddress] = useState({
+    value: "",
+    label: "",
+  });
 
-  onPassphraseChange(e: React.ChangeEvent<HTMLInputElement>): void {
+  const { loading, error, pastelIDs } = useAppSelector(
+    (state) => state.pastelID
+  );
+  const dispatch = useAppDispatch();
+
+  // fetch pastel ids
+  useEffect(() => {
+    dispatch(fetchPastelIDs(pastelConfig));
+  }, []);
+
+  function onPassphraseChange(e: React.ChangeEvent<HTMLInputElement>): void {
     const passphrase = e.target.value;
     const validation = passwordStrength(passphrase);
-    this.setState({
-      passphrase,
-      passphraseValidation: validation,
-    });
+
+    setPassphrase(passphrase);
+    setPassphraseValidation(validation);
   }
 
-  onAddressChange(selectedAddress: { value: string; label: string }): void {
-    this.setState({
-      selectedAddress,
-    });
+  function onAddressChange(selectedAddress: TSelectedAddress): void {
+    setSelectedAddress(selectedAddress);
   }
 
-  async onCreate(): Promise<void> {
+  async function onCreate(): Promise<void> {
     try {
-      const { passphrase, selectedAddress } = this.state;
-      const { createNewAddress, createNewPastelID } = this.props;
-
-      if (!this.valid) {
+      if (!valid()) {
         return;
       }
-
-      this.setState({
-        loading: true,
-      });
 
       if (!selectedAddress) {
         const newAddress = await createNewAddress(false);
@@ -96,114 +89,103 @@ export default class PastelID extends Component<Props, State> {
           value: newAddress,
           label: newAddress,
         };
-        this.setState({
-          selectedAddress: newSelectedAddress,
-        });
+        setSelectedAddress(newSelectedAddress);
       }
 
-      await createNewPastelID(passphrase);
-      this.setState({
-        loading: false,
-      });
-    } catch (e) {
+      dispatch(createPastelID(passphrase, pastelConfig));
+    } catch (error) {
+      dispatch(
+        openErrorModal({
+          title: "Error",
+          body: "Can not create a new Pastel address. Please try again later.",
+        })
+      );
+
       // TODO log errors to a central logger so we can address them later.
-      console.warn(e);
+      console.warn(error);
     }
   }
 
-  get valid(): boolean {
-    const { passphraseValidation } = this.state;
+  const passphraseColor = passphraseStatusColor(
+    passphraseValidation as TPasswordStrengthResult
+  );
+
+  function valid(): boolean {
     return passphraseValidation.id === 3; // Strong
   }
 
-  render(): JSX.Element {
-    const { addressesWithBalance, pastelIDs } = this.props;
-    const { loading, passphraseValidation, passphrase } = this.state;
-    return (
-      <>
-        <div
-          className={[cstyles.xlarge, cstyles.padall, cstyles.center].join(" ")}
-        >
-          Pastel ID
-        </div>
-        <div className={styles.container}>
-          <LoadingOverlay loading={loading}>
-            <div className={cstyles.well}>
-              <div className={cstyles.flexspacebetween}>
-                <div className={cstyles.sublight}>
-                  Enter a secure passphrase for this Pastel ID
-                </div>
-                <div className={cstyles.validationerror}>
-                  {passphrase && (
-                    <span
-                      className={passphraseStatusColor(passphraseValidation)}
-                    >
-                      {passphraseValidation.value}
-                    </span>
-                  )}
-                </div>
+  return (
+    <>
+      <div className={`${cstyles.xlarge} ${cstyles.padall} ${cstyles.center}`}>
+        Pastel ID
+      </div>
+      <div className={styles.container}>
+        <LoadingOverlay loading={loading}>
+          <div className={cstyles.well}>
+            <div className={cstyles.flexspacebetween}>
+              <div className={cstyles.sublight}>
+                Enter a secure passphrase for this Pastel ID
               </div>
-
-              <input
-                type="text"
-                className={[cstyles.inputbox, cstyles.margintopsmall].join(" ")}
-                onChange={this.onPassphraseChange.bind(this)}
-                placeholder="Passphrase"
-              />
-
-              <div
-                className={[cstyles.verticalflex, cstyles.margintoplarge].join(
-                  " "
+              <div className={cstyles.validationerror}>
+                {passphrase && (
+                  <span className={passphraseColor}>
+                    {passphraseValidation.value}
+                  </span>
                 )}
-              >
-                <div
-                  className={[cstyles.sublight, cstyles.padbottomsmall].join(
-                    " "
-                  )}
-                >
-                  Select an address to pay for this PastelID. If no address is
-                  selected, a new one will be created
-                </div>
-                <Select
-                  styles
-                  value
-                  options={addressesWithBalance}
-                  onChange={this.onAddressChange.bind(this)}
-                />
-              </div>
-
-              <div className={cstyles.margintoplarge}>
-                <button
-                  type="button"
-                  disabled={!this.valid}
-                  className={[
-                    cstyles.primarybutton,
-                    cstyles.margintoplarge,
-                    styles.button,
-                  ].join(" ")}
-                  onClick={this.onCreate.bind(this)}
-                >
-                  Create
-                </button>
               </div>
             </div>
-          </LoadingOverlay>
 
-          {pastelIDs.length > 0 && (
-            <List title="Pastel ID">
-              {pastelIDs.map((item) => (
-                <ListItem buttons={false} key={uid()} title={item.pastelid} />
-              ))}
-            </List>
-          )}
+            <input
+              type="text"
+              className={`${cstyles.inputbox} ${cstyles.margintopsmall}`}
+              onChange={onPassphraseChange}
+              placeholder="Passphrase"
+            />
 
-          {pastelIDs.length === 0 && (
+            <div
+              className={`${cstyles.verticalflex} ${cstyles.margintoplarge}`}
+            >
+              <div className={`${cstyles.sublight} ${cstyles.padbottomsmall}`}>
+                Select an address to pay for this PastelID. If no address is
+                selected, a new one will be created
+              </div>
+              <Select
+                styles
+                value
+                options={addressesWithBalance}
+                onChange={onAddressChange}
+              />
+            </div>
+
             <div className={cstyles.margintoplarge}>
-              There are currently no Pastel IDs generated.
+              <button
+                type="button"
+                disabled={!valid()}
+                className={`${cstyles.primarybutton} ${cstyles.margintoplarge} ${styles.button}`}
+                onClick={onCreate}
+              >
+                Create
+              </button>
             </div>
-          )}
-        </div>
-      </>
-    );
-  }
+          </div>
+        </LoadingOverlay>
+
+        {pastelIDs.length > 0 && (
+          <List title="Pastel ID">
+            {pastelIDs.map((item) => (
+              <ListItem buttons={false} key={uid()} title={item.pastelid} />
+            ))}
+          </List>
+        )}
+
+        {pastelIDs.length === 0 && (
+          <div className={cstyles.margintoplarge}>
+            There are currently no Pastel IDs generated.
+          </div>
+        )}
+      </div>
+    </>
+  );
 }
+
+export default PastelID;
