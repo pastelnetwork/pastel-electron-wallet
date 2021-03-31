@@ -35,7 +35,7 @@ type TSelectedAddress = {
   label: string
 }
 
-function PastelID(props: Props): JSX.Element {
+function PastelID(props: any): JSX.Element {
   const { addressesWithBalance, createNewAddress } = props
 
   const [passphraseValidation, setPassphraseValidation] = useState({

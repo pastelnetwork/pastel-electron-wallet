@@ -9,7 +9,7 @@ import { v4 as uid } from 'uuid'
 import cstyles from './Common.module.css'
 import styles from './ListItem.module.css'
 
-const ListItem = ({ title, value, buttons }) => {
+const ListItem = ({ title, value, buttons }: any) => {
   return (
     <AccordionItem
       key={title}
@@ -27,7 +27,7 @@ const ListItem = ({ title, value, buttons }) => {
       {buttons && (
         <AccordionItemPanel>
           <div className={[styles.listItemButtons].join(' ')}>
-            {buttons.map(b => (
+            {buttons.map((b: any) => (
               <button
                 key={uid()}
                 type='button'

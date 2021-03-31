@@ -30,10 +30,10 @@ export default class SentTxStore {
   static async loadSentTxns() {
     try {
       const sentTx = JSON.parse(
-        await fs.promises.readFile(SentTxStore.locateSentTxStore()),
+        (await fs.promises.readFile(SentTxStore.locateSentTxStore())) as any,
       )
-      return sentTx.map(s => {
-        const transction = new Transaction()
+      return sentTx.map((s: any) => {
+        const transction: any = new Transaction()
         transction.type = s.type
         transction.amount = s.amount
         transction.address = s.from

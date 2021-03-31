@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import { Info } from './AppState'
 import cstyles from './Common.module.css'
@@ -6,7 +5,7 @@ import styles from './Pasteld.module.css'
 import ScrollPane from './ScrollPane'
 import Heart from '../assets/img/pastel-logo.png'
 
-const DetailLine = ({ label, value }) => {
+const DetailLine = ({ label, value }: any) => {
   return (
     <div className={styles.detailline}>
       <div className={[cstyles.sublight].join(' ')}>{label} :</div>
@@ -15,7 +14,7 @@ const DetailLine = ({ label, value }) => {
   )
 }
 
-export default class Pasteld extends Component {
+export default class Pasteld extends Component<any> {
   render() {
     const { info, refresh } = this.props
 
@@ -39,7 +38,7 @@ export default class Pasteld extends Component {
             <div className={cstyles.margintoplarge}>Not Connected</div>
           </div>
         </div>
-      ) // eslint-disable-next-line no-else-return
+      )
     } else {
       let height = info.latestBlock
 

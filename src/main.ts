@@ -24,7 +24,7 @@ export default class AppUpdater {
     log.transports.file.level = 'info'
   }
 }
-let mainWindow = null
+let mainWindow: any = null
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support')
@@ -89,7 +89,7 @@ const createWindow = async () => {
       mainWindow.focus()
     }
   })
-  mainWindow.on('close', event => {
+  mainWindow.on('close', (event: any) => {
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
       console.log('proceed to close, so closing')
@@ -126,7 +126,6 @@ const createWindow = async () => {
   const menuBuilder = new MenuBuilder(mainWindow)
   menuBuilder.buildMenu()
   // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
   new AppUpdater()
 }
 

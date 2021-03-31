@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import {
@@ -14,13 +13,14 @@ import { AddressBookEntry } from './AppState'
 import ScrollPane from './ScrollPane'
 import Utils from '../utils/utils'
 import routes from '../constants/routes.json' // Internal because we're using withRouter just below
+import { PastelURITarget } from '../utils/uris'
 
 const AddressBookItemInteral = ({
   item,
   removeAddressBookEntry,
   setSendTo,
   history,
-}) => {
+}: any) => {
   return (
     <AccordionItem
       key={item.label}
@@ -63,8 +63,8 @@ const AddressBookItemInteral = ({
 }
 
 const AddressBookItem = withRouter(AddressBookItemInteral)
-export default class AddressBook extends Component {
-  constructor(props) {
+export default class AddressBook extends Component<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = {
       currentLabel: '',
@@ -73,7 +73,7 @@ export default class AddressBook extends Component {
     }
   }
 
-  updateLabel = currentLabel => {
+  updateLabel = (currentLabel: any) => {
     // Don't update the field if it is longer than 20 chars
     if (currentLabel.length > 20) return
     const { currentAddress } = this.state
@@ -91,7 +91,7 @@ export default class AddressBook extends Component {
         currentAddress !== '',
     )
   }
-  updateAddress = currentAddress => {
+  updateAddress = (currentAddress: any) => {
     const { currentLabel } = this.state
     this.setState({
       currentAddress,
@@ -116,14 +116,14 @@ export default class AddressBook extends Component {
       currentAddress: '',
     })
   }
-  setAddButtonEnabled = addButtonEnabled => {
+  setAddButtonEnabled = (addButtonEnabled: any) => {
     this.setState({
       addButtonEnabled,
     })
   }
-  validate = (currentLabel, currentAddress) => {
+  validate = (currentLabel: any, currentAddress: any) => {
     const { addressBook } = this.props
-    let labelError = addressBook.find(i => i.label === currentLabel)
+    let labelError = addressBook.find((i: any) => i.label === currentLabel)
       ? 'Duplicate Label'
       : null
     labelError = currentLabel.length > 12 ? 'Label is too long' : labelError
@@ -216,7 +216,7 @@ export default class AddressBook extends Component {
               </div>
               {addressBook && (
                 <Accordion>
-                  {addressBook.map(item => (
+                  {addressBook.map((item: any) => (
                     <AddressBookItem
                       key={item.label}
                       item={item}

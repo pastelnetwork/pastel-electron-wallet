@@ -1,13 +1,10 @@
-/* eslint-disable react/prop-types */
 import Modal from 'react-modal'
 import React from 'react'
 import cstyles from './Common.module.css'
 export class ErrorModalData {
-  constructor() {
-    this.modalIsOpen = false
-  }
+  modalIsOpen = false
 }
-export const ErrorModal = ({ title, body, modalIsOpen, closeModal }) => {
+export const ErrorModal = ({ title, body, modalIsOpen, closeModal }: any) => {
   return (
     <Modal
       isOpen={modalIsOpen}

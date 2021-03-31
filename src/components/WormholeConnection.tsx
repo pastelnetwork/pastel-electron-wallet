@@ -5,8 +5,8 @@ import cstyles from './Common.module.css'
 import styles from './WormholeConnection.module.css'
 import CompanionAppListener from '../companion'
 import { ConnectedCompanionApp } from './AppState'
-export default class WormholeConnection extends PureComponent {
-  constructor(props) {
+export default class WormholeConnection extends PureComponent<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = {
       tempKeyHex: null,

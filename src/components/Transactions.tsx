@@ -1,8 +1,3 @@
-/* eslint-disable react/prop-types */
-
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { Component } from 'react'
 import Modal from 'react-modal'
 import dateformat from 'dateformat'
@@ -16,6 +11,7 @@ import ScrollPane from './ScrollPane'
 import Utils from '../utils/utils'
 import AddressBook from './Addressbook'
 import routes from '../constants/routes.json'
+import { PastelURITarget } from '../utils/uris'
 
 const TxModalInternal = ({
   modalIsOpen,
@@ -26,7 +22,7 @@ const TxModalInternal = ({
   pslPrice,
   setSendTo,
   history,
-}) => {
+}: any) => {
   let txid = ''
   let type = ''
   let typeIcon = ''
@@ -64,7 +60,7 @@ const TxModalInternal = ({
     }
   }
 
-  const doReply = address => {
+  const doReply = (address: any) => {
     setSendTo(
       new PastelURITarget(address, Utils.getDefaultFee(info.latestBlock), null),
     )
@@ -141,7 +137,7 @@ const TxModalInternal = ({
         <div className={cstyles.margintoplarge} />
         <hr />
 
-        {detailedTxns.map(txdetail => {
+        {detailedTxns.map((txdetail: any) => {
           const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(
             Math.abs(txdetail.amount),
           )
@@ -152,7 +148,7 @@ const TxModalInternal = ({
             address = '(Shielded)'
           }
 
-          let replyTo = null
+          let replyTo: any = null
 
           if (tx.type === 'receive' && memo) {
             const split = memo.split(/[ :\n\r\t]+/)
@@ -231,7 +227,7 @@ const TxItemBlock = ({
   pslPrice,
   txClicked,
   addressBookMap,
-}) => {
+}: any) => {
   const txDate = new Date(transaction.time * 1000)
   const datePart = dateformat(txDate, 'mmm dd, yyyy')
   const timePart = dateformat(txDate, 'hh:MM tt')
@@ -255,7 +251,7 @@ const TxItemBlock = ({
           </div>
         </div>
         <div className={styles.txaddressamount}>
-          {transaction.detailedTxns.map(txdetail => {
+          {transaction.detailedTxns.map((txdetail: any) => {
             const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(
               Math.abs(txdetail.amount),
             )
@@ -318,8 +314,8 @@ const TxItemBlock = ({
   )
 }
 
-export default class Transactions extends Component {
-  constructor(props) {
+export default class Transactions extends Component<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = {
       clickedTx: null,
@@ -328,7 +324,7 @@ export default class Transactions extends Component {
     }
   }
 
-  txClicked = tx => {
+  txClicked = (tx: any) => {
     // Show the modal
     if (!tx) return
     this.setState({
@@ -354,8 +350,7 @@ export default class Transactions extends Component {
     const { clickedTx, modalIsOpen, numTxnsToShow } = this.state
     const isLoadMoreEnabled =
       transactions && numTxnsToShow < transactions.length
-    const addressBookMap = addressBook.reduce((map, obj) => {
-      // eslint-disable-next-line no-param-reassign
+    const addressBookMap = addressBook.reduce((map: any, obj: any) => {
       map[obj.address] = obj.label
       return map
     }, {})
@@ -386,7 +381,7 @@ export default class Transactions extends Component {
             </div>
           )}
           {transactions &&
-            transactions.slice(0, numTxnsToShow).map(t => {
+            transactions.slice(0, numTxnsToShow).map((t: any) => {
               const key = t.type + t.txid + t.address + t.index
               return (
                 <TxItemBlock
