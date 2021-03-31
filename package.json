@@ -18,7 +18,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "format": "prettier --ignore-path=.gitignore --loglevel=error --write .",
-    "lint": "eslint --ext .ts .",
+    "lint": "eslint --ext .ts,.tsx .",
     "postinstall": "husky install"
   },
   "dependencies": {
@@ -46,7 +46,7 @@
     "react-modal": "3.11.1",
     "react-redux": "7.2.3",
     "react-router": "5.2.0",
-    "react-router-dom": "5.1.2",
+    "react-router-dom": "5.2.0",
     "react-select": "3.0.8",
     "react-tabs": "3.1.0",
     "react-textarea-autosize": "7.1.2",
@@ -66,7 +66,6 @@
     "@electron-forge/plugin-webpack": "6.0.0-beta.54",
     "@marshallofsound/webpack-asset-relocator-loader": "0.5.0",
     "@types/dateformat": "3.0.1",
-    "@types/electron": "1.6.10",
     "@types/electron-devtools-installer": "2.2.0",
     "@types/ini": "1.3.30",
     "@types/libsodium-wrappers-sumo": "0.7.5",
