@@ -1,1 +1,1 @@
-export { pastelConfReducer, setPastelConf } from "./pastelConfSlice";
+export { pastelConfReducer, setPastelConf } from './pastelConfSlice'

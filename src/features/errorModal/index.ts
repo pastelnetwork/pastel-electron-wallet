@@ -1,9 +1,9 @@
-import ErrorModal from "./ErrorModal";
+import ErrorModal from './ErrorModal'
 
 export {
   closeErrorModal,
   openErrorModal,
   errorModalReducer,
-} from "./errorModalSlice";
+} from './errorModalSlice'
 
-export { ErrorModal };
+export { ErrorModal }

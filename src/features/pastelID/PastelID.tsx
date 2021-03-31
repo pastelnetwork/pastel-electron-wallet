@@ -1,111 +1,111 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   passwordStrength,
   TPasswordStrengthResult,
-} from "check-password-strength";
-import { v4 as uid } from "uuid";
-import Select from "../../components/Select";
-import styles from "./PastelID.module.css";
-import cstyles from "../../components/Common.module.css";
-import List from "../../components/List";
-import ListItem from "../../components/ListItem";
-import LoadingOverlay from "../../components/LoadingOverlay";
-import { createPastelID, fetchPastelIDs, TPastelID } from "./pastelIDSlice";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { openErrorModal } from "../errorModal";
+} from 'check-password-strength'
+import { v4 as uid } from 'uuid'
+import Select from '../../components/Select'
+import styles from './PastelID.module.css'
+import cstyles from '../../components/Common.module.css'
+import List from '../../components/List'
+import ListItem from '../../components/ListItem'
+import LoadingOverlay from '../../components/LoadingOverlay'
+import { createPastelID, fetchPastelIDs, TPastelID } from './pastelIDSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { openErrorModal } from '../errorModal'
 
 function passphraseStatusColor(validation: TPasswordStrengthResult) {
-  const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green];
+  const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green]
 
   if (!colors[validation.id]) {
-    return cstyles.red;
+    return cstyles.red
   }
 
-  return colors[validation.id];
+  return colors[validation.id]
 }
 
 type Props = {
-  addressesWithBalance: Array<string>;
-  pastelIDs: Array<TPastelID>;
-  createNewAddress: (v: boolean) => any;
-};
+  addressesWithBalance: Array<string>
+  pastelIDs: Array<TPastelID>
+  createNewAddress: (v: boolean) => any
+}
 
 type TSelectedAddress = {
-  value: string;
-  label: string;
-};
+  value: string
+  label: string
+}
 
 function PastelID(props: Props): JSX.Element {
-  const { addressesWithBalance, createNewAddress } = props;
+  const { addressesWithBalance, createNewAddress } = props
 
   const [passphraseValidation, setPassphraseValidation] = useState({
     id: 0,
-    value: "Too weak",
-  });
+    value: 'Too weak',
+  })
 
-  const [passphrase, setPassphrase] = useState("");
+  const [passphrase, setPassphrase] = useState('')
   const [selectedAddress, setSelectedAddress] = useState({
-    value: "",
-    label: "",
-  });
+    value: '',
+    label: '',
+  })
 
-  const { loading, pastelIDs } = useAppSelector((state) => state.pastelID);
-  const pastelConfig = useAppSelector((state) => state.pastelConf);
+  const { loading, pastelIDs } = useAppSelector(state => state.pastelID)
+  const pastelConfig = useAppSelector(state => state.pastelConf)
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   // fetch pastel ids
   useEffect(() => {
-    dispatch(fetchPastelIDs(pastelConfig));
-  }, []);
+    dispatch(fetchPastelIDs(pastelConfig))
+  }, [])
 
   function onPassphraseChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const passphrase = e.target.value;
-    const validation = passwordStrength(passphrase);
+    const passphrase = e.target.value
+    const validation = passwordStrength(passphrase)
 
-    setPassphrase(passphrase);
-    setPassphraseValidation(validation);
+    setPassphrase(passphrase)
+    setPassphraseValidation(validation)
   }
 
   function onAddressChange(selectedAddress: TSelectedAddress): void {
-    setSelectedAddress(selectedAddress);
+    setSelectedAddress(selectedAddress)
   }
 
   async function onCreate(): Promise<void> {
     try {
       if (!valid()) {
-        return;
+        return
       }
 
       if (!selectedAddress) {
-        const newAddress = await createNewAddress(false);
+        const newAddress = await createNewAddress(false)
         const newSelectedAddress = {
           value: newAddress,
           label: newAddress,
-        };
-        setSelectedAddress(newSelectedAddress);
+        }
+        setSelectedAddress(newSelectedAddress)
       }
 
-      dispatch(createPastelID(passphrase, pastelConfig));
+      dispatch(createPastelID(passphrase, pastelConfig))
     } catch (error) {
       dispatch(
         openErrorModal({
-          title: "Error",
-          body: "Can not create a new Pastel address. Please try again later.",
-        })
-      );
+          title: 'Error',
+          body: 'Can not create a new Pastel address. Please try again later.',
+        }),
+      )
 
       // TODO log errors to a central logger so we can address them later.
-      console.warn(error);
+      console.warn(error)
     }
   }
 
   const passphraseColor = passphraseStatusColor(
-    passphraseValidation as TPasswordStrengthResult
-  );
+    passphraseValidation as TPasswordStrengthResult,
+  )
 
   function valid(): boolean {
-    return passphraseValidation.id === 3; // Strong
+    return passphraseValidation.id === 3 // Strong
   }
 
   return (
@@ -130,10 +130,10 @@ function PastelID(props: Props): JSX.Element {
             </div>
 
             <input
-              type="text"
+              type='text'
               className={`${cstyles.inputbox} ${cstyles.margintopsmall}`}
               onChange={onPassphraseChange}
-              placeholder="Passphrase"
+              placeholder='Passphrase'
             />
 
             <div
@@ -153,7 +153,7 @@ function PastelID(props: Props): JSX.Element {
 
             <div className={cstyles.margintoplarge}>
               <button
-                type="button"
+                type='button'
                 disabled={!valid()}
                 className={`${cstyles.primarybutton} ${cstyles.margintoplarge} ${styles.button}`}
                 onClick={onCreate}
@@ -165,8 +165,8 @@ function PastelID(props: Props): JSX.Element {
         </LoadingOverlay>
 
         {pastelIDs.length > 0 && (
-          <List title="Pastel ID">
-            {pastelIDs.map((item) => (
+          <List title='Pastel ID'>
+            {pastelIDs.map(item => (
               <ListItem buttons={false} key={uid()} title={item.pastelid} />
             ))}
           </List>
@@ -179,7 +179,7 @@ function PastelID(props: Props): JSX.Element {
         )}
       </div>
     </>
-  );
+  )
 }
 
-export default PastelID;
+export default PastelID
