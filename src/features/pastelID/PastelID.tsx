@@ -12,14 +12,7 @@ import ListItem from "../../components/ListItem";
 import LoadingOverlay from "../../components/LoadingOverlay";
 import { createPastelID, fetchPastelIDs, TPastelID } from "./pastelIDSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { RPCConfig } from "../../api/pastel-rpc";
 import { openErrorModal } from "../errorModal";
-
-const pastelConfig: RPCConfig = {
-  url: "http://127.0.0.1:9932",
-  password: "2ij3eq3ma2j",
-  username: "pastelwallet",
-};
 
 function passphraseStatusColor(validation: TPasswordStrengthResult) {
   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green];
@@ -49,15 +42,16 @@ function PastelID(props: Props): JSX.Element {
     id: 0,
     value: "Too weak",
   });
+
   const [passphrase, setPassphrase] = useState("");
   const [selectedAddress, setSelectedAddress] = useState({
     value: "",
     label: "",
   });
 
-  const { loading, error, pastelIDs } = useAppSelector(
-    (state) => state.pastelID
-  );
+  const { loading, pastelIDs } = useAppSelector((state) => state.pastelID);
+  const pastelConfig = useAppSelector((state) => state.pastelConf);
+
   const dispatch = useAppDispatch();
 
   // fetch pastel ids

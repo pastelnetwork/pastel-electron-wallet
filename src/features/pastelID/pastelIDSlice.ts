@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   createNewPastelID,
   getPastelIDs,
-  RPCConfig,
+  TRPCConfig,
 } from "../../api/pastel-rpc";
 import type { AppThunk } from "../../redux/store";
 import { openErrorModal } from "../errorModal";
@@ -16,17 +16,15 @@ interface PastelIDsLoaded {
 }
 
 // Define a type for the slice state
-interface PastelIDState {
+interface IPastelIDState {
   pastelIDs: TPastelID[];
   loading: boolean;
-  error: Error;
 }
 
 // Define the initial state using that type
-const initialState: PastelIDState = {
+const initialState: IPastelIDState = {
   pastelIDs: [],
   loading: false,
-  error: null,
 };
 
 export const pastelIDSlice = createSlice({
@@ -34,42 +32,36 @@ export const pastelIDSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    getPastelIDsStart(state: PastelIDState) {
+    getPastelIDsStart(state: IPastelIDState) {
       state.loading = true;
-      state.error = null;
     },
     getPastelIDsSuccess(
-      state: PastelIDState,
+      state: IPastelIDState,
       action: PayloadAction<PastelIDsLoaded>
     ) {
       state.pastelIDs = action.payload.pastelids;
       state.loading = false;
-      state.error = null;
     },
-    getPastelIDsFailure(state: PastelIDState, action: PayloadAction<Error>) {
+    getPastelIDsFailure(state: IPastelIDState) {
       state.loading = true;
-      state.error = action.payload;
     },
-    createPastelIDStart(state: PastelIDState) {
-      (state.loading = true), (state.error = null);
+    createPastelIDStart(state: IPastelIDState) {
+      state.loading = true;
     },
     createPastelIDSuccess(
-      state: PastelIDState,
+      state: IPastelIDState,
       action: PayloadAction<TPastelID>
     ) {
       state.pastelIDs = [...state.pastelIDs, action.payload];
       state.loading = false;
-      state.error = null;
     },
-    createPastelIDFailure(state: PastelIDState, action: PayloadAction<Error>) {
-      state.error = action.payload;
+    createPastelIDFailure(state: IPastelIDState) {
       state.loading = false;
-      state.error = null;
     },
   },
 });
 
-export const {
+const {
   getPastelIDsStart,
   getPastelIDsSuccess,
   getPastelIDsFailure,
@@ -80,14 +72,14 @@ export const {
 
 export const pastelIDReducer = pastelIDSlice.reducer;
 
-export function fetchPastelIDs(config: RPCConfig): AppThunk {
+export function fetchPastelIDs(config: TRPCConfig): AppThunk {
   return async (dispatch) => {
     try {
       dispatch(getPastelIDsStart());
       const pastelids = await getPastelIDs(config);
       dispatch(getPastelIDsSuccess({ pastelids }));
     } catch (err) {
-      dispatch(getPastelIDsFailure(err));
+      dispatch(getPastelIDsFailure());
       dispatch(
         openErrorModal({
           title: "Can not fetch Pastel IDs",
@@ -104,7 +96,7 @@ export function fetchPastelIDs(config: RPCConfig): AppThunk {
 
 export function createPastelID(
   passphrase: string,
-  config: RPCConfig
+  config: TRPCConfig
 ): AppThunk {
   return async (dispatch) => {
     try {
@@ -112,7 +104,7 @@ export function createPastelID(
       const pastelid = await createNewPastelID(passphrase, config);
       dispatch(createPastelIDSuccess(pastelid));
     } catch (err) {
-      dispatch(getPastelIDsFailure(err));
+      dispatch(createPastelIDFailure());
       dispatch(
         openErrorModal({
           title: "Can not create new Pastel ID",

@@ -1,5 +1,5 @@
 import { TPastelID } from "../../features/pastelID";
-import { rpc, RPCConfig } from "./rpc";
+import { rpc, TRPCConfig } from "./rpc";
 
 type TCreateNewPastelIDResponse = {
   result: {
@@ -9,7 +9,7 @@ type TCreateNewPastelIDResponse = {
 
 export async function createNewPastelID(
   passphrase: string,
-  config: RPCConfig
+  config: TRPCConfig
 ): Promise<TPastelID> {
   const resp = await rpc<TCreateNewPastelIDResponse>(
     "pastelid",
@@ -26,7 +26,7 @@ type TGetPastelIDsResponse = {
   }>;
 };
 
-export async function getPastelIDs(config: RPCConfig): Promise<TPastelID[]> {
+export async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[]> {
   let resp: TGetPastelIDsResponse;
 
   try {

@@ -38,8 +38,10 @@ import Transactions from "./components/Transactions";
 import CompanionAppListener from "./companion";
 import { PastelID } from "./features/pastelID";
 import WormholeConnection from "./components/WormholeConnection";
+import { connect } from "react-redux";
+import { setPastelConf } from "./features/pastelConf";
 
-export default class RouteApp extends React.Component {
+class RouteApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -552,7 +554,14 @@ export default class RouteApp extends React.Component {
                 path={routes.LOADING}
                 render={() => (
                   <LoadingScreen
-                    setRPCConfig={this.setRPCConfig}
+                    setRPCConfig={(rpcConfig) => {
+                      // To support Redux calls
+                      this.props.setPastelConf(rpcConfig);
+
+                      // To support legacy calls
+                      // TODO Remove then fully moved over to Redux
+                      this.setRPCConfig(rpcConfig);
+                    }}
                     setInfo={this.setInfo}
                   />
                 )}
@@ -564,3 +573,5 @@ export default class RouteApp extends React.Component {
     );
   }
 }
+
+export default connect(null, { setPastelConf })(RouteApp);

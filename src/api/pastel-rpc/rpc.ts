@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-export type RPCConfig = {
+export type TRPCConfig = {
   url: string;
   username: string;
   password: string;
@@ -9,7 +9,7 @@ export type RPCConfig = {
 export async function rpc<T>(
   method: string,
   params: string[],
-  rpcConfig: RPCConfig
+  rpcConfig: TRPCConfig
 ): Promise<T> {
   const { url, username, password } = rpcConfig;
   let response: AxiosResponse;
