@@ -36,9 +36,12 @@ import AddressbookImpl from './utils/AddressbookImpl'
 import Sidebar from './components/Sidebar'
 import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
-import PastelID from './components/PastelID'
+import { PastelID } from './features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
-export default class RouteApp extends React.Component {
+import { connect } from 'react-redux'
+import { setPastelConf } from './features/pastelConf'
+
+class RouteApp extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -406,38 +409,6 @@ export default class RouteApp extends React.Component {
     this.rpc.refresh()
   }
 
-  async getPastelIDs() {
-    try {
-      const ids = await this.rpc.getPastelIDs()
-      this.setState({
-        pastelIDs: ids,
-      })
-    } catch (e) {
-      this.openErrorModal(
-        'Can not fetch Pastel IDs',
-        "We cound't fetch existing Pastel IDs for some reason. Please restart the wallet to try again.",
-      ) // TODO log errors to a central logger so we can address them later.
-
-      console.warn(e)
-    }
-  }
-
-  createNewPastelID = async passphrase => {
-    try {
-      const res = await this.rpc.createNewPastelID(passphrase)
-      this.setState(prevState => ({
-        pastelIDs: [...prevState.pastelIDs, res],
-      }))
-    } catch (e) {
-      this.openErrorModal(
-        'Can not create new Pastel ID',
-        "We cound't create a new Pastel ID for some reason. Please restart the wallet and try again.",
-      ) // TODO log errors to a central logger so we can address them later.
-
-      console.warn(e)
-    }
-  }
-
   render() {
     const {
       totalBalance,
@@ -563,11 +534,8 @@ export default class RouteApp extends React.Component {
                 path={routes.PASTEL_ID}
                 render={() => (
                   <PastelID
-                    getPastelIDs={this.getPastelIDs.bind(this)}
                     addressesWithBalance={addressesWithBalance}
                     createNewAddress={this.createNewAddress}
-                    createNewPastelID={this.createNewPastelID.bind(this)}
-                    pastelIDs={pastelIDs}
                   />
                 )}
               />
@@ -586,7 +554,14 @@ export default class RouteApp extends React.Component {
                 path={routes.LOADING}
                 render={() => (
                   <LoadingScreen
-                    setRPCConfig={this.setRPCConfig}
+                    setRPCConfig={rpcConfig => {
+                      // To support Redux calls
+                      this.props.setPastelConf(rpcConfig)
+
+                      // To support legacy calls
+                      // TODO Remove then fully moved over to Redux
+                      this.setRPCConfig(rpcConfig)
+                    }}
                     setInfo={this.setInfo}
                   />
                 )}
@@ -598,3 +573,5 @@ export default class RouteApp extends React.Component {
     )
   }
 }
+
+export default connect(null, { setPastelConf })(RouteApp)

@@ -2,9 +2,22 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import log from 'electron-log'
 import MenuBuilder from './menu'
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from 'electron-devtools-installer'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any
+
+// Enable dev tools
+if (!app.isPackaged) {
+  app.whenReady().then(() => {
+    installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
+      .then((name: string) => console.log(`Added Extension:  ${name}`))
+      .catch((err: Error) => console.log('An error occurred: ', err))
+  })
+}
 
 export default class AppUpdater {
   constructor() {
@@ -26,27 +39,10 @@ if (
   require('electron-debug')()
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer')
-
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS']
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload)),
-  ).catch(console.log)
-}
-
 let waitingForClose = false
 let proceedToClose = false
 
 const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
-    await installExtensions()
-  }
-
   mainWindow = new BrowserWindow({
     show: false,
     width: 1300,
