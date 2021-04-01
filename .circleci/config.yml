@@ -36,9 +36,9 @@ jobs:
           command: npx prettier --check
 
 workflows:
-  build-and-sync:
+  lint:
     jobs:
       - install-deps
-      - linkt:
+      - lint:
           requires:
             - install-deps
