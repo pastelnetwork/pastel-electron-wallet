@@ -138,12 +138,14 @@ class LoadingScreen extends Component<any, any> {
     }) // check for request errors
 
     sendReq.on('error', err => {
-      fs.promises.unlink(dest)
+      // @ts-ignore
+      fs.unlink(dest)
       return cb(err.message)
     })
     file.on('error', err => {
       // Handle errors
-      fs.promises.unlink(dest) // Delete the file async. (But we don't check the result)
+      // @ts-ignore
+      fs.unlink(dest) // Delete the file async. (But we don't check the result)
 
       return cb(err.message)
     })

@@ -13,7 +13,6 @@ import { AddressBookEntry } from './AppState'
 import ScrollPane from './ScrollPane'
 import Utils from '../utils/utils'
 import routes from '../constants/routes.json' // Internal because we're using withRouter just below
-import { PastelURITarget } from '../utils/uris'
 
 const AddressBookItemInteral = ({
   item,
@@ -43,6 +42,7 @@ const AddressBookItemInteral = ({
             type='button'
             className={cstyles.primarybutton}
             onClick={() => {
+              // @ts-ignore
               setSendTo(new PastelURITarget(item.address, null, null))
               history.push(routes.SEND)
             }}

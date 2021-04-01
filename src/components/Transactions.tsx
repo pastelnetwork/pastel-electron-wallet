@@ -11,7 +11,6 @@ import ScrollPane from './ScrollPane'
 import Utils from '../utils/utils'
 import AddressBook from './Addressbook'
 import routes from '../constants/routes.json'
-import { PastelURITarget } from '../utils/uris'
 
 const TxModalInternal = ({
   modalIsOpen,
@@ -62,6 +61,7 @@ const TxModalInternal = ({
 
   const doReply = (address: any) => {
     setSendTo(
+      // @ts-ignore
       new PastelURITarget(address, Utils.getDefaultFee(info.latestBlock), null),
     )
     closeModal()
