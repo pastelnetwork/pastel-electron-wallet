@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react'
 import styles from './LoadingOverlay.module.css'
 export default function LoadingOverlay({ loading, children }: any) {

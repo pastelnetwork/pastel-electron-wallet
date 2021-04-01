@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import url from 'url'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'

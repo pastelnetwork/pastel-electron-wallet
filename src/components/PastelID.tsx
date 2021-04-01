@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from 'react'
 import { passwordStrength } from 'check-password-strength'
 import { v4 as uid } from 'uuid'

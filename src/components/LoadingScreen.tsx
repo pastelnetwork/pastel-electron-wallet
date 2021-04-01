@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from 'react'
 import { Redirect, withRouter } from 'react-router'
 import ini from 'ini'
@@ -111,7 +113,7 @@ class LoadingScreen extends Component<any, any> {
       }
 
       const totalSize = (
-        parseInt(response.headers['content-length'], 10) /
+        parseInt(response.headers['content-length'] as any, 10) /
         1024 /
         1024
       ).toFixed(0)

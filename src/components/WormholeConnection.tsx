@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { PureComponent } from 'react'
 import QRCode from 'qrcode.react'
 import dateformat from 'dateformat'

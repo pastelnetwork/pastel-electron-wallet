@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import hex from 'hex-string'
 import _sodium from 'libsodium-wrappers-sumo'
 import Store from 'electron-store'

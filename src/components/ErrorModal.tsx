@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Modal from 'react-modal'
 import React from 'react'
 import cstyles from './Common.module.css'

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react'
 import { Accordion } from 'react-accessible-accordion'
 import ScrollPane from './ScrollPane'

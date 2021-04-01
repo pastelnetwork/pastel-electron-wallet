@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export class TotalBalance {}
 export class AddressBalance {
   constructor(public address: any, public balance: any) {}

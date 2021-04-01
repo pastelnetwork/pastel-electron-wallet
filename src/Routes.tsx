@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from 'react'
 import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
@@ -452,7 +454,7 @@ class RouteApp extends React.Component<any, any> {
                 importANIPrivKeys={this.importANIPrivKeys}
                 addresses={addresses}
                 transactions={transactions}
-                {...standardProps}
+                {...(standardProps as any)}
               />
             </div>
           )}

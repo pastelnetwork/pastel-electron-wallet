@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from 'react'
 import { Info } from './AppState'
 import cstyles from './Common.module.css'

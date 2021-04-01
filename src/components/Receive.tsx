@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component, useState, useEffect } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import {
@@ -36,7 +38,7 @@ const AddressBlock = ({
   useEffect(() => {
     return () => {
       if (timerID) {
-        clearTimeout(timerID)
+        clearTimeout(timerID as any)
       }
     }
   })
@@ -143,7 +145,7 @@ const AddressBlock = ({
                 onClick={() => {
                   clipboard.writeText(address)
                   setCopied(true)
-                  setTimerID(setTimeout(() => setCopied(false), 5000))
+                  setTimerID(setTimeout(() => setCopied(false), 5000) as any)
                 }}
               >
                 {copied ? <span>Copied!</span> : <span>Copy Address</span>}

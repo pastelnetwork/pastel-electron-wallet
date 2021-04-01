@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import axios from 'axios'
 import _ from 'underscore'
 import hex from 'hex-string'

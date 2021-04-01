@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { PureComponent } from 'react'
 import fs from 'fs'
 import dateformat from 'dateformat'

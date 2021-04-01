@@ -2,8 +2,8 @@ import ErrorModal from './ErrorModal'
 
 export {
   closeErrorModal,
-  openErrorModal,
   errorModalReducer,
+  openErrorModal,
 } from './errorModalSlice'
 
 export { ErrorModal }

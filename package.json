@@ -17,9 +17,12 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "format": "prettier --ignore-path=.gitignore --loglevel=error --write .",
-    "check-eslint": "eslint --ignore-path=.gitignore --max-warnings=0 --ext .ts,.tsx .",
+    "format": "eslint --ignore-path=.gitignore --ext .ts,.tsx --fix . && prettier --ignore-path=.gitignore --loglevel=error --write .",
+    "check-eslint": "eslint --ignore-path=.gitignore --ext .ts,.tsx --max-warnings=0 .",
+    "check-prettier": "prettier --ignore-path=.gitignore --list-different .",
+    "check-typescript": "tsc",
     "check-type-coverage": "type-coverage --strict --ignoreCatch --atLeast=100",
+    "check-all": "yarn check-prettier && yarn check-eslint && yarn check-typescript",
     "postinstall": "husky install"
   },
   "dependencies": {
@@ -52,6 +55,7 @@
     "react-tabs": "3.1.0",
     "react-textarea-autosize": "7.1.2",
     "redux": "4.0.5",
+    "redux-thunk": "2.3.0",
     "typeface-roboto": "0.0.75",
     "underscore": "1.9.2",
     "uuid": "8.3.2",
@@ -72,7 +76,6 @@
     "@types/libsodium-wrappers-sumo": "0.7.5",
     "@types/progress-stream": "2.0.1",
     "@types/qrcode.react": "1.0.1",
-    "@types/source-map-support": "0.5.3",
     "@types/react": "17.0.3",
     "@types/react-dom": "17.0.3",
     "@types/react-modal": "3.12.0",
@@ -81,17 +84,19 @@
     "@types/react-tabs": "2.3.2",
     "@types/react-textarea-autosize": "4.3.5",
     "@types/request": "2.48.5",
+    "@types/source-map-support": "0.5.3",
     "@types/underscore": "1.11.0",
     "@types/uuid": "8.3.0",
     "@types/ws": "7.4.0",
     "@typescript-eslint/eslint-plugin": "4.0.1",
-    "@typescript-eslint/parser": "4.0.1",
+    "@typescript-eslint/parser": "4.20.0",
     "css-loader": "4.2.1",
     "electron": "12.0.1",
     "electron-debug": "3.2.0",
     "electron-devtools-installer": "3.1.1",
     "eslint": "7.6.0",
     "eslint-plugin-import": "2.20.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
     "file-loader": "6.2.0",
     "fork-ts-checker-webpack-plugin": "5.0.14",
     "husky": "6.0.0",
@@ -107,6 +112,10 @@
     "webpack-cli": "4.6.0"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,html,css,scss,json,md}": "prettier --write"
+    "*.{ts,tsx}": [
+      "eslint --ext .ts,.tsx --fix",
+      "prettier --write"
+    ],
+    "*.{js,html,css,scss,json,md}": "prettier --write"
   }
 }

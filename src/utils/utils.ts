@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const NO_CONNECTION = 'Could not connect to pasteld'
 export default class Utils {
   static isSapling(addr: any) {

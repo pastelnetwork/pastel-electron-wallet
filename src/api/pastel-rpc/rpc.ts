@@ -38,7 +38,7 @@ export async function rpc<T>(
       throw new Error(`api/pastel-rpc no response error: ${err.request}`)
     }
 
-    throw new Error(`api/pastel-rpc error: can not connect to pastel id`)
+    throw new Error('api/pastel-rpc error: can not connect to pastel id')
   }
 
   return response.data as T
