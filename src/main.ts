@@ -6,6 +6,8 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
+import sourceMapSupport from 'source-map-support'
+import electronDebug from 'electron-debug'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: any
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any
@@ -27,8 +29,6 @@ export default class AppUpdater {
 let mainWindow = null
 
 if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support')
-
   sourceMapSupport.install()
 }
 
@@ -36,7 +36,7 @@ if (
   process.env.NODE_ENV === 'development' ||
   process.env.DEBUG_PROD === 'true'
 ) {
-  require('electron-debug')()
+  electronDebug()
 }
 
 let waitingForClose = false

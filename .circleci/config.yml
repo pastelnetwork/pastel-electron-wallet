@@ -33,7 +33,7 @@ jobs:
           command: yarn lint
       - run:
           name: check format
-          command: npx prettier --check
+          command: npx prettier --check .
 
 workflows:
   lint:
