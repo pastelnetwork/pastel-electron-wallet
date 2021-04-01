@@ -1,0 +1,44 @@
+version: 2.1
+
+jobs:
+  install-deps:
+    docker:
+      - image: circleci/node:14.16.0
+    working_directory: ~/project
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node_deps-{{ checksum "package.json" }}
+      - run:
+          command: npm i
+      - save_cache:
+          key: node_deps-{{ checksum "package.json" }}
+          paths:
+            - ~/project/node_modules
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  lint:
+    docker:
+      - image: circleci/node:14.16.0
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: eslint
+          command: yarn lint
+      - run:
+          name: check format
+          command: npx prettier --check .
+
+workflows:
+  lint:
+    jobs:
+      - install-deps
+      - lint:
+          requires:
+            - install-deps
