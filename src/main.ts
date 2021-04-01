@@ -1,16 +1,19 @@
-/* eslint global-require: off */
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import log from 'electron-log'
-import MenuBuilder from './menu'
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
+import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
-import electronDebug from 'electron-debug'
 
-declare const MAIN_WINDOW_WEBPACK_ENTRY: any
-declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: any
+import MenuBuilder from './menu'
+
+declare const MAIN_WINDOW_WEBPACK_ENTRY: string
+declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
 // Enable dev tools
 if (!app.isPackaged) {
@@ -26,7 +29,7 @@ export default class AppUpdater {
     log.transports.file.level = 'info'
   }
 }
-let mainWindow = null
+let mainWindow: BrowserWindow | null = null
 
 if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install()
@@ -43,7 +46,7 @@ let waitingForClose = false
 let proceedToClose = false
 
 const createWindow = async () => {
-  mainWindow = new BrowserWindow({
+  const w = new BrowserWindow({
     show: false,
     width: 1300,
     height: 728,
@@ -58,12 +61,13 @@ const createWindow = async () => {
       webSecurity: false,
     },
   })
+  mainWindow = w
 
-  mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
+  w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
   if (!app.isPackaged) {
-    mainWindow.webContents.openDevTools()
+    w.webContents.openDevTools()
   }
 
   app.on('web-contents-created', (event, contents) => {
@@ -77,19 +81,19 @@ const createWindow = async () => {
   })
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  mainWindow.webContents.on('did-finish-load', () => {
+  w.webContents.on('did-finish-load', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined')
     }
 
     if (process.env.START_MINIMIZED) {
-      mainWindow.minimize()
+      w.minimize()
     } else {
-      mainWindow.show()
-      mainWindow.focus()
+      w.show()
+      w.focus()
     }
   })
-  mainWindow.on('close', event => {
+  w.on('close', (event: Event) => {
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
       console.log('proceed to close, so closing')
@@ -111,7 +115,7 @@ const createWindow = async () => {
       app.quit()
     })
     // $FlowFixMe
-    mainWindow.webContents.send('appquitting')
+    w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
     setTimeout(() => {
       waitingForClose = false
@@ -120,13 +124,12 @@ const createWindow = async () => {
       app.quit()
     }, 10 * 1000)
   })
-  mainWindow.on('closed', () => {
+  w.on('closed', () => {
     mainWindow = null
   })
-  const menuBuilder = new MenuBuilder(mainWindow)
+  const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
   // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
   new AppUpdater()
 }
 
@@ -140,5 +143,7 @@ app.on('ready', createWindow)
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) createWindow()
+  if (mainWindow === null) {
+    createWindow()
+  }
 })

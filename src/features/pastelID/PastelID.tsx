@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react'
 import {
   passwordStrength,
   TPasswordStrengthResult,
 } from 'check-password-strength'
+import React, { useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid'
-import Select from '../../components/Select'
-import styles from './PastelID.module.css'
+
 import cstyles from '../../components/Common.module.css'
 import List from '../../components/List'
 import ListItem from '../../components/ListItem'
 import LoadingOverlay from '../../components/LoadingOverlay'
-import { createPastelID, fetchPastelIDs, TPastelID } from './pastelIDSlice'
+import Select from '../../components/Select'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { openErrorModal } from '../errorModal'
+import styles from './PastelID.module.css'
+import { createPastelID, fetchPastelIDs } from './pastelIDSlice'
 
 function passphraseStatusColor(validation: TPasswordStrengthResult) {
   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green]
@@ -24,10 +25,9 @@ function passphraseStatusColor(validation: TPasswordStrengthResult) {
   return colors[validation.id]
 }
 
-type Props = {
+export type PastelIDProps = {
   addressesWithBalance: Array<string>
-  pastelIDs: Array<TPastelID>
-  createNewAddress: (v: boolean) => any
+  createNewAddress: (v: boolean) => Promise<string>
 }
 
 type TSelectedAddress = {
@@ -35,7 +35,7 @@ type TSelectedAddress = {
   label: string
 }
 
-function PastelID(props: Props): JSX.Element {
+function PastelID(props: PastelIDProps): JSX.Element {
   const { addressesWithBalance, createNewAddress } = props
 
   const [passphraseValidation, setPassphraseValidation] = useState({

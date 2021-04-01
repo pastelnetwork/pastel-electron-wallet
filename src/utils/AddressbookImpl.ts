@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import fs from 'fs'
 import path from 'path'
 import { remote } from 'electron'
@@ -15,7 +17,7 @@ export default class AddressbookImpl {
     return fileName
   } // Write the address book to disk
 
-  static async writeAddressBook(ab) {
+  static async writeAddressBook(ab: any) {
     const fileName = await this.getFileName()
     await fs.promises.writeFile(fileName, JSON.stringify(ab))
   } // Read the address book
@@ -24,7 +26,7 @@ export default class AddressbookImpl {
     const fileName = await this.getFileName()
 
     try {
-      return JSON.parse(await fs.promises.readFile(fileName))
+      return JSON.parse((await fs.promises.readFile(fileName)) as any)
     } catch (err) {
       // File probably doesn't exist, so return nothing
       console.log(err)

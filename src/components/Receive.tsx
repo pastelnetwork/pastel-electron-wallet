@@ -1,4 +1,5 @@
-/* eslint-disable react/prop-types */
+/* eslint-disable */
+
 import React, { Component, useState, useEffect } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import {
@@ -30,14 +31,14 @@ const AddressBlock = ({
   fetchAndSetSinglePrivKey,
   viewKey,
   fetchAndSetSingleViewKey,
-}) => {
+}: any) => {
   const { address } = addressBalance
   const [copied, setCopied] = useState(false)
   const [timerID, setTimerID] = useState(null)
   useEffect(() => {
     return () => {
       if (timerID) {
-        clearTimeout(timerID)
+        clearTimeout(timerID as any)
       }
     }
   })
@@ -53,7 +54,6 @@ const AddressBlock = ({
 
   return (
     <AccordionItem
-      key={copied}
       className={[cstyles.well, styles.receiveblock].join(' ')}
       uuid={address}
     >
@@ -145,7 +145,7 @@ const AddressBlock = ({
                 onClick={() => {
                   clipboard.writeText(address)
                   setCopied(true)
-                  setTimerID(setTimeout(() => setCopied(false), 5000))
+                  setTimerID(setTimeout(() => setCopied(false), 5000) as any)
                 }}
               >
                 {copied ? <span>Copied!</span> : <span>Copy Address</span>}
@@ -196,7 +196,7 @@ const AddressBlock = ({
   )
 }
 
-export default class Receive extends Component {
+export default class Receive extends Component<any> {
   render() {
     const {
       addresses,
@@ -212,22 +212,20 @@ export default class Receive extends Component {
       rerenderKey,
     } = this.props // Convert the addressBalances into a map.
 
-    const addressMap = addressesWithBalance.reduce((map, a) => {
-      // eslint-disable-next-line no-param-reassign
+    const addressMap = addressesWithBalance.reduce((map: any, a: any) => {
       map[a.address] = a.balance
       return map
     }, {})
     const zaddrs = addresses
-      .filter(a => Utils.isSapling(a))
+      .filter((a: any) => Utils.isSapling(a))
       .slice(0, 100)
-      .map(a => new AddressBalance(a, addressMap[a]))
+      .map((a: any) => new AddressBalance(a, addressMap[a]))
     let defaultZaddr = zaddrs.length ? zaddrs[0].address : ''
 
     if (receivePageState && Utils.isSapling(receivePageState.newAddress)) {
       defaultZaddr = receivePageState.newAddress // move this address to the front, since the scrollbar will reset when we re-render
 
-      zaddrs.sort((x, y) => {
-        // eslint-disable-next-line prettier/prettier, no-nested-ternary
+      zaddrs.sort((x: any, y: any) => {
         return x.address === defaultZaddr
           ? -1
           : y.address === defaultZaddr
@@ -237,16 +235,15 @@ export default class Receive extends Component {
     }
 
     const taddrs = addresses
-      .filter(a => Utils.isTransparent(a))
+      .filter((a: any) => Utils.isTransparent(a))
       .slice(0, 100)
-      .map(a => new AddressBalance(a, addressMap[a]))
+      .map((a: any) => new AddressBalance(a, addressMap[a]))
     let defaultTaddr = taddrs.length ? taddrs[0].address : ''
 
     if (receivePageState && Utils.isTransparent(receivePageState.newAddress)) {
       defaultTaddr = receivePageState.newAddress // move this address to the front, since the scrollbar will reset when we re-render
 
-      taddrs.sort((x, y) => {
-        // eslint-disable-next-line prettier/prettier, no-nested-ternary
+      taddrs.sort((x: any, y: any) => {
         return x.address === defaultTaddr
           ? -1
           : y.address === defaultTaddr
@@ -255,8 +252,7 @@ export default class Receive extends Component {
       })
     }
 
-    const addressBookMap = addressBook.reduce((map, obj) => {
-      // eslint-disable-next-line no-param-reassign
+    const addressBookMap = addressBook.reduce((map: any, obj: any) => {
       map[obj.address] = obj.label
       return map
     }, {})
@@ -273,7 +269,7 @@ export default class Receive extends Component {
               {/* Change the hardcoded height */}
               <ScrollPane offsetHeight={100}>
                 <Accordion preExpanded={[defaultZaddr]}>
-                  {zaddrs.map(a => (
+                  {zaddrs.map((a: any) => (
                     <AddressBlock
                       key={a.address}
                       addressBalance={a}
@@ -284,7 +280,7 @@ export default class Receive extends Component {
                       viewKey={addressViewKeys[a.address]}
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
-                      rerender={this.rerender}
+                      rerender={(this as any).rerender}
                     />
                   ))}
                 </Accordion>
@@ -307,7 +303,7 @@ export default class Receive extends Component {
               {/* Change the hardcoded height */}
               <ScrollPane offsetHeight={100}>
                 <Accordion preExpanded={[defaultTaddr]}>
-                  {taddrs.map(a => (
+                  {taddrs.map((a: any) => (
                     <AddressBlock
                       key={a.address}
                       addressBalance={a}
@@ -317,7 +313,7 @@ export default class Receive extends Component {
                       viewKey={addressViewKeys[a.address]}
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
-                      rerender={this.rerender}
+                      rerender={(this as any).rerender}
                     />
                   ))}
                 </Accordion>

@@ -1,16 +1,5 @@
-/* eslint-disable no-restricted-globals */
+/* eslint-disable */
 
-/* eslint-disable no-else-return */
-
-/* eslint-disable radix */
-
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
-/* eslint-disable react/prop-types */
-
-/* eslint-disable max-classes-per-file */
 import React, { PureComponent } from 'react'
 import Modal from 'react-modal'
 import Select from 'react-select'
@@ -51,7 +40,7 @@ const ToAddrBox = ({
   setMaxAmount,
   setSendButtonEnable,
   totalAmountAvailable,
-}) => {
+}: any) => {
   const isMemoDisabled = !Utils.isZaddr(toaddr.to)
   const addressIsValid =
     toaddr.to === '' ||
@@ -85,7 +74,7 @@ const ToAddrBox = ({
     amountError = 'Amount cannot be empty'
   }
 
-  let buttonstate
+  let buttonstate: any
 
   if (
     !addressIsValid ||
@@ -206,11 +195,11 @@ const ToAddrBox = ({
   )
 }
 
-function getSendManyJSON(sendPageState, info) {
+function getSendManyJSON(sendPageState: any, info: any) {
   const json = []
   json.push(sendPageState.fromaddr)
   json.push(
-    sendPageState.toaddrs.map(to => {
+    sendPageState.toaddrs.map((to: any) => {
       const textEncoder = new TextEncoder()
       const memo = to.memo ? hex.encode(textEncoder.encode(to.memo)) : ''
 
@@ -237,7 +226,7 @@ function getSendManyJSON(sendPageState, info) {
   return json
 }
 
-const ConfirmModalToAddr = ({ toaddr, info }) => {
+const ConfirmModalToAddr = ({ toaddr, info }: any) => {
   const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(toaddr.amount)
   const memo = toaddr.memo ? toaddr.memo : ''
   return (
@@ -278,10 +267,10 @@ const ConfirmModalInternal = ({
   modalIsOpen,
   openErrorModal,
   history,
-}) => {
+}: any) => {
   const sendingTotal =
     sendPageState.toaddrs.reduce(
-      (s, t) => parseFloat(s) + parseFloat(t.amount),
+      (s: any, t: any) => parseFloat(s) + parseFloat(t.amount),
       0.0,
     ) + Utils.getDefaultFee(info.latestBlock)
   const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(sendingTotal)
@@ -358,7 +347,7 @@ const ConfirmModalInternal = ({
         <div
           className={[cstyles.verticalflex, cstyles.margintoplarge].join(' ')}
         >
-          {sendPageState.toaddrs.map(t => (
+          {sendPageState.toaddrs.map((t: any) => (
             <ConfirmModalToAddr key={t.to} toaddr={t} info={info} />
           ))}
         </div>
@@ -408,17 +397,15 @@ const ConfirmModalInternal = ({
 const ConfirmModal = withRouter(ConfirmModalInternal)
 
 class SendState {
-  constructor() {
-    this.modalIsOpen = false
-    this.errorModalIsOpen = false
-    this.errorModalBody = ''
-    this.errorModalTitle = ''
-    this.sendButtonEnabled = false
-  }
+  modalIsOpen = false
+  errorModalIsOpen = false
+  errorModalBody = ''
+  errorModalTitle = ''
+  sendButtonEnabled = false
 }
 
-export default class Send extends PureComponent {
-  constructor(props) {
+export default class Send extends PureComponent<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = new SendState()
   }
@@ -443,7 +430,7 @@ export default class Send extends PureComponent {
     newState.toaddrs = newToAddrs
     setSendPageState(newState)
   }
-  changeFrom = selectedOption => {
+  changeFrom = (selectedOption: any) => {
     const { sendPageState, setSendPageState } = this.props // Create the new state object
 
     const newState = new SendPageState()
@@ -451,11 +438,11 @@ export default class Send extends PureComponent {
     newState.toaddrs = sendPageState.toaddrs
     setSendPageState(newState)
   }
-  updateToField = (id, address, amount, memo) => {
+  updateToField = (id: any, address: any, amount: any, memo: any) => {
     const { sendPageState, setSendPageState } = this.props
     const newToAddrs = sendPageState.toaddrs.slice(0) // Find the correct toAddr
 
-    const toAddr = newToAddrs.find(a => a.id === id)
+    const toAddr = newToAddrs.find((a: any) => a.id === id)
 
     if (address) {
       // $FlowFixMe
@@ -488,16 +475,16 @@ export default class Send extends PureComponent {
     newState.toaddrs = newToAddrs
     setSendPageState(newState)
   }
-  setMaxAmount = (id, total) => {
+  setMaxAmount = (id: any, total: any) => {
     const { sendPageState, setSendPageState, info } = this.props
     const newToAddrs = sendPageState.toaddrs.slice(0)
     let totalOtherAmount = newToAddrs
-      .filter(a => a.id !== id)
-      .reduce((s, a) => parseFloat(s) + parseFloat(a.amount), 0) // Add Fee
+      .filter((a: any) => a.id !== id)
+      .reduce((s: any, a: any) => parseFloat(s) + parseFloat(a.amount), 0) // Add Fee
 
     totalOtherAmount += Utils.getDefaultFee(info.latestBlock) // Find the correct toAddr
 
-    const toAddr = newToAddrs.find(a => a.id === id)
+    const toAddr = newToAddrs.find((a: any) => a.id === id)
     toAddr.amount = total - totalOtherAmount
     if (toAddr.amount < 0) toAddr.amount = 0
     toAddr.amount = Utils.maxPrecisionTrimmed(toAddr.amount) // Create the new state object
@@ -507,7 +494,7 @@ export default class Send extends PureComponent {
     newState.toaddrs = newToAddrs
     setSendPageState(newState)
   }
-  setSendButtonEnable = sendButtonEnabled => {
+  setSendButtonEnable = (sendButtonEnabled: any) => {
     this.setState({
       sendButtonEnabled,
     })
@@ -522,9 +509,11 @@ export default class Send extends PureComponent {
       modalIsOpen: false,
     })
   }
-  getBalanceForAddress = (addr, addressesWithBalance) => {
+  getBalanceForAddress = (addr: any, addressesWithBalance: any) => {
     // Find the addr in addressesWithBalance
-    const addressBalance = addressesWithBalance.find(ab => ab.address === addr)
+    const addressBalance = addressesWithBalance.find(
+      (ab: any) => ab.address === addr,
+    )
 
     if (!addressBalance) {
       return 0
@@ -532,10 +521,14 @@ export default class Send extends PureComponent {
 
     return addressBalance.balance
   }
-  getLabelForFromAddress = (addr, addressesWithBalance, currencyName) => {
+  getLabelForFromAddress = (
+    addr: any,
+    addressesWithBalance: any,
+    currencyName: any,
+  ) => {
     // Find the addr in addressesWithBalance
     const { addressBook } = this.props
-    const label = addressBook.find(ab => ab.address === addr)
+    const label = addressBook.find((ab: any) => ab.address === addr)
     const labelStr = label ? ` [ ${label.label} ]` : ''
     const balance = this.getBalanceForAddress(addr, addressesWithBalance)
     return `[ ${currencyName} ${balance.toString()} ]${labelStr} ${addr}`
@@ -551,13 +544,13 @@ export default class Send extends PureComponent {
     } = this.state
     const { sendPageState, info, openErrorModal, closeErrorModal } = this.props
     const customStyles = {
-      option: (provided, state) => ({
+      option: (provided: any, state: any) => ({
         ...provided,
         color: state.isSelected ? '#c3921f;' : 'white',
         background: '#212124;',
         padding: 20,
       }),
-      menu: provided => ({ ...provided, background: '#212124;' }),
+      menu: (provided: any) => ({ ...provided, background: '#212124;' }),
       control: () => ({
         // none of react-select's styles are passed to <Control />
         display: 'flex',
@@ -565,14 +558,14 @@ export default class Send extends PureComponent {
         flexWrap: 'flex',
         background: '#212124;',
       }),
-      singleValue: (provided, state) => {
+      singleValue: (provided: any, state: any) => {
         const opacity = state.isDisabled ? 0.5 : 1
         const transition = 'opacity 300ms'
         return { ...provided, opacity, transition, color: '#ffffff' }
       },
     }
     const { addressesWithBalance, sendTransaction } = this.props
-    const sendFromList = addressesWithBalance.map(ab => {
+    const sendFromList = addressesWithBalance.map((ab: any) => {
       return {
         value: ab.address,
         label: this.getLabelForFromAddress(
@@ -583,7 +576,7 @@ export default class Send extends PureComponent {
       }
     }) // Find the fromaddress
 
-    let fromaddr = {}
+    let fromaddr: any = {}
 
     if (sendPageState.fromaddr) {
       fromaddr = {
@@ -618,7 +611,7 @@ export default class Send extends PureComponent {
             <Select
               value={fromaddr}
               options={sendFromList}
-              styles={customStyles} // $FlowFixMe
+              styles={customStyles as any} // $FlowFixMe
               onChange={this.changeFrom}
             />
           </div>
@@ -626,7 +619,7 @@ export default class Send extends PureComponent {
           <Spacer />
 
           <ScrollPane offsetHeight={300}>
-            {sendPageState.toaddrs.map(toaddr => {
+            {sendPageState.toaddrs.map((toaddr: any) => {
               return (
                 <ToAddrBox
                   key={toaddr.id}

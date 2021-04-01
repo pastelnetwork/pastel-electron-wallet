@@ -1,7 +1,8 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
-import { pastelIDReducer } from '../features/pastelID'
+
 import { errorModalReducer } from '../features/errorModal'
 import { pastelConfReducer } from '../features/pastelConf'
+import { pastelIDReducer } from '../features/pastelID'
 
 const store = configureStore({
   reducer: {

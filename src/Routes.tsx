@@ -1,10 +1,5 @@
-/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable */
 
-/* eslint-disable max-classes-per-file */
-
-/* eslint-disable react/prop-types */
-
-/* eslint-disable react/no-unused-state */
 import React from 'react'
 import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
@@ -41,8 +36,8 @@ import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from './features/pastelConf'
 
-class RouteApp extends React.Component {
-  constructor(props) {
+class RouteApp extends React.Component<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = {
       totalBalance: new TotalBalance(),
@@ -61,12 +56,14 @@ class RouteApp extends React.Component {
       connectedCompanionApp: null,
       pastelIDs: [],
     } // Create the initial ToAddr box
-    // eslint-disable-next-line react/destructuring-assignment
 
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
 
     ReactModal.setAppElement('#root')
   }
+
+  rpc: any
+  companionAppListener: any
 
   componentDidMount() {
     if (!this.rpc) {
@@ -104,8 +101,8 @@ class RouteApp extends React.Component {
   getFullState = () => {
     return this.state
   }
-  openErrorModal = (title, body) => {
-    const errorModalData = new ErrorModalData()
+  openErrorModal = (title: any, body: any) => {
+    const errorModalData: any = new ErrorModalData()
     errorModalData.modalIsOpen = true
     errorModalData.title = title
     errorModalData.body = body
@@ -121,9 +118,9 @@ class RouteApp extends React.Component {
     })
   } // Set the state of the current info object to be disconnected
 
-  setDisconnected = err => {
+  setDisconnected = (err: any) => {
     const { info } = this.state
-    const newInfo = new Info()
+    const newInfo: any = new Info()
     Object.assign(newInfo, info)
     newInfo.disconnected = true
     this.setState({
@@ -131,17 +128,20 @@ class RouteApp extends React.Component {
     })
     this.openErrorModal('Disconnected', err)
   }
-  setInfo = info => {
-    this.setState({
-      info,
-    })
-  }
-  setTotalBalance = totalBalance => {
+
+  // TODO duplicated with below, discovered by TypeScript
+  // setInfo = (info: any) => {
+  //   this.setState({
+  //     info,
+  //   })
+  // }
+
+  setTotalBalance = (totalBalance: any) => {
     this.setState({
       totalBalance,
     })
   }
-  setAddressesWithBalances = addressesWithBalance => {
+  setAddressesWithBalances = (addressesWithBalance: any) => {
     this.setState({
       addressesWithBalance,
     })
@@ -150,8 +150,8 @@ class RouteApp extends React.Component {
     if (!sendPageState.fromaddr) {
       // Find a z-address with the highest balance
       const defaultAB = addressesWithBalance
-        .filter(ab => Utils.isSapling(ab.address))
-        .reduce((prev, ab) => {
+        .filter((ab: any) => Utils.isSapling(ab.address))
+        .reduce((prev: any, ab: any) => {
           // We'll start with a sapling address
           if (prev == null) {
             return ab
@@ -174,23 +174,23 @@ class RouteApp extends React.Component {
       }
     }
   }
-  setTransactionList = transactions => {
+  setTransactionList = (transactions: any) => {
     this.setState({
       transactions,
     })
   }
-  setAllAddresses = addresses => {
+  setAllAddresses = (addresses: any) => {
     this.setState({
       addresses,
     })
   }
-  setSendPageState = sendPageState => {
+  setSendPageState = (sendPageState: any) => {
     this.setState({
       sendPageState,
     })
   }
-  importPrivKeys = async keys => {
-    console.log(keys) // eslint-disable-next-line no-plusplus
+  importPrivKeys = async (keys: any) => {
+    console.log(keys)
 
     for (let i = 0; i < keys.length; i++) {
       // The last doImport will take forever, because it will trigger the rescan. So, show
@@ -206,7 +206,7 @@ class RouteApp extends React.Component {
             Please be patient!
           </span>,
         )
-      } // eslint-disable-next-line no-await-in-loop
+      }
 
       const result = await this.rpc.doImportPrivKey(
         keys[i],
@@ -228,8 +228,8 @@ class RouteApp extends React.Component {
       }
     }
   }
-  importANIPrivKeys = async keys => {
-    console.log(keys) // eslint-disable-next-line no-plusplus
+  importANIPrivKeys = async (keys: any) => {
+    console.log(keys)
 
     for (let i = 0; i < keys.length; i++) {
       // The last doImport will take forever, because it will trigger the rescan. So, show
@@ -245,7 +245,7 @@ class RouteApp extends React.Component {
             Please be patient!
           </span>,
         )
-      } // eslint-disable-next-line no-await-in-loop
+      }
 
       const result = await this.rpc.doImportANIPrivKey(
         keys[i],
@@ -267,7 +267,7 @@ class RouteApp extends React.Component {
       }
     }
   }
-  setSendTo = targets => {
+  setSendTo = (targets: any) => {
     // Clear the existing send page state and set up the new one
     const { sendPageState } = this.state
     const newSendPageState = new SendPageState()
@@ -280,7 +280,7 @@ class RouteApp extends React.Component {
       tgts = [targets]
     }
 
-    tgts.forEach(tgt => {
+    tgts.forEach((tgt: any) => {
       const to = new ToAddr(Utils.getNextToAddrID())
 
       if (tgt.address) {
@@ -301,29 +301,28 @@ class RouteApp extends React.Component {
       sendPageState: newSendPageState,
     })
   }
-  setRPCConfig = rpcConfig => {
+  setRPCConfig = (rpcConfig: any) => {
     this.setState({
       rpcConfig,
     })
     console.log(rpcConfig)
     this.rpc.configure(rpcConfig)
   }
-  setPslPrice = price => {
+  setPslPrice = (price: any) => {
     console.log(`Price = ${price}`)
     const { info } = this.state
-    const newInfo = new Info()
+    const newInfo: any = new Info()
     Object.assign(newInfo, info)
     newInfo.pslPrice = price
     this.setState({
       info: newInfo,
     })
   }
-  setInfo = newInfo => {
+  setInfo = (newInfo: any) => {
     // If the price is not set in this object, copy it over from the current object
     const { info } = this.state
 
     if (!newInfo.pslPrice) {
-      // eslint-disable-next-line no-param-reassign
       newInfo.pslPrice = info.pslPrice
     }
 
@@ -331,7 +330,7 @@ class RouteApp extends React.Component {
       info: newInfo,
     })
   }
-  sendTransaction = async (sendJson, fnOpenSendErrorModal) => {
+  sendTransaction = async (sendJson: any, fnOpenSendErrorModal: any) => {
     try {
       const success = await this.rpc.sendTransaction(
         sendJson,
@@ -343,27 +342,27 @@ class RouteApp extends React.Component {
     }
   } // Get a single private key for this address, and return it as a string.
 
-  getPrivKeyAsString = async address => {
+  getPrivKeyAsString = async (address: any) => {
     return this.rpc.getPrivKeyAsString(address)
   } // Getter methods, which are called by the components to update the state
 
-  fetchAndSetSinglePrivKey = async address => {
+  fetchAndSetSinglePrivKey = async (address: any) => {
     const key = await this.rpc.getPrivKeyAsString(address)
-    const addressPrivateKeys = {}
+    const addressPrivateKeys: any = {}
     addressPrivateKeys[address] = key
     this.setState({
       addressPrivateKeys,
     })
   }
-  fetchAndSetSingleViewKey = async address => {
+  fetchAndSetSingleViewKey = async (address: any) => {
     const key = await this.rpc.getViewKeyAsString(address)
-    const addressViewKeys = {}
+    const addressViewKeys: any = {}
     addressViewKeys[address] = key
     this.setState({
       addressViewKeys,
     })
   }
-  addAddressBookEntry = (label, address) => {
+  addAddressBookEntry = (label: any, address: any) => {
     // Add an entry into the address book
     const { addressBook } = this.state
     const newAddressBook = addressBook.concat(
@@ -375,16 +374,16 @@ class RouteApp extends React.Component {
       addressBook: newAddressBook,
     })
   }
-  removeAddressBookEntry = label => {
+  removeAddressBookEntry = (label: any) => {
     const { addressBook } = this.state
-    const newAddressBook = addressBook.filter(i => i.label !== label) // Write to disk. This method is async
+    const newAddressBook = addressBook.filter((i: any) => i.label !== label) // Write to disk. This method is async
 
     AddressbookImpl.writeAddressBook(newAddressBook)
     this.setState({
       addressBook: newAddressBook,
     })
   }
-  createNewAddress = async zaddress => {
+  createNewAddress = async (zaddress: any) => {
     // Create a new address
     const newaddress = await this.rpc.createNewAddress(zaddress)
     console.log(`Created new Address ${newaddress}`) // And then fetch the list of addresses again to refresh
@@ -400,7 +399,7 @@ class RouteApp extends React.Component {
     })
     return newaddress
   }
-  updateConnectedCompanionApp = connectedCompanionApp => {
+  updateConnectedCompanionApp = (connectedCompanionApp: any) => {
     this.setState({
       connectedCompanionApp,
     })
@@ -455,7 +454,7 @@ class RouteApp extends React.Component {
                 importANIPrivKeys={this.importANIPrivKeys}
                 addresses={addresses}
                 transactions={transactions}
-                {...standardProps}
+                {...(standardProps as any)}
               />
             </div>
           )}
@@ -504,7 +503,7 @@ class RouteApp extends React.Component {
                 )}
               />
               <Route
-                path={routes.DASHBOARD} // eslint-disable-next-line react/jsx-props-no-spreading
+                path={routes.DASHBOARD}
                 render={() => (
                   <Dashboard
                     totalBalance={totalBalance}
@@ -554,7 +553,7 @@ class RouteApp extends React.Component {
                 path={routes.LOADING}
                 render={() => (
                   <LoadingScreen
-                    setRPCConfig={rpcConfig => {
+                    setRPCConfig={(rpcConfig: any) => {
                       // To support Redux calls
                       this.props.setPastelConf(rpcConfig)
 

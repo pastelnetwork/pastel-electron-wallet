@@ -1,10 +1,5 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable */
 
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
-/* eslint-disable no-plusplus */
-
-/* eslint-disable react/prop-types */
 import React, { Component } from 'react'
 import {
   AccordionItemButton,
@@ -19,7 +14,11 @@ import { TotalBalance, Info, AddressBalance } from './AppState'
 import Utils from '../utils/utils'
 import ScrollPane from './ScrollPane' // $FlowFixMe
 
-export const BalanceBlockHighlight = ({ pslValue, usdValue, currencyName }) => {
+export const BalanceBlockHighlight = ({
+  pslValue,
+  usdValue,
+  currencyName,
+}: any) => {
   const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(pslValue)
   return (
     <div
@@ -40,9 +39,9 @@ export const BalanceBlockHighlight = ({ pslValue, usdValue, currencyName }) => {
       </div>
     </div>
   )
-} // eslint-disable-next-line react/prop-types
+}
 
-const BalanceBlock = ({ pslValue, usdValue, topLabel, currencyName }) => {
+const BalanceBlock = ({ pslValue, usdValue, topLabel, currencyName }: any) => {
   const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(pslValue)
   return (
     <div className={cstyles.padall}>
@@ -64,7 +63,7 @@ const BalanceBlock = ({ pslValue, usdValue, topLabel, currencyName }) => {
   )
 }
 
-const AddressBalanceItem = ({ currencyName, pslPrice, item }) => {
+const AddressBalanceItem = ({ currencyName, pslPrice, item }: any) => {
   const { bigPart, smallPart } = Utils.splitPslAmountIntoBigSmall(
     Math.abs(item.balance),
   )
@@ -107,7 +106,7 @@ const AddressBalanceItem = ({ currencyName, pslPrice, item }) => {
   )
 }
 
-export default class Home extends Component {
+export default class Home extends Component<any, any> {
   render() {
     const { totalBalance, info, addressesWithBalance } = this.props
     return (
@@ -164,8 +163,8 @@ export default class Home extends Component {
                 ) : (
                   <Accordion>
                     {addressesWithBalance
-                      .filter(ab => ab.balance > 0)
-                      .map(ab => (
+                      .filter((ab: any) => ab.balance > 0)
+                      .map((ab: any) => (
                         <AddressBalanceItem
                           key={ab.address}
                           item={ab}

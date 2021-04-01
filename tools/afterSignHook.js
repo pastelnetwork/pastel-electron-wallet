@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const fs = require('fs')
 const electron_notarize = require('electron-notarize')
 

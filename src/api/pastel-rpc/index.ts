@@ -1,2 +1,2 @@
-export { getPastelIDs, createNewPastelID } from './pastelid'
-export { TRPCConfig } from './rpc'
+export { createNewPastelID, getPastelIDs } from './pastelid'
+export type { TRPCConfig } from './rpc'

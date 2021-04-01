@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-export default class ScrollPane extends Component {
-  constructor(props) {
+export default class ScrollPane extends Component<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = {
       height: 0,
@@ -21,7 +23,6 @@ export default class ScrollPane extends Component {
    */
 
   updateDimensions = () => {
-    // eslint-disable-next-line react/destructuring-assignment
     const updateHeight = window.innerHeight - this.props.offsetHeight
     this.setState({
       height: updateHeight,

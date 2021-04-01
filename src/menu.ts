@@ -1,14 +1,14 @@
+/* eslint-disable */
+
 import { app, Menu, shell, BrowserWindow } from 'electron'
 export default class MenuBuilder {
-  constructor(mainWindow) {
-    this.mainWindow = mainWindow
-  }
+  constructor(public mainWindow: any) {}
 
   buildMenu() {
     // if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     //   // this.setupDevelopmentEnvironment();
     // }
-    const template =
+    const template: any =
       process.platform === 'darwin'
         ? this.buildDarwinTemplate()
         : this.buildDefaultTemplate()
@@ -22,7 +22,7 @@ export default class MenuBuilder {
         type: 'separator',
       },
       {
-        role: 'selectall',
+        role: 'selectall' as any,
       },
     ])
     const inputMenu = Menu.buildFromTemplate([
@@ -48,10 +48,10 @@ export default class MenuBuilder {
         type: 'separator',
       },
       {
-        role: 'selectall',
+        role: 'selectall' as any,
       },
     ])
-    this.mainWindow.webContents.on('context-menu', (e, props) => {
+    this.mainWindow.webContents.on('context-menu', (e: any, props: any) => {
       const { selectionText, isEditable } = props
 
       if (isEditable) {
@@ -93,7 +93,7 @@ export default class MenuBuilder {
         },
         {
           label: 'Services',
-          submenu: [],
+          submenu: [] as any,
         },
         {
           type: 'separator',

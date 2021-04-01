@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { Component } from 'react'
 import { passwordStrength } from 'check-password-strength'
 import { v4 as uid } from 'uuid'
@@ -9,7 +11,7 @@ import ListItem from './ListItem'
 import LoadingOverlay from './LoadingOverlay'
 import { AddressBalance, SinglePastelID } from './AppState'
 
-function passphraseStatusColor(validation) {
+function passphraseStatusColor(validation: any) {
   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green]
 
   if (!colors[validation.id]) {
@@ -19,8 +21,8 @@ function passphraseStatusColor(validation) {
   return colors[validation.id]
 }
 
-export default class PastelID extends Component {
-  constructor(props) {
+export default class PastelID extends Component<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = {
       passphrase: '',
@@ -38,7 +40,7 @@ export default class PastelID extends Component {
     getPastelIDs()
   }
 
-  onPassphraseChange(e) {
+  onPassphraseChange(e: any) {
     const passphrase = e.target.value
     const validation = passwordStrength(passphrase)
     this.setState({
@@ -47,7 +49,7 @@ export default class PastelID extends Component {
     })
   }
 
-  onAddressChange(selectedOption) {
+  onAddressChange(selectedOption: any) {
     this.setState({
       selectedAddress: selectedOption.value,
     })
@@ -165,7 +167,7 @@ export default class PastelID extends Component {
 
           {pastelIDs.length > 0 && (
             <List title='Pastel ID'>
-              {pastelIDs.map(item => (
+              {pastelIDs.map((item: any) => (
                 <ListItem key={uid()} title={item.pastelid} />
               ))}
             </List>

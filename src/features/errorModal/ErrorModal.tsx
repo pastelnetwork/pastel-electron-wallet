@@ -1,5 +1,6 @@
-import Modal from 'react-modal'
 import React from 'react'
+import Modal from 'react-modal'
+
 import cstyles from '../../components/Common.module.css'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { closeErrorModal } from './errorModalSlice'

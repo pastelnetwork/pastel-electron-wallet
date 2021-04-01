@@ -1,11 +1,8 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable */
 
-/* eslint-disable no-else-return */
-
-/* eslint-disable no-plusplus */
 export const NO_CONNECTION = 'Could not connect to pasteld'
 export default class Utils {
-  static isSapling(addr) {
+  static isSapling(addr: any) {
     if (!addr) return false
     return (
       new RegExp('^ps[a-z0-9]{76}$').test(addr) ||
@@ -13,40 +10,39 @@ export default class Utils {
     )
   }
 
-  static isSprout(addr) {
+  static isSprout(addr: any) {
     if (!addr) return false
     return new RegExp('^P[a-zA-Z0-9]{94}$').test(addr)
   }
 
-  static isZaddr(addr) {
+  static isZaddr(addr: any) {
     if (!addr) return false
     return Utils.isSapling(addr) || Utils.isSprout(addr)
   }
 
-  static isTransparent(addr) {
+  static isTransparent(addr: any) {
     if (!addr) return false
     return new RegExp('^P[a-zA-Z0-9]{34}$').test(addr)
   }
 
-  static isValidSaplingPrivateKey(key) {
+  static isValidSaplingPrivateKey(key: any) {
     return (
       new RegExp('^p-secret-extended-key-test[0-9a-z]{278}$').test(key) ||
       new RegExp('^p-secret-extended-key-main[0-9a-z]{278}$').test(key)
     )
   } // Convert to max 5 decimal places, and remove trailing zeros
 
-  static maxPrecision(v) {
+  static maxPrecision(v: any) {
     if (!v) return v
 
     if (typeof v === 'string' || v instanceof String) {
-      // eslint-disable-next-line no-param-reassign
-      v = parseFloat(v)
+      v = parseFloat(v as string)
     }
 
     return v.toFixed(5)
   }
 
-  static maxPrecisionTrimmed(v) {
+  static maxPrecisionTrimmed(v: any) {
     let s = Utils.maxPrecision(v)
 
     if (!s) {
@@ -64,7 +60,7 @@ export default class Utils {
     return s
   }
 
-  static splitPslAmountIntoBigSmall(pslValue) {
+  static splitPslAmountIntoBigSmall(pslValue: any) {
     if (!pslValue) {
       return {
         bigPart: pslValue,
@@ -98,7 +94,7 @@ export default class Utils {
     }
   }
 
-  static splitStringIntoChunks(s, numChunks) {
+  static splitStringIntoChunks(s: any, numChunks: any) {
     if (numChunks > s.length) return [s]
     if (s.length < 16) return [s]
     const chunkSize = Math.round(s.length / numChunks)
@@ -115,11 +111,10 @@ export default class Utils {
   static nextToAddrID = 0
 
   static getNextToAddrID() {
-    // eslint-disable-next-line no-plusplus
     return Utils.nextToAddrID++
   }
 
-  static getDefaultFee(height) {
+  static getDefaultFee(height: any) {
     if (height >= 1080000) {
       return 0.00001
     } else {
@@ -127,7 +122,7 @@ export default class Utils {
     }
   }
 
-  static getDonationAddress(testnet) {
+  static getDonationAddress(testnet: any) {
     if (testnet) {
       return 'ps100222ztwt66hdjrl878y0ar2pvrhs26kyalppjvnwa7rdp9p8l7h8jgq3unawrv4l5mv758f2w7'
     } else {
@@ -135,15 +130,15 @@ export default class Utils {
     }
   }
 
-  static getDefaultDonationAmount(testnet) {
+  static getDefaultDonationAmount(testnet: any) {
     return 0.1
   }
 
-  static getDefaultDonationMemo(testnet) {
+  static getDefaultDonationMemo(testnet: any) {
     return 'Thanks for supporting Pastelwallet!'
   }
 
-  static getPslToUsdString(price, pslValue) {
+  static getPslToUsdString(price: any, pslValue: any) {
     if (!price || !pslValue) {
       return 'USD --'
     }

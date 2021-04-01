@@ -27,7 +27,7 @@ type TGetPastelIDsResponse = {
 }
 
 export async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[]> {
-  let resp: TGetPastelIDsResponse
+  let resp: TGetPastelIDsResponse | null = null
 
   try {
     resp = await rpc<TGetPastelIDsResponse>('pastelid', ['list'], config)
@@ -44,6 +44,9 @@ export async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[]> {
   // TODO RPC calls "pastel list" and "pastel newkey <pass>" return inconsistent results:
   // one returns [{ PastelID: string }] and the other { pastelid: string }. This difference in keys must be fixed on RPC side.
   // The loop below is a workaroud to translate the [{ PastelID: string }] of "pastel list" into [{ pastelid: string }].
+  if (!resp) {
+    return []
+  }
 
   if (resp.result === null || resp.result.length === 0) {
     return []

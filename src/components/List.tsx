@@ -1,9 +1,11 @@
+/* eslint-disable */
+
 import React from 'react'
 import { Accordion } from 'react-accessible-accordion'
 import ScrollPane from './ScrollPane'
 import cstyles from './Common.module.css'
 
-const List = ({ children, title, value }) => (
+const List = ({ children, title, value }: any) => (
   <ScrollPane offsetHeight={300}>
     <div className={cstyles.margintoplarge}>
       <div

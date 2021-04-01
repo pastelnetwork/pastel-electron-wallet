@@ -1,8 +1,5 @@
-/* eslint-disable no-else-return */
+/* eslint-disable */
 
-/* eslint-disable react/destructuring-assignment */
-
-/* eslint-disable react/prop-types */
 import React, { PureComponent } from 'react'
 import fs from 'fs'
 import dateformat from 'dateformat'
@@ -20,7 +17,11 @@ import { Info, Transaction } from './AppState'
 import Utils from '../utils/utils'
 import { parsePastelURI, PastelURITarget } from '../utils/uris'
 
-const ExportPrivKeyModal = ({ modalIsOpen, exportedPrivKeys, closeModal }) => {
+const ExportPrivKeyModal = ({
+  modalIsOpen,
+  exportedPrivKeys,
+  closeModal,
+}: any) => {
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -71,7 +72,7 @@ const ImportPrivKeyModal = ({
   setModalInput,
   closeModal,
   doImportPrivKeys,
-}) => {
+}: any) => {
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -138,7 +139,7 @@ const ImportANIPrivKeyModal = ({
   setModalInput,
   closeModal,
   doImportANIPrivKeys,
-}) => {
+}: any) => {
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -213,7 +214,7 @@ const PayURIModal = ({
   modalTitle,
   actionButtonName,
   actionCallback,
-}) => {
+}: any) => {
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -276,11 +277,11 @@ const PayURIModal = ({
   )
 }
 
-const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }) => {
+const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
   let isActive = false
 
   if (
-    (currentRoute.endsWith('app.html') && routeName === routes.HOME) ||
+    (currentRoute.endsWith('app.html') && routeName === (routes as any).HOME) ||
     currentRoute === routeName
   ) {
     isActive = true
@@ -305,8 +306,8 @@ const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }) => {
   )
 }
 
-class Sidebar extends PureComponent {
-  constructor(props) {
+class Sidebar extends PureComponent<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = {
       uriModalIsOpen: false,
@@ -391,9 +392,9 @@ class Sidebar extends PureComponent {
       if (save.filePath) {
         // Construct a CSV
         const { transactions } = this.props
-        const rows = transactions.flatMap(t => {
+        const rows = transactions.flatMap((t: any) => {
           if (t.detailedTxns) {
-            return t.detailedTxns.map(dt => {
+            return t.detailedTxns.map((dt: any) => {
               const normaldate = dateformat(
                 t.time * 1000,
                 'mmm dd yyyy hh::MM tt',
@@ -428,11 +429,10 @@ class Sidebar extends PureComponent {
       const { addresses, getPrivKeyAsString } = this.props // We'll do an array iteration rather than a async array.map, because there might
       // be several keys, and we don't want to hammer pasteld with 100s of RPC calls.
 
-      const exportedPrivKeys = [] // eslint-disable-next-line no-restricted-syntax
-      // eslint-disable-next-line no-plusplus
+      const exportedPrivKeys = []
 
       for (let i = 0; i < addresses.length; i++) {
-        const address = addresses[i] // eslint-disable-next-line no-await-in-loop
+        const address = addresses[i]
 
         const privKey = await getPrivKeyAsString(address)
         exportedPrivKeys.push(`${privKey} #${address}`) // Show a progress dialog
@@ -468,26 +468,26 @@ class Sidebar extends PureComponent {
       exportedPrivKeys: null,
     })
   }
-  openImportPrivKeyModal = defaultValue => {
+  openImportPrivKeyModal = (defaultValue: any) => {
     const privKeyInputValue = defaultValue || ''
     this.setState({
       privKeyModalIsOpen: true,
       privKeyInputValue,
     })
   }
-  openImportANIPrivKeyModal = defaultValue => {
+  openImportANIPrivKeyModal = (defaultValue: any) => {
     const ANIprivKeyInputValue = defaultValue || ''
     this.setState({
       ANIprivKeyModalIsOpen: true,
       ANIprivKeyInputValue,
     })
   }
-  setImprovPrivKeyInputValue = privKeyInputValue => {
+  setImprovPrivKeyInputValue = (privKeyInputValue: any) => {
     this.setState({
       privKeyInputValue,
     })
   }
-  setImportANIPrivKeyInputValue = ANIprivKeyInputValue => {
+  setImportANIPrivKeyInputValue = (ANIprivKeyInputValue: any) => {
     this.setState({
       ANIprivKeyInputValue,
     })
@@ -497,7 +497,7 @@ class Sidebar extends PureComponent {
       privKeyModalIsOpen: false,
     })
   }
-  openURIModal = defaultValue => {
+  openURIModal = (defaultValue: any) => {
     const uriModalInputValue = defaultValue || ''
     this.setState({
       uriModalIsOpen: true,
@@ -511,10 +511,9 @@ class Sidebar extends PureComponent {
   }
   doImportPrivKeys = () => {
     const { importPrivKeys, openErrorModal } = this.props
-    const { privKeyInputValue } = this.state // eslint-disable-next-line no-control-regex
+    const { privKeyInputValue } = this.state
 
     if (privKeyInputValue) {
-      // eslint-disable-next-line no-control-regex
       let keys = privKeyInputValue.split(new RegExp('[\n\r]+'))
 
       if (!keys || keys.length === 0) {
@@ -526,7 +525,7 @@ class Sidebar extends PureComponent {
       } // Filter out empty lines and clean up the private keys
 
       keys = keys.filter(
-        k => !(k.trim().startsWith('#') || k.trim().length === 0),
+        (k: any) => !(k.trim().startsWith('#') || k.trim().length === 0),
       ) // Special case.
       // Sometimes, when importing from a paperwallet or such, the key is split by newlines, and might have
       // been pasted like that. So check to see if the whole thing is one big private key
@@ -540,10 +539,9 @@ class Sidebar extends PureComponent {
   }
   doImportANIPrivKeys = () => {
     const { importANIPrivKeys, openErrorModal } = this.props
-    const { ANIprivKeyInputValue } = this.state // eslint-disable-next-line no-control-regex
+    const { ANIprivKeyInputValue } = this.state
 
     if (ANIprivKeyInputValue) {
-      // eslint-disable-next-line no-control-regex
       let keys = ANIprivKeyInputValue.split(new RegExp('[\n\r]+'))
 
       if (!keys || keys.length === 0) {
@@ -555,12 +553,12 @@ class Sidebar extends PureComponent {
       } // Filter out empty lines and clean up the private keys
 
       keys = keys.filter(
-        k => !(k.trim().startsWith('#') || k.trim().length === 0),
+        (k: any) => !(k.trim().startsWith('#') || k.trim().length === 0),
       )
       importANIPrivKeys(keys)
     }
   }
-  setURIInputValue = uriModalInputValue => {
+  setURIInputValue = (uriModalInputValue: any) => {
     this.setState({
       uriModalInputValue,
     })
@@ -570,12 +568,12 @@ class Sidebar extends PureComponent {
       uriModalIsOpen: false,
     })
   }
-  payURI = uri => {
+  payURI = (uri: any) => {
     console.log(`Paying ${uri}`)
     const { openErrorModal, setSendTo, history } = this.props
     const errTitle = 'URI Error'
 
-    const getErrorBody = explain => {
+    const getErrorBody = (explain: any) => {
       return (
         <div>
           <span>{explain}</span>
@@ -613,7 +611,7 @@ class Sidebar extends PureComponent {
       exportedPrivKeys,
     } = this.state
     let state = 'DISCONNECTED'
-    let progress = 100
+    let progress: any = 100
 
     if (info && info.version && !info.disconnected) {
       if (info.verificationProgress < 0.99) {

@@ -1,23 +1,18 @@
-/* eslint-disable no-restricted-globals */
+/* eslint-disable */
 
-/* eslint-disable no-case-declarations */
-
-/* eslint-disable vars-on-top */
-
-/* eslint-disable no-restricted-syntax */
 import url from 'url'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'
 import Utils from './utils'
 export class PastelURITarget {
   // A default constructor that creates a basic Target
-  constructor(address, amount, memo) {
-    this.address = address
-    this.amount = amount
-    this.memoString = memo
-  }
+  constructor(
+    public address?: any,
+    public amount?: any,
+    public memoString?: any,
+  ) {}
 }
-export const parsePastelURI = uri => {
+export const parsePastelURI = (uri: any) => {
   if (!uri || uri === '') {
     return 'Bad URI'
   }
@@ -59,7 +54,7 @@ export const parsePastelURI = uri => {
 
     const qIdx = parseInt(qIdxS, 10) || 0
 
-    if (!targets.has(parseInt(qIdx, 10))) {
+    if (!targets.has(qIdx)) {
       targets.set(qIdx, new PastelURITarget())
     }
 

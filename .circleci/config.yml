@@ -29,11 +29,8 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: eslint
-          command: yarn lint
-      - run:
-          name: check format
-          command: npx prettier --check .
+          name: check code follow standard
+          command: yarn check-all
 
 workflows:
   lint:

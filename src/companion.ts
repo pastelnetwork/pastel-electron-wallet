@@ -1,8 +1,5 @@
-/* eslint-disable flowtype/no-weak-types */
+/* eslint-disable */
 
-/* eslint-disable max-classes-per-file */
-
-/* eslint-disable class-methods-use-this */
 import hex from 'hex-string'
 import _sodium from 'libsodium-wrappers-sumo'
 import Store from 'electron-store'
@@ -10,7 +7,7 @@ import WebSocket from 'ws'
 import AppState, { ConnectedCompanionApp } from './components/AppState'
 import Utils from './utils/utils' // Wormhole code is sha256(sha256(secret_key))
 
-function getWormholeCode(keyHex, sodium) {
+function getWormholeCode(keyHex: any, sodium: any) {
   const key = sodium.from_hex(keyHex)
   const pass1 = sodium.crypto_hash_sha256(key)
   const pass2 = sodium.to_hex(sodium.crypto_hash_sha256(pass1))
@@ -18,11 +15,14 @@ function getWormholeCode(keyHex, sodium) {
 } // A class that connects to wormhole given a secret key
 
 class WormholeClient {
-  wss = null
-  listner = null
-  keepAliveTimerID = null
+  wss: any = null
+  listner: any = null
+  keepAliveTimerID: any = null
+  keyHex: any
+  sodium: any
+  wormholeCode: any
 
-  constructor(keyHex, sodium, listner) {
+  constructor(keyHex: any, sodium: any, listner: any) {
     this.keyHex = keyHex
     this.sodium = sodium
     this.listner = listner
@@ -47,13 +47,13 @@ class WormholeClient {
         this.wss.send(JSON.stringify(ping))
       }, 4 * 60 * 1000)
     })
-    this.wss.on('message', data => {
+    this.wss.on('message', (data: any) => {
       this.listner.processIncoming(data, this.keyHex, this.wss)
     })
-    this.wss.on('close', (code, reason) => {
+    this.wss.on('close', (code: any, reason: any) => {
       console.log('Socket closed for ', this.keyHex, code, reason)
     })
-    this.wss.on('error', (ws, err) => {
+    this.wss.on('error', (ws: any, err: any) => {
       console.log('ws error', err)
     })
   }
@@ -75,14 +75,18 @@ class WormholeClient {
 // or (multiple) wormhole clients
 
 export default class CompanionAppListener {
-  sodium = null
-  fnGetState = null
-  fnSendTransaction = null
-  fnUpdateConnectedClient = null
-  permWormholeClient = null
-  tmpWormholeClient = null
+  sodium: any = null
+  fnGetState: any = null
+  fnSendTransaction: any = null
+  fnUpdateConnectedClient: any = null
+  permWormholeClient: any = null
+  tmpWormholeClient: any = null
 
-  constructor(fnGetSate, fnSendTransaction, fnUpdateConnectedClient) {
+  constructor(
+    fnGetSate: any,
+    fnSendTransaction: any,
+    fnUpdateConnectedClient: any,
+  ) {
     this.fnGetState = fnGetSate
     this.fnSendTransaction = fnSendTransaction
     this.fnUpdateConnectedClient = fnUpdateConnectedClient
@@ -107,14 +111,14 @@ export default class CompanionAppListener {
     const lastSeen = store.get('companion/lastseen')
 
     if (name && lastSeen) {
-      const o = new ConnectedCompanionApp()
+      const o: any = new ConnectedCompanionApp()
       o.name = name
       o.lastSeen = lastSeen
       this.fnUpdateConnectedClient(o)
     }
   }
 
-  createTmpClient(keyHex) {
+  createTmpClient(keyHex: any) {
     if (this.tmpWormholeClient) {
       this.tmpWormholeClient.close()
     }
@@ -142,7 +146,7 @@ export default class CompanionAppListener {
     store.delete('companion/localnonce')
   }
 
-  processIncoming(data, keyHex, ws) {
+  processIncoming(data: any, keyHex: any, ws: any) {
     const dataJson = JSON.parse(data) // If the wormhole sends some messages, we ignore them
 
     if ('error' in dataJson) {
@@ -226,13 +230,13 @@ export default class CompanionAppListener {
     return keyHex
   }
 
-  setEncKey(keyHex) {
+  setEncKey(keyHex: any) {
     // Get the nonce. Increment and store the nonce for next use
     const store = new Store()
     store.set('companion/key', keyHex)
   }
 
-  saveLastClientName(name) {
+  saveLastClientName(name: any) {
     // Save the last client name
     const store = new Store()
     store.set('companion/name', name)
@@ -240,7 +244,7 @@ export default class CompanionAppListener {
     if (name) {
       const now = Date.now()
       store.set('companion/lastseen', now)
-      const o = new ConnectedCompanionApp()
+      const o: any = new ConnectedCompanionApp()
       o.name = name
       o.lastSeen = now
       this.fnUpdateConnectedClient(o)
@@ -265,7 +269,7 @@ export default class CompanionAppListener {
     return nonceHex
   }
 
-  updateRemoteNonce(nonce) {
+  updateRemoteNonce(nonce: any) {
     if (nonce) {
       const store = new Store()
       store.set('companion/remotenonce', nonce)
@@ -287,7 +291,7 @@ export default class CompanionAppListener {
     return nonceHex
   }
 
-  encryptOutgoing(str, keyHex) {
+  encryptOutgoing(str: any, keyHex: any) {
     if (!keyHex) {
       console.log('No secret key')
       throw Error('No Secret Key')
@@ -306,7 +310,7 @@ export default class CompanionAppListener {
     return JSON.stringify(resp)
   }
 
-  decryptIncoming(msg, keyHex, checkNonce) {
+  decryptIncoming(msg: any, keyHex: any, checkNonce: any) {
     const msgJson = JSON.parse(msg)
     console.log('trying to decrypt', msgJson)
 
@@ -323,7 +327,7 @@ export default class CompanionAppListener {
 
       if (prevNonce && this.sodium.compare(prevNonce, nonce) >= 0) {
         return {
-          decrypted: null,
+          decrypted: null as any,
         }
       }
     }
@@ -338,15 +342,17 @@ export default class CompanionAppListener {
     }
   }
 
-  doGetInfo(cmd) {
+  doGetInfo(cmd: any) {
     const appState = this.fnGetState()
 
     if (cmd && cmd.name) {
       this.saveLastClientName(cmd.name)
     }
 
-    const saplingAddress = appState.addresses.find(a => Utils.isSapling(a))
-    const tAddress = appState.addresses.find(a => Utils.isTransparent(a))
+    const saplingAddress = appState.addresses.find((a: any) =>
+      Utils.isSapling(a),
+    )
+    const tAddress = appState.addresses.find((a: any) => Utils.isTransparent(a))
     const balance = parseFloat(appState.totalBalance.total)
     const maxspendable = parseFloat(appState.totalBalance.total)
     const maxzspendable = parseFloat(appState.totalBalance.private)
@@ -373,7 +379,7 @@ export default class CompanionAppListener {
 
     if (appState.transactions) {
       // Get only the last 20 txns
-      txlist = appState.transactions.slice(0, 20).map(t => {
+      txlist = appState.transactions.slice(0, 20).map((t: any) => {
         let memo =
           t.detailedTxns && t.detailedTxns.length > 0
             ? t.detailedTxns[0].memo
@@ -406,13 +412,13 @@ export default class CompanionAppListener {
     return JSON.stringify(resp)
   }
 
-  doSendTransaction(cmd, ws) {
+  doSendTransaction(cmd: any, ws: any) {
     // "command":"sendTx","tx":{"amount":"0.00019927","to":"zs1pzr7ee53jwa3h3yvzdjf7meruujq84w5rsr5kuvye9qg552kdyz5cs5ywy5hxkxcfvy9wln94p6","memo":""}}
     const inpTx = cmd.tx
     const appState = this.fnGetState()
     const sendingAmount = parseFloat(inpTx.amount)
 
-    const buildError = reason => {
+    const buildError = (reason: any) => {
       const resp = {
         errorCode: -1,
         errorMessage: `Couldn't send Tx:${reason}`,
@@ -422,7 +428,7 @@ export default class CompanionAppListener {
     } // First, find an address that can send the correct amount.
 
     const fromAddress = appState.addressesWithBalance.find(
-      ab => ab.balance > sendingAmount,
+      (ab: any) => ab.balance > sendingAmount,
     )
 
     if (!fromAddress) {
@@ -455,7 +461,7 @@ export default class CompanionAppListener {
       ])
     } // console.log('sendjson is', sendJSON);
 
-    this.fnSendTransaction(sendJSON, (title, msg) => {
+    this.fnSendTransaction(sendJSON, (title: any, msg: any) => {
       let resp
 
       if (title.startsWith('Success')) {
@@ -474,7 +480,8 @@ export default class CompanionAppListener {
         }
       } // console.log('Callback sending', resp);
 
-      ws.send(this.encryptOutgoing(JSON.stringify(resp)))
+      // TODO this's gonna throw error in the js version as well because missing keyhex
+      ws.send(this.encryptOutgoing(JSON.stringify(resp), ''))
     }) // After the transaction is submitted, we return an intermediate success.
 
     const resp = {

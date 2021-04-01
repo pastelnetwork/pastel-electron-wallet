@@ -1,8 +1,5 @@
-/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable */
 
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
-/* eslint-disable max-classes-per-file */
 import React, { Component } from 'react'
 import { Redirect, withRouter } from 'react-router'
 import ini from 'ini'
@@ -81,18 +78,16 @@ const locatePastelParamsDir = () => {
 }
 
 class LoadingScreenState {
-  constructor() {
-    this.currentStatus = 'Loading...'
-    this.creatingPastelConf = false
-    this.loadingDone = false
-    this.pasteldSpawned = 0
-    this.getinfoRetryCount = 0
-    this.rpcConfig = null
-  }
+  currentStatus = 'Loading...'
+  creatingPastelConf = false
+  loadingDone = false
+  pasteldSpawned = 0
+  getinfoRetryCount = 0
+  rpcConfig: RPCConfig | null = null
 }
 
-class LoadingScreen extends Component {
-  constructor(props) {
+class LoadingScreen extends Component<any, any> {
+  constructor(props: any) {
     super(props)
     this.state = new LoadingScreenState()
   }
@@ -108,7 +103,7 @@ class LoadingScreen extends Component {
     })()
   }
 
-  download = (url, dest, name, cb) => {
+  download = (url: any, dest: any, name: any, cb: any) => {
     const file = fs.createWriteStream(dest)
     const sendReq = request.get(url) // verify response code
 
@@ -118,7 +113,7 @@ class LoadingScreen extends Component {
       }
 
       const totalSize = (
-        parseInt(response.headers['content-length'], 10) /
+        parseInt(response.headers['content-length'] as any, 10) /
         1024 /
         1024
       ).toFixed(0)
@@ -139,14 +134,19 @@ class LoadingScreen extends Component {
       sendReq.pipe(str).pipe(file)
     }) // close() is async, call cb after close completes
 
-    file.on('finish', () => file.close(cb)) // check for request errors
+    file.on('finish', () => {
+      file.close()
+      cb()
+    }) // check for request errors
 
     sendReq.on('error', err => {
+      // @ts-ignore
       fs.unlink(dest)
       return cb(err.message)
     })
     file.on('error', err => {
       // Handle errors
+      // @ts-ignore
       fs.unlink(dest) // Delete the file async. (But we don't check the result)
 
       return cb(err.message)
@@ -181,7 +181,7 @@ class LoadingScreen extends Component {
         name: 'sprout-verifying.key',
         url: 'https://z.cash/downloads/sprout-verifying.key',
       },
-    ] // eslint-disable-next-line no-plusplus
+    ]
 
     for (let i = 0; i < params.length; i++) {
       const p = params[i]
@@ -194,7 +194,6 @@ class LoadingScreen extends Component {
         })
 
         try {
-          // eslint-disable-next-line no-await-in-loop
           await promisify(this.download)(p.url, fileName, p.name)
         } catch (err) {
           console.log(`error: ${err}`)
@@ -209,7 +208,7 @@ class LoadingScreen extends Component {
     return true
   }
 
-  async loadPastelConf(createIfMissing) {
+  async loadPastelConf(createIfMissing: any) {
     // Load the RPC config from pastel.conf file
     const pastelLocation = locatePastelConf()
     let confValues
@@ -300,7 +299,7 @@ class LoadingScreen extends Component {
     })
     this.loadPastelConf(false)
   }
-  pasteld = null
+  pasteld: any = null
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
@@ -346,7 +345,7 @@ class LoadingScreen extends Component {
     this.setState({
       currentStatus: 'pasteld starting...',
     })
-    this.pasteld.on('error', err => {
+    this.pasteld.on('error', (err: any) => {
       console.log(`pasteld start error, giving up. Error: ${err}`) // Set that we tried to start pasteld, and failed
 
       this.setState({
@@ -423,12 +422,12 @@ class LoadingScreen extends Component {
     }
   }
 
-  handleEnableFastSync = event => {
+  handleEnableFastSync = (event: any) => {
     this.setState({
       enableFastSync: event.target.checked,
     })
   }
-  handleTorEnabled = event => {
+  handleTorEnabled = (event: any) => {
     this.setState({
       connectOverTor: event.target.checked,
     })
