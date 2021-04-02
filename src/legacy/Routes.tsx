@@ -31,10 +31,10 @@ import AddressbookImpl from './utils/AddressbookImpl'
 import Sidebar from './components/Sidebar'
 import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
-import { PastelID } from './features/pastelID'
+import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
-import { setPastelConf } from './features/pastelConf'
+import { setPastelConf } from '../features/pastelConf'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
