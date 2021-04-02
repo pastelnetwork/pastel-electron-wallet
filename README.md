@@ -1,5 +1,7 @@
 PastelWallet Fullnode is a z-Addr first, Sapling compatible wallet and full node for pasteld that runs on Linux, Windows and macOS.
 
+[Contributing Guidelines](./docs/CONTRIBUTING.md)
+
 # Installation
 
 ### Getting started
