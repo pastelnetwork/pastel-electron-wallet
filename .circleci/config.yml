@@ -42,3 +42,6 @@ workflows:
       - lint:
           requires:
             - install-deps
+      - test:
+          requires:
+            - install-deps
