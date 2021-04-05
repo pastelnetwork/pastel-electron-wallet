@@ -39,6 +39,6 @@ workflows:
   lint-and-test:
     jobs:
       - install-deps
-      - lint:
+      - lint-and-test:
           requires:
             - install-deps
