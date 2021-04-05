@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface IErrorModalState {
+export interface IErrorModalState {
   opened: boolean
   title: string
   body: string

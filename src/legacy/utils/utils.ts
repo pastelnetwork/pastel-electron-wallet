@@ -1,4 +1,5 @@
 /* eslint-disable */
+import store from '../../redux/store'
 
 export const NO_CONNECTION = 'Could not connect to pasteld'
 export default class Utils {
@@ -139,10 +140,13 @@ export default class Utils {
   }
 
   static getPslToUsdString(price: any, pslValue: any) {
-    if (!price || !pslValue) {
+    // overriding price here to avoid connecing every legacy component to redux
+    const realPrice = store.getState().pastelPrice.price
+
+    if (!realPrice || !pslValue) {
       return 'USD --'
     }
 
-    return `USD ${(price * pslValue).toFixed(2)}`
+    return `USD ${(realPrice * pslValue).toFixed(2)}`
   }
 }
