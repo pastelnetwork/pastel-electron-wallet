@@ -7,6 +7,7 @@ module.exports = {
   // Put your normal webpack config below here
   module: {
     rules: require('./webpack.rules'),
+    noParse:/node_modules\/sql\.js\/dist\/sql-wasm\.js$/,
   },
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],

@@ -1,15 +1,20 @@
-import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
+import { Action, configureStore, getDefaultMiddleware , ThunkAction } from '@reduxjs/toolkit'
 
 import { errorModalReducer } from '../features/errorModal'
 import { pastelConfReducer } from '../features/pastelConf'
 import { pastelIDReducer } from '../features/pastelID'
+import { pastelDBReducer } from './modules/pastelDB';
 
 const store = configureStore({
   reducer: {
     pastelID: pastelIDReducer,
     errorModal: errorModalReducer,
     pastelConf: pastelConfReducer,
+    pastelDB: pastelDBReducer,
   },
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

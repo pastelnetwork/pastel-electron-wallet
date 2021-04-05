@@ -1,8 +1,18 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default class App extends React.Component {
-  render(): React.ReactElement {
-    const { children } = this.props
-    return <>{children}</>
-  }
+interface AppProps {
+  children: React.ReactNode,
+};
+
+const App = (props: AppProps) => {
+  const { children } = props;
+  
+
+  return (
+    <>
+      {children}
+    </>
+  );
 }
+
+export default App;

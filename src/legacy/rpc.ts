@@ -582,4 +582,22 @@ export default class RPC {
       return new SinglePastelID(id.PastelID)
     })
   }
+
+  async getStatisticInfos() {
+    let result: any;
+    try {
+      const hashrate: any = await RPC.doRPC('getnetworkhashps', [], this.rpcConfig);
+      const difficulty: any = await RPC.doRPC('getdifficulty', [], this.rpcConfig);
+      await RPC.doRPC('getblocksubsidy', [], this.rpcConfig);
+      const listsinceblock: any = await RPC.doRPC('listsinceblock', [], this.rpcConfig);
+      const block: any = await RPC.getInfoObject(this.rpcConfig)
+      return {
+        hashrate: hashrate.result,
+        difficulty: difficulty.result,
+        block: block.solps,
+      };
+    } catch ( error ) {
+      return null;
+    }
+  }
 }
