@@ -31,6 +31,9 @@ jobs:
       - run:
           name: check code follow standard
           command: yarn check-all
+      - run:
+          name: tests
+          command: yarn test
 
 workflows:
   lint:
