@@ -27,7 +27,6 @@ cd Pastel_Electron_Wallet
 yarn install
 yarn make
 ```
-please replace node_module/sql.js/sql-wasm js file with src/features/pastelDB/sql-wasm js file
 
 The resulting binaries would be located at `out` folder.
 
