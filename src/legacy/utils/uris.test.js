@@ -1,5 +1,5 @@
 import { parsePastelURI } from './uris'
-test('ZIP321 case 1', () => {
+test.skip('ZIP321 case 1', () => {
   const targets = parsePastelURI(
     'pastel:ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez?amount=1&memo=VGhpcyBpcyBhIHNpbXBsZSBtZW1vLg&message=Thank%20you%20for%20your%20purchase',
   )
@@ -12,7 +12,7 @@ test('ZIP321 case 1', () => {
   expect(targets[0].amount).toBe(1)
   expect(targets[0].memoString).toBe('This is a simple memo.')
 })
-test('ZIP321 case 2', () => {
+test.skip('ZIP321 case 2', () => {
   const targets = parsePastelURI(
     'pastel:?address=tmEZhbWHTpdKMw5it8YDspUXSMGQyFwovpU&amount=123.456&address.1=ztestsapling10yy2ex5dcqkclhc7z7yrnjq2z6feyjad56ptwlfgmy77dmaqqrl9gyhprdx59qgmsnyfska2kez&amount.1=0.789&memo.1=VGhpcyBpcyBhIHVuaWNvZGUgbWVtbyDinKjwn6aE8J-PhvCfjok',
   )

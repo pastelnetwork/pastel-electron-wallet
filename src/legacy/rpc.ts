@@ -55,9 +55,10 @@ export default class RPC {
       this.opTimerID = setTimeout(() => this.refreshOpStatus(), 1000)
     }
 
-    if (!this.priceTimerID) {
-      this.priceTimerID = setTimeout(() => this.getPslPrice(), 1000)
-    }
+    // disabling pastel price in favor of features/PastelPrice
+    // if (!this.priceTimerID) {
+    //   this.priceTimerID = setTimeout(() => this.getPslPrice(), 1000)
+    // }
   }
 
   setupNextFetch(lastBlockHeight: any) {

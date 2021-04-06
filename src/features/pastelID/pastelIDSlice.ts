@@ -17,7 +17,7 @@ interface PastelIDsLoaded {
 }
 
 // Define a type for the slice state
-interface IPastelIDState {
+export interface IPastelIDState {
   pastelIDs: TPastelID[]
   loading: boolean
 }
