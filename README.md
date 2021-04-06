@@ -28,11 +28,6 @@ yarn install
 yarn make
 ```
 
-### replace js file from node_module###
-
-download sql-wasm.js from https://github.com/Dinisueldanov/node_module_sql.js and replace it with node_modules/sql.js/dist/ 
-
-
 The resulting binaries would be located at `out` folder.
 
 #### Pre-Requisits
