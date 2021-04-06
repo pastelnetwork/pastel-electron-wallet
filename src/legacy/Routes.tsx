@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
 import { ErrorModal, ErrorModalData } from './components/ErrorModal'
@@ -33,64 +33,14 @@ import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
-import { pastelDBSelector } from '../redux/modules/pastelDB'
-import { getLastIdFromDB, getStatisticDatasFromDB, insertStatisticDataToDB } from '../legacy/utils/PastelDB'
-
-interface PastelDBThreadProps {
-  rpc: any;
-  rpcConfig: any;
-}
-
-const PastelDBThread = (props: PastelDBThreadProps) => {
-  const { rpc, rpcConfig } = props;
-  const [isStarted, setStarted] = useState(false);
-  const pastelDBState = useSelector(pastelDBSelector);
-
-  useEffect (() => {
-    const fetchStatisticDataFromRPC = async () => {
-      // fetch the statistic data(Hashrate...) from RPC.
-      if(pastelDBState.isCreated && rpc && rpcConfig) {
-        setStarted(true);
-        const results = await rpc.getStatisticInfos();
-        if (results) {
-          //Add the fetched statistic data from RPC to database. 
-          let sqlResult = getStatisticDatasFromDB(pastelDBState);
-          const newId = getLastIdFromDB(pastelDBState);
-          insertStatisticDataToDB(
-            pastelDBState,
-            newId + 1,
-            results.hashrate,
-            results.block,
-            results.difficulty
-          );
-          sqlResult = getStatisticDatasFromDB(pastelDBState);
-        }
-        // setTimeout(() => fetchStatisticDataFromRPC(), 300000);
-        setTimeout(() => fetchStatisticDataFromRPC(), 10000);
-      } else {
-        return;
-      }
-    }
-    
-    if (!isStarted) {
-      fetchStatisticDataFromRPC();
-    }
-    
-    return (() => {
-      clearTimeout();
-    })
-  }, [rpc, rpcConfig])
-
-  return (<></>)
-}
+import { PastelDBThread } from '../features/pastelDB'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
     this.state = {
-      isEnabled: false,
       totalBalance: new TotalBalance(),
       addressesWithBalance: [],
       addressPrivateKeys: {},
@@ -354,10 +304,8 @@ class RouteApp extends React.Component<any, any> {
   }
   setRPCConfig = (rpcConfig: any) => {
     this.setState({
-      isEnabled: true,
       rpcConfig,
     })
-    console.log("rpcConfig...", rpcConfig)
     this.rpc.configure(rpcConfig)
   }
   setPslPrice = (price: any) => {
@@ -620,9 +568,7 @@ class RouteApp extends React.Component<any, any> {
             </Switch>
           </div>
         </div>
-        {this.state.isEnabled && (
-          <PastelDBThread rpc={this.rpc} rpcConfig={this.state.rpcConfig}/>
-        )}
+        <PastelDBThread rpcConfig={this.state.rpcConfig} />
       </App>
     )
   }

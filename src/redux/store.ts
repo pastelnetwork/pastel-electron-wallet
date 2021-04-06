@@ -1,9 +1,14 @@
-import { Action, configureStore, getDefaultMiddleware , ThunkAction } from '@reduxjs/toolkit'
+import {
+  Action,
+  configureStore,
+  getDefaultMiddleware,
+  ThunkAction,
+} from '@reduxjs/toolkit'
 
 import { errorModalReducer } from '../features/errorModal'
 import { pastelConfReducer } from '../features/pastelConf'
+import { pastelDBReducer } from '../features/pastelDB'
 import { pastelIDReducer } from '../features/pastelID'
-import { pastelDBReducer } from './modules/pastelDB';
 
 const store = configureStore({
   reducer: {

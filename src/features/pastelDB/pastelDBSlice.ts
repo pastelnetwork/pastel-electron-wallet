@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { AppThunk, AppDispatch, RootState } from '../../store'
-import { openErrorModal } from '../../../features/errorModal'
+import { Database } from 'sql.js'
 
-interface IPastelDBState {
-  pastelDB: any;
+import type { AppDispatch, AppThunk, RootState } from '../../redux/store'
+import { openErrorModal } from '../errorModal'
+
+export interface IPastelDBState {
+  pastelDB: Database
   isCreated: boolean
 }
+
 // Define the initial state using that type
 const initialState: IPastelDBState = {
-  pastelDB: {},
+  pastelDB: {} as Database,
   isCreated: false,
 }
 
@@ -18,23 +21,19 @@ export const pastelDBSlice = createSlice({
   reducers: {
     createPastelDBAction(
       state: IPastelDBState,
-      action: PayloadAction<any>,
+      action: PayloadAction<Database>,
     ) {
-      state.pastelDB = action.payload;
+      state.pastelDB = action.payload
       state.isCreated = true
-    }
+    },
   },
 })
 
-const {
-  createPastelDBAction
-} = pastelDBSlice.actions
+const { createPastelDBAction } = pastelDBSlice.actions
 
 export const pastelDBReducer = pastelDBSlice.reducer
 
-export function createPastelDB(
-  db: any
-): AppThunk {
+export function createPastelDB(db: Database): AppThunk {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(createPastelDBAction(db))
@@ -53,4 +52,5 @@ export function createPastelDB(
   }
 }
 
-export const pastelDBSelector = (state: RootState) => state.pastelDB
+export const pastelDBSelector = (state: RootState): IPastelDBState =>
+  state.pastelDB

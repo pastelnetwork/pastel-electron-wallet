@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-interface AppProps {
-  children: React.ReactNode,
-};
-
-const App = (props: AppProps) => {
-  const { children } = props;
-  
-
-  return (
-    <>
-      {children}
-    </>
-  );
+export default class App extends React.Component {
+  render(): React.ReactElement {
+    const { children } = this.props
+    return <>{children}</>
+  }
 }
-
-export default App;

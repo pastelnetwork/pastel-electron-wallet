@@ -1,6 +1,6 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const webpack = require('webpack')
-const CopyPlugin = require('copy-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
@@ -10,6 +10,8 @@ module.exports = [
     START_MINIMIZED: false,
   }),
   new CopyPlugin({
-    patterns: [{ from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: 'static/bin' }]
-  })
+    patterns: [
+      { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: 'static/bin' },
+    ],
+  }),
 ]
