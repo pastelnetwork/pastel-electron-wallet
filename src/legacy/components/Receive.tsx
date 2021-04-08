@@ -21,6 +21,7 @@ import {
   AddressBookEntry,
 } from './AppState'
 import ScrollPane from './ScrollPane'
+import PastelPaperWalletGenerator from '../../features/pastelPaperWalletGenerator'
 
 const AddressBlock = ({
   addressBalance,
@@ -31,8 +32,10 @@ const AddressBlock = ({
   fetchAndSetSinglePrivKey,
   viewKey,
   fetchAndSetSingleViewKey,
+  handleShowPastelPaperWalletModal,
 }: any) => {
   const { address } = addressBalance
+  const [modalIsOpen, setModalIsOpen] = useState(false)
   const [copied, setCopied] = useState(false)
   const [timerID, setTimerID] = useState(null)
   useEffect(() => {
@@ -59,7 +62,9 @@ const AddressBlock = ({
     >
       <AccordionItemHeading>
         <AccordionItemButton className={cstyles.accordionHeader}>
-          {address}
+          <span onClick={() => handleShowPastelPaperWalletModal(address)}>
+            {address}
+          </span>
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className={[styles.receiveDetail].join(' ')}>
@@ -87,7 +92,6 @@ const AddressBlock = ({
             <div className={[cstyles.padtopsmall].join(' ')}>
               {Utils.getPslToUsdString(pslPrice, balance)}
             </div>
-
             <div
               className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}
             >
@@ -197,6 +201,20 @@ const AddressBlock = ({
 }
 
 export default class Receive extends Component<any> {
+  state = {
+    modalIsOpen: false,
+    address: '',
+  }
+
+  handleShowPastelPaperWalletModal = (address: string) => {
+    this.props.fetchAndSetSinglePrivKey(address)
+    this.setState({ modalIsOpen: true, address })
+  }
+
+  handleClosePastelPaperWalletModal = () => {
+    this.setState({ modalIsOpen: false, address: '' })
+  }
+
   render() {
     const {
       addresses,
@@ -281,6 +299,9 @@ export default class Receive extends Component<any> {
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
                       rerender={(this as any).rerender}
+                      handleShowPastelPaperWalletModal={
+                        this.handleShowPastelPaperWalletModal
+                      }
                     />
                   ))}
                 </Accordion>
@@ -314,6 +335,9 @@ export default class Receive extends Component<any> {
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
                       rerender={(this as any).rerender}
+                      handleShowPastelPaperWalletModal={
+                        this.handleShowPastelPaperWalletModal
+                      }
                     />
                   ))}
                 </Accordion>
@@ -332,6 +356,14 @@ export default class Receive extends Component<any> {
               </ScrollPane>
             </TabPanel>
           </Tabs>
+          <PastelPaperWalletGenerator
+            address={this.state.address}
+            privateKey={
+              addressPrivateKeys && addressPrivateKeys[this.state.address]
+            }
+            modalIsOpen={this.state.modalIsOpen}
+            onCloseModal={this.handleClosePastelPaperWalletModal}
+          />
         </div>
       </div>
     )
