@@ -109,6 +109,14 @@ const createWindow = async () => {
 
     waitingForClose = true
     event.preventDefault()
+
+    // to load expert console terminal
+    ipcMain.on('terminaldone', () => {
+      waitingForClose = false
+      proceedToClose = true
+      app.quit()
+    })
+
     ipcMain.on('appquitdone', () => {
       waitingForClose = false
       proceedToClose = true

@@ -701,6 +701,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
+          <SidebarMenuItem
+            name='Expert Console'
+            routeName={routes.EXPERT_CONSOLE}
+            currentRoute={location.pathname}
+            iconname='fa-file-code'
+          />
         </div>
 
         <div className={cstyles.center}>
