@@ -25,7 +25,6 @@ type PastelPaperWalletGeneratorProps = {
 function PastelPaperWalletGenerator(
   props: PastelPaperWalletGeneratorProps,
 ): JSX.Element {
-  console.log(props)
   if (!props.modalIsOpen || !props.privateKey) {
     return <></>
   }
