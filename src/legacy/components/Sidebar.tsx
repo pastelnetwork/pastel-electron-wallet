@@ -461,6 +461,10 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.on('connectmobile', () => {
       history.push(routes.CONNECTMOBILE)
     })
+
+    ipcRenderer.on('paperWallet', (event, message) => {
+      this.props.openPaperWallet(message)
+    })
   }
   closeExportPrivKeysModal = () => {
     this.setState({

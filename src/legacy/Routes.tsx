@@ -35,6 +35,7 @@ import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
+import PastelPaperWalletGenerator from '../features/pastelPaperWalletGenerator'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -55,6 +56,9 @@ class RouteApp extends React.Component<any, any> {
       errorModalData: new ErrorModalData(),
       connectedCompanionApp: null,
       pastelIDs: [],
+      pastelPaperWalletIsOpen: false,
+      selectedAddress: '',
+      selectedAddressPrivateKeys: {},
     } // Create the initial ToAddr box
 
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
@@ -346,13 +350,19 @@ class RouteApp extends React.Component<any, any> {
     return this.rpc.getPrivKeyAsString(address)
   } // Getter methods, which are called by the components to update the state
 
-  fetchAndSetSinglePrivKey = async (address: any) => {
+  fetchAndSetSinglePrivKey = async (address: any, type: string = '') => {
     const key = await this.rpc.getPrivKeyAsString(address)
     const addressPrivateKeys: any = {}
     addressPrivateKeys[address] = key
-    this.setState({
-      addressPrivateKeys,
-    })
+    if (type === 'paperWallet') {
+      this.setState({
+        selectedAddressPrivateKeys: addressPrivateKeys,
+      })
+    } else {
+      this.setState({
+        addressPrivateKeys,
+      })
+    }
   }
   fetchAndSetSingleViewKey = async (address: any) => {
     const key = await this.rpc.getViewKeyAsString(address)
@@ -407,6 +417,21 @@ class RouteApp extends React.Component<any, any> {
   doRefresh = () => {
     this.rpc.refresh()
   }
+  openPaperWallet = (coordinate: any) => {
+    if (coordinate && coordinate.x && coordinate.y) {
+      const item = document.elementFromPoint(coordinate.x, coordinate.y)
+      if (item && item.innerHTML) {
+        this.fetchAndSetSinglePrivKey(item.innerHTML.trim(), 'paperWallet')
+        this.setState({
+          pastelPaperWalletIsOpen: true,
+          selectedAddress: item.innerHTML.trim(),
+        })
+      }
+    }
+  }
+  handleClosePastelPaperWalletModal = () => {
+    this.setState({ pastelPaperWalletIsOpen: false, selectedAddress: '' })
+  }
 
   render() {
     const {
@@ -423,6 +448,9 @@ class RouteApp extends React.Component<any, any> {
       errorModalData,
       connectedCompanionApp,
       pastelIDs,
+      selectedAddress,
+      selectedAddressPrivateKeys,
+      pastelPaperWalletIsOpen,
     } = this.state
     const standardProps = {
       openErrorModal: this.openErrorModal,
@@ -452,6 +480,7 @@ class RouteApp extends React.Component<any, any> {
                 getPrivKeyAsString={this.getPrivKeyAsString}
                 importPrivKeys={this.importPrivKeys}
                 importANIPrivKeys={this.importANIPrivKeys}
+                openPaperWallet={this.openPaperWallet}
                 addresses={addresses}
                 transactions={transactions}
                 {...(standardProps as any)}
@@ -568,6 +597,15 @@ class RouteApp extends React.Component<any, any> {
             </Switch>
           </div>
         </div>
+        <PastelPaperWalletGenerator
+          address={selectedAddress}
+          privateKey={
+            selectedAddressPrivateKeys &&
+            selectedAddressPrivateKeys[selectedAddress]
+          }
+          modalIsOpen={pastelPaperWalletIsOpen}
+          onCloseModal={this.handleClosePastelPaperWalletModal}
+        />
       </App>
     )
   }

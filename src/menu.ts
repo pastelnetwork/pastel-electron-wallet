@@ -65,6 +65,15 @@ export default class MenuBuilder {
         const { x, y } = props
         Menu.buildFromTemplate([
           {
+            label: 'Turn address into paper wallet',
+            click: () => {
+              this.mainWindow.webContents.send('paperWallet', {
+                x: props.x,
+                y: props.y,
+              })
+            },
+          },
+          {
             label: 'Inspect element',
             click: () => {
               this.mainWindow.inspectElement(x, y)

@@ -31,6 +31,10 @@ function PastelPaperWalletGenerator(
 
   const breakChar = '\u00ad'
   const pdfStyles = StyleSheet.create({
+    viewer: {
+      width: '100%',
+      height: '100%',
+    },
     page: {
       flexDirection: 'row',
     },
@@ -98,39 +102,51 @@ function PastelPaperWalletGenerator(
   })
 
   function generateQrcode() {
-    const qrcodeValue = ReactDOMServer.renderToString(
-      <QRCode value={props.address} renderAs='svg' />,
-    )
-    const paths = qrcodeValue.match(/d="([^"]*)/g)
-    const fills = qrcodeValue.match(/fill="([^"]*)/g)
+    try {
+      const qrcodeValue = ReactDOMServer.renderToString(
+        <QRCode value={props.address} renderAs='svg' />,
+      )
+      const paths = qrcodeValue.match(/d="([^"]*)/g)
+      const fills = qrcodeValue.match(/fill="([^"]*)/g)
 
-    return (
-      <Svg
-        shape-rendering='crispEdges'
-        height='100%'
-        width='100%'
-        viewBox='0 0 33 33'
-      >
-        {paths &&
-          paths.length > 0 &&
-          paths?.map((path, idx) => (
-            <Path
-              fill={fills ? fills[idx].replace('fill="', '') : '#000'}
-              d={path.replace('d="', '')}
-              key={idx}
-            ></Path>
-          ))}
-      </Svg>
-    )
+      return (
+        <Svg
+          shape-rendering='crispEdges'
+          height='100%'
+          width='100%'
+          viewBox='0 0 33 33'
+        >
+          {paths &&
+            paths.length > 0 &&
+            paths.map((path, idx) => (
+              <Path
+                fill={fills ? fills[idx].replace('fill="', '') : '#000'}
+                d={path.replace('d="', '')}
+                key={idx}
+              ></Path>
+            ))}
+        </Svg>
+      )
+    } catch {
+      return null
+    }
   }
 
   return (
     <Modal
       isOpen={props.modalIsOpen}
       onRequestClose={() => props.onCloseModal()}
+      className={styles.modal_content_wrapper}
     >
       <div className={styles.modal_content}>
-        <PDFViewer width='100%' height='100%'>
+        <button
+          type='button'
+          className={styles.btn_close}
+          onClick={() => props.onCloseModal()}
+        >
+          X
+        </button>
+        <PDFViewer style={pdfStyles.viewer}>
           <Document>
             <Page size='A4' style={pdfStyles.page}>
               <View style={pdfStyles.section}>
