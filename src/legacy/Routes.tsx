@@ -529,7 +529,7 @@ class RouteApp extends React.Component<any, any> {
                 render={() => <Pasteld info={info} refresh={this.doRefresh} />}
               />
 
-              <Route
+              {/* <Route
                 path={routes.PASTEL_ID}
                 render={() => (
                   <PastelID
@@ -537,7 +537,7 @@ class RouteApp extends React.Component<any, any> {
                     createNewAddress={this.createNewAddress}
                   />
                 )}
-              />
+              /> */}
 
               <Route
                 path={routes.CONNECTMOBILE}
