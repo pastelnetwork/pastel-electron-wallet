@@ -7,37 +7,7 @@ import cstyles from './Common.module.css'
 import LoadingOverlay from './LoadingOverlay'
 import loadConsole from './console'
 
-// type Props = {
-//   totalBalance: TotalBalance,
-//   info: Info,
-//   addressesWithBalance: addressesWithBalance,
-//   txDetail: TxDetail,
-//   transactions: transactions,
-//   connectedCompanionApp: connectedCompanionApp,
-//   pastelIDs: pastelIDsFV
-// };
-
-// type PassphraseValclassNameation = {
-//   value: string,
-//   className: number
-// };
-
-// type State = {
-//   passphrase: string,
-//   selectedAddress: OptionType,
-//   loading: boolean,
-//   passphraseValclassNameation: PassphraseValclassNameation
-// };
-
-// function passphraseStatusColor(valclassNameation: PassphraseValclassNameation) {
-//   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green];
-
-//   if (!colors[valclassNameation.className]) {
-//     return cstyles.red;
-//   }
-
-//   return colors[valclassNameation.className];
-// }
+import cx from 'classnames'
 
 export default class ExpertConsole extends Component {
   constructor(props) {
@@ -51,6 +21,7 @@ export default class ExpertConsole extends Component {
         className: 0,
         value: 'Too weak',
       },
+      theme: 'green',
     }
 
     this.consoleCommands = this.consoleCommands.bind(this)
@@ -58,6 +29,21 @@ export default class ExpertConsole extends Component {
 
   componentDidMount() {
     loadConsole(this.consoleCommands)
+    window.addEventListener('resize', this.onWindowResize)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onWindowResize)
+  }
+
+  onWindowResize = () => {
+    // Always scroll to bottom on resize
+    const t = document.querySelector('#terminal textarea')
+    if (!t) {
+      return
+    }
+    t.scrollTo({
+      top: t.scrollHeight,
+    })
   }
 
   consoleCommands() {
@@ -165,29 +151,51 @@ export default class ExpertConsole extends Component {
     return passphraseValclassNameation.className === 3 // Strong
   }
 
+  onThemeBtnClick = theme => {
+    this.setState({ theme })
+  }
+
   render() {
-    const { loading } = this.state
+    const { loading, theme } = this.state
 
     return (
-      <>
-        {/* <div className={[cstyles.xlarge, cstyles.padall, cstyles.center].join(' ')}>Expert Console</div> */}
-        <div className={styles.container}>
-          <LoadingOverlay loading={loading}>
-            <div className={cstyles.flexspacebetween} />
-            <div className={styles.crt}>
-              <div className={styles.screen}>
-                <div className={styles.wrapper}>
-                  <div className={styles.interlace} />
-                  <div id='scanline' />
-                  <div className={styles.envelope}>
-                    <div className={styles.terminal} id='terminal' />
-                  </div>
+      <div className={styles.container}>
+        <LoadingOverlay loading={loading}>
+          <div className={cstyles.flexspacebetween} />
+          <div className={cx(styles.crt, styles[theme])}>
+            <div className={styles.screen}>
+              <div className={styles.wrapper}>
+                <div className={styles.interlace} />
+                <div id='scanline' />
+                <div className={styles.envelope}>
+                  <div className={styles.terminal} id='terminal' />
                 </div>
               </div>
             </div>
-          </LoadingOverlay>
-        </div>
-      </>
+            <div
+              className={cx(styles.greenThemeBtn, {
+                [styles.active]: theme === 'green',
+              })}
+              onClick={() => this.onThemeBtnClick('green')}
+              title='Select green theme'
+            />
+            <div
+              className={cx(styles.amberThemeBtn, {
+                [styles.active]: theme === 'amber',
+              })}
+              onClick={() => this.onThemeBtnClick('amber')}
+              title='Select amber theme'
+            />
+            <div
+              className={cx(styles.blackThemeBtn, {
+                [styles.active]: theme === 'black',
+              })}
+              onClick={() => this.onThemeBtnClick('black')}
+              title='Select black theme'
+            />
+          </div>
+        </LoadingOverlay>
+      </div>
     )
   }
 }
