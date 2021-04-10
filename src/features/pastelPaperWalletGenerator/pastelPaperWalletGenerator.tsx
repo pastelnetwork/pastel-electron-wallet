@@ -76,6 +76,8 @@ function PastelPaperWalletGenerator(
       display: 'flex',
       flexDirection: 'row',
       width: '100%',
+      paddingBottom: '40px',
+      borderBottom: '2px solid #000',
     },
     topMedia: {
       width: '35%',
