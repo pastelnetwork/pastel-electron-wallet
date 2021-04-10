@@ -2,8 +2,8 @@
 const createOptions = opts => ({
   banner: 'Hello World',
   prompt: () => '$ > ',
-  tickrate: 1000 / 60,
-  buflen: 8,
+  tickrate: 1000 / 60, // fps
+  buflen: 20, // generally speed of the renderer
   commands: {},
   ...(opts || {}),
 })
@@ -147,7 +147,7 @@ const terminal = opts => {
   const $element = createElement($root)
   const fontSize = getFontSize($element)
   const width = $element.offsetWidth
-  const cwidth = Math.round((width / fontSize) * 1.9) // FIXME: Should be calculated via canvas
+  const cwidth = Math.ceil((width / fontSize) * 1.9) // FIXME: Should be calculated via canvas
 
   const output = (outputVal, center) => {
     let lines = outputVal.split(/\n/)
