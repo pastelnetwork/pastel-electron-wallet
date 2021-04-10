@@ -35,7 +35,6 @@ import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
-import PastelPaperWalletGenerator from '../features/pastelPaperWalletGenerator'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -357,6 +356,8 @@ class RouteApp extends React.Component<any, any> {
     if (type === 'paperWallet') {
       this.setState({
         selectedAddressPrivateKeys: addressPrivateKeys,
+        selectedAddress: address,
+        pastelPaperWalletIsOpen: true,
       })
     } else {
       this.setState({
@@ -417,20 +418,12 @@ class RouteApp extends React.Component<any, any> {
   doRefresh = () => {
     this.rpc.refresh()
   }
-  openPaperWallet = (coordinate: any) => {
-    if (coordinate && coordinate.x && coordinate.y) {
-      const item = document.elementFromPoint(coordinate.x, coordinate.y)
-      if (item && item.innerHTML) {
-        this.fetchAndSetSinglePrivKey(item.innerHTML.trim(), 'paperWallet')
-        this.setState({
-          pastelPaperWalletIsOpen: true,
-          selectedAddress: item.innerHTML.trim(),
-        })
-      }
-    }
-  }
   handleClosePastelPaperWalletModal = () => {
-    this.setState({ pastelPaperWalletIsOpen: false, selectedAddress: '' })
+    this.setState({
+      pastelPaperWalletIsOpen: false,
+      selectedAddress: '',
+      selectedAddressPrivateKeys: {},
+    })
   }
 
   render() {
@@ -480,7 +473,6 @@ class RouteApp extends React.Component<any, any> {
                 getPrivKeyAsString={this.getPrivKeyAsString}
                 importPrivKeys={this.importPrivKeys}
                 importANIPrivKeys={this.importANIPrivKeys}
-                openPaperWallet={this.openPaperWallet}
                 addresses={addresses}
                 transactions={transactions}
                 {...(standardProps as any)}
@@ -517,6 +509,12 @@ class RouteApp extends React.Component<any, any> {
                     fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
                     fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
                     createNewAddress={this.createNewAddress}
+                    selectedAddress={selectedAddress}
+                    selectedAddressPrivateKeys={selectedAddressPrivateKeys}
+                    pastelPaperWalletIsOpen={pastelPaperWalletIsOpen}
+                    onClosePastelPaperWalletModal={
+                      this.handleClosePastelPaperWalletModal
+                    }
                   />
                 )}
               />
@@ -597,15 +595,6 @@ class RouteApp extends React.Component<any, any> {
             </Switch>
           </div>
         </div>
-        <PastelPaperWalletGenerator
-          address={selectedAddress}
-          privateKey={
-            selectedAddressPrivateKeys &&
-            selectedAddressPrivateKeys[selectedAddress]
-          }
-          modalIsOpen={pastelPaperWalletIsOpen}
-          onCloseModal={this.handleClosePastelPaperWalletModal}
-        />
       </App>
     )
   }
