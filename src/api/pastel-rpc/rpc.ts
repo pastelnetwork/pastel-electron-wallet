@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios, { AxiosResponse } from 'axios'
 
 export type TRPCConfig = {
@@ -8,7 +9,7 @@ export type TRPCConfig = {
 
 export async function rpc<T>(
   method: string,
-  params: string[],
+  params: any[],
   rpcConfig: TRPCConfig,
 ): Promise<T> {
   const { url, username, password } = rpcConfig

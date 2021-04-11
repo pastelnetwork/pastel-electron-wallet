@@ -3,11 +3,7 @@ import { Database } from 'sql.js'
 
 import type { AppDispatch, AppThunk, RootState } from '../../redux/store'
 import { openErrorModal } from '../errorModal'
-
-export interface IPastelDBState {
-  pastelDB: Database
-  isCreated: boolean
-}
+import { IPastelDBState } from '../type'
 
 // Define the initial state using that type
 const initialState: IPastelDBState = {
