@@ -500,6 +500,7 @@ class LoadingScreen extends Component<any, any> {
                   </div>
                 </div>
 
+                {/*
                 <div
                   className={cstyles.left}
                   style={{
@@ -541,6 +542,7 @@ class LoadingScreen extends Component<any, any> {
                     </div>
                   </div>
                 </div>
+                */}
 
                 <div className={cstyles.buttoncontainer}>
                   <button
