@@ -1,17 +1,17 @@
 .receivecontainer {
   margin: 16px;
 }
-
+.receiveMaxWidth {
+  max-width: 600px;
+}
 .receiveblock {
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
 }
-
 .receiveDetail {
   margin-top: 16px;
 }
-
 .receiveQrcode {
   padding: 8px;
   background-color: white;

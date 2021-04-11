@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import {
   Accordion,
@@ -14,37 +14,58 @@ import { shell, clipboard } from 'electron'
 import styles from './Receive.module.css'
 import cstyles from './Common.module.css'
 import Utils from '../utils/utils'
-import {
-  AddressBalance,
-  Info,
-  ReceivePageState,
-  AddressBookEntry,
-} from './AppState'
+import { AddressBalance } from './AppState'
 import ScrollPane from './ScrollPane'
+import cx from 'classnames'
 
-const AddressBlock = ({
-  addressBalance,
-  label,
-  currencyName,
-  pslPrice,
-  privateKey,
-  fetchAndSetSinglePrivKey,
-  viewKey,
-  fetchAndSetSingleViewKey,
-}: any) => {
-  const { address } = addressBalance
-  const [copied, setCopied] = useState(false)
-  const [timerID, setTimerID] = useState(null)
-  useEffect(() => {
-    return () => {
-      if (timerID) {
-        clearTimeout(timerID as any)
-      }
+class AddressBlock extends React.Component<any, any> {
+  state = {
+    copiedAddr: false,
+    copiedPrivKey: '',
+  }
+  copiedAddrTimerId = 0
+  copiedPrivKeyTimerId = 0
+
+  componentWillUnmount() {
+    if (this.copiedAddrTimerId) {
+      window.clearTimeout(this.copiedAddrTimerId)
     }
-  })
-  const balance = addressBalance.balance || 0
+  }
+  componentDidUpdate() {
+    if (this.state.copiedPrivKey === 'loading' && this.props.privateKey) {
+      clipboard.writeText(this.props.privateKey)
+      this.setState({ copiedPrivKey: 'done' })
+      this.copiedPrivKeyTimerId = window.setTimeout(() => {
+        this.setState({ copiedPrivKey: '' })
+        this.copiedPrivKeyTimerId = 0
+      }, 3000)
+    }
+  }
 
-  const openAddress = () => {
+  onCopyAddrBtnClick = (addr: string) => {
+    if (this.state.copiedAddr || this.copiedAddrTimerId) {
+      return
+    }
+    clipboard.writeText(addr)
+    this.setState({ copiedAddr: true })
+    this.copiedAddrTimerId = window.setTimeout(() => {
+      this.setState({ copiedAddr: false })
+      this.copiedAddrTimerId = 0
+    }, 3000)
+  }
+  onCopyPrivKeyBtnClick = (addr: string) => {
+    if (this.state.copiedPrivKey || this.copiedPrivKeyTimerId) {
+      return
+    }
+    this.props.fetchAndSetSinglePrivKey(addr)
+    this.setState({ copiedPrivKey: 'loading' })
+  }
+
+  openAddress = () => {
+    const {
+      currencyName,
+      addressBalance: { address },
+    } = this.props
     if (currencyName === 'LSP') {
       shell.openExternal(`https://chain.so/address/PSLTEST/${address}`)
     } else {
@@ -52,165 +73,120 @@ const AddressBlock = ({
     }
   }
 
-  return (
-    <AccordionItem
-      className={[cstyles.well, styles.receiveblock].join(' ')}
-      uuid={address}
-    >
-      <AccordionItemHeading>
-        <AccordionItemButton className={cstyles.accordionHeader}>
-          {address}
-        </AccordionItemButton>
-      </AccordionItemHeading>
-      <AccordionItemPanel className={[styles.receiveDetail].join(' ')}>
-        <div className={[cstyles.flexspacebetween].join(' ')}>
-          <div className={[cstyles.verticalflex, cstyles.marginleft].join(' ')}>
-            {label && (
-              <div className={cstyles.margintoplarge}>
-                <div className={[cstyles.sublight].join(' ')}>Label</div>
-                <div
-                  className={[cstyles.padtopsmall, cstyles.fixedfont].join(' ')}
-                >
-                  {label}
-                </div>
-              </div>
-            )}
+  render() {
+    const {
+      addressBalance,
+      label,
+      currencyName,
+      pslPrice,
+      viewKey,
+      fetchAndSetSingleViewKey,
+    } = this.props
+    const { copiedAddr, copiedPrivKey } = this.state
 
-            <div
-              className={[cstyles.sublight, cstyles.margintoplarge].join(' ')}
-            >
-              Funds
-            </div>
-            <div className={[cstyles.padtopsmall].join(' ')}>
-              {currencyName} {balance}
-            </div>
-            <div className={[cstyles.padtopsmall].join(' ')}>
-              {Utils.getPslToUsdString(pslPrice, balance)}
-            </div>
+    const { address } = addressBalance
+    const balance = addressBalance.balance || 0
 
-            <div
-              className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}
-            >
-              {privateKey && (
-                <div>
-                  <div className={[cstyles.sublight].join(' ')}>
-                    Private Key
+    return (
+      <AccordionItem
+        className={cx(cstyles.well, styles.receiveblock)}
+        uuid={address}
+      >
+        <AccordionItemHeading>
+          <AccordionItemButton className={cstyles.accordionHeader}>
+            {address}
+          </AccordionItemButton>
+        </AccordionItemHeading>
+        <AccordionItemPanel className={cx(styles.receiveDetail)}>
+          <div className={cx(cstyles.flexspacebetween)}>
+            <div className={cx(cstyles.verticalflex, cstyles.marginleft)}>
+              {label && (
+                <div className={cstyles.margintoplarge}>
+                  <div className={cx(cstyles.sublight)}>Label</div>
+                  <div className={cx(cstyles.padtopsmall, cstyles.fixedfont)}>
+                    {label}
                   </div>
-                  <div
-                    className={[
-                      cstyles.breakword,
-                      cstyles.padtopsmall,
-                      cstyles.fixedfont,
-                    ].join(' ')}
-                    style={{
-                      maxWidth: '600px',
-                    }}
-                  >
-                    {privateKey}
+                </div>
+              )}
+
+              <div className={cx(cstyles.sublight, cstyles.margintoplarge)}>
+                Funds
+              </div>
+              <div className={cx(cstyles.padtopsmall)}>
+                {currencyName} {balance}
+              </div>
+              <div className={cx(cstyles.padtopsmall)}>
+                {Utils.getPslToUsdString(pslPrice, balance)}
+              </div>
+
+              <div className={cx(cstyles.margintoplarge, cstyles.breakword)}>
+                {viewKey && (
+                  <div>
+                    <div className={cx(cstyles.sublight)}>Viewing Key</div>
                     <div
-                      className={[
-                        cstyles.margintoplarge,
-                        cstyles.highlight,
-                      ].join(' ')}
+                      className={cx(
+                        cstyles.breakword,
+                        cstyles.padtopsmall,
+                        cstyles.fixedfont,
+                        styles.receiveMaxWidth,
+                      )}
                     >
-                      <i
-                        className={[
-                          cstyles.yellow,
-                          cstyles.padrightsmall,
-                          cstyles.small,
-                          'fas',
-                          'fa-exclamation-triangle',
-                        ].join(' ')}
-                      />
-                      WARNING: DO NOT SEND TO ANYONE
+                      {viewKey}
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-
-            <div
-              className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}
-            >
-              {viewKey && (
-                <div>
-                  <div className={[cstyles.sublight].join(' ')}>
-                    Viewing Key
-                  </div>
-                  <div
-                    className={[
-                      cstyles.breakword,
-                      cstyles.padtopsmall,
-                      cstyles.fixedfont,
-                    ].join(' ')}
-                    style={{
-                      maxWidth: '600px',
-                    }}
-                  >
-                    {viewKey}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div>
-              <button
-                className={[cstyles.primarybutton, cstyles.margintoplarge].join(
-                  ' ',
                 )}
-                type='button'
-                onClick={() => {
-                  clipboard.writeText(address)
-                  setCopied(true)
-                  setTimerID(setTimeout(() => setCopied(false), 5000) as any)
-                }}
-              >
-                {copied ? <span>Copied!</span> : <span>Copy Address</span>}
-              </button>
-              {!privateKey && (
-                <button
-                  className={[cstyles.primarybutton].join(' ')}
-                  type='button'
-                  onClick={() => fetchAndSetSinglePrivKey(address)}
-                >
-                  Export Private Key
-                </button>
-              )}
+              </div>
 
-              {Utils.isZaddr(address) && !viewKey && (
+              <div>
                 <button
-                  className={[cstyles.primarybutton].join(' ')}
+                  className={cx(cstyles.primarybutton, cstyles.margintoplarge)}
                   type='button'
-                  onClick={() => fetchAndSetSingleViewKey(address)}
+                  onClick={() => this.onCopyAddrBtnClick(address)}
                 >
-                  Export Viewing Key
+                  {copiedAddr ? 'Copied!' : 'Copy Address'}
                 </button>
-              )}
+                <button
+                  className={cx(cstyles.primarybutton)}
+                  type='button'
+                  onClick={() => this.onCopyPrivKeyBtnClick(address)}
+                >
+                  {!copiedPrivKey
+                    ? 'Copy Private Key'
+                    : copiedPrivKey === 'loading'
+                    ? 'Copying'
+                    : 'Copied!'}
+                </button>
 
-              {Utils.isTransparent(address) && (
-                <button
-                  className={[cstyles.primarybutton].join(' ')}
-                  type='button'
-                  onClick={() => openAddress()}
-                >
-                  View on explorer{' '}
-                  <i
-                    className={['fas', 'fa-external-link-square-alt'].join(' ')}
-                  />
-                </button>
-              )}
+                {Utils.isZaddr(address) && !viewKey && (
+                  <button
+                    className={cx(cstyles.primarybutton)}
+                    type='button'
+                    onClick={() => fetchAndSetSingleViewKey(address)}
+                  >
+                    Export Viewing Key
+                  </button>
+                )}
+
+                {Utils.isTransparent(address) && (
+                  <button
+                    className={cx(cstyles.primarybutton)}
+                    type='button'
+                    onClick={this.openAddress}
+                  >
+                    View on explorer{' '}
+                    <i className={cx('fas', 'fa-external-link-square-alt')} />
+                  </button>
+                )}
+              </div>
+            </div>
+            <div>
+              <QRCode value={address} className={cx(styles.receiveQrcode)} />
             </div>
           </div>
-          <div>
-            <QRCode
-              value={address}
-              className={[styles.receiveQrcode].join(' ')}
-            />
-          </div>
-        </div>
-      </AccordionItemPanel>
-    </AccordionItem>
-  )
+        </AccordionItemPanel>
+      </AccordionItem>
+    )
+  }
 }
 
 export default class Receive extends Component<any> {
@@ -303,11 +279,11 @@ export default class Receive extends Component<any> {
                 </Accordion>
 
                 <button
-                  className={[
+                  className={cx(
                     cstyles.primarybutton,
                     cstyles.margintoplarge,
                     cstyles.marginbottomlarge,
-                  ].join(' ')}
+                  )}
                   onClick={() => createNewAddress(true)}
                   type='button'
                 >
@@ -336,11 +312,11 @@ export default class Receive extends Component<any> {
                 </Accordion>
 
                 <button
-                  className={[
+                  className={cx(
                     cstyles.primarybutton,
                     cstyles.margintoplarge,
                     cstyles.marginbottomlarge,
-                  ].join(' ')}
+                  )}
                   type='button'
                   onClick={() => createNewAddress(false)}
                 >
