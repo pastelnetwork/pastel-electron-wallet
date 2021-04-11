@@ -118,15 +118,13 @@ function PastelPaperWalletGenerator(
           width='100%'
           viewBox='0 0 33 33'
         >
-          {paths &&
-            paths.length > 0 &&
-            paths.map((path, idx) => (
-              <Path
-                fill={fills ? fills[idx].replace('fill="', '') : '#000'}
-                d={path.replace('d="', '')}
-                key={idx}
-              ></Path>
-            ))}
+          {paths?.map((path, idx) => (
+            <Path
+              fill={fills ? fills[idx].replace('fill="', '') : '#000'}
+              d={path.replace('d="', '')}
+              key={idx}
+            ></Path>
+          ))}
         </Svg>
       )
     } catch {

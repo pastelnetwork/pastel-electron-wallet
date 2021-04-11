@@ -349,10 +349,7 @@ export default class Receive extends Component<any> {
         </div>
         <PastelPaperWalletGenerator
           address={selectedAddress}
-          privateKey={
-            selectedAddressPrivateKeys &&
-            selectedAddressPrivateKeys[selectedAddress]
-          }
+          privateKey={selectedAddressPrivateKeys?.[selectedAddress]}
           modalIsOpen={pastelPaperWalletIsOpen}
           onCloseModal={onClosePastelPaperWalletModal}
         />
