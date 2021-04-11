@@ -36,6 +36,8 @@ import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
 import { PastelDBThread } from '../features/pastelDB'
+// @ts-ignore
+import ExpertConsole from './components/ExpertConsole'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -545,6 +547,21 @@ class RouteApp extends React.Component<any, any> {
                   <WormholeConnection
                     companionAppListener={this.companionAppListener}
                     connectedCompanionApp={connectedCompanionApp}
+                  />
+                )}
+              />
+
+              <Route
+                path={routes.EXPERT_CONSOLE}
+                render={() => (
+                  <ExpertConsole
+                    totalBalance={totalBalance}
+                    info={info}
+                    addressesWithBalance={addressesWithBalance}
+                    transactions={transactions}
+                    addressPrivateKeys={addressPrivateKeys}
+                    connectedCompanionApp={connectedCompanionApp}
+                    pastelIDs={pastelIDs}
                   />
                 )}
               />

@@ -9,6 +9,7 @@ import { errorModalReducer } from '../features/errorModal'
 import { pastelConfReducer } from '../features/pastelConf'
 import { pastelDBReducer } from '../features/pastelDB'
 import { pastelIDReducer } from '../features/pastelID'
+import { pastelPriceReducer } from '../features/pastelPrice'
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     errorModal: errorModalReducer,
     pastelConf: pastelConfReducer,
     pastelDB: pastelDBReducer,
+    pastelPrice: pastelPriceReducer,
   },
   middleware: getDefaultMiddleware({
     serializableCheck: false,

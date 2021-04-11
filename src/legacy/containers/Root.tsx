@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { MemoryRouter, useDispatch } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Database } from 'sql.js'
 
@@ -31,9 +31,9 @@ const Root = (): JSX.Element => {
 
   return (
     <>
-      <Router>
+      <MemoryRouter>
         <Routes />
-      </Router>
+      </MemoryRouter>
       <ReduxErrorModal />
     </>
   )

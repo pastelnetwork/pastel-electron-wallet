@@ -4,11 +4,16 @@
 html {
   overflow: hidden;
 }
+html,
+body,
+#root {
+  min-height: 100vh;
+}
 
 body {
+  margin: 0;
   position: relative;
   color: white;
-  height: 100vh;
   background-color: #212124;
   font-family: Roboto, Arial, Helvetica, Helvetica Neue, serif;
 }
@@ -112,18 +117,14 @@ input[disabled] {
 img,
 img::after,
 img::before {
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-app-region: no-drag;
+  user-select: none;
   cursor: default;
 }
 
 a,
 a::after,
 a::before {
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
-  -webkit-app-region: no-drag;
+  user-select: none;
   cursor: default;
 }
 

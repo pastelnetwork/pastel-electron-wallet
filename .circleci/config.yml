@@ -21,7 +21,7 @@ jobs:
           paths:
             - .
 
-  lint:
+  lint-and-test:
     docker:
       - image: circleci/node:14.16.0
     working_directory: ~/project
@@ -31,11 +31,14 @@ jobs:
       - run:
           name: check code follow standard
           command: yarn check-all
+      - run:
+          name: tests
+          command: yarn test
 
 workflows:
-  lint:
+  lint-and-test:
     jobs:
       - install-deps
-      - lint:
+      - lint-and-test:
           requires:
             - install-deps
