@@ -107,6 +107,23 @@ const AddressBlock = ({
                     }}
                   >
                     {privateKey}
+                    <div
+                      className={[
+                        cstyles.margintoplarge,
+                        cstyles.highlight,
+                      ].join(' ')}
+                    >
+                      <i
+                        className={[
+                          cstyles.yellow,
+                          cstyles.padrightsmall,
+                          cstyles.small,
+                          'fas',
+                          'fa-exclamation-triangle',
+                        ].join(' ')}
+                      />
+                      WARNING: DO NOT SEND TO ANYONE
+                    </div>
                   </div>
                 </div>
               )}
