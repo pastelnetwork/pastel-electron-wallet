@@ -356,6 +356,10 @@ class RouteApp extends React.Component<any, any> {
       addressPrivateKeys,
     })
   }
+  hidePrivKey = () => {
+    this.setState({ addressPrivateKeys: {} })
+  }
+
   fetchAndSetSingleViewKey = async (address: any) => {
     const key = await this.rpc.getViewKeyAsString(address)
     const addressViewKeys: any = {}
@@ -488,6 +492,7 @@ class RouteApp extends React.Component<any, any> {
                     addressBook={addressBook}
                     {...standardProps}
                     fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
+                    hidePrivKey={this.hidePrivKey}
                     fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
                     createNewAddress={this.createNewAddress}
                   />

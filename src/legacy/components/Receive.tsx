@@ -30,11 +30,15 @@ class AddressBlock extends React.Component<any, any> {
     if (this.copiedAddrTimerId) {
       window.clearTimeout(this.copiedAddrTimerId)
     }
+    if (this.copiedPrivKeyTimerId) {
+      window.clearTimeout(this.copiedPrivKeyTimerId)
+    }
   }
   componentDidUpdate() {
     if (this.state.copiedPrivKey === 'loading' && this.props.privateKey) {
       clipboard.writeText(this.props.privateKey)
       this.setState({ copiedPrivKey: 'done' })
+      this.props.hidePrivKey()
       this.copiedPrivKeyTimerId = window.setTimeout(() => {
         this.setState({ copiedPrivKey: '' })
         this.copiedPrivKeyTimerId = 0
@@ -200,6 +204,7 @@ export default class Receive extends Component<any> {
       info,
       receivePageState,
       fetchAndSetSinglePrivKey,
+      hidePrivKey,
       fetchAndSetSingleViewKey,
       createNewAddress,
       rerenderKey,
@@ -272,6 +277,7 @@ export default class Receive extends Component<any> {
                       privateKey={addressPrivateKeys[a.address]}
                       viewKey={addressViewKeys[a.address]}
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
+                      hidePrivKey={hidePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
                       rerender={(this as any).rerender}
                     />
@@ -305,6 +311,7 @@ export default class Receive extends Component<any> {
                       privateKey={addressPrivateKeys[a.address]}
                       viewKey={addressViewKeys[a.address]}
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
+                      hidePrivKey={hidePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
                       rerender={(this as any).rerender}
                     />
