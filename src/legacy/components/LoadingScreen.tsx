@@ -20,7 +20,7 @@ import { NO_CONNECTION } from '../utils/utils'
 import Logo from '../assets/img/pastel-logo.png'
 import pasteldlogo from '../assets/img/pastel-logo2.png'
 import process from 'process'
-import md5File from 'md5-file'
+import sha256File from 'sha256-file'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -159,27 +159,32 @@ class LoadingScreen extends Component<any, any> {
       {
         name: 'sapling-output.params',
         url: 'https://z.cash/downloads/sapling-output.params',
-        md5: '924daf81b87a81bbbb9c7d18562046c8',
+        sha256:
+          '2f0ebbcbb9bb0bcffe95a397e7eba89c29eb4dde6191c339db88570e3f3fb0e4',
       },
       {
         name: 'sapling-spend.params',
         url: 'https://z.cash/downloads/sapling-spend.params',
-        md5: '0f44c12ef115ae019decf18ade583b20',
+        sha256:
+          '8e48ffd23abb3a5fd9c5589204f32d9c31285a04b78096ba40a79b75677efc13',
       },
       {
         name: 'sprout-groth16.params',
         url: 'https://z.cash/downloads/sprout-groth16.params',
-        md5: '00f0cbfc8651ea4003eea5f627b0cd73',
+        sha256:
+          'b685d700c60328498fbde589c8c7c484c722b788b265b72af448a5bf0ee55b50',
       },
       {
         name: 'sprout-proving.key',
         url: 'https://z.cash/downloads/sprout-proving.key',
-        md5: 'af23e521697ed69d8b8a6b9c53e48300',
+        sha256:
+          '8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7',
       },
       {
         name: 'sprout-verifying.key',
         url: 'https://z.cash/downloads/sprout-verifying.key',
-        md5: '21e8b499aa84b5920ca0cea260074f34',
+        sha256:
+          '4bd498dae0aacfd8e98dc306338d017d9c08dd0918ead18172bd0aec2fc5df82',
       },
     ]
     this.setState({ errorEnsurePastelParams: false })
@@ -195,9 +200,9 @@ class LoadingScreen extends Component<any, any> {
         const fileName = path.join(dir, p.name)
         this.setState({ currentStatus: `Checking ${p.name}...` })
         let exists = await new Promise(resolve => fs.exists(fileName, resolve))
-        const md5 = exists && (await md5File(fileName))
+        const sha256 = exists && (await promisify(sha256File)(fileName))
         // Remove corrupted file to re-download
-        if (exists && md5 !== p.md5) {
+        if (exists && sha256 !== p.sha256) {
           fs.unlinkSync(fileName)
           exists = false
         }
