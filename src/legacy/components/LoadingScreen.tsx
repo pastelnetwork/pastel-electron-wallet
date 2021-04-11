@@ -20,6 +20,7 @@ import { NO_CONNECTION } from '../utils/utils'
 import Logo from '../assets/img/pastel-logo.png'
 import pasteldlogo from '../assets/img/pastel-logo2.png'
 import process from 'process'
+import md5File from 'md5-file'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -152,60 +153,67 @@ class LoadingScreen extends Component<any, any> {
       return cb(err.message)
     })
   }
+
   ensurePastelParams = async () => {
-    // Check if the pastel params dir exists and if the params files are present
-    const dir = locatePastelParamsDir()
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir)
-    }
-
     const params = [
       {
         name: 'sapling-output.params',
         url: 'https://z.cash/downloads/sapling-output.params',
+        md5: '924daf81b87a81bbbb9c7d18562046c8',
       },
       {
         name: 'sapling-spend.params',
         url: 'https://z.cash/downloads/sapling-spend.params',
+        md5: '0f44c12ef115ae019decf18ade583b20',
       },
       {
         name: 'sprout-groth16.params',
         url: 'https://z.cash/downloads/sprout-groth16.params',
+        md5: '00f0cbfc8651ea4003eea5f627b0cd73',
       },
       {
         name: 'sprout-proving.key',
         url: 'https://z.cash/downloads/sprout-proving.key',
+        md5: 'af23e521697ed69d8b8a6b9c53e48300',
       },
       {
         name: 'sprout-verifying.key',
         url: 'https://z.cash/downloads/sprout-verifying.key',
+        md5: '21e8b499aa84b5920ca0cea260074f34',
       },
     ]
+    this.setState({ errorEnsurePastelParams: false })
 
-    for (let i = 0; i < params.length; i++) {
-      const p = params[i]
-      const fileName = path.join(dir, p.name)
-
-      if (!fs.existsSync(fileName)) {
-        // Download and save this file
-        this.setState({
-          currentStatus: `Downloading ${p.name}...`,
-        })
-
-        try {
+    try {
+      // Check if the pastel params dir exists and if the params files are present
+      const dir = locatePastelParamsDir()
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir)
+      }
+      for (let i = 0; i < params.length; i++) {
+        const p = params[i]
+        const fileName = path.join(dir, p.name)
+        this.setState({ currentStatus: `Checking ${p.name}...` })
+        let exists = await new Promise(resolve => fs.exists(fileName, resolve))
+        const md5 = exists && (await md5File(fileName))
+        // Remove corrupted file to re-download
+        if (exists && md5 !== p.md5) {
+          fs.unlinkSync(fileName)
+          exists = false
+        }
+        if (!exists) {
+          this.setState({ currentStatus: `Downloading ${p.name}...` })
           await promisify(this.download)(p.url, fileName, p.name)
-        } catch (err) {
-          console.log(`error: ${err}`)
-          this.setState({
-            currentStatus: `Error downloading ${p.name}. The error was: ${err}`,
-          })
-          return false
         }
       }
+      return true
+    } catch (err) {
+      this.setState({
+        currentStatus: `Error downloading params. The error was: ${err}`,
+        errorEnsurePastelParams: true,
+      })
+      return false
     }
-
-    return true
   }
 
   async loadPastelConf(createIfMissing: any) {
@@ -440,6 +448,7 @@ class LoadingScreen extends Component<any, any> {
       creatingPastelConf,
       connectOverTor,
       enableFastSync,
+      errorEnsurePastelParams,
     } = this.state // If still loading, show the status
 
     if (!loadingDone) {
@@ -454,7 +463,20 @@ class LoadingScreen extends Component<any, any> {
               >
                 <img src={Logo} width='200px;' alt='Logo' />
               </div>
-              <div>{currentStatus}</div>
+              <div>
+                {currentStatus}
+                {errorEnsurePastelParams && (
+                  <>
+                    {' '}
+                    <span
+                      className={styles.clickable}
+                      onClick={this.ensurePastelParams}
+                    >
+                      Retry
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
           )}
 
