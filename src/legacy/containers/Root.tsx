@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { MemoryRouter, useDispatch } from 'react-redux'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import { Database } from 'sql.js'
 
 import { ErrorModal as ReduxErrorModal } from '../../features/errorModal'
