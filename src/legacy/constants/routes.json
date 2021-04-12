@@ -8,5 +8,6 @@
   "SETTINGS": "/settings",
   "PASTELD": "/pasteld",
   "PASTEL_ID": "/pastel_id",
-  "CONNECTMOBILE": "/connectmobile"
+  "CONNECTMOBILE": "/connectmobile",
+  "EXPERT_CONSOLE": "/expert_console"
 }
