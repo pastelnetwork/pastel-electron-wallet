@@ -1,4 +1,3 @@
-const { result } = require('underscore')
 const os = require('os')
 const package = require('./package.json')
 
@@ -18,9 +17,26 @@ function getExtraResource() {
   }
 }
 
+function getIcon() {
+  const p = os.platform()
+  switch (p) {
+    case 'darwin':
+      return './static/icons/icon.icns'
+    case 'linux':
+      return './static/icons/icon.png'
+    case 'win32':
+      return './static/icons/icon.ico'
+    default:
+      throw new Error(
+        'forge.config.js error: your OS is not supported. Supported OS are: darwin, linux, win32',
+      )
+  }
+}
+
 module.exports = {
   packagerConfig: {
-    name: 'pastelwallet',
+    name: 'Pastel Wallet Fullnode',
+    icon: getIcon(),
     asar: true,
     extraResource: getExtraResource(),
   },
@@ -31,9 +47,6 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        // TODO for some reason, shortcut name and icon doesn't change no matter what settings we use here.
-        // It might be a bug of squirrel.windows, because the creation of the shortcut is done through  it, and that's C# code.
-        // We need to figure out how to add the proper icon to the shortcut and how to change shortcuts title.
         setupIcon: './static/icons/icon.ico',
         loadingGif: './static/icons/icon.gif',
         iconUrl:
