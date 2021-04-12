@@ -21,6 +21,7 @@ import {
   AddressBookEntry,
 } from './AppState'
 import ScrollPane from './ScrollPane'
+import PastelPaperWalletModal from '../../features/pastelPaperWalletGenerator'
 
 const AddressBlock = ({
   addressBalance,
@@ -87,7 +88,6 @@ const AddressBlock = ({
             <div className={[cstyles.padtopsmall].join(' ')}>
               {Utils.getPslToUsdString(pslPrice, balance)}
             </div>
-
             <div
               className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}
             >
@@ -199,6 +199,18 @@ const AddressBlock = ({
                   />
                 </button>
               )}
+
+              <button
+                className={[cstyles.primarybutton, styles.buttomMarginTop].join(
+                  ' ',
+                )}
+                type='button'
+                onClick={() =>
+                  fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
+                }
+              >
+                Generate paper wallet
+              </button>
             </div>
           </div>
           <div>
@@ -350,6 +362,7 @@ export default class Receive extends Component<any> {
             </TabPanel>
           </Tabs>
         </div>
+        <PastelPaperWalletModal />
       </div>
     )
   }

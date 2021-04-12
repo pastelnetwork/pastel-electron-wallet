@@ -1,8 +1,8 @@
 @font-face {
-  font-family: 'Inconsolata';
+  font-family: 'Essential PragmataPro';
   font-weight: normal;
   font-style: normal;
-  src: url('console/fonts/Inconsolata-Regular.ttf') format('truetype');
+  src: url('console/fonts/EssentialPragmataPro-R_1.2.ttf') format('truetype');
 }
 
 .container {
@@ -23,7 +23,7 @@
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000;
-  font-family: 'Inconsolata', monospace !important;
+  font-family: 'Essential PragmataPro', monospace !important;
 }
 
 .screen {
