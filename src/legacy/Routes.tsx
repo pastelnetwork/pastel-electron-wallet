@@ -9,7 +9,7 @@ import routes from './constants/routes.json'
 import App from './containers/App'
 import Dashboard from './components/Dashboard'
 import Send from './components/Send'
-import Receive from './components/Receive'
+import { Receive } from '../features/recieve'
 import LoadingScreen from './components/LoadingScreen'
 import AppState, {
   AddressBalance,
