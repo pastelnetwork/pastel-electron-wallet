@@ -24,37 +24,29 @@ export default function AddressBookForm(
       return
     }
     setCurrentLabel(value)
-    const { labelError, addressIsValid } = validate()
+    const { labelError, addressIsValid } = validate(value, currentAddress)
     setAddButtonEnabled(
-      !labelError &&
-        addressIsValid &&
-        currentLabel !== '' &&
-        currentAddress !== '',
+      !labelError && addressIsValid && value !== '' && currentAddress !== '',
     )
   }
 
   const updateAddress = (value: string) => {
     setCurrentAddress(value)
-    const { labelError, addressIsValid } = validate()
+    const { labelError, addressIsValid } = validate(currentLabel, value)
     setAddButtonEnabled(
-      !labelError &&
-        addressIsValid &&
-        currentLabel !== '' &&
-        currentAddress !== '',
+      !labelError && addressIsValid && currentLabel !== '' && value !== '',
     )
   }
 
-  const validate = () => {
+  const validate = (label: string, address: string) => {
     let labelError = props.addressBook.find(
-      (i: AddressBookProps) => i.label === currentLabel,
+      (i: AddressBookProps) => i.label === label,
     )
       ? 'Duplicate Label'
       : null
-    labelError = currentLabel.length > 150 ? 'Label is too long' : labelError
+    labelError = label.length > 150 ? 'Label is too long' : labelError
     const addressIsValid =
-      currentAddress === '' ||
-      Utils.isZaddr(currentAddress) ||
-      Utils.isTransparent(currentAddress)
+      address === '' || Utils.isZaddr(address) || Utils.isTransparent(address)
     return {
       labelError,
       addressIsValid,
@@ -62,12 +54,15 @@ export default function AddressBookForm(
   }
 
   const handleAddButtonClicked = () => {
-    props.addAddressBookEntry(currentLabel, currentAddress)
-    setCurrentLabel('')
-    setCurrentAddress('')
+    if (currentLabel && currentAddress) {
+      props.addAddressBookEntry(currentLabel, currentAddress)
+      setCurrentLabel('')
+      setCurrentAddress('')
+      setAddButtonEnabled(false)
+    }
   }
 
-  const { labelError, addressIsValid } = validate()
+  const { labelError, addressIsValid } = validate(currentLabel, currentAddress)
 
   return (
     <div className={[styles.well].join(' ')}>
