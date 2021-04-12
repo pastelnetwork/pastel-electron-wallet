@@ -1,5 +1,7 @@
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
+// install shortcuts on windows
+import 'electron-squirrel-startup'
 
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import electronDebug from 'electron-debug'
