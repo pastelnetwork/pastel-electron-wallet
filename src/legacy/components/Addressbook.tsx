@@ -14,7 +14,7 @@ import cstyles from './Common.module.css'
 import { AddressBookEntry } from './AppState'
 import ScrollPane from './ScrollPane'
 import routes from '../constants/routes.json' // Internal because we're using withRouter just below
-import AddressBookForm from '../../features/addressBookForm'
+import PastelAddressBookForm from '../../features/pastelAddressBookForm'
 
 const AddressBookItemInteral = ({
   item,
@@ -82,7 +82,7 @@ export default class AddressBook extends Component<any, any> {
         </div>
 
         <div className={styles.addressbookcontainer}>
-          <AddressBookForm
+          <PastelAddressBookForm
             addressBook={addressBook}
             addAddressBookEntry={this.props.addAddressBookEntry}
           />

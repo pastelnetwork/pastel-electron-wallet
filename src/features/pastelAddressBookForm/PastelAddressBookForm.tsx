@@ -1,19 +1,19 @@
 import React, { useState } from 'react'
 
 import Utils from '../../legacy/utils/utils'
-import styles from './AddressBookForm.module.css'
+import styles from './PastelAddressBookForm.module.css'
 
 type AddressBookProps = {
   label: string
 }
 
-type AddressBookFormProps = {
+type PastelAddressBookFormProps = {
   addAddressBookEntry: (currentLabel: string, currentAddress: string) => void
   addressBook: AddressBookProps[]
 }
 
-export default function AddressBookForm(
-  props: AddressBookFormProps,
+export default function PastelAddressBookForm(
+  props: PastelAddressBookFormProps,
 ): JSX.Element {
   const [addButtonEnabled, setAddButtonEnabled] = useState(false)
   const [currentLabel, setCurrentLabel] = useState('')
