@@ -1,5 +1,6 @@
 .sidebarcontainer {
   width: 220px;
+  height: 100vh;
   float: left;
 }
 
@@ -115,6 +116,10 @@
 
 .padbottomsmall {
   padding-bottom: 4px;
+}
+
+.padrightsmall {
+  padding-right: 4px;
 }
 
 .marginbottomsmall {

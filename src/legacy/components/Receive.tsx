@@ -21,6 +21,7 @@ import {
   AddressBookEntry,
 } from './AppState'
 import ScrollPane from './ScrollPane'
+import PastelPaperWalletModal from '../../features/pastelPaperWalletGenerator'
 
 const AddressBlock = ({
   addressBalance,
@@ -87,7 +88,6 @@ const AddressBlock = ({
             <div className={[cstyles.padtopsmall].join(' ')}>
               {Utils.getPslToUsdString(pslPrice, balance)}
             </div>
-
             <div
               className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}
             >
@@ -107,6 +107,23 @@ const AddressBlock = ({
                     }}
                   >
                     {privateKey}
+                    <div
+                      className={[
+                        cstyles.margintoplarge,
+                        cstyles.highlight,
+                      ].join(' ')}
+                    >
+                      <i
+                        className={[
+                          cstyles.yellow,
+                          cstyles.padrightsmall,
+                          cstyles.small,
+                          'fas',
+                          'fa-exclamation-triangle',
+                        ].join(' ')}
+                      />
+                      WARNING: DO NOT SEND TO ANYONE
+                    </div>
                   </div>
                 </div>
               )}
@@ -182,6 +199,18 @@ const AddressBlock = ({
                   />
                 </button>
               )}
+
+              <button
+                className={[cstyles.primarybutton, styles.buttomMarginTop].join(
+                  ' ',
+                )}
+                type='button'
+                onClick={() =>
+                  fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
+                }
+              >
+                Generate paper wallet
+              </button>
             </div>
           </div>
           <div>
@@ -333,6 +362,7 @@ export default class Receive extends Component<any> {
             </TabPanel>
           </Tabs>
         </div>
+        <PastelPaperWalletModal />
       </div>
     )
   }
