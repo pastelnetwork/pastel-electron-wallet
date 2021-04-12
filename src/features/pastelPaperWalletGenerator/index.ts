@@ -1,3 +1,10 @@
-import PastelPaperWalletGenerator from './pastelPaperWalletGenerator'
+import PastelPaperWalletModal from './PastelPaperWalletModal'
 
-export default PastelPaperWalletGenerator
+export type { IPastelPaperWalletModalState } from './PastelPaperWalletModalSlice'
+export {
+  closePastelPaperWalletModal,
+  openPastelPaperWalletModal,
+  pastelPaperWalletModalReducer,
+} from './PastelPaperWalletModalSlice'
+
+export default PastelPaperWalletModal

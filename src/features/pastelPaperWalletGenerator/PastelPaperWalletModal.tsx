@@ -1,31 +1,26 @@
 import {
   Document,
   Page,
-  Path,
   PDFViewer,
   StyleSheet,
-  Svg,
   Text,
   View,
 } from '@react-pdf/renderer'
-import QRCode from 'qrcode.react'
 import React from 'react'
-import ReactDOMServer from 'react-dom/server'
 import Modal from 'react-modal'
 
-import styles from './PastelPaperWalletGenerator.module.css'
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import styles from './PastelPaperWalletModal.module.css'
+import { closePastelPaperWalletModal } from './PastelPaperWalletModalSlice'
+import QRCodeGEnerator from './QRCodeGEnerator'
 
-type PastelPaperWalletGeneratorProps = {
-  address: string
-  privateKey: string
-  modalIsOpen: boolean
-  onCloseModal: () => void
-}
+export default function PastelPaperWalletModal(): JSX.Element {
+  const { address, privateKey, modalIsOpen } = useAppSelector(
+    state => state.pastelPaperWalletModal,
+  )
+  const dispatch = useAppDispatch()
 
-function PastelPaperWalletGenerator(
-  props: PastelPaperWalletGeneratorProps,
-): JSX.Element {
-  if (!props.modalIsOpen || !props.privateKey) {
+  if (!modalIsOpen || !privateKey) {
     return <></>
   }
 
@@ -103,46 +98,17 @@ function PastelPaperWalletGenerator(
     },
   })
 
-  function generateQrcode() {
-    try {
-      const qrcodeValue = ReactDOMServer.renderToString(
-        <QRCode value={props.address} renderAs='svg' />,
-      )
-      const paths = qrcodeValue.match(/d="([^"]*)/g)
-      const fills = qrcodeValue.match(/fill="([^"]*)/g)
-
-      return (
-        <Svg
-          shape-rendering='crispEdges'
-          height='100%'
-          width='100%'
-          viewBox='0 0 33 33'
-        >
-          {paths?.map((path, idx) => (
-            <Path
-              fill={fills ? fills[idx].replace('fill="', '') : '#000'}
-              d={path.replace('d="', '')}
-              key={idx}
-            ></Path>
-          ))}
-        </Svg>
-      )
-    } catch {
-      return null
-    }
-  }
-
   return (
     <Modal
-      isOpen={props.modalIsOpen}
-      onRequestClose={() => props.onCloseModal()}
+      isOpen={modalIsOpen}
+      onRequestClose={() => dispatch(closePastelPaperWalletModal())}
       className={styles.modal_content_wrapper}
     >
       <div className={styles.modal_content}>
         <button
           type='button'
           className={styles.btn_close}
-          onClick={() => props.onCloseModal()}
+          onClick={() => dispatch(closePastelPaperWalletModal())}
         >
           X
         </button>
@@ -151,13 +117,15 @@ function PastelPaperWalletGenerator(
             <Page size='A4' style={pdfStyles.page}>
               <View style={pdfStyles.section}>
                 <View style={pdfStyles.contentTop}>
-                  <View style={pdfStyles.topMedia}>{generateQrcode()}</View>
+                  <View style={pdfStyles.topMedia}>
+                    <QRCodeGEnerator address={address} />
+                  </View>
                   <View style={pdfStyles.contentWrapper}>
                     <Text style={pdfStyles.contentTitle}>
                       PSL Address (Sapling)
                     </Text>
                     <Text style={pdfStyles.contentValue}>
-                      {props.address.replace(/(.{40})/g, `$1${breakChar}`)}
+                      {address.replace(/(.{40})/g, `$1${breakChar}`)}
                     </Text>
                   </View>
                 </View>
@@ -166,7 +134,7 @@ function PastelPaperWalletGenerator(
                     <View style={pdfStyles.contentItem}>
                       <Text style={pdfStyles.contentTitle}>Private Key</Text>
                       <Text style={pdfStyles.contentValue}>
-                        {props.privateKey.replace(/(.{40})/g, `$1${breakChar}`)}
+                        {privateKey.replace(/(.{40})/g, `$1${breakChar}`)}
                       </Text>
                     </View>
                     <View style={pdfStyles.marginTop20}>
@@ -174,11 +142,13 @@ function PastelPaperWalletGenerator(
                         PSL Address (Sapling)
                       </Text>
                       <Text style={pdfStyles.contentValue}>
-                        {props.address.replace(/(.{40})/g, `$1${breakChar}`)}
+                        {address.replace(/(.{40})/g, `$1${breakChar}`)}
                       </Text>
                     </View>
                   </View>
-                  <View style={pdfStyles.mainMedia}>{generateQrcode()}</View>
+                  <View style={pdfStyles.mainMedia}>
+                    <QRCodeGEnerator address={address} />
+                  </View>
                 </View>
               </View>
             </Page>
@@ -188,5 +158,3 @@ function PastelPaperWalletGenerator(
     </Modal>
   )
 }
-
-export default PastelPaperWalletGenerator

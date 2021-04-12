@@ -21,7 +21,7 @@ import {
   AddressBookEntry,
 } from './AppState'
 import ScrollPane from './ScrollPane'
-import PastelPaperWalletGenerator from '../../features/pastelPaperWalletGenerator'
+import PastelPaperWalletModal from '../../features/pastelPaperWalletGenerator'
 
 const AddressBlock = ({
   addressBalance,
@@ -188,7 +188,9 @@ const AddressBlock = ({
                   ' ',
                 )}
                 type='button'
-                onClick={() => fetchAndSetSinglePrivKey(address, 'paperWallet')}
+                onClick={() =>
+                  fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
+                }
               >
                 Turn address into paper wallet
               </button>
@@ -220,10 +222,6 @@ export default class Receive extends Component<any> {
       fetchAndSetSingleViewKey,
       createNewAddress,
       rerenderKey,
-      selectedAddress,
-      selectedAddressPrivateKeys,
-      pastelPaperWalletIsOpen,
-      onClosePastelPaperWalletModal,
     } = this.props // Convert the addressBalances into a map.
 
     const addressMap = addressesWithBalance.reduce((map: any, a: any) => {
@@ -347,12 +345,7 @@ export default class Receive extends Component<any> {
             </TabPanel>
           </Tabs>
         </div>
-        <PastelPaperWalletGenerator
-          address={selectedAddress}
-          privateKey={selectedAddressPrivateKeys?.[selectedAddress]}
-          modalIsOpen={pastelPaperWalletIsOpen}
-          onCloseModal={onClosePastelPaperWalletModal}
-        />
+        <PastelPaperWalletModal />
       </div>
     )
   }

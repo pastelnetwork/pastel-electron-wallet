@@ -35,6 +35,7 @@ import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
+import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -55,9 +56,6 @@ class RouteApp extends React.Component<any, any> {
       errorModalData: new ErrorModalData(),
       connectedCompanionApp: null,
       pastelIDs: [],
-      pastelPaperWalletIsOpen: false,
-      selectedAddress: '',
-      selectedAddressPrivateKeys: {},
     } // Create the initial ToAddr box
 
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
@@ -353,11 +351,10 @@ class RouteApp extends React.Component<any, any> {
     const key = await this.rpc.getPrivKeyAsString(address)
     const addressPrivateKeys: any = {}
     addressPrivateKeys[address] = key
-    if (type === 'paperWallet') {
-      this.setState({
-        selectedAddressPrivateKeys: addressPrivateKeys,
-        selectedAddress: address,
-        pastelPaperWalletIsOpen: true,
+    if (type === 'generatePaperWallet') {
+      this.props.openPastelPaperWalletModal({
+        address,
+        privateKey: addressPrivateKeys?.[address],
       })
     } else {
       this.setState({
@@ -418,13 +415,6 @@ class RouteApp extends React.Component<any, any> {
   doRefresh = () => {
     this.rpc.refresh()
   }
-  handleClosePastelPaperWalletModal = () => {
-    this.setState({
-      pastelPaperWalletIsOpen: false,
-      selectedAddress: '',
-      selectedAddressPrivateKeys: {},
-    })
-  }
 
   render() {
     const {
@@ -441,9 +431,6 @@ class RouteApp extends React.Component<any, any> {
       errorModalData,
       connectedCompanionApp,
       pastelIDs,
-      selectedAddress,
-      selectedAddressPrivateKeys,
-      pastelPaperWalletIsOpen,
     } = this.state
     const standardProps = {
       openErrorModal: this.openErrorModal,
@@ -509,12 +496,6 @@ class RouteApp extends React.Component<any, any> {
                     fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
                     fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
                     createNewAddress={this.createNewAddress}
-                    selectedAddress={selectedAddress}
-                    selectedAddressPrivateKeys={selectedAddressPrivateKeys}
-                    pastelPaperWalletIsOpen={pastelPaperWalletIsOpen}
-                    onClosePastelPaperWalletModal={
-                      this.handleClosePastelPaperWalletModal
-                    }
                   />
                 )}
               />
@@ -600,4 +581,6 @@ class RouteApp extends React.Component<any, any> {
   }
 }
 
-export default connect(null, { setPastelConf })(RouteApp)
+export default connect(null, { setPastelConf, openPastelPaperWalletModal })(
+  RouteApp,
+)

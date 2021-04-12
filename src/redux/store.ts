@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import { errorModalReducer } from '../features/errorModal'
 import { pastelConfReducer } from '../features/pastelConf'
 import { pastelIDReducer } from '../features/pastelID'
+import { pastelPaperWalletModalReducer } from '../features/pastelPaperWalletGenerator'
 import { pastelPriceReducer } from '../features/pastelPrice'
 
 const store = configureStore({
@@ -11,6 +12,7 @@ const store = configureStore({
     errorModal: errorModalReducer,
     pastelConf: pastelConfReducer,
     pastelPrice: pastelPriceReducer,
+    pastelPaperWalletModal: pastelPaperWalletModalReducer,
   },
 })
 
