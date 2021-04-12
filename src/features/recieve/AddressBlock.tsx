@@ -207,7 +207,9 @@ export class AddressBlock extends Component<
                 <button
                   className={cx(cstyles.primarybutton, styles.buttonMarginTop)}
                   type='button'
-                  onClick={() => fetchAndSetSinglePrivKey(address, 'generatePaperWallet')}
+                  onClick={() =>
+                    fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
+                  }
                 >
                   Generate paper wallet
                 </button>
