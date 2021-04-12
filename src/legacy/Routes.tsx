@@ -35,6 +35,7 @@ import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
+import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 // @ts-ignore
 import ExpertConsole from './components/ExpertConsole'
 
@@ -348,13 +349,20 @@ class RouteApp extends React.Component<any, any> {
     return this.rpc.getPrivKeyAsString(address)
   } // Getter methods, which are called by the components to update the state
 
-  fetchAndSetSinglePrivKey = async (address: any) => {
+  fetchAndSetSinglePrivKey = async (address: any, type: string = '') => {
     const key = await this.rpc.getPrivKeyAsString(address)
     const addressPrivateKeys: any = {}
     addressPrivateKeys[address] = key
-    this.setState({
-      addressPrivateKeys,
-    })
+    if (type === 'generatePaperWallet') {
+      this.props.openPastelPaperWalletModal({
+        address,
+        privateKey: addressPrivateKeys?.[address],
+      })
+    } else {
+      this.setState({
+        addressPrivateKeys,
+      })
+    }
   }
   fetchAndSetSingleViewKey = async (address: any) => {
     const key = await this.rpc.getViewKeyAsString(address)
@@ -590,4 +598,6 @@ class RouteApp extends React.Component<any, any> {
   }
 }
 
-export default connect(null, { setPastelConf })(RouteApp)
+export default connect(null, { setPastelConf, openPastelPaperWalletModal })(
+  RouteApp,
+)
