@@ -20,7 +20,7 @@ export interface IAddressBlockProps {
 
   privateKey?: string
   hidePrivKey(): void
-  fetchAndSetSinglePrivKey(add: string): void
+  fetchAndSetSinglePrivKey(add: string, type?: string): void
 
   addressBalance: {
     address: string
@@ -104,6 +104,7 @@ export class AddressBlock extends Component<
       label,
       currencyName,
       pslPrice,
+      fetchAndSetSinglePrivKey,
       viewKey,
       fetchAndSetSingleViewKey,
     } = this.props
@@ -202,6 +203,14 @@ export class AddressBlock extends Component<
                     <i className={cx('fas', 'fa-external-link-square-alt')} />
                   </button>
                 )}
+
+                <button
+                  className={cx(cstyles.primarybutton, styles.buttonMarginTop)}
+                  type='button'
+                  onClick={() => fetchAndSetSinglePrivKey(address, 'generatePaperWallet')}
+                >
+                  Generate paper wallet
+                </button>
               </div>
             </div>
             <div>

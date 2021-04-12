@@ -7,6 +7,7 @@ import { AddressBalance } from '../../legacy/components/AppState'
 import cstyles from '../../legacy/components/Common.module.css'
 import ScrollPane from '../../legacy/components/ScrollPane'
 import Utils from '../../legacy/utils/utils'
+import PastelPaperWalletModal from '../pastelPaperWalletGenerator'
 import { AddressBlock } from './AddressBlock'
 import styles from './Receive.module.css'
 
@@ -171,6 +172,7 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
           </ScrollPane>
         </TabPanel>
       </Tabs>
+      <PastelPaperWalletModal />
     </div>
   )
 }
