@@ -60,6 +60,7 @@
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
     "regenerator-runtime": "0.13.7",
+    "request": "2.88.2",
     "sha256-file": "1.0.0",
     "typeface-roboto": "0.0.75",
     "underscore": "1.9.2",

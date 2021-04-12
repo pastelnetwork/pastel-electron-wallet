@@ -4,13 +4,10 @@ import React, { Component } from 'react'
 import { Redirect, withRouter } from 'react-router'
 import ini from 'ini'
 import fs from 'fs'
-import request from 'request'
-import progress from 'progress-stream'
 import os from 'os'
 import path from 'path'
 import { remote, ipcRenderer } from 'electron'
 import { spawn } from 'child_process'
-import { promisify } from 'util'
 import routes from '../constants/routes.json'
 import { RPCConfig } from './AppState'
 import RPC from '../rpc'
@@ -20,7 +17,7 @@ import { NO_CONNECTION } from '../utils/utils'
 import Logo from '../assets/img/pastel-logo.png'
 import pasteldlogo from '../assets/img/pastel-logo2.png'
 import process from 'process'
-import sha256File from 'sha256-file'
+import { checkHashAndDownloadParams } from '../../features/loading'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -104,56 +101,6 @@ class LoadingScreen extends Component<any, any> {
     })()
   }
 
-  download = (url: any, dest: any, name: any, cb: any) => {
-    const file = fs.createWriteStream(dest)
-    const sendReq = request.get(url) // verify response code
-
-    sendReq.on('response', response => {
-      if (response.statusCode !== 200) {
-        return cb(`Response status was ${response.statusCode}`)
-      }
-
-      const totalSize = (
-        parseInt(response.headers['content-length'] as any, 10) /
-        1024 /
-        1024
-      ).toFixed(0)
-      const str = progress(
-        {
-          time: 1000,
-        },
-        pgrs => {
-          this.setState({
-            currentStatus: `Downloading ${name}... (${(
-              pgrs.transferred /
-              1024 /
-              1024
-            ).toFixed(0)} MB / ${totalSize} MB)`,
-          })
-        },
-      )
-      sendReq.pipe(str).pipe(file)
-    }) // close() is async, call cb after close completes
-
-    file.on('finish', () => {
-      file.close()
-      cb()
-    }) // check for request errors
-
-    sendReq.on('error', err => {
-      // @ts-ignore
-      fs.unlink(dest)
-      return cb(err.message)
-    })
-    file.on('error', err => {
-      // Handle errors
-      // @ts-ignore
-      fs.unlink(dest) // Delete the file async. (But we don't check the result)
-
-      return cb(err.message)
-    })
-  }
-
   ensurePastelParams = async () => {
     const params = [
       {
@@ -190,27 +137,11 @@ class LoadingScreen extends Component<any, any> {
     this.setState({ errorEnsurePastelParams: false })
 
     try {
-      // Check if the pastel params dir exists and if the params files are present
-      const dir = locatePastelParamsDir()
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir)
-      }
-      for (let i = 0; i < params.length; i++) {
-        const p = params[i]
-        const fileName = path.join(dir, p.name)
-        this.setState({ currentStatus: `Checking ${p.name}...` })
-        let exists = await new Promise(resolve => fs.exists(fileName, resolve))
-        const sha256 = exists && (await promisify(sha256File)(fileName))
-        // Remove corrupted file to re-download
-        if (exists && sha256 !== p.sha256) {
-          fs.unlinkSync(fileName)
-          exists = false
-        }
-        if (!exists) {
-          this.setState({ currentStatus: `Downloading ${p.name}...` })
-          await promisify(this.download)(p.url, fileName, p.name)
-        }
-      }
+      await checkHashAndDownloadParams({
+        params,
+        outputDir: locatePastelParamsDir(),
+        onProgress: currentStatus => this.setState({ currentStatus }),
+      })
       return true
     } catch (err) {
       this.setState({
