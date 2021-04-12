@@ -209,7 +209,7 @@ const AddressBlock = ({
                   fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
                 }
               >
-                Turn address into paper wallet
+                Generate paper wallet
               </button>
             </div>
           </div>
