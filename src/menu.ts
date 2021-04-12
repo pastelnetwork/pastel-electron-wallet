@@ -146,12 +146,12 @@ export default class MenuBuilder {
             mainWindow.webContents.send('importani')
           },
         },
-        {
-          label: '&Export All Private Keys',
-          click: () => {
-            mainWindow.webContents.send('exportall')
-          },
-        },
+        // {
+        //   label: '&Export All Private Keys',
+        //   click: () => {
+        //     mainWindow.webContents.send('exportall')
+        //   },
+        // },
         {
           type: 'separator',
         },
@@ -316,12 +316,12 @@ export default class MenuBuilder {
               mainWindow.webContents.send('importani')
             },
           },
-          {
-            label: '&Export All Private Keys',
-            click: () => {
-              mainWindow.webContents.send('exportall')
-            },
-          },
+          // {
+          //   label: '&Export All Private Keys',
+          //   click: () => {
+          //     mainWindow.webContents.send('exportall')
+          //   },
+          // },
           {
             type: 'separator',
           },
