@@ -35,15 +35,13 @@ function getIcon() {
 
 module.exports = {
   packagerConfig: {
-    name: 'Pastel Wallet Fullnode',
+    name: package.productName,
+    executableName: package.name,
     icon: getIcon(),
     asar: true,
     extraResource: getExtraResource(),
   },
   makers: [
-    {
-      name: '@electron-forge/maker-zip',
-    },
     {
       name: '@electron-forge/maker-squirrel',
       config: {
@@ -51,8 +49,8 @@ module.exports = {
         loadingGif: './static/icons/icon.gif',
         iconUrl:
           'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
-        title: 'Pastel Wallet Fullnode',
-        setupExe: `Pastel Wallet Fullnode Setup - v${package.version}.exe`,
+        title: package.productName,
+        setupExe: `${package.productName} Setup - v${package.version}.exe`,
         skipUpdateIcon: true,
       },
     },
@@ -60,7 +58,7 @@ module.exports = {
       name: '@electron-forge/maker-dmg',
       config: {
         icon: './static/icons/icon.icns',
-        name: 'Pastel Wallet Fullnode',
+        name: package.productName,
       },
     },
     {
@@ -68,8 +66,6 @@ module.exports = {
       config: {
         options: {
           icon: './static/icons/icon.png',
-          genericName: 'Wallet',
-          productName: 'Pastel Wallet Fullnode',
         },
       },
     },
