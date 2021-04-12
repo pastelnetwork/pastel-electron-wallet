@@ -67,29 +67,29 @@ class RouteApp extends React.Component<any, any> {
 
   rpc: any
   companionAppListener: any
+  rpcRefreshIntervalId = 0
 
-  componentDidMount() {
-    if (!this.rpc) {
-      this.rpc = new RPC(
-        this.setTotalBalance,
-        this.setAddressesWithBalances,
-        this.setTransactionList,
-        this.setAllAddresses,
-        this.setInfo,
-        this.setPslPrice,
-        this.setDisconnected,
-      )
-    } // Read the address book
+  async componentDidMount() {
+    const rpc = new RPC(
+      this.setTotalBalance,
+      this.setAddressesWithBalances,
+      this.setTransactionList,
+      this.setAllAddresses,
+      this.setInfo,
+      this.setPslPrice,
+      this.setDisconnected,
+    )
+    this.rpc = rpc
 
-    ;(async () => {
-      const addressBook = await AddressbookImpl.readAddressBook()
+    // Auto refresh every 10s
+    this.rpcRefreshIntervalId = window.setInterval(() => {
+      rpc.refresh()
+    }, 10000)
 
-      if (addressBook) {
-        this.setState({
-          addressBook,
-        })
-      }
-    })() // Setup the websocket for the companion app
+    const addressBook = await AddressbookImpl.readAddressBook()
+    if (addressBook) {
+      this.setState({ addressBook })
+    }
 
     this.companionAppListener = new CompanionAppListener(
       this.getFullState,
@@ -99,7 +99,9 @@ class RouteApp extends React.Component<any, any> {
     this.companionAppListener.setUp()
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    window.clearInterval(this.rpcRefreshIntervalId)
+  }
 
   getFullState = () => {
     return this.state
