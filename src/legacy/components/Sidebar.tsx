@@ -322,7 +322,12 @@ class Sidebar extends PureComponent<any, any> {
   } // Handle menu items
 
   setupMenuHandlers = async () => {
-    const { history, openErrorModal, closeErrorModal } = this.props // About
+    const {
+      history,
+      openErrorModal,
+      closeErrorModal,
+      openPastelPhotopeaModal,
+    } = this.props // About
 
     ipcRenderer.on('about', () => {
       openErrorModal(
@@ -460,6 +465,10 @@ class Sidebar extends PureComponent<any, any> {
 
     ipcRenderer.on('connectmobile', () => {
       history.push(routes.CONNECTMOBILE)
+    })
+
+    ipcRenderer.on('pastelPhotopea', () => {
+      openPastelPhotopeaModal()
     })
   }
   closeExportPrivKeysModal = () => {
