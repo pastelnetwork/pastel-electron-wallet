@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import PastelLoading from '../pastelLoading'
 import styles from './PastelPhotopeaModal.module.css'
 import { closePastelPhotopeaModal } from './PastelPhotopeaModalSlice'
 
@@ -29,18 +30,7 @@ export default function PastelPhotopeaModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          {isLoading && (
-            <div className={styles.loading}>
-              <div className={styles.loadingWrapper}>
-                <div className={styles.ldsEllipsis}>
-                  <div />
-                  <div />
-                  <div />
-                  <div />
-                </div>
-              </div>
-            </div>
-          )}
+          <PastelLoading loadingIsOpen={isLoading} />
           <iframe
             id='photopea'
             src='https://www.photopea.com'
