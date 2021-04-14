@@ -1,25 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import PastelLoading from '../pastelLoading'
 import styles from './PastelPhotopeaModal.module.css'
 import { closePastelPhotopeaModal } from './PastelPhotopeaModalSlice'
 
 export default function PastelPhotopeaModal(): JSX.Element {
   const { modalIsOpen } = useAppSelector(state => state.pastelPhotopeaModal)
   const dispatch = useAppDispatch()
-  const [isLoading, setIsLoading] = useState(true)
-
-  if (!modalIsOpen) {
-    return <></>
-  }
 
   return (
     <Modal
-      isOpen={modalIsOpen}
+      isOpen
       onRequestClose={() => dispatch(closePastelPhotopeaModal())}
       className={styles.modalWrapper}
+      overlayClassName={`${styles.overlay} ${modalIsOpen ? styles.open : ''}`}
     >
       <div className={styles.modalContent}>
         <button
@@ -30,12 +25,7 @@ export default function PastelPhotopeaModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <PastelLoading loadingIsOpen={isLoading} />
-          <iframe
-            id='photopea'
-            src='https://www.photopea.com'
-            onLoad={() => setTimeout(() => setIsLoading(false), 100)}
-          />
+          <iframe id='photopea' src='https://www.photopea.com' />
         </div>
       </div>
     </Modal>

@@ -1,7 +1,15 @@
+.overlay {
+  display: none;
+}
+
+.overlay.open {
+  display: block;
+}
+
 .modalWrapper {
   position: absolute;
-  padding: 20px;
-  inset: 40px;
+  padding: 0;
+  inset: 0;
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255);
   border-radius: 4px;
@@ -17,14 +25,14 @@
 
 .btn_close {
   position: absolute;
-  top: -40px;
-  right: -40px;
+  top: 5px;
+  right: 5px;
   display: block;
-  width: 40px;
-  height: 40px;
-  padding: 8px 16px;
+  width: 25px;
+  height: 25px;
+  padding: 0;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
   color: #000;
   text-align: center;
   border-radius: 100%;
@@ -33,6 +41,7 @@
   box-shadow: 0 4px 6px rgb(38 38 38 / 8%);
   cursor: pointer;
   outline: none;
+  z-index: 10;
 }
 
 .iframe {
