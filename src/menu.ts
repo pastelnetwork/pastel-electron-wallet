@@ -284,7 +284,7 @@ export default class MenuBuilder {
       label: 'Misc Tools',
       submenu: [
         {
-          label: 'Sprite Editor Tool',
+          label: 'Spritemate',
           click: () => {
             this.mainWindow.webContents.send('pastelSpriteEditorTool')
           },
@@ -381,7 +381,7 @@ export default class MenuBuilder {
         label: 'Misc Tools',
         submenu: [
           {
-            label: 'Sprite Editor Tool',
+            label: 'Spritemate',
             click: () => {
               this.mainWindow.webContents.send('pastelSpriteEditorTool')
             },
