@@ -1,0 +1,237 @@
+import { clipboard, shell } from 'electron'
+import QRCode from 'qrcode.react'
+import React, { useEffect, useState } from 'react'
+import {
+  AccordionItem,
+  AccordionItemButton,
+  AccordionItemHeading,
+  AccordionItemPanel,
+} from 'react-accessible-accordion'
+
+import Utils from '../../legacy/utils/utils'
+import styles from './PastelAddressBlock.module.css'
+
+type AddressBalanceProps = {
+  address: string
+  balance: number
+}
+
+type PastelAddressBlockProps = {
+  addressBalance: AddressBalanceProps
+  label?: string
+  currencyName: string
+  pslPrice: number
+  privateKey: string
+  fetchAndSetSinglePrivKey: (address: string, type?: string) => void
+  viewKey: string
+  fetchAndSetSingleViewKey: (address: string) => void
+  rerender: any
+  lastAccessed?: string
+}
+
+export default function PastelAddressBlock({
+  addressBalance,
+  label,
+  currencyName,
+  pslPrice,
+  privateKey,
+  fetchAndSetSinglePrivKey,
+  viewKey,
+  fetchAndSetSingleViewKey,
+  lastAccessed,
+}: PastelAddressBlockProps): JSX.Element {
+  const { address } = addressBalance
+  const [copied, setCopied] = useState(false)
+  const [timerID, setTimerID] = useState(null)
+  useEffect(() => {
+    return () => {
+      if (timerID) {
+        clearTimeout(timerID as any)
+      }
+    }
+  })
+  const balance = addressBalance.balance || 0
+
+  const openAddress = () => {
+    if (currencyName === 'LSP') {
+      shell.openExternal(`https://chain.so/address/PSLTEST/${address}`)
+    } else {
+      shell.openExternal(`https://explorer.pastel.network/address/${address}`)
+    }
+  }
+
+  return (
+    <AccordionItem
+      className={[styles.well, styles.receiveblock].join(' ')}
+      uuid={address}
+    >
+      <AccordionItemHeading>
+        <AccordionItemButton
+          className={[
+            styles.accordionHeader,
+            styles.flexspacebetween,
+            styles.itemsCenter,
+          ].join(' ')}
+        >
+          <span>{address}</span>
+          {lastAccessed && (
+            <span className={styles.lastAccessed}>
+              Last accessed {lastAccessed}
+            </span>
+          )}
+        </AccordionItemButton>
+      </AccordionItemHeading>
+      <AccordionItemPanel className={[styles.receiveDetail].join(' ')}>
+        <div className={[styles.flexspacebetween].join(' ')}>
+          <div className={[styles.verticalflex, styles.marginleft].join(' ')}>
+            {label && (
+              <div className={styles.margintoplarge}>
+                <div className={[styles.sublight].join(' ')}>Label</div>
+                <div
+                  className={[styles.padtopsmall, styles.fixedfont].join(' ')}
+                >
+                  {label}
+                </div>
+              </div>
+            )}
+
+            <div className={[styles.sublight, styles.margintopSmall].join(' ')}>
+              Funds
+            </div>
+            <div className={[styles.padtopsmall].join(' ')}>
+              {currencyName} {balance}
+            </div>
+            <div className={[styles.padtopsmall].join(' ')}>
+              {Utils.getPslToUsdString(pslPrice, balance)}
+            </div>
+            <div
+              className={[styles.margintoplarge, styles.breakword].join(' ')}
+            >
+              {privateKey && (
+                <div>
+                  <div className={[styles.sublight].join(' ')}>Private Key</div>
+                  <div
+                    className={[
+                      styles.breakword,
+                      styles.padtopsmall,
+                      styles.fixedfont,
+                    ].join(' ')}
+                    style={{
+                      maxWidth: '600px',
+                    }}
+                  >
+                    {privateKey}
+                    <div
+                      className={[styles.margintoplarge, styles.highlight].join(
+                        ' ',
+                      )}
+                    >
+                      <i
+                        className={[
+                          styles.yellow,
+                          styles.padrightsmall,
+                          styles.small,
+                          'fas',
+                          'fa-exclamation-triangle',
+                        ].join(' ')}
+                      />
+                      WARNING: DO NOT SEND TO ANYONE
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div
+              className={[styles.margintoplarge, styles.breakword].join(' ')}
+            >
+              {viewKey && (
+                <div>
+                  <div className={[styles.sublight].join(' ')}>Viewing Key</div>
+                  <div
+                    className={[
+                      styles.breakword,
+                      styles.padtopsmall,
+                      styles.fixedfont,
+                    ].join(' ')}
+                    style={{
+                      maxWidth: '600px',
+                    }}
+                  >
+                    {viewKey}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <button
+                className={[styles.primarybutton, styles.margintoplarge].join(
+                  ' ',
+                )}
+                type='button'
+                onClick={() => {
+                  clipboard.writeText(address)
+                  setCopied(true)
+                  setTimerID(setTimeout(() => setCopied(false), 5000) as any)
+                }}
+              >
+                {copied ? <span>Copied!</span> : <span>Copy Address</span>}
+              </button>
+              {!privateKey && (
+                <button
+                  className={[styles.primarybutton].join(' ')}
+                  type='button'
+                  onClick={() => fetchAndSetSinglePrivKey(address)}
+                >
+                  Export Private Key
+                </button>
+              )}
+
+              {Utils.isZaddr(address) && !viewKey && (
+                <button
+                  className={[styles.primarybutton].join(' ')}
+                  type='button'
+                  onClick={() => fetchAndSetSingleViewKey(address)}
+                >
+                  Export Viewing Key
+                </button>
+              )}
+
+              {Utils.isTransparent(address) && (
+                <button
+                  className={[styles.primarybutton].join(' ')}
+                  type='button'
+                  onClick={() => openAddress()}
+                >
+                  View on explorer{' '}
+                  <i
+                    className={['fas', 'fa-external-link-square-alt'].join(' ')}
+                  />
+                </button>
+              )}
+
+              <button
+                className={[styles.primarybutton, styles.buttomMarginTop].join(
+                  ' ',
+                )}
+                type='button'
+                onClick={() =>
+                  fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
+                }
+              >
+                Generate paper wallet
+              </button>
+            </div>
+          </div>
+          <div className={styles.margintopSmall}>
+            <QRCode
+              value={address}
+              className={[styles.receiveQrcode].join(' ')}
+            />
+          </div>
+        </div>
+      </AccordionItemPanel>
+    </AccordionItem>
+  )
+}

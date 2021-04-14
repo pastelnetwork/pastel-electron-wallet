@@ -1,229 +1,15 @@
 /* eslint-disable */
 
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import {
-  Accordion,
-  AccordionItem,
-  AccordionItemHeading,
-  AccordionItemButton,
-  AccordionItemPanel,
-} from 'react-accessible-accordion'
-import QRCode from 'qrcode.react'
-import { shell, clipboard } from 'electron'
+import { Accordion } from 'react-accessible-accordion'
 import styles from './Receive.module.css'
 import cstyles from './Common.module.css'
 import Utils from '../utils/utils'
-import {
-  AddressBalance,
-  Info,
-  ReceivePageState,
-  AddressBookEntry,
-} from './AppState'
+import { AddressBalance } from './AppState'
 import ScrollPane from './ScrollPane'
 import PastelPaperWalletModal from '../../features/pastelPaperWalletGenerator'
-
-const AddressBlock = ({
-  addressBalance,
-  label,
-  currencyName,
-  pslPrice,
-  privateKey,
-  fetchAndSetSinglePrivKey,
-  viewKey,
-  fetchAndSetSingleViewKey,
-}: any) => {
-  const { address } = addressBalance
-  const [copied, setCopied] = useState(false)
-  const [timerID, setTimerID] = useState(null)
-  useEffect(() => {
-    return () => {
-      if (timerID) {
-        clearTimeout(timerID as any)
-      }
-    }
-  })
-  const balance = addressBalance.balance || 0
-
-  const openAddress = () => {
-    if (currencyName === 'LSP') {
-      shell.openExternal(`https://chain.so/address/PSLTEST/${address}`)
-    } else {
-      shell.openExternal(`https://explorer.pastel.network/address/${address}`)
-    }
-  }
-
-  return (
-    <AccordionItem
-      className={[cstyles.well, styles.receiveblock].join(' ')}
-      uuid={address}
-    >
-      <AccordionItemHeading>
-        <AccordionItemButton className={cstyles.accordionHeader}>
-          {address}
-        </AccordionItemButton>
-      </AccordionItemHeading>
-      <AccordionItemPanel className={[styles.receiveDetail].join(' ')}>
-        <div className={[cstyles.flexspacebetween].join(' ')}>
-          <div className={[cstyles.verticalflex, cstyles.marginleft].join(' ')}>
-            {label && (
-              <div className={cstyles.margintoplarge}>
-                <div className={[cstyles.sublight].join(' ')}>Label</div>
-                <div
-                  className={[cstyles.padtopsmall, cstyles.fixedfont].join(' ')}
-                >
-                  {label}
-                </div>
-              </div>
-            )}
-
-            <div
-              className={[cstyles.sublight, cstyles.margintoplarge].join(' ')}
-            >
-              Funds
-            </div>
-            <div className={[cstyles.padtopsmall].join(' ')}>
-              {currencyName} {balance}
-            </div>
-            <div className={[cstyles.padtopsmall].join(' ')}>
-              {Utils.getPslToUsdString(pslPrice, balance)}
-            </div>
-            <div
-              className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}
-            >
-              {privateKey && (
-                <div>
-                  <div className={[cstyles.sublight].join(' ')}>
-                    Private Key
-                  </div>
-                  <div
-                    className={[
-                      cstyles.breakword,
-                      cstyles.padtopsmall,
-                      cstyles.fixedfont,
-                    ].join(' ')}
-                    style={{
-                      maxWidth: '600px',
-                    }}
-                  >
-                    {privateKey}
-                    <div
-                      className={[
-                        cstyles.margintoplarge,
-                        cstyles.highlight,
-                      ].join(' ')}
-                    >
-                      <i
-                        className={[
-                          cstyles.yellow,
-                          cstyles.padrightsmall,
-                          cstyles.small,
-                          'fas',
-                          'fa-exclamation-triangle',
-                        ].join(' ')}
-                      />
-                      WARNING: DO NOT SEND TO ANYONE
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div
-              className={[cstyles.margintoplarge, cstyles.breakword].join(' ')}
-            >
-              {viewKey && (
-                <div>
-                  <div className={[cstyles.sublight].join(' ')}>
-                    Viewing Key
-                  </div>
-                  <div
-                    className={[
-                      cstyles.breakword,
-                      cstyles.padtopsmall,
-                      cstyles.fixedfont,
-                    ].join(' ')}
-                    style={{
-                      maxWidth: '600px',
-                    }}
-                  >
-                    {viewKey}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div>
-              <button
-                className={[cstyles.primarybutton, cstyles.margintoplarge].join(
-                  ' ',
-                )}
-                type='button'
-                onClick={() => {
-                  clipboard.writeText(address)
-                  setCopied(true)
-                  setTimerID(setTimeout(() => setCopied(false), 5000) as any)
-                }}
-              >
-                {copied ? <span>Copied!</span> : <span>Copy Address</span>}
-              </button>
-              {!privateKey && (
-                <button
-                  className={[cstyles.primarybutton].join(' ')}
-                  type='button'
-                  onClick={() => fetchAndSetSinglePrivKey(address)}
-                >
-                  Export Private Key
-                </button>
-              )}
-
-              {Utils.isZaddr(address) && !viewKey && (
-                <button
-                  className={[cstyles.primarybutton].join(' ')}
-                  type='button'
-                  onClick={() => fetchAndSetSingleViewKey(address)}
-                >
-                  Export Viewing Key
-                </button>
-              )}
-
-              {Utils.isTransparent(address) && (
-                <button
-                  className={[cstyles.primarybutton].join(' ')}
-                  type='button'
-                  onClick={() => openAddress()}
-                >
-                  View on explorer{' '}
-                  <i
-                    className={['fas', 'fa-external-link-square-alt'].join(' ')}
-                  />
-                </button>
-              )}
-
-              <button
-                className={[cstyles.primarybutton, styles.buttomMarginTop].join(
-                  ' ',
-                )}
-                type='button'
-                onClick={() =>
-                  fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
-                }
-              >
-                Generate paper wallet
-              </button>
-            </div>
-          </div>
-          <div>
-            <QRCode
-              value={address}
-              className={[styles.receiveQrcode].join(' ')}
-            />
-          </div>
-        </div>
-      </AccordionItemPanel>
-    </AccordionItem>
-  )
-}
+import PastelAddressBlock from '../../features/pastelAddressBlock'
 
 export default class Receive extends Component<any> {
   render() {
@@ -299,7 +85,7 @@ export default class Receive extends Component<any> {
               <ScrollPane offsetHeight={100}>
                 <Accordion preExpanded={[defaultZaddr]}>
                   {zaddrs.map((a: any) => (
-                    <AddressBlock
+                    <PastelAddressBlock
                       key={a.address}
                       addressBalance={a}
                       currencyName={info.currencyName}
@@ -333,7 +119,7 @@ export default class Receive extends Component<any> {
               <ScrollPane offsetHeight={100}>
                 <Accordion preExpanded={[defaultTaddr]}>
                   {taddrs.map((a: any) => (
-                    <AddressBlock
+                    <PastelAddressBlock
                       key={a.address}
                       addressBalance={a}
                       currencyName={info.currencyName}
@@ -343,6 +129,7 @@ export default class Receive extends Component<any> {
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
                       rerender={(this as any).rerender}
+                      lastAccessed='4/8/2021 at 11:23 AM'
                     />
                   ))}
                 </Accordion>
