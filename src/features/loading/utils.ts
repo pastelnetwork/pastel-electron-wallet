@@ -30,14 +30,16 @@ export const checkHashAndDownloadParams = async ({
 
     onProgress(`Checking ${p.name}...`)
     const absPath = path.join(outputDir, p.name)
-    let exists = await new Promise(resolve => fs.exists(absPath, resolve))
-    const sha256 = exists && (await promisify(sha256File)(absPath))
+    let exists = fs.statSync(absPath).isFile()
+    const sha256 = exists && sha256File(absPath)
     if (exists && sha256 !== p.sha256) {
       // Remove corrupted file to re-download
       fs.unlinkSync(absPath)
       exists = false
+      console.log(1)
     }
     if (exists) {
+      console.log(2)
       continue
     }
 

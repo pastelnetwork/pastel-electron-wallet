@@ -1,31 +1,52 @@
 import fs from 'fs'
-import http, { Server } from 'http'
 import path from 'path'
+import request from 'request'
 
 import { checkHashAndDownloadParams } from '../utils'
 
-describe('loading/utils', () => {
-  // Build the mock server for downloading
-  let server: Server | null = null
-  beforeAll(async () => {
-    await new Promise((resolve, reject) => {
-      server = http.createServer((req, res) => {
-        // send the pathname to the response
-        res.end(req.url?.substr(1) || '')
-      })
-      server.listen(8444).once('listening', resolve).once('error', reject)
-    })
-  })
-  afterAll(async () => {
-    await new Promise((resolve, reject) => {
-      if (!server) {
-        resolve(undefined)
-        return
-      }
-      server.close(err => (err ? reject(err) : resolve(undefined)))
-    })
-  })
+// jest.mock('fs', () => ({
+//   existsSync: jest.fn(),
+//   mkdirSync: jest.fn(),
+//   exists: jest.fn(),
+//   unlinkSync: jest.fn(),
+//   createWriteStream: jest.fn(),
+// }))
 
+jest.mock('path', () => ({
+  join: jest.fn(),
+}))
+
+jest.mock('request', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+jest.mock('sha256-file', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
+
+jest.mock('fs', () => ({
+  __esModule: true,
+  default: {
+    existsSync: jest.fn(),
+    mkdirSync: jest.fn(),
+    exists: jest.fn(),
+    unlinkSync: jest.fn(),
+    createWriteStream: jest.fn(),
+    statSync: jest.fn(),
+  },
+}))
+
+jest.mock('request', () => {
+  return {
+    get: jest.fn().mockReturnValue({
+      on: jest.fn(),
+    }),
+  }
+})
+
+describe('loading/utils', () => {
   const params = [
     {
       name: 'abc.txt',
@@ -46,43 +67,28 @@ describe('loading/utils', () => {
         'fadfef49b40bf551a279f820bd863ac96aebcbf39b4431dff4f0d5cb62dd5303',
     },
   ]
-  const outputDir = __dirname
 
-  // Prepare existing mock files
-  beforeEach(() => {
-    const absPath0 = path.join(outputDir, params[0].name)
-    // abc.txt should not be replaced because of correct content
-    fs.writeFileSync(absPath0, 'abc')
-
-    const absPath1 = path.join(outputDir, params[1].name)
-    // xyz.txt should be removed and replaced because of incorrect content
-    fs.writeFileSync(absPath1, 'xyz1')
-
-    // tuv.txt will be created
-  })
-
-  // Remove mock files
-  afterEach(() => {
-    params.forEach(p => {
-      const absPath = path.join(outputDir, p.name)
-      if (fs.existsSync(absPath)) {
-        fs.unlinkSync(absPath)
-      }
+  test.only('should download all params correctly', async () => {
+    // Arrange
+    jest.spyOn(fs, 'mkdirSync').mockImplementation(() => 'string')
+    ;(jest.spyOn(fs, 'statSync') as jest.Mock).mockImplementation(() => ({
+      isFile: jest.fn(),
+    }))
+    ;(jest.spyOn(fs, 'createWriteStream') as jest.Mock).mockReturnValue({
+      on: jest.fn().mockImplementation((e: string, cb) => cb()),
+      close: jest.fn(),
     })
-  })
 
-  test('should download all params correctly', async () => {
-    const onProgress = jest.fn()
+    // Act
     await checkHashAndDownloadParams({
       params,
-      outputDir,
-      onProgress,
+      outputDir: 'a/b',
+      onProgress: jest.fn(),
     })
-    const absPath0 = path.join(outputDir, 'abc.txt')
+
+    // Assert
     expect(fs.readFileSync(absPath0, 'utf-8')).toEqual('abc')
-    const absPath1 = path.join(outputDir, 'xyz.txt')
     expect(fs.readFileSync(absPath1, 'utf-8')).toEqual('xyz')
-    const absPath2 = path.join(outputDir, 'tuv.txt')
     expect(fs.readFileSync(absPath2, 'utf-8')).toEqual('tuv')
   })
 
