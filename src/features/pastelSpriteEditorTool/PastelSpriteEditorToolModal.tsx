@@ -30,9 +30,7 @@ export default function PastelSpriteEditorToolModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe
-            src='https://www.spritemate.com/'
-          />
+          <iframe src='https://www.spritemate.com/' />
         </div>
       </div>
     </Modal>
