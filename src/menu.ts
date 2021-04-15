@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import { app, Menu, shell, BrowserWindow } from 'electron'
+import { app, Menu, shell } from 'electron'
+
 export default class MenuBuilder {
   constructor(public mainWindow: any) {}
 
@@ -279,6 +280,17 @@ export default class MenuBuilder {
         },
       ],
     }
+    const subMenuMiscTools = {
+      label: 'Misc Tools',
+      submenu: [
+        {
+          label: 'Spritemate',
+          click: () => {
+            this.mainWindow.webContents.send('pastelSpriteEditorTool')
+          },
+        },
+      ],
+    }
     const subMenuView =
       process.env.NODE_ENV === 'development' ? subMenuViewDev : subMenuViewProd
     return [
@@ -286,6 +298,7 @@ export default class MenuBuilder {
       subMenuFile,
       subMenuEdit,
       subMenuView,
+      subMenuMiscTools,
       subMenuWindow,
       subMenuHelp,
     ]
@@ -360,6 +373,17 @@ export default class MenuBuilder {
             label: 'pasteld info',
             click: () => {
               this.mainWindow.webContents.send('pasteld')
+            },
+          },
+        ],
+      },
+      {
+        label: 'Misc Tools',
+        submenu: [
+          {
+            label: 'Spritemate',
+            click: () => {
+              this.mainWindow.webContents.send('pastelSpriteEditorTool')
             },
           },
         ],
