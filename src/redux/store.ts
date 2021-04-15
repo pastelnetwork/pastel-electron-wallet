@@ -6,6 +6,7 @@ import { pastelIDReducer } from '../features/pastelID'
 import { pastelPaperWalletModalReducer } from '../features/pastelPaperWalletGenerator'
 import { pastelPhotopeaModalReducer } from '../features/pastelPhotopea'
 import { pastelPriceReducer } from '../features/pastelPrice'
+import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEditorTool'
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     pastelConf: pastelConfReducer,
     pastelPrice: pastelPriceReducer,
     pastelPaperWalletModal: pastelPaperWalletModalReducer,
+    pastelSpriteEditorToolModal: pastelSpriteEditorToolModalReducer,
     pastelPhotopeaModal: pastelPhotopeaModalReducer,
   },
 })

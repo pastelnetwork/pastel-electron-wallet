@@ -283,6 +283,12 @@ export default class MenuBuilder {
       label: 'Misc Tools',
       submenu: [
         {
+          label: 'Spritemate',
+          click: () => {
+            this.mainWindow.webContents.send('pastelSpriteEditorTool')
+          },
+        },
+        {
           label: 'Photopea',
           click: () => {
             this.mainWindow.webContents.send('pastelPhotopea')
@@ -379,6 +385,12 @@ export default class MenuBuilder {
       {
         label: 'Misc Tools',
         submenu: [
+          {
+            label: 'Spritemate',
+            click: () => {
+              this.mainWindow.webContents.send('pastelSpriteEditorTool')
+            },
+          },
           {
             label: 'Photopea',
             click: () => {
