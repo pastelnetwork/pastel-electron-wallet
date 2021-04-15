@@ -1,7 +1,6 @@
 /* eslint-disable */
 
-import { app, Menu, shell } from 'electron'
-
+import { app, Menu, shell, BrowserWindow } from 'electron'
 export default class MenuBuilder {
   constructor(public mainWindow: any) {}
 
@@ -289,6 +288,12 @@ export default class MenuBuilder {
             this.mainWindow.webContents.send('pastelSpriteEditorTool')
           },
         },
+        {
+          label: 'Photopea',
+          click: () => {
+            this.mainWindow.webContents.send('pastelPhotopea')
+          },
+        },
       ],
     }
     const subMenuView =
@@ -384,6 +389,12 @@ export default class MenuBuilder {
             label: 'Spritemate',
             click: () => {
               this.mainWindow.webContents.send('pastelSpriteEditorTool')
+            },
+          },
+          {
+            label: 'Photopea',
+            click: () => {
+              this.mainWindow.webContents.send('pastelPhotopea')
             },
           },
         ],

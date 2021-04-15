@@ -39,6 +39,9 @@ import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerat
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
 } from '../features/pastelSpriteEditorTool'
+import PastelPhotopeaModal, {
+  openPastelPhotopeaModal,
+} from '../features/pastelPhotopea'
 // @ts-ignore
 import ExpertConsole from './components/ExpertConsole'
 
@@ -453,6 +456,7 @@ class RouteApp extends React.Component<any, any> {
           modalIsOpen={errorModalData.modalIsOpen}
           closeModal={this.closeErrorModal}
         />
+        <PastelPhotopeaModal />
         <PastelSpriteEditorToolModal />
 
         <div
@@ -474,6 +478,7 @@ class RouteApp extends React.Component<any, any> {
                   this.props.openPastelSpriteEditorToolModal
                 }
                 {...(standardProps as any)}
+                openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
               />
             </div>
           )}
@@ -610,5 +615,6 @@ class RouteApp extends React.Component<any, any> {
 export default connect(null, {
   setPastelConf,
   openPastelPaperWalletModal,
+  openPastelPhotopeaModal,
   openPastelSpriteEditorToolModal,
 })(RouteApp)
