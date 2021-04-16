@@ -67,6 +67,21 @@ export default function PastelAddressBlock({
     }
   }
 
+  const getDiffDays = (date: Date) => {
+    const now = new Date()
+    const distance = now.getTime() - date.getTime()
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+
+    if (days < 1) {
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+      )
+      return `${hours} hours`
+    }
+
+    return `${days} days`
+  }
+
   const getLastAccessed = () => {
     if (!transactions) {
       return null
@@ -78,8 +93,9 @@ export default function PastelAddressBlock({
 
       return (
         <span className={styles.lastAccessed}>
-          Last accessed {dateformat(txDate, 'mmm dd, yyyy')} at{' '}
-          {dateformat(txDate, 'hh:MM tt')}
+          Last transaction to or from Address was {getDiffDays(txDate)} ago (
+          {dateformat(txDate, 'mmm dd, yyyy')} at{' '}
+          {dateformat(txDate, 'hh:MM tt')})
         </span>
       )
     }

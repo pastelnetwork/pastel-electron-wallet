@@ -108,6 +108,7 @@
 
 .lastAccessed {
   display: inline-block;
+  max-width: 218px;
   margin-left: 10px;
   font-size: 12px;
   font-style: italic;
