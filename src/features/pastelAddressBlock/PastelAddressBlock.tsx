@@ -1,3 +1,4 @@
+import dateformat from 'dateformat'
 import { clipboard, shell } from 'electron'
 import QRCode from 'qrcode.react'
 import React, { useEffect, useState } from 'react'
@@ -16,6 +17,12 @@ type AddressBalanceProps = {
   balance: number
 }
 
+type TransactionsProps = {
+  address: string
+  time: number
+  type: string
+}
+
 type PastelAddressBlockProps = {
   addressBalance: AddressBalanceProps
   label?: string
@@ -26,7 +33,7 @@ type PastelAddressBlockProps = {
   viewKey: string
   fetchAndSetSingleViewKey: (address: string) => void
   rerender: any
-  lastAccessed?: string
+  transactions?: [TransactionsProps]
 }
 
 export default function PastelAddressBlock({
@@ -38,7 +45,7 @@ export default function PastelAddressBlock({
   fetchAndSetSinglePrivKey,
   viewKey,
   fetchAndSetSingleViewKey,
-  lastAccessed,
+  transactions,
 }: PastelAddressBlockProps): JSX.Element {
   const { address } = addressBalance
   const [copied, setCopied] = useState(false)
@@ -60,6 +67,26 @@ export default function PastelAddressBlock({
     }
   }
 
+  const getLastAccessed = () => {
+    if (!transactions) {
+      return null
+    }
+
+    const transaction = transactions.filter(t => t.address === address)[0]
+    if (transaction && transaction.time) {
+      const txDate = new Date(transaction.time * 1000)
+
+      return (
+        <span className={styles.lastAccessed}>
+          Last accessed {dateformat(txDate, 'mmm dd, yyyy')} at{' '}
+          {dateformat(txDate, 'hh:MM tt')}
+        </span>
+      )
+    }
+
+    return null
+  }
+
   return (
     <AccordionItem
       className={[styles.well, styles.receiveblock].join(' ')}
@@ -74,11 +101,7 @@ export default function PastelAddressBlock({
           ].join(' ')}
         >
           <span>{address}</span>
-          {lastAccessed && (
-            <span className={styles.lastAccessed}>
-              Last accessed {lastAccessed}
-            </span>
-          )}
+          {getLastAccessed()}
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className={[styles.receiveDetail].join(' ')}>

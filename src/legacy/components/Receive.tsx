@@ -25,6 +25,7 @@ export default class Receive extends Component<any> {
       fetchAndSetSingleViewKey,
       createNewAddress,
       rerenderKey,
+      transactions,
     } = this.props // Convert the addressBalances into a map.
 
     const addressMap = addressesWithBalance.reduce((map: any, a: any) => {
@@ -129,7 +130,7 @@ export default class Receive extends Component<any> {
                       fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
                       fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
                       rerender={(this as any).rerender}
-                      lastAccessed='4/8/2021 at 11:23 AM'
+                      transactions={transactions}
                     />
                   ))}
                 </Accordion>
