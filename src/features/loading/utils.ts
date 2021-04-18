@@ -1,19 +1,36 @@
+import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
-import progress from 'progress-stream'
-import request from 'request'
 import sha256File from 'sha256-file'
-import { promisify } from 'util'
 
 export interface IDownloadItem {
   name: string
   url: string
   sha256: string
 }
+
 export interface ICheckHashAndDownloadParams {
   params: IDownloadItem[]
   outputDir: string
   onProgress: (msg: string) => void
+}
+
+type TProgressEvent = {
+  loaded: number
+  total: number
+}
+
+async function exists(path: string): Promise<boolean> {
+  try {
+    await fs.promises.stat(path)
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      return Promise.resolve(false)
+    } else {
+      throw new Error(`utils exists error: ${err.message}`)
+    }
+  }
+  return Promise.resolve(true)
 }
 
 export const checkHashAndDownloadParams = async ({
@@ -21,8 +38,9 @@ export const checkHashAndDownloadParams = async ({
   outputDir,
   onProgress,
 }: ICheckHashAndDownloadParams): Promise<void> => {
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir)
+  const dirExists = await exists(outputDir)
+  if (!dirExists) {
+    await fs.promises.mkdir(outputDir)
   }
 
   for (let i = 0; i < params.length; i++) {
@@ -30,51 +48,49 @@ export const checkHashAndDownloadParams = async ({
 
     onProgress(`Checking ${p.name}...`)
     const absPath = path.join(outputDir, p.name)
-    let exists = fs.statSync(absPath).isFile()
-    const sha256 = exists && sha256File(absPath)
-    if (exists && sha256 !== p.sha256) {
-      // Remove corrupted file to re-download
-      fs.unlinkSync(absPath)
-      exists = false
-      console.log(1)
-    }
-    if (exists) {
-      console.log(2)
+
+    const fileExists = await exists(absPath)
+    const sha256 = sha256File(absPath)
+
+    // console.log(fileExists, sha256)
+
+    if (fileExists && sha256 == p.sha256) {
       continue
+    } else {
+      await fs.promises.unlink(absPath)
     }
 
     onProgress(`Downloading ${p.name}...`)
 
-    await new Promise((resolve, reject) => {
-      const file = fs.createWriteStream(absPath)
-      const req = request.get(p.url)
-      req.on('response', res => {
-        if (res.statusCode !== 200) {
-          const err = `Response status was ${res.statusCode}`
-          reject(err)
-          return
-        }
-        const contentLength = parseInt(res.headers['content-length'] || '0', 10)
-        const total = (contentLength / 1024 / 1024).toFixed(0)
-        const str = progress({ time: 1000 }, pgrs => {
-          const trans = (pgrs.transferred / 1024 / 1024).toFixed(0)
-          onProgress(`Downloading ${p.name}... (${trans} MB / ${total} MB)`)
-        })
-        req.pipe(str).pipe(file)
+    const resp = await axios({
+      url: p.url,
+      method: 'GET',
+      responseType: 'stream',
+      onDownloadProgress: (e: TProgressEvent) => {
+        const percentage = Math.round((e.loaded * 100) / e.total)
+        onProgress(`Downloading ${p.name}: ${percentage}%`)
+      },
+    })
+
+    if (resp.status !== 200) {
+      throw new Error(
+        'utils checkHashAndDownloadParams axios.get error: can not download file',
+      )
+    }
+
+    const writer = fs.createWriteStream(absPath)
+
+    resp.data.pipe(writer)
+
+    return new Promise((resolve, reject) => {
+      writer.on('finish', () => {
+        writer.close()
+        resolve()
       })
-      file.on('finish', () => {
-        file.close()
-        resolve(undefined)
-      })
-      req.on('error', err => {
-        reject(err.message)
-        file.close()
-        fs.unlinkSync(absPath)
-      })
-      file.on('error', err => {
-        reject(err.message)
-        file.close()
-        fs.unlinkSync(absPath)
+      writer.on('error', e => {
+        writer.close()
+        fs.promises.unlink(absPath)
+        reject(e)
       })
     })
   }
