@@ -51,9 +51,10 @@ function PastelID(props: PastelIDProps): JSX.Element {
   })
 
   const [passphrase, setPassphrase] = useState('')
-  const [selectedAddress, setSelectedAddress] = useState(
-    generatedAddressesWithBalanceOptions()[0],
-  )
+  const [selectedAddress, setSelectedAddress] = useState({
+    value: '',
+    label: 'Select an address',
+  })
 
   const { loading, pastelIDs } = useAppSelector(state => state.pastelID)
   const pastelConfig = useAppSelector(state => state.pastelConf)
@@ -83,7 +84,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
         return
       }
       let address: string = selectedAddress?.value
-      if (!selectedAddress) {
+      if (!selectedAddress || !selectedAddress.value) {
         const newAddress = await createNewAddress(false)
         const newSelectedAddress = {
           value: newAddress,
@@ -174,6 +175,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
                 value={selectedAddress}
                 options={generatedAddressesWithBalanceOptions()}
                 onChange={onAddressChange}
+                placeholder='Select an address'
               />
             </div>
 
