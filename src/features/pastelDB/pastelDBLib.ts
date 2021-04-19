@@ -1,4 +1,5 @@
-import initSqlJs, { Database, QueryExecResult } from 'sql.js'
+/* eslint-disable */
+import { Database, QueryExecResult } from 'sql.js'
 
 import {
   create_block,
@@ -37,6 +38,8 @@ import {
   TxoutsetInfo,
   WalletInfo,
 } from '../type'
+
+const initSqlJs = require('./sql-wasm.js')
 
 export const createDatabase = async (): Promise<Database> => {
   const SQL = await initSqlJs({
