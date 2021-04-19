@@ -1,6 +1,7 @@
-import axios from 'axios'
 import fs from 'fs'
 import path from 'path'
+import progress from 'progress-stream'
+import request from 'request'
 import sha256File from 'sha256-file'
 
 export interface IDownloadItem {
@@ -13,11 +14,6 @@ export interface ICheckHashAndDownloadParams {
   params: IDownloadItem[]
   outputDir: string
   onProgress: (msg: string) => void
-}
-
-type TProgressEvent = {
-  loaded: number
-  total: number
 }
 
 async function exists(path: string): Promise<boolean> {
@@ -38,6 +34,8 @@ export const checkHashAndDownloadParams = async ({
   outputDir,
   onProgress,
 }: ICheckHashAndDownloadParams): Promise<void> => {
+  const promises: Promise<void>[] = []
+
   const dirExists = await exists(outputDir)
   if (!dirExists) {
     await fs.promises.mkdir(outputDir)
@@ -50,48 +48,67 @@ export const checkHashAndDownloadParams = async ({
     const absPath = path.join(outputDir, p.name)
 
     const fileExists = await exists(absPath)
-    const sha256 = sha256File(absPath)
 
-    // console.log(fileExists, sha256)
+    if (fileExists) {
+      const sha256 = sha256File(absPath)
 
-    if (fileExists && sha256 == p.sha256) {
-      continue
-    } else {
-      await fs.promises.unlink(absPath)
-    }
+      if (sha256 == p.sha256) {
+        continue
+      }
 
-    onProgress(`Downloading ${p.name}...`)
-
-    const resp = await axios({
-      url: p.url,
-      method: 'GET',
-      responseType: 'stream',
-      onDownloadProgress: (e: TProgressEvent) => {
-        const percentage = Math.round((e.loaded * 100) / e.total)
-        onProgress(`Downloading ${p.name}: ${percentage}%`)
-      },
-    })
-
-    if (resp.status !== 200) {
-      throw new Error(
-        'utils checkHashAndDownloadParams axios.get error: can not download file',
-      )
+      try {
+        await fs.promises.unlink(absPath)
+      } catch (error) {
+        throw new Error(
+          `utils checkHashAndDownloadParams error: ${error.message}`,
+        )
+      }
     }
 
     const writer = fs.createWriteStream(absPath)
+    onProgress(`Downloading ${p.name}...`)
 
-    resp.data.pipe(writer)
+    const r = request.get(p.url)
 
-    return new Promise((resolve, reject) => {
+    r.on('response', resp => {
+      if (resp.statusCode !== 200) {
+        throw new Error(
+          'utils checkHashAndDownloadParams request.get error: can not download file',
+        )
+      }
+
+      const total = parseInt(resp.headers['content-length'] || '0', 10)
+      const str = progress({ time: 100 }, pgrs => {
+        const percentage = Math.round((pgrs.transferred * 100) / total)
+        onProgress(`Downloading ${p.name}... ${percentage}%`)
+      })
+
+      resp.pipe(str).pipe(writer)
+    })
+
+    const promise = new Promise<void>((resolve, reject) => {
       writer.on('finish', () => {
         writer.close()
         resolve()
       })
-      writer.on('error', e => {
+
+      writer.on('error', async e => {
         writer.close()
-        fs.promises.unlink(absPath)
-        reject(e)
+        try {
+          await fs.promises.unlink(absPath)
+        } catch (error) {
+          throw new Error(
+            'utils checkHashAndDownloadParams request.get error: error deleting file',
+          )
+        }
+        reject(`utils wricheckHashAndDownloadParamster error: ${e.message}`)
       })
     })
+
+    promises.push(promise)
+  }
+
+  for (const promise in promises) {
+    await promise
   }
 }

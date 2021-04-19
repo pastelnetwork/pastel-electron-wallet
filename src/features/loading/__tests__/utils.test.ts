@@ -1,159 +1,160 @@
-import fs, { promises } from 'fs'
-import path from 'path'
+// import * as axios from 'axios'
+import fs from 'fs'
 import request from 'request'
-import { PassThrough } from 'stream'
+import * as sha256File from 'sha256-file'
+import { Readable, Writable } from 'stream'
 
 import { checkHashAndDownloadParams } from '../utils'
 
-// jest.mock('fs', () => ({
-//   existsSync: jest.fn(),
-//   mkdirSync: jest.fn(),
-//   exists: jest.fn(),
-//   unlinkSync: jest.fn(),
-//   createWriteStream: jest.fn(),
-// }))
-
-// jest.mock('path', () => ({
-//   join: jest.fn(),
-// }))
-
-// jest.mock('request', () => ({
-//   __esModule: true,
-//   default: jest.fn(),
-// }))
+jest.mock('request', () => ({
+  get: jest.fn(),
+}))
 
 jest.mock('sha256-file', () => ({
   __esModule: true,
   default: jest.fn(),
 }))
 
-// jest.mock('fs', () => ({
-//   __esModule: true,
-//   default: {
-//     existsSync: jest.fn(),
-//     mkdirSync: jest.fn(),
-//     exists: jest.fn(),
-//     unlinkSync: jest.fn(),
-//     createWriteStream: jest.fn(),
-//     statSync: jest.fn(),
-//   },
-// }))
-
-// jest.mock('request', () => {
-//   return {
-//     get: jest.fn().mockReturnValue({
-//       on: jest.fn(),
-//     }),
-//   }
-// })
-
 jest.mock('fs', () => ({
-  // Arrange
   promises: {
-    stat: jest.fn().mockResolvedValue(true),
-    mkdir: jest.fn().mockResolvedValue(true),
-    unlink: jest.fn().mockResolvedValue(true),
+    stat: jest.fn(),
+    mkdir: jest.fn(),
+    unlink: jest.fn(),
   },
-  createWriteStream: jest.fn().mockReturnValue({ on: jest.fn() }),
+  createWriteStream: jest.fn(),
 }))
 
 jest.mock('path', () => ({
-  __esModule: true,
-  default: {
-    join: jest.fn().mockReturnValue('a/b'),
-  },
+  join: jest.fn(),
 }))
 
 jest.mock('sha256-file', () => ({
   __esModule: true,
-  default: jest.fn().mockResolvedValue(true),
-}))
-
-jest.mock('axios', () => ({
-  __esModule: true,
-  default: jest.fn().mockResolvedValue({
-    status: 200,
-    data: {
-      pipe: jest.fn(),
-    },
-  }),
+  default: jest.fn().mockResolvedValue(false),
 }))
 
 describe('loading/utils', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+    jest.clearAllMocks()
+  })
+
   const params = [
     {
       name: 'abc.txt',
       url: 'http://localhost:8444/abc',
-      sha256:
-        'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad',
+      sha256: 'correct sha',
     },
     {
       name: 'xyz.txt',
       url: 'http://localhost:8444/xyz',
-      sha256:
-        '3608bca1e44ea6c4d268eb6db02260269892c0b42b86bbf1e77a6fa16c3c9282',
+      sha256: 'correct sha',
     },
     {
       name: 'tuv.txt',
       url: 'http://localhost:8444/tuv',
-      sha256:
-        'fadfef49b40bf551a279f820bd863ac96aebcbf39b4431dff4f0d5cb62dd5303',
+      sha256: 'correct sha',
     },
   ]
 
-  test.only('should download all params correctly', async () => {
-    const mockWritable = new PassThrough()
-
-    const statSpy = jest.spyOn(fs.promises, 'stat').mockRejectedValue({
+  test('should download all params correctly', async () => {
+    // Arrange
+    jest.spyOn(fs.promises, 'stat').mockRejectedValue({
       code: 'ENOENT',
     })
 
-    const writerSpy = jest.spyOn(fs, 'createWriteStream') as jest.Mock
-    writerSpy.mockReturnValueOnce(mockWritable)
+    const readableMock = new Readable()
+    const requestSpy = jest.spyOn(request, 'get') as jest.SpyInstance
+    requestSpy.mockReturnValue(readableMock)
+
+    const mockWritable = new WritableMock()
+    const writerSpy = jest.spyOn(fs, 'createWriteStream') as jest.SpyInstance
+    writerSpy.mockReturnValue(mockWritable)
 
     // Act
-    const res = checkHashAndDownloadParams({
-      params,
-      outputDir: 'a/b',
-      onProgress: jest.fn(),
-    })
     setTimeout(() => {
       mockWritable.emit('finish')
     }, 100)
 
+    const res = await checkHashAndDownloadParams({
+      params,
+      outputDir: 'a/b',
+      onProgress: jest.fn(),
+    })
+
     // Assert
-    expect(statSpy).toBeCalled()
+    expect(requestSpy).toBeCalledTimes(params.length)
     expect(writerSpy).toBeCalledTimes(params.length)
-    expect(res).resolves.toBeUndefined()
   })
 
-  // test('should not remove/re-download valid params', async () => {
-  //   const onProgress = jest.fn()
-  //   await checkHashAndDownloadParams({
-  //     params,
-  //     outputDir,
-  //     onProgress,
-  //   })
-  //   // abc.txt is mocked with correct data, so it should not be re-downloaded
-  //   expect(
-  //     onProgress.mock.calls.some(c => c[0] === 'Downloading abc.txt...'),
-  //   ).toEqual(false)
-  // })
+  test('should not remove/re-download valid params', async () => {
+    // Arrange
+    const statSpy = jest.spyOn(fs.promises, 'stat') as jest.SpyInstance
+    statSpy.mockResolvedValue(true)
 
-  // test('should remove/re-download invalid params', async () => {
-  //   const onProgress = jest.fn()
-  //   await checkHashAndDownloadParams({
-  //     params,
-  //     outputDir,
-  //     onProgress,
-  //   })
-  //   // xyz.txt is mocked with incorrect data, so it should be re-downloaded
-  //   expect(
-  //     onProgress.mock.calls.some(c => c[0] === 'Downloading xyz.txt...'),
-  //   ).toEqual(true)
-  //   // tuv.txt is not existed on each mock, so it should be re-downloaded
-  //   expect(
-  //     onProgress.mock.calls.some(c => c[0] === 'Downloading tuv.txt...'),
-  //   ).toEqual(true)
-  // })
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
+    jest.spyOn(sha256File, 'default').mockReturnValue('correct sha')
+
+    const readableMock = new Readable()
+    const requestSpy = jest.spyOn(request, 'get') as jest.SpyInstance
+    requestSpy.mockReturnValue(readableMock)
+
+    // Act
+    const res = await checkHashAndDownloadParams({
+      params,
+      outputDir: 'a/b',
+      onProgress: jest.fn(),
+    })
+
+    // Assert
+    expect(unlinkSpy).toBeCalledTimes(0)
+    expect(requestSpy).toBeCalledTimes(0)
+  })
+
+  test('should remove/re-download invalid params', async () => {
+    // Arrange
+    const newParams = [...params]
+
+    newParams[0] = {
+      name: 'abc.txt',
+      url: 'http://localhost:8444/abc',
+      sha256: 'incorrect sha',
+    }
+    const onProgressSpy = jest.fn()
+
+    const statSpy = jest.spyOn(fs.promises, 'stat') as jest.SpyInstance
+    statSpy.mockResolvedValue(true)
+
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
+    jest.spyOn(sha256File, 'default').mockReturnValue('correct sha')
+
+    const readableMock = new Readable()
+    const requestSpy = jest.spyOn(request, 'get') as jest.SpyInstance
+    requestSpy.mockReturnValue(readableMock)
+
+    const mockWritable = new WritableMock()
+    const writerSpy = jest.spyOn(fs, 'createWriteStream') as jest.SpyInstance
+    writerSpy.mockReturnValue(mockWritable)
+
+    // Act
+    setTimeout(() => {
+      mockWritable.emit('finish')
+    }, 100)
+
+    const res = await checkHashAndDownloadParams({
+      params: newParams,
+      outputDir: 'a/b',
+      onProgress: onProgressSpy,
+    })
+
+    expect(unlinkSpy).toBeCalledTimes(1)
+    expect(onProgressSpy).toHaveBeenCalledWith('Downloading abc.txt...')
+    expect(requestSpy).toBeCalledTimes(1)
+  })
 })
+
+class WritableMock extends Writable {
+  close() {
+    return 'mock me'
+  }
+}
