@@ -1,4 +1,3 @@
-// import * as axios from 'axios'
 import fs from 'fs'
 import request from 'request'
 import * as sha256File from 'sha256-file'
