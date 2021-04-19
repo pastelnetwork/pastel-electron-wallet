@@ -76,7 +76,7 @@ describe('loading/utils', () => {
       mockWritable.emit('finish')
     }, 100)
 
-    const res = await checkHashAndDownloadParams({
+    await checkHashAndDownloadParams({
       params,
       outputDir: 'a/b',
       onProgress: jest.fn(),
@@ -100,7 +100,7 @@ describe('loading/utils', () => {
     requestSpy.mockReturnValue(readableMock)
 
     // Act
-    const res = await checkHashAndDownloadParams({
+    await checkHashAndDownloadParams({
       params,
       outputDir: 'a/b',
       onProgress: jest.fn(),
@@ -141,7 +141,7 @@ describe('loading/utils', () => {
       mockWritable.emit('finish')
     }, 100)
 
-    const res = await checkHashAndDownloadParams({
+    await checkHashAndDownloadParams({
       params: newParams,
       outputDir: 'a/b',
       onProgress: onProgressSpy,
