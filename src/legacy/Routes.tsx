@@ -89,7 +89,9 @@ class RouteApp extends React.Component<any, any> {
 
     // Auto refresh every 10s
     this.rpcRefreshIntervalId = window.setInterval(() => {
-      rpc.refresh()
+      if (this.state.rpcConfig.username) {
+        rpc.refresh()
+      }
     }, 10000)
 
     const addressBook = await AddressbookImpl.readAddressBook()
@@ -594,7 +596,11 @@ class RouteApp extends React.Component<any, any> {
                   <LoadingScreen
                     setRPCConfig={(rpcConfig: any) => {
                       // To support Redux calls
-                      this.props.setPastelConf(rpcConfig)
+                      this.props.setPastelConf({
+                        url: rpcConfig.url,
+                        username: rpcConfig.username,
+                        password: rpcConfig.password,
+                      })
 
                       // To support legacy calls
                       // TODO Remove then fully moved over to Redux
