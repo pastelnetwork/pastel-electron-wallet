@@ -29,7 +29,7 @@ jest.mock('path', () => ({
 
 jest.mock('sha256-file', () => ({
   __esModule: true,
-  default: jest.fn().mockResolvedValue(false),
+  default: jest.fn(),
 }))
 
 describe('loading/utils', () => {
