@@ -4,13 +4,10 @@ import React, { Component } from 'react'
 import { Redirect, withRouter } from 'react-router'
 import ini from 'ini'
 import fs from 'fs'
-import request from 'request'
-import progress from 'progress-stream'
 import os from 'os'
 import path from 'path'
 import { remote, ipcRenderer } from 'electron'
 import { spawn } from 'child_process'
-import { promisify } from 'util'
 import routes from '../constants/routes.json'
 import { RPCConfig } from './AppState'
 import RPC from '../rpc'
@@ -20,6 +17,7 @@ import { NO_CONNECTION } from '../utils/utils'
 import Logo from '../assets/img/pastel-logo.png'
 import pasteldlogo from '../assets/img/pastel-logo2.png'
 import process from 'process'
+import { checkHashAndDownloadParams } from '../../features/loading'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -103,109 +101,55 @@ class LoadingScreen extends Component<any, any> {
     })()
   }
 
-  download = (url: any, dest: any, name: any, cb: any) => {
-    const file = fs.createWriteStream(dest)
-    const sendReq = request.get(url) // verify response code
-
-    sendReq.on('response', response => {
-      if (response.statusCode !== 200) {
-        return cb(`Response status was ${response.statusCode}`)
-      }
-
-      const totalSize = (
-        parseInt(response.headers['content-length'] as any, 10) /
-        1024 /
-        1024
-      ).toFixed(0)
-      const str = progress(
-        {
-          time: 1000,
-        },
-        pgrs => {
-          this.setState({
-            currentStatus: `Downloading ${name}... (${(
-              pgrs.transferred /
-              1024 /
-              1024
-            ).toFixed(0)} MB / ${totalSize} MB)`,
-          })
-        },
-      )
-      sendReq.pipe(str).pipe(file)
-    }) // close() is async, call cb after close completes
-
-    file.on('finish', () => {
-      file.close()
-      cb()
-    }) // check for request errors
-
-    sendReq.on('error', err => {
-      // @ts-ignore
-      fs.unlink(dest)
-      return cb(err.message)
-    })
-    file.on('error', err => {
-      // Handle errors
-      // @ts-ignore
-      fs.unlink(dest) // Delete the file async. (But we don't check the result)
-
-      return cb(err.message)
-    })
-  }
   ensurePastelParams = async () => {
-    // Check if the pastel params dir exists and if the params files are present
-    const dir = locatePastelParamsDir()
-
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir)
-    }
-
     const params = [
       {
         name: 'sapling-output.params',
         url: 'https://z.cash/downloads/sapling-output.params',
+        sha256:
+          '2f0ebbcbb9bb0bcffe95a397e7eba89c29eb4dde6191c339db88570e3f3fb0e4',
       },
       {
         name: 'sapling-spend.params',
         url: 'https://z.cash/downloads/sapling-spend.params',
+        sha256:
+          '8e48ffd23abb3a5fd9c5589204f32d9c31285a04b78096ba40a79b75677efc13',
       },
       {
         name: 'sprout-groth16.params',
         url: 'https://z.cash/downloads/sprout-groth16.params',
+        sha256:
+          'b685d700c60328498fbde589c8c7c484c722b788b265b72af448a5bf0ee55b50',
       },
       {
         name: 'sprout-proving.key',
         url: 'https://z.cash/downloads/sprout-proving.key',
+        sha256:
+          '8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7',
       },
       {
         name: 'sprout-verifying.key',
         url: 'https://z.cash/downloads/sprout-verifying.key',
+        sha256:
+          '4bd498dae0aacfd8e98dc306338d017d9c08dd0918ead18172bd0aec2fc5df82',
       },
     ]
+    this.setState({ errorEnsurePastelParams: false })
 
-    for (let i = 0; i < params.length; i++) {
-      const p = params[i]
-      const fileName = path.join(dir, p.name)
-
-      if (!fs.existsSync(fileName)) {
-        // Download and save this file
-        this.setState({
-          currentStatus: `Downloading ${p.name}...`,
-        })
-
-        try {
-          await promisify(this.download)(p.url, fileName, p.name)
-        } catch (err) {
-          console.log(`error: ${err}`)
-          this.setState({
-            currentStatus: `Error downloading ${p.name}. The error was: ${err}`,
-          })
-          return false
-        }
-      }
+    try {
+      await checkHashAndDownloadParams({
+        params,
+        outputDir: locatePastelParamsDir(),
+        onProgress: currentStatus => this.setState({ currentStatus }),
+      })
+      return true
+    } catch (err) {
+      this.setState({
+        currentStatus: `Error downloading params. The error was: ${err}`,
+        errorEnsurePastelParams: true,
+      })
+      return false
     }
-
-    return true
   }
 
   async loadPastelConf(createIfMissing: any) {
@@ -440,6 +384,7 @@ class LoadingScreen extends Component<any, any> {
       creatingPastelConf,
       connectOverTor,
       enableFastSync,
+      errorEnsurePastelParams,
     } = this.state // If still loading, show the status
 
     if (!loadingDone) {
@@ -454,7 +399,20 @@ class LoadingScreen extends Component<any, any> {
               >
                 <img src={Logo} width='200px;' alt='Logo' />
               </div>
-              <div>{currentStatus}</div>
+              <div>
+                {currentStatus}
+                {errorEnsurePastelParams && (
+                  <>
+                    {' '}
+                    <span
+                      className={styles.clickable}
+                      onClick={this.ensurePastelParams}
+                    >
+                      Retry
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
           )}
 

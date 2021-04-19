@@ -1,3 +1,7 @@
 .loadingcontainer {
   margin-left: -20%;
 }
+.clickable {
+  text-decoration: underline;
+  cursor: pointer;
+}
