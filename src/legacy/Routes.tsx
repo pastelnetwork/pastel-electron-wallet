@@ -36,6 +36,12 @@ import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
+import PastelSpriteEditorToolModal, {
+  openPastelSpriteEditorToolModal,
+} from '../features/pastelSpriteEditorTool'
+import PastelPhotopeaModal, {
+  openPastelPhotopeaModal,
+} from '../features/pastelPhotopea'
 // @ts-ignore
 import ExpertConsole from './components/ExpertConsole'
 
@@ -452,6 +458,8 @@ class RouteApp extends React.Component<any, any> {
           modalIsOpen={errorModalData.modalIsOpen}
           closeModal={this.closeErrorModal}
         />
+        <PastelPhotopeaModal />
+        <PastelSpriteEditorToolModal />
 
         <div
           style={{
@@ -468,7 +476,11 @@ class RouteApp extends React.Component<any, any> {
                 importANIPrivKeys={this.importANIPrivKeys}
                 addresses={addresses}
                 transactions={transactions}
+                openPastelSpriteEditorToolModal={
+                  this.props.openPastelSpriteEditorToolModal
+                }
                 {...(standardProps as any)}
+                openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
               />
             </div>
           )}
@@ -606,6 +618,9 @@ class RouteApp extends React.Component<any, any> {
   }
 }
 
-export default connect(null, { setPastelConf, openPastelPaperWalletModal })(
-  RouteApp,
-)
+export default connect(null, {
+  setPastelConf,
+  openPastelPaperWalletModal,
+  openPastelPhotopeaModal,
+  openPastelSpriteEditorToolModal,
+})(RouteApp)
