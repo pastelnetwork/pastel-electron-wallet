@@ -1,5 +1,5 @@
-const { result } = require('underscore')
 const os = require('os')
+const package = require('./package.json')
 
 function getExtraResource() {
   const p = os.platform()
@@ -17,29 +17,56 @@ function getExtraResource() {
   }
 }
 
+function getIcon() {
+  const p = os.platform()
+  switch (p) {
+    case 'darwin':
+      return './static/icons/icon.icns'
+    case 'linux':
+      return './static/icons/icon.png'
+    case 'win32':
+      return './static/icons/icon.ico'
+    default:
+      throw new Error(
+        'forge.config.js error: your OS is not supported. Supported OS are: darwin, linux, win32',
+      )
+  }
+}
+
 module.exports = {
   packagerConfig: {
-    name: 'pastelwallet',
+    name: package.productName,
+    executableName: package.name,
+    icon: getIcon(),
     asar: true,
     extraResource: getExtraResource(),
   },
   makers: [
     {
-      name: '@electron-forge/maker-zip',
-    },
-    {
       name: '@electron-forge/maker-squirrel',
+      config: {
+        setupIcon: './static/icons/icon.ico',
+        loadingGif: './static/icons/icon.gif',
+        iconUrl:
+          'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
+        title: package.productName,
+        setupExe: `${package.productName} Setup - v${package.version}.exe`,
+        skipUpdateIcon: true,
+      },
     },
     {
       name: '@electron-forge/maker-dmg',
       config: {
-        'icon:': './static/icons/icon.icns',
+        icon: './static/icons/icon.icns',
+        name: package.productName,
       },
     },
     {
       name: '@electron-forge/maker-deb',
-      options: {
-        icon: './static/icons/icon.png',
+      config: {
+        options: {
+          icon: './static/icons/icon.png',
+        },
       },
     },
   ],

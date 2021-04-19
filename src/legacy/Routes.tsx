@@ -36,6 +36,13 @@ import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
 import { PastelDBThread } from '../features/pastelDB'
+import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
+import PastelSpriteEditorToolModal, {
+  openPastelSpriteEditorToolModal,
+} from '../features/pastelSpriteEditorTool'
+import PastelPhotopeaModal, {
+  openPastelPhotopeaModal,
+} from '../features/pastelPhotopea'
 // @ts-ignore
 import ExpertConsole from './components/ExpertConsole'
 
@@ -67,29 +74,31 @@ class RouteApp extends React.Component<any, any> {
 
   rpc: any
   companionAppListener: any
+  rpcRefreshIntervalId = 0
 
-  componentDidMount() {
-    if (!this.rpc) {
-      this.rpc = new RPC(
-        this.setTotalBalance,
-        this.setAddressesWithBalances,
-        this.setTransactionList,
-        this.setAllAddresses,
-        this.setInfo,
-        this.setPslPrice,
-        this.setDisconnected,
-      )
-    } // Read the address book
+  async componentDidMount() {
+    const rpc = new RPC(
+      this.setTotalBalance,
+      this.setAddressesWithBalances,
+      this.setTransactionList,
+      this.setAllAddresses,
+      this.setInfo,
+      this.setPslPrice,
+      this.setDisconnected,
+    )
+    this.rpc = rpc
 
-    ;(async () => {
-      const addressBook = await AddressbookImpl.readAddressBook()
-
-      if (addressBook) {
-        this.setState({
-          addressBook,
-        })
+    // Auto refresh every 10s
+    this.rpcRefreshIntervalId = window.setInterval(() => {
+      if (this.state.rpcConfig.username) {
+        rpc.refresh()
       }
-    })() // Setup the websocket for the companion app
+    }, 10000)
+
+    const addressBook = await AddressbookImpl.readAddressBook()
+    if (addressBook) {
+      this.setState({ addressBook })
+    }
 
     this.companionAppListener = new CompanionAppListener(
       this.getFullState,
@@ -99,7 +108,9 @@ class RouteApp extends React.Component<any, any> {
     this.companionAppListener.setUp()
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    window.clearInterval(this.rpcRefreshIntervalId)
+  }
 
   getFullState = () => {
     return this.state
@@ -348,13 +359,20 @@ class RouteApp extends React.Component<any, any> {
     return this.rpc.getPrivKeyAsString(address)
   } // Getter methods, which are called by the components to update the state
 
-  fetchAndSetSinglePrivKey = async (address: any) => {
+  fetchAndSetSinglePrivKey = async (address: any, type: string = '') => {
     const key = await this.rpc.getPrivKeyAsString(address)
     const addressPrivateKeys: any = {}
     addressPrivateKeys[address] = key
-    this.setState({
-      addressPrivateKeys,
-    })
+    if (type === 'generatePaperWallet') {
+      this.props.openPastelPaperWalletModal({
+        address,
+        privateKey: addressPrivateKeys?.[address],
+      })
+    } else {
+      this.setState({
+        addressPrivateKeys,
+      })
+    }
   }
   fetchAndSetSingleViewKey = async (address: any) => {
     const key = await this.rpc.getViewKeyAsString(address)
@@ -440,6 +458,8 @@ class RouteApp extends React.Component<any, any> {
           modalIsOpen={errorModalData.modalIsOpen}
           closeModal={this.closeErrorModal}
         />
+        <PastelPhotopeaModal />
+        <PastelSpriteEditorToolModal />
 
         <div
           style={{
@@ -456,7 +476,11 @@ class RouteApp extends React.Component<any, any> {
                 importANIPrivKeys={this.importANIPrivKeys}
                 addresses={addresses}
                 transactions={transactions}
+                openPastelSpriteEditorToolModal={
+                  this.props.openPastelSpriteEditorToolModal
+                }
                 {...(standardProps as any)}
+                openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
               />
             </div>
           )}
@@ -572,7 +596,11 @@ class RouteApp extends React.Component<any, any> {
                   <LoadingScreen
                     setRPCConfig={(rpcConfig: any) => {
                       // To support Redux calls
-                      this.props.setPastelConf(rpcConfig)
+                      this.props.setPastelConf({
+                        url: rpcConfig.url,
+                        username: rpcConfig.username,
+                        password: rpcConfig.password,
+                      })
 
                       // To support legacy calls
                       // TODO Remove then fully moved over to Redux
@@ -591,4 +619,9 @@ class RouteApp extends React.Component<any, any> {
   }
 }
 
-export default connect(null, { setPastelConf })(RouteApp)
+export default connect(null, {
+  setPastelConf,
+  openPastelPaperWalletModal,
+  openPastelPhotopeaModal,
+  openPastelSpriteEditorToolModal,
+})(RouteApp)

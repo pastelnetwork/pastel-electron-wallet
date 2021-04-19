@@ -279,6 +279,23 @@ export default class MenuBuilder {
         },
       ],
     }
+    const subMenuMiscTools = {
+      label: 'Misc Tools',
+      submenu: [
+        {
+          label: 'Spritemate',
+          click: () => {
+            this.mainWindow.webContents.send('pastelSpriteEditorTool')
+          },
+        },
+        {
+          label: 'Photopea',
+          click: () => {
+            this.mainWindow.webContents.send('pastelPhotopea')
+          },
+        },
+      ],
+    }
     const subMenuView =
       process.env.NODE_ENV === 'development' ? subMenuViewDev : subMenuViewProd
     return [
@@ -286,6 +303,7 @@ export default class MenuBuilder {
       subMenuFile,
       subMenuEdit,
       subMenuView,
+      subMenuMiscTools,
       subMenuWindow,
       subMenuHelp,
     ]
@@ -360,6 +378,23 @@ export default class MenuBuilder {
             label: 'pasteld info',
             click: () => {
               this.mainWindow.webContents.send('pasteld')
+            },
+          },
+        ],
+      },
+      {
+        label: 'Misc Tools',
+        submenu: [
+          {
+            label: 'Spritemate',
+            click: () => {
+              this.mainWindow.webContents.send('pastelSpriteEditorTool')
+            },
+          },
+          {
+            label: 'Photopea',
+            click: () => {
+              this.mainWindow.webContents.send('pastelPhotopea')
             },
           },
         ],
