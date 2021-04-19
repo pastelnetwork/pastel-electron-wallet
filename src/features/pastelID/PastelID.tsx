@@ -128,11 +128,24 @@ function PastelID(props: PastelIDProps): JSX.Element {
       ]
     }
 
-    return addressesWithBalance.map((item: any) => ({
-      ...item,
-      label: item.address,
-      value: item.address,
-    }))
+    const defaultOption = [
+      {
+        value: '',
+        label: 'Select an address',
+        address: '',
+        balance: 0,
+      },
+    ]
+
+    return defaultOption.concat(
+      addressesWithBalance.map((item: AddressesWithBalanceProps) => ({
+        ...item,
+        label: `${item.balance > 0 ? '[PSL ' + item.balance + '] ' : ''}${
+          item.address
+        }`,
+        value: item.address,
+      })),
+    )
   }
 
   return (
@@ -188,6 +201,10 @@ function PastelID(props: PastelIDProps): JSX.Element {
               >
                 Create
               </button>
+              <p className={[cstyles.sublight, styles.note].join(' ')}>
+                Note: You will need 1,000 PSL coins to write this ticket to the
+                blockchain.
+              </p>
             </div>
           </div>
         </LoadingOverlay>
