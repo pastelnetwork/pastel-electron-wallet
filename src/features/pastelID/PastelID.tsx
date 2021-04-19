@@ -25,14 +25,21 @@ function passphraseStatusColor(validation: TPasswordStrengthResult) {
   return colors[validation.id]
 }
 
+type AddressesWithBalanceProps = {
+  address: string
+  balance: number
+}
+
 export type PastelIDProps = {
-  addressesWithBalance: Array<string>
+  addressesWithBalance: Array<AddressesWithBalanceProps>
   createNewAddress: (v: boolean) => Promise<string>
 }
 
 type TSelectedAddress = {
   value: string
   label: string
+  address?: string
+  balance?: number
 }
 
 function PastelID(props: PastelIDProps): JSX.Element {
@@ -44,10 +51,9 @@ function PastelID(props: PastelIDProps): JSX.Element {
   })
 
   const [passphrase, setPassphrase] = useState('')
-  const [selectedAddress, setSelectedAddress] = useState({
-    value: '',
-    label: '',
-  })
+  const [selectedAddress, setSelectedAddress] = useState(
+    generatedAddressesWithBalanceOptions()[0],
+  )
 
   const { loading, pastelIDs } = useAppSelector(state => state.pastelID)
   const pastelConfig = useAppSelector(state => state.pastelConf)
@@ -76,17 +82,18 @@ function PastelID(props: PastelIDProps): JSX.Element {
       if (!valid()) {
         return
       }
-
+      let address: string = selectedAddress?.value
       if (!selectedAddress) {
         const newAddress = await createNewAddress(false)
         const newSelectedAddress = {
           value: newAddress,
           label: newAddress,
         }
+        address = newAddress
         setSelectedAddress(newSelectedAddress)
       }
 
-      dispatch(createPastelID(passphrase, pastelConfig))
+      dispatch(createPastelID(passphrase, address, pastelConfig))
     } catch (error) {
       dispatch(
         openErrorModal({
@@ -105,7 +112,26 @@ function PastelID(props: PastelIDProps): JSX.Element {
   )
 
   function valid(): boolean {
-    return passphraseValidation.id === 3 // Strong
+    return passphraseValidation.id === 3
+  }
+
+  function generatedAddressesWithBalanceOptions() {
+    if (!addressesWithBalance || addressesWithBalance.length < 1) {
+      return [
+        {
+          label: '',
+          value: '',
+          address: '',
+          balance: 0,
+        },
+      ]
+    }
+
+    return addressesWithBalance.map((item: any) => ({
+      ...item,
+      label: item.address,
+      value: item.address,
+    }))
   }
 
   return (
@@ -145,8 +171,8 @@ function PastelID(props: PastelIDProps): JSX.Element {
               </div>
               <Select
                 styles
-                value
-                options={addressesWithBalance}
+                value={selectedAddress}
+                options={generatedAddressesWithBalanceOptions()}
                 onChange={onAddressChange}
               />
             </div>

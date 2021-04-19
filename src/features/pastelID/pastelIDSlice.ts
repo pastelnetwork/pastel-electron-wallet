@@ -8,6 +8,11 @@ import {
 import type { AppThunk } from '../../redux/store'
 import { openErrorModal } from '../errorModal'
 
+export type TRegisterPastelID = {
+  pastelid: string
+  txid: string
+}
+
 export type TPastelID = {
   pastelid: string
 }
@@ -97,12 +102,13 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
 
 export function createPastelID(
   passphrase: string,
+  address: string,
   config: TRPCConfig,
 ): AppThunk {
   return async dispatch => {
     try {
       dispatch(createPastelIDStart())
-      const pastelid = await createNewPastelID(passphrase, config)
+      const pastelid = await createNewPastelID(passphrase, address, config)
       dispatch(createPastelIDSuccess(pastelid))
     } catch (err) {
       dispatch(createPastelIDFailure())
