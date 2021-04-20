@@ -561,6 +561,7 @@ class RouteApp extends React.Component<any, any> {
                   <PastelID
                     addressesWithBalance={addressesWithBalance}
                     createNewAddress={this.createNewAddress}
+                    totalBalance={totalBalance}
                   />
                 )}
               />

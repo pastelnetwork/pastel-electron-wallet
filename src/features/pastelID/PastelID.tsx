@@ -30,9 +30,14 @@ type AddressesWithBalanceProps = {
   balance: number
 }
 
+type TotalBalanceProps = {
+  total: string
+}
+
 export type PastelIDProps = {
   addressesWithBalance: Array<AddressesWithBalanceProps>
   createNewAddress: (v: boolean) => Promise<string>
+  totalBalance: TotalBalanceProps
 }
 
 type TSelectedAddress = {
@@ -43,8 +48,7 @@ type TSelectedAddress = {
 }
 
 function PastelID(props: PastelIDProps): JSX.Element {
-  const { addressesWithBalance, createNewAddress } = props
-
+  const { addressesWithBalance, createNewAddress, totalBalance } = props
   const [passphraseValidation, setPassphraseValidation] = useState({
     id: 0,
     value: 'Too weak',
@@ -113,7 +117,9 @@ function PastelID(props: PastelIDProps): JSX.Element {
   )
 
   function valid(): boolean {
-    return passphraseValidation.id === 3
+    return (
+      parseFloat(totalBalance.total) > 1000 && passphraseValidation.id === 3
+    )
   }
 
   function generatedAddressesWithBalanceOptions() {

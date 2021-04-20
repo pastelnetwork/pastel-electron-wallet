@@ -25,7 +25,7 @@ export async function createNewPastelID(
   )
   const resRP = await rpc<TTicketsRegisterIDResponse>(
     'tickets',
-    ['register', 'id', resp.result.pastelid, passphrase, address],
+    ['register', 'id', resp.result.pastelid, address, passphrase],
     config,
   )
   const res: TRegisterPastelID = {
