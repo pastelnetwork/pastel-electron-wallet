@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {
   IBlockInfo,
   IBlockSubsidy,
@@ -74,7 +73,7 @@ export async function getMiningInfo(config: TRPCConfig): Promise<IMiningInfo> {
   return result
 }
 
-export async function getRawMempool(config: TRPCConfig): Promise<any> {
+export async function getRawMempool(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('getrawmempool', [], config)
   return result
 }
@@ -99,7 +98,7 @@ export async function getBlockByHash(config: TRPCConfig): Promise<IBlockInfo> {
   return result
 }
 
-export async function getAddress(config: TRPCConfig): Promise<any> {
+export async function getAddress(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('validateaddress', [], config)
   return result
 }
@@ -120,12 +119,15 @@ export async function getWalletTransaction(
   return result
 }
 
-export async function getUtxo(txId: string, config: TRPCConfig): Promise<any> {
+export async function getUtxo(
+  txId: string,
+  config: TRPCConfig,
+): Promise<unknown> {
   const { result } = await rpc('gettxout', [txId], config)
   return result
 }
 
-export async function getTxOut(config: TRPCConfig): Promise<any> {
+export async function getTxOut(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('gettxout', [], config)
   return result
 }
@@ -180,7 +182,7 @@ export async function getBlockHashes(config: TRPCConfig): Promise<void> {
   return
 }
 
-export async function getBlockHeader(config: TRPCConfig): Promise<any> {
+export async function getBlockHeader(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('getblockheader', [], config)
   return result
 }
@@ -239,7 +241,7 @@ export async function validatePaymentDisclosure(
   return result
 }
 
-export async function getGenerate(config: TRPCConfig): Promise<any> {
+export async function getGenerate(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('getgenerate', [], config)
   return result
 }
@@ -256,12 +258,12 @@ export async function getBlockTemplate(config: TRPCConfig): Promise<void> {
   return
 }
 
-export async function getLocalSolps(config: TRPCConfig): Promise<any> {
+export async function getLocalSolps(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('getlocalsolps', [], config)
   return result
 }
 
-export async function getNetworkSolps(config: TRPCConfig): Promise<any> {
+export async function getNetworkSolps(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('getnetworksolps', [], config)
   return result
 }
@@ -271,7 +273,7 @@ export async function prioritiseTransaction(
   delta: number,
   fee: number,
   config: TRPCConfig,
-): Promise<any> {
+): Promise<unknown> {
   const { result } = await rpc('prioritisetransaction', [txId], config)
   return result
 }
@@ -290,12 +292,12 @@ export async function getDeprecationInfo(config: TRPCConfig): Promise<void> {
   await rpc('getdeprecationinfo', [], config)
 }
 
-export async function getPeerInfo(config: TRPCConfig): Promise<any> {
+export async function getPeerInfo(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('getpeerinfo', [], config)
   return result
 }
 
-export async function listBanned(config: TRPCConfig): Promise<any> {
+export async function listBanned(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('listbanned', [], config)
   return result
 }
@@ -318,7 +320,7 @@ export async function verifyMessage(config: TRPCConfig): Promise<void> {
 export async function validateaddress(
   address: string,
   config: TRPCConfig,
-): Promise<any> {
+): Promise<unknown> {
   const { result } = await rpc('z_validateaddress', [address], config)
   return result
 }
@@ -326,17 +328,19 @@ export async function validateaddress(
 export async function getAccount(
   address: string,
   config: TRPCConfig,
-): Promise<any> {
+): Promise<unknown> {
   const { result } = await rpc('getaccount', [address], config)
   return result
 }
 
-export async function getBalance(config: TRPCConfig): Promise<any> {
+export async function getBalance(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('getbalance', [], config)
   return result
 }
 
-export async function getRawChangeAddress(config: TRPCConfig): Promise<any> {
+export async function getRawChangeAddress(
+  config: TRPCConfig,
+): Promise<unknown> {
   const { result } = await rpc('getrawchangeaddress', [], config)
   return result
 }
@@ -350,7 +354,7 @@ export async function getreceivedByAddress(
   address: string,
   minconf: number,
   config: TRPCConfig,
-): Promise<any> {
+): Promise<unknown> {
   const { result } = await rpc('getreceivedbyaddress', [address], config)
   return result
 }
@@ -372,22 +376,26 @@ export async function getWalletInfo(config: TRPCConfig): Promise<IWalletInfo> {
   return result
 }
 
-export async function listAccounts(config: TRPCConfig): Promise<any> {
+export async function listAccounts(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('listaccounts', [], config)
   return result
 }
 
-export async function listAddressGroupings(config: TRPCConfig): Promise<any> {
+export async function listAddressGroupings(
+  config: TRPCConfig,
+): Promise<unknown> {
   const { result } = await rpc('listaddressgroupings', [], config)
   return result
 }
 
-export async function listLockUnspent(config: TRPCConfig): Promise<any> {
+export async function listLockUnspent(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('listlockunspent', [], config)
   return result
 }
 
-export async function listReceivedByAccount(config: TRPCConfig): Promise<any> {
+export async function listReceivedByAccount(
+  config: TRPCConfig,
+): Promise<unknown> {
   const { result } = await rpc('listreceivedbyaccount', [], config)
   return result
 }
@@ -399,7 +407,7 @@ export async function listReceivedByAddress(
   return result
 }
 
-export async function getListSinceBlock(config: TRPCConfig): Promise<any> {
+export async function getListSinceBlock(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('listsinceblock', [], config)
   return result
 }
@@ -420,7 +428,7 @@ export async function getZBalance(
   address: string,
   mineconf: string,
   config: TRPCConfig,
-): Promise<any> {
+): Promise<unknown> {
   return await rpc('z_getbalance', [address, mineconf], config)
 }
 
@@ -428,8 +436,8 @@ export async function getMigrationStatus(config: TRPCConfig): Promise<void> {
   return await rpc('z_getmigrationstatus', [], config)
 }
 
-export async function getNewAddress(config: TRPCConfig): Promise<any> {
-  await rpc('z_getnewaddress', [], config)
+export async function getNewAddress(config: TRPCConfig): Promise<unknown> {
+  return await await rpc('z_getnewaddress', [], config)
 }
 
 export async function getNotesCount(config: TRPCConfig): Promise<void> {
@@ -456,7 +464,7 @@ export async function listAddresses(config: TRPCConfig): Promise<string[]> {
   return result
 }
 
-export async function listOperationIds(config: TRPCConfig): Promise<any> {
+export async function listOperationIds(config: TRPCConfig): Promise<unknown> {
   const { result } = await rpc('z_listoperationids', [], config)
   return result
 }
