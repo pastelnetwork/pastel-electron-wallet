@@ -118,7 +118,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
 
   function valid(): boolean {
     return (
-      parseFloat(totalBalance.total) > 1000 && passphraseValidation.id === 3
+      parseFloat(totalBalance.total) >= 1000 && passphraseValidation.id === 3
     )
   }
 
