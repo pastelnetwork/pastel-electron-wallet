@@ -44,6 +44,7 @@ import PastelPhotopeaModal, {
 } from '../features/pastelPhotopea'
 // @ts-ignore
 import ExpertConsole from './components/ExpertConsole'
+import SimpleImageEditor from './components/SimpleImageEditor'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -518,7 +519,7 @@ class RouteApp extends React.Component<any, any> {
                 )}
               />
               <Route
-                path={routes.ADDRESSBOOK}
+                path={routes.ADDRESS_BOOK}
                 render={() => (
                   <AddressBook
                     addressBook={addressBook}
@@ -566,7 +567,7 @@ class RouteApp extends React.Component<any, any> {
               />
 
               <Route
-                path={routes.CONNECTMOBILE}
+                path={routes.CONNECT_MOBILE}
                 render={() => (
                   <WormholeConnection
                     companionAppListener={this.companionAppListener}
@@ -589,6 +590,8 @@ class RouteApp extends React.Component<any, any> {
                   />
                 )}
               />
+
+              <Route path={routes.SIMPLE_IMAGE_EDITOR} render={() => <SimpleImageEditor />} />
 
               <Route
                 path={routes.LOADING}

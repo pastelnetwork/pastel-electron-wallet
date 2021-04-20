@@ -1,0 +1,140 @@
+.tie-icon-add-button.icon-bubble .tui-image-editor-button[data-icontype='icon-bubble'] label,
+.tie-icon-add-button.icon-heart .tui-image-editor-button[data-icontype='icon-heart'] label,
+.tie-icon-add-button.icon-location .tui-image-editor-button[data-icontype='icon-location'] label,
+.tie-icon-add-button.icon-polygon .tui-image-editor-button[data-icontype='icon-polygon'] label,
+.tie-icon-add-button.icon-star .tui-image-editor-button[data-icontype='icon-star'] label,
+.tie-icon-add-button.icon-star-2 .tui-image-editor-button[data-icontype='icon-star-2'] label,
+.tie-icon-add-button.icon-arrow-3 .tui-image-editor-button[data-icontype='icon-arrow-3'] label,
+.tie-icon-add-button.icon-arrow-2 .tui-image-editor-button[data-icontype='icon-arrow-2'] label,
+.tie-icon-add-button.icon-arrow .tui-image-editor-button[data-icontype='icon-arrow'] label,
+.tie-icon-add-button.icon-bubble .tui-image-editor-button[data-icontype='icon-bubble'] label,
+.tie-draw-line-select-button.line .tui-image-editor-button.line label,
+.tie-draw-line-select-button.free .tui-image-editor-button.free label,
+.tie-flip-button.flipX .tui-image-editor-button.flipX label,
+.tie-flip-button.flipY .tui-image-editor-button.flipY label,
+.tie-flip-button.resetFlip .tui-image-editor-button.resetFlip label,
+.tie-crop-button .tui-image-editor-button.apply.active label,
+.tie-crop-preset-button .tui-image-editor-button.preset.active label,
+.tie-shape-button.rect .tui-image-editor-button.rect label,
+.tie-shape-button.circle .tui-image-editor-button.circle label,
+.tie-shape-button.triangle .tui-image-editor-button.triangle label,
+.tie-text-effect-button .tui-image-editor-button.active label,
+.tie-text-align-button.left .tui-image-editor-button.left label,
+.tie-text-align-button.center .tui-image-editor-button.center label,
+.tie-text-align-button.right .tui-image-editor-button.right label,
+.tie-mask-apply.apply.active .tui-image-editor-button.apply label,
+.tui-image-editor-container .tui-image-editor-submenu .tui-image-editor-button:hover > label,
+.tui-image-editor-container .tui-image-editor-checkbox label > span {
+  color: #fff;
+  font-weight: lighter;
+}
+.tui-image-editor-container .tui-image-editor-submenu .tui-image-editor-button > label,
+.tui-image-editor-container .tui-image-editor-range-wrap.tui-image-editor-newline.short label,
+.tui-image-editor-container .tui-image-editor-range-wrap.tui-image-editor-newline.short label > span {
+  color: #8a8a8a;
+  font-weight: lighter;
+}
+.tui-image-editor-container .tui-image-editor-range-wrap label > span {
+  color: #fff;
+  font-weight: lighter;
+}
+.tui-image-editor-container .tui-image-editor-partition > div {
+  color: #3c3c3c;
+  border-left: 1px solid #3c3c3c;
+}
+.tui-image-editor-container.left .tui-image-editor-submenu .tui-image-editor-partition > div,
+.tui-image-editor-container.right .tui-image-editor-submenu .tui-image-editor-partition > div {
+  color: #3c3c3c;
+  border-bottom: 1px solid #3c3c3c;
+}
+.tui-image-editor-container .tui-image-editor-checkbox label > span::before {
+  border: 0;
+  background-color: #fff;
+}
+.tui-image-editor-container .tui-image-editor-checkbox label > input:checked + span::before {
+  border: 0;
+}
+.tui-image-editor-container .tui-image-editor-virtual-range-pointer {
+  color: #fff;
+  background-color: #fff;
+}
+.tui-image-editor-container .tui-image-editor-virtual-range-bar {
+  color: #666;
+  background-color: #666;
+}
+.tui-image-editor-container .tui-image-editor-virtual-range-subbar {
+  color: #d1d1d1;
+  background-color: #d1d1d1;
+}
+.tui-image-editor-container .tui-image-editor-disabled .tui-image-editor-virtual-range-pointer {
+  color: #414141;
+  background-color: #414141;
+}
+.tui-image-editor-container .tui-image-editor-disabled .tui-image-editor-virtual-range-subbar {
+  color: #414141;
+  background-color: #414141;
+}
+.tui-image-editor-container .tui-image-editor-disabled .tui-image-editor-virtual-range-bar {
+  color: #282828;
+  background-color: #282828;
+}
+.tui-image-editor-container .tui-image-editor-range-value {
+  color: #fff;
+  font-weight: lighter;
+  font-size: 11px;
+  border: 1px solid #353535;
+  background-color: #151515;
+}
+.tui-image-editor-container .tui-image-editor-submenu .tui-image-editor-button .color-picker-value + label {
+  color: #fff;
+}
+.tui-image-editor-container .tui-image-editor-submenu .tui-image-editor-button .color-picker-value {
+  border: 1px solid #1e1e1e;
+}
+.tui-image-editor-container .svg_ic-menu {
+  width: 24px;
+  height: 24px;
+}
+.tui-image-editor-container .svg_ic-submenu {
+  width: 32px;
+  height: 32px;
+}
+.tui-image-editor-container .tui-image-editor-controls-logo > img,
+.tui-image-editor-container .tui-image-editor-header-logo > img {
+  width: 251px;
+  height: 21px;
+}
+.tui-image-editor-menu use.normal.use-default,
+.tui-image-editor-help-menu use.normal.use-default {
+  fill-rule: evenodd;
+  fill: #8a8a8a;
+  stroke: #8a8a8a;
+}
+.tui-image-editor-menu use.active.use-default,
+.tui-image-editor-help-menu use.active.use-default {
+  fill-rule: evenodd;
+  fill: #555;
+  stroke: #555;
+}
+.tui-image-editor-menu use.hover.use-default,
+.tui-image-editor-help-menu use.hover.use-default {
+  fill-rule: evenodd;
+  fill: #e9e9e9;
+  stroke: #e9e9e9;
+}
+.tui-image-editor-menu use.disabled.use-default,
+.tui-image-editor-help-menu use.disabled.use-default {
+  fill-rule: evenodd;
+  fill: #434343;
+  stroke: #434343;
+}
+.tui-image-editor-submenu use.normal.use-default {
+  fill-rule: evenodd;
+  fill: #8a8a8a;
+  stroke: #8a8a8a;
+}
+.tui-image-editor-submenu use.active.use-default {
+  fill-rule: evenodd;
+  fill: #e9e9e9;
+  stroke: #e9e9e9;
+}
