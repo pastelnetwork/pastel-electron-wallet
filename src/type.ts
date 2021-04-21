@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { Database } from 'sql.js'
 
 export interface IPastelDBState {
@@ -19,9 +18,9 @@ export interface INetworkInfo {
   localservices: string
   timeoffset: number
   connections: number
-  networks: any
+  networks: unknown
   relayfee: number
-  localaddresses: any
+  localaddresses: unknown
   warnings: string
   create_timestamp: string
 }
@@ -46,7 +45,7 @@ export interface IRawMempoolInfo {
   height: number
   startingpriority: number
   currentpriority: number
-  depends: any
+  depends: unknown
 }
 
 export interface IMiningInfo {
@@ -94,12 +93,12 @@ export interface IRawTransaction {
   versiongroupid: string
   locktime: number
   expiryheight: number
-  vin: any
-  vout: any
-  vjoinsplit: any
+  vin: unknown
+  vout: unknown
+  vjoinsplit: unknown
   valueBalance: number
-  vShieldedSpend: any
-  vShieldedOutput: any
+  vShieldedSpend: unknown
+  vShieldedOutput: unknown
   bindingSig: string
   blockhash: string
   confirmations: number
@@ -115,12 +114,12 @@ export interface ITransactionInfo {
   versiongroupid: string
   locktime: number
   expiryheight: number
-  vin: any
-  vout: any
-  vjoinsplit: any
+  vin: unknown
+  vout: unknown
+  vjoinsplit: unknown
   valueBalance: number
-  vShieldedSpend: any
-  vShieldedOutput: any
+  vShieldedSpend: unknown
+  vShieldedOutput: unknown
   bindingSig: string
   blockhash: string
   confirmations: number
@@ -165,7 +164,7 @@ export interface IReceivedByAddress {
   account: string
   amount: number
   confirmations: number
-  txids: any
+  txids: unknown
   create_timestamp: string
 }
 export interface IListTransactions {
@@ -180,10 +179,10 @@ export interface IListTransactions {
   blocktime: number
   expiryheight: number
   txid: string
-  walletconflicts: any
+  walletconflicts: unknown
   time: number
   timereceived: number
-  vjoinsplit: any
+  vjoinsplit: unknown
   size: number
   lastblock: string
 }

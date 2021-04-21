@@ -244,9 +244,9 @@ class LoadingScreen extends Component<any, any> {
     this.loadPastelConf(false)
   }
   pasteld: any = null
-  setupExitHandler = () => {
+  setupExitHandler = async () => {
     // App is quitting, exit pasteld as well
-    ipcRenderer.on('appquitting', async () => {
+    await ipcRenderer.on('appquitting', async () => {
       if (this.pasteld) {
         const { history } = this.props
         const { rpcConfig } = this.state
@@ -260,7 +260,6 @@ class LoadingScreen extends Component<any, any> {
         this.pasteld.on('exit', () => {
           ipcRenderer.send('appquitdone')
         })
-        console.log('Sending stop')
         setTimeout(() => {
           RPC.doRPC('stop', [], rpcConfig)
         })
