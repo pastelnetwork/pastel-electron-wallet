@@ -114,9 +114,9 @@ export function createPastelID(
       dispatch(createPastelIDFailure())
       dispatch(
         openErrorModal({
-          title: 'Can not create new Pastel ID',
+          title: 'Cannot create a new PastelID!',
           body:
-            "We cound't create a new Pastel ID for some reason. Please restart the wallet and try again.",
+            "We couldn't create a new PastelID for some reason. Please restart the wallet and try again.",
         }),
       )
 
