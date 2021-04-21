@@ -3,12 +3,11 @@
   "DASHBOARD": "/dashboard",
   "SEND": "/send",
   "RECEIVE": "/receive",
-  "ADDRESS_BOOK": "/addressbook",
+  "ADDRESSBOOK": "/addressbook",
   "TRANSACTIONS": "/transactions",
   "SETTINGS": "/settings",
   "PASTELD": "/pasteld",
   "PASTEL_ID": "/pastel_id",
-  "CONNECT_MOBILE": "/connectmobile",
-  "EXPERT_CONSOLE": "/expert_console",
-  "SIMPLE_IMAGE_EDITOR": "/simpleImageEditor"
+  "CONNECTMOBILE": "/connectmobile",
+  "EXPERT_CONSOLE": "/expert_console"
 }

@@ -228,24 +228,6 @@ export default class MenuBuilder {
         },
       ],
     }
-    // const subMenuMiscTool = {
-    //   label: 'Misc Tool',
-    //   submenu: [
-    //     {
-    //       label: 'Simple Image Editor',
-    //       click: () => {
-    //         this.mainWindow.webContents.send('simpleImageEditor');
-    //       },
-    //     },
-    //     { type: 'separator' },
-    //     {
-    //       label: 'Glitch Image',
-    //       click: () => {
-    //         this.mainWindow.webContents.send('glitchImage');
-    //       },
-    //     },
-    //   ],
-    // }
     const subMenuViewProd = {
       label: 'View',
       submenu: [

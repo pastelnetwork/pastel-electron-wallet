@@ -465,7 +465,7 @@ class Sidebar extends PureComponent<any, any> {
     }) // Connect mobile app
 
     ipcRenderer.on('connectmobile', () => {
-      history.push(routes.CONNECT_MOBILE)
+      history.push(routes.CONNECTMOBILE)
     })
 
     ipcRenderer.on('pastelSpriteEditorTool', () => {
@@ -475,12 +475,6 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.on('pastelPhotopea', () => {
       openPastelPhotopeaModal()
     })
-
-    // Open simple image editor
-    ipcRenderer.on('simpleImageEditor', () => {
-      history.push(routes.SIMPLE_IMAGE_EDITOR);
-    });
-
   }
   closeExportPrivKeysModal = () => {
     this.setState({
@@ -711,7 +705,7 @@ class Sidebar extends PureComponent<any, any> {
           />
           <SidebarMenuItem
             name='Address Book'
-            routeName={routes.ADDRESS_BOOK}
+            routeName={routes.ADDRESSBOOK}
             currentRoute={location.pathname}
             iconname='fa-address-book'
           />
