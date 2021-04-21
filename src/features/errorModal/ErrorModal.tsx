@@ -1,3 +1,4 @@
+import parse from 'html-react-parser'
 import React from 'react'
 import Modal from 'react-modal'
 
@@ -35,7 +36,7 @@ export default function ErrorModal(): JSX.Element {
             overflowY: 'auto',
           }}
         >
-          {body}
+          {parse(body)}
         </div>
       </div>
 

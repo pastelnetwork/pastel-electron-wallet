@@ -34,10 +34,15 @@ type TotalBalanceProps = {
   total: string
 }
 
+type InfoProps = {
+  currencyName: string
+}
+
 export type PastelIDProps = {
   addressesWithBalance: Array<AddressesWithBalanceProps>
   createNewAddress: (v: boolean) => Promise<string>
   totalBalance: TotalBalanceProps
+  info: InfoProps
 }
 
 type TSelectedAddress = {
@@ -48,7 +53,7 @@ type TSelectedAddress = {
 }
 
 function PastelID(props: PastelIDProps): JSX.Element {
-  const { addressesWithBalance, createNewAddress, totalBalance } = props
+  const { addressesWithBalance, createNewAddress, totalBalance, info } = props
   const [passphraseValidation, setPassphraseValidation] = useState({
     id: 0,
     value: 'Too weak',
@@ -146,9 +151,11 @@ function PastelID(props: PastelIDProps): JSX.Element {
     return defaultOption.concat(
       addressesWithBalance.map((item: AddressesWithBalanceProps) => ({
         ...item,
-        label: `${item.balance > 0 ? '[PSL ' + item.balance + '] ' : ''}${
-          item.address
-        }`,
+        label: `${
+          item.balance > 0
+            ? '[' + info.currencyName + ' ' + item.balance + '] '
+            : ''
+        }${item.address}`,
         value: item.address,
       })),
     )
@@ -157,14 +164,14 @@ function PastelID(props: PastelIDProps): JSX.Element {
   return (
     <>
       <div className={`${cstyles.xlarge} ${cstyles.padall} ${cstyles.center}`}>
-        Pastel ID
+        PastelID
       </div>
       <div className={styles.container}>
         <LoadingOverlay loading={loading}>
           <div className={cstyles.well}>
             <div className={cstyles.flexspacebetween}>
               <div className={cstyles.sublight}>
-                Enter a secure passphrase for this Pastel ID
+                Enter a secure passphrase for this PastelID
               </div>
               <div className={cstyles.validationerror}>
                 {passphrase && (
@@ -208,15 +215,15 @@ function PastelID(props: PastelIDProps): JSX.Element {
                 Create
               </button>
               <p className={[cstyles.sublight, styles.note].join(' ')}>
-                Note: You will need 1,000 PSL coins to write this ticket to the
-                blockchain.
+                Note: You will need 1,000 {info.currencyName} coins to write
+                this ticket to the blockchain.
               </p>
             </div>
           </div>
         </LoadingOverlay>
 
         {pastelIDs.length > 0 && (
-          <List title='Pastel ID'>
+          <List title='PastelID'>
             {pastelIDs.map(item => (
               <ListItem buttons={false} key={uid()} title={item.pastelid} />
             ))}
@@ -225,7 +232,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
 
         {pastelIDs.length === 0 && (
           <div className={cstyles.margintoplarge}>
-            There are currently no Pastel IDs generated.
+            There are currently no PastelIDs generated.
           </div>
         )}
       </div>

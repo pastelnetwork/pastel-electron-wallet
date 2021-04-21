@@ -450,6 +450,7 @@ class RouteApp extends React.Component<any, any> {
       setSendTo: this.setSendTo,
       info,
     }
+
     return (
       <App>
         <ErrorModal
@@ -562,6 +563,7 @@ class RouteApp extends React.Component<any, any> {
                     addressesWithBalance={addressesWithBalance}
                     createNewAddress={this.createNewAddress}
                     totalBalance={totalBalance}
+                    info={info}
                   />
                 )}
               />

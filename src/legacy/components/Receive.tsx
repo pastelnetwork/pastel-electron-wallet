@@ -362,7 +362,7 @@ export default class Receive extends Component<any> {
             </TabPanel>
           </Tabs>
         </div>
-        <PastelPaperWalletModal />
+        <PastelPaperWalletModal info={info} />
       </div>
     )
   }

@@ -30,7 +30,7 @@ export async function createNewPastelID(
   )
   const res: TRegisterPastelID = {
     pastelid: resp.result.pastelid,
-    txid: resRP.result?.txid,
+    txid: resRP.result.txid,
   }
   return res
 }

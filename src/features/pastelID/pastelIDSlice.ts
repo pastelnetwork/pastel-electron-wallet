@@ -56,7 +56,7 @@ export const pastelIDSlice = createSlice({
     },
     createPastelIDSuccess(
       state: IPastelIDState,
-      action: PayloadAction<TPastelID>,
+      action: PayloadAction<TRegisterPastelID>,
     ) {
       state.pastelIDs = [...state.pastelIDs, action.payload]
       state.loading = false
@@ -88,9 +88,9 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
       dispatch(getPastelIDsFailure())
       dispatch(
         openErrorModal({
-          title: 'Can not fetch Pastel IDs',
+          title: 'Can not fetch PastelIDs',
           body:
-            "We cound't fetch existing Pastel IDs for some reason. Please restart the wallet to try again.",
+            "We cound't fetch existing PastelIDs for some reason. Please restart the wallet to try again.",
         }),
       )
 
@@ -108,8 +108,19 @@ export function createPastelID(
   return async dispatch => {
     try {
       dispatch(createPastelIDStart())
-      const pastelid = await createNewPastelID(passphrase, address, config)
-      dispatch(createPastelIDSuccess(pastelid))
+      const res = await createNewPastelID(passphrase, address, config)
+      dispatch(
+        createPastelIDSuccess({
+          pastelid: res.pastelid,
+          txid: res.txid,
+        }),
+      )
+      dispatch(
+        openErrorModal({
+          title: 'PastelID has been created!',
+          body: `<div>PastelID: ${res.pastelid}<br />TXID: ${res.txid}</div>`,
+        }),
+      )
     } catch (err) {
       dispatch(createPastelIDFailure())
       dispatch(
