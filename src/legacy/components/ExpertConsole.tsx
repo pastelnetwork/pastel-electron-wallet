@@ -3,34 +3,33 @@ import cx from 'classnames'
 import React, { Component } from 'react'
 
 import cstyles from './Common.module.css'
-// import loadConsole from './console'
+import TerminalConsole from './console'
 import styles from './ExpertConsole.module.css'
 import LoadingOverlay from './LoadingOverlay'
-import TerminalConsole from './TerminalConsole'
 
 interface IProps {
-  totalBalance: any;
-  info: any;
-  addressesWithBalance: any[];
-  transactions: any;
-  addressPrivateKeys: any;
-  connectedCompanionApp: any;
-  pastelIDs: any[];
-  txDetail?: any;
-  createNewAddress?: any;
-  createNewPastelclassName?: any;
+  totalBalance: any
+  info: any
+  addressesWithBalance: any[]
+  transactions: any
+  addressPrivateKeys: any
+  connectedCompanionApp: any
+  pastelIDs: any[]
+  txDetail?: any
+  createNewAddress?: any
+  createNewPastelclassName?: any
 }
 
 interface IState {
-  passphrase: string;
-  selectedAddress: string | any;
-  loading: boolean;
-  passphraseValclassNameation: any;
-  theme: string;
+  passphrase: string
+  selectedAddress: string | any
+  loading: boolean
+  passphraseValclassNameation: any
+  theme: string
 }
 
 export default class ExpertConsole extends Component<IProps, IState> {
-  constructor (props: IProps) {
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
@@ -48,7 +47,6 @@ export default class ExpertConsole extends Component<IProps, IState> {
   }
 
   componentDidMount() {
-    // loadConsole(this.consoleCommands)
     window.addEventListener('resize', this.onWindowResize)
   }
   componentWillUnmount() {
@@ -209,7 +207,7 @@ export default class ExpertConsole extends Component<IProps, IState> {
                 <div id='scanline' />
                 <div className={styles.envelope}>
                   <div className={styles.terminal}>
-                    <TerminalConsole {...this.consoleProps()} theme={theme}/>
+                    <TerminalConsole {...this.consoleProps()} theme={theme} />
                   </div>
                 </div>
               </div>

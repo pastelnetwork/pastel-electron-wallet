@@ -44,7 +44,6 @@ import PastelPhotopeaModal, {
 } from '../features/pastelPhotopea'
 // @ts-ignore
 import ExpertConsole from './components/ExpertConsole'
-import SimpleImageEditor from './components/SimpleImageEditor'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -590,8 +589,6 @@ class RouteApp extends React.Component<any, any> {
                   />
                 )}
               />
-
-              <Route path={routes.SIMPLE_IMAGE_EDITOR} render={() => <SimpleImageEditor />} />
 
               <Route
                 path={routes.LOADING}
