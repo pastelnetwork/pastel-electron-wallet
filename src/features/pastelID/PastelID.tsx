@@ -25,7 +25,7 @@ function passphraseStatusColor(validation: TPasswordStrengthResult) {
   return colors[validation.id]
 }
 
-type AddressesWithBalanceProps = {
+type TAddressesWithBalanceProps = {
   address: string
   balance: number
 }
@@ -39,7 +39,7 @@ type InfoProps = {
 }
 
 export type PastelIDProps = {
-  addressesWithBalance: Array<AddressesWithBalanceProps>
+  addressesWithBalance: Array<TAddressesWithBalanceProps>
   createNewAddress: (v: boolean) => Promise<string>
   totalBalance: TotalBalanceProps
   info: InfoProps
@@ -149,7 +149,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
     ]
 
     return defaultOption.concat(
-      addressesWithBalance.map((item: AddressesWithBalanceProps) => ({
+      addressesWithBalance.map((item: TAddressesWithBalanceProps) => ({
         ...item,
         label: `${
           item.balance > 0
