@@ -242,6 +242,7 @@
   border: 3px transparent solid;
   border-radius: 3px;
   cursor: pointer;
+  z-index: 100;
 }
 .greenThemeBtn.active,
 .amberThemeBtn.active,

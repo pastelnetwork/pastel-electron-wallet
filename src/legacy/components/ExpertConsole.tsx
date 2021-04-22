@@ -1,16 +1,36 @@
-import React, { Component } from 'react'
 import { passwordStrength } from 'check-password-strength'
-
-import styles from './ExpertConsole.module.css'
-import cstyles from './Common.module.css'
-
-import LoadingOverlay from './LoadingOverlay'
-import loadConsole from './console'
-
 import cx from 'classnames'
+import React, { Component } from 'react'
 
-export default class ExpertConsole extends Component {
-  constructor(props) {
+import cstyles from './Common.module.css'
+// import loadConsole from './console'
+import styles from './ExpertConsole.module.css'
+import LoadingOverlay from './LoadingOverlay'
+import TerminalConsole from './TerminalConsole'
+
+interface IProps {
+  totalBalance: any
+  info: any
+  addressesWithBalance: any[]
+  transactions: any
+  addressPrivateKeys: any
+  connectedCompanionApp: any
+  pastelIDs: any[]
+  txDetail?: any
+  createNewAddress?: any
+  createNewPastelclassName?: any
+}
+
+interface IState {
+  passphrase: string
+  selectedAddress: string | any
+  loading: boolean
+  passphraseValclassNameation: any
+  theme: string
+}
+
+export default class ExpertConsole extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
 
     this.state = {
@@ -28,7 +48,7 @@ export default class ExpertConsole extends Component {
   }
 
   componentDidMount() {
-    loadConsole(this.consoleCommands)
+    // loadConsole(this.consoleCommands)
     window.addEventListener('resize', this.onWindowResize)
   }
   componentWillUnmount() {
@@ -98,7 +118,28 @@ export default class ExpertConsole extends Component {
     }
   }
 
-  onPassphraseChange(e) {
+  consoleProps = () => {
+    const {
+      totalBalance,
+      info,
+      addressesWithBalance,
+      txDetail,
+      transactions,
+      connectedCompanionApp,
+      pastelIDs,
+    } = this.props
+    return {
+      totalBalance,
+      info,
+      addressesWithBalance,
+      txDetail,
+      transactions,
+      connectedCompanionApp,
+      pastelIDs,
+    }
+  }
+
+  onPassphraseChange(e: any) {
     const passphrase = e.target.value
     const valclassNameation = passwordStrength(passphrase)
 
@@ -108,14 +149,13 @@ export default class ExpertConsole extends Component {
     })
   }
 
-  onAddressChange(selectedOption) {
+  onAddressChange(selectedOption: any) {
     this.setState({ selectedAddress: selectedOption.value })
   }
 
   async onCreate() {
     try {
       const { passphrase, selectedAddress } = this.state
-      // eslint-disable-next-line react/prop-types
       const { createNewAddress, createNewPastelclassName } = this.props
 
       if (!this.valclassName) {
@@ -151,7 +191,7 @@ export default class ExpertConsole extends Component {
     return passphraseValclassNameation.className === 3 // Strong
   }
 
-  onThemeBtnClick = theme => {
+  onThemeBtnClick = (theme: string) => {
     this.setState({ theme })
   }
 
@@ -168,7 +208,9 @@ export default class ExpertConsole extends Component {
                 <div className={styles.interlace} />
                 <div id='scanline' />
                 <div className={styles.envelope}>
-                  <div className={styles.terminal} id='terminal' />
+                  <div className={styles.terminal}>
+                    <TerminalConsole {...this.consoleProps()} theme={theme} />
+                  </div>
                 </div>
               </div>
             </div>

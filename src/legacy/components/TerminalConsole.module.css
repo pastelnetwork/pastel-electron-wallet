@@ -1,0 +1,84 @@
+@font-face {
+  font-family: 'essential';
+  font-weight: normal;
+  font-style: normal;
+  src: url('./console/fonts/EssentialPragmataPro-R_1.2.ttf') format('truetype');
+}
+
+.terminal {
+  position: relative;
+  z-index: 100;
+  height: 100%;
+  font-family: 'essential';
+  overflow: auto;
+  min-height: 500px;
+}
+
+.terminalHead {
+  padding: 20px 30px 40px;
+}
+
+.terminalHead pre,
+.terminalHead p {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'essential';
+}
+
+.terminalOutput {
+  margin-bottom: 0.8em;
+  padding: 0 30px;
+}
+
+.textOutput pre,
+.errorOutput pre,
+.headOutput pre {
+  font-family: 'essential';
+  margin-bottom: 0.8em;
+}
+
+.terminalInput {
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-family: 'essential';
+  width: 100%;
+}
+
+.terminalInput:focus {
+  outline: none;
+}
+
+.terminalInputWrap {
+  display: flex;
+  align-items: center;
+  padding: 0 30px 30px;
+}
+
+/* theme */
+.terminal.green p,
+.terminal.green pre,
+.terminal.green span,
+.terminal.green #terminalOutput,
+.green .terminalInput {
+  color: #18ff62 !important;
+}
+
+.terminal.amber p,
+.terminal.amber span,
+.terminal.amber pre,
+.terminal.amber #terminalOutput,
+.amber .terminalInput {
+  color: #e88537 !important;
+}
+
+.terminal.black p,
+.terminal.black span,
+.terminal.black pre,
+.terminal.black #terminalOutput,
+.black .terminalInput {
+  box-shadow: none;
+}
