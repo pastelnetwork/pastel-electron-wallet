@@ -287,326 +287,178 @@ export interface IAddressUtxo {
 
 export type TGetnetworkhashps = {
   result: number
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetdifficulty = {
   result: number
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetNetworkinfo = {
   result: INetworkInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetNetTotals = {
   result: INetTotals
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetmempoolinfo = {
   result: IMempoolInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetmininginfo = {
   result: IMiningInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type Tgetmininginfo = {
   result: IMiningInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetrawmempool = {
   result: IRawMempoolInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetblockhash = {
   result: string
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetblock = {
   result: IBlockInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TValidateaddress = {
   result: IValidateaddress
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetrawtransaction = {
   result: IRawTransaction
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGettransaction = {
   result: ITransactionInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGettxout = {
   result: ITxout
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGettxoutsetinfo = {
   result: ITxoutsetInfo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetaddressbalance = {
   result: IAddressesBalance
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetaddressdeltas = {
   result: IAddressDelta[]
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetaddressmempool = {
   result: IAddressMempool[]
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetaddresstxids = {
   result: string[]
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetaddressutxos = {
   result: IAddressUtxo
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetbestblockhash = {
   result: string
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetblockcount = {
   result: number
-  error: Error
-  id: string
-}
-
-export type TGetblockdeltas = {
-  result: unknown[]
-  error: Error
-  id: string
-}
-
-export type TGetblockhashes = {
-  result: string[]
-  error: Error
-  id: string
-}
-export type TGetblockheader = {
-  result: number
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetchaintips = {
   result: IChainTips[]
-  error: Error
-  id: string
-}
-export type TGetspentinfo = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGettxoutproof = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGettreestate = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetexperimentalfeatures = {
-  result: unknown[]
-  error: Error
-  id: string
-}
-
-export type TGetmemoryinfo = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetpaymentdisclosure = {
-  result: number
-  error: Error
-  id: string
-}
-
-export type TGgtgenerate = {
-  result: number
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetblocksubsidy = {
   result: IBlockSubsidy
-  error: Error
-  id: string
-}
-
-export type TGetblocktemplate = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetlocalsolps = {
-  result: string[]
-  error: Error
-  id: string
-}
-
-export type TGetnetworksolps = {
-  result: string[]
-  error: Error
-  id: string
-}
-
-export type TGetaddednodeinfo = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetpeerinfo = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetaccount = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetrawchangeaddress = {
-  result: string
-  error: Error
-  id: string
-}
-
-export type TGetreceivedbyaccount = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetreceivedbyaddress = {
-  result: unknown
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGetwalletinfo = {
   result: IWalletInfo
-  error: Error
-  id: string
-}
-
-export type Tlistsinceblock = {
-  result: unknown[]
-  error: Error
+  error: IError
   id: string
 }
 
 export type Tlisttransactions = {
   result: IListTransactions[]
-  error: Error
+  error: IError
   id: string
 }
 
 export type Tlistunspent = {
   result: IListUnspent[]
-  error: Error
-  id: string
-}
-
-export type TGetbalance = {
-  result: unknown
-  error: Error
-  id: string
-}
-
-export type TGetmigrationstatus = {
-  result: string
-  error: Error
-  id: string
-}
-
-export type TGetnewaddress = {
-  result: string
-  error: Error
-  id: string
-}
-
-export type TGetoperationresult = {
-  result: string
-  error: Error
-  id: string
-}
-
-export type TGetoperationstatus = {
-  result: string
-  error: Error
+  error: IError
   id: string
 }
 
 export type TGettotalbalance = {
   result: ITotalBalance
-  error: Error
+  error: IError
   id: string
 }
 
 export type Tlistaddresses = {
   result: string[]
-  error: Error
+  error: IError
   id: string
 }
 
-export interface Error {
+export interface IError {
   message: string
 }
