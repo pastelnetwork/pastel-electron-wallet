@@ -47,9 +47,9 @@ export default class RPC {
   async configure(rpcConfig: any) {
     this.rpcConfig = rpcConfig
 
-    if (!this.refreshTimerID) {
-      this.refreshTimerID = setTimeout(() => this.refresh(), 1000)
-    }
+    // if (!this.refreshTimerID) {
+    //   this.refreshTimerID = setTimeout(() => this.refresh(), 1000)
+    // }
 
     if (!this.opTimerID) {
       this.opTimerID = setTimeout(() => this.refreshOpStatus(), 1000)

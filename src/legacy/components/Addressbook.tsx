@@ -13,8 +13,8 @@ import styles from './Addressbook.module.css'
 import cstyles from './Common.module.css'
 import { AddressBookEntry } from './AppState'
 import ScrollPane from './ScrollPane'
-import Utils from '../utils/utils'
 import routes from '../constants/routes.json' // Internal because we're using withRouter just below
+import PastelAddressBookForm from '../../features/pastelAddressBookForm'
 
 const AddressBookItemInteral = ({
   item,
@@ -68,84 +68,11 @@ const AddressBookItem = withRouter(AddressBookItemInteral)
 export default class AddressBook extends Component<any, any> {
   constructor(props: any) {
     super(props)
-    this.state = {
-      currentLabel: '',
-      currentAddress: '',
-      addButtonEnabled: false,
-    }
-  }
-
-  updateLabel = (currentLabel: any) => {
-    // Don't update the field if it is longer than 20 chars
-    if (currentLabel.length > 20) return
-    const { currentAddress } = this.state
-    this.setState({
-      currentLabel,
-    })
-    const { labelError, addressIsValid } = this.validate(
-      currentLabel,
-      currentAddress,
-    )
-    this.setAddButtonEnabled(
-      !labelError &&
-        addressIsValid &&
-        currentLabel !== '' &&
-        currentAddress !== '',
-    )
-  }
-  updateAddress = (currentAddress: any) => {
-    const { currentLabel } = this.state
-    this.setState({
-      currentAddress,
-    })
-    const { labelError, addressIsValid } = this.validate(
-      currentLabel,
-      currentAddress,
-    )
-    this.setAddButtonEnabled(
-      !labelError &&
-        addressIsValid &&
-        currentLabel !== '' &&
-        currentAddress !== '',
-    )
-  }
-  addButtonClicked = () => {
-    const { addAddressBookEntry } = this.props
-    const { currentLabel, currentAddress } = this.state
-    addAddressBookEntry(currentLabel, currentAddress)
-    this.setState({
-      currentLabel: '',
-      currentAddress: '',
-    })
-  }
-  setAddButtonEnabled = (addButtonEnabled: any) => {
-    this.setState({
-      addButtonEnabled,
-    })
-  }
-  validate = (currentLabel: any, currentAddress: any) => {
-    const { addressBook } = this.props
-    let labelError = addressBook.find((i: any) => i.label === currentLabel)
-      ? 'Duplicate Label'
-      : null
-    labelError = currentLabel.length > 12 ? 'Label is too long' : labelError
-    const addressIsValid =
-      currentAddress === '' ||
-      Utils.isZaddr(currentAddress) ||
-      Utils.isTransparent(currentAddress)
-    return {
-      labelError,
-      addressIsValid,
-    }
   }
 
   render() {
     const { addressBook, removeAddressBookEntry, setSendTo } = this.props
-    const { currentLabel, currentAddress, addButtonEnabled } = this.state
-    const { labelError, addressIsValid } = this.validate(
-      currentLabel,
-      currentAddress,
-    )
+
     return (
       <div>
         <div
@@ -155,54 +82,10 @@ export default class AddressBook extends Component<any, any> {
         </div>
 
         <div className={styles.addressbookcontainer}>
-          <div className={[cstyles.well].join(' ')}>
-            <div className={[cstyles.flexspacebetween].join(' ')}>
-              <div className={cstyles.sublight}>Label</div>
-              <div className={cstyles.validationerror}>
-                {!labelError ? (
-                  <i className={[cstyles.green, 'fas', 'fa-check'].join(' ')} />
-                ) : (
-                  <span className={cstyles.red}>{labelError}</span>
-                )}
-              </div>
-            </div>
-            <input
-              type='text'
-              value={currentLabel}
-              className={[cstyles.inputbox, cstyles.margintopsmall].join(' ')}
-              onChange={e => this.updateLabel(e.target.value)}
-            />
-
-            <div className={cstyles.margintoplarge} />
-
-            <div className={[cstyles.flexspacebetween].join(' ')}>
-              <div className={cstyles.sublight}>Address</div>
-              <div className={cstyles.validationerror}>
-                {addressIsValid ? (
-                  <i className={[cstyles.green, 'fas', 'fa-check'].join(' ')} />
-                ) : (
-                  <span className={cstyles.red}>Invalid Address</span>
-                )}
-              </div>
-            </div>
-            <input
-              type='text'
-              value={currentAddress}
-              className={[cstyles.inputbox, cstyles.margintopsmall].join(' ')}
-              onChange={e => this.updateAddress(e.target.value)}
-            />
-
-            <div className={cstyles.margintoplarge} />
-
-            <button
-              type='button'
-              className={cstyles.primarybutton}
-              disabled={!addButtonEnabled}
-              onClick={this.addButtonClicked}
-            >
-              Add
-            </button>
-          </div>
+          <PastelAddressBookForm
+            addressBook={addressBook}
+            addAddressBookEntry={this.props.addAddressBookEntry}
+          />
 
           <ScrollPane offsetHeight={300}>
             <div className={styles.addressbooklist}>

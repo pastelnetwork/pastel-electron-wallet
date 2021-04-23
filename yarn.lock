@@ -2190,6 +2190,11 @@
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
   integrity sha512-EaCxbanVeyxDRTQBkdLb3Bvl/HK7PBK6UJjsSixB0iHKoWxE5uu2Q/DgtpOhPIojN0Zl1whvOd7PoHs2P0s5eA==
 
+"@types/sha256-file@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@types/sha256-file/-/sha256-file-1.0.0.tgz#fb9762a39daf33a6ec7da1b7ff6ec27187de66b4"
+  integrity sha512-b11B4u1e9xhzx5vqSINm6VBp5+ZxO6NMTkaiqbPED6wyCRimeztKWFBoX4pvzU6F4NkWzCTan9rmirBFtkx65Q==
+
 "@types/source-list-map@*":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@types/source-list-map/-/source-list-map-0.1.2.tgz#0078836063ffaf17412349bba364087e0ac02ec9"
@@ -9750,7 +9755,7 @@ request-promise-native@^1.0.9:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request@^2.45.0, request@^2.88.2:
+request@2.88.2, request@^2.45.0, request@^2.88.2:
   version "2.88.2"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
@@ -10178,6 +10183,11 @@ sha.js@^2.4.0, sha.js@^2.4.8:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+sha256-file@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sha256-file/-/sha256-file-1.0.0.tgz#02cade5e658da3fbc167c3270bdcdfd5409f1b65"
+  integrity sha512-nqf+g0veqgQAkDx0U2y2Tn2KWyADuuludZTw9A7J3D+61rKlIIl9V5TS4mfnwKuXZOH9B7fQyjYJ9pKRHIsAyg==
 
 shallow-clone@^3.0.0:
   version "3.0.1"
