@@ -8,7 +8,6 @@ import {
   AccordionItemHeading,
   AccordionItemPanel,
 } from 'react-accessible-accordion'
-import { components } from 'react-select'
 
 import Utils from '../../legacy/utils/utils'
 import styles from './PastelAddressBlock.module.css'
@@ -22,7 +21,7 @@ type TransactionsProps = {
   address: string
   time: number
   type: string
-  sender?: string[]
+  inputAddresses?: string[]
 }
 
 type PastelAddressBlockProps = {
@@ -102,7 +101,7 @@ export default function PastelAddressBlock({
       return null
     }
     const transaction = transactions.filter(
-      t => t.address === address || t.sender?.indexOf(address) !== -1,
+      t => t?.address === address || t?.inputAddresses?.indexOf(address) !== -1,
     )[0]
     if (transaction && transaction.time) {
       const txDate = new Date(transaction.time * 1000)

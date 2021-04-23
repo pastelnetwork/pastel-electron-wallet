@@ -54,26 +54,26 @@ export async function fetchTandZTransactions(config: TRPCConfig, cb: any) {
             config,
           )
 
-          const sender: string[] = []
+          const inputAddresses: string[] = []
           await rawTransaction.result.vin.map(async (v: any) => {
             try {
               const ttxlist: any = await rpc('gettransaction', [v.txid], config)
 
               ttxlist.result.details.map((d: any) => {
-                if (sender.indexOf(d.address) === -1) {
-                  sender.push(d.address)
+                if (inputAddresses.indexOf(d.address) === -1) {
+                  inputAddresses.push(d.address)
                 }
               })
             } catch (err) {
-              return
+              throw new Error(`api/pastel-rpc server error: ${err.response}`)
             }
           })
-          transaction.sender = sender
+          transaction.inputAddresses = inputAddresses
         } catch (err) {
-          return
+          throw new Error(`api/pastel-rpc server error: ${err.response}`)
         }
       } else {
-        transaction.sender = []
+        transaction.inputAddresses = []
       }
       return transaction
     }) // Now get Z txns
@@ -117,7 +117,7 @@ export async function fetchTandZTransactions(config: TRPCConfig, cb: any) {
       transaction.detailedTxns = [new TxDetail()]
       transaction.detailedTxns[0].address = tx.address
       transaction.detailedTxns[0].amount = tx.amount
-      transaction.sender = []
+      transaction.inputAddresses = []
 
       transaction.detailedTxns[0].memo = tx.memo
         ? tx.memo.replace(/\u0000/g, '')
