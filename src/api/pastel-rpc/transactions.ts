@@ -57,22 +57,20 @@ export async function fetchTandZTransactions(config: TRPCConfig, cb: any) {
           const sender: string[] = []
           await rawTransaction.result.vin.map(async (v: any) => {
             try {
-              const rawT: any = await rpc(
-                'getrawtransaction',
-                [v.txid, 1],
-                config,
-              )
+              const ttxlist: any = await rpc('gettransaction', [v.txid], config)
 
-              rawT.result.vout.map((vout: any) => {
-                sender.push(vout.scriptPubKey.addresses[0])
+              ttxlist.result.details.map((d: any) => {
+                if (sender.indexOf(d.address) === -1) {
+                  sender.push(d.address)
+                }
               })
             } catch (err) {
-              throw new Error(`api/pastel-rpc server error: ${err.response}`)
+              return
             }
           })
           transaction.sender = sender
         } catch (err) {
-          throw new Error(`api/pastel-rpc server error: ${err.response}`)
+          return
         }
       } else {
         transaction.sender = []
