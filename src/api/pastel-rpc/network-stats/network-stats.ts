@@ -1,26 +1,12 @@
 import { rpc, TRPCConfig } from '../rpc'
 import {
-  IAddressDelta,
-  IAddressesBalance,
-  IAddressMempool,
-  IAddressUtxo,
-  IBlockInfo,
-  IBlockSubsidy,
-  IChainTips,
-  IListTransactions,
-  IListUnspent,
-  IMempoolInfo,
-  IMiningInfo,
-  INetTotals,
-  INetworkInfo,
-  IRawMempoolInfo,
-  IRawTransaction,
-  ITotalBalance,
-  ITransactionInfo,
-  ITxout,
-  ITxoutsetInfo,
-  IValidateaddress,
-  IWalletInfo,
+  TAddressDelta,
+  TAddressesBalance,
+  TAddressMempool,
+  TAddressUtxo,
+  TBlockInfo,
+  TBlockSubsidy,
+  TChainTips,
   TGetaddressbalance,
   TGetaddressdeltas,
   TGetaddressmempool,
@@ -46,19 +32,33 @@ import {
   TGettxoutsetinfo,
   TGetwalletinfo,
   Tlistaddresses,
+  TListTransactions,
   Tlisttransactions,
+  TListUnspent,
   Tlistunspent,
+  TMempoolInfo,
+  TMiningInfo,
+  TNetTotals,
+  TNetworkInfo,
+  TRawMempoolInfo,
+  TRawTransaction,
+  TTotalBalance,
+  TTransactionInfo,
+  TTxout,
+  TTxoutsetInfo,
   TValidateaddress,
+  TValidateaddresses,
+  TWalletInfo,
 } from './type'
 
-interface IStatistic {
+type TStatistic = {
   hashrate: number
   difficulty: number
 }
 
 export async function getStatisticInfo(
   config: TRPCConfig,
-): Promise<IStatistic> {
+): Promise<TStatistic> {
   try {
     const [hashrate, difficulty] = await Promise.all([
       getNetworkHashps(config),
@@ -89,31 +89,31 @@ export async function getDifficulty(config: TRPCConfig): Promise<number> {
 
 export async function getNetworkInfo(
   config: TRPCConfig,
-): Promise<INetworkInfo> {
+): Promise<TNetworkInfo> {
   const { result } = await rpc<TGetNetworkinfo>('getnetworkinfo', [], config)
   return result
 }
 
-export async function getNetTotals(config: TRPCConfig): Promise<INetTotals> {
+export async function getNetTotals(config: TRPCConfig): Promise<TNetTotals> {
   const { result } = await rpc<TGetNetTotals>('getnettotals', [], config)
   return result
 }
 
 export async function getMempoolInfo(
   config: TRPCConfig,
-): Promise<IMempoolInfo> {
+): Promise<TMempoolInfo> {
   const { result } = await rpc<TGetmempoolinfo>('getmempoolinfo', [], config)
   return result
 }
 
-export async function getMiningInfo(config: TRPCConfig): Promise<IMiningInfo> {
+export async function getMiningInfo(config: TRPCConfig): Promise<TMiningInfo> {
   const { result } = await rpc<TGetmininginfo>('getmininginfo', [], config)
   return result
 }
 
 export async function getRawMempool(
   config: TRPCConfig,
-): Promise<IRawMempoolInfo> {
+): Promise<TRawMempoolInfo> {
   const { result } = await rpc<TGetrawmempool>('getrawmempool', [], config)
   return result
 }
@@ -127,12 +127,12 @@ export async function getBlockByHeight(config: TRPCConfig): Promise<string> {
 export async function getBlockHeaderByHash(
   hash: string,
   config: TRPCConfig,
-): Promise<IBlockInfo> {
+): Promise<TBlockInfo> {
   const { result } = await rpc<TGetblock>('getblockheader', [hash], config)
   return result
 }
 
-export async function getBlockByHash(config: TRPCConfig): Promise<IBlockInfo> {
+export async function getBlockByHash(config: TRPCConfig): Promise<TBlockInfo> {
   const hash = await getBlockByHeight(config)
   const { result } = await rpc<TGetblock>('getblock', [hash], config)
   return result
@@ -140,15 +140,19 @@ export async function getBlockByHash(config: TRPCConfig): Promise<IBlockInfo> {
 
 export async function getAddress(
   config: TRPCConfig,
-): Promise<IValidateaddress> {
-  const { result } = await rpc<TValidateaddress>('validateaddress', [], config)
+): Promise<TValidateaddress> {
+  const { result } = await rpc<TValidateaddresses>(
+    'validateaddress',
+    [],
+    config,
+  )
   return result
 }
 
 export async function getRawTransaction(
   txId: string,
   config: TRPCConfig,
-): Promise<IRawTransaction> {
+): Promise<TRawTransaction> {
   const { result } = await rpc<TGetrawtransaction>(
     'getrawtransaction',
     [txId],
@@ -160,7 +164,7 @@ export async function getRawTransaction(
 export async function getWalletTransaction(
   txId: string,
   config: TRPCConfig,
-): Promise<ITransactionInfo> {
+): Promise<TTransactionInfo> {
   const { result } = await rpc<TGettransaction>(
     'gettransaction',
     [txId],
@@ -169,19 +173,19 @@ export async function getWalletTransaction(
   return result
 }
 
-export async function getTxOut(config: TRPCConfig): Promise<ITxout> {
+export async function getTxOut(config: TRPCConfig): Promise<TTxout> {
   const { result } = await rpc<TGettxout>('gettxout', [], config)
   return result
 }
 
-export async function getRpcData(config: TRPCConfig): Promise<ITxoutsetInfo> {
+export async function getRpcData(config: TRPCConfig): Promise<TTxoutsetInfo> {
   const { result } = await rpc<TGettxoutsetinfo>('gettxoutsetinfo', [], config)
   return result
 }
 
 export async function getAddressBalance(
   config: TRPCConfig,
-): Promise<IAddressesBalance> {
+): Promise<TAddressesBalance> {
   const { result } = await rpc<TGetaddressbalance>(
     'getaddressbalance',
     [],
@@ -192,7 +196,7 @@ export async function getAddressBalance(
 
 export async function getAddressDeltas(
   config: TRPCConfig,
-): Promise<IAddressDelta[]> {
+): Promise<TAddressDelta[]> {
   const { result } = await rpc<TGetaddressdeltas>(
     'getaddressdeltas',
     [],
@@ -203,7 +207,7 @@ export async function getAddressDeltas(
 
 export async function getAddressMempool(
   config: TRPCConfig,
-): Promise<IAddressMempool[]> {
+): Promise<TAddressMempool[]> {
   const { result } = await rpc<TGetaddressmempool>(
     'getaddressmempool',
     [],
@@ -219,7 +223,7 @@ export async function getAddressTxids(config: TRPCConfig): Promise<string[]> {
 
 export async function getAddressUtxos(
   config: TRPCConfig,
-): Promise<IAddressUtxo> {
+): Promise<TAddressUtxo> {
   const { result } = await rpc<TGetaddressutxos>('getaddressutxos', [], config)
   return result
 }
@@ -238,33 +242,33 @@ export async function getBlockCount(config: TRPCConfig): Promise<number> {
   return result
 }
 
-export async function getChaintips(config: TRPCConfig): Promise<IChainTips[]> {
+export async function getChaintips(config: TRPCConfig): Promise<TChainTips[]> {
   const { result } = await rpc<TGetchaintips>('getchaintips', [], config)
   return result
 }
 
 export async function getBlockSubSidy(
   config: TRPCConfig,
-): Promise<IBlockSubsidy> {
+): Promise<TBlockSubsidy> {
   const { result } = await rpc<TGetblocksubsidy>('getblocksubsidy', [], config)
   return result
 }
 
 export async function getTransaction(
   config: TRPCConfig,
-): Promise<ITransactionInfo> {
+): Promise<TTransactionInfo> {
   const { result } = await rpc<TGettransaction>('gettransaction', [], config)
   return result
 }
 
-export async function getWalletInfo(config: TRPCConfig): Promise<IWalletInfo> {
+export async function getWalletInfo(config: TRPCConfig): Promise<TWalletInfo> {
   const { result } = await rpc<TGetwalletinfo>('getwalletinfo', [], config)
   return result
 }
 
 export async function listTransactions(
   config: TRPCConfig,
-): Promise<IListTransactions[]> {
+): Promise<TListTransactions[]> {
   const { result } = await rpc<Tlisttransactions>(
     'listtransactions',
     [],
@@ -273,14 +277,14 @@ export async function listTransactions(
   return result
 }
 
-export async function listUnspent(config: TRPCConfig): Promise<IListUnspent[]> {
+export async function listUnspent(config: TRPCConfig): Promise<TListUnspent[]> {
   const { result } = await rpc<Tlistunspent>('listunspent', [], config)
   return result
 }
 
 export async function getTotalBalance(
   config: TRPCConfig,
-): Promise<ITotalBalance> {
+): Promise<TTotalBalance> {
   const { result } = await rpc<TGettotalbalance>(
     'z_gettotalbalance',
     [],
