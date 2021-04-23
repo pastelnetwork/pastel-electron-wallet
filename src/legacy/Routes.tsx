@@ -9,7 +9,7 @@ import routes from './constants/routes.json'
 import App from './containers/App'
 import Dashboard from './components/Dashboard'
 import Send from './components/Send'
-import Receive from './components/Receive'
+import { Receive } from '../features/recieve'
 import LoadingScreen from './components/LoadingScreen'
 import AppState, {
   AddressBalance,
@@ -366,7 +366,7 @@ class RouteApp extends React.Component<any, any> {
     if (type === 'generatePaperWallet') {
       this.props.openPastelPaperWalletModal({
         address,
-        privateKey: addressPrivateKeys?.[address],
+        privateKey: addressPrivateKeys[address],
       })
     } else {
       this.setState({
@@ -374,6 +374,10 @@ class RouteApp extends React.Component<any, any> {
       })
     }
   }
+  hidePrivKey = () => {
+    this.setState({ addressPrivateKeys: {} })
+  }
+
   fetchAndSetSingleViewKey = async (address: any) => {
     const key = await this.rpc.getViewKeyAsString(address)
     const addressViewKeys: any = {}
@@ -512,6 +516,7 @@ class RouteApp extends React.Component<any, any> {
                     addressBook={addressBook}
                     {...standardProps}
                     fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
+                    hidePrivKey={this.hidePrivKey}
                     fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
                     createNewAddress={this.createNewAddress}
                   />
