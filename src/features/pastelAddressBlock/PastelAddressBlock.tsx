@@ -8,6 +8,7 @@ import {
   AccordionItemHeading,
   AccordionItemPanel,
 } from 'react-accessible-accordion'
+import { components } from 'react-select'
 
 import Utils from '../../legacy/utils/utils'
 import styles from './PastelAddressBlock.module.css'
@@ -21,6 +22,7 @@ type TransactionsProps = {
   address: string
   time: number
   type: string
+  sender?: string[]
 }
 
 type PastelAddressBlockProps = {
@@ -67,34 +69,48 @@ export default function PastelAddressBlock({
     }
   }
 
-  const getDiffDays = (date: Date) => {
-    const now = new Date()
-    const distance = now.getTime() - date.getTime()
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24))
+  const getDifferenceDays = (date: Date) => {
+    try {
+      const now = new Date()
+      const distance = now.getTime() - date.getTime()
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24))
 
-    if (days < 1) {
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-      )
-      return `${hours} hours`
+      if (days < 1) {
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        )
+
+        if (hours < 1) {
+          const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) / (1000 * 60),
+          )
+
+          return `${minutes || 1} ${minutes <= 1 ? 'minute' : 'minutes'}`
+        }
+
+        return `${hours || 1} ${hours === 1 ? 'hour' : 'hours'}`
+      }
+
+      return `${days}  ${days === 1 ? 'day' : 'days'}`
+    } catch {
+      return null
     }
-
-    return `${days} days`
   }
 
   const getLastAccessed = () => {
     if (!transactions) {
       return null
     }
-
-    const transaction = transactions.filter(t => t.address === address)[0]
+    const transaction = transactions.filter(
+      t => t.address === address || t.sender?.indexOf(address) !== -1,
+    )[0]
     if (transaction && transaction.time) {
       const txDate = new Date(transaction.time * 1000)
 
       return (
         <span className={styles.lastAccessed}>
-          Last transaction to or from Address was {getDiffDays(txDate)} ago (
-          {dateformat(txDate, 'mmm dd, yyyy')} at{' '}
+          Last transaction to or from Address was {getDifferenceDays(txDate)}{' '}
+          ago ({dateformat(txDate, 'mmm dd, yyyy')} at{' '}
           {dateformat(txDate, 'hh:MM tt')})
         </span>
       )

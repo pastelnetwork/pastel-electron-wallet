@@ -41,5 +41,6 @@ module.exports = {
     ],
     // other rules we dont want to use
     // ...
+    'no-control-regex': 0,
   },
 }

@@ -14,6 +14,7 @@ import {
 } from './components/AppState'
 import Utils, { NO_CONNECTION } from './utils/utils'
 import SentTxStore from './utils/SentTxStore'
+import { fetchTandZTransactions } from '../api/pastel-rpc/transactions'
 
 const parseMemo = (memoHex: any) => {
   if (!memoHex || memoHex.length < 2) return null // First, check if this is a memo (first byte is less than 'f6' (246))
@@ -119,7 +120,10 @@ export default class RPC {
       try {
         const balP = this.fetchTotalBalance()
         const abP = this.fetchTandZAddressesWithBalances()
-        const txns = this.fetchTandZTransactions()
+        const txns = fetchTandZTransactions(
+          this.rpcConfig,
+          this.fnSetTransactionsList,
+        )
         const addrs = this.fetchAllAddresses()
         await balP
         await abP
@@ -328,93 +332,6 @@ export default class RPC {
     const addresses = zaddresses.concat(taddresses)
     this.fnSetAddressesWithBalance(addresses)
   } // Fetch all T and Z transactions
-
-  async fetchTandZTransactions() {
-    const tresponse: any = await RPC.doRPC(
-      'listtransactions',
-      [],
-      this.rpcConfig,
-    )
-    const zaddressesPromise = RPC.doRPC('z_listaddresses', [], this.rpcConfig)
-    const senttxstorePromise = SentTxStore.loadSentTxns()
-    const ttxlist = tresponse.result.map((tx: any) => {
-      const transaction: any = new Transaction()
-      transaction.address = tx.address
-      transaction.type = tx.category
-      transaction.amount = tx.amount
-      transaction.fee = Math.abs(tx.fee || 0)
-      transaction.confirmations = tx.confirmations
-      transaction.txid = tx.txid
-      transaction.time = tx.time
-      transaction.detailedTxns = [new TxDetail()]
-      transaction.detailedTxns[0].address = tx.address
-      transaction.detailedTxns[0].amount = tx.amount
-      return transaction
-    }) // Now get Z txns
-
-    const zaddresses: any = await zaddressesPromise
-    const alltxnsPromise = zaddresses.result.map(async (zaddr: any) => {
-      // For each zaddr, get the list of incoming transactions
-      const incomingTxns: any = await RPC.doRPC(
-        'z_listreceivedbyaddress',
-        [zaddr, 0],
-        this.rpcConfig,
-      )
-      const txns: any = incomingTxns.result
-        .filter((itx: any) => !itx.change)
-        .map((incomingTx: any) => {
-          return {
-            address: zaddr,
-            txid: incomingTx.txid,
-            memo: parseMemo(incomingTx.memo),
-            amount: incomingTx.amount,
-            index: incomingTx.outindex,
-          }
-        })
-      return txns
-    })
-    const alltxns = (await Promise.all(alltxnsPromise)).flat() // Now, for each tx in the array, call gettransaction
-
-    const ztxlist = await Promise.all(
-      alltxns.map(async (tx: any) => {
-        const txresponse: any = await RPC.doRPC(
-          'gettransaction',
-          [tx.txid],
-          this.rpcConfig,
-        )
-        const transaction: any = new Transaction()
-        transaction.address = tx.address
-        transaction.type = 'receive'
-        transaction.amount = tx.amount
-        transaction.confirmations = txresponse.result.confirmations
-        transaction.txid = tx.txid
-        transaction.time = txresponse.result.time
-        transaction.index = tx.index || 0
-        transaction.detailedTxns = [new TxDetail()]
-        transaction.detailedTxns[0].address = tx.address
-        transaction.detailedTxns[0].amount = tx.amount
-
-        transaction.detailedTxns[0].memo = tx.memo
-          ? tx.memo.replace(/\u0000/g, '')
-          : tx.memo
-        return transaction
-      }),
-    ) // Get transactions from the sent tx store
-
-    const sentTxns = await senttxstorePromise // Now concat the t and z transactions, and call the update function again
-
-    const alltxlist = ttxlist
-      .concat(ztxlist)
-      .concat(sentTxns)
-      .sort((tx1: any, tx2: any) => {
-        if (tx1.time && tx2.time) {
-          return tx2.time - tx1.time
-        }
-
-        return tx1.confirmations - tx2.confirmations
-      })
-    this.fnSetTransactionsList(alltxlist)
-  } // Get all Addresses, including T and Z addresses
 
   async fetchAllAddresses() {
     const zaddrsPromise: any = RPC.doRPC('z_listaddresses', [], this.rpcConfig)
