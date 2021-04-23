@@ -21,7 +21,7 @@ import {
   create_transaction,
   create_txoutsetinfo,
   create_walletinfo,
-} from '../constants'
+} from './constants'
 
 const initSqlJs = require('./sql-wasm.js')
 
