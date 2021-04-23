@@ -1,3 +1,4 @@
+import { rpc, TRPCConfig } from '../rpc'
 import {
   IAddressDelta,
   IAddressesBalance,
@@ -48,8 +49,7 @@ import {
   Tlisttransactions,
   Tlistunspent,
   TValidateaddress,
-} from '../../../type'
-import { rpc, TRPCConfig } from '../rpc'
+} from './type'
 
 interface IStatistic {
   hashrate: number
