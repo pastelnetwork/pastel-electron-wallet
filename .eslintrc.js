@@ -42,5 +42,6 @@ module.exports = {
     // other rules we dont want to use
     // ...
     'no-control-regex': 0,
+    '@typescript-eslint/no-explicit-any': 0,
   },
 }

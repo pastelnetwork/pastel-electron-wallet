@@ -21,7 +21,10 @@ const parseMemo = (memoHex: any) => {
   return memo
 }
 
-export async function fetchTandZTransactions(config: TRPCConfig, cb: any) {
+export async function fetchTandZTransactions(
+  config: TRPCConfig,
+  cb: (alltxlist: any) => void,
+): Promise<void> {
   const tresponse: any = await rpc('listtransactions', [], config)
 
   const zaddressesPromise = rpc('z_listaddresses', [], config)
@@ -128,7 +131,7 @@ export async function fetchTandZTransactions(config: TRPCConfig, cb: any) {
 
   const sentTxns = await senttxstorePromise // Now concat the t and z transactions, and call the update function again
 
-  const alltxlist = ttxlist
+  const alltxlist: any = ttxlist
     .concat(ztxlist)
     .concat(sentTxns)
     .sort((tx1: any, tx2: any) => {
