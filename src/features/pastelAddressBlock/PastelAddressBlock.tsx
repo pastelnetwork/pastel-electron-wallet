@@ -108,9 +108,10 @@ export default function PastelAddressBlock({
 
       return (
         <span className={styles.lastAccessed}>
-          Last transaction to or from Address was {getDifferenceDays(txDate)}{' '}
-          ago ({dateformat(txDate, 'mmm dd, yyyy')} at{' '}
-          {dateformat(txDate, 'hh:MM tt')})
+          Last transaction to or from Address was
+          <br />
+          {getDifferenceDays(txDate)} ago ({dateformat(txDate, 'mmm dd, yyyy')}{' '}
+          at {dateformat(txDate, 'hh:MM tt')})
         </span>
       )
     }

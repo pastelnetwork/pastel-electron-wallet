@@ -108,11 +108,12 @@
 
 .lastAccessed {
   display: inline-block;
-  max-width: 218px;
+  max-width: 225px;
   margin-left: 10px;
   font-size: 12px;
   font-style: italic;
   color: #fff;
+  text-align: right;
 }
 
 .itemsCenter {
