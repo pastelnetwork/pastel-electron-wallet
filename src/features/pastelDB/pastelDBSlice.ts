@@ -2,9 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Database } from 'sql.js'
 
 import type { AppDispatch, AppThunk, RootState } from '../../redux/store'
-import { IPastelDBState } from '../../type'
 import { openErrorModal } from '../errorModal'
 
+export interface IPastelDBState {
+  pastelDB: Database
+  isCreated: boolean
+}
 // Define the initial state using that type
 const initialState: IPastelDBState = {
   pastelDB: {} as Database,

@@ -47,7 +47,6 @@ export const createDatabase = async (): Promise<Database> => {
 }
 
 export const saveDataToLocalSqlite = async (db: Database): Promise<void> => {
-  console.log('&&&&&&&&&&&&&&&&&', db)
   const data = db.export()
   const buffer = Buffer.from(data)
   fs.writeFileSync(
@@ -55,7 +54,6 @@ export const saveDataToLocalSqlite = async (db: Database): Promise<void> => {
     buffer,
     { flag: 'a+' },
   )
-  console.log('$$$$$$$$$$$$$$$$$$$$$$$$')
   return
 }
 
