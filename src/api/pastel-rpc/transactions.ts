@@ -65,12 +65,12 @@ export async function fetchTandZTransactions(config: TRPCConfig, cb: any) {
                 }
               })
             } catch (err) {
-              throw new Error(`api/pastel-rpc server error: ${err.response}`)
+              inputAddresses.push('')
             }
           })
           transaction.inputAddresses = inputAddresses
         } catch (err) {
-          throw new Error(`api/pastel-rpc server error: ${err.response}`)
+          transaction.inputAddresses = []
         }
       } else {
         transaction.inputAddresses = []
