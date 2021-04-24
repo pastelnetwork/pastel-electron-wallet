@@ -101,7 +101,7 @@ class LoadingScreen extends Component<any, any> {
     })()
   }
 
-  ensurePastelParams = async () => {
+  ensurePastelParams = async (nRetry = 0): Promise<boolean> => {
     const params = [
       {
         name: 'sapling-output.params',
@@ -144,6 +144,9 @@ class LoadingScreen extends Component<any, any> {
       })
       return true
     } catch (err) {
+      if (nRetry < 10) {
+        return this.ensurePastelParams(nRetry + 1)
+      }
       this.setState({
         currentStatus: `Error downloading params. The error was: ${err}`,
         errorEnsurePastelParams: true,
@@ -406,7 +409,7 @@ class LoadingScreen extends Component<any, any> {
                     {' '}
                     <span
                       className={styles.clickable}
-                      onClick={this.ensurePastelParams}
+                      onClick={() => this.ensurePastelParams()}
                     >
                       Retry
                     </span>

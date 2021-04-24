@@ -108,7 +108,5 @@ export const checkHashAndDownloadParams = async ({
     promises.push(promise)
   }
 
-  for (const promise in promises) {
-    await promise
-  }
+  await Promise.all(promises)
 }
