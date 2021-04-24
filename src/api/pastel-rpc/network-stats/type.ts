@@ -1,43 +1,43 @@
-export interface INetworks {
+export type TNetworks = {
   name: string
   limited: boolean
   reachable: boolean
   proxy: string
 }
 
-export interface ILocaladdresses {
+export type TLocaladdresses = {
   address: string
   port: number
   score: number
 }
 
-export interface INetworkInfo {
+export type TNetworkInfo = {
   version: number
   subversion: string
   protocolversion: number
   localservices: string
   timeoffset: number
   connections: number
-  networks: INetworks[]
+  networks: TNetworks[]
   relayfee: number
-  localaddresses: ILocaladdresses[]
+  localaddresses: TLocaladdresses[]
   warnings: string
   create_timestamp: string
 }
 
-export interface INetTotals {
+export type TNetTotals = {
   totalbytesrecv: number
   totalbytessent: number
   timemillis: number
 }
 
-export interface IMempoolInfo {
+export type TMempoolInfo = {
   size: number
   bytes: number
   usage: number
 }
 
-export interface IRawMempoolInfo {
+export type TRawMempoolInfo = {
   transactionid: string
   size: number
   fee: number
@@ -45,10 +45,10 @@ export interface IRawMempoolInfo {
   height: number
   startingpriority: number
   currentpriority: number
-  depends: IRawMempoolInfo[]
+  depends: TRawMempoolInfo[]
 }
 
-export interface IMiningInfo {
+export type TMiningInfo = {
   blocks: number
   currentblocksize: number
   currentblocktx: number
@@ -64,7 +64,7 @@ export interface IMiningInfo {
   generate: boolean
 }
 
-export interface IBlockInfo {
+export type TBlockInfo = {
   hash: string
   confirmations: number
   size: number
@@ -85,19 +85,19 @@ export interface IBlockInfo {
   nextblockhash: string
 }
 
-export interface IScriptSig {
+export type TScriptSig = {
   asm: string
   hex: string
 }
 
-export interface IVin {
+export type TVin = {
   txid: string
   vout: number
-  scriptSig: IScriptSig
+  scriptSig: TScriptSig
   sequence: number
 }
 
-export interface IScriptPubkey {
+export type TScriptPubkey = {
   asm: string
   hex: string
   regSigs: number
@@ -105,13 +105,13 @@ export interface IScriptPubkey {
   addresses: string[]
 }
 
-export interface IVout {
+export type TVout = {
   value: number
   n: number
-  scriptPubkey: IScriptPubkey
+  scriptPubkey: TScriptPubkey
 }
 
-export interface IVjoinsplit {
+export type TVjoinsplit = {
   vpub_old: number
   vpub_new: number
   anchor: string
@@ -124,7 +124,7 @@ export interface IVjoinsplit {
   ciphertexts: string[]
 }
 
-export interface IRawTransaction {
+export type TRawTransaction = {
   hex: string
   txid: string
   overwintered: boolean
@@ -132,16 +132,16 @@ export interface IRawTransaction {
   versiongroupid: string
   locktime: number
   expiryheight: number
-  vin: IVin[]
-  vout: IVout[]
-  vjoinsplit: IVjoinsplit[]
+  vin: TVin[]
+  vout: TVout[]
+  vjoinsplit: TVjoinsplit[]
   blockhash: string
   confirmations: number
   time: number
   blocktime: number
 }
 
-export interface ITransactionInfo {
+export type TTransactionInfo = {
   hex: string
   txid: string
   overwintered: number
@@ -149,16 +149,16 @@ export interface ITransactionInfo {
   versiongroupid: string
   locktime: number
   expiryheight: number
-  vin: IVin[]
-  vout: IVout[]
-  vjoinsplit: IVjoinsplit[]
+  vin: TVin[]
+  vout: TVout[]
+  vjoinsplit: TVjoinsplit[]
   blockhash: string
   confirmations: number
   time: number
   blocktime: number
 }
 
-export interface ITxoutsetInfo {
+export type TTxoutsetInfo = {
   height: number
   bestblock: string
   transactions: number
@@ -168,20 +168,20 @@ export interface ITxoutsetInfo {
   total_amount: number
 }
 
-export interface IChainTips {
+export type TChainTips = {
   height: number
   hash: string
   branchlen: number
   status: string
 }
 
-export interface IBlockSubsidy {
+export type TBlockSubsidy = {
   miner: number
   masternode: number
   governance: number
 }
 
-export interface IWalletInfo {
+export type TWalletInfo = {
   walletversion: number
   balance: number
   unconfirmed_balance: number
@@ -193,7 +193,7 @@ export interface IWalletInfo {
   seedfp: string
 }
 
-export interface IListTransactions {
+export type TListTransactions = {
   account: string
   address: string
   category: string
@@ -208,12 +208,12 @@ export interface IListTransactions {
   walletconflicts: string[]
   time: number
   timereceived: number
-  vjoinsplit: IVjoinsplit[]
+  vjoinsplit: TVjoinsplit[]
   size: number
   lastblock: string
 }
 
-export interface IListUnspent {
+export type TListUnspent = {
   txid: string
   vout: number
   generated: boolean
@@ -225,13 +225,13 @@ export interface IListUnspent {
   spendable: number
 }
 
-export interface ITotalBalance {
+export type TTotalBalance = {
   transparent: string
   private: string
   total: string
 }
 
-export interface IValidateaddress {
+export type TValidateaddress = {
   isvalid: boolean
   address: string
   scriptPubkey: string
@@ -242,18 +242,18 @@ export interface IValidateaddress {
   account: string
 }
 
-export interface ITxout {
+export type TTxout = {
   bestblock: string
   confirmations: number
   value: number
-  scriptPubKey: IScriptPubkey
+  scriptPubKey: TScriptPubkey
 }
 
-export interface IAddressesBalance {
+export type TAddressesBalance = {
   addresses: string[]
 }
 
-export interface IAddressDelta {
+export type TAddressDelta = {
   satoshis: number
   txid: string
   index: number
@@ -261,7 +261,7 @@ export interface IAddressDelta {
   address: string
 }
 
-export interface IAddressMempool {
+export type TAddressMempool = {
   address: string
   txid: string
   index: number
@@ -271,7 +271,7 @@ export interface IAddressMempool {
   prevout: string
 }
 
-export interface IUtxo {
+export type TUtxo = {
   address: string
   txid: string
   height: number
@@ -279,186 +279,186 @@ export interface IUtxo {
   script: string
 }
 
-export interface IAddressUtxo {
-  utxos: IUtxo[]
+export type TAddressUtxo = {
+  utxos: TUtxo[]
   hash: string
   height: number
 }
 
 export type TGetnetworkhashps = {
   result: number
-  error: IError
+  error: TError
   id: string
 }
 
 export type TGetdifficulty = {
   result: number
-  error: IError
+  error: TError
   id: string
 }
 
 export type TGetNetworkinfo = {
-  result: INetworkInfo
-  error: IError
+  result: TNetworkInfo
+  error: TError
   id: string
 }
 
 export type TGetNetTotals = {
-  result: INetTotals
-  error: IError
+  result: TNetTotals
+  error: TError
   id: string
 }
 
 export type TGetmempoolinfo = {
-  result: IMempoolInfo
-  error: IError
+  result: TMempoolInfo
+  error: TError
   id: string
 }
 
 export type TGetmininginfo = {
-  result: IMiningInfo
-  error: IError
+  result: TMiningInfo
+  error: TError
   id: string
 }
 
 export type Tgetmininginfo = {
-  result: IMiningInfo
-  error: IError
+  result: TMiningInfo
+  error: TError
   id: string
 }
 
 export type TGetrawmempool = {
-  result: IRawMempoolInfo
-  error: IError
+  result: TRawMempoolInfo
+  error: TError
   id: string
 }
 
 export type TGetblockhash = {
   result: string
-  error: IError
+  error: TError
   id: string
 }
 
 export type TGetblock = {
-  result: IBlockInfo
-  error: IError
+  result: TBlockInfo
+  error: TError
   id: string
 }
 
-export type TValidateaddress = {
-  result: IValidateaddress
-  error: IError
+export type TValidateaddresses = {
+  result: TValidateaddress
+  error: TError
   id: string
 }
 
 export type TGetrawtransaction = {
-  result: IRawTransaction
-  error: IError
+  result: TRawTransaction
+  error: TError
   id: string
 }
 
 export type TGettransaction = {
-  result: ITransactionInfo
-  error: IError
+  result: TTransactionInfo
+  error: TError
   id: string
 }
 
 export type TGettxout = {
-  result: ITxout
-  error: IError
+  result: TTxout
+  error: TError
   id: string
 }
 
 export type TGettxoutsetinfo = {
-  result: ITxoutsetInfo
-  error: IError
+  result: TTxoutsetInfo
+  error: TError
   id: string
 }
 
 export type TGetaddressbalance = {
-  result: IAddressesBalance
-  error: IError
+  result: TAddressesBalance
+  error: TError
   id: string
 }
 
 export type TGetaddressdeltas = {
-  result: IAddressDelta[]
-  error: IError
+  result: TAddressDelta[]
+  error: TError
   id: string
 }
 
 export type TGetaddressmempool = {
-  result: IAddressMempool[]
-  error: IError
+  result: TAddressMempool[]
+  error: TError
   id: string
 }
 
 export type TGetaddresstxids = {
   result: string[]
-  error: IError
+  error: TError
   id: string
 }
 
 export type TGetaddressutxos = {
-  result: IAddressUtxo
-  error: IError
+  result: TAddressUtxo
+  error: TError
   id: string
 }
 
 export type TGetbestblockhash = {
   result: string
-  error: IError
+  error: TError
   id: string
 }
 
 export type TGetblockcount = {
   result: number
-  error: IError
+  error: TError
   id: string
 }
 
 export type TGetchaintips = {
-  result: IChainTips[]
-  error: IError
+  result: TChainTips[]
+  error: TError
   id: string
 }
 
 export type TGetblocksubsidy = {
-  result: IBlockSubsidy
-  error: IError
+  result: TBlockSubsidy
+  error: TError
   id: string
 }
 
 export type TGetwalletinfo = {
-  result: IWalletInfo
-  error: IError
+  result: TWalletInfo
+  error: TError
   id: string
 }
 
 export type Tlisttransactions = {
-  result: IListTransactions[]
-  error: IError
+  result: TListTransactions[]
+  error: TError
   id: string
 }
 
 export type Tlistunspent = {
-  result: IListUnspent[]
-  error: IError
+  result: TListUnspent[]
+  error: TError
   id: string
 }
 
 export type TGettotalbalance = {
-  result: ITotalBalance
-  error: IError
+  result: TTotalBalance
+  error: TError
   id: string
 }
 
 export type Tlistaddresses = {
   result: string[]
-  error: IError
+  error: TError
   id: string
 }
 
-export interface IError {
+export type TError = {
   message: string
 }
