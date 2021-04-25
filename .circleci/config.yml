@@ -9,14 +9,14 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node_deps-{{ checksum "package.json" }}
+            - node_deps-{{ checksum "yarn.lock" }}
       - run:
           # https://circleci.com/docs/2.0/caching/
           command: yarn --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache:
-          key: node_deps-{{ checksum "package.json" }}
+          key: node_deps-{{ checksum "yarn.lock" }}
           paths:
-            - ~/project/node_modules
+            - ~/.cache/yarn
       - persist_to_workspace:
           root: ~/project
           paths:
