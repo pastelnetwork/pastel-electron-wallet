@@ -186,11 +186,26 @@ class TerminalConsole extends Component<IProps, IState> {
   }
 
   onTabPress = () => {
+    const currentInput = this.getInput()
+    if (!currentInput) {
+      this.addOutputThenDisplay(
+        `$\nType 'help' for a list of available commands.`,
+      )
+      return
+    }
     const autoCompletionStr = this.emulator.autocomplete(
       this.emulatorState,
-      this.getInput(),
+      currentInput,
     )
-    this.setInput(autoCompletionStr)
+    if (autoCompletionStr !== currentInput) {
+      this.setInput(autoCompletionStr)
+      return
+    }
+    const suggestions = this.emulator.suggest(this.emulatorState, currentInput)
+    if (!suggestions?.length) {
+      return
+    }
+    this.addOutputThenDisplay(`$ ${currentInput}\n${suggestions.join('\n')}`)
   }
 
   onArrowDownPress = () => {
@@ -312,27 +327,24 @@ class TerminalConsole extends Component<IProps, IState> {
     try {
       const data = await rpcApi[commandKey](opts)
       const text =
-        typeof data === 'object' ? textAsTable([this.formatData(data)]) : data
-      const oldOutputs = this.emulatorState.getOutputs()
-      const newOutputs = Outputs.addRecord(
-        oldOutputs,
-        OutputFactory.makeTextOutput(text),
-      )
-
-      this.emulatorState = await this.emulatorState.setOutputs(newOutputs)
-      this.displayOutputs(this.emulatorState.getOutputs())
+        typeof data === 'object'
+          ? textAsTable([this.formatData(data)])
+          : `${data}`
+      await this.addOutputThenDisplay(text)
     } catch (error) {
-      const oldOutputs = this.emulatorState.getOutputs()
-      const newOutputs = Outputs.addRecord(
-        oldOutputs,
-        OutputFactory.makeTextOutput(
-          `Error ${error.statusCode}: ${error.message}`,
-        ),
-      )
-
-      this.emulatorState = await this.emulatorState.setOutputs(newOutputs)
-      this.displayOutputs(this.emulatorState.getOutputs())
+      const text = `Error ${error.statusCode}: ${error.message}`
+      await this.addOutputThenDisplay(text)
     }
+  }
+
+  private addOutputThenDisplay = async (text: string) => {
+    const oldOutputs = this.emulatorState.getOutputs()
+    const newOutputs = Outputs.addRecord(
+      oldOutputs,
+      OutputFactory.makeTextOutput(text),
+    )
+    this.emulatorState = await this.emulatorState.setOutputs(newOutputs)
+    this.displayOutputs(this.emulatorState.getOutputs())
   }
 
   initTerminal = () => {
@@ -411,6 +423,7 @@ class TerminalConsole extends Component<IProps, IState> {
       this.addKeyDownListener('ArrowUp', this.inputRef, this.onArrowUpPress)
       this.addKeyDownListener('ArrowDown', this.inputRef, this.onArrowDownPress)
       this.addKeyDownListener('Tab', this.inputRef, this.onTabPress)
+      this.inputRef.focus()
     }
   }
 
