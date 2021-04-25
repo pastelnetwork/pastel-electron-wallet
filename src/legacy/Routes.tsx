@@ -34,6 +34,7 @@ import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
+import { PastelDBThread } from '../features/pastelDB'
 import { setPastelConf } from '../features/pastelConf'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 import PastelSpriteEditorToolModal, {
@@ -618,6 +619,7 @@ class RouteApp extends React.Component<any, any> {
             </Switch>
           </div>
         </div>
+        <PastelDBThread rpcConfig={this.state.rpcConfig} />
       </App>
     )
   }

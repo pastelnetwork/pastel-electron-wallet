@@ -32,6 +32,7 @@ import {
   TGettxoutsetinfo,
   TGetwalletinfo,
   Tlistaddresses,
+  TListsinceblock,
   TListTransactions,
   Tlisttransactions,
   TListUnspent,
@@ -42,8 +43,8 @@ import {
   TNetworkInfo,
   TRawMempoolInfo,
   TRawTransaction,
+  TSinceblock,
   TTotalBalance,
-  TTransactionInfo,
   TTxout,
   TTxoutsetInfo,
   TValidateaddress,
@@ -114,13 +115,13 @@ export async function getMiningInfo(config: TRPCConfig): Promise<TMiningInfo> {
 export async function getRawMempool(
   config: TRPCConfig,
 ): Promise<TRawMempoolInfo> {
-  const { result } = await rpc<TGetrawmempool>('getrawmempool', [], config)
+  const { result } = await rpc<TGetrawmempool>('getrawmempool', [true], config)
   return result
 }
 
 export async function getBlockByHeight(config: TRPCConfig): Promise<string> {
-  // const height = 1000
-  const { result } = await rpc<TGetblockhash>('getblockhash', [], config)
+  const height = 1000
+  const { result } = await rpc<TGetblockhash>('getblockhash', [height], config)
   return result
 }
 
@@ -155,7 +156,7 @@ export async function getRawTransaction(
 ): Promise<TRawTransaction> {
   const { result } = await rpc<TGetrawtransaction>(
     'getrawtransaction',
-    [txId],
+    [txId, 1],
     config,
   )
   return result
@@ -164,7 +165,7 @@ export async function getRawTransaction(
 export async function getWalletTransaction(
   txId: string,
   config: TRPCConfig,
-): Promise<TTransactionInfo> {
+): Promise<TRawTransaction> {
   const { result } = await rpc<TGettransaction>(
     'gettransaction',
     [txId],
@@ -256,13 +257,20 @@ export async function getBlockSubSidy(
 
 export async function getTransaction(
   config: TRPCConfig,
-): Promise<TTransactionInfo> {
+): Promise<TRawTransaction> {
   const { result } = await rpc<TGettransaction>('gettransaction', [], config)
   return result
 }
 
 export async function getWalletInfo(config: TRPCConfig): Promise<TWalletInfo> {
   const { result } = await rpc<TGetwalletinfo>('getwalletinfo', [], config)
+  return result
+}
+
+export async function getListSinceBlock(
+  config: TRPCConfig,
+): Promise<TSinceblock> {
+  const { result } = await rpc<TListsinceblock>('listsinceblock', [], config)
   return result
 }
 

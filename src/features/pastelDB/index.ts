@@ -7,3 +7,4 @@ export {
   pastelDBReducer,
   pastelDBSelector,
 } from './pastelDBSlice'
+export * from './pastelDBThread'
