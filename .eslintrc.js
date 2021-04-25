@@ -4,9 +4,15 @@ module.exports = {
   plugins: ['@typescript-eslint', 'import', 'simple-import-sort'],
   extends: [
     'eslint:recommended',
+    'plugin:react/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
   ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   env: {
     browser: true,
     es6: true,
