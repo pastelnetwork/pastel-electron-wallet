@@ -202,7 +202,7 @@ class TerminalConsole extends Component<IProps, IState> {
       return
     }
     const suggestions = this.emulator.suggest(this.emulatorState, currentInput)
-    if (!suggestions?.length) {
+    if (!suggestions?.length || suggestions[0] === currentInput) {
       return
     }
     this.addOutputThenDisplay(`$ ${currentInput}\n${suggestions.join('\n')}`)
