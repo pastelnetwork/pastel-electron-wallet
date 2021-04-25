@@ -1,17 +1,12 @@
-@font-face {
-  font-family: 'essential';
-  font-weight: normal;
-  font-style: normal;
-  src: url('./console/fonts/EssentialPragmataPro-R_1.2.ttf') format('truetype');
-}
-
 .terminal {
-  position: relative;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
   z-index: 100;
-  height: 100%;
-  font-family: 'essential';
+  font-family: 'Essential PragmataPro', monospace;
   overflow: auto;
-  min-height: 500px;
 }
 
 .terminalHead {
@@ -22,7 +17,7 @@
 .terminalHead p {
   text-align: center;
   font-size: 16px;
-  font-family: 'essential';
+  font-family: 'Essential PragmataPro', monospace;
 }
 
 .terminalOutput {
@@ -33,8 +28,11 @@
 .textOutput pre,
 .errorOutput pre,
 .headOutput pre {
-  font-family: 'essential';
+  font-family: 'Essential PragmataPro', monospace;
   margin-bottom: 0.8em;
+  width: 100%;
+  max-width: 100%;
+  white-space: pre-wrap;
 }
 
 .terminalInput {
@@ -44,7 +42,7 @@
   border: none;
   color: #fff;
   font-size: 20px;
-  font-family: 'essential';
+  font-family: 'Essential PragmataPro', monospace;
   width: 100%;
 }
 
@@ -56,6 +54,7 @@
   display: flex;
   align-items: center;
   padding: 0 30px 30px;
+  cursor: text;
 }
 
 /* theme */

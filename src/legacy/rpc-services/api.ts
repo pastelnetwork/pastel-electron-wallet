@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import axios from 'axios'
 
 import store from '../../redux/store'
@@ -17,7 +19,7 @@ const getMessage = (statusCode: number, isECONNREFUSED: boolean) => {
 
   switch (statusCode) {
     case 401:
-      return 'Not authorized to access Zcash RPC, please check your rpcuser and rpcpassword'
+      return 'Not authorized to access RPC, please check your rpcuser and rpcpassword'
     default:
       return 'Something went wrong'
   }

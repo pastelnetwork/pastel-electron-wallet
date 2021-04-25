@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable */
+
 import asTable from 'as-table'
 import cx from 'classnames'
 import {
@@ -20,10 +21,8 @@ const textAsTable = asTable.configure({ delimiter: ' | ' })
 
 const createOutputDiv = (className: string, textContent: string) => {
   const div = document.createElement('div')
-
   div.className = className
   div.innerHTML = `<pre>${textContent}</pre>`
-
   return div
 }
 
@@ -61,7 +60,6 @@ const helpText = `Available commands:
 `
 
 interface IProps {
-  theme: string
   totalBalance: any
   addressesWithBalance: any
   txDetail: any
@@ -69,6 +67,7 @@ interface IProps {
   transactions: any
   connectedCompanionApp: any
   pastelIDs: any
+  theme: string
 }
 
 interface IState {
@@ -99,6 +98,23 @@ class TerminalConsole extends Component<IProps, IState> {
 
   componentDidMount() {
     this.loadBanner()
+    window.addEventListener('resize', this.scrollToBottomWhenResize)
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.scrollToBottomWhenResize)
+  }
+  focusTerminalInput = () => {
+    document.getElementById('terminalInput')?.focus()
+  }
+  scrollToBottomWhenResize = () => {
+    // Always scroll to bottom on resize
+    const t = document.getElementById('terminalWrap')
+    if (!t) {
+      return
+    }
+    t.scrollTo({
+      top: t.scrollHeight,
+    })
   }
 
   loadBanner = () => {
@@ -142,15 +158,12 @@ class TerminalConsole extends Component<IProps, IState> {
   displayOutputs = (outputs: any) => {
     if (this.outputRef) {
       this.outputRef.innerHTML = ''
-
       const outputNodes = Array.from(outputs).map((output: any) =>
         outputToHTMLNode[output.type](output.content),
       )
-
       for (const outputNode of outputNodes) {
         this.outputRef.append(outputNode)
       }
-
       if (this.terminalWrapRef) {
         this.terminalWrapRef.scrollTop = this.terminalWrapRef.scrollHeight + 100
       }
@@ -163,7 +176,6 @@ class TerminalConsole extends Component<IProps, IState> {
 
   onEnterKeyDown = () => {
     const commandStr = this.getInput()
-
     this.emulatorState = this.emulator.execute(
       this.emulatorState,
       commandStr,
@@ -409,18 +421,14 @@ class TerminalConsole extends Component<IProps, IState> {
     return (
       <div className={cx(styles.terminal, styles[theme])} id='terminalWrap'>
         <div className={styles.terminalHead}>
-          <p id='bannerLine1'>
-            ............................................................
-          </p>
+          <p>............................................................</p>
           <pre id='banner' />
           {isReady && (
             <>
-              <p id='bannerLine2'>
+              <p>
                 ............................................................
               </p>
-              <p id='bannerHelpText'>
-                Type 'help' for a list of available commands.
-              </p>
+              <p>Type 'help' for a list of available commands.</p>
             </>
           )}
         </div>
@@ -428,6 +436,7 @@ class TerminalConsole extends Component<IProps, IState> {
         <div
           className={styles.terminalInputWrap}
           style={{ display: isReady ? '' : 'none' }}
+          onClick={this.focusTerminalInput}
         >
           <span>$&nbsp;</span>
           <input
