@@ -11,7 +11,8 @@ jobs:
           keys:
             - node_deps-{{ checksum "package.json" }}
       - run:
-          command: npm i
+          # https://circleci.com/docs/2.0/caching/
+          command: yarn --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache:
           key: node_deps-{{ checksum "package.json" }}
           paths:
