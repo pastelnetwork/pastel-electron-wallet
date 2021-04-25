@@ -34,8 +34,6 @@ export const checkHashAndDownloadParams = async ({
   outputDir,
   onProgress,
 }: ICheckHashAndDownloadParams): Promise<void> => {
-  const promises: Promise<void>[] = []
-
   const dirExists = await exists(outputDir)
   if (!dirExists) {
     await fs.promises.mkdir(outputDir)
@@ -105,8 +103,6 @@ export const checkHashAndDownloadParams = async ({
       })
     })
 
-    promises.push(promise)
+    await promise
   }
-
-  await Promise.all(promises)
 }
