@@ -45,7 +45,7 @@ const banner = `
 ╚═╝     ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚══════╝\u2800
 `
 
-// Help text
+// Help text default
 const helpText = `Available commands:
  - help: This output
  - clear: To clear the console
