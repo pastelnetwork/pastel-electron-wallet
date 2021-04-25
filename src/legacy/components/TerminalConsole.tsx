@@ -98,22 +98,19 @@ class TerminalConsole extends Component<IProps, IState> {
 
   componentDidMount() {
     this.loadBanner()
-    window.addEventListener('resize', this.scrollToBottomWhenResize)
+    window.addEventListener('resize', this.resetScroll)
   }
   componentWillUnmount() {
-    window.removeEventListener('resize', this.scrollToBottomWhenResize)
+    window.removeEventListener('resize', this.resetScroll)
   }
   focusTerminalInput = () => {
-    document.getElementById('terminalInput')?.focus()
+    this.inputRef?.focus()
+    this.resetScroll()
   }
-  scrollToBottomWhenResize = () => {
-    // Always scroll to bottom on resize
-    const t = document.getElementById('terminalWrap')
-    if (!t) {
-      return
-    }
-    t.scrollTo({
-      top: t.scrollHeight,
+  resetScroll = () => {
+    this.terminalWrapRef?.scrollTo({
+      left: 0,
+      top: this.terminalWrapRef.scrollHeight,
     })
   }
 
@@ -164,9 +161,7 @@ class TerminalConsole extends Component<IProps, IState> {
       for (const outputNode of outputNodes) {
         this.outputRef.append(outputNode)
       }
-      if (this.terminalWrapRef) {
-        this.terminalWrapRef.scrollTop = this.terminalWrapRef.scrollHeight + 100
-      }
+      this.resetScroll()
     }
   }
 
@@ -328,7 +323,11 @@ class TerminalConsole extends Component<IProps, IState> {
       const data = await rpcApi[commandKey](opts)
       const text =
         typeof data === 'object'
-          ? textAsTable([this.formatData(data)])
+          ? textAsTable(
+              Array.isArray(data)
+                ? data.map(i => this.formatData(i))
+                : [this.formatData(data)],
+            )
           : `${data}`
       await this.addOutputThenDisplay(text)
     } catch (error) {
@@ -445,10 +444,17 @@ class TerminalConsole extends Component<IProps, IState> {
             </>
           )}
         </div>
-        <div id='terminalOutput' className={styles.terminalOutput} />
+        <div className={styles.terminalInputLongArea}>
+          <div id='terminalOutput' className={styles.terminalOutput} />
+          <div
+            className={styles.terminalInputLongAreaClickable}
+            onClick={this.focusTerminalInput}
+          />
+        </div>
         <div
-          className={styles.terminalInputWrap}
-          style={{ display: isReady ? '' : 'none' }}
+          className={cx(styles.terminalInputWrap, {
+            [styles.isReady]: isReady,
+          })}
           onClick={this.focusTerminalInput}
         >
           <span>$&nbsp;</span>
@@ -457,6 +463,7 @@ class TerminalConsole extends Component<IProps, IState> {
             type='text'
             className={styles.terminalInput}
             autoFocus={isReady}
+            onChange={this.resetScroll}
           />
         </div>
       </div>

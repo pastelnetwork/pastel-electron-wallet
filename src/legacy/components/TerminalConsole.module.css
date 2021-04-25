@@ -4,9 +4,9 @@
   left: 50px;
   right: 50px;
   bottom: 50px;
-  z-index: 100;
-  font-family: 'Essential PragmataPro', monospace;
   overflow: auto;
+  font-family: 'Essential PragmataPro', monospace;
+  z-index: 100;
 }
 
 .terminalHead {
@@ -22,7 +22,6 @@
 
 .terminalOutput {
   margin-bottom: 0.8em;
-  padding: 0 30px;
 }
 
 .textOutput pre,
@@ -30,6 +29,47 @@
 .headOutput pre {
   font-family: 'Essential PragmataPro', monospace;
   margin-bottom: 0.8em;
+  float: left;
+  padding: 0 30px;
+}
+.textOutput::before,
+.errorOutput::before,
+.headOutput::before,
+.textOutput::after,
+.errorOutput::after,
+.headOutput::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.terminalInputLongArea {
+  position: relative;
+  display: inline-block;
+}
+.terminalInputLongAreaClickable {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 85px;
+  cursor: text;
+}
+
+.terminalInputWrap {
+  position: relative;
+  display: none;
+  align-items: center;
+  padding: 0 30px 60px;
+  cursor: text;
+  font-size: 20px;
+}
+.terminalInputWrap.isReady {
+  display: flex;
+}
+.terminalInputWrap span {
+  font-weight: bold;
+  user-select: none;
 }
 
 .terminalInput {
@@ -45,13 +85,6 @@
 
 .terminalInput:focus {
   outline: none;
-}
-
-.terminalInputWrap {
-  display: flex;
-  align-items: center;
-  padding: 0 30px 30px;
-  cursor: text;
 }
 
 /* theme */
