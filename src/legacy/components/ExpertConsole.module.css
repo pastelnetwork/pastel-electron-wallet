@@ -30,6 +30,7 @@
   overflow: hidden;
   box-shadow: 0 0 1px 3px rgba(10, 10, 10, 0.7);
 }
+
 .screen::before {
   position: absolute;
   left: 0;
@@ -63,6 +64,7 @@
   bottom: 0;
   /* animation: pulse 5s linear infinite; */
 }
+
 .wrapper::before {
   position: absolute;
   left: 0;
@@ -114,8 +116,9 @@
   top: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
   background: rgba(0, 0, 0, 0.25);
-  /* animation: skew 5s linear infinite; */
+  animation: skew 5s linear infinite;
 }
 
 @keyframes scanline {
@@ -127,11 +130,13 @@
     top: 100%;
   }
 }
+
 .terminal {
   position: relative;
   width: 100%;
   height: 100%;
 }
+
 .terminal textarea {
   display: block;
   background: transparent;
@@ -165,7 +170,7 @@
   }
 }
 
-#scanline {
+.scanline {
   position: absolute;
   top: 0;
   left: 0;
@@ -242,31 +247,39 @@
   border: 3px transparent solid;
   border-radius: 3px;
   cursor: pointer;
+  z-index: 100;
 }
+
 .greenThemeBtn.active,
 .amberThemeBtn.active,
 .blackThemeBtn.active {
   border-color: white;
 }
+
 .greenThemeBtn {
   right: 65px;
   background-color: #44aa44;
 }
+
 .amberThemeBtn {
   right: 35px;
   background-color: #e88537;
 }
+
 .blackThemeBtn {
   right: 5px;
   background-color: black;
 }
+
 .crt.amber {
   background: #311;
 }
+
 .crt.amber .terminal textarea {
   color: #e88537 !important;
   text-shadow: 0 0 2px rgba(255, 10, 10, 0.8);
 }
+
 .crt.amber .wrapper::after {
   display: none;
 }
@@ -276,10 +289,12 @@
   background-color: black;
   box-shadow: none;
 }
+
 .crt.black .terminal textarea {
   color: white !important;
   text-shadow: none;
 }
+
 .crt.black .wrapper::after,
 .crt.black .interlace,
 .crt.black .screen::before,
