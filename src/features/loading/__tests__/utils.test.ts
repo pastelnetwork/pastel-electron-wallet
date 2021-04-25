@@ -71,9 +71,12 @@ describe('loading/utils', () => {
     writerSpy.mockReturnValue(mockWritable)
 
     // Act
-    setTimeout(() => {
-      mockWritable.emit('finish')
-    }, 100)
+    for (let i = 1; i <= params.length; i++) {
+      // emit mock event for all files in params object
+      setTimeout(() => {
+        mockWritable.emit('finish')
+      }, 50 * i)
+    }
 
     await checkHashAndDownloadParams({
       params,
@@ -136,9 +139,12 @@ describe('loading/utils', () => {
     writerSpy.mockReturnValue(mockWritable)
 
     // Act
-    setTimeout(() => {
-      mockWritable.emit('finish')
-    }, 100)
+    for (let i = 1; i <= params.length; i++) {
+      // emit mock event for all files in params object
+      setTimeout(() => {
+        mockWritable.emit('finish')
+      }, 50 * i)
+    }
 
     await checkHashAndDownloadParams({
       params: newParams,
