@@ -30,9 +30,6 @@
 .headOutput pre {
   font-family: 'Essential PragmataPro', monospace;
   margin-bottom: 0.8em;
-  width: 100%;
-  max-width: 100%;
-  white-space: pre-wrap;
 }
 
 .terminalInput {
