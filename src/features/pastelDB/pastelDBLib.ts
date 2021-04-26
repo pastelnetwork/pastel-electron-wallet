@@ -1,7 +1,6 @@
-import fs from 'fs-extra'
-import path from 'path'
-import { Database } from 'sql.js'
+import initSqlJs, { Database } from 'sql.js'
 
+import { readSqliteDBFile, writeSqliteDBFile } from '../../config'
 import {
   create_block,
   create_blocksubsidy,
@@ -23,8 +22,6 @@ import {
   create_walletinfo,
 } from './constants'
 
-const initSqlJs = require('./sql-wasm.js')
-
 export const createDatabase = async (): Promise<Database> => {
   const SQL = await initSqlJs({
     locateFile: (file: string) => {
@@ -32,28 +29,20 @@ export const createDatabase = async (): Promise<Database> => {
     },
   })
 
-  let filebuffer
   try {
-    filebuffer = fs.readFileSync(
-      path.join(process.env.HOMEPATH as string, './pasteldb.sqlite'),
-    )
+    const filebuffer: Buffer = await readSqliteDBFile()
+    return new SQL.Database(filebuffer)
   } catch (error) {
     const newdb: Database = new SQL.Database()
     await createTables(newdb)
     return newdb
   }
-  const newdb: Database = new SQL.Database(filebuffer)
-  return newdb
 }
 
 export const saveDataToLocalSqlite = async (db: Database): Promise<void> => {
   const data = db.export()
   const buffer = Buffer.from(data)
-  fs.writeFileSync(
-    path.join(process.env.HOMEPATH as string, './pasteldb.sqlite'),
-    buffer,
-    { flag: 'a+' },
-  )
+  await writeSqliteDBFile(buffer)
   return
 }
 

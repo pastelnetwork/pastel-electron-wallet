@@ -249,10 +249,13 @@ class LoadingScreen extends Component<any, any> {
   pasteld: any = null
   setupExitHandler = async () => {
     // App is quitting, exit pasteld as well
-    await ipcRenderer.on('appquitting', async () => {
+    ipcRenderer.on('appquitting', async () => {
       if (this.pasteld) {
         const { history } = this.props
         const { rpcConfig } = this.state
+        this.setState({
+          currentStatus: 'Waiting for pasteld to exit...',
+        })
         history.push(routes.LOADING)
         this.pasteld.on('close', () => {
           ipcRenderer.send('appquitdone')
