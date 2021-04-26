@@ -201,7 +201,7 @@ const AddressBlock = ({
               )}
 
               <button
-                className={[cstyles.primarybutton, styles.buttomMarginTop].join(
+                className={[cstyles.primarybutton, styles.buttonMarginTop].join(
                   ' ',
                 )}
                 type='button'
