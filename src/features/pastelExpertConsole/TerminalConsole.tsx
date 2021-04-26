@@ -14,7 +14,6 @@ import {
 import React, { createRef, useEffect, useState } from 'react'
 
 import ConsoleOutput from './ConsoleOutput'
-import { TExpertProps } from './ExpertConsole'
 import rpcApi from './rpc-services/api'
 import { formatConsoleData } from './rpc-services/utils'
 import styles from './TerminalConsole.module.css'
@@ -45,7 +44,19 @@ const helpText = `Available commands:
 
 `
 
-interface TConsoleProps extends TExpertProps {
+interface TConsoleProps {
+  totalBalance: {
+    total: number
+    [key: string]: string | number
+  }
+  info: {
+    [key: string]: string | number
+  }
+  addressesWithBalance: { [key: string]: string | number }[]
+  transactions: { [key: string]: string | number }[]
+  connectedCompanionApp: boolean
+  pastelIDs: string[]
+  txDetail?: { [key: string]: string | number }
   theme: string
 }
 

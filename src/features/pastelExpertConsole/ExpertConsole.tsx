@@ -6,7 +6,10 @@ import styles from './ExpertConsole.module.css'
 import TerminalConsole from './TerminalConsole'
 
 export interface TExpertProps {
-  totalBalance: number
+  totalBalance: {
+    total: number
+    [key: string]: string | number
+  }
   info: {
     [key: string]: string | number
   }
