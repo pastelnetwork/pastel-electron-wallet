@@ -1,8 +1,7 @@
-/* eslint-disable */
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios'
 
-import store from '../../redux/store'
+import store from '../../../redux/store'
 import { APIMethods, METHODS } from './utils'
 
 const getRPCConfig = () => {
@@ -14,7 +13,7 @@ const getRPCConfig = () => {
 
 const getMessage = (statusCode: number, isECONNREFUSED: boolean) => {
   if (isECONNREFUSED) {
-    return 'Zepio could not find a daemon running, please check the logs!'
+    return 'Pastel could not find a daemon running, please check the logs!'
   }
 
   switch (statusCode) {
@@ -30,7 +29,7 @@ const apiMethods: any = {}
 const api: APIMethods = METHODS.reduce(
   (obj, method) => ({
     ...obj,
-    [method]: (params: any = []) => {
+    [method]: (params = []) => {
       const RPC = getRPCConfig()
       return new Promise((resolve, reject) => {
         axios(RPC.url, {

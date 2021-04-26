@@ -955,3 +955,25 @@ export type APIMethods = {
   }>
   [key: string]: any
 }
+
+export const formatConsoleData = (data: { [key: string]: any }) => {
+  let newData = {}
+  newData = Object.keys(data).reduce((obj, key) => {
+    let val = ''
+    if (typeof data[key] === 'object') {
+      if (Array.isArray(data[key])) {
+        val = data[key].map((item: any) => JSON.stringify(item)).join('\n')
+      } else {
+        val = JSON.stringify(data[key])
+      }
+    } else {
+      val = data[key]
+    }
+    return {
+      ...obj,
+      [key]: val,
+    }
+  }, newData)
+
+  return newData
+}

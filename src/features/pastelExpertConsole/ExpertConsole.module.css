@@ -2,7 +2,8 @@
   font-family: 'Essential PragmataPro';
   font-weight: normal;
   font-style: normal;
-  src: url('../assets/fonts/EssentialPragmataPro.ttf') format('truetype');
+  src: url('../../legacy/assets/fonts/EssentialPragmataPro.ttf')
+    format('truetype');
 }
 
 .container {
