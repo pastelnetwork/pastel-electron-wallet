@@ -1,6 +1,8 @@
+import { remote } from 'electron'
+import fs from 'fs-extra'
+import path from 'path'
 import initSqlJs, { Database } from 'sql.js'
 
-import { readSqliteDBFile, writeSqliteDBFile } from '../../config'
 import {
   create_block,
   create_blocksubsidy,
@@ -21,6 +23,20 @@ import {
   create_txoutsetinfo,
   create_walletinfo,
 } from './constants'
+
+export const readSqliteDBFile = async (): Promise<Buffer> => {
+  return await fs.promises.readFile(
+    path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+  )
+}
+
+export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
+  await fs.promises.writeFile(
+    path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+    buffer,
+    { flag: 'a+' },
+  )
+}
 
 export const createDatabase = async (): Promise<Database> => {
   const SQL = await initSqlJs({
