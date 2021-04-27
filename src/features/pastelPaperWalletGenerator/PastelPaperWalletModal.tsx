@@ -14,12 +14,10 @@ import styles from './PastelPaperWalletModal.module.css'
 import { closePastelPaperWalletModal } from './PastelPaperWalletModalSlice'
 import QRCodeGEnerator from './QRCodeGEnerator'
 
-type InfoProps = {
-  currencyName: string
-}
-
 type PastelPaperWalletModalProps = {
-  info: InfoProps
+  info: {
+    currencyName: string
+  }
 }
 
 export default function PastelPaperWalletModal({

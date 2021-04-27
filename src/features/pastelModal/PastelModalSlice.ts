@@ -1,43 +1,43 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export interface IErrorModalState {
+export interface IPastelModalState {
   opened: boolean
   title: string
-  body: string
+  body: string[]
 }
 
 type TOpenAction = {
   title: string
-  body: string
+  body: string[]
 }
 
-const initialState: IErrorModalState = {
+const initialState: IPastelModalState = {
   opened: false,
   title: '',
-  body: '',
+  body: [],
 }
 
-export const errorModalSlice = createSlice({
-  name: 'errorModal',
+export const pastelModalSlice = createSlice({
+  name: 'pastelModal',
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    openErrorModal(
-      state: IErrorModalState,
+    openPastelModal(
+      state: IPastelModalState,
       action: PayloadAction<TOpenAction>,
     ) {
       state.opened = true
       state.title = action.payload.title
       state.body = action.payload.body
     },
-    closeErrorModal(state: IErrorModalState) {
+    closePastelModal(state: IPastelModalState) {
       state.opened = false
-      state.body = ''
+      state.body = []
       state.title = ''
     },
   },
 })
 
-export const errorModalReducer = errorModalSlice.reducer
+export const pastelModalReducer = pastelModalSlice.reducer
 
-export const { openErrorModal, closeErrorModal } = errorModalSlice.actions
+export const { openPastelModal, closePastelModal } = pastelModalSlice.actions
