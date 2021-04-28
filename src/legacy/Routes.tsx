@@ -43,7 +43,7 @@ import PastelPhotopeaModal, {
   openPastelPhotopeaModal,
 } from '../features/pastelPhotopea'
 // @ts-ignore
-import ExpertConsole from './components/ExpertConsole'
+import ExpertConsole from '../features/pastelExpertConsole'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
