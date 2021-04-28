@@ -1,8 +1,8 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 
-import { errorModalReducer } from '../features/errorModal'
 import { pastelConfReducer } from '../features/pastelConf'
 import { pastelIDReducer } from '../features/pastelID'
+import { pastelModalReducer } from '../features/pastelModal'
 import { pastelPaperWalletModalReducer } from '../features/pastelPaperWalletGenerator'
 import { pastelPhotopeaModalReducer } from '../features/pastelPhotopea'
 import { pastelPriceReducer } from '../features/pastelPrice'
@@ -11,7 +11,7 @@ import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEdit
 const store = configureStore({
   reducer: {
     pastelID: pastelIDReducer,
-    errorModal: errorModalReducer,
+    pastelModal: pastelModalReducer,
     pastelConf: pastelConfReducer,
     pastelPrice: pastelPriceReducer,
     pastelPaperWalletModal: pastelPaperWalletModalReducer,
