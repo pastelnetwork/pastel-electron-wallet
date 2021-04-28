@@ -18,19 +18,19 @@ Additionally, if this is the first time you're running PastelWallet or a pasteld
 
 ## Compiling from source
 
-PastelWallet is written in Electron/Javascript and can be build from source. Note that if you are compiling from source, you won't get the embedded pasteld by default. You can either run an external pasteld, or compile pasteld as well.
+PastelWallet is written in Electron/Javascript and can be build from source.
 
 ```
-git clone https://github.com/PastelNetwork/Pastel_Electron_Wallet.git
-cd Pastel_Electron_Wallet
+git clone https://github.com/pastelnetwork/pastel-electron-wallet.git
+cd pastel-electron-wallet
 
 yarn install
 yarn make
 ```
 
-The resulting binaries would be located at `out` folder.
+The resulting binaries would be located at `out` folder. Please note that `yarn make` will create installers only for the OS where it's executed.
 
-#### Pre-Requisits
+#### Prerequisites
 
 You need to have the following software installed before you can build Pastelwallet Fullnode
 

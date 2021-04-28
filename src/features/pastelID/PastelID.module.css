@@ -30,3 +30,7 @@
 .button {
   margin: 0;
 }
+
+.note {
+  font-style: italic;
+}

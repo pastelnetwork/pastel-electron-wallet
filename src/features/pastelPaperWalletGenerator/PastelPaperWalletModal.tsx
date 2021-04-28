@@ -14,7 +14,15 @@ import styles from './PastelPaperWalletModal.module.css'
 import { closePastelPaperWalletModal } from './PastelPaperWalletModalSlice'
 import QRCodeGEnerator from './QRCodeGEnerator'
 
-export default function PastelPaperWalletModal(): JSX.Element {
+type PastelPaperWalletModalProps = {
+  info: {
+    currencyName: string
+  }
+}
+
+export default function PastelPaperWalletModal({
+  info,
+}: PastelPaperWalletModalProps): JSX.Element {
   const { address, privateKey, modalIsOpen } = useAppSelector(
     state => state.pastelPaperWalletModal,
   )
@@ -122,7 +130,7 @@ export default function PastelPaperWalletModal(): JSX.Element {
                   </View>
                   <View style={pdfStyles.contentWrapper}>
                     <Text style={pdfStyles.contentTitle}>
-                      PSL Address (Sapling)
+                      {info.currencyName} Address (Sapling)
                     </Text>
                     <Text style={pdfStyles.contentValue}>
                       {address.replace(/(.{40})/g, `$1${breakChar}`)}
@@ -139,7 +147,7 @@ export default function PastelPaperWalletModal(): JSX.Element {
                     </View>
                     <View style={pdfStyles.marginTop20}>
                       <Text style={pdfStyles.contentTitle}>
-                        PSL Address (Sapling)
+                        {info.currencyName} Address (Sapling)
                       </Text>
                       <Text style={pdfStyles.contentValue}>
                         {address.replace(/(.{40})/g, `$1${breakChar}`)}

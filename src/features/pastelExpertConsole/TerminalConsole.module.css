@@ -1,0 +1,113 @@
+.terminal {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  right: 50px;
+  bottom: 50px;
+  overflow: auto;
+  font-family: 'Essential PragmataPro', monospace;
+  z-index: 100;
+}
+
+.terminalHead {
+  padding: 20px 30px 40px;
+}
+
+.terminalHead pre,
+.terminalHead p {
+  text-align: center;
+  font-size: 16px;
+  font-family: 'Essential PragmataPro', monospace;
+}
+
+.terminalOutput {
+  margin-bottom: 0.8em;
+}
+
+.textOutput pre,
+.errorOutput pre,
+.headOutput pre {
+  font-family: 'Essential PragmataPro', monospace;
+  margin-bottom: 0.8em;
+  float: left;
+  padding: 0 30px;
+}
+.textOutput::before,
+.errorOutput::before,
+.headOutput::before,
+.textOutput::after,
+.errorOutput::after,
+.headOutput::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.terminalInputLongArea {
+  position: relative;
+  display: inline-block;
+}
+.terminalInputLongAreaClickable {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 85px;
+  cursor: text;
+}
+
+.terminalInputWrap {
+  position: relative;
+  display: none;
+  align-items: center;
+  padding: 0 30px 60px;
+  cursor: text;
+  font-size: 20px;
+}
+.terminalInputWrap.isReady {
+  display: flex;
+}
+.terminalInputWrap span {
+  font-weight: bold;
+  user-select: none;
+}
+
+.terminalInput {
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  font-family: 'Essential PragmataPro', monospace;
+  width: 100%;
+}
+
+.terminalInput:focus {
+  outline: none;
+}
+
+/* theme */
+.terminal.green p,
+.terminal.green pre,
+.terminal.green span,
+.terminal.green #terminalOutput,
+.green .terminalInput {
+  color: #18ff62 !important;
+}
+
+.terminal.amber p,
+.terminal.amber span,
+.terminal.amber pre,
+.terminal.amber #terminalOutput,
+.amber .terminalInput {
+  color: #e88537 !important;
+}
+
+.terminal.black p,
+.terminal.black span,
+.terminal.black pre,
+.terminal.black #terminalOutput,
+.black .terminalInput {
+  box-shadow: none;
+}

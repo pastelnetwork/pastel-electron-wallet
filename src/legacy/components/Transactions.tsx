@@ -170,7 +170,6 @@ const TxModalInternal = ({
               <div>{Utils.splitStringIntoChunks(address, 6).join(' ')}</div>
 
               <div className={cstyles.margintoplarge} />
-
               <div className={[cstyles.sublight].join(' ')}>Amount</div>
               <div>
                 <span>
