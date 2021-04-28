@@ -1,10 +1,25 @@
 import hex from 'hex-string'
 
-import { Transaction, TxDetail } from '../../legacy/components/AppState'
-import SentTxStore from '../../legacy/utils/SentTxStore'
-import { rpc, TRPCConfig } from './rpc'
+import { Transaction, TxDetail } from '../../declarations/app-state'
+import SentTxStore from '../../declarations/sent-tx-store'
+import {
+  getRawTransaction,
+  getWalletTransaction,
+  listAddresses,
+  listTransactions,
+  zListReceivedByAddress,
+} from './network-stats'
+import {
+  TDetails,
+  TListTransactions,
+  TRawTransaction,
+  TTransactionInfo,
+  TVin,
+  TZListReceivedByAddress,
+} from './network-stats/type'
+import { TRPCConfig } from './rpc'
 
-const parseMemo = (memoHex: any) => {
+const parseMemo = (memoHex: string) => {
   if (!memoHex || memoHex.length < 2) {
     return null
   } // First, check if this is a memo (first byte is less than 'f6' (246))
@@ -23,16 +38,18 @@ const parseMemo = (memoHex: any) => {
 
 export async function fetchTandZTransactions(
   config: TRPCConfig,
-  cb: (alltxlist: any) => void,
+  cb: (alltxlist: TListTransactions[]) => void,
 ): Promise<void> {
-  const tresponse: any = await rpc('listtransactions', [], config)
-
-  const zaddressesPromise = rpc('z_listaddresses', [], config)
   const senttxstorePromise = SentTxStore.loadSentTxns()
+
+  const tresponse: TListTransactions[] = await listTransactions(config)
+
   const existAddresses: string[] = []
-  const ttxlistPromise = tresponse.result
-    .sort((tx1: any, tx2: any) => tx2.time - tx1.time)
-    .map(async (tx: any) => {
+  const ttxlistPromise = tresponse
+    .sort(
+      (tx1: TListTransactions, tx2: TListTransactions) => tx2.time - tx1.time,
+    )
+    .map(async (tx: TListTransactions) => {
       const transaction: any = new Transaction()
       transaction.address = tx.address
       transaction.type = tx.category
@@ -51,18 +68,20 @@ export async function fetchTandZTransactions(
       ) {
         existAddresses.push(tx.address)
         try {
-          const rawTransaction: any = await rpc(
-            'getrawtransaction',
-            [tx.txid, 1],
+          const rawTransaction: TRawTransaction = await getRawTransaction(
+            tx.txid,
             config,
           )
 
           const inputAddresses: string[] = []
-          await rawTransaction.result.vin.map(async (v: any) => {
+          await rawTransaction.vin.map(async (v: TVin) => {
             try {
-              const ttxlist: any = await rpc('gettransaction', [v.txid], config)
+              const ttxlist: TTransactionInfo = await getWalletTransaction(
+                v.txid,
+                config,
+              )
 
-              ttxlist.result.details.map((d: any) => {
+              ttxlist.details.map((d: TDetails) => {
                 if (inputAddresses.indexOf(d.address) === -1) {
                   inputAddresses.push(d.address)
                 }
@@ -81,19 +100,21 @@ export async function fetchTandZTransactions(
       return transaction
     }) // Now get Z txns
 
-  const ttxlist = (await Promise.all(ttxlistPromise)).flat()
+  const ttxlist: TListTransactions[] = (
+    await Promise.all(ttxlistPromise)
+  ).flat()
 
-  const zaddresses: any = await zaddressesPromise
-  const alltxnsPromise = zaddresses.result.map(async (zaddr: any) => {
+  const zaddresses = await listAddresses(config)
+
+  const alltxnsPromise = zaddresses.map(async (zaddr: string) => {
     // For each zaddr, get the list of incoming transactions
-    const incomingTxns: any = await rpc(
-      'z_listreceivedbyaddress',
-      [zaddr, 0],
+    const incomingTxns: TZListReceivedByAddress[] = await zListReceivedByAddress(
+      zaddr,
       config,
     )
-    const txns: any = incomingTxns.result
-      .filter((itx: any) => !itx.change)
-      .map((incomingTx: any) => {
+    const txns: any = incomingTxns
+      .filter((itx: TZListReceivedByAddress) => !itx.change)
+      .map((incomingTx: TZListReceivedByAddress) => {
         return {
           address: zaddr,
           txid: incomingTx.txid,
@@ -108,14 +129,17 @@ export async function fetchTandZTransactions(
 
   const ztxlist = await Promise.all(
     alltxns.map(async (tx: any) => {
-      const txresponse: any = await rpc('gettransaction', [tx.txid], config)
+      const txresponse: TTransactionInfo = await getWalletTransaction(
+        tx.txid,
+        config,
+      )
       const transaction: any = new Transaction()
       transaction.address = tx.address
       transaction.type = 'receive'
       transaction.amount = tx.amount
-      transaction.confirmations = txresponse.result.confirmations
+      transaction.confirmations = txresponse.confirmations
       transaction.txid = tx.txid
-      transaction.time = txresponse.result.time
+      transaction.time = txresponse.time
       transaction.index = tx.index || 0
       transaction.detailedTxns = [new TxDetail()]
       transaction.detailedTxns[0].address = tx.address
@@ -131,10 +155,10 @@ export async function fetchTandZTransactions(
 
   const sentTxns = await senttxstorePromise // Now concat the t and z transactions, and call the update function again
 
-  const alltxlist: any = ttxlist
+  const alltxlist: TListTransactions[] = ttxlist
     .concat(ztxlist)
     .concat(sentTxns)
-    .sort((tx1: any, tx2: any) => {
+    .sort((tx1: TListTransactions, tx2: TListTransactions) => {
       if (tx1.time && tx2.time) {
         return tx2.time - tx1.time
       }

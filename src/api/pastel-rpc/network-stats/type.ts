@@ -124,6 +124,13 @@ export type TVjoinsplit = {
   ciphertexts: string[]
 }
 
+export type TDetails = {
+  account: string
+  address: string
+  category: string
+  amount: number
+}
+
 export type TRawTransaction = {
   hex: string
   txid: string
@@ -156,6 +163,7 @@ export type TTransactionInfo = {
   confirmations: number
   time: number
   blocktime: number
+  details: TDetails[]
 }
 
 export type TTxoutsetInfo = {
@@ -211,6 +219,7 @@ export type TListTransactions = {
   vjoinsplit: TVjoinsplit[]
   size: number
   lastblock: string
+  fee?: number
 }
 
 export type TListUnspent = {
@@ -461,4 +470,25 @@ export type Tlistaddresses = {
 
 export type TError = {
   message: string
+}
+
+export type TZListReceivedByAddress = {
+  txid: string
+  amount: number
+  amountZat: number
+  memo: string
+  confirmations: number
+  blockheight: number
+  blockindex: number
+  blocktime: number
+  jsindex: number
+  jsoutindex: number
+  outindex: number
+  change: boolean
+}
+
+export type TListReceivedByAddress = {
+  result: TZListReceivedByAddress[]
+  error: TError
+  id: string
 }
