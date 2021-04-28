@@ -1,5 +1,4 @@
 import { app, remote } from 'electron'
-import log from 'electron-log'
 import fs from 'fs'
 import path from 'path'
 import initSqlJs, { Database } from 'sql.js'
@@ -47,9 +46,13 @@ export async function delayValidPath(path: string): Promise<boolean> {
       return true
     }
   } catch (error) {
-    log.info(`${path} is invalid, can't reference .webpack folder`)
+    return false
   }
   return false
+}
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 export const createDatabase = async (): Promise<Database> => {
@@ -59,9 +62,7 @@ export const createDatabase = async (): Promise<Database> => {
       `${app.getAppPath()}/.webpack/renderer/static/bin`,
     )) === false
   ) {
-    setTimeout(function () {
-      log.info('delay while .webpack folder create.')
-    }, 10000)
+    await sleep(1000)
   }
 
   const SQL = await initSqlJs({
