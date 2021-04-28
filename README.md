@@ -30,7 +30,7 @@ yarn make
 
 The resulting binaries would be located at `out` folder. Please note that `yarn make` will create installers only for the OS where it's executed.
 
-#### Pre-Requisits
+#### Prerequisites
 
 You need to have the following software installed before you can build Pastelwallet Fullnode
 
