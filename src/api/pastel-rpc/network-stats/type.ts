@@ -37,6 +37,17 @@ export type TMempoolInfo = {
   usage: number
 }
 
+export type TRawMempool = {
+  transactionid: string
+  size: number
+  fee: number
+  time: number
+  height: number
+  startingpriority: number
+  currentpriority: number
+  depends: TRawMempoolInfo[]
+}
+
 export type TRawMempoolInfo = {
   transactionid: string
   size: number
