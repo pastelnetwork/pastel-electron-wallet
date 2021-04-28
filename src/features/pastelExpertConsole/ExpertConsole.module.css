@@ -2,7 +2,8 @@
   font-family: 'Essential PragmataPro';
   font-weight: normal;
   font-style: normal;
-  src: url('console/fonts/EssentialPragmataPro-R_1.2.ttf') format('truetype');
+  src: url('../../legacy/assets/fonts/EssentialPragmataPro.ttf')
+    format('truetype');
 }
 
 .container {
@@ -19,7 +20,6 @@
   background: #7b8e78;
   box-shadow: inset 0.25em 0.25em 2px rgba(255, 255, 255, 0.4),
     inset -0.25em -0.25em 2px rgba(0, 0, 0, 0.4);
-  user-select: none;
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
   perspective: 1000;
@@ -27,9 +27,9 @@
 }
 
 .screen {
-  overflow: hidden;
   box-shadow: 0 0 1px 3px rgba(10, 10, 10, 0.7);
 }
+
 .screen::before {
   position: absolute;
   left: 0;
@@ -48,7 +48,6 @@
   bottom: 0;
   content: '';
   opacity: 0.1;
-  /* pointer-events: none; */
   background: linear-gradient(
     rgba(255, 255, 255, 0.8),
     rgba(255, 255, 255, 0.2)
@@ -61,8 +60,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* animation: pulse 5s linear infinite; */
+  animation: pulse 5s linear infinite;
 }
+
 .wrapper::before {
   position: absolute;
   left: 0;
@@ -107,65 +107,7 @@
   background-repeat: repeat-y;
 }
 
-.envelope {
-  /* @include fill($envelope-margin, $envelope-margin, $envelope-margin, $envelope-margin); */
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.25);
-  /* animation: skew 5s linear infinite; */
-}
-
-@keyframes scanline {
-  0% {
-    top: 0;
-  }
-
-  100% {
-    top: 100%;
-  }
-}
-.terminal {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.terminal textarea {
-  display: block;
-  background: transparent;
-  resize: none;
-  width: 100%;
-  height: 100%;
-  border: 0 none;
-  outline: 0 none;
-  box-sizing: border-box;
-  margin: 0;
-  overflow: hidden;
-  padding: 1em;
-  color: #18ff62;
-  text-shadow: 0 0 2px rgba(10, 255, 10, 0.8);
-
-  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-  font-family: inherit;
-  font-size: inherit;
-  /* animation: blur 5s linear infinite; */
-  line-height: 1.25;
-  white-space: pre-wrap;
-}
-
-@keyframes scanline {
-  0% {
-    top: 0;
-  }
-
-  100% {
-    top: 100%;
-  }
-}
-
-#scanline {
+.scanline {
   position: absolute;
   top: 0;
   left: 0;
@@ -181,6 +123,37 @@
     transparent 100%
   );
   animation: scanline 1.25s linear infinite;
+}
+
+.envelope {
+  position: absolute;
+  left: -50px;
+  top: -50px;
+  right: -50px;
+  bottom: -50px;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.25);
+  animation: skew 5s linear infinite;
+}
+
+@keyframes scanline {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 100%;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 100%;
+  }
 }
 
 @keyframes skew {
@@ -242,33 +215,32 @@
   border: 3px transparent solid;
   border-radius: 3px;
   cursor: pointer;
+  z-index: 100;
 }
+
 .greenThemeBtn.active,
 .amberThemeBtn.active,
 .blackThemeBtn.active {
   border-color: white;
 }
+
 .greenThemeBtn {
-  right: 65px;
+  right: 75px;
   background-color: #44aa44;
 }
+
 .amberThemeBtn {
-  right: 35px;
+  right: 45px;
   background-color: #e88537;
 }
+
 .blackThemeBtn {
-  right: 5px;
+  right: 15px;
   background-color: black;
 }
+
 .crt.amber {
   background: #311;
-}
-.crt.amber .terminal textarea {
-  color: #e88537 !important;
-  text-shadow: 0 0 2px rgba(255, 10, 10, 0.8);
-}
-.crt.amber .wrapper::after {
-  display: none;
 }
 
 .crt.black,
@@ -276,15 +248,13 @@
   background-color: black;
   box-shadow: none;
 }
-.crt.black .terminal textarea {
-  color: white !important;
-  text-shadow: none;
-}
-.crt.black .wrapper::after,
-.crt.black .interlace,
-.crt.black .screen::before,
-.crt.black .screen::after,
-.crt.black .wrapper::before,
-.crt.black .wrapper::after {
-  opacity: 0;
+
+/* To allow copy text from terminal */
+.crt .wrapper::after,
+.crt .interlace,
+.crt .screen::before,
+.crt .screen::after,
+.crt .wrapper::before,
+.crt .wrapper::after {
+  pointer-events: none;
 }

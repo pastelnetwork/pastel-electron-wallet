@@ -1,4 +1,4 @@
-import { TPastelID } from '../../features/pastelID'
+import { TPastelID, TRegisterPastelID } from '../../features/pastelID'
 import { rpc, TRPCConfig } from './rpc'
 
 type TCreateNewPastelIDResponse = {
@@ -7,16 +7,31 @@ type TCreateNewPastelIDResponse = {
   }
 }
 
+type TTicketsRegisterIDResponse = {
+  result: {
+    txid: string
+  }
+}
+
 export async function createNewPastelID(
   passphrase: string,
+  address: string,
   config: TRPCConfig,
-): Promise<TPastelID> {
+): Promise<TRegisterPastelID> {
   const resp = await rpc<TCreateNewPastelIDResponse>(
     'pastelid',
     ['newkey', passphrase],
     config,
   )
-  const res: TPastelID = { pastelid: resp.result.pastelid }
+  const resRP = await rpc<TTicketsRegisterIDResponse>(
+    'tickets',
+    ['register', 'id', resp.result.pastelid, passphrase, address],
+    config,
+  )
+  const res: TRegisterPastelID = {
+    pastelid: resp.result.pastelid,
+    txid: resRP.result.txid,
+  }
   return res
 }
 

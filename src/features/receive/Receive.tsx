@@ -172,7 +172,7 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
           </ScrollPane>
         </TabPanel>
       </Tabs>
-      <PastelPaperWalletModal />
+      <PastelPaperWalletModal info={info} />
     </div>
   )
 }
