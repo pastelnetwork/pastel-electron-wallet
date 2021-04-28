@@ -255,15 +255,19 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   const onKeyDownHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case 'Enter':
+        e.preventDefault()
         onEnterKeyDown()
         break
       case 'ArrowUp':
+        e.preventDefault()
         onArrowUpPress()
         break
       case 'ArrowDown':
+        e.preventDefault()
         onArrowDownPress()
         break
       case 'Tab':
+        e.preventDefault()
         onTabPress()
         break
       default:
