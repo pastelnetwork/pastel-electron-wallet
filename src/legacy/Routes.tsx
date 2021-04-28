@@ -9,7 +9,7 @@ import routes from './constants/routes.json'
 import App from './containers/App'
 import Dashboard from './components/Dashboard'
 import Send from './components/Send'
-import { Receive } from '../features/recieve'
+import { Receive } from '../features/receive'
 import LoadingScreen from './components/LoadingScreen'
 import AppState, {
   AddressBalance,
@@ -454,6 +454,7 @@ class RouteApp extends React.Component<any, any> {
       setSendTo: this.setSendTo,
       info,
     }
+
     return (
       <App>
         <ErrorModal
@@ -566,6 +567,8 @@ class RouteApp extends React.Component<any, any> {
                   <PastelID
                     addressesWithBalance={addressesWithBalance}
                     createNewAddress={this.createNewAddress}
+                    totalBalance={totalBalance}
+                    info={info}
                   />
                 )}
               />
