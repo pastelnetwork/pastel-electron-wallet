@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import hex from 'hex-string'
 
 import { Transaction, TxDetail } from '../../declarations/app-state'
