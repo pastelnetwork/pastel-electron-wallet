@@ -1,5 +1,6 @@
-import { remote } from 'electron'
-import fs from 'fs-extra'
+import { app, remote } from 'electron'
+import log from 'electron-log'
+import fs from 'fs'
 import path from 'path'
 import initSqlJs, { Database } from 'sql.js'
 
@@ -38,10 +39,34 @@ export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
   )
 }
 
+export async function delayValidPath(path: string): Promise<boolean> {
+  try {
+    const stats = fs.statSync(path)
+    const isValid = stats.isDirectory()
+    if (isValid) {
+      return true
+    }
+  } catch (error) {
+    log.info(`${path} is invalid, can't reference .webpack folder`)
+  }
+  return false
+}
+
 export const createDatabase = async (): Promise<Database> => {
+  // delay untill create./webpack folder
+  while (
+    (await delayValidPath(
+      `${app.getAppPath()}/.webpack/renderer/static/bin`,
+    )) === false
+  ) {
+    setTimeout(function () {
+      log.info('delay while .webpack folder create.')
+    }, 10000)
+  }
+
   const SQL = await initSqlJs({
     locateFile: (file: string) => {
-      return `static/bin/${file}`
+      return `${app.getAppPath()}/.webpack/renderer/static/bin/${file}`
     },
   })
 
