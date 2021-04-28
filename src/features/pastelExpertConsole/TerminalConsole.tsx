@@ -72,6 +72,10 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   const [isInitiatedTerminal, setIsInitiatedTerminal] = useState(false)
   const inputRef = createRef<HTMLInputElement>()
 
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [isReady])
+
   const loadBanner = () => {
     const len = banner.length
     const bElm = document.getElementById('banner')
