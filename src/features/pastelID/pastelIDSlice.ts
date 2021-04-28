@@ -6,7 +6,12 @@ import {
   TRPCConfig,
 } from '../../api/pastel-rpc'
 import type { AppThunk } from '../../redux/store'
-import { openErrorModal } from '../errorModal'
+import { openPastelModal } from '../pastelModal'
+
+export type TRegisterPastelID = {
+  pastelid: string
+  txid: string
+}
 
 export type TPastelID = {
   pastelid: string
@@ -51,7 +56,7 @@ export const pastelIDSlice = createSlice({
     },
     createPastelIDSuccess(
       state: IPastelIDState,
-      action: PayloadAction<TPastelID>,
+      action: PayloadAction<TRegisterPastelID>,
     ) {
       state.pastelIDs = [...state.pastelIDs, action.payload]
       state.loading = false
@@ -82,10 +87,11 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
     } catch (err) {
       dispatch(getPastelIDsFailure())
       dispatch(
-        openErrorModal({
-          title: 'Can not fetch Pastel IDs',
-          body:
-            "We cound't fetch existing Pastel IDs for some reason. Please restart the wallet to try again.",
+        openPastelModal({
+          title: 'Can not fetch PastelIDs',
+          body: [
+            "We cound't fetch existing PastelIDs for some reason. Please restart the wallet to try again.",
+          ],
         }),
       )
 
@@ -97,20 +103,33 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
 
 export function createPastelID(
   passphrase: string,
+  address: string,
   config: TRPCConfig,
 ): AppThunk {
   return async dispatch => {
     try {
       dispatch(createPastelIDStart())
-      const pastelid = await createNewPastelID(passphrase, config)
-      dispatch(createPastelIDSuccess(pastelid))
+      const res = await createNewPastelID(passphrase, address, config)
+      dispatch(
+        createPastelIDSuccess({
+          pastelid: res.pastelid,
+          txid: res.txid,
+        }),
+      )
+      dispatch(
+        openPastelModal({
+          title: 'PastelID has been created!',
+          body: [`PastelID: ${res.pastelid}`, `TXID: ${res.txid}`],
+        }),
+      )
     } catch (err) {
       dispatch(createPastelIDFailure())
       dispatch(
-        openErrorModal({
-          title: 'Can not create new Pastel ID',
-          body:
-            "We cound't create a new Pastel ID for some reason. Please restart the wallet and try again.",
+        openPastelModal({
+          title: 'Cannot create a new PastelID!',
+          body: [
+            "We couldn't create a new PastelID for some reason. Please restart the wallet and try again.",
+          ],
         }),
       )
 
