@@ -11,19 +11,11 @@ import installExtension, {
 } from 'electron-devtools-installer'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
-import { Database } from 'sql.js'
 
-import { createDatabase } from './features/pastelDB'
 import MenuBuilder from './menu'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
-
-interface CustomNodeJsGlobal extends NodeJS.Global {
-  pastelDB: Database
-}
-
-declare const global: CustomNodeJsGlobal
 
 // Enable dev tools
 if (!app.isPackaged) {
@@ -164,8 +156,4 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
-})
-
-app.on('ready', async () => {
-  global.pastelDB = await createDatabase()
 })

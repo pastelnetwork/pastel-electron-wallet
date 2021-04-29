@@ -1,4 +1,4 @@
-import { app, remote } from 'electron'
+import { remote } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import initSqlJs, { Database } from 'sql.js'
@@ -38,36 +38,10 @@ export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
   )
 }
 
-export async function delayValidPath(path: string): Promise<boolean> {
-  try {
-    const stats = fs.statSync(path)
-    const isValid = stats.isDirectory()
-    if (isValid) {
-      return true
-    }
-  } catch (error) {
-    return false
-  }
-  return false
-}
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
 export const createDatabase = async (): Promise<Database> => {
-  // delay untill create./webpack folder
-  while (
-    (await delayValidPath(
-      `${app.getAppPath()}/.webpack/renderer/static/bin`,
-    )) === false
-  ) {
-    await sleep(1000)
-  }
-
   const SQL = await initSqlJs({
     locateFile: (file: string) => {
-      return `${app.getAppPath()}/.webpack/renderer/static/bin/${file}`
+      return `/static/bin/${file}`
     },
   })
 
