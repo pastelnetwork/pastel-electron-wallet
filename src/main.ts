@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -124,6 +124,7 @@ const createWindow = async () => {
       proceedToClose = true
       app.quit()
     })
+
     // $FlowFixMe
     w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
@@ -136,6 +137,11 @@ const createWindow = async () => {
   })
   w.on('closed', () => {
     mainWindow = null
+  })
+  w.once('ready-to-show', () => {
+    // const url = 'https://github.com/pastelnetwork/pastel-electron-wallet.git'
+    // autoUpdater.setFeedURL({ url })
+    // autoUpdater.checkForUpdates()
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
@@ -156,4 +162,12 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+autoUpdater.on('update-available', () => {
+  mainWindow?.webContents?.send('update_available')
+})
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow?.webContents?.send('update_downloaded')
 })
