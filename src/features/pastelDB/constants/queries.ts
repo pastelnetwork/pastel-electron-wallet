@@ -103,15 +103,11 @@ export const create_rawtransaction = `CREATE TABLE rawtransaction (
   vin text,
   vout text,
   vjoinsplit text,
-  valueBalance float,
-  vShieldedSpend text,
-  vShieldedOutput text,
-  bindingSig VARCHAR(255),
   blockhash VARCHAR(255),
   confirmations int,
   time int,
   blocktime int,
-  create_timestamp int    
+  create_timestamp int      
 )`
 
 export const create_transaction = `CREATE TABLE transaction_tbl (
@@ -126,10 +122,6 @@ export const create_transaction = `CREATE TABLE transaction_tbl (
   vin text,
   vout text,
   vjoinsplit text,
-  valueBalance float,
-  vShieldedSpend text,
-  vShieldedOutput text,
-  bindingSig VARCHAR(255),
   blockhash VARCHAR(255),
   confirmations int,
   time int,
