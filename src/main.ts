@@ -12,6 +12,7 @@ import installExtension, {
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
 
+import pkg from '../package.json'
 import MenuBuilder from './menu'
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string
@@ -139,9 +140,22 @@ const createWindow = async () => {
     mainWindow = null
   })
   w.once('ready-to-show', () => {
-    // const url = 'https://github.com/pastelnetwork/pastel-electron-wallet.git'
-    // autoUpdater.setFeedURL({ url })
-    // autoUpdater.checkForUpdates()
+    const host = 'https://update.electronjs.org'
+    const repo = 'ngvtuan/test_electron_app_update'
+    const feedURL = `${host}/${repo}/${process.platform}-${
+      process.arch
+    }/${app.getVersion()}`
+    const requestHeaders = {
+      'User-Agent': `${pkg.name}/${pkg.version} (${process.platform}: ${process.arch})`,
+    }
+    autoUpdater.setFeedURL({
+      url: feedURL,
+      headers: requestHeaders,
+    })
+    autoUpdater.checkForUpdates()
+    setTimeout(() => {
+      autoUpdater.checkForUpdates()
+    }, 3600000) // 1 hour
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
@@ -164,8 +178,8 @@ app.on('activate', () => {
   }
 })
 
-autoUpdater.on('update-available', () => {
-  mainWindow?.webContents?.send('update_available')
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall()
 })
 
 autoUpdater.on('update-downloaded', () => {

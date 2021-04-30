@@ -328,6 +328,7 @@ class Sidebar extends PureComponent<any, any> {
       closeErrorModal,
       openPastelSpriteEditorToolModal,
       openPastelPhotopeaModal,
+      openUpdateToast,
     } = this.props // About
 
     ipcRenderer.on('about', () => {
@@ -474,6 +475,10 @@ class Sidebar extends PureComponent<any, any> {
 
     ipcRenderer.on('pastelPhotopea', () => {
       openPastelPhotopeaModal()
+    })
+
+    ipcRenderer.on('update_downloaded', () => {
+      openUpdateToast()
     })
   }
   closeExportPrivKeysModal = () => {

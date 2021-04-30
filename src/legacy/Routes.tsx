@@ -44,6 +44,7 @@ import PastelPhotopeaModal, {
 } from '../features/pastelPhotopea'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
+import { openUpdateToast } from '../features/updateToast'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -486,6 +487,7 @@ class RouteApp extends React.Component<any, any> {
                 }
                 {...(standardProps as any)}
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
+                openUpdateToast={this.props.openUpdateToast}
               />
             </div>
           )}
@@ -631,4 +633,5 @@ export default connect(null, {
   openPastelPaperWalletModal,
   openPastelPhotopeaModal,
   openPastelSpriteEditorToolModal,
+  openUpdateToast,
 })(RouteApp)
