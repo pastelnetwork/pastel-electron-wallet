@@ -141,7 +141,7 @@ const createWindow = async () => {
   })
   w.once('ready-to-show', () => {
     const host = 'https://update.electronjs.org'
-    const repo = 'ngvtuan/test_electron_app_update'
+    const repo = 'pastelnetwork/pastel-electron-wallet'
     const feedURL = `${host}/${repo}/${process.platform}-${
       process.arch
     }/${app.getVersion()}`
@@ -182,6 +182,31 @@ ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall()
 })
 
-autoUpdater.on('update-downloaded', () => {
-  mainWindow?.webContents?.send('update_downloaded')
+autoUpdater.on('checking-for-update', () => {
+  console.log('checking-for-update')
+})
+
+autoUpdater.on('update-available', () => {
+  console.log('update-available')
+})
+
+autoUpdater.on(
+  'update-downloaded',
+  (event, releaseNotes, releaseName, updateURL) => {
+    mainWindow?.webContents?.send('update_downloaded')
+    console.log('update-downloaded', {
+      event,
+      releaseNotes,
+      releaseName,
+      updateURL,
+    })
+  },
+)
+
+autoUpdater.on('update-not-available', () => {
+  console.log('update-not-available')
+})
+
+autoUpdater.on('error', error => {
+  console.log('error', { error })
 })
