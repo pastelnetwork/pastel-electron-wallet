@@ -23,7 +23,7 @@ setInterval(() => {
 try {
   PastelDB.getDatabaseInstance()
 } catch (error) {
-  throw new Error('"pastelDB create:" error')
+  console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
 }
 
 const application = (
