@@ -247,7 +247,7 @@ class LoadingScreen extends Component<any, any> {
     this.loadPastelConf(false)
   }
   pasteld: any = null
-  setupExitHandler = async () => {
+  setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
       if (this.pasteld) {
