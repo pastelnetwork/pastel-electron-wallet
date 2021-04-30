@@ -5,6 +5,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
+import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
@@ -18,6 +19,12 @@ store.dispatch(fetchPastelPrice())
 setInterval(() => {
   store.dispatch(fetchPastelPrice())
 }, oneHour)
+
+try {
+  PastelDB.getDatabaseInstance()
+} catch (error) {
+  throw new Error('"pastelDB create:" error')
+}
 
 const application = (
   <Provider store={store}>
