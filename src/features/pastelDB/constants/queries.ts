@@ -64,7 +64,6 @@ export const createMininginfo = `CREATE TABLE mininginfo (
   pooledtx int,
   testnet int,
   chain text,
-  generate boolean,
   create_timestamp int
 )`
 
@@ -93,20 +92,22 @@ export const createBlock = `CREATE TABLE blockinfo (
 
 export const createRawtransaction = `CREATE TABLE rawtransaction (
   id int NOT NULL,
+  bindingSig VARCHAR(255),
+  blockhash VARCHAR(255),
+  blocktime int,
+  confirmations int,
+  expiryheight int,
   hex VARCHAR(255),
-  txid VARCHAR(255),
+  locktime int,
   overwintered boolean,
+  time int,
+  txid VARCHAR(255),
+  vShieldedOutput text,
+  vShieldedSpend text,
+  valueBalance float,
   version int,
   versiongroupid VARCHAR(255),
-  locktime int,
-  expiryheight int,
-  vin text,
-  vout text,
   vjoinsplit text,
-  blockhash VARCHAR(255),
-  confirmations int,
-  time int,
-  blocktime int,
   create_timestamp int      
 )`
 
@@ -200,7 +201,6 @@ export const createListtransactions = `CREATE TABLE listtransactions (
   timereceived int,
   vjoinsplit text,
   size int,
-  lastblock VARCHAR(255),
   create_timestamp int
 )`
 
@@ -234,7 +234,7 @@ export const createListaddresses = `CREATE TABLE listaddresses (
 
 export const insertStatisticinfoQuery = `INSERT INTO statisticinfo VALUES (
   $newId,
-  $hashrate',
+  $hashrate,
   '',
   $difficulty,
   $createTimestamp
@@ -298,49 +298,50 @@ export const insertMininginfoQuery = `INSERT INTO mininginfo VALUES (
   $pooledtx,
   $testnet,
   $chain,
-  $generate,
   $createTimestamp
 )`
 
 export const insertBlockinfoQuery = `INSERT INTO blockinfo VALUES (
   $newId,
-  $blockInfo.hash,
-  $blockInfo.confirmations,
-  $blockInfo.size,
-  $blockInfo.height,
-  $blockInfo.version,
-  $blockInfo.merkleroot,
-  $blockInfo.finalsaplingroot,
-  $blockInfo.tx,
-  $blockInfo.time,
-  $blockInfo.nonce,
-  $blockInfo.solution,
-  $blockInfo.bits,
-  $blockInfo.difficulty,
-  $blockInfo.chainwork,
-  $blockInfo.anchor,
+  $hash,
+  $confirmations,
+  $size,
+  $height,
+  $version,
+  $merkleroot,
+  $finalsaplingroot,
+  $tx,
+  $time,
+  $nonce,
+  $solution,
+  $bits,
+  $difficulty,
+  $chainwork,
+  $anchor,
   $valuePools,
-  $blockInfo.previousblockhash,
-  $blockInfo.nextblockhash,
+  $previousblockhash,
+  $nextblockhash,
   $createTimestamp
 )`
 
 export const insertRawtransactionQuery = `INSERT INTO rawtransaction VALUES (
   $newId,
-  $rawtransaction.hex,
-  $rawtransaction.txid,
-  $rawtransaction.overwintered,
-  $rawtransaction.version,
-  $rawtransaction.versiongroupid,
-  $rawtransaction.locktime,
-  $rawtransaction.expiryheight,
-  $rawtransaction.vin,
-  $rawtransaction.vout,
-  $rawtransaction.vjoinsplit,
-  $rawtransaction.blockhash,
-  $rawtransaction.confirmations,
-  $rawtransaction.time,
-  $rawtransaction.blocktime,
+  $bindingSig,
+  $blockhash,
+  $blocktime,
+  $confirmations,
+  $expiryheight,
+  $hex,
+  $locktime,
+  $overwintered,
+  $time,
+  $txid,
+  $vShieldedOutput,
+  $vShieldedSpend,
+  $valueBalance,
+  $version,
+  $versiongroupid,
+  $vjoinsplit,
   $createTimestamp
 )`
 
@@ -394,15 +395,15 @@ export const insertBlocksubsidyQuery = `INSERT INTO blocksubsidy VALUES (
 
 export const insertWalletinfoQuery = `INSERT INTO walletinfo VALUES (
   $newId,
-  $walletinfo.walletversion,
-  $walletinfo.balance,
-  $walletinfo.unconfirmed_balance,
-  $walletinfo.immature_balance,
-  $walletinfo.txcount,
-  $walletinfo.keypoololdest,
-  $walletinfo.keypoolsize,
-  $walletinfo.paytxfee,
-  $walletinfo.seedfp,
+  $walletversion,
+  $balance,
+  $unconfirmed_balance,
+  $immature_balance,
+  $txcount,
+  $keypoololdest,
+  $keypoolsize,
+  $paytxfee,
+  $seedfp,
   $createTimestamp
 )`
 
@@ -424,7 +425,6 @@ export const insertListtransactionsQuery = `INSERT INTO listtransactions VALUES 
   $timereceived,
   $vjoinsplit,
   $size,
-  $lastblock,
   $createTimestamp
 )`
 

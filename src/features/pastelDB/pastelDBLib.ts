@@ -16,6 +16,7 @@ import {
   TRawMempool,
   TRawTransaction,
   TTotalBalance,
+  TTransactionInfo,
   TTxoutsetInfo,
   TWalletInfo,
 } from '../../api/pastel-rpc/network-stats/type'
@@ -67,7 +68,7 @@ export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
   await fs.promises.writeFile(
     path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
     buffer,
-    { flag: 'a+' },
+    { flag: 'w+' },
   )
 }
 
@@ -88,7 +89,7 @@ export const createDatabase = async (): Promise<Database> => {
   }
 }
 
-export const saveDataToLocalSqlite = async (db: Database): Promise<void> => {
+export const exportSqliteDB = async (db: Database): Promise<void> => {
   const data = db.export()
   const buffer = Buffer.from(data)
   await writeSqliteDBFile(buffer)
@@ -273,7 +274,6 @@ export const insertMiningInfoToDB = (
 ): void => {
   const createTimestamp: string = new Date().toLocaleTimeString()
   const newId = getLastIdFromDB(pastelDB, 'mininginfo')
-  const generate = mininginfo.generate.toString()
   const values = {
     $newId: newId,
     $blocks: mininginfo.blocks,
@@ -288,7 +288,6 @@ export const insertMiningInfoToDB = (
     $pooledtx: mininginfo.pooledtx,
     $testnet: mininginfo.testnet,
     $chain: mininginfo.chain,
-    $generate: generate,
     $createTimestamp: createTimestamp,
   }
 
@@ -301,6 +300,7 @@ export const insertBlockInfoToDB = (
 ): void => {
   const createTimestamp: string = new Date().toLocaleTimeString()
   const newId = getLastIdFromDB(pastelDB, 'blockinfo')
+  const tx = JSON.stringify(blockInfo.valuePools)
   const valuePools = JSON.stringify(blockInfo.valuePools)
   const values = {
     $newId: newId,
@@ -311,7 +311,7 @@ export const insertBlockInfoToDB = (
     $version: blockInfo.version,
     $merkleroot: blockInfo.merkleroot,
     $finalsaplingroot: blockInfo.finalsaplingroot,
-    $tx: blockInfo.tx,
+    $tx: tx,
     $time: blockInfo.time,
     $nonce: blockInfo.nonce,
     $solution: blockInfo.solution,
@@ -335,25 +335,27 @@ export const insertRawtransaction = (
   const createTimestamp: string = new Date().toLocaleTimeString()
   const newId = getLastIdFromDB(pastelDB, 'rawtransaction')
   const overwintered = rawtransaction.overwintered.toString()
-  const vin = JSON.stringify(rawtransaction.vin)
-  const vout = JSON.stringify(rawtransaction.vout)
   const vjoinsplit = JSON.stringify(rawtransaction.vjoinsplit)
+  const vShieldedOutput = JSON.stringify(rawtransaction.vShieldedOutput)
+  const vShieldedSpend = JSON.stringify(rawtransaction.vShieldedSpend)
   const values = {
     $newId: newId,
+    $bindingSig: rawtransaction.bindingSig,
+    $blockhash: rawtransaction.blockhash,
+    $blocktime: rawtransaction.blocktime,
+    $confirmations: rawtransaction.confirmations,
+    $expiryheight: rawtransaction.expiryheight,
     $hex: rawtransaction.hex,
-    $txid: rawtransaction.txid,
+    $locktime: rawtransaction.locktime,
     $overwintered: overwintered,
+    $time: rawtransaction.time,
+    $txid: rawtransaction.txid,
+    $vShieldedOutput: vShieldedOutput,
+    $vShieldedSpend: vShieldedSpend,
+    $valueBalance: rawtransaction.valueBalance,
     $version: rawtransaction.version,
     $versiongroupid: rawtransaction.versiongroupid,
-    $locktime: rawtransaction.locktime,
-    $expiryheight: rawtransaction.expiryheight,
-    $vin: vin,
-    $vout: vout,
     $vjoinsplit: vjoinsplit,
-    $blockhash: rawtransaction.blockhash,
-    $confirmations: rawtransaction.confirmations,
-    $time: rawtransaction.time,
-    $blocktime: rawtransaction.blocktime,
     $createTimestamp: createTimestamp,
   }
 
@@ -362,30 +364,28 @@ export const insertRawtransaction = (
 
 export const insertTransaction = (
   pastelDB: Database,
-  transactionInfo: TRawTransaction,
+  transactionInfo: TTransactionInfo,
 ): void => {
   const createTimestamp: string = new Date().toLocaleTimeString()
   const newId = getLastIdFromDB(pastelDB, 'transaction_tbl')
-  const overwintered = transactionInfo.overwintered.toString()
-  const vin = JSON.stringify(transactionInfo.vin)
-  const vout = JSON.stringify(transactionInfo.vout)
+  const details = JSON.stringify(transactionInfo.details)
   const vjoinsplit = JSON.stringify(transactionInfo.vjoinsplit)
+  const walletconflicts = JSON.stringify(transactionInfo.walletconflicts)
   const values = {
     $newId: newId,
-    $hex: transactionInfo.hex,
-    $txid: transactionInfo.txid,
-    $overwintered: overwintered,
-    $version: transactionInfo.version,
-    $versiongroupid: transactionInfo.versiongroupid,
-    $locktime: transactionInfo.locktime,
-    $expiryheight: transactionInfo.expiryheight,
-    $vin: vin,
-    $vout: vout,
-    $vjoinsplit: vjoinsplit,
+    $amount: transactionInfo.amount,
     $blockhash: transactionInfo.blockhash,
-    $confirmations: transactionInfo.confirmations,
-    $time: transactionInfo.time,
+    $blockindex: transactionInfo.blockindex,
     $blocktime: transactionInfo.blocktime,
+    $confirmations: transactionInfo.confirmations,
+    $details: details,
+    $expiryheight: transactionInfo.expiryheight,
+    $hex: transactionInfo.hex,
+    $time: transactionInfo.time,
+    $timereceived: transactionInfo.timereceived,
+    $txid: transactionInfo.txid,
+    $vjoinsplit: vjoinsplit,
+    $walletconflicts: walletconflicts,
     $createTimestamp: createTimestamp,
   }
 
@@ -497,7 +497,6 @@ export const insertListTransactions = (
     $timereceived: listtransactions.timereceived,
     $vjoinsplit: vjoinsplit,
     $size: listtransactions.size,
-    $lastblock: listtransactions.lastblock,
     $createTimestamp: createTimestamp,
   }
 

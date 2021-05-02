@@ -1,4 +1,3 @@
-import { remote } from 'electron'
 import React, { useEffect, useState } from 'react'
 import { Database } from 'sql.js'
 
@@ -27,7 +26,11 @@ import {
   TSinceblockTransaction,
 } from '../../api/pastel-rpc/network-stats/type'
 import { RPCConfig } from '../../legacy/components/AppState'
+import { pastelTableNames } from './constants'
+import PastelDB from './database'
 import {
+  exportSqliteDB,
+  getDatasFromDB,
   insertBlockInfoToDB,
   insertBlocksubsidy,
   insertChaintips,
@@ -178,9 +181,13 @@ export const PastelDBThread = (
   const { rpcConfig } = props
   const [isStarted, setStarted] = useState(false)
 
+  const loadDatabase = async () => {
+    return await PastelDB.getDatabaseInstance()
+  }
+
   useEffect(() => {
-    const pastelDB = remote.getGlobal('pastelDB')
     const fetchStatisticDataFromRPC = async () => {
+      const pastelDB = await loadDatabase()
       if (pastelDB && rpcConfig && rpcConfig.username !== '') {
         // fetch whole data from RPC and save to pastel DB.
         const pastelConfig: fetchFuncConfig = {
@@ -207,6 +214,9 @@ export const PastelDBThread = (
           fetchTotalbalance(pastelConfig),
           fetchListaddresses(pastelConfig),
         ])
+
+        getDatasFromDB(pastelDB, pastelTableNames.statisticinfo)
+        exportSqliteDB(pastelDB)
 
         setTimeout(() => fetchStatisticDataFromRPC(), 10000)
       } else {

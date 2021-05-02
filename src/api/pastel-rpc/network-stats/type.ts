@@ -74,7 +74,15 @@ export type TMiningInfo = {
   pooledtx: number
   testnet: number
   chain: string
-  generate: boolean
+}
+
+export type TValuePool = {
+  chainValue?: number
+  chainValueZat?: number
+  id: string
+  monitored: boolean
+  valueDelta?: number
+  valueDeltaZat?: number
 }
 
 export type TBlockInfo = {
@@ -85,7 +93,7 @@ export type TBlockInfo = {
   version: number
   merkleroot: string
   finalsaplingroot: string
-  tx: string
+  tx: string[]
   time: number
   nonce: string
   solution: string
@@ -93,7 +101,7 @@ export type TBlockInfo = {
   difficulty: number
   chainwork: string
   anchor: string
-  valuePools: string
+  valuePools: TValuePool
   previousblockhash: string
   nextblockhash: string
 }
@@ -137,21 +145,63 @@ export type TVjoinsplit = {
   ciphertexts: string[]
 }
 
-export type TRawTransaction = {
+export type TTransactionInfo = {
+  amount: number
+  blockhash: string
+  blockindex: number
+  blocktime: number
+  confirmations: number
+  details: TTransactionInfoDetails[]
+  expiryheight: number
   hex: string
+  time: number
+  timereceived: number
   txid: string
+  vjoinsplit: TVjoinsplit[]
+  walletconflicts: string[]
+}
+
+export type TTransactionInfoDetails = {
+  account: string
+  address: string
+  amount: number
+  category: string
+  size: number
+  vout: number
+}
+
+export type TShieldedOutput = {
+  cv: string
+  anchor: string
+  nullifier: string
+}
+
+export type TShieldedSpendInfo = {
+  cmu: string
+  cv: string
+  encCiphertext: string
+  ephemeralKey: string
+  outCiphertext: string
+  proof: string
+}
+
+export type TRawTransaction = {
+  bindingSig: string
+  blockhash: string
+  blocktime: number
+  confirmations: number
+  expiryheight: number
+  hex: string
+  locktime: number
   overwintered: boolean
+  time: number
+  txid: string
+  vShieldedOutput: TShieldedOutput[]
+  vShieldedSpend: TShieldedSpendInfo[]
+  valueBalance: number
   version: number
   versiongroupid: string
-  locktime: number
-  expiryheight: number
-  vin: TVin[]
-  vout: TVout[]
   vjoinsplit: TVjoinsplit[]
-  blockhash: string
-  confirmations: number
-  time: number
-  blocktime: number
 }
 
 export type TTxoutsetInfo = {
@@ -206,7 +256,6 @@ export type TListTransactions = {
   timereceived: number
   vjoinsplit: TVjoinsplit[]
   size: number
-  lastblock: string
 }
 
 export type TListUnspent = {
@@ -317,12 +366,6 @@ export type TGetmininginfo = {
   id: string
 }
 
-export type Tgetmininginfo = {
-  result: TMiningInfo
-  error: TError
-  id: string
-}
-
 export type TGetrawmempool = {
   result: TRawMempoolInfo
   error: TError
@@ -354,7 +397,7 @@ export type TGetrawtransaction = {
 }
 
 export type TGettransaction = {
-  result: TRawTransaction
+  result: TTransactionInfo
   error: TError
   id: string
 }
