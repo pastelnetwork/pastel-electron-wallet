@@ -30,7 +30,7 @@ export default function PastelSquooshToolModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src='https://squoosh.app/' />
+          <iframe src="https://admiring-turing-6c65e1.netlify.app/" />
         </div>
       </div>
     </Modal>
