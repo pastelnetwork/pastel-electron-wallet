@@ -271,10 +271,76 @@ export default class MenuBuilder {
       label: 'Help',
       submenu: [
         {
-          label: 'File a bug...',
-
-          click() {
-            shell.openExternal('https://github.com/PastelNetwork/Pastel/issues')
+          label: 'Pastel Wiki',
+          click: () => {
+            shell.openExternal('http://pastel.wiki/')
+          },
+        },
+        {
+          label: 'Pastel Explorer',
+          click: () => {
+            shell.openExternal('https://explorer.pastel.network')
+          },
+        },
+        {
+          label: 'Pastel Frequently Asked Questions',
+          click: () => {
+            shell.openExternal(
+              'https://github.com/pastelnetwork/community/blob/main/Pastel_Frequently_Asked_Questions.md',
+            )
+          },
+        },
+        {
+          label: 'Report GitHub Issue',
+          click: () => {
+            shell.openExternal(
+              'https://github.com/pastelnetwork/pastel-electron-wallet/issues',
+            )
+          },
+        },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'Original 2018 Whitepaper',
+          click: () => {
+            shell.openExternal('http://bit.ly/Pastel_Original_Whitepaper')
+          },
+        },
+        {
+          label: 'Pastel Coingecko Page',
+          click: () => {
+            shell.openExternal('https://www.coingecko.com/en/coins/pastel')
+          },
+        },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'Telegram Group',
+          click: () => {
+            shell.openExternal('https://t.me/PastelNetwork')
+          },
+        },
+        {
+          label: 'Instagram Account',
+          click: () => {
+            shell.openExternal('https://instagram.com/pastelnetworkofficial')
+          },
+        },
+        {
+          label: 'Twitter Account',
+          click: () => {
+            shell.openExternal('https://twitter.com/PastelNetwork')
+          },
+        },
+        {
+          type: 'separator',
+        },
+        {
+          label: 'About Pastelwallet Fullnode',
+          click: () => {
+            mainWindow.webContents.send('about')
           },
         },
       ],
@@ -402,6 +468,73 @@ export default class MenuBuilder {
       {
         label: 'Help',
         submenu: [
+          {
+            label: 'Pastel Wiki',
+            click: () => {
+              shell.openExternal('http://pastel.wiki/')
+            },
+          },
+          {
+            label: 'Pastel Explorer',
+            click: () => {
+              shell.openExternal('https://explorer.pastel.network')
+            },
+          },
+          {
+            label: 'Pastel Frequently Asked Questions',
+            click: () => {
+              shell.openExternal(
+                'https://github.com/pastelnetwork/community/blob/main/Pastel_Frequently_Asked_Questions.md',
+              )
+            },
+          },
+          {
+            label: 'Report GitHub Issue',
+            click: () => {
+              shell.openExternal(
+                'https://github.com/pastelnetwork/pastel-electron-wallet/issues',
+              )
+            },
+          },
+          {
+            type: 'separator',
+          },
+          {
+            label: 'Original 2018 Whitepaper',
+            click: () => {
+              shell.openExternal('http://bit.ly/Pastel_Original_Whitepaper')
+            },
+          },
+          {
+            label: 'Pastel Coingecko Page',
+            click: () => {
+              shell.openExternal('https://www.coingecko.com/en/coins/pastel')
+            },
+          },
+          {
+            type: 'separator',
+          },
+          {
+            label: 'Telegram Group',
+            click: () => {
+              shell.openExternal('https://t.me/PastelNetwork')
+            },
+          },
+          {
+            label: 'Instagram Account',
+            click: () => {
+              shell.openExternal('https://instagram.com/pastelnetworkofficial')
+            },
+          },
+          {
+            label: 'Twitter Account',
+            click: () => {
+              shell.openExternal('https://twitter.com/PastelNetwork')
+            },
+          },
+          {
+            type: 'separator',
+          },
           {
             label: 'About Pastelwallet Fullnode',
             click: () => {
