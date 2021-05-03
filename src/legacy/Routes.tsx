@@ -42,7 +42,9 @@ import PastelSpriteEditorToolModal, {
 import PastelPhotopeaModal, {
   openPastelPhotopeaModal,
 } from '../features/pastelPhotopea'
-import PastelSquooshToolModal, { openPastelSquooshToolModal, } from '../features/pastelSquooshTool'
+import PastelSquooshToolModal, {
+  openPastelSquooshToolModal,
+} from '../features/pastelSquooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
 

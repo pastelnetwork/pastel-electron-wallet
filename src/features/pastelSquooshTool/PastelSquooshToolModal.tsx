@@ -6,9 +6,7 @@ import styles from './PastelSquooshToolModal.module.css'
 import { closePastelSquooshToolModal } from './PastelSquooshToolModalSlice'
 
 export default function PastelSquooshToolModal(): JSX.Element {
-  const { modalIsOpen } = useAppSelector(
-    state => state.pastelSquooshToolModal,
-  )
+  const { modalIsOpen } = useAppSelector(state => state.pastelSquooshToolModal)
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen) {
@@ -30,7 +28,7 @@ export default function PastelSquooshToolModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src="https://admiring-turing-6c65e1.netlify.app/" />
+          <iframe src='https://admiring-turing-6c65e1.netlify.app/' />
         </div>
       </div>
     </Modal>

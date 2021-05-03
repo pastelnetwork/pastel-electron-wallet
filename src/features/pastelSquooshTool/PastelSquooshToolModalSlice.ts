@@ -21,8 +21,7 @@ export const pastelSquooshToolModalSlice = createSlice({
   },
 })
 
-export const pastelSquooshToolModalReducer =
-  pastelSquooshToolModalSlice.reducer
+export const pastelSquooshToolModalReducer = pastelSquooshToolModalSlice.reducer
 
 export const {
   openPastelSquooshToolModal,
