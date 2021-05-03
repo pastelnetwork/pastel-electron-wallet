@@ -23,6 +23,7 @@ setInterval(() => {
 try {
   PastelDB.getDatabaseInstance()
 } catch (error) {
+  // TODO log errors to a central logger so we can address them later.
   console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
 }
 
