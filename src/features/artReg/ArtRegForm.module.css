@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.imageSelectionWrapper {
+  display: flex;
+}
+
+.imageWrapper,
+.imageUpload {
+  flex: 1;
+}
+
+.imageWrapper {
+  margin-right: 24px;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  padding-bottom: 100%;
+  background: lightgrey;
+  position: relative;
+}
+
+.imagePlaceholder::before,
+.imagePlaceholder::after {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: block;
+  content: '';
+  width: 100%;
+  height: 1px;
+  background: grey;
+}
+
+.imagePlaceholder::before {
+  transform: rotate(45deg);
+}
+
+.imagePlaceholder::after {
+  transform: rotate(-45deg);
+}

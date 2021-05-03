@@ -44,6 +44,7 @@ import PastelPhotopeaModal, {
 } from '../features/pastelPhotopea'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
+import { ArtRegForm } from '../features/artReg'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -596,6 +597,11 @@ class RouteApp extends React.Component<any, any> {
                     pastelIDs={pastelIDs}
                   />
                 )}
+              />
+
+              <Route
+                path={routes.ART_REGISTRATION}
+                render={() => <ArtRegForm />}
               />
 
               <Route
