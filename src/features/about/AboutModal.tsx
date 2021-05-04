@@ -3,11 +3,11 @@ import React from 'react'
 import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import styles from './PastelAboutModal.module.css'
-import { closePastelAboutModal } from './PastelAboutModalSlice'
+import styles from './AboutModal.module.css'
+import { closeAboutModal } from './AboutModalSlice'
 
-export default function PastelAboutModal(): JSX.Element {
-  const { modalIsOpen } = useAppSelector(state => state.pastelAboutModal)
+export default function AboutModal(): JSX.Element {
+  const { modalIsOpen } = useAppSelector(state => state.aboutModal)
   const dispatch = useAppDispatch()
 
   const txYear = new Date().getFullYear()
@@ -19,7 +19,7 @@ export default function PastelAboutModal(): JSX.Element {
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={() => dispatch(closePastelAboutModal())}
+      onRequestClose={() => dispatch(closeAboutModal())}
       className={styles.modal}
       overlayClassName={styles.modalOverlay}
     >
@@ -83,7 +83,7 @@ export default function PastelAboutModal(): JSX.Element {
         <button
           type='button'
           className={styles.primarybutton}
-          onClick={() => dispatch(closePastelAboutModal())}
+          onClick={() => dispatch(closeAboutModal())}
         >
           Close
         </button>
