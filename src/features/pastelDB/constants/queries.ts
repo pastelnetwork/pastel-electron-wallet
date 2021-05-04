@@ -463,3 +463,11 @@ export const insertListaddressesQuery = `INSERT INTO listaddresses VALUES (
   $address,
   $createTimestamp
 )`
+
+export const selectAllQuery = 'SELECT * FROM '
+export const selectIDQuery = 'SELECT id FROM '
+
+export const whereTransactionIDMatchingQuery =
+  ' WHERE transactionid=$tid AND time=$time'
+
+export const orderByIDQuery = ' ORDER BY id LIMIT 1'

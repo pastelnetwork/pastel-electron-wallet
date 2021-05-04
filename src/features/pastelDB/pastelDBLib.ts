@@ -55,6 +55,11 @@ import {
   insertTransactionTableQuery,
   insertTxoutsetinfoQuery,
   insertWalletinfoQuery,
+  orderByIDQuery,
+  selectAllQuery,
+  selectIDQuery,
+  tableNames,
+  whereTransactionIDMatchingQuery,
 } from './constants'
 
 export const readSqliteDBFile = async (): Promise<Buffer> => {
@@ -123,7 +128,11 @@ export const validateDataFromDB = (
   transactionid: string,
   time: number,
 ): boolean => {
-  const sqlText = `SELECT id FROM ${tableName} WHERE transactionid=$tid AND time=$time`
+  if (tableNames[tableName] !== true) {
+    throw new Error('pastelDB validateDataFromDB error: table name is invalid')
+  }
+
+  const sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
   const values = {
     $tid: transactionid,
     $time: time,
@@ -137,7 +146,11 @@ export const getLastIdFromDB = (
   pastelDB: Database,
   tableName: string,
 ): number => {
-  const sqlText = `SELECT id FROM ${tableName} ORDER BY id LIMIT 1`
+  if (tableNames[tableName] !== true) {
+    throw new Error('pastelDB getLastIdFromDB error: table name is invalid')
+  }
+
+  const sqlText = selectIDQuery + tableName + orderByIDQuery
   const sqlResult = pastelDB.exec(sqlText)
   if (sqlResult.length) {
     return sqlResult[0].values[0][0] as number
@@ -167,7 +180,11 @@ export const getDatasFromDB = (
   pastelDB: Database,
   tableName: string,
 ): QueryExecResult[] => {
-  const sqlText = `SELECT * FROM ${tableName}`
+  if (tableNames[tableName] !== true) {
+    throw new Error('pastelDB getDatasFromDB error: table name is invalid')
+  }
+
+  const sqlText = selectAllQuery + tableName
   const sqlResult = pastelDB.exec(sqlText)
   return sqlResult
 }
