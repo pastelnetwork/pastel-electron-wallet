@@ -26,11 +26,9 @@ import {
   TSinceblockTransaction,
 } from '../../api/pastel-rpc/network-stats/type'
 import { RPCConfig } from '../../legacy/components/AppState'
-import { pastelTableNames } from './constants'
 import PastelDB from './database'
 import {
   exportSqliteDB,
-  getDatasFromDB,
   insertBlockInfoToDB,
   insertBlocksubsidy,
   insertChaintips,
@@ -215,7 +213,6 @@ export const PastelDBThread = (
           fetchListaddresses(pastelConfig),
         ])
 
-        getDatasFromDB(pastelDB, pastelTableNames.statisticinfo)
         exportSqliteDB(pastelDB)
 
         setTimeout(() => fetchStatisticDataFromRPC(), 10000)
