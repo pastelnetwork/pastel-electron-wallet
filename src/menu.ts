@@ -85,7 +85,7 @@ export default class MenuBuilder {
           label: 'About Pastelwallet Fullnode',
           selector: 'orderFrontStandardAboutPanel:',
           click: () => {
-            mainWindow.webContents.send('about')
+            mainWindow.webContents.send('pastelAbout')
           },
         },
         {
@@ -340,7 +340,7 @@ export default class MenuBuilder {
         {
           label: 'About Pastelwallet Fullnode',
           click: () => {
-            mainWindow.webContents.send('about')
+            mainWindow.webContents.send('pastelAbout')
           },
         },
       ],
@@ -538,7 +538,7 @@ export default class MenuBuilder {
           {
             label: 'About Pastelwallet Fullnode',
             click: () => {
-              mainWindow.webContents.send('about')
+              mainWindow.webContents.send('pastelAbout')
             },
           },
         ],
