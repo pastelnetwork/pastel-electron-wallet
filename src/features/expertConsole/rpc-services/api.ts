@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { CancelTokenSource } from 'axios'
 
 import store from '../../../redux/store'
@@ -24,7 +23,7 @@ const getMessage = (statusCode: number, isECONNREFUSED: boolean) => {
   }
 }
 
-const apiRequests: CancelTokenSource[] = [];
+const apiRequests: CancelTokenSource[] = []
 
 type possibleMethods = typeof METHODS[number]
 type dynamicAPI = {
@@ -80,6 +79,4 @@ METHODS.forEach((method: string) => {
 
 export default apiMethods
 
-export {
-  apiRequests
-}
+export { apiRequests }
