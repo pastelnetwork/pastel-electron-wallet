@@ -363,7 +363,7 @@ export default class MenuBuilder {
         {
           label: 'Squoosh',
           click: () => {
-            this.mainWindow.webContents.send('pastelSquooshTool')
+            this.mainWindow.webContents.send('squooshTool')
           },
         },
       ],
@@ -472,7 +472,7 @@ export default class MenuBuilder {
           {
             label: 'Squoosh',
             click: () => {
-              this.mainWindow.webContents.send('pastelSquooshTool')
+              this.mainWindow.webContents.send('squooshTool')
             },
           },
         ],

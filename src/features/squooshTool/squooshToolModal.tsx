@@ -2,11 +2,11 @@ import React from 'react'
 import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import styles from './PastelSquooshToolModal.module.css'
-import { closePastelSquooshToolModal } from './PastelSquooshToolModalSlice'
+import styles from './squooshToolModal.module.css'
+import { closeSquooshToolModal } from './squooshToolModalSlice'
 
-export default function PastelSquooshToolModal(): JSX.Element {
-  const { modalIsOpen } = useAppSelector(state => state.pastelSquooshToolModal)
+export default function squooshToolModal(): JSX.Element {
+  const { modalIsOpen } = useAppSelector(state => state.squooshToolModal)
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen) {
@@ -16,14 +16,14 @@ export default function PastelSquooshToolModal(): JSX.Element {
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={() => dispatch(closePastelSquooshToolModal())}
+      onRequestClose={() => dispatch(closeSquooshToolModal())}
       className={styles.modalWrapper}
     >
       <div className={styles.modalContent}>
         <button
           type='button'
           className={styles.btn_close}
-          onClick={() => dispatch(closePastelSquooshToolModal())}
+          onClick={() => dispatch(closeSquooshToolModal())}
         >
           X
         </button>
