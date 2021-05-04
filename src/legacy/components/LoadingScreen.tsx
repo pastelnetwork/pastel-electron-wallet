@@ -253,9 +253,6 @@ class LoadingScreen extends Component<any, any> {
       if (this.pasteld) {
         const { history } = this.props
         const { rpcConfig } = this.state
-        this.setState({
-          currentStatus: 'Waiting for pasteld to exit...',
-        })
         history.push(routes.LOADING)
         this.pasteld.on('close', () => {
           ipcRenderer.send('appquitdone')
@@ -263,7 +260,6 @@ class LoadingScreen extends Component<any, any> {
         this.pasteld.on('exit', () => {
           ipcRenderer.send('appquitdone')
         })
-        console.log('Sending stop')
         setTimeout(() => {
           RPC.doRPC('stop', [], rpcConfig)
         })
