@@ -42,9 +42,7 @@ import PastelSpriteEditorToolModal, {
 import PastelPhotopeaModal, {
   openPastelPhotopeaModal,
 } from '../features/pastelPhotopea'
-import SquooshToolModal, {
-  openSquooshToolModal,
-} from '../features/squooshTool'
+import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
 
@@ -490,9 +488,7 @@ class RouteApp extends React.Component<any, any> {
                 }
                 {...(standardProps as any)}
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
-                openSquooshToolModal={
-                  this.props.openSquooshToolModal
-                }
+                openSquooshToolModal={this.props.openSquooshToolModal}
               />
             </div>
           )}
