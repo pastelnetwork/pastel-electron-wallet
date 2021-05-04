@@ -13,6 +13,7 @@ import {
 } from 'javascript-terminal'
 import React, { createRef, useEffect, useState } from 'react'
 
+import { apiRequests } from '../../features/expertConsole/rpc-services/api'
 import ConsoleOutput from './ConsoleOutput'
 import rpcApi from './rpc-services/api'
 import { formatConsoleData } from './rpc-services/utils'
@@ -67,6 +68,7 @@ let terminalPlugins: any = []
 
 function TerminalConsole(props: TConsoleProps): JSX.Element {
   const [typing, setTyping] = useState('')
+  const [executingCommand, setExecutingCommand] = useState(false)
   const [outputs, setOutputs] = useState<any[]>([])
   const [isReady, setIsReady] = useState(false)
   const [isInitiatedTerminal, setIsInitiatedTerminal] = useState(false)
@@ -75,6 +77,18 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   useEffect(() => {
     inputRef.current?.focus()
   }, [isReady])
+
+  useEffect(() => {
+    return () => {
+      for (let i = apiRequests.length - 1; i >= 0; i--) {
+        // Cancel all API requests
+        if (apiRequests[i]) {
+          apiRequests[i].cancel('Operation canceled when change route.')
+          apiRequests.splice(i, 1)
+        }
+      }
+    }
+  }, [])
 
   const loadBanner = () => {
     const len = banner.length
@@ -227,22 +241,31 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
 
   const rpcCommandResponse = (commandKey: string) => async (
     state: any,
-    opts: string,
+    opts: string[],
   ) => {
     try {
+      setExecutingCommand(true)
       const data = await rpcApi[commandKey](opts)
       const text =
         typeof data === 'object'
           ? textAsTable(
               Array.isArray(data)
-                ? data.map(i => formatConsoleData(i))
-                : [formatConsoleData(data)],
+                ? data.length > 0
+                  ? data.map(i => formatConsoleData(i))
+                  : ['']
+                : [formatConsoleData(data || {})],
             )
           : `${data}`
+      if (data == null || (Array.isArray(data) && data.length == 0)) {
+        await addOutputThenDisplay('null')
+        setExecutingCommand(false)
+        return
+      }
       await addOutputThenDisplay(text)
+      setExecutingCommand(false)
     } catch (error) {
-      const text = `Error ${error.statusCode}: ${error.message}`
-      await addOutputThenDisplay(text)
+      await addOutputThenDisplay(error.message)
+      setExecutingCommand(false)
     }
   }
 
@@ -403,9 +426,10 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
           onClick={focusTerminalInput}
         />
       </div>
+      {executingCommand && <div className={styles.loading} />}
       <div
         className={cx(styles.terminalInputWrap, {
-          [styles.isReady]: isReady,
+          [styles.isReady]: isReady && !executingCommand,
         })}
         onClick={focusTerminalInput}
       >

@@ -3,32 +3,16 @@ import Modal from 'react-modal'
 
 import cstyles from '../../legacy/components/Common.module.css'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { RootState } from '../../redux/store'
-import styles from './PastelModal.module.css'
-import { closePastelModal } from './PastelModalSlice'
+import { closeErrorModal } from './errorModalSlice'
 
-export default function PastelModal(): JSX.Element {
-  const { title, body, opened } = useAppSelector(
-    (state: RootState) => state.pastelModal,
-  )
+export default function ErrorModal(): JSX.Element {
+  const { title, body, opened } = useAppSelector(state => state.errorModal)
   const dispatch = useAppDispatch()
-
-  function renderModalContent() {
-    if (body && body.length > 0) {
-      return body.map((content: string, idx: number) => (
-        <p className={styles.content} key={idx}>
-          {content}
-        </p>
-      ))
-    }
-
-    return null
-  }
 
   return (
     <Modal
       isOpen={opened}
-      onRequestClose={() => dispatch(closePastelModal())}
+      onRequestClose={() => dispatch(closeErrorModal())}
       className={cstyles.modal}
       overlayClassName={cstyles.modalOverlay}
     >
@@ -51,7 +35,7 @@ export default function PastelModal(): JSX.Element {
             overflowY: 'auto',
           }}
         >
-          {renderModalContent()}
+          {body}
         </div>
       </div>
 
@@ -59,7 +43,7 @@ export default function PastelModal(): JSX.Element {
         <button
           type='button'
           className={cstyles.primarybutton}
-          onClick={() => dispatch(closePastelModal())}
+          onClick={() => dispatch(closeErrorModal())}
         >
           Close
         </button>
