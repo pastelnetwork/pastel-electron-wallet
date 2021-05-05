@@ -1954,7 +1954,7 @@
   version "0.16.1"
   resolved "https://registry.yarnpkg.com/@types/scheduler/-/scheduler-0.16.1.tgz#18845205e86ff0038517aab7a18a62a6b9f71275"
 
-"@types/serve-static@^1.13.9":
+"@types/serve-static@1.13.9":
   version "1.13.9"
   resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.13.9.tgz#aacf28a85a05ee29a11fb7c3ead935ac56f33e4e"
   dependencies:
@@ -5554,7 +5554,7 @@ http2-wrapper@^1.0.0-beta.5.2:
     quick-lru "^5.1.1"
     resolve-alpn "^1.0.0"
 
-http@^0.0.1-security:
+http@0.0.1-security:
   version "0.0.1-security"
   resolved "https://registry.yarnpkg.com/http/-/http-0.0.1-security.tgz#3aac09129d12dc2747bbce4157afde20ad1f7995"
 
@@ -8945,7 +8945,7 @@ serialize-javascript@^5.0.1:
   dependencies:
     randombytes "^2.1.0"
 
-serve-static@1.14.1, serve-static@^1.14.1:
+serve-static@1.14.1:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/serve-static/-/serve-static-1.14.1.tgz#666e636dc4f010f7ef29970a88a674320898b2f9"
   dependencies:
@@ -9194,9 +9194,9 @@ sql.js@pastelnetwork/sql.js#230351f:
   version "1.5.0"
   resolved "https://codeload.github.com/pastelnetwork/sql.js/tar.gz/230351fe5fb3b8e0980db29da66d7595da4bfb62"
 
-squoosh@pastelnetwork/squoosh#feature/psl-squoosh-custom:
+squoosh@pastelnetwork/squoosh:
   version "2.0.0"
-  resolved "https://codeload.github.com/pastelnetwork/squoosh/tar.gz/b8e3b4b7499e3ade2ab6b467d46aea1d52a14d52"
+  resolved "https://codeload.github.com/pastelnetwork/squoosh/tar.gz/7d742978d0c61b834d1b8128c737268190ae876d"
   dependencies:
     wasm-feature-detect "^1.2.9"
 
