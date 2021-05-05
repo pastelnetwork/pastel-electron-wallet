@@ -6,7 +6,7 @@ import {
   TRPCConfig,
 } from '../../api/pastel-rpc'
 import type { AppThunk } from '../../redux/store'
-import { openErrorModal } from '../errorModal'
+import { openPastelModal } from '../pastelModal'
 
 export type TRegisterPastelID = {
   pastelid: string
@@ -87,10 +87,11 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
     } catch (err) {
       dispatch(getPastelIDsFailure())
       dispatch(
-        openErrorModal({
+        openPastelModal({
           title: 'Can not fetch Pastel IDs',
-          body:
+          body: [
             "We couldn't fetch existing Pastel IDs for some reason. Please restart the wallet to try again.",
+          ],
         }),
       )
 
@@ -116,18 +117,19 @@ export function createPastelID(
         }),
       )
       dispatch(
-        openErrorModal({
+        openPastelModal({
           title: 'PastelID has been created!',
-          body: `PastelID: ${res.pastelid}, TXID: ${res.txid}`,
+          body: [`PastelID: ${res.pastelid}`, `TXID: ${res.txid}`],
         }),
       )
     } catch (err) {
       dispatch(createPastelIDFailure())
       dispatch(
-        openErrorModal({
+        openPastelModal({
           title: 'Cannot create a new PastelID!',
-          body:
+          body: [
             "We couldn't create a new PastelID for some reason. Please restart the wallet and try again.",
+          ],
         }),
       )
 

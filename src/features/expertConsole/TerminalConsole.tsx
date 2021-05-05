@@ -243,30 +243,30 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     state: any,
     opts: string[],
   ) => {
+    setExecutingCommand(true)
+    let textConsole = ''
+
     try {
-      setExecutingCommand(true)
       const data = await rpcApi[commandKey](opts)
-      const text =
-        typeof data === 'object'
-          ? textAsTable(
-              Array.isArray(data)
-                ? data.length > 0
-                  ? data.map(i => formatConsoleData(i))
-                  : ['']
-                : [formatConsoleData(data || {})],
-            )
-          : `${data}`
-      if (data == null || (Array.isArray(data) && data.length == 0)) {
-        await addOutputThenDisplay('null')
-        setExecutingCommand(false)
-        return
+      textConsole = `${data}`
+
+      if (typeof data === 'object') {
+        const tempArr = Array.isArray(data)
+          ? data.length > 0
+            ? data.map(formatConsoleData)
+            : ['']
+          : [formatConsoleData(data || {})]
+        textConsole = textAsTable(tempArr)
       }
-      await addOutputThenDisplay(text)
-      setExecutingCommand(false)
+
+      if (data == null || (Array.isArray(data) && data.length == 0)) {
+        textConsole = 'null'
+      }
     } catch (error) {
-      await addOutputThenDisplay(error.message)
-      setExecutingCommand(false)
+      textConsole = error.message
     }
+    await addOutputThenDisplay(textConsole)
+    setExecutingCommand(false)
   }
 
   const addOutputThenDisplay = async (text: string) => {

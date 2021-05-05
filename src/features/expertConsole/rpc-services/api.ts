@@ -35,8 +35,7 @@ let apiMethods = {} as dynamicAPI
 METHODS.forEach((method: string) => {
   apiMethods = {
     ...apiMethods,
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    [method]: (params = []) => {
+    [method]: <T>(params: string[]): Promise<T> => {
       const { url, username, password } = getRPCConfig()
       return new Promise((resolve, reject) => {
         const CancelToken = axios.CancelToken

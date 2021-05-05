@@ -11,7 +11,7 @@ import List from '../../legacy/components/List'
 import ListItem from '../../legacy/components/ListItem'
 import Select from '../../legacy/components/Select'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { openErrorModal } from '../errorModal'
+import { openPastelModal } from '../pastelModal'
 import styles from './PastelID.module.css'
 import { createPastelID, fetchPastelIDs } from './pastelIDSlice'
 
@@ -106,9 +106,11 @@ function PastelID(props: PastelIDProps): JSX.Element {
       dispatch(createPastelID(passphrase, address, pastelConfig))
     } catch (error) {
       dispatch(
-        openErrorModal({
+        openPastelModal({
           title: 'Error',
-          body: 'Can not create a new Pastel address. Please try again later.',
+          body: [
+            'Can not create a new Pastel address. Please try again later.',
+          ],
         }),
       )
 
