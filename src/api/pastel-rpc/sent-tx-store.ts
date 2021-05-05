@@ -1,14 +1,13 @@
-/* eslint-disable */
-
+import { remote } from 'electron'
+import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import fs from 'fs'
-import { remote } from 'electron'
 
 import { Transaction, TxDetail } from './app-state'
+import { TListTransactions, TSentTxStore } from './network-stats/type'
 
 export default class SentTxStore {
-  static locateSentTxStore() {
+  static locateSentTxStore(): string {
     if (os.platform() === 'darwin') {
       return path.join(
         remote.app.getPath('appData'),
@@ -31,13 +30,15 @@ export default class SentTxStore {
     return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
   }
 
-  static async loadSentTxns() {
+  static async loadSentTxns(): Promise<TListTransactions | []> {
     try {
       const sentTx = JSON.parse(
-        (await fs.promises.readFile(SentTxStore.locateSentTxStore())) as any,
+        (
+          await fs.promises.readFile(SentTxStore.locateSentTxStore())
+        ).toString(),
       )
-      return sentTx.map((s: any) => {
-        const transction: any = new Transaction()
+      return sentTx.map((s: TSentTxStore) => {
+        const transction: TListTransactions = new Transaction()
         transction.type = s.type
         transction.amount = s.amount
         transction.address = s.from

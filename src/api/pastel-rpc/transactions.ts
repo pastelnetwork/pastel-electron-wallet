@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import hex from 'hex-string'
 
-import { Transaction, TxDetail } from '../../declarations/app-state'
-import SentTxStore from '../../declarations/sent-tx-store'
+import { Transaction } from './app-state'
 import {
   getRawTransaction,
   getWalletTransaction,
@@ -19,6 +17,7 @@ import {
   TZListReceivedByAddress,
 } from './network-stats/type'
 import { TRPCConfig } from './rpc'
+import SentTxStore from './sent-tx-store'
 
 const parseMemo = (memoHex: string) => {
   if (!memoHex || memoHex.length < 2) {
@@ -51,7 +50,7 @@ export async function fetchTandZTransactions(
       (tx1: TListTransactions, tx2: TListTransactions) => tx2.time - tx1.time,
     )
     .map(async (tx: TListTransactions) => {
-      const transaction: any = new Transaction()
+      const transaction: TListTransactions = new Transaction()
       transaction.address = tx.address
       transaction.type = tx.category
       transaction.amount = tx.amount
@@ -59,7 +58,7 @@ export async function fetchTandZTransactions(
       transaction.confirmations = tx.confirmations
       transaction.txid = tx.txid
       transaction.time = tx.time
-      transaction.detailedTxns = [new TxDetail()]
+      transaction.detailedTxns = []
       transaction.detailedTxns[0].address = tx.address
       transaction.detailedTxns[0].amount = tx.amount
       if (
@@ -113,7 +112,7 @@ export async function fetchTandZTransactions(
       zaddr,
       config,
     )
-    const txns: any = incomingTxns
+    const txns = incomingTxns
       .filter((itx: TZListReceivedByAddress) => !itx.change)
       .map((incomingTx: TZListReceivedByAddress) => {
         return {
@@ -129,12 +128,12 @@ export async function fetchTandZTransactions(
   const alltxns = (await Promise.all(alltxnsPromise)).flat() // Now, for each tx in the array, call gettransaction
 
   const ztxlist = await Promise.all(
-    alltxns.map(async (tx: any) => {
+    alltxns.map(async tx => {
       const txresponse: TTransactionInfo = await getWalletTransaction(
         tx.txid,
         config,
       )
-      const transaction: any = new Transaction()
+      const transaction: TListTransactions = new Transaction()
       transaction.address = tx.address
       transaction.type = 'receive'
       transaction.amount = tx.amount
@@ -142,7 +141,7 @@ export async function fetchTandZTransactions(
       transaction.txid = tx.txid
       transaction.time = txresponse.time
       transaction.index = tx.index || 0
-      transaction.detailedTxns = [new TxDetail()]
+      transaction.detailedTxns = []
       transaction.detailedTxns[0].address = tx.address
       transaction.detailedTxns[0].amount = tx.amount
       transaction.inputAddresses = []

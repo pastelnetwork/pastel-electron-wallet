@@ -42,7 +42,7 @@ export interface IAddressBlockProps {
   // deprecated, see Utils.getPslToUsdString
   pslPrice: number
 
-  transactions?: [ITransactionsProps]
+  transactions?: ITransactionsProps[]
 }
 
 export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
@@ -134,9 +134,18 @@ export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
     if (!transactions) {
       return null
     }
-    const transaction = transactions.filter(
-      t => t?.address === address || t?.inputAddresses?.indexOf(address) !== -1,
-    )[0]
+    const transaction = transactions.filter(t => {
+      if (!t) {
+        return false
+      }
+      if (t.address === address) {
+        return true
+      }
+      if (!t.inputAddresses) {
+        return false
+      }
+      return t.inputAddresses.indexOf(address) !== -1
+    })[0]
     if (transaction?.time) {
       const txDate = new Date(transaction.time * 1000)
 

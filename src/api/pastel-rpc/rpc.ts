@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios, { AxiosResponse } from 'axios'
 
 export type TRPCConfig = {
@@ -7,14 +6,15 @@ export type TRPCConfig = {
   password: string
 }
 
+export type TRPCParam = string | boolean | number
+
 export async function rpc<T>(
   method: string,
-  params: any[],
+  params: TRPCParam[],
   rpcConfig: TRPCConfig,
 ): Promise<T> {
   const { url, username, password } = rpcConfig
   let response: AxiosResponse
-
   try {
     response = await axios(url, {
       data: {

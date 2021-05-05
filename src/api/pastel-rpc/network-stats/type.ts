@@ -201,6 +201,12 @@ export type TWalletInfo = {
   seedfp: string
 }
 
+export type TDetailedTxns = {
+  address: string
+  amount: number
+  memo?: string | null
+}
+
 export type TListTransactions = {
   account: string
   address: string
@@ -220,6 +226,10 @@ export type TListTransactions = {
   size: number
   lastblock: string
   fee?: number
+  type?: string
+  detailedTxns?: TDetailedTxns[]
+  inputAddresses?: string[]
+  index?: number
 }
 
 export type TListUnspent = {
@@ -491,4 +501,15 @@ export type TListReceivedByAddress = {
   result: TZListReceivedByAddress[]
   error: TError
   id: string
+}
+
+export type TSentTxStore = {
+  type: string
+  amount: number
+  from: string
+  txid: string
+  datetime: number
+  detailedTxns: TDetailedTxns
+  address: string
+  memo: string
 }
