@@ -93,7 +93,7 @@ export const createDatabase = async (): Promise<Database> => {
   }
 }
 
-export const saveDataToLocalSqlite = async (db: Database): Promise<void> => {
+export const exportSqliteDB = async (db: Database): Promise<void> => {
   const data = db.export()
   const buffer = Buffer.from(data)
   await writeSqliteDBFile(buffer)
