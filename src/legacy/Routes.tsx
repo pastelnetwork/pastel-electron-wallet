@@ -43,6 +43,7 @@ import PastelSpriteEditorToolModal, {
 import PastelPhotopeaModal, {
   openPastelPhotopeaModal,
 } from '../features/pastelPhotopea'
+import AboutModal, { openAboutModal } from '../features/about'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
 
@@ -466,6 +467,7 @@ class RouteApp extends React.Component<any, any> {
         />
         <PastelPhotopeaModal />
         <PastelSpriteEditorToolModal />
+        <AboutModal />
 
         <div
           style={{
@@ -487,6 +489,7 @@ class RouteApp extends React.Component<any, any> {
                 }
                 {...(standardProps as any)}
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
+                openAboutModal={this.props.openAboutModal}
               />
             </div>
           )}
@@ -633,4 +636,5 @@ export default connect(null, {
   openPastelPaperWalletModal,
   openPastelPhotopeaModal,
   openPastelSpriteEditorToolModal,
+  openAboutModal,
 })(RouteApp)
