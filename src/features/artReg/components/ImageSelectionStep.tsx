@@ -2,10 +2,10 @@ import cx from 'classnames'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
-import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import { Button, ButtonGroup, FormControl, Input } from '../common'
-import cstyles from '../common/Common.module.css'
-import { IArtRegFormData, setFormData, setStep } from '.'
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
+import { Button, ButtonGroup, FormControl, Input } from '../../common'
+import cstyles from '../../common/Common.module.css'
+import { IArtRegFormData, setFormData, setStep } from '..'
 import styles from './ArtRegForm.module.css'
 
 export function ImageSelectionStep(): JSX.Element {

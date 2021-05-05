@@ -1,11 +1,11 @@
 import cx from 'classnames'
 import React from 'react'
 
-import cstyles from '../../legacy/components/Common.module.css'
-import ScrollPane from '../../legacy/components/ScrollPane'
-import { useAppSelector } from '../../redux/hooks'
+import cstyles from '../../../legacy/components/Common.module.css'
+import ScrollPane from '../../../legacy/components/ScrollPane'
+import { useAppSelector } from '../../../redux/hooks'
 import styles from './ArtRegForm.module.css'
-import { GeneralInfoStep } from './GeneralInfo'
+import { GeneralInfoStep } from './GeneralInfoStep'
 import { ImageSelectionStep } from './ImageSelectionStep'
 
 const stepMap = {

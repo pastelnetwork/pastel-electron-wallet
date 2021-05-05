@@ -1,13 +1,19 @@
 import cx from 'classnames'
-import React from 'react'
+import React, { ForwardedRef, forwardRef, InputHTMLAttributes } from 'react'
 
 import cstyles from './Common.module.css'
 
-export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+function _Input(
+  props: InputHTMLAttributes<HTMLInputElement>,
+  ref: ForwardedRef<HTMLInputElement>,
+) {
   return (
     <input
+      ref={ref}
       className={cx(cstyles.inputbox, cstyles.margintopsmall)}
       {...props}
     />
   )
 }
+
+export const Input = forwardRef(_Input)
