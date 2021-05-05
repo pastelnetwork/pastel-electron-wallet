@@ -3,15 +3,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 type TStep = 'GeneralInfo' | 'ImageSelection' | 'Optimization' | 'Submission'
 
 export interface IArtRegFormData {
-  title: string
-  copies: number
-  file: string
-  category: string
-  externalProfile: string
-  description: string
-  pastelID: string
-  address: string
-  compensation: number
+  title?: string
+  copies?: number
+  filePath?: string
+  fileSize?: number
+  category?: string
+  externalProfile?: string
+  description?: string
+  pastelID?: string
+  address?: string
+  compensation?: number
 }
 
 export type IArtRegFormState = IArtRegFormData & {
@@ -22,7 +23,8 @@ const initialState: IArtRegFormState = {
   step: 'GeneralInfo',
   title: '',
   copies: 0,
-  file: '',
+  filePath: '',
+  fileSize: 0,
   category: '',
   externalProfile: '',
   description: '',

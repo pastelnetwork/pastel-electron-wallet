@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { setValue, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
 import { FormControl, Input, Textarea } from '../../common'
@@ -18,13 +18,12 @@ export function GeneralInfoStep(): JSX.Element {
   } = useAppSelector(state => state.artRegForm)
 
   const dispatch = useAppDispatch()
+  const { register, handleSubmit } = useForm()
 
-  const onSubmit = (data: IArtRegFormData) => {
+  function onSubmit(data: IArtRegFormData) {
     dispatch(setFormData(data))
     dispatch(setStep('ImageSelection'))
   }
-
-  const { register, handleSubmit } = useForm()
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

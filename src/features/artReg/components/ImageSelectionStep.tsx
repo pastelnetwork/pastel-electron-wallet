@@ -1,5 +1,7 @@
 import cx from 'classnames'
-import React from 'react'
+import { app, ipcRenderer } from 'electron'
+import fs from 'fs'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
@@ -9,19 +11,56 @@ import { IArtRegFormData, setFormData, setStep } from '..'
 import styles from './ArtRegForm.module.css'
 
 export function ImageSelectionStep(): JSX.Element {
-  const { file } = useAppSelector(state => state.artRegForm)
+  const { filePath } = useAppSelector(state => state.artRegForm)
 
   const dispatch = useAppDispatch()
+  const { register, setValue, handleSubmit } = useForm()
+  const [imageData, setImageData] = useState('')
 
-  const onSubmit = (data: IArtRegFormData) => {
+  useEffect(() => {
+    register('filePath', { required: true })
+
+    if (filePath !== '') {
+      ipcRenderer
+        .invoke('readFileBase64', filePath)
+        .then((resp: string) => {
+          const src = `data:image/jpg;base64,${resp}`
+          setImageData(src)
+        })
+        .catch(error => {
+          // TODO log errors to a central logger so we can address them later.
+          console.warn(`artReg ImageSelectionStep error: ${error.message}`)
+        })
+    }
+  }, [])
+
+  function onSubmit(data: IArtRegFormData) {
     dispatch(setFormData(data))
     dispatch(setStep('Optimization'))
   }
 
-  const { register, handleSubmit } = useForm()
-
   function onGoBack() {
     dispatch(setStep('GeneralInfo'))
+  }
+
+  function onSelectImage(): void {
+    ipcRenderer.send('chooseImage')
+
+    ipcRenderer.on('chooseImageDone', (event, resp) => {
+      console.log(resp)
+      const base64 = resp.payload.base64
+      const src = `data:image/jpg;base64,${base64}`
+
+      setValue('filePath', resp.payload.path)
+      setImageData(src)
+
+      dispatch(
+        setFormData({
+          filePath: resp.payload.path,
+          fileSize: resp.payload.size,
+        }),
+      )
+    })
   }
 
   return (
@@ -30,8 +69,8 @@ export function ImageSelectionStep(): JSX.Element {
         className={cx(styles.imageSelectionWrapper, cstyles.marginbottomlarge)}
       >
         <div className={styles.imageWrapper}>
-          {file !== '' ? (
-            <img src={file} />
+          {imageData !== '' ? (
+            <img className={styles.imageSelected} src={imageData} />
           ) : (
             <div className={styles.imagePlaceholder} />
           )}
@@ -39,7 +78,9 @@ export function ImageSelectionStep(): JSX.Element {
         <div className={styles.imageUpload}>
           <div className={cstyles.marginbottomlarge}>
             <FormControl title='Upload image file'>
-              <Input {...register('file')} defaultValue={file} type='file' />
+              <div className={cstyles.margintopmed}>
+                <Button onClick={onSelectImage} text='Select Image' />
+              </div>
             </FormControl>
           </div>
           <p>

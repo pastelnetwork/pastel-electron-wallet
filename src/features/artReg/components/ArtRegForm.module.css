@@ -21,6 +21,8 @@
 
 .imageWrapper {
   margin-right: 24px;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .imagePlaceholder {
@@ -48,4 +50,9 @@
 
 .imagePlaceholder::after {
   transform: rotate(-45deg);
+}
+
+.imageSelected {
+  max-width: 100%;
+  max-height: 100%;
 }
