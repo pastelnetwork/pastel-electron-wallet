@@ -1,8 +1,7 @@
 import fs from 'fs'
 
+import masternodes from '../masternodes'
 import { updateDefaultPastelConfig } from '../pastelConf'
-
-const pastelConfPath = __dirname + '\\pastel.conf'
 
 jest.mock('fs', () => ({
   promises: {
@@ -24,20 +23,31 @@ describe('pastelConf/updateDefaultPastelConfig', () => {
 
   test('can read pastel.conf', async () => {
     const readFileSpy = jest.spyOn(fs.promises, 'readFile')
-    await updateDefaultPastelConfig(pastelConfPath)
+    await updateDefaultPastelConfig('somePath')
 
     expect(readFileSpy).toBeCalledTimes(1)
   })
 
   test('can write pastel.conf', async () => {
-    const writeFileSpy = jest.spyOn(fs.promises, 'writeFile')
-    await updateDefaultPastelConfig(pastelConfPath)
+    let mResponse = 'erver=1\n'
+    masternodes.map(m => {
+      mResponse += `${m.label}=${m.value}\n`
+    })
+    jest.spyOn(fs.promises, 'readFile').mockResolvedValueOnce(mResponse)
 
-    expect(writeFileSpy).toBeCalledTimes(1)
+    await updateDefaultPastelConfig('somePath')
+    expect(fs.promises.writeFile).toBeCalledWith('somePath', mResponse)
   })
 
   test('pastel.conf has been updated', async () => {
-    const result = await updateDefaultPastelConfig(pastelConfPath)
+    let mResponse = 'erver=1\n'
+    masternodes.map(m => {
+      mResponse += `${m.label}=${m.value}\n`
+    })
+    jest.spyOn(fs.promises, 'readFile').mockResolvedValueOnce(mResponse)
+
+    const result = await updateDefaultPastelConfig('somePath')
+    expect(fs.promises.writeFile).toBeCalledWith('somePath', mResponse)
 
     expect(result).toBe(1)
   })

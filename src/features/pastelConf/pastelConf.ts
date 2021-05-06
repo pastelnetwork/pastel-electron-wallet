@@ -16,23 +16,15 @@ export const updateDefaultPastelConfig = async (
       encoding: 'utf-8',
     })
 
-    if (confValues) {
-      confValues = confValues.split('\n')
-      confValues.map(item => {
-        if (item) {
-          confContent += `${item}\n`
-          if (item.includes('addnode')) {
-            masterNodesExist.push(item)
-          }
+    confValues = confValues.split('\n')
+    confValues.map(item => {
+      if (item) {
+        confContent += `${item}\n`
+        if (item.includes('addnode')) {
+          masterNodesExist.push(item)
         }
-      })
-    } else {
-      confContent += 'server=1\n'
-      confContent += 'rpcuser=pastelwallet\n'
-      confContent += `rpcpassword=${Math.random()
-        .toString(36)
-        .substring(2, 15)}\n`
-    }
+      }
+    })
 
     if (masternodes) {
       masternodes.map(m => {
