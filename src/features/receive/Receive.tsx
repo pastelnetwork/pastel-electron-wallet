@@ -39,7 +39,7 @@ export interface IReceiveProps {
   fetchAndSetSingleViewKey(addr: string): void
   createNewAddress(isZaddr: boolean): void
   rerenderKey: string
-  transactions?: [ITransactionsProps]
+  transactions?: ITransactionsProps[]
 }
 
 export const Receive = (props: IReceiveProps): JSX.Element => {

@@ -1,6 +1,5 @@
-import hex from 'hex-string'
+import m from 'hex-string'
 
-import { Transaction } from './app-state'
 import {
   getRawTransaction,
   getWalletTransaction,
@@ -17,7 +16,7 @@ import {
   TZListReceivedByAddress,
 } from './network-stats/type'
 import { TRPCConfig } from './rpc'
-import SentTxStore from './sent-tx-store'
+import { loadSentTxns, Transaction, TxDetail } from './sent-tx-store'
 
 const parseMemo = (memoHex: string) => {
   if (!memoHex || memoHex.length < 2) {
@@ -29,7 +28,7 @@ const parseMemo = (memoHex: string) => {
   } // Else, parse as Hex string
 
   const textDecoder = new TextDecoder()
-  const memo = textDecoder.decode(hex.decode(memoHex))
+  const memo = textDecoder.decode(m.decode(memoHex))
   if (memo === '') {
     return null
   }
@@ -40,8 +39,7 @@ export async function fetchTandZTransactions(
   config: TRPCConfig,
   cb: (alltxlist: TListTransactions[]) => void,
 ): Promise<void> {
-  const senttxstorePromise = SentTxStore.loadSentTxns()
-
+  const senttxstorePromise = await loadSentTxns()
   const tresponse: TListTransactions[] = await listTransactions(config)
 
   const existAddresses: string[] = []
@@ -58,7 +56,7 @@ export async function fetchTandZTransactions(
       transaction.confirmations = tx.confirmations
       transaction.txid = tx.txid
       transaction.time = tx.time
-      transaction.detailedTxns = []
+      transaction.detailedTxns = [new TxDetail()]
       transaction.detailedTxns[0].address = tx.address
       transaction.detailedTxns[0].amount = tx.amount
       if (
@@ -82,7 +80,7 @@ export async function fetchTandZTransactions(
               )
 
               ttxlist.details.map((d: TDetails) => {
-                if (inputAddresses.indexOf(d.address) === -1) {
+                if (d && inputAddresses.indexOf(d.address) === -1) {
                   inputAddresses.push(d.address)
                 }
               })
@@ -105,7 +103,6 @@ export async function fetchTandZTransactions(
   ).flat()
 
   const zaddresses = await listAddresses(config)
-
   const alltxnsPromise = zaddresses.map(async (zaddr: string) => {
     // For each zaddr, get the list of incoming transactions
     const incomingTxns: TZListReceivedByAddress[] = await zListReceivedByAddress(
@@ -126,7 +123,6 @@ export async function fetchTandZTransactions(
     return txns
   })
   const alltxns = (await Promise.all(alltxnsPromise)).flat() // Now, for each tx in the array, call gettransaction
-
   const ztxlist = await Promise.all(
     alltxns.map(async tx => {
       const txresponse: TTransactionInfo = await getWalletTransaction(
@@ -141,20 +137,19 @@ export async function fetchTandZTransactions(
       transaction.txid = tx.txid
       transaction.time = txresponse.time
       transaction.index = tx.index || 0
-      transaction.detailedTxns = []
+      transaction.detailedTxns = [new TxDetail()]
       transaction.detailedTxns[0].address = tx.address
       transaction.detailedTxns[0].amount = tx.amount
       transaction.inputAddresses = []
 
       transaction.detailedTxns[0].memo = tx.memo
-        ? tx.memo.replace(/\u0000/g, '')
+        ? tx.memo.replace(/\\u0000/g, '')
         : tx.memo
       return transaction
     }),
   ) // Get transactions from the sent tx store
 
   const sentTxns = await senttxstorePromise // Now concat the t and z transactions, and call the update function again
-
   const alltxlist: TListTransactions[] = ttxlist
     .concat(ztxlist)
     .concat(sentTxns)
