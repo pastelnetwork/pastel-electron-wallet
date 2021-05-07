@@ -9194,7 +9194,7 @@ sql.js@pastelnetwork/sql.js#230351f:
   version "1.5.0"
   resolved "https://codeload.github.com/pastelnetwork/sql.js/tar.gz/230351fe5fb3b8e0980db29da66d7595da4bfb62"
 
-squoosh@pastelnetwork/squoosh#dev:
+squoosh@pastelnetwork/squoosh#6406a10:
   version "2.0.0"
   resolved "https://codeload.github.com/pastelnetwork/squoosh/tar.gz/6406a10cde4185549ca289cdae34ff4419c0872e"
   dependencies:
