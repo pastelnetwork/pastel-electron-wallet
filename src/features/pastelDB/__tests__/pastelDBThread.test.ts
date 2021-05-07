@@ -1,4 +1,4 @@
-import initSqlJs, { Database } from 'sql.js'
+import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 
 import {
   createBlock,
@@ -17,6 +17,7 @@ import {
   createTotalbalance,
   createTxoutsetinfo,
   createWalletinfo,
+  selectAllQuery,
 } from '../constants'
 import {
   insertBlockInfoToDB,
@@ -37,15 +38,47 @@ import {
   insertWalletinfo,
 } from '../pastelDBLib'
 
-describe('PastelDBThread', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
+type Databaseinstance = {
+  db: Database
+}
 
+describe('PastelDBThread', () => {
   const loadDatabase = jest.fn(async () => {
     const SQL = await initSqlJs()
     const db: Database = new SQL.Database()
     return db
+  })
+
+  const getDatafromDB = jest.fn((tableName): QueryExecResult[] => {
+    return pastelDB.db.exec(selectAllQuery + tableName)
+  })
+
+  const pastelDB: Databaseinstance = {
+    db: {} as Database,
+  }
+
+  beforeAll(async () => {
+    pastelDB.db = await loadDatabase()
+    pastelDB.db.exec(createStatisticinfo)
+    pastelDB.db.exec(createNetworkinfo)
+    pastelDB.db.exec(createNettotals)
+    pastelDB.db.exec(createMempoolinfo)
+    pastelDB.db.exec(createRawmempoolinfo)
+    pastelDB.db.exec(createMininginfo)
+    pastelDB.db.exec(createBlock)
+    pastelDB.db.exec(createRawtransaction)
+    pastelDB.db.exec(createTxoutsetinfo)
+    pastelDB.db.exec(createChaintips)
+    pastelDB.db.exec(createBlocksubsidy)
+    pastelDB.db.exec(createWalletinfo)
+    pastelDB.db.exec(createListtransactions)
+    pastelDB.db.exec(createListunspent)
+    pastelDB.db.exec(createTotalbalance)
+    pastelDB.db.exec(createListaddresses)
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
   })
 
   const getStatisticInfo = jest.fn(() => {
@@ -102,7 +135,7 @@ describe('PastelDBThread', () => {
 
   const getRawMempool = jest.fn(() => {
     return {
-      transactionid: 'id',
+      transactionid: 'transactionid-12345678',
       size: 0,
       fee: 0,
       time: 0,
@@ -140,14 +173,14 @@ describe('PastelDBThread', () => {
       networkhashps: 0,
       pooledtx: 0,
       testnet: 0,
-      chain: '',
+      chain: 'mininginfo-chain',
       generate: true,
     }
   })
 
   const getBlockByHash = jest.fn(() => {
     return {
-      hash: '',
+      hash: 'hash-12345678',
       confirmations: 0,
       size: 0,
       height: 0,
@@ -170,7 +203,7 @@ describe('PastelDBThread', () => {
 
   const getRawTransaction = jest.fn(() => {
     return {
-      hex: '',
+      hex: 'raw-transaction-hex-12345678',
       txid: '',
       overwintered: true,
       version: 1.0,
@@ -225,7 +258,7 @@ describe('PastelDBThread', () => {
   const getRpcData = jest.fn(() => {
     return {
       height: 0,
-      bestblock: '',
+      bestblock: 'best-block-123456',
       transactions: 0,
       txouts: 0,
       bytes_serialized: 0,
@@ -237,7 +270,7 @@ describe('PastelDBThread', () => {
   const getChaintips = jest.fn(() => {
     return {
       height: 0,
-      hash: '',
+      hash: 'chain-tips-hash-1234578',
       branchlen: 0,
       status: '',
     }
@@ -245,7 +278,7 @@ describe('PastelDBThread', () => {
 
   const getBlockSubSidy = jest.fn(() => {
     return {
-      miner: 0,
+      miner: 456789,
       masternode: 0,
       governance: 0,
     }
@@ -253,7 +286,7 @@ describe('PastelDBThread', () => {
 
   const getWalletInfo = jest.fn(() => {
     return {
-      walletversion: 0,
+      walletversion: 456789,
       balance: 0,
       unconfirmed_balance: 0,
       immature_balance: 0,
@@ -267,7 +300,7 @@ describe('PastelDBThread', () => {
 
   const listTransactions = jest.fn(() => {
     return {
-      account: '',
+      account: 'account-1',
       address: '',
       category: '',
       amount: 0,
@@ -302,7 +335,7 @@ describe('PastelDBThread', () => {
 
   const listUnspent = jest.fn(() => {
     return {
-      txid: '',
+      txid: 'unspent-txid-123456789',
       vout: 0,
       generated: true,
       address: '',
@@ -316,183 +349,125 @@ describe('PastelDBThread', () => {
 
   const getTotalBalance = jest.fn(() => {
     return {
-      transparent: '',
+      transparent: 'totalbalance-transparent',
       private: '',
       total: '',
     }
   })
 
   const listAddresses = jest.fn(() => {
-    return ''
+    return 'address1'
   })
 
   test('statistic data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getStatisticInfo()
-    expect(db).not.toBeNull()
-
-    db.exec(createStatisticinfo)
-    const result = insertStatisticDataToDB(db, info.hashrate, info.difficult)
-    expect(result).not.toBeNull()
+    insertStatisticDataToDB(pastelDB.db, info.hashrate, info.difficult)
+    const result = getDatafromDB('statisticinfo')
+    expect(result[0].values[0]).toContainEqual('1.2345')
   })
 
   test('network info data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getNetworkInfo()
-    expect(db).not.toBeNull()
-
-    db.exec(createNetworkinfo)
-    const result = insertNetworkInfotoDB(db, info)
-    expect(result).not.toBeNull()
+    insertNetworkInfotoDB(pastelDB.db, info)
+    const result = getDatafromDB('networkinfo')
+    expect(result[0].values[0]).toContainEqual('warnings')
   })
 
   test('net total info data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getNetTotals()
-    expect(db).not.toBeNull()
-
-    db.exec(createNettotals)
-    const result = insertNetTotalsToDB(db, info)
-    expect(result).not.toBeNull()
+    insertNetTotalsToDB(pastelDB.db, info)
+    const result = getDatafromDB('nettotals')
+    expect(result[0].values[0]).toContainEqual(1)
   })
 
   test('mempool info data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getMempoolInfo()
-    expect(db).not.toBeNull()
-
-    db.exec(createMempoolinfo)
-    const result = insertMempoolinfoToDB(db, info)
-    expect(result).not.toBeNull()
+    insertMempoolinfoToDB(pastelDB.db, info)
+    const result = getDatafromDB('mempoolinfo')
+    expect(result[0].values[0]).toContainEqual(100)
   })
 
   test('rawmempool info data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getRawMempool()
-    expect(db).not.toBeNull()
-
-    db.exec(createRawmempoolinfo)
-    const result = insertRawMempoolinfoToDB(db, info)
-    expect(result).not.toBeNull()
+    insertRawMempoolinfoToDB(pastelDB.db, info)
+    const result = getDatafromDB('rawmempoolinfo')
+    expect(result[0].values[0]).toContainEqual('transactionid-12345678')
   })
 
-  test('rawmempool data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
+  test('minginfo data should fetch and store correctly', async () => {
     const info = getMiningInfo()
-    expect(db).not.toBeNull()
-
-    db.exec(createMininginfo)
-    const result = insertMiningInfoToDB(db, info)
-    expect(result).not.toBeNull()
+    insertMiningInfoToDB(pastelDB.db, info)
+    const result = getDatafromDB('mininginfo')
+    expect(result[0].values[0]).toContainEqual('mininginfo-chain')
   })
 
   test('blockbyhash data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getBlockByHash()
-    expect(db).not.toBeNull()
-
-    db.exec(createBlock)
-    const result = insertBlockInfoToDB(db, info)
-    expect(result).not.toBeNull()
+    insertBlockInfoToDB(pastelDB.db, info)
+    const result = getDatafromDB('blockinfo')
+    expect(result[0].values[0]).toContainEqual('hash-12345678')
   })
 
   test('rawtransaction data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getRawTransaction()
-    expect(db).not.toBeNull()
-
-    db.exec(createRawtransaction)
-    const result = insertRawtransaction(db, info)
-    expect(result).not.toBeNull()
+    insertRawtransaction(pastelDB.db, info)
+    const result = getDatafromDB('rawtransaction')
+    expect(result[0].values[0]).toContainEqual('raw-transaction-hex-12345678')
   })
 
   test('txoutset data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getRpcData()
-    expect(db).not.toBeNull()
-
-    db.exec(createTxoutsetinfo)
-    const result = insertTxoutsetinfo(db, info)
-    expect(result).not.toBeNull()
+    insertTxoutsetinfo(pastelDB.db, info)
+    const result = getDatafromDB('txoutsetinfo')
+    expect(result[0].values[0]).toContainEqual('best-block-123456')
   })
 
   test('txoutset data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getChaintips()
-    expect(db).not.toBeNull()
-
-    db.exec(createChaintips)
-    const result = insertChaintips(db, info)
-    expect(result).not.toBeNull()
+    insertChaintips(pastelDB.db, info)
+    const result = getDatafromDB('chaintips')
+    expect(result[0].values[0]).toContainEqual('chain-tips-hash-1234578')
   })
 
   test('txoutset data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getBlockSubSidy()
-    expect(db).not.toBeNull()
-
-    db.exec(createBlocksubsidy)
-    const result = insertBlocksubsidy(db, info)
-    expect(result).not.toBeNull()
+    insertBlocksubsidy(pastelDB.db, info)
+    const result = getDatafromDB('blocksubsidy')
+    expect(result[0].values[0]).toContainEqual(456789)
   })
 
   test('wallet data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = getWalletInfo()
-    expect(db).not.toBeNull()
-
-    db.exec(createWalletinfo)
-    const result = insertWalletinfo(db, info)
-    expect(result).not.toBeNull()
-  })
-
-  test('wallet data should fetch and store correctly', async () => {
-    const db = await loadDatabase()
-    const info = getWalletInfo()
-    expect(db).not.toBeNull()
-
-    db.exec(createWalletinfo)
-    const result = insertWalletinfo(db, info)
-    expect(result).not.toBeNull()
+    insertWalletinfo(pastelDB.db, info)
+    const result = getDatafromDB('walletinfo')
+    expect(result[0].values[0]).toContainEqual(456789)
   })
 
   test('transaction list should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = listTransactions()
-    expect(db).not.toBeNull()
-
-    db.exec(createListtransactions)
-    const result = insertListTransactions(db, info)
-    expect(result).not.toBeNull()
+    insertListTransactions(pastelDB.db, info)
+    const result = getDatafromDB('listtransactions')
+    expect(result[0].values[0]).toContainEqual('account-1')
   })
 
   test('unspent list should fetch and store correctly', async () => {
-    const db = await loadDatabase()
     const info = listUnspent()
-    expect(db).not.toBeNull()
-
-    db.exec(createListunspent)
-    const result = insertListunspent(db, info)
-    expect(result).not.toBeNull()
+    insertListunspent(pastelDB.db, info)
+    const result = getDatafromDB('listunspent')
+    expect(result[0].values[0]).toContainEqual('unspent-txid-123456789')
   })
 
-  test('unspent list should fetch and store correctly', async () => {
-    const db = await loadDatabase()
+  test('total balance data should fetch and store correctly', async () => {
     const info = getTotalBalance()
-    expect(db).not.toBeNull()
-
-    db.exec(createTotalbalance)
-    const result = insertTotalbalance(db, info)
-    expect(result).not.toBeNull()
+    insertTotalbalance(pastelDB.db, info)
+    const result = getDatafromDB('totalbalance')
+    expect(result[0].values[0]).toContainEqual('totalbalance-transparent')
   })
 
-  test('unspent list should fetch and store correctly', async () => {
-    const db = await loadDatabase()
+  test('address infos should fetch and store correctly', async () => {
     const info = listAddresses()
-    expect(db).not.toBeNull()
-
-    db.exec(createListaddresses)
-    const result = insertListaddresses(db, info)
-    expect(result).not.toBeNull()
+    insertListaddresses(pastelDB.db, info)
+    const result = getDatafromDB('listaddresses')
+    expect(result[0].values[0]).toContainEqual('address1')
   })
 })
