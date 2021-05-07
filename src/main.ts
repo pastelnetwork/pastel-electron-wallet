@@ -10,13 +10,12 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import log from 'electron-log'
+import http from 'http'
+import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
 import pkg from '../package.json'
 import MenuBuilder from './menu'
-
-declare const MAIN_WINDOW_WEBPACK_ENTRY: string
-declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 
 // Enable dev tools
 if (!app.isPackaged) {
@@ -140,6 +139,18 @@ const createWindow = async () => {
     mainWindow = null
   })
   w.once('ready-to-show', () => {
+    const serve = serveStatic(`${process.cwd()}/node_modules/squoosh/build`, {
+      index: ['index.html'],
+    })
+    // Create server
+    const server = http.createServer(function onRequest(req, res) {
+      serve(req, res, () => {
+        console.log('Create server')
+      })
+    })
+    // Listen
+    server.listen(5100)
+
     const host = 'https://update.electronjs.org'
     const repo = 'pastelnetwork/pastel-electron-wallet'
     const feedURL = `${host}/${repo}/${process.platform}-${
