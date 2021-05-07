@@ -10,7 +10,10 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import log from 'electron-log'
+import fs from 'fs'
 import http from 'http'
+import os from 'os'
+import path from 'path'
 import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
@@ -151,22 +154,22 @@ const createWindow = async () => {
     // Listen
     server.listen(5100)
 
-    const host = 'https://update.electronjs.org'
-    const repo = 'pastelnetwork/pastel-electron-wallet'
-    const feedURL = `${host}/${repo}/${process.platform}-${
-      process.arch
-    }/${app.getVersion()}`
-    const requestHeaders = {
-      'User-Agent': `${pkg.name}/${pkg.version} (${process.platform}: ${process.arch})`,
-    }
-    autoUpdater.setFeedURL({
-      url: feedURL,
-      headers: requestHeaders,
-    })
-    autoUpdater.checkForUpdates()
-    setTimeout(() => {
+    if (app.isPackaged && checkSignatureExists()) {
+      const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
+        process.arch
+      }/${app.getVersion()}`
+      const requestHeaders = {
+        'User-Agent': `${pkg.name}/${pkg.version} (${process.platform}: ${process.arch})`,
+      }
+      autoUpdater.setFeedURL({
+        url: feedURL,
+        headers: requestHeaders,
+      })
       autoUpdater.checkForUpdates()
-    }, 3600000) // 1 hour
+      setTimeout(() => {
+        autoUpdater.checkForUpdates()
+      }, 3600000) // 1 hour
+    }
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
@@ -221,3 +224,20 @@ autoUpdater.on('update-not-available', () => {
 autoUpdater.on('error', error => {
   console.log('error', { error })
 })
+
+const checkSignatureExists = () => {
+  if (os.platform() === 'darwin') {
+    const certExists = fs.existsSync(path.join('static', 'entitlements.plist'))
+
+    return certExists
+  }
+
+  if (os.platform() === 'win32') {
+    const certPath = path.join(__dirname, 'win-certificate.pfx')
+    const certExists = fs.existsSync(certPath)
+
+    return certExists
+  }
+
+  return false
+}
