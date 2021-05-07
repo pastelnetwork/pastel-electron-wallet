@@ -10,6 +10,8 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import log from 'electron-log'
+import http from 'http'
+import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
 import MenuBuilder from './menu'
@@ -133,6 +135,19 @@ const createWindow = async () => {
   })
   w.on('closed', () => {
     mainWindow = null
+  })
+  w.once('ready-to-show', () => {
+    const serve = serveStatic(`${process.cwd()}/node_modules/squoosh/build`, {
+      index: ['index.html'],
+    })
+    // Create server
+    const server = http.createServer(function onRequest(req, res) {
+      serve(req, res, () => {
+        console.log('Create server')
+      })
+    })
+    // Listen
+    server.listen(5100)
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
