@@ -16,13 +16,12 @@ describe('pastelConf/updateDefaultPastelConfig', () => {
     jest.clearAllMocks()
   })
 
-  test('pastel.conf is existing', async () => {
-    const result = await updateDefaultPastelConfig('')
-    expect(result).toBe(2)
-  })
-
   test('can read pastel.conf', async () => {
-    const readFileSpy = jest.spyOn(fs.promises, 'readFile')
+    const mResponse = 'erver=1\n'
+    const readFileSpy = jest
+      .spyOn(fs.promises, 'readFile')
+      .mockResolvedValueOnce(mResponse)
+
     await updateDefaultPastelConfig('somePath')
 
     expect(readFileSpy).toBeCalledTimes(1)
@@ -46,9 +45,17 @@ describe('pastelConf/updateDefaultPastelConfig', () => {
     })
     jest.spyOn(fs.promises, 'readFile').mockResolvedValueOnce(mResponse)
 
-    const result = await updateDefaultPastelConfig('somePath')
+    await updateDefaultPastelConfig('somePath')
     expect(fs.promises.writeFile).toBeCalledWith('somePath', mResponse)
+  })
 
-    expect(result).toBe(1)
+  test('catches an error if pastel.conf is undefined', async () => {
+    try {
+      await updateDefaultPastelConfig('somePath')
+    } catch (err) {
+      expect(err.message).toEqual(
+        "pastelConf updateDefaultPastelConfig error: Cannot read property 'split' of undefined",
+      )
+    }
   })
 })

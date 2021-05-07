@@ -160,7 +160,13 @@ class LoadingScreen extends Component<any, any> {
     // Load the RPC config from pastel.conf file
     const pastelLocation = locatePastelConf()
     let confValues
-    await updateDefaultPastelConfig(pastelLocation)
+    try {
+      await updateDefaultPastelConfig(pastelLocation)
+    } catch (error) {
+      console.warn(
+        `LoadingScreen updateDefaultPastelConfig error: ${error.message}`,
+      )
+    }
     try {
       confValues = ini.parse(
         await fs.promises.readFile(pastelLocation, {

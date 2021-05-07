@@ -4,10 +4,7 @@ import masternodes from './masternodes'
 
 export const updateDefaultPastelConfig = async (
   pastelConfPath: string,
-): Promise<number> => {
-  if (!pastelConfPath) {
-    return 2 // pastelConfPath empty
-  }
+): Promise<void> => {
   try {
     let confValues
     let confContent = ''
@@ -36,8 +33,9 @@ export const updateDefaultPastelConfig = async (
     }
 
     await fs.promises.writeFile(pastelConfPath, confContent)
-    return 1 // success
   } catch (err) {
-    return 3
+    throw new Error(
+      `pastelConf updateDefaultPastelConfig error: ${err.message}`,
+    )
   }
 }
