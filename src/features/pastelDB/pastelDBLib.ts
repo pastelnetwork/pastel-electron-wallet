@@ -1,27 +1,65 @@
 import { remote } from 'electron'
 import fs from 'fs'
 import path from 'path'
-import initSqlJs, { Database } from 'sql.js'
+import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 
 import {
-  create_block,
-  create_blocksubsidy,
-  create_chaintips,
-  create_listaddresses,
-  create_listreceivedbyaddress,
-  create_listtransactions,
-  create_listunspent,
-  create_mempoolinfo,
-  create_mininginfo,
-  create_nettotals,
-  create_networkinfo,
-  create_rawmempoolinfo,
-  create_rawtransaction,
-  create_statisticinfo,
-  create_totalbalance,
-  create_transaction,
-  create_txoutsetinfo,
-  create_walletinfo,
+  TBlockInfo,
+  TBlockSubsidy,
+  TChainTips,
+  TListTransactions,
+  TListUnspent,
+  TMempoolInfo,
+  TMiningInfo,
+  TNetTotals,
+  TNetworkInfo,
+  TRawMempool,
+  TRawTransaction,
+  TTotalBalance,
+  TTxoutsetInfo,
+  TWalletInfo,
+} from '../../api/pastel-rpc/network-stats/type'
+import {
+  createBlock,
+  createBlocksubsidy,
+  createChaintips,
+  createListaddresses,
+  createListreceivedbyaddress,
+  createListtransactions,
+  createListunspent,
+  createMempoolinfo,
+  createMininginfo,
+  createNettotals,
+  createNetworkinfo,
+  createRawmempoolinfo,
+  createRawtransaction,
+  createStatisticinfo,
+  createTotalbalance,
+  createTransaction,
+  createTxoutsetinfo,
+  createWalletinfo,
+  insertBlockinfoQuery,
+  insertBlocksubsidyQuery,
+  insertChaintipsQuery,
+  insertListaddressesQuery,
+  insertListtransactionsQuery,
+  insertListunspentQuery,
+  insertMempoolinfoQuery,
+  insertMininginfoQuery,
+  insertNettotalsQuery,
+  insertNetworkinfoQuery,
+  insertRawmempoolinfoQuery,
+  insertRawtransactionQuery,
+  insertStatisticinfoQuery,
+  insertTotalbalanceQuery,
+  insertTransactionTableQuery,
+  insertTxoutsetinfoQuery,
+  insertWalletinfoQuery,
+  orderByIDQuery,
+  selectAllQuery,
+  selectIDQuery,
+  tableNames,
+  whereTransactionIDMatchingQuery,
 } from './constants'
 
 export const readSqliteDBFile = async (): Promise<Buffer> => {
@@ -63,23 +101,475 @@ export const saveDataToLocalSqlite = async (db: Database): Promise<void> => {
 }
 
 export const createTables = async (db: Database): Promise<void> => {
-  db.exec(create_statisticinfo)
-  db.exec(create_networkinfo)
-  db.exec(create_nettotals)
-  db.exec(create_mempoolinfo)
-  db.exec(create_rawmempoolinfo)
-  db.exec(create_mininginfo)
-  db.exec(create_block)
-  db.exec(create_rawtransaction)
-  db.exec(create_transaction)
-  db.exec(create_txoutsetinfo)
-  db.exec(create_chaintips)
-  db.exec(create_blocksubsidy)
-  db.exec(create_walletinfo)
-  db.exec(create_listreceivedbyaddress)
-  db.exec(create_listtransactions)
-  db.exec(create_listunspent)
-  db.exec(create_totalbalance)
-  db.exec(create_listaddresses)
+  db.exec(createStatisticinfo)
+  db.exec(createNetworkinfo)
+  db.exec(createNettotals)
+  db.exec(createMempoolinfo)
+  db.exec(createRawmempoolinfo)
+  db.exec(createMininginfo)
+  db.exec(createBlock)
+  db.exec(createRawtransaction)
+  db.exec(createTransaction)
+  db.exec(createTxoutsetinfo)
+  db.exec(createChaintips)
+  db.exec(createBlocksubsidy)
+  db.exec(createWalletinfo)
+  db.exec(createListreceivedbyaddress)
+  db.exec(createListtransactions)
+  db.exec(createListunspent)
+  db.exec(createTotalbalance)
+  db.exec(createListaddresses)
   return
+}
+
+export const validateDataFromDB = (
+  pastelDB: Database,
+  tableName: string,
+  transactionid: string,
+  time: number,
+): boolean => {
+  if (tableNames[tableName] !== true) {
+    throw new Error('pastelDB validateDataFromDB error: table name is invalid')
+  }
+
+  const sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
+  const values = {
+    $tid: transactionid,
+    $time: time,
+  }
+
+  const sqlResult = pastelDB.exec(sqlText, values)
+  return sqlResult.length ? false : true
+}
+
+export const getLastIdFromDB = (
+  pastelDB: Database,
+  tableName: string,
+): number => {
+  if (tableNames[tableName] !== true) {
+    throw new Error('pastelDB getLastIdFromDB error: table name is invalid')
+  }
+
+  const sqlText = selectIDQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+  if (sqlResult.length && sqlResult[0].values[0][0]) {
+    return parseInt(sqlResult[0].values[0][0].toString())
+  } else {
+    return 1
+  }
+}
+
+export const insertStatisticDataToDB = (
+  pastelDB: Database,
+  hashrate: number,
+  difficulty: number,
+): void => {
+  const createTimestamp: number = +new Date()
+  const newId = getLastIdFromDB(pastelDB, 'statisticinfo')
+  const values = {
+    $newId: newId,
+    $hashrate: hashrate,
+    $difficulty: difficulty,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertStatisticinfoQuery, values)
+}
+
+export const getDatasFromDB = (
+  pastelDB: Database,
+  tableName: string,
+): QueryExecResult[] => {
+  if (tableNames[tableName] !== true) {
+    throw new Error('pastelDB getDatasFromDB error: table name is invalid')
+  }
+
+  const sqlText = selectAllQuery + tableName
+  const sqlResult = pastelDB.exec(sqlText)
+  return sqlResult
+}
+
+export const insertNetworkInfotoDB = (
+  pastelDB: Database,
+  networkinfo: TNetworkInfo,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'networkinfo')
+  const networks = JSON.stringify(networkinfo.networks)
+  const localaddresses = JSON.stringify(networkinfo.localaddresses)
+  const values = {
+    $newId: newId,
+    $version: networkinfo.version,
+    $subversion: networkinfo.subversion,
+    $protocolversion: networkinfo.protocolversion,
+    $localservices: networkinfo.localservices,
+    $timeoffset: networkinfo.timeoffset,
+    $connections: networkinfo.connections,
+    $networks: networks,
+    $relayfee: networkinfo.relayfee,
+    $localaddresses: localaddresses,
+    $warnings: networkinfo.warnings,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertNetworkinfoQuery, values)
+}
+
+export const insertNetTotalsToDB = (
+  pastelDB: Database,
+  nettotals: TNetTotals,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'nettotals')
+  const values = {
+    $newId: newId,
+    $totalbytesrecv: nettotals.totalbytesrecv,
+    $totalbytessent: nettotals.totalbytessent,
+    $timemillis: nettotals.timemillis,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertNettotalsQuery, values)
+}
+
+export const insertMempoolinfoToDB = (
+  pastelDB: Database,
+  mempoolinfo: TMempoolInfo,
+): void => {
+  const createTimestamp: number = +new Date()
+  const newId = getLastIdFromDB(pastelDB, 'mempoolinfo')
+  const values = {
+    $newId: newId,
+    $size: mempoolinfo.size,
+    $bytes: mempoolinfo.bytes,
+    $usage: mempoolinfo.usage,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertMempoolinfoQuery, values)
+}
+
+export const insertRawMempoolinfoToDB = (
+  pastelDB: Database,
+  mempoolinfo: TRawMempool,
+): void => {
+  if (
+    !validateDataFromDB(
+      pastelDB,
+      'rawmempoolinfo',
+      mempoolinfo.transactionid,
+      mempoolinfo.time,
+    )
+  ) {
+    // mempoolinfo already exist on db.
+    return
+  }
+
+  const createTimestamp: number = +new Date()
+  const newId = getLastIdFromDB(pastelDB, 'rawmempoolinfo')
+  const depends = JSON.stringify(mempoolinfo.depends)
+  const values = {
+    $newId: newId,
+    $transactionid: mempoolinfo.transactionid,
+    $size: mempoolinfo.size,
+    $fee: mempoolinfo.fee,
+    $time: mempoolinfo.time,
+    $height: mempoolinfo.height,
+    $startingpriority: mempoolinfo.startingpriority,
+    $currentpriority: mempoolinfo.currentpriority,
+    $depends: depends,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertRawmempoolinfoQuery, values)
+}
+
+export const insertMiningInfoToDB = (
+  pastelDB: Database,
+  mininginfo: TMiningInfo,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'mininginfo')
+  const generate = mininginfo.generate.toString()
+  const values = {
+    $newId: newId,
+    $blocks: mininginfo.blocks,
+    $currentblocksize: mininginfo.currentblocksize,
+    $currentblocktx: mininginfo.currentblocktx,
+    $difficulty: mininginfo.difficulty,
+    $errors: mininginfo.errors,
+    $genproclimit: mininginfo.genproclimit,
+    $localsolps: mininginfo.localsolps,
+    $networksolps: mininginfo.networksolps,
+    $networkhashps: mininginfo.networkhashps,
+    $pooledtx: mininginfo.pooledtx,
+    $testnet: mininginfo.testnet,
+    $chain: mininginfo.chain,
+    $generate: generate,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertMininginfoQuery, values)
+}
+
+export const insertBlockInfoToDB = (
+  pastelDB: Database,
+  blockInfo: TBlockInfo,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'blockinfo')
+  const valuePools = JSON.stringify(blockInfo.valuePools)
+  const values = {
+    $newId: newId,
+    $hash: blockInfo.hash,
+    $confirmations: blockInfo.confirmations,
+    $size: blockInfo.size,
+    $height: blockInfo.height,
+    $version: blockInfo.version,
+    $merkleroot: blockInfo.merkleroot,
+    $finalsaplingroot: blockInfo.finalsaplingroot,
+    $tx: blockInfo.tx,
+    $time: blockInfo.time,
+    $nonce: blockInfo.nonce,
+    $solution: blockInfo.solution,
+    $bits: blockInfo.bits,
+    $difficulty: blockInfo.difficulty,
+    $chainwork: blockInfo.chainwork,
+    $anchor: blockInfo.anchor,
+    $valuePools: valuePools,
+    $previousblockhash: blockInfo.previousblockhash,
+    $nextblockhash: blockInfo.nextblockhash,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertBlockinfoQuery, values)
+}
+
+export const insertRawtransaction = (
+  pastelDB: Database,
+  rawtransaction: TRawTransaction,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'rawtransaction')
+  const overwintered = rawtransaction.overwintered.toString()
+  const vin = JSON.stringify(rawtransaction.vin)
+  const vout = JSON.stringify(rawtransaction.vout)
+  const vjoinsplit = JSON.stringify(rawtransaction.vjoinsplit)
+  const values = {
+    $newId: newId,
+    $hex: rawtransaction.hex,
+    $txid: rawtransaction.txid,
+    $overwintered: overwintered,
+    $version: rawtransaction.version,
+    $versiongroupid: rawtransaction.versiongroupid,
+    $locktime: rawtransaction.locktime,
+    $expiryheight: rawtransaction.expiryheight,
+    $vin: vin,
+    $vout: vout,
+    $vjoinsplit: vjoinsplit,
+    $blockhash: rawtransaction.blockhash,
+    $confirmations: rawtransaction.confirmations,
+    $time: rawtransaction.time,
+    $blocktime: rawtransaction.blocktime,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertRawtransactionQuery, values)
+}
+
+export const insertTransaction = (
+  pastelDB: Database,
+  transactionInfo: TRawTransaction,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'transaction_tbl')
+  const overwintered = transactionInfo.overwintered.toString()
+  const vin = JSON.stringify(transactionInfo.vin)
+  const vout = JSON.stringify(transactionInfo.vout)
+  const vjoinsplit = JSON.stringify(transactionInfo.vjoinsplit)
+  const values = {
+    $newId: newId,
+    $hex: transactionInfo.hex,
+    $txid: transactionInfo.txid,
+    $overwintered: overwintered,
+    $version: transactionInfo.version,
+    $versiongroupid: transactionInfo.versiongroupid,
+    $locktime: transactionInfo.locktime,
+    $expiryheight: transactionInfo.expiryheight,
+    $vin: vin,
+    $vout: vout,
+    $vjoinsplit: vjoinsplit,
+    $blockhash: transactionInfo.blockhash,
+    $confirmations: transactionInfo.confirmations,
+    $time: transactionInfo.time,
+    $blocktime: transactionInfo.blocktime,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertTransactionTableQuery, values)
+}
+
+export const insertTxoutsetinfo = (
+  pastelDB: Database,
+  txoutsetinfo: TTxoutsetInfo,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'txoutsetinfo')
+  const values = {
+    $newId: newId,
+    $height: txoutsetinfo.height,
+    $bestblock: txoutsetinfo.bestblock,
+    $transactions: txoutsetinfo.transactions,
+    $txouts: txoutsetinfo.txouts,
+    $bytes_serialized: txoutsetinfo.bytes_serialized,
+    $hash_serialized: txoutsetinfo.hash_serialized,
+    $total_amount: txoutsetinfo.total_amount,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertTxoutsetinfoQuery, values)
+}
+
+export const insertChaintips = (
+  pastelDB: Database,
+  chaintips: TChainTips,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'chaintips')
+  const values = {
+    $newId: newId,
+    $height: chaintips.height,
+    $hash: chaintips.hash,
+    $branchlen: chaintips.branchlen,
+    $status: chaintips.status,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertChaintipsQuery, values)
+}
+
+export const insertBlocksubsidy = (
+  pastelDB: Database,
+  blocksubsidy: TBlockSubsidy,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'blocksubsidy')
+  const values = {
+    $newId: newId,
+    $miner: blocksubsidy.miner,
+    $masternode: blocksubsidy.masternode,
+    $governance: blocksubsidy.governance,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertBlocksubsidyQuery, values)
+}
+
+export const insertWalletinfo = (
+  pastelDB: Database,
+  walletinfo: TWalletInfo,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'walletinfo')
+  const values = {
+    $newId: newId,
+    $walletversion: walletinfo.walletversion,
+    $balance: walletinfo.balance,
+    $unconfirmed_balance: walletinfo.unconfirmed_balance,
+    $immature_balance: walletinfo.immature_balance,
+    $txcount: walletinfo.txcount,
+    $keypoololdest: walletinfo.keypoololdest,
+    $keypoolsize: walletinfo.keypoolsize,
+    $paytxfee: walletinfo.paytxfee,
+    $seedfp: walletinfo.seedfp,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertWalletinfoQuery, values)
+}
+
+export const insertListTransactions = (
+  pastelDB: Database,
+  listtransactions: TListTransactions,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'listtransactions')
+  const walletconflicts = JSON.stringify(listtransactions.walletconflicts)
+  const vjoinsplit = JSON.stringify(listtransactions.vjoinsplit)
+  const values = {
+    $newId: newId,
+    $account: listtransactions.account,
+    $address: listtransactions.address,
+    $category: listtransactions.category,
+    $amount: listtransactions.amount,
+    $vout: listtransactions.vout,
+    $confirmations: listtransactions.confirmations,
+    $blockhash: listtransactions.blockhash,
+    $blockindex: listtransactions.blockindex,
+    $blocktime: listtransactions.blocktime,
+    $expiryheight: listtransactions.expiryheight,
+    $txid: listtransactions.txid,
+    $walletconflicts: walletconflicts,
+    $time: listtransactions.time,
+    $timereceived: listtransactions.timereceived,
+    $vjoinsplit: vjoinsplit,
+    $size: listtransactions.size,
+    $lastblock: listtransactions.lastblock,
+    $createTimestamp: createTimestamp,
+  }
+
+  pastelDB.exec(insertListtransactionsQuery, values)
+}
+
+export const insertListunspent = (
+  pastelDB: Database,
+  listunspent: TListUnspent,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'listunspent')
+  const generated = listunspent.generated.toString()
+  const values = {
+    $newId: newId,
+    $txid: listunspent.txid,
+    $vout: listunspent.vout,
+    $generated: generated,
+    $address: listunspent.address,
+    $account: listunspent.account,
+    $scriptPubKey: listunspent.scriptPubKey,
+    $amount: listunspent.amount,
+    $confirmations: listunspent.confirmations,
+    $spendable: listunspent.spendable,
+    $createTimestamp: createTimestamp,
+  }
+  pastelDB.exec(insertListunspentQuery, values)
+}
+
+export const insertTotalbalance = (
+  pastelDB: Database,
+  totalBalance: TTotalBalance,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'totalbalance')
+  const values = {
+    $newId: newId,
+    $transparent: totalBalance.transparent,
+    $private: totalBalance.private,
+    $total: totalBalance.total,
+    $createTimestamp: createTimestamp,
+  }
+  pastelDB.exec(insertTotalbalanceQuery, values)
+}
+
+export const insertListaddresses = (
+  pastelDB: Database,
+  address: string,
+): void => {
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'listaddresses')
+  const values = {
+    $newId: newId,
+    $address: address,
+    $createTimestamp: createTimestamp,
+  }
+  pastelDB.exec(insertListaddressesQuery, values)
 }
