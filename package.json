@@ -72,7 +72,7 @@
     "sql.js": "pastelnetwork/sql.js#230351f",
     "squoosh": "pastelnetwork/squoosh#6406a10",
     "typeface-roboto": "0.0.75",
-    "underscore": "1.9.2",
+    "underscore": "1.12.1",
     "uuid": "8.3.2",
     "ws": "7.2.1"
   },
