@@ -43,6 +43,7 @@ import PastelPhotopeaModal, {
   openPastelPhotopeaModal,
 } from '../features/pastelPhotopea'
 import AboutModal, { openAboutModal } from '../features/about'
+import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
 
@@ -467,6 +468,7 @@ class RouteApp extends React.Component<any, any> {
         <PastelPhotopeaModal />
         <PastelSpriteEditorToolModal />
         <AboutModal />
+        <SquooshToolModal />
 
         <div
           style={{
@@ -489,6 +491,7 @@ class RouteApp extends React.Component<any, any> {
                 {...(standardProps as any)}
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
                 openAboutModal={this.props.openAboutModal}
+                openSquooshToolModal={this.props.openSquooshToolModal}
               />
             </div>
           )}
@@ -635,4 +638,5 @@ export default connect(null, {
   openPastelPhotopeaModal,
   openPastelSpriteEditorToolModal,
   openAboutModal,
+  openSquooshToolModal,
 })(RouteApp)

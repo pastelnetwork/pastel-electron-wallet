@@ -360,6 +360,12 @@ export default class MenuBuilder {
             this.mainWindow.webContents.send('pastelPhotopea')
           },
         },
+        {
+          label: 'Squoosh',
+          click: () => {
+            this.mainWindow.webContents.send('squooshTool')
+          },
+        },
       ],
     }
     const subMenuView =
@@ -461,6 +467,12 @@ export default class MenuBuilder {
             label: 'Photopea',
             click: () => {
               this.mainWindow.webContents.send('pastelPhotopea')
+            },
+          },
+          {
+            label: 'Squoosh',
+            click: () => {
+              this.mainWindow.webContents.send('squooshTool')
             },
           },
         ],
