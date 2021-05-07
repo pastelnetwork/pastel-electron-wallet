@@ -40,6 +40,17 @@ module.exports = {
     icon: getIcon(),
     asar: true,
     extraResource: getExtraResource(),
+    osxSign: {
+      identity: 'Developer ID Application: Felix Rieseberg (LT94ZKYDCJ)',
+      'hardened-runtime': true,
+      entitlements: 'entitlements.plist',
+      'entitlements-inherit': 'entitlements.plist',
+      'signature-flags': 'library',
+    },
+    osxNotarize: {
+      appleId: 'felix@felix.fun',
+      appleIdPassword: 'my-apple-id-password',
+    },
   },
   makers: [
     {
