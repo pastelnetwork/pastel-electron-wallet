@@ -1,4 +1,4 @@
-export const create_statisticinfo = `CREATE TABLE statisticinfo (
+export const createStatisticinfo = `CREATE TABLE statisticinfo (
   id int NOT NULL,
   hashrate VARCHAR(255),
   miner_distribution VARCHAR(255),
@@ -6,7 +6,7 @@ export const create_statisticinfo = `CREATE TABLE statisticinfo (
   create_timestamp int
 )`
 
-export const create_networkinfo = `CREATE TABLE networkinfo (
+export const createNetworkinfo = `CREATE TABLE networkinfo (
   id int NOT NULL,
   version int,
   subversion VARCHAR(255),
@@ -21,7 +21,7 @@ export const create_networkinfo = `CREATE TABLE networkinfo (
   create_timestamp int
 )`
 
-export const create_nettotals = `CREATE TABLE nettotals (
+export const createNettotals = `CREATE TABLE nettotals (
   id int NOT NULL,
   totalbytesrecv int,
   totalbytessent int,
@@ -29,7 +29,7 @@ export const create_nettotals = `CREATE TABLE nettotals (
   create_timestamp int
 )`
 
-export const create_mempoolinfo = `CREATE TABLE mempoolinfo (
+export const createMempoolinfo = `CREATE TABLE mempoolinfo (
   id int NOT NULL,
   size int,
   bytes int,
@@ -37,7 +37,7 @@ export const create_mempoolinfo = `CREATE TABLE mempoolinfo (
   create_timestamp int
 )`
 
-export const create_rawmempoolinfo = `CREATE TABLE rawmempoolinfo (
+export const createRawmempoolinfo = `CREATE TABLE rawmempoolinfo (
   id int NOT NULL,
   transactionid int NOT NULL,
   size int,
@@ -50,7 +50,7 @@ export const create_rawmempoolinfo = `CREATE TABLE rawmempoolinfo (
   create_timestamp int
 )`
 
-export const create_mininginfo = `CREATE TABLE mininginfo (
+export const createMininginfo = `CREATE TABLE mininginfo (
   id int NOT NULL,
   blocks int,
   currentblocksize int,
@@ -64,11 +64,10 @@ export const create_mininginfo = `CREATE TABLE mininginfo (
   pooledtx int,
   testnet int,
   chain text,
-  generate boolean,
   create_timestamp int
 )`
 
-export const create_block = `CREATE TABLE blockinfo (
+export const createBlock = `CREATE TABLE blockinfo (
   id int NOT NULL,
   hash VARCHAR(255),
   confirmations int,
@@ -91,7 +90,28 @@ export const create_block = `CREATE TABLE blockinfo (
   create_timestamp int
 )`
 
-export const create_rawtransaction = `CREATE TABLE rawtransaction (
+export const createRawtransaction = `CREATE TABLE rawtransaction (
+  id int NOT NULL,
+  bindingSig VARCHAR(255),
+  blockhash VARCHAR(255),
+  blocktime int,
+  confirmations int,
+  expiryheight int,
+  hex VARCHAR(255),
+  locktime int,
+  overwintered boolean,
+  time int,
+  txid VARCHAR(255),
+  vShieldedOutput text,
+  vShieldedSpend text,
+  valueBalance float,
+  version int,
+  versiongroupid VARCHAR(255),
+  vjoinsplit text,
+  create_timestamp int      
+)`
+
+export const createTransaction = `CREATE TABLE transaction_tbl (
   id int NOT NULL,
   hex VARCHAR(255),
   txid VARCHAR(255),
@@ -103,10 +123,6 @@ export const create_rawtransaction = `CREATE TABLE rawtransaction (
   vin text,
   vout text,
   vjoinsplit text,
-  valueBalance float,
-  vShieldedSpend text,
-  vShieldedOutput text,
-  bindingSig VARCHAR(255),
   blockhash VARCHAR(255),
   confirmations int,
   time int,
@@ -114,30 +130,7 @@ export const create_rawtransaction = `CREATE TABLE rawtransaction (
   create_timestamp int    
 )`
 
-export const create_transaction = `CREATE TABLE transaction_tbl (
-  id int NOT NULL,
-  hex VARCHAR(255),
-  txid VARCHAR(255),
-  overwintered boolean,
-  version int,
-  versiongroupid VARCHAR(255),
-  locktime int,
-  expiryheight int,
-  vin text,
-  vout text,
-  vjoinsplit text,
-  valueBalance float,
-  vShieldedSpend text,
-  vShieldedOutput text,
-  bindingSig VARCHAR(255),
-  blockhash VARCHAR(255),
-  confirmations int,
-  time int,
-  blocktime int,
-  create_timestamp int    
-)`
-
-export const create_txoutsetinfo = `CREATE TABLE txoutsetinfo (
+export const createTxoutsetinfo = `CREATE TABLE txoutsetinfo (
   id int NOT NULL,
   height int,
   bestblock VARCHAR(255),
@@ -149,7 +142,7 @@ export const create_txoutsetinfo = `CREATE TABLE txoutsetinfo (
   create_timestamp int  
 )`
 
-export const create_chaintips = `CREATE TABLE chaintips (
+export const createChaintips = `CREATE TABLE chaintips (
   id int NOT NULL,
   height int,
   hash VARCHAR(255),
@@ -158,7 +151,7 @@ export const create_chaintips = `CREATE TABLE chaintips (
   create_timestamp int
 )`
 
-export const create_blocksubsidy = `CREATE TABLE blocksubsidy (
+export const createBlocksubsidy = `CREATE TABLE blocksubsidy (
   id int NOT NULL,
   miner int,
   masternode int,
@@ -166,7 +159,7 @@ export const create_blocksubsidy = `CREATE TABLE blocksubsidy (
   create_timestamp int  
 )`
 
-export const create_walletinfo = `CREATE TABLE walletinfo (
+export const createWalletinfo = `CREATE TABLE walletinfo (
   id int NOT NULL,
   walletversion int,
   balance int,
@@ -180,7 +173,7 @@ export const create_walletinfo = `CREATE TABLE walletinfo (
   create_timestamp int
 )`
 
-export const create_listreceivedbyaddress = `CREATE TABLE listreceivedbyaddress (
+export const createListreceivedbyaddress = `CREATE TABLE listreceivedbyaddress (
   id int NOT NULL,
   address VARCHAR(255),
   account VARCHAR(255),
@@ -190,7 +183,7 @@ export const create_listreceivedbyaddress = `CREATE TABLE listreceivedbyaddress 
   create_timestamp int
 )`
 
-export const create_listtransactions = `CREATE TABLE listtransactions (
+export const createListtransactions = `CREATE TABLE listtransactions (
   id int NOT NULL,
   account VARCHAR(255),
   address VARCHAR(255),
@@ -208,11 +201,10 @@ export const create_listtransactions = `CREATE TABLE listtransactions (
   timereceived int,
   vjoinsplit text,
   size int,
-  lastblock VARCHAR(255),
   create_timestamp int
 )`
 
-export const create_listunspent = `CREATE TABLE listunspent (
+export const createListunspent = `CREATE TABLE listunspent (
   id int NOT NULL,
   txid VARCHAR(255),
   vout int,
@@ -226,7 +218,7 @@ export const create_listunspent = `CREATE TABLE listunspent (
   create_timestamp int
 )`
 
-export const create_totalbalance = `CREATE TABLE totalbalance (
+export const createTotalbalance = `CREATE TABLE totalbalance (
   id int NOT NULL,
   transparent VARCHAR(255),
   private VARCHAR(255),
@@ -234,8 +226,241 @@ export const create_totalbalance = `CREATE TABLE totalbalance (
   create_timestamp int
 )`
 
-export const create_listaddresses = `CREATE TABLE listaddresses (
+export const createListaddresses = `CREATE TABLE listaddresses (
   id int NOT NULL,
   address VARCHAR(255),
   create_timestamp int
 )`
+
+export const insertStatisticinfoQuery = `INSERT INTO statisticinfo VALUES (
+  $newId,
+  $hashrate,
+  '',
+  $difficulty,
+  $createTimestamp
+)`
+
+export const insertNetworkinfoQuery = `INSERT INTO networkinfo VALUES (
+  $newId,
+  $version,
+  $subversion,
+  $protocolversion,
+  $localservices,
+  $timeoffset,
+  $connections,
+  $networks,
+  $relayfee,
+  $localaddresses,
+  $warnings,
+  $createTimestamp
+)`
+
+export const insertNettotalsQuery = `INSERT INTO nettotals VALUES (
+  $newId,
+  $totalbytesrecv,
+  $totalbytessent,
+  $timemillis,
+  $createTimestamp
+)`
+
+export const insertMempoolinfoQuery = `INSERT INTO mempoolinfo VALUES (
+  $newId,
+  $size,
+  $bytes,
+  $usage,
+  $createTimestamp
+)`
+
+export const insertRawmempoolinfoQuery = `INSERT INTO rawmempoolinfo VALUES (
+  $newId,
+  $transactionid,
+  $size,
+  $fee,
+  $time,
+  $height,
+  $startingpriority,
+  $currentpriority,
+  $depends,
+  $createTimestamp
+)`
+
+export const insertMininginfoQuery = `INSERT INTO mininginfo VALUES (
+  $newId,
+  $blocks,
+  $currentblocksize,
+  $currentblocktx,
+  $difficulty,
+  $errors,
+  $genproclimit,
+  $localsolps,
+  $networksolps,
+  $networkhashps,
+  $pooledtx,
+  $testnet,
+  $chain,
+  $createTimestamp
+)`
+
+export const insertBlockinfoQuery = `INSERT INTO blockinfo VALUES (
+  $newId,
+  $hash,
+  $confirmations,
+  $size,
+  $height,
+  $version,
+  $merkleroot,
+  $finalsaplingroot,
+  $tx,
+  $time,
+  $nonce,
+  $solution,
+  $bits,
+  $difficulty,
+  $chainwork,
+  $anchor,
+  $valuePools,
+  $previousblockhash,
+  $nextblockhash,
+  $createTimestamp
+)`
+
+export const insertRawtransactionQuery = `INSERT INTO rawtransaction VALUES (
+  $newId,
+  $bindingSig,
+  $blockhash,
+  $blocktime,
+  $confirmations,
+  $expiryheight,
+  $hex,
+  $locktime,
+  $overwintered,
+  $time,
+  $txid,
+  $vShieldedOutput,
+  $vShieldedSpend,
+  $valueBalance,
+  $version,
+  $versiongroupid,
+  $vjoinsplit,
+  $createTimestamp
+)`
+
+export const insertTransactionTableQuery = `INSERT INTO transaction_tbl VALUES (
+  $newId,
+  $hex,
+  $txid,
+  $overwintered,
+  $version,
+  $versiongroupid,
+  $locktime,
+  $expiryheight,
+  $vin,
+  $vout,
+  $vjoinsplit,
+  $blockhash,
+  $confirmations,
+  $time,
+  $blocktime,
+  $createTimestamp
+)`
+
+export const insertTxoutsetinfoQuery = `INSERT INTO txoutsetinfo VALUES (
+  $newId,
+  $height,
+  $bestblock,
+  $transactions,
+  $txouts,
+  $bytes_serialized,
+  $hash_serialized,
+  $total_amount,
+  $createTimestamp
+)`
+
+export const insertChaintipsQuery = `INSERT INTO chaintips VALUES (
+  $newId,
+  $height,
+  $hash,
+  $branchlen,
+  $status,
+  $createTimestamp
+)`
+
+export const insertBlocksubsidyQuery = `INSERT INTO blocksubsidy VALUES (
+  $newId,
+  $miner,
+  $masternode,
+  $governance,
+  $createTimestamp
+)`
+
+export const insertWalletinfoQuery = `INSERT INTO walletinfo VALUES (
+  $newId,
+  $walletversion,
+  $balance,
+  $unconfirmed_balance,
+  $immature_balance,
+  $txcount,
+  $keypoololdest,
+  $keypoolsize,
+  $paytxfee,
+  $seedfp,
+  $createTimestamp
+)`
+
+export const insertListtransactionsQuery = `INSERT INTO listtransactions VALUES (
+  $newId,
+  $account,
+  $address,
+  $category,
+  $amount,
+  $vout,
+  $confirmations,
+  $blockhash,
+  $blockindex,
+  $blocktime,
+  $expiryheight,
+  $txid,
+  $walletconflicts,
+  $time,
+  $timereceived,
+  $vjoinsplit,
+  $size,
+  $createTimestamp
+)`
+
+export const insertListunspentQuery = `INSERT INTO listunspent VALUES (
+  $newId,
+  $txid,
+  $vout,
+  $generated,
+  $address,
+  $account,
+  $scriptPubKey,
+  $amount,
+  $confirmations,
+  $spendable,
+  $createTimestamp
+)`
+
+export const insertTotalbalanceQuery = `INSERT INTO totalbalance VALUES (
+  $newId,
+  $transparent,
+  $private,
+  $total,
+  $createTimestamp
+)`
+
+export const insertListaddressesQuery = `INSERT INTO listaddresses VALUES (
+  $newId,
+  $address,
+  $createTimestamp
+)`
+
+export const selectAllQuery = 'SELECT * FROM '
+
+export const selectIDQuery = 'SELECT id FROM '
+
+export const whereTransactionIDMatchingQuery =
+  ' WHERE transactionid=$tid AND time=$time'
+
+export const orderByIDQuery = ' ORDER BY id LIMIT 1'
