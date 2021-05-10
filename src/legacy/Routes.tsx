@@ -620,6 +620,7 @@ class RouteApp extends React.Component<any, any> {
                       // To support legacy calls
                       // TODO Remove then fully moved over to Redux
                       this.setRPCConfig(rpcConfig)
+                      PastelDBThread(rpcConfig)
                     }}
                     setInfo={this.setInfo}
                   />
@@ -628,7 +629,6 @@ class RouteApp extends React.Component<any, any> {
             </Switch>
           </div>
         </div>
-        <PastelDBThread rpcConfig={this.state.rpcConfig} />
       </App>
     )
   }

@@ -137,6 +137,46 @@ export type TVjoinsplit = {
   ciphertexts: string[]
 }
 
+export type TTransactionInfo = {
+  amount: number
+  blockhash: string
+  blockindex: number
+  blocktime: number
+  confirmations: number
+  details: TTransactionInfoDetails[]
+  expiryheight: number
+  hex: string
+  time: number
+  timereceived: number
+  txid: string
+  vjoinsplit: TVjoinsplit[]
+  walletconflicts: string[]
+}
+
+export type TTransactionInfoDetails = {
+  account: string
+  address: string
+  amount: number
+  category: string
+  size: number
+  vout: number
+}
+
+export type TShieldedOutput = {
+  cv: string
+  anchor: string
+  nullifier: string
+}
+
+export type TShieldedSpendInfo = {
+  cmu: string
+  cv: string
+  encCiphertext: string
+  ephemeralKey: string
+  outCiphertext: string
+  proof: string
+}
+
 export type TRawTransaction = {
   hex: string
   txid: string
@@ -354,7 +394,7 @@ export type TGetrawtransaction = {
 }
 
 export type TGettransaction = {
-  result: TRawTransaction
+  result: TTransactionInfo
   error: TError
   id: string
 }

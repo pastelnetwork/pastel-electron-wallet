@@ -1,95 +1,30 @@
-import initSqlJs, { Database, QueryExecResult } from 'sql.js'
+import { Database } from 'sql.js'
 
-import {
-  createBlock,
-  createBlocksubsidy,
-  createChaintips,
-  createListaddresses,
-  createListtransactions,
-  createListunspent,
-  createMempoolinfo,
-  createMininginfo,
-  createNettotals,
-  createNetworkinfo,
-  createRawmempoolinfo,
-  createRawtransaction,
-  createStatisticinfo,
-  createTotalbalance,
-  createTxoutsetinfo,
-  createWalletinfo,
-  selectAllQuery,
-} from '../constants'
-import {
-  insertBlockInfoToDB,
-  insertBlocksubsidy,
-  insertChaintips,
-  insertListaddresses,
-  insertListTransactions,
-  insertListunspent,
-  insertMempoolinfoToDB,
-  insertMiningInfoToDB,
-  insertNetTotalsToDB,
-  insertNetworkInfotoDB,
-  insertRawMempoolinfoToDB,
-  insertRawtransaction,
-  insertStatisticDataToDB,
-  insertTotalbalance,
-  insertTxoutsetinfo,
-  insertWalletinfo,
-} from '../pastelDBLib'
+import * as pastelRPC from '../../../api/pastel-rpc/rpc'
+import * as pastelDBLib from '../pastelDBLib'
+import * as pastelDBThread from '../pastelDBThread'
 
 type Databaseinstance = {
   db: Database
 }
 
 describe('PastelDBThread', () => {
-  const loadDatabase = jest.fn(async () => {
-    const SQL = await initSqlJs()
-    const db: Database = new SQL.Database()
-    return db
-  })
-
-  const getDatafromDB = jest.fn((tableName): QueryExecResult[] => {
-    return pastelDB.db.exec(selectAllQuery + tableName)
-  })
-
   const pastelDB: Databaseinstance = {
     db: {} as Database,
   }
 
-  beforeAll(async () => {
-    pastelDB.db = await loadDatabase()
-    pastelDB.db.exec(createStatisticinfo)
-    pastelDB.db.exec(createNetworkinfo)
-    pastelDB.db.exec(createNettotals)
-    pastelDB.db.exec(createMempoolinfo)
-    pastelDB.db.exec(createRawmempoolinfo)
-    pastelDB.db.exec(createMininginfo)
-    pastelDB.db.exec(createBlock)
-    pastelDB.db.exec(createRawtransaction)
-    pastelDB.db.exec(createTxoutsetinfo)
-    pastelDB.db.exec(createChaintips)
-    pastelDB.db.exec(createBlocksubsidy)
-    pastelDB.db.exec(createWalletinfo)
-    pastelDB.db.exec(createListtransactions)
-    pastelDB.db.exec(createListunspent)
-    pastelDB.db.exec(createTotalbalance)
-    pastelDB.db.exec(createListaddresses)
-  })
+  const mockConfig = {
+    username: 'pastelwallet',
+    password: 'kizvmu1tmvf',
+    url: 'http://127.0.0.1:9932',
+  }
 
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  const getStatisticInfo = jest.fn(() => {
-    return {
-      difficult: 1.0,
-      hashrate: 1.2345,
-    }
-  })
-
-  const getNetworkInfo = jest.fn(() => {
-    return {
+  const mockNetworkInfo = {
+    result: {
       version: 1.0,
       subversion: '1.0',
       protocolversion: 1,
@@ -114,53 +49,27 @@ describe('PastelDBThread', () => {
       ],
       warnings: 'warnings',
       create_timestamp: '',
-    }
-  })
+    },
+  }
 
-  const getNetTotals = jest.fn(() => {
-    return {
+  const mockNetTotals = {
+    result: {
       totalbytesrecv: 0,
       totalbytessent: 0,
       timemillis: 0,
-    }
-  })
+    },
+  }
 
-  const getMempoolInfo = jest.fn(() => {
-    return {
+  const mockMempoolInfo = {
+    result: {
       size: 0,
       bytes: 100,
       usage: 10,
-    }
-  })
+    },
+  }
 
-  const getRawMempool = jest.fn(() => {
-    return {
-      transactionid: 'transactionid-12345678',
-      size: 0,
-      fee: 0,
-      time: 0,
-      height: 0,
-      startingpriority: 0,
-      currentpriority: 0,
-      depends: [
-        {
-          0: {
-            transactionid: 'id',
-            size: 0,
-            fee: 0,
-            time: 0,
-            height: 0,
-            startingpriority: 0,
-            currentpriority: 0,
-            depends: [],
-          },
-        },
-      ],
-    }
-  })
-
-  const getMiningInfo = jest.fn(() => {
-    return {
+  const mockMiningInfo = {
+    result: {
       newId: 1,
       blocks: 0,
       currentblocksize: 0,
@@ -175,11 +84,11 @@ describe('PastelDBThread', () => {
       testnet: 0,
       chain: 'mininginfo-chain',
       generate: true,
-    }
-  })
+    },
+  }
 
-  const getBlockByHash = jest.fn(() => {
-    return {
+  const mockBlockByHash = {
+    result: {
       hash: 'hash-12345678',
       confirmations: 0,
       size: 0,
@@ -198,65 +107,11 @@ describe('PastelDBThread', () => {
       valuePools: '',
       previousblockhash: '',
       nextblockhash: '',
-    }
-  })
+    },
+  }
 
-  const getRawTransaction = jest.fn(() => {
-    return {
-      hex: 'raw-transaction-hex-12345678',
-      txid: '',
-      overwintered: true,
-      version: 1.0,
-      versiongroupid: '',
-      locktime: 0,
-      expiryheight: 0,
-      vin: [
-        {
-          txid: '',
-          vout: 0,
-          scriptSig: {
-            asm: '',
-            hex: '',
-          },
-          sequence: 0,
-        },
-      ],
-      vout: [
-        {
-          value: 0,
-          n: 0,
-          scriptPubkey: {
-            asm: '',
-            hex: '',
-            regSigs: 0,
-            type: '',
-            addresses: [''],
-          },
-        },
-      ],
-      vjoinsplit: [
-        {
-          vpub_old: 0,
-          vpub_new: 0,
-          anchor: '',
-          nullifiers: [''],
-          commitments: [''],
-          onetimePubKey: '',
-          randomSeed: '',
-          macs: [''],
-          proof: '',
-          ciphertexts: [''],
-        },
-      ],
-      blockhash: '',
-      confirmations: 0,
-      time: 0,
-      blocktime: 0,
-    }
-  })
-
-  const getRpcData = jest.fn(() => {
-    return {
+  const mockTxoutsetinfo = {
+    result: {
       height: 0,
       bestblock: 'best-block-123456',
       transactions: 0,
@@ -264,28 +119,30 @@ describe('PastelDBThread', () => {
       bytes_serialized: 0,
       hash_serialized: '',
       total_amount: 0,
-    }
-  })
+    },
+  }
 
-  const getChaintips = jest.fn(() => {
-    return {
-      height: 0,
-      hash: 'chain-tips-hash-1234578',
-      branchlen: 0,
-      status: '',
-    }
-  })
+  const mockChaintips = {
+    result: [
+      {
+        height: 0,
+        hash: 'chain-tips-hash-1234578',
+        branchlen: 0,
+        status: '',
+      },
+    ],
+  }
 
-  const getBlockSubSidy = jest.fn(() => {
-    return {
+  const mockBlockSubSidy = {
+    result: {
       miner: 456789,
       masternode: 0,
       governance: 0,
-    }
-  })
+    },
+  }
 
-  const getWalletInfo = jest.fn(() => {
-    return {
+  const mockWalletInfo = {
+    result: {
       walletversion: 456789,
       balance: 0,
       unconfirmed_balance: 0,
@@ -295,179 +152,380 @@ describe('PastelDBThread', () => {
       keypoolsize: 0,
       paytxfee: 0,
       seedfp: '',
-    }
-  })
+    },
+  }
 
-  const listTransactions = jest.fn(() => {
-    return {
-      account: 'account-1',
-      address: '',
-      category: '',
-      amount: 0,
-      vout: 0,
-      confirmations: 0,
-      blockhash: 0,
-      blockindex: 0,
-      blocktime: 0,
-      expiryheight: 0,
-      txid: '',
-      walletconflicts: [''],
-      time: 0,
-      timereceived: 0,
-      vjoinsplit: [
-        {
-          vpub_old: 0,
-          vpub_new: 0,
-          anchor: '',
-          nullifiers: [''],
-          commitments: [''],
-          onetimePubKey: '',
-          randomSeed: '',
-          macs: [''],
-          proof: '',
-          ciphertexts: [''],
-        },
-      ],
-      size: 0,
-      lastblock: '',
-    }
-  })
-
-  const listUnspent = jest.fn(() => {
-    return {
-      txid: 'unspent-txid-123456789',
-      vout: 0,
-      generated: true,
-      address: '',
-      account: '',
-      scriptPubKey: '',
-      amount: 0,
-      confirmations: 0,
-      spendable: 0,
-    }
-  })
-
-  const getTotalBalance = jest.fn(() => {
-    return {
+  const mockTotalBalance = {
+    result: {
       transparent: 'totalbalance-transparent',
       private: '',
       total: '',
-    }
+    },
+  }
+
+  const mockListAddresses = {
+    result: ['address'],
+  }
+
+  test('fetchStatisticInfo works', async () => {
+    // Arrange
+    const rpcSpy = jest.spyOn(pastelRPC, 'rpc').mockResolvedValue({
+      result: { hashrate: 10000, difficult: 12345.234 },
+    })
+    const insertStatisticDataToDBSpy = jest
+      .spyOn(pastelDBLib, 'insertStatisticDataToDB')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchStatisticInfo({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getnetworkhashps', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getdifficulty', [], mockConfig)
+
+    expect(insertStatisticDataToDBSpy).toHaveBeenCalled()
+    expect(insertStatisticDataToDBSpy).toHaveBeenCalledWith(
+      pastelDB.db,
+      { difficult: 12345.234, hashrate: 10000 },
+      { difficult: 12345.234, hashrate: 10000 },
+    )
   })
 
-  const listAddresses = jest.fn(() => {
-    return 'address1'
+  test('fetchNetworkInfo works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockNetworkInfo)
+    const insertNetworkInfoToDBSpy = jest
+      .spyOn(pastelDBLib, 'insertNetworkInfoToDB')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchNetworkInfo({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getnetworkinfo', [], mockConfig)
+
+    expect(insertNetworkInfoToDBSpy).toHaveBeenCalled()
+    expect(insertNetworkInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+      connections: 0,
+      create_timestamp: '',
+      localaddresses: [{ address: '', port: 0, score: 0 }],
+      localservices: '',
+      networks: [{ limited: true, name: '', proxy: '', reachable: true }],
+      protocolversion: 1,
+      relayfee: 0,
+      subversion: '1.0',
+      timeoffset: 0,
+      version: 1,
+      warnings: 'warnings',
+    })
   })
 
-  test('statistic data should fetch and store correctly', async () => {
-    const info = getStatisticInfo()
-    insertStatisticDataToDB(pastelDB.db, info.hashrate, info.difficult)
-    const result = getDatafromDB('statisticinfo')
-    expect(result[0].values[0]).toContainEqual('1.2345')
+  test('fetchNettotals works', async () => {
+    // Arrange
+    const rpcSpy = jest.spyOn(pastelRPC, 'rpc').mockResolvedValue(mockNetTotals)
+    const insertNetTotalsToDBSpy = jest
+      .spyOn(pastelDBLib, 'insertNetTotalsToDB')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchNettotals({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getnettotals', [], mockConfig)
+
+    expect(insertNetTotalsToDBSpy).toHaveBeenCalled()
+    expect(insertNetTotalsToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+      timemillis: 0,
+      totalbytesrecv: 0,
+      totalbytessent: 0,
+    })
   })
 
-  test('network info data should fetch and store correctly', async () => {
-    const info = getNetworkInfo()
-    insertNetworkInfotoDB(pastelDB.db, info)
-    const result = getDatafromDB('networkinfo')
-    expect(result[0].values[0]).toContainEqual('warnings')
+  test('fetchMempoolInfo works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockMempoolInfo)
+    const insertMempoolInfoToDBSpy = jest
+      .spyOn(pastelDBLib, 'insertMempoolInfoToDB')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchMempoolInfo({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getmempoolinfo', [], mockConfig)
+
+    expect(insertMempoolInfoToDBSpy).toHaveBeenCalled()
+    expect(insertMempoolInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+      bytes: 100,
+      size: 0,
+      usage: 10,
+    })
   })
 
-  test('net total info data should fetch and store correctly', async () => {
-    const info = getNetTotals()
-    insertNetTotalsToDB(pastelDB.db, info)
-    const result = getDatafromDB('nettotals')
-    expect(result[0].values[0]).toContainEqual(1)
+  test('fetchMiningInfo works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockMiningInfo)
+    const insertMiningInfoToDBSpy = jest
+      .spyOn(pastelDBLib, 'insertMiningInfoToDB')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchMiningInfo({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getmininginfo', [], mockConfig)
+
+    expect(insertMiningInfoToDBSpy).toHaveBeenCalled()
+    expect(insertMiningInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+      blocks: 0,
+      chain: 'mininginfo-chain',
+      currentblocksize: 0,
+      currentblocktx: 0,
+      difficulty: 0,
+      errors: '',
+      generate: true,
+      genproclimit: 0,
+      localsolps: 0,
+      networkhashps: 0,
+      networksolps: 0,
+      newId: 1,
+      pooledtx: 0,
+      testnet: 0,
+    })
   })
 
-  test('mempool info data should fetch and store correctly', async () => {
-    const info = getMempoolInfo()
-    insertMempoolinfoToDB(pastelDB.db, info)
-    const result = getDatafromDB('mempoolinfo')
-    expect(result[0].values[0]).toContainEqual(100)
+  test('fetchBlock works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockBlockByHash)
+    const insertBlockInfoToDBSpy = jest
+      .spyOn(pastelDBLib, 'insertBlockInfoToDB')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchBlock({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getblockhash', [1000], mockConfig)
+
+    expect(insertBlockInfoToDBSpy).toHaveBeenCalled()
+    expect(insertBlockInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+      anchor: '',
+      bits: '',
+      chainwork: '',
+      confirmations: 0,
+      difficulty: 0,
+      finalsaplingroot: '',
+      hash: 'hash-12345678',
+      height: 0,
+      merkleroot: '',
+      nextblockhash: '',
+      nonce: '',
+      previousblockhash: '',
+      size: 0,
+      solution: '',
+      time: 0,
+      tx: '',
+      valuePools: '',
+      version: 0,
+    })
   })
 
-  test('rawmempool info data should fetch and store correctly', async () => {
-    const info = getRawMempool()
-    insertRawMempoolinfoToDB(pastelDB.db, info)
-    const result = getDatafromDB('rawmempoolinfo')
-    expect(result[0].values[0]).toContainEqual('transactionid-12345678')
+  test('fetchTxoutsetInfo works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockTxoutsetinfo)
+    const insertTxoutsetinfoSpy = jest
+      .spyOn(pastelDBLib, 'insertTxoutsetinfo')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchTxoutsetInfo({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('gettxoutsetinfo', [], mockConfig)
+
+    expect(insertTxoutsetinfoSpy).toHaveBeenCalled()
+    expect(insertTxoutsetinfoSpy).toHaveBeenCalledWith(pastelDB.db, {
+      bestblock: 'best-block-123456',
+      bytes_serialized: 0,
+      hash_serialized: '',
+      height: 0,
+      total_amount: 0,
+      transactions: 0,
+      txouts: 0,
+    })
   })
 
-  test('minginfo data should fetch and store correctly', async () => {
-    const info = getMiningInfo()
-    insertMiningInfoToDB(pastelDB.db, info)
-    const result = getDatafromDB('mininginfo')
-    expect(result[0].values[0]).toContainEqual('mininginfo-chain')
+  test('fetchChaintips works', async () => {
+    // Arrange
+    const rpcSpy = jest.spyOn(pastelRPC, 'rpc').mockResolvedValue(mockChaintips)
+    const insertChaintipsSpy = jest
+      .spyOn(pastelDBLib, 'insertChaintips')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchChaintips({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getchaintips', [], mockConfig)
+
+    expect(insertChaintipsSpy).toHaveBeenCalled()
+    expect(insertChaintipsSpy).toHaveBeenCalledWith(pastelDB.db, {
+      branchlen: 0,
+      hash: 'chain-tips-hash-1234578',
+      height: 0,
+      status: '',
+    })
   })
 
-  test('blockbyhash data should fetch and store correctly', async () => {
-    const info = getBlockByHash()
-    insertBlockInfoToDB(pastelDB.db, info)
-    const result = getDatafromDB('blockinfo')
-    expect(result[0].values[0]).toContainEqual('hash-12345678')
+  test('fetchBlocksubsidy works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockBlockSubSidy)
+    const insertBlocksubsidySpy = jest
+      .spyOn(pastelDBLib, 'insertBlocksubsidy')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchBlocksubsidy({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getblocksubsidy', [], mockConfig)
+
+    expect(insertBlocksubsidySpy).toHaveBeenCalled()
+    expect(insertBlocksubsidySpy).toHaveBeenCalledWith(pastelDB.db, {
+      governance: 0,
+      masternode: 0,
+      miner: 456789,
+    })
   })
 
-  test('rawtransaction data should fetch and store correctly', async () => {
-    const info = getRawTransaction()
-    insertRawtransaction(pastelDB.db, info)
-    const result = getDatafromDB('rawtransaction')
-    expect(result[0].values[0]).toContainEqual('raw-transaction-hex-12345678')
+  test('fetchWalletInfo works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockWalletInfo)
+    const insertWalletinfoSpy = jest
+      .spyOn(pastelDBLib, 'insertWalletinfo')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchWalletInfo({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('getwalletinfo', [], mockConfig)
+
+    expect(insertWalletinfoSpy).toHaveBeenCalled()
+    expect(insertWalletinfoSpy).toHaveBeenCalledWith(pastelDB.db, {
+      balance: 0,
+      immature_balance: 0,
+      keypoololdest: 0,
+      keypoolsize: 0,
+      paytxfee: 0,
+      seedfp: '',
+      txcount: 0,
+      unconfirmed_balance: 0,
+      walletversion: 456789,
+    })
   })
 
-  test('txoutset data should fetch and store correctly', async () => {
-    const info = getRpcData()
-    insertTxoutsetinfo(pastelDB.db, info)
-    const result = getDatafromDB('txoutsetinfo')
-    expect(result[0].values[0]).toContainEqual('best-block-123456')
+  test('fetchTotalbalance works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockTotalBalance)
+    const insertTotalbalanceSpy = jest
+      .spyOn(pastelDBLib, 'insertTotalbalance')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchTotalbalance({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('z_gettotalbalance', [], mockConfig)
+
+    expect(insertTotalbalanceSpy).toHaveBeenCalled()
+    expect(insertTotalbalanceSpy).toHaveBeenCalledWith(pastelDB.db, {
+      private: '',
+      total: '',
+      transparent: 'totalbalance-transparent',
+    })
   })
 
-  test('txoutset data should fetch and store correctly', async () => {
-    const info = getChaintips()
-    insertChaintips(pastelDB.db, info)
-    const result = getDatafromDB('chaintips')
-    expect(result[0].values[0]).toContainEqual('chain-tips-hash-1234578')
-  })
+  test('fetchListaddresses works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockListAddresses)
+    const insertListaddressesSpy = jest
+      .spyOn(pastelDBLib, 'insertListaddresses')
+      .mockImplementation()
 
-  test('txoutset data should fetch and store correctly', async () => {
-    const info = getBlockSubSidy()
-    insertBlocksubsidy(pastelDB.db, info)
-    const result = getDatafromDB('blocksubsidy')
-    expect(result[0].values[0]).toContainEqual(456789)
-  })
+    // Act
+    await pastelDBThread.fetchListaddresses({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
 
-  test('wallet data should fetch and store correctly', async () => {
-    const info = getWalletInfo()
-    insertWalletinfo(pastelDB.db, info)
-    const result = getDatafromDB('walletinfo')
-    expect(result[0].values[0]).toContainEqual(456789)
-  })
+    // Assert
+    expect(rpcSpy).toHaveBeenCalled()
+    expect(rpcSpy).toHaveBeenCalledWith('z_listaddresses', [], mockConfig)
 
-  test('transaction list should fetch and store correctly', async () => {
-    const info = listTransactions()
-    insertListTransactions(pastelDB.db, info)
-    const result = getDatafromDB('listtransactions')
-    expect(result[0].values[0]).toContainEqual('account-1')
-  })
-
-  test('unspent list should fetch and store correctly', async () => {
-    const info = listUnspent()
-    insertListunspent(pastelDB.db, info)
-    const result = getDatafromDB('listunspent')
-    expect(result[0].values[0]).toContainEqual('unspent-txid-123456789')
-  })
-
-  test('total balance data should fetch and store correctly', async () => {
-    const info = getTotalBalance()
-    insertTotalbalance(pastelDB.db, info)
-    const result = getDatafromDB('totalbalance')
-    expect(result[0].values[0]).toContainEqual('totalbalance-transparent')
-  })
-
-  test('address infos should fetch and store correctly', async () => {
-    const info = listAddresses()
-    insertListaddresses(pastelDB.db, info)
-    const result = getDatafromDB('listaddresses')
-    expect(result[0].values[0]).toContainEqual('address1')
+    expect(insertListaddressesSpy).toHaveBeenCalled()
+    expect(insertListaddressesSpy).toHaveBeenCalledWith(pastelDB.db, 'address')
   })
 })
