@@ -6,6 +6,7 @@ import {
   defaultCommandMapping,
   Emulator,
   EmulatorState,
+  History,
   HistoryKeyboardPlugin,
   OutputFactory,
   Outputs,
@@ -65,12 +66,14 @@ let emulator: any = null
 let emulatorState: any = null
 let historyKeyboardPlugin: any = null
 let terminalPlugins: any = []
+let isRendered = false
+const historyCmds: string[] = []
 
 function TerminalConsole(props: TConsoleProps): JSX.Element {
   const [typing, setTyping] = useState('')
   const [executingCommand, setExecutingCommand] = useState(false)
   const [outputs, setOutputs] = useState<any[]>([])
-  const [isReady, setIsReady] = useState(false)
+  const [isReady, setIsReady] = useState(isRendered)
   const [isInitiatedTerminal, setIsInitiatedTerminal] = useState(false)
   const inputRef = createRef<HTMLInputElement>()
 
@@ -243,6 +246,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     state: any,
     opts: string[],
   ) => {
+    historyCmds.push(commandKey)
     setExecutingCommand(true)
     let textConsole = ''
 
@@ -361,12 +365,25 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     })
 
     // init terminal
-    emulator = new Emulator()
+    if (!emulator) {
+      emulator = new Emulator()
+    }
+
+    const oldOutputs = emulatorState
+      ? emulatorState.getOutputs()
+      : Outputs.create([])
     emulatorState = EmulatorState.create({
       commandMapping: customCommandMapping,
+      history: History.create(historyCmds),
+      outputs: oldOutputs,
     })
-    historyKeyboardPlugin = new HistoryKeyboardPlugin(emulatorState)
-    terminalPlugins = [historyKeyboardPlugin]
+
+    if (oldOutputs.size > 0) {
+      displayOutputs(oldOutputs)
+    } else {
+      historyKeyboardPlugin = new HistoryKeyboardPlugin(emulatorState)
+      terminalPlugins = [historyKeyboardPlugin]
+    }
   }
 
   const onChangeTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -375,7 +392,10 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   }
 
   useEffect(() => {
-    loadBanner()
+    if (!isRendered) {
+      loadBanner()
+      isRendered = true
+    }
     window.addEventListener('resize', resetScroll)
     return () => {
       window.removeEventListener('resize', resetScroll)
@@ -399,7 +419,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     <div id='terminalWrap' className={cx(styles.terminal, styles[theme])}>
       <div className={styles.terminalHead}>
         <p>............................................................</p>
-        <pre id='banner' />
+        <pre id='banner'>{isRendered && banner}</pre>
         {isReady && (
           <>
             <p>............................................................</p>
