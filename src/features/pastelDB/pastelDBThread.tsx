@@ -38,16 +38,10 @@ export async function getStatisticInfo(
   config: TRPCConfig,
 ): Promise<TStatistic> {
   try {
-    const networkhasps = await rpc<types.TGetnetworkhashps>(
-      'getnetworkhashps',
-      [],
-      config,
-    )
-    const difficulty = await rpc<types.TGetdifficulty>(
-      'getdifficulty',
-      [],
-      config,
-    )
+    const [networkhasps, difficulty] = await Promise.all([
+      rpc<types.TGetnetworkhashps>('getnetworkhashps', [], config),
+      rpc<types.TGetdifficulty>('getdifficulty', [], config),
+    ])
     return {
       hashrate: networkhasps.result,
       difficulty: difficulty.result,
@@ -96,7 +90,7 @@ export async function fetchRawMempoolInfo(
 ): Promise<void> {
   const { result } = await rpc<types.TGetrawmempool>(
     'getrawmempool',
-    [],
+    [true],
     props.rpcConfig,
   )
   const keys = Object.keys(result)
@@ -271,47 +265,31 @@ export async function fetchListaddresses(
 
 export async function PastelDBThread(rpcConfig: RPCConfig): Promise<void> {
   const pastelDB = await PastelDB.getDatabaseInstance()
-  async function fetchStatisticDataFromRPC() {
-    const period = 10000
-    let timer: NodeJS.Timeout
-    // isStoped would be set from background in the future
-    const isStoped = false
-    if (pastelDB && rpcConfig && rpcConfig.username !== '') {
-      // fetch whole data from RPC and save to pastel DB.
-      const pastelConfig: fetchFuncConfig = {
-        pastelDB,
-        rpcConfig,
-      }
-      await Promise.all([
-        fetchStatisticInfo(pastelConfig),
-        fetchNetworkInfo(pastelConfig),
-        fetchNettotals(pastelConfig),
-        fetchMempoolInfo(pastelConfig),
-        fetchRawMempoolInfo(pastelConfig),
-        fetchMiningInfo(pastelConfig),
-        fetchBlock(pastelConfig),
-        fetchRawtransaction(pastelConfig),
-        fetchTransaction(pastelConfig),
-        fetchTxoutsetInfo(pastelConfig),
-        fetchChaintips(pastelConfig),
-        fetchBlocksubsidy(pastelConfig),
-        fetchWalletInfo(pastelConfig),
-        fetchListTransactions(pastelConfig),
-        fetchListunspent(pastelConfig),
-        fetchTotalbalance(pastelConfig),
-        fetchListaddresses(pastelConfig),
-      ])
-
-      timer = setTimeout(fetchStatisticDataFromRPC, period)
-      if (isStoped) {
-        clearTimeout(timer)
-        return
-      }
-    } else {
-      return
+  if (pastelDB && rpcConfig && rpcConfig.username !== '') {
+    // fetch whole data from RPC and save to pastel DB.
+    const pastelConfig: fetchFuncConfig = {
+      pastelDB,
+      rpcConfig,
     }
+    await Promise.all([
+      fetchStatisticInfo(pastelConfig),
+      fetchNetworkInfo(pastelConfig),
+      fetchNettotals(pastelConfig),
+      fetchMempoolInfo(pastelConfig),
+      fetchRawMempoolInfo(pastelConfig),
+      fetchMiningInfo(pastelConfig),
+      fetchBlock(pastelConfig),
+      fetchRawtransaction(pastelConfig),
+      fetchTransaction(pastelConfig),
+      fetchTxoutsetInfo(pastelConfig),
+      fetchChaintips(pastelConfig),
+      fetchBlocksubsidy(pastelConfig),
+      fetchWalletInfo(pastelConfig),
+      fetchListTransactions(pastelConfig),
+      fetchListunspent(pastelConfig),
+      fetchTotalbalance(pastelConfig),
+      fetchListaddresses(pastelConfig),
+    ])
   }
-
-  await fetchStatisticDataFromRPC()
   return
 }

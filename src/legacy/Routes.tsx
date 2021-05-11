@@ -48,6 +48,8 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
 
+const period = 1000 * 10
+
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
     super(props)
@@ -620,7 +622,11 @@ class RouteApp extends React.Component<any, any> {
                       // To support legacy calls
                       // TODO Remove then fully moved over to Redux
                       this.setRPCConfig(rpcConfig)
-                      PastelDBThread(rpcConfig)
+
+                      // set pastel DB thread update timer
+                      setInterval(() => {
+                        PastelDBThread(rpcConfig)
+                      }, period)
                     }}
                     setInfo={this.setInfo}
                   />
