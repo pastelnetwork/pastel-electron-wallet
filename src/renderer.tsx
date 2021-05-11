@@ -27,6 +27,7 @@
  */
 
 import './index.css'
+import 'react-circular-progressbar/dist/styles.css'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 

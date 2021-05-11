@@ -13,7 +13,7 @@ body,
 body {
   margin: 0;
   position: relative;
-  color: white;
+  color: #fff;
   background-color: #212124;
   font-family: Roboto, Arial, Helvetica, Helvetica Neue, serif;
 }
@@ -39,10 +39,6 @@ h2 {
   font-weight: bold;
   letter-spacing: -0.025em;
   color: #fff;
-}
-
-p {
-  font-size: 12px;
 }
 
 li {
@@ -119,7 +115,6 @@ img,
 img::after,
 img::before {
   user-select: none;
-  cursor: default;
 }
 
 a,
