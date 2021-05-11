@@ -31,7 +31,7 @@ export async function rpc<T>(
     })
   } catch (err) {
     if (err.response) {
-      throw new Error(`api/pastel-rpc server error: ${err.response}`)
+      throw new Error(`api/pastel-rpc server error: ${err.message}`)
     }
 
     if (err.request) {

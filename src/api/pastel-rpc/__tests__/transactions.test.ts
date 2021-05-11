@@ -82,15 +82,13 @@ describe('api/pastel-rpc/transactions', () => {
     }
 
     const mock = new MockAdapter(axios)
-    const data = undefined
-
-    mock.onPost(config.url).reply(500, data)
+    mock.onPost(config.url).reply(500)
 
     try {
       await fetchTandZTransactions(config, callback)
     } catch (err) {
       expect(err.message).toEqual(
-        'api/pastel-rpc server error: [object Object]',
+        'api/pastel-rpc server error: Request failed with status code 500',
       )
     }
   })
