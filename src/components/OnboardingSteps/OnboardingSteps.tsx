@@ -1,34 +1,39 @@
 import * as React from 'react'
 
 import icoArrowRight from '../../assets/icons/ico-arrow-right.svg'
-import creditCardIco from '../../assets/icons/ico-credit-card.svg'
-import downloadIco from '../../assets/icons/ico-download.svg'
-import downloadIcoGray from '../../assets/icons/ico-download-gray.svg'
+import completedIco from '../../assets/icons/ico-completed.svg'
 import infoIco from '../../assets/icons/ico-info.svg'
-import refreshIco from '../../assets/icons/ico-refresh.svg'
+import { STEPS } from './OnboardingSteps.helpers'
 import * as Styles from './OnboardingSteps.styles'
 
-const OnboardingSteps = () => (
-  <Styles.Steps>
-    <Styles.Step $active={true}>
-      <img src={downloadIco} alt='step 1' />
-      <Styles.StepLabel>Primary login</Styles.StepLabel>
-      <Styles.StepInfoIcon src={infoIco} alt='info' />
-      <Styles.StepActiveArrow src={icoArrowRight} alt='active step' />
-    </Styles.Step>
-    <Styles.Step $active={false}>
-      <img src={downloadIcoGray} alt='step 2' />
-      <Styles.StepLabel>Backup access method</Styles.StepLabel>
-    </Styles.Step>
-    <Styles.Step $active={false}>
-      <img src={creditCardIco} alt='step 3' />
-      <Styles.StepLabel>Payment method</Styles.StepLabel>
-    </Styles.Step>
-    <Styles.Step $active={false}>
-      <img src={refreshIco} alt='step 4' />
-      <Styles.StepLabel>Registration fee</Styles.StepLabel>
-    </Styles.Step>
-  </Styles.Steps>
-)
+interface IOnboardingStepsProps {
+  activeStep: 1 | 2 | 3 | 4
+}
+
+const OnboardingSteps: React.FC<IOnboardingStepsProps> = ({ activeStep }) => {
+  return (
+    <Styles.Steps>
+      {STEPS.map(({ id, iconActive, iconDefault, label, stepIconLabel }) => (
+        <Styles.Step $active={activeStep === id} key={id}>
+          {activeStep <= id ? (
+            <img
+              src={activeStep === id ? iconActive : iconDefault}
+              alt={stepIconLabel}
+            />
+          ) : (
+            <img src={completedIco} alt={`Step ${id} completed`} />
+          )}
+          <Styles.StepLabel>{label}</Styles.StepLabel>
+          {activeStep === id && (
+            <Styles.StepInfoIcon src={infoIco} alt='info' />
+          )}
+          {activeStep === id && (
+            <Styles.StepActiveArrow src={icoArrowRight} alt='active step' />
+          )}
+        </Styles.Step>
+      ))}
+    </Styles.Steps>
+  )
+}
 
 export default OnboardingSteps
