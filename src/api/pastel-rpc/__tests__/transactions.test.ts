@@ -75,13 +75,23 @@ describe('api/pastel-rpc/transactions', () => {
   })
 
   test('can’t get the transaction', async () => {
+    expect.hasAssertions()
+
     function callback(alltxlist: TListTransactions[]): void {
       expect(alltxlist).toBeNaN()
     }
+
+    const mock = new MockAdapter(axios)
+    const data = undefined
+
+    mock.onPost(config.url).reply(500, data)
+
     try {
       await fetchTandZTransactions(config, callback)
     } catch (err) {
-      expect(err.message).not.toBeNull()
+      expect(err.message).toEqual(
+        'api/pastel-rpc server error: [object Object]',
+      )
     }
   })
 })
