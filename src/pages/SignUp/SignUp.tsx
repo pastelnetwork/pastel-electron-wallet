@@ -6,7 +6,7 @@ import OnboardingSteps from '../../components/OnboardingSteps/OnboardingSteps'
 import * as Styles from './SignUp.styles'
 import StepLogin from './StepLogin/StepLogin'
 
-const SignUp = () => {
+const SignUp: React.FC<unknown> = () => {
   const [progress, setProgress] = React.useState(0)
   const [activeStep, setActiveStep] = React.useState<1 | 2 | 3 | 4>(1)
 

@@ -7,7 +7,7 @@ import Button from '../../components/Button/Button'
 import * as ROUTES from '../../utils/constants/routes'
 import * as Styles from './OnboardingWelcome.styles'
 
-const OnboardingWelcome = () => {
+const OnboardingWelcome: React.FC<unknown> = () => {
   return (
     <>
       <Styles.Title>Welcome to Pastel NFT</Styles.Title>

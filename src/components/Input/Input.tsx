@@ -2,7 +2,7 @@ import React from 'react'
 
 import * as Styles from './Input.styles'
 
-interface IInputProps {
+export interface IInputProps {
   type: 'text' | 'password' | 'number'
   label?: string
   placeholder?: string

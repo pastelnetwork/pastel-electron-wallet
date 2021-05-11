@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import * as Styles from './StepLogin.styles'
 
-const StepLogin = () => (
+const StepLogin: React.FC<unknown> = () => (
   <>
     <Styles.LoginInput
       type='text'
