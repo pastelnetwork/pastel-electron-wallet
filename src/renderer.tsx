@@ -44,11 +44,15 @@ import store from './redux/store'
 const oneHour = 1000 * 60 * 60
 
 // get pastel price
-store.dispatch(fetchPastelPrice())
+// TODO fix any typing
+// eslint-disable-next-line
+store.dispatch(fetchPastelPrice() as any)
 
 // set up pastel price update timer
 setInterval(() => {
-  store.dispatch(fetchPastelPrice())
+  // TODO fix any typing
+  // eslint-disable-next-line
+  store.dispatch(fetchPastelPrice() as any)
 }, oneHour)
 
 try {
