@@ -445,6 +445,14 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.on('squooshTool', () => {
       openSquooshToolModal()
     })
+
+    ipcRenderer.send('app-ready')
+    ipcRenderer.on('deepLink', (event, arg) => {
+      history.push({
+        pathname: arg.view,
+        search: `?${arg?.param}`,
+      })
+    })
   }
   closeExportPrivKeysModal = () => {
     this.setState({

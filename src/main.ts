@@ -14,7 +14,44 @@ import http from 'http'
 import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
+import pkg from '../package.json'
 import MenuBuilder from './menu'
+
+// Deep linked url
+let deeplinkingUrl: string[] | string
+
+const redirectDeepLinkingUrl = (deepLink: string, m: BrowserWindow) => {
+  if (deepLink.includes(`${pkg.protocolSchemes}://`)) {
+    const url = deepLink.split(`${pkg.protocolSchemes}://`)[1].split('?')
+    m.webContents.send('deepLink', { view: url[0].slice(0, -1), param: url[1] })
+  }
+}
+
+// Force Single Instance Application
+const gotTheLock = app.requestSingleInstanceLock()
+if (gotTheLock) {
+  app.on('second-instance', (e, argv) => {
+    // Someone tried to run a second instance, we should focus our window.
+
+    // Protocol handler for win32
+    // argv: An array of the second instance’s (command line / deep linked) arguments
+    if (process.platform == 'win32') {
+      // Keep only command line / deep linked arguments
+      deeplinkingUrl = argv.slice(1)
+    }
+    console.log('app.makeSingleInstance# ' + deeplinkingUrl)
+
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore()
+      }
+      mainWindow.focus()
+      redirectDeepLinkingUrl(deeplinkingUrl.toString(), mainWindow)
+    }
+  })
+} else {
+  app.quit()
+}
 
 // Enable dev tools
 if (!app.isPackaged) {
@@ -70,6 +107,13 @@ const createWindow = async () => {
   if (!app.isPackaged) {
     w.webContents.openDevTools()
   }
+
+  // Protocol handler for win32
+  if (process.platform == 'win32') {
+    // Keep only command line / deep linked arguments
+    deeplinkingUrl = process.argv.slice(1)
+  }
+  console.log('createWindow# ' + deeplinkingUrl)
 
   app.on('web-contents-created', (event, contents) => {
     contents.on('new-window', async (eventInner, navigationUrl) => {
@@ -167,5 +211,24 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow()
+  }
+})
+
+if (!app.isDefaultProtocolClient(pkg.protocolSchemes)) {
+  // Define custom protocol handler. Deep linking works on packaged versions of the application!
+  app.setAsDefaultProtocolClient(pkg.protocolSchemes)
+}
+
+app.on('will-finish-launching', function () {
+  // Protocol handler for osx
+  app.on('open-url', function (event, url) {
+    event.preventDefault()
+    deeplinkingUrl = url
+  })
+})
+
+ipcMain.on('app-ready', () => {
+  if (mainWindow && deeplinkingUrl) {
+    redirectDeepLinkingUrl(deeplinkingUrl.toString(), mainWindow)
   }
 })
