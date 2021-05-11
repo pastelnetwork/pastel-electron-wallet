@@ -50,6 +50,10 @@ describe('pastelConf/updateDefaultPastelConfig', () => {
   })
 
   test('catches an error if pastel.conf is undefined', async () => {
+    expect.hasAssertions()
+
+    jest.spyOn(fs.promises, 'readFile')
+
     try {
       await updateDefaultPastelConfig('somePath')
     } catch (err) {
