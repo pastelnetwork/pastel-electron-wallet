@@ -8,7 +8,7 @@ import cstyles from '../../legacy/components/Common.module.css'
 import ScrollPane from '../../legacy/components/ScrollPane'
 import Utils from '../../legacy/utils/utils'
 import PastelPaperWalletModal from '../pastelPaperWalletGenerator'
-import { AddressBlock } from './AddressBlock'
+import { AddressBlock, ITransactionsProps } from './AddressBlock'
 import styles from './Receive.module.css'
 
 export interface IAddressesWithBalance {
@@ -39,6 +39,7 @@ export interface IReceiveProps {
   fetchAndSetSingleViewKey(addr: string): void
   createNewAddress(isZaddr: boolean): void
   rerenderKey: string
+  transactions?: ITransactionsProps[]
 }
 
 export const Receive = (props: IReceiveProps): JSX.Element => {
@@ -55,6 +56,7 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
     fetchAndSetSingleViewKey,
     createNewAddress,
     rerenderKey,
+    transactions,
   } = props
 
   const addressMap = addressesWithBalance.reduce((map, a) => {
@@ -155,6 +157,7 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
                   fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
                   hidePrivKey={hidePrivKey}
                   fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
+                  transactions={transactions}
                 />
               ))}
             </Accordion>
