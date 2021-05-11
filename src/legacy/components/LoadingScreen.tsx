@@ -18,6 +18,7 @@ import Logo from '../assets/img/pastel-logo.png'
 import pasteldlogo from '../assets/img/pastel-logo2.png'
 import process from 'process'
 import { checkHashAndDownloadParams } from '../../features/loading'
+import { updateDefaultPastelConfig } from '../../features/pastelConf'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -159,7 +160,13 @@ class LoadingScreen extends Component<any, any> {
     // Load the RPC config from pastel.conf file
     const pastelLocation = locatePastelConf()
     let confValues
-
+    try {
+      await updateDefaultPastelConfig(pastelLocation)
+    } catch (error) {
+      console.warn(
+        `LoadingScreen updateDefaultPastelConfig error: ${error.message}`,
+      )
+    }
     try {
       confValues = ini.parse(
         await fs.promises.readFile(pastelLocation, {
@@ -241,6 +248,7 @@ class LoadingScreen extends Component<any, any> {
     }
 
     await fs.promises.writeFile(pastelConfPath, confContent)
+
     this.setState({
       creatingPastelConf: false,
     })
