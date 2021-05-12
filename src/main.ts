@@ -227,7 +227,7 @@ app.on('will-finish-launching', function () {
   app.on('open-url', function (event, url) {
     event.preventDefault()
     deeplinkingUrl = url
-    if (mainWindow && deeplinkingUrl) {
+    if (mainWindow) {
       redirectDeepLinkingUrl(deeplinkingUrl.toString(), mainWindow)
     }
   })
