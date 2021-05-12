@@ -1,4 +1,6 @@
 import cx from 'classnames'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
 import { clipboard, shell } from 'electron'
 import QRCode from 'qrcode.react'
 import React, { useEffect, useRef, useState } from 'react'
@@ -12,6 +14,15 @@ import {
 import cstyles from '../../legacy/components/Common.module.css'
 import Utils from '../../legacy/utils/utils'
 import styles from './Receive.module.css'
+
+dayjs.extend(relativeTime)
+
+export interface ITransactionsProps {
+  address: string
+  time: number
+  type: string
+  inputAddresses?: string[]
+}
 
 export interface IAddressBlockProps {
   currencyName: string
@@ -30,6 +41,8 @@ export interface IAddressBlockProps {
 
   // deprecated, see Utils.getPslToUsdString
   pslPrice: number
+
+  transactions?: ITransactionsProps[]
 }
 
 export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
@@ -111,10 +124,43 @@ export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
     fetchAndSetSinglePrivKey,
     viewKey,
     fetchAndSetSingleViewKey,
+    transactions,
   } = props
 
   const { address } = addressBalance
   const balance = addressBalance.balance || 0
+
+  const getLastAccessed = () => {
+    if (!transactions) {
+      return null
+    }
+    const transaction = transactions.filter(t => {
+      if (!t) {
+        return false
+      }
+      if (t.address === address) {
+        return true
+      }
+      if (!t.inputAddresses) {
+        return false
+      }
+      return t.inputAddresses.indexOf(address) !== -1
+    })[0]
+    if (transaction?.time) {
+      const txDate = new Date(transaction.time * 1000)
+
+      return (
+        <span className={styles.lastAccessed}>
+          Last transaction to or from Address was
+          <br />
+          {dayjs(txDate).fromNow()} ago ({dayjs(txDate).format('MMM DD, YYYY')}{' '}
+          at {dayjs(txDate).format('hh:mm a')})
+        </span>
+      )
+    }
+
+    return null
+  }
 
   return (
     <AccordionItem
@@ -122,8 +168,15 @@ export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
       uuid={address}
     >
       <AccordionItemHeading>
-        <AccordionItemButton className={cstyles.accordionHeader}>
-          {address}
+        <AccordionItemButton
+          className={cx(
+            cstyles.accordionHeader,
+            styles.flexspacebetween,
+            styles.itemsCenter,
+          )}
+        >
+          <span>{address}</span>
+          {getLastAccessed()}
         </AccordionItemButton>
       </AccordionItemHeading>
       <AccordionItemPanel className={cx(styles.receiveDetail)}>

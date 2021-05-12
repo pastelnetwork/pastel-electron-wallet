@@ -32,6 +32,7 @@ import {
   TGettxoutsetinfo,
   TGetwalletinfo,
   Tlistaddresses,
+  TListReceivedByAddress,
   TListTransactions,
   Tlisttransactions,
   TListUnspent,
@@ -49,6 +50,7 @@ import {
   TValidateaddress,
   TValidateaddresses,
   TWalletInfo,
+  TZListReceivedByAddress,
 } from './type'
 
 type TStatistic = {
@@ -155,7 +157,7 @@ export async function getRawTransaction(
 ): Promise<TRawTransaction> {
   const { result } = await rpc<TGetrawtransaction>(
     'getrawtransaction',
-    [txId],
+    [txId, 1],
     config,
   )
   return result
@@ -295,5 +297,17 @@ export async function getTotalBalance(
 
 export async function listAddresses(config: TRPCConfig): Promise<string[]> {
   const { result } = await rpc<Tlistaddresses>('z_listaddresses', [], config)
+  return result
+}
+
+export async function zListReceivedByAddress(
+  zaddress: string,
+  config: TRPCConfig,
+): Promise<TZListReceivedByAddress[]> {
+  const { result } = await rpc<TListReceivedByAddress>(
+    'z_listreceivedbyaddress',
+    [zaddress, 0],
+    config,
+  )
   return result
 }

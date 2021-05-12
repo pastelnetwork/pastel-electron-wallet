@@ -521,6 +521,7 @@ class RouteApp extends React.Component<any, any> {
                     addressViewKeys={addressViewKeys}
                     receivePageState={receivePageState}
                     addressBook={addressBook}
+                    transactions={transactions}
                     {...standardProps}
                     fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
                     hidePrivKey={this.hidePrivKey}
