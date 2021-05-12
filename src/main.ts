@@ -23,7 +23,15 @@ let deeplinkingUrl: string[] | string
 const redirectDeepLinkingUrl = (deepLink: string, m: BrowserWindow) => {
   if (deepLink.includes(`${pkg.protocolSchemes.native}://`)) {
     const url = deepLink.split(`${pkg.protocolSchemes.native}://`)[1].split('?')
-    m.webContents.send('deepLink', { view: url[0].slice(0, -1), param: url[1] })
+
+    if (process.platform == 'win32') {
+      m.webContents.send('deepLink', {
+        view: url[0].slice(0, -1),
+        param: url[1],
+      })
+    } else {
+      m.webContents.send('deepLink', { view: url[0], param: url[1] })
+    }
   }
 }
 
@@ -39,7 +47,6 @@ if (gotTheLock) {
       // Keep only command line / deep linked arguments
       deeplinkingUrl = argv.slice(1)
     }
-    console.log('app.makeSingleInstance# ' + deeplinkingUrl)
 
     if (mainWindow) {
       if (mainWindow.isMinimized()) {
@@ -113,13 +120,9 @@ const createWindow = async () => {
     // Keep only command line / deep linked arguments
     deeplinkingUrl = process.argv.slice(1)
   }
-  console.log('createWindow# ' + deeplinkingUrl)
 
   app.on('web-contents-created', (event, contents) => {
     contents.on('new-window', async (eventInner, navigationUrl) => {
-      // In this example, we'll ask the operating system
-      // to open this event's url in the default browser.
-      console.log('attempting to open window', navigationUrl)
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
@@ -224,6 +227,9 @@ app.on('will-finish-launching', function () {
   app.on('open-url', function (event, url) {
     event.preventDefault()
     deeplinkingUrl = url
+    if (mainWindow && deeplinkingUrl) {
+      redirectDeepLinkingUrl(deeplinkingUrl.toString(), mainWindow)
+    }
   })
 })
 
