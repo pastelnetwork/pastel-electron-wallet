@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { LocationState } from '../creator'
+export type LocationState = {
+  param: string
+}
 
 export default function Nft(): JSX.Element {
   const location = useLocation<LocationState>()
