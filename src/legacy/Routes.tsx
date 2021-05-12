@@ -46,6 +46,9 @@ import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/pastelExpertConsole'
+import Creator from '../features/creator'
+import Collector from '../features/collector'
+import Nft from '../features/nft'
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -562,6 +565,12 @@ class RouteApp extends React.Component<any, any> {
                   />
                 )}
               />
+
+              <Route path={routes.CREATOR} render={() => <Creator />} />
+
+              <Route path={routes.COLLECTOR} render={() => <Collector />} />
+
+              <Route path={routes.NFT} render={() => <Nft />} />
 
               <Route
                 path={routes.PASTELD}

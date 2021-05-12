@@ -21,8 +21,8 @@ import MenuBuilder from './menu'
 let deeplinkingUrl: string[] | string
 
 const redirectDeepLinkingUrl = (deepLink: string, m: BrowserWindow) => {
-  if (deepLink.includes(`${pkg.protocolSchemes}://`)) {
-    const url = deepLink.split(`${pkg.protocolSchemes}://`)[1].split('?')
+  if (deepLink.includes(`${pkg.protocolSchemes.native}://`)) {
+    const url = deepLink.split(`${pkg.protocolSchemes.native}://`)[1].split('?')
     m.webContents.send('deepLink', { view: url[0].slice(0, -1), param: url[1] })
   }
 }
@@ -214,9 +214,9 @@ app.on('activate', () => {
   }
 })
 
-if (!app.isDefaultProtocolClient(pkg.protocolSchemes)) {
+if (!app.isDefaultProtocolClient(pkg.protocolSchemes.native)) {
   // Define custom protocol handler. Deep linking works on packaged versions of the application!
-  app.setAsDefaultProtocolClient(pkg.protocolSchemes)
+  app.setAsDefaultProtocolClient(pkg.protocolSchemes.native)
 }
 
 app.on('will-finish-launching', function () {

@@ -450,7 +450,7 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.on('deepLink', (event, arg) => {
       history.push({
         pathname: arg.view,
-        search: `?${arg?.param}`,
+        state: { param: arg.param },
       })
     })
   }

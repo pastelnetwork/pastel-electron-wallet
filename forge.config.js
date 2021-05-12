@@ -44,7 +44,7 @@ module.exports = {
       {
         protocol: package.name,
         name: package.name,
-        schemes: [package.protocolSchemes],
+        schemes: [package.protocolSchemes.native],
       },
     ],
   },
