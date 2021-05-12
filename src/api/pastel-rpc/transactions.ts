@@ -1,12 +1,13 @@
 import m from 'hex-string'
 
+// this library and functions removed, should call rpc func directly.
 import {
   getRawTransaction,
   getWalletTransaction,
   listAddresses,
   listTransactions,
   zListReceivedByAddress,
-} from './network-stats'
+} from './network-stats/network-stats'
 import {
   TDetails,
   TListTransactions,
