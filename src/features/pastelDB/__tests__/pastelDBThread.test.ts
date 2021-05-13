@@ -623,7 +623,9 @@ describe('PastelDBThread', () => {
       expect(fetchTotalbalanceSpy).toHaveBeenCalled()
       expect(fetchListaddressesSpy).toHaveBeenCalled()
     } catch (e) {
-      expect(e)
+      expect(e.message).toEqual(
+        'pastelDBThread fetchRawMempoolInfo error: undefined',
+      )
     }
   })
 })
