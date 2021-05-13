@@ -1,6 +1,7 @@
 import {
   Document,
   Page,
+  PDFDownloadLink,
   PDFViewer,
   StyleSheet,
   Text,
@@ -69,9 +70,6 @@ export default function PastelPaperWalletModal({
       fontWeight: 'normal',
       wordBreak: 'break-all',
     },
-    marginRight30: {
-      marginRight: '30px',
-    },
     marginTop20: {
       marginTop: '20px',
     },
@@ -106,6 +104,88 @@ export default function PastelPaperWalletModal({
     },
   })
 
+  const splitStringIntoChunks = (s: string, numChunks: number) => {
+    if (numChunks > s.length) {
+      return [s]
+    }
+
+    if (s.length < 16) {
+      return [s]
+    }
+
+    const chunkSize = Math.round(s.length / numChunks)
+    const chunks = []
+
+    for (let i = 0; i < numChunks - 1; i++) {
+      chunks.push(s.substr(i * chunkSize, chunkSize))
+    } // Last chunk might contain un-even length
+
+    chunks.push(s.substr((numChunks - 1) * chunkSize))
+    return chunks
+  }
+
+  const generateFileName = () => {
+    const addr = splitStringIntoChunks(address, 6)[0]
+    const title = `PSL_Paper_Wallet__Shielded_Address_${addr}`
+    const date = new Date()
+    const dateTime = `${
+      date.getMonth() + 1
+    }_${date.getDate()}_${date.getFullYear()}__${date.getHours()}_${date.getMinutes()}`
+    return `${title}_${dateTime}.pdf`
+  }
+
+  const PDFDocument = () => (
+    <Document>
+      <Page size='A4' style={pdfStyles.page}>
+        <View style={pdfStyles.section}>
+          <View style={pdfStyles.contentTop}>
+            <View style={pdfStyles.topMedia}>
+              <QRCodeGEnerator address={address} />
+            </View>
+            <View style={pdfStyles.contentWrapper}>
+              <Text style={pdfStyles.contentTitle}>
+                {info.currencyName} Address (Sapling)
+              </Text>
+              <Text style={pdfStyles.contentValue}>
+                {address.replace(/(.{40})/g, `$1${breakChar}`)}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.mainContent}>
+            <View style={pdfStyles.mainContentWrapper}>
+              <View style={pdfStyles.contentItem}>
+                <Text style={pdfStyles.contentTitle}>Private Key</Text>
+                <Text style={pdfStyles.contentValue}>
+                  {privateKey.replace(/(.{40})/g, `$1${breakChar}`)}
+                </Text>
+              </View>
+              <View style={pdfStyles.marginTop20}>
+                <Text style={pdfStyles.contentTitle}>
+                  {info.currencyName} Address (Sapling)
+                </Text>
+                <Text style={pdfStyles.contentValue}>
+                  {address.replace(/(.{40})/g, `$1${breakChar}`)}
+                </Text>
+              </View>
+            </View>
+            <View style={pdfStyles.mainMedia}>
+              <QRCodeGEnerator address={address} />
+            </View>
+          </View>
+        </View>
+      </Page>
+    </Document>
+  )
+
+  const DownloadButton = () => (
+    <button className={styles.btn_download} id='PDFDownloadBtn'>
+      <PDFDownloadLink
+        document={<PDFDocument />}
+        fileName={generateFileName()}
+      />
+    </button>
+  )
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -120,47 +200,9 @@ export default function PastelPaperWalletModal({
         >
           X
         </button>
+        <DownloadButton />
         <PDFViewer style={pdfStyles.viewer}>
-          <Document>
-            <Page size='A4' style={pdfStyles.page}>
-              <View style={pdfStyles.section}>
-                <View style={pdfStyles.contentTop}>
-                  <View style={pdfStyles.topMedia}>
-                    <QRCodeGEnerator address={address} />
-                  </View>
-                  <View style={pdfStyles.contentWrapper}>
-                    <Text style={pdfStyles.contentTitle}>
-                      {info.currencyName} Address (Sapling)
-                    </Text>
-                    <Text style={pdfStyles.contentValue}>
-                      {address.replace(/(.{40})/g, `$1${breakChar}`)}
-                    </Text>
-                  </View>
-                </View>
-                <View style={pdfStyles.mainContent}>
-                  <View style={pdfStyles.mainContentWrapper}>
-                    <View style={pdfStyles.contentItem}>
-                      <Text style={pdfStyles.contentTitle}>Private Key</Text>
-                      <Text style={pdfStyles.contentValue}>
-                        {privateKey.replace(/(.{40})/g, `$1${breakChar}`)}
-                      </Text>
-                    </View>
-                    <View style={pdfStyles.marginTop20}>
-                      <Text style={pdfStyles.contentTitle}>
-                        {info.currencyName} Address (Sapling)
-                      </Text>
-                      <Text style={pdfStyles.contentValue}>
-                        {address.replace(/(.{40})/g, `$1${breakChar}`)}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={pdfStyles.mainMedia}>
-                    <QRCodeGEnerator address={address} />
-                  </View>
-                </View>
-              </View>
-            </Page>
-          </Document>
+          <PDFDocument />
         </PDFViewer>
       </div>
     </Modal>
