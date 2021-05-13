@@ -6,8 +6,6 @@ export type TRPCConfig = {
   password: string
 }
 
-export type TRPCParam = string | boolean | number
-
 export async function rpc<T>(
   method: string,
   params: (string | boolean | number)[],

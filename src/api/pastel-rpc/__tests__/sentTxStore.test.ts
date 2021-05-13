@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { loadSentTxns } from '../sent-tx-store'
+import { loadSentTxns } from '../../../features/pastelLib/sent-tx-store'
 
 jest.mock('fs', () => ({
   promises: {

@@ -1,8 +1,8 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import { TListTransactions } from '../network-stats/type'
-import { fetchTandZTransactions } from '../transactions'
+import { TListTransactions } from '../../../features/pastelDB/type'
+import { fetchTandZTransactions } from '../../../features/pastelLib/transactions'
 
 jest.mock('fs', () => ({
   promises: {

@@ -8,7 +8,7 @@ import {
   TListTransactions,
   TSentTxStore,
   TVjoinsplit,
-} from './network-stats/type'
+} from '../pastelDB/type'
 
 const locateSentTxStore = (): string => {
   if (os.platform() === 'darwin') {
@@ -35,13 +35,37 @@ export const loadSentTxns = async (): Promise<TListTransactions | []> => {
       (await fs.promises.readFile(locateSentTxStore())).toString(),
     )
     return sentTx.map((s: TSentTxStore) => {
-      const transction: TListTransactions = new Transaction()
+      const transction: TListTransactions = {
+        account: '',
+        address: '',
+        category: '',
+        amount: 0,
+        vout: 0,
+        confirmations: 0,
+        blockhash: 0,
+        blockindex: 0,
+        blocktime: 0,
+        expiryheight: 0,
+        txid: '',
+        walletconflicts: [],
+        time: 0,
+        timereceived: 0,
+        vjoinsplit: [],
+        size: 0,
+        lastblock: '',
+      }
       transction.type = s.type
       transction.amount = s.amount
       transction.address = s.from
       transction.txid = s.txid
       transction.time = s.datetime
-      transction.detailedTxns = [new TxDetail()]
+      const detailedTxns: TxDetail[] = [
+        {
+          address: '',
+          amount: 0,
+        },
+      ]
+      transction.detailedTxns = detailedTxns
       transction.detailedTxns[0].address = s.address
       transction.detailedTxns[0].amount = s.amount
       transction.detailedTxns[0].memo = s.memo
@@ -53,18 +77,13 @@ export const loadSentTxns = async (): Promise<TListTransactions | []> => {
   }
 }
 
-export class TxDetail {
+export type TxDetail = {
   address: string
   amount: number
   memo?: string | null
-
-  constructor() {
-    this.address = ''
-    this.amount = 0
-  }
 }
 
-export class Transaction {
+export type Transaction = {
   account: string
   address: string
   category: string
@@ -86,24 +105,4 @@ export class Transaction {
   type?: string
   detailedTxns?: TDetailedTxns[]
   inputAddresses?: string[]
-
-  constructor() {
-    this.account = ''
-    this.address = ''
-    this.category = ''
-    this.amount = 0
-    this.vout = 0
-    this.confirmations = 0
-    this.blockhash = 0
-    this.blockindex = 0
-    this.blocktime = 0
-    this.expiryheight = 0
-    this.txid = ''
-    this.walletconflicts = []
-    this.time = 0
-    this.timereceived = 0
-    this.vjoinsplit = []
-    this.size = 0
-    this.lastblock = ''
-  }
 }
