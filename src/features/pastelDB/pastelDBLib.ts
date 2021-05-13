@@ -4,22 +4,6 @@ import path from 'path'
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 
 import {
-  TBlockInfo,
-  TBlockSubsidy,
-  TChainTips,
-  TListTransactions,
-  TListUnspent,
-  TMempoolInfo,
-  TMiningInfo,
-  TNetTotals,
-  TNetworkInfo,
-  TRawMempool,
-  TRawTransaction,
-  TTotalBalance,
-  TTxoutsetInfo,
-  TWalletInfo,
-} from '../../api/pastel-rpc/network-stats/type'
-import {
   createBlock,
   createBlocksubsidy,
   createChaintips,
@@ -61,6 +45,23 @@ import {
   tableNames,
   whereTransactionIDMatchingQuery,
 } from './constants'
+import {
+  TBlockInfo,
+  TBlockSubsidy,
+  TChainTips,
+  TListTransactions,
+  TListUnspent,
+  TMempoolInfo,
+  TMiningInfo,
+  TNetTotals,
+  TNetworkInfo,
+  TRawMempool,
+  TRawTransaction,
+  TTotalBalance,
+  TTransactionInfo,
+  TTxoutsetInfo,
+  TWalletInfo,
+} from './type'
 
 export const readSqliteDBFile = async (): Promise<Buffer> => {
   return await fs.promises.readFile(
@@ -93,14 +94,14 @@ export const createDatabase = async (): Promise<Database> => {
   }
 }
 
-export const saveDataToLocalSqlite = async (db: Database): Promise<void> => {
+export async function exportSqliteDB(db: Database): Promise<void> {
   const data = db.export()
   const buffer = Buffer.from(data)
   await writeSqliteDBFile(buffer)
   return
 }
 
-export const createTables = async (db: Database): Promise<void> => {
+export async function createTables(db: Database): Promise<void> {
   db.exec(createStatisticinfo)
   db.exec(createNetworkinfo)
   db.exec(createNettotals)
@@ -122,12 +123,12 @@ export const createTables = async (db: Database): Promise<void> => {
   return
 }
 
-export const validateDataFromDB = (
+export function validateDataFromDB(
   pastelDB: Database,
   tableName: string,
   transactionid: string,
   time: number,
-): boolean => {
+): boolean {
   if (tableNames[tableName] !== true) {
     throw new Error('pastelDB validateDataFromDB error: table name is invalid')
   }
@@ -142,10 +143,7 @@ export const validateDataFromDB = (
   return sqlResult.length ? false : true
 }
 
-export const getLastIdFromDB = (
-  pastelDB: Database,
-  tableName: string,
-): number => {
+export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
   if (tableNames[tableName] !== true) {
     throw new Error('pastelDB getLastIdFromDB error: table name is invalid')
   }
@@ -159,11 +157,11 @@ export const getLastIdFromDB = (
   }
 }
 
-export const insertStatisticDataToDB = (
+export function insertStatisticDataToDB(
   pastelDB: Database,
   hashrate: number,
   difficulty: number,
-): void => {
+): void {
   const createTimestamp: number = +new Date()
   const newId = getLastIdFromDB(pastelDB, 'statisticinfo')
   const values = {
@@ -172,14 +170,13 @@ export const insertStatisticDataToDB = (
     $difficulty: difficulty,
     $createTimestamp: createTimestamp,
   }
-
   pastelDB.exec(insertStatisticinfoQuery, values)
 }
 
-export const getDatasFromDB = (
+export function getDatasFromDB(
   pastelDB: Database,
   tableName: string,
-): QueryExecResult[] => {
+): QueryExecResult[] {
   if (tableNames[tableName] !== true) {
     throw new Error('pastelDB getDatasFromDB error: table name is invalid')
   }
@@ -189,10 +186,10 @@ export const getDatasFromDB = (
   return sqlResult
 }
 
-export const insertNetworkInfotoDB = (
+export function insertNetworkInfoToDB(
   pastelDB: Database,
   networkinfo: TNetworkInfo,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'networkinfo')
   const networks = JSON.stringify(networkinfo.networks)
@@ -215,10 +212,10 @@ export const insertNetworkInfotoDB = (
   pastelDB.exec(insertNetworkinfoQuery, values)
 }
 
-export const insertNetTotalsToDB = (
+export function insertNetTotalsToDB(
   pastelDB: Database,
   nettotals: TNetTotals,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'nettotals')
   const values = {
@@ -232,10 +229,10 @@ export const insertNetTotalsToDB = (
   pastelDB.exec(insertNettotalsQuery, values)
 }
 
-export const insertMempoolinfoToDB = (
+export function insertMempoolInfoToDB(
   pastelDB: Database,
   mempoolinfo: TMempoolInfo,
-): void => {
+): void {
   const createTimestamp: number = +new Date()
   const newId = getLastIdFromDB(pastelDB, 'mempoolinfo')
   const values = {
@@ -249,10 +246,10 @@ export const insertMempoolinfoToDB = (
   pastelDB.exec(insertMempoolinfoQuery, values)
 }
 
-export const insertRawMempoolinfoToDB = (
+export function insertRawMempoolinfoToDB(
   pastelDB: Database,
   mempoolinfo: TRawMempool,
-): void => {
+): void {
   if (
     !validateDataFromDB(
       pastelDB,
@@ -284,13 +281,13 @@ export const insertRawMempoolinfoToDB = (
   pastelDB.exec(insertRawmempoolinfoQuery, values)
 }
 
-export const insertMiningInfoToDB = (
+export function insertMiningInfoToDB(
   pastelDB: Database,
   mininginfo: TMiningInfo,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'mininginfo')
-  const generate = mininginfo.generate.toString()
+  const generate = mininginfo.generate ? mininginfo.generate?.toString() : ''
   const values = {
     $newId: newId,
     $blocks: mininginfo.blocks,
@@ -312,10 +309,10 @@ export const insertMiningInfoToDB = (
   pastelDB.exec(insertMininginfoQuery, values)
 }
 
-export const insertBlockInfoToDB = (
+export function insertBlockInfoToDB(
   pastelDB: Database,
   blockInfo: TBlockInfo,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'blockinfo')
   const valuePools = JSON.stringify(blockInfo.valuePools)
@@ -345,13 +342,15 @@ export const insertBlockInfoToDB = (
   pastelDB.exec(insertBlockinfoQuery, values)
 }
 
-export const insertRawtransaction = (
+export function insertRawtransaction(
   pastelDB: Database,
   rawtransaction: TRawTransaction,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'rawtransaction')
-  const overwintered = rawtransaction.overwintered.toString()
+  const overwintered = rawtransaction.overwintered
+    ? rawtransaction.overwintered.toString()
+    : ''
   const vin = JSON.stringify(rawtransaction.vin)
   const vout = JSON.stringify(rawtransaction.vout)
   const vjoinsplit = JSON.stringify(rawtransaction.vjoinsplit)
@@ -379,40 +378,38 @@ export const insertRawtransaction = (
 
 export const insertTransaction = (
   pastelDB: Database,
-  transactionInfo: TRawTransaction,
+  transactionInfo: TTransactionInfo,
 ): void => {
-  const createTimestamp = Date.now()
+  const createTimestamp: string = new Date().toLocaleTimeString()
   const newId = getLastIdFromDB(pastelDB, 'transaction_tbl')
-  const overwintered = transactionInfo.overwintered.toString()
-  const vin = JSON.stringify(transactionInfo.vin)
-  const vout = JSON.stringify(transactionInfo.vout)
+  const details = JSON.stringify(transactionInfo.details)
   const vjoinsplit = JSON.stringify(transactionInfo.vjoinsplit)
+  const walletconflicts = JSON.stringify(transactionInfo.walletconflicts)
   const values = {
     $newId: newId,
-    $hex: transactionInfo.hex,
-    $txid: transactionInfo.txid,
-    $overwintered: overwintered,
-    $version: transactionInfo.version,
-    $versiongroupid: transactionInfo.versiongroupid,
-    $locktime: transactionInfo.locktime,
-    $expiryheight: transactionInfo.expiryheight,
-    $vin: vin,
-    $vout: vout,
-    $vjoinsplit: vjoinsplit,
+    $amount: transactionInfo.amount,
     $blockhash: transactionInfo.blockhash,
-    $confirmations: transactionInfo.confirmations,
-    $time: transactionInfo.time,
+    $blockindex: transactionInfo.blockindex,
     $blocktime: transactionInfo.blocktime,
+    $confirmations: transactionInfo.confirmations,
+    $details: details,
+    $expiryheight: transactionInfo.expiryheight,
+    $hex: transactionInfo.hex,
+    $time: transactionInfo.time,
+    $timereceived: transactionInfo.timereceived,
+    $txid: transactionInfo.txid,
+    $vjoinsplit: vjoinsplit,
+    $walletconflicts: walletconflicts,
     $createTimestamp: createTimestamp,
   }
 
   pastelDB.exec(insertTransactionTableQuery, values)
 }
 
-export const insertTxoutsetinfo = (
+export function insertTxoutsetinfo(
   pastelDB: Database,
   txoutsetinfo: TTxoutsetInfo,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'txoutsetinfo')
   const values = {
@@ -430,10 +427,10 @@ export const insertTxoutsetinfo = (
   pastelDB.exec(insertTxoutsetinfoQuery, values)
 }
 
-export const insertChaintips = (
+export function insertChaintips(
   pastelDB: Database,
   chaintips: TChainTips,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'chaintips')
   const values = {
@@ -448,10 +445,10 @@ export const insertChaintips = (
   pastelDB.exec(insertChaintipsQuery, values)
 }
 
-export const insertBlocksubsidy = (
+export function insertBlocksubsidy(
   pastelDB: Database,
   blocksubsidy: TBlockSubsidy,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'blocksubsidy')
   const values = {
@@ -465,10 +462,10 @@ export const insertBlocksubsidy = (
   pastelDB.exec(insertBlocksubsidyQuery, values)
 }
 
-export const insertWalletinfo = (
+export function insertWalletinfo(
   pastelDB: Database,
   walletinfo: TWalletInfo,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'walletinfo')
   const values = {
@@ -488,10 +485,10 @@ export const insertWalletinfo = (
   pastelDB.exec(insertWalletinfoQuery, values)
 }
 
-export const insertListTransactions = (
+export function insertListTransactions(
   pastelDB: Database,
   listtransactions: TListTransactions,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listtransactions')
   const walletconflicts = JSON.stringify(listtransactions.walletconflicts)
@@ -521,10 +518,10 @@ export const insertListTransactions = (
   pastelDB.exec(insertListtransactionsQuery, values)
 }
 
-export const insertListunspent = (
+export function insertListunspent(
   pastelDB: Database,
   listunspent: TListUnspent,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listunspent')
   const generated = listunspent.generated.toString()
@@ -544,10 +541,10 @@ export const insertListunspent = (
   pastelDB.exec(insertListunspentQuery, values)
 }
 
-export const insertTotalbalance = (
+export function insertTotalbalance(
   pastelDB: Database,
   totalBalance: TTotalBalance,
-): void => {
+): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'totalbalance')
   const values = {
@@ -560,10 +557,7 @@ export const insertTotalbalance = (
   pastelDB.exec(insertTotalbalanceQuery, values)
 }
 
-export const insertListaddresses = (
-  pastelDB: Database,
-  address: string,
-): void => {
+export function insertListaddresses(pastelDB: Database, address: string): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listaddresses')
   const values = {
