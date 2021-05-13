@@ -73,7 +73,7 @@ export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
   await fs.promises.writeFile(
     path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
     buffer,
-    { flag: 'a+' },
+    { flag: 'w+' },
   )
 }
 

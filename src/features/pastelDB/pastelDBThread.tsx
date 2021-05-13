@@ -3,6 +3,7 @@ import { Database } from 'sql.js'
 import { rpc, TRPCConfig } from '../../api/pastel-rpc/rpc'
 import PastelDB from '../../features/pastelDB/database'
 import {
+  exportSqliteDB,
   insertBlockInfoToDB,
   insertBlocksubsidy,
   insertChaintips,
@@ -365,6 +366,7 @@ export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
       fetchTotalbalance(pastelConfig),
       fetchListaddresses(pastelConfig),
     ])
+    await exportSqliteDB(pastelDB)
   }
   return
 }
