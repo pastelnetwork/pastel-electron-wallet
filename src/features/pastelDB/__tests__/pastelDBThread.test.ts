@@ -627,7 +627,9 @@ describe('PastelDBThread', () => {
       expect(fetchListaddressesSpy).toHaveBeenCalled()
       expect(exportSqliteDBSpy).toHaveBeenCalled()
     } catch (e) {
-      expect(e)
+      expect(e.message).toEqual(
+        'pastelDBThread fetchRawMempoolInfo error: undefined',
+      )
     }
   })
 })
