@@ -119,7 +119,12 @@ const pdfStyles = StyleSheet.create({
 })
 const breakChar = '\u00ad'
 
-function PDFDocument({ address, currencyName, privateKey, title }: PDFDocumentProps) {
+function PDFDocument({
+  address,
+  currencyName,
+  privateKey,
+  title,
+}: PDFDocumentProps) {
   return (
     <Document title={title}>
       <Page size='A4' style={pdfStyles.page}>
