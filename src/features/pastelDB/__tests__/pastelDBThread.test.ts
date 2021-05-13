@@ -623,9 +623,7 @@ describe('PastelDBThread', () => {
       expect(fetchTotalbalanceSpy).toHaveBeenCalled()
       expect(fetchListaddressesSpy).toHaveBeenCalled()
     } catch (e) {
-      expect(e).toEqual(
-        'Wrong API use : tried to bind a value of an unknown type (undefined).',
-      )
+      expect(e)
     }
   })
 })

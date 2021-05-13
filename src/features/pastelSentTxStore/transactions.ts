@@ -1,7 +1,7 @@
 import m from 'hex-string'
 
 import { rpc, TRPCConfig } from '../../api/pastel-rpc/rpc'
-import * as types from '../../features/pastelDB/type'
+import * as types from '../pastelDB/type'
 import { loadSentTxns } from './sent-tx-store'
 
 const parseMemo = (memoHex: string) => {
