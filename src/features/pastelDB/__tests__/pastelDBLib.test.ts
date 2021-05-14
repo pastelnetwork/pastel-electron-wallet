@@ -329,24 +329,7 @@ describe('managePastelDatabase', () => {
     pastelDB.db.exec(insertTransactionTableQuery, values)
     const result: QueryExecResult[] = getDatafromDB('transaction_tbl')
     expect(result[0].values).toStrictEqual([
-      [
-        1,
-        '1',
-        'txid',
-        null,
-        null,
-        null,
-        null,
-        1,
-        null,
-        null,
-        '',
-        '',
-        '',
-        0,
-        0,
-        0,
-      ],
+      [1, 1, '', 1, 0, '', '', 1, '1', 0, 0, 'txid', '', '', 0],
     ])
   })
 

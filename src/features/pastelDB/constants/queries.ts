@@ -113,20 +113,19 @@ export const createRawtransaction = `CREATE TABLE rawtransaction (
 
 export const createTransaction = `CREATE TABLE transaction_tbl (
   id int NOT NULL,
-  hex VARCHAR(255),
-  txid VARCHAR(255),
-  overwintered boolean,
-  version int,
-  versiongroupid VARCHAR(255),
-  locktime int,
-  expiryheight int,
-  vin text,
-  vout text,
-  vjoinsplit text,
+  amount int,
   blockhash VARCHAR(255),
-  confirmations int,
-  time int,
+  blockindex int,
   blocktime int,
+  confirmations int,
+  details text,
+  expiryheight int,
+  hex VARCHAR(255),
+  time int,
+  timereceived int,
+  txid VARCHAR(255),
+  vjoinsplit text,
+  walletconflicts text,
   create_timestamp int    
 )`
 
@@ -347,20 +346,19 @@ export const insertRawtransactionQuery = `INSERT INTO rawtransaction VALUES (
 
 export const insertTransactionTableQuery = `INSERT INTO transaction_tbl VALUES (
   $newId,
-  $hex,
-  $txid,
-  $overwintered,
-  $version,
-  $versiongroupid,
-  $locktime,
-  $expiryheight,
-  $vin,
-  $vout,
-  $vjoinsplit,
+  $amount,
   $blockhash,
-  $confirmations,
-  $time,
+  $blockindex,
   $blocktime,
+  $confirmations,
+  $details,
+  $expiryheight,
+  $hex,
+  $time,
+  $timereceived,
+  $txid,
+  $vjoinsplit,
+  $walletconflicts,
   $createTimestamp
 )`
 
