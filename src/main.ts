@@ -238,11 +238,3 @@ const checkSignatureExists = () => {
 
   return true
 }
-
-// Log both at dev console and at running node console instance
-function logEverywhere(s: any) {
-  console.log(s)
-  if (mainWindow && mainWindow.webContents) {
-    mainWindow.webContents.executeJavaScript(`console.log(1111, '${s}')`)
-  }
-}
