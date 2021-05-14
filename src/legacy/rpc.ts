@@ -14,7 +14,7 @@ import {
 } from './components/AppState'
 import Utils, { NO_CONNECTION } from './utils/utils'
 import SentTxStore from './utils/SentTxStore'
-import { fetchTandZTransactions } from '../api/pastel-rpc/transactions'
+import { fetchTandZTransactions } from '../features/pastelSentTxStore/transactions'
 
 const parseMemo = (memoHex: any) => {
   if (!memoHex || memoHex.length < 2) return null // First, check if this is a memo (first byte is less than 'f6' (246))
