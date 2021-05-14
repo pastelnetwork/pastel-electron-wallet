@@ -20,3 +20,22 @@
 .buttonMarginTop {
   margin-top: 10px;
 }
+
+.lastAccessed {
+  display: inline-block;
+  max-width: 225px;
+  margin-left: 10px;
+  font-size: 12px;
+  font-style: italic;
+  color: #fff;
+  text-align: right;
+}
+
+.flexspacebetween {
+  display: flex;
+  justify-content: space-between;
+}
+
+.itemsCenter {
+  align-items: center;
+}
