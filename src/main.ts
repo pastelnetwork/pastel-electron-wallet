@@ -186,9 +186,9 @@ ipcMain.on('app-ready', () => {
       serverType: 'default',
     })
     autoUpdater.checkForUpdates()
-    setTimeout(() => {
+    setInterval(() => {
       autoUpdater.checkForUpdates()
-    }, 3600000) // 1 hour
+    }, 4 * 60 * 60 * 1000)
   }
 })
 

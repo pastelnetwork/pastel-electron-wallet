@@ -42,7 +42,7 @@ export default function UpdateToast(): JSX.Element {
           className={cx(styles.btn, cstyles.primaryButton)}
           onClick={handleUpdate}
         >
-          Update
+          OK
         </button>
         <button
           type='button'
