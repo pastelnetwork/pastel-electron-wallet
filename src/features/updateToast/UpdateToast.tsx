@@ -2,6 +2,7 @@ import cx from 'classnames'
 import { ipcRenderer, shell } from 'electron'
 import React from 'react'
 
+import pkg from '../../../package.json'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import cstyles from '../Common.module.css'
 import styles from './UpdateToast.module.css'
@@ -12,9 +13,7 @@ export default function UpdateToast(): JSX.Element {
   const dispatch = useAppDispatch()
 
   const openLearnMore = () => {
-    shell.openExternal(
-      'https://github.com/pastelnetwork/pastel-electron-wallet/releases',
-    )
+    shell.openExternal(`https://github.com/${pkg.repoName}/releases`)
   }
 
   const handleUpdate = () => {
