@@ -443,12 +443,13 @@ class Sidebar extends PureComponent<any, any> {
       openAboutModal()
     }) // About
 
-    ipcRenderer.on('update_downloaded', () => {
-      openUpdateToast()
-    })
-
     ipcRenderer.on('squooshTool', () => {
       openSquooshToolModal()
+    })
+
+    ipcRenderer.send('app-ready')
+    ipcRenderer.on('update_downloaded', () => {
+      openUpdateToast()
     })
   }
   closeExportPrivKeysModal = () => {

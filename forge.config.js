@@ -36,15 +36,6 @@ function getIcon() {
   }
 }
 
-// if (process.env['WINDOWS_CODESIGN_FILE']) {
-//   const certPath = path.join(__dirname, 'win-certificate.pfx')
-//   const certExists = fs.existsSync(certPath)
-
-//   if (certExists) {
-//     process.env['WINDOWS_CODESIGN_FILE'] = certPath
-//   }
-// }
-
 module.exports = {
   packagerConfig: {
     name: package.productName,
@@ -68,16 +59,6 @@ module.exports = {
     {
       name: '@electron-forge/maker-squirrel',
       config: arch => {
-        // const certificateFile = process.env.CI
-        //   ? path.join(__dirname, 'cert.p12')
-        //   : process.env.WINDOWS_CERTIFICATE_FILE
-
-        // if (!certificateFile || !fs.existsSync(certificateFile)) {
-        //   console.warn(
-        //     `Warning: Could not find certificate file at ${certificateFile}`,
-        //   )
-        // }
-
         return {
           exe: `${package.name}.exe`,
           setupIcon: './static/icons/icon.ico',
@@ -87,8 +68,6 @@ module.exports = {
           title: package.productName,
           setupExe: `${package.productName} Setup - v${package.version}.exe`,
           skipUpdateIcon: true,
-          // certificateFile: process.env['WINDOWS_CODESIGN_FILE'],
-          // certificatePassword: process.env['WINDOWS_CODESIGN_PASSWORD'],
         }
       },
     },

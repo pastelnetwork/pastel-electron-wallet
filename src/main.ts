@@ -153,23 +153,6 @@ const createWindow = async () => {
     })
     // Listen
     server.listen(5100)
-
-    if (app.isPackaged && checkSignatureExists()) {
-      const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
-        process.arch
-      }/${app.getVersion()}`
-      const requestHeaders = {
-        'User-Agent': `${pkg.name}/${pkg.version} (${process.platform}: ${process.arch})`,
-      }
-      autoUpdater.setFeedURL({
-        url: feedURL,
-        headers: requestHeaders,
-      })
-      autoUpdater.checkForUpdates()
-      setTimeout(() => {
-        autoUpdater.checkForUpdates()
-      }, 3600000) // 1 hour
-    }
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
@@ -192,6 +175,23 @@ app.on('activate', () => {
   }
 })
 
+ipcMain.on('app-ready', () => {
+  if (app.isPackaged && checkSignatureExists()) {
+    const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
+      process.arch
+    }/${app.getVersion()}`
+
+    autoUpdater.setFeedURL({
+      url: feedURL,
+      serverType: 'default',
+    })
+    autoUpdater.checkForUpdates()
+    setTimeout(() => {
+      autoUpdater.checkForUpdates()
+    }, 3600000) // 1 hour
+  }
+})
+
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall()
 })
@@ -207,7 +207,9 @@ autoUpdater.on('update-available', () => {
 autoUpdater.on(
   'update-downloaded',
   (event, releaseNotes, releaseName, updateURL) => {
-    mainWindow?.webContents?.send('update_downloaded')
+    if (mainWindow && mainWindow.webContents) {
+      mainWindow.webContents.send('update_downloaded')
+    }
     console.log('update-downloaded', {
       event,
       releaseNotes,
@@ -221,23 +223,26 @@ autoUpdater.on('update-not-available', () => {
   console.log('update-not-available')
 })
 
-autoUpdater.on('error', error => {
-  console.log('error', { error })
+autoUpdater.on('error', err => {
+  console.log('error', { err })
 })
 
 const checkSignatureExists = () => {
   if (os.platform() === 'darwin') {
-    const certExists = fs.existsSync(path.join('static', 'entitlements.plist'))
+    const certExists = fs.existsSync(
+      path.join(__dirname, 'static', 'entitlements.plist'),
+    )
 
     return certExists
   }
 
-  if (os.platform() === 'win32') {
-    const certPath = path.join(__dirname, 'win-certificate.pfx')
-    const certExists = fs.existsSync(certPath)
+  return true
+}
 
-    return certExists
+// Log both at dev console and at running node console instance
+function logEverywhere(s: any) {
+  console.log(s)
+  if (mainWindow && mainWindow.webContents) {
+    mainWindow.webContents.executeJavaScript(`console.log(1111, '${s}')`)
   }
-
-  return false
 }
