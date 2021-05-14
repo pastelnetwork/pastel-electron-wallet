@@ -49,14 +49,16 @@ export type TRawMempool = {
 }
 
 export type TRawMempoolInfo = {
-  transactionid: string
-  size: number
-  fee: number
-  time: number
-  height: number
-  startingpriority: number
-  currentpriority: number
-  depends: TRawMempoolInfo[]
+  [index: string]: {
+    transactionid: string
+    size: number
+    fee: number
+    time: number
+    height: number
+    startingpriority: number
+    currentpriority: number
+    depends: TRawMempoolInfo[]
+  }
 }
 
 export type TMiningInfo = {
@@ -135,6 +137,46 @@ export type TVjoinsplit = {
   ciphertexts: string[]
 }
 
+export type TTransactionInfo = {
+  amount: number
+  blockhash: string
+  blockindex: number
+  blocktime: number
+  confirmations: number
+  details: TTransactionInfoDetails[]
+  expiryheight: number
+  hex: string
+  time: number
+  timereceived: number
+  txid: string
+  vjoinsplit: TVjoinsplit[]
+  walletconflicts: string[]
+}
+
+export type TTransactionInfoDetails = {
+  account: string
+  address: string
+  amount: number
+  category: string
+  size: number
+  vout: number
+}
+
+export type TShieldedOutput = {
+  cv: string
+  anchor: string
+  nullifier: string
+}
+
+export type TShieldedSpendInfo = {
+  cmu: string
+  cv: string
+  encCiphertext: string
+  ephemeralKey: string
+  outCiphertext: string
+  proof: string
+}
+
 export type TDetails = {
   account: string
   address: string
@@ -146,23 +188,6 @@ export type TRawTransaction = {
   hex: string
   txid: string
   overwintered: boolean
-  version: number
-  versiongroupid: string
-  locktime: number
-  expiryheight: number
-  vin: TVin[]
-  vout: TVout[]
-  vjoinsplit: TVjoinsplit[]
-  blockhash: string
-  confirmations: number
-  time: number
-  blocktime: number
-}
-
-export type TTransactionInfo = {
-  hex: string
-  txid: string
-  overwintered: number
   version: number
   versiongroupid: string
   locktime: number
@@ -461,6 +486,37 @@ export type TGetblocksubsidy = {
 
 export type TGetwalletinfo = {
   result: TWalletInfo
+  error: TError
+  id: string
+}
+
+export type TSinceblock = {
+  transactions: TSinceblockTransaction[]
+  lastblock: string
+}
+
+export type TSinceblockTransaction = {
+  account: string
+  address: string
+  category: string
+  status: string
+  amount: number
+  amountZat: number
+  vout: number
+  fee: number
+  confirmations: number
+  blockhash: number
+  blockindex: number
+  blocktime: number
+  txid: string
+  time: number
+  timereceived: number
+  comment: string
+  to: string
+}
+
+export type TListsinceblock = {
+  result: TSinceblock
   error: TError
   id: string
 }
