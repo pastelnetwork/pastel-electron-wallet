@@ -14,6 +14,7 @@ import {
   createMininginfo,
   createNettotals,
   createNetworkinfo,
+  createPastelPriceTable,
   createRawmempoolinfo,
   createRawtransaction,
   createStatisticinfo,
@@ -66,6 +67,7 @@ describe('PastelDBThread', () => {
     pastelDB.db.exec(createListunspent)
     pastelDB.db.exec(createTotalbalance)
     pastelDB.db.exec(createListaddresses)
+    pastelDB.db.exec(createPastelPriceTable)
   })
 
   beforeEach(() => {
