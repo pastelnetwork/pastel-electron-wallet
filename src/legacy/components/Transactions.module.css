@@ -52,6 +52,13 @@
   overflow-y: auto;
 }
 
+.tranIcon {
+  width: 30px;
+  height: 24px;
+  margin-top: 8px;
+  margin-right: 8px;
+}
+
 .txmodalOverlay {
   position: fixed;
   top: 0;

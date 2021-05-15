@@ -8,7 +8,7 @@ export const METHODS = [
   'getaddresstxids',
   'getaddressutxos',
 
-  // Blockchain
+  // == Blockchain ==
   'getbestblockhash',
   'getblock',
   'getblockchaininfo',
@@ -29,7 +29,7 @@ export const METHODS = [
   'verifytxoutproof',
   'z_gettreestate',
 
-  // control
+  // == Control ==
   'getexperimentalfeatures',
   'getinfo',
   'getmemoryinfo',
@@ -37,26 +37,38 @@ export const METHODS = [
   'setlogfilter',
   'stop',
 
-  // disclosure
+  // == Disclosure ==
   'z_getpaymentdisclosure',
   'z_validatepaymentdisclosure',
 
-  // Generating
+  // == Generating ==
   'generate',
   'getgenerate',
   'setgenerate',
 
-  // Mining
+  // == Mining ==
   'getblocksubsidy',
   'getblocktemplate',
   'getlocalsolps',
   'getmininginfo',
   'getnetworkhashps',
   'getnetworksolps',
+  'getnextblocksubsidy',
   'prioritisetransaction',
   'submitblock',
 
-  // Network
+  // == Mnode ==
+  'chaindata',
+  'ingest',
+  'masternode',
+  'masternodebroadcast',
+  'masternodelist',
+  'mnsync',
+  'pastelid',
+  'storagefee',
+  'tickets',
+
+  // == Network ==
   'addnode',
   'clearbanned',
   'disconnectnode',
@@ -70,7 +82,7 @@ export const METHODS = [
   'ping',
   'setban',
 
-  // Rawtransactions
+  // == Rawtransactions ==
   'createrawtransaction',
   'decoderawtransaction',
   'decodescript',
@@ -79,7 +91,7 @@ export const METHODS = [
   'sendrawtransaction',
   'signrawtransaction',
 
-  // Util
+  // == Util ==
   'createmultisig',
   'estimatefee',
   'estimatepriority',
@@ -87,7 +99,7 @@ export const METHODS = [
   'verifymessage',
   'z_validateaddress',
 
-  // Wallet
+  // == Wallet ==
   'addmultisigaddress',
   'backupwallet',
   'dumpprivkey',
@@ -110,6 +122,7 @@ export const METHODS = [
   'importwallet',
   'keypoolrefill',
   'listaccounts',
+  'listaddressamounts',
   'listaddressgroupings',
   'listlockunspent',
   'listreceivedbyaccount',
