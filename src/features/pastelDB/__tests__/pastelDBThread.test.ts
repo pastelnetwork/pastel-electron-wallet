@@ -370,7 +370,7 @@ describe('PastelDBThread', () => {
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getblockhash', [1000], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getbestblockhash', [], mockConfig)
     expect(insertBlockInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
       anchor: '',
       bits: '',
@@ -598,6 +598,9 @@ describe('PastelDBThread', () => {
     const fetchListaddressesSpy = jest
       .spyOn(pastelDBThread, 'fetchListaddresses')
       .mockResolvedValue()
+    const fetchBlockChainInfoSpy = jest
+      .spyOn(pastelDBThread, 'fetchBlockChainInfo')
+      .mockResolvedValue()
     const exportSqliteDBSpy = jest
       .spyOn(pastelDBLib, 'exportSqliteDB')
       .mockResolvedValue()
@@ -625,6 +628,7 @@ describe('PastelDBThread', () => {
       expect(fetchListunspentSpy).toHaveBeenCalled()
       expect(fetchTotalbalanceSpy).toHaveBeenCalled()
       expect(fetchListaddressesSpy).toHaveBeenCalled()
+      expect(fetchBlockChainInfoSpy).toHaveBeenCalled()
       expect(exportSqliteDBSpy).toHaveBeenCalled()
     } catch (e) {
       expect(e.message).toEqual(

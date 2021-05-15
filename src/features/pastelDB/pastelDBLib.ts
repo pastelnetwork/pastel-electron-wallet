@@ -5,6 +5,7 @@ import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 
 import {
   createBlock,
+  createBlockChainInfo,
   createBlocksubsidy,
   createChaintips,
   createListaddresses,
@@ -15,6 +16,7 @@ import {
   createMininginfo,
   createNettotals,
   createNetworkinfo,
+  createPastelPriceTable,
   createRawmempoolinfo,
   createRawtransaction,
   createStatisticinfo,
@@ -22,6 +24,7 @@ import {
   createTransaction,
   createTxoutsetinfo,
   createWalletinfo,
+  insertBlockChainInfoQuery,
   insertBlockinfoQuery,
   insertBlocksubsidyQuery,
   insertChaintipsQuery,
@@ -32,6 +35,7 @@ import {
   insertMininginfoQuery,
   insertNettotalsQuery,
   insertNetworkinfoQuery,
+  insertPastelPriceInfoQuery,
   insertRawmempoolinfoQuery,
   insertRawtransactionQuery,
   insertStatisticinfoQuery,
@@ -46,6 +50,7 @@ import {
   whereTransactionIDMatchingQuery,
 } from './constants'
 import {
+  TBlockChainInfo,
   TBlockInfo,
   TBlockSubsidy,
   TChainTips,
@@ -60,6 +65,7 @@ import {
   TTotalBalance,
   TTransactionInfo,
   TTxoutsetInfo,
+  TValidateFields,
   TWalletInfo,
 } from './type'
 
@@ -109,6 +115,7 @@ export async function createTables(db: Database): Promise<void> {
   db.exec(createRawmempoolinfo)
   db.exec(createMininginfo)
   db.exec(createBlock)
+  db.exec(createBlockChainInfo)
   db.exec(createRawtransaction)
   db.exec(createTransaction)
   db.exec(createTxoutsetinfo)
@@ -120,27 +127,58 @@ export async function createTables(db: Database): Promise<void> {
   db.exec(createListunspent)
   db.exec(createTotalbalance)
   db.exec(createListaddresses)
+  db.exec(createPastelPriceTable)
   return
 }
 
 export function validateDataFromDB(
   pastelDB: Database,
   tableName: string,
-  transactionid: string,
-  time: number,
+  validateFields: TValidateFields,
 ): boolean {
   if (tableNames[tableName] !== true) {
     throw new Error('pastelDB validateDataFromDB error: table name is invalid')
   }
 
-  const sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
-  const values = {
-    $tid: transactionid,
-    $time: time,
-  }
+  let sqlResult: QueryExecResult[]
+  let sqlText = ''
+  let values = {}
 
-  const sqlResult = pastelDB.exec(sqlText, values)
-  return sqlResult.length ? false : true
+  if (tableName === 'rawmempoolinfo') {
+    sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
+    values = {
+      $tid: validateFields.transactionid,
+      $time: validateFields.time,
+    }
+    sqlResult = pastelDB.exec(sqlText, values)
+    return sqlResult.length ? false : true
+  } else {
+    sqlText = selectAllQuery + tableName + orderByIDQuery
+    sqlResult = pastelDB.exec(sqlText)
+    if (sqlResult.length && sqlResult[0].values[0]) {
+      switch (tableName) {
+        case 'blockchaininfo':
+          if (validateFields.bestBlockHash === sqlResult[0].values[0][1]) {
+            return false
+          }
+          break
+        case 'blockinfo':
+          if (validateFields.hash === sqlResult[0].values[0][1]) {
+            return false
+          }
+          break
+        case 'pslprice':
+          if (validateFields.price === sqlResult[0].values[0][1]) {
+            return false
+          }
+          break
+        case '':
+          break
+      }
+      return true
+    }
+  }
+  return true
 }
 
 export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
@@ -151,7 +189,7 @@ export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
   const sqlText = selectIDQuery + tableName + orderByIDQuery
   const sqlResult = pastelDB.exec(sqlText)
   if (sqlResult.length && sqlResult[0].values[0][0]) {
-    return parseInt(sqlResult[0].values[0][0].toString())
+    return parseInt(sqlResult[0].values[0][0].toString()) + 1
   } else {
     return 1
   }
@@ -251,12 +289,10 @@ export function insertRawMempoolinfoToDB(
   mempoolinfo: TRawMempool,
 ): void {
   if (
-    !validateDataFromDB(
-      pastelDB,
-      'rawmempoolinfo',
-      mempoolinfo.transactionid,
-      mempoolinfo.time,
-    )
+    !validateDataFromDB(pastelDB, 'rawmempoolinfo', {
+      transactionid: mempoolinfo.transactionid,
+      time: mempoolinfo.time,
+    })
   ) {
     // mempoolinfo already exist on db.
     return
@@ -313,33 +349,39 @@ export function insertBlockInfoToDB(
   pastelDB: Database,
   blockInfo: TBlockInfo,
 ): void {
-  const createTimestamp = Date.now()
-  const newId = getLastIdFromDB(pastelDB, 'blockinfo')
-  const valuePools = JSON.stringify(blockInfo.valuePools)
-  const values = {
-    $newId: newId,
-    $hash: blockInfo.hash,
-    $confirmations: blockInfo.confirmations,
-    $size: blockInfo.size,
-    $height: blockInfo.height,
-    $version: blockInfo.version,
-    $merkleroot: blockInfo.merkleroot,
-    $finalsaplingroot: blockInfo.finalsaplingroot,
-    $tx: blockInfo.tx,
-    $time: blockInfo.time,
-    $nonce: blockInfo.nonce,
-    $solution: blockInfo.solution,
-    $bits: blockInfo.bits,
-    $difficulty: blockInfo.difficulty,
-    $chainwork: blockInfo.chainwork,
-    $anchor: blockInfo.anchor,
-    $valuePools: valuePools,
-    $previousblockhash: blockInfo.previousblockhash,
-    $nextblockhash: blockInfo.nextblockhash,
-    $createTimestamp: createTimestamp,
+  if (
+    validateDataFromDB(pastelDB, 'blockinfo', {
+      hash: blockInfo.hash,
+    })
+  ) {
+    const createTimestamp = Date.now()
+    const newId = getLastIdFromDB(pastelDB, 'blockinfo')
+    const valuePools = JSON.stringify(blockInfo.valuePools)
+    const txs = JSON.stringify(blockInfo.tx)
+    const values = {
+      $newId: newId,
+      $hash: blockInfo.hash,
+      $confirmations: blockInfo.confirmations,
+      $size: blockInfo.size,
+      $height: blockInfo.height,
+      $version: blockInfo.version,
+      $merkleroot: blockInfo.merkleroot,
+      $finalsaplingroot: blockInfo.finalsaplingroot,
+      $tx: txs,
+      $time: blockInfo.time,
+      $nonce: blockInfo.nonce,
+      $solution: blockInfo.solution,
+      $bits: blockInfo.bits,
+      $difficulty: blockInfo.difficulty,
+      $chainwork: blockInfo.chainwork,
+      $anchor: blockInfo.anchor,
+      $valuePools: valuePools,
+      $previousblockhash: blockInfo.previousblockhash,
+      $nextblockhash: blockInfo.nextblockhash ? blockInfo.nextblockhash : '',
+      $createTimestamp: createTimestamp,
+    }
+    pastelDB.exec(insertBlockinfoQuery, values)
   }
-
-  pastelDB.exec(insertBlockinfoQuery, values)
 }
 
 export function insertRawtransaction(
@@ -566,4 +608,54 @@ export function insertListaddresses(pastelDB: Database, address: string): void {
     $createTimestamp: createTimestamp,
   }
   pastelDB.exec(insertListaddressesQuery, values)
+}
+
+export function insertPastelPrice(pastelDB: Database, price: number): void {
+  const createTimestamp = Date.now()
+  if (validateDataFromDB(pastelDB, 'pslprice', { price: price })) {
+    const newId = getLastIdFromDB(pastelDB, 'pslprice')
+    const values = {
+      $newId: newId,
+      $priceUsd: price,
+      $createTimestamp: createTimestamp,
+    }
+    pastelDB.exec(insertPastelPriceInfoQuery, values)
+  }
+}
+
+export function insertBlockChainInfo(
+  pastelDB: Database,
+  blockChainInfo: TBlockChainInfo,
+): void {
+  const createTimestamp = Date.now()
+  if (
+    validateDataFromDB(pastelDB, 'blockchaininfo', {
+      bestBlockHash: blockChainInfo.bestblockhash,
+    })
+  ) {
+    const newId = getLastIdFromDB(pastelDB, 'blockchaininfo')
+    const consensus = JSON.stringify(blockChainInfo.consensus)
+    const softforks = JSON.stringify(blockChainInfo.softforks)
+    const upgrades = JSON.stringify(blockChainInfo.upgrades)
+    const valuePools = JSON.stringify(blockChainInfo.valuePools)
+    const pruned = JSON.stringify(blockChainInfo.pruned)
+    const values = {
+      $newId: newId,
+      $bestblockhash: blockChainInfo.bestblockhash,
+      $blocks: blockChainInfo.blocks,
+      $chain: blockChainInfo.chain,
+      $chainwork: blockChainInfo.chainwork,
+      $commitments: blockChainInfo.commitments,
+      $consensus: consensus,
+      $difficulty: blockChainInfo.difficulty,
+      $headers: blockChainInfo.headers,
+      $pruned: pruned,
+      $softforks: softforks,
+      $upgrades: upgrades,
+      $valuePools: valuePools,
+      $verificationprogress: blockChainInfo.verificationprogress,
+      $createTimestamp: createTimestamp,
+    }
+    pastelDB.exec(insertBlockChainInfoQuery, values)
+  }
 }
