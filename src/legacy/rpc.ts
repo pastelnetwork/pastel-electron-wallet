@@ -71,11 +71,6 @@ export default class RPC {
 
   static async doRPC(method: any, params: any, rpcConfig: any) {
     const { url, username, password } = rpcConfig
-    console.log(rpcConfig)
-    console.log(url)
-    console.log(username)
-    console.log(password)
-    console.log(method)
     const response = await new Promise((resolve, reject) => {
       axios(url, {
         data: {

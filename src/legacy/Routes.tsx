@@ -46,7 +46,7 @@ import PastelPhotopeaModal, {
 import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
-import ExpertConsole from '../features/pastelExpertConsole'
+import ExpertConsole from '../features/expertConsole'
 
 const period = 1000 * 10
 

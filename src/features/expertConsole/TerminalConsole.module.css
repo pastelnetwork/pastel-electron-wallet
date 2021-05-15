@@ -32,6 +32,7 @@
   float: left;
   padding: 0 30px;
 }
+
 .textOutput::before,
 .errorOutput::before,
 .headOutput::before,
@@ -47,6 +48,7 @@
   position: relative;
   display: inline-block;
 }
+
 .terminalInputLongAreaClickable {
   position: absolute;
   top: 100%;
@@ -64,9 +66,11 @@
   cursor: text;
   font-size: 20px;
 }
+
 .terminalInputWrap.isReady {
   display: flex;
 }
+
 .terminalInputWrap span {
   font-weight: bold;
   user-select: none;
@@ -92,6 +96,7 @@
 .terminal.green pre,
 .terminal.green span,
 .terminal.green #terminalOutput,
+.green .loading,
 .green .terminalInput {
   color: #18ff62 !important;
 }
@@ -100,6 +105,7 @@
 .terminal.amber span,
 .terminal.amber pre,
 .terminal.amber #terminalOutput,
+.amber .loading,
 .amber .terminalInput {
   color: #e88537 !important;
 }
@@ -110,4 +116,28 @@
 .terminal.black #terminalOutput,
 .black .terminalInput {
   box-shadow: none;
+}
+
+.loading {
+  padding-left: 30px;
+}
+
+.loading:after {
+  content: 'Getting info';
+  animation: dots 3s steps(5, end) infinite;
+}
+
+@keyframes dots {
+  0%,
+  25% {
+    content: 'Getting info.';
+  }
+
+  50% {
+    content: 'Getting info..';
+  }
+
+  75% {
+    content: 'Getting info...';
+  }
 }

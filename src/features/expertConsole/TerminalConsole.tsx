@@ -6,6 +6,7 @@ import {
   defaultCommandMapping,
   Emulator,
   EmulatorState,
+  History,
   HistoryKeyboardPlugin,
   OutputFactory,
   Outputs,
@@ -13,6 +14,7 @@ import {
 } from 'javascript-terminal'
 import React, { createRef, useEffect, useState } from 'react'
 
+import { apiRequests } from '../../features/expertConsole/rpc-services/api'
 import ConsoleOutput from './ConsoleOutput'
 import rpcApi from './rpc-services/api'
 import { formatConsoleData } from './rpc-services/utils'
@@ -64,17 +66,32 @@ let emulator: any = null
 let emulatorState: any = null
 let historyKeyboardPlugin: any = null
 let terminalPlugins: any = []
+let isRendered = false
+const historyCmds: string[] = []
 
 function TerminalConsole(props: TConsoleProps): JSX.Element {
   const [typing, setTyping] = useState('')
+  const [executingCommand, setExecutingCommand] = useState(false)
   const [outputs, setOutputs] = useState<any[]>([])
-  const [isReady, setIsReady] = useState(false)
+  const [isReady, setIsReady] = useState(isRendered)
   const [isInitiatedTerminal, setIsInitiatedTerminal] = useState(false)
   const inputRef = createRef<HTMLInputElement>()
 
   useEffect(() => {
     inputRef.current?.focus()
   }, [isReady])
+
+  useEffect(() => {
+    return () => {
+      for (let i = apiRequests.length - 1; i >= 0; i--) {
+        // Cancel all API requests
+        if (apiRequests[i]) {
+          apiRequests[i].cancel('Operation canceled when change route.')
+          apiRequests.splice(i, 1)
+        }
+      }
+    }
+  }, [])
 
   const loadBanner = () => {
     const len = banner.length
@@ -227,23 +244,33 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
 
   const rpcCommandResponse = (commandKey: string) => async (
     state: any,
-    opts: string,
+    opts: string[],
   ) => {
+    historyCmds.push(commandKey)
+    setExecutingCommand(true)
+    let textConsole = ''
+
     try {
       const data = await rpcApi[commandKey](opts)
-      const text =
-        typeof data === 'object'
-          ? textAsTable(
-              Array.isArray(data)
-                ? data.map(i => formatConsoleData(i))
-                : [formatConsoleData(data)],
-            )
-          : `${data}`
-      await addOutputThenDisplay(text)
+      textConsole = `${data}`
+
+      if (typeof data === 'object') {
+        const tempArr = Array.isArray(data)
+          ? data.length > 0
+            ? data.map(formatConsoleData)
+            : ['']
+          : [formatConsoleData(data || {})]
+        textConsole = textAsTable(tempArr)
+      }
+
+      if (data == null || (Array.isArray(data) && data.length == 0)) {
+        textConsole = 'null'
+      }
     } catch (error) {
-      const text = `Error ${error.statusCode}: ${error.message}`
-      await addOutputThenDisplay(text)
+      textConsole = error.message
     }
+    await addOutputThenDisplay(textConsole)
+    setExecutingCommand(false)
   }
 
   const addOutputThenDisplay = async (text: string) => {
@@ -338,12 +365,25 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     })
 
     // init terminal
-    emulator = new Emulator()
+    if (!emulator) {
+      emulator = new Emulator()
+    }
+
+    const oldOutputs = emulatorState
+      ? emulatorState.getOutputs()
+      : Outputs.create([])
     emulatorState = EmulatorState.create({
       commandMapping: customCommandMapping,
+      history: History.create(historyCmds),
+      outputs: oldOutputs,
     })
-    historyKeyboardPlugin = new HistoryKeyboardPlugin(emulatorState)
-    terminalPlugins = [historyKeyboardPlugin]
+
+    if (oldOutputs.size > 0) {
+      displayOutputs(oldOutputs)
+    } else {
+      historyKeyboardPlugin = new HistoryKeyboardPlugin(emulatorState)
+      terminalPlugins = [historyKeyboardPlugin]
+    }
   }
 
   const onChangeTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -352,7 +392,10 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   }
 
   useEffect(() => {
-    loadBanner()
+    if (!isRendered) {
+      loadBanner()
+      isRendered = true
+    }
     window.addEventListener('resize', resetScroll)
     return () => {
       window.removeEventListener('resize', resetScroll)
@@ -376,7 +419,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     <div id='terminalWrap' className={cx(styles.terminal, styles[theme])}>
       <div className={styles.terminalHead}>
         <p>............................................................</p>
-        <pre id='banner' />
+        <pre id='banner'>{isRendered && banner}</pre>
         {isReady && (
           <>
             <p>............................................................</p>
@@ -403,9 +446,10 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
           onClick={focusTerminalInput}
         />
       </div>
+      {executingCommand && <div className={styles.loading} />}
       <div
         className={cx(styles.terminalInputWrap, {
-          [styles.isReady]: isReady,
+          [styles.isReady]: isReady && !executingCommand,
         })}
         onClick={focusTerminalInput}
       >
