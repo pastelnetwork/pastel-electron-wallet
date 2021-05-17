@@ -9,4 +9,5 @@ export const colors = {
   textGray: '#777e91',
   grayLight: '#e6e8ec',
   green: '#6dbd72',
-}
+  error: '#FE634C',
+};

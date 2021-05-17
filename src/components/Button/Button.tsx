@@ -1,13 +1,21 @@
-import * as React from 'react'
+import * as React from 'react';
 
-import * as Styles from './Button.styles'
+import * as Styles from './Button.styles';
 
-interface IButtonProps {
-  variant?: 'default' | 'transparent'
+export interface IButtonProps {
+  variant?: 'default' | 'transparent';
+  type?: 'submit' | 'button';
 }
 
-const Button: React.FC<IButtonProps> = ({ children, variant = 'default' }) => (
-  <Styles.Button $variant={variant}>{children}</Styles.Button>
-)
+const Button: React.FC<IButtonProps> = ({
+  children,
+  variant = 'default',
+  type = 'button',
+  ...restProps
+}) => (
+  <Styles.Button type={type} $variant={variant} {...restProps}>
+    {children}
+  </Styles.Button>
+);
 
-export default Button
+export default Button;

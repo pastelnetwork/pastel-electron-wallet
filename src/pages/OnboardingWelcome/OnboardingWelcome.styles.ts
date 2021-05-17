@@ -1,4 +1,5 @@
-import styled from 'styled-components'
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.textDark};
@@ -7,7 +8,7 @@ export const Title = styled.h1`
   line-height: 40px;
   margin: 0;
   text-align: center;
-`
+`;
 
 export const Subtitle = styled.p`
   color: ${({ theme }) => theme.colors.textGray};
@@ -16,12 +17,12 @@ export const Subtitle = styled.p`
   text-align: center;
   max-width: 350px;
   margin: 16px 0;
-`
+`;
 
 export const ImageWrapper = styled.div`
   position: relative;
   margin-bottom: 36px;
-`
+`;
 
 export const PlayButton = styled.div`
   position: absolute;
@@ -57,15 +58,15 @@ export const PlayButton = styled.div`
       background-color: rgba(255, 255, 255, 0.4);
     }
   }
-`
+`;
 
 export const Image = styled.img`
   border-radius: 16px;
-`
+`;
 
 export const Spacing = styled.div`
   margin-bottom: 16px;
-`
+`;
 
 export const FooterText = styled.p`
   color: ${({ theme }) => theme.colors.textGray};
@@ -73,10 +74,10 @@ export const FooterText = styled.p`
   line-height: 20px;
   text-align: center;
   margin: 0;
-`
+`;
 
-export const FooterLink = styled.a`
+export const FooterLink = styled(Link)`
   color: ${({ theme }) => theme.colors.blue};
   text-decoration: none;
   cursor: pointer;
-`
+`;

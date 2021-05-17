@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const Card = styled.div`
   position: absolute;
@@ -15,7 +15,7 @@ export const Card = styled.div`
   border-radius: 12px;
   border: 1px solid ${({ theme }) => theme.colors.grayLight};
   box-shadow: 0px 64px 64px -48px rgba(31, 47, 70, 0.12);
-`
+`;
 
 export const CloseButton = styled(Link)`
   position: absolute;
@@ -30,4 +30,4 @@ export const CloseButton = styled(Link)`
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.grayLight};
   background-color: ${({ theme }) => theme.colors.white};
-`
+`;

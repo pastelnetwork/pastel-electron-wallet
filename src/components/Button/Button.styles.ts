@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 export const Button = styled.button<{ $variant: 'default' | 'transparent' }>`
   min-width: 385px;
@@ -7,7 +7,7 @@ export const Button = styled.button<{ $variant: 'default' | 'transparent' }>`
   text-align: center;
   font-size: ${({ theme }) => theme.fonts.default};
   line-height: 1;
-  font-weight: 700;
+  font-weight: 500;
   padding: 12px;
   background-color: ${({ $variant, theme }) =>
     $variant === 'transparent' ? theme.colors.whiteOff : theme.colors.blue};
@@ -19,11 +19,10 @@ export const Button = styled.button<{ $variant: 'default' | 'transparent' }>`
   &:hover {
     background-color: ${({ theme }) => theme.colors.blueHover};
     border-color: ${({ theme }) => theme.colors.blueHover};
-    color: ${({ $variant, theme }) =>
-      $variant === 'transparent' && theme.colors.whiteOff};
+    color: ${({ $variant, theme }) => $variant === 'transparent' && theme.colors.whiteOff};
   }
 
   &:focus {
     outline: 0;
   }
-`
+`;

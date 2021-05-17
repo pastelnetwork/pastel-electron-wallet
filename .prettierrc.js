@@ -1,8 +1,8 @@
 module.exports = {
-  printWidth: 80,
+  printWidth: 100,
   tabWidth: 2,
   useTabs: false,
-  semi: false,
+  semi: true,
   singleQuote: true,
   quoteProps: 'as-needed',
   jsxSingleQuote: true,
@@ -13,4 +13,4 @@ module.exports = {
   requirePragma: false,
   insertPragma: false,
   endOfLine: 'lf',
-}
+};
