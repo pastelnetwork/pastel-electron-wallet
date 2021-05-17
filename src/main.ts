@@ -10,10 +10,7 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import log from 'electron-log'
-import fs from 'fs'
 import http from 'http'
-import os from 'os'
-import path from 'path'
 import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
@@ -176,7 +173,7 @@ app.on('activate', () => {
 })
 
 ipcMain.on('app-ready', () => {
-  if (app.isPackaged && checkSignatureExists()) {
+  if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
       process.arch
     }/${app.getVersion()}`
@@ -186,9 +183,11 @@ ipcMain.on('app-ready', () => {
       serverType: 'default',
     })
     autoUpdater.checkForUpdates()
+
+    const fourHours = 4 * 60 * 60 * 1000
     setInterval(() => {
       autoUpdater.checkForUpdates()
-    }, 4 * 60 * 60 * 1000)
+    }, fourHours)
   }
 })
 
@@ -226,15 +225,3 @@ autoUpdater.on('update-not-available', () => {
 autoUpdater.on('error', err => {
   console.log('error', { err })
 })
-
-const checkSignatureExists = () => {
-  if (os.platform() === 'darwin') {
-    const certExists = fs.existsSync(
-      path.join(__dirname, 'static', 'entitlements.plist'),
-    )
-
-    return certExists
-  }
-
-  return true
-}

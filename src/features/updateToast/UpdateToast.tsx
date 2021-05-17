@@ -3,12 +3,12 @@ import { ipcRenderer, shell } from 'electron'
 import React from 'react'
 
 import pkg from '../../../package.json'
+import cstyles from '../../common/Styles.module.css'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import cstyles from '../Common.module.css'
 import styles from './UpdateToast.module.css'
 import { closeUpdateToast } from './UpdateToastSlice'
 
-export default function UpdateToast(): JSX.Element {
+export default function UpdateToast(): JSX.Element | null {
   const { opened } = useAppSelector(state => state.updateToast)
   const dispatch = useAppDispatch()
 
@@ -22,7 +22,7 @@ export default function UpdateToast(): JSX.Element {
   }
 
   if (!opened) {
-    return <></>
+    return null
   }
 
   return (

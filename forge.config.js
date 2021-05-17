@@ -1,5 +1,3 @@
-// const fs = require('fs')
-// const path = require('path')
 const os = require('os')
 
 const package = require('./package.json')
@@ -43,32 +41,19 @@ module.exports = {
     icon: getIcon(),
     asar: true,
     extraResource: getExtraResource(),
-    // osxSign: {
-    //   identity: 'Developer ID Application: Felix Rieseberg (LT94ZKYDCJ)',
-    //   'hardened-runtime': true,
-    //   entitlements: 'static/entitlements.plist',
-    //   'entitlements-inherit': 'static/entitlements.plist',
-    //   'signature-flags': 'library',
-    // },
-    // osxNotarize: {
-    //   appleId: 'felix@felix.fun',
-    //   appleIdPassword: 'my-apple-id-password',
-    // },
   },
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: arch => {
-        return {
-          exe: `${package.name}.exe`,
-          setupIcon: './static/icons/icon.ico',
-          loadingGif: './static/icons/icon.gif',
-          iconUrl:
-            'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
-          title: package.productName,
-          setupExe: `${package.productName} Setup - v${package.version}.exe`,
-          skipUpdateIcon: true,
-        }
+      config: {
+        exe: `${package.name}.exe`,
+        setupIcon: './static/icons/icon.ico',
+        loadingGif: './static/icons/icon.gif',
+        iconUrl:
+          'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
+        title: package.productName,
+        setupExe: `${package.productName} Setup - v${package.version}.exe`,
+        skipUpdateIcon: true,
       },
     },
     {
