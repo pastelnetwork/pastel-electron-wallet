@@ -25,6 +25,7 @@ interface PDFDocumentProps {
   address: string
   privateKey: string
   currencyName: string
+  title: string
 }
 
 const splitStringIntoChunks = (str: string, chunkQuantity: number) => {
@@ -118,9 +119,14 @@ const pdfStyles = StyleSheet.create({
 })
 const breakChar = '\u00ad'
 
-function PDFDocument({ address, currencyName, privateKey }: PDFDocumentProps) {
+function PDFDocument({
+  address,
+  currencyName,
+  privateKey,
+  title,
+}: PDFDocumentProps) {
   return (
-    <Document>
+    <Document title={title}>
       <Page size='A4' style={pdfStyles.page}>
         <View style={pdfStyles.section}>
           <View style={pdfStyles.contentTop}>
@@ -193,6 +199,7 @@ export default function PastelPaperWalletModal({
             currencyName={info.currencyName}
             address={address}
             privateKey={privateKey}
+            title={generateFileName()}
           />
         }
         fileName={generateFileName()}
@@ -220,6 +227,7 @@ export default function PastelPaperWalletModal({
             currencyName={info.currencyName}
             address={address}
             privateKey={privateKey}
+            title={generateFileName()}
           />
         </PDFViewer>
       </div>
