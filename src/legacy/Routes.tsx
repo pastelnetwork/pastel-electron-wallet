@@ -349,7 +349,6 @@ class RouteApp extends React.Component<any, any> {
   setInfo = (newInfo: TWalletInfo) => {
     // If the price is not set in this object, copy it over from the current object
     const { info } = this.state
-    console.log('newInfo', newInfo)
 
     if (!newInfo.pslPrice) {
       newInfo.pslPrice = info.pslPrice
