@@ -2,6 +2,7 @@ import initSqlJs, { Database } from 'sql.js'
 
 import * as pastelRPC from '../../../api/pastel-rpc/rpc'
 import PastelDB from '../../../features/pastelDB/database'
+import coinGeckoClient from '../../pastelPrice/coingecko'
 import {
   createBlock,
   createBlocksubsidy,
@@ -29,6 +30,12 @@ import * as pastelDBThread from '../pastelDBThread'
 type Databaseinstance = {
   db: Database
 }
+
+jest.mock('../../pastelPrice/coingecko', () => ({
+  simple: {
+    price: jest.fn(),
+  },
+}))
 
 describe('PastelDBThread', () => {
   const loadDatabase = jest.fn(async () => {
@@ -216,6 +223,58 @@ describe('PastelDBThread', () => {
 
   const mockListAddresses = {
     result: ['address'],
+  }
+
+  const mockBlockChainInfo = {
+    result: {
+      bestblockhash: '1023655ase41252455',
+      blocks: 60524,
+      chain: '',
+      chainwork: '',
+      commitments: 1,
+      consensus: {
+        chaintip: '',
+        nextblock: '',
+      },
+      difficulty: 0.26125444544,
+      headers: 1,
+      pruned: true,
+      softforks: [
+        {
+          enforce: {
+            found: 0,
+            required: 0,
+            status: true,
+            window: 0,
+          },
+          id: 0,
+          reject: {
+            found: 0,
+            required: 0,
+            status: true,
+            window: 0,
+          },
+          version: 1,
+        },
+      ],
+      upgrades: {
+        index1: {
+          activationheight: 0,
+          info: '',
+          name: '',
+          status: '',
+        },
+      },
+      valuePools: [
+        {
+          chainValue: 0,
+          chainValueZat: 0,
+          id: '',
+          monitored: true,
+        },
+      ],
+      verificationprogress: 0,
+    },
   }
 
   test('fetchStatisticInfo works', async () => {
@@ -544,6 +603,106 @@ describe('PastelDBThread', () => {
     expect(insertListaddressesSpy).toHaveBeenCalledWith(pastelDB.db, 'address')
   })
 
+  test('fetchBlockChainInfo works', async () => {
+    // Arrange
+    const rpcSpy = jest
+      .spyOn(pastelRPC, 'rpc')
+      .mockResolvedValue(mockBlockChainInfo)
+    const insertBlockChainInfoSpy = jest
+      .spyOn(pastelDBLib, 'insertBlockChainInfo')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchBlockChainInfo({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(rpcSpy).toHaveBeenCalledWith('getblockchaininfo', [], mockConfig)
+    expect(insertBlockChainInfoSpy).toHaveBeenCalledWith(pastelDB.db, {
+      bestblockhash: '1023655ase41252455',
+      blocks: 60524,
+      chain: '',
+      chainwork: '',
+      commitments: 1,
+      consensus: {
+        chaintip: '',
+        nextblock: '',
+      },
+      difficulty: 0.26125444544,
+      headers: 1,
+      pruned: true,
+      softforks: [
+        {
+          enforce: {
+            found: 0,
+            required: 0,
+            status: true,
+            window: 0,
+          },
+          id: 0,
+          reject: {
+            found: 0,
+            required: 0,
+            status: true,
+            window: 0,
+          },
+          version: 1,
+        },
+      ],
+      upgrades: {
+        index1: {
+          activationheight: 0,
+          info: '',
+          name: '',
+          status: '',
+        },
+      },
+      valuePools: [
+        {
+          chainValue: 0,
+          chainValueZat: 0,
+          id: '',
+          monitored: true,
+        },
+      ],
+      verificationprogress: 0,
+    })
+  })
+
+  test('fetchPastelPrices works', async () => {
+    // Arrange
+    const coingeckoSpy = jest
+      .spyOn(coinGeckoClient.simple, 'price')
+      .mockResolvedValue({
+        success: true,
+        message: 'string',
+        code: 200,
+        data: {
+          pastel: {
+            usd: 10,
+          },
+        },
+      })
+    const insertPastelPriceSpy = jest
+      .spyOn(pastelDBLib, 'insertPastelPrice')
+      .mockImplementation()
+
+    // Act
+    await pastelDBThread.fetchPastelPrices({
+      pastelDB: pastelDB.db,
+      rpcConfig: mockConfig,
+    })
+
+    // Assert
+    expect(coingeckoSpy).toHaveBeenCalledWith({
+      ids: ['pastel'],
+      vs_currencies: ['usd'],
+    })
+    expect(insertPastelPriceSpy).toBeCalledTimes(1)
+  })
+
   test('patelDBThread works', async () => {
     // Arrange
     const pastelDBSpy = jest
@@ -603,6 +762,9 @@ describe('PastelDBThread', () => {
     const fetchBlockChainInfoSpy = jest
       .spyOn(pastelDBThread, 'fetchBlockChainInfo')
       .mockResolvedValue()
+    const fetchPastelPricesSpy = jest
+      .spyOn(pastelDBThread, 'fetchPastelPrices')
+      .mockResolvedValue()
     const exportSqliteDBSpy = jest
       .spyOn(pastelDBLib, 'exportSqliteDB')
       .mockResolvedValue()
@@ -631,6 +793,7 @@ describe('PastelDBThread', () => {
       expect(fetchTotalbalanceSpy).toHaveBeenCalled()
       expect(fetchListaddressesSpy).toHaveBeenCalled()
       expect(fetchBlockChainInfoSpy).toHaveBeenCalled()
+      expect(fetchPastelPricesSpy).toHaveBeenCalled()
       expect(exportSqliteDBSpy).toHaveBeenCalled()
     } catch (e) {
       expect(e.message).toEqual(

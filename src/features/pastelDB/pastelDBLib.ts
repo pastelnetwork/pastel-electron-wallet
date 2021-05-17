@@ -108,26 +108,74 @@ export async function exportSqliteDB(db: Database): Promise<void> {
 }
 
 export async function createTables(db: Database): Promise<void> {
+  // create whole tables
+  await Promise.all([
+    createAddressTables(db),
+    createBlockChainTables(db),
+    createMiningTables(db),
+    createNetworkTables(db),
+    createPSLPriceTable(db),
+    createRawTransactionTables(db),
+    createStatisticTable(db),
+    createWalletTables(db),
+  ])
+  return
+}
+
+export async function createAddressTables(db: Database): Promise<void> {
+  // create tables that keep Address related informations
+  db.exec(createListreceivedbyaddress)
+  db.exec(createListaddresses)
+  return
+}
+
+export async function createStatisticTable(db: Database): Promise<void> {
+  // create statisticinfo table
   db.exec(createStatisticinfo)
-  db.exec(createNetworkinfo)
-  db.exec(createNettotals)
+}
+
+export async function createPSLPriceTable(db: Database): Promise<void> {
+  // create Pastel Price table
+  db.exec(createPastelPriceTable)
+}
+
+export async function createBlockChainTables(db: Database): Promise<void> {
+  // Create the tables that keep various info regarding block chain processing.
   db.exec(createMempoolinfo)
   db.exec(createRawmempoolinfo)
-  db.exec(createMininginfo)
   db.exec(createBlock)
   db.exec(createBlockChainInfo)
+  db.exec(createChaintips)
+  db.exec(createTxoutsetinfo)
+  return
+}
+
+export async function createNetworkTables(db: Database): Promise<void> {
+  // create Network data tables
+  db.exec(createNetworkinfo)
+  db.exec(createNettotals)
+  return
+}
+
+export async function createWalletTables(db: Database): Promise<void> {
+  // create Wallet data tables
+  db.exec(createWalletinfo)
+  db.exec(createListunspent)
+  db.exec(createListtransactions)
+  db.exec(createTotalbalance)
+}
+
+export async function createMiningTables(db: Database): Promise<void> {
+  // create Mining data tables
+  db.exec(createMininginfo)
+  db.exec(createBlocksubsidy)
+  return
+}
+
+export async function createRawTransactionTables(db: Database): Promise<void> {
+  // create RawTransaction Data tables
   db.exec(createRawtransaction)
   db.exec(createTransaction)
-  db.exec(createTxoutsetinfo)
-  db.exec(createChaintips)
-  db.exec(createBlocksubsidy)
-  db.exec(createWalletinfo)
-  db.exec(createListreceivedbyaddress)
-  db.exec(createListtransactions)
-  db.exec(createListunspent)
-  db.exec(createTotalbalance)
-  db.exec(createListaddresses)
-  db.exec(createPastelPriceTable)
   return
 }
 
