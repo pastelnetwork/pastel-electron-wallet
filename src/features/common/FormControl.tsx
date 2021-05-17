@@ -7,7 +7,7 @@ type Props = {
   children: JSX.Element
 }
 
-export function FormControl(props: Props) {
+export function FormControl(props: Props): JSX.Element {
   return (
     <div>
       <div className={cstyles.flexspacebetween}>

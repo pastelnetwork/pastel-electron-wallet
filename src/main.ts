@@ -5,7 +5,7 @@ import 'electron-squirrel-startup'
 // install IPC handlers and listeners
 import './ipcMain'
 
-import { app, BrowserWindow, dialog, ipcMain, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,

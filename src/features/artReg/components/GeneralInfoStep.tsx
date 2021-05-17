@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
@@ -33,7 +33,7 @@ export function GeneralInfoStep(): JSX.Element {
             {...register('title')}
             placeholder='The Starry Night'
             defaultValue={title}
-            onChange={e => null}
+            onChange={() => null}
           />
         </FormControl>
       </div>

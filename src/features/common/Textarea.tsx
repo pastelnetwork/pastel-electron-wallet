@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import React, { ForwardedRef, forwardRef, InputHTMLAttributes } from 'react'
+import React, { ForwardedRef, forwardRef } from 'react'
 
 import cstyles from './Common.module.css'
 
