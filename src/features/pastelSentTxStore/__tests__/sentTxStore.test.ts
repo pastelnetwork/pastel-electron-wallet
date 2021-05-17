@@ -43,7 +43,6 @@ const mockTransactions = [
     vjoinsplit: [],
     size: 0,
     lastblock: '',
-    fee: undefined,
     type: '',
     detailedTxns: [
       {

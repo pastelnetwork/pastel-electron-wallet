@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal'
 import dateformat from 'dateformat'
 import { shell } from 'electron'
+import clx from 'classnames'
 import { withRouter } from 'react-router'
 import { BalanceBlockHighlight } from './Dashboard'
 import styles from './Transactions.module.css'
@@ -13,6 +14,9 @@ import ScrollPane from './ScrollPane'
 import Utils from '../utils/utils'
 import AddressBook from './Addressbook'
 import routes from '../constants/routes.json'
+
+import ReceiveIcon from '../assets/img/transaction_received_icon_dark.svg'
+import SendIcon from '../assets/img/transaction_sent_icon_dark.svg'
 
 const TxModalInternal = ({
   modalIsOpen,
@@ -77,12 +81,12 @@ const TxModalInternal = ({
       className={styles.txmodal}
       overlayClassName={styles.txmodalOverlay}
     >
-      <div className={[cstyles.verticalflex].join(' ')}>
-        <div className={[cstyles.marginbottomlarge, cstyles.center].join(' ')}>
+      <div className={cstyles.verticalflex}>
+        <div className={clx(cstyles.marginbottomlarge, cstyles.center)}>
           Transaction Status
         </div>
 
-        <div className={[cstyles.center].join(' ')}>
+        <div className={cstyles.center}>
           <i
             className={['fas', typeIcon].join(' ')}
             style={{
@@ -92,8 +96,8 @@ const TxModalInternal = ({
           />
         </div>
 
-        <div className={[cstyles.center].join(' ')}>
-          {type}
+        <div className={cstyles.center}>
+          {type === 'receive' ? 'Receive' : 'Send'}
           <BalanceBlockHighlight
             pslValue={amount}
             usdValue={Utils.getPslToUsdString(pslPrice, Math.abs(amount))}
@@ -101,9 +105,9 @@ const TxModalInternal = ({
           />
         </div>
 
-        <div className={[cstyles.flexspacebetween].join(' ')}>
+        <div className={cstyles.flexspacebetween}>
           <div>
-            <div className={[cstyles.sublight].join(' ')}>Time</div>
+            <div className={cstyles.sublight}>Time</div>
             <div>
               {datePart} {timePart}
             </div>
@@ -111,28 +115,28 @@ const TxModalInternal = ({
 
           {type === 'send' && (
             <div>
-              <div className={[cstyles.sublight].join(' ')}>Fees</div>
+              <div className={cstyles.sublight}>Fees</div>
               <div>PSL {Utils.maxPrecisionTrimmed(tx.fee)}</div>
             </div>
           )}
 
           <div>
-            <div className={[cstyles.sublight].join(' ')}>Confirmations</div>
+            <div className={cstyles.sublight}>Confirmations</div>
             <div>{confirmations}</div>
           </div>
         </div>
 
         <div className={cstyles.margintoplarge} />
 
-        <div className={[cstyles.flexspacebetween].join(' ')}>
+        <div className={cstyles.flexspacebetween}>
           <div>
-            <div className={[cstyles.sublight].join(' ')}>TXID</div>
+            <div className={cstyles.sublight}>TXID</div>
             <div>{txid}</div>
           </div>
 
           <div className={cstyles.primarybutton} onClick={openTxid}>
             View TXID &nbsp;
-            <i className={['fas', 'fa-external-link-square-alt'].join(' ')} />
+            <i className='fas fa-external-link-square-alt' />
           </div>
         </div>
 
@@ -166,18 +170,16 @@ const TxModalInternal = ({
 
           return (
             <div key={address} className={cstyles.verticalflex}>
-              <div className={[cstyles.sublight].join(' ')}>Address</div>
+              <div className={cstyles.sublight}>Address</div>
               <div>{Utils.splitStringIntoChunks(address, 6).join(' ')}</div>
 
               <div className={cstyles.margintoplarge} />
-              <div className={[cstyles.sublight].join(' ')}>Amount</div>
+              <div className={cstyles.sublight}>Amount</div>
               <div>
                 <span>
                   {currencyName} {bigPart}
                 </span>
-                <span
-                  className={[cstyles.small, cstyles.pslsmallpart].join(' ')}
-                >
+                <span className={clx(cstyles.small, cstyles.pslsmallpart)}>
                   {smallPart}
                 </span>
               </div>
@@ -186,8 +188,8 @@ const TxModalInternal = ({
 
               {memo && (
                 <div>
-                  <div className={[cstyles.sublight].join(' ')}>Memo</div>
-                  <div className={[cstyles.flexspacebetween].join(' ')}>
+                  <div className={cstyles.sublight}>Memo</div>
+                  <div className={cstyles.flexspacebetween}>
                     <div>{memo}</div>
                     {replyTo && (
                       <div
@@ -206,7 +208,7 @@ const TxModalInternal = ({
           )
         })}
 
-        <div className={[cstyles.center, cstyles.margintoplarge].join(' ')}>
+        <div className={clx(cstyles.center, cstyles.margintoplarge)}>
           <button
             type='button'
             className={cstyles.primarybutton}
@@ -232,22 +234,28 @@ const TxItemBlock = ({
   const txDate = new Date(transaction.time * 1000)
   const datePart = dateformat(txDate, 'mmm dd, yyyy')
   const timePart = dateformat(txDate, 'hh:MM tt')
+  const isReceive = transaction.type === 'receive'
+
   return (
     <div>
-      <div
-        className={[cstyles.small, cstyles.sublight, styles.txdate].join(' ')}
-      >
+      <div className={clx(cstyles.small, cstyles.sublight, styles.txdate)}>
         {datePart}
       </div>
       <div
-        className={[cstyles.well, styles.txbox].join(' ')}
+        className={clx(cstyles.well, styles.txbox)}
         onClick={() => {
           txClicked(transaction)
         }}
       >
+        <img
+          src={isReceive ? ReceiveIcon : SendIcon}
+          alt=''
+          className={styles.tranIcon}
+        />
+
         <div className={styles.txtype}>
-          <div>{transaction.type}</div>
-          <div className={[cstyles.padtopsmall, cstyles.sublight].join(' ')}>
+          <div>{isReceive ? 'Receive' : 'Send'}</div>
+          <div className={clx(cstyles.padtopsmall, cstyles.sublight)}>
             {timePart}
           </div>
         </div>
@@ -270,35 +278,31 @@ const TxItemBlock = ({
                   <div className={cstyles.highlight}>{label}</div>
                   <div>{Utils.splitStringIntoChunks(address, 6).join(' ')}</div>
                   <div
-                    className={[
+                    className={clx(
                       cstyles.small,
                       cstyles.sublight,
                       cstyles.padtopsmall,
                       styles.txmemo,
-                    ].join(' ')}
+                    )}
                   >
                     {memo}
                   </div>
                 </div>
-                <div className={[styles.txamount, cstyles.right].join(' ')}>
+                <div className={clx(styles.txamount, cstyles.right)}>
                   <div>
                     <span>
                       {currencyName} {bigPart}
                     </span>
-                    <span
-                      className={[cstyles.small, cstyles.pslsmallpart].join(
-                        ' ',
-                      )}
-                    >
+                    <span className={clx(cstyles.small, cstyles.pslsmallpart)}>
                       {smallPart}
                     </span>
                   </div>
                   <div
-                    className={[
+                    className={clx(
                       cstyles.sublight,
                       cstyles.small,
                       cstyles.padtopsmall,
-                    ].join(' ')}
+                    )}
                   >
                     {Utils.getPslToUsdString(
                       pslPrice,
@@ -357,9 +361,7 @@ export default class Transactions extends Component<any, any> {
     }, {})
     return (
       <div>
-        <div
-          className={[cstyles.xlarge, cstyles.padall, cstyles.center].join(' ')}
-        >
+        <div className={clx(cstyles.xlarge, cstyles.padall, cstyles.center)}>
           Transactions
         </div>
 
@@ -368,16 +370,14 @@ export default class Transactions extends Component<any, any> {
           {
             /* If no transactions, show the "loading..." text */
             !transactions && (
-              <div
-                className={[cstyles.center, cstyles.margintoplarge].join(' ')}
-              >
+              <div className={clx(cstyles.center, cstyles.margintoplarge)}>
                 Loading...
               </div>
             )
           }
 
           {transactions && transactions.length === 0 && (
-            <div className={[cstyles.center, cstyles.margintoplarge].join(' ')}>
+            <div className={clx(cstyles.center, cstyles.margintoplarge)}>
               No Transactions Yet
             </div>
           )}
