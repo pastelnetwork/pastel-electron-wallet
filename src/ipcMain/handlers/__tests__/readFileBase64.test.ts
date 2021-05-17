@@ -2,12 +2,6 @@ import fs from 'fs'
 
 import { readFileBase64 } from '../readFileBase64'
 
-jest.mock('electron', () => ({
-  ipcMain: {
-    handle: jest.fn(),
-  },
-}))
-
 describe('readFileBase64', () => {
   beforeEach(() => {
     jest.resetAllMocks()

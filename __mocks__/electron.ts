@@ -1,3 +1,6 @@
+// This is electron mock, and being picked up by Jest every time `electron` is imported.
+// Read more: https://jestjs.io/docs/manual-mocks#mocking-node-modules
+
 export const ipcRenderer = {
   events: {},
   on(event: string, handler: () => void): void {
@@ -17,4 +20,5 @@ export const dialog = {
 
 export const ipcMain = {
   on: jest.fn(),
+  handle: jest.fn(),
 }
