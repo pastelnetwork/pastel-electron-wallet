@@ -88,9 +88,9 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
       dispatch(getPastelIDsFailure())
       dispatch(
         openPastelModal({
-          title: 'Can not fetch PastelIDs',
+          title: 'Can not fetch Pastel IDs',
           body: [
-            "We cound't fetch existing PastelIDs for some reason. Please restart the wallet to try again.",
+            "We couldn't fetch existing Pastel IDs for some reason. Please restart the wallet to try again.",
           ],
         }),
       )
