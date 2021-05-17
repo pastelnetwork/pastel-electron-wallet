@@ -8,9 +8,9 @@ export const InputContainer = styled.div`
   justify-content: space-between;
 `;
 
-export const Input = styled.input<{ bordercolor: string }>`
+export const Input = styled.input<{ borderColor: string }>`
   background-color: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ bordercolor }) => bordercolor};
+  border: 1px solid ${({ borderColor }) => borderColor};
   border-radius: 4px;
   padding: 9px 40px 9px 20px;
   font-size: ${({ theme }) => theme.fonts.default};

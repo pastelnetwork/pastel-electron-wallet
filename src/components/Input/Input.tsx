@@ -21,7 +21,7 @@ const Input: React.FC<IInputProps> = ({ label, hint, errorMessage, style, type, 
     {label && <Styles.Label>{label}</Styles.Label>}
     <Styles.InputContainer>
       <Styles.Input
-        bordercolor={errorMessage ? colors.error : '#8e98a333'}
+        borderColor={errorMessage ? colors.error : '#8e98a333'}
         type={type}
         {...restProps}
       />
