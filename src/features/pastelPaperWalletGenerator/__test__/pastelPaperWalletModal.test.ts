@@ -5,7 +5,7 @@ import {
 } from '../PastelPaperWalletModalSlice'
 
 describe('PastelPaperWalletModal reducer', () => {
-  test('returns correct default state', () => {
+  test('Returns correct default state for PastelPaperWalletModal reducer', () => {
     // Act
     const s = pastelPaperWalletModalReducer(undefined, { type: 'test' })
 
@@ -17,7 +17,7 @@ describe('PastelPaperWalletModal reducer', () => {
     })
   })
 
-  test('open state correctly', () => {
+  test('Open state correctly for PastelPaperWalletModal reducer', () => {
     const address = 'PtmHPHFpBz9ALNDs5AUUu6nyx7W5bonSjhv',
       privateKey = 'PtmHPHFpBz9ALNDs5AUUu6nyx7W5bonSjhv'
     // Act
@@ -37,7 +37,7 @@ describe('PastelPaperWalletModal reducer', () => {
     })
   })
 
-  test('close state correctly', () => {
+  test('Close state correctly for PastelPaperWalletModal reducer', () => {
     // Act
     const s = pastelPaperWalletModalReducer(
       undefined,

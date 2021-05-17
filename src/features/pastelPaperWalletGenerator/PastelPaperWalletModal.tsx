@@ -21,30 +21,30 @@ type PastelPaperWalletModalProps = {
   }
 }
 
-type PDFDocumentProps = {
+interface PDFDocumentProps {
   address: string
   privateKey: string
   currencyName: string
 }
 
-const splitStringIntoChunks = (s: string, numChunks: number) => {
-  if (numChunks > s.length) {
-    return [s]
+const splitStringIntoChunks = (str: string, chunkQuantity: number) => {
+  if (chunkQuantity > str.length || str.length < 16) {
+    return [str]
   }
 
-  if (s.length < 16) {
-    return [s]
-  }
-
-  const chunkSize = Math.round(s.length / numChunks)
+  const chunkSize = Math.round(str.length / chunkQuantity)
   const chunks = []
 
-  for (let i = 0; i < numChunks - 1; i++) {
-    chunks.push(s.substr(i * chunkSize, chunkSize))
-  } // Last chunk might contain un-even length
+  str.split('').map((v: string, index: number) => {
+    chunks.push(str.substr(index * chunkSize, chunkSize))
+  })
 
-  chunks.push(s.substr((numChunks - 1) * chunkSize))
+  chunks.push(str.substr((chunkQuantity - 1) * chunkSize))
   return chunks
+}
+
+const addLineBreakForContent = (str: string) => {
+  return str.replace(/(.{40})/g, `$1${breakChar}`)
 }
 
 const pdfStyles = StyleSheet.create({
@@ -132,7 +132,7 @@ function PDFDocument({ address, currencyName, privateKey }: PDFDocumentProps) {
                 {currencyName} Address (Sapling)
               </Text>
               <Text style={pdfStyles.contentValue}>
-                {address.replace(/(.{40})/g, `$1${breakChar}`)}
+                {addLineBreakForContent(address)}
               </Text>
             </View>
           </View>
@@ -141,7 +141,7 @@ function PDFDocument({ address, currencyName, privateKey }: PDFDocumentProps) {
               <View style={pdfStyles.contentItem}>
                 <Text style={pdfStyles.contentTitle}>Private Key</Text>
                 <Text style={pdfStyles.contentValue}>
-                  {privateKey.replace(/(.{40})/g, `$1${breakChar}`)}
+                  {addLineBreakForContent(privateKey)}
                 </Text>
               </View>
               <View style={pdfStyles.marginTop20}>
@@ -149,7 +149,7 @@ function PDFDocument({ address, currencyName, privateKey }: PDFDocumentProps) {
                   {currencyName} Address (Sapling)
                 </Text>
                 <Text style={pdfStyles.contentValue}>
-                  {address.replace(/(.{40})/g, `$1${breakChar}`)}
+                  {addLineBreakForContent(address)}
                 </Text>
               </View>
             </View>
@@ -165,19 +165,19 @@ function PDFDocument({ address, currencyName, privateKey }: PDFDocumentProps) {
 
 export default function PastelPaperWalletModal({
   info,
-}: PastelPaperWalletModalProps): JSX.Element {
+}: PastelPaperWalletModalProps): JSX.Element | null {
   const { address, privateKey, modalIsOpen } = useAppSelector(
     state => state.pastelPaperWalletModal,
   )
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen || !privateKey) {
-    return <></>
+    return null
   }
 
   const generateFileName = () => {
-    const addr = splitStringIntoChunks(address, 6)[0]
-    const title = `PSL_Paper_Wallet__Shielded_Address_${addr}`
+    const firstPartOfTheAddress = splitStringIntoChunks(address, 6)[0]
+    const title = `PSL_Paper_Wallet__Shielded_Address_${firstPartOfTheAddress}`
     const date = new Date()
     const dateTime = `${
       date.getMonth() + 1
