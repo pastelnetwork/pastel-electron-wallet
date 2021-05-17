@@ -1,9 +1,19 @@
 import { dialog, ipcMain } from 'electron'
 import fs from 'fs'
 
-ipcMain.on('chooseImage', async (event, arg) => {
+import { TIpcListenerResponse } from './response'
+
+export type TChooseImageResponse = {
+  base64: string
+  size: number
+  path: string
+}
+
+export async function chooseImage(): Promise<
+  TIpcListenerResponse<TChooseImageResponse>
+> {
   try {
-    const { canceled, filePaths, bookmarks } = await dialog.showOpenDialog({
+    const { filePaths } = await dialog.showOpenDialog({
       properties: ['openFile'],
       filters: [{ name: 'Images', extensions: ['png', 'jpg', 'jpeg'] }],
     })
@@ -14,20 +24,23 @@ ipcMain.on('chooseImage', async (event, arg) => {
     ])
 
     const base64 = buf.toString('base64')
-    event.reply('chooseImageDone', {
+    return {
       status: 'Success',
       payload: {
         base64,
         size: stat.size,
         path: filePaths[0],
       },
-    })
+    }
   } catch (error) {
-    event.reply('chooseImageDone', {
+    return {
       status: 'Failure',
-      payload: {
-        error: error.message,
-      },
-    })
+      error: `ipcMain chooseImage error: ${error.message}`,
+    }
   }
+}
+
+ipcMain.on('chooseImage', async event => {
+  const resp = await chooseImage()
+  event.reply('chooseImageDone', resp)
 })

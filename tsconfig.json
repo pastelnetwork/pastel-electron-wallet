@@ -62,5 +62,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src"]
+  "include": ["src", "tools", "./jest-setup.ts"]
 }

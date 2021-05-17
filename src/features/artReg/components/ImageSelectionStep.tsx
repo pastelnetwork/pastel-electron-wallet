@@ -1,11 +1,12 @@
 import cx from 'classnames'
-import { app, ipcRenderer } from 'electron'
-import fs from 'fs'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import { ipcRenderer } from 'electron'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { TChooseImageResponse } from '../../../ipcMain/listeners/chooseImage'
+import { TIpcListenerResponse } from '../../../ipcMain/listeners/response'
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import { Button, ButtonGroup, FormControl, Input } from '../../common'
+import { Button, ButtonGroup, FormControl } from '../../common'
 import cstyles from '../../common/Common.module.css'
 import { IArtRegFormData, setFormData, setStep } from '..'
 import styles from './ArtRegForm.module.css'
@@ -16,6 +17,7 @@ export function ImageSelectionStep(): JSX.Element {
   const dispatch = useAppDispatch()
   const { register, setValue, handleSubmit } = useForm()
   const [imageData, setImageData] = useState('')
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     register('filePath', { required: true })
@@ -28,6 +30,7 @@ export function ImageSelectionStep(): JSX.Element {
           setImageData(src)
         })
         .catch(error => {
+          setError(true)
           // TODO log errors to a central logger so we can address them later.
           console.warn(`artReg ImageSelectionStep error: ${error.message}`)
         })
@@ -45,9 +48,21 @@ export function ImageSelectionStep(): JSX.Element {
 
   function onSelectImage(): void {
     ipcRenderer.send('chooseImage')
+  }
 
-    ipcRenderer.on('chooseImageDone', (event, resp) => {
-      console.log(resp)
+  ipcRenderer.on(
+    'chooseImageDone',
+    (event, resp: TIpcListenerResponse<TChooseImageResponse>) => {
+      if (resp.status === 'Failure') {
+        setError(true)
+        // TODO log errors to a central logger so we can address them later.
+        console.warn(`artReg ImageSelectionStep error: ${resp.error}`)
+      }
+
+      if (!resp.payload) {
+        return
+      }
+
       const base64 = resp.payload.base64
       const src = `data:image/jpg;base64,${base64}`
 
@@ -60,19 +75,29 @@ export function ImageSelectionStep(): JSX.Element {
           fileSize: resp.payload.size,
         }),
       )
-    })
-  }
+    },
+  )
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      data-testid='imageSelectionStepForm'
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div
         className={cx(styles.imageSelectionWrapper, cstyles.marginbottomlarge)}
       >
         <div className={styles.imageWrapper}>
           {imageData !== '' ? (
-            <img className={styles.imageSelected} src={imageData} />
+            <img
+              data-testid='imageSelected'
+              className={styles.imageSelected}
+              src={imageData}
+            />
           ) : (
-            <div className={styles.imagePlaceholder} />
+            <div
+              data-testid='imagePlaceholder'
+              className={styles.imagePlaceholder}
+            />
           )}
         </div>
         <div className={styles.imageUpload}>
@@ -88,11 +113,16 @@ export function ImageSelectionStep(): JSX.Element {
             registration fee.
           </p>
           <p>For example, 0.5mb costs 1,000 PSL, 5mb - 10,000 PSL</p>
+          {error && (
+            <p data-testid='error' className={cstyles.red}>
+              An error occured. Please try selecting an image again.
+            </p>
+          )}
         </div>
       </div>
       <ButtonGroup>
-        <Button text='Go to optimization' type='submit' />
-        <Button text='Go back' onClick={onGoBack} />
+        <Button data-testid='submit' text='Go to optimization' type='submit' />
+        <Button data-testid='back' text='Go back' onClick={onGoBack} />
       </ButtonGroup>
     </form>
   )
