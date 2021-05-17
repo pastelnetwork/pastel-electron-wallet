@@ -598,6 +598,9 @@ describe('PastelDBThread', () => {
     const fetchListaddressesSpy = jest
       .spyOn(pastelDBThread, 'fetchListaddresses')
       .mockResolvedValue()
+    const exportSqliteDBSpy = jest
+      .spyOn(pastelDBLib, 'exportSqliteDB')
+      .mockResolvedValue()
 
     try {
       // Act
@@ -622,6 +625,7 @@ describe('PastelDBThread', () => {
       expect(fetchListunspentSpy).toHaveBeenCalled()
       expect(fetchTotalbalanceSpy).toHaveBeenCalled()
       expect(fetchListaddressesSpy).toHaveBeenCalled()
+      expect(exportSqliteDBSpy).toHaveBeenCalled()
     } catch (e) {
       expect(e.message).toEqual(
         'pastelDBThread fetchRawMempoolInfo error: undefined',
