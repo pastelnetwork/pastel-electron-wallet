@@ -16,6 +16,7 @@ import Logo from '../assets/img/pastel-logo.png'
 import { Info, Transaction } from './AppState'
 import Utils from '../utils/utils'
 import { parsePastelURI, PastelURITarget } from '../utils/uris'
+import ImportPrivKeyModal from '../../features/importPrivKeyModal'
 
 const ExportPrivKeyModal = ({
   modalIsOpen,
@@ -60,73 +61,6 @@ const ExportPrivKeyModal = ({
           onClick={closeModal}
         >
           Close
-        </button>
-      </div>
-    </Modal>
-  )
-}
-
-const ImportPrivKeyModal = ({
-  modalIsOpen,
-  modalInput,
-  setModalInput,
-  closeModal,
-  doImportPrivKeys,
-}: any) => {
-  return (
-    <Modal
-      isOpen={modalIsOpen}
-      onRequestClose={closeModal}
-      className={cstyles.modal}
-      overlayClassName={cstyles.modalOverlay}
-    >
-      <div className={[cstyles.verticalflex].join(' ')}>
-        <div
-          className={cstyles.marginbottomlarge}
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Import Private Keys
-        </div>
-
-        <div className={cstyles.marginbottomlarge}>
-          Please paste your private or viewing keys here (transparent address or
-          shielded address), one line per key.
-        </div>
-
-        <div
-          className={cstyles.well}
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          <TextareaAutosize
-            className={cstyles.inputbox}
-            placeholder='Private Keys'
-            value={modalInput}
-            onChange={e => setModalInput(e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className={cstyles.buttoncontainer}>
-        <button
-          type='button'
-          className={cstyles.primarybutton}
-          onClick={() => {
-            doImportPrivKeys()
-            closeModal()
-          }}
-        >
-          Import
-        </button>
-        <button
-          type='button'
-          className={cstyles.primarybutton}
-          onClick={closeModal}
-        >
-          Cancel
         </button>
       </div>
     </Modal>
