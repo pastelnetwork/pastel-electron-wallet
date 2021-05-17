@@ -12,8 +12,8 @@ interface ImportPrivKeyModalProps {
   doImportPrivKeys: () => void
 }
 
-export const removeAllWhiteSpaces = (str: string): string => {
-  return str.replace(/\s/g, '')
+export const removeAllBreakChar = (str: string): string => {
+  return str.replace(/\u00ad/g, '')
 }
 
 export default function ImportPrivKeyModal({
@@ -55,7 +55,7 @@ export default function ImportPrivKeyModal({
             className={cstyles.inputbox}
             placeholder='Private Keys'
             value={modalInput}
-            onChange={e => setModalInput(removeAllWhiteSpaces(e.target.value))}
+            onChange={e => setModalInput(removeAllBreakChar(e.target.value))}
           />
         </div>
       </div>
