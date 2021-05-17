@@ -137,7 +137,11 @@ const createWindow = async () => {
     mainWindow = null
   })
   w.once('ready-to-show', () => {
-    const serve = serveStatic(`${process.cwd()}/node_modules/squoosh/build`, {
+    let staticPath = `${process.cwd()}/node_modules/squoosh/build`
+    if (app.isPackaged) {
+      staticPath = './resources/app.asar/.webpack/renderer/static/squoosh'
+    }
+    const serve = serveStatic(staticPath, {
       index: ['index.html'],
     })
     // Create server
