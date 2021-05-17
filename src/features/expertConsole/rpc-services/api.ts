@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios'
+import axios, { CancelTokenSource } from 'axios'
 
 import store from '../../../redux/store'
-import { APIMethods, METHODS } from './utils'
+import { METHODS } from './utils'
 
 const getRPCConfig = () => {
   const state = store.getState()
@@ -24,30 +23,40 @@ const getMessage = (statusCode: number, isECONNREFUSED: boolean) => {
   }
 }
 
-const apiMethods: any = {}
+const apiRequests: CancelTokenSource[] = []
 
-const api: APIMethods = METHODS.reduce(
-  (obj, method) => ({
-    ...obj,
-    [method]: (params = []) => {
-      const RPC = getRPCConfig()
+type possibleMethods = typeof METHODS[number]
+type dynamicAPI = {
+  [x in possibleMethods]: <T>(params: string[]) => Promise<T>
+}
+
+let apiMethods = {} as dynamicAPI
+
+METHODS.forEach((method: string) => {
+  apiMethods = {
+    ...apiMethods,
+    [method]: <T>(params: string[]): Promise<T> => {
+      const { url, username, password } = getRPCConfig()
       return new Promise((resolve, reject) => {
-        axios(RPC.url, {
+        const CancelToken = axios.CancelToken
+        const source = CancelToken.source()
+
+        apiRequests.push(source)
+
+        axios(url, {
           method: 'POST',
-          auth: {
-            username: RPC.username,
-            password: RPC.password,
-          },
+          auth: { username, password },
           data: {
             jsonrpc: '2.0',
             id: 'curltest',
             method,
             params,
           },
+          cancelToken: source.token,
         })
-          .then((data: any) => {
-            console.log('[RPC CALL SUCCESS] -', method, data)
-            resolve(data.data.result)
+          .then(data => {
+            console.log('[RPC CALL SUCCESS] -', method, data?.data?.result)
+            resolve(data?.data?.result)
           })
           .catch(error => {
             console.log('[RPC CALL ERROR] - ', { ...error })
@@ -64,8 +73,9 @@ const api: APIMethods = METHODS.reduce(
           })
       })
     },
-  }),
-  apiMethods,
-)
+  }
+})
 
-export default api
+export default apiMethods
+
+export { apiRequests }

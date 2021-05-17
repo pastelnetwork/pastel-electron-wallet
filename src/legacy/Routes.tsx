@@ -35,6 +35,7 @@ import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
+import { PastelDBThread } from '../features/pastelDB'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
@@ -45,10 +46,12 @@ import PastelPhotopeaModal, {
 import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
-import ExpertConsole from '../features/pastelExpertConsole'
+import ExpertConsole from '../features/expertConsole'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+
+const period = 1000 * 10
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -629,6 +632,11 @@ class RouteApp extends React.Component<any, any> {
                       // To support legacy calls
                       // TODO Remove then fully moved over to Redux
                       this.setRPCConfig(rpcConfig)
+
+                      // set pastel DB thread update timer
+                      setInterval(() => {
+                        PastelDBThread(rpcConfig)
+                      }, period)
                     }}
                     setInfo={this.setInfo}
                   />
