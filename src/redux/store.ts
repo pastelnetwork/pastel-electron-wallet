@@ -9,6 +9,7 @@ import { pastelPaperWalletModalReducer } from '../features/pastelPaperWalletGene
 import { pastelPhotopeaModalReducer } from '../features/pastelPhotopea'
 import { pastelPriceReducer } from '../features/pastelPrice'
 import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEditorTool'
+import { squooshToolModalReducer } from '../features/squooshTool'
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
     pastelPhotopeaModal: pastelPhotopeaModalReducer,
     artRegForm: artRegFormReducer,
     aboutModal: aboutModalReducer,
+    squooshToolModal: squooshToolModalReducer,
   },
 })
 

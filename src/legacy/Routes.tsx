@@ -35,6 +35,7 @@ import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
+import { PastelDBThread } from '../features/pastelDB'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
@@ -43,9 +44,12 @@ import PastelPhotopeaModal, {
   openPastelPhotopeaModal,
 } from '../features/pastelPhotopea'
 import AboutModal, { openAboutModal } from '../features/about'
+import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
-import ExpertConsole from '../features/pastelExpertConsole'
 import { ArtRegForm } from '../features/artReg'
+import ExpertConsole from '../features/expertConsole'
+
+const period = 1000 * 10
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -468,6 +472,7 @@ class RouteApp extends React.Component<any, any> {
         <PastelPhotopeaModal />
         <PastelSpriteEditorToolModal />
         <AboutModal />
+        <SquooshToolModal />
 
         <div
           style={{
@@ -490,6 +495,7 @@ class RouteApp extends React.Component<any, any> {
                 {...(standardProps as any)}
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
                 openAboutModal={this.props.openAboutModal}
+                openSquooshToolModal={this.props.openSquooshToolModal}
               />
             </div>
           )}
@@ -519,6 +525,7 @@ class RouteApp extends React.Component<any, any> {
                     addressViewKeys={addressViewKeys}
                     receivePageState={receivePageState}
                     addressBook={addressBook}
+                    transactions={transactions}
                     {...standardProps}
                     fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
                     hidePrivKey={this.hidePrivKey}
@@ -622,6 +629,11 @@ class RouteApp extends React.Component<any, any> {
                       // To support legacy calls
                       // TODO Remove then fully moved over to Redux
                       this.setRPCConfig(rpcConfig)
+
+                      // set pastel DB thread update timer
+                      setInterval(() => {
+                        PastelDBThread(rpcConfig)
+                      }, period)
                     }}
                     setInfo={this.setInfo}
                   />
@@ -641,4 +653,5 @@ export default connect(null, {
   openPastelPhotopeaModal,
   openPastelSpriteEditorToolModal,
   openAboutModal,
+  openSquooshToolModal,
 })(RouteApp)
