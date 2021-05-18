@@ -47,6 +47,7 @@ import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
+import PastelUtils from '../features/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
@@ -230,7 +231,7 @@ class RouteApp extends React.Component<any, any> {
       }
 
       const result = await this.rpc.doImportPrivKey(
-        keys[i],
+        PastelUtils.removeAllBreakChar(keys[i]),
         i === keys.length - 1,
       )
 

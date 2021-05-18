@@ -9209,9 +9209,9 @@ sql.js@pastelnetwork/sql.js#230351f:
   version "1.5.0"
   resolved "https://codeload.github.com/pastelnetwork/sql.js/tar.gz/230351fe5fb3b8e0980db29da66d7595da4bfb62"
 
-squoosh@pastelnetwork/squoosh#6406a10:
+squoosh@pastelnetwork/squoosh#d44b1b4:
   version "2.0.0"
-  resolved "https://codeload.github.com/pastelnetwork/squoosh/tar.gz/6406a10cde4185549ca289cdae34ff4419c0872e"
+  resolved "https://codeload.github.com/pastelnetwork/squoosh/tar.gz/d44b1b4166308052b4ccafd6b093fbc002ede3f1"
   dependencies:
     wasm-feature-detect "^1.2.9"
 
