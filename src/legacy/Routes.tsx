@@ -47,7 +47,8 @@ import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
-import PastelUtils from '../features/utils/utils'
+import { openUpdateToast } from '../features/updateToast'
+import PastelUtils from '../features/common/utils'
 
 const period = 1000 * 10
 
@@ -495,6 +496,7 @@ class RouteApp extends React.Component<any, any> {
                 {...(standardProps as any)}
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
                 openAboutModal={this.props.openAboutModal}
+                openUpdateToast={this.props.openUpdateToast}
                 openSquooshToolModal={this.props.openSquooshToolModal}
               />
             </div>
@@ -649,4 +651,5 @@ export default connect(null, {
   openPastelSpriteEditorToolModal,
   openAboutModal,
   openSquooshToolModal,
+  openUpdateToast,
 })(RouteApp)

@@ -13,6 +13,8 @@
   },
   "license": "MIT",
   "main": ".webpack/main",
+  "hostUrl": "https://update.electronjs.org",
+  "repoName": "pastelnetwork/pastel-electron-wallet",
   "scripts": {
     "start": "cross-env NODE_ENV=development electron-forge start",
     "package": "cross-env NODE_ENV=production electron-forge package",
@@ -74,6 +76,7 @@
     "squoosh": "pastelnetwork/squoosh#d44b1b4",
     "typeface-roboto": "0.0.75",
     "underscore": "1.9.2",
+    "update-electron-app": "2.0.1",
     "uuid": "8.3.2",
     "ws": "7.2.1"
   },
