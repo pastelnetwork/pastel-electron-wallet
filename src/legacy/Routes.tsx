@@ -47,6 +47,7 @@ import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
+import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../features/common/utils'
 
@@ -609,6 +610,11 @@ class RouteApp extends React.Component<any, any> {
                     pastelIDs={pastelIDs}
                   />
                 )}
+              />
+
+              <Route
+                path={routes.STATISTICS}
+                render={() => <PastelStatistics />}
               />
 
               <Route

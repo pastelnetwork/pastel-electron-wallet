@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.cardList {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-flow: wrap;
+}
+
+.fullWidth {
+  width: 100%;
+}

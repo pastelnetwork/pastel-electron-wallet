@@ -1,0 +1,30 @@
+.cardWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 28%;
+  margin-bottom: 20px;
+}
+.cardContainer {
+  display: flex;
+  width: 85%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+  font-size: 16px;
+  border-radius: 3px;
+}
+
+.cardContainer::after {
+  content: ' ';
+  padding-bottom: 50%;
+}
+.cardContainer:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
