@@ -14,47 +14,21 @@ import http from 'http'
 import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
-import pkg from '../package.json'
+import {
+  forceSingleInstanceApplication,
+  redirectDeepLinkingUrl,
+  registerCustomProtocol,
+} from './features/deepLinking'
 import MenuBuilder from './menu'
 
 // Deep linked url
-let deeplinkingUrl: string[] | string
+let deepLinkingUrl: string[] | string
+let mainWindow: BrowserWindow | null = null
 
-const redirectDeepLinkingUrl = (deepLink: string, m: BrowserWindow) => {
-  if (deepLink.includes(`${pkg.protocolSchemes.native}://`)) {
-    const url = deepLink.split(`${pkg.protocolSchemes.native}://`)[1].split('?')
-
-    if (process.platform == 'win32') {
-      m.webContents.send('deepLink', {
-        view: url[0].slice(0, -1),
-        param: url[1],
-      })
-    } else {
-      m.webContents.send('deepLink', { view: url[0], param: url[1] })
-    }
-  }
-}
-
-// Force Single Instance Application
 const gotTheLock = app.requestSingleInstanceLock()
 if (gotTheLock) {
   app.on('second-instance', (e, argv) => {
-    // Someone tried to run a second instance, we should focus our window.
-
-    // Protocol handler for win32
-    // argv: An array of the second instance’s (command line / deep linked) arguments
-    if (process.platform == 'win32') {
-      // Keep only command line / deep linked arguments
-      deeplinkingUrl = argv.slice(1)
-    }
-
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) {
-        mainWindow.restore()
-      }
-      mainWindow.focus()
-      redirectDeepLinkingUrl(deeplinkingUrl.toString(), mainWindow)
-    }
+    forceSingleInstanceApplication(mainWindow, deepLinkingUrl, argv)
   })
 } else {
   app.quit()
@@ -74,7 +48,6 @@ export default class AppUpdater {
     log.transports.file.level = 'info'
   }
 }
-let mainWindow: BrowserWindow | null = null
 
 if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install()
@@ -111,14 +84,15 @@ const createWindow = async () => {
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
-  if (!app.isPackaged) {
-    w.webContents.openDevTools()
-  }
+  // if (!app.isPackaged) {
+  //   w.webContents.openDevTools()
+  // }
+  w.webContents.openDevTools()
 
   // Protocol handler for win32
   if (process.platform == 'win32') {
     // Keep only command line / deep linked arguments
-    deeplinkingUrl = process.argv.slice(1)
+    deepLinkingUrl = process.argv.slice(1)
   }
 
   app.on('web-contents-created', (event, contents) => {
@@ -221,24 +195,17 @@ app.on('activate', () => {
   }
 })
 
-if (!app.isDefaultProtocolClient(pkg.protocolSchemes.native)) {
-  // Define custom protocol handler. Deep linking works on packaged versions of the application!
-  app.setAsDefaultProtocolClient(pkg.protocolSchemes.native)
-}
+registerCustomProtocol()
 
 app.on('will-finish-launching', function () {
   // Protocol handler for osx
   app.on('open-url', function (event, url) {
     event.preventDefault()
-    deeplinkingUrl = url
-    if (mainWindow) {
-      redirectDeepLinkingUrl(deeplinkingUrl.toString(), mainWindow)
-    }
+    deepLinkingUrl = url
+    redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   })
 })
 
 ipcMain.on('app-ready', () => {
-  if (mainWindow && deeplinkingUrl) {
-    redirectDeepLinkingUrl(deeplinkingUrl.toString(), mainWindow)
-  }
+  redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 })

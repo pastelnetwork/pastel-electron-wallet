@@ -452,7 +452,7 @@ class Sidebar extends PureComponent<any, any> {
       (event, { view, param }: { view: string; param: string }) => {
         const allRoutes = Object.assign(routes)
         const page = allRoutes[view.toUpperCase()] ? view : routes.DASHBOARD
-        history.push({
+        history.replace({
           pathname: page,
           state: { param },
         })
