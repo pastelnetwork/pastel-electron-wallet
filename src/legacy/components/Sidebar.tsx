@@ -329,6 +329,7 @@ class Sidebar extends PureComponent<any, any> {
       openPastelSpriteEditorToolModal,
       openPastelPhotopeaModal,
       openAboutModal,
+      openUpdateToast,
       openSquooshToolModal,
     } = this.props
 
@@ -444,6 +445,11 @@ class Sidebar extends PureComponent<any, any> {
 
     ipcRenderer.on('squooshTool', () => {
       openSquooshToolModal()
+    })
+
+    ipcRenderer.send('app-ready')
+    ipcRenderer.on('update_downloaded', () => {
+      openUpdateToast()
     })
   }
   closeExportPrivKeysModal = () => {

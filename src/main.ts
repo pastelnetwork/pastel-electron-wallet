@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -14,6 +14,7 @@ import http from 'http'
 import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
+import pkg from '../package.json'
 import MenuBuilder from './menu'
 
 // Enable dev tools
@@ -123,6 +124,7 @@ const createWindow = async () => {
       proceedToClose = true
       app.quit()
     })
+
     // $FlowFixMe
     w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
@@ -172,4 +174,58 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+ipcMain.on('app-ready', () => {
+  if (app.isPackaged) {
+    const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
+      process.arch
+    }/${app.getVersion()}`
+
+    autoUpdater.setFeedURL({
+      url: feedURL,
+      serverType: 'default',
+    })
+    autoUpdater.checkForUpdates()
+
+    const fourHours = 4 * 60 * 60 * 1000
+    setInterval(() => {
+      autoUpdater.checkForUpdates()
+    }, fourHours)
+  }
+})
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall()
+})
+
+autoUpdater.on('checking-for-update', () => {
+  console.log('checking-for-update')
+})
+
+autoUpdater.on('update-available', () => {
+  console.log('update-available')
+})
+
+autoUpdater.on(
+  'update-downloaded',
+  (event, releaseNotes, releaseName, updateURL) => {
+    if (mainWindow && mainWindow.webContents) {
+      mainWindow.webContents.send('update_downloaded')
+    }
+    console.log('update-downloaded', {
+      event,
+      releaseNotes,
+      releaseName,
+      updateURL,
+    })
+  },
+)
+
+autoUpdater.on('update-not-available', () => {
+  console.log('update-not-available')
+})
+
+autoUpdater.on('error', err => {
+  console.log('error', { err })
 })
