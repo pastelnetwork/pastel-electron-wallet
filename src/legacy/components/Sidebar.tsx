@@ -329,6 +329,7 @@ class Sidebar extends PureComponent<any, any> {
       openPastelSpriteEditorToolModal,
       openPastelPhotopeaModal,
       openAboutModal,
+      openUpdateToast,
       openSquooshToolModal,
     } = this.props
 
@@ -447,6 +448,9 @@ class Sidebar extends PureComponent<any, any> {
     })
 
     ipcRenderer.send('app-ready')
+    ipcRenderer.on('update_downloaded', () => {
+      openUpdateToast()
+    })
     ipcRenderer.on(
       'deepLink',
       (event, { view, param }: { view: string; param: string }) => {
