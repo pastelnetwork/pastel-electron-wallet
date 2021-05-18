@@ -48,7 +48,7 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
 import { openUpdateToast } from '../features/updateToast'
-import PastelUtils from '../features/utils/utils'
+import PastelUtils from '../features/common/utils'
 
 const period = 1000 * 10
 
