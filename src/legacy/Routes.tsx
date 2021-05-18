@@ -48,6 +48,7 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
 import { openUpdateToast } from '../features/updateToast'
+import PastelUtils from '../features/utils/utils'
 
 const period = 1000 * 10
 
@@ -228,7 +229,7 @@ class RouteApp extends React.Component<any, any> {
       }
 
       const result = await this.rpc.doImportPrivKey(
-        keys[i],
+        PastelUtils.removeAllBreakChar(keys[i]),
         i === keys.length - 1,
       )
 
