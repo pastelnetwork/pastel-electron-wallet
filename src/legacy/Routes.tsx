@@ -620,9 +620,9 @@ class RouteApp extends React.Component<any, any> {
 
               <Route
                 path={routes.LOADING}
-                render={p => (
+                render={props => (
                   <LoadingScreen
-                    {...p}
+                    {...props}
                     setRPCConfig={(rpcConfig: any) => {
                       // To support Redux calls
                       this.props.setPastelConf({
