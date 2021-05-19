@@ -232,14 +232,6 @@ ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall()
 })
 
-autoUpdater.on('checking-for-update', () => {
-  console.warn('checking-for-update')
-})
-
-autoUpdater.on('update-available', () => {
-  console.warn('update-available')
-})
-
 autoUpdater.on(
   'update-downloaded',
   (event, releaseNotes, releaseName, updateURL) => {
@@ -255,10 +247,6 @@ autoUpdater.on(
   },
 )
 
-autoUpdater.on('update-not-available', () => {
-  console.warn('update-not-available')
-})
-
 autoUpdater.on('error', err => {
-  console.warn('autoUpdater error: ${err.message}', err)
+  console.warn(`autoUpdater error: ${err.message}`, err)
 })

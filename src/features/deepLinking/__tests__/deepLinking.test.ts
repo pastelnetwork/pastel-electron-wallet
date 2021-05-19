@@ -1,12 +1,12 @@
-import { BrowserWindowMock } from '../../../../__mocks__/browser-window'
+import { BrowserWindow } from 'electron'
+
 import { redirectDeepLinkingUrl } from '../DeepLinking'
 
 describe('deepLinking/redirectDeepLinkingUrl', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let mockWindow: any
+  let mockWindow: BrowserWindow
 
   beforeEach(() => {
-    mockWindow = new BrowserWindowMock()
+    mockWindow = new BrowserWindow()
     jest.resetAllMocks()
     jest.clearAllMocks()
   })
@@ -14,7 +14,10 @@ describe('deepLinking/redirectDeepLinkingUrl', () => {
   test("protocolSchema isn't existing on redirectDeepLinkingUrl", async () => {
     expect.hasAssertions()
     try {
-      redirectDeepLinkingUrl('protocolSchemes', null)
+      redirectDeepLinkingUrl(
+        'protocolSchemes://creator?content=test',
+        mockWindow,
+      )
     } catch (err) {
       expect(err.message).toEqual(
         "deepLinking redirectDeepLinkingUrl error: protocolSchema isn't existing",

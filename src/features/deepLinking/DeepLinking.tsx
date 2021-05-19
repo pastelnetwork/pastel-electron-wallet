@@ -7,24 +7,29 @@ export const redirectDeepLinkingUrl = (
   mainWindow: BrowserWindow | null,
 ): void => {
   const deepLinkingUrl = deepLink.toString()
-  if (deepLinkingUrl.includes(`${pkg.protocolSchemes.native}://`)) {
-    const url = deepLinkingUrl
-      .split(`${pkg.protocolSchemes.native}://`)[1]
-      .split('?')
-    if (mainWindow && mainWindow.webContents) {
-      if (process.platform == 'win32') {
-        mainWindow.webContents.send('deepLink', {
-          view: url[0].slice(0, -1),
-          param: url[1],
-        })
-      } else {
-        mainWindow.webContents.send('deepLink', { view: url[0], param: url[1] })
+  if (deepLinkingUrl.includes('://')) {
+    if (deepLinkingUrl.includes(`${pkg.protocolSchemes.native}://`)) {
+      const url = deepLinkingUrl
+        .split(`${pkg.protocolSchemes.native}://`)[1]
+        .split('?')
+      if (mainWindow && mainWindow.webContents) {
+        if (process.platform == 'win32') {
+          mainWindow.webContents.send('deepLink', {
+            view: url[0].slice(0, -1),
+            param: url[1],
+          })
+        } else {
+          mainWindow.webContents.send('deepLink', {
+            view: url[0],
+            param: url[1],
+          })
+        }
       }
+    } else {
+      throw new Error(
+        "deepLinking redirectDeepLinkingUrl error: protocolSchema isn't existing",
+      )
     }
-  } else {
-    throw new Error(
-      "deepLinking redirectDeepLinkingUrl error: protocolSchema isn't existing",
-    )
   }
 }
 

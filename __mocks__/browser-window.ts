@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 
 import { WebContentsMock } from './web-contents'
 
-export class BrowserWindowMock extends EventEmitter {
+export class BrowserWindow extends EventEmitter {
   public static getAllWindows = jest.fn()
   public static getFocusedWindow = jest.fn()
   public static fromWebContents = jest.fn()
