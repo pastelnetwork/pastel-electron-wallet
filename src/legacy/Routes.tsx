@@ -50,6 +50,7 @@ import ExpertConsole from '../features/expertConsole'
 import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../features/common/utils'
+import { DifficultyOvertime } from '../features/pastelStatistics/components/difficultyovertime'
 
 const period = 1000 * 10
 
@@ -615,6 +616,11 @@ class RouteApp extends React.Component<any, any> {
               <Route
                 path={routes.STATISTICS}
                 render={() => <PastelStatistics />}
+              />
+
+              <Route
+                path={routes.DIFFICULTYOVERTIME}
+                render={() => <DifficultyOvertime />}
               />
 
               <Route

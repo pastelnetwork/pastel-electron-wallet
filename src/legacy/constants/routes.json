@@ -10,5 +10,6 @@
   "PASTEL_ID": "/pastel_id",
   "CONNECTMOBILE": "/connectmobile",
   "EXPERT_CONSOLE": "/expert_console",
-  "STATISTICS": "/statistics"
+  "STATISTICS": "/statistics",
+  "DIFFICULTYOVERTIME": "/difficultyovertime"
 }

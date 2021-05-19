@@ -645,3 +645,8 @@ export type TValidateFields = {
   time?: number
   transactionid?: string
 }
+
+export type TLineChartData = {
+  dataX: string[]
+  dataY: number[]
+}
