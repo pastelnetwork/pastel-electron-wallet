@@ -2,6 +2,7 @@ import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 
 import {
   createBlock,
+  createBlockChainInfo,
   createBlocksubsidy,
   createChaintips,
   createListaddresses,
@@ -12,6 +13,7 @@ import {
   createMininginfo,
   createNettotals,
   createNetworkinfo,
+  createPastelPriceTable,
   createRawmempoolinfo,
   createRawtransaction,
   createStatisticinfo,
@@ -67,6 +69,7 @@ describe('managePastelDatabase', () => {
     pastelDB.db.exec(createRawmempoolinfo)
     pastelDB.db.exec(createMininginfo)
     pastelDB.db.exec(createBlock)
+    pastelDB.db.exec(createBlockChainInfo)
     pastelDB.db.exec(createRawtransaction)
     pastelDB.db.exec(createTransaction)
     pastelDB.db.exec(createTxoutsetinfo)
@@ -78,6 +81,7 @@ describe('managePastelDatabase', () => {
     pastelDB.db.exec(createListunspent)
     pastelDB.db.exec(createTotalbalance)
     pastelDB.db.exec(createListaddresses)
+    pastelDB.db.exec(createPastelPriceTable)
   })
 
   beforeEach(() => {

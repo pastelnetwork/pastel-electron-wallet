@@ -45,6 +45,8 @@ import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
+import { openUpdateToast } from '../features/updateToast'
+import PastelUtils from '../features/common/utils'
 
 export type TWalletInfo = {
   connections: number
@@ -237,7 +239,7 @@ class RouteApp extends React.Component<any, any> {
       }
 
       const result = await this.rpc.doImportPrivKey(
-        keys[i],
+        PastelUtils.removeAllBreakChar(keys[i]),
         i === keys.length - 1,
       )
 
@@ -504,6 +506,7 @@ class RouteApp extends React.Component<any, any> {
                 {...(standardProps as any)}
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
                 openAboutModal={this.props.openAboutModal}
+                openUpdateToast={this.props.openUpdateToast}
                 openSquooshToolModal={this.props.openSquooshToolModal}
               />
             </div>
@@ -659,4 +662,5 @@ export default connect(null, {
   openPastelSpriteEditorToolModal,
   openAboutModal,
   openSquooshToolModal,
+  openUpdateToast,
 })(RouteApp)

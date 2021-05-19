@@ -9,6 +9,7 @@ import { pastelPhotopeaModalReducer } from '../features/pastelPhotopea'
 import { pastelPriceReducer } from '../features/pastelPrice'
 import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEditorTool'
 import { squooshToolModalReducer } from '../features/squooshTool'
+import { updateToastReducer } from '../features/updateToast'
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     pastelSpriteEditorToolModal: pastelSpriteEditorToolModalReducer,
     pastelPhotopeaModal: pastelPhotopeaModalReducer,
     aboutModal: aboutModalReducer,
+    updateToast: updateToastReducer,
     squooshToolModal: squooshToolModalReducer,
   },
 })

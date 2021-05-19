@@ -67,6 +67,24 @@ export const createMininginfo = `CREATE TABLE mininginfo (
   create_timestamp int
 )`
 
+export const createBlockChainInfo = `CREATE TABLE blockchaininfo (
+  id int NOT NULL,
+  bestblockhash VARCHAR(255),
+  blocks int,
+  chain VARCHAR(255),
+  chainwork VARCHAR(255),
+  commitments int,
+  consensus text,
+  difficulty float,
+  headers int,
+  pruned boolean,
+  softforks text,
+  upgrades text,
+  valuePools text,
+  verificationprogress int,
+  create_timestamp int
+)`
+
 export const createBlock = `CREATE TABLE blockinfo (
   id int NOT NULL,
   hash VARCHAR(255),
@@ -231,6 +249,18 @@ export const createListaddresses = `CREATE TABLE listaddresses (
   create_timestamp int
 )`
 
+export const createPastelPriceTable = `CREATE TABLE pslprice (
+  id int NOT NULL,
+  price_usd number,
+  create_timestamp int
+)`
+
+export const insertPastelPriceInfoQuery = `INSERT INTO pslprice VALUES (
+  $newId,
+  $priceUsd,
+  $createTimestamp
+)`
+
 export const insertStatisticinfoQuery = `INSERT INTO statisticinfo VALUES (
   $newId,
   $hashrate,
@@ -297,6 +327,24 @@ export const insertMininginfoQuery = `INSERT INTO mininginfo VALUES (
   $pooledtx,
   $testnet,
   $chain,
+  $createTimestamp
+)`
+
+export const insertBlockChainInfoQuery = `INSERT INTO blockchaininfo VALUES (
+  $newId,
+  $bestblockhash,
+  $blocks,
+  $chain,
+  $chainwork,
+  $commitments,
+  $consensus,
+  $difficulty,
+  $headers,
+  $pruned,
+  $softforks,
+  $upgrades,
+  $valuePools,
+  $verificationprogress,
   $createTimestamp
 )`
 
@@ -461,4 +509,4 @@ export const selectIDQuery = 'SELECT id FROM '
 export const whereTransactionIDMatchingQuery =
   ' WHERE transactionid=$tid AND time=$time'
 
-export const orderByIDQuery = ' ORDER BY id LIMIT 1'
+export const orderByIDQuery = ' ORDER BY id DESC LIMIT 1'

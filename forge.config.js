@@ -1,4 +1,5 @@
 const os = require('os')
+
 const package = require('./package.json')
 
 function getExtraResource() {
