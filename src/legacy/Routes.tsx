@@ -10,11 +10,10 @@ import App from './containers/App'
 import Dashboard from './components/Dashboard'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
-import LoadingScreen from './components/LoadingScreen'
-import AppState, {
+import LoadingScreen from '../features/loading'
+import {
   AddressBalance,
   TotalBalance,
-  Transaction,
   SendPageState,
   ToAddr,
   RPCConfig,
@@ -24,7 +23,6 @@ import AppState, {
 } from './components/AppState'
 import RPC from './rpc'
 import Utils from './utils/utils'
-import { PastelURITarget } from './utils/uris'
 import Pasteld from './components/Pasteld'
 import AddressBook from './components/Addressbook'
 import AddressbookImpl from './utils/AddressbookImpl'
@@ -49,6 +47,18 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import ExpertConsole from '../features/expertConsole'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../features/common/utils'
+
+export type TWalletInfo = {
+  connections: number
+  currencyName: string
+  disconnected: boolean
+  latestBlock: number
+  pslPrice: number | undefined
+  solps: number
+  testnet: boolean
+  verificationProgress: number
+  version: number
+}
 
 const period = 1000 * 10
 
@@ -338,7 +348,7 @@ class RouteApp extends React.Component<any, any> {
       info: newInfo,
     })
   }
-  setInfo = (newInfo: any) => {
+  setInfo = (newInfo: TWalletInfo) => {
     // If the price is not set in this object, copy it over from the current object
     const { info } = this.state
 
@@ -477,7 +487,7 @@ class RouteApp extends React.Component<any, any> {
 
         <div
           style={{
-            overflow: 'hidden',
+            height: '100%',
           }}
         >
           {info && info.version && (
@@ -613,8 +623,9 @@ class RouteApp extends React.Component<any, any> {
 
               <Route
                 path={routes.LOADING}
-                render={() => (
+                render={props => (
                   <LoadingScreen
+                    {...props}
                     setRPCConfig={(rpcConfig: any) => {
                       // To support Redux calls
                       this.props.setPastelConf({
