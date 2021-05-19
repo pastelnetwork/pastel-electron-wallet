@@ -1,5 +1,5 @@
+import { BrowserWindowMock } from '../../../../__mocks__/browser-window'
 import { redirectDeepLinkingUrl } from '../DeepLinking'
-import { BrowserWindowMock } from '../mocks/browser-window'
 
 describe('deepLinking/redirectDeepLinkingUrl', () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -97,8 +97,7 @@ export class WebContentsMock extends EventEmitter {
     super()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public get id(): any {
+  public get id(): void {
     return this.idMock()
   }
 }

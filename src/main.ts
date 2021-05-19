@@ -39,8 +39,8 @@ if (gotTheLock) {
 if (!app.isPackaged) {
   app.whenReady().then(() => {
     installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-      .then((name: string) => console.log(`Added Extension:  ${name}`))
-      .catch((err: Error) => console.log('An error occurred: ', err))
+      .then((name: string) => console.warn(`Added Extension:  ${name}`))
+      .catch((err: Error) => console.warn('An error occurred: ', err))
   })
 }
 
@@ -85,10 +85,9 @@ const createWindow = async () => {
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   // Open the DevTools.
-  // if (!app.isPackaged) {
-  //   w.webContents.openDevTools()
-  // }
-  w.webContents.openDevTools()
+  if (!app.isPackaged) {
+    w.webContents.openDevTools()
+  }
 
   // Protocol handler for win32
   if (process.platform == 'win32') {
@@ -119,13 +118,13 @@ const createWindow = async () => {
   w.on('close', (event: Event) => {
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
-      console.log('proceed to close, so closing')
+      console.warn('proceed to close, so closing')
       return
     }
 
     // If we're already waiting for close, then don't allow another close event to actually close the window
     if (waitingForClose) {
-      console.log('Waiting for close... Timeout in 10s')
+      console.warn('Waiting for close... Timeout in 10s')
       event.preventDefault()
       return
     }
@@ -152,7 +151,7 @@ const createWindow = async () => {
     setTimeout(() => {
       waitingForClose = false
       proceedToClose = true
-      console.log('Timeout, quitting')
+      console.warn('Timeout, quitting')
       app.quit()
     }, 10 * 1000)
   })
@@ -170,7 +169,7 @@ const createWindow = async () => {
     // Create server
     const server = http.createServer(function onRequest(req, res) {
       serve(req, res, () => {
-        console.log('Create server')
+        console.warn('Create server')
       })
     })
     // Listen
@@ -234,11 +233,11 @@ ipcMain.on('restart_app', () => {
 })
 
 autoUpdater.on('checking-for-update', () => {
-  console.log('checking-for-update')
+  console.warn('checking-for-update')
 })
 
 autoUpdater.on('update-available', () => {
-  console.log('update-available')
+  console.warn('update-available')
 })
 
 autoUpdater.on(
@@ -247,7 +246,7 @@ autoUpdater.on(
     if (mainWindow && mainWindow.webContents) {
       mainWindow.webContents.send('update_downloaded')
     }
-    console.log('update-downloaded', {
+    console.warn('update-downloaded', {
       event,
       releaseNotes,
       releaseName,
@@ -257,9 +256,9 @@ autoUpdater.on(
 )
 
 autoUpdater.on('update-not-available', () => {
-  console.log('update-not-available')
+  console.warn('update-not-available')
 })
 
 autoUpdater.on('error', err => {
-  console.log('error', { err })
+  console.warn('autoUpdater error: ${err.message}', err)
 })
