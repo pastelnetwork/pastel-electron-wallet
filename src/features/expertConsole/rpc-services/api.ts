@@ -55,6 +55,7 @@ METHODS.forEach((method: string) => {
           cancelToken: source.token,
         })
           .then(data => {
+            console.log('[RPC CALL SUCCESS] -', method, data?.data?.result)
             resolve(data?.data?.result)
           })
           .catch(error => {
