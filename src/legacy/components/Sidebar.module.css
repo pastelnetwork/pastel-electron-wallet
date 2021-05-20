@@ -1,6 +1,6 @@
 .sidebar {
   background-color: #000;
-  height: calc(100vh - 55px);
+  height: calc(100vh - 63px);
 }
 
 .sidebarmenuitem {
@@ -16,7 +16,13 @@
 
 .sidebarlogobg {
   background: #ffb100;
-  margin-bottom: 8px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.sidebarlogobg img {
+  object-fit: contain;
 }
 
 .exportedPrivKeys {

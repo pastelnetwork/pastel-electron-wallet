@@ -456,6 +456,17 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.on('update_downloaded', () => {
       openUpdateToast()
     })
+    ipcRenderer.on(
+      'deepLink',
+      (event, { view, param }: { view: string; param: string }) => {
+        const allRoutes = Object.assign(routes)
+        const page = allRoutes[view.toUpperCase()] ? view : routes.DASHBOARD
+        history.replace({
+          pathname: page,
+          state: { param },
+        })
+      },
+    )
   }
   closeExportPrivKeysModal = () => {
     this.setState({
