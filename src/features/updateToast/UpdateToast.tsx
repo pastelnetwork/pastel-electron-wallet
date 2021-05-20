@@ -4,7 +4,7 @@ import React from 'react'
 
 import pkg from '../../../package.json'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import cstyles from '../common/Styles.module.css'
+import cstyles from '../../common/utils/Styles.module.css'
 import styles from './UpdateToast.module.css'
 import { closeUpdateToast } from './UpdateToastSlice'
 
