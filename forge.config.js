@@ -41,6 +41,13 @@ module.exports = {
     icon: getIcon(),
     asar: true,
     extraResource: getExtraResource(),
+    protocols: [
+      {
+        protocol: package.name,
+        name: package.name,
+        schemes: [package.protocolSchemes.native],
+      },
+    ],
   },
   makers: [
     {
