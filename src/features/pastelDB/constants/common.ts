@@ -21,12 +21,12 @@ export const pastelTableNames = {
 
 export const pastelChartFields = [
   { name: 'Difficulty', routeName: '/difficultyovertime' },
-  { name: 'Hashrate', routeName: '/hashrateovertime' },
-  { name: 'PSL Price', routeName: '/priceovertime' },
-  { name: 'Rawtransaction', routeName: '/rawtransaction' },
-  { name: 'Txoutsetinfo', routeName: '/txoutsetinfo' },
-  { name: 'Walletinfo', routeName: '/walletinfo' },
-  { name: 'RawMempool', routeName: '/rawmempoolovertime' },
-  { name: 'MempoolSize', routeName: '/mempoolsizeovertime' },
-  { name: 'Miners Revenue', routeName: '/minersrevenue' },
+  { name: 'Hashrate', routeName: '/dashboard' },
+  { name: 'PSL Price', routeName: '/dashboard' },
+  { name: 'Rawtransaction', routeName: '/dashboard' },
+  { name: 'Txoutsetinfo', routeName: '/dashboard' },
+  { name: 'Walletinfo', routeName: '/dashboard' },
+  { name: 'RawMempool', routeName: '/dashboard' },
+  { name: 'MempoolSize', routeName: '/dashboard' },
+  { name: 'Miners Revenue', routeName: '/dashboard' },
 ]

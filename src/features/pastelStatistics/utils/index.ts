@@ -1,1 +1,1 @@
-export * from './PastelStiatisticLib'
+export * from './PastelStatisticsLib'
