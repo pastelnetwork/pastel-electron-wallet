@@ -10,12 +10,12 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import log from 'electron-log'
-import http from 'http'
-import serveStatic from 'serve-static'
+import { Server } from 'http'
 import sourceMapSupport from 'source-map-support'
 
 import pkg from '../package.json'
 import MenuBuilder from './menu'
+import initServeStatic from './features/serveStatic'
 
 // Enable dev tools
 if (!app.isPackaged) {
@@ -46,6 +46,7 @@ if (
 
 let waitingForClose = false
 let proceedToClose = false
+let servers: Server[]
 
 const createWindow = async () => {
   const w = new BrowserWindow({
@@ -136,24 +137,15 @@ const createWindow = async () => {
     }, 10 * 1000)
   })
   w.on('closed', () => {
+    if (servers && servers.length > 0) {
+      servers.map(server => {
+        server.close()
+      })
+    }
     mainWindow = null
   })
   w.once('ready-to-show', () => {
-    let staticPath = `${process.cwd()}/node_modules/squoosh/build`
-    if (app.isPackaged) {
-      staticPath = './resources/app.asar/.webpack/renderer/static/squoosh'
-    }
-    const serve = serveStatic(staticPath, {
-      index: ['index.html'],
-    })
-    // Create server
-    const server = http.createServer(function onRequest(req, res) {
-      serve(req, res, () => {
-        console.log('Create server')
-      })
-    })
-    // Listen
-    server.listen(5100)
+    servers = initServeStatic()
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()

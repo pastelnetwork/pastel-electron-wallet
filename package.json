@@ -50,6 +50,7 @@
     "http": "0.0.1-security",
     "ini": "2.0.0",
     "javascript-terminal": "1.1.1",
+    "jpg-glitch": "pastelnetwork/jpg-glitch#53a0839",
     "js-base64": "3.5.2",
     "js-sha256": "0.9.0",
     "libsodium-wrappers-sumo": "0.7.6",

@@ -331,6 +331,7 @@ class Sidebar extends PureComponent<any, any> {
       openAboutModal,
       openUpdateToast,
       openSquooshToolModal,
+      openGlitchImageModal,
     } = this.props
 
     ipcRenderer.on('payuri', (event, uri) => {
@@ -445,6 +446,10 @@ class Sidebar extends PureComponent<any, any> {
 
     ipcRenderer.on('squooshTool', () => {
       openSquooshToolModal()
+    })
+
+    ipcRenderer.on('glitchImage', () => {
+      openGlitchImageModal()
     })
 
     ipcRenderer.send('app-ready')

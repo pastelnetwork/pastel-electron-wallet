@@ -6437,6 +6437,10 @@ jest@26.6.3:
     import-local "^3.0.2"
     jest-cli "^26.6.3"
 
+jpg-glitch@pastelnetwork/jpg-glitch#53a0839:
+  version "1.0.1"
+  resolved "https://codeload.github.com/pastelnetwork/jpg-glitch/tar.gz/53a083961ec30af5cbffea8a0b09fc4c190cc234"
+
 js-base64@3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-3.5.2.tgz#3cc800e4f10812b55fb5ec53e7cabaef35dc6d3c"
