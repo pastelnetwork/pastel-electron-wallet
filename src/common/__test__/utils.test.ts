@@ -1,4 +1,4 @@
-import PastelUtils from '../utils'
+import PastelUtils from '../utils/utils'
 
 describe('feature/common/utils', () => {
   test('Remove whitespace of a string in utils/removeAllBreakChar', async () => {

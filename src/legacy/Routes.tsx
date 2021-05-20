@@ -46,7 +46,7 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
 import { openUpdateToast } from '../features/updateToast'
-import PastelUtils from '../features/common/utils'
+import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
