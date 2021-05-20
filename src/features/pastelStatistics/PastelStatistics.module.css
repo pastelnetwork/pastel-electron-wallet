@@ -14,3 +14,12 @@
 .fullWidth {
   width: 100%;
 }
+
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 28%;
+  margin-bottom: 20px;
+}
