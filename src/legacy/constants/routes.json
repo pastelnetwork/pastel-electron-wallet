@@ -11,5 +11,8 @@
   "CONNECTMOBILE": "/connectmobile",
   "EXPERT_CONSOLE": "/expert_console",
   "STATISTICS": "/statistics",
-  "DIFFICULTYOVERTIME": "/difficultyovertime"
+  "DIFFICULTYOVERTIME": "/difficultyovertime",
+  "CREATOR": "/creator",
+  "COLLECTOR": "/collector",
+  "NFT": "/nft"
 }

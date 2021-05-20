@@ -19,7 +19,7 @@ export const pastelTableNames = {
   listaddresses: 'listaddresses',
 }
 
-export const statisticsFieldNames = [
+export const pastelChartFields = [
   { name: 'Difficulty', routeName: '/difficultyovertime' },
   { name: 'Hashrate', routeName: '/hashrateovertime' },
   { name: 'PSL Price', routeName: '/priceovertime' },
