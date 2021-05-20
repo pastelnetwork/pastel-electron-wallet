@@ -20,6 +20,7 @@ describe('managePastelDatabase', () => {
 
   test('transformDifficultyInfo function works correctly', async () => {
     // Arrange
+    process.env.TZ = 'Pacific Standard Time'
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
 
     // Act
@@ -34,6 +35,8 @@ describe('managePastelDatabase', () => {
       dataX: ['5/20/2021, 6:42:13 AM', '5/20/2021, 6:42:13 AM'],
       dataY: [67782.8577019893, 67782.8577019893],
     })
+
+    process.env.TZ = process.env.STORED_TZ
   })
 })
 
