@@ -4,20 +4,17 @@ import serveStatic from 'serve-static'
 
 export default function initServeStatic(): Server[] {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/build`
-  if (app.isPackaged) {
-    squooshStaticPath =
-      './resources/app.asar/.webpack/renderer/static/serve-static/squoosh'
-  }
-  const server1 = setupServeStatic(squooshStaticPath, 5101)
-
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
   if (app.isPackaged) {
+    squooshStaticPath =
+      './resources/app.asar/.webpack/renderer/static/squoosh'
     glitchStaticPath =
-      './resources/app.asar/.webpack/renderer/static/serve-static/glitch'
+      './resources/app.asar/.webpack/renderer/static/glitch'
   }
-  const server2 = setupServeStatic(glitchStaticPath, 5102)
+  const serverSquoosh = setupServeStatic(squooshStaticPath, 5101)
+  const serverGlitch = setupServeStatic(glitchStaticPath, 5102)
 
-  return [server1, server2]
+  return [serverSquoosh, serverGlitch]
 }
 
 function setupServeStatic(staticPath: string, port: number) {
@@ -27,7 +24,7 @@ function setupServeStatic(staticPath: string, port: number) {
   // Create server
   const server = http.createServer(function onRequest(req, res) {
     serve(req, res, () => {
-      console.log('Create server')
+      console.log('Created server')
     })
   })
   // Listen

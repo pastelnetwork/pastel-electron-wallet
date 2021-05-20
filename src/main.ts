@@ -146,6 +146,12 @@ const createWindow = async () => {
       app.quit()
     })
 
+    if (servers && servers.length > 0) {
+      servers.map(server => {
+        server.close()
+      })
+    }
+
     // $FlowFixMe
     w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
@@ -157,11 +163,6 @@ const createWindow = async () => {
     }, 10 * 1000)
   })
   w.on('closed', () => {
-    if (servers && servers.length > 0) {
-      servers.map(server => {
-        server.close()
-      })
-    }
     mainWindow = null
   })
   w.once('ready-to-show', () => {
