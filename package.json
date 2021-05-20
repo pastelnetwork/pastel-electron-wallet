@@ -15,6 +15,9 @@
   "main": ".webpack/main",
   "hostUrl": "https://update.electronjs.org",
   "repoName": "pastelnetwork/pastel-electron-wallet",
+  "protocolSchemes": {
+    "native": "pastel"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=development electron-forge start",
     "package": "cross-env NODE_ENV=production electron-forge package",

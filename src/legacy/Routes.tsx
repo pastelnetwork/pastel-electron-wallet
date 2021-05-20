@@ -47,6 +47,9 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import ExpertConsole from '../features/expertConsole'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../features/common/utils'
+import Creator from '../features/creator'
+import Collector from '../features/collector'
+import Nft from '../features/nft'
 
 export type TWalletInfo = {
   connections: number
@@ -578,6 +581,12 @@ class RouteApp extends React.Component<any, any> {
                   />
                 )}
               />
+
+              <Route path={routes.CREATOR} render={() => <Creator />} />
+
+              <Route path={routes.COLLECTOR} render={() => <Collector />} />
+
+              <Route path={routes.NFT} render={() => <Nft />} />
 
               <Route
                 path={routes.PASTELD}
