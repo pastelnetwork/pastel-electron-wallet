@@ -28,7 +28,7 @@ export default function squooshToolModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src={'http://localhost:5101/'} />
+          <iframe src={'http://localhost:5200/'} />
         </div>
       </div>
     </Modal>

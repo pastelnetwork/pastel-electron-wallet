@@ -14,11 +14,11 @@ module.exports = [
       { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: 'static/bin' },
       {
         from: './node_modules/squoosh/build',
-        to: './static/serve-static/squoosh',
+        to: './static/squoosh',
       },
       {
         from: './node_modules/jpg-glitch/production',
-        to: './static/serve-static/glitch',
+        to: './static/glitch',
       },
     ],
   }),

@@ -6,13 +6,11 @@ export default function initServeStatic(): Server[] {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/build`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
   if (app.isPackaged) {
-    squooshStaticPath =
-      './resources/app.asar/.webpack/renderer/static/squoosh'
-    glitchStaticPath =
-      './resources/app.asar/.webpack/renderer/static/glitch'
+    squooshStaticPath = './resources/app.asar/.webpack/renderer/static/squoosh'
+    glitchStaticPath = './resources/app.asar/.webpack/renderer/static/glitch'
   }
-  const serverSquoosh = setupServeStatic(squooshStaticPath, 5101)
-  const serverGlitch = setupServeStatic(glitchStaticPath, 5102)
+  const serverSquoosh = setupServeStatic(squooshStaticPath, 5200)
+  const serverGlitch = setupServeStatic(glitchStaticPath, 5300)
 
   return [serverSquoosh, serverGlitch]
 }
