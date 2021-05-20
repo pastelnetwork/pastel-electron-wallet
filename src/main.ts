@@ -15,14 +15,32 @@ import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
 import pkg from '../package.json'
+import {
+  forceSingleInstanceApplication,
+  redirectDeepLinkingUrl,
+  registerCustomProtocol,
+} from './features/deepLinking'
 import MenuBuilder from './menu'
+
+// Deep linked url
+let deepLinkingUrl: string[] | string
+let mainWindow: BrowserWindow | null = null
+
+const gotTheLock = app.requestSingleInstanceLock()
+if (gotTheLock) {
+  app.on('second-instance', (e, argv) => {
+    forceSingleInstanceApplication(mainWindow, deepLinkingUrl, argv)
+  })
+} else {
+  app.quit()
+}
 
 // Enable dev tools
 if (!app.isPackaged) {
   app.whenReady().then(() => {
     installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-      .then((name: string) => console.log(`Added Extension:  ${name}`))
-      .catch((err: Error) => console.log('An error occurred: ', err))
+      .then((name: string) => console.warn(`Added Extension:  ${name}`))
+      .catch((err: Error) => console.warn('An error occurred: ', err))
   })
 }
 
@@ -31,7 +49,6 @@ export default class AppUpdater {
     log.transports.file.level = 'info'
   }
 }
-let mainWindow: BrowserWindow | null = null
 
 if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install()
@@ -72,11 +89,14 @@ const createWindow = async () => {
     w.webContents.openDevTools()
   }
 
+  // Protocol handler for win32
+  if (process.platform == 'win32') {
+    // Keep only command line / deep linked arguments
+    deepLinkingUrl = process.argv.slice(1)
+  }
+
   app.on('web-contents-created', (event, contents) => {
     contents.on('new-window', async (eventInner, navigationUrl) => {
-      // In this example, we'll ask the operating system
-      // to open this event's url in the default browser.
-      console.log('attempting to open window', navigationUrl)
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
@@ -98,13 +118,13 @@ const createWindow = async () => {
   w.on('close', (event: Event) => {
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
-      console.log('proceed to close, so closing')
+      console.warn('proceed to close, so closing')
       return
     }
 
     // If we're already waiting for close, then don't allow another close event to actually close the window
     if (waitingForClose) {
-      console.log('Waiting for close... Timeout in 10s')
+      console.warn('Waiting for close... Timeout in 10s')
       event.preventDefault()
       return
     }
@@ -131,7 +151,7 @@ const createWindow = async () => {
     setTimeout(() => {
       waitingForClose = false
       proceedToClose = true
-      console.log('Timeout, quitting')
+      console.warn('Timeout, quitting')
       app.quit()
     }, 10 * 1000)
   })
@@ -149,7 +169,7 @@ const createWindow = async () => {
     // Create server
     const server = http.createServer(function onRequest(req, res) {
       serve(req, res, () => {
-        console.log('Create server')
+        console.warn('Create server')
       })
     })
     // Listen
@@ -176,6 +196,17 @@ app.on('activate', () => {
   }
 })
 
+registerCustomProtocol()
+
+app.on('will-finish-launching', function () {
+  // Protocol handler for osx
+  app.on('open-url', function (event, url) {
+    event.preventDefault()
+    deepLinkingUrl = url
+    redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+  })
+})
+
 ipcMain.on('app-ready', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
@@ -193,18 +224,12 @@ ipcMain.on('app-ready', () => {
       autoUpdater.checkForUpdates()
     }, fourHours)
   }
+
+  redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 })
 
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall()
-})
-
-autoUpdater.on('checking-for-update', () => {
-  console.log('checking-for-update')
-})
-
-autoUpdater.on('update-available', () => {
-  console.log('update-available')
 })
 
 autoUpdater.on(
@@ -213,7 +238,7 @@ autoUpdater.on(
     if (mainWindow && mainWindow.webContents) {
       mainWindow.webContents.send('update_downloaded')
     }
-    console.log('update-downloaded', {
+    console.warn('update-downloaded', {
       event,
       releaseNotes,
       releaseName,
@@ -222,10 +247,6 @@ autoUpdater.on(
   },
 )
 
-autoUpdater.on('update-not-available', () => {
-  console.log('update-not-available')
-})
-
 autoUpdater.on('error', err => {
-  console.log('error', { err })
+  console.warn(`autoUpdater error: ${err.message}`, err)
 })
