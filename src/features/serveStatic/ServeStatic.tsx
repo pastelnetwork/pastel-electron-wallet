@@ -1,11 +1,10 @@
-import { app } from 'electron'
 import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 
-export default function initServeStatic(): Server[] {
-  let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/build`
+export default function initServeStatic(isPackaged:boolean): Server[] {
+  let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
-  if (app.isPackaged) {
+  if (isPackaged) {
     squooshStaticPath = './resources/app.asar/.webpack/renderer/static/squoosh'
     glitchStaticPath = './resources/app.asar/.webpack/renderer/static/glitch'
   }

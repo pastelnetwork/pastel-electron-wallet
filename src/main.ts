@@ -166,7 +166,7 @@ const createWindow = async () => {
     mainWindow = null
   })
   w.once('ready-to-show', () => {
-    servers = initServeStatic()
+    servers = initServeStatic(app.isPackaged)
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
