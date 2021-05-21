@@ -10,6 +10,7 @@ export const tableNames: TTableNamesValidate = {
   rawmempoolinfo: true,
   mininginfo: true,
   blockinfo: true,
+  blockchaininfo: true,
   rawtransaction: true,
   transaction_tbl: true,
   txoutsetinfo: true,
@@ -21,4 +22,5 @@ export const tableNames: TTableNamesValidate = {
   listunspent: true,
   totalbalance: true,
   listaddresses: true,
+  pslprice: true,
 }

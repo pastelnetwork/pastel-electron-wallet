@@ -5,7 +5,7 @@ import 'electron-squirrel-startup'
 // install IPC handlers and listeners
 import './ipcMain'
 
-import { app, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -16,14 +16,33 @@ import http from 'http'
 import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
+import pkg from '../package.json'
+import {
+  forceSingleInstanceApplication,
+  redirectDeepLinkingUrl,
+  registerCustomProtocol,
+} from './features/deepLinking'
 import MenuBuilder from './menu'
+
+// Deep linked url
+let deepLinkingUrl: string[] | string
+let mainWindow: BrowserWindow | null = null
+
+const gotTheLock = app.requestSingleInstanceLock()
+if (gotTheLock) {
+  app.on('second-instance', (e, argv) => {
+    forceSingleInstanceApplication(mainWindow, deepLinkingUrl, argv)
+  })
+} else {
+  app.quit()
+}
 
 // Enable dev tools
 if (!app.isPackaged) {
   app.whenReady().then(() => {
     installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-      .then((name: string) => console.log(`Added Extension:  ${name}`))
-      .catch((err: Error) => console.log('An error occurred: ', err))
+      .then((name: string) => console.warn(`Added Extension:  ${name}`))
+      .catch((err: Error) => console.warn('An error occurred: ', err))
   })
 }
 
@@ -32,7 +51,6 @@ export default class AppUpdater {
     log.transports.file.level = 'info'
   }
 }
-let mainWindow: BrowserWindow | null = null
 
 if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install()
@@ -73,11 +91,14 @@ const createWindow = async () => {
     w.webContents.openDevTools()
   }
 
+  // Protocol handler for win32
+  if (process.platform == 'win32') {
+    // Keep only command line / deep linked arguments
+    deepLinkingUrl = process.argv.slice(1)
+  }
+
   app.on('web-contents-created', (event, contents) => {
     contents.on('new-window', async (eventInner, navigationUrl) => {
-      // In this example, we'll ask the operating system
-      // to open this event's url in the default browser.
-      console.log('attempting to open window', navigationUrl)
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
@@ -99,13 +120,13 @@ const createWindow = async () => {
   w.on('close', (event: Event) => {
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
-      console.log('proceed to close, so closing')
+      console.warn('proceed to close, so closing')
       return
     }
 
     // If we're already waiting for close, then don't allow another close event to actually close the window
     if (waitingForClose) {
-      console.log('Waiting for close... Timeout in 10s')
+      console.warn('Waiting for close... Timeout in 10s')
       event.preventDefault()
       return
     }
@@ -125,13 +146,14 @@ const createWindow = async () => {
       proceedToClose = true
       app.quit()
     })
+
     // $FlowFixMe
     w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
     setTimeout(() => {
       waitingForClose = false
       proceedToClose = true
-      console.log('Timeout, quitting')
+      console.warn('Timeout, quitting')
       app.quit()
     }, 10 * 1000)
   })
@@ -139,13 +161,17 @@ const createWindow = async () => {
     mainWindow = null
   })
   w.once('ready-to-show', () => {
-    const serve = serveStatic(`${process.cwd()}/node_modules/squoosh/build`, {
+    let staticPath = `${process.cwd()}/node_modules/squoosh/build`
+    if (app.isPackaged) {
+      staticPath = './resources/app.asar/.webpack/renderer/static/squoosh'
+    }
+    const serve = serveStatic(staticPath, {
       index: ['index.html'],
     })
     // Create server
     const server = http.createServer(function onRequest(req, res) {
       serve(req, res, () => {
-        console.log('Create server')
+        console.warn('Create server')
       })
     })
     // Listen
@@ -170,4 +196,59 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+registerCustomProtocol()
+
+app.on('will-finish-launching', function () {
+  // Protocol handler for osx
+  app.on('open-url', function (event, url) {
+    event.preventDefault()
+    deepLinkingUrl = url
+    redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+  })
+})
+
+ipcMain.on('app-ready', () => {
+  if (app.isPackaged) {
+    const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
+      process.arch
+    }/${app.getVersion()}`
+
+    autoUpdater.setFeedURL({
+      url: feedURL,
+      serverType: 'default',
+    })
+    autoUpdater.checkForUpdates()
+
+    const fourHours = 4 * 60 * 60 * 1000
+    setInterval(() => {
+      autoUpdater.checkForUpdates()
+    }, fourHours)
+  }
+
+  redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+})
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall()
+})
+
+autoUpdater.on(
+  'update-downloaded',
+  (event, releaseNotes, releaseName, updateURL) => {
+    if (mainWindow && mainWindow.webContents) {
+      mainWindow.webContents.send('update_downloaded')
+    }
+    console.warn('update-downloaded', {
+      event,
+      releaseNotes,
+      releaseName,
+      updateURL,
+    })
+  },
+)
+
+autoUpdater.on('error', err => {
+  console.warn(`autoUpdater error: ${err.message}`, err)
 })

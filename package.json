@@ -13,6 +13,11 @@
   },
   "license": "MIT",
   "main": ".webpack/main",
+  "hostUrl": "https://update.electronjs.org",
+  "repoName": "pastelnetwork/pastel-electron-wallet",
+  "protocolSchemes": {
+    "native": "pastel"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=development electron-forge start",
     "package": "cross-env NODE_ENV=production electron-forge package",
@@ -72,9 +77,11 @@
     "serve-static": "1.14.1",
     "sha256-file": "1.0.0",
     "sql.js": "pastelnetwork/sql.js#230351f",
-    "squoosh": "pastelnetwork/squoosh#6406a10",
+    "squoosh": "pastelnetwork/squoosh#d44b1b4",
+    "styled-components": "5.3.0",
     "typeface-roboto": "0.0.75",
     "underscore": "1.9.2",
+    "update-electron-app": "2.0.1",
     "uuid": "8.3.2",
     "ws": "7.2.1"
   },
@@ -113,6 +120,7 @@
     "@types/sha256-file": "1.0.0",
     "@types/source-map-support": "0.5.3",
     "@types/sql.js": "1.4.2",
+    "@types/styled-components": "5.1.9",
     "@types/underscore": "1.11.0",
     "@types/uuid": "8.3.0",
     "@types/ws": "7.4.0",

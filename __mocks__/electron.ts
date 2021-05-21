@@ -1,5 +1,7 @@
 // This is electron mock, and being picked up by Jest every time `electron` is imported.
 // Read more: https://jestjs.io/docs/manual-mocks#mocking-node-modules
+import { BrowserWindow } from './browser-window'
+export { BrowserWindow }
 
 export const ipcRenderer = {
   events: {},
@@ -22,3 +24,8 @@ export const ipcMain = {
   on: jest.fn(),
   handle: jest.fn(),
 }
+
+
+
+
+
