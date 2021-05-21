@@ -2,8 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import cstyles from '../../legacy/components/Common.module.css'
-import { pastelChartFields } from '../pastelDB/constants'
-import { Card } from './components'
+import { pastelChartFields } from './constants/common'
+import { Card } from './components/card/Card'
 import styles from './PastelStatistics.module.css'
 
 const PastelStatistics = (): JSX.Element => {
@@ -18,12 +18,12 @@ const PastelStatistics = (): JSX.Element => {
       <div className={styles.container}>
         <div className={`${styles.fullWidth}`} style={{ padding: '16px' }}>
           <div className={styles.cardList}>
-            {pastelChartFields.map((field, index) => (
+            {pastelChartFields.map(field => (
               <Link to={field.routeName} className={styles.cardLink}>
                 <Card
                   key={field.name}
                   subTitle={field.name}
-                  cardIndex={index}
+                  backgroundImage={field.backgroundImage}
                 />
               </Link>
             ))}
