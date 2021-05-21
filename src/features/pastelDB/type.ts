@@ -650,3 +650,9 @@ export type TLineChartData = {
   dataX: string[]
   dataY: number[]
 }
+
+export type TMultiLineChartData = {
+  dataX: string[]
+  dataY1: number[]
+  dataY2: number[]
+}

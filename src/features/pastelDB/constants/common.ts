@@ -17,12 +17,13 @@ export const pastelTableNames = {
   listunspent: 'listunspent',
   totalbalance: 'totalbalance',
   listaddresses: 'listaddresses',
+  pslprice: 'pslprice',
 }
 
 export const pastelChartFields = [
   { name: 'Difficulty', routeName: '/difficultyovertime' },
   { name: 'Hashrate', routeName: '/dashboard' },
-  { name: 'PSL Price', routeName: '/dashboard' },
+  { name: 'PSL Price', routeName: '/priceovertime' },
   { name: 'Rawtransaction', routeName: '/dashboard' },
   { name: 'Txoutsetinfo', routeName: '/dashboard' },
   { name: 'Walletinfo', routeName: '/dashboard' },

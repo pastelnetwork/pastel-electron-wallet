@@ -47,7 +47,10 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import ExpertConsole from '../features/expertConsole'
 import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
-import { DifficultyOvertime } from '../features/pastelStatistics/components/difficultyovertime'
+import {
+  DifficultyOvertime,
+  PriceOvertime,
+} from '../features/pastelStatistics/components'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
@@ -640,6 +643,11 @@ class RouteApp extends React.Component<any, any> {
               <Route
                 path={routes.DIFFICULTYOVERTIME}
                 render={() => <DifficultyOvertime />}
+              />
+
+              <Route
+                path={routes.PRICEOVERTIME}
+                render={() => <PriceOvertime />}
               />
 
               <Route

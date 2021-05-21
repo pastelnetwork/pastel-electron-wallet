@@ -1,6 +1,6 @@
 import { SqlValue } from 'sql.js'
 
-import { TLineChartData } from '../../pastelDB/type'
+import { TLineChartData, TMultiLineChartData } from '../../pastelDB/type'
 
 export function getStartPoint(period: string): number {
   let duration = 1
@@ -52,4 +52,27 @@ export function transformDifficultyInfo(
   }
 
   return { dataX, dataY }
+}
+
+export function transformPriceInfo(
+  prices: SqlValue[][],
+  period: string,
+): TMultiLineChartData {
+  const dataX: string[] = []
+  const dataY1: number[] = []
+  const dataY2: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < prices.length; i++) {
+    const createTime = Number(prices[i][2])
+    if (createTime > startDate) {
+      const usd = Number(prices[i][1])
+      const btc = (usd * 167.98) / 8336807
+      dataY1.push(usd)
+      dataY2.push(btc)
+      dataX.push(new Date(createTime).toLocaleString())
+    }
+  }
+  return { dataX, dataY1, dataY2 }
 }
