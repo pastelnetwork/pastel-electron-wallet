@@ -18,15 +18,3 @@ export const pastelTableNames = {
   totalbalance: 'totalbalance',
   listaddresses: 'listaddresses',
 }
-
-export const pastelChartFields = [
-  { name: 'Difficulty', routeName: '/difficultyovertime' },
-  { name: 'Hashrate', routeName: '/dashboard' },
-  { name: 'PSL Price', routeName: '/dashboard' },
-  { name: 'Rawtransaction', routeName: '/dashboard' },
-  { name: 'Txoutsetinfo', routeName: '/dashboard' },
-  { name: 'Walletinfo', routeName: '/dashboard' },
-  { name: 'RawMempool', routeName: '/dashboard' },
-  { name: 'MempoolSize', routeName: '/dashboard' },
-  { name: 'Miners Revenue', routeName: '/dashboard' },
-]

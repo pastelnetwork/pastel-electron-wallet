@@ -194,7 +194,9 @@ export async function fetchRawtransaction(
       insertRawtransaction(props.pastelDB, result)
     }
   } catch (error) {
-    throw new Error(`pastelDBThread fetchBlock error: ${error.message}`)
+    throw new Error(
+      `pastelDBThread fetchRawtransaction error: ${error.message}`,
+    )
   }
 }
 
