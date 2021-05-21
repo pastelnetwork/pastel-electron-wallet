@@ -39,8 +39,6 @@ describe('managePastelDatabase', () => {
       ],
       dataY: [67782.8577019893, 67782.8577019893],
     })
-
-    process.env.TZ = process.env.STORED_TZ
   })
 })
 
