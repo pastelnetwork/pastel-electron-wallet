@@ -9779,6 +9779,11 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+timezone-mock@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/timezone-mock/-/timezone-mock-1.1.4.tgz#3dfc0c8a864132873e1de8459c4bb7757dd8a96e"
+  integrity sha512-TeDA/tpbgJPC6dFkFpz3+sZmjtma8n+ECQbf7FQK9+TqIa38PUzIx8LBJGv0v3994Z9FFwLU0zJT/ABeb3bZWQ==
+
 tiny-each-async@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/tiny-each-async/-/tiny-each-async-2.0.3.tgz#8ebbbfd6d6295f1370003fbb37162afe5a0a51d1"

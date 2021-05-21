@@ -1,4 +1,5 @@
 import * as pastelStatisticsLib from '../utils'
+import timezone_mock from 'timezone-mock'
 
 describe('managePastelDatabase', () => {
   const mockTime = 1621525333257
@@ -20,7 +21,7 @@ describe('managePastelDatabase', () => {
 
   test('transformDifficultyInfo function works correctly', async () => {
     // Arrange
-    process.env.TZ = 'Pacific Standard Time'
+    timezone_mock.register('US/Pacific')
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
 
     // Act
@@ -32,7 +33,10 @@ describe('managePastelDatabase', () => {
     //Assert
     expect(dateSpy).toHaveBeenCalled()
     expect(result).toEqual({
-      dataX: ['5/20/2021, 6:42:13 AM', '5/20/2021, 6:42:13 AM'],
+      dataX: [
+        '2021-05-20T13:42:13.277Z UTC (MockDate: GMT-0700)',
+        '2021-05-20T13:42:13.357Z UTC (MockDate: GMT-0700)',
+      ],
       dataY: [67782.8577019893, 67782.8577019893],
     })
 
