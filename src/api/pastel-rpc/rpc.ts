@@ -17,7 +17,7 @@ export async function rpc<T>(
     response = await axios(url, {
       data: {
         jsonrpc: '2.0',
-        id: 'curltest',
+        id: method,
         method,
         params,
       },
