@@ -1,8 +1,9 @@
 import { SqlValue } from 'sql.js'
-
 import { TLineChartData } from '../../pastelDB/type'
 
-export function getStartPoint(period: string): number {
+export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
+
+export function getStartPoint(period: TPeriod): number {
   let duration = 1
   switch (period) {
     case '2h':
@@ -34,7 +35,7 @@ export function getStartPoint(period: string): number {
 
 export function transformDifficultyInfo(
   hashrates: SqlValue[][],
-  period: string,
+  period: TPeriod,
 ): TLineChartData {
   const dataX: string[] = []
   const dataY: number[] = []

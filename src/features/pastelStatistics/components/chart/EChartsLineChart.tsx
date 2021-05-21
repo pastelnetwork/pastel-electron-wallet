@@ -5,6 +5,7 @@ import * as htmlToImage from 'html-to-image'
 import React, { useEffect, useRef, useState } from 'react'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
+import { TPeriod } from '../../utils'
 
 import styles from './LineChart.module.css'
 
@@ -24,7 +25,7 @@ type LineChartProps = {
   title?: string
   periodIndex: number
   handleBgColorChange: (color: string) => void
-  handlePeriodFilterChange?: (period: string) => void
+  handlePeriodFilterChange?: (period: TPeriod) => void
 }
 
 export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
@@ -41,7 +42,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
   } = props
   const [minY, setMinY] = useState(0)
   const [maxY, setMaxY] = useState(0)
-  const periods = [
+  const periods: TPeriod[][] = [
     ['2h', '2d', '4d', 'all'],
     ['30d', '60d', '180d', '1y', 'all'],
   ]
