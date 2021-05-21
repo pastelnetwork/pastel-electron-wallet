@@ -1,12 +1,19 @@
 import http, { Server } from 'http'
 import serveStatic from 'serve-static'
+import path from 'path'
 
-export default function initServeStatic(isPackaged:boolean): Server[] {
+export default function initServeStatic(isPackaged: boolean): Server[] {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
   if (isPackaged) {
-    squooshStaticPath = './resources/app.asar/.webpack/renderer/static/squoosh'
-    glitchStaticPath = './resources/app.asar/.webpack/renderer/static/glitch'
+    squooshStaticPath = path.join(
+      process.resourcesPath,
+      '/app.asar/.webpack/renderer/static/squoosh',
+    )
+    glitchStaticPath = path.join(
+      process.resourcesPath,
+      '/app.asar/.webpack/renderer/static/glitch',
+    )
   }
   const serverSquoosh = setupServeStatic(squooshStaticPath, 5200)
   const serverGlitch = setupServeStatic(glitchStaticPath, 5300)
