@@ -2,7 +2,9 @@ import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
 
-export default function initServeStatic(isPackaged: boolean): Server[] {
+const servers: Server[] = []
+
+export default function initServeStatic(isPackaged: boolean): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
   if (isPackaged) {
@@ -15,24 +17,39 @@ export default function initServeStatic(isPackaged: boolean): Server[] {
       '/app.asar/.webpack/renderer/static/glitch',
     )
   }
-  const serverSquoosh = setupServeStatic(squooshStaticPath, 5200)
-  const serverGlitch = setupServeStatic(glitchStaticPath, 5300)
-
-  return [serverSquoosh, serverGlitch]
+  setupServeStatic(squooshStaticPath, 5200)
+  setupServeStatic(glitchStaticPath, 5300)
 }
 
 function setupServeStatic(staticPath: string, port: number) {
-  const serve = serveStatic(staticPath, {
-    index: ['index.html'],
-  })
-  // Create server
-  const server = http.createServer(function onRequest(req, res) {
-    serve(req, res, () => {
-      console.log('Created server')
+  try {
+    const serve = serveStatic(staticPath, {
+      index: ['index.html'],
     })
-  })
-  // Listen
-  server.listen(port)
+    // Create server
+    const server = http.createServer(function onRequest(req, res) {
+      serve(req, res, () => {
+        console.log('Created server')
+      })
+    })
+    // Listen
+    server.listen(port)
+    servers.push(server)
+  } catch (error) {
+    throw new Error(`serveStatic setupServeStatic error: ${error.message}`)
+  }
+}
 
-  return server
+export function closeServeStatic(): void {
+  if (servers && servers.length > 0) {
+    servers.map(server => {
+      server.close(error => {
+        if (error) {
+          throw new Error(
+            `serveStatic closeServeStatic error: ${error.message}`,
+          )
+        }
+      })
+    })
+  }
 }

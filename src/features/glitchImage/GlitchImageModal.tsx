@@ -5,12 +5,12 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './GlitchImageModal.module.css'
 import { closeGlitchImageModal } from './GlitchImageModalSlice'
 
-export default function glitchImageModal(): JSX.Element {
+export default function glitchImageModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.glitchImageModal)
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen) {
-    return <></>
+    return null
   }
 
   return (

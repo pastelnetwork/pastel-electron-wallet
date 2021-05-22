@@ -10,7 +10,6 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import log from 'electron-log'
-import { Server } from 'http'
 import sourceMapSupport from 'source-map-support'
 
 import pkg from '../package.json'
@@ -20,7 +19,6 @@ import {
   registerCustomProtocol,
 } from './features/deepLinking'
 import MenuBuilder from './menu'
-import initServeStatic from './features/serveStatic'
 
 // Deep linked url
 let deepLinkingUrl: string[] | string
@@ -63,7 +61,6 @@ if (
 
 let waitingForClose = false
 let proceedToClose = false
-let servers: Server[]
 
 const createWindow = async () => {
   const w = new BrowserWindow({
@@ -146,12 +143,6 @@ const createWindow = async () => {
       app.quit()
     })
 
-    if (servers && servers.length > 0) {
-      servers.map(server => {
-        server.close()
-      })
-    }
-
     // $FlowFixMe
     w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
@@ -164,9 +155,6 @@ const createWindow = async () => {
   })
   w.on('closed', () => {
     mainWindow = null
-  })
-  w.once('ready-to-show', () => {
-    servers = initServeStatic(app.isPackaged)
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
