@@ -1,4 +1,4 @@
-import * as pastelStatisticsLib from '../utils'
+import * as pastelStatisticsLib from '../utils/PastelStatisticsLib'
 import timezone_mock from 'timezone-mock'
 
 describe('managePastelDatabase', () => {

@@ -19,7 +19,11 @@ const PastelStatistics = (): JSX.Element => {
         <div className={`${styles.fullWidth}`} style={{ padding: '16px' }}>
           <div className={styles.cardList}>
             {pastelChartFields.map(field => (
-              <Link to={field.routeName} className={styles.cardLink}>
+              <Link
+                to={field.routeName}
+                className={styles.cardLink}
+                key={field.routeName}
+              >
                 <Card
                   key={field.name}
                   subTitle={field.name}

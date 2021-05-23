@@ -5,7 +5,7 @@ import * as htmlToImage from 'html-to-image'
 import React, { useEffect, useRef, useState } from 'react'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
-import { TPeriod } from '../../utils'
+import { TPeriod } from '../../utils/PastelStatisticsLib'
 
 import styles from './LineChart.module.css'
 

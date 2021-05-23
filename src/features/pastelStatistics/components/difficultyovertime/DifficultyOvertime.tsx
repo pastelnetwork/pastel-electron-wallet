@@ -4,14 +4,16 @@ import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
-import { transformDifficultyInfo } from '../../utils'
+import {
+  TPeriod,
+  transformDifficultyInfo,
+} from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from './DifficultyOvertime.module.css'
-import { TPeriod } from '../../utils/PastelStatisticsLib'
 
 const redrawCycle = 60000
 
-export const DifficultyOvertime = (): JSX.Element => {
+const DifficultyOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState('#100c2a')
   const [period, setPeriod] = useState<TPeriod>('2h')
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
@@ -74,3 +76,5 @@ export const DifficultyOvertime = (): JSX.Element => {
     </>
   )
 }
+
+export default DifficultyOvertime
