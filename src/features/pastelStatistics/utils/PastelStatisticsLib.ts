@@ -34,7 +34,7 @@ export function getStartPoint(period: TPeriod): number {
 }
 
 export function transformDifficultyInfo(
-  hashrates: SqlValue[][],
+  difficulties: SqlValue[][],
   period: TPeriod,
 ): TLineChartData {
   const dataX: string[] = []
@@ -42,11 +42,11 @@ export function transformDifficultyInfo(
 
   const startDate = getStartPoint(period)
 
-  for (let i = 0; i < hashrates.length; i++) {
-    if (hashrates[i][4] !== null) {
-      const createTime = Number(hashrates[i][4])
+  for (let i = 0; i < difficulties.length; i++) {
+    if (difficulties[i][3] !== null) {
+      const createTime = Number(difficulties[i][3])
       if (createTime > startDate) {
-        dataY.push(Number(hashrates[i][3]))
+        dataY.push(Number(difficulties[i][2]))
         dataX.push(new Date(createTime).toLocaleString())
       }
     }

@@ -91,7 +91,7 @@ describe('managePastelDatabase', () => {
   test('the data should be added correctly to staticinfo table', async () => {
     const values = {
       $newId: 1,
-      $hashrate: 1.0,
+      $solutions: 1,
       $difficulty: 1.2345678,
       $createTimestamp: 0,
     }
@@ -100,14 +100,8 @@ describe('managePastelDatabase', () => {
     const result: QueryExecResult[] = getDatafromDB('statisticinfo')
     expect(result).toStrictEqual([
       {
-        columns: [
-          'id',
-          'hashrate',
-          'miner_distribution',
-          'difficulty',
-          'create_timestamp',
-        ],
-        values: [[1, '1', '', '1.2345678', 0]],
+        columns: ['id', 'solutions', 'difficulty', 'create_timestamp'],
+        values: [[1, 1, 1.2345678, 0]],
       },
     ])
   })
