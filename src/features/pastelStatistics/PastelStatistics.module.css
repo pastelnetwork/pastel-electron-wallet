@@ -7,7 +7,7 @@
 .cardList {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  /* justify-content: space-around; */
   flex-flow: wrap;
 }
 
@@ -22,4 +22,12 @@
   justify-content: center;
   width: 28%;
   margin-bottom: 20px;
+}
+
+.marginTop20 {
+  margin-top: 20px;
+}
+
+.padding16 {
+  padding: 16px;
 }

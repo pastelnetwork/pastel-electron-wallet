@@ -45,12 +45,12 @@ import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
-import PastelStatistics from '../features/pastelStatistics'
-import { openUpdateToast } from '../features/updateToast'
 import {
   DifficultyOvertime,
   PriceOvertime,
-} from '../features/pastelStatistics/components'
+  PastelStatistics,
+} from '../features/pastelStatistics'
+import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'

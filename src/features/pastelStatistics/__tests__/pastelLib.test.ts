@@ -1,11 +1,11 @@
-import * as pastelStatisticsLib from '../utils'
+import * as pastelStatisticsLib from '../utils/PastelStatisticsLib'
 import timezone_mock from 'timezone-mock'
 
 describe('managePastelDatabase', () => {
   const mockTime = 1621525333257
-  const mockHashrates = [
-    [1, 3556559, 0, 67782.8577019893, 1621518133277],
-    [2, 3556559, 0, 67782.8577019893, 1621518133357],
+  const mockDifficulties = [
+    [1, 3556559, 67782.8577019893, 1621518133277],
+    [2, 3556559, 67782.8577019893, 1621518133357],
   ]
   const mockPslPrices = [
     [1, 0.00539335, 1621518133277],
@@ -30,7 +30,7 @@ describe('managePastelDatabase', () => {
 
     // Act
     const result = pastelStatisticsLib.transformDifficultyInfo(
-      mockHashrates,
+      mockDifficulties,
       '2h',
     )
 

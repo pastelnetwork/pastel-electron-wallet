@@ -85,7 +85,7 @@ export type TBlockInfo = {
   version: number
   merkleroot: string
   finalsaplingroot: string
-  tx: string
+  tx: string[]
   time: number
   nonce: string
   solution: string
@@ -639,11 +639,26 @@ export type Tconsensus = {
 }
 
 export type TValidateFields = {
+  balance?: number
+  balanceTotal?: string
+  balanceTransparent?: string
   bestBlockHash?: string
+  difficulty?: number
   hash?: string
+  height?: number
+  keypoololdest?: number
+  masterNode?: number
+  miner?: number
+  miningBlocks?: number
+  mempoolSize?: number
+  mempoolByte?: number
+  mempoolUsage?: number
   price?: number
+  seedfp?: string
+  solutions?: number
   time?: number
   transactionid?: string
+  walletversion?: number
 }
 
 export type TLineChartData = {

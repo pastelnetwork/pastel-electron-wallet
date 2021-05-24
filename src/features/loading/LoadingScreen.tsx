@@ -19,6 +19,7 @@ import RPC from '../../legacy/rpc'
 import { NO_CONNECTION } from '../../legacy/utils/utils'
 import styles from './LoadingScreen.module.css'
 import { checkHashAndDownloadParams } from './utils'
+import PastelDB from '../../features/pastelDB/database'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -148,8 +149,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           'b685d700c60328498fbde589c8c7c484c722b788b265b72af448a5bf0ee55b50',
       },
       {
-        name: 'sprout-proving.key',
-        url: 'https://z.cash/downloads/sprout-proving.key',
+        name: 'sprout-proving.key.deprecated-sworn-elves',
+        url:
+          'https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves',
         sha256:
           '8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7',
       },
@@ -266,6 +268,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     this.loadPastelConf(false)
   }
 
+  sleep = (ms: number) => {
+    return new Promise(resolve => setTimeout(resolve, ms))
+  }
+
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
@@ -276,6 +282,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           currentStatus: 'Waiting for pasteld to exit...',
         })
         history.push(routes.LOADING)
+        while (!PastelDB.isValidDB()) {
+          // wait if database is reading or writing status
+          this.sleep(100)
+        }
         this.pasteld.on('close', () => {
           ipcRenderer.send('appquitdone')
         })
