@@ -492,21 +492,21 @@ class RouteApp extends React.Component<any, any> {
         {info && info.version && (
           <div className={cstyles.sidebarcontainer}>
             <HeaderScreen
-              info={info}
-              setSendTo={this.setSendTo}
-              getPrivKeyAsString={this.getPrivKeyAsString}
-              importPrivKeys={this.importPrivKeys}
-              importANIPrivKeys={this.importANIPrivKeys}
-              addresses={addresses}
-              transactions={transactions}
-              openPastelSpriteEditorToolModal={
-                this.props.openPastelSpriteEditorToolModal
-              }
-              {...(standardProps as any)}
-              openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
-              openAboutModal={this.props.openAboutModal}
-              openUpdateToast={this.props.openUpdateToast}
-              openSquooshToolModal={this.props.openSquooshToolModal}
+            // info={info}
+            // setSendTo={this.setSendTo}
+            // getPrivKeyAsString={this.getPrivKeyAsString}
+            // importPrivKeys={this.importPrivKeys}
+            // importANIPrivKeys={this.importANIPrivKeys}
+            // addresses={addresses}
+            // transactions={transactions}
+            // openPastelSpriteEditorToolModal={
+            //   this.props.openPastelSpriteEditorToolModal
+            // }
+            // {...(standardProps as any)}
+            // openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
+            // openAboutModal={this.props.openAboutModal}
+            // openUpdateToast={this.props.openUpdateToast}
+            // openSquooshToolModal={this.props.openSquooshToolModal}
             />
           </div>
         )}

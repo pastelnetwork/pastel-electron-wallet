@@ -3,7 +3,7 @@ import * as Styles from './Icon.styles'
 
 export interface IIconProps {
   variant?: string
-  src: any
+  src: string
 }
 
 const Icon: React.FC<IIconProps> = ({
