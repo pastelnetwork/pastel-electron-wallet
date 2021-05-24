@@ -58,7 +58,7 @@ export function transformDifficultyInfo(
 
 export function transformPriceInfo(
   prices: SqlValue[][],
-  period: string,
+  period: TPeriod,
 ): TMultiLineChartData {
   const dataX: string[] = []
   const dataY1: number[] = []

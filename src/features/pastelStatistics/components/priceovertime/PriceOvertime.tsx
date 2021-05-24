@@ -5,7 +5,7 @@ import PastelDB from '../../../pastelDB/database'
 import { EChartsMultiLineChart } from '../chart/EChartsMultiLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
-import { transformPriceInfo } from '../../utils'
+import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
 import styles from './PriceOvertime.module.css'
 
 type TLineChartData = {
@@ -16,9 +16,9 @@ type TLineChartData = {
 
 const redrawCycle = 60000
 
-export const PriceOvertime = () => {
+const PriceOvertime = () => {
   const [currentBgColor, setCurrentBgColor] = useState('#100c2a')
-  const [period, setPeriod] = useState('2d')
+  const [period, setPeriod] = useState<TPeriod>('2d')
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,
@@ -48,7 +48,7 @@ export const PriceOvertime = () => {
     }
   }, [period])
 
-  const handlePeriodFilterChange = (period: string) => {
+  const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
     clearInterval(ticker as NodeJS.Timeout)
   }
@@ -79,3 +79,5 @@ export const PriceOvertime = () => {
     </>
   )
 }
+
+export default PriceOvertime

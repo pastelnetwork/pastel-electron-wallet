@@ -6,6 +6,7 @@ import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { saveAs } from 'file-saver'
 import styles from './LineChart.module.css'
+import { TPeriod } from '../../utils/PastelStatisticsLib'
 
 type TThemeColor = {
   name: string
@@ -22,7 +23,7 @@ type LineChartProps = {
   dataY1?: number[]
   dataY2?: number[]
   title?: string
-  handlePeriodFilterChange?: (period: string) => void
+  handlePeriodFilterChange?: (period: TPeriod) => void
   handleBgColorChange: (color: string) => void
 }
 
@@ -42,7 +43,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
   const [minY2, setMinY2] = useState(0)
   const [maxY1, setMaxY1] = useState(0)
   const [maxY2, setMaxY2] = useState(0)
-  const periods = ['2h', '2d', '4d', 'all']
+  const periods: TPeriod[] = ['2h', '2d', '4d', 'all']
   const themes = [
     {
       name: 'theme1',
