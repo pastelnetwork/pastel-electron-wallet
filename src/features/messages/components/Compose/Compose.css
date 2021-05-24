@@ -1,0 +1,139 @@
+.compose {
+  padding: 10px;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  flex-direction: column;
+  background: white;
+  border-top: 1px solid #eeeef1;
+  /* position: absolute; */
+  margin-bottom: 16px;
+  width: calc(100% - 20px);
+  bottom: 16px;
+  background-color: #2e3033;
+  border-top: 1px solid rgba(0, 0, 0, 0.16);
+}
+
+.compose-input {
+  flex: 1;
+  font-size: 14px;
+  height: 40px;
+  background: none;
+  margin-right: 10px;
+  color: #fff;
+  border-radius: 20px;
+  border: 1px solid #bbbbbf;
+  padding: 0 10px;
+  width: calc(100% - 25px);
+}
+
+.compose-input::placeholder {
+  opacity: 0.3;
+}
+
+.compose-input:focus {
+  outline: none;
+}
+
+.compose .toolbar-button {
+  color: #bbbbbf;
+  margin-left: 15px;
+}
+
+.compose .toolbar-button:hover {
+  color: #99999c;
+}
+
+.button__click-send {
+  width: 0;
+  height: 0;
+}
+
+.input-compose-image {
+  width: 0;
+  height: 0;
+}
+
+.compose .wrapper-compose {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper-compose .wrapper-emoji {
+  display: none;
+  position: absolute;
+  top: -440px;
+  left: 85px;
+}
+
+.wrapper-compose .wrapper-emoji.active {
+  display: block;
+}
+
+.wrapper-emoji .emoji-mart-dark {
+  width: 275px !important;
+}
+
+.wrapper-compose .wrapper-input-compose {
+  flex: 1;
+}
+
+.wrapper-list-image__compose {
+  display: flex;
+  margin-bottom: 10px;
+  overflow: auto;
+  max-width: 500px;
+}
+
+.wrapper-list-image__compose .wrapper-image__compose {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px 10px 5px;
+  position: relative;
+}
+
+.wrapper-image__compose img {
+  object-fit: cover;
+  width: 85%;
+  height: 85%;
+}
+
+.wrapper-record__compose {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wrapper-record__compose .record-bottom__compose {
+  display: flex;
+  align-items: center;
+}
+
+.record-bottom__compose audio {
+  height: 40px;
+  margin-left: 15px;
+}
+
+.record-bottom__compose audio:focus {
+  outline: none;
+}
+
+.record-bottom__compose .sound-wave {
+  width: 300px;
+  height: 40px;
+  border-radius: 20px;
+  margin-left: 15px;
+}
+
+.wrapper-icon__compose {
+  margin-right: 15px;
+}

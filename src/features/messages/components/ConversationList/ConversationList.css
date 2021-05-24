@@ -1,0 +1,11 @@
+.conversation-list {
+  display: flex;
+  flex-direction: column;
+  background-color: #212326;
+}
+
+.conversation__wrapper {
+  overflow: auto;
+  max-height: calc(100vh - 128px);
+  margin: 10px 0;
+}

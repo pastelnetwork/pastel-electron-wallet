@@ -12,5 +12,6 @@
   "EXPERT_CONSOLE": "/expert_console",
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
+  "MESSAGES": "/messages",
   "NFT": "/nft"
 }

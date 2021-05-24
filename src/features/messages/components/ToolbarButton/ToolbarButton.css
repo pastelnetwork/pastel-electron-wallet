@@ -1,0 +1,37 @@
+.btn-wrapper__icon {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.btn-wrapper__icon:focus {
+  outline: none;
+}
+
+.toolbar-button {
+  color: #007aff;
+  font-size: 28px;
+  transition: all 0.1s;
+}
+
+.toolbar-button:hover {
+  cursor: pointer;
+  color: #0063ce;
+}
+
+.toolbar-button:active {
+  color: #007aff;
+  opacity: 0.25;
+}
+
+.icon-delete-image {
+  font-size: 12px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: rgb(1, 1, 1) !important;
+}
+
+.icon-audio {
+  font-size: 20px;
+}
