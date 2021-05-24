@@ -108,9 +108,6 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
       min: minY1,
       max: maxY1,
     },
-    legend: {
-      data: ['USD', 'BTC'],
-    },
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -124,7 +121,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
     yAxis: [
       {
         type: 'value',
-        name: 'USD Price: ',
+        name: 'USD Price',
         position: 'left',
         min: minY1,
         max: maxY1,
@@ -144,7 +141,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
       },
       {
         type: 'value',
-        name: 'BTC Price: ',
+        name: 'BTC Price',
         position: 'right',
         min: minY2,
         max: maxY2,
@@ -281,7 +278,6 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
                   series: [
                     {
                       type: 'line',
-                      name: 'USD: ',
                       showSymbol: false,
                       data: dataY1,
                       smooth: theme.smooth,
@@ -294,7 +290,6 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
                     },
                     {
                       type: 'bar',
-                      name: 'BTC price: ',
                       yAxisIndex: 1,
                       showSymbol: false,
                       data: dataY2,

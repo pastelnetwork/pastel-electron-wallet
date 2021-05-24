@@ -382,7 +382,6 @@ export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
     }
     await Promise.all([
       fetchStatisticInfo(pastelConfig),
-      fetchNetworkInfo(pastelConfig),
       fetchNettotals(pastelConfig),
       fetchMempoolInfo(pastelConfig),
       fetchRawMempoolInfo(pastelConfig),

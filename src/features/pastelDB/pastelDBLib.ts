@@ -770,6 +770,7 @@ export function insertListaddresses(pastelDB: Database, address: string): void {
 
 export function insertPastelPrice(pastelDB: Database, price: number): void {
   const createTimestamp = Date.now()
+  console.log('price log...', price)
   if (validateDataFromDB(pastelDB, 'pslprice', { price: price })) {
     const newId = getLastIdFromDB(pastelDB, 'pslprice')
     const values = {
