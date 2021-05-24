@@ -161,10 +161,6 @@ class Sidebar extends PureComponent<any, any> {
             // <IconItem src={icon.src} noti={icon.noti} background={icon.background}/>
           ))}
         </div>
-
-        <div className='absolute text-black insert-0 bg-white text-center h-full flex flex-col justify justify-center'>
-          ERB + TAILWIND = HAPPY
-        </div>
       </div>
     )
   }
