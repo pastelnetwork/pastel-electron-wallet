@@ -5,6 +5,8 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './GlitchImageModal.module.css'
 import { closeGlitchImageModal } from './GlitchImageModalSlice'
 
+import { glitch } from '../constants/ServeStatic'
+
 export default function glitchImageModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.glitchImageModal)
   const dispatch = useAppDispatch()
@@ -28,7 +30,7 @@ export default function glitchImageModal(): JSX.Element | null {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src={'http://localhost:5300/'} />
+          <iframe src={`http://localhost:${glitch.staticPort}/`} />
         </div>
       </div>
     </Modal>

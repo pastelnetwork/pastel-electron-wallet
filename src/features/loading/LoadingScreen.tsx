@@ -19,7 +19,6 @@ import RPC from '../../legacy/rpc'
 import { NO_CONNECTION } from '../../legacy/utils/utils'
 import styles from './LoadingScreen.module.css'
 import { checkHashAndDownloadParams } from './utils'
-import initServeStatic, { closeServeStatic } from '../serveStatic'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -122,7 +121,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   loadingConfigs = async () => {
     const success = await this.ensurePastelParams()
     if (success) {
-      initServeStatic(remote.app.isPackaged)
       await this.loadPastelConf(true)
       this.setupExitHandler()
     }
@@ -291,8 +289,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         // And reply that we're all done.
         ipcRenderer.send('appquitdone')
       }
-
-      closeServeStatic()
     })
   }
   startPasteld = async () => {

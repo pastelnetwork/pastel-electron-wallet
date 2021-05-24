@@ -2,6 +2,8 @@ import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
 
+import { glitch, squoosh } from '../constants/ServeStatic'
+
 const servers: Server[] = []
 
 export default function initServeStatic(isPackaged: boolean): void {
@@ -17,8 +19,8 @@ export default function initServeStatic(isPackaged: boolean): void {
       '/app.asar/.webpack/renderer/static/glitch',
     )
   }
-  setupServeStatic(squooshStaticPath, 5200)
-  setupServeStatic(glitchStaticPath, 5300)
+  setupServeStatic(squooshStaticPath, squoosh.staticPort)
+  setupServeStatic(glitchStaticPath, glitch.staticPort)
 }
 
 function setupServeStatic(staticPath: string, port: number) {

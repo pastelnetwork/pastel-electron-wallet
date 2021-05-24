@@ -18,6 +18,7 @@ import {
   redirectDeepLinkingUrl,
   registerCustomProtocol,
 } from './features/deepLinking'
+import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
 
 // Deep linked url
@@ -143,6 +144,8 @@ const createWindow = async () => {
       app.quit()
     })
 
+    closeServeStatic()
+
     // $FlowFixMe
     w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
@@ -207,6 +210,8 @@ ipcMain.on('app-ready', () => {
   }
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+
+  initServeStatic(app.isPackaged)
 })
 
 ipcMain.on('restart_app', () => {
