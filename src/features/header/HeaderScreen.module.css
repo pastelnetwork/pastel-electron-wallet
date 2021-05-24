@@ -1,0 +1,96 @@
+.headercontainer {
+  background: #fff;
+  height: 66px;
+  display: flex;
+  align-items: center;
+}
+
+.logoimage {
+  margin-left: 60px;
+  margin-right: 40px;
+}
+
+.menulist {
+  display: flex;
+  color: #a6b0c2;
+}
+
+.headermenuitem {
+  font-size: 16px;
+  font-weight: 500;
+  height: 22px;
+  font-family: Avenir;
+}
+
+.headermainactive {
+  color: #334d6e;
+  font-weight: 800;
+}
+
+.iconbtn {
+  display: flex;
+  align-items: center;
+  margin-left: 50px;
+  font-weight: 800;
+  color: #3f9af7;
+}
+
+.sidebarlogobg {
+  background: #ffb100;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.sidebarlogobg img {
+  object-fit: contain;
+}
+
+.exportedPrivKeys {
+  width: 100%;
+  max-height: calc(100vh - 400px);
+}
+
+.roundBackgournd {
+  background-color: #f8f8fa;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.inputstyle {
+  width: 352px;
+  height: 41px;
+  border-radius: 60px;
+  background-color: #f2f2f2;
+  border-color: #f2f2f2;
+  border: none;
+  padding-left: 46.1px;
+}
+
+::placeholder {
+  color: #b0b7c3;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.searchIconPosition {
+  position: absolute;
+  top: 13px;
+  left: 20px;
+}
+
+.notificationBadge {
+  width: 7.67px;
+  height: 7.67px;
+  border-radius: 50%;
+  background-color: #fe634c;
+  position: absolute;
+  top: -4px;
+  right: 0px;
+  border: 2px solid white;
+}

@@ -67,7 +67,7 @@ let proceedToClose = false
 const createWindow = async () => {
   const w = new BrowserWindow({
     show: false,
-    width: 1300,
+    width: 1440,
     height: 728,
     minHeight: 500,
     minWidth: 1100,
