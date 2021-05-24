@@ -2,12 +2,13 @@ import styled, { css } from 'styled-components'
 
 export const IconContainer = styled.div<{ $variant: string }>`
   position: relative;
+  width: ${({ $variant }) => ($variant == 'background' ? '40px' : '24px')};
+  height: ${({ $variant }) => ($variant == 'background' ? '40px' : '24px')};
+  margin-top: 1px;
   ${({ $variant }) =>
     $variant == 'background' &&
     css`
       background-color: #f8f8fa;
-      width: 40px;
-      height: 40px;
       border-radius: 50%;
       display: flex;
       justify-content: center;

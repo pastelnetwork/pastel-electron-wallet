@@ -1,20 +1,11 @@
-/* eslint-disable */
-
 import React, { PureComponent } from 'react'
-import fs from 'fs'
-import dateformat from 'dateformat'
-import Modal from 'react-modal'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { ipcRenderer, remote } from 'electron'
-import TextareaAutosize from 'react-textarea-autosize'
 import styles from './HeaderScreen.module.css'
-import cstyles from '../../legacy/components/Common.module.css'
-import rstyles from '../../common/utils/Styles.module.css'
-import routes from '../../legacy/constants/routes.json'
-import Logo from '../../legacy/assets/img/logo.png'
-import addBtn from '../../legacy/assets/img/add-btn.png'
-import searchIcon from '../../legacy/assets/img/search-icon.png'
+import routes from '../../common/constants/routes.json'
+import Logo from '../../common/assets/icons/ico-logo.svg'
+import addBtn from '../../common/assets/icons/ico-addbtn.png'
+import searchIcon from '../../common/assets/icons/ico-search.svg'
 import QuestionTag from '../../common/assets/icons/ico-question.svg'
 import BellIcon from '../../common/assets/icons/ico-bell.svg'
 import MessageIcon from '../../common/assets/icons/ico-msg.svg'
@@ -22,9 +13,6 @@ import SettingIcon from '../../common/assets/icons/ico-setting.svg'
 import UserIcon from '../../common/assets/icons/ico-user.svg'
 
 import Icon from '../../common/components/Icon/Icon'
-
-import Utils from '../../legacy/utils/utils'
-import { parsePastelURI, PastelURITarget } from '../../legacy/utils/uris'
 
 const SidebarMenuItem = ({ name, routeName, currentRoute, style }: any) => {
   let isActive = false
@@ -43,7 +31,11 @@ const SidebarMenuItem = ({ name, routeName, currentRoute, style }: any) => {
   }
 
   return (
-    <div className={[styles.headermenuitem, activeColorClass, style].join(' ')}>
+    <div
+      className={[styles.headermenuitem, activeColorClass, 'mr-15', style].join(
+        ' ',
+      )}
+    >
       <Link to={routeName}>
         <span className={activeColorClass}>{name}</span>
       </Link>
@@ -53,32 +45,17 @@ const SidebarMenuItem = ({ name, routeName, currentRoute, style }: any) => {
 
 const SearhBar = () => {
   return (
-    <div className={[cstyles.flexcenter, cstyles.positionRelative].join(' ')}>
+    <div className='flex relative'>
       <img width='16' className={styles.searchIconPosition} src={searchIcon} />
       <input
-        className={styles.inputstyle}
+        className='h-41 bg-gray-110 rounded-full pl-46 w-380 2xl:w-352'
         placeholder='Search creator or NFT'
       />
     </div>
   )
 }
 
-const IconItem = ({ src, noti, background }: any) => {
-  return (
-    <div
-      className={[
-        rstyles.mr26,
-        rstyles.positionRelative,
-        background ? styles.roundBackgournd : '',
-      ].join(' ')}
-    >
-      {noti ? <div className={styles.notificationBadge}></div> : null}
-      <img src={src} />
-    </div>
-  )
-}
-
-class Sidebar extends PureComponent<any, any> {
+class Header extends PureComponent<any, any> {
   constructor(props: any) {
     super(props)
   }
@@ -108,57 +85,74 @@ class Sidebar extends PureComponent<any, any> {
       },
     ]
 
+    const sidebar_items = [
+      {
+        name: 'Dashboard',
+        routeName: routes.DASHBOARD,
+        currentRoute: location.pathname,
+        style: '2xl:mr-35',
+      },
+      {
+        name: 'NFTs',
+        routeName: routes.SEND,
+        currentRoute: location.pathname,
+        style: '2xl:mr-37',
+      },
+      {
+        name: 'Members',
+        routeName: routes.RECEIVE,
+        currentRoute: location.pathname,
+        style: '2xl:mr-28',
+      },
+      {
+        name: 'Wallet',
+        routeName: routes.TRANSACTIONS,
+        currentRoute: location.pathname,
+        style: '2xl:mr-35',
+      },
+      {
+        name: 'Portfolio',
+        routeName: routes.ADDRESSBOOK,
+        currentRoute: location.pathname,
+      },
+    ]
+
     return (
-      <div className={styles.headercontainer}>
-        <div className={styles.logoimage}>
-          <img src={Logo} width='36' alt='logo' />
-        </div>
-        <div className={styles.menulist}>
-          <SidebarMenuItem
-            name='Dashboard'
-            routeName={routes.DASHBOARD}
-            currentRoute={location.pathname}
-            style={rstyles.mr35}
-          />
-          <SidebarMenuItem
-            name='NFTs'
-            routeName={routes.SEND}
-            currentRoute={location.pathname}
-            style={cstyles.mr37}
-          />
-          <SidebarMenuItem
-            name='Members'
-            routeName={routes.RECEIVE}
-            currentRoute={location.pathname}
-            style={cstyles.mr28}
-          />
-          <SidebarMenuItem
-            name='Wallet'
-            routeName={routes.TRANSACTIONS}
-            currentRoute={location.pathname}
-            style={styles.mr35}
-          />
-          <SidebarMenuItem
-            name='Portfolio'
-            routeName={routes.ADDRESSBOOK}
-            currentRoute={location.pathname}
-          />
-          <div className={styles.headermenuitem}>
-            <Link to='#' className={styles.iconbtn}>
-              <img src={addBtn}></img>
-              <span className={rstyles.ml8}>new NFT</span>
-            </Link>
+      <div className='flex items-center h-66 bg-white justify-between text-14 2xl:text-16 font-display'>
+        <div className='flex items-center'>
+          <div className='ml-20 2xl:ml-60 mr-20 2xl:mr-40'>
+            <img src={Logo} alt='logo' />
+          </div>
+          <div className='flex'>
+            {sidebar_items.map((item, index) => (
+              <SidebarMenuItem
+                key={index}
+                name={item.name}
+                routeName={item.routeName}
+                currentRoute={item.currentRoute}
+                style={item.style}
+              />
+            ))}
+            <div className='ml-8 2xl:ml-50'>
+              <Link to='#' className='flex items-center'>
+                <img
+                  src={addBtn}
+                  className='w-20 h-20 mr-8'
+                  alt='add button'
+                ></img>
+                <span className='text-blue-450'>new NFT</span>
+              </Link>
+            </div>
+          </div>
+          <div className='ml-13 2xl:ml-68'>
+            <SearhBar />
           </div>
         </div>
-
-        <div className={[cstyles.ml68, rstyles.mr26].join(' ')}>
-          <SearhBar />
-        </div>
-
-        <div className={rstyles.displayFlexCenter}>
+        <div className='flex items-center mr-33'>
           {icons.map(icon => (
-            <Icon src={icon.src} variant={icon.variant} />
-            // <IconItem src={icon.src} noti={icon.noti} background={icon.background}/>
+            <div className='mr-26'>
+              <Icon src={icon.src} variant={icon.variant} />
+            </div>
           ))}
         </div>
       </div>
@@ -166,4 +160,4 @@ class Sidebar extends PureComponent<any, any> {
   }
 } // $FlowFixMe
 
-export default withRouter(Sidebar)
+export default withRouter(Header)
