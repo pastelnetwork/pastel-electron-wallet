@@ -9,7 +9,7 @@ const PromotionSteps: React.FC = () => {
   return (
     <Styles.Container>
       <Typography variant='h3' weight={800}>
-        Airdrop promotion code{' '}
+        Airdrop promotion code
       </Typography>
       <Typography variant='body3' color={colors.text.secondary}>
         and copy promotion code
