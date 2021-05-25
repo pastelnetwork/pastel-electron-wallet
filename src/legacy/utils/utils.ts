@@ -23,7 +23,7 @@ export default class Utils {
 
   static isTransparent(addr: any) {
     if (!addr) return false
-    return new RegExp('^P[a-zA-Z0-9]{34}$').test(addr)
+    return new RegExp('^[tP][a-zA-Z0-9]{34}$').test(addr)
   }
 
   static isValidSaplingPrivateKey(key: any) {
