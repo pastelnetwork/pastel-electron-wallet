@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import styles from './HeaderScreen.module.css'
@@ -29,7 +29,6 @@ const SidebarMenuItem = ({
 }: IMenuType) => {
   let isActive = false
 
-  console.log(typeof routes)
   if (currentRoute.endsWith('app.html') || currentRoute === routeName) {
     isActive = true
   }
@@ -54,12 +53,20 @@ const SidebarMenuItem = ({
 }
 
 const SearhBar = () => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  let placeholder = 'Search creator or NFT'
+  if (inputRef && inputRef.current) {
+    if (inputRef.current.clientWidth < 200) {
+      placeholder = 'Search creator ...'
+    }
+  }
   return (
     <div className='flex relative'>
       <img width='16' className={styles.searchIconPosition} src={searchIcon} />
       <input
+        ref={inputRef}
         className='h-41 bg-gray-110 rounded-full pl-46 w-380 2xl:w-352'
-        placeholder='Search creator or NFT'
+        placeholder={`${placeholder}`}
       />
     </div>
   )
@@ -74,7 +81,6 @@ interface PropsType {
 }
 
 const Header = (props: PropsType) => {
-  console.log(props)
   const { location } = props
   const icons = [
     {

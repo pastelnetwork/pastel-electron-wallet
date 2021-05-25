@@ -19,12 +19,12 @@ export const IconContainer = styled.div<{ $variant: string }>`
 export const Image = styled.img``
 
 export const NotificationBadge = styled.div`
-  width: 7.67px;
-  height: 7.67px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background-color: #fe634c;
   position: absolute;
-  top: -4px;
-  right: 0px;
+  top: -5px;
+  right: 3px;
   border: 2px solid white;
 `
