@@ -48,7 +48,7 @@ METHODS.forEach((method: string) => {
           auth: { username, password },
           data: {
             jsonrpc: '2.0',
-            id: 'curltest',
+            id: method,
             method,
             params,
           },

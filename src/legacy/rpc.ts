@@ -75,7 +75,7 @@ export default class RPC {
       axios(url, {
         data: {
           jsonrpc: '2.0',
-          id: 'curltest',
+          id: method,
           method,
           params,
         },
