@@ -11,6 +11,7 @@
   "CONNECTMOBILE": "/connectmobile",
   "EXPERT_CONSOLE": "/expert_console",
   "STATISTICS": "/statistics",
+  "MEMPOOLSIZEOVERTIME": "/mempoolsizeovertime",
   "DIFFICULTYOVERTIME": "/difficultyovertime",
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",

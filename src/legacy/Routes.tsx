@@ -47,6 +47,7 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import ExpertConsole from '../features/expertConsole'
 import {
   DifficultyOvertime,
+  MempoolSizeOvertime,
   PastelStatistics,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
@@ -642,6 +643,11 @@ class RouteApp extends React.Component<any, any> {
               <Route
                 path={routes.DIFFICULTYOVERTIME}
                 render={() => <DifficultyOvertime />}
+              />
+
+              <Route
+                path={routes.MEMPOOLSIZEOVERTIME}
+                render={() => <MempoolSizeOvertime />}
               />
 
               <Route
