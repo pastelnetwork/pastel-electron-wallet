@@ -181,12 +181,14 @@ export async function fetchRawtransaction(
 ): Promise<void> {
   try {
     for (let i = 0; i < txIds.length; i++) {
-      const { result } = await rpc<types.TGetrawtransaction>(
-        'getrawtransaction',
-        [txIds[i], 1],
-        props.rpcConfig,
-      )
-      insertRawtransaction(props.pastelDB, result)
+      if (txIds[i]) {
+        const { result } = await rpc<types.TGetrawtransaction>(
+          'getrawtransaction',
+          [txIds[i], 1],
+          props.rpcConfig,
+        )
+        insertRawtransaction(props.pastelDB, result)
+      }
     }
   } catch (error) {
     throw new Error(

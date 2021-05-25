@@ -19,10 +19,7 @@
   text-align: center;
   font-weight: 100;
   font-size: 12px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding: 4px 8px;
   border-radius: 3px;
   border-color: #212124;
   margin-left: 4px;

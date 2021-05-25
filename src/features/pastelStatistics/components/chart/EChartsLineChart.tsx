@@ -29,6 +29,24 @@ type LineChartProps = {
 }
 
 export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
+  const [csvData, setCsvData] = useState<string | Data>('')
+  const csvHeaders = [
+    { label: 'Value', key: 'value' },
+    { label: 'Created time', key: 'time' },
+  ]
+  const downloadRef = useRef(null)
+  const [periodButtonStatus, setPeriodButtonStatus] = useState<string[]>([
+    styles.activeButton,
+    '',
+    '',
+    '',
+    '',
+  ])
+  const [themeButtonStatus, setThemeButtonStatus] = useState<string[]>([
+    styles.activeThemeButton,
+    '',
+    '',
+  ])
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
@@ -85,15 +103,19 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
         setMinY(Math.round(min) - 1000)
         setMaxY(Math.floor(max) + 1000)
       }
+      if (dataX) {
+        const data: Data = []
+        dataY.map((o, index) => {
+          data.push({
+            value: o,
+            time: dataX[index],
+          })
+        })
+        setCsvData(data)
+      }
     }
-  }, [dataY])
+  }, [dataX, dataY])
 
-  const [csvData] = useState<string | Data>('')
-  const csvHeaders = [
-    { label: 'Value', key: 'value' },
-    { label: 'Created time', key: 'time' },
-  ]
-  const downloadRef = useRef(null)
   const options = {
     grid: {
       top: 8,
@@ -150,13 +172,29 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
       easing: 'cubicOut',
     },
   }
+  const makeDownloadFileName = (): string => {
+    let imageTitle = ''
+    const date = new Date()
+
+    if (title === 'Network Difficulty') {
+      imageTitle = 'Network_Difficulty'
+    } else if (title === 'PSL Prices') {
+      imageTitle = 'Prices'
+    }
+
+    const dateTime = `${
+      date.getMonth() + 1
+    }_${date.getDate()}_${date.getFullYear()}__${date.getHours()}_${date.getMinutes()}`
+
+    return `PSL_${imageTitle}_${dateTime}`
+  }
   const downloadPNG = () => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef?.ele)
         .then(function (blob: Blob | null) {
           if (blob) {
-            saveAs(blob, 'linechart-image.png')
+            saveAs(blob, makeDownloadFileName() + '.png')
           }
         })
         .catch(function (error) {
@@ -177,10 +215,14 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
         <div className={styles.periodSelect}>
           <span style={{ color: currentTheme?.color }}>period: </span>
           {periods[periodIndex] &&
-            periods[periodIndex].map(period => (
+            periods[periodIndex].map((period, index) => (
               <button
-                className={styles.filterButton}
+                className={`${periodButtonStatus[index]}`}
                 onClick={() => {
+                  const status = ['', '', '', '', '']
+                  status[index] = styles.activeButton
+                  setPeriodButtonStatus(status)
+
                   if (handlePeriodFilterChange) {
                     handlePeriodFilterChange(period)
                   }
@@ -206,10 +248,14 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
       </div>
       <div className={styles.lineChartFooter}>
         <div className={styles.lineChartThemeSelect}>
-          {themes.map(theme => (
+          {themes.map((theme, index) => (
             <button
-              className={styles.themeSelectButton}
+              className={`${styles.themeSelectButton} ${themeButtonStatus[index]}`}
               onClick={() => {
+                const status = ['', '', '']
+                status[index] = styles.activeThemeButton
+                setThemeButtonStatus(status)
+
                 setCurrentTheme(theme)
                 handleBgColorChange(theme.backgroundColor)
                 const option = {
@@ -262,6 +308,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           </button>
           <CSVLink
             data={csvData}
+            filename={makeDownloadFileName() + '.csv'}
             headers={csvHeaders}
             separator={';'}
             ref={downloadRef}

@@ -38,7 +38,7 @@
   padding-bottom: 10px;
 }
 
-.uploadButton {
+/* .uploadButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,9 +52,26 @@
   border-color: #c3921f;
   margin-left: 8px;
   margin-right: 8px;
+} */
+.uploadButton {
+  display: flex;
+  align-items: center;
+  background-color: #c3921f;
+  color: #000;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 4px;
+  border-color: #c3921f;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
-.uploadButton {
+.uploadButton:hover {
   cursor: pointer;
   opacity: 0.8;
 }
@@ -96,4 +113,14 @@
   width: 30px;
   height: 30px;
   border-radius: 5px;
+}
+
+.activeButton {
+  background-color: #c3921f;
+  border-color: #c3921f;
+}
+
+.activeThemeButton {
+  border-color: green;
+  border-width: 5px;
 }

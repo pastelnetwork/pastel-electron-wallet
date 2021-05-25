@@ -282,7 +282,8 @@ const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
 
   if (
     (currentRoute.endsWith('app.html') && routeName === (routes as any).HOME) ||
-    currentRoute === routeName
+    currentRoute === routeName ||
+    currentRoute.includes(routeName)
   ) {
     isActive = true
   }
