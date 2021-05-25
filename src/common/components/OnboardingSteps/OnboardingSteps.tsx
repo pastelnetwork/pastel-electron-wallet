@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import Typography from '../Typography/Typography'
 import icoArrowRight from '../../assets/icons/ico-arrow-right.svg'
 import completedIco from '../../assets/icons/ico-completed.svg'
 import infoIco from '../../assets/icons/ico-info.svg'
