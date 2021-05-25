@@ -75,9 +75,9 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
   useEffect(() => {
     if (dataY1?.length && dataY2?.length) {
       const min = Math.min(...dataY1)
-      const max = Math.min(...dataY1)
+      const max = Math.max(...dataY1)
       const min1 = Math.min(...dataY2)
-      const max1 = Math.min(...dataY2)
+      const max1 = Math.max(...dataY2)
       if (title === 'PSL Prices') {
         setMinY1(min - 0.0001)
         setMaxY1(max + 0.0001)
