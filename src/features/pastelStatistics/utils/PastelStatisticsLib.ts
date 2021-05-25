@@ -1,5 +1,6 @@
 import { SqlValue } from 'sql.js'
 import { TLineChartData } from '../../pastelDB/type'
+import { TNetTotalsChartData } from '../components/nettotal/NetTotalsOvertime'
 
 export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
 
@@ -53,4 +54,30 @@ export function transformDifficultyInfo(
   }
 
   return { dataX, dataY }
+}
+
+export function transformNetTotals(
+  nettotals: SqlValue[][],
+  period: TPeriod,
+): TNetTotalsChartData {
+  const dataX: string[] = []
+  const dataY: number[] = []
+  const dataY1: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < nettotals.length; i++) {
+    if (nettotals[i][3] !== null) {
+      const createTime = Number(nettotals[i][3])
+      if (createTime > startDate) {
+        const recv = Number(nettotals[i][1])
+        const sent = Number(nettotals[i][2])
+        dataY.push(recv)
+        dataY1.push(sent)
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+
+  return { dataX, dataY, dataY1 }
 }
