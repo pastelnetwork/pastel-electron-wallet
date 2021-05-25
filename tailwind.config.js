@@ -8,17 +8,6 @@ module.exports = {
   purge: [],
   theme: {
     extend: {
-
-      colors: {
-        blue: {
-          450: '#3F9AF7',
-        },
-        gray: {
-          110: '#F2F2F2',
-          350: 'B0B7C3',
-        },
-      },
-
       color: {
         text: {
           gray500: '#A0AEC0',
@@ -95,18 +84,22 @@ module.exports = {
         h5: '1rem',
         h6: '0.875rem',
       },
+      colors: {
+        blue: {
+          450: '#3F9AF7',
+        },
+        gray: {
+          110: '#F2F2F2',
+          350: 'B0B7C3',
+        },
+      },
     },
-    
     screens: {
       sm: '414px',
       md: '834px',
       lg: '874px',
       xl: '946px',
       '2xl': '1440px',
-    },
-
-    fontFamily: {
-      display: ['Avenir'],
     },
     margin: {
       8: '8px',
@@ -147,39 +140,7 @@ module.exports = {
       16: '16px',
       14: '14px',
     },
-
   },
   variants: {},
   plugins: [],
 }
-
-
-// colors: {
-//   text: {
-//     500: '#A0AEC0',
-//     600: '#718096',
-//     700: '#4A5568',
-//     800: '#2D3748',
-//     900: '#1A202C',
-//     link: '#3F9AF7',
-//   },
-//   success: {
-//     DEFAULT: '#00D097',
-//     pressed: '#00B282',
-//     hover: '#00C28D',
-//     bg: '#00C28D',
-//   },
-//   warning: {
-//     DEFAULT: '#FA9501',
-//     pressed: '#E88A00',
-//     hover: '#FFA21B',
-//     bg: '#FEF0DC',
-//   },
-//   error: {
-//     DEFAULT: '#DA8AB8',
-//     pressed: '#C85195',
-//     hover: '#CE64A1',
-//     bg: '#FAEFF5',
-//   },
-// },
-
