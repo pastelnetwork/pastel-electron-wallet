@@ -8,6 +8,24 @@ module.exports = {
   purge: [],
   theme: {
     extend: {
+      spacing: {
+        '14px': '14px',
+        '40px': '40px',
+        30: '7.5rem',
+      },
+      colors: {
+        gray: {
+          f7: '#F7F8F9',
+          b0: '#B0B7C3',
+          e6: '#E6E8EC',
+          71: '#718096',
+          35: '#353941',
+          '2d': '#2D3748',
+        },
+        blue: {
+          '3f': '#3F9AF7',
+        },
+      },
       color: {
         text: {
           gray500: '#A0AEC0',
@@ -75,6 +93,8 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         xLarge:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+        2: '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        16: '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
       },
       fontSize: {
         h1: '2rem',
