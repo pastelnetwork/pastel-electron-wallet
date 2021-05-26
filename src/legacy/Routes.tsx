@@ -50,6 +50,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import MySecurity from '../features/profile/mySecurity'
 
 export type TWalletInfo = {
   connections: number
@@ -629,6 +630,8 @@ class RouteApp extends React.Component<any, any> {
                   />
                 )}
               />
+
+              <Route path={routes.MYSECURITY} render={() => <MySecurity />} />
 
               <Route
                 path={routes.LOADING}
