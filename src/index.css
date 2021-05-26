@@ -27,6 +27,12 @@
   }
 }
 
+@layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+}
+
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
 
