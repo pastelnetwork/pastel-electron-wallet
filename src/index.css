@@ -30,7 +30,7 @@
 @layer components {
   /* Used to wrapp main routes  */
   .wrapper {
-    @apply container pt-4;
+    @apply px-4 xl:px-15 xl:container pt-4;
   }
 }
 

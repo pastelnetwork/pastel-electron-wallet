@@ -17,8 +17,8 @@ const mockCardProps: NFTCardProps = {
 
 const PortfolioFeed: React.FC = () => {
   return (
-    <div className='wrapper text-text-gray900 bg-background-main h-full'>
-      <div className='grid grid-cols-3 lg:grid-cols-4 gap-10'>
+    <div className='wrapper text-text-gray900 bg-background-main h-full '>
+      <div className='grid grid-cols-3 md:grid-cols-4 gap-10'>
         {Array.from({ length: 6 }).map(() => (
           <NFTCard {...mockCardProps} />
         ))}

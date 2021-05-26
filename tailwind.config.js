@@ -8,6 +8,9 @@ module.exports = {
   purge: [],
   theme: {
     extend: {
+      screens: {
+        '2xl': '1440px',
+      },
       colors: {
         text: {
           gray500: '#A0AEC0',
@@ -86,21 +89,14 @@ module.exports = {
       },
       container: {
         center: true,
-        padding: '3.75rem',
       },
       spacing: {
         4.5: '1.125rem',
+        15: '3.75rem',
       },
       height: {
         58: '14.375rem',
       },
-    },
-    screens: {
-      sm: '414px',
-      md: '834px',
-      lg: '874px',
-      xl: '946px',
-      '2xl': '1440px',
     },
   },
   variants: {},
