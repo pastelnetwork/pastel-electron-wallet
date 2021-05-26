@@ -50,6 +50,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import { MembersDirectory } from '../features/members'
 
 export type TWalletInfo = {
   connections: number
@@ -580,6 +581,11 @@ class RouteApp extends React.Component<any, any> {
                     setSendTo={this.setSendTo}
                   />
                 )}
+              />
+
+              <Route
+                path={routes.MEMBERS}
+                render={() => <MembersDirectory />}
               />
 
               <Route path={routes.CREATOR} render={() => <Creator />} />

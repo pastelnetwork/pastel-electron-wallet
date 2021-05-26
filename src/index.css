@@ -22,8 +22,28 @@
   h5 {
     @apply text-h5;
   }
-  h5 {
+  h6 {
     @apply text-h6;
+  }
+}
+
+@layer components {
+  /* Used to wrapp main routes  */
+  .wrapper {
+    @apply container pt-4;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: radial-gradient(
+      87.68% 87.68% at 95.36% 14.36%,
+      #ffcf14 0%,
+      #ee8fff 55.86%,
+      #38deff 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 

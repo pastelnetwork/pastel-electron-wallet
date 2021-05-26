@@ -708,6 +708,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-file-code'
           />
+          <SidebarMenuItem
+            name='Members'
+            routeName={routes.MEMBERS}
+            currentRoute={location.pathname}
+            iconname='fa-file-code'
+          />
         </div>
 
         <div className={cstyles.center}>

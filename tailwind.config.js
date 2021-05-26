@@ -8,7 +8,7 @@ module.exports = {
   purge: [],
   theme: {
     extend: {
-      color: {
+      colors: {
         text: {
           gray500: '#A0AEC0',
           gray600: '#718096',
@@ -66,7 +66,7 @@ module.exports = {
       },
       boxShadow: {
         xSmall:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 1px 1px rgba(10, 22, 70, 0.1)',
         small:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
         medium:
@@ -84,6 +84,18 @@ module.exports = {
         h5: '1rem',
         h6: '0.875rem',
       },
+      container: {
+        center: true,
+        padding: '3.75rem',
+      },
+      spacing: {
+        4.5: '1.125rem',
+        22: '5.5rem',
+        58: '14.375rem',
+      },
+      borderRadius: {
+        smd: '4px',
+      },
     },
     screens: {
       sm: '414px',
@@ -96,32 +108,3 @@ module.exports = {
   variants: {},
   plugins: [],
 }
-
-// colors: {
-//   text: {
-//     500: '#A0AEC0',
-//     600: '#718096',
-//     700: '#4A5568',
-//     800: '#2D3748',
-//     900: '#1A202C',
-//     link: '#3F9AF7',
-//   },
-//   success: {
-//     DEFAULT: '#00D097',
-//     pressed: '#00B282',
-//     hover: '#00C28D',
-//     bg: '#00C28D',
-//   },
-//   warning: {
-//     DEFAULT: '#FA9501',
-//     pressed: '#E88A00',
-//     hover: '#FFA21B',
-//     bg: '#FEF0DC',
-//   },
-//   error: {
-//     DEFAULT: '#DA8AB8',
-//     pressed: '#C85195',
-//     hover: '#CE64A1',
-//     bg: '#FAEFF5',
-//   },
-// },
