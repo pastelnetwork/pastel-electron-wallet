@@ -179,107 +179,264 @@ export async function createRawTransactionTables(db: Database): Promise<void> {
   return
 }
 
-export function validateDataFromDB(
+export function validateDuplicatedRawmempoolInfo(
   pastelDB: Database,
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB validateDataFromDB error: table name is invalid')
+    throw new Error(
+      'pastelDB validateDuplicatedRawmempoolInfo error: table name is invalid',
+    )
   }
 
-  let sqlResult: QueryExecResult[]
-  let sqlText = ''
   let values = {}
 
-  if (tableName === 'rawmempoolinfo') {
-    sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
-    values = {
-      $tid: validateFields.transactionid,
-      $time: validateFields.time,
+  const sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
+  values = {
+    $tid: validateFields.transactionid,
+    $time: validateFields.time,
+  }
+  const sqlResult = pastelDB.exec(sqlText, values)
+  return sqlResult.length ? false : true
+}
+
+export function validateDuplicatedBlockchainInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedBlockchainInfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (validateFields.bestBlockHash === sqlResult[0].values[0][1]) {
+      return false
     }
-    sqlResult = pastelDB.exec(sqlText, values)
-    return sqlResult.length ? false : true
-  } else {
-    sqlText = selectAllQuery + tableName + orderByIDQuery
-    sqlResult = pastelDB.exec(sqlText)
-    if (sqlResult.length && sqlResult[0].values[0]) {
-      switch (tableName) {
-        case 'blockchaininfo':
-          if (validateFields.bestBlockHash === sqlResult[0].values[0][1]) {
-            return false
-          }
-          break
-        case 'blockinfo':
-          if (validateFields.hash === sqlResult[0].values[0][1]) {
-            return false
-          }
-          break
-        case 'blocksubsidy':
-          if (
-            validateFields.miner === sqlResult[0].values[0][1] &&
-            validateFields.masterNode === sqlResult[0].values[0][2]
-          ) {
-            return false
-          }
-          break
-        case 'pslprice':
-          if (validateFields.price === sqlResult[0].values[0][1]) {
-            return false
-          }
-          break
-        case 'mempoolinfo':
-          if (
-            validateFields.mempoolSize === sqlResult[0].values[0][1] &&
-            validateFields.mempoolByte === sqlResult[0].values[0][2] &&
-            validateFields.mempoolUsage === sqlResult[0].values[0][3]
-          ) {
-            return false
-          }
-          break
-        case 'mininginfo':
-          if (validateFields.miningBlocks === sqlResult[0].values[0][1]) {
-            return false
-          }
-          break
-        case 'statisticInfo':
-          if (
-            validateFields.solutions === sqlResult[0].values[0][1] &&
-            validateFields.difficulty === sqlResult[0].values[0][2]
-          ) {
-            return false
-          }
-          break
-        case 'totalbalance':
-          if (
-            validateFields.balanceTransparent === sqlResult[0].values[0][1] &&
-            validateFields.balanceTotal === sqlResult[0].values[0][3]
-          ) {
-            return false
-          }
-          break
-        case 'txoutsetinfo':
-          if (
-            validateFields.height === sqlResult[0].values[0][1] &&
-            validateFields.bestBlockHash === sqlResult[0].values[0][2]
-          ) {
-            return false
-          }
-          break
-        case 'walletinfo':
-          if (
-            validateFields.walletversion === sqlResult[0].values[0][1] &&
-            validateFields.balance === sqlResult[0].values[0][2] &&
-            validateFields.keypoololdest === sqlResult[0].values[0][6] &&
-            validateFields.seedfp === sqlResult[0].values[0][9]
-          ) {
-            return false
-          }
-          break
-        case '':
-          break
-      }
-      return true
+  }
+  return true
+}
+
+export function validateDuplicatedBlockInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedBlockinfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (validateFields.hash === sqlResult[0].values[0][1]) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedBlocksubsidy(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedBlocksubsidy error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (
+      validateFields.miner === sqlResult[0].values[0][1] &&
+      validateFields.masterNode === sqlResult[0].values[0][2]
+    ) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedPriceInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedPriceInfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (validateFields.price === sqlResult[0].values[0][1]) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedMempoolInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedMempoolInfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (
+      validateFields.mempoolSize === sqlResult[0].values[0][1] &&
+      validateFields.mempoolByte === sqlResult[0].values[0][2] &&
+      validateFields.mempoolUsage === sqlResult[0].values[0][3]
+    ) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedMiningInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedMiningInfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (validateFields.miningBlocks === sqlResult[0].values[0][1]) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedStatisticInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedStatisticInfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (
+      validateFields.solutions === sqlResult[0].values[0][1] &&
+      validateFields.difficulty === sqlResult[0].values[0][2]
+    ) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedTotalbalance(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedTotalbalance error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (
+      validateFields.balanceTransparent === sqlResult[0].values[0][1] &&
+      validateFields.balanceTotal === sqlResult[0].values[0][3]
+    ) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedTxoutsetInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedTxoutsetInfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (
+      validateFields.height === sqlResult[0].values[0][1] &&
+      validateFields.bestBlockHash === sqlResult[0].values[0][2]
+    ) {
+      return false
+    }
+  }
+  return true
+}
+
+export function validateDuplicatedWalletInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      'pastelDB validateDuplicatedWalletInfo error: table name is invalid',
+    )
+  }
+
+  const sqlText = selectAllQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
+
+  if (sqlResult.length && sqlResult[0].values[0]) {
+    if (
+      validateFields.walletversion === sqlResult[0].values[0][1] &&
+      validateFields.balance === sqlResult[0].values[0][2] &&
+      validateFields.keypoololdest === sqlResult[0].values[0][6] &&
+      validateFields.seedfp === sqlResult[0].values[0][9]
+    ) {
+      return false
     }
   }
   return true
@@ -305,7 +462,7 @@ export function insertStatisticDataToDB(
   difficulty: number,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'statisticinfo', {
+    validateDuplicatedStatisticInfo(pastelDB, 'statisticinfo', {
       solutions: solutions,
       difficulty: difficulty,
     })
@@ -383,7 +540,7 @@ export function insertMempoolInfoToDB(
   mempoolinfo: TMempoolInfo,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'mempoolinfo', {
+    validateDuplicatedMempoolInfo(pastelDB, 'mempoolinfo', {
       mempoolSize: mempoolinfo.size,
       mempoolByte: mempoolinfo.bytes,
       mempoolUsage: mempoolinfo.usage,
@@ -408,7 +565,7 @@ export function insertRawMempoolinfoToDB(
   mempoolinfo: TRawMempool,
 ): void {
   if (
-    !validateDataFromDB(pastelDB, 'rawmempoolinfo', {
+    !validateDuplicatedRawmempoolInfo(pastelDB, 'rawmempoolinfo', {
       transactionid: mempoolinfo.transactionid,
       time: mempoolinfo.time,
     })
@@ -441,7 +598,7 @@ export function insertMiningInfoToDB(
   mininginfo: TMiningInfo,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'mininginfo', {
+    validateDuplicatedMiningInfo(pastelDB, 'mininginfo', {
       miningBlocks: mininginfo.blocks,
     })
   ) {
@@ -475,7 +632,7 @@ export function insertBlockInfoToDB(
   blockInfo: TBlockInfo,
 ): boolean {
   if (
-    validateDataFromDB(pastelDB, 'blockinfo', {
+    validateDuplicatedBlockInfo(pastelDB, 'blockinfo', {
       hash: blockInfo.hash,
     })
   ) {
@@ -581,7 +738,7 @@ export function insertTxoutsetinfo(
   txoutsetinfo: TTxoutsetInfo,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'txoutsetinfo', {
+    validateDuplicatedTxoutsetInfo(pastelDB, 'txoutsetinfo', {
       height: txoutsetinfo.height,
       bestBlockHash: txoutsetinfo.bestblock,
     })
@@ -627,7 +784,7 @@ export function insertBlocksubsidy(
   blocksubsidy: TBlockSubsidy,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'blocksubsidy', {
+    validateDuplicatedBlocksubsidy(pastelDB, 'blocksubsidy', {
       miner: blocksubsidy.miner,
       masterNode: blocksubsidy.masternode,
     })
@@ -651,7 +808,7 @@ export function insertWalletinfo(
   walletinfo: TWalletInfo,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'walletinfo', {
+    validateDuplicatedWalletInfo(pastelDB, 'walletinfo', {
       walletversion: walletinfo.walletversion,
       balance: walletinfo.balance,
       keypoololdest: walletinfo.keypoololdest,
@@ -739,7 +896,7 @@ export function insertTotalbalance(
   totalBalance: TTotalBalance,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'totalbalance', {
+    validateDuplicatedTotalbalance(pastelDB, 'totalbalance', {
       balanceTransparent: totalBalance.transparent,
       balanceTotal: totalBalance.total,
     })
@@ -770,7 +927,7 @@ export function insertListaddresses(pastelDB: Database, address: string): void {
 
 export function insertPastelPrice(pastelDB: Database, price: number): void {
   const createTimestamp = Date.now()
-  if (validateDataFromDB(pastelDB, 'pslprice', { price: price })) {
+  if (validateDuplicatedPriceInfo(pastelDB, 'pslprice', { price: price })) {
     const newId = getLastIdFromDB(pastelDB, 'pslprice')
     const values = {
       $newId: newId,
@@ -787,7 +944,7 @@ export function insertBlockChainInfo(
 ): void {
   const createTimestamp = Date.now()
   if (
-    validateDataFromDB(pastelDB, 'blockchaininfo', {
+    validateDuplicatedBlockchainInfo(pastelDB, 'blockchaininfo', {
       bestBlockHash: blockChainInfo.bestblockhash,
     })
   ) {

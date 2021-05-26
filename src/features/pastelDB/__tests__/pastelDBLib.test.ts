@@ -41,6 +41,8 @@ import {
   selectAllQuery,
 } from '../constants'
 
+import * as pastelDBLib from '../pastelDBLib'
+
 type Databaseinstance = {
   db: Database
 }
@@ -475,6 +477,236 @@ describe('managePastelDatabase', () => {
     pastelDB.db.exec(insertListaddressesQuery, values)
     const result: QueryExecResult[] = getDatafromDB('listaddresses')
     expect(result[0].values).toStrictEqual([[1, 'address', 0]])
+  })
+
+  test('validateDuplicatedRawmempoolInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedRawmempoolInfo(
+      pastelDB.db,
+      'rawmempoolinfo',
+      {
+        transactionid: '123456789',
+        time: 1621518133277,
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedBlockchainInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedBlockchainInfo(
+      pastelDB.db,
+      'blockchaininfo',
+      {
+        bestBlockHash: 'abcd12345',
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedBlockInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedBlockInfo(
+      pastelDB.db,
+      'blockinfo',
+      {
+        hash: 'abcd12345',
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedBlocksubsidy should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedBlocksubsidy(
+      pastelDB.db,
+      'blocksubsidy',
+      {
+        miner: 12345,
+        masterNode: 11111,
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedPriceInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedPriceInfo(
+      pastelDB.db,
+      'pslprice',
+      {
+        price: 12345,
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedMempoolInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedMempoolInfo(
+      pastelDB.db,
+      'mempoolinfo',
+      {
+        mempoolSize: 123,
+        mempoolByte: 456,
+        mempoolUsage: 789,
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedMiningInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedMiningInfo(
+      pastelDB.db,
+      'mininginfo',
+      {
+        miningBlocks: 123,
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedStatisticInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedStatisticInfo(
+      pastelDB.db,
+      'statisticinfo',
+      {
+        solutions: 1,
+        difficulty: 99.265,
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedTotalbalance should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedTotalbalance(
+      pastelDB.db,
+      'totalbalance',
+      {
+        balanceTransparent: 'transparent',
+        balanceTotal: 'total',
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedTxoutsetInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedTxoutsetInfo(
+      pastelDB.db,
+      'txoutsetinfo',
+      {
+        height: 496,
+        bestBlockHash: 'bestblock',
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
+  })
+
+  test('validateDuplicatedWalletInfo should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [])
+
+    // Act
+    const result = pastelDBLib.validateDuplicatedWalletInfo(
+      pastelDB.db,
+      'walletinfo',
+      {
+        walletversion: 123,
+        balance: 456,
+        keypoololdest: 789,
+        seedfp: 'seedfp',
+      },
+    )
+
+    // Assert
+    expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+    expect(result).toEqual(true)
   })
 })
 

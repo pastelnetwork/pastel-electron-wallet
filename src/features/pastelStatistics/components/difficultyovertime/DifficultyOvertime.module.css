@@ -13,24 +13,6 @@
   width: 100%;
 }
 
-.filterButton {
-  background-color: #212124;
-  color: #fff;
-  text-align: center;
-  font-weight: 100;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 3px;
-  border-color: #212124;
-  margin-left: 4px;
-  margin-right: 4px;
-}
-
-.filterButton:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
 .header {
   display: flex;
   flex-direction: column;

@@ -35,18 +35,8 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
     { label: 'Created time', key: 'time' },
   ]
   const downloadRef = useRef(null)
-  const [periodButtonStatus, setPeriodButtonStatus] = useState<string[]>([
-    styles.activeButton,
-    '',
-    '',
-    '',
-    '',
-  ])
-  const [themeButtonStatus, setThemeButtonStatus] = useState<string[]>([
-    styles.activeThemeButton,
-    '',
-    '',
-  ])
+  const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
@@ -217,12 +207,11 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           {periods[periodIndex] &&
             periods[periodIndex].map((period, index) => (
               <button
-                className={`${periodButtonStatus[index]}`}
+                className={`${
+                  selectedPeriodButton == index ? styles.activeButton : ''
+                } ${styles.filterButton}`}
                 onClick={() => {
-                  const status = ['', '', '', '', '']
-                  status[index] = styles.activeButton
-                  setPeriodButtonStatus(status)
-
+                  setSelectedPeriodButton(index)
                   if (handlePeriodFilterChange) {
                     handlePeriodFilterChange(period)
                   }
@@ -250,13 +239,12 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
         <div className={styles.lineChartThemeSelect}>
           {themes.map((theme, index) => (
             <button
-              className={`${styles.themeSelectButton} ${themeButtonStatus[index]}`}
+              className={`${styles.themeSelectButton} ${
+                selectedThemeButton === index ? styles.activeThemeButton : ''
+              }`}
               onClick={() => {
-                const status = ['', '', '']
-                status[index] = styles.activeThemeButton
-                setThemeButtonStatus(status)
-
                 setCurrentTheme(theme)
+                setSelectedThemeButton(index)
                 handleBgColorChange(theme.backgroundColor)
                 const option = {
                   backgroundColor: theme.backgroundColor,

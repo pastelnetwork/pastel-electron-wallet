@@ -115,9 +115,29 @@
   border-radius: 5px;
 }
 
+.filterButton {
+  background-color: #eee;
+  color: #212124;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  border-width: 1px;
+  border-color: #212124;
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.filterButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
 .activeButton {
   background-color: #c3921f;
   border-color: #c3921f;
+  color: #fff;
 }
 
 .activeThemeButton {

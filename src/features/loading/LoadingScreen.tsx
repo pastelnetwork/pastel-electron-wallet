@@ -267,10 +267,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     this.loadPastelConf(false)
   }
 
-  sleep = (ms: number) => {
-    return new Promise(resolve => setTimeout(resolve, ms))
-  }
-
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
@@ -283,7 +279,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         history.push(routes.LOADING)
         while (!PastelDB.isValidDB()) {
           // wait if database is reading or writing status
-          this.sleep(100)
+          new Promise(resolve => setTimeout(resolve, 100))
         }
         this.pasteld.on('close', () => {
           ipcRenderer.send('appquitdone')
