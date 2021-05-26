@@ -8,7 +8,7 @@ module.exports = {
   purge: [],
   theme: {
     extend: {
-      color: {
+      colors: {
         text: {
           gray500: '#A0AEC0',
           gray600: '#718096',
@@ -66,7 +66,7 @@ module.exports = {
       },
       boxShadow: {
         xSmall:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 1px 1px rgba(10, 22, 70, 0.1)',
         small:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
         medium:
@@ -83,6 +83,16 @@ module.exports = {
         h4: '1.125',
         h5: '1rem',
         h6: '0.875rem',
+      },
+      container: {
+        center: true,
+        padding: '3.75rem',
+      },
+      spacing: {
+        4.5: '1.125rem',
+      },
+      height: {
+        58: '14.375rem',
       },
     },
     screens: {

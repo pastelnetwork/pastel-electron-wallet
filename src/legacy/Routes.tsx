@@ -50,6 +50,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import NFTMarketFeed from '../features/NFTMarket'
 
 export type TWalletInfo = {
   connections: number
@@ -516,6 +517,8 @@ class RouteApp extends React.Component<any, any> {
           )}
           <div className={cstyles.contentcontainer}>
             <Switch>
+              <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
+
               <Route
                 path={routes.SEND}
                 render={() => (
