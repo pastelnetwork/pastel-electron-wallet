@@ -1,0 +1,66 @@
+.profile {
+  background-color: rgb(236, 236, 236);
+  color: rgb(40, 46, 52);
+  border-color: rgb(239, 241, 244);
+  min-height: 100vh;
+}
+
+.wrapper {
+  max-width: 1390px;
+}
+
+.card {
+  width: 304px;
+}
+
+.row {
+  display: flex;
+  padding: 0.5rem 0 0.5rem 0;
+}
+
+.row_title {
+  width: 190px;
+  color: rgb(120, 120, 120);
+  font-size: 14px;
+}
+
+.row_content {
+  flex-grow: 1;
+  font-size: 1rem;
+  color: rgb(60, 60, 60);
+}
+
+.General {
+  width: 510px;
+  padding: 0 1rem;
+}
+
+.tab {
+  font-size: 14px;
+  color: rgb(180, 180, 180);
+  border-bottom: 1px solid rgb(220, 220, 220);
+  padding: 0.5rem 1rem;
+}
+
+.tab.active {
+  color: rgb(60, 60, 60);
+  border-color: rgb(60, 60, 60);
+  font-weight: bold;
+}
+
+/* cursor_pointer w-24 text-center px-2 mr-2 rounded-full text-gray-800 */
+.tab_round {
+  cursor: pointer;
+  width: 6rem;
+  text-align: center;
+  padding: 0.2rem 0.1rem;
+  border-radius: 100px;
+  color: rgb(160, 160, 160);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.tab_round.active {
+  color: white;
+  background-color: rgb(53, 57, 69);
+}

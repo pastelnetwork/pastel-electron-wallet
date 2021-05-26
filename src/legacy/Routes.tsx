@@ -8,6 +8,7 @@ import cstyles from './components/Common.module.css'
 import routes from './constants/routes.json'
 import App from './containers/App'
 import Dashboard from './components/Dashboard'
+import Profile from './components/Profile'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
@@ -629,6 +630,8 @@ class RouteApp extends React.Component<any, any> {
                   />
                 )}
               />
+
+              <Route path={routes.PROFILE} render={() => <Profile />} />
 
               <Route
                 path={routes.LOADING}
