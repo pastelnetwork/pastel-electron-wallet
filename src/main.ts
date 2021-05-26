@@ -70,7 +70,7 @@ const createWindow = async () => {
     width: 1440,
     height: 728,
     minHeight: 500,
-    minWidth: 1100,
+    minWidth: 900,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       // Allow node integration because we're only loading local content here.
