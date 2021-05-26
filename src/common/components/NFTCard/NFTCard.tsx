@@ -1,7 +1,4 @@
 import React from 'react'
-import avatar from '../../assets/images/avatar-placeholder.png'
-import image from '../../assets/images/nft-card-placeholder.png'
-
 export interface NFTCardProps {
   author: string
   avatarSrc: string
