@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
@@ -16,7 +14,8 @@ type RouteType = {
     | React.FunctionComponent<RouteComponentProps>
     | React.ComponentClass<RouteComponentProps>
     | null
-    | any // remove this any after user login is taken by redux
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    | any // remove this any and eslint disable after user login is taken by redux
   layout:
     | React.FunctionComponent<unknown>
     | React.ComponentClass<unknown>

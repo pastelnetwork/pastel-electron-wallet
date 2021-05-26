@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.cardList {
+  width: 100%;
+  display: flex;
+  /* justify-content: space-around; */
+  flex-flow: wrap;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 28%;
+  margin-bottom: 20px;
+}
+
+.marginTop20 {
+  margin-top: 20px;
+}
+
+.padding16 {
+  padding: 16px;
+}

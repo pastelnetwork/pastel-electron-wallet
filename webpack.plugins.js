@@ -12,7 +12,14 @@ module.exports = [
   new CopyPlugin({
     patterns: [
       { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: 'static/bin' },
-      { from: './node_modules/squoosh/build', to: './static/squoosh' },
+      {
+        from: 'node_modules/squoosh/production',
+        to: 'static/squoosh',
+      },
+      {
+        from: 'node_modules/jpg-glitch/production',
+        to: 'static/glitch',
+      },
     ],
   }),
 ]
