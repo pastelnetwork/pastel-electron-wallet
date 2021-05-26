@@ -120,7 +120,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 
   loadingConfigs = async () => {
     const success = await this.ensurePastelParams()
-
     if (success) {
       await this.loadPastelConf(true)
       this.setupExitHandler()
@@ -295,7 +294,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
   startPasteld = async () => {
     const { pasteldSpawned } = this.state
-
     if (pasteldSpawned) {
       this.setState({
         currentStatus: 'pasteld start failed',
