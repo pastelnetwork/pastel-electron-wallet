@@ -49,6 +49,7 @@ import ExpertConsole from '../features/expertConsole'
 import {
   DifficultyOvertime,
   PastelStatistics,
+  TransactionTotalCountOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
@@ -640,6 +641,11 @@ class RouteApp extends React.Component<any, any> {
               <Route
                 path={routes.DIFFICULTYOVERTIME}
                 render={() => <DifficultyOvertime />}
+              />
+
+              <Route
+                path={routes.TRANSACTIONTOTALCOUNTOVERTIME}
+                render={() => <TransactionTotalCountOvertime />}
               />
 
               <Route

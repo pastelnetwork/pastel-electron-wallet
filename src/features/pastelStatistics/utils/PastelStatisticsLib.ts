@@ -54,3 +54,25 @@ export function transformDifficultyInfo(
 
   return { dataX, dataY }
 }
+
+export function transformTransactionInfo(
+  difficulties: SqlValue[][],
+  period: TPeriod,
+): TLineChartData {
+  const dataX: string[] = []
+  const dataY: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < difficulties.length; i++) {
+    if (difficulties[i][8] !== null) {
+      const createTime = Number(difficulties[i][8])
+      if (createTime > startDate) {
+        dataY.push(Number(difficulties[i][3]))
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+
+  return { dataX, dataY }
+}

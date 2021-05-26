@@ -6,14 +6,14 @@ import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
 import {
   TPeriod,
-  transformDifficultyInfo,
+  transformTransactionInfo,
 } from '../../utils/PastelStatisticsLib'
-import { EChartsLineChart } from '../chart/EChartsLineChart'
+import { EChartsLineChart } from './EChartsLineChart'
 import styles from '../../Common.module.css'
 
 const redrawCycle = 60000
 
-const DifficultyOvertime = (): JSX.Element => {
+const TransactionTotalCountOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState('#100c2a')
   const [period, setPeriod] = useState<TPeriod>('2h')
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
@@ -25,9 +25,9 @@ const DifficultyOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.statisticinfo)
+      const result = getDatasFromDB(pasteldb, pastelTableNames.txoutsetinfo)
       if (result.length) {
-        const transforms = transformDifficultyInfo(result[0].values, period)
+        const transforms = transformTransactionInfo(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -65,7 +65,7 @@ const DifficultyOvertime = (): JSX.Element => {
             <EChartsLineChart
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
-              title='Network Difficulty'
+              title='Number of Transactions'
               periodIndex={0}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
@@ -77,4 +77,4 @@ const DifficultyOvertime = (): JSX.Element => {
   )
 }
 
-export default DifficultyOvertime
+export default TransactionTotalCountOvertime
