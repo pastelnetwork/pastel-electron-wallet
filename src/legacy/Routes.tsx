@@ -11,7 +11,7 @@ import Dashboard from './components/Dashboard'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
-import HeaderScreen from '../features/header'
+import HeaderScreen from '../common/components/Header'
 import {
   AddressBalance,
   TotalBalance,

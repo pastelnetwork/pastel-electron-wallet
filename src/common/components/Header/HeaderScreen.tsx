@@ -1,18 +1,18 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import styles from './HeaderScreen.module.css'
-import routes from '../../common/constants/routes.json'
-import Logo from '../../common/assets/icons/ico-logo.svg'
-import addBtn from '../../common/assets/icons/ico-addbtn.png'
-import searchIcon from '../../common/assets/icons/ico-search.svg'
-import QuestionTag from '../../common/assets/icons/ico-question.svg'
-import BellIcon from '../../common/assets/icons/ico-bell.svg'
-import MessageIcon from '../../common/assets/icons/ico-msg.svg'
-import SettingIcon from '../../common/assets/icons/ico-setting.svg'
-import UserIcon from '../../common/assets/icons/ico-user.svg'
+import routes from '../../constants/routes.json'
+import Logo from '../../assets/icons/ico-logo.svg'
+import addBtn from '../../assets/icons/ico-addbtn.png'
+import searchIcon from '../../assets/icons/ico-search.svg'
+import QuestionTag from '../../assets/icons/ico-question.svg'
+import BellIcon from '../../assets/icons/ico-bell.svg'
+import MessageIcon from '../../assets/icons/ico-msg.svg'
+import SettingIcon from '../../assets/icons/ico-setting.svg'
+import UserIcon from '../../assets/icons/ico-user.svg'
 
-import Icon from '../../common/components/Icon/Icon'
+import Icon from '../Icon/Icon'
 
 interface IMenuType {
   name: string
@@ -56,18 +56,11 @@ const SidebarMenuItem = ({
 }
 
 const SearhBar = () => {
-  const inputRef = useRef<HTMLInputElement>(null)
-  let placeholder = 'Search creator or NFT'
-  if (inputRef && inputRef.current) {
-    if (inputRef.current.clientWidth < 200) {
-      placeholder = 'Search creator ...'
-    }
-  }
+  const placeholder = 'Search creator or NFT'
   return (
     <div className='flex relative'>
       <img width='16' className={styles.searchIconPosition} src={searchIcon} />
       <input
-        ref={inputRef}
         className='h-41 bg-gray-110 rounded-full pl-46 md:w-300 lg:w-300 xl:w-352'
         placeholder={`${placeholder}`}
       />
@@ -171,8 +164,8 @@ const Header = (props: PropsType) => {
         </div>
       </div>
       <div className='flex items-center mr-33'>
-        {icons.map(icon => (
-          <div className='mr-20 md:mr-26'>
+        {icons.map((icon, index) => (
+          <div className='mr-20 md:mr-26' key={index}>
             <Icon src={icon.src} variant={icon.variant} />
           </div>
         ))}
