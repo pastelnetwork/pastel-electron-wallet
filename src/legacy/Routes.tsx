@@ -43,6 +43,7 @@ import PastelPhotopeaModal, {
 } from '../features/pastelPhotopea'
 import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
+import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
 import PastelStatistics from '../features/pastelStatistics'
@@ -488,6 +489,7 @@ class RouteApp extends React.Component<any, any> {
         <PastelSpriteEditorToolModal />
         <AboutModal />
         <SquooshToolModal />
+        <GlitchImageModal />
 
         <div
           style={{
@@ -512,6 +514,7 @@ class RouteApp extends React.Component<any, any> {
                 openAboutModal={this.props.openAboutModal}
                 openUpdateToast={this.props.openUpdateToast}
                 openSquooshToolModal={this.props.openSquooshToolModal}
+                openGlitchImageModal={this.props.openGlitchImageModal}
               />
             </div>
           )}
@@ -678,4 +681,5 @@ export default connect(null, {
   openAboutModal,
   openSquooshToolModal,
   openUpdateToast,
+  openGlitchImageModal,
 })(RouteApp)
