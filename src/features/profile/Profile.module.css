@@ -58,9 +58,16 @@
   color: rgb(160, 160, 160);
   font-size: 14px;
   font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tab_round.active {
   color: white;
   background-color: rgb(53, 57, 69);
+}
+
+.badge {
+  font-size: 10px;
 }

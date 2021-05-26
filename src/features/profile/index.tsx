@@ -4,7 +4,7 @@ import styles from './Profile.module.css'
 import classnames from 'classnames'
 import Rate from 'rc-rate'
 import 'rc-rate/assets/index.css'
-import '../assets/css/rc-rate.custom.css'
+import '../../legacy/assets/css/rc-rate.custom.css'
 
 export default class Profile extends Component<any, any> {
   render() {
@@ -50,7 +50,10 @@ class Card extends Component<any, any> {
           <div className='rounded-full border-4 border-white bg-pink-200 w-24 h-24'></div>
           <div className='mt-11 pl-3 text-sm'>
             <div className='px-1 text-gray-300'>@zndrson</div>
-            <div className='pt-2 text-blue-400'>0xc41923...2145</div>
+            <div className='pt-2 text-blue-400'>
+              0xc41923...2145
+              <i className='ml-2 fas fa-clone text-gray-400 cursor-pointer'></i>
+            </div>
           </div>
         </div>
         <div className='flex flex-col px-5'>
@@ -64,13 +67,25 @@ class Card extends Component<any, any> {
           <div className='text-xs text-gray-600 py-1'>
             Cosmic Perspective: Galactic Arch
           </div>
-          <div className='text-xs'>New York, US</div>
-          <div></div>
-          <div className='cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-4 bg-blue-500 text-white h-10'>
+          <div className='text-xs text-gray-600'>
+            <i className='mr-2 fas fa-map-marker-alt'></i>
+            New York, US
+          </div>
+          <div className='py-2 flex'>
+            <i className='text-xs w-5 h-5 flex items-center justify-center text-gray-400 border-gray-400 border rounded-full fab fa-facebook mr-2'></i>
+            <i className='text-xs w-5 h-5 flex items-center justify-center text-gray-400 border-gray-400 border rounded-full fab fa-twitter'></i>
+          </div>
+          <div className='cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-4 bg-blue-400 text-white h-10'>
+            <i className='mr-2 fas fa-plus'></i>
             Follow
           </div>
-          <div className='cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-2 text-blue-500 h-10 border-blue-500'>
+          <div className='cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-2 text-blue-400 h-10 border-blue-400'>
+            <i className='mr-2 fas fa-envelope'></i>
             Message
+          </div>
+          <div className='cursor-pointer text-xs text-blue-400 text-center pt-2'>
+            <i className='mr-2 fas fa-flag'></i>
+            report
           </div>
         </div>
       </div>
@@ -85,8 +100,28 @@ class Tabs extends Component<any, any> {
         <div className={classnames(styles.tab_round, styles.active)}>
           General
         </div>
-        <div className={classnames(styles.tab_round)}>Portfolio</div>
-        <div className={classnames(styles.tab_round)}>Board</div>
+        <div className={classnames(styles.tab_round)}>
+          Portfolio
+          <div
+            className={classnames(
+              'w-4 h-4 rounded-full bg-gray-400 text-white flex justify-center items-center ml-2',
+              styles.badge,
+            )}
+          >
+            7
+          </div>
+        </div>
+        <div className={classnames(styles.tab_round)}>
+          Board
+          <div
+            className={classnames(
+              'w-4 h-4 rounded-full bg-gray-400 text-white flex justify-center items-center ml-2',
+              styles.badge,
+            )}
+          >
+            12
+          </div>
+        </div>
       </div>
     )
   }
@@ -105,7 +140,12 @@ class General extends Component<any, any> {
         {/* First Row Group of General */}
         <div className='py-8 pt-4'>
           <div className={classnames(styles.row)}>
-            <div className={classnames(styles.row_title)}>Location</div>
+            <div
+              className={classnames(styles.row_title, 'flex justify-between')}
+            >
+              Location
+              <i className='mr-2 mt-1 fas fa-map-marker-alt text-xs'></i>
+            </div>
             <div className={classnames(styles.row_content)}>New York, US</div>
             <div className='w-40'>#121</div>
           </div>
@@ -136,15 +176,15 @@ class General extends Component<any, any> {
         <div className={classnames('py-8')}>
           <div className={styles.row}>
             <div className={styles.row_title}>Highest fee recieved</div>
-            <div className={styles.row_content}>136,200,000k PSL,</div>
+            <div className={styles.row_content}>136,200,000k PSL</div>
           </div>
           <div className={styles.row}>
             <div className={styles.row_title}>Total sales amount</div>
-            <div className={styles.row_content}>560,600,00k PSL,</div>
+            <div className={styles.row_content}>560,600,00k PSL</div>
           </div>
           <div className={styles.row}>
             <div className={styles.row_title}>Total items sold</div>
-            <div className={styles.row_content}>14,</div>
+            <div className={styles.row_content}>14</div>
           </div>
           <div className={styles.row}>
             <div className={styles.row_title}>Top category persentage</div>
@@ -195,8 +235,8 @@ class Followers extends Component<any, any> {
     const { followers } = this.props
     return (
       <div className='flex flex-col pt-2'>
-        {followers.map((follower: any) => (
-          <Follower follower={follower} />
+        {followers.map((follower: any, index: any) => (
+          <Follower follower={follower} key={index} />
         ))}
       </div>
     )
