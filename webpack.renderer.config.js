@@ -3,7 +3,18 @@ const plugins = require('./webpack.plugins')
 
 rules.push({
   test: /\.css$/,
-  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+  use: [
+    { loader: 'style-loader' },
+    { loader: 'css-loader' },
+    {
+      loader: 'postcss-loader',
+      options: {
+        postcssOptions: {
+          plugins: ['tailwindcss', 'autoprefixer'],
+        },
+      },
+    },
+  ],
 })
 
 // TODO figure out how to load assets with file-loader. Currently, they are being resolved in a wrong folder, and this is why URL-loader whould be a quick and dirty solution.

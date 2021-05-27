@@ -4,7 +4,7 @@ import PSLPrice from '../assets/images/pslprice.jpg'
 export const pastelChartFields = [
   {
     name: 'Difficulty',
-    routeName: '/difficultyovertime',
+    routeName: '/statistics/difficultyovertime',
     backgroundImage: Difficulty,
   },
   {

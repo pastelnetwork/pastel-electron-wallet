@@ -282,7 +282,8 @@ const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
 
   if (
     (currentRoute.endsWith('app.html') && routeName === (routes as any).HOME) ||
-    currentRoute === routeName
+    currentRoute === routeName ||
+    currentRoute.includes(routeName)
   ) {
     isActive = true
   }
@@ -331,6 +332,7 @@ class Sidebar extends PureComponent<any, any> {
       openAboutModal,
       openUpdateToast,
       openSquooshToolModal,
+      openGlitchImageModal,
     } = this.props
 
     ipcRenderer.on('payuri', (event, uri) => {
@@ -445,6 +447,10 @@ class Sidebar extends PureComponent<any, any> {
 
     ipcRenderer.on('squooshTool', () => {
       openSquooshToolModal()
+    })
+
+    ipcRenderer.on('glitchImage', () => {
+      openGlitchImageModal()
     })
 
     ipcRenderer.send('app-ready')
@@ -702,6 +708,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
+          {/* <SidebarMenuItem
+            name='Statistics'
+            routeName={routes.STATISTICS}
+            currentRoute={location.pathname}
+            iconname='fa-chart-bar'
+          /> */}
           <SidebarMenuItem
             name='Statistics'
             routeName={routes.STATISTICS}
