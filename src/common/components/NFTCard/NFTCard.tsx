@@ -35,7 +35,7 @@ export const NFTCard: React.FC<NFTCardProps> = ({
       </div>
       {/* Image */}
       <div className='h-58 object-cover'>
-        <img src={imageSrc} className='h-full' />
+        <img src={imageSrc} className='h-full w-full' />
       </div>
       {/* Footer */}
       <div className='px-4.5 pt-2'>

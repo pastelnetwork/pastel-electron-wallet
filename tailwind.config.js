@@ -7,14 +7,14 @@ module.exports = {
   },
   purge: [],
   theme: {
+    screens: {
+      sm: '900px',
+      md: '1100px',
+      lg: '1300px',
+      xl: '1440px',
+      '2xl': '1700px',
+    },
     extend: {
-      screens: {
-        sm: '900px',
-        md: '1100px',
-        lg: '1300px',
-        xl: '1440px',
-        '2xl': '1700px',
-      },
       colors: {
         gray: {
           f7: '#F7F8F9',
@@ -110,8 +110,11 @@ module.exports = {
       },
       spacing: {
         '14px': '14px',
+        '30px': '30px',
         '40px': '40px',
+        '50px': '50px',
         4.5: '1.125rem',
+        5.5: '1.375rem',
         15: '3.75rem',
         30: '7.5rem',
       },
