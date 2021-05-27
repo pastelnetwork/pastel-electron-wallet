@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import styles from './Profile.module.css'
 import classnames from 'classnames'
 import Rate from 'rc-rate'
+import truncateMiddle from 'truncate-middle'
 import 'rc-rate/assets/index.css'
 import '../../legacy/assets/css/rc-rate.custom.css'
 
@@ -51,7 +52,7 @@ class Card extends Component<any, any> {
           <div className='mt-11 pl-3 text-sm'>
             <div className='px-1 text-gray-300'>@zndrson</div>
             <div className='pt-2 text-blue-400'>
-              0xc41923...2145
+              {truncateMiddle('0xc419234152312145', 8, 4, '...')}
               <i className='ml-2 fas fa-clone text-gray-400 cursor-pointer'></i>
             </div>
           </div>
