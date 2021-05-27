@@ -169,9 +169,7 @@ export const METHODS = [
 
 export type APIMethods = {
   getbestblockhash: () => Promise<string>
-  getblock: (
-    hash: string,
-  ) => Promise<{
+  getblock: (hash: string) => Promise<{
     hash: string
     confirmations: number
     size: number
@@ -238,9 +236,7 @@ export type APIMethods = {
   }>
   getblockcount: () => Promise<number>
   getblockhash: (idx: number) => Promise<string>
-  getblockheader: (
-    hash: string,
-  ) => Promise<{
+  getblockheader: (hash: string) => Promise<{
     hash: string
     confirmations: number
     height: number
@@ -337,9 +333,7 @@ export type APIMethods = {
   getblocksubsidy: (
     height?: number,
   ) => Promise<{ miner: number; founders: number }>
-  getblocktemplate: (
-    jsonrequestobject: string,
-  ) => Promise<{
+  getblocktemplate: (jsonrequestobject: string) => Promise<{
     capabilities: string[]
     version: number
     previousblockhash: string
@@ -489,9 +483,7 @@ export type APIMethods = {
     locktime?: number,
     expiryheight?: number,
   ) => Promise<string>
-  decoderawtransaction: (
-    hex: string,
-  ) => Promise<{
+  decoderawtransaction: (hex: string) => Promise<{
     txid: string
     overwintered: boolean
     version: number
@@ -537,9 +529,7 @@ export type APIMethods = {
       }
     }[]
   }>
-  decodescript: (
-    hex: string,
-  ) => Promise<{
+  decodescript: (hex: string) => Promise<{
     asm: string
     hex: string
     type: string
@@ -548,16 +538,12 @@ export type APIMethods = {
     p2sh: string
     address: string
   }>
-  fundrawtransaction: (
-    hex: string,
-  ) => Promise<{
+  fundrawtransaction: (hex: string) => Promise<{
     hex: string
     fee: number
     changepos: string
   }>
-  getrawtransaction: (
-    txid: string,
-  ) => Promise<{
+  getrawtransaction: (txid: string) => Promise<{
     hex: string
     txid: string
     version: number
@@ -636,9 +622,7 @@ export type APIMethods = {
   ) => Promise<{ address: string; redeemScript: string }>
   estimatefee: (nblocks: number) => Promise<number>
   estimatepriority: (nblocks: number) => Promise<number>
-  validateaddress: (
-    zcashaddress: string,
-  ) => Promise<{
+  validateaddress: (zcashaddress: string) => Promise<{
     isvalid: boolean
     address: string
     scriptPubKey: string
@@ -653,9 +637,7 @@ export type APIMethods = {
     signature: string,
     message: string,
   ) => Promise<boolean>
-  z_validateaddress: (
-    zaddr: string,
-  ) => Promise<{
+  z_validateaddress: (zaddr: string) => Promise<{
     isvalid: boolean
     address: string
     type: string

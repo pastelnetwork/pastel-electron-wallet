@@ -23,7 +23,5 @@ export const pastelPhotopeaModalSlice = createSlice({
 
 export const pastelPhotopeaModalReducer = pastelPhotopeaModalSlice.reducer
 
-export const {
-  openPastelPhotopeaModal,
-  closePastelPhotopeaModal,
-} = pastelPhotopeaModalSlice.actions
+export const { openPastelPhotopeaModal, closePastelPhotopeaModal } =
+  pastelPhotopeaModalSlice.actions

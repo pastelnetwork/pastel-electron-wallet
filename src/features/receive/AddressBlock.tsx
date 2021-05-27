@@ -56,9 +56,8 @@ export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
     [],
   )
 
-  const [copiedPrivKey, setCopiedPrivKey] = useState<'' | 'loading' | 'done'>(
-    '',
-  )
+  const [copiedPrivKey, setCopiedPrivKey] =
+    useState<'' | 'loading' | 'done'>('')
   useEffect(() => {
     if (copiedPrivKey !== 'loading' || !props.privateKey) {
       return

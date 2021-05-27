@@ -43,10 +43,12 @@ import store from './redux/store'
 const oneHour = 1000 * 60 * 60
 
 // get pastel price
+// @ts-expect-error Need to correct
 store.dispatch(fetchPastelPrice())
 
 // set up pastel price update timer
 setInterval(() => {
+  // @ts-expect-error Need to correct
   store.dispatch(fetchPastelPrice())
 }, oneHour)
 

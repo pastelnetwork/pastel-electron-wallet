@@ -1,7 +1,7 @@
-import cx from 'classnames'
+// import cx from 'classnames'
 import React from 'react'
 
-import cstyles from '../../../legacy/components/Common.module.css'
+// import cstyles from '../../../legacy/components/Common.module.css'
 import ScrollPane from '../../../legacy/components/ScrollPane'
 import { useAppSelector } from '../../../redux/hooks'
 import styles from './ArtRegForm.module.css'

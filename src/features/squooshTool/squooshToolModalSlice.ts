@@ -23,7 +23,5 @@ export const squooshToolModalSlice = createSlice({
 
 export const squooshToolModalReducer = squooshToolModalSlice.reducer
 
-export const {
-  openSquooshToolModal,
-  closeSquooshToolModal,
-} = squooshToolModalSlice.actions
+export const { openSquooshToolModal, closeSquooshToolModal } =
+  squooshToolModalSlice.actions

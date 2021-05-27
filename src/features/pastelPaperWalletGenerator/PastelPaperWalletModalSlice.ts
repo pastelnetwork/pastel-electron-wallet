@@ -39,7 +39,5 @@ export const pastelPaperWalletModalSlice = createSlice({
 
 export const pastelPaperWalletModalReducer = pastelPaperWalletModalSlice.reducer
 
-export const {
-  openPastelPaperWalletModal,
-  closePastelPaperWalletModal,
-} = pastelPaperWalletModalSlice.actions
+export const { openPastelPaperWalletModal, closePastelPaperWalletModal } =
+  pastelPaperWalletModalSlice.actions

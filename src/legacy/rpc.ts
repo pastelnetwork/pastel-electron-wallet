@@ -342,11 +342,9 @@ export default class RPC {
 
   async sendTransaction(sendJson: any, fnOpenSendErrorModal: any) {
     try {
-      const opid = ((await RPC.doRPC(
-        'z_sendmany',
-        sendJson,
-        this.rpcConfig,
-      )) as any).result
+      const opid = (
+        (await RPC.doRPC('z_sendmany', sendJson, this.rpcConfig)) as any
+      ).result
       const monitor: any = new OpidMonitor()
       monitor.opid = opid
       monitor.fnOpenSendErrorModal = fnOpenSendErrorModal

@@ -242,36 +242,34 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
   }
 
-  const rpcCommandResponse = (commandKey: string) => async (
-    state: any,
-    opts: string[],
-  ) => {
-    historyCmds.push(commandKey)
-    setExecutingCommand(true)
-    let textConsole = ''
+  const rpcCommandResponse =
+    (commandKey: string) => async (state: any, opts: string[]) => {
+      historyCmds.push(commandKey)
+      setExecutingCommand(true)
+      let textConsole = ''
 
-    try {
-      const data = await rpcApi[commandKey](opts)
-      textConsole = `${data}`
+      try {
+        const data = await rpcApi[commandKey](opts)
+        textConsole = `${data}`
 
-      if (typeof data === 'object') {
-        const tempArr = Array.isArray(data)
-          ? data.length > 0
-            ? data.map(formatConsoleData)
-            : ['']
-          : [formatConsoleData(data || {})]
-        textConsole = textAsTable(tempArr)
+        if (typeof data === 'object') {
+          const tempArr = Array.isArray(data)
+            ? data.length > 0
+              ? data.map(formatConsoleData)
+              : ['']
+            : [formatConsoleData(data || {})]
+          textConsole = textAsTable(tempArr)
+        }
+
+        if (data == null || (Array.isArray(data) && data.length == 0)) {
+          textConsole = 'null'
+        }
+      } catch (error) {
+        textConsole = error.message
       }
-
-      if (data == null || (Array.isArray(data) && data.length == 0)) {
-        textConsole = 'null'
-      }
-    } catch (error) {
-      textConsole = error.message
+      await addOutputThenDisplay(textConsole)
+      setExecutingCommand(false)
     }
-    await addOutputThenDisplay(textConsole)
-    setExecutingCommand(false)
-  }
 
   const addOutputThenDisplay = async (text: string) => {
     const oldOutputs = emulatorState.getOutputs()
