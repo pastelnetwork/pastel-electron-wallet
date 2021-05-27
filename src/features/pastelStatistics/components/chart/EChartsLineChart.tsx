@@ -181,7 +181,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
   const downloadPNG = () => {
     if (eChartRef?.ele) {
       htmlToImage
-        .toBlob(eChartRef?.ele)
+        .toBlob(eChartRef.ele)
         .then(function (blob: Blob | null) {
           if (blob) {
             saveAs(blob, makeDownloadFileName() + '.png')
@@ -191,6 +191,57 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           throw new Error('PNG download error: ' + error)
         })
     }
+  }
+
+  const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
+    setCurrentTheme(theme)
+    setSelectedThemeButton(index)
+    handleBgColorChange(theme.backgroundColor)
+    const option = {
+      backgroundColor: theme.backgroundColor,
+      textStyle: {
+        color: theme.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY,
+          smooth: theme.smooth,
+          lineStyle: {
+            width: 3,
+            shadowColor: 'rgba(0,0,0,0.5)',
+            shadowBlur: 10,
+            shadowOffsetY: 8,
+          },
+        },
+      ],
+    }
+    eChartInstance?.setOption(option)
+  }
+
+  const getActivePriodButtonStyle = (index: number): string => {
+    if (selectedPeriodButton === index) {
+      return styles.activeButton
+    }
+    return ''
+  }
+
+  const getActiveThemeButtonStyle = (index: number): string => {
+    if (selectedThemeButton === index) {
+      return styles.activeThemeButton
+    }
+    return ''
   }
 
   return (
@@ -207,9 +258,9 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           {periods[periodIndex] &&
             periods[periodIndex].map((period, index) => (
               <button
-                className={`${
-                  selectedPeriodButton == index ? styles.activeButton : ''
-                } ${styles.filterButton}`}
+                className={`${getActivePriodButtonStyle(index)} ${
+                  styles.filterButton
+                }`}
                 onClick={() => {
                   setSelectedPeriodButton(index)
                   if (handlePeriodFilterChange) {
@@ -239,45 +290,10 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
         <div className={styles.lineChartThemeSelect}>
           {themes.map((theme, index) => (
             <button
-              className={`${styles.themeSelectButton} ${
-                selectedThemeButton === index ? styles.activeThemeButton : ''
-              }`}
-              onClick={() => {
-                setCurrentTheme(theme)
-                setSelectedThemeButton(index)
-                handleBgColorChange(theme.backgroundColor)
-                const option = {
-                  backgroundColor: theme.backgroundColor,
-                  textStyle: {
-                    color: theme.color,
-                  },
-                  yAxis: {
-                    splitLine: {
-                      lineStyle: {
-                        color: theme.splitLineColor,
-                      },
-                    },
-                    axisLine: {
-                      show: true,
-                    },
-                  },
-                  series: [
-                    {
-                      type: 'line',
-                      showSymbol: false,
-                      data: dataY,
-                      smooth: theme.smooth,
-                      lineStyle: {
-                        width: 3,
-                        shadowColor: 'rgba(0,0,0,0.5)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 8,
-                      },
-                    },
-                  ],
-                }
-                eChartInstance?.setOption(option)
-              }}
+              className={`${
+                styles.themeSelectButton
+              } ${getActiveThemeButtonStyle(index)}`}
+              onClick={() => handleThemeButtonClick(theme, index)}
               style={{
                 backgroundColor: `${theme.backgroundColor}`,
               }}

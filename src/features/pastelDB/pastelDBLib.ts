@@ -186,7 +186,7 @@ export function validateDuplicatedRawmempoolInfo(
 ): boolean {
   if (tableNames[tableName] !== true) {
     throw new Error(
-      'pastelDB validateDuplicatedRawmempoolInfo error: table name is invalid',
+      `pastelDB validateDuplicatedRawmempoolInfo error: ${tableName} is invalid table name`,
     )
   }
 
@@ -201,20 +201,27 @@ export function validateDuplicatedRawmempoolInfo(
   return sqlResult.length ? false : true
 }
 
-export function validateDuplicatedBlockchainInfo(
+export function getLastDataFromDB(
   pastelDB: Database,
   tableName: string,
-  validateFields: TValidateFields,
-): boolean {
+): QueryExecResult[] {
   if (tableNames[tableName] !== true) {
     throw new Error(
-      'pastelDB validateDuplicatedBlockchainInfo error: table name is invalid',
+      `pastelDB getLastDataFromDB error: ${tableName} is invalid table name`,
     )
   }
 
   const sqlText = selectAllQuery + tableName + orderByIDQuery
   const sqlResult = pastelDB.exec(sqlText)
+  return sqlResult
+}
 
+export function validateDuplicatedBlockchainInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (validateFields.bestBlockHash === sqlResult[0].values[0][1]) {
       return false
@@ -228,15 +235,7 @@ export function validateDuplicatedBlockInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedBlockinfo error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (validateFields.hash === sqlResult[0].values[0][1]) {
       return false
@@ -250,15 +249,7 @@ export function validateDuplicatedBlocksubsidy(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedBlocksubsidy error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (
       validateFields.miner === sqlResult[0].values[0][1] &&
@@ -275,15 +266,7 @@ export function validateDuplicatedPriceInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedPriceInfo error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (validateFields.price === sqlResult[0].values[0][1]) {
       return false
@@ -297,15 +280,7 @@ export function validateDuplicatedMempoolInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedMempoolInfo error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (
       validateFields.mempoolSize === sqlResult[0].values[0][1] &&
@@ -323,15 +298,7 @@ export function validateDuplicatedMiningInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedMiningInfo error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (validateFields.miningBlocks === sqlResult[0].values[0][1]) {
       return false
@@ -345,15 +312,7 @@ export function validateDuplicatedStatisticInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedStatisticInfo error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (
       validateFields.solutions === sqlResult[0].values[0][1] &&
@@ -370,15 +329,7 @@ export function validateDuplicatedTotalbalance(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedTotalbalance error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (
       validateFields.balanceTransparent === sqlResult[0].values[0][1] &&
@@ -395,15 +346,7 @@ export function validateDuplicatedTxoutsetInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedTxoutsetInfo error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (
       validateFields.height === sqlResult[0].values[0][1] &&
@@ -420,15 +363,7 @@ export function validateDuplicatedWalletInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      'pastelDB validateDuplicatedWalletInfo error: table name is invalid',
-    )
-  }
-
-  const sqlText = selectAllQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
-
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0]) {
     if (
       validateFields.walletversion === sqlResult[0].values[0][1] &&
@@ -443,12 +378,7 @@ export function validateDuplicatedWalletInfo(
 }
 
 export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
-  if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB getLastIdFromDB error: table name is invalid')
-  }
-
-  const sqlText = selectIDQuery + tableName + orderByIDQuery
-  const sqlResult = pastelDB.exec(sqlText)
+  const sqlResult = getLastDataFromDB(pastelDB, tableName)
   if (sqlResult.length && sqlResult[0].values[0][0]) {
     return parseInt(sqlResult[0].values[0][0].toString()) + 1
   } else {
@@ -484,7 +414,9 @@ export function getDatasFromDB(
   tableName: string,
 ): QueryExecResult[] {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB getDatasFromDB error: table name is invalid')
+    throw new Error(
+      `pastelDB getDatasFromDB error: ${tableName} is invalid table name`,
+    )
   }
 
   const sqlText = selectAllQuery + tableName
