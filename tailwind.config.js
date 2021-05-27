@@ -9,9 +9,25 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        '2xl': '1440px',
+        sm: '900px',
+        md: '1100px',
+        lg: '1300px',
+        xl: '1440px',
+        '2xl': '1700px',
       },
       colors: {
+        gray: {
+          f7: '#F7F8F9',
+          b0: '#B0B7C3',
+          e6: '#E6E8EC',
+          71: '#718096',
+          35: '#353941',
+          '2d': '#2D3748',
+          14: '#141416',
+        },
+        blue: {
+          '3f': '#3F9AF7',
+        },
         text: {
           gray500: '#A0AEC0',
           gray600: '#718096',
@@ -78,6 +94,8 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         xLarge:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+        2: '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        16: '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
       },
       fontSize: {
         h1: '2rem',
@@ -91,8 +109,11 @@ module.exports = {
         center: true,
       },
       spacing: {
+        '14px': '14px',
+        '40px': '40px',
         4.5: '1.125rem',
         15: '3.75rem',
+        30: '7.5rem',
       },
       height: {
         58: '14.375rem',

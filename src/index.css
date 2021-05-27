@@ -46,7 +46,11 @@
     -webkit-text-fill-color: transparent;
   }
 }
-
+@layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+}
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
 
@@ -189,4 +193,12 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.focus-visible:focus {
+  outline: none;
+}
+
+.focus-visible:focus-visible {
+  outline: 1px solid #3f9af7;
 }
