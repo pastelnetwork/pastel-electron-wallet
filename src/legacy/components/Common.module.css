@@ -1,7 +1,5 @@
 .sidebarcontainer {
-  width: 220px;
-  height: 100vh;
-  float: left;
+  width: 100%;
 }
 
 .contentcontainer {
@@ -27,6 +25,11 @@
 .flexspacebetween {
   display: flex;
   justify-content: space-between;
+}
+
+.flexcenter {
+  display: flex;
+  align-items: center;
 }
 
 .highlight {
@@ -79,6 +82,11 @@
 
 .yellow {
   color: yellow;
+}
+
+.searchbarcolor {
+  color: #334d6e;
+  font-size: 16px;
 }
 
 .breakword {
@@ -216,4 +224,28 @@
 .tableheader {
   margin: 8px 0;
   border-bottom: solid 1px grey;
+}
+
+.positionRelative {
+  position: relative;
+}
+
+.ml68 {
+  margin-left: 68px;
+}
+
+.mr35 {
+  margin-right: 35px;
+}
+
+.mr37 {
+  margin-right: 37px;
+}
+
+.mr28 {
+  margin-right: 28px;
+}
+
+.ml8 {
+  margin-left: 8px;
 }
