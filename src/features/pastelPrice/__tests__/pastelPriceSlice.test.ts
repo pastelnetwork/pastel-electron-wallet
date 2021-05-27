@@ -38,7 +38,8 @@ describe('fetchPastelPrice', () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
 
     // Act
-    await store.dispatch(fetchPastelPrice())
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await store.dispatch<any>(fetchPastelPrice())
 
     // Assert
     expect(coingeckoSpy).toBeCalledTimes(1)
@@ -67,7 +68,8 @@ describe('fetchPastelPrice', () => {
     const dateSpy = jest.spyOn(Date, 'now').mockReturnValue(100)
 
     // Act
-    await store.dispatch(fetchPastelPrice())
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await store.dispatch<any>(fetchPastelPrice())
 
     // Assert
     expect(coingeckoSpy).toBeCalledTimes(1)
