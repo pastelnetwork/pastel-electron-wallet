@@ -65,7 +65,7 @@ export default function AutoComplete({
           {isOpen ? (
             <ul
               {...getMenuProps()}
-              className='mt-px absolute bg-white focus:border-blue-450 w-112px border-4px rounded-4px shadow-large border-gray-e6'
+              className='mt-px absolute bg-white focus:border-blue-3f w-112px rounded rounded-4px shadow-large border-gray-e6'
               onClick={e => e.stopPropagation()}
             >
               {options
@@ -82,7 +82,7 @@ export default function AutoComplete({
                         item,
                       })}
                       className={cn(
-                        'w-full h-40px flex items-center px-4 text-gray-35 rounded-4px',
+                        'w-full h-40px flex items-center px-4 text-gray-35 rounded',
                         highlight && 'bg-gray-f7',
                       )}
                     >
