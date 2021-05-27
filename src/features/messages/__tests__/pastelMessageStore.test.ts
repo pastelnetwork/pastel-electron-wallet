@@ -6,7 +6,6 @@ import {
   fetchConversations,
   pastelMessageReducer,
   updateConversationList,
-  updateLoading,
 } from '../MessagesStore'
 import conversationMock from '../conversation-mock'
 

@@ -1,5 +1,12 @@
+import { TConversation } from './MessagesStore'
+
+interface RESPONSE {
+  status: number
+  data: TConversation[]
+}
+
 const conversations = {
-  list: () =>
+  list: (): Promise<RESPONSE> =>
     new Promise(res =>
       res({
         status: 200,

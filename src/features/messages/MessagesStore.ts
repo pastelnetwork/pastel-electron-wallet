@@ -44,8 +44,8 @@ export const MessageStoreSlice = createSlice({
       action: PayloadAction<TConversation[]>,
     ) {
       state.conversations = action.payload.sort(
-        (a: TConversation, b: TConversation) => {
-          return b.timestamp - a.timestamp
+        (conversation1: TConversation, conversation2: TConversation) => {
+          return conversation2.timestamp - conversation1.timestamp
         },
       )
       if (!state.currentConversationId && action.payload[0]) {
