@@ -1,10 +1,10 @@
-import './ToolbarButton.css'
-
 import React from 'react'
+
+import * as Styles from './ToolbarButton.styles'
 
 interface IToolbarButton {
   icon: string
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
   isLoading?: boolean
 }
 
@@ -16,15 +16,11 @@ export default function ToolbarIconButton({
   return (
     <>
       {isLoading ? (
-        <button
-          className='btn-wrapper__icon'
-          onClick={onClick}
-          disabled={isLoading}
-        >
-          <i className={`toolbar-button ${icon}`} />
-        </button>
+        <Styles.BtnWrapperIcon onClick={onClick} disabled={isLoading}>
+          <Styles.ToolbarButton className={`${icon}`} />
+        </Styles.BtnWrapperIcon>
       ) : (
-        <i onClick={onClick} className={`toolbar-button ${icon}`} />
+        <Styles.ToolbarButton onClick={onClick} className={`${icon}`} />
       )}
     </>
   )

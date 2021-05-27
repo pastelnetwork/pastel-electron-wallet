@@ -69,9 +69,11 @@ export const MessageStoreSlice = createSlice({
         state.conversations[conversationIndex].messages.push(action.payload)
         state.conversations[conversationIndex].timestamp =
           action.payload.timestamp
-        state.conversations.sort((a: TConversation, b: TConversation) => {
-          return b.timestamp - a.timestamp
-        })
+        state.conversations.sort(
+          (conversation1: TConversation, conversation2: TConversation) => {
+            return conversation2.timestamp - conversation1.timestamp
+          },
+        )
       }
     },
   },
@@ -88,19 +90,16 @@ export const {
 
 export function fetchConversations(): AppThunk {
   return dispatch => {
-    // data from api
-    dispatch(updateLoading(true))
-
-    setTimeout(() => {
+    try {
       const data = [
         {
-          id: 1,
+          id: 'id1',
           name: 'Hanh Tran',
           thumbnail: 'https://randomuser.me/api/portraits/women/6.jpg',
           lastMessage: 'Hello Thuat Nguyen',
           messages: [
             {
-              id: 2,
+              id: 'id2',
               author: 'orange',
               message: 'Hello Thuat Nguyen',
               image: [],
@@ -110,27 +109,12 @@ export function fetchConversations(): AppThunk {
           ],
           timestamp: new Date('5/5/2021').getTime(),
         },
-        {
-          id: 2,
-          name: 'Quynh Nguyen',
-          thumbnail: 'https://randomuser.me/api/portraits/women/7.jpg',
-          lastMessage: 'Hello guys',
-          messages: [
-            {
-              id: 2,
-              author: 'orange',
-              message: 'Hello guys',
-              image: [],
-              record: '',
-              timestamp: new Date('5/4/2021').getTime(),
-            },
-          ],
-          timestamp: new Date('5/4/2021').getTime(),
-        },
       ]
       dispatch(updateConversationList(data))
-      dispatch(updateLoading(false))
-    }, 3000)
+    } catch (error) {
+      // dispatch(updateLoading(false))
+      throw new Error('fetch conversations failed')
+    }
   }
 }
 

@@ -1,6 +1,6 @@
-import './Toolbar.css'
-
 import React from 'react'
+
+import * as Styles from './Toolbar.styles'
 
 interface ToolbarMessage {
   title: string
@@ -9,8 +9,8 @@ interface ToolbarMessage {
 export default function Toolbar(props: ToolbarMessage): JSX.Element {
   const { title } = props
   return (
-    <div className='toolbar'>
-      <h1 className='toolbar-title'>{title}</h1>
-    </div>
+    <Styles.Toolbar>
+      <Styles.ToolbarTitle>{title}</Styles.ToolbarTitle>
+    </Styles.Toolbar>
   )
 }

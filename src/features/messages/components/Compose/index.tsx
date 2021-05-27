@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
@@ -6,7 +6,8 @@ import { ReactMic } from 'react-mic'
 
 import { createMessage } from '../../MessagesStore'
 import ToolbarIconButton from '../ToolbarButton'
-import './Compose.css'
+
+import * as Styles from './Compose.styles'
 
 interface IComposeProps {
   createMessage: (msg: string, image: string[], audio: string) => void
@@ -86,7 +87,8 @@ function InputCompose(props: IComposeProps): JSX.Element {
     })
   }
 
-  const onChangeShowEmoji = () => {
+  const onChangeShowEmoji = (e: React.MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
     setShowEmoji(!showEmoji)
   }
 
@@ -97,12 +99,10 @@ function InputCompose(props: IComposeProps): JSX.Element {
 
   const onChangeImageCompose = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
-    if (files) {
+    if (files?.length) {
       Array.from(files).forEach((file: File) => {
         const ext = file.name.split('.').pop()?.toLowerCase() || ''
-        if (!['jpg', 'png', 'jpeg'].includes(ext)) {
-          console.log('File invalid')
-        } else {
+        if (['jpg', 'png', 'jpeg'].includes(ext)) {
           onReadFile(file)
         }
       })
@@ -131,12 +131,8 @@ function InputCompose(props: IComposeProps): JSX.Element {
     setAudio(recordedBlob.blobURL)
   }
 
-  const startRecording = () => {
-    setRecord(true)
-  }
-
-  const stopRecording = () => {
-    setRecord(false)
+  const handleRecording = (isStart: boolean) => () => {
+    setRecord(isStart)
   }
 
   const deleteRecording = () => {
@@ -146,43 +142,60 @@ function InputCompose(props: IComposeProps): JSX.Element {
   const onChangeShowRecord = () => {
     setShowRecord(!showRecord)
     setAudio('')
+    setTimeout(() => {
+      setRecord(true)
+    }, 300)
     setTimeout(scrollToBottom, 100)
   }
 
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const pickerWrap = document.getElementById(
+        'wrapperEmoji',
+      ) as HTMLDivElement
+      if (pickerWrap && !pickerWrap.contains(e.target as Node)) {
+        if (showEmoji) {
+          setShowEmoji(!showEmoji)
+        }
+      }
+    }
+    window.addEventListener('click', handleClick)
+    return () => {
+      window.removeEventListener('click', handleClick)
+    }
+  }, [showEmoji])
+
   return (
-    <div className='compose'>
+    <Styles.Compose>
       <>
         {messageImage.length !== 0 && (
-          <div className='wrapper-list-image__compose'>
-            {messageImage.map(item => (
-              <div className='wrapper-image__compose'>
-                <img src={item} alt='image compose' />
+          <Styles.WrapperListImageCompose>
+            {messageImage.map((item, index) => (
+              <Styles.WrapperImageCompose key={index}>
+                <Styles.ImageCompose src={item} alt='image compose' />
                 <ToolbarIconButton
                   key='close'
                   icon='fa fa-times-circle icon-delete-image'
                   onClick={onDeleteImage(item)}
                 />
-              </div>
+              </Styles.WrapperImageCompose>
             ))}
-          </div>
+          </Styles.WrapperListImageCompose>
         )}
       </>
       <>
         {showRecord && (
-          <div className='wrapper-record__compose'>
-            <div className='record-bottom__compose'>
+          <Styles.WrapperRecordCompose>
+            <Styles.RecordBottomCompose>
               <ToolbarIconButton
-                key='start'
                 icon='fa fa-play icon-audio'
-                onClick={startRecording}
+                onClick={handleRecording(true)}
               />
               <ToolbarIconButton
-                key='start'
                 icon='fa fa-stop icon-audio'
-                onClick={stopRecording}
+                onClick={handleRecording(false)}
               />
               <ToolbarIconButton
-                key='start'
                 icon='fa fa-trash icon-audio'
                 onClick={deleteRecording}
               />
@@ -195,15 +208,15 @@ function InputCompose(props: IComposeProps): JSX.Element {
                   className='sound-wave'
                 />
               ) : (
-                <audio className='audio-compose' src={audio} controls />
+                <Styles.AudioCompose src={audio} controls />
               )}
-            </div>
-          </div>
+            </Styles.RecordBottomCompose>
+          </Styles.WrapperRecordCompose>
         )}
       </>
 
-      <div className='wrapper-compose'>
-        <div className='wrapper-icon__compose'>
+      <Styles.WrapperCompose>
+        <Styles.WrapperIconCompose>
           <ToolbarIconButton
             isLoading={isLoading}
             key='image'
@@ -222,14 +235,16 @@ function InputCompose(props: IComposeProps): JSX.Element {
             icon='fa fa-smile icon-bottom'
             onClick={onChangeShowEmoji}
           />
-        </div>
-        <div className={`wrapper-emoji ${showEmoji && 'active'}`}>
+        </Styles.WrapperIconCompose>
+        <Styles.WrapperEmoji
+          className={`${showEmoji && 'active'}`}
+          id='wrapperEmoji'
+        >
           <Picker onSelect={onChangeEmoji} set='facebook' theme='dark' />
-        </div>
-        <div className='wrapper-input-compose'>
-          <input
+        </Styles.WrapperEmoji>
+        <Styles.WrapperInputCompose>
+          <Styles.ComposeInput
             type='text'
-            className='compose-input'
             placeholder='Type a message, @name'
             onChange={onChangeInput}
             onKeyDown={handleKeyDown}
@@ -237,22 +252,17 @@ function InputCompose(props: IComposeProps): JSX.Element {
             value={messageTyping}
             id='message-input'
           />
-        </div>
-        <div
-          id='message-send'
-          className='button__click-send'
-          onClick={handleSendMsg}
-        />
-        <input
+        </Styles.WrapperInputCompose>
+        <Styles.ButtonClickSend onClick={handleSendMsg} />
+        <Styles.InputComposeImage
           type='file'
-          className='input-compose-image'
           id='input-compose-image'
           onChange={onChangeImageCompose}
           accept='image/*'
           multiple
         />
-      </div>
-    </div>
+      </Styles.WrapperCompose>
+    </Styles.Compose>
   )
 }
 

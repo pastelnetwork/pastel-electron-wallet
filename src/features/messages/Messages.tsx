@@ -5,7 +5,7 @@ import { RootState } from '../../redux/store'
 import ConversationList from './components/ConversationList'
 import MessageList from './components/MessageList'
 import Skeleton from './components/skeletons'
-import style from './Messages.module.css'
+// import style from './Messages.module.css'
 import {
   changeConversation,
   fetchConversations,
@@ -14,7 +14,9 @@ import {
 import Toolbar from './components/Toolbar'
 import ConversationSearch from './components/ConversationSearch'
 import Compose from './components/Compose'
-import './components/MessageList/MessageList.css'
+// import './components/MessageList/MessageList.css'
+
+import * as Styles from './Messages.styles'
 
 interface IProps extends IConversationsState {
   fetchConversations: () => void
@@ -39,26 +41,26 @@ function Messages(props: IProps): JSX.Element {
   const conversation = conversations.find(c => c.id === currentConversationId)
 
   return (
-    <div className={style.container}>
-      <div className={style.messenger}>
-        <div className={`${style.scrollAble} ${style.sidebar}`}>
+    <Styles.Container>
+      <Styles.Message>
+        <Styles.Sidebar>
           {isLoading ? (
             <>
               <Toolbar title='Messages' />
 
               <ConversationSearch />
 
-              <div className='wrapper-not-data wrapper-loading-conversations'>
+              <Styles.WrapperLoading>
                 {index.map(n => (
-                  <div key={n} className='wrapper-skeleton-left'>
+                  <Styles.WrapperSkeletonLeft key={n}>
                     <Skeleton type='avatar' />
-                    <div className='skeleton-right'>
+                    <Styles.SkeletonRight>
                       <Skeleton type='text name-skeleton' />
                       <Skeleton type='text description-skeleton' />
-                    </div>
-                  </div>
+                    </Styles.SkeletonRight>
+                  </Styles.WrapperSkeletonLeft>
                 ))}
-              </div>
+              </Styles.WrapperLoading>
             </>
           ) : (
             <ConversationList
@@ -67,32 +69,32 @@ function Messages(props: IProps): JSX.Element {
               changeConversation={changeConversation}
             />
           )}
-        </div>
-        <div className={`${style.scrollAble} ${style.content}`}>
+        </Styles.Sidebar>
+        <Styles.Content>
           {isLoading ? (
-            <div className='wrapper-not-data wrapper-not-data-2'>
-              <div className='skeleton-top'>
+            <Styles.WrapperNotData2>
+              <Styles.SkeletonTop>
                 <Skeleton type='avatar' />
                 <Skeleton type='title' />
-              </div>
-              <div className='skeleton-bottom'>
+              </Styles.SkeletonTop>
+              <Styles.SkeletonBottom>
                 <Skeleton type='title skeleton-msg-1' />
                 <Skeleton type='title skeleton-msg-2' />
                 <Skeleton type='title skeleton-msg-3' />
                 <Skeleton type='title skeleton-msg-4' />
-              </div>
+              </Styles.SkeletonBottom>
               <Compose isLoading={isLoading} />
-            </div>
+            </Styles.WrapperNotData2>
           ) : conversation ? (
             <MessageList conversation={conversation} />
           ) : (
-            <div className='wrapper-not-data wrapper-not-data-2'>
+            <Styles.WrapperNotData2>
               <p>Select one to message</p>
-            </div>
+            </Styles.WrapperNotData2>
           )}
-        </div>
-      </div>
-    </div>
+        </Styles.Content>
+      </Styles.Message>
+    </Styles.Container>
   )
 }
 

@@ -1,11 +1,11 @@
-import './ConversationList.css'
-
 import React, { useEffect, useState } from 'react'
 
 import { TConversation } from '../../MessagesStore'
 import ConversationListItem from '../ConversationListItem'
 import ConversationSearch from '../ConversationSearch'
 import Toolbar from '../Toolbar'
+
+import * as Styles from './ConversationList.styles'
 
 interface IConversationListProps {
   conversations: TConversation[]
@@ -37,12 +37,12 @@ export default function ConversationList(
   }
 
   return (
-    <div className='conversation-list'>
+    <Styles.ConversationList>
       <Toolbar title='Messages' />
 
       <ConversationSearch searchConversation={searchConversation} />
 
-      <div className='conversation__wrapper'>
+      <Styles.ConversationWrapper>
         {conversationsCopy.map((conversation: TConversation) => (
           <ConversationListItem
             key={conversation.id}
@@ -51,7 +51,7 @@ export default function ConversationList(
             changeConversation={changeConversation}
           />
         ))}
-      </div>
-    </div>
+      </Styles.ConversationWrapper>
+    </Styles.ConversationList>
   )
 }

@@ -1,10 +1,9 @@
-import './ConversationListItem.css'
-
-import clx from 'classnames'
 import React, { useEffect } from 'react'
 import shave from 'shave'
 
 import { TConversation } from '../../MessagesStore'
+
+import * as Styles from './ConversationListItem.styles'
 
 interface IConversationItemProps {
   conversation: TConversation
@@ -28,19 +27,20 @@ export default function ConversationListItem(
   })
 
   return (
-    <div
-      className={clx('conversation-list-item', { active: isActive })}
+    <Styles.ConversationListItem
+      className={`${isActive && 'active'}`}
       onClick={onChangeConversation}
     >
-      <img
-        className='conversation-photo'
+      <Styles.ConversationPhoto
         src={conversation.thumbnail}
         alt='conversation'
       />
-      <div className='conversation-info'>
-        <h1 className='conversation-title'>{conversation.name}</h1>
-        <p className='conversation-snippet'>{conversation.lastMessage}</p>
+      <div>
+        <Styles.ConversationTitle>{conversation.name}</Styles.ConversationTitle>
+        <Styles.ConversationSnippet className='conversation-snippet'>
+          {conversation.lastMessage}
+        </Styles.ConversationSnippet>
       </div>
-    </div>
+    </Styles.ConversationListItem>
   )
 }

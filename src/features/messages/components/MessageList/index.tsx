@@ -1,12 +1,15 @@
-import './MessageList.css'
-
-import moment from 'moment'
 import React, { useEffect } from 'react'
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 
 import { TConversation } from '../../MessagesStore'
 import Compose from '../Compose'
 import Message from '../Message'
 import ToolbarIconButton from '../ToolbarButton'
+
+import * as Styles from './MessageList.styles'
+
+dayjs.extend(duration)
 
 const MY_USER_ID = 'apple'
 
@@ -39,7 +42,7 @@ function MessageList(props: IProps): JSX.Element {
       const current = messages[i]
       const next = messages[i + 1]
       const isMine = current.author === MY_USER_ID
-      const currentMoment = moment(current.timestamp)
+      const currentMoment = dayjs(current.timestamp)
       let prevBySameAuthor = false
       let nextBySameAuthor = false
       let startsSequence = true
@@ -47,8 +50,8 @@ function MessageList(props: IProps): JSX.Element {
       let showTimestamp = true
 
       if (previous) {
-        const previousMoment = moment(previous.timestamp)
-        const previousDuration = moment.duration(
+        const previousMoment = dayjs(previous.timestamp)
+        const previousDuration = dayjs.duration(
           currentMoment.diff(previousMoment),
         )
         prevBySameAuthor = previous.author === current.author
@@ -63,8 +66,8 @@ function MessageList(props: IProps): JSX.Element {
       }
 
       if (next) {
-        const nextMoment = moment(next.timestamp)
-        const nextDuration = moment.duration(nextMoment.diff(currentMoment))
+        const nextMoment = dayjs(next.timestamp)
+        const nextDuration = dayjs.duration(nextMoment.diff(currentMoment))
         nextBySameAuthor = next.author === current.author
 
         if (nextBySameAuthor && nextDuration.as('hours') < 1) {
@@ -95,30 +98,26 @@ function MessageList(props: IProps): JSX.Element {
   }, [])
 
   return (
-    <div className='message-list'>
-      <div className='message__header'>
-        <img
-          className='conversation-photo'
-          src={thumbnail}
-          alt='conversation'
-        />
-        <div className='message__header-name'>
-          <h1 className='message-name'>{name}</h1>
+    <Styles.MessageList>
+      <Styles.MessageHeader>
+        <Styles.ImageMessageHeader src={thumbnail} alt='conversation' />
+        <div>
+          <Styles.MessageName>{name}</Styles.MessageName>
         </div>
-      </div>
+      </Styles.MessageHeader>
 
       {messages.length !== 0 ? (
-        <div id='wrapper-list-message' className='message-list-container'>
+        <Styles.MessageListContainer id='wrapper-list-message'>
           {renderMessages()}
-        </div>
+        </Styles.MessageListContainer>
       ) : (
-        <div className='wrapper-not-data'>
+        <Styles.WrapperNotData>
           <ToolbarIconButton icon='fa fa-comment-dots icon-message' />
-        </div>
+        </Styles.WrapperNotData>
       )}
 
       <Compose />
-    </div>
+    </Styles.MessageList>
   )
 }
 

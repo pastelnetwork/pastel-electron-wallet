@@ -1,9 +1,9 @@
-import './Message.css'
-
-import moment from 'moment'
 import React from 'react'
+import dayjs from 'dayjs'
 
 import { TMessage } from '../../MessagesStore'
+
+import * as Styles from './Message.styles'
 
 interface IMessageProps {
   data: TMessage
@@ -15,10 +15,10 @@ interface IMessageProps {
 
 export default function Messages(props: IMessageProps): JSX.Element {
   const { data, isMine, startsSequence, endsSequence, showTimestamp } = props
-  const friendlyTimestamp = moment(data.timestamp).format('LLLL')
+  const friendlyTimestamp = dayjs(data.timestamp).format('dddd MMMM DD, YYYY')
 
   return (
-    <div
+    <Styles.Message
       className={[
         'message',
         `${isMine ? 'mine' : ''}`,
@@ -26,26 +26,28 @@ export default function Messages(props: IMessageProps): JSX.Element {
         `${endsSequence ? 'end' : ''}`,
       ].join(' ')}
     >
-      {showTimestamp && <div className='timestamp'>{friendlyTimestamp}</div>}
+      {showTimestamp && (
+        <Styles.Timestamp>{friendlyTimestamp}</Styles.Timestamp>
+      )}
 
-      <div className='bubble-container'>
+      <Styles.BubbleContainer className='bubble-container'>
         {data.message && (
-          <div className='bubble' title={friendlyTimestamp}>
+          <Styles.Bubble className='bubble' title={friendlyTimestamp}>
             {data.message}
-          </div>
+          </Styles.Bubble>
         )}
         {data.image.length !== 0 &&
-          data.image.map((item: string) => (
-            <div className='bubble bubble-image' title={friendlyTimestamp}>
-              <img src={item} alt='image-message' />
-            </div>
+          data.image.map((item: string, index: number) => (
+            <Styles.WrapperBubbleImage key={index} title={friendlyTimestamp}>
+              <Styles.ImageBubble src={item} alt='image-message' />
+            </Styles.WrapperBubbleImage>
           ))}
         {data.record && (
-          <div className='bubble bubble-audio'>
-            <audio src={data.record} controls></audio>
-          </div>
+          <Styles.WrapperBubbleAudio>
+            <Styles.AudioBubble src={data.record} controls></Styles.AudioBubble>
+          </Styles.WrapperBubbleAudio>
         )}
-      </div>
-    </div>
+      </Styles.BubbleContainer>
+    </Styles.Message>
   )
 }
