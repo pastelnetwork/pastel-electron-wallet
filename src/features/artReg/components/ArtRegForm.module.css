@@ -1,3 +1,43 @@
+@font-face {
+  font-family: "Avenir";
+  font-display: swap;
+  src: url("../../../common/assets/fonts/AvenirLT-Black.woff") format("woff"), url("../../../common/assets/fonts/AvenirLT-Black.woff2") format("woff2");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  font-display: swap;
+  src: url("../../../common/assets/fonts/AvenirLT-Book.woff") format("woff"), url("../../../common/assets/fonts/AvenirLT-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  font-display: swap;
+  src: url("../../../common/assets/fonts/AvenirLT-Heavy.woff") format("woff"), url("../../../common/assets/fonts/AvenirLT-Heavy.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  font-display: swap;
+  src: url("../../../common/assets/fonts/AvenirLT-Medium.woff") format("woff"), url("../../../common/assets/fonts/AvenirLT-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Avenir";
+  font-display: swap;
+  src: url("../../../common/assets/fonts/AvenirLT-Light.woff") format("woff"), url("../../../common/assets/fonts/AvenirLT-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -55,4 +95,257 @@
 .imageSelected {
   max-width: 100%;
   max-height: 100%;
+}
+
+/* New styles */
+.artRegFormContainer {
+  height: 100%;
+  background-color: #d1d1d1;
+  font-family: "Avenir";
+}
+
+.newstyleclass {
+  background-color: aquamarine;
+}
+
+.artRegFormStep {
+
+}
+
+.artRegFormMainBlock {
+  position: absolute;
+  width: 610px;
+  left: calc(50% - 610px/2 + 110px);
+  top: calc(50% - 726px/2 - 4px);
+  border: 1px solid #E6E8EC;
+  box-shadow: 0px 64px 64px -48px #1F2F461F;
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 40px;
+}
+
+.artRegFormTitle {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 30px;
+  letter-spacing: -0.01em;
+  color: #23262F;
+  margin: 10px 0px 0px 0px;
+}
+
+.artRegFormSubTitle {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 170.3%;
+  display: flex;
+  align-items: center;
+  color: #334D6E;
+  opacity: 0.5;
+}
+
+.artRegFormProgressCircle {
+  position: absolute;
+  top: 40px;
+  left: calc(50% - 64px);
+}
+
+.artRegFormInputTitle {
+  margin-top: 27px;
+}
+
+.artRegFormInputExternalProfile {
+  margin-top: 24px;
+}
+
+.artRegFormInputTitle > div > div,
+.artRegFormInputCategory > div > div,
+.artRegFormInputCollection > div > div,
+.artRegFormInputCopies > div > div,
+.artRegFormInputCompensation > div > div,
+.artRegFormInputCompensationPercent > div > div,
+.artRegFormInputExternalProfile > div > div,
+.artRegFormInputDescription > div > div {
+  font-size: 16px;
+  color: #718096 !important;
+  margin-bottom: 8px;
+}
+
+.artRegFormInputTitle input::placeholder,
+.artRegFormInputCategory input::placeholder,
+.artRegFormInputCollection input::placeholder,
+.artRegFormInputCopies input::placeholder,
+.artRegFormInputCompensation input::placeholder,
+.artRegFormInputCompensationPercent input::placeholder,
+.artRegFormInputExternalProfile input::placeholder,
+.artRegFormInputDescription input::placeholder {
+  font-family: Avenir;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #A0AEC0;
+  margin-left: 16px;
+}
+
+.artRegFormInputCategoryContainer,
+.artRegFormInputCopiesContainer {
+  margin-top: 24px;
+  height: 74px;
+}
+
+.artRegFormInputCategory {
+  position: absolute;
+  width: 298px;
+  height: 74px;
+  left: 40px;
+}
+
+.artRegFormInputCollection {
+  position: absolute;
+  width: 298px;
+  height: 74px;
+  right: 40px;
+}
+
+.artRegFormInputCopies {
+  position: absolute;
+  width: 152px;
+  height: 74px;
+  left: 40px;
+}
+
+.artRegFormInputCompensation {
+  position: absolute;
+  width: 277px;
+  height: 74px;
+  left: calc(25% + 34px);
+}
+
+.artRegFormInputCompensationPercent {
+  position: absolute;
+  width: 152px;
+  height: 74px;
+  right: 40px;
+}
+
+.artRegFormInputDescription {
+  margin-top: 24px;
+  left: 40px;
+}
+
+.artRegFormInputTitle input,
+.artRegFormInputCategory input {
+  background: #FFFFFF;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01), 0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  width: 100%;
+  color: #A0AEC0;
+  padding-left: 16px;
+}
+
+.artRegFormInputCollection input {
+  background: #FFFFFF;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01), 0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  width: 100%;
+  color: #A0AEC0;
+  padding-left: 16px;
+  width: calc(100% - 36px);
+}
+
+.artRegFormInputCopies input {
+  background: #FFFFFF;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01), 0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  width: 100%;
+  color: #A0AEC0;
+  width: 100%;
+  text-align: center;
+}
+
+.artRegFormInputCompensation input {
+  background: #FFFFFF;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01), 0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  width: 100%;
+  color: #A0AEC0;
+  width: 100%;
+  padding-left: 16px;
+}
+
+.artRegFormInputCompensationPercent input {
+  background: #FFFFFF;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01), 0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  width: 100%;
+  color: #A0AEC0;
+  width: 100%;
+  text-align: center;
+}
+
+.artRegFormInputExternalProfile input {
+  background: #FFFFFF;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01), 0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  width: 100%;
+  color: #A0AEC0;
+  padding-left: 16px;
+}
+
+.artRegFormInputDescription textarea {
+  background: #FFFFFF;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01), 0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  width: 100%;
+  color: #A0AEC0;
+  padding-left: 16px;
+  padding-top: 10px;
+}
+
+.artRegFormInputCopiesStepper {
+  position: absolute;
+  margin-top: -29px;
+  margin-left: 9px;
+  pointer-events: none;
+}
+
+.artRegFormInputCollectionPlusButton {
+  position: absolute;
+  right: 0px;
+  top: 39px;
+}
+
+.artRegFormInputDescriptionControls,
+.artRegFormInputDescriptionControlsLabel,
+.artRegFormInputDescriptionControlsInfo {
+  display: none;
+}
+
+.artRegFormSubmit {
+  background-color: #3F9AF7;
+  width: 100%;
+  height: 48px;
+  border-radius: 16px;
+  margin-top: 22px;
+  font-family: Avenir;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 48px;
+  color: #fff;
 }

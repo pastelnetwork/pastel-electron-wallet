@@ -19,11 +19,10 @@ export function ArtRegForm(): JSX.Element {
   const { step } = useAppSelector(state => state.artRegForm)
   return (
     <ScrollPane offsetHeight={0}>
-      <div className={cx(cstyles.xlarge, cstyles.padall, cstyles.center)}>
-        Art Registration
-      </div>
-      <div className={styles.container}>
-        <div className={cstyles.well}>{stepMap[step]}</div>
+      <div className={styles.artRegFormContainer}>
+        <div className={styles.artRegFormMainBlock}>
+          <div className={styles.artRegFormStep}>{stepMap[step]}</div>
+        </div>
       </div>
     </ScrollPane>
   )
