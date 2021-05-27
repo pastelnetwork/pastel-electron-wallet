@@ -7,6 +7,7 @@
 .contentcontainer {
   width: calc(100% - 220px);
   float: right;
+  height: 100%;
 }
 
 .well {

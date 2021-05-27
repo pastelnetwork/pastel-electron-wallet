@@ -43,7 +43,7 @@ export default function Select({
           type='button'
           {...getToggleButtonProps()}
           className={cn(
-            'bg-white text-gray-71 flex items-center justify-between shadow-2 h-40px px-14px rounded relative focus-visible',
+            'bg-white text-gray-71 flex items-center justify-between shadow-2px h-40px px-3.5 rounded relative focus-visible',
             className,
           )}
         >
@@ -58,7 +58,7 @@ export default function Select({
           />
           <ul
             {...getMenuProps()}
-            className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16'
+            className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px'
             onClick={e => e.stopPropagation()}
           >
             {isOpen

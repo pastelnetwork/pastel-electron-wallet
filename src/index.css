@@ -3,9 +3,6 @@
 @import 'tailwindcss/utilities';
 
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer base {
   h1 {
     @apply text-h1 leading-10 font-extrabold;
@@ -22,11 +19,19 @@
   h5 {
     @apply text-h5;
   }
-  h5 {
+  h6 {
     @apply text-h6;
   }
 }
 
+@tailwind components;
+@layer components {
+  .paper {
+    @apply bg-white shadow-44px rounded-lg;
+  }
+}
+
+@tailwind utilities;
 @layer utilities {
   .flex-center {
     @apply flex justify-center items-center;
@@ -55,18 +60,17 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 0.5em;
-  height: 0.5em;
+  width: 3px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px grey;
-  background-color: rgb(1, 1, 1);
+  background: #f3f3f3;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: white;
-  outline: 1px solid slategrey;
+  background: #cdd2db;
+  border-radius: 30px;
 }
 
 h2 {

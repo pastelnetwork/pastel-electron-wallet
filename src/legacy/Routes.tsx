@@ -7,12 +7,10 @@ import { ErrorModal, ErrorModalData } from './components/ErrorModal'
 import cstyles from './components/Common.module.css'
 import routes from './constants/routes.json'
 import App from './containers/App'
-import Dashboard from './components/Dashboard'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
 import {
-  AddressBalance,
   TotalBalance,
   SendPageState,
   ToAddr,
@@ -27,6 +25,7 @@ import Pasteld from './components/Pasteld'
 import AddressBook from './components/Addressbook'
 import AddressbookImpl from './utils/AddressbookImpl'
 import Sidebar from './components/Sidebar'
+import DashboardPage from '../features/dashboard/DashboardPage'
 import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
@@ -516,6 +515,7 @@ class RouteApp extends React.Component<any, any> {
           )}
           <div className={cstyles.contentcontainer}>
             <Switch>
+              <Route path={routes.DASHBOARD} component={DashboardPage} />
               <Route
                 path={routes.SEND}
                 render={() => (
@@ -557,16 +557,6 @@ class RouteApp extends React.Component<any, any> {
                     addAddressBookEntry={this.addAddressBookEntry}
                     removeAddressBookEntry={this.removeAddressBookEntry}
                     {...standardProps}
-                  />
-                )}
-              />
-              <Route
-                path={routes.DASHBOARD}
-                render={() => (
-                  <Dashboard
-                    totalBalance={totalBalance}
-                    info={info}
-                    addressesWithBalance={addressesWithBalance}
                   />
                 )}
               />
