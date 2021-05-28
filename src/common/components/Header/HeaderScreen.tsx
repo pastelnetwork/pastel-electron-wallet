@@ -99,10 +99,6 @@ const Header = (props: PropsType) => {
       src: UserIcon,
       variant: 'background',
     },
-    {
-      src: UserIcon,
-      variant: 'background',
-    },
   ]
 
   const sidebar_items = [
