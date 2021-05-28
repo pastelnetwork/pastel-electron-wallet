@@ -84,6 +84,15 @@ module.exports = {
         h5: '1rem',
         h6: '0.875rem',
       },
+      colors: {
+        blue: {
+          450: '#3F9AF7',
+        },
+        gray: {
+          110: '#F2F2F2',
+          350: 'B0B7C3',
+        },
+      },
     },
     screens: {
       sm: '900px',
@@ -92,36 +101,51 @@ module.exports = {
       xl: '1440px',
       '2xl': '1700px',
     },
+    margin: {
+      2: '2px',
+      8: '8px',
+      13: '13px',
+      15: '15px',
+      20: '20px',
+      26: '26px',
+      28: '28px',
+      30: '30px',
+      35: '35px',
+      37: '37px',
+      40: '40px',
+      50: '50px',
+      60: '60px',
+      68: '68px',
+    },
+    height: {
+      20: '20px',
+      30: '30px',
+      36: '36px',
+      66: '66px',
+      41: '41px',
+    },
+    padding: {
+      46: '46px',
+    },
+    width: {
+      20: '20px',
+      30: '30px',
+      36: '36px',
+      300: '300px',
+      352: '352px',
+    },
+    top: {
+      13: '13px',
+    },
+    left: {
+      20: '20px',
+    },
+    fontSize: {
+      16: '16px',
+      15: '15px',
+      14: '14px',
+    },
   },
   variants: {},
   plugins: [],
 }
-
-// colors: {
-//   text: {
-//     500: '#A0AEC0',
-//     600: '#718096',
-//     700: '#4A5568',
-//     800: '#2D3748',
-//     900: '#1A202C',
-//     link: '#3F9AF7',
-//   },
-//   success: {
-//     DEFAULT: '#00D097',
-//     pressed: '#00B282',
-//     hover: '#00C28D',
-//     bg: '#00C28D',
-//   },
-//   warning: {
-//     DEFAULT: '#FA9501',
-//     pressed: '#E88A00',
-//     hover: '#FFA21B',
-//     bg: '#FEF0DC',
-//   },
-//   error: {
-//     DEFAULT: '#DA8AB8',
-//     pressed: '#C85195',
-//     hover: '#CE64A1',
-//     bg: '#FAEFF5',
-//   },
-// },

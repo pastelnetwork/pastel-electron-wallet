@@ -10,6 +10,15 @@
   text-align: center;
 }
 
+.displayFlexCenter {
+  display: flex;
+  align-items: center;
+}
+
+.positionRelative {
+  position: relative;
+}
+
 .primaryButton {
   background-color: #c3921f;
   color: #000;
@@ -35,4 +44,16 @@
 
 .primaryButton:hover {
   cursor: pointer;
+}
+
+.mr26 {
+  margin-right: 26px;
+}
+
+.ml8 {
+  margin-left: 8px;
+}
+
+.mr35 {
+  margin-right: 35px;
 }
