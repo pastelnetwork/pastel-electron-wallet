@@ -67,21 +67,18 @@ export default function Select({
                     selectedItem === item || highlightedIndex === index
 
                   return (
-                    <li key={item.value}>
-                      <a
-                        type='button'
-                        {...getItemProps({
-                          key: item.value,
-                          index,
-                          item,
-                        })}
-                        className={cn(
-                          'w-full h-40px flex items-center px-4 text-gray-71',
-                          highlight && 'bg-gray-f7',
-                        )}
-                      >
-                        {item.value}
-                      </a>
+                    <li
+                      {...getItemProps({
+                        key: item.value,
+                        index,
+                        item,
+                      })}
+                      className={cn(
+                        'w-full h-40px flex items-center px-4 text-gray-71',
+                        highlight && 'bg-gray-f7',
+                      )}
+                    >
+                      {item.value}
                     </li>
                   )
                 })
