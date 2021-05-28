@@ -12,7 +12,7 @@ import MessageIcon from '../../assets/icons/ico-msg.svg'
 import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 
-import Icon from '../Icon/Icon'
+import Icon from '../Icon'
 
 interface IMenuType {
   name: string
@@ -44,7 +44,7 @@ const SidebarMenuItem = ({
       className={[
         styles.headermenuitem,
         activeColorClass,
-        'mr-8 md:mr-13 lg:mr-28',
+        'mr-8px md:mr-13px lg:mr-28px',
         style,
       ].join(' ')}
     >
@@ -61,7 +61,7 @@ const SearhBar = () => {
     <div className='flex relative'>
       <img width='16' className={styles.searchIconPosition} src={searchIcon} />
       <input
-        className='h-41 bg-gray-110 rounded-full pl-46 md:w-300 lg:w-300 xl:w-352'
+        className='h-41px bg-gray-110 rounded-full pl-46px md:w-300px lg:w-300px xl:w-352px'
         placeholder={`${placeholder}`}
       />
     </div>
@@ -106,25 +106,25 @@ const Header = (props: PropsType) => {
       name: 'Dashboard',
       routeName: routes.DASHBOARD,
       currentRoute: location.pathname,
-      style: 'xl:mr-35',
+      style: 'xl:mr-35px',
     },
     {
       name: 'NFTs',
       routeName: routes.SEND,
       currentRoute: location.pathname,
-      style: 'xl:mr-37',
+      style: 'xl:mr-37px',
     },
     {
       name: 'Members',
       routeName: routes.RECEIVE,
       currentRoute: location.pathname,
-      style: 'xl:mr-28',
+      style: 'xl:mr-28px',
     },
     {
       name: 'Wallet',
       routeName: routes.TRANSACTIONS,
       currentRoute: location.pathname,
-      style: 'xl:mr-35',
+      style: 'xl:mr-35px',
     },
     {
       name: 'Portfolio',
@@ -133,9 +133,9 @@ const Header = (props: PropsType) => {
     },
   ]
   return (
-    <div className='flex items-center h-66 bg-white justify-between md:text-14 lg:text-15 xl:text-16 font-display'>
+    <div className='flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display'>
       <div className='flex items-center'>
-        <div className='ml-20 md:ml-30 lg:ml-50 xl:ml-60 mr-13 md:mr-20 lg:mr-30 xl:mr-40 w-30 md:w-36 h-30 md:h-36'>
+        <div className='ml-20px md:ml-30px lg:ml-50px xl:ml-60px mr-13px md:mr-20px lg:mr-30px xl:mr-40px w-30px md:w-36px h-30px md:h-36px'>
           <img src={Logo} alt='logo' />
         </div>
         <div className='flex'>
@@ -148,24 +148,24 @@ const Header = (props: PropsType) => {
               style={item.style}
             />
           ))}
-          <div className='md:ml-13 lg:ml-40 xl:ml-50'>
+          <div className='md:ml-13px lg:ml-40px xl:ml-50px'>
             <Link to='#' className='flex items-center'>
               <img
                 src={addBtn}
-                className='w-20 h-20 mr-2 md:mr-8'
+                className='w-20px h-20px mr-2px md:mr-8px'
                 alt='add button'
               ></img>
               <span className='text-blue-450 whitespace-nowrap'>new NFT</span>
             </Link>
           </div>
         </div>
-        <div className='ml-20 md:ml-40 lg:ml-50 xl:ml-68 md:mr-8 lg:mr-8 xl:mr-8'>
+        <div className='ml-20px md:ml-40px lg:ml-50px xl:ml-68px md:mr-8px lg:mr-8px xl:mr-8px'>
           <SearhBar />
         </div>
       </div>
-      <div className='flex items-center mr-33'>
+      <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
-          <div className='mr-20 md:mr-26' key={index}>
+          <div className='mr-20px md:mr-26px' key={index}>
             <Icon src={icon.src} variant={icon.variant} />
           </div>
         ))}

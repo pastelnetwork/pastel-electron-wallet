@@ -1,22 +1,54 @@
 module.exports = {
-  future: {
-    // removeDeprecatedGapUtilities: true,
-    // purgeLayersByDefault: true,
-    // defaultLineHeights: true,
-    // standardFontWeights: true
-  },
-  purge: [],
+  purge: [
+    './src/**/*.ts',
+    './src/**/*.tsx',
+    './src/**/*.js',
+    './src/**/*.jsx',
+    './src/**/*.html',
+  ],
   theme: {
+    screens: {
+      sm: '900px',
+      md: '1100px',
+      lg: '1300px',
+      xl: '1440px',
+      '2xl': '1700px',
+    },
+    fontFamily: {
+      body: 'Roboto, Arial, Helvetica, Helvetica Neue, serif',
+    },
     extend: {
-      color: {
-        text: {
-          gray500: '#A0AEC0',
-          gray600: '#718096',
-          gray700: '#4A5568',
-          gray800: '#2D3748',
-          gray900: '#1A202C',
-          link: '#3F9AF7',
-        },
+      spacing: {
+        '2px': '2px',
+        '4px': '4px',
+        '6px': '6px',
+        '8px': '8px',
+        '13px': '13px',
+        '14px': '14px',
+        '15px': '15px',
+        '16px': '16px',
+        '18px': '18px',
+        '20px': '20px',
+        '26px': '26px',
+        '28px': '28px',
+        '30px': '30px',
+        '35px': '35px',
+        '36px': '36px',
+        '37px': '37px',
+        '40px': '40px',
+        '41px': '41px',
+        '46px': '46px',
+        '50px': '50px',
+        '60px': '60px',
+        '66px': '66px',
+        '68px': '68px',
+        '111px': '111px',
+        '112px': '112px',
+        '300px': '300px',
+        '352px': '352px',
+        30: '7.5rem',
+      },
+      colors: {
         success: {
           DEFAULT: '#00D097',
           pressed: '#00B282',
@@ -35,17 +67,30 @@ module.exports = {
           hover: '#CE64A1',
           background: '#FAEFF5',
         },
+        blue: {
+          450: '#3F9AF7',
+        },
+        gray: {
+          a0: '#A0AEC0',
+          '4a': '#4A5568',
+          '1a': '#1A202C',
+          110: '#F2F2F2',
+          f7: '#F7F8F9',
+          b0: '#B0B7C3',
+          e6: '#E6E8EC',
+          71: '#718096',
+          35: '#353941',
+          '2d': '#2D3748',
+          14: '#141416',
+        },
         button: {
-          DEFAULT: '#3F9AF7',
           pressed: '#0E80F5',
           hover: '#278DF6',
-          background: '#F2F2F2',
           text: '#8E98A3',
         },
         navigation: {
           DEFAULT: '#A6B0C2',
           selected: '#334D6E',
-          background: '#E6E8EC',
         },
         tab: {
           active: '#353945',
@@ -54,10 +99,6 @@ module.exports = {
         line: {
           DEFAULT: '#F2F4F7',
         },
-        icon: {
-          DEFAULT: '#8E98A3',
-          active: '#334D6E',
-        },
         background: {
           onboarding: '#FCFCFD',
           main: '#F8F9FA',
@@ -65,15 +106,15 @@ module.exports = {
         },
       },
       boxShadow: {
-        xSmall:
+        xs:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        small:
+        sm:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
-        medium:
+        md:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 6px 8px rgba(10, 22, 70, 0.1)',
-        large:
+        lg:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
-        xLarge:
+        xl:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
       },
       fontSize: {
@@ -83,67 +124,11 @@ module.exports = {
         h4: '1.125',
         h5: '1rem',
         h6: '0.875rem',
+        15: '0.938rem',
       },
-      colors: {
-        blue: {
-          450: '#3F9AF7',
-        },
-        gray: {
-          110: '#F2F2F2',
-          350: 'B0B7C3',
-        },
+      borderRadius: {
+        '4px': '4px',
       },
-    },
-    screens: {
-      sm: '900px',
-      md: '1100px',
-      lg: '1300px',
-      xl: '1440px',
-      '2xl': '1700px',
-    },
-    margin: {
-      2: '2px',
-      8: '8px',
-      13: '13px',
-      15: '15px',
-      20: '20px',
-      26: '26px',
-      28: '28px',
-      30: '30px',
-      35: '35px',
-      37: '37px',
-      40: '40px',
-      50: '50px',
-      60: '60px',
-      68: '68px',
-    },
-    height: {
-      20: '20px',
-      30: '30px',
-      36: '36px',
-      66: '66px',
-      41: '41px',
-    },
-    padding: {
-      46: '46px',
-    },
-    width: {
-      20: '20px',
-      30: '30px',
-      36: '36px',
-      300: '300px',
-      352: '352px',
-    },
-    top: {
-      13: '13px',
-    },
-    left: {
-      20: '20px',
-    },
-    fontSize: {
-      16: '16px',
-      15: '15px',
-      14: '14px',
     },
   },
   variants: {},
