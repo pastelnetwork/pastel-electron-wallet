@@ -6,11 +6,12 @@
 }
 
 .wrapper {
-  max-width: 1390px;
+  max-width: 87rem;
+  height: fit-content;
 }
 
 .card {
-  width: 304px;
+  width: 19rem;
 }
 
 .row {
