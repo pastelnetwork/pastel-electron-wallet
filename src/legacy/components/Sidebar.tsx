@@ -317,7 +317,7 @@ class Sidebar extends PureComponent<any, any> {
       exportPrivKeysModalIsOpen: false,
       exportedPrivKeys: null,
       privKeyInputValue: null,
-      showProfile: true,
+      showProfile: false,
     }
     this.setupMenuHandlers()
   } // Handle menu items
