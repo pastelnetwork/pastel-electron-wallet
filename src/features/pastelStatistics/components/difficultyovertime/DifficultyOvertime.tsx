@@ -9,7 +9,7 @@ import {
   transformDifficultyInfo,
 } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
-import styles from './DifficultyOvertime.module.css'
+import styles from '../../Common.module.css'
 
 const redrawCycle = 60000
 

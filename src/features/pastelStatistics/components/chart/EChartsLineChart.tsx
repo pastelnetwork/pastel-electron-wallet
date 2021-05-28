@@ -5,7 +5,7 @@ import * as htmlToImage from 'html-to-image'
 import React, { useEffect, useRef, useState } from 'react'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
-import { TPeriod } from '../../utils/PastelStatisticsLib'
+import { TPeriod, makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 
 import styles from './LineChart.module.css'
 
@@ -86,13 +86,8 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
     if (dataY?.length) {
       const min = Math.min(...dataY)
       const max = Math.max(...dataY)
-      if (title === 'PSL Prices') {
-        setMinY(Math.round(min) - 1)
-        setMaxY(Math.floor(max) + 1)
-      } else {
-        setMinY(Math.round(min) - 1000)
-        setMaxY(Math.floor(max) + 1000)
-      }
+      setMinY(Math.round(min) - 1000)
+      setMaxY(Math.floor(max) + 1000)
       if (dataX) {
         const data: Data = []
         dataY.map((o, index) => {
@@ -162,29 +157,14 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
       easing: 'cubicOut',
     },
   }
-  const makeDownloadFileName = (): string => {
-    let imageTitle = ''
-    const date = new Date()
 
-    if (title === 'Network Difficulty') {
-      imageTitle = 'Network_Difficulty'
-    } else if (title === 'PSL Prices') {
-      imageTitle = 'Prices'
-    }
-
-    const dateTime = `${
-      date.getMonth() + 1
-    }_${date.getDate()}_${date.getFullYear()}__${date.getHours()}_${date.getMinutes()}`
-
-    return `PSL_${imageTitle}_${dateTime}`
-  }
   const downloadPNG = () => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef.ele)
         .then(function (blob: Blob | null) {
           if (blob) {
-            saveAs(blob, makeDownloadFileName() + '.png')
+            saveAs(blob, makeDownloadFileName(title ?? '') + '.png')
           }
         })
         .catch(function (error) {
@@ -312,7 +292,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           </button>
           <CSVLink
             data={csvData}
-            filename={makeDownloadFileName() + '.csv'}
+            filename={makeDownloadFileName(title ?? '') + '.csv'}
             headers={csvHeaders}
             separator={';'}
             ref={downloadRef}

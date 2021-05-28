@@ -6,7 +6,7 @@ import { EChartsMultiLineChart } from '../chart/EChartsMultiLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
-import styles from './PriceOvertime.module.css'
+import styles from '../../Common.module.css'
 
 type TLineChartData = {
   dataX: string[]

@@ -6,7 +6,7 @@ import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { saveAs } from 'file-saver'
 import styles from './LineChart.module.css'
-import { TPeriod } from '../../utils/PastelStatisticsLib'
+import { makeDownloadFileName, TPeriod } from '../../utils/PastelStatisticsLib'
 
 type TThemeColor = {
   name: string
@@ -31,6 +31,8 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
+  const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const {
     dataX,
     dataY1,
@@ -180,19 +182,95 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
       easing: 'cubicOut',
     },
   }
+
   const downloadPNG = () => {
     if (eChartRef?.ele) {
       htmlToImage
-        .toBlob(eChartRef?.ele)
+        .toBlob(eChartRef.ele)
         .then(function (blob: Blob | null) {
           if (blob) {
-            saveAs(blob, 'linechart-image.png')
+            saveAs(blob, makeDownloadFileName(title ?? '') + '.png')
           }
         })
         .catch(function (error) {
           throw new Error('PNG download error: ' + error)
         })
     }
+  }
+
+  const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
+    setCurrentTheme(theme)
+    setSelectedThemeButton(index)
+    handleBgColorChange(theme.backgroundColor)
+    const option = {
+      backgroundColor: theme.backgroundColor,
+      textStyle: {
+        color: theme.color,
+      },
+      yAxis: [
+        {
+          type: 'value',
+          position: 'left',
+          name: 'USD:',
+          splitLine: {
+            lineStyle: {
+              color: theme.splitLineColor,
+            },
+          },
+          axisLine: {
+            show: true,
+          },
+        },
+        {
+          type: 'value',
+          name: 'BTC price:',
+          position: 'right',
+          splitLine: {
+            lineStyle: {
+              color: theme.splitLineColor,
+            },
+          },
+          axisLine: {
+            show: true,
+          },
+        },
+      ],
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY1,
+          smooth: theme.smooth,
+          lineStyle: {
+            width: 3,
+            shadowColor: 'rgba(0,0,0,0.5)',
+            shadowBlur: 10,
+            shadowOffsetY: 8,
+          },
+        },
+        {
+          type: 'bar',
+          yAxisIndex: 1,
+          showSymbol: false,
+          data: dataY2,
+        },
+      ],
+    }
+    eChartInstance?.setOption(option)
+  }
+
+  const getActivePriodButtonStyle = (index: number): string => {
+    if (selectedPeriodButton === index) {
+      return styles.activeButton
+    }
+    return ''
+  }
+
+  const getActiveThemeButtonStyle = (index: number): string => {
+    if (selectedThemeButton === index) {
+      return styles.activeThemeButton
+    }
+    return ''
   }
 
   return (
@@ -207,10 +285,12 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
         <div className={styles.periodSelect}>
           <span style={{ color: currentTheme?.color }}>period: </span>
           {periods &&
-            periods.map(period => (
+            periods.map((period, index) => (
               <button
-                className={styles.filterButton}
+                className={`${getActivePriodButtonStyle(index)} 
+                  ${styles.filterButton}`}
                 onClick={() => {
+                  setSelectedPeriodButton(index)
                   if (handlePeriodFilterChange) {
                     handlePeriodFilterChange(period)
                   }
@@ -236,68 +316,12 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
       </div>
       <div className={styles.lineChartFooter}>
         <div className={styles.lineChartThemeSelect}>
-          {themes.map(theme => (
+          {themes.map((theme, index) => (
             <button
-              className={styles.themeSelectButton}
-              onClick={() => {
-                setCurrentTheme(theme)
-                handleBgColorChange(theme.backgroundColor)
-                const option = {
-                  backgroundColor: theme.backgroundColor,
-                  textStyle: {
-                    color: theme.color,
-                  },
-                  yAxis: [
-                    {
-                      type: 'value',
-                      position: 'left',
-                      name: 'USD:',
-                      splitLine: {
-                        lineStyle: {
-                          color: theme.splitLineColor,
-                        },
-                      },
-                      axisLine: {
-                        show: true,
-                      },
-                    },
-                    {
-                      type: 'value',
-                      name: 'BTC price:',
-                      position: 'right',
-                      splitLine: {
-                        lineStyle: {
-                          color: theme.splitLineColor,
-                        },
-                      },
-                      axisLine: {
-                        show: true,
-                      },
-                    },
-                  ],
-                  series: [
-                    {
-                      type: 'line',
-                      showSymbol: false,
-                      data: dataY1,
-                      smooth: theme.smooth,
-                      lineStyle: {
-                        width: 3,
-                        shadowColor: 'rgba(0,0,0,0.5)',
-                        shadowBlur: 10,
-                        shadowOffsetY: 8,
-                      },
-                    },
-                    {
-                      type: 'bar',
-                      yAxisIndex: 1,
-                      showSymbol: false,
-                      data: dataY2,
-                    },
-                  ],
-                }
-                eChartInstance?.setOption(option)
-              }}
+              className={`${
+                styles.themeSelectButton
+              } ${getActiveThemeButtonStyle(index)}`}
+              onClick={() => handleThemeButtonClick(theme, index)}
               style={{ backgroundColor: `${theme.backgroundColor}` }}
               type='button'
               key={`button-filter-${theme.name}`}
@@ -314,6 +338,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
           </button>
           <CSVLink
             data={csvData}
+            filename={makeDownloadFileName(title ?? '') + '.csv'}
             headers={csvHeaders}
             separator={';'}
             ref={downloadRef}

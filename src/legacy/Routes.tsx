@@ -644,13 +644,13 @@ class RouteApp extends React.Component<any, any> {
               />
 
               <Route
-                path={routes.STATISTICS}
-                render={() => <PastelStatistics />}
+                path={routes.PRICEOVERTIME}
+                render={() => <PriceOvertime />}
               />
 
               <Route
-                path={routes.PRICEOVERTIME}
-                render={() => <PriceOvertime />}
+                path={routes.STATISTICS}
+                render={() => <PastelStatistics />}
               />
 
               <Route

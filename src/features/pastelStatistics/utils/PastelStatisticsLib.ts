@@ -78,3 +78,20 @@ export function transformPriceInfo(
   }
   return { dataX, dataY1, dataY2 }
 }
+
+export const makeDownloadFileName = (title: string): string => {
+  let imageTitle = ''
+  const date = new Date()
+
+  if (title === 'Network Difficulty') {
+    imageTitle = 'Network_Difficulty'
+  } else if (title === 'PSL Prices') {
+    imageTitle = 'Prices'
+  }
+
+  const dateTime = `${
+    date.getMonth() + 1
+  }_${date.getDate()}_${date.getFullYear()}__${date.getHours()}_${date.getMinutes()}`
+
+  return `PSL_${imageTitle}_${dateTime}`
+}
