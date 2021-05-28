@@ -6,6 +6,7 @@ module.exports = {
     './src/**/*.jsx',
     './src/**/*.html',
   ],
+  prefix: 'psl-',
   theme: {
     screens: {
       sm: '900px',
