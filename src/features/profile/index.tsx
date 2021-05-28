@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import styles from './Profile.module.css'
 import classnames from 'classnames'
 import Rate from 'rc-rate'
-import truncateMiddle from 'truncate-middle'
 import 'rc-rate/assets/index.css'
 import '../../legacy/assets/css/rc-rate.custom.css'
 
@@ -11,7 +10,12 @@ export default class Profile extends Component<any, any> {
   render() {
     // const {  } = this.props
     return (
-      <div className={classnames('px-8 py-10 w-full flex', styles.profile)}>
+      <div
+        className={classnames(
+          'px-8 py-10 w-full flex h-screen overflow-y-auto',
+          styles.profile,
+        )}
+      >
         <div
           className={classnames(
             'm-auto w-full bg-white px-14 py-8 flex',
@@ -26,7 +30,7 @@ export default class Profile extends Component<any, any> {
           </div>
           <div className='flex flex-col flex-grow pl-4'>
             <Tabs />
-            <div className='flex pt-4 pl-2 justify-between'>
+            <div className='flex pt-4 pl-2 justify-between flex-col lg:flex-col xl:flex-row'>
               <General />
               <Relations />
             </div>
@@ -34,6 +38,34 @@ export default class Profile extends Component<any, any> {
         </div>
       </div>
     )
+  }
+}
+
+function truncateMiddle(
+  str: String,
+  frontLen: any,
+  backLen: any,
+  truncateStr: String,
+) {
+  if (str === null) {
+    return ''
+  }
+  var strLen = str.length
+  // Setting default values
+  frontLen = ~~frontLen // will cast to integer
+  backLen = ~~backLen
+  truncateStr = truncateStr || '&hellip;'
+  if (
+    (frontLen === 0 && backLen === 0) ||
+    frontLen >= strLen ||
+    backLen >= strLen ||
+    frontLen + backLen >= strLen
+  ) {
+    return str
+  } else if (backLen === 0) {
+    return str.slice(0, frontLen) + truncateStr
+  } else {
+    return str.slice(0, frontLen) + truncateStr + str.slice(strLen - backLen)
   }
 }
 
@@ -135,11 +167,11 @@ class General extends Component<any, any> {
       <div
         className={classnames(
           styles.General,
-          'flex-grow divide-y divide-grey-400 mr-8',
+          'flex-grow divide-y divide-grey-400 pr-4 w-full xl:w-1/2',
         )}
       >
         {/* First Row Group of General */}
-        <div className='py-8 pt-4'>
+        <div className='w-full py-8 pt-4'>
           <div className={classnames(styles.row)}>
             <div
               className={classnames(styles.row_title, 'flex justify-between')}
@@ -148,7 +180,8 @@ class General extends Component<any, any> {
               <i className='mr-2 mt-1 fas fa-map-marker-alt text-xs'></i>
             </div>
             <div className={classnames(styles.row_content)}>New York, US</div>
-            <div className='w-40'>#121</div>
+            <div className='pl-2'>#121</div>
+            <div className='flex-grow' />
           </div>
           <div className={classnames(styles.row)}>
             <div className={classnames(styles.row_title)}>Language</div>
@@ -174,7 +207,7 @@ class General extends Component<any, any> {
           </div>
         </div>
         {/* Second Row Group of General */}
-        <div className={classnames('py-8')}>
+        <div className={classnames('w-full py-8')}>
           <div className={styles.row}>
             <div className={styles.row_title}>Highest fee recieved</div>
             <div className={styles.row_content}>136,200,000k PSL</div>
@@ -193,7 +226,7 @@ class General extends Component<any, any> {
           </div>
         </div>
         {/* Third Row Group of General */}
-        <div className={classnames('py-8')}>
+        <div className={classnames('w-full py-8')}>
           <div className={styles.row}>
             <div className={styles.row_title}>Bio</div>
           </div>
@@ -217,7 +250,7 @@ class Relations extends Component<any, any> {
   render() {
     const {} = this.props
     return (
-      <div className='flex flex-col'>
+      <div className='w-full xl:w-1/2 flex flex-col flex-grow px-4'>
         <div className='flex'>
           <div className={classnames(styles.tab, styles.active)}>
             Followers (235)
@@ -235,7 +268,7 @@ class Followers extends Component<any, any> {
   render() {
     const { followers } = this.props
     return (
-      <div className='flex flex-col pt-2'>
+      <div className='flex flex-col pt-2 pr-4'>
         {followers.map((follower: any, index: any) => (
           <Follower follower={follower} key={index} />
         ))}
@@ -248,7 +281,7 @@ class Follower extends Component<any, any> {
   render() {
     const { follower } = this.props
     return (
-      <div className='flex items-center py-2 text-md'>
+      <div className='flex items-center py-2 text-md pr-8'>
         <div
           className={classnames(
             'rounded-full bg-pink-300 w-10 h-10',
