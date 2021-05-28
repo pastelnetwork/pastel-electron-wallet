@@ -1,81 +1,35 @@
+import React, { useEffect, useRef, useState } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
 import * as htmlToImage from 'html-to-image'
-import React, { useEffect, useRef, useState } from 'react'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
-import { TPeriod, makeDownloadFileName } from '../../utils/PastelStatisticsLib'
+import { csvHeaders, themes } from '../../common/constants'
+import { LineChartProps, TThemeColor } from '../../common/types'
+import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 
 import styles from './LineChart.module.css'
 
-type TThemeColor = {
-  name: string
-  backgroundColor: string
-  lineColor?: string
-  splitLineColor: string
-  color: string
-  stack?: string
-  smooth?: boolean
-}
-
-type LineChartProps = {
-  dataX?: string[]
-  dataY?: number[]
-  title?: string
-  periodIndex: number
-  handleBgColorChange: (color: string) => void
-  handlePeriodFilterChange?: (period: TPeriod) => void
-}
-
 export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
-  const [csvData, setCsvData] = useState<string | Data>('')
-  const csvHeaders = [
-    { label: 'Value', key: 'value' },
-    { label: 'Created time', key: 'time' },
-  ]
+  const {
+    dataX,
+    dataY,
+    title,
+    info,
+    periods,
+    handlePeriodFilterChange,
+    handleBgColorChange,
+  } = props
   const downloadRef = useRef(null)
+  const [csvData, setCsvData] = useState<string | Data>('')
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
-  const {
-    dataX,
-    dataY,
-    title,
-    periodIndex,
-    handlePeriodFilterChange,
-    handleBgColorChange,
-  } = props
   const [minY, setMinY] = useState(0)
   const [maxY, setMaxY] = useState(0)
-  const periods: TPeriod[][] = [
-    ['2h', '2d', '4d', 'all'],
-    ['30d', '60d', '180d', '1y', 'all'],
-  ]
-  const themes = [
-    {
-      name: 'theme1',
-      backgroundColor: '#100c2a',
-      splitLineColor: '#202021',
-      color: '#abaac1',
-    },
-    {
-      name: 'theme2',
-      backgroundColor: '#FFF7C6',
-      stack: 'confidence-band',
-      splitLineColor: '#C7C4CC',
-      smooth: true,
-      color: '#100c2a',
-    },
-    {
-      name: 'theme3',
-      backgroundColor: '#FFF',
-      splitLineColor: '#EEE',
-      color: '#202021',
-    },
-  ]
 
   useEffect(() => {
     const chartInstance = eChartRef?.getEchartsInstance()
@@ -164,7 +118,10 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
         .toBlob(eChartRef.ele)
         .then(function (blob: Blob | null) {
           if (blob) {
-            saveAs(blob, makeDownloadFileName(title ?? '') + '.png')
+            saveAs(
+              blob,
+              makeDownloadFileName(info.currencyName, title ?? '') + '.png',
+            )
           }
         })
         .catch(function (error) {
@@ -235,24 +192,23 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
         </div>
         <div className={styles.periodSelect}>
           <span style={{ color: currentTheme?.color }}>period: </span>
-          {periods[periodIndex] &&
-            periods[periodIndex].map((period, index) => (
-              <button
-                className={`${getActivePriodButtonStyle(index)} ${
-                  styles.filterButton
-                }`}
-                onClick={() => {
-                  setSelectedPeriodButton(index)
-                  if (handlePeriodFilterChange) {
-                    handlePeriodFilterChange(period)
-                  }
-                }}
-                type='button'
-                key={`button-filter-${period}`}
-              >
-                {period}
-              </button>
-            ))}
+          {periods.map((period, index) => (
+            <button
+              className={`${getActivePriodButtonStyle(index)} ${
+                styles.filterButton
+              }`}
+              onClick={() => {
+                setSelectedPeriodButton(index)
+                if (handlePeriodFilterChange) {
+                  handlePeriodFilterChange(period)
+                }
+              }}
+              type='button'
+              key={`button-filter-${period}`}
+            >
+              {period}
+            </button>
+          ))}
         </div>
       </div>
       <div className={styles.lineChartWrap}>
@@ -292,7 +248,9 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           </button>
           <CSVLink
             data={csvData}
-            filename={makeDownloadFileName(title ?? '') + '.csv'}
+            filename={
+              makeDownloadFileName(info.currencyName, title ?? '') + '.csv'
+            }
             headers={csvHeaders}
             separator={';'}
             ref={downloadRef}

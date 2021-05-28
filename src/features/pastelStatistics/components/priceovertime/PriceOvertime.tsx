@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react'
 
 import PastelDB from '../../../pastelDB/database'
@@ -7,6 +6,7 @@ import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
 import styles from '../../Common.module.css'
+import { periods } from '../../common/constants'
 
 type TLineChartData = {
   dataX: string[]
@@ -14,9 +14,16 @@ type TLineChartData = {
   dataY2: number[]
 }
 
+type TPriceOvertimeProps = {
+  info: {
+    [key: string]: string | number
+  }
+}
+
 const redrawCycle = 60000
 
-const PriceOvertime = () => {
+const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
+  const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState('#100c2a')
   const [period, setPeriod] = useState<TPeriod>('2d')
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
@@ -69,7 +76,9 @@ const PriceOvertime = () => {
               dataX={transformLineChartData?.dataX}
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}
-              title='PSL Prices'
+              title={`${info.currencyName} Prices`}
+              info={info}
+              periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
             />

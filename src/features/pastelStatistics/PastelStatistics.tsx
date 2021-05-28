@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import cstyles from '../../legacy/components/Common.module.css'
-import { pastelChartFields } from './constants/common'
+import { pastelChartFields } from './common/constants'
 import { Card } from './components/card/Card'
 import styles from './PastelStatistics.module.css'
 

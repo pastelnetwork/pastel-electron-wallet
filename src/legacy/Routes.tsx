@@ -640,12 +640,12 @@ class RouteApp extends React.Component<any, any> {
 
               <Route
                 path={routes.DIFFICULTYOVERTIME}
-                render={() => <DifficultyOvertime />}
+                render={() => <DifficultyOvertime info={info} />}
               />
 
               <Route
                 path={routes.PRICEOVERTIME}
-                render={() => <PriceOvertime />}
+                render={() => <PriceOvertime info={info} />}
               />
 
               <Route

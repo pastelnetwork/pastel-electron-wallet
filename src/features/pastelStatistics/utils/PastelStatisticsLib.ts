@@ -79,7 +79,10 @@ export function transformPriceInfo(
   return { dataX, dataY1, dataY2 }
 }
 
-export const makeDownloadFileName = (title: string): string => {
+export const makeDownloadFileName = (
+  currencyName: string | number,
+  title: string,
+): string => {
   let imageTitle = ''
   const date = new Date()
 
@@ -93,5 +96,5 @@ export const makeDownloadFileName = (title: string): string => {
     date.getMonth() + 1
   }_${date.getDate()}_${date.getFullYear()}__${date.getHours()}_${date.getMinutes()}`
 
-  return `PSL_${imageTitle}_${dateTime}`
+  return `${currencyName}_${imageTitle}_${dateTime}`
 }
