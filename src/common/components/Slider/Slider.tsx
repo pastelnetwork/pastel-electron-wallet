@@ -6,7 +6,7 @@ const SliderShape = ({
   style,
 }: {
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }) => {
   return (
     <svg
@@ -28,21 +28,21 @@ export type SliderProps = {
   min: number
   max: number
   style?: CSSProperties
-  formatValue?(value: number): number | string
-  formatTooltipValue?(value: number): number | string
+  formatValue?: (value: number) => number | string
+  formatTooltipValue?: (value: number) => number | string
 } & (
   | {
       value: number
-      onChange(value: number): void
+      onChange: (value: number) => void
     }
   | {
       values: [number, number]
-      onChange(values: [number, number]): void
+      onChange: (values: [number, number]) => void
     }
 )
 
 const defaultStyle = {
-  width: '311px',
+  width: '19rem',
 }
 
 const defaultFormat = (value: number) => value
