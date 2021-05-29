@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react'
-
 import PastelDB from '../../../pastelDB/database'
-import { EChartsMultiLineChart } from '../chart/EChartsMultiLineChart'
+import { EChartsLineChart } from '../chart/EChartsLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
-import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
-import styles from '../../Common.module.css'
 import { periods } from '../../common/constants'
+import { TLineChartData } from '../../../pastelDB/type'
+import { TPeriod, transformHashrateInfo } from '../../utils/PastelStatisticsLib'
+import styles from '../../Common.module.css'
 
-type TLineChartData = {
-  dataX: string[]
-  dataY1: number[]
-  dataY2: number[]
-}
-
-type TPriceOvertimeProps = {
+type THashrateOvertimeProps = {
   info: {
     [key: string]: string | number
   }
@@ -22,10 +16,10 @@ type TPriceOvertimeProps = {
 
 const redrawCycle = 60000
 
-const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
+const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState('#0d0d0d')
-  const [period, setPeriod] = useState<TPeriod>('2d')
+  const [period, setPeriod] = useState<TPeriod>('2h')
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,
@@ -35,9 +29,9 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.pslprice)
+      const result = getDatasFromDB(pasteldb, pastelTableNames.mininginfo)
       if (result.length) {
-        const transforms = transformPriceInfo(result[0].values, period)
+        const transforms = transformHashrateInfo(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -72,14 +66,13 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
           style={{ backgroundColor: currentBgColor }}
         >
           {transformLineChartData && (
-            <EChartsMultiLineChart
-              chartIndex='price'
+            <EChartsLineChart
+              chartIndex='hashrate'
               dataX={transformLineChartData?.dataX}
-              dataY1={transformLineChartData?.dataY1}
-              dataY2={transformLineChartData?.dataY2}
-              title={`${info.currencyName} Prices`}
+              dataY={transformLineChartData?.dataY}
+              title='Hashrate(MH/s)'
               info={info}
-              offset={0.0001}
+              offset={0.5}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
@@ -91,4 +84,4 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   )
 }
 
-export default PriceOvertime
+export default HashrateOvertime

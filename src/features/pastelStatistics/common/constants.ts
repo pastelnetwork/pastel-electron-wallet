@@ -1,5 +1,6 @@
 import Difficulty from '../assets/images/difficulty.jpg'
 import PSLPrice from '../assets/images/pslprice.jpg'
+import Hashrate from '../assets/images/hashrate.jpg'
 import { TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
@@ -13,12 +14,17 @@ export const pastelChartFields = [
     routeName: '/statistics/priceovertime',
     backgroundImage: PSLPrice,
   },
+  {
+    name: 'Hashrate',
+    routeName: '/statistics/hashrateovertime',
+    backgroundImage: Hashrate,
+  },
 ]
 
 export const themes = [
   {
     name: 'theme1',
-    backgroundColor: '#100c2a',
+    backgroundColor: '#0d0d0d',
     splitLineColor: '#202021',
     color: '#abaac1',
   },

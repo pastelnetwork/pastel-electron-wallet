@@ -98,3 +98,25 @@ export const makeDownloadFileName = (
 
   return `${currencyName}_${imageTitle}_${dateTime}`
 }
+
+export function transformHashrateInfo(
+  hashrateInfo: SqlValue[][],
+  period: TPeriod,
+): TLineChartData {
+  const dataX: string[] = []
+  const dataY: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < hashrateInfo.length; i++) {
+    if (hashrateInfo[i][13] !== null) {
+      const createTime = Number(hashrateInfo[i][13])
+      if (createTime > startDate) {
+        dataY.push(Number(hashrateInfo[i][8]) / 1000000)
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+
+  return { dataX, dataY }
+}

@@ -17,6 +17,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
     dataY1,
     dataY2,
     info,
+    offset,
     periods,
     title,
     handlePeriodFilterChange,
@@ -46,8 +47,8 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
       const min1 = Math.min(...dataY2)
       const max1 = Math.max(...dataY2)
       if (title === 'PSL Prices') {
-        setMinY1(min - 0.0001)
-        setMaxY1(max + 0.0001)
+        setMinY1(min - offset)
+        setMaxY1(max + offset)
         setMinY2(min1)
         setMaxY2(max1)
       }

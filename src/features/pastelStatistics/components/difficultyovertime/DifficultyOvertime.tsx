@@ -22,7 +22,7 @@ const redrawCycle = 60000
 
 const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   const { info } = props
-  const [currentBgColor, setCurrentBgColor] = useState('#100c2a')
+  const [currentBgColor, setCurrentBgColor] = useState('#0d0d0d')
   const [period, setPeriod] = useState<TPeriod>('2h')
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
@@ -71,10 +71,12 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
+              chartIndex='difficulty'
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
               title='Network Difficulty'
               info={info}
+              offset={1000}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}

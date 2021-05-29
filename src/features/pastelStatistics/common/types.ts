@@ -11,6 +11,7 @@ export type TThemeColor = {
 }
 
 export type LineChartProps = {
+  chartIndex: string
   dataX?: string[]
   dataY?: number[]
   dataY1?: number[]
@@ -19,7 +20,17 @@ export type LineChartProps = {
   info: {
     [key: string]: string | number
   }
+  offset: number
   periods: TPeriod[]
   handleBgColorChange: (color: string) => void
   handlePeriodFilterChange?: (period: TPeriod) => void
+}
+
+export type TThemeInitOption = {
+  theme?: TThemeColor | null
+  dataX?: string[]
+  dataY?: number[]
+  chartIndex: string
+  minY: number
+  maxY: number
 }
