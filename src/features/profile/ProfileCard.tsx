@@ -6,7 +6,10 @@ import Rate from 'rc-rate'
 const ProfileCard = (): JSX.Element => {
   return (
     <div
-      className={cx('flex flex-col pb-4 rounded-md shadow-medium', styles.card)}
+      className={cx(
+        'flex flex-col pb-4 rounded-md shadow-sm bg-white',
+        styles.card,
+      )}
     >
       <div className='bg-blue-300 h-32 rounded-t-md'></div>
       <div className='-mt-10 px-4 flex'>
