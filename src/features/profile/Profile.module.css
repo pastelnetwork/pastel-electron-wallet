@@ -8,6 +8,7 @@
 .wrapper {
   max-width: 87rem;
   height: fit-content;
+  background-color: #f8f9fa;
 }
 
 .card {

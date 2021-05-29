@@ -12,15 +12,13 @@ const ProfileGeneral = (): JSX.Element => {
       )}
     >
       {/* First Row Group of General */}
-      <div className='w-full py-8 pt-4'>
+      <div className='w-full py-10 pt-4'>
         <div className={cx(styles.row)}>
-          <div className={cx(styles.row_title, 'flex justify-between')}>
-            Location
-            <i className='mr-2 mt-1 fas fa-map-marker-alt text-xs'></i>
+          <div className={cx(styles.row_title)}>Location</div>
+          <div className={cx(styles.row_content, 'flex')}>
+            <div>New York, US</div>
+            <div className='mx-auto -mt-2'>#121</div>
           </div>
-          <div className={cx(styles.row_content)}>New York, US</div>
-          <div className='pl-2'>#121</div>
-          <div className='flex-grow' />
         </div>
         <div className={cx(styles.row)}>
           <div className={cx(styles.row_title)}>Language</div>
@@ -35,9 +33,9 @@ const ProfileGeneral = (): JSX.Element => {
         </div>
         <div className={cx(styles.row)}>
           <div className={cx(styles.row_title)}>Buyer reputation</div>
-          <div className={cx(styles.row_content, 'flex')}>
+          <div className={cx(styles.row_content, 'flex flex-col xl:flex-row')}>
             <Rate value={4.7} allowHalf={true} allowClear={false} />
-            <div className='pl-2 text-gray-500'>4.89 reputation</div>
+            <div className='xl:pl-2 text-gray-500'>4.89 reputation</div>
           </div>
         </div>
         <div className={cx(styles.row)}>
@@ -46,7 +44,7 @@ const ProfileGeneral = (): JSX.Element => {
         </div>
       </div>
       {/* Second Row Group of General */}
-      <div className={cx('w-full py-8')}>
+      <div className={cx('w-full py-10')}>
         <div className={styles.row}>
           <div className={styles.row_title}>Highest fee recieved</div>
           <div className={styles.row_content}>136,200,000k PSL</div>
@@ -65,7 +63,7 @@ const ProfileGeneral = (): JSX.Element => {
         </div>
       </div>
       {/* Third Row Group of General */}
-      <div className={cx('w-full py-8')}>
+      <div className={cx('w-full py-10')}>
         <div className={styles.row}>
           <div className={styles.row_title}>Bio</div>
         </div>
