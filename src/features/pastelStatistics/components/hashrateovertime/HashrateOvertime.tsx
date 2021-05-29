@@ -72,7 +72,7 @@ const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
               dataY={transformLineChartData?.dataY}
               title='Hashrate(MH/s)'
               info={info}
-              offset={0.5}
+              offset={1}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
