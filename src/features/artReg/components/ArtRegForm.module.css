@@ -174,6 +174,7 @@
   font-size: 16px;
   color: #718096 !important;
   margin-bottom: 8px;
+  user-select: none;
 }
 
 .artRegFormInputTitle input::placeholder,
@@ -249,6 +250,36 @@
   width: 100%;
   color: #a0aec0;
   padding-left: 16px;
+}
+
+.artRegFormInputCategorySelect {
+  margin-top: 12px;
+  background: #ffffff;
+  border: 1px solid rgba(156, 160, 165, 0.2);
+  box-sizing: border-box;
+  box-shadow: 0px 1px 12px rgba(50, 50, 71, 0.01),
+    0px 0px 4px rgba(50, 50, 71, 0.1);
+  border-radius: 4px;
+  color: #a0aec0;
+}
+.artRegFormInputCategorySelect > div {
+  padding-left: 5px;
+  border: none !important;
+  min-height: 36px;
+}
+
+.artRegFormInputCategorySelect > div > div:nth-child(1) > div {
+  font-family: Avenir;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #a0aec0 !important;
+}
+
+.artRegFormInputCategorySelect > div > div:nth-child(2) > span,
+.artRegFormInputCategorySelect > div > div:nth-child(2) > div:nth-child(2),
+.artRegFormInputCompensation > div > div:nth-child(2) > div:nth-child(3) {
+  min-height: 0px;
 }
 
 .artRegFormInputCollection input {
@@ -335,16 +366,86 @@
   pointer-events: none;
 }
 
+.artRegFormInputCopiesStepperMinus {
+  position: absolute;
+  top: 40px;
+  right: 9px;
+}
+.artRegFormInputCopiesStepperPlus {
+  position: absolute;
+  top: 40px;
+  left: 9px;
+}
+
 .artRegFormInputCollectionPlusButton {
   position: absolute;
   right: 0px;
   top: 39px;
 }
 
-.artRegFormInputDescriptionControls,
-.artRegFormInputDescriptionControlsLabel,
-.artRegFormInputDescriptionControlsInfo {
+.artRegFormInputDescriptionControls {
+  position: absolute;
+  right: 131px;
+}
+
+.artRegFormInputDescriptionControlsCheckbox {
   display: none;
+}
+
+.artRegFormInputDescriptionControlsCheckboxButton {
+  position: relative;
+  width: 34px;
+  height: 20px;
+  border-radius: 17px;
+  background-color: #68CC67;
+}
+
+.artRegFormInputDescriptionControlsCheckboxLabel {
+  position: relative;
+  height: 20px;
+  width: 34px;
+  display: block;
+}
+
+.artRegFormInputDescriptionControlsCheckbox ~ label .artRegFormInputDescriptionControlsCheckboxButton {
+  background-color: rgba(87, 101, 123, 0.15);
+}
+.artRegFormInputDescriptionControlsCheckbox:checked ~ label .artRegFormInputDescriptionControlsCheckboxButton {
+  background-color: #68CC67;
+}
+
+.artRegFormInputDescriptionControlsCheckbox ~ label .artRegFormInputDescriptionControlsCheckboxButton .artRegFormInputDescriptionControlsCheckboxButtonSwitch {
+  position: absolute;
+  left: 4px;
+  right: auto;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #FAFAFA;
+  transition: all 300ms ease-in;
+}
+
+.artRegFormInputDescriptionControlsCheckbox:checked ~ label .artRegFormInputDescriptionControlsCheckboxButton .artRegFormInputDescriptionControlsCheckboxButtonSwitch {
+  position: absolute;
+  left: auto;
+  right: 4px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #FAFAFA;
+  transition: all 300ms ease-out;
+}
+
+.artRegFormInputDescriptionControlsLabel {
+  position: absolute;
+  right: 73px;
+  color: #718096;
+}
+.artRegFormInputDescriptionControlsInfo {
+  position: absolute;
+  right: 41px;
 }
 
 .artRegFormSubmit {
@@ -357,6 +458,7 @@
   font-style: normal;
   font-weight: 800;
   font-size: 16px;
-  line-height: 48px;
+  line-height: 56px;
   color: #fff;
+  border: none;
 }

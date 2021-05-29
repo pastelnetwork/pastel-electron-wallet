@@ -38,7 +38,6 @@ describe('fetchPastelPrice', () => {
     const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
 
     // Act
-    // @ts-expect-error Need to correct
     await store.dispatch(fetchPastelPrice())
 
     // Assert
@@ -68,7 +67,6 @@ describe('fetchPastelPrice', () => {
     const dateSpy = jest.spyOn(Date, 'now').mockReturnValue(100)
 
     // Act
-    // @ts-expect-error Need to correct
     await store.dispatch(fetchPastelPrice())
 
     // Assert
