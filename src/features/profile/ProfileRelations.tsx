@@ -2,7 +2,7 @@ import React from 'react'
 
 const ProfileRelations = (): JSX.Element => {
   return (
-    <div className='psl-psl-w-full psl-xl:w-1/2 psl-flex psl-flex-col psl-flex-grow psl-px-4 psl-xl:pl-12'>
+    <div className='psl-psl-w-full xl:psl-w-1/2 psl-flex psl-flex-col psl-flex-grow psl-px-4 xl:psl-pl-12'>
       <div className='psl-flex'>
         <div className='psl-text-sm psl-border-b psl-px-4 psl-pt-2 psl-border-gray-b0 psl-text-gray-b0 psl-text-gray-33 psl-border-gray-33'>
           Followers (235)

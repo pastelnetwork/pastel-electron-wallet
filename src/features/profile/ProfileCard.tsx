@@ -4,7 +4,7 @@ import svg_card from '../../legacy/assets/img/card.svg'
 
 const ProfileCard = (): JSX.Element => {
   return (
-    <div className='psl-flex psl-lex-psl-col psl-pb-4 psl-rounded-md psl-shadow-sm psl-bg-white psl-w-315px'>
+    <div className='psl-flex psl-flex-col psl-pb-4 psl-rounded-md psl-shadow-sm psl-bg-white psl-w-315px'>
       <div className='psl-bg-blue-300 psl-h-32 psl-rounded-t-md'>
         <img src={svg_card} />
       </div>
