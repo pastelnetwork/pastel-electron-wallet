@@ -157,13 +157,11 @@ module.exports = {
         h4: '1.125',
         h5: '1rem',
         h6: '0.875rem',
+        10: '0.625rem',
         15: '0.938rem',
       },
       borderRadius: {
         '4px': '4px',
-      },
-      fontSize: {
-        '10px': '10px',
       },
     },
     screens: {
