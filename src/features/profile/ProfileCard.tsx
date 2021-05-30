@@ -1,20 +1,16 @@
 import React from 'react'
-import styles from './Profile.module.css'
-import cx from 'classnames'
 import Rate from 'rc-rate'
+import svg_card from '../../legacy/assets/img/card.svg'
 
 const ProfileCard = (): JSX.Element => {
   return (
-    <div
-      className={cx(
-        'flex flex-col pb-4 rounded-md shadow-sm bg-white',
-        styles.card,
-      )}
-    >
-      <div className='bg-blue-300 h-32 rounded-t-md'></div>
-      <div className='-mt-10 px-4 flex'>
+    <div className='flex flex-col pb-4 rounded-md shadow-sm bg-white w-315px'>
+      <div className='bg-blue-300 h-32 rounded-t-md'>
+        <img src={svg_card} />
+      </div>
+      <div className='-mt-8 px-4 flex'>
         <div className='rounded-full border-4 border-white bg-pink-200 w-24 h-24'></div>
-        <div className='mt-11 pl-3 text-sm'>
+        <div className='mt-12 pl-3 text-sm'>
           <div className='px-1 text-gray-300'>@zndrson</div>
           <div className='pt-2 text-blue-400'>
             {truncateMiddle('0xc419234152312145', 8, 4, '...')}
