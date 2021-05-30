@@ -56,7 +56,7 @@ jobs:
           name: generate builds
           command: yarn make
       - store_artifacts:
-          path: ~/project/out
+          path: ~/project/out/make
 
 workflows:
   lint-test-package:
