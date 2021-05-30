@@ -74,21 +74,6 @@ workflows:
       - lint-and-test:
           requires:
             - install-deps
-      # - build-windows:
-      #     requires:
-      #       - lint-and-test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
-      # - build-macos:
-      #     requires:
-      #       - lint-and-test
-      #     filters:
-      #       branches:
-      #         only:
-      #           - master
       - build-ubuntu:
           requires:
             - lint-and-test
-
