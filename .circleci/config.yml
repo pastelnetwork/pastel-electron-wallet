@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   install-deps:
     docker:
-      - image: circleci/node:14.16.0
+      - image: cimg/node:14.17.0
     working_directory: ~/project
     steps:
       - checkout
@@ -11,7 +11,6 @@ jobs:
           keys:
             - node_deps-{{ checksum "yarn.lock" }}
       - run:
-          # https://circleci.com/docs/2.0/caching/
           command: yarn --frozen-lockfile
       - save_cache:
           key: node_deps-{{ checksum "yarn.lock" }}
@@ -24,7 +23,7 @@ jobs:
 
   lint-and-test:
     docker:
-      - image: circleci/node:14.16.0
+      - image: cimg/node:14.17.0
     working_directory: ~/project
     steps:
       - attach_workspace:
@@ -36,10 +35,60 @@ jobs:
           name: tests
           command: yarn test
 
+  build-windows:
+    docker:
+      - image: electronuserland/builder:wine
+    steps:
+      - checkout
+      - run: yarn && yarn make
+      - store_artifacts:
+          path: ~repo/out
+
+  build-macos:
+    macos:
+      xcode: 11.3.0
+    steps:
+      - checkout
+      - run: security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
+      - run: security default-keychain -s build.keychain
+      - run: security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
+      - run: echo $KEYSTORE | base64 --decode - > keystore.p12
+      - run: security import keystore.p12 -k build.keychain -P $KEYCHAIN_PASSWORD -T /usr/bin/codesign
+      - run: yarn && yarn make
+      - store_artifacts:
+          path: ~repo/out
+
+  build-ubuntu:
+    docker:
+      - image: electronuserland/builder
+    steps:
+      - checkout
+      - run: yarn && yarn make
+      - store_artifacts:
+          path: ~repo/out
+
 workflows:
-  lint-and-test:
+  lint-test-package:
     jobs:
       - install-deps
       - lint-and-test:
           requires:
             - install-deps
+      # - build-windows:
+      #     requires:
+      #       - lint-and-test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      # - build-macos:
+      #     requires:
+      #       - lint-and-test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
+      - build-ubuntu:
+          requires:
+            - lint-and-test
+
