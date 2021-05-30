@@ -1,7 +1,7 @@
 import { remote } from 'electron'
 import fs from 'fs'
 import path from 'path'
-import initSqlJs, { Database, QueryExecResult } from 'sql.js'
+import initSqlJs, { Database, QueryExecResult, SqlJsStatic } from 'sql.js'
 
 import {
   createBlock,
@@ -83,12 +83,26 @@ export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
   )
 }
 
-export const createDatabase = async (): Promise<Database> => {
-  const SQL = await initSqlJs({
+async function initSqlJS(): Promise<SqlJsStatic> {
+  if (remote.app.isPackaged) {
+    return await initSqlJs({
+      locateFile: (file: string) => {
+        return path.join(
+          process.resourcesPath,
+          `/app.asar/.webpack/renderer/static/bin/${file}`,
+        )
+      },
+    })
+  }
+  return await initSqlJs({
     locateFile: (file: string) => {
       return `/static/bin/${file}`
     },
   })
+}
+
+export const createDatabase = async (): Promise<Database> => {
+  const SQL = await initSqlJS()
 
   try {
     const filebuffer: Buffer = await readSqliteDBFile()
