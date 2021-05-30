@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   install-deps:
     docker:
-      - image: cimg/node:14.17.0
+      - image: electronuserland/builder:14
     working_directory: ~/project
     steps:
       - checkout
@@ -11,6 +11,7 @@ jobs:
           keys:
             - node_deps-{{ checksum "yarn.lock" }}
       - run:
+          name: install dependencies
           command: yarn --frozen-lockfile
       - save_cache:
           key: node_deps-{{ checksum "yarn.lock" }}
@@ -23,7 +24,7 @@ jobs:
 
   lint-and-test:
     docker:
-      - image: cimg/node:14.17.0
+      - image: electronuserland/builder:14
     working_directory: ~/project
     steps:
       - attach_workspace:
@@ -34,54 +35,28 @@ jobs:
       - run:
           name: tests
           command: yarn test
-
-  build-windows:
-    docker:
-      - image: electronuserland/builder:wine
-    steps:
-      - checkout
-      - run: yarn && yarn make
-      - store_artifacts:
-          path: ~repo/out
-
-  build-macos:
-    macos:
-      xcode: 11.3.0
-    steps:
-      - checkout
-      - run: security create-keychain -p $KEYCHAIN_PASSWORD build.keychain
-      - run: security default-keychain -s build.keychain
-      - run: security unlock-keychain -p $KEYCHAIN_PASSWORD build.keychain
-      - run: echo $KEYSTORE | base64 --decode - > keystore.p12
-      - run: security import keystore.p12 -k build.keychain -P $KEYCHAIN_PASSWORD -T /usr/bin/codesign
-      - run: yarn && yarn make
-      - store_artifacts:
-          path: ~repo/out
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
 
   build-ubuntu:
     docker:
       - image: electronuserland/builder:14
+    working_directory: ~/project
     steps:
-      - checkout
-      - restore_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+      - attach_workspace:
+          at: ~/project
       - run:
-          name: Install Dependencies
-          command: yarn install
-      - run:
-          name: Install dpkg and fakeroot
+          name: install dpkg and fakeroot
           command: |
             apt-get update -y
             apt-get install -y dpkg fakeroot
-      - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
       - run:
-          name: Generate Builds
+          name: generate builds
           command: yarn make
       - store_artifacts:
-          path: ~/repo/out/make
+          path: ~/project/out
 
 workflows:
   lint-test-package:
