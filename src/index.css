@@ -2,33 +2,59 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@font-face {
+  font-family: 'Avenir';
+  font-weight: '400';
+  font-style: normal;
+  src: url('./common/assets/fonts/Avenir/Avenir Regular.ttf');
+}
+@font-face {
+  font-family: 'Avenir';
+  font-weight: '500';
+  font-style: normal;
+  src: url('./common/assets/fonts/Avenir/Avenir Medium.ttf');
+}
+@font-face {
+  font-family: 'Avenir';
+  font-weight: '800';
+  font-style: normal;
+  src: url('./common/assets/fonts/Avenir/Avenir Heavy.ttf');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   h1 {
-    @apply text-h1 leading-10 font-extrabold;
+    @apply text-h1 leading-10 font-heavy text-text-default;
   }
   h2 {
-    @apply text-h2 leading-8 font-extrabold;
+    @apply text-h2 leading-8 font-heavy text-text-default;
   }
   h3 {
-    @apply text-h3 leading-7 font-extrabold;
+    @apply text-h3 leading-7 font-heavy text-text-default;
   }
   h4 {
-    @apply text-h4 leading-6;
+    @apply text-h4 leading-6 text-text-default;
   }
   h5 {
-    @apply text-h5;
+    @apply text-h5 text-text-default;
   }
   h5 {
-    @apply text-h6;
+    @apply text-h6 text-text-default;
   }
 }
 
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
+
+@layer utilities {
+  .input-number::-webkit-inner-spin-button,
+  .input-number::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+  }
+}
 
 html {
   overflow: hidden;
@@ -63,15 +89,15 @@ body {
   outline: 1px solid slategrey;
 }
 
-h2 {
+/* h2 {
   margin: 0;
   font-size: 2.25rem;
   font-weight: bold;
   letter-spacing: -0.025em;
   color: #fff;
-}
+} */
 
-p {
+/* p {
   font-size: 12px;
 }
 
@@ -169,4 +195,4 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+} */

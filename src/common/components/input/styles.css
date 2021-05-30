@@ -1,0 +1,6 @@
+.input-field:focus + fieldset {
+  @apply border-gray-600;
+}
+.input-field:active + fieldset {
+  @apply border-button-default;
+}

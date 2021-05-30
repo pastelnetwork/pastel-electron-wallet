@@ -27,4 +27,5 @@ const List = ({ children, title, value }: any) => (
 List.defaultProps = {
   value: '',
 }
+
 export default List

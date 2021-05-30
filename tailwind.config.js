@@ -8,42 +8,47 @@ module.exports = {
   purge: [],
   theme: {
     extend: {
-      color: {
+      colors: {
+        link: '#3F9AF7',
+        white: '#FFFFFF',
+        transparent: 'transparent',
+        gray: {
+          500: '#A0AEC0',
+          600: '#718096',
+          700: '#4A5568',
+          800: '#2D3748',
+          900: '#1A202C',
+        },
         text: {
-          gray500: '#A0AEC0',
-          gray600: '#718096',
-          gray700: '#4A5568',
-          gray800: '#2D3748',
-          gray900: '#1A202C',
-          link: '#3F9AF7',
+          default: '#171F46',
         },
         success: {
-          DEFAULT: '#00D097',
+          default: '#00D097',
           pressed: '#00B282',
           hover: '#00C28D',
           background: '#E0F9F2',
         },
         warning: {
-          DEFAULT: '#FA9501',
+          default: '#FA9501',
           pressed: '#E88A00',
           hover: '#FFA21B',
           background: '#FEF0DC',
         },
         error: {
-          DEFAULT: '#DA8AB8',
+          default: '#DA8AB8',
           pressed: '#C85195',
           hover: '#CE64A1',
           background: '#FAEFF5',
         },
         button: {
-          DEFAULT: '#3F9AF7',
+          default: '#3F9AF7',
           pressed: '#0E80F5',
           hover: '#278DF6',
           background: '#F2F2F2',
           text: '#8E98A3',
         },
         navigation: {
-          DEFAULT: '#A6B0C2',
+          default: '#A6B0C2',
           selected: '#334D6E',
           background: '#E6E8EC',
         },
@@ -52,10 +57,10 @@ module.exports = {
           hover: '#F4F5F6',
         },
         line: {
-          DEFAULT: '#F2F4F7',
+          default: '#F2F4F7',
         },
         icon: {
-          DEFAULT: '#8E98A3',
+          default: '#8E98A3',
           active: '#334D6E',
         },
         background: {
@@ -64,7 +69,15 @@ module.exports = {
           modal: '#1A1A1A',
         },
       },
+      textColor: theme => ({
+        ...theme('colors'),
+      }),
+      fill: theme => ({
+        ...theme('colors'),
+      }),
       boxShadow: {
+        input:
+          '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
         xSmall:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
         small:
@@ -76,6 +89,9 @@ module.exports = {
         xLarge:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
       },
+      fontFamily: {
+        sans: ['Avenir'],
+      },
       fontSize: {
         h1: '2rem',
         h2: '1.5rem',
@@ -83,6 +99,12 @@ module.exports = {
         h4: '1.125',
         h5: '1rem',
         h6: '0.875rem',
+        p: '1rem',
+      },
+      fontWeight: {
+        roman: '400',
+        medium: '500',
+        heavy: '800',
       },
     },
     screens: {

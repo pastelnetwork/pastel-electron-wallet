@@ -1,0 +1,27 @@
+.button-secondary-text {
+  @apply transition-colors;
+  @apply duration-300;
+  @apply text-button-default;
+}
+
+.button:hover .button-secondary-text {
+  @apply text-button-hover;
+}
+
+.button:active .button-secondary-text {
+  @apply text-button-pressed;
+}
+
+.button-secondary-icon {
+  @apply transition-colors;
+  @apply duration-300;
+  @apply fill-button-default;
+}
+
+.button:hover .button-secondary-icon {
+  @apply fill-button-hover;
+}
+
+.button:active .button-secondary-icon {
+  @apply fill-button-pressed;
+}

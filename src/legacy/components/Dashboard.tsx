@@ -14,6 +14,8 @@ import { TotalBalance, Info, AddressBalance } from './AppState'
 import Utils from '../utils/utils'
 import ScrollPane from './ScrollPane' // $FlowFixMe
 
+import App from '../../common/views/app'
+
 export const BalanceBlockHighlight = ({
   pslValue,
   usdValue,
@@ -141,7 +143,7 @@ export default class Home extends Component<any, any> {
             currencyName={info.currencyName}
           />
         </div>
-
+        <App></App>
         <div className={styles.addressbalancecontainer}>
           <ScrollPane offsetHeight={200}>
             <div className={styles.addressbooklist}>
