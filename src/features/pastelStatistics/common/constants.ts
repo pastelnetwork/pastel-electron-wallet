@@ -10,7 +10,7 @@ export const pastelChartFields = [
     backgroundImage: Difficulty,
   },
   {
-    name: 'PSL Price',
+    name: 'Price',
     routeName: '/statistics/priceovertime',
     backgroundImage: PSLPrice,
   },
