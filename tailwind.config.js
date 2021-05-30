@@ -80,13 +80,13 @@ module.exports = {
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
         xSmall:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        small:
+        sm:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
-        medium:
+        md:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 6px 8px rgba(10, 22, 70, 0.1)',
-        large:
+        lg:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
-        xLarge:
+        xl:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
       },
       fontFamily: {
@@ -108,42 +108,13 @@ module.exports = {
       },
     },
     screens: {
-      sm: '414px',
-      md: '834px',
-      lg: '874px',
-      xl: '946px',
-      '2xl': '1440px',
+      sm: '900px',
+      md: '1100px',
+      lg: '1300px',
+      xl: '1440px',
+      '2xl': '1700px',
     },
   },
   variants: {},
   plugins: [],
 }
-
-// colors: {
-//   text: {
-//     500: '#A0AEC0',
-//     600: '#718096',
-//     700: '#4A5568',
-//     800: '#2D3748',
-//     900: '#1A202C',
-//     link: '#3F9AF7',
-//   },
-//   success: {
-//     DEFAULT: '#00D097',
-//     pressed: '#00B282',
-//     hover: '#00C28D',
-//     bg: '#00C28D',
-//   },
-//   warning: {
-//     DEFAULT: '#FA9501',
-//     pressed: '#E88A00',
-//     hover: '#FFA21B',
-//     bg: '#FEF0DC',
-//   },
-//   error: {
-//     DEFAULT: '#DA8AB8',
-//     pressed: '#C85195',
-//     hover: '#CE64A1',
-//     bg: '#FAEFF5',
-//   },
-// },
