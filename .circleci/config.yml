@@ -60,12 +60,28 @@ jobs:
 
   build-ubuntu:
     docker:
-      - image: electronuserland/builder
+      - image: electronuserland/builder:14
     steps:
       - checkout
-      - run: yarn && yarn make
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install
+      - run:
+          name: Install dpkg and fakeroot
+          command: |
+            sudo apt-get update -y
+            sudo apt-get install -y dpkg fakeroot
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Generate Builds
+          command: yarn make
       - store_artifacts:
-          path: ~repo/out
+          path: ~/repo/out/make
 
 workflows:
   lint-test-package:
