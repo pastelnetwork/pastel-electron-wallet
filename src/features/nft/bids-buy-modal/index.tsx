@@ -6,8 +6,7 @@ import Button from '../../../common/components/button'
 
 export interface BidsBuyModalProps {
   isOpen: boolean
-  handleClose: any
-  children?: any
+  handleClose: React.MouseEventHandler<Element>
 }
 
 const BidsBuyModal: React.FC<BidsBuyModalProps> = ({ isOpen, handleClose }) => {

@@ -10,7 +10,7 @@ export interface ButtonProps {
   href?: string
   className?: string
   fluid?: boolean
-  [x: string]: any
+  [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Button: React.FC<ButtonProps> = ({

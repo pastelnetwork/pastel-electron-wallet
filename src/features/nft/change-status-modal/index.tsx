@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 // Components
 import Modal from '../../../common/components/modal'
 import Button from '../../../common/components/button'
@@ -9,8 +8,7 @@ import Link from '../../../common/components/link'
 
 export interface ChangeStatusModalProps {
   isOpen: boolean
-  handleClose?: any
-  children?: any
+  handleClose?: React.MouseEventHandler<Element>
 }
 
 const ChangeStatusModal: React.FC<ChangeStatusModalProps> = ({

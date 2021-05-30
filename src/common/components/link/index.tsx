@@ -6,7 +6,7 @@ export interface LinkProps {
   className?: string
   href?: string
   variant?: string
-  [x: string]: any
+  [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Link: React.FC<LinkProps> = ({

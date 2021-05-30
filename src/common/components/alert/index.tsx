@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import cn from 'classnames'
 
-interface AlertProps {
+export interface AlertProps {
   variant: string
   children?: ReactNode
 }

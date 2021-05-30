@@ -8,7 +8,7 @@ export interface ScrollBarProps {
   maxHeight?: string
   className?: string
   autoHide?: boolean
-  [x: string]: any
+  [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Scrollbar: React.FC<ScrollBarProps> = ({

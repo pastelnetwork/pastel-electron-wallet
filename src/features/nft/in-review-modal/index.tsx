@@ -5,8 +5,7 @@ import Alert from '../../../common/components/alert'
 
 export interface InReviewModalProps {
   isOpen: boolean
-  handleClose: any
-  children?: any
+  handleClose: React.MouseEventHandler<Element>
 }
 
 const InReviewModal: React.FC<InReviewModalProps> = ({

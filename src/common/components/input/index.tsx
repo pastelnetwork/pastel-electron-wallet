@@ -8,7 +8,7 @@ export interface InputProps {
   type?: string
   prepend?: ReactNode
   append?: ReactNode
-  [x: string]: any
+  [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Input: React.FC<InputProps> = ({

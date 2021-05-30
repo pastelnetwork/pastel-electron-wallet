@@ -7,8 +7,7 @@ import Button from '../../../common/components/button'
 
 export interface BidsOfferModalProps {
   isOpen: boolean
-  handleClose: any
-  children?: any
+  handleClose: React.MouseEventHandler<Element>
 }
 
 const BidsOfferModal: React.FC<BidsOfferModalProps> = ({

@@ -9,7 +9,6 @@ import bids from './data'
 export interface BidsAuctionModalProps {
   isOpen: boolean
   handleClose: React.MouseEventHandler<Element>
-  children?: any
 }
 
 const BidsAuctionModal: React.FC<BidsAuctionModalProps> = ({

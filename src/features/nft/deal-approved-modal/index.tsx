@@ -4,8 +4,7 @@ import Modal from '../../../common/components/modal'
 
 export interface DealApprovedModalProps {
   isOpen: boolean
-  handleClose: any
-  children?: any
+  handleClose: React.MouseEventHandler<Element>
 }
 
 const DealApprovedModal: React.FC<DealApprovedModalProps> = ({

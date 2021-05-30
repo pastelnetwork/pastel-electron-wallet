@@ -64,7 +64,6 @@
     "postcss-cli": "8.3.1",
     "postcss-loader": "4.2.0",
     "progress-stream": "2.0.0",
-    "prop-types": "^15.7.2",
     "qrcode.react": "1.0.0",
     "react": "17.0.1",
     "react-accessible-accordion": "3.3.4",

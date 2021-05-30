@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import ReactSelect, { MenuPosition, OptionTypeBase } from 'react-select'
 import { selectStyles } from './styles'
 
@@ -6,7 +6,7 @@ export interface SelectProps {
   options?: ReadonlyArray<OptionTypeBase>
   defaultValue?: OptionTypeBase
   menuPosition?: MenuPosition
-  [x: string]: any
+  [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Select: React.FC<SelectProps> = ({
