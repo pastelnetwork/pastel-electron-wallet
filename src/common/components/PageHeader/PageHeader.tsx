@@ -2,30 +2,30 @@ import React from 'react'
 import Select, { Option } from '../Select/Select'
 import cn from 'classnames'
 
-export type UpperSectionRoutes = {
+export type PageHeaderRoutes = {
   label: string
   route?: string // in the future when clicking the link it should change current route...
   isSelected?: boolean
 }
 
-export type UpperSectionSortByOptions = {
+export type PageHeaderSortByOptions = {
   placeholder: string
   onOptionChange: (option: Option | null) => void
   selected: Option | null
   options: Option[]
 }
 
-export interface UpperSectionProps {
+export interface PageHeaderProps {
   title: string
-  routes: UpperSectionRoutes[]
-  sortByOptions: UpperSectionSortByOptions[]
+  routes: PageHeaderRoutes[]
+  sortByOptions: PageHeaderSortByOptions[]
 }
 
 /**
  * This is a presentational component, meaning it holds no state.
  * State should be handled by parent component.
  */
-const UpperSection = (props: UpperSectionProps): JSX.Element => {
+const PageHeader = (props: PageHeaderProps): JSX.Element => {
   return (
     <div className='bg-white text-gray-1a'>
       <div className='wrapper py-30px'>
@@ -68,4 +68,4 @@ const UpperSection = (props: UpperSectionProps): JSX.Element => {
   )
 }
 
-export default UpperSection
+export default PageHeader
