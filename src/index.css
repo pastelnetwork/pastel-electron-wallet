@@ -6,27 +6,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  h1 {
-    @apply text-h1 leading-10 font-extrabold;
-  }
-  h2 {
-    @apply text-h2 leading-8 font-extrabold;
-  }
-  h3 {
-    @apply text-h3 leading-7 font-extrabold;
-  }
-  h4 {
-    @apply text-h4 leading-6;
-  }
-  h5 {
-    @apply text-h5;
-  }
-  h5 {
-    @apply text-h6;
-  }
-}
-
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
 
@@ -80,7 +59,7 @@ li {
 }
 
 a {
-  color: white;
+  color: #a6b0c2;
   text-decoration: none;
 }
 
