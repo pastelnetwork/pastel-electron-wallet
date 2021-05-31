@@ -1,27 +1,11 @@
 import styled from 'styled-components'
 
-export const DescriptionContainer = styled.div`
-  margin-top: 12px;
-  max-width: 330px;
-`
+export const QrBackground = styled.div.attrs({
+  className:
+    'flex justify-center h-348px rounded-8px py-33px px-42px bg-tab-hover',
+})``
 
-export const QRContainer = styled.div`
-  margin-top: 18px;
-  margin-bottom: 76px;
-  flex-grow: 1;
-`
-
-export const QrBackground = styled.div`
-  display: flex;
-  justify-content: center;
-  height: 348px;
-  background-color: ${({ theme }) => theme.colors.tab.hover};
-  border-radius: 8px;
-  padding: 35px 0;
-`
-
-export const QrContainer = styled.div`
-  background-color: ${({ theme }) => theme.colors.background.onboarding};
-  border-radius: 12px;
-  padding: 80px;
-`
+export const QrContainer = styled.div.attrs({
+  className:
+    'flex w-full h-full bg-background-onboarding rounded-md justify-center items-center  min-w-128px',
+})``

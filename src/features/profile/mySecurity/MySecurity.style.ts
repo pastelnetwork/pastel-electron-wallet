@@ -1,29 +1,23 @@
 import styled from 'styled-components'
 
-export const MySecurityContainer = styled.div`
-  width: 100%;
-  height: 100vh;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 30px 60px;
-  background-color: ${({ theme }) => theme.colors.background.main};
-`
+export const MySecurityContainer = styled.div.attrs({
+  className:
+    'w-full h-screen items-center flex justify-center py-30px px-60px bg-background-main',
+})``
 
 export const CardContainer = styled.div.attrs({
-  className: 'grid grid-cols-3 gap-4 min-h-672',
+  className: 'grid grid-cols-3 gap-5 min-h-672px',
 })``
 
 export const Card = styled.div.attrs({
   className:
-    'relative flex flex-col max-w-472 h-full rounded-8 p-30 colors.white',
+    'relative flex flex-col max-w-472px h-full rounded-lg p-30px colors.white rounded-xl bg-white',
 })``
 
 export const DescriptionContainer = styled.div.attrs({
-  className: 'min-h-78 mt-12',
+  className: 'min-h-78px mt-3',
 })``
 
 export const BodyContainer = styled.div.attrs({
-  className: 'flex-grow my-18',
+  className: 'flex-grow my-4',
 })``

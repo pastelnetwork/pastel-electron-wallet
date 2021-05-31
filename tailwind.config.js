@@ -16,6 +16,7 @@ module.exports = {
     },
     fontFamily: {
       body: 'Roboto, Arial, Helvetica, Helvetica Neue, serif',
+      avenir: 'Avenir, Arial, Helvetica, Helvetica Neue, serif',
     },
     extend: {
       spacing: {
@@ -26,9 +27,11 @@ module.exports = {
         '22px': '1.375rem',
         '26px': '1.625rem',
         '30px': '1.875rem',
+        '33px': '2.0625rem',
         '35px': '2.188rem',
         '37px': '2.313rem',
         '41px': '2.563rem',
+        '42px': '2.625rem',
         '46px': '2.875rem',
         '50px': '3.125rem',
         '60px': '3.75rem',
@@ -42,6 +45,7 @@ module.exports = {
         '220px': '13.75rem',
         '300px': '18.75rem',
         '335px': '20.938rem',
+        '348px': '21.75rem',
         '352px': '22rem',
       },
       colors: {
@@ -93,6 +97,15 @@ module.exports = {
           hover: '#278DF6',
           text: '#8E98A3',
         },
+        loader: {
+          default: '#A6B0C2',
+          red: '#FE634C',
+          yellow: '#FFBE3D',
+          green: '#00D097',
+        },
+        input: {
+          border: '#8E98A333',
+        },
         navigation: {
           DEFAULT: '#A6B0C2',
           selected: '#334D6E',
@@ -108,6 +121,17 @@ module.exports = {
           onboarding: '#FCFCFD',
           main: '#F8F9FA',
           modal: '#1A1A1A',
+        },
+        text: {
+          primary: '#23262F',
+          secondary: '#777E90',
+          tertiary: '#FCFCFD',
+          gray500: '#A0AEC0',
+          gray600: '#718096',
+          gray700: '#4A5568',
+          gray800: '#2D3748',
+          gray900: '#1A202C',
+          link: '#3F9AF7',
         },
       },
       boxShadow: {
@@ -125,8 +149,8 @@ module.exports = {
       fontSize: {
         h1: '2rem',
         h2: '1.5rem',
-        h3: '1.375',
-        h4: '1.125',
+        h3: '1.375rem',
+        h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
         15: '0.938rem',
@@ -135,17 +159,14 @@ module.exports = {
         '4px': '0.25rem',
       },
       minHeight: {
-        78: '78px',
-        672: '672px',
+        '78px': '4.875rem',
+        '672px': '42rem',
       },
       maxWidth: {
-        472: '472px',
+        '472px': '29.5rem',
       },
-      borderRadius: {
-        8: '8px',
-      },
-      padding: {
-        30: '30px',
+      minWidth: {
+        '128px': '8rem',
       },
     },
   },

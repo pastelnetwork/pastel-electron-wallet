@@ -1,9 +1,11 @@
 import * as React from 'react'
 import QRCode from 'qrcode.react'
 
-import Button from '../../../../common/components/Button/Button'
-import Typography from '../../../../common/components/Typography/Typography'
-import { colors } from '../../../../common/theme/colors'
+import Button from '../../../../common/components/MySecurity/Button/Button'
+import {
+  Title,
+  Description,
+} from '../../../../common/components/MySecurity/Typography/Typography'
 import * as Styles from './QRCode.style'
 import { DescriptionContainer, BodyContainer } from '../MySecurity.style'
 
@@ -24,19 +26,12 @@ const downloadQR = () => {
 const QR: React.FC = () => {
   return (
     <>
-      <Typography variant='h3' weight={800} lineHeight={40}>
-        Make a photo of QR-code
-      </Typography>
+      <Title>Make a photo of QR-code</Title>
       <DescriptionContainer>
-        <Typography
-          color={colors.text.secondary}
-          lineHeight={26}
-          variant='body2'
-          weight={500}
-        >
+        <Description>
           Take a photo of this with your smartphone to use as a backup in case
           you forget your password
-        </Typography>
+        </Description>
       </DescriptionContainer>
       <BodyContainer>
         <Styles.QrBackground>
@@ -45,13 +40,7 @@ const QR: React.FC = () => {
           </Styles.QrContainer>
         </Styles.QrBackground>
       </BodyContainer>
-      <Button
-        variant='transparent'
-        style={{ width: '100%' }}
-        onClick={downloadQR}
-      >
-        Download QR-code
-      </Button>
+      <Button onClick={downloadQR}>Download QR-code</Button>
     </>
   )
 }

@@ -7,18 +7,21 @@ import {
   View,
 } from '@react-pdf/renderer'
 
-import Button from '../../../../common/components/Button/Button'
-import Typography from '../../../../common/components/Typography/Typography'
-import Input from '../../../../common/components/Input/Input'
-import { colors } from '../../../../common/theme/colors'
+import Button from '../../../../common/components/MySecurity/Button/Button'
+import Key from '../../../../common/components/MySecurity/Crypto/Crypto'
+import {
+  Title,
+  Description,
+} from '../../../../common/components/MySecurity/Typography/Typography'
 import * as Styles from './CryptoKey.style'
+import { DescriptionContainer, BodyContainer } from '../MySecurity.style'
 
 interface PDFDocumentProps {
   privateKey: string
-  publicKey: string
+  secretKey: string
 }
 
-const PDFDocument = ({ privateKey, publicKey }: PDFDocumentProps) => {
+const PDFDocument = ({ privateKey, secretKey }: PDFDocumentProps) => {
   return (
     <Document title={'Crypto Keys'}>
       <Page size='A4'>
@@ -26,7 +29,7 @@ const PDFDocument = ({ privateKey, publicKey }: PDFDocumentProps) => {
           <Text>Private Key: {privateKey}</Text>
         </View>
         <View>
-          <Text>Public Key: {publicKey}</Text>
+          <Text>Secret Key: {secretKey}</Text>
         </View>
       </Page>
     </Document>
@@ -34,47 +37,28 @@ const PDFDocument = ({ privateKey, publicKey }: PDFDocumentProps) => {
 }
 
 const CryptoKey: React.FC = () => {
+  const privateKey = 'ps19jxlfdl8mhnsqlf7x0cwlhx0cwlheq0v34'
+  const secretKey = 'ps19jxlfdl8mhnsqlf7x0cwlhx0cwlheq0v34'
+
   return (
     <>
-      <Typography variant='h3' weight={800} lineHeight={40}>
-        Backup crypto-keys
-      </Typography>
-      <Styles.DescriptionContainer>
-        <Typography
-          color={colors.text.secondary}
-          lineHeight={26}
-          variant='body2'
-          weight={500}
-        >
-          Some description goes here
-        </Typography>
-      </Styles.DescriptionContainer>
-      <Styles.KeysContainer>
-        <Input
-          type='text'
-          label='Public key'
-          value={'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34'}
-          onChange={() => {
-            console.log()
-          }}
-          ref={null}
-        />
-        <Input
-          type='text'
-          label='Secret key'
-          value={'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34'}
-          onChange={() => {
-            console.log()
-          }}
-          ref={null}
-          style={{ marginTop: 22 }}
-        />
-      </Styles.KeysContainer>
-      <Button variant='transparent' style={{ width: '100%' }}>
+      <Title>Backup crypto-keys</Title>
+      <DescriptionContainer>
+        <Description>Some description goes here</Description>
+      </DescriptionContainer>
+      <BodyContainer>
+        <Key label='Private Key'>{privateKey}</Key>
+        <Styles.Spacer />
+        <Key label='Secret Key'>{secretKey}</Key>
+      </BodyContainer>
+      <Button>
         Download PDF with all keys
         <PDFDownloadLink
-          document={<PDFDocument privateKey={'123'} publicKey={'iop'} />}
+          document={
+            <PDFDocument privateKey={privateKey} secretKey={secretKey} />
+          }
           fileName={'crypto_keys'}
+          className='inline-block w-full h-full absolute top-o left-0'
         />
       </Button>
     </>
