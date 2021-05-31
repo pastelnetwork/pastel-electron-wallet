@@ -66,5 +66,9 @@ workflows:
           requires:
             - install-deps
       - build-ubuntu:
+          filters: &filters-build
+            branches:
+              only:
+                - master
           requires:
             - lint-and-test
