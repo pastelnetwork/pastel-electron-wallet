@@ -109,11 +109,11 @@ class RouteApp extends React.Component<any, any> {
     this.rpc = rpc
 
     // Auto refresh every 10s
-    // this.rpcRefreshIntervalId = window.setInterval(() => {
-    //   if (this.state.rpcConfig.username) {
-    //     rpc.refresh()
-    //   }
-    // }, 10000)
+    this.rpcRefreshIntervalId = window.setInterval(() => {
+      if (this.state.rpcConfig.username) {
+        rpc.refresh()
+      }
+    }, 10000)
 
     const addressBook = await AddressbookImpl.readAddressBook()
     if (addressBook) {

@@ -43,7 +43,6 @@ module.exports = {
         '300px': '18.75rem',
         '335px': '20.938rem',
         '352px': '22rem',
-        30: '7.5rem',
       },
       colors: {
         success: {
@@ -133,7 +132,7 @@ module.exports = {
         15: '0.938rem',
       },
       borderRadius: {
-        '4px': '4px',
+        '4px': '0.25rem',
       },
     },
   },
