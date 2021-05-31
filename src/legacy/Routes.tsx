@@ -52,6 +52,7 @@ import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
 import NFTMarketFeed from '../features/NFTMarket'
+import { app } from 'electron'
 
 export type TWalletInfo = {
   connections: number
@@ -110,11 +111,13 @@ class RouteApp extends React.Component<any, any> {
     this.rpc = rpc
 
     // Auto refresh every 10s
-    // this.rpcRefreshIntervalId = window.setInterval(() => {
-    //   if (this.state.rpcConfig.username) {
-    //     rpc.refresh()
-    //   }
-    // }, 10000)
+    if (!app.isPackaged) {
+      this.rpcRefreshIntervalId = window.setInterval(() => {
+        if (this.state.rpcConfig.username) {
+          rpc.refresh()
+        }
+      }, 10000)
+    }
 
     const addressBook = await AddressbookImpl.readAddressBook()
     if (addressBook) {

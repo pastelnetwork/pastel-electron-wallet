@@ -6,8 +6,8 @@ import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import Select, { Option } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
-import UpperSection from '../../common/components/UpperSection'
-import { UpperSectionSortByOptions } from '../../common/components/UpperSection/UpperSection'
+import PageHeader from '../../common/components/PageHeader'
+import { UpperSectionSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
 const mockCardProps: NFTCardProps = {
   author: 'zndrson',
@@ -86,7 +86,7 @@ const NFTMarketFeed: React.FC = () => {
 
   return (
     <div className=''>
-      <UpperSection
+      <PageHeader
         title='Market'
         routes={[{ label: 'Feed', isSelected: true }, { label: 'Statistic' }]}
         sortByOptions={upperSectionSortByOptions}
