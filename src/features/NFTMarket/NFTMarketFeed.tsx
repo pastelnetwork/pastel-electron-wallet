@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 
-import { NFTCard, NFTCardProps } from '../../common/components/NFTCard/NFTCard'
+import NFTCard, { NFTCardProps } from '../../common/components/NFTCard'
 
 import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import Select, { Option } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
+import UpperSection from '../../common/components/UpperSection'
+import { UpperSectionSortByOptions } from '../../common/components/UpperSection/UpperSection'
 
 const mockCardProps: NFTCardProps = {
   author: 'zndrson',
@@ -17,17 +19,38 @@ const mockCardProps: NFTCardProps = {
   title: 'Cosmic Perspective',
 }
 
-const mockOptions: Option[] = [
-  { value: 'option_1', label: 'Option 1' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
-]
-
 const NFTMarketFeed: React.FC = () => {
   // Upper Section
   const [priceSold, setPriceSold] = useState<Option | null>(null)
   const [bidPrice, setBidPrice] = useState<Option | null>(null)
   const [likes, setLikes] = useState<Option | null>(null)
+
+  const mockOptions: Option[] = [
+    { value: 'option_1', label: 'Option 1' },
+    { value: 'option_2', label: 'Option 2' },
+    { value: 'option_3', label: 'Option 3' },
+  ]
+
+  const upperSectionSortByOptions: UpperSectionSortByOptions[] = [
+    {
+      placeholder: 'Price Sold',
+      selected: priceSold,
+      onOptionChange: setPriceSold,
+      options: mockOptions,
+    },
+    {
+      placeholder: 'Bid Price',
+      selected: bidPrice,
+      onOptionChange: setBidPrice,
+      options: mockOptions,
+    },
+    {
+      placeholder: 'Likes',
+      selected: likes,
+      onOptionChange: setLikes,
+      options: mockOptions,
+    },
+  ]
 
   // Filters
   const [category, setCategory] = useState<Option | null>(mockOptions[0])
@@ -40,43 +63,11 @@ const NFTMarketFeed: React.FC = () => {
 
   return (
     <div className=''>
-      {/* Upper Section: Extract to component? */}
-      <div className='bg-white text-text-gray900'>
-        <div className='wrapper py-30px'>
-          <div className='flex justify-between'>
-            <div className='flex items-center'>
-              <h1 className='pr-20 font-semibold'>Market</h1>
-              <div className='mr-6 rounded-3xl bg-text-gray800 px-3 py-1'>
-                <p className='text-h6 text-white font-medium'>Feed</p>
-              </div>
-              <p className='pr-6 text-h6 text-gray-600'>Statistics</p>
-            </div>
-            <div className='flex items-center'>
-              <p className='pr-4 text-h5'>Sort by</p>
-              <div className='flex space-x-6'>
-                <Select
-                  placeholder='Price Sold'
-                  options={mockOptions}
-                  selected={priceSold}
-                  onChange={setPriceSold}
-                />
-                <Select
-                  placeholder='Bid Price'
-                  options={mockOptions}
-                  selected={bidPrice}
-                  onChange={setBidPrice}
-                />
-                <Select
-                  placeholder='Likes'
-                  options={mockOptions}
-                  selected={likes}
-                  onChange={setLikes}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <UpperSection
+        title='Market'
+        routes={[{ label: 'Feed', isSelected: true }, { label: 'Statistic' }]}
+        sortByOptions={upperSectionSortByOptions}
+      />
       <div className='wrapper bg-background-main h-full '>
         {/* Filters */}
         <div className='flex justify-between pb-50px'>

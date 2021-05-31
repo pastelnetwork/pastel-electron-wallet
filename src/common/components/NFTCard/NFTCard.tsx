@@ -1,18 +1,7 @@
 import React from 'react'
+import { NFTCardProps } from '.'
 
-export interface NFTCardProps {
-  author: string
-  avatarSrc: string
-  imageSrc: string
-  title: string
-  likes: number
-  price: number | string
-  onSale: boolean
-  // listed ?
-  // 5/10 ?
-}
-
-export const NFTCard: React.FC<NFTCardProps> = ({
+const NFTCard = ({
   author,
   avatarSrc,
   imageSrc,
@@ -20,7 +9,7 @@ export const NFTCard: React.FC<NFTCardProps> = ({
   likes,
   price,
   onSale,
-}) => {
+}: NFTCardProps): JSX.Element => {
   return (
     <div className='bg-white rounded-lg shadow-medium py-4'>
       {/* Header */}
@@ -62,3 +51,5 @@ export const NFTCard: React.FC<NFTCardProps> = ({
     </div>
   )
 }
+
+export default NFTCard
