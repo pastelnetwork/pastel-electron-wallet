@@ -2,19 +2,19 @@ import React from 'react'
 
 const ProfileTabs = (): JSX.Element => {
   return (
-    <div className='psl-w-72 psl-flex psl-border psl-rounded-full psl-ml-4 psl-text-md'>
-      <div className='psl-cursor-pointer psl-w-24 psl-py-3px psl-px-2px psl-rounded-full psl-text-center psl-text-gray-71 psl-text-sm psl-font-bold psl-flex psl-items-center psl-justify-center psl-text-white psl-bg-gray-35'>
+    <div className='w-72 flex border rounded-full ml-4 text-md'>
+      <div className='cursor-pointer w-24 py-3px px-2px rounded-full text-center text-gray-71 text-sm font-bold flex items-center justify-center text-white bg-gray-35'>
         General
       </div>
-      <div className='psl-cursor-pointer psl-w-24 psl-py-3px psl-px-2px psl-rounded-full psl-text-center psl-text-gray-71 psl-text-sm psl-font-bold psl-flex psl-items-center psl-justify-center'>
+      <div className='cursor-pointer w-24 py-3px px-2px rounded-full text-center text-gray-71 text-sm font-bold flex items-center justify-center'>
         Portfolio
-        <div className='psl-text-10 psl-w-4 psl-h-4 psl-rounded-full psl-bg-gray-400 psl-text-white psl-flex psl-justify-center psl-items-center psl-ml-2'>
+        <div className='text-10 w-4 h-4 rounded-full bg-gray-400 text-white flex justify-center items-center ml-2'>
           7
         </div>
       </div>
-      <div className='psl-cursor-pointer psl-w-24 psl-py-3px psl-px-2px psl-rounded-full psl-text-center psl-text-gray-71 psl-text-sm psl-font-bold psl-flex psl-items-center psl-justify-center'>
+      <div className='cursor-pointer w-24 py-3px px-2px rounded-full text-center text-gray-71 text-sm font-bold flex items-center justify-center'>
         Board
-        <div className='psl-text-10 psl-w-4 psl-h-4 psl-rounded-full psl-bg-gray-400 psl-text-white psl-flex psl-justify-center psl-items-center psl-ml-2'>
+        <div className='text-10 w-4 h-4 rounded-full bg-gray-400 text-white flex justify-center items-center ml-2'>
           12
         </div>
       </div>
