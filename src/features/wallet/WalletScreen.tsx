@@ -34,20 +34,20 @@ const WalletScreen = () => {
     },
   ]
   return (
-    <div className='psl-bg-gray-f8 psl-pt-5 psl-px-60px'>
-      <div className='psl-flex'>
+    <div className='bg-gray-f8 pt-5 px-60px'>
+      <div className='flex'>
         {card_items.map(card => (
-          <div className='psl-mr-18px'>
+          <div className='mr-18px'>
             <div
-              className={`psl-flex psl-w-427px psl-h-124pxpsl-pl-26px psl-border-gray-e7 psl-border psl-rounded-lg ${
-                card.style.background == 'white' ? 'psl-bg-white' : ''
+              className={`flex w-427px h-124px pl-26px border-gray-e7 border rounded-lg ${
+                card.style.background == 'white' ? 'bg-white' : ''
               }`}
             >
-              <div className='psl-pt-18px psl-pl-26px psl-pb-19px'>
-                <img className='psl-w-92px psl-h-87px' src={card.icon} />
+              <div className='pt-18px pl-26px pb-19px'>
+                <img className='w-92px h-87px' src={card.icon} />
               </div>
-              <div className='psl-pt-36px psl-pl-35px'>
-                <div className='psl-text-2xl psl-leading-6 psl-text-gray-4e psl-pt-9'>
+              <div className='pt-36px pl-35px'>
+                <div className='text-2xl leading-6 text-gray-4e pt-9'>
                   PSL{' '}
                   <NumberFormat
                     value={card.psl}
@@ -55,7 +55,7 @@ const WalletScreen = () => {
                     thousandSeparator={true}
                   />
                 </div>
-                <div className='psl-text-gray-93 text-sm'>TOTAL BALENCE</div>
+                <div className='text-gray-93 text-sm'>TOTAL BALENCE</div>
               </div>
             </div>
           </div>
