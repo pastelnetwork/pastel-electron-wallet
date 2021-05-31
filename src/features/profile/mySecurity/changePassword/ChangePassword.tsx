@@ -7,6 +7,7 @@ import Button from '../../../../common/components/Button/Button'
 import { colors } from '../../../../common/theme/colors'
 
 import * as Styles from './ChangePassword.style'
+import { DescriptionContainer, BodyContainer } from '../MySecurity.style'
 
 interface IPassword {
   value: string
@@ -29,7 +30,7 @@ const ChangePassword: React.FC = () => {
       <Typography variant='h3' weight={800} lineHeight={40}>
         Change password
       </Typography>
-      <Styles.DescriptionContainer>
+      <DescriptionContainer>
         <Typography
           color={colors.text.secondary}
           lineHeight={26}
@@ -39,8 +40,8 @@ const ChangePassword: React.FC = () => {
           Contain at least 1 letter, 1 number and 1 symbol. Minimum lenght is 12
           characters
         </Typography>
-      </Styles.DescriptionContainer>
-      <Styles.PasswordContainer>
+      </DescriptionContainer>
+      <BodyContainer>
         <Input
           type='password'
           label='New password'
@@ -90,7 +91,7 @@ const ChangePassword: React.FC = () => {
           clickable links that open a web browser to the sites for these
           products)
         </Typography>
-      </Styles.PasswordContainer>
+      </BodyContainer>
       <Button variant='transparent' style={{ width: '100%' }}>
         Submit new password
       </Button>

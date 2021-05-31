@@ -76,6 +76,19 @@ module.exports = {
           ef: '#FFEFEB',
         },
       },
+      minHeight: {
+        78: '78px',
+        672: '672px',
+      },
+      maxWidth: {
+        472: '472px',
+      },
+      borderRadius: {
+        8: '8px',
+      },
+      padding: {
+        30: '30px',
+      },
     },
     screens: {
       sm: '900px',

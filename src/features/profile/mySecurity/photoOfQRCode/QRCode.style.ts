@@ -8,6 +8,7 @@ export const DescriptionContainer = styled.div`
 export const QRContainer = styled.div`
   margin-top: 18px;
   margin-bottom: 76px;
+  flex-grow: 1;
 `
 
 export const QrBackground = styled.div`

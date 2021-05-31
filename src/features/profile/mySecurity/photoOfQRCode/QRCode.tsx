@@ -5,6 +5,21 @@ import Button from '../../../../common/components/Button/Button'
 import Typography from '../../../../common/components/Typography/Typography'
 import { colors } from '../../../../common/theme/colors'
 import * as Styles from './QRCode.style'
+import { DescriptionContainer, BodyContainer } from '../MySecurity.style'
+
+const downloadQR = () => {
+  const canvas = document.getElementById('qrcode') as HTMLCanvasElement
+
+  const pngUrl = canvas
+    ?.toDataURL('image/png')
+    .replace('image/png', 'image/octet-stream')
+  const downloadLink = document.createElement('a')
+  downloadLink.href = pngUrl
+  downloadLink.download = 'qrcode.png'
+  document.body.appendChild(downloadLink)
+  downloadLink.click()
+  document.body.removeChild(downloadLink)
+}
 
 const QR: React.FC = () => {
   return (
@@ -12,7 +27,7 @@ const QR: React.FC = () => {
       <Typography variant='h3' weight={800} lineHeight={40}>
         Make a photo of QR-code
       </Typography>
-      <Styles.DescriptionContainer>
+      <DescriptionContainer>
         <Typography
           color={colors.text.secondary}
           lineHeight={26}
@@ -22,15 +37,19 @@ const QR: React.FC = () => {
           Take a photo of this with your smartphone to use as a backup in case
           you forget your password
         </Typography>
-      </Styles.DescriptionContainer>
-      <Styles.QRContainer>
+      </DescriptionContainer>
+      <BodyContainer>
         <Styles.QrBackground>
           <Styles.QrContainer>
-            <QRCode value='https://explorer.pastel.network/' />
+            <QRCode id='qrcode' value='https://explorer.pastel.network/' />
           </Styles.QrContainer>
         </Styles.QrBackground>
-      </Styles.QRContainer>
-      <Button variant='transparent' style={{ width: '100%' }}>
+      </BodyContainer>
+      <Button
+        variant='transparent'
+        style={{ width: '100%' }}
+        onClick={downloadQR}
+      >
         Download QR-code
       </Button>
     </>

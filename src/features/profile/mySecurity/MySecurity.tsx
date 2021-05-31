@@ -8,15 +8,17 @@ import * as Styles from './MySecurity.style'
 const MySecurity: React.FC = () => {
   return (
     <Styles.MySecurityContainer>
-      <Styles.Card>
-        <ChangePassword />
-      </Styles.Card>
-      <Styles.Card>
-        <QRCode />
-      </Styles.Card>
-      <Styles.Card>
-        <CryptoKey />
-      </Styles.Card>
+      <Styles.CardContainer>
+        <Styles.Card>
+          <ChangePassword />
+        </Styles.Card>
+        <Styles.Card>
+          <QRCode />
+        </Styles.Card>
+        <Styles.Card>
+          <CryptoKey />
+        </Styles.Card>
+      </Styles.CardContainer>
     </Styles.MySecurityContainer>
   )
 }

@@ -11,11 +11,19 @@ export const MySecurityContainer = styled.div`
   background-color: ${({ theme }) => theme.colors.background.main};
 `
 
-export const Card = styled.div`
-  width: 427px;
-  min-height: 672px;
-  background-color: ${({ theme }) => theme.colors.custom.white};
-  padding: 30px;
-  box-shadow: 0px 23px 44px rgba(176, 183, 195, 0.14);
-  border-radius: 8px;
-`
+export const CardContainer = styled.div.attrs({
+  className: 'grid grid-cols-3 gap-4 min-h-672',
+})``
+
+export const Card = styled.div.attrs({
+  className:
+    'relative flex flex-col max-w-472 h-full rounded-8 p-30 colors.white',
+})``
+
+export const DescriptionContainer = styled.div.attrs({
+  className: 'min-h-78 mt-12',
+})``
+
+export const BodyContainer = styled.div.attrs({
+  className: 'flex-grow my-18',
+})``

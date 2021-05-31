@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRouter } from 'react-router'
+import { withRouter, useHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import styles from './HeaderScreen.module.css'
 import routes from '../../constants/routes.json'
@@ -78,6 +78,7 @@ interface PropsType {
 
 const Header = (props: PropsType) => {
   const { location } = props
+  const history = useHistory()
   const icons = [
     {
       src: QuestionTag,
@@ -98,6 +99,7 @@ const Header = (props: PropsType) => {
     {
       src: UserIcon,
       variant: 'background',
+      func: () => history.push(routes.MYSECURITY),
     },
   ]
 
@@ -165,7 +167,7 @@ const Header = (props: PropsType) => {
       </div>
       <div className='flex items-center mr-33'>
         {icons.map((icon, index) => (
-          <div className='mr-20px md:mr-26px' key={index}>
+          <div className='mr-20px md:mr-26px' key={index} onClick={icon.func}>
             <Icon src={icon.src} variant={icon.variant} />
           </div>
         ))}

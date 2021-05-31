@@ -5,8 +5,7 @@ export const DescriptionContainer = styled.div`
 `
 
 export const PasswordContainer = styled.div`
-  margin-top: 44px;
-  margin-bottom: 119px;
+  min-height: 467px;
 `
 
 export const LoadingContainer = styled.div`
