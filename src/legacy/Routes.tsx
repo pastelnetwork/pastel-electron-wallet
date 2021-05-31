@@ -5,12 +5,13 @@ import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
 import { ErrorModal, ErrorModalData } from './components/ErrorModal'
 import cstyles from './components/Common.module.css'
-import routes from './constants/routes.json'
+import routes from '../common/constants/routes.json'
 import App from './containers/App'
 import Dashboard from './components/Dashboard'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
+import WalletScreen from '../features/wallet'
 import HeaderScreen from '../common/components/Header'
 import {
   AddressBalance,
@@ -489,7 +490,7 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
 
-        {info && info.version && (
+        {/* {info && info.version && (
           <div className={cstyles.sidebarcontainer}>
             <HeaderScreen
             // info={info}
@@ -509,7 +510,7 @@ class RouteApp extends React.Component<any, any> {
             // openSquooshToolModal={this.props.openSquooshToolModal}
             />
           </div>
-        )}
+        )} */}
         <div className={cstyles.contentcontainer}>
           <Switch>
             <Route
@@ -577,6 +578,8 @@ class RouteApp extends React.Component<any, any> {
                 />
               )}
             />
+
+            <Route path={routes.WALLET} render={() => <WalletScreen />} />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
 

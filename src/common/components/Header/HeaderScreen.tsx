@@ -122,7 +122,7 @@ const Header = (props: PropsType) => {
     },
     {
       name: 'Wallet',
-      routeName: routes.TRANSACTIONS,
+      routeName: routes.WALLET,
       currentRoute: location.pathname,
       style: 'xl:mr-35px',
     },
