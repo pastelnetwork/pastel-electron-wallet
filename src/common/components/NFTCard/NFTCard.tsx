@@ -19,7 +19,7 @@ const NFTCard = ({
           <h4 className='pl-2 font-semibold'>@{author}</h4>
         </div>
         <div className='flex items-center'>
-          <p className='text-text-link'>Follow</p>
+          <p className='text-blue-450'>Follow</p>
         </div>
       </div>
       {/* Image */}
