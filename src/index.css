@@ -8,6 +8,7 @@
 
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
 
 html {
   overflow: hidden;
@@ -24,7 +25,7 @@ body {
   position: relative;
   color: white;
   background-color: #212124;
-  font-family: Roboto, Arial, Helvetica, Helvetica Neue, serif;
+  font-family: Avenir;
 }
 
 ::-webkit-scrollbar {

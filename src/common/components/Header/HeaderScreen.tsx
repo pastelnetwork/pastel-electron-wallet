@@ -11,6 +11,7 @@ import BellIcon from '../../assets/icons/ico-bell.svg'
 import MessageIcon from '../../assets/icons/ico-msg.svg'
 import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
+import cn from 'classnames'
 
 import Icon from '../Icon/Icon'
 
@@ -21,12 +22,7 @@ interface IMenuType {
   style: string | undefined
 }
 
-const SidebarMenuItem = ({
-  name,
-  routeName,
-  currentRoute,
-  style,
-}: IMenuType) => {
+const MenubarItem = ({ name, routeName, currentRoute, style }: IMenuType) => {
   let isActive = false
 
   if (currentRoute.endsWith('app.html') || currentRoute === routeName) {
@@ -41,12 +37,18 @@ const SidebarMenuItem = ({
 
   return (
     <div
-      className={[
+      // className={[
+      //   styles.headermenuitem,
+      //   activeColorClass,
+      //   'mr-8px md:mr-13px lg:mr-28px',
+      //   style,
+      // ].join(' ')}
+      className={cn(
         styles.headermenuitem,
         activeColorClass,
-        'mr-8px md:mr-13px lg:mr-28px',
+        'mr-8px md:mr-13px lg:mr-28px font-medium h-22px',
         style,
-      ].join(' ')}
+      )}
     >
       <Link to={routeName}>
         <span className={activeColorClass}>{name}</span>
@@ -61,7 +63,7 @@ const SearhBar = () => {
     <div className='flex relative'>
       <img width='16' className={styles.searchIconPosition} src={searchIcon} />
       <input
-        className='h-41px bg-gray-110 rounded-full pl-46px md:w-300px lg:w-300px xl:w-352px'
+        className=' placeholder-gray-b0 h-41px bg-gray-110 rounded-full pl-46px md:w-300px lg:w-300px xl:w-352px'
         placeholder={`${placeholder}`}
       />
     </div>
@@ -101,7 +103,7 @@ const Header = (props: PropsType) => {
     },
   ]
 
-  const sidebar_items = [
+  const menubar_items = [
     {
       name: 'Dashboard',
       routeName: routes.DASHBOARD,
@@ -133,14 +135,14 @@ const Header = (props: PropsType) => {
     },
   ]
   return (
-    <div className='flex items-center h-66px bg-white justify-between md:text-14px lg:text-15px xl:text-16px font-display'>
+    <div className='flex items-center h-66px bg-white justify-between md:text-14px lg:text-15px xl:text-16px'>
       <div className='flex items-center'>
         <div className='ml-20px md:ml-30px lg:ml-50px xl:ml-60px mr-13px md:mr-20px lg:mr-30px xl:mr-40px w-30px md:w-36px h-30px md:h-36px'>
           <img src={Logo} alt='logo' />
         </div>
         <div className='flex'>
-          {sidebar_items.map((item, index) => (
-            <SidebarMenuItem
+          {menubar_items.map((item, index) => (
+            <MenubarItem
               key={index}
               name={item.name}
               routeName={item.routeName}
