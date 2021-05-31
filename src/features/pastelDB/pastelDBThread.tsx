@@ -186,15 +186,19 @@ export async function fetchRawtransaction(
     for (let i = 0; i < listSinceBlock.transactions.length; i++) {
       const transaction: types.TSinceblockTransaction =
         listSinceBlock.transactions[i]
-      const { result } = await rpc<types.TGetrawtransaction>(
-        'getrawtransaction',
-        [transaction.txid, 1],
-        props.rpcConfig,
-      )
-      insertRawtransaction(props.pastelDB, result)
+      if (transaction.txid) {
+        const { result } = await rpc<types.TGetrawtransaction>(
+          'getrawtransaction',
+          [transaction.txid, 1],
+          props.rpcConfig,
+        )
+        insertRawtransaction(props.pastelDB, result)
+      }
     }
   } catch (error) {
-    throw new Error(`pastelDBThread fetchBlock error: ${error.message}`)
+    throw new Error(
+      `pastelDBThread fetchRawtransaction error: ${error.message}`,
+    )
   }
 }
 

@@ -72,7 +72,7 @@ body {
   position: relative;
   color: white;
   background-color: #212124;
-  font-family: Avenir;
+  font-family: Avenir, Roboto, Arial, serif;
 }
 
 ::-webkit-scrollbar {
@@ -88,31 +88,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: white;
   outline: 1px solid slategrey;
-}
-
-/* h2 {
-  margin: 0;
-  font-size: 2.25rem;
-  font-weight: bold;
-  letter-spacing: -0.025em;
-  color: #fff;
-} */
-
-/* p {
-  font-size: 12px;
-}
-
-li {
-  list-style: none;
-}
-
-a {
-  color: #a6b0c2;
-  text-decoration: none;
-}
-
-input[disabled] {
-  color: grey;
 }
 
 .react-tabs {
@@ -196,4 +171,12 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
-} */
+}
+
+.focus-visible:focus {
+  outline: none;
+}
+
+.focus-visible:focus-visible {
+  outline: 1px solid #3f9af7;
+}

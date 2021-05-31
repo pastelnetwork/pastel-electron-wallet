@@ -1,12 +1,22 @@
 module.exports = {
-  future: {
-    // removeDeprecatedGapUtilities: true,
-    // purgeLayersByDefault: true,
-    // defaultLineHeights: true,
-    // standardFontWeights: true
-  },
-  purge: [],
+  purge: [
+    './src/**/*.ts',
+    './src/**/*.tsx',
+    './src/**/*.js',
+    './src/**/*.jsx',
+    './src/**/*.html',
+  ],
   theme: {
+    screens: {
+      sm: '900px',
+      md: '1100px',
+      lg: '1300px',
+      xl: '1440px',
+      '2xl': '1700px',
+    },
+    fontFamily: {
+      body: 'Avenir, Roboto, Arial, serif',
+    },
     extend: {
       colors: {
         link: '#3F9AF7',
@@ -122,9 +132,6 @@ module.exports = {
         xl:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
       },
-      fontFamily: {
-        sans: ['Avenir'],
-      },
       fontSize: {
         h1: '2rem',
         h2: '1.5rem',
@@ -139,13 +146,6 @@ module.exports = {
         medium: '500',
         heavy: '800',
       },
-    },
-    screens: {
-      sm: '900px',
-      md: '1100px',
-      lg: '1300px',
-      xl: '1440px',
-      '2xl': '1700px',
     },
   },
   variants: {},

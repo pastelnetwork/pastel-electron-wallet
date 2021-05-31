@@ -10,8 +10,6 @@ import installExtension, {
   REDUX_DEVTOOLS,
 } from 'electron-devtools-installer'
 import log from 'electron-log'
-import http from 'http'
-import serveStatic from 'serve-static'
 import sourceMapSupport from 'source-map-support'
 
 import pkg from '../package.json'
@@ -20,6 +18,7 @@ import {
   redirectDeepLinkingUrl,
   registerCustomProtocol,
 } from './features/deepLinking'
+import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
 
 // Deep linked url
@@ -145,6 +144,8 @@ const createWindow = async () => {
       app.quit()
     })
 
+    closeServeStatic()
+
     // $FlowFixMe
     w.webContents.send('appquitting')
     // Failsafe, timeout after 10 seconds
@@ -157,23 +158,6 @@ const createWindow = async () => {
   })
   w.on('closed', () => {
     mainWindow = null
-  })
-  w.once('ready-to-show', () => {
-    let staticPath = `${process.cwd()}/node_modules/squoosh/build`
-    if (app.isPackaged) {
-      staticPath = './resources/app.asar/.webpack/renderer/static/squoosh'
-    }
-    const serve = serveStatic(staticPath, {
-      index: ['index.html'],
-    })
-    // Create server
-    const server = http.createServer(function onRequest(req, res) {
-      serve(req, res, () => {
-        console.warn('Create server')
-      })
-    })
-    // Listen
-    server.listen(5100)
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
@@ -226,6 +210,8 @@ ipcMain.on('app-ready', () => {
   }
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+
+  initServeStatic(app.isPackaged)
 })
 
 ipcMain.on('restart_app', () => {

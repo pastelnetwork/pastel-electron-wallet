@@ -13,7 +13,6 @@ import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
 import HeaderScreen from '../common/components/Header'
 import {
-  AddressBalance,
   TotalBalance,
   SendPageState,
   ToAddr,
@@ -27,7 +26,6 @@ import Utils from './utils/utils'
 import Pasteld from './components/Pasteld'
 import AddressBook from './components/Addressbook'
 import AddressbookImpl from './utils/AddressbookImpl'
-import Sidebar from './components/Sidebar'
 import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
@@ -44,8 +42,10 @@ import PastelPhotopeaModal, {
 } from '../features/pastelPhotopea'
 import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
+import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
+import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
@@ -488,7 +488,7 @@ class RouteApp extends React.Component<any, any> {
         <PastelSpriteEditorToolModal />
         <AboutModal />
         <SquooshToolModal />
-
+        <GlitchImageModal />
         {info && info.version && (
           <div className={cstyles.sidebarcontainer}>
             <HeaderScreen
@@ -667,4 +667,5 @@ export default connect(null, {
   openAboutModal,
   openSquooshToolModal,
   openUpdateToast,
+  openGlitchImageModal,
 })(RouteApp)

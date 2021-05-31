@@ -1,5 +1,12 @@
 export const colors = {
+  custom: {
+    white: '#fff',
+    black: '#000',
+  },
   text: {
+    primary: '#23262F',
+    secondary: '#777E90',
+    tertiary: '#FCFCFD',
     gray500: '#A0AEC0',
     gray600: '#718096',
     gray700: '#4A5568',
@@ -25,8 +32,14 @@ export const colors = {
     hover: '#CE64A1',
     background: '#FAEFF5',
   },
+  loader: {
+    default: '#A6B0C2',
+    red: '#FE634C',
+    green: '#00D097',
+  },
   button: {
     default: '#3F9AF7',
+    secondary: '#E5F1FF',
     pressed: '#0E80F5',
     hover: '#278DF6',
     background: '#F2F2F2',
@@ -48,9 +61,14 @@ export const colors = {
     default: '#8E98A3',
     active: '#334D6E',
   },
+  border: {
+    default: '#EAECEF',
+  },
   background: {
     onboarding: '#FCFCFD',
     main: '#F8F9FA',
     modal: '#1A1A1A',
+    pinkLight: '#ddd5ff',
+    blueLight: '#cde8fd',
   },
 }
