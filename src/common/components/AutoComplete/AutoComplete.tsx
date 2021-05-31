@@ -9,7 +9,6 @@ export type Option = {
 }
 
 export type AutoCompleteProps = {
-  options: Option[]
   onChange?: (option: Option | null) => void
   selected: Option | null
   startNumber: number
@@ -51,12 +50,12 @@ export default function AutoComplete({
           <div className='relative w-111px'>
             <NumberFormat
               displayType={'input'}
-              className='rounded text-gray-800 border h-36px shadow-2 w-full pl-18px pr-41px pt-8px pb-6px font-extrabold text-16px'
+              className='rounded text-gray-800 border h-9 shadow-2 w-full pl-18px pr-41px pt-2 pb-1.5 font-extrabold text-base'
               {...getInputProps()}
               thousandSeparator={true}
             />
             <img
-              className='absolute top-0 text-gray-b0 ml-2 top-16px right-16px'
+              className='absolute top-0 text-gray-b0 ml-2 top-4 right-4'
               src={caretDownIcon}
               alt='toggle menu'
               {...getToggleButtonProps()}
@@ -65,7 +64,7 @@ export default function AutoComplete({
           {isOpen ? (
             <ul
               {...getMenuProps()}
-              className='mt-px absolute bg-white focus:border-blue-3f w-112px rounded rounded-4px shadow-large border-gray-e6'
+              className='mt-px absolute bg-white focus:border-blue-3f w-28 rounded rounded shadow-large border-gray-e6 z-50'
               onClick={e => e.stopPropagation()}
             >
               {options
@@ -82,7 +81,7 @@ export default function AutoComplete({
                         item,
                       })}
                       className={cn(
-                        'w-full h-40px flex items-center px-4 text-gray-35 rounded',
+                        'w-full h-10 flex items-center px-4 text-gray-35 rounded',
                         highlight && 'bg-gray-f7',
                       )}
                     >

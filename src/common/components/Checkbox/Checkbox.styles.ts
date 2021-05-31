@@ -6,8 +6,6 @@ export const Container = styled.label`
   color: ${({ theme }) => theme.colors.text.gray500};
   display: block;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
   cursor: pointer;
   user-select: none;
 `
