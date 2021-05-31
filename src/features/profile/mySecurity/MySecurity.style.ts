@@ -11,7 +11,7 @@ export const CardContainer = styled.div.attrs({
 
 export const Card = styled.div.attrs({
   className:
-    'relative flex flex-col max-w-472px h-full rounded-lg p-30px colors.white rounded-xl bg-white',
+    'relative flex flex-col max-w-472px h-full rounded-lg p-30px colors.white rounded-lg bg-white',
 })``
 
 export const DescriptionContainer = styled.div.attrs({

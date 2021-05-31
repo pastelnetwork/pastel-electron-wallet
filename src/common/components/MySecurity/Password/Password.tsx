@@ -14,6 +14,33 @@ interface PasswordProps {
   setConfirmPassword: (pass: string) => void
 }
 
+const passOptions = [
+  {
+    id: 0,
+    value: 'Too weak',
+    minDiversity: 0,
+    minLength: 1,
+  },
+  {
+    id: 1,
+    value: 'Weak',
+    minDiversity: 2,
+    minLength: 6,
+  },
+  {
+    id: 2,
+    value: 'Medium',
+    minDiversity: 3,
+    minLength: 10,
+  },
+  {
+    id: 3,
+    value: 'Strong',
+    minDiversity: 4,
+    minLength: 12,
+  },
+]
+
 const Password: React.FC<PasswordProps> = ({
   newPassword,
   confirmPassword,
@@ -37,7 +64,7 @@ const Password: React.FC<PasswordProps> = ({
   const checkPasswordStrength = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPass = e.target.value
     setNewPassword(newPass)
-    const validation = passwordStrength(newPass)
+    const validation = passwordStrength(newPass, passOptions)
 
     let status = [
       'bg-loader-default',
@@ -61,10 +88,10 @@ const Password: React.FC<PasswordProps> = ({
       ]
     } else if (validation.id === 2) {
       status = [
-        'bg-loader-green',
         'bg-loader-yellow',
         'bg-loader-yellow',
-        'bg-loader-green',
+        'bg-loader-yellow',
+        'bg-loader-default',
       ]
     } else if (validation.id === 3) {
       status = [
@@ -86,6 +113,7 @@ const Password: React.FC<PasswordProps> = ({
   const handleRefresh = () => {
     setNewPassword('')
     setConfirmPassword('')
+    setPassStrength([])
   }
 
   return (

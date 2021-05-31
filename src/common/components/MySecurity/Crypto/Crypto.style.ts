@@ -6,7 +6,7 @@ export const Container = styled.div.attrs({
 
 export const Key = styled.div.attrs({
   className:
-    'flex-grow px-3.5 pt-1.5 rounded-4px shadow-sm text-text-secondary h-10 overflow-ellipsis whitespace-nowrap overflow-hidden',
+    'flex-grow px-3.5 pt-1.5 rounded-4px shadow-input text-text-secondary h-10 overflow-ellipsis whitespace-nowrap overflow-hidden',
 })``
 
 export const IconButton = styled.img.attrs({
