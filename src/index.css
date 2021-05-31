@@ -8,27 +8,46 @@
 
 @layer base {
   h1 {
-    @apply psl-text-h1 psl-leading-10 psl-font-extrabold;
+    @apply text-h1 leading-10 font-extrabold;
   }
   h2 {
-    @apply psl-text-h2 psl-leading-8 psl-font-extrabold;
+    @apply text-h2 leading-8 font-extrabold;
   }
   h3 {
-    @apply psl-text-h3 psl-leading-7 psl-font-extrabold;
+    @apply text-h3 leading-7 font-extrabold;
   }
   h4 {
-    @apply psl-text-h4 psl-leading-6;
+    @apply text-h4 leading-6;
   }
   h5 {
-    @apply psl-text-h5;
+    @apply text-h5;
   }
   h5 {
-    @apply psl-text-h6;
+    @apply text-h6;
   }
 }
 
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
+
+html {
+  overflow: hidden;
+}
+html,
+body,
+#root {
+  min-height: 100vh;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  position: relative;
+  color: white;
+  background-color: #212124;
+  font-family: Avenir;
+}
 
 ::-webkit-scrollbar {
   width: 0.5em;
@@ -126,4 +145,12 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.focus-visible:focus {
+  outline: none;
+}
+
+.focus-visible:focus-visible {
+  outline: 1px solid #3f9af7;
 }

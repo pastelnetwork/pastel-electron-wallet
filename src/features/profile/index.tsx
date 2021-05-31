@@ -8,16 +8,16 @@ import ProfileGeneral from './ProfileGeneral'
 
 const Profile = (): JSX.Element => {
   return (
-    <div className='psl-mx-auto psl-w-full psl-px-60px psl-py-8 psl-flex psl-max-w-screen-xl psl-bg-gray-f8 psl-text-gray-23'>
-      <div className='psl-flex psl-flex-col psl-items-center lg:psl-justify-between'>
+    <div className='mx-auto w-full px-60px py-8 flex max-w-screen-xl bg-gray-f8 text-gray-23'>
+      <div className='flex flex-col items-center lg:justify-between'>
         <ProfileCard />
-        <div className='psl-text-gray-400 psl-text-sm psl-mt-24 lg:psl-mt-0'>
+        <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
           Member Since May 15, 2021
         </div>
       </div>
-      <div className='psl-flex psl-flex-col psl-flex-grow psl-pl-4'>
+      <div className='flex flex-col flex-grow pl-4'>
         <ProfileTabs />
-        <div className='psl-flex psl-pt-4 psl-pl-2 psl-justify-between psl-flex-col lg:psl-flex-col xl:psl-flex-row'>
+        <div className='flex pt-4 pl-2 justify-between flex-col lg:flex-col xl:flex-row'>
           <ProfileGeneral />
           <ProfileRelations />
         </div>
