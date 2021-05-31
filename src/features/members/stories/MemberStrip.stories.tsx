@@ -19,7 +19,7 @@ export default {
 }
 
 export const MemberStrip: React.FC = () => (
-  <div className=' text-text-gray900 bg-background-main h-full'>
+  <div className=' text-gray-1a bg-background-main h-full'>
     <div className='p-2'>
       <div className='bg-white p-5 rounded-lg'>
         <MemberStripComponent {...mockMemberStrips} />

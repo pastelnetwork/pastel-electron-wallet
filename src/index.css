@@ -30,7 +30,7 @@
 @layer components {
   /* Used to wrapp main routes  */
   .wrapper {
-    @apply container pt-4;
+    @apply px-4 md:px-60px xl:container pt-4;
   }
 }
 
@@ -45,19 +45,9 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-}
-
-@import '@fortawesome/fontawesome-free/css/all.css';
-@import 'typeface-roboto/index.css';
-
-html {
-  overflow: hidden;
-}
-html,
-body,
-#root {
-  min-height: 100vh;
-  height: 100%;
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
 }
 
 body {
@@ -65,8 +55,12 @@ body {
   position: relative;
   color: white;
   background-color: #212124;
-  font-family: Roboto, Arial, Helvetica, Helvetica Neue, serif;
+  font-family: Avenir, Roboto, Arial, serif;
 }
+
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
 
 ::-webkit-scrollbar {
   width: 0.5em;
@@ -81,31 +75,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: white;
   outline: 1px solid slategrey;
-}
-
-h2 {
-  margin: 0;
-  font-size: 2.25rem;
-  font-weight: bold;
-  letter-spacing: -0.025em;
-  color: #fff;
-}
-
-p {
-  font-size: 12px;
-}
-
-li {
-  list-style: none;
-}
-
-a {
-  color: white;
-  text-decoration: none;
-}
-
-input[disabled] {
-  color: grey;
 }
 
 .react-tabs {
@@ -189,4 +158,12 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.focus-visible:focus {
+  outline: none;
+}
+
+.focus-visible:focus-visible {
+  outline: 1px solid #3f9af7;
 }

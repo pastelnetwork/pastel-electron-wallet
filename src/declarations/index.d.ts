@@ -9,6 +9,11 @@ declare module '*.png' {
   export = url
 }
 
+declare module '*.jpeg' {
+  const url: string
+  export = url
+}
+
 declare module '*.svg' {
   const content: string
   export default content
