@@ -8,22 +8,22 @@
 
 @layer base {
   h1 {
-    @apply psl-text-h1 psl-leading-10 psl-font-extrabold;
+    @apply text-h1 leading-10 font-extrabold;
   }
   h2 {
-    @apply psl-text-h2 psl-leading-8 psl-font-extrabold;
+    @apply text-h2 leading-8 font-extrabold;
   }
   h3 {
-    @apply psl-text-h3 psl-leading-7 psl-font-extrabold;
+    @apply text-h3 leading-7 font-extrabold;
   }
   h4 {
-    @apply psl-text-h4 psl-leading-6;
+    @apply text-h4 leading-6;
   }
   h5 {
-    @apply psl-text-h5;
+    @apply text-h5;
   }
   h5 {
-    @apply psl-text-h6;
+    @apply text-h6;
   }
 }
 
