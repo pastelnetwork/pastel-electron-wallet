@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
@@ -24,16 +24,20 @@ export function GeneralInfoStep(): JSX.Element {
 
   const categoriesOptions = [
     { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' }
+    { value: 'option2', label: 'Option 2' },
+    { value: 'option3', label: 'Option 3' },
+    { value: 'option4', label: 'Option 4' },
+    { value: 'option5', label: 'Option 5' },
+    { value: 'option6', label: 'Option 6' },
   ]
 
   const compensationOptions = [
     { value: 'royalty', label: 'Royalty' },
-    { value: 'option2', label: 'Option 2' }
+    { value: 'option2', label: 'Option 2' },
   ]
 
-  let [copies, setCountOne] = useState(10);
-  let [royaltyPercent, setCountTwo] = useState(10);
+  let [copies, setCountOne] = useState(10)
+  let [royaltyPercent, setCountTwo] = useState(10)
 
   function onSubmit(data: IArtRegFormData) {
     dispatch(setFormData(data))
@@ -69,21 +73,49 @@ export function GeneralInfoStep(): JSX.Element {
       <div className={styles.artRegFormCloseButton}></div>
 
       <div className={styles.artRegFormInputContainer}>
-        <div className={styles.artRegFormInputTitle}>
-          <FormControl title='Title'>
-            <Input
-              {...register('title')}
-              placeholder='The Starry Night'
-              defaultValue={title}
-              onChange={() => null}
-            />
-          </FormControl>
+        <div className={styles.artRegFormRow}>
+          <div className={styles.artRegFormInputTitle}>
+            <FormControl title='Title'>
+              <Input
+                {...register('title')}
+                placeholder='The Starry Night'
+                defaultValue={title}
+                onChange={() => null}
+              />
+            </FormControl>
+          </div>
         </div>
 
-        <div className={styles.artRegFormInputCategoryContainer}>
+        <div className={styles.artRegFormRow}>
           <div className={styles.artRegFormInputCategory}>
             <FormControl title='Category'>
-              <Select isMulti className={styles.artRegFormInputCategorySelect} options={categoriesOptions} />
+              <Select
+                isMulti
+                className={styles.artRegFormInputCategorySelect}
+                classNamePrefix='react-select'
+                options={categoriesOptions}
+                styles={{
+                  valueContainer: base => ({
+                    ...base,
+                    minHeight: '36px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'flex-start',
+                  }),
+                  multiValue: base => ({
+                    ...base,
+                    backgroundColor: '#718096',
+                    borderRadius: '12px',
+                    padding: '0px 8px',
+                    lineHeight: '24px',
+                  }),
+                  multiValueLabel: base => ({
+                    ...base,
+                    color: '#F8F8FA',
+                  }),
+                }}
+              />
             </FormControl>
           </div>
 
@@ -123,7 +155,7 @@ export function GeneralInfoStep(): JSX.Element {
           </div>
         </div>
 
-        <div className={styles.artRegFormInputCopiesContainer}>
+        <div className={styles.artRegFormRow}>
           <div className={styles.artRegFormInputCopies}>
             <FormControl title='Copies'>
               <Input
@@ -134,22 +166,55 @@ export function GeneralInfoStep(): JSX.Element {
               />
             </FormControl>
 
-            <div className={styles.artRegFormInputCopiesStepperPlus} onClick={() => setCountOne(copies + 10)}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99981 10.002L9.99922 6.88307C9.99922 6.65266 10.186 6.46587 10.4164 6.46587C10.6468 6.46587 10.8336 6.65266 10.8336 6.88307L10.833 10.002L13.9519 10.0014C14.1824 10.0014 14.3691 10.1882 14.3691 10.4186C14.3691 10.649 14.1824 10.8358 13.9519 10.8358L10.833 10.8352L10.8336 13.9541C10.8336 14.1845 10.6468 14.3713 10.4164 14.3713C10.186 14.3713 9.99922 14.1845 9.99922 13.9541L9.99981 10.8352L6.88088 10.8358C6.65047 10.8358 6.46368 10.649 6.46368 10.4186C6.46368 10.1882 6.65047 10.0014 6.88088 10.0014L9.99981 10.002ZM10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346Z" fill="#334D6E"/>
+            <div
+              className={styles.artRegFormInputCopiesStepperPlus}
+              onClick={() => setCountOne(copies + 10)}
+            >
+              <svg
+                width='20'
+                height='20'
+                viewBox='0 0 20 20'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  clip-rule='evenodd'
+                  d='M9.99981 10.002L9.99922 6.88307C9.99922 6.65266 10.186 6.46587 10.4164 6.46587C10.6468 6.46587 10.8336 6.65266 10.8336 6.88307L10.833 10.002L13.9519 10.0014C14.1824 10.0014 14.3691 10.1882 14.3691 10.4186C14.3691 10.649 14.1824 10.8358 13.9519 10.8358L10.833 10.8352L10.8336 13.9541C10.8336 14.1845 10.6468 14.3713 10.4164 14.3713C10.186 14.3713 9.99922 14.1845 9.99922 13.9541L9.99981 10.8352L6.88088 10.8358C6.65047 10.8358 6.46368 10.649 6.46368 10.4186C6.46368 10.1882 6.65047 10.0014 6.88088 10.0014L9.99981 10.002ZM10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346Z'
+                  fill='#334D6E'
+                />
               </svg>
             </div>
 
-            <div className={styles.artRegFormInputCopiesStepperMinus} onClick={() => setCountOne(copies - 10)}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346ZM7.08268 10.8346C6.85256 10.8346 6.66602 10.6481 6.66602 10.418C6.66602 10.1878 6.85256 10.0013 7.08268 10.0013H13.7493C13.9795 10.0013 14.166 10.1878 14.166 10.418C14.166 10.6481 13.9795 10.8346 13.7493 10.8346H7.08268Z" fill="#334D6E"/>
+            <div
+              className={styles.artRegFormInputCopiesStepperMinus}
+              onClick={() => setCountOne(copies - 10)}
+            >
+              <svg
+                width='20'
+                height='20'
+                viewBox='0 0 20 20'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  clip-rule='evenodd'
+                  d='M10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346ZM7.08268 10.8346C6.85256 10.8346 6.66602 10.6481 6.66602 10.418C6.66602 10.1878 6.85256 10.0013 7.08268 10.0013H13.7493C13.9795 10.0013 14.166 10.1878 14.166 10.418C14.166 10.6481 13.9795 10.8346 13.7493 10.8346H7.08268Z'
+                  fill='#334D6E'
+                />
               </svg>
             </div>
           </div>
 
           <div className={styles.artRegFormInputCompensation}>
             <FormControl title='Compensation'>
-              <Select isMulti {...register('compensation')} className={styles.artRegFormInputCategorySelect} options={compensationOptions} />
+              <Select
+                isMulti
+                {...register('compensation')}
+                className={styles.artRegFormInputCompensationSelect}
+                options={compensationOptions}
+              />
             </FormControl>
           </div>
 
@@ -163,70 +228,121 @@ export function GeneralInfoStep(): JSX.Element {
               />
             </FormControl>
 
-            <div className={styles.artRegFormInputCopiesStepperPlus} onClick={() => setCountTwo(royaltyPercent + 1)}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.99981 10.002L9.99922 6.88307C9.99922 6.65266 10.186 6.46587 10.4164 6.46587C10.6468 6.46587 10.8336 6.65266 10.8336 6.88307L10.833 10.002L13.9519 10.0014C14.1824 10.0014 14.3691 10.1882 14.3691 10.4186C14.3691 10.649 14.1824 10.8358 13.9519 10.8358L10.833 10.8352L10.8336 13.9541C10.8336 14.1845 10.6468 14.3713 10.4164 14.3713C10.186 14.3713 9.99922 14.1845 9.99922 13.9541L9.99981 10.8352L6.88088 10.8358C6.65047 10.8358 6.46368 10.649 6.46368 10.4186C6.46368 10.1882 6.65047 10.0014 6.88088 10.0014L9.99981 10.002ZM10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346Z" fill="#334D6E"/>
+            <div
+              className={styles.artRegFormInputCopiesStepperPlus}
+              onClick={() => setCountTwo(royaltyPercent + 1)}
+            >
+              <svg
+                width='20'
+                height='20'
+                viewBox='0 0 20 20'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  clip-rule='evenodd'
+                  d='M9.99981 10.002L9.99922 6.88307C9.99922 6.65266 10.186 6.46587 10.4164 6.46587C10.6468 6.46587 10.8336 6.65266 10.8336 6.88307L10.833 10.002L13.9519 10.0014C14.1824 10.0014 14.3691 10.1882 14.3691 10.4186C14.3691 10.649 14.1824 10.8358 13.9519 10.8358L10.833 10.8352L10.8336 13.9541C10.8336 14.1845 10.6468 14.3713 10.4164 14.3713C10.186 14.3713 9.99922 14.1845 9.99922 13.9541L9.99981 10.8352L6.88088 10.8358C6.65047 10.8358 6.46368 10.649 6.46368 10.4186C6.46368 10.1882 6.65047 10.0014 6.88088 10.0014L9.99981 10.002ZM10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346Z'
+                  fill='#334D6E'
+                />
               </svg>
             </div>
 
-            <div className={styles.artRegFormInputCopiesStepperMinus} onClick={() => setCountTwo(royaltyPercent - 1)}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346ZM7.08268 10.8346C6.85256 10.8346 6.66602 10.6481 6.66602 10.418C6.66602 10.1878 6.85256 10.0013 7.08268 10.0013H13.7493C13.9795 10.0013 14.166 10.1878 14.166 10.418C14.166 10.6481 13.9795 10.8346 13.7493 10.8346H7.08268Z" fill="#334D6E"/>
-              </svg>
-            </div> 
-          </div>
-        </div>
-
-        <div className={styles.artRegFormInputExternalProfile}>
-          <FormControl title='Extenral Profile'>
-            <Input
-              {...register('externalProfile')}
-              placeholder='https://behance.com/'
-              defaultValue={externalProfile}
-            />
-          </FormControl>
-        </div>
-
-        <div className={styles.artRegFormInputDescription}>
-          <div className={styles.artRegFormInputDescriptionControls}>
-            <input id='switch-1' type='checkbox' className={styles.artRegFormInputDescriptionControlsCheckbox} />
-            <label className={styles.artRegFormInputDescriptionControlsCheckboxLabel} htmlFor="switch-1">
-              <div className={styles.artRegFormInputDescriptionControlsCheckboxButton}>
-                <div className={styles.artRegFormInputDescriptionControlsCheckboxButtonSwitch}></div>
-              </div>
-            </label>
-          </div>
-          <div className={styles.artRegFormInputDescriptionControlsLabel}>
-            Green
-          </div>
-          <div className={styles.artRegFormInputDescriptionControlsInfo}>
-            <svg
-              width='20'
-              height='20'
-              viewBox='0 0 20 20'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
+            <div
+              className={styles.artRegFormInputCopiesStepperMinus}
+              onClick={() => setCountTwo(royaltyPercent - 1)}
             >
-              <path
-                d='M10 0.9375C5 0.9375 0.9375 5 0.9375 10C0.9375 15 5 19.0625 10 19.0625C15 19.0625 19.0625 15 19.0625 10C19.0625 5 15 0.9375 10 0.9375ZM10 1.875C14.4844 1.875 18.125 5.51562 18.125 10C18.125 14.4844 14.4844 18.125 10 18.125C5.51562 18.125 1.875 14.4844 1.875 10C1.875 5.51562 5.51562 1.875 10 1.875ZM10 5.9375C9.73438 5.9375 9.53125 6.14062 9.53125 6.40625V7.1875C9.53125 7.45312 9.73438 7.65625 10 7.65625C10.2656 7.65625 10.4688 7.45312 10.4688 7.1875V6.40625C10.4688 6.14062 10.2656 5.9375 10 5.9375ZM10 9.0625C9.73438 9.0625 9.53125 9.26562 9.53125 9.53125V13.5938C9.53125 13.8594 9.73438 14.0625 10 14.0625C10.2656 14.0625 10.4688 13.8594 10.4688 13.5938V9.53125C10.4688 9.26562 10.2656 9.0625 10 9.0625Z'
-                fill='#8E98A3'
-              />
-            </svg>
+              <svg
+                width='20'
+                height='20'
+                viewBox='0 0 20 20'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  fill-rule='evenodd'
+                  clip-rule='evenodd'
+                  d='M10.416 19.168C5.58352 19.168 1.66602 15.2505 1.66602 10.418C1.66602 5.58547 5.58352 1.66797 10.416 1.66797C15.2485 1.66797 19.166 5.58547 19.166 10.418C19.166 15.2505 15.2485 19.168 10.416 19.168ZM10.416 18.3346C14.7883 18.3346 18.3327 14.7902 18.3327 10.418C18.3327 6.04571 14.7883 2.5013 10.416 2.5013C6.04376 2.5013 2.49935 6.04571 2.49935 10.418C2.49935 14.7902 6.04376 18.3346 10.416 18.3346ZM7.08268 10.8346C6.85256 10.8346 6.66602 10.6481 6.66602 10.418C6.66602 10.1878 6.85256 10.0013 7.08268 10.0013H13.7493C13.9795 10.0013 14.166 10.1878 14.166 10.418C14.166 10.6481 13.9795 10.8346 13.7493 10.8346H7.08268Z'
+                  fill='#334D6E'
+                />
+              </svg>
+            </div>
           </div>
-          <FormControl title='Description'>
-            <Textarea
-              {...register('description')}
-              defaultValue={description}
-              placeholder=''
-            />
-          </FormControl>
         </div>
 
-        <Button
-          text='Go to preview'
-          type='submit'
-          className={styles.artRegFormSubmit}
-        />
+        <div className={styles.artRegFormRow}>
+          <div className={styles.artRegFormInputExternalProfile}>
+            <FormControl title='Extenral Profile'>
+              <Input
+                {...register('externalProfile')}
+                placeholder='https://behance.com/'
+                defaultValue={externalProfile}
+              />
+            </FormControl>
+          </div>
+        </div>
+
+        <div className={styles.artRegFormRow}>
+          <div className={styles.artRegFormInputDescription}>
+            <div className={styles.artRegFormInputDescriptionControls}>
+              <input
+                id='switch-1'
+                type='checkbox'
+                className={styles.artRegFormInputDescriptionControlsCheckbox}
+              />
+              <label
+                className={
+                  styles.artRegFormInputDescriptionControlsCheckboxLabel
+                }
+                htmlFor='switch-1'
+              >
+                <div
+                  className={
+                    styles.artRegFormInputDescriptionControlsCheckboxButton
+                  }
+                >
+                  <div
+                    className={
+                      styles.artRegFormInputDescriptionControlsCheckboxButtonSwitch
+                    }
+                  ></div>
+                </div>
+              </label>
+            </div>
+            <div className={styles.artRegFormInputDescriptionControlsLabel}>
+              Green
+            </div>
+            <div className={styles.artRegFormInputDescriptionControlsInfo}>
+              <svg
+                width='20'
+                height='20'
+                viewBox='0 0 20 20'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
+              >
+                <path
+                  d='M10 0.9375C5 0.9375 0.9375 5 0.9375 10C0.9375 15 5 19.0625 10 19.0625C15 19.0625 19.0625 15 19.0625 10C19.0625 5 15 0.9375 10 0.9375ZM10 1.875C14.4844 1.875 18.125 5.51562 18.125 10C18.125 14.4844 14.4844 18.125 10 18.125C5.51562 18.125 1.875 14.4844 1.875 10C1.875 5.51562 5.51562 1.875 10 1.875ZM10 5.9375C9.73438 5.9375 9.53125 6.14062 9.53125 6.40625V7.1875C9.53125 7.45312 9.73438 7.65625 10 7.65625C10.2656 7.65625 10.4688 7.45312 10.4688 7.1875V6.40625C10.4688 6.14062 10.2656 5.9375 10 5.9375ZM10 9.0625C9.73438 9.0625 9.53125 9.26562 9.53125 9.53125V13.5938C9.53125 13.8594 9.73438 14.0625 10 14.0625C10.2656 14.0625 10.4688 13.8594 10.4688 13.5938V9.53125C10.4688 9.26562 10.2656 9.0625 10 9.0625Z'
+                  fill='#8E98A3'
+                />
+              </svg>
+            </div>
+            <FormControl title='Description'>
+              <Textarea
+                {...register('description')}
+                defaultValue={description}
+                placeholder=''
+              />
+            </FormControl>
+          </div>
+        </div>
+
+        <div className={styles.artRegFormRow}>
+          <Button
+            text='Go to preview'
+            type='submit'
+            className={styles.artRegFormSubmit}
+          />
+        </div>
       </div>
     </form>
   )
