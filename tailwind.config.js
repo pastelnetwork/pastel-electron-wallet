@@ -39,6 +39,7 @@ module.exports = {
         //24px: 6 default
         '25px': '1.563rem',
         '26px': '1.625rem',
+        '27px': '1.688rem',
         //28px: 7 default
         '30px': '1.875rem',
         //32px: 8 default
@@ -89,6 +90,7 @@ module.exports = {
         '352px': '22rem',
         //384px: 96 default
         '427px': '26.688rem',
+        '553px': '34.563rem',
       },
       colors: {
         success: {

@@ -140,7 +140,7 @@ const WalletScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className='bg-white mt-3.5'>
+        <div className='bg-white mt-3.5 h-553px'>
           <div className='flex justify-end mr-58px pt-18px items-center'>
             <span className='text-gray-33 text-lg'>Total:</span>
             <span className='text-blue-3f font-extrabold text-h3 ml-3'>
@@ -153,9 +153,9 @@ const WalletScreen: React.FC = () => {
             </span>
           </div>
           <div className='mb-15px ml-9'>
-            <table>
+            <table className='ml-9'>
               {walletdatas.map((data: IDataType, index: number) => (
-                <tr className='mt-26px ml-31px flex'>
+                <tr className='pt-18px pb-19px ml-31px flex border-b border-line-DEFAULT'>
                   <td className='flex items-center'>
                     <Checkbox
                       isChecked={isChecked}
@@ -171,22 +171,24 @@ const WalletScreen: React.FC = () => {
                   <td className='flex items-center ml-75px'>
                     <img src={viewIcon} />
                   </td>
-                  <td>
+                  <td className='flex items-center'>
                     <span className='text-gray-a0 ml-117px'>{data.time}</span>
                   </td>
-                  <td>
+                  <td className='flex items-center'>
                     <span className='text-gray-a0 ml-86px'>viewing key</span>
                   </td>
-                  <td>
+                  <td className='flex items-center'>
                     <span className='text-gray-a0 ml-59px'>private key</span>
                   </td>
-                  <td>
-                    <AutoComplete
-                      selected={{ value: '20000' }}
-                      startNumber={20000}
-                      endNumber={24000}
-                      diffNumber={2000}
-                    />
+                  <td className='flex items-center ml-60px'>
+                    <div>
+                      <AutoComplete
+                        selected={{ value: '20000' }}
+                        startNumber={20000}
+                        endNumber={24000}
+                        diffNumber={2000}
+                      />
+                    </div>
                   </td>
                 </tr>
               ))}
