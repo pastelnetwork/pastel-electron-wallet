@@ -46,7 +46,7 @@ body {
   position: relative;
   color: white;
   background-color: #212124;
-  font-family: Avenir;
+  font-family: Avenir, Roboto, Arial, serif;
 }
 
 ::-webkit-scrollbar {

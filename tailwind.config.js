@@ -15,7 +15,7 @@ module.exports = {
       '2xl': '1700px',
     },
     fontFamily: {
-      body: 'Roboto, Arial, Helvetica, Helvetica Neue, serif',
+      body: 'Avenir, Roboto, Arial, serif',
     },
     extend: {
       spacing: {
@@ -96,6 +96,7 @@ module.exports = {
         navigation: {
           DEFAULT: '#A6B0C2',
           selected: '#334D6E',
+          background: '#E6E8EC',
         },
         tab: {
           active: '#353945',
@@ -103,6 +104,10 @@ module.exports = {
         },
         line: {
           DEFAULT: '#F2F4F7',
+        },
+        icon: {
+          DEFAULT: '#8E98A3',
+          active: '#334D6E',
         },
         background: {
           onboarding: '#FCFCFD',

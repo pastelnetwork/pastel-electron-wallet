@@ -10,6 +10,7 @@ import { pastelPriceReducer } from '../features/pastelPrice'
 import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEditorTool'
 import { squooshToolModalReducer } from '../features/squooshTool'
 import { updateToastReducer } from '../features/updateToast'
+import { glitchImageModalReducer } from '../features/glitchImage'
 
 const store = configureStore({
   reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
     aboutModal: aboutModalReducer,
     updateToast: updateToastReducer,
     squooshToolModal: squooshToolModalReducer,
+    glitchImageModal: glitchImageModalReducer,
   },
 })
 
