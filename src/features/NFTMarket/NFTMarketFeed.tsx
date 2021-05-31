@@ -99,9 +99,7 @@ const NFTMarketFeed: React.FC = () => {
           </div>
           <div className='flex'>
             <div className='flex h-full items-center justify-end'>
-              <p className='text-h6 pl-5.5 pr-2 text-text-gray800'>
-                Price range:
-              </p>
+              <p className='text-h6 pl-22px pr-2 text-gray-2d'>Price range:</p>
 
               <Slider
                 min={100}
@@ -114,7 +112,7 @@ const NFTMarketFeed: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-text-gray900'>
+        <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-gray-1a'>
           {Array.from({ length: 6 }).map(() => (
             <NFTCard {...mockCardProps} />
           ))}

@@ -6,6 +6,6 @@ export interface NFTCardProps {
   likes: number
   price: number | string
   onSale: boolean
-  // listed ?
+  // isListed ?
   // 5/10 ?
 }

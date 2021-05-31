@@ -30,7 +30,7 @@
 @layer components {
   /* Used to wrapp main routes  */
   .wrapper {
-    @apply px-4 xl:px-15 xl:container pt-4;
+    @apply px-4 md:px-60px xl:container pt-4;
   }
 }
 
@@ -45,32 +45,14 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-}
-@layer utilities {
   .flex-center {
     @apply flex justify-center items-center;
   }
 }
+
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
-
-html {
-  overflow: hidden;
-}
-html,
-body,
-#root {
-  min-height: 100vh;
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  position: relative;
-  color: white;
-  background-color: #212124;
-  font-family: Roboto, Arial, Helvetica, Helvetica Neue, serif;
-}
+@import '/src/common/assets/fonts/font.css';
 
 ::-webkit-scrollbar {
   width: 0.5em;
@@ -85,31 +67,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: white;
   outline: 1px solid slategrey;
-}
-
-h2 {
-  margin: 0;
-  font-size: 2.25rem;
-  font-weight: bold;
-  letter-spacing: -0.025em;
-  color: #fff;
-}
-
-p {
-  font-size: 12px;
-}
-
-li {
-  list-style: none;
-}
-
-a {
-  color: white;
-  text-decoration: none;
-}
-
-input[disabled] {
-  color: grey;
 }
 
 .react-tabs {

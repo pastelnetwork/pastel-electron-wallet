@@ -23,7 +23,7 @@ export default {
 }
 
 export const NFTCard: React.FC = () => (
-  <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-text-gray900'>
+  <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-gray-1a'>
     <NFTCardComponent {...mockCardProps} />
   </div>
 )

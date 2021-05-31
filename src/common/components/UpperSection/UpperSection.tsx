@@ -27,7 +27,7 @@ export interface UpperSectionProps {
  */
 const UpperSection = (props: UpperSectionProps): JSX.Element => {
   return (
-    <div className='bg-white text-text-gray900'>
+    <div className='bg-white text-gray-1a'>
       <div className='wrapper py-30px'>
         <div className='flex justify-between'>
           <div className='flex items-center'>
@@ -35,8 +35,7 @@ const UpperSection = (props: UpperSectionProps): JSX.Element => {
             {props.routes.map(route => (
               <div
                 className={cn({
-                  'mr-6 rounded-3xl bg-text-gray800 px-3 py-1':
-                    route.isSelected,
+                  'mr-6 rounded-3xl bg-gray-2d px-3 py-1': route.isSelected,
                 })}
               >
                 <a

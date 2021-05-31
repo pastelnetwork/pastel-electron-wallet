@@ -11,6 +11,7 @@ import Dashboard from './components/Dashboard'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
+import HeaderScreen from '../common/components/Header'
 import {
   AddressBalance,
   TotalBalance,
@@ -489,178 +490,171 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
 
-        <div
-          style={{
-            height: '100%',
-          }}
-        >
-          {info && info.version && (
-            <div className={cstyles.sidebarcontainer}>
-              <Sidebar
-                info={info}
-                setSendTo={this.setSendTo}
-                getPrivKeyAsString={this.getPrivKeyAsString}
-                importPrivKeys={this.importPrivKeys}
-                importANIPrivKeys={this.importANIPrivKeys}
-                addresses={addresses}
-                transactions={transactions}
-                openPastelSpriteEditorToolModal={
-                  this.props.openPastelSpriteEditorToolModal
-                }
-                {...(standardProps as any)}
-                openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
-                openAboutModal={this.props.openAboutModal}
-                openUpdateToast={this.props.openUpdateToast}
-                openSquooshToolModal={this.props.openSquooshToolModal}
-              />
-            </div>
-          )}
-          <div className={cstyles.contentcontainer}>
-            <Switch>
-              <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
-
-              <Route
-                path={routes.SEND}
-                render={() => (
-                  <Send
-                    addressesWithBalance={addressesWithBalance}
-                    sendTransaction={this.sendTransaction}
-                    sendPageState={sendPageState}
-                    setSendPageState={this.setSendPageState}
-                    addressBook={addressBook}
-                    {...standardProps}
-                  />
-                )}
-              />
-              <Route
-                path={routes.RECEIVE}
-                render={() => (
-                  <Receive
-                    rerenderKey={receivePageState.rerenderKey}
-                    addresses={addresses}
-                    addressesWithBalance={addressesWithBalance}
-                    addressPrivateKeys={addressPrivateKeys}
-                    addressViewKeys={addressViewKeys}
-                    receivePageState={receivePageState}
-                    addressBook={addressBook}
-                    transactions={transactions}
-                    {...standardProps}
-                    fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
-                    hidePrivKey={this.hidePrivKey}
-                    fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
-                    createNewAddress={this.createNewAddress}
-                  />
-                )}
-              />
-              <Route
-                path={routes.ADDRESSBOOK}
-                render={() => (
-                  <AddressBook
-                    addressBook={addressBook}
-                    addAddressBookEntry={this.addAddressBookEntry}
-                    removeAddressBookEntry={this.removeAddressBookEntry}
-                    {...standardProps}
-                  />
-                )}
-              />
-              <Route
-                path={routes.DASHBOARD}
-                render={() => (
-                  <Dashboard
-                    totalBalance={totalBalance}
-                    info={info}
-                    addressesWithBalance={addressesWithBalance}
-                  />
-                )}
-              />
-              <Route
-                path={routes.TRANSACTIONS}
-                render={() => (
-                  <Transactions
-                    transactions={transactions}
-                    info={info}
-                    addressBook={addressBook}
-                    setSendTo={this.setSendTo}
-                  />
-                )}
-              />
-
-              <Route path={routes.CREATOR} render={() => <Creator />} />
-
-              <Route path={routes.COLLECTOR} render={() => <Collector />} />
-
-              <Route path={routes.NFT} render={() => <Nft />} />
-
-              <Route
-                path={routes.PASTELD}
-                render={() => <Pasteld info={info} refresh={this.doRefresh} />}
-              />
-
-              <Route
-                path={routes.PASTEL_ID}
-                render={() => (
-                  <PastelID
-                    addressesWithBalance={addressesWithBalance}
-                    createNewAddress={this.createNewAddress}
-                    totalBalance={totalBalance}
-                    info={info}
-                  />
-                )}
-              />
-
-              <Route
-                path={routes.CONNECTMOBILE}
-                render={() => (
-                  <WormholeConnection
-                    companionAppListener={this.companionAppListener}
-                    connectedCompanionApp={connectedCompanionApp}
-                  />
-                )}
-              />
-
-              <Route
-                path={routes.EXPERT_CONSOLE}
-                render={() => (
-                  <ExpertConsole
-                    totalBalance={totalBalance}
-                    info={info}
-                    addressesWithBalance={addressesWithBalance}
-                    transactions={transactions}
-                    addressPrivateKeys={addressPrivateKeys}
-                    connectedCompanionApp={connectedCompanionApp}
-                    pastelIDs={pastelIDs}
-                  />
-                )}
-              />
-
-              <Route
-                path={routes.LOADING}
-                render={props => (
-                  <LoadingScreen
-                    {...props}
-                    setRPCConfig={(rpcConfig: any) => {
-                      // To support Redux calls
-                      this.props.setPastelConf({
-                        url: rpcConfig.url,
-                        username: rpcConfig.username,
-                        password: rpcConfig.password,
-                      })
-
-                      // To support legacy calls
-                      // TODO Remove then fully moved over to Redux
-                      this.setRPCConfig(rpcConfig)
-
-                      // set pastel DB thread update timer
-                      setInterval(() => {
-                        PastelDBThread(rpcConfig)
-                      }, period)
-                    }}
-                    setInfo={this.setInfo}
-                  />
-                )}
-              />
-            </Switch>
+        {info && info.version && (
+          <div className={cstyles.sidebarcontainer}>
+            <HeaderScreen
+            // info={info}
+            // setSendTo={this.setSendTo}
+            // getPrivKeyAsString={this.getPrivKeyAsString}
+            // importPrivKeys={this.importPrivKeys}
+            // importANIPrivKeys={this.importANIPrivKeys}
+            // addresses={addresses}
+            // transactions={transactions}
+            // openPastelSpriteEditorToolModal={
+            //   this.props.openPastelSpriteEditorToolModal
+            // }
+            // {...(standardProps as any)}
+            // openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
+            // openAboutModal={this.props.openAboutModal}
+            // openUpdateToast={this.props.openUpdateToast}
+            // openSquooshToolModal={this.props.openSquooshToolModal}
+            />
           </div>
+        )}
+        <div className={cstyles.contentcontainer}>
+          <Switch>
+            <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
+            <Route
+              path={routes.SEND}
+              render={() => (
+                <Send
+                  addressesWithBalance={addressesWithBalance}
+                  sendTransaction={this.sendTransaction}
+                  sendPageState={sendPageState}
+                  setSendPageState={this.setSendPageState}
+                  addressBook={addressBook}
+                  {...standardProps}
+                />
+              )}
+            />
+            <Route
+              path={routes.RECEIVE}
+              render={() => (
+                <Receive
+                  rerenderKey={receivePageState.rerenderKey}
+                  addresses={addresses}
+                  addressesWithBalance={addressesWithBalance}
+                  addressPrivateKeys={addressPrivateKeys}
+                  addressViewKeys={addressViewKeys}
+                  receivePageState={receivePageState}
+                  addressBook={addressBook}
+                  transactions={transactions}
+                  {...standardProps}
+                  fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
+                  hidePrivKey={this.hidePrivKey}
+                  fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
+                  createNewAddress={this.createNewAddress}
+                />
+              )}
+            />
+            <Route
+              path={routes.ADDRESSBOOK}
+              render={() => (
+                <AddressBook
+                  addressBook={addressBook}
+                  addAddressBookEntry={this.addAddressBookEntry}
+                  removeAddressBookEntry={this.removeAddressBookEntry}
+                  {...standardProps}
+                />
+              )}
+            />
+            <Route
+              path={routes.DASHBOARD}
+              render={() => (
+                <Dashboard
+                  totalBalance={totalBalance}
+                  info={info}
+                  addressesWithBalance={addressesWithBalance}
+                />
+              )}
+            />
+            <Route
+              path={routes.TRANSACTIONS}
+              render={() => (
+                <Transactions
+                  transactions={transactions}
+                  info={info}
+                  addressBook={addressBook}
+                  setSendTo={this.setSendTo}
+                />
+              )}
+            />
+
+            <Route path={routes.CREATOR} render={() => <Creator />} />
+
+            <Route path={routes.COLLECTOR} render={() => <Collector />} />
+
+            <Route path={routes.NFT} render={() => <Nft />} />
+
+            <Route
+              path={routes.PASTELD}
+              render={() => <Pasteld info={info} refresh={this.doRefresh} />}
+            />
+
+            <Route
+              path={routes.PASTEL_ID}
+              render={() => (
+                <PastelID
+                  addressesWithBalance={addressesWithBalance}
+                  createNewAddress={this.createNewAddress}
+                  totalBalance={totalBalance}
+                  info={info}
+                />
+              )}
+            />
+
+            <Route
+              path={routes.CONNECTMOBILE}
+              render={() => (
+                <WormholeConnection
+                  companionAppListener={this.companionAppListener}
+                  connectedCompanionApp={connectedCompanionApp}
+                />
+              )}
+            />
+
+            <Route
+              path={routes.EXPERT_CONSOLE}
+              render={() => (
+                <ExpertConsole
+                  totalBalance={totalBalance}
+                  info={info}
+                  addressesWithBalance={addressesWithBalance}
+                  transactions={transactions}
+                  addressPrivateKeys={addressPrivateKeys}
+                  connectedCompanionApp={connectedCompanionApp}
+                  pastelIDs={pastelIDs}
+                />
+              )}
+            />
+
+            <Route
+              path={routes.LOADING}
+              render={props => (
+                <LoadingScreen
+                  {...props}
+                  setRPCConfig={(rpcConfig: any) => {
+                    // To support Redux calls
+                    this.props.setPastelConf({
+                      url: rpcConfig.url,
+                      username: rpcConfig.username,
+                      password: rpcConfig.password,
+                    })
+
+                    // To support legacy calls
+                    // TODO Remove then fully moved over to Redux
+                    this.setRPCConfig(rpcConfig)
+
+                    // set pastel DB thread update timer
+                    setInterval(() => {
+                      PastelDBThread(rpcConfig)
+                    }, period)
+                  }}
+                  setInfo={this.setInfo}
+                />
+              )}
+            />
+          </Switch>
         </div>
       </App>
     )

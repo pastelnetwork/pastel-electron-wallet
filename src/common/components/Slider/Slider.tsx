@@ -6,7 +6,7 @@ const SliderShape = ({
   style,
 }: {
   className?: string
-  style?: React.CSSProperties
+  style?: CSSProperties
 }) => {
   return (
     <svg
@@ -28,21 +28,21 @@ export type SliderProps = {
   min: number
   max: number
   style?: CSSProperties
-  formatValue?(value: number): number | string
-  formatTooltipValue?(value: number): number | string
+  formatValue?: (value: number) => number | string
+  formatTooltipValue?: (value: number) => number | string
 } & (
   | {
       value: number
-      onChange(value: number): void
+      onChange: (value: number) => void
     }
   | {
       values: [number, number]
-      onChange(values: [number, number]): void
+      onChange: (values: [number, number]) => void
     }
 )
 
 const defaultStyle = {
-  width: '311px',
+  width: '19rem',
 }
 
 const defaultFormat = (value: number) => value
@@ -103,7 +103,7 @@ export default function Slider({
         >
           <div className='w-4 h-4 bg-blue-3f rounded-full' />
           <div className='absolute -top-9 flex flex-col items-center'>
-            <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap'>
+            <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white'>
               {formatTooltipValue(value)}
             </div>
             <svg
