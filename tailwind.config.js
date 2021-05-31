@@ -25,6 +25,7 @@ module.exports = {
         //6px: 1.5 default
         //8px: 2 default
         //10px: 2.5 default
+        '11px': '0.688rem',
         //12px: 3 default
         '13px': '0.813rem',
         //14px: 3.5 default
@@ -33,12 +34,14 @@ module.exports = {
         '18px': '1.125rem',
         '19px': '1.188rem',
         //20px: 5 default
+        '21px': '1.313rem',
         '22px': '1.375rem',
         //24px: 6 default
         '26px': '1.625rem',
         //28px: 7 default
         '30px': '1.875rem',
         //32px: 8 default
+        '34px': '2.215rem',
         '35px': '2.188rem',
         //36px: 9 default
         '37px': '2.313rem',
@@ -121,6 +124,7 @@ module.exports = {
           14: '#141416',
           '4e': '#4E5D78',
           93: '#939EAB',
+          57: '#57657B',
         },
         red: {
           '7a': '#FF7A00',
