@@ -14,7 +14,6 @@ export interface TypographyProps {
   variant?: TypographyVariant
   weight?: TypographyWeight
   uppercase?: boolean
-  lineHeight?: number
 }
 
 const Typography: React.FC<TypographyProps> = ({
@@ -23,11 +22,10 @@ const Typography: React.FC<TypographyProps> = ({
   variant = 'body1',
   weight = 400,
   uppercase = false,
-  lineHeight,
 }) => (
   <Styles.Typography
     size={typography[variant].size}
-    lineHeight={lineHeight ? lineHeight : typography[variant].lineHeight}
+    lineHeight={typography[variant].lineHeight}
     weight={weight}
     uppercase={uppercase}
     color={color}

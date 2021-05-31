@@ -58,7 +58,7 @@ const Input: React.FC<IInputProps> = ({
           </Styles.IconContainer>
         )}
       </Styles.InputContainer>
-      {errorMessage && <Styles.Error>{errorMessage}</Styles.Error>}
+      <Styles.Error>{errorMessage}</Styles.Error>
       {hint && (
         <Typography variant='body3' color={colors.text.gray500}>
           {hint}

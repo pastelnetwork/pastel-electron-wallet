@@ -46,7 +46,7 @@ body {
   position: relative;
   color: white;
   background-color: #212124;
-  font-family: Avenir;
+  font-family: Avenir, Roboto, Arial, serif;
 }
 
 ::-webkit-scrollbar {
@@ -145,4 +145,12 @@ input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.focus-visible:focus {
+  outline: none;
+}
+
+.focus-visible:focus-visible {
+  outline: 1px solid #3f9af7;
 }

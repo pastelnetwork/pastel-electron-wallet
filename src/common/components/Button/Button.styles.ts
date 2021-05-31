@@ -7,6 +7,7 @@ interface ButtonProps {
 
 export const Button = styled.button<ButtonProps>`
   font-family: Avenir;
+  min-width: ${({ width }) => width || '385px'};
   color: ${({ $variant, theme }) =>
     $variant === 'transparent'
       ? theme.colors.button.default
