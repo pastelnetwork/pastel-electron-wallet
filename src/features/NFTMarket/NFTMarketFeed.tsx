@@ -58,6 +58,29 @@ const NFTMarketFeed: React.FC = () => {
   const [time, setTime] = useState<Option | null>(mockOptions[0])
   const [rareness, setRareness] = useState<Option | null>(mockOptions[0])
 
+  const filterOptions = [
+    {
+      label: 'Categories',
+      selected: category,
+      onChange: setCategory,
+    },
+    {
+      label: 'Status',
+      selected: status,
+      onChange: setStatus,
+    },
+    {
+      label: 'Time',
+      selected: time,
+      onChange: setTime,
+    },
+    {
+      label: 'Rareness',
+      selected: rareness,
+      onChange: setRareness,
+    },
+  ]
+
   const [range, setRange] = useState(500)
   const formatValue = (value: number) => `${value}K`
 
@@ -71,31 +94,10 @@ const NFTMarketFeed: React.FC = () => {
       <div className='wrapper bg-background-main h-full '>
         {/* Filters */}
         <div className='flex justify-between pb-50px'>
-          <div className='flex space-x-6'>
-            <Select
-              label='Categories'
-              options={mockOptions}
-              selected={category}
-              onChange={setCategory}
-            />
-            <Select
-              label='Status'
-              options={mockOptions}
-              selected={status}
-              onChange={setStatus}
-            />
-            <Select
-              label='Time'
-              options={mockOptions}
-              selected={time}
-              onChange={setTime}
-            />
-            <Select
-              label='Rareness'
-              options={mockOptions}
-              selected={rareness}
-              onChange={setRareness}
-            />
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
+            {filterOptions.map(option => (
+              <Select {...option} options={mockOptions} />
+            ))}
           </div>
           <div className='flex'>
             <div className='flex h-full items-center justify-end'>
