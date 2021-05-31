@@ -50,6 +50,14 @@
   }
 }
 
+body {
+  margin: 0;
+  position: relative;
+  color: white;
+  background-color: #212124;
+  font-family: Avenir, Roboto, Arial, serif;
+}
+
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';

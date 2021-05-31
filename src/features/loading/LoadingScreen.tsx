@@ -120,7 +120,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 
   loadingConfigs = async () => {
     const success = await this.ensurePastelParams()
-
     if (success) {
       await this.loadPastelConf(true)
       this.setupExitHandler()
@@ -153,6 +152,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           'https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves',
         sha256:
           '8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7',
+        originalName: 'sprout-proving.key',
       },
       {
         name: 'sprout-verifying.key',
@@ -295,7 +295,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
   startPasteld = async () => {
     const { pasteldSpawned } = this.state
-
     if (pasteldSpawned) {
       this.setState({
         currentStatus: 'pasteld start failed',
