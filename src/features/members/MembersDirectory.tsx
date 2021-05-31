@@ -5,7 +5,7 @@ import image from '../../common/assets/images/member-image-placeholder.png'
 import Select, { Option } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
-import { UpperSectionSortByOptions } from '../../common/components/PageHeader/PageHeader'
+import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
 const mockMemberStrips: MemberStripProps = {
   memberCard: {
@@ -42,7 +42,7 @@ const MembersDirectory: React.FC = () => {
   const [ranking, setRanking] = useState<Option | null>(null)
   const [sold, setSold] = useState<Option | null>(null)
   const [followers, setFollowers] = useState<Option | null>(null)
-  const upperSectionSortByOptions: UpperSectionSortByOptions[] = [
+  const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
     {
       placeholder: 'Ranking',
       selected: ranking,
@@ -72,7 +72,7 @@ const MembersDirectory: React.FC = () => {
           { label: 'Sellers', isSelected: true },
           { label: 'Buyers' },
         ]}
-        sortByOptions={upperSectionSortByOptions}
+        sortByOptions={pageHeaderSortByOptions}
       />
       <div className='wrapper'>
         <div className='bg-white p-5 rounded-lg'>
