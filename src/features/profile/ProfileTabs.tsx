@@ -8,7 +8,7 @@ const ProfileTabs = (): JSX.Element => {
       </div>
       <div className='psl-cursor-pointer psl-w-24 psl-py-3px psl-px-2px psl-rounded-full psl-text-center psl-text-gray-71 psl-text-sm psl-font-bold psl-flex psl-items-center psl-justify-center'>
         Portfolio
-        <div className='psl-text-10 psl-w-4 psl-h-4 psl-rounded-full psl-bg-gray-400 psl-text-white psl-flex psl-justify-center psl-items-center ml-2'>
+        <div className='psl-text-10 psl-w-4 psl-h-4 psl-rounded-full psl-bg-gray-400 psl-text-white psl-flex psl-justify-center psl-items-center psl-ml-2'>
           7
         </div>
       </div>
