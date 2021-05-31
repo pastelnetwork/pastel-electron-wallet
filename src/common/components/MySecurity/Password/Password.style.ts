@@ -4,10 +4,12 @@ export const InputContainer = styled.div.attrs({
   className: 'relative',
 })``
 
-export const Input = styled.input.attrs({
+export const Input = styled.input.attrs(props => ({
   className: `relative w-full shadow-input h-10 mt-2.5 rounded border 
-  border-solid border-input-border outline-none focus:border-blue-450 box-border px-4 pr-20`,
-})``
+  border-solid border-input-border outline-none focus:border-blue-450 box-border px-4 ${
+    props.color ? props.color : 'pr-10'
+  }`,
+}))``
 
 export const IconButton = styled.img.attrs({
   className: 'absolute top-5 right-3  hover: cursor-pointer w-5 h-5',

@@ -1,5 +1,5 @@
 import React from 'react'
-import { passwordStrength } from 'check-password-strength'
+import { passwordStrength, IPasswordOption } from 'check-password-strength'
 
 import IconEye from '../../../assets/icons/ico-eye.svg'
 import IconEyeHidden from '../../../assets/icons/ico-eye-hidden.svg'
@@ -14,7 +14,7 @@ interface PasswordProps {
   setConfirmPassword: (pass: string) => void
 }
 
-const passOptions = [
+const passOptions: IPasswordOption[] = [
   {
     id: 0,
     value: 'Too weak',
@@ -124,6 +124,7 @@ const Password: React.FC<PasswordProps> = ({
           type={newPasswordVisible ? 'text' : 'password'}
           onChange={checkPasswordStrength}
           value={newPassword}
+          color={'pr-20'}
         />
         {newPassword && (
           <>
