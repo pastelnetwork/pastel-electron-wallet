@@ -6,7 +6,6 @@ module.exports = {
     './src/**/*.jsx',
     './src/**/*.html',
   ],
-  prefix: 'psl-',
   theme: {
     screens: {
       sm: '900px',
@@ -171,7 +170,7 @@ module.exports = {
         15: '0.938rem',
       },
       borderRadius: {
-        '4px': '4px',
+        '4px': '0.25rem',
       },
     },
   },

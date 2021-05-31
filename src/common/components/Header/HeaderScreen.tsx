@@ -13,7 +13,7 @@ import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 import cn from 'classnames'
 
-import Icon from '../Icon/Icon'
+import Icon from '../Icon'
 
 interface IMenuType {
   name: string
@@ -135,7 +135,7 @@ const Header = (props: PropsType) => {
     },
   ]
   return (
-    <div className='flex items-center h-66px bg-white justify-between md:text-14px lg:text-15px xl:text-16px'>
+    <div className='flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display'>
       <div className='flex items-center'>
         <div className='ml-20px md:ml-30px lg:ml-50px xl:ml-60px mr-13px md:mr-20px lg:mr-30px xl:mr-40px w-30px md:w-36px h-30px md:h-36px'>
           <img src={Logo} alt='logo' />
@@ -165,7 +165,7 @@ const Header = (props: PropsType) => {
           <SearhBar />
         </div>
       </div>
-      <div className='flex items-center mr-33'>
+      <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
           <div className='mr-20px md:mr-26px' key={index}>
             <Icon src={icon.src} variant={icon.variant} />
