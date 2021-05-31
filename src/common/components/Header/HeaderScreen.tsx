@@ -12,7 +12,7 @@ import MessageIcon from '../../assets/icons/ico-msg.svg'
 import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 
-import Icon from '../Icon/Icon'
+import Icon from '../Icon'
 
 interface IMenuType {
   name: string
@@ -44,7 +44,7 @@ const SidebarMenuItem = ({
       className={[
         styles.headermenuitem,
         activeColorClass,
-        'mr-8px md:mr-13px lg:mr-28px',
+        'psl-mr-8px md:psl-mr-13px lg:psl-mr-28px',
         style,
       ].join(' ')}
     >
@@ -58,10 +58,10 @@ const SidebarMenuItem = ({
 const SearhBar = () => {
   const placeholder = 'Search creator or NFT'
   return (
-    <div className='flex relative'>
+    <div className='psl-flex psl-relative'>
       <img width='16' className={styles.searchIconPosition} src={searchIcon} />
       <input
-        className='h-41px bg-gray-110 rounded-full pl-46px md:w-300px lg:w-300px xl:w-352px'
+        className='psl-h-41px psl-bg-gray-110 psl-rounded-full psl-pl-46px md:psl-w-300px lg:psl-w-300px xl:psl-w-352px'
         placeholder={`${placeholder}`}
       />
     </div>
@@ -106,25 +106,25 @@ const Header = (props: PropsType) => {
       name: 'Dashboard',
       routeName: routes.DASHBOARD,
       currentRoute: location.pathname,
-      style: 'xl:mr-35px',
+      style: 'xl:psl-mr-35px',
     },
     {
       name: 'NFTs',
       routeName: routes.SEND,
       currentRoute: location.pathname,
-      style: 'xl:mr-37px',
+      style: 'xl:psl-mr-37px',
     },
     {
       name: 'Members',
       routeName: routes.RECEIVE,
       currentRoute: location.pathname,
-      style: 'xl:mr-28px',
+      style: 'xl:psl-mr-28px',
     },
     {
       name: 'Wallet',
       routeName: routes.TRANSACTIONS,
       currentRoute: location.pathname,
-      style: 'xl:mr-35px',
+      style: 'xl:psl-mr-35px',
     },
     {
       name: 'Portfolio',
@@ -138,12 +138,12 @@ const Header = (props: PropsType) => {
     },
   ]
   return (
-    <div className='flex items-center h-66px bg-white justify-between md:text-14px lg:text-15px xl:text-16px font-display'>
-      <div className='flex items-center'>
-        <div className='ml-20px md:ml-30px lg:ml-50px xl:ml-60px mr-13px md:mr-20px lg:mr-30px xl:mr-40px w-30px md:w-36px h-30px md:h-36px'>
+    <div className='psl-flex psl-items-center psl-h-66px psl-bg-white psl-justify-between md:psl-text-h6 lg:psl-text-15 xl:psl-text-h5 psl-font-display'>
+      <div className='psl-flex psl-items-center'>
+        <div className='psl-ml-20px md:psl-ml-30px lg:psl-ml-50px xl:psl-ml-60px psl-mr-13px md:psl-mr-20px lg:psl-mr-30px xl:psl-mr-40px psl-w-30px md:psl-w-36px psl-h-30px md:psl-h-36px'>
           <img src={Logo} alt='logo' />
         </div>
-        <div className='flex'>
+        <div className='psl-flex'>
           {sidebar_items.map((item, index) => (
             <SidebarMenuItem
               key={index}
@@ -153,24 +153,26 @@ const Header = (props: PropsType) => {
               style={item.style}
             />
           ))}
-          <div className='md:ml-13px lg:ml-40px xl:ml-50px'>
-            <Link to='#' className='flex items-center'>
+          <div className='md:psl-ml-13px lg:psl-ml-40px xl:psl-ml-50px'>
+            <Link to='#' className='psl-flex psl-items-center'>
               <img
                 src={addBtn}
-                className='w-20px h-20px mr-2px md:mr-8px'
+                className='psl-w-20px psl-h-20px psl-mr-2px md:psl-mr-8px'
                 alt='add button'
               ></img>
-              <span className='text-blue-450 whitespace-nowrap'>new NFT</span>
+              <span className='psl-text-blue-450 psl-whitespace-nowrap'>
+                new NFT
+              </span>
             </Link>
           </div>
         </div>
-        <div className='ml-20px md:ml-40px lg:ml-50px xl:ml-68px md:mr-8px lg:mr-8px xl:mr-8px'>
+        <div className='psl-ml-20px md:psl-ml-40px lg:psl-ml-50px xl:psl-ml-68px md:psl-mr-8px lg:psl-mr-8px xl:psl-mr-8px'>
           <SearhBar />
         </div>
       </div>
-      <div className='flex items-center mr-33'>
+      <div className='psl-flex psl-items-center psl-mr-33px'>
         {icons.map((icon, index) => (
-          <div className='mr-20px md:mr-26px' key={index}>
+          <div className='psl-mr-20px md:psl-mr-26px' key={index}>
             <Icon src={icon.src} variant={icon.variant} />
           </div>
         ))}

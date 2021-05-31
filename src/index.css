@@ -6,26 +6,29 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply psl-text-h1 psl-leading-10 psl-font-extrabold;
+  }
+  h2 {
+    @apply psl-text-h2 psl-leading-8 psl-font-extrabold;
+  }
+  h3 {
+    @apply psl-text-h3 psl-leading-7 psl-font-extrabold;
+  }
+  h4 {
+    @apply psl-text-h4 psl-leading-6;
+  }
+  h5 {
+    @apply psl-text-h5;
+  }
+  h5 {
+    @apply psl-text-h6;
+  }
+}
+
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
-
-html {
-  overflow: hidden;
-}
-html,
-body,
-#root {
-  min-height: 100vh;
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  position: relative;
-  color: white;
-  background-color: #212124;
-  font-family: Roboto, Arial, Helvetica, Helvetica Neue, serif;
-}
 
 ::-webkit-scrollbar {
   width: 0.5em;
@@ -40,31 +43,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: white;
   outline: 1px solid slategrey;
-}
-
-h2 {
-  margin: 0;
-  font-size: 2.25rem;
-  font-weight: bold;
-  letter-spacing: -0.025em;
-  color: #fff;
-}
-
-p {
-  font-size: 12px;
-}
-
-li {
-  list-style: none;
-}
-
-a {
-  color: #a6b0c2;
-  text-decoration: none;
-}
-
-input[disabled] {
-  color: grey;
 }
 
 .react-tabs {
