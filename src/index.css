@@ -46,7 +46,7 @@ body {
   position: relative;
   color: white;
   background-color: #212124;
-  font-family: Avenir;
+  font-family: Avenir, Roboto, Arial, serif;
 }
 
 ::-webkit-scrollbar {
@@ -156,4 +156,12 @@ input:checked ~ .dot {
 input:checked ~ .dot {
   transform: translateX(100%);
   background-color: #48bb78;
+}
+
+.focus-visible:focus {
+  outline: none;
+}
+
+.focus-visible:focus-visible {
+  outline: 1px solid #3f9af7;
 }

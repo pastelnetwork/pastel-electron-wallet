@@ -366,6 +366,12 @@ export default class MenuBuilder {
             this.mainWindow.webContents.send('squooshTool')
           },
         },
+        {
+          label: 'Glitch Transform Image',
+          click: () => {
+            this.mainWindow.webContents.send('glitchImage')
+          },
+        },
       ],
     }
     const subMenuView =
@@ -473,6 +479,12 @@ export default class MenuBuilder {
             label: 'Squoosh',
             click: () => {
               this.mainWindow.webContents.send('squooshTool')
+            },
+          },
+          {
+            label: 'Glitch Transform Image',
+            click: () => {
+              this.mainWindow.webContents.send('glitchImage')
             },
           },
         ],

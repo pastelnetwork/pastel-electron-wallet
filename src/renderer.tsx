@@ -41,13 +41,19 @@ import Root from './legacy/containers/Root'
 import store from './redux/store'
 
 const oneHour = 1000 * 60 * 60
-
+/**
+ * TODO Max please remove <any> from fetchPastelPrice after investigation why
+ * fetchPastelPrice fails after merging master into onboarding branch.
+ * Any is also visible in fetchPastelPrice tests.
+ */
 // get pastel price
-store.dispatch(fetchPastelPrice())
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+store.dispatch<any>(fetchPastelPrice())
 
 // set up pastel price update timer
 setInterval(() => {
-  store.dispatch(fetchPastelPrice())
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  store.dispatch<any>(fetchPastelPrice())
 }, oneHour)
 
 try {
