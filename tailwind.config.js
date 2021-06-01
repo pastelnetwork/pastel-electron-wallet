@@ -168,6 +168,10 @@ module.exports = {
       },
     },
   },
-  variants: {},
+  variants: {
+    extend: {
+      contrast: ['hover', 'focus'],
+    },
+  },
   plugins: [],
 }
