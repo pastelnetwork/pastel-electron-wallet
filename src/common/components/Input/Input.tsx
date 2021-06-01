@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, ReactNode } from 'react'
 
 import Typography from '../../../common/components/Typography/Typography'
 import eyePassIcon from '../../assets/icons/ico-pass-eye.svg'
@@ -8,8 +8,8 @@ import * as Styles from './Input.styles'
 
 export interface IInputProps {
   type: 'text' | 'password' | 'number'
-  value: string
-  onChange: (event: React.FormEvent<HTMLInputElement>) => void
+  value?: string
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   label?: string
   placeholder?: string
   name?: string
@@ -17,6 +17,7 @@ export interface IInputProps {
   hint?: string
   errorMessage?: string | null
   style?: CSSProperties
+  [x: string]: ReactNode | string | undefined
 }
 
 const Input: React.FC<IInputProps> = ({
@@ -48,6 +49,8 @@ const Input: React.FC<IInputProps> = ({
           type={
             (type === 'password' && isPasswordVisible) || type === 'text'
               ? 'text'
+              : type === 'number'
+              ? 'number'
               : 'password'
           }
           {...restProps}

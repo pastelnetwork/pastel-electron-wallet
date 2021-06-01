@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, ReactNode } from 'react'
 
 import * as Styles from './Button.styles'
 
@@ -7,6 +7,7 @@ export interface IButtonProps {
   type?: 'submit' | 'button'
   style?: CSSProperties
   onClick?: () => void
+  [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Button: React.FC<IButtonProps> = ({
