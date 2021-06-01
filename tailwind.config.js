@@ -15,19 +15,26 @@ module.exports = {
       '2xl': '1700px',
     },
     fontFamily: {
-      body: 'Avenir, Roboto, Arial, serif',
+      body: 'Avenir, Roboto, Arial, Helvetica, Helvetica Neue, serif',
     },
     extend: {
       spacing: {
+        '2px': '0.125rem',
         '3px': '0.188rem',
+        '6px': '0.375rem',
+        '8px': '0.188rem',
         '13px': '0.813rem',
+        '14px': '0.875rem',
         '15px': '0.938rem',
         '18px': '1.125rem',
         '22px': '1.375rem',
         '26px': '1.625rem',
+        '27px': '1.688rem',
+        '28px': '1.75rem',
         '30px': '1.875rem',
         '35px': '2.188rem',
         '37px': '2.313rem',
+        '40px': '2.5rem',
         '41px': '2.563rem',
         '46px': '2.875rem',
         '50px': '3.125rem',
@@ -39,7 +46,9 @@ module.exports = {
         '70px': '4.375rem',
         '82px': '5.125rem',
         '111px': '6.938rem',
+        '120px': '7.5rem',
         '220px': '13.75rem',
+        '230px': '14.375rem',
         '300px': '18.75rem',
         '335px': '20.938rem',
         '352px': '22rem',
@@ -68,21 +77,24 @@ module.exports = {
           '3f': '#3F9AF7',
         },
         gray: {
+          // text
+          a0: '#A0AEC0',
+          71: '#718096',
+          '4a': '#4A5568',
+          '2d': '#2D3748',
+          '1a': '#1A202C',
+          // --
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           e7: '#E7EAF2',
           e6: '#E6E8EC',
           b0: '#B0B7C3',
-          a0: '#A0AEC0',
-          71: '#718096',
-          '4a': '#4A5568',
-          '1a': '#1A202C',
           110: '#F2F2F2',
           35: '#353941',
           33: '#334D6E',
-          '2d': '#2D3748',
           '1d': '#1D263A',
           14: '#141416',
+          23: '#23262F',
         },
         red: {
           '7a': '#FF7A00',
@@ -117,7 +129,7 @@ module.exports = {
       },
       boxShadow: {
         xs:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 1px 1px rgba(10, 22, 70, 0.1)',
         sm:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
         md:
@@ -130,14 +142,17 @@ module.exports = {
       fontSize: {
         h1: '2rem',
         h2: '1.5rem',
-        h3: '1.375',
-        h4: '1.125',
+        h3: '1.375rem',
+        h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
         15: '0.938rem',
       },
       borderRadius: {
         '4px': '0.25rem',
+      },
+      container: {
+        center: true,
       },
     },
   },
