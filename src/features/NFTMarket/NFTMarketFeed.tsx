@@ -87,32 +87,36 @@ const NFTMarketFeed: React.FC = () => {
       label: 'Categories',
       selected: category,
       onChange: setCategory,
+      options: mockCategories,
     },
     {
       label: 'Status',
       selected: status,
       onChange: setStatus,
+      options: mockStatus,
     },
     {
       label: 'Time',
       selected: time,
       onChange: setTime,
+      options: mockTime,
     },
     {
       label: 'Rareness',
       selected: rareness,
       onChange: setRareness,
+      options: mockRareness,
     },
   ]
 
   const [range, setRange] = useState(500)
-  const formatValue = (value: number) => `${value}K`
+  const formatValue = (value: number) => `${value}k`
 
   return (
     <div className=''>
       <PageHeader
         title='Market'
-        routes={[{ label: 'Feed', isSelected: true }, { label: 'Statistic' }]}
+        routes={[{ label: 'Feed', isSelected: true }, { label: 'Statistics' }]}
         sortByOptions={pageHeaderSortByOptions}
       />
       <div className='wrapper bg-background-main h-full '>
@@ -120,12 +124,12 @@ const NFTMarketFeed: React.FC = () => {
         <div className='flex justify-between pb-50px'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
             {filterOptions.map(option => (
-              <Select {...option} options={mockOptions} />
+              <Select {...option} key={option.label} />
             ))}
           </div>
           <div className='flex'>
             <div className='flex h-full items-center justify-end'>
-              <p className='text-h6 pl-22px pr-2 text-gray-2d'>Price range:</p>
+              <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
 
               <Slider
                 min={100}
@@ -139,8 +143,8 @@ const NFTMarketFeed: React.FC = () => {
           </div>
         </div>
         <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-gray-1a'>
-          {Array.from({ length: 6 }).map(() => (
-            <NFTCard {...mockCardProps} />
+          {Array.from({ length: 6 }).map((_, i) => (
+            <NFTCard {...mockCardProps} key={i} />
           ))}
         </div>
       </div>

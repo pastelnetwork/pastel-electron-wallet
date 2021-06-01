@@ -30,7 +30,7 @@
 @layer components {
   /* It's used to wrap main routes  */
   .wrapper {
-    @apply px-4 md:px-60px xl:container pt-4;
+    @apply px-4 md:px-60px xl:container pt-5;
   }
 }
 
@@ -48,14 +48,6 @@
   .flex-center {
     @apply flex justify-center items-center;
   }
-}
-
-body {
-  margin: 0;
-  position: relative;
-  color: white;
-  background-color: #212124;
-  font-family: Avenir, Roboto, Arial, serif;
 }
 
 @import '@fortawesome/fontawesome-free/css/all.css';
