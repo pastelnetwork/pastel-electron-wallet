@@ -170,3 +170,9 @@ input:checked ~ .dot {
 .focus-visible:focus-visible {
   outline: 1px solid #3f9af7;
 }
+
+table,
+th,
+td {
+  border-collapse: collapse;
+}

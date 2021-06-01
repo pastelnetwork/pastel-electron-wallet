@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Checkbox from '../../components/Checkbox/Checkbox'
 import pasteIcon from '../../assets/icons/ico-paste.svg'
 import pencilIcon from '../../assets/icons/ico-pencil.svg'
@@ -14,10 +14,7 @@ export type ColumnDefinitionType<T, K extends keyof T> = {
 type TableProps<T, K extends keyof T> = {
   data: Array<T>
   columns: Array<ColumnDefinitionType<T, K>>
-  checkHandler: (
-    event: React.MouseEvent<HTMLLabelElement, MouseEvent>,
-    index?: string,
-  ) => void
+  checkHandler: (param: number[]) => void
 }
 
 const Table = <T, K extends keyof T>({
@@ -25,19 +22,29 @@ const Table = <T, K extends keyof T>({
   columns,
   checkHandler,
 }: TableProps<T, K>): JSX.Element => {
+  const [selected, setSelected] = useState<number[]>([])
   return (
     <table className='w-full'>
       <tbody>
         {data.map((d, i) => (
           <tr
             key={i}
-            className='pt-18px pb-19px lg:ml-6 xl:ml-38px pl-31px pr-31px flex border-b border-line-DEFAULT mr-4 justify-between'
+            className='pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between'
           >
             <td className='flex items-center whitespace-nowrap w-5'>
               <Checkbox
-                isChecked={true}
-                clickHandler={e => {
-                  checkHandler(e)
+                isChecked={selected.includes(i) ? true : false}
+                clickHandler={() => {
+                  if (selected.includes(i)) {
+                    const ind = selected.indexOf(i)
+                    if (ind > -1) {
+                      selected.splice(ind, 1)
+                    }
+                  } else {
+                    selected.push(i)
+                  }
+                  setSelected([...selected])
+                  checkHandler(selected)
                 }}
               ></Checkbox>
             </td>
@@ -46,7 +53,7 @@ const Table = <T, K extends keyof T>({
                 return (
                   <td
                     key={index + i}
-                    className='flex items-center whitespace-nowrap'
+                    className='flex items-center whitespace-nowrap ml-1 md:ml-3'
                   >
                     <span className='text-blue-3f'>{d[c.key]}</span>
                     <img className='ml-7' src={pasteIcon} />
