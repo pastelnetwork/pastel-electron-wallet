@@ -25,6 +25,30 @@ const NFTMarketFeed: React.FC = () => {
   const [bidPrice, setBidPrice] = useState<Option | null>(null)
   const [likes, setLikes] = useState<Option | null>(null)
 
+  const mockCategories: Option[] = [
+    { value: 'ai', label: 'AI' },
+    { value: 'option_2', label: 'Option 2' },
+    { value: 'option_3', label: 'Option 3' },
+  ]
+
+  const mockStatus: Option[] = [
+    { value: 'auctions', label: 'Auctions' },
+    { value: 'option_2', label: 'Option 2' },
+    { value: 'option_3', label: 'Option 3' },
+  ]
+
+  const mockTime: Option[] = [
+    { value: 'future', label: 'Future' },
+    { value: 'present', label: 'Present' },
+    { value: 'past', label: 'Past' },
+  ]
+
+  const mockRareness: Option[] = [
+    { value: 'high', label: 'High' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'low', label: 'Low' },
+  ]
+
   const mockOptions: Option[] = [
     { value: 'option_1', label: 'Option 1' },
     { value: 'option_2', label: 'Option 2' },
@@ -33,13 +57,13 @@ const NFTMarketFeed: React.FC = () => {
 
   const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
     {
-      placeholder: 'Price Sold',
+      placeholder: 'Price sold',
       selected: priceSold,
       onOptionChange: setPriceSold,
       options: mockOptions,
     },
     {
-      placeholder: 'Bid Price',
+      placeholder: 'Bid price',
       selected: bidPrice,
       onOptionChange: setBidPrice,
       options: mockOptions,
@@ -53,10 +77,10 @@ const NFTMarketFeed: React.FC = () => {
   ]
 
   // Filters
-  const [category, setCategory] = useState<Option | null>(mockOptions[0])
-  const [status, setStatus] = useState<Option | null>(mockOptions[0])
-  const [time, setTime] = useState<Option | null>(mockOptions[0])
-  const [rareness, setRareness] = useState<Option | null>(mockOptions[0])
+  const [category, setCategory] = useState<Option | null>(mockCategories[0])
+  const [status, setStatus] = useState<Option | null>(mockStatus[0])
+  const [time, setTime] = useState<Option | null>(mockTime[0])
+  const [rareness, setRareness] = useState<Option | null>(mockRareness[0])
 
   const filterOptions = [
     {
