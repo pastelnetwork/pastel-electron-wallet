@@ -22,7 +22,7 @@ const BidInput: React.FC<BidInputProps> = ({ onBidChange, bid }) => {
         value={bid}
         onChange={handleBid}
       />
-      <p className='font-medium text-gray-500 text-center mb-6'>
+      <p className='font-medium text-navigation-default text-center mb-6'>
         {fee ? `Estimated fee ${fee} PSL` : 'No data yet'}
       </p>
     </>

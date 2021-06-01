@@ -31,12 +31,16 @@ const BidAuctionModal: React.FC<BidAuctionModalProps> = ({
             {idx === 0 ? (
               <h5 className='font-heavy'>Highest bid</h5>
             ) : (
-              <h5 className='font-medium text-gray-500'>Previous bid</h5>
+              <h5 className='font-medium text-navigation-default'>
+                Previous bid
+              </h5>
             )}
-            <span className='text-gray-500'>{time}</span>
+            <span className='text-navigation-default'>{time}</span>
             <span
               className={
-                idx === 0 ? 'text-success-default font-medium' : 'text-gray-500'
+                idx === 0
+                  ? 'text-success-default font-medium'
+                  : 'text-navigation-default'
               }
             >
               {bid} PSL
@@ -45,7 +49,7 @@ const BidAuctionModal: React.FC<BidAuctionModalProps> = ({
           </div>
         ))}
         <div className='text-center'>
-          <span className='font-medium text-gray-500 cursor-pointer'>
+          <span className='font-medium text-navigation-default cursor-pointer'>
             Show more
           </span>
         </div>

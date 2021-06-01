@@ -19,7 +19,7 @@ const BidBuyModal: React.FC<BidBuyModalProps> = ({ isOpen, handleClose }) => {
         Buy-it-now listing: “Diamonds in the sky”
       </h2>
       <div className='flex justify-between mb-6'>
-        <span className='text-gray-500'>Listed price</span>
+        <span className='text-navigation-default'>Listed price</span>
         <span className='text-success-default font-heavy'>
           1,000,000,000 PSL
         </span>

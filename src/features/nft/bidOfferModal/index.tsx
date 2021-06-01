@@ -22,8 +22,10 @@ const BidOfferModal: React.FC<BidOfferModalProps> = ({
       <h2 className='mb-2 font-roman'>
         Make an offer for “Diamonds in the sky”
       </h2>
-      <span className='text-gray-500 inline-block mb-4'>NFT is not listed</span>
-      <p className='text-gray-500 font-medium text-center text-h4 mb-4'>
+      <span className='text-navigation-default inline-block mb-4'>
+        NFT is not listed
+      </span>
+      <p className='text-navigation-default font-medium text-center text-h4 mb-4'>
         <span className='text-success-default font-heavy'>1,000,000k</span> was
         offered by SuperDealer23
       </p>

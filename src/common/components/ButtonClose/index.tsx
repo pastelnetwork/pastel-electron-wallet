@@ -17,7 +17,7 @@ const ButtonClose: React.FC<ButtonCloseProps> = ({ onClick, className }) => {
   return (
     <button onClick={onClick} className={classes}>
       <svg
-        className='fill-current text-gray-450'
+        className='fill-current text-gray-b0'
         width='8'
         height='9'
         viewBox='0 0 8 9'
