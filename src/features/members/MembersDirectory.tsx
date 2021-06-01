@@ -29,7 +29,7 @@ const MembersDirectory: React.FC = () => {
   const [category, setCategory] = useState<Option | null>(mockOptions[0])
 
   const [range, setRange] = useState(500)
-  const formatValue = (value: number) => `${value}K`
+  const formatValue = (value: number) => `${value}k`
 
   const filterOptions = {
     label: 'Categories',
@@ -82,9 +82,7 @@ const MembersDirectory: React.FC = () => {
             </div>
             <div className='flex'>
               <div className='flex h-full items-center justify-end'>
-                <p className='text-h6 pl-22px pr-2 text-gray-2d'>
-                  Sales turover:
-                </p>
+                <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
 
                 <Slider
                   min={100}

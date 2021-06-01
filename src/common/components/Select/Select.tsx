@@ -49,7 +49,12 @@ export default function Select({
         >
           <div className='whitespace-nowrap'>
             {label && <span className='text-gray-b0 mr-2'>{label}:</span>}
-            {selectedItem ? selectedItem.value : placeholder}
+
+            {selectedItem ? (
+              <span className='text-gray-2d'>{selectedItem.value}</span>
+            ) : (
+              placeholder
+            )}
           </div>
           <img
             className='text-gray-b0 ml-2'

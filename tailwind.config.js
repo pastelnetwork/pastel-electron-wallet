@@ -21,6 +21,7 @@ module.exports = {
       spacing: {
         '2px': '0.125rem',
         '3px': '0.188rem',
+        '6px': '0.375rem',
         '8px': '0.188rem',
         '13px': '0.813rem',
         '14px': '0.875rem',
@@ -29,6 +30,7 @@ module.exports = {
         '22px': '1.375rem',
         '25px': '1.563rem',
         '26px': '1.625rem',
+        '27px': '1.688rem',
         '28px': '1.75rem',
         '30px': '1.875rem',
         '35px': '2.188rem',
@@ -95,6 +97,8 @@ module.exports = {
           33: '#334D6E',
           '1d': '#1D263A',
           14: '#141416',
+          23: '#23262F',
+          77: '#777E90',
         },
         red: {
           '7a': '#FF7A00',
@@ -142,11 +146,12 @@ module.exports = {
       fontSize: {
         h1: '2rem',
         h2: '1.5rem',
-        h3: '1.375',
-        h4: '1.125',
+        h3: '1.375rem',
+        h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
         15: '0.938rem',
+        12: '0.75rem',
       },
       borderRadius: {
         '4px': '0.25rem',

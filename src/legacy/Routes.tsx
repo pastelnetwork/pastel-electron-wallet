@@ -51,6 +51,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
 
 export type TWalletInfo = {
@@ -110,11 +111,13 @@ class RouteApp extends React.Component<any, any> {
     this.rpc = rpc
 
     // Auto refresh every 10s
-    this.rpcRefreshIntervalId = window.setInterval(() => {
-      if (this.state.rpcConfig.username) {
-        rpc.refresh()
-      }
-    }, 10000)
+    if (!app?.isPackaged) {
+      this.rpcRefreshIntervalId = window.setInterval(() => {
+        if (this.state.rpcConfig.username) {
+          rpc.refresh()
+        }
+      }, 10000)
+    }
 
     const addressBook = await AddressbookImpl.readAddressBook()
     if (addressBook) {
@@ -647,9 +650,11 @@ class RouteApp extends React.Component<any, any> {
                     this.setRPCConfig(rpcConfig)
 
                     // set pastel DB thread update timer
-                    setInterval(() => {
-                      PastelDBThread(rpcConfig)
-                    }, period)
+                    if (!app?.isPackaged) {
+                      setInterval(() => {
+                        PastelDBThread(rpcConfig)
+                      }, period)
+                    }
                   }}
                   setInfo={this.setInfo}
                 />
