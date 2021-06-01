@@ -30,6 +30,34 @@ async function exists(path: string): Promise<boolean> {
   return Promise.resolve(true)
 }
 
+async function cloneFile(downloadItem: IDownloadItem, outputDir: string) {
+  if (downloadItem?.originalName) {
+    const originalFileExists = await exists(
+      `${path.join(outputDir, downloadItem.originalName)}`,
+    )
+
+    if (!originalFileExists) {
+      const absPath = path.join(outputDir, downloadItem.name)
+      const absPathExists = await exists(absPath)
+
+      if (absPathExists) {
+        fs.copyFile(
+          absPath,
+          path.join(outputDir, downloadItem.originalName),
+          err => {
+            if (err) {
+              console.warn(
+                `utils checkHashAndDownloadParams rename error: ${err.message}`,
+                err,
+              )
+            }
+          },
+        )
+      }
+    }
+  }
+}
+
 export const checkHashAndDownloadParams = async ({
   params,
   outputDir,
@@ -47,14 +75,12 @@ export const checkHashAndDownloadParams = async ({
     const absPath = path.join(outputDir, p.name)
 
     const fileExists = await exists(absPath)
-
     if (fileExists) {
       const sha256 = sha256File(absPath)
-
       if (sha256 == p.sha256) {
+        await cloneFile(p, outputDir)
         continue
       }
-
       try {
         await fs.promises.unlink(absPath)
       } catch (error) {
@@ -63,7 +89,6 @@ export const checkHashAndDownloadParams = async ({
         )
       }
     }
-
     const writer = fs.createWriteStream(absPath)
     onProgress(`Downloading ${p.name}...`)
 
@@ -84,21 +109,10 @@ export const checkHashAndDownloadParams = async ({
 
       resp.pipe(str).pipe(writer)
     })
-
     const promise = new Promise<void>((resolve, reject) => {
-      writer.on('finish', () => {
+      writer.on('finish', async () => {
         writer.close()
-
-        if (p?.originalName) {
-          fs.copyFile(absPath, path.join(outputDir, p.originalName), err => {
-            if (err) {
-              console.warn(
-                `utils checkHashAndDownloadParams rename error: ${err.message}`,
-                err,
-              )
-            }
-          })
-        }
+        await cloneFile(p, outputDir)
         resolve()
       })
 
