@@ -53,6 +53,7 @@ import Collector from '../features/collector'
 import Nft from '../features/nft'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
+import NFTMarketFeed from '../features/NFTMarket'
 
 export type TWalletInfo = {
   connections: number
@@ -518,6 +519,7 @@ class RouteApp extends React.Component<any, any> {
           <Switch>
             <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
 
+            <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
             <Route
               path={routes.SEND}
               render={() => (

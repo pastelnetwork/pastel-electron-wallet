@@ -112,7 +112,7 @@ const Header = (props: PropsType) => {
     },
     {
       name: 'NFTs',
-      routeName: routes.SEND,
+      routeName: routes.MARKET,
       currentRoute: location.pathname,
       style: 'xl:mr-37px',
     },
