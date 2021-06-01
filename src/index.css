@@ -28,7 +28,7 @@
 }
 
 @layer components {
-  /* It's used to wrapp main routes  */
+  /* It's used to wrap main routes  */
   .wrapper {
     @apply px-4 md:px-60px xl:container pt-4;
   }
