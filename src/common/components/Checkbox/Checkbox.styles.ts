@@ -23,6 +23,10 @@ export const Input = styled.input`
   &:checked ~ .checkboxCheckmark:after {
     display: block;
   }
+
+  &:checked ~ .checkboxCheckmark {
+    border: solid ${({ theme }) => theme.colors.button.secondary} !important;
+  }
 `
 export const Span = styled.span`
   position: absolute;
@@ -31,17 +35,17 @@ export const Span = styled.span`
   height: 20px;
   width: 20px;
   border-radius: 40%;
-  background-color: ${({ theme }) => theme.colors.button.secondary};
-
+  border: 1px solid rgba(176, 183, 195, 0.5);
   &:after {
     content: '';
     position: absolute;
     display: none;
-    left: 8px;
-    top: 5px;
-    width: 3px;
-    height: 7px;
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
     border: solid ${({ theme }) => theme.colors.button.default};
+    background-color: ${({ theme }) => theme.colors.button.secondary};
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
