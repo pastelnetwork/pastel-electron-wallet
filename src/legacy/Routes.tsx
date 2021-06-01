@@ -46,7 +46,11 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
-import PastelStatistics from '../features/pastelStatistics'
+import {
+  DifficultyOvertime,
+  PriceOvertime,
+  PastelStatistics,
+} from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
@@ -632,6 +636,16 @@ class RouteApp extends React.Component<any, any> {
                     pastelIDs={pastelIDs}
                   />
                 )}
+              />
+
+              <Route
+                path={routes.DIFFICULTYOVERTIME}
+                render={() => <DifficultyOvertime info={info} />}
+              />
+
+              <Route
+                path={routes.PRICEOVERTIME}
+                render={() => <PriceOvertime info={info} />}
               />
 
               <Route

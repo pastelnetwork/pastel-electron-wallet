@@ -1,3 +1,5 @@
 import PastelStatistics from './PastelStatistics'
+import PriceOvertime from './components/priceovertime/PriceOvertime'
+import DifficultyOvertime from './components/difficultyovertime/DifficultyOvertime'
 
-export default PastelStatistics
+export { PastelStatistics, PriceOvertime, DifficultyOvertime }

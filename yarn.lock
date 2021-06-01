@@ -3114,6 +3114,11 @@
   resolved "https://registry.yarnpkg.com/@types/emscripten/-/emscripten-1.39.4.tgz#d61990c0cee72c4e475de737a140b51fe925a2c8"
   integrity sha512-k3LLVMFrdNA9UCvMDPWMbFrGPNb+GcPyw29ktJTo1RCN7RmxFG5XzPZcPKRlnLuLT/FRm8wp4ohvDwNY7GlROQ==
 
+"@types/file-saver@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.2.tgz#bd593ccfaee42ff94a5c1c83bf69ae9be83493b9"
+  integrity sha512-xbqnZmGrCEqi/KUzOkeUSe77p7APvLuyellGaAoeww3CHJ1AbjQWjPSCFtKIzZn8L7LpEax4NXnC+gfa6nM7IA==
+
 "@types/fs-extra@^9.0.1":
   version "9.0.11"
   resolved "https://registry.yarnpkg.com/@types/fs-extra/-/fs-extra-9.0.11.tgz#8cc99e103499eab9f347dbc6ca4e99fb8d2c2b87"
@@ -3344,6 +3349,13 @@
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/@types/reach__router/-/reach__router-1.3.7.tgz#de8ab374259ae7f7499fc1373b9697a5f3cd6428"
   integrity sha512-cyBEb8Ef3SJNH5NYEIDGPoMMmYUxROatuxbICusVRQIqZUB85UCt6R2Ok60tKS/TABJsJYaHyNTW3kqbpxlMjg==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-csv@1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-csv/-/react-csv-1.1.1.tgz#003f6de5a46e4f64712f97e5509a4b3f2df9a8b1"
+  integrity sha512-sP8AxGrFJ/kb7ygFpGkssdD/vKSTqdZDJbw3pJKTCa1C0UoT+0+rdUWy2fZqvhvvdpHG+OCJ4G8O7OZqVIa+BA==
   dependencies:
     "@types/react" "*"
 
@@ -6508,6 +6520,22 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
+echarts-for-react@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/echarts-for-react/-/echarts-for-react-3.0.1.tgz#cf9de60e468b342c244314be2325e00d765a5137"
+  integrity sha512-9LNcPNT+DH+IwtZlahuXQf7zqCWSnnYqITXtKgLDzoQ7fvotH1xEaFPriASQb+jYqSI9pBdtN5cFneT89wECUg==
+  dependencies:
+    fast-deep-equal "^3.1.3"
+    size-sensor "^1.0.1"
+
+echarts@5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-5.1.1.tgz#b186f162f017c555cfd67b12ede6762bdc3ddfda"
+  integrity sha512-b3nP8M9XwZM2jISuA+fP0EuJv8lcfgWrinel185Npy8bE/UhXTDIPJcqgQOCWdvk0c5CeT6Dsm1xBjmJXAGlxQ==
+  dependencies:
+    tslib "2.0.3"
+    zrender "5.1.0"
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -7475,6 +7503,11 @@ file-loader@6.2.0, file-loader@^6.2.0:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
+
+file-saver@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
 file-system-cache@^1.0.5:
   version "1.0.5"
@@ -8570,6 +8603,11 @@ html-tags@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/html-tags/-/html-tags-3.1.0.tgz#7b5e6f7e665e9fb41f30007ed9e0d41e97fb2140"
   integrity sha512-1qYz89hW3lFDEazhjW0yVAV87lw8lVkrJocr72XmBkMKsoSVJCQx3W8BXsC7hO2qAt8BoVjYjtAcZ9perqGnNg==
+
+html-to-image@1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/html-to-image/-/html-to-image-1.6.2.tgz#9d444424cc638df13db5c7be810ac0d2962f5edd"
+  integrity sha512-X6X7wJW2KQ+AGqMeBITdntCcQnxBgZY62MdGOi042Y70+0SMe8/iJCzUv8RNaUoXqUjWw5FPyoTDmdGoapTQIQ==
 
 html-void-elements@^1.0.0:
   version "1.0.5"
@@ -12496,6 +12534,11 @@ react-colorful@^5.0.1:
   resolved "https://registry.yarnpkg.com/react-colorful/-/react-colorful-5.2.2.tgz#0a69d0648db47e51359d343854d83d250a742243"
   integrity sha512-Xdb1Rl6lZ5SMdNBH59eE0lGqR1g2LVD8IgPlw0WeMDrOC65lYI8fgMEwj/0dDpVRVMh5qp73ciISDst/t2O2iQ==
 
+react-csv@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-2.0.3.tgz#f5d17a3c71107d9bcbe580049350200debdc042a"
+  integrity sha512-exyAdFLAxtuM4wNwLYrlKyPYLiJ7e0mv9tqPAd3kq+k1CiJFtznevR3yP0icv5q/y200w+lzNgi7TQn1Wrhu0w==
+
 react-dev-utils@^11.0.3:
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.4.tgz#a7ccb60257a1ca2e0efe7a83e38e6700d17aa37a"
@@ -13715,6 +13758,11 @@ sisteransi@^1.0.5:
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
 
+size-sensor@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/size-sensor/-/size-sensor-1.0.1.tgz#f84e46206d3e259faff1d548e4b3beca93219dbb"
+  integrity sha512-QTy7MnuugCFXIedXRpUSk9gUnyNiaxIdxGfUjr8xxXOqIB3QvBUYP9+b51oCg2C4dnhaeNk/h57TxjbvoJrJUA==
+
 slash@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
@@ -14503,6 +14551,11 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+timezone-mock@1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/timezone-mock/-/timezone-mock-1.1.4.tgz#3dfc0c8a864132873e1de8459c4bb7757dd8a96e"
+  integrity sha512-TeDA/tpbgJPC6dFkFpz3+sZmjtma8n+ECQbf7FQK9+TqIa38PUzIx8LBJGv0v3994Z9FFwLU0zJT/ABeb3bZWQ==
+
 tiny-each-async@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/tiny-each-async/-/tiny-each-async-2.0.3.tgz#8ebbbfd6d6295f1370003fbb37162afe5a0a51d1"
@@ -14708,6 +14761,11 @@ ts-pnp@^1.1.6:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.2.0.tgz#fb2c475977e35e241311ede2693cee1ec6698f5c"
   integrity sha512-gS9GVHRU+RGn5KQM2rllAlR3dU6m7AcpJKdtH8gFvQiC4Otgk98XnmMU+nZenHt/+VhnBPWwgrJsyrdcw6i23w==
+
+tslib@2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.3.tgz#8e0741ac45fc0c226e58a17bfc3e64b9bc6ca61c"
+  integrity sha512-uZtkfKblCEQtZKBF6EBXVZeQNl82yqtDQdv+eck8u7tdPxjLu2/lp5/uPW+um2tpuxINHWy3GhiccY7QgEaVHQ==
 
 tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
@@ -15700,6 +15758,13 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zrender@5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-5.1.0.tgz#b6a84c3aa7ccc6642ee0519901ca4c0835c4d85e"
+  integrity sha512-c+8VRx52ycbmqwHeHLlo/BAfIHBl/JZNLM6cfDQFgzIH05yb+f5J9F/fbRsP+zGc8dW9XHuhdt8/iqukgMZSeg==
+  dependencies:
+    tslib "2.0.3"
 
 zwitch@^1.0.0:
   version "1.0.5"
