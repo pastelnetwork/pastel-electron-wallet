@@ -3,7 +3,7 @@ import Checkbox from '../../components/Checkbox/Checkbox'
 import pasteIcon from '../../assets/icons/ico-paste.svg'
 import pencilIcon from '../../assets/icons/ico-pencil.svg'
 import viewIcon from '../../assets/icons/ico-view.svg'
-import AutoComplete from '../../components/AutoComplete/AutoComplete'
+import Select from '../../components/Select/Select'
 
 export type ColumnDefinitionType<T, K extends keyof T> = {
   key: K
@@ -72,22 +72,29 @@ const Table = <T, K extends keyof T>({
                 )
               }
               if (c.key === 'psl') {
-                return (
-                  <td
-                    className='flex items-center md:8 lg:ml-60px'
-                    key={index + i}
-                  >
-                    <div>
-                      <AutoComplete
-                        selected={'20000'}
-                        startNumber={20000}
-                        endNumber={24000}
-                        diffNumber={2000}
-                        onChange={value => console.log(value)}
-                      />
-                    </div>
-                  </td>
-                )
+                const value = d[c.key]
+                if (typeof value == 'number') {
+                  return (
+                    <td
+                      className='flex items-center md:8 lg:ml-60px'
+                      key={index + i}
+                    >
+                      <div>
+                        <Select
+                          className='text-gray-2d w-28'
+                          autocomplete={true}
+                          min={10000}
+                          max={20000}
+                          step={100}
+                          value={value}
+                          onChange={(value: number | null) => {
+                            console.log(value)
+                          }}
+                        />
+                      </div>
+                    </td>
+                  )
+                }
               }
               return (
                 <td className='flex items-center whitespace-nowrap'>

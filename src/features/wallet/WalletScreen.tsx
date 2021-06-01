@@ -19,7 +19,7 @@ interface Transaction {
   time: string
   viewing_key?: string
   private_key?: string
-  psl?: number
+  psl: number
   qr_code?: string
 }
 
@@ -61,21 +61,21 @@ const walletdatas: Transaction[] = [
     time: '1d 1 h 25m ago',
     viewing_key: 'viewing key',
     private_key: 'private key',
-    psl: 22000,
+    psl: 15000,
   },
   {
     hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
     viewing_key: 'viewing key',
     private_key: 'private key',
-    psl: 22000,
+    psl: 15000,
   },
   {
     hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
     viewing_key: 'viewing key',
     private_key: 'private key',
-    psl: 22000,
+    psl: 18000,
   },
 ]
 
