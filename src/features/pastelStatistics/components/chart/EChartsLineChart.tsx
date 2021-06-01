@@ -83,7 +83,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           if (blob) {
             saveAs(
               blob,
-              makeDownloadFileName(info.currencyName, title ?? '') + '.png',
+              makeDownloadFileName(info.currencyName, chartIndex) + '.png',
             )
           }
         })
@@ -192,7 +192,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           <CSVLink
             data={csvData}
             filename={
-              makeDownloadFileName(info.currencyName, title ?? '') + '.csv'
+              makeDownloadFileName(info.currencyName, chartIndex) + '.csv'
             }
             headers={csvHeaders}
             separator={';'}

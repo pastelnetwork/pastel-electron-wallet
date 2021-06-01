@@ -10,7 +10,11 @@ import {
 } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
-import { periods } from '../../common/constants'
+import {
+  CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  CHART_DEFAULT_PERIOD,
+  periods,
+} from '../../common/constants'
 
 type TDifficultyOvertimeProps = {
   info: {
@@ -22,8 +26,10 @@ const redrawCycle = 60000
 
 const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   const { info } = props
-  const [currentBgColor, setCurrentBgColor] = useState('#0d0d0d')
-  const [period, setPeriod] = useState<TPeriod>('2h')
+  const [currentBgColor, setCurrentBgColor] = useState(
+    CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  )
+  const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,

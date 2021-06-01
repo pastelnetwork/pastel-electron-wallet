@@ -13,7 +13,7 @@ module.exports = [
     patterns: [
       { from: 'node_modules/sql.js/dist/sql-wasm.wasm', to: 'static/bin' },
       {
-        from: 'node_modules/squoosh/production',
+        from: 'node_modules/squoosh',
         to: 'static/squoosh',
       },
       {

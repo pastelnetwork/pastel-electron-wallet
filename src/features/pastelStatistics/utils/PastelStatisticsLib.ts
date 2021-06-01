@@ -86,10 +86,9 @@ export const makeDownloadFileName = (
   let imageTitle = ''
   const date = new Date()
 
+  imageTitle = title
   if (title === 'Network Difficulty') {
     imageTitle = 'Network_Difficulty'
-  } else if (title === 'PSL Prices') {
-    imageTitle = 'Prices'
   }
 
   const dateTime = `${

@@ -3,9 +3,14 @@ import PastelDB from '../../../pastelDB/database'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
-import { periods } from '../../common/constants'
+import {
+  periods,
+  CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  CHART_DEFAULT_PERIOD,
+} from '../../common/constants'
 import { TLineChartData } from '../../../pastelDB/type'
 import { TPeriod, transformHashrateInfo } from '../../utils/PastelStatisticsLib'
+
 import styles from '../../Common.module.css'
 
 type THashrateOvertimeProps = {
@@ -18,8 +23,10 @@ const redrawCycle = 60000
 
 const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
   const { info } = props
-  const [currentBgColor, setCurrentBgColor] = useState('#0d0d0d')
-  const [period, setPeriod] = useState<TPeriod>('2h')
+  const [currentBgColor, setCurrentBgColor] = useState(
+    CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  )
+  const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,

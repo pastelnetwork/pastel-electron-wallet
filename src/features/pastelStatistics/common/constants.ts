@@ -53,3 +53,6 @@ export const csvHeaders = [
   { label: 'Value', key: 'value' },
   { label: 'Created time', key: 'time' },
 ]
+
+export const CHART_THEME_BACKGROUND_DEFAULT_COLOR = '#0d0d0d'
+export const CHART_DEFAULT_PERIOD = '2h'

@@ -13,6 +13,7 @@ import styles from './LineChart.module.css'
 
 export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
   const {
+    chartIndex,
     dataX,
     dataY1,
     dataY2,
@@ -46,7 +47,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
       const max = Math.max(...dataY1)
       const min1 = Math.min(...dataY2)
       const max1 = Math.max(...dataY2)
-      if (title === 'PSL Prices') {
+      if (chartIndex === 'prices') {
         setMinY1(min - offset)
         setMaxY1(max + offset)
         setMinY2(min1)
@@ -151,7 +152,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
           if (blob) {
             saveAs(
               blob,
-              makeDownloadFileName(info.currencyName, title ?? '') + '.png',
+              makeDownloadFileName(info.currencyName, chartIndex) + '.png',
             )
           }
         })
@@ -301,7 +302,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
           <CSVLink
             data={csvData}
             filename={
-              makeDownloadFileName(info.currencyName, title ?? '') + '.csv'
+              makeDownloadFileName(info.currencyName, chartIndex) + '.csv'
             }
             headers={csvHeaders}
             separator={';'}

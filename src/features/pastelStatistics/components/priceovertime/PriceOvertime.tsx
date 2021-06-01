@@ -6,7 +6,10 @@ import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
 import styles from '../../Common.module.css'
-import { periods } from '../../common/constants'
+import {
+  CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  periods,
+} from '../../common/constants'
 
 type TLineChartData = {
   dataX: string[]
@@ -24,7 +27,9 @@ const redrawCycle = 60000
 
 const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   const { info } = props
-  const [currentBgColor, setCurrentBgColor] = useState('#0d0d0d')
+  const [currentBgColor, setCurrentBgColor] = useState(
+    CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  )
   const [period, setPeriod] = useState<TPeriod>('2d')
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
@@ -73,7 +78,7 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsMultiLineChart
-              chartIndex='price'
+              chartIndex='prices'
               dataX={transformLineChartData?.dataX}
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}
