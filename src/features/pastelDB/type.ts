@@ -1,3 +1,28 @@
+import {
+  ITDetailedTxns,
+  ITSentTxStore,
+  ITTransactionResponse,
+  ITTransactionResult,
+  ITRawTransactionResponse,
+  ITRawTransactionResult,
+  ITVJoinsplit,
+  ITTransactionDetail,
+  ITScriptSig,
+  ITScriptPubkey,
+  ITVout,
+  ITVin,
+  ITTransactionInfoResult,
+  ITTransactionInfoDetails,
+  IListUnspentResult,
+  IListAddressesResponse,
+  IListUnspentResponse,
+  IResponse,
+  IResonseError,
+  ITZListReceivedByAddressResult,
+  ITZListReceivedByAddressResponse,
+  ITTransactionInfoResponse,
+} from '../../types/rpc'
+
 export type TNetworks = {
   name: string
   limited: boolean
@@ -98,69 +123,19 @@ export type TBlockInfo = {
   nextblockhash: string
 }
 
-export type TScriptSig = {
-  asm: string
-  hex: string
-}
+export type TScriptSig = ITScriptSig
 
-export type TVin = {
-  txid: string
-  vout: number
-  scriptSig: TScriptSig
-  sequence: number
-}
+export type TVin = ITVin
 
-export type TScriptPubkey = {
-  asm: string
-  hex: string
-  regSigs: number
-  type: string
-  addresses: string[]
-}
+export type TScriptPubkey = ITScriptPubkey
 
-export type TVout = {
-  value: number
-  n: number
-  scriptPubkey: TScriptPubkey
-}
+export type TVout = ITVout
 
-export type TVjoinsplit = {
-  vpub_old: number
-  vpub_new: number
-  anchor: string
-  nullifiers: string[]
-  commitments: string[]
-  onetimePubKey: string
-  randomSeed: string
-  macs: string[]
-  proof: string
-  ciphertexts: string[]
-}
+export type TVjoinsplit = ITVJoinsplit
 
-export type TTransactionInfo = {
-  amount: number
-  blockhash: string
-  blockindex: number
-  blocktime: number
-  confirmations: number
-  details: TTransactionInfoDetails[]
-  expiryheight: number
-  hex: string
-  time: number
-  timereceived: number
-  txid: string
-  vjoinsplit: TVjoinsplit[]
-  walletconflicts: string[]
-}
+export type TTransactionInfo = ITTransactionInfoResult
 
-export type TTransactionInfoDetails = {
-  account: string
-  address: string
-  amount: number
-  category: string
-  size: number
-  vout: number
-}
+export type TTransactionInfoDetails = ITTransactionInfoDetails
 
 export type TShieldedOutput = {
   cv: string
@@ -177,30 +152,9 @@ export type TShieldedSpendInfo = {
   proof: string
 }
 
-export type TDetails = {
-  account: string
-  address: string
-  category: string
-  amount: number
-}
+export type TDetails = ITTransactionDetail
 
-export type TRawTransaction = {
-  hex: string
-  txid: string
-  overwintered: boolean
-  version: number
-  versiongroupid: string
-  locktime: number
-  expiryheight: number
-  vin: TVin[]
-  vout: TVout[]
-  vjoinsplit: TVjoinsplit[]
-  blockhash: string
-  confirmations: number
-  time: number
-  blocktime: number
-  details: TDetails[]
-}
+export type TRawTransaction = ITRawTransactionResult
 
 export type TTxoutsetInfo = {
   height: number
@@ -237,48 +191,11 @@ export type TWalletInfo = {
   seedfp: string
 }
 
-export type TDetailedTxns = {
-  address: string
-  amount: number
-  memo?: string | null
-}
+export type TDetailedTxns = ITDetailedTxns
 
-export type TListTransactions = {
-  account: string
-  address: string
-  category: string
-  amount: number
-  vout: number
-  confirmations: number
-  blockhash: number
-  blockindex: number
-  blocktime: number
-  expiryheight: number
-  txid: string
-  walletconflicts: string[]
-  time: number
-  timereceived: number
-  vjoinsplit: TVjoinsplit[]
-  size: number
-  lastblock: string
-  fee?: number
-  type?: string
-  detailedTxns?: TDetailedTxns[]
-  inputAddresses?: string[]
-  index?: number
-}
+export type TListTransactions = ITTransactionResult
 
-export type TListUnspent = {
-  txid: string
-  vout: number
-  generated: boolean
-  address: string
-  account: string
-  scriptPubKey: string
-  amount: number
-  confirmations: number
-  spendable: number
-}
+export type TListUnspent = IListUnspentResult
 
 export type TTotalBalance = {
   transparent: string
@@ -406,17 +323,9 @@ export type TValidateaddresses = {
   id: string
 }
 
-export type TGetrawtransaction = {
-  result: TRawTransaction
-  error: TError
-  id: string
-}
+export type TGetrawtransaction = ITRawTransactionResponse
 
-export type TGettransaction = {
-  result: TTransactionInfo
-  error: TError
-  id: string
-}
+export type TGettransaction = ITTransactionInfoResponse
 
 export type TGettxout = {
   result: TTxout
@@ -521,71 +430,23 @@ export type TListsinceblock = {
   id: string
 }
 
-export type Tlisttransactions = {
-  result: TListTransactions[]
-  error: TError
-  id: string
-}
+export type Tlisttransactions = ITTransactionResponse
 
-export type Tlistunspent = {
-  result: TListUnspent[]
-  error: TError
-  id: string
-}
+export type Tlistunspent = IListUnspentResponse
 
-export type TGettotalbalance = {
-  result: TTotalBalance
-  error: TError
-  id: string
-}
+export type TGettotalbalance = IResponse<TTotalBalance>
 
-export type Tlistaddresses = {
-  result: string[]
-  error: TError
-  id: string
-}
+export type Tlistaddresses = IListAddressesResponse
 
-export type TError = {
-  message: string
-}
+export type TError = IResonseError
 
-export type TZListReceivedByAddress = {
-  txid: string
-  amount: number
-  amountZat: number
-  memo: string
-  confirmations: number
-  blockheight: number
-  blockindex: number
-  blocktime: number
-  jsindex: number
-  jsoutindex: number
-  outindex: number
-  change: boolean
-}
+export type TZListReceivedByAddress = ITZListReceivedByAddressResult
 
-export type TListReceivedByAddress = {
-  result: TZListReceivedByAddress[]
-  error: TError
-  id: string
-}
+export type TListReceivedByAddress = ITZListReceivedByAddressResponse
 
-export type TSentTxStore = {
-  type: string
-  amount: number
-  from: string
-  txid: string
-  datetime: number
-  detailedTxns: TDetailedTxns
-  address: string
-  memo: string
-}
+export type TSentTxStore = ITSentTxStore
 
-export type TGetBlockChainInfo = {
-  result: TBlockChainInfo
-  error: TError
-  id: string
-}
+export type TGetBlockChainInfo = IResponse<TBlockChainInfo>
 
 export type TBlockChainInfo = {
   bestblockhash: string
