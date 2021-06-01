@@ -21,12 +21,15 @@ module.exports = {
       spacing: {
         '3px': '0.188rem',
         '13px': '0.813rem',
+        '14px': '0.875rem',
         '15px': '0.938rem',
         '18px': '1.125rem',
+        '20px': '1.25rem',
         '22px': '1.375rem',
         '26px': '1.625rem',
         '30px': '1.875rem',
         '35px': '2.188rem',
+        '36px': '2.29rem',
         '37px': '2.313rem',
         '41px': '2.563rem',
         '46px': '2.875rem',
@@ -39,10 +42,14 @@ module.exports = {
         '70px': '4.375rem',
         '82px': '5.125rem',
         '111px': '6.938rem',
+        '112px': '7rem',
+        '180px': '11.25rem',
         '220px': '13.75rem',
         '300px': '18.75rem',
         '335px': '20.938rem',
         '352px': '22rem',
+        '380px': '23.75rem',
+        '419px': '26.187rem',
       },
       colors: {
         success: {
@@ -77,7 +84,7 @@ module.exports = {
           71: '#718096',
           '4a': '#4A5568',
           '1a': '#1A202C',
-          110: '#F2F2F2',
+          f2: '#F2F2F2',
           35: '#353941',
           33: '#334D6E',
           '2d': '#2D3748',
@@ -87,6 +94,9 @@ module.exports = {
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
+        },
+        orange: {
+          63: '#FE634C',
         },
         button: {
           pressed: '#0E80F5',
@@ -126,6 +136,7 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         xl:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+        'depth-1': '0px 8px 16px -8px rgba(15, 15, 15, 0.2)',
         '2px':
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
         '16px':
