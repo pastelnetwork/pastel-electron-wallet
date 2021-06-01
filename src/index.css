@@ -40,6 +40,7 @@
 
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
 
 html {
   overflow: hidden;
@@ -56,7 +57,7 @@ body {
   position: relative;
   color: white;
   background-color: #212124;
-  font-family: Roboto, Arial, Helvetica, Helvetica Neue, serif;
+  font-family: Avenir, Roboto, Arial, serif;
 }
 
 ::-webkit-scrollbar {
@@ -71,31 +72,6 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #cdd2db;
   border-radius: 30px;
-}
-
-h2 {
-  margin: 0;
-  font-size: 2.25rem;
-  font-weight: bold;
-  letter-spacing: -0.025em;
-  color: #fff;
-}
-
-p {
-  font-size: 12px;
-}
-
-li {
-  list-style: none;
-}
-
-a {
-  color: #a6b0c2;
-  text-decoration: none;
-}
-
-input[disabled] {
-  color: grey;
 }
 
 .react-tabs {

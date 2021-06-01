@@ -43,8 +43,10 @@ import PastelPhotopeaModal, {
 } from '../features/pastelPhotopea'
 import AboutModal, { openAboutModal } from '../features/about'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
+import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
+import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
@@ -487,6 +489,7 @@ class RouteApp extends React.Component<any, any> {
         <PastelSpriteEditorToolModal />
         <AboutModal />
         <SquooshToolModal />
+        <GlitchImageModal />
         {info && info.version && (
           <div className={cstyles.sidebarcontainer}>
             <HeaderScreen
@@ -665,4 +668,5 @@ export default connect(null, {
   openAboutModal,
   openSquooshToolModal,
   openUpdateToast,
+  openGlitchImageModal,
 })(RouteApp)
