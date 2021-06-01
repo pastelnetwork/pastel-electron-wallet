@@ -62,7 +62,7 @@ export default function DashboardPage(): JSX.Element {
               <PortfolioItem />
             </PortfolioColumn>
             <PortfolioColumn
-              title='Sales in progress'
+              title='Sales in review'
               className='md:border-l md:border-r md:border-gray-e7'
             >
               <PortfolioItem />

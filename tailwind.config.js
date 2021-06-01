@@ -74,6 +74,10 @@ module.exports = {
           450: '#3F9AF7',
           '3f': '#3F9AF7',
         },
+        green: {
+          e5: '#E5F6EF',
+          38: '#38CB89',
+        },
         gray: {
           f8: '#F8F9FA',
           f7: '#F7F8F9',
