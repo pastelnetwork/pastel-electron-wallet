@@ -719,6 +719,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-file-code'
           />
+          <SidebarMenuItem
+            name='Market'
+            routeName={routes.MARKET}
+            currentRoute={location.pathname}
+            iconname='fa-shopping-cart'
+          />
         </div>
 
         <div className={cstyles.center}>

@@ -27,6 +27,11 @@
 
 @tailwind components;
 @layer components {
+  /* It's used to wrap main routes  */
+  .wrapper {
+    @apply px-4 md:px-60px xl:container pt-5;
+  }
+
   .paper {
     @apply bg-white shadow-44px rounded-lg;
   }
@@ -70,13 +75,25 @@ body,
   height: 100%;
 }
 
-body {
-  margin: 0;
-  position: relative;
-  color: white;
-  background-color: #212124;
-  font-family: Avenir, Roboto, Arial, serif;
+@layer utilities {
+  .text-gradient {
+    background: radial-gradient(
+      87.68% 87.68% at 95.36% 14.36%,
+      #ffcf14 0%,
+      #ee8fff 55.86%,
+      #38deff 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
 }
+
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
 
 ::-webkit-scrollbar {
   width: 3px;
