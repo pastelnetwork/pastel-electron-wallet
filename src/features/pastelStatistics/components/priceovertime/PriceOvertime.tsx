@@ -39,6 +39,7 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   ] = useState<TLineChartData>()
 
   useEffect(() => {
+    const ac = new AbortController()
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
       const result = getDatasFromDB(pasteldb, pastelTableNames.pslprice)
@@ -58,6 +59,7 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
       if (ticker) {
         clearInterval(ticker)
       }
+      ac.abort()
     }
   }, [period])
 

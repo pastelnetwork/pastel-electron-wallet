@@ -59,7 +59,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
   const options = {
     grid: {
       top: 50,
-      right: 70,
+      right: 100,
       bottom: 40,
       left: 70,
       show: false,
@@ -98,7 +98,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
         },
         axisLabel: {
           formatter: function (value: string) {
-            return Number.parseFloat(value).toExponential(2)
+            return `$${Number.parseFloat(value).toFixed(5)}`
           },
         },
       },
@@ -116,7 +116,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
         },
         axisLabel: {
           formatter: function (value: string) {
-            return Number.parseFloat(value).toExponential(2)
+            return Number.parseFloat(value).toFixed(10)
           },
         },
       },
