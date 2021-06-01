@@ -14,8 +14,6 @@ import { TotalBalance, Info, AddressBalance } from './AppState'
 import Utils from '../utils/utils'
 import ScrollPane from './ScrollPane' // $FlowFixMe
 
-import App from '../../common/view/app'
-
 export const BalanceBlockHighlight = ({
   pslValue,
   usdValue,
@@ -157,7 +155,6 @@ export default class Home extends Component<any, any> {
                 <div>Address</div>
                 <div>Balance</div>
               </div>
-              <App></App>
               {addressesWithBalance &&
                 (addressesWithBalance.length === 0 ? (
                   <div className={[cstyles.center, cstyles.sublight].join(' ')}>
