@@ -8,6 +8,7 @@ import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
 import styles from '../../Common.module.css'
 import {
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
 
@@ -30,7 +31,7 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
-  const [period, setPeriod] = useState<TPeriod>('2d')
+  const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,
