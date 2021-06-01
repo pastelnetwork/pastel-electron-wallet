@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+interface TooltipProps {
+  $variant: 'top' | 'left' | 'right' | 'bottom'
+}
+
 export const Container = styled.div`
   position: relative;
   display: inline-block;
@@ -12,32 +16,29 @@ export const Container = styled.div`
     opacity: 1;
   }
 `
-export const Content = styled.span`
+export const Content = styled.span<TooltipProps>`
   visibility: hidden;
-  width: 240px;
-  background-color: ${({ theme }) => theme.colors.custom.black};
-  border: 1px solid ${({ theme }) => theme.colors.border.default};
-  border-radius: 8px;
+  width: 120px;
+  background-color: black;
+  color: #fff;
   text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
   position: absolute;
   z-index: 1;
-  bottom: 150%;
+  width: 120px;
+  bottom: 100%;
   left: 50%;
-  margin-left: -140px;
-  box-shadow: ${({ theme }) => theme.shadows.large};
-  opacity: 0;
-  transition: opacity 0.2s;
+  margin-left: -60px;
 
   &:after {
-    content: '';
+    content: ' ';
     position: absolute;
-    top: 100%;
+    top: 100%; /* At the bottom of the tooltip */
     left: 50%;
     margin-left: -5px;
-    border-width: 10px;
+    border-width: 5px;
     border-style: solid;
-    border-radius: 3px;
-    border-color: ${({ theme }) => theme.colors.custom.black} transparent
-      transparent transparent;
+    border-color: black transparent transparent transparent;
   }
 `

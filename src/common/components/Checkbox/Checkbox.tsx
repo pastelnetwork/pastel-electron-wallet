@@ -16,13 +16,10 @@ const Checkbox: React.FC<CheckboxProps> = ({
   clickHandler,
 }) => {
   return (
-    <Styles.Container
-      className='checkboxContainer pl-41px'
-      onClick={clickHandler}
-    >
+    <Styles.Container className='checkboxContainer pl-41px mb-4'>
       {children}
       <Styles.Input type='checkbox' checked={isChecked} onChange={() => null} />
-      <Styles.Span className='checkboxCheckmark' />
+      <Styles.Span onClick={clickHandler} className='checkboxCheckmark' />
     </Styles.Container>
   )
 }
