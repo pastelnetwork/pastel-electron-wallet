@@ -51,7 +51,9 @@ const MenubarItem = ({ name, routeName, currentRoute, style }: IMenuType) => {
       )}
     >
       <Link to={routeName}>
-        <span data-spandor className={activeColorClass}>{name}</span>
+        <span data-spandor className={activeColorClass}>
+          {name}
+        </span>
       </Link>
     </div>
   )

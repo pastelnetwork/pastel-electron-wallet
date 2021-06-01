@@ -627,10 +627,10 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
 
-              <Route
-                path={routes.ART_REGISTRATION}
-                render={() => <ArtRegForm />}
-              />
+            <Route
+              path={routes.ART_REGISTRATION}
+              render={() => <ArtRegForm />}
+            />
 
             <Route
               path={routes.LOADING}
