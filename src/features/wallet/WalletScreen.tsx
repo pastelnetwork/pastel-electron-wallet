@@ -77,6 +77,34 @@ const walletdatas: Transaction[] = [
     private_key: 'private key',
     psl: 18000,
   },
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    time: '1d 1 h 25m ago',
+    viewing_key: 'viewing key',
+    private_key: 'private key',
+    psl: 18000,
+  },
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    time: '1d 1 h 25m ago',
+    viewing_key: 'viewing key',
+    private_key: 'private key',
+    psl: 18000,
+  },
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    time: '1d 1 h 25m ago',
+    viewing_key: 'viewing key',
+    private_key: 'private key',
+    psl: 18000,
+  },
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    time: '1d 1 h 25m ago',
+    viewing_key: 'viewing key',
+    private_key: 'private key',
+    psl: 18000,
+  },
 ]
 
 const WalletScreen: React.FC = () => {
@@ -187,6 +215,9 @@ const WalletScreen: React.FC = () => {
               columns={columns}
               checkHandler={e => {
                 console.log(e)
+              }}
+              clickedHandler={d => {
+                console.log(d)
               }}
             />
           </div>

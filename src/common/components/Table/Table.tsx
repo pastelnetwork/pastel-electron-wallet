@@ -4,6 +4,7 @@ import pasteIcon from '../../assets/icons/ico-paste.svg'
 import pencilIcon from '../../assets/icons/ico-pencil.svg'
 import viewIcon from '../../assets/icons/ico-view.svg'
 import Select from '../../components/Select/Select'
+import cn from 'classnames'
 
 export type ColumnDefinitionType<T, K extends keyof T> = {
   key: K
@@ -15,21 +16,26 @@ type TableProps<T, K extends keyof T> = {
   data: Array<T>
   columns: Array<ColumnDefinitionType<T, K>>
   checkHandler: (param: number[]) => void
+  clickedHandler?: (param: T) => void
 }
 
 const Table = <T, K extends keyof T>({
   data,
   columns,
   checkHandler,
+  clickedHandler,
 }: TableProps<T, K>): JSX.Element => {
   const [selected, setSelected] = useState<number[]>([])
   return (
-    <table className='w-full'>
+    <table className='w-full mt-15px'>
       <tbody>
         {data.map((d, i) => (
           <tr
             key={i}
-            className='pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between'
+            className={cn(
+              'pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between',
+              selected.includes(i) && 'bg-blue-f8',
+            )}
           >
             <td className='flex items-center whitespace-nowrap w-5'>
               <Checkbox
@@ -88,7 +94,10 @@ const Table = <T, K extends keyof T>({
                           step={100}
                           value={value}
                           onChange={(value: number | null) => {
-                            console.log(value)
+                            if (clickedHandler) {
+                              d = { ...d, psl: value }
+                              clickedHandler(d)
+                            }
                           }}
                         />
                       </div>
@@ -97,7 +106,10 @@ const Table = <T, K extends keyof T>({
                 }
               }
               return (
-                <td className='flex items-center whitespace-nowrap'>
+                <td
+                  key={index + i}
+                  className='flex items-center whitespace-nowrap'
+                >
                   <span className={c.classnames}>{d[c.key]}</span>
                 </td>
               )

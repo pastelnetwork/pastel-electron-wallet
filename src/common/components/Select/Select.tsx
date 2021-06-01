@@ -107,7 +107,7 @@ export default function Select(props: SelectProps): JSX.Element {
             />
             <ul
               {...getMenuProps()}
-              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto'
+              className='z-10 absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto'
               onClick={e => e.stopPropagation()}
             >
               {filteredOptions?.map((item, index) => {

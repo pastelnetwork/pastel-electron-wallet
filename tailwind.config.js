@@ -119,6 +119,7 @@ module.exports = {
         },
         blue: {
           '3f': '#3F9AF7',
+          f8: '#F8FBFF',
         },
         gray: {
           // text
@@ -176,7 +177,7 @@ module.exports = {
       },
       boxShadow: {
         xs:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 1px 1px rgba(10, 22, 70, 0.1)',
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
         sm:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
         md:
@@ -185,6 +186,13 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         xl:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+        'depth-1': '0px 8px 16px -8px rgba(15, 15, 15, 0.2)',
+        '2px':
+          '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        '16px':
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
+        '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
+        '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
       },
       fontSize: {
         h1: '2rem',
