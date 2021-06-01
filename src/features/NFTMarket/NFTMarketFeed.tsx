@@ -26,27 +26,27 @@ const NFTMarketFeed: React.FC = () => {
   const [likes, setLikes] = useState<Option | null>(null)
 
   const mockCategories: Option[] = [
-    { value: 'ai', label: 'AI' },
+    { value: 'AI', label: 'AI' },
     { value: 'option_2', label: 'Option 2' },
     { value: 'option_3', label: 'Option 3' },
   ]
 
   const mockStatus: Option[] = [
-    { value: 'auctions', label: 'Auctions' },
+    { value: 'Auctions', label: 'Auctions' },
     { value: 'option_2', label: 'Option 2' },
     { value: 'option_3', label: 'Option 3' },
   ]
 
   const mockTime: Option[] = [
-    { value: 'future', label: 'Future' },
-    { value: 'present', label: 'Present' },
-    { value: 'past', label: 'Past' },
+    { value: 'Future', label: 'Future' },
+    { value: 'Present', label: 'Present' },
+    { value: 'Past', label: 'Past' },
   ]
 
   const mockRareness: Option[] = [
-    { value: 'high', label: 'High' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'low', label: 'Low' },
+    { value: 'High', label: 'High' },
+    { value: 'Medium', label: 'Medium' },
+    { value: 'Low', label: 'Low' },
   ]
 
   const mockOptions: Option[] = [
