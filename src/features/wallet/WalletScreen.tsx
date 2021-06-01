@@ -23,7 +23,7 @@ const WalletScreen: React.FC = () => {
     checked: boolean
   }
 
-  const walletdatas = [
+  const [walletdatas, setWalletDatas] = useState([
     {
       hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
       time: '1d 1 h 25m ago',
@@ -59,8 +59,9 @@ const WalletScreen: React.FC = () => {
       time: '1d 1 h 25m ago',
       checked: false,
     },
-  ]
-  const [isChecked, setIsChecked] = useState(false)
+  ])
+  const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
+
   const card_items = [
     {
       style: {
@@ -99,7 +100,10 @@ const WalletScreen: React.FC = () => {
       return
     }
     console.log(index)
-    setIsChecked(previousValue => !previousValue)
+    const temp = walletdatas
+    temp[index] = { ...temp[index], checked: !temp[index].checked }
+    setWalletDatas(temp)
+    forceUpdate()
   }
   return (
     <ThemeProvider theme={theme}>
@@ -170,7 +174,7 @@ const WalletScreen: React.FC = () => {
                   >
                     <td className='flex items-center whitespace-nowrap'>
                       <Checkbox
-                        isChecked={isChecked}
+                        isChecked={data.checked}
                         clickHandler={e => {
                           checkHandler(e, index)
                         }}
