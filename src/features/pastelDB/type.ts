@@ -580,3 +580,68 @@ export type TSentTxStore = {
   address: string
   memo: string
 }
+
+export type TGetBlockChainInfo = {
+  result: TBlockChainInfo
+  error: TError
+  id: string
+}
+
+export type TBlockChainInfo = {
+  bestblockhash: string
+  blocks: number
+  chain: string
+  chainwork: string
+  commitments: number
+  consensus: Tconsensus
+  difficulty: number
+  headers: number
+  pruned: boolean
+  softforks: Tsoftfork[]
+  upgrades: TUpgrades
+  valuePools: TValuePool[]
+  verificationprogress: number
+}
+
+export type TValuePool = {
+  chainValue?: number
+  chainValueZat?: number
+  id: string
+  monitored: boolean
+}
+
+export type TUpgrades = {
+  [index: string]: {
+    activationheight: number
+    info: string
+    name: string
+    status: string
+  }
+}
+
+export type Tsoftfork = {
+  enforce: Tenforce
+  id: string
+  reject: Tenforce
+  version: number
+}
+
+export type Tenforce = {
+  found: number
+  required: number
+  status: boolean
+  window: number
+}
+
+export type Tconsensus = {
+  chaintip: string
+  nextblock: string
+}
+
+export type TValidateFields = {
+  bestBlockHash?: string
+  hash?: string
+  price?: number
+  time?: number
+  transactionid?: string
+}

@@ -1,0 +1,38 @@
+.highlight {
+  color: #c3921f;
+}
+
+.large {
+  font-size: 18px;
+}
+
+.center {
+  text-align: center;
+}
+
+.primaryButton {
+  background-color: #c3921f;
+  color: #000;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 4px;
+  border-color: #c3921f;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.primaryButton:disabled,
+.primaryButton[disabled] {
+  border: 1px solid #999;
+  background-color: #ccc;
+  color: #666;
+}
+
+.primaryButton:hover {
+  cursor: pointer;
+}

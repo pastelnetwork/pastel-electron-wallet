@@ -329,7 +329,9 @@ class Sidebar extends PureComponent<any, any> {
       openPastelSpriteEditorToolModal,
       openPastelPhotopeaModal,
       openAboutModal,
+      openUpdateToast,
       openSquooshToolModal,
+      openGlitchImageModal,
     } = this.props
 
     ipcRenderer.on('payuri', (event, uri) => {
@@ -445,6 +447,26 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.on('squooshTool', () => {
       openSquooshToolModal()
     })
+
+    ipcRenderer.on('glitchImage', () => {
+      openGlitchImageModal()
+    })
+
+    ipcRenderer.send('app-ready')
+    ipcRenderer.on('update_downloaded', () => {
+      openUpdateToast()
+    })
+    ipcRenderer.on(
+      'deepLink',
+      (event, { view, param }: { view: string; param: string }) => {
+        const allRoutes = Object.assign(routes)
+        const page = allRoutes[view.toUpperCase()] ? view : routes.DASHBOARD
+        history.replace({
+          pathname: page,
+          state: { param },
+        })
+      },
+    )
   }
   closeExportPrivKeysModal = () => {
     this.setState({
@@ -685,6 +707,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
+          {/* <SidebarMenuItem
+            name='Statistics'
+            routeName={routes.STATISTICS}
+            currentRoute={location.pathname}
+            iconname='fa-chart-bar'
+          /> */}
           <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}

@@ -1,0 +1,8 @@
+export const WELCOME_PAGE = '/welcome-page'
+export const SIGN_UP = '/sign-up'
+export const LOGIN = '/login'
+export const PASSWORD_RECOVERY = '/password-recovery'
+export const REGISTER_PENDING = '/register-pending'
+export const REGISTER_SUCCESSFUL = '/register-successful'
+export const CRYPTO_KEYS = '/crypto-keys'
+export const NEW_PASSWORD = '/new-password'

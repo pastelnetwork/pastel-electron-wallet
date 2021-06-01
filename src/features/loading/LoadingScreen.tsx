@@ -1,24 +1,24 @@
-/* eslint-disable */
-
-import React, { Component } from 'react'
-import { Redirect, withRouter } from 'react-router'
-import ini from 'ini'
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
+import clx from 'classnames'
+import { ipcRenderer, remote } from 'electron'
 import fs from 'fs'
+import ini from 'ini'
 import os from 'os'
 import path from 'path'
-import { remote, ipcRenderer } from 'electron'
-import { spawn } from 'child_process'
-import routes from '../constants/routes.json'
-import { RPCConfig } from './AppState'
-import RPC from '../rpc'
-import cstyles from './Common.module.css'
-import styles from './LoadingScreen.module.css'
-import { NO_CONNECTION } from '../utils/utils'
-import Logo from '../assets/img/pastel-logo.png'
-import pasteldlogo from '../assets/img/pastel-logo2.png'
 import process from 'process'
-import { checkHashAndDownloadParams } from '../../features/loading'
-import { updateDefaultPastelConfig } from '../../features/pastelConf'
+import React, { Component } from 'react'
+import { Redirect } from 'react-router'
+
+import pasteldlogo from '../../legacy/assets/img/pastel-logo2.png'
+import { RPCConfig } from '../../legacy/components/AppState'
+import cstyles from '../../legacy/components/Common.module.css'
+import routes from '../../legacy/constants/routes.json'
+import { TWalletInfo } from '../../legacy/Routes'
+import RPC from '../../legacy/rpc'
+import { NO_CONNECTION } from '../../legacy/utils/utils'
+import styles from './LoadingScreen.module.css'
+import { checkHashAndDownloadParams } from './utils'
 
 const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
@@ -76,33 +76,57 @@ const locatePastelParamsDir = () => {
   return path.join(remote.app.getPath('appData'), 'PastelParams')
 }
 
-class LoadingScreenState {
-  currentStatus = 'Loading...'
-  creatingPastelConf = false
-  loadingDone = false
-  pasteldSpawned = 0
-  getinfoRetryCount = 0
-  rpcConfig: RPCConfig | null = null
+interface TLoadingState {
+  currentStatus: string | JSX.Element
+  creatingPastelConf: boolean
+  loadingDone: boolean
+  connectOverTor: boolean
+  enableFastSync: boolean
+  errorEnsurePastelParams: boolean
+  pasteldSpawned: number
+  getInfoRetryCount: number
+  rpcConfig: RPCConfig | null
 }
 
-class LoadingScreen extends Component<any, any> {
-  constructor(props: any) {
+interface TLoadingProps {
+  history: {
+    push: (route: string) => void
+  }
+  setRPCConfig: (data: RPCConfig | null) => void
+  setInfo: (data: TWalletInfo) => void
+}
+
+class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
+  pasteld: ChildProcessWithoutNullStreams | null = null
+
+  constructor(props: TLoadingProps) {
     super(props)
-    this.state = new LoadingScreenState()
+    this.state = {
+      currentStatus: 'Loading...',
+      creatingPastelConf: false,
+      loadingDone: false,
+      connectOverTor: false,
+      enableFastSync: false,
+      errorEnsurePastelParams: false,
+      pasteldSpawned: 0,
+      getInfoRetryCount: 0,
+      rpcConfig: null,
+    }
   }
 
   componentDidMount() {
-    ;(async () => {
-      const success = await this.ensurePastelParams()
-
-      if (success) {
-        await this.loadPastelConf(true)
-        await this.setupExitHandler()
-      }
-    })()
+    this.loadingConfigs()
   }
 
-  ensurePastelParams = async (nRetry = 0): Promise<boolean> => {
+  loadingConfigs = async () => {
+    const success = await this.ensurePastelParams()
+    if (success) {
+      await this.loadPastelConf(true)
+      this.setupExitHandler()
+    }
+  }
+
+  ensurePastelParams = async () => {
     const params = [
       {
         name: 'sapling-output.params',
@@ -123,10 +147,12 @@ class LoadingScreen extends Component<any, any> {
           'b685d700c60328498fbde589c8c7c484c722b788b265b72af448a5bf0ee55b50',
       },
       {
-        name: 'sprout-proving.key',
-        url: 'https://z.cash/downloads/sprout-proving.key',
+        name: 'sprout-proving.key.deprecated-sworn-elves',
+        url:
+          'https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves',
         sha256:
           '8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7',
+        originalName: 'sprout-proving.key',
       },
       {
         name: 'sprout-verifying.key',
@@ -141,13 +167,10 @@ class LoadingScreen extends Component<any, any> {
       await checkHashAndDownloadParams({
         params,
         outputDir: locatePastelParamsDir(),
-        onProgress: currentStatus => this.setState({ currentStatus }),
+        onProgress: (currentStatus: string) => this.setState({ currentStatus }),
       })
       return true
     } catch (err) {
-      if (nRetry < 10) {
-        return this.ensurePastelParams(nRetry + 1)
-      }
       this.setState({
         currentStatus: `Error downloading params. The error was: ${err}`,
         errorEnsurePastelParams: true,
@@ -156,28 +179,18 @@ class LoadingScreen extends Component<any, any> {
     }
   }
 
-  async loadPastelConf(createIfMissing: any) {
+  loadPastelConf = async (createIfMissing: boolean) => {
     // Load the RPC config from pastel.conf file
     const pastelLocation = locatePastelConf()
     let confValues
-    try {
-      await updateDefaultPastelConfig(pastelLocation)
-    } catch (error) {
-      console.warn(
-        `LoadingScreen updateDefaultPastelConfig error: ${error.message}`,
-      )
-    }
+
     try {
       confValues = ini.parse(
-        await fs.promises.readFile(pastelLocation, {
-          encoding: 'utf-8',
-        }),
+        await fs.promises.readFile(pastelLocation, { encoding: 'utf-8' }),
       )
     } catch (err) {
       if (createIfMissing) {
-        this.setState({
-          creatingPastelConf: true,
-        })
+        this.setState({ creatingPastelConf: true })
         return
       }
 
@@ -223,7 +236,7 @@ class LoadingScreen extends Component<any, any> {
     this.setupNextGetInfo()
   }
 
-  createPastelconf = async () => {
+  createPastelConf = async () => {
     const { connectOverTor, enableFastSync } = this.state
     const dir = locatePastelConfDir()
 
@@ -248,19 +261,21 @@ class LoadingScreen extends Component<any, any> {
     }
 
     await fs.promises.writeFile(pastelConfPath, confContent)
-
     this.setState({
       creatingPastelConf: false,
     })
     this.loadPastelConf(false)
   }
-  pasteld: any = null
+
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
       if (this.pasteld) {
         const { history } = this.props
         const { rpcConfig } = this.state
+        this.setState({
+          currentStatus: 'Waiting for pasteld to exit...',
+        })
         history.push(routes.LOADING)
         this.pasteld.on('close', () => {
           ipcRenderer.send('appquitdone')
@@ -268,6 +283,7 @@ class LoadingScreen extends Component<any, any> {
         this.pasteld.on('exit', () => {
           ipcRenderer.send('appquitdone')
         })
+        console.log('Sending stop')
         setTimeout(() => {
           RPC.doRPC('stop', [], rpcConfig)
         })
@@ -279,7 +295,6 @@ class LoadingScreen extends Component<any, any> {
   }
   startPasteld = async () => {
     const { pasteldSpawned } = this.state
-
     if (pasteldSpawned) {
       this.setState({
         currentStatus: 'pasteld start failed',
@@ -288,24 +303,17 @@ class LoadingScreen extends Component<any, any> {
     }
 
     const program = locatePasteld()
-    console.log(program)
     this.pasteld = spawn(program)
     this.setState({
       pasteldSpawned: 1,
-    })
-    this.setState({
       currentStatus: 'pasteld starting...',
     })
-    this.pasteld.on('error', (err: any) => {
+    this.pasteld.on('error', (err: string) => {
       console.log(`pasteld start error, giving up. Error: ${err}`) // Set that we tried to start pasteld, and failed
-
       this.setState({
         pasteldSpawned: 1,
+        getInfoRetryCount: 10,
       }) // No point retrying.
-
-      this.setState({
-        getinfoRetryCount: 10,
-      })
     })
   }
 
@@ -314,11 +322,10 @@ class LoadingScreen extends Component<any, any> {
   }
 
   async getInfo() {
-    const { rpcConfig, pasteldSpawned, getinfoRetryCount } = this.state // Try getting the info.
+    const { rpcConfig, pasteldSpawned, getInfoRetryCount } = this.state // Try getting the info.
 
     try {
       const info = await RPC.getInfoObject(rpcConfig)
-      console.log(info)
       const { setRPCConfig, setInfo } = this.props
       setRPCConfig(rpcConfig)
       setInfo(info) // This will cause a redirect to the dashboard
@@ -338,18 +345,18 @@ class LoadingScreen extends Component<any, any> {
         this.setupNextGetInfo()
       }
 
-      if (err === NO_CONNECTION && pasteldSpawned && getinfoRetryCount < 10) {
+      if (err === NO_CONNECTION && pasteldSpawned && getInfoRetryCount < 10) {
         this.setState({
           currentStatus: 'Waiting for pasteld to start...',
         })
-        const inc = getinfoRetryCount + 1
+        const inc = getInfoRetryCount + 1
         this.setState({
-          getinfoRetryCount: inc,
+          getInfoRetryCount: inc,
         })
         this.setupNextGetInfo()
       }
 
-      if (err === NO_CONNECTION && pasteldSpawned && getinfoRetryCount >= 10) {
+      if (err === NO_CONNECTION && pasteldSpawned && getInfoRetryCount >= 10) {
         // Give up
         this.setState({
           currentStatus: (
@@ -373,85 +380,44 @@ class LoadingScreen extends Component<any, any> {
     }
   }
 
-  handleEnableFastSync = (event: any) => {
-    this.setState({
-      enableFastSync: event.target.checked,
-    })
-  }
-  handleTorEnabled = (event: any) => {
-    this.setState({
-      connectOverTor: event.target.checked,
-    })
-  }
-
   render() {
     const {
       loadingDone,
       currentStatus,
       creatingPastelConf,
-      connectOverTor,
-      enableFastSync,
       errorEnsurePastelParams,
     } = this.state // If still loading, show the status
 
     if (!loadingDone) {
       return (
-        <div className={[cstyles.center, styles.loadingcontainer].join(' ')}>
-          {!creatingPastelConf && (
-            <div className={cstyles.verticalflex}>
-              <div
-                style={{
-                  marginTop: '100px',
-                }}
-              >
-                <img src={Logo} width='200px;' alt='Logo' />
-              </div>
-              <div>
-                {currentStatus}
-                {errorEnsurePastelParams && (
-                  <>
-                    {' '}
-                    <span
-                      className={styles.clickable}
-                      onClick={() => this.ensurePastelParams()}
-                    >
-                      Retry
-                    </span>
-                  </>
-                )}
-              </div>
-            </div>
-          )}
-
-          {creatingPastelConf && (
-            <div>
+        <div className={clx(cstyles.center, styles.loadingcontainer)}>
+          <div className={styles.viewContent}>
+            {creatingPastelConf ? (
               <div className={cstyles.verticalflex}>
                 <div
-                  className={[
+                  className={clx(
                     cstyles.verticalflex,
                     cstyles.center,
                     cstyles.margintoplarge,
                     cstyles.highlight,
-                  ].join(' ')}
+                  )}
                 >
-                  <div className={[cstyles.xlarge].join(' ')}>
+                  <div className={cstyles.xlarge}>
                     {' '}
                     Welcome To Pastel Wallet Fullnode!
                   </div>
                 </div>
 
-                <div
-                  className={[cstyles.center, cstyles.margintoplarge].join(' ')}
-                >
+                <div className={clx(cstyles.center, cstyles.margintoplarge)}>
                   <img src={pasteldlogo} width='400px' alt='pasteldlogo' />
                 </div>
 
                 <div
-                  className={[
+                  className={clx(
                     cstyles.verticalflex,
                     cstyles.center,
                     cstyles.margintoplarge,
-                  ].join(' ')}
+                  )}
                   style={{
                     width: '75%',
                     marginLeft: '15%',
@@ -465,62 +431,40 @@ class LoadingScreen extends Component<any, any> {
                   </div>
                 </div>
 
-                {/*
-                <div
-                  className={cstyles.left}
-                  style={{
-                    width: '75%',
-                    marginLeft: '15%',
-                  }}
-                >
-                  <div className={cstyles.margintoplarge} />
-                  <div className={[cstyles.verticalflex].join(' ')}>
-                    <div>
-                      <input
-                        type='checkbox'
-                        onChange={this.handleTorEnabled}
-                        defaultChecked={connectOverTor}
-                      />
-                      &nbsp; Connect over Tor
-                    </div>
-                    <div className={cstyles.sublight}>
-                      Will connect over Tor. Please make sure you have the Tor
-                      client installed and listening on port 9050.
-                    </div>
-                  </div>
-
-                  <div className={cstyles.margintoplarge} />
-                  <div className={[cstyles.verticalflex].join(' ')}>
-                    <div>
-                      <input
-                        type='checkbox'
-                        onChange={this.handleEnableFastSync}
-                        defaultChecked={enableFastSync}
-                      />
-                      &nbsp; Enable Fast Sync
-                    </div>
-                    <div className={cstyles.sublight}>
-                      When enabled, Pastel Wallet will skip some expensive
-                      verifications of the pasteld blockchain when downloading.
-                      This option is safe to use if you are creating a brand new
-                      wallet.
-                    </div>
-                  </div>
-                </div>
-                */}
-
                 <div className={cstyles.buttoncontainer}>
                   <button
                     type='button'
                     className={cstyles.primarybutton}
-                    onClick={this.createPastelconf}
+                    onClick={this.createPastelConf}
                   >
                     Start Pastel
                   </button>
                 </div>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className={cstyles.verticalflex}>
+                <div className={styles.viewInner}>
+                  <div className={styles.loaderWrapper}>
+                    <div className={styles.loader} />
+                  </div>
+                </div>
+                <div className={styles.textWrap}>
+                  {currentStatus}
+                  {errorEnsurePastelParams && (
+                    <>
+                      {' '}
+                      <span
+                        className={styles.clickable}
+                        onClick={this.ensurePastelParams}
+                      >
+                        Retry
+                      </span>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )
     }
@@ -529,4 +473,4 @@ class LoadingScreen extends Component<any, any> {
   }
 }
 
-export default withRouter(LoadingScreen)
+export default LoadingScreen

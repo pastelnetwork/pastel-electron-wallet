@@ -5,6 +5,8 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './squooshToolModal.module.css'
 import { closeSquooshToolModal } from './squooshToolModalSlice'
 
+import { squoosh } from '../constants/ServeStatic'
+
 export default function squooshToolModal(): JSX.Element {
   const { modalIsOpen } = useAppSelector(state => state.squooshToolModal)
   const dispatch = useAppDispatch()
@@ -28,9 +30,7 @@ export default function squooshToolModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe
-            src={`${window.location.protocol}//${window.location.hostname}:5100/`}
-          />
+          <iframe src={`http://localhost:${squoosh.staticPort}/`} />
         </div>
       </div>
     </Modal>

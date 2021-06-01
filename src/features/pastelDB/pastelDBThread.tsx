@@ -2,8 +2,10 @@ import { Database } from 'sql.js'
 
 import { rpc, TRPCConfig } from '../../api/pastel-rpc/rpc'
 import PastelDB from '../../features/pastelDB/database'
+import coinGeckoClient from '../pastelPrice/coingecko'
 import {
   exportSqliteDB,
+  insertBlockChainInfo,
   insertBlockInfoToDB,
   insertBlocksubsidy,
   insertChaintips,
@@ -14,6 +16,7 @@ import {
   insertMiningInfoToDB,
   insertNetTotalsToDB,
   insertNetworkInfoToDB,
+  insertPastelPrice,
   insertRawMempoolinfoToDB,
   insertRawtransaction,
   insertStatisticDataToDB,
@@ -154,10 +157,9 @@ export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchBlock(props: fetchFuncConfig): Promise<void> {
   try {
-    const height = 1000
     const hash = await rpc<types.TGetblockhash>(
-      'getblockhash',
-      [height],
+      'getbestblockhash',
+      [],
       props.rpcConfig,
     )
     const blockInfo = await rpc<types.TGetblock>(
@@ -167,7 +169,7 @@ export async function fetchBlock(props: fetchFuncConfig): Promise<void> {
     )
     insertBlockInfoToDB(props.pastelDB, blockInfo.result)
   } catch (error) {
-    throw new Error(`pastelDBThread fetchBlock error: ${error.message}`)
+    throw new Error(`pastelDBThread fetchBlock error: ${error}`)
   }
 }
 
@@ -184,15 +186,19 @@ export async function fetchRawtransaction(
     for (let i = 0; i < listSinceBlock.transactions.length; i++) {
       const transaction: types.TSinceblockTransaction =
         listSinceBlock.transactions[i]
-      const { result } = await rpc<types.TGetrawtransaction>(
-        'getrawtransaction',
-        [transaction.txid, 1],
-        props.rpcConfig,
-      )
-      insertRawtransaction(props.pastelDB, result)
+      if (transaction.txid) {
+        const { result } = await rpc<types.TGetrawtransaction>(
+          'getrawtransaction',
+          [transaction.txid, 1],
+          props.rpcConfig,
+        )
+        insertRawtransaction(props.pastelDB, result)
+      }
     }
   } catch (error) {
-    throw new Error(`pastelDBThread fetchBlock error: ${error.message}`)
+    throw new Error(
+      `pastelDBThread fetchRawtransaction error: ${error.message}`,
+    )
   }
 }
 
@@ -339,6 +345,39 @@ export async function fetchListaddresses(
   }
 }
 
+export async function fetchPastelPrices(props: fetchFuncConfig): Promise<void> {
+  try {
+    const resp = await coinGeckoClient.simple.price({
+      ids: ['pastel'],
+      vs_currencies: ['usd'],
+    })
+
+    if (!resp.data?.['pastel']?.['usd']) {
+      throw new Error('pastelPrice fetchPastelPrice error: invalid response')
+    }
+
+    insertPastelPrice(props.pastelDB, resp.data?.['pastel']?.['usd'])
+  } catch (err) {
+    // TODO log errors to a central logger so we can address them later.
+    console.warn(err.message)
+  }
+}
+
+export async function fetchBlockChainInfo(
+  props: fetchFuncConfig,
+): Promise<void> {
+  try {
+    const { result } = await rpc<types.TGetBlockChainInfo>(
+      'getblockchaininfo',
+      [],
+      props.rpcConfig,
+    )
+    insertBlockChainInfo(props.pastelDB, result)
+  } catch (error) {
+    throw new Error(`pastelDBThread fetchBlockChainInfo error: ${error}`)
+  }
+}
+
 export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
   const pastelDB = await PastelDB.getDatabaseInstance()
   if (pastelDB && rpcConfig && rpcConfig.username !== '') {
@@ -365,6 +404,8 @@ export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
       fetchListunspent(pastelConfig),
       fetchTotalbalance(pastelConfig),
       fetchListaddresses(pastelConfig),
+      fetchPastelPrices(pastelConfig),
+      fetchBlockChainInfo(pastelConfig),
     ])
     await exportSqliteDB(pastelDB)
   }
