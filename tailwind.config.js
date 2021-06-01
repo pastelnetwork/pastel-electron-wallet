@@ -42,11 +42,13 @@ module.exports = {
         '27px': '1.688rem',
         //28px: 7 default
         '30px': '1.875rem',
+        '31px': '1.938rem',
         //32px: 8 default
         '34px': '2.215rem',
         '35px': '2.188rem',
         //36px: 9 default
         '37px': '2.313rem',
+        '38px': '2.375rem',
         //40px: 10 default
         '41px': '2.563rem',
         //44px: 11 default
@@ -59,7 +61,7 @@ module.exports = {
         '60px': '3.75rem',
         //64px: 16 default
         '66px': '4.125rem',
-        '67px': '',
+        '67px': '4.188rem',
         '68px': '4.25rem',
         '70px': '4.375rem',
         '75px': '4.688rem',
@@ -82,6 +84,7 @@ module.exports = {
         '220px': '13.75rem',
         //224px: 56 default
         //240px: 60 default
+        '247px': '15.438rem',
         //256px: 64 default
         //288px: 72 default
         '300px': '18.75rem',
@@ -90,6 +93,7 @@ module.exports = {
         '352px': '22rem',
         //384px: 96 default
         '427px': '26.688rem',
+        '456px': '28.5rem',
         '553px': '34.563rem',
       },
       colors: {
