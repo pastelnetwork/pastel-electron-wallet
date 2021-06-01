@@ -71,7 +71,6 @@ module.exports = {
           background: '#FAEFF5',
         },
         blue: {
-          450: '#3F9AF7',
           '3f': '#3F9AF7',
         },
         green: {

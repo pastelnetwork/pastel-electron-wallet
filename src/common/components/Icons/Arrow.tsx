@@ -34,9 +34,9 @@ export default function Arrow({
       <path
         d='M5.58437 1.57227L9.69043 5.00084L5.58437 8.42941M1.47831 5.00084L9.10385 5.00084'
         stroke='currentColor'
-        stroke-width='1.4'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeWidth='1.4'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   )
