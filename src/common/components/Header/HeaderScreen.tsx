@@ -51,7 +51,7 @@ const MenubarItem = ({ name, routeName, currentRoute, style }: IMenuType) => {
       )}
     >
       <Link to={routeName}>
-        <span className={activeColorClass}>{name}</span>
+        <span data-spandor className={activeColorClass}>{name}</span>
       </Link>
     </div>
   )
@@ -151,7 +151,7 @@ const Header = (props: PropsType) => {
             />
           ))}
           <div className='md:ml-13px lg:ml-40px xl:ml-50px'>
-            <Link to='#' className='flex items-center'>
+            <Link to='/art_registration' className='flex items-center'>
               <img
                 src={addBtn}
                 className='w-20px h-20px mr-2px md:mr-8px'

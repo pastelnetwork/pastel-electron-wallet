@@ -45,6 +45,7 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
+import { ArtRegForm } from '../features/artReg'
 import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
@@ -625,6 +626,11 @@ class RouteApp extends React.Component<any, any> {
                 />
               )}
             />
+
+              <Route
+                path={routes.ART_REGISTRATION}
+                render={() => <ArtRegForm />}
+              />
 
             <Route
               path={routes.LOADING}

@@ -1,6 +1,7 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 
 import { aboutModalReducer } from '../features/about'
+import { artRegFormReducer } from '../features/artReg'
 import { pastelConfReducer } from '../features/pastelConf'
 import { pastelIDReducer } from '../features/pastelID'
 import { pastelModalReducer } from '../features/pastelModal'
@@ -21,6 +22,7 @@ const store = configureStore({
     pastelPaperWalletModal: pastelPaperWalletModalReducer,
     pastelSpriteEditorToolModal: pastelSpriteEditorToolModalReducer,
     pastelPhotopeaModal: pastelPhotopeaModalReducer,
+    artRegForm: artRegFormReducer,
     aboutModal: aboutModalReducer,
     updateToast: updateToastReducer,
     squooshToolModal: squooshToolModalReducer,
