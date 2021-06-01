@@ -52,6 +52,8 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import NFTMarketFeed from '../features/NFTMarket'
+import { app } from 'electron'
 
 export type TWalletInfo = {
   connections: number
@@ -110,11 +112,13 @@ class RouteApp extends React.Component<any, any> {
     this.rpc = rpc
 
     // Auto refresh every 10s
-    this.rpcRefreshIntervalId = window.setInterval(() => {
-      if (this.state.rpcConfig.username) {
-        rpc.refresh()
-      }
-    }, 10000)
+    if (!app?.isPackaged) {
+      this.rpcRefreshIntervalId = window.setInterval(() => {
+        if (this.state.rpcConfig.username) {
+          rpc.refresh()
+        }
+      }, 10000)
+    }
 
     const addressBook = await AddressbookImpl.readAddressBook()
     if (addressBook) {
@@ -497,6 +501,7 @@ class RouteApp extends React.Component<any, any> {
         )}
         <div className={cstyles.contentcontainer}>
           <Switch>
+            <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
             <Route
               path={routes.SEND}
               render={() => (
@@ -631,9 +636,11 @@ class RouteApp extends React.Component<any, any> {
                     this.setRPCConfig(rpcConfig)
 
                     // set pastel DB thread update timer
-                    setInterval(() => {
-                      PastelDBThread(rpcConfig)
-                    }, period)
+                    if (!app?.isPackaged) {
+                      setInterval(() => {
+                        PastelDBThread(rpcConfig)
+                      }, period)
+                    }
                   }}
                   setInfo={this.setInfo}
                 />

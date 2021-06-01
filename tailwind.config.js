@@ -15,7 +15,7 @@ module.exports = {
       '2xl': '1700px',
     },
     fontFamily: {
-      body: 'Avenir, Roboto, Arial, serif',
+      body: 'Avenir, Roboto, Arial, Helvetica, Helvetica Neue, serif',
     },
     extend: {
       spacing: {
@@ -74,6 +74,7 @@ module.exports = {
         '111px': '6.938rem',
         //112px: 28 default
         '117px': '7.313rem',
+        '120px': '7.5rem',
         '124px': '7.75rem',
         //128px: 32 default
         //144px: 36 default
@@ -83,6 +84,7 @@ module.exports = {
         //208px: 52 default
         '220px': '13.75rem',
         //224px: 56 default
+        '230px': '14.375rem',
         //240px: 60 default
         '247px': '15.438rem',
         //256px: 64 default
@@ -119,24 +121,27 @@ module.exports = {
           '3f': '#3F9AF7',
         },
         gray: {
+          // text
+          a0: '#A0AEC0',
+          71: '#718096',
+          '4a': '#4A5568',
+          '2d': '#2D3748',
+          '1a': '#1A202C',
+          // --
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           e7: '#E7EAF2',
           e6: '#E6E8EC',
           b0: '#B0B7C3',
-          a0: '#A0AEC0',
-          71: '#718096',
-          '4a': '#4A5568',
-          '1a': '#1A202C',
           110: '#F2F2F2',
           35: '#353941',
           33: '#334D6E',
-          '2d': '#2D3748',
           '1d': '#1D263A',
           14: '#141416',
           '4e': '#4E5D78',
           93: '#939EAB',
           57: '#57657B',
+          23: '#23262F',
         },
         red: {
           '7a': '#FF7A00',
@@ -171,7 +176,7 @@ module.exports = {
       },
       boxShadow: {
         xs:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 1px 1px rgba(10, 22, 70, 0.1)',
         sm:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
         md:
@@ -185,13 +190,16 @@ module.exports = {
         h1: '2rem',
         h2: '1.5rem',
         h3: '1.375em',
-        h4: '1.125',
+        h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
         15: '0.938rem',
       },
       borderRadius: {
         '4px': '0.25rem',
+      },
+      container: {
+        center: true,
       },
     },
   },
