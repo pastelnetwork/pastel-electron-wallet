@@ -8,11 +8,11 @@ module.exports = {
   ],
   theme: {
     screens: {
-      sm: '414px',
-      md: '834px',
-      lg: '874px',
-      xl: '946px',
-      '2xl': '1440px',
+      sm: '900px',
+      md: '1100px',
+      lg: '1300px',
+      xl: '1440px',
+      '2xl': '1700px',
     },
     fontFamily: {
       body: 'Avenir, Roboto, Arial, serif',

@@ -20,7 +20,7 @@ const Modal: React.FC<ModalProps> = ({
   children,
 }) => {
   const modalClasses = cn({
-    'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 sm:px-12 px-4 overflow-auto mx-auto': true,
+    'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 px-12 overflow-auto mx-auto': true,
     [`max-w-${size}`]: size,
   })
 
