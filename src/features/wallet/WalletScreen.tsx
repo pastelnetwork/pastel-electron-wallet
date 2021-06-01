@@ -1,73 +1,85 @@
-import React, { useState } from 'react'
+import React from 'react'
 import NumberFormat from 'react-number-format'
 import placeholderIcon from '../../common/assets/icons/ico-placeholder.svg'
 import elminationIcon from '../../common/assets/icons/ico-elmination.svg'
-import pasteIcon from '../../common/assets/icons/ico-paste.svg'
 import clockIcon from '../../common/assets/icons/ico-clock.svg'
 import plusIcon from '../../common/assets/icons/ico-plus.svg'
-import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
-import viewIcon from '../../common/assets/icons/ico-view.svg'
 import electIcon from '../../common/assets/icons/ico-elect.svg'
 import Tooltip from '../../common/components/Tooltip/Tooltip'
 import Toggle from '../../common/components/Toggle'
 import { ThemeProvider } from 'styled-components/macro'
 import { theme } from '../../common/theme'
-import Checkbox from '../../common/components/Checkbox/Checkbox'
-import AutoComplete from '../../common/components/AutoComplete/AutoComplete'
 import Button from '../../common/components/Button/Button'
+import Table, {
+  ColumnDefinitionType,
+} from '../../common/components/Table/Table'
+
+interface Transaction {
+  hash: string
+  time: string
+  viewing_key?: string
+  private_key?: string
+  psl?: number
+  qr_code?: string
+}
+
+const columns: ColumnDefinitionType<Transaction, keyof Transaction>[] = [
+  {
+    key: 'hash',
+    header: 'Hash',
+  },
+  {
+    key: 'qr_code',
+    header: 'QR Code',
+    classnames: '',
+  },
+  {
+    key: 'time',
+    header: 'Time',
+    classnames: 'text-gray-a0 lg:ml-20 xl:ml-117px',
+  },
+  {
+    key: 'viewing_key',
+    header: 'Viewing Key',
+    classnames: 'text-gray-a0 lg:ml-16 xl:ml-86px',
+  },
+  {
+    key: 'private_key',
+    header: 'Private Key',
+    classnames: 'text-gray-a0 lg:ml-11 xl:ml-59px',
+  },
+  {
+    key: 'psl',
+    header: 'psl',
+    classnames: 'psl',
+  },
+]
+
+const walletdatas: Transaction[] = [
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    time: '1d 1 h 25m ago',
+    viewing_key: 'viewing key',
+    private_key: 'private key',
+    psl: 22000,
+  },
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    time: '1d 1 h 25m ago',
+    viewing_key: 'viewing key',
+    private_key: 'private key',
+    psl: 22000,
+  },
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    time: '1d 1 h 25m ago',
+    viewing_key: 'viewing key',
+    private_key: 'private key',
+    psl: 22000,
+  },
+]
 
 const WalletScreen: React.FC = () => {
-  interface IDataType {
-    hash: string
-    time: string
-    checked: boolean
-  }
-
-  // const columns = [
-  //   'hash',
-  //   'time',
-  //   'viewing_key',
-  //   'private_key'
-  // ]
-
-  const [walletdatas, setWalletDatas] = useState([
-    {
-      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-      time: '1d 1 h 25m ago',
-      checked: false,
-    },
-    {
-      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
-      time: '1d 1 h 25m ago',
-      checked: false,
-    },
-    {
-      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
-      time: '1d 1 h 25m ago',
-      checked: false,
-    },
-    {
-      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
-      time: '1d 1 h 25m ago',
-      checked: false,
-    },
-    {
-      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
-      time: '1d 1 h 25m ago',
-      checked: false,
-    },
-    {
-      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
-      time: '1d 1 h 25m ago',
-      checked: false,
-    },
-    {
-      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
-      time: '1d 1 h 25m ago',
-      checked: false,
-    },
-  ])
-
   const card_items = [
     {
       style: {
@@ -98,18 +110,18 @@ const WalletScreen: React.FC = () => {
     },
   ]
 
-  const checkHandler = (
-    event: React.MouseEvent<HTMLLabelElement, MouseEvent>,
-    index: number,
-  ) => {
-    if ((event?.target as HTMLElement).tagName === 'LABEL') {
-      return
-    }
-    console.log(index)
-    const temp = walletdatas
-    temp[index] = { ...temp[index], checked: !temp[index].checked }
-    setWalletDatas([...temp])
-  }
+  // const checkHandler = (
+  //   event: React.MouseEvent<HTMLLabelElement, MouseEvent>,
+  //   index: number,
+  // ) => {
+  //   if ((event?.target as HTMLElement).tagName === 'LABEL') {
+  //     return
+  //   }
+  //   console.log(index)
+  //   const temp = walletdatas
+  //   // temp[index] = { ...temp[index], checked: !temp[index].checked }
+  //   // setWalletDatas([...temp])
+  // }
   return (
     <ThemeProvider theme={theme}>
       <div className='bg-gray-f8 pt-5 sm:px-10 md:px-60px'>
@@ -170,59 +182,13 @@ const WalletScreen: React.FC = () => {
             </span>
           </div>
           <div className='mb-15px h-456px overflow-y-scroll mr-4'>
-            <table className='w-full'>
-              <tbody>
-                {walletdatas.map((data: IDataType, index: number) => (
-                  <tr
-                    key={index}
-                    className='pt-18px pb-19px lg:ml-6 xl:ml-38px pl-31px pr-31px flex border-b border-line-DEFAULT mr-4 justify-between'
-                  >
-                    <td className='flex items-center'>
-                      <Checkbox
-                        isChecked={data.checked}
-                        clickHandler={e => {
-                          checkHandler(e, index)
-                        }}
-                      ></Checkbox>
-                    </td>
-                    <td className='flex items-center whitespace-nowrap'>
-                      <span className='text-blue-3f'>{data.hash}</span>
-                      <img className='ml-7' src={pasteIcon} />
-                      <img className='ml-25px' src={pencilIcon} />
-                    </td>
-                    <td className='flex items-center lg:ml-16 xl:ml-75px'>
-                      <img src={viewIcon} />
-                    </td>
-                    <td className='flex items-center whitespace-nowrap'>
-                      <span className='text-gray-a0 lg:ml-20 xl:ml-117px'>
-                        {data.time}
-                      </span>
-                    </td>
-                    <td className='flex items-center whitespace-nowrap'>
-                      <span className='text-gray-a0 lg:ml-16 xl:ml-86px'>
-                        viewing key
-                      </span>
-                    </td>
-                    <td className='flex items-center whitespace-nowrap'>
-                      <span className='text-gray-a0 lg:ml-11 xl:ml-59px'>
-                        private key
-                      </span>
-                    </td>
-                    <td className='flex items-center md:8 lg:ml-60px'>
-                      <div>
-                        <AutoComplete
-                          selected={'20000'}
-                          startNumber={20000}
-                          endNumber={24000}
-                          diffNumber={2000}
-                          onChange={value => console.log(value)}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <Table
+              data={walletdatas}
+              columns={columns}
+              checkHandler={e => {
+                console.log(e)
+              }}
+            />
           </div>
         </div>
 
