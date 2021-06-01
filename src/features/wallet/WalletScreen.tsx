@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
+import { ThemeProvider } from 'styled-components'
 import NumberFormat from 'react-number-format'
+import PaymentModal from './PaymentModal'
+import TransactionHistoryModal from './TransactionHistoryModal'
 import placeholderIcon from '../../common/assets/icons/ico-placeholder.svg'
 import elminationIcon from '../../common/assets/icons/ico-elmination.svg'
 import pasteIcon from '../../common/assets/icons/ico-paste.svg'
@@ -10,7 +13,6 @@ import viewIcon from '../../common/assets/icons/ico-view.svg'
 import electIcon from '../../common/assets/icons/ico-elect.svg'
 import Tooltip from '../../common/components/Tooltip/Tooltip'
 import Toggle from '../../common/components/Toggle'
-import { ThemeProvider } from 'styled-components/macro'
 import { theme } from '../../common/theme'
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import AutoComplete from '../../common/components/AutoComplete/AutoComplete'
@@ -60,7 +62,56 @@ const WalletScreen: React.FC = () => {
       checked: false,
     },
   ]
+
+  const paymentSources = [
+    {
+      hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    },
+    {
+      hash: 'Michael Francis',
+    },
+  ]
+
+  const transactionHistory = [
+    {
+      date: '11.04.21 01:43',
+      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+      type: 'Shielded',
+      status: 'success',
+      id: '2654843-5933',
+      comments: 'abcdefg',
+      fee: '100',
+      amount: '22.000',
+    },
+    {
+      date: '11.04.21 01:43',
+      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+      type: 'Shielded',
+      status: 'pending',
+      id: '2654843-5933',
+      comments: 'abcdefg',
+      fee: '100',
+      amount: '22.000',
+    },
+    {
+      date: '11.04.21 01:43',
+      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+      type: 'Shielded',
+      status: 'failed',
+      id: '2654843-5933',
+      comments: 'abcdefg',
+      fee: '100',
+      amount: '22.000',
+    },
+  ]
+
   const [isChecked, setIsChecked] = useState(false)
+  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [
+    isTransactionHistoryModalOpen,
+    setTransactionHistoryModalOpen,
+  ] = useState(false)
+
   const card_items = [
     {
       style: {
@@ -142,7 +193,10 @@ const WalletScreen: React.FC = () => {
             <Toggle />
             <img className='ml-2' src={elminationIcon} />
           </div>
-          <div className='flex'>
+          <div
+            className='flex cursor-pointer'
+            onClick={() => setTransactionHistoryModalOpen(true)}
+          >
             <img src={clockIcon} />
             <span className='text-blue-3f ml-3.5'>Transaction history</span>
           </div>
@@ -195,7 +249,7 @@ const WalletScreen: React.FC = () => {
                     <td className='flex items-center ml-60px'>
                       <div>
                         <AutoComplete
-                          selected={'20000'}
+                          selected={{ value: '20000' }}
                           startNumber={20000}
                           endNumber={24000}
                           diffNumber={2000}
@@ -217,7 +271,11 @@ const WalletScreen: React.FC = () => {
               <span className='text-sm ml-11px'>Create a new PSL address</span>
             </div>
           </Button>
-          <Button className='ml-11px' style={{ width: '174px' }}>
+          <Button
+            className='ml-11px'
+            style={{ width: '174px' }}
+            onClick={() => setPaymentModalOpen(true)}
+          >
             <div className='flex items-center ml-5'>
               <img src={plusIcon} className='py-3.5' />
               <span className='text-sm ml-2'>Create a payment</span>
@@ -225,6 +283,20 @@ const WalletScreen: React.FC = () => {
           </Button>
         </div>
       </div>
+      <PaymentModal
+        paymentSources={paymentSources}
+        isOpen={isPaymentModalOpen}
+        handleClose={() => {
+          setPaymentModalOpen(false)
+        }}
+      ></PaymentModal>
+      <TransactionHistoryModal
+        transactionHistory={transactionHistory}
+        isOpen={isTransactionHistoryModalOpen}
+        handleClose={() => {
+          setTransactionHistoryModalOpen(false)
+        }}
+      ></TransactionHistoryModal>
     </ThemeProvider>
   )
 }
