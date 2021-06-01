@@ -9,19 +9,14 @@ import {
 
 import Button from '../../../../common/components/MySecurity/Button/Button'
 import Key from '../../../../common/components/MySecurity/Crypto/Crypto'
-import {
-  Title,
-  Description,
-} from '../../../../common/components/MySecurity/Typography/Typography'
-import * as Styles from './CryptoKey.style'
-import { DescriptionContainer, BodyContainer } from '../MySecurity.style'
+import Card from '../../../../common/components/MySecurity/Card'
 
-interface PDFDocumentProps {
+interface IPDFDocumentProps {
   privateKey: string
   secretKey: string
 }
 
-const PDFDocument = ({ privateKey, secretKey }: PDFDocumentProps) => {
+const PDFDocument = ({ privateKey, secretKey }: IPDFDocumentProps) => {
   return (
     <Document title={'Crypto Keys'}>
       <Page size='A4'>
@@ -40,28 +35,31 @@ const CryptoKey: React.FC = () => {
   const privateKey = 'ps19jxlfdl8mhnsqlf7x0cwlhx0cwlheq0v34'
   const secretKey = 'ps19jxlfdl8mhnsqlf7x0cwlhx0cwlheq0v34'
 
-  return (
+  const content = (
     <>
-      <Title>Backup crypto-keys</Title>
-      <DescriptionContainer>
-        <Description>Some description goes here</Description>
-      </DescriptionContainer>
-      <BodyContainer>
-        <Key label='Private Key'>{privateKey}</Key>
-        <Styles.Spacer />
-        <Key label='Secret Key'>{secretKey}</Key>
-      </BodyContainer>
-      <Button>
-        Download PDF with all keys
-        <PDFDownloadLink
-          document={
-            <PDFDocument privateKey={privateKey} secretKey={secretKey} />
-          }
-          fileName={'crypto_keys'}
-          className='inline-block w-full h-full absolute top-o left-0'
-        />
-      </Button>
+      <Key label='Private Key'>{privateKey}</Key>
+      <Key label='Secret Key'>{secretKey}</Key>
     </>
+  )
+
+  const footer = (
+    <Button>
+      Download PDF with all keys
+      <PDFDownloadLink
+        document={<PDFDocument privateKey={privateKey} secretKey={secretKey} />}
+        fileName={'crypto_keys'}
+        className='inline-block w-full h-full absolute top-o left-0'
+      />
+    </Button>
+  )
+
+  return (
+    <Card
+      title='Backup crypto-keys'
+      description='Some description goes here'
+      content={content}
+      footer={footer}
+    />
   )
 }
 

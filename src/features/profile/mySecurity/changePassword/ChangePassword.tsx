@@ -1,19 +1,14 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
-import Password from '../../../../common/components/MySecurity/Password/Password'
-import {
-  Title,
-  Description,
-  Hint,
-} from '../../../../common/components/MySecurity/Typography/Typography'
+import Card from '../../../../common/components/MySecurity/Card'
 import Button from '../../../../common/components/MySecurity/Button/Button'
-
-import { DescriptionContainer, BodyContainer } from '../MySecurity.style'
+import Password from '../../../../common/components/MySecurity/Password/Password'
+import { Hint } from '../../../../common/components/MySecurity/Typography/Typography'
 
 const ChangePassword: React.FC = () => {
-  const [newPassword, setNewPassword] = React.useState('')
-  const [confirmPassword, setConfirmPassword] = React.useState('')
-  const [noMatch, setNoMatch] = React.useState(false)
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [noMatch, setNoMatch] = useState(false)
 
   const submitPassword = () => {
     if (newPassword !== confirmPassword) {
@@ -21,38 +16,37 @@ const ChangePassword: React.FC = () => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (newPassword === confirmPassword && !newPassword && !confirmPassword) {
       setNoMatch(false)
     }
   }, [newPassword, confirmPassword, setNoMatch])
 
-  return (
+  const content = (
     <>
-      <Title>Change password</Title>
-      <DescriptionContainer>
-        <Description>
-          Contain at least 1 letter, 1 number and 1 symbol. Minimum length is 12
-          characters
-        </Description>
-      </DescriptionContainer>
-      <BodyContainer>
-        <Password
-          newPassword={newPassword}
-          confirmPassword={confirmPassword}
-          setNewPassword={setNewPassword}
-          setConfirmPassword={setConfirmPassword}
-        />
-        {noMatch && <Hint color='text-loader-red'>No Match</Hint>}
-        <Hint>
-          We strongly suggest that you save your password in a password manager
-          such as LastPase or 1Password (the underlined parts should be
-          clickable links that open a web browser to the sites for these
-          products)
-        </Hint>
-      </BodyContainer>
-      <Button onClick={submitPassword}>Submit new password</Button>
+      <Password
+        newPassword={newPassword}
+        confirmPassword={confirmPassword}
+        setNewPassword={setNewPassword}
+        setConfirmPassword={setConfirmPassword}
+      />
+      {noMatch && <Hint color='text-loader-red'>No Match</Hint>}
+      <Hint>
+        We strongly suggest that you save your password in a password manager
+        such as LastPase or 1Password
+      </Hint>
     </>
+  )
+
+  const footer = <Button onClick={submitPassword}>Submit new password</Button>
+
+  return (
+    <Card
+      title='Change password'
+      description='Contain at least 1 letter, 1 number and 1 symbol. Minimum length is 12 characters'
+      content={content}
+      footer={footer}
+    />
   )
 }
 

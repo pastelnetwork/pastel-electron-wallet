@@ -3,14 +3,13 @@ import { clipboard } from 'electron'
 
 import { Description } from '../Typography/Typography'
 import IconClipboard from '../../../assets/icons/ico-clipboard.svg'
-import * as Styles from './Crypto.style'
 
-interface CryptoProps {
+interface ICryptoProps {
   label: string
   children: string
 }
 
-const Crypto: React.FC<CryptoProps> = ({ label, children }) => {
+const Crypto: React.FC<ICryptoProps> = ({ label, children }) => {
   const copyClipboard = () => {
     clipboard.writeText(children)
   }
@@ -18,10 +17,16 @@ const Crypto: React.FC<CryptoProps> = ({ label, children }) => {
   return (
     <>
       <Description>{label}</Description>
-      <Styles.Container>
-        <Styles.Key>{children}</Styles.Key>
-        <Styles.IconButton onClick={copyClipboard} src={IconClipboard} />
-      </Styles.Container>
+      <div className='flex gap-4 mt-2.5'>
+        <div className='flex-grow px-3.5 pt-1.5 rounded-4px shadow-input text-text-secondary h-10 overflow-ellipsis whitespace-nowrap overflow-hidden'>
+          {children}
+        </div>
+        <img
+          className='hover: cursor-pointer'
+          onClick={copyClipboard}
+          src={IconClipboard}
+        />
+      </div>
     </>
   )
 }

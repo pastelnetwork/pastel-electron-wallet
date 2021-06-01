@@ -1,21 +1,34 @@
 import React from 'react'
 
-import * as Styles from './Typography.style'
-
-interface TextProps {
+interface ITextProps {
   children: string
   color?: string
 }
 
-export const Title: React.FC<TextProps> = ({ children }) => {
-  return <Styles.Title>{children}</Styles.Title>
+export const Title: React.FC<ITextProps> = ({ children }) => {
+  return (
+    <h3 className='font-body font-extrabold leading-10 text-h3 text-text-primary'>
+      {children}
+    </h3>
+  )
 }
 
-export const Description: React.FC<TextProps> = ({ children }) => {
-  return <Styles.Description>{children}</Styles.Description>
+export const Description: React.FC<ITextProps> = ({ children }) => {
+  return (
+    <div className='font-body font-medium leading-relaxed text-h5 text-text-secondary'>
+      {children}
+    </div>
+  )
 }
 
-export const Hint: React.FC<TextProps> = ({ children, color }) => {
-  console.log('debug', color)
-  return <Styles.Hint color={color}>{children}</Styles.Hint>
+export const Hint: React.FC<ITextProps> = ({ children, color }) => {
+  return (
+    <div
+      className={`font-body font-medium leading-snug text-h6 ${
+        color ? color : 'text-text-secondary'
+      }`}
+    >
+      {children}
+    </div>
+  )
 }

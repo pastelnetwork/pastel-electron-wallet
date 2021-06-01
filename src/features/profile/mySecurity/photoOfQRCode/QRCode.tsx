@@ -1,13 +1,8 @@
-import * as React from 'react'
+import React from 'react'
 import QRCode from 'qrcode.react'
 
 import Button from '../../../../common/components/MySecurity/Button/Button'
-import {
-  Title,
-  Description,
-} from '../../../../common/components/MySecurity/Typography/Typography'
-import * as Styles from './QRCode.style'
-import { DescriptionContainer, BodyContainer } from '../MySecurity.style'
+import Card from '../../../../common/components/MySecurity/Card'
 
 const downloadQR = () => {
   const canvas = document.getElementById('qrcode') as HTMLCanvasElement
@@ -24,24 +19,23 @@ const downloadQR = () => {
 }
 
 const QR: React.FC = () => {
+  const content = (
+    <div className='flex justify-center h-348px rounded-8px py-33px px-42px bg-tab-hover'>
+      <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center  min-w-128px'>
+        <QRCode id='qrcode' value='https://explorer.pastel.network/' />
+      </div>
+    </div>
+  )
+
+  const footer = <Button onClick={downloadQR}>Download QR-code</Button>
+
   return (
-    <>
-      <Title>Make a photo of QR-code</Title>
-      <DescriptionContainer>
-        <Description>
-          Take a photo of this with your smartphone to use as a backup in case
-          you forget your password
-        </Description>
-      </DescriptionContainer>
-      <BodyContainer>
-        <Styles.QrBackground>
-          <Styles.QrContainer>
-            <QRCode id='qrcode' value='https://explorer.pastel.network/' />
-          </Styles.QrContainer>
-        </Styles.QrBackground>
-      </BodyContainer>
-      <Button onClick={downloadQR}>Download QR-code</Button>
-    </>
+    <Card
+      title='Make a photo of QR-code'
+      description='Take a photo of this with your smartphone to use as a backup in case you forget your password'
+      content={content}
+      footer={footer}
+    />
   )
 }
 

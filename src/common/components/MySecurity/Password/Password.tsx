@@ -1,13 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 
 import IconEye from '../../../assets/icons/ico-eye.svg'
 import IconEyeHidden from '../../../assets/icons/ico-eye-hidden.svg'
 import IconRefresh from '../../../assets/icons/ico-refresh-blue.svg'
 import { Description } from '../Typography/Typography'
-import * as Styles from './Password.style'
 
-interface PasswordProps {
+interface IPasswordProps {
   newPassword: string
   confirmPassword: string
   setNewPassword: (pass: string) => void
@@ -41,17 +40,15 @@ const passOptions: IPasswordOption[] = [
   },
 ]
 
-const Password: React.FC<PasswordProps> = ({
+const Password: React.FC<IPasswordProps> = ({
   newPassword,
   confirmPassword,
   setNewPassword,
   setConfirmPassword,
 }) => {
-  const [newPasswordVisible, setNewPasswordVisible] = React.useState(false)
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = React.useState(
-    false,
-  )
-  const [passStrength, setPassStrength] = React.useState<string[]>([])
+  const [newPasswordVisible, setNewPasswordVisible] = useState(false)
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
+  const [passStrength, setPassStrength] = useState<string[]>([])
 
   const handleNewVisibility = () => {
     setNewPasswordVisible(!newPasswordVisible)
@@ -119,47 +116,55 @@ const Password: React.FC<PasswordProps> = ({
   return (
     <>
       <Description>New Password</Description>
-      <Styles.InputContainer>
-        <Styles.Input
+      <div className='relative'>
+        <input
           type={newPasswordVisible ? 'text' : 'password'}
           onChange={checkPasswordStrength}
           value={newPassword}
-          color={'pr-20'}
+          className={`relative w-full shadow-input h-10 mt-2.5 rounded border 
+          border-solid border-input-border outline-none focus:border-blue-450 box-border px-4 pr-20
+          `}
         />
         {newPassword && (
           <>
-            <Styles.IconButton
+            <img
+              className='absolute top-5 right-3  hover: cursor-pointer w-5 h-5'
               onClick={handleNewVisibility}
-              src={newPasswordVisible ? IconEyeHidden : IconEye}
+              src={newPasswordVisible ? IconEye : IconEyeHidden}
             />
-            <Styles.IconRefreshButton
+            <img
+              className='absolute top-5 right-12  hover: cursor-pointer w-5 h-5'
               onClick={handleRefresh}
               src={IconRefresh}
             />
           </>
         )}
-      </Styles.InputContainer>
-      <Styles.Spacer />
+      </div>
+
       <Description>Confirm Password</Description>
-      <Styles.InputContainer>
-        <Styles.Input
+      <div className='relative'>
+        <input
           value={confirmPassword}
           type={confirmPasswordVisible ? 'text' : 'password'}
           onChange={handleConfirmPass}
+          className={`relative w-full shadow-input h-10 mt-2.5 rounded border 
+          border-solid border-input-border outline-none focus:border-blue-450 box-border px-4 pr-10
+          `}
         />
         {confirmPassword && (
-          <Styles.IconButton
+          <img
+            className='absolute top-5 right-3  hover: cursor-pointer w-5 h-5'
             onClick={handleConfirmVisibility}
             src={confirmPasswordVisible ? IconEyeHidden : IconEye}
           />
         )}
-      </Styles.InputContainer>
+      </div>
       {passStrength && (
-        <Styles.LoadContainer>
+        <div className='grid grid-cols-4 gap-1 mt-4 mb-6'>
           {passStrength?.map((status: string) => {
             return <div className={`${status} h-1.5 rounded`} />
           })}
-        </Styles.LoadContainer>
+        </div>
       )}
     </>
   )

@@ -1,22 +1,25 @@
 import React from 'react'
 
-import * as Styles from './Button.style'
-
-interface ButtonProps {
+interface IButtonProps {
   type?: 'submit' | 'button'
   onClick?: () => void
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<IButtonProps> = ({
   children,
   type = 'button',
   onClick,
   ...restProps
 }) => {
   return (
-    <Styles.Button type={type} {...restProps} onClick={onClick}>
+    <button
+      className='relative w-full font-body hover:cursor-pointer h-10 rounded-2xl border border border-blue-450 text-text-link focus:outline-none leading-4'
+      type={type}
+      {...restProps}
+      onClick={onClick}
+    >
       {children}
-    </Styles.Button>
+    </button>
   )
 }
 
