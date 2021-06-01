@@ -34,7 +34,7 @@ const ProfileCard = (): JSX.Element => {
       <div className='flex flex-col px-5'>
         <div className='text-xs text-gray-71 pt-2'>
           <div className='flex items-center'>
-            <StarRate rate={4.7} />
+            <StarRate />
             <div className='pl-1 text-gray-71'>4.89 reputation</div>
           </div>
         </div>
