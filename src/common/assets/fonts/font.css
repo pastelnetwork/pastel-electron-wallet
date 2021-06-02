@@ -6,7 +6,7 @@
     url('Avenir-Black.ttf') format('truetype'),
     url('Avenir-Black.svg#Avenir-Black') format('svg'),
     url('Avenir-Black.eot?#iefix') format('embedded-opentype');
-  font-weight: 800;
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
@@ -19,7 +19,7 @@
     url('Avenir-BlackOblique.ttf') format('truetype'),
     url('Avenir-BlackOblique.svg#Avenir-BlackOblique') format('svg'),
     url('Avenir-BlackOblique.eot?#iefix') format('embedded-opentype');
-  font-weight: 800;
+  font-weight: 900;
   font-style: oblique;
   font-display: swap;
 }
@@ -32,7 +32,7 @@
     url('Avenir-Heavy.ttf') format('truetype'),
     url('Avenir-Heavy.svg#Avenir-Heavy') format('svg'),
     url('Avenir-Heavy.eot?#iefix') format('embedded-opentype');
-  font-weight: 900;
+  font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
@@ -45,7 +45,7 @@
     url('Avenir-HeavyOblique.ttf') format('truetype'),
     url('Avenir-HeavyOblique.svg#Avenir-HeavyOblique') format('svg'),
     url('Avenir-HeavyOblique.eot?#iefix') format('embedded-opentype');
-  font-weight: 900;
+  font-weight: 800;
   font-style: oblique;
   font-display: swap;
 }

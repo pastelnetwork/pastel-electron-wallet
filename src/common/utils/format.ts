@@ -2,5 +2,5 @@
 export const formatNumber = (x: number, delimiter = ','): string =>
   x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, delimiter)
 
-export const parseFormattedNumber = (input: string, delimeter = ','): number =>
-  parseFloat(input.replaceAll(delimeter, ''))
+export const parseFormattedNumber = (input: string, delimiter = ','): number =>
+  parseFloat(input.replaceAll(delimiter, ''))

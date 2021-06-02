@@ -72,7 +72,7 @@ export default function Header(): JSX.Element {
         <img src={Logo} alt='logo' />
       </Link>
       <MenuItem to={routes.DASHBOARD}>Dashboard</MenuItem>
-      <MenuItem to={routes.SEND}>NFTs</MenuItem>
+      <MenuItem to={routes.MARKET}>Market</MenuItem>
       <MenuItem to={routes.RECEIVE}>Members</MenuItem>
       <MenuItem to={routes.TRANSACTIONS}>Wallet</MenuItem>
       <MenuItem to={routes.ADDRESSBOOK}>Portfolio</MenuItem>

@@ -10,7 +10,7 @@ type Props = {
 export default function TransactionItem({ type, amount }: Props): JSX.Element {
   return (
     <div className='border border-gray-e7 h-70px rounded-lg mb-4'>
-      <div className='flex items-center justify-between px-2.5 py-3.5'>
+      <div className='flex items-center justify-between px-2.5 py-3'>
         <div className='flex h-full'>
           <div
             className={cn(

@@ -9,7 +9,7 @@ import Dashboard from '../features/dashboard/DashboardPage'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
-import Header from '../features/layout/Header'
+import Header from '../common/components/Header'
 import {
   TotalBalance,
   SendPageState,

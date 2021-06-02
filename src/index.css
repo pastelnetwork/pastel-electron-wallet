@@ -33,7 +33,7 @@
   }
 
   .paper {
-    @apply bg-white shadow-44px rounded-lg;
+    @apply bg-white shadow-44px rounded-lg border border-gray-e7;
   }
 
   .page-container {

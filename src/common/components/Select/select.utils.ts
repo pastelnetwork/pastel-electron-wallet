@@ -72,6 +72,7 @@ export const useSelectOptions = (props: SelectProps): Options => {
 
     selected = null
 
+    // onChange is required by Downshift but not needed for autocomplete mode
     onChange = noop
 
     onInputValueChange = (value, options) => {

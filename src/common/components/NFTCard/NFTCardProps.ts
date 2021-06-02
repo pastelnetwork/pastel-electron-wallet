@@ -1,9 +1,13 @@
-export interface NFTCardProps {
-  author: string
-  avatarSrc: string
+export interface NFTCompactCardProps {
   imageSrc: string
   title: string
   likes: number
+  className?: string
+}
+
+export interface NFTCardProps extends NFTCompactCardProps {
+  author: string
+  avatarSrc: string
   price: number | string
   onSale: boolean
 }
