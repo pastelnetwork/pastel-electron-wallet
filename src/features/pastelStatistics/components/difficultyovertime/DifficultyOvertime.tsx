@@ -22,7 +22,7 @@ type TDifficultyOvertimeProps = {
   }
 }
 
-const redrawCycle = 60000
+const redrawCycle = 6000
 
 const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   const { info } = props
@@ -54,8 +54,8 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
     setTicker(newTicker)
 
     return () => {
-      if (ticker) {
-        clearInterval(ticker)
+      if (newTicker) {
+        clearInterval(newTicker)
       }
       ac.abort()
     }

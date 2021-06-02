@@ -24,7 +24,7 @@ type TPriceOvertimeProps = {
   }
 }
 
-const redrawCycle = 60000
+const redrawCycle = 6000
 
 const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   const { info } = props
@@ -41,6 +41,7 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   useEffect(() => {
     const ac = new AbortController()
     const loadLineChartData = async () => {
+      // load chart data from database
       const pasteldb = await PastelDB.getDatabaseInstance()
       const result = getDatasFromDB(pasteldb, pastelTableNames.pslprice)
       if (result.length) {
@@ -56,8 +57,8 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
     setTicker(newTicker)
 
     return () => {
-      if (ticker) {
-        clearInterval(ticker)
+      if (newTicker) {
+        clearInterval(newTicker)
       }
       ac.abort()
     }
