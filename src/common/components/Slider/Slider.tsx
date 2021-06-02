@@ -103,7 +103,7 @@ export default function Slider({
         >
           <div className='w-4 h-4 bg-blue-3f rounded-full' />
           <div className='absolute -top-9 flex flex-col items-center'>
-            <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap'>
+            <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white'>
               {formatTooltipValue(value)}
             </div>
             <svg

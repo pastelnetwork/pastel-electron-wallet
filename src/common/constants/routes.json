@@ -13,5 +13,6 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
-  "MYSECURITY": "/profile/my_security"
+  "MYSECURITY": "/profile/my_security",
+  "MARKET": "/market"
 }

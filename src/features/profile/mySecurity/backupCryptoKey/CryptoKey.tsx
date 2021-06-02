@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import {
   Document,
   Page,
@@ -19,7 +19,7 @@ interface IPDFDocumentProps {
 
 const PDFDocument = ({ publicKey, secretKey }: IPDFDocumentProps) => {
   return (
-    <Document title={'Crypto Keys'}>
+    <Document title='Crypto Keys'>
       <Page size='A4'>
         <View>
           <Text>Private Key: {publicKey}</Text>
