@@ -39,8 +39,8 @@ const NFTCard = ({
         </div>
       )}
       {/* Image */}
-      <div className={cn('object-cover', imageHeightClass)}>
-        <img src={imageSrc} className='h-full w-full' />
+      <div className={imageHeightClass}>
+        <img src={imageSrc} className='object-cover h-full w-full' />
       </div>
       {/* Footer */}
       <div className='px-18px pt-2'>
