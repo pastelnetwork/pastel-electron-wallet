@@ -1,11 +1,11 @@
 import React from 'react'
 
-export type HeartProps = {
+export type THeartProps = {
   size: number
   className?: string
 }
 
-export default function Heart({ size, className }: HeartProps): JSX.Element {
+export default function Heart({ size, className }: THeartProps): JSX.Element {
   return (
     <svg
       width={size}

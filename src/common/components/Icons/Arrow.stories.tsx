@@ -1,14 +1,14 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Arrow, { ArrowProps } from './Arrow'
+import Arrow, { TArrowProps } from './Arrow'
 
 export default {
   title: 'Icons/Arrow',
   component: Arrow,
 } as Meta
 
-const Template: Story<ArrowProps> = ({ ...args }) => {
+const Template: Story<TArrowProps> = ({ ...args }) => {
   return <Arrow {...args} className='text-black' />
 }
 

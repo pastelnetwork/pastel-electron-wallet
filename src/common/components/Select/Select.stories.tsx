@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Select, { OptionsProps, RangeProps } from './Select'
+import Select, { TOptionsProps, TRangeProps } from './Select'
 
 export default {
   title: 'Select',
   component: Select,
 } as Meta
 
-const TemplateOptions: Story<OptionsProps> = ({ selected, ...args }) => {
+const TemplateOptions: Story<TOptionsProps> = ({ selected, ...args }) => {
   const [selectedItem, setSelected] = useState(selected)
 
   return <Select {...args} selected={selectedItem} onChange={setSelected} />
@@ -36,7 +36,7 @@ WithLabel.args = {
 }
 
 // not using ...args because this is causing wrong behaviour by passing options={undefined}
-const TemplateRange: Story<RangeProps> = ({
+const TemplateRange: Story<TRangeProps> = ({
   className,
   autocomplete,
   min,

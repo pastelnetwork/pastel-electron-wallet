@@ -4,7 +4,7 @@ import NFTCard, { NFTCardProps } from '../../common/components/NFTCard'
 
 import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
-import Select, { Option } from '../../common/components/Select/Select'
+import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
@@ -21,35 +21,35 @@ const mockCardProps: NFTCardProps = {
 
 const NFTMarketFeed: React.FC = () => {
   // Upper Section
-  const [priceSold, setPriceSold] = useState<Option | null>(null)
-  const [bidPrice, setBidPrice] = useState<Option | null>(null)
-  const [likes, setLikes] = useState<Option | null>(null)
+  const [priceSold, setPriceSold] = useState<TOption | null>(null)
+  const [bidPrice, setBidPrice] = useState<TOption | null>(null)
+  const [likes, setLikes] = useState<TOption | null>(null)
 
-  const mockCategories: Option[] = [
+  const mockCategories: TOption[] = [
     { value: 'AI', label: 'AI' },
     { value: 'option_2', label: 'Option 2' },
     { value: 'option_3', label: 'Option 3' },
   ]
 
-  const mockStatus: Option[] = [
+  const mockStatus: TOption[] = [
     { value: 'Auctions', label: 'Auctions' },
     { value: 'option_2', label: 'Option 2' },
     { value: 'option_3', label: 'Option 3' },
   ]
 
-  const mockTime: Option[] = [
+  const mockTime: TOption[] = [
     { value: 'Future', label: 'Future' },
     { value: 'Present', label: 'Present' },
     { value: 'Past', label: 'Past' },
   ]
 
-  const mockRareness: Option[] = [
+  const mockRareness: TOption[] = [
     { value: 'High', label: 'High' },
     { value: 'Medium', label: 'Medium' },
     { value: 'Low', label: 'Low' },
   ]
 
-  const mockOptions: Option[] = [
+  const mockOptions: TOption[] = [
     { value: 'option_1', label: 'Option 1' },
     { value: 'option_2', label: 'Option 2' },
     { value: 'option_3', label: 'Option 3' },
@@ -77,10 +77,10 @@ const NFTMarketFeed: React.FC = () => {
   ]
 
   // Filters
-  const [category, setCategory] = useState<Option | null>(mockCategories[0])
-  const [status, setStatus] = useState<Option | null>(mockStatus[0])
-  const [time, setTime] = useState<Option | null>(mockTime[0])
-  const [rareness, setRareness] = useState<Option | null>(mockRareness[0])
+  const [category, setCategory] = useState<TOption | null>(mockCategories[0])
+  const [status, setStatus] = useState<TOption | null>(mockStatus[0])
+  const [time, setTime] = useState<TOption | null>(mockTime[0])
+  const [rareness, setRareness] = useState<TOption | null>(mockRareness[0])
 
   const filterOptions = [
     {

@@ -1,14 +1,14 @@
 import React from 'react'
 
-type Dir = 'top' | 'right' | 'bottom' | 'left'
+type TDir = 'top' | 'right' | 'bottom' | 'left'
 
-export type ArrowProps = {
+export type TArrowProps = {
   size: number
-  to?: Dir
+  to?: TDir
   className?: string
 }
 
-const rotate: Record<Dir, number> = {
+const rotate: Record<TDir, number> = {
   top: -90,
   right: 0,
   bottom: 90,
@@ -19,7 +19,7 @@ export default function Arrow({
   size,
   to = 'right',
   className,
-}: ArrowProps): JSX.Element {
+}: TArrowProps): JSX.Element {
   const style = { transform: `rotate(${rotate[to]}deg)` }
 
   return (

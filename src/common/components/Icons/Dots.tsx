@@ -1,6 +1,6 @@
 import React from 'react'
 
-export type DotsProps = {
+export type TDotsProps = {
   size: number
   vertical?: boolean
   className?: string
@@ -10,7 +10,7 @@ export default function Dots({
   size,
   className,
   vertical = false,
-}: DotsProps): JSX.Element {
+}: TDotsProps): JSX.Element {
   const style = vertical === true ? { transform: 'rotate(90deg)' } : undefined
 
   return (
