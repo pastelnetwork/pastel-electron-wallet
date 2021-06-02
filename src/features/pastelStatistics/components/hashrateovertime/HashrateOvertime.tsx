@@ -34,9 +34,7 @@ const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
   ] = useState<TLineChartData>()
 
   useEffect(() => {
-    const ac = new AbortController()
     const loadLineChartData = async () => {
-      // load hashrate chart data from database
       const pasteldb = await PastelDB.getDatabaseInstance()
       const result = getDatasFromDB(pasteldb, pastelTableNames.mininginfo)
       if (result.length) {
@@ -55,7 +53,6 @@ const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
       if (newTicker) {
         clearInterval(newTicker)
       }
-      ac.abort()
     }
   }, [period])
 
