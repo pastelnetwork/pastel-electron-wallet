@@ -317,7 +317,6 @@ class Sidebar extends PureComponent<any, any> {
       exportPrivKeysModalIsOpen: false,
       exportedPrivKeys: null,
       privKeyInputValue: null,
-      showProfile: true,
     }
     this.setupMenuHandlers()
   } // Handle menu items
@@ -720,14 +719,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-file-code'
           />
-          {this.state.showProfile && (
-            <SidebarMenuItem
-              name='Profile'
-              routeName={routes.PROFILE}
-              currentRoute={location.pathname}
-              iconname='fa-id-card'
-            />
-          )}
+          <SidebarMenuItem
+            name='Profile'
+            routeName={routes.PROFILE}
+            currentRoute={location.pathname}
+            iconname='fa-id-card'
+          />
         </div>
 
         <div className={cstyles.center}>

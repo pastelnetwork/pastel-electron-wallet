@@ -80,27 +80,25 @@ function truncateMiddle(
   str: string,
   frontLen: number,
   backLen: number,
-  truncateStr: string,
+  truncateStr = '&hellip;',
 ) {
-  if (str === null) {
+  if (!str) {
     return ''
   }
-  const strLen = str.length
   // Setting default values
-  frontLen = ~~frontLen // will cast to integer
-  backLen = ~~backLen
-  truncateStr = truncateStr || '&hellip;'
+  frontLen = Math.floor(frontLen)
+  backLen = Math.floor(backLen)
   if (
     (frontLen === 0 && backLen === 0) ||
-    frontLen >= strLen ||
-    backLen >= strLen ||
-    frontLen + backLen >= strLen
+    frontLen >= str.length ||
+    backLen >= str.length ||
+    frontLen + backLen >= str.length
   ) {
     return str
   } else if (backLen === 0) {
     return str.slice(0, frontLen) + truncateStr
   }
-  return str.slice(0, frontLen) + truncateStr + str.slice(strLen - backLen)
+  return str.slice(0, frontLen) + truncateStr + str.slice(str.length - backLen)
 }
 
 export default ProfileCard

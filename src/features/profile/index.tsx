@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import ProfileCard from './ProfileCard'
+import ProfileCard from '../../common/components/Profile/ProfileCard'
 import ProfileRelations from './ProfileRelations'
 import ProfileTabs from './ProfileTabs'
 import ProfileGeneral from './ProfileGeneral'
