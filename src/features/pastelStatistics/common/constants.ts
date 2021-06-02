@@ -30,10 +30,9 @@ export const themes = [
   },
   {
     name: 'theme2',
-    backgroundColor: '#FFF7C6',
+    backgroundColor: '#AFDBF5',
     stack: 'confidence-band',
     splitLineColor: '#C7C4CC',
-    smooth: true,
     color: '#100c2a',
   },
   {
