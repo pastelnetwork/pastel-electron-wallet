@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react'
 import Card from '../../../../common/components/MySecurity/Card'
 import Button from '../../../../common/components/MySecurity/Button/Button'
 import Password from '../../../../common/components/MySecurity/Password/Password'
-import { Hint } from '../../../../common/components/MySecurity/Typography/Typography'
 
 const ChangePassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState('')
@@ -11,9 +10,7 @@ const ChangePassword: React.FC = () => {
   const [noMatch, setNoMatch] = useState(false)
 
   const submitPassword = () => {
-    if (newPassword !== confirmPassword) {
-      setNoMatch(true)
-    }
+    setNoMatch(newPassword !== confirmPassword)
   }
 
   useEffect(() => {
@@ -29,12 +26,33 @@ const ChangePassword: React.FC = () => {
         confirmPassword={confirmPassword}
         setNewPassword={setNewPassword}
         setConfirmPassword={setConfirmPassword}
+        isMatch={!noMatch}
       />
-      {noMatch && <Hint color='text-loader-red'>No Match</Hint>}
-      <Hint>
-        We strongly suggest that you save your password in a password manager
-        such as LastPase or 1Password
-      </Hint>
+      <div className='text-gray-a0 text-h6 leading-relaxed'>
+        {noMatch && (
+          <div className='text-loader-red'>Passwords do not match</div>
+        )}
+        <span>
+          {' '}
+          We strongly suggest that you save your password in a password manager
+          such as{' '}
+        </span>
+        <a
+          href='https://www.lastpass.com/'
+          target='_blank'
+          className='underline text-blue-3f'
+        >
+          LastPase
+        </a>
+        <span> or </span>
+        <a
+          href='https://1password.com/'
+          target='_blank'
+          className='underline text-blue-3f'
+        >
+          1Password
+        </a>
+      </div>
     </>
   )
 

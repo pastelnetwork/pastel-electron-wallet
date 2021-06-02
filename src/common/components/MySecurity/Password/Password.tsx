@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 
 import IconEye from '../../../assets/icons/ico-eye.svg'
@@ -11,6 +11,7 @@ interface IPasswordProps {
   confirmPassword: string
   setNewPassword: (pass: string) => void
   setConfirmPassword: (pass: string) => void
+  isMatch: boolean
 }
 
 const passOptions: IPasswordOption[] = [
@@ -45,10 +46,17 @@ const Password: React.FC<IPasswordProps> = ({
   confirmPassword,
   setNewPassword,
   setConfirmPassword,
+  isMatch,
 }) => {
   const [newPasswordVisible, setNewPasswordVisible] = useState(false)
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
   const [passStrength, setPassStrength] = useState<string[]>([])
+
+  useEffect(() => {
+    if (!newPassword) {
+      setPassStrength([])
+    }
+  }, [newPassword, setPassStrength])
 
   const handleNewVisibility = () => {
     setNewPasswordVisible(!newPasswordVisible)
@@ -113,27 +121,40 @@ const Password: React.FC<IPasswordProps> = ({
     setPassStrength([])
   }
 
+  const getIconClassnames = (isRefresh: boolean) => {
+    return `absolute top-5  hover: cursor-pointer w-5 h-5 object-none ${
+      isRefresh ? 'right-12' : 'right-3'
+    }`
+  }
+
+  const getInputClassnames = (hasRefresh: boolean) => {
+    return `relative w-full shadow-input h-10 mt-2.5 rounded border text-gray-2d
+    border-solid ${
+      isMatch ? 'border-input-border' : 'border-loader-red'
+    }  outline-none focus:border-blue-450 box-border px-4 ${
+      hasRefresh ? 'pr-20' : 'pr-10'
+    }`
+  }
+
   return (
     <>
-      <Description>New Password</Description>
-      <div className='relative'>
+      <Description>New password</Description>
+      <div className='relative mb-4'>
         <input
           type={newPasswordVisible ? 'text' : 'password'}
           onChange={checkPasswordStrength}
           value={newPassword}
-          className={`relative w-full shadow-input h-10 mt-2.5 rounded border 
-          border-solid border-input-border outline-none focus:border-blue-450 box-border px-4 pr-20
-          `}
+          className={getInputClassnames(true)}
         />
         {newPassword && (
           <>
             <img
-              className='absolute top-5 right-3  hover: cursor-pointer w-5 h-5'
+              className={getIconClassnames(false)}
               onClick={handleNewVisibility}
               src={newPasswordVisible ? IconEye : IconEyeHidden}
             />
             <img
-              className='absolute top-5 right-12  hover: cursor-pointer w-5 h-5'
+              className={getIconClassnames(true)}
               onClick={handleRefresh}
               src={IconRefresh}
             />
@@ -141,28 +162,26 @@ const Password: React.FC<IPasswordProps> = ({
         )}
       </div>
 
-      <Description>Confirm Password</Description>
+      <Description>Confirm password</Description>
       <div className='relative'>
         <input
           value={confirmPassword}
           type={confirmPasswordVisible ? 'text' : 'password'}
           onChange={handleConfirmPass}
-          className={`relative w-full shadow-input h-10 mt-2.5 rounded border 
-          border-solid border-input-border outline-none focus:border-blue-450 box-border px-4 pr-10
-          `}
+          className={getInputClassnames(false)}
         />
         {confirmPassword && (
           <img
-            className='absolute top-5 right-3  hover: cursor-pointer w-5 h-5'
+            className={getIconClassnames(false)}
             onClick={handleConfirmVisibility}
-            src={confirmPasswordVisible ? IconEyeHidden : IconEye}
+            src={confirmPasswordVisible ? IconEye : IconEyeHidden}
           />
         )}
       </div>
       {passStrength && (
-        <div className='grid grid-cols-4 gap-1 mt-4 mb-6'>
-          {passStrength?.map((status: string) => {
-            return <div className={`${status} h-1.5 rounded`} />
+        <div className='grid grid-cols-4 gap-1 mt-5 mb-6'>
+          {passStrength?.map((status: string, index: number) => {
+            return <div className={`${status} h-1.5 rounded`} key={index} />
           })}
         </div>
       )}

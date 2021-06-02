@@ -20,8 +20,8 @@ const downloadQR = () => {
 
 const QR: React.FC = () => {
   const content = (
-    <div className='flex justify-center h-348px rounded-8px py-33px px-42px bg-tab-hover'>
-      <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center  min-w-128px'>
+    <div className='flex justify-center h-348px rounded-lg py-33px px-42px bg-tab-hover'>
+      <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center shadow-qrcode  min-w-128px border border-solid border-gray-e6'>
         <QRCode id='qrcode' value='https://explorer.pastel.network/' />
       </div>
     </div>

@@ -13,7 +13,7 @@ const Button: React.FC<IButtonProps> = ({
 }) => {
   return (
     <button
-      className='relative w-full font-body hover:cursor-pointer h-10 rounded-2xl border border border-blue-450 text-text-link focus:outline-none leading-4'
+      className='relative w-full font-body font-extrabold hover:cursor-pointer h-10 rounded-2xl border border border-blue-3f text-blue-3f focus:outline-none leading-4'
       type={type}
       {...restProps}
       onClick={onClick}

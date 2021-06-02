@@ -67,7 +67,6 @@ module.exports = {
           background: '#FAEFF5',
         },
         blue: {
-          450: '#3F9AF7',
           '3f': '#3F9AF7',
         },
         gray: {
@@ -127,15 +126,8 @@ module.exports = {
           modal: '#1A1A1A',
         },
         text: {
-          primary: '#23262F',
-          secondary: '#777E90',
-          tertiary: '#FCFCFD',
-          gray500: '#A0AEC0',
-          gray600: '#718096',
-          gray700: '#4A5568',
-          gray800: '#2D3748',
-          gray900: '#1A202C',
-          link: '#3F9AF7',
+          23: '#23262F',
+          77: '#777E90',
         },
       },
       boxShadow: {
@@ -151,6 +143,7 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
         input:
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        qrcode: '0px 32px 64px 0px rgba(31, 47, 70, 0.12)',
       },
       fontSize: {
         h1: '2rem',
