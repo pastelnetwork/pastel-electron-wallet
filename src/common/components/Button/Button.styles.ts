@@ -16,7 +16,7 @@ export const Button = styled.button<ButtonProps>`
   font-size: ${({ theme }) => theme.typography.body2.size}px;
   line-height: 1;
   font-weight: 500;
-  height: 40px;
+  padding: 12px;
   background-color: ${({ $variant, theme }) =>
     $variant === 'transparent'
       ? theme.colors.text.tertiary

@@ -51,7 +51,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import MySecurity from '../features/profile/mySecurity'
+import MySecurity from '../features/profile/MySecurity'
 import NFTMarketFeed from '../features/NFTMarket'
 import { app } from 'electron'
 

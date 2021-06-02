@@ -8,9 +8,9 @@ import {
 } from '@react-pdf/renderer'
 import dayjs from 'dayjs'
 
-import Button from '../../../../common/components/MySecurity/Button/Button'
-import Key from '../../../../common/components/MySecurity/Crypto/Crypto'
-import Card from '../../../../common/components/MySecurity/Card'
+import Button from '../components/Button/Button'
+import Key from '../components/Crypto/Crypto'
+import Card from '../components/Card'
 
 interface IProps {
   currencyName: string

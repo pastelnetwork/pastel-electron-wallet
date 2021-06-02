@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-import Card from '../../../../common/components/MySecurity/Card'
-import Button from '../../../../common/components/MySecurity/Button/Button'
-import Password from '../../../../common/components/MySecurity/Password/Password'
+import Button from '../components/Button/Button'
+import Password from '../components/Password/Password'
+import Card from '../components/Card'
 
 const ChangePassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState('')

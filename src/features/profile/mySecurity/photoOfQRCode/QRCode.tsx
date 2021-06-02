@@ -1,8 +1,8 @@
 import React from 'react'
 import QRCode from 'qrcode.react'
 
-import Button from '../../../../common/components/MySecurity/Button/Button'
-import Card from '../../../../common/components/MySecurity/Card'
+import Button from '../components/Button/Button'
+import Card from '../components/Card'
 
 const downloadQR = () => {
   const canvas = document.getElementById('qrcode') as HTMLCanvasElement
@@ -21,8 +21,12 @@ const downloadQR = () => {
 const QR: React.FC = () => {
   const content = (
     <div className='flex justify-center h-348px rounded-lg py-33px px-42px bg-tab-hover'>
-      <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center shadow-qrcode  min-w-128px border border-solid border-gray-e6'>
-        <QRCode id='qrcode' value='https://explorer.pastel.network/' />
+      <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center shadow-qrcode  min-w-118px border border-solid border-gray-e6'>
+        <QRCode
+          id='qrcode'
+          value='https://explorer.pastel.network/'
+          size={118}
+        />
       </div>
     </div>
   )

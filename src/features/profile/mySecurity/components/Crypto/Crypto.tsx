@@ -2,7 +2,7 @@ import React from 'react'
 import { clipboard } from 'electron'
 
 import { Description } from '../Typography/Typography'
-import IconClipboard from '../../../assets/icons/ico-clipboard.svg'
+import IconClipboard from '../../../../../common/assets/icons/ico-clipboard.svg'
 
 interface ICryptoProps {
   label: string
@@ -30,7 +30,7 @@ const Crypto: React.FC<ICryptoProps> = ({ label, children }) => {
           <div>{secondPart}</div>
         </div>
         <img
-          className='hover: cursor-pointer'
+          className='hover:cursor-pointer'
           onClick={copyClipboard}
           src={IconClipboard}
         />

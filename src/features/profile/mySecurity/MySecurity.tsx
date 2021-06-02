@@ -1,6 +1,6 @@
 import React from 'react'
 
-import ChangePassword from './changePassword/ChangePassword'
+import ChangePassword from './changePassword/Password'
 import QRCode from './photoOfQRCode/QRCode'
 import CryptoKey from './backupCryptoKey/CryptoKey'
 

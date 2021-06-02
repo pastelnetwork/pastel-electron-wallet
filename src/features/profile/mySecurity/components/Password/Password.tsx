@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 
-import IconEye from '../../../assets/icons/ico-eye.svg'
-import IconEyeHidden from '../../../assets/icons/ico-eye-hidden.svg'
-import IconRefresh from '../../../assets/icons/ico-refresh-blue.svg'
+import IconEye from '../../../../../common/assets/icons/ico-eye.svg'
+import IconEyeHidden from '../../../../../common/assets/icons/ico-eye-hidden.svg'
+import IconRefresh from '../../../../../common/assets/icons/ico-refresh-blue.svg'
 import { Description } from '../Typography/Typography'
 
 interface IPasswordProps {
@@ -72,31 +72,31 @@ const Password: React.FC<IPasswordProps> = ({
     const validation = passwordStrength(newPass, passOptions)
 
     let status = [
-      'bg-navigation-default',
-      'bg-navigation-default',
-      'bg-navigation-default',
-      'bg-navigation-default',
+      'bg-navigation-default opacity-20',
+      'bg-navigation-default opacity-20',
+      'bg-navigation-default opacity-20',
+      'bg-navigation-default opacity-20',
     ]
     if (validation.id === 0) {
       status = [
         'bg-red-fe',
-        'bg-navigation-default',
-        'bg-navigation-default',
-        'bg-navigation-default',
+        'bg-navigation-default opacity-20',
+        'bg-navigation-default opacity-20',
+        'bg-navigation-default opacity-20',
       ]
     } else if (validation.id === 1) {
       status = [
         'bg-yellow-ff',
         'bg-yellow-ff',
-        'bg-navigation-default',
-        'bg-navigation-default',
+        'bg-navigation-default opacity-20',
+        'bg-navigation-default opacity-20',
       ]
     } else if (validation.id === 2) {
       status = [
         'bg-yellow-ff',
         'bg-yellow-ff',
         'bg-yellow-ff',
-        'bg-navigation-default',
+        'bg-navigation-default opacity-20',
       ]
     } else if (validation.id === 3) {
       status = [
@@ -122,7 +122,7 @@ const Password: React.FC<IPasswordProps> = ({
   }
 
   const getIconClassnames = (isRefresh: boolean) => {
-    return `absolute top-5  hover: cursor-pointer w-5 h-5 object-none ${
+    return `absolute top-5 hover:cursor-pointer w-5 h-5 object-none ${
       isRefresh ? 'right-12' : 'right-3'
     }`
   }

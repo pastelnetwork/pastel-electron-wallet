@@ -48,6 +48,7 @@ module.exports = {
         '70px': '4.375rem',
         '82px': '5.125rem',
         '111px': '6.938rem',
+        '118px': '7.375rem',
         '120px': '7.5rem',
         '220px': '13.75rem',
         '230px': '14.375rem',
@@ -97,6 +98,7 @@ module.exports = {
           '1d': '#1D263A',
           14: '#141416',
           23: '#23262F',
+          e7: 'E7EBF0',
         },
         red: {
           '7a': '#FF7A00',
@@ -154,6 +156,7 @@ module.exports = {
         input:
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
         qrcode: '0px 32px 64px 0px rgba(31, 47, 70, 0.12)',
+        'security-card': '0px 23px 44px rgba(176, 183, 195, 0.12)',
       },
       fontSize: {
         h1: '2rem',
@@ -172,10 +175,10 @@ module.exports = {
         '672px': '42rem',
       },
       maxWidth: {
-        '472px': '29.5rem',
+        '427px': '26.6875rem',
       },
       minWidth: {
-        '128px': '8rem',
+        '118px': '7.375rem',
       },
       container: {
         center: true,
