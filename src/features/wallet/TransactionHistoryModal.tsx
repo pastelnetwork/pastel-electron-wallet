@@ -28,7 +28,7 @@ interface IDataType {
 
 export interface TransactionHistoryModalProps {
   isOpen: boolean
-  handleClose: React.MouseEventHandler<Element>
+  handleClose: () => void
   transactionHistory: Array<IDataType>
 }
 
@@ -40,7 +40,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={handleClose}
+      handleClose={() => handleClose()}
       size='7xl'
       title='Transaction history'
     >

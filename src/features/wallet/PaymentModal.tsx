@@ -1,7 +1,6 @@
 import React from 'react'
 // Components
 import Modal from './modal'
-import AutoComplete from '../../common/components/AutoComplete/AutoComplete'
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import Button from '../../common/components/Button/Button'
 import pasteIcon from '../../common/assets/icons/ico-paste.svg'
@@ -11,6 +10,7 @@ import infoIcon from '../../common/assets/icons/ico-info.svg'
 import addIcon from '../../common/assets/icons/ico-add.svg'
 import add2Icon from '../../common/assets/icons/ico-add-2.svg'
 import checkIcon from '../../common/assets/icons/ico-check.svg'
+import Select from '../../common/components/Select/Select'
 
 interface IDataType {
   hash: string
@@ -18,7 +18,7 @@ interface IDataType {
 
 export interface PaymentModalProps {
   isOpen: boolean
-  handleClose: React.MouseEventHandler<Element>
+  handleClose: () => void
   paymentSources: Array<IDataType>
 }
 
@@ -117,12 +117,16 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                 </td>
                 <td>
                   <div className='flex justify-end pr-4'>
-                    <AutoComplete
-                      selected={{ value: '20000' }}
-                      startNumber={20000}
-                      endNumber={24000}
-                      diffNumber={2000}
-                      onChange={value => console.log(value)}
+                    <Select
+                      className='text-gray-2d w-28'
+                      autocomplete={true}
+                      min={10000}
+                      max={20000}
+                      step={100}
+                      value={100}
+                      onChange={(value: number | null) => {
+                        console.log(value)
+                      }}
                     />
                   </div>
                 </td>

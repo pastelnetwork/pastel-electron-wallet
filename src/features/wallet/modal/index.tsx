@@ -8,7 +8,7 @@ ReactModal.setAppElement('#root')
 
 export interface ModalProps {
   isOpen: boolean
-  handleClose?: React.MouseEventHandler<Element>
+  handleClose?: () => void
   size?: string
   children?: ReactNode
   title?: string

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NumberFormat from 'react-number-format'
 import placeholderIcon from '../../common/assets/icons/ico-placeholder.svg'
 import elminationIcon from '../../common/assets/icons/ico-elmination.svg'
@@ -13,6 +13,8 @@ import Button from '../../common/components/Button/Button'
 import Table, {
   ColumnDefinitionType,
 } from '../../common/components/Table/Table'
+import PaymentModal from './PaymentModal'
+import TransactionHistoryModal from './TransactionHistoryModal'
 
 interface Transaction {
   hash: string
@@ -107,6 +109,48 @@ const walletdatas: Transaction[] = [
   },
 ]
 
+const paymentSources = [
+  {
+    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+  },
+  {
+    hash: 'Michael Francis',
+  },
+]
+
+const transactionHistory = [
+  {
+    date: '11.04.21 01:43',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    type: 'Shielded',
+    status: 'success',
+    id: '2654843-5933',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '22.000',
+  },
+  {
+    date: '11.04.21 01:43',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    type: 'Shielded',
+    status: 'pending',
+    id: '2654843-5933',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '22.000',
+  },
+  {
+    date: '11.04.21 01:43',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    type: 'Shielded',
+    status: 'failed',
+    id: '2654843-5933',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '22.000',
+  },
+]
+
 const WalletScreen: React.FC = () => {
   const card_items = [
     {
@@ -137,6 +181,12 @@ const WalletScreen: React.FC = () => {
       icon: placeholderIcon,
     },
   ]
+
+  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [
+    isTransactionHistoryModalOpen,
+    setTransactionHistoryModalOpen,
+  ] = useState(false)
 
   return (
     <ThemeProvider theme={theme}>
@@ -184,7 +234,10 @@ const WalletScreen: React.FC = () => {
             <Toggle />
             <img className='ml-2' src={elminationIcon} />
           </div>
-          <div className='flex'>
+          <div
+            className='flex cursor-pointer'
+            onClick={() => setTransactionHistoryModalOpen(true)}
+          >
             <img src={clockIcon} />
             <span className='text-blue-3f ml-3.5'>Transaction history</span>
           </div>
@@ -216,14 +269,18 @@ const WalletScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className='flex justify-end mt-5'>
+        <div className='flex justify-end mt-5 mb-10'>
           <Button variant='transparent' style={{ width: '247px' }}>
             <div className='flex items-center  ml-6'>
               <img src={electIcon} className='py-3' />
               <span className='text-sm ml-11px'>Create a new PSL address</span>
             </div>
           </Button>
-          <Button className='ml-11px' style={{ width: '174px' }}>
+          <Button
+            onClick={() => setPaymentModalOpen(true)}
+            className='ml-11px'
+            style={{ width: '174px' }}
+          >
             <div className='flex items-center ml-5'>
               <img src={plusIcon} className='py-3.5' />
               <span className='text-sm ml-2'>Create a payment</span>
@@ -231,6 +288,20 @@ const WalletScreen: React.FC = () => {
           </Button>
         </div>
       </div>
+      <PaymentModal
+        paymentSources={paymentSources}
+        isOpen={isPaymentModalOpen}
+        handleClose={() => {
+          setPaymentModalOpen(false)
+        }}
+      ></PaymentModal>
+      <TransactionHistoryModal
+        transactionHistory={transactionHistory}
+        isOpen={isTransactionHistoryModalOpen}
+        handleClose={() => {
+          setTransactionHistoryModalOpen(false)
+        }}
+      ></TransactionHistoryModal>
     </ThemeProvider>
   )
 }
