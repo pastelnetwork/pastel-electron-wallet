@@ -43,8 +43,8 @@ const MemberStrip: React.FC<MemberStripProps> = ({
           <div className='flex space-x-5 h-full overflow-x-auto'>
             {images.map(imgSrc => (
               <div className='flex flex-col justify-center h-full '>
-                <div className='w-28 h-24 object-cover'>
-                  <img src={imgSrc} className='rounded-xl' />
+                <div className='w-28 h-24'>
+                  <img src={imgSrc} className='object-cover rounded-xl' />
                 </div>
               </div>
             ))}
