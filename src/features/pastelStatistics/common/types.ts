@@ -10,8 +10,8 @@ export type TThemeColor = {
   smooth?: boolean
 }
 
-export type LineChartProps = {
-  chartIndex: string
+export type TLineChartProps = {
+  chartName: string
   dataX?: string[]
   dataY?: number[]
   dataY1?: number[]
@@ -30,7 +30,7 @@ export type TThemeInitOption = {
   theme?: TThemeColor | null
   dataX?: string[]
   dataY?: number[]
-  chartIndex: string
+  chartName: string
   minY: number
   maxY: number
 }

@@ -7,7 +7,7 @@ type TChartOption = {
 }
 
 export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
-  const { theme, dataX, dataY, chartIndex, minY, maxY } = args
+  const { theme, dataX, dataY, chartName, minY, maxY } = args
   const chartOptions: TChartOption = {
     difficulty: {
       grid: {
@@ -45,7 +45,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         },
         axisLabel: {
           formatter: function (value: string) {
-            return Number.parseFloat(value).toExponential(2)
+            return Number.parseFloat(value).toFixed(2)
           },
         },
       },
@@ -129,11 +129,11 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
     },
   }
 
-  return chartOptions[chartIndex]
+  return chartOptions[chartName]
 }
 
 export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
-  const { theme, dataY, chartIndex } = args
+  const { theme, dataY, chartName } = args
   const defaultOption: EChartsOption = {
     backgroundColor: theme?.backgroundColor,
     textStyle: {
@@ -170,5 +170,5 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
     hashrate: defaultOption,
   }
 
-  return chartOptions[chartIndex]
+  return chartOptions[chartName]
 }

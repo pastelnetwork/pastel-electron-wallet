@@ -74,7 +74,7 @@ const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartIndex='hashrate'
+              chartName='hashrate'
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
               title='Hashrate(MH/s)'

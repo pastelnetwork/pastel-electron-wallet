@@ -6,14 +6,14 @@ import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { saveAs } from 'file-saver'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
-import { LineChartProps, TThemeColor } from '../../common/types'
+import { TLineChartProps, TThemeColor } from '../../common/types'
 import { csvHeaders, themes } from '../../common/constants'
 
 import styles from './LineChart.module.css'
 
-export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
+export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
   const {
-    chartIndex,
+    chartName,
     dataX,
     dataY1,
     dataY2,
@@ -47,7 +47,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
       const max = Math.max(...dataY1)
       const min1 = Math.min(...dataY2)
       const max1 = Math.max(...dataY2)
-      if (chartIndex === 'prices') {
+      if (chartName === 'prices') {
         setMinY1(min - offset)
         setMaxY1(max + offset)
         setMinY2(min1)
@@ -152,7 +152,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
           if (blob) {
             saveAs(
               blob,
-              makeDownloadFileName(info.currencyName, chartIndex) + '.png',
+              makeDownloadFileName(info.currencyName, chartName) + '.png',
             )
           }
         })
@@ -302,7 +302,7 @@ export const EChartsMultiLineChart = (props: LineChartProps): JSX.Element => {
           <CSVLink
             data={csvData}
             filename={
-              makeDownloadFileName(info.currencyName, chartIndex) + '.csv'
+              makeDownloadFileName(info.currencyName, chartName) + '.csv'
             }
             headers={csvHeaders}
             separator={';'}

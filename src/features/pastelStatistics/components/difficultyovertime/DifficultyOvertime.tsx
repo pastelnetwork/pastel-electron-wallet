@@ -77,7 +77,7 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartIndex='difficulty'
+              chartName='difficulty'
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
               title='Network Difficulty'

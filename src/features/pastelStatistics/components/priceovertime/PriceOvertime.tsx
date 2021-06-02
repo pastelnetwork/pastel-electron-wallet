@@ -79,7 +79,7 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsMultiLineChart
-              chartIndex='prices'
+              chartName='prices'
               dataX={transformLineChartData?.dataX}
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}

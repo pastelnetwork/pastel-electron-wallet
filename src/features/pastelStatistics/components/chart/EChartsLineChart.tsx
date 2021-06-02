@@ -7,7 +7,7 @@ import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { csvHeaders, themes } from '../../common/constants'
 import {
-  LineChartProps,
+  TLineChartProps,
   TThemeColor,
   TThemeInitOption,
 } from '../../common/types'
@@ -19,9 +19,9 @@ import {
   getThemeUpdateOption,
 } from '../../utils/ChartOptions'
 
-export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
+export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   const {
-    chartIndex,
+    chartName,
     dataX,
     dataY,
     title,
@@ -69,7 +69,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
     theme: currentTheme,
     dataX,
     dataY,
-    chartIndex: chartIndex,
+    chartName: chartName,
     minY,
     maxY,
   }
@@ -83,7 +83,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           if (blob) {
             saveAs(
               blob,
-              makeDownloadFileName(info.currencyName, chartIndex) + '.png',
+              makeDownloadFileName(info.currencyName, chartName) + '.png',
             )
           }
         })
@@ -102,7 +102,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
       theme: theme,
       dataX,
       dataY,
-      chartIndex: chartIndex,
+      chartName: chartName,
       minY,
       maxY,
     }
@@ -192,7 +192,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           <CSVLink
             data={csvData}
             filename={
-              makeDownloadFileName(info.currencyName, chartIndex) + '.csv'
+              makeDownloadFileName(info.currencyName, chartName) + '.csv'
             }
             headers={csvHeaders}
             separator={';'}
