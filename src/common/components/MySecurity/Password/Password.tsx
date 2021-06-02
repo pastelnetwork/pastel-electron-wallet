@@ -72,38 +72,38 @@ const Password: React.FC<IPasswordProps> = ({
     const validation = passwordStrength(newPass, passOptions)
 
     let status = [
-      'bg-loader-default',
-      'bg-loader-default',
-      'bg-loader-default',
-      'bg-loader-default',
+      'bg-navigation-default',
+      'bg-navigation-default',
+      'bg-navigation-default',
+      'bg-navigation-default',
     ]
     if (validation.id === 0) {
       status = [
-        'bg-loader-red',
-        'bg-loader-default',
-        'bg-loader-default',
-        'bg-loader-default',
+        'bg-red-fe',
+        'bg-navigation-default',
+        'bg-navigation-default',
+        'bg-navigation-default',
       ]
     } else if (validation.id === 1) {
       status = [
-        'bg-loader-yellow',
-        'bg-loader-yellow',
-        'bg-loader-default',
-        'bg-loader-default',
+        'bg-yellow-ff',
+        'bg-yellow-ff',
+        'bg-navigation-default',
+        'bg-navigation-default',
       ]
     } else if (validation.id === 2) {
       status = [
-        'bg-loader-yellow',
-        'bg-loader-yellow',
-        'bg-loader-yellow',
-        'bg-loader-default',
+        'bg-yellow-ff',
+        'bg-yellow-ff',
+        'bg-yellow-ff',
+        'bg-navigation-default',
       ]
     } else if (validation.id === 3) {
       status = [
-        'bg-loader-green',
-        'bg-loader-green',
-        'bg-loader-green',
-        'bg-loader-green',
+        'bg-success-default',
+        'bg-success-default',
+        'bg-success-default',
+        'bg-success-default',
       ]
     }
 
