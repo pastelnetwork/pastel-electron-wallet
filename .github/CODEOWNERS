@@ -1,0 +1,16 @@
+# Reference: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-code-owners
+
+# These owners will be the default owners for everything in the repo
+*                 @Dicklesworthstone @br4in3x
+
+# Order is important; the last matching pattern takes the most precedence.
+# Dot-files
+.*                @CrazyOptimist
+
+# Frontend assets
+*.ts *.tsx *.css *.html *.json yarn.lock tailwind.config.js           @ngvtuan @westalert @dbizhev @sanjanadhikari1 @CrazyOptimist
+
+# Restricted
+/docs/            @ngvtuan @westalert
+/static/          @ngvtuan @westalert
+/tools/           @ngvtuan @westalert
