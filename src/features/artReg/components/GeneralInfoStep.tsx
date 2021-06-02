@@ -2,10 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-// import { FormControl, Input, Textarea } from '../../../common/components/Input'
-import Input from '../../../common/components/Input'
-// import Textarea  from '../../../common/components/Textarea'
-import Button from '../../../common/components/Button'
+import { FormControl, Input, Textarea, Button } from '../../common'
 // import cstyles from '../../common/Common.module.css'
 import styles from './ArtRegForm.module.css'
 import { IArtRegFormData, setFormData, setStep } from '../artRegSlice'
@@ -18,11 +15,16 @@ export function GeneralInfoStep(): JSX.Element {
     category,
     externalProfile,
     description,
-    compensation,
+    // compensation,
   } = useAppSelector(state => state.artRegForm)
 
   const dispatch = useAppDispatch()
   const { register, handleSubmit } = useForm()
+
+  function onSubmit(data: IArtRegFormData) {
+    dispatch(setFormData(data))
+    dispatch(setStep('ImageSelection'))
+  }
 
   const categoriesOptions = [
     { value: 'option1', label: 'Option 1' },
@@ -38,13 +40,8 @@ export function GeneralInfoStep(): JSX.Element {
     { value: 'option2', label: 'Option 2' },
   ]
 
-  let [copies, setCountOne] = useState(10)
-  let [royaltyPercent, setCountTwo] = useState(10)
-
-  function onSubmit(data: IArtRegFormData) {
-    dispatch(setFormData(data))
-    dispatch(setStep('ImageSelection'))
-  }
+  const [copies, setCountOne] = useState(10)
+  const [royaltyPercent, setCountTwo] = useState(10)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -77,20 +74,20 @@ export function GeneralInfoStep(): JSX.Element {
       <div className={styles.artRegFormInputContainer}>
         <div className={styles.artRegFormRow}>
           <div className={styles.artRegFormInputTitle}>
-            {/* <FormControl title='Title'>
+            <FormControl title='Title'>
               <Input
                 {...register('title')}
                 placeholder='The Starry Night'
                 defaultValue={title}
                 onChange={() => null}
               />
-            </FormControl> */}
+            </FormControl>
           </div>
         </div>
 
         <div className={styles.artRegFormRow}>
           <div className={styles.artRegFormInputCategory}>
-            {/* <FormControl title='Category'>
+            <FormControl title='Category'>
               <Select
                 isMulti
                 className={styles.artRegFormInputCategorySelect}
@@ -118,17 +115,17 @@ export function GeneralInfoStep(): JSX.Element {
                   }),
                 }}
               />
-            </FormControl> */}
+            </FormControl>
           </div>
 
           <div className={styles.artRegFormInputCollection}>
-            {/* <FormControl title='Collection'>
+            <FormControl title='Collection'>
               <Input
                 {...register('collection')}
                 placeholder='Choose'
                 defaultValue={category}
               />
-            </FormControl> */}
+            </FormControl>
             <div className={styles.artRegFormInputCollectionPlusButton}>
               <svg
                 width='24'
@@ -159,14 +156,14 @@ export function GeneralInfoStep(): JSX.Element {
 
         <div className={styles.artRegFormRow}>
           <div className={styles.artRegFormInputCopies}>
-            {/* <FormControl title='Copies'>
+            <FormControl title='Copies'>
               <Input
                 {...register('copies')}
                 type='number'
                 min={0}
                 value={copies}
               />
-            </FormControl> */}
+            </FormControl>
 
             <div
               className={styles.artRegFormInputCopiesStepperPlus}
@@ -210,25 +207,25 @@ export function GeneralInfoStep(): JSX.Element {
           </div>
 
           <div className={styles.artRegFormInputCompensation}>
-            {/* <FormControl title='Compensation'>
+            <FormControl title='Compensation'>
               <Select
                 isMulti
                 {...register('compensation')}
                 className={styles.artRegFormInputCompensationSelect}
                 options={compensationOptions}
               />
-            </FormControl> */}
+            </FormControl>
           </div>
 
           <div className={styles.artRegFormInputCompensationPercent}>
-            {/* <FormControl title='&nbsp;'>
+            <FormControl title='&nbsp;'>
               <Input
                 {...register('royaltyPercent')}
                 type='number'
                 min={0}
                 value={royaltyPercent}
               />
-            </FormControl> */}
+            </FormControl>
 
             <div
               className={styles.artRegFormInputCopiesStepperPlus}
@@ -274,13 +271,13 @@ export function GeneralInfoStep(): JSX.Element {
 
         <div className={styles.artRegFormRow}>
           <div className={styles.artRegFormInputExternalProfile}>
-            {/* <FormControl title='Extenral Profile'>
+            <FormControl title='Extenral Profile'>
               <Input
                 {...register('externalProfile')}
                 placeholder='https://behance.com/'
                 defaultValue={externalProfile}
               />
-            </FormControl> */}
+            </FormControl>
           </div>
         </div>
 
@@ -328,22 +325,22 @@ export function GeneralInfoStep(): JSX.Element {
                 />
               </svg>
             </div>
-            {/* <FormControl title='Description'>
+            <FormControl title='Description'>
               <Textarea
                 {...register('description')}
                 defaultValue={description}
                 placeholder=''
               />
-            </FormControl> */}
+            </FormControl>
           </div>
         </div>
 
         <div className={styles.artRegFormRow}>
-          {/* <Button
+          <Button
             text='Go to preview'
             type='submit'
             className={styles.artRegFormSubmit}
-          /> */}
+          />
         </div>
       </div>
     </form>
