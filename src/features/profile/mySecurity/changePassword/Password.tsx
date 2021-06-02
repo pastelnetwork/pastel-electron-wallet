@@ -29,9 +29,7 @@ const ChangePassword: React.FC = () => {
         isMatch={!noMatch}
       />
       <div className='text-gray-a0 text-h6 leading-relaxed'>
-        {noMatch && (
-          <div className='text-loader-red'>Passwords do not match</div>
-        )}
+        {noMatch && <div className='text-red-fe'>Passwords do not match</div>}
         <span>
           {' '}
           We strongly suggest that you save your password in a password manager
