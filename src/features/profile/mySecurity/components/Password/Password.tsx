@@ -6,7 +6,7 @@ import IconEyeHidden from '../../../../../common/assets/icons/ico-eye-hidden.svg
 import IconRefresh from '../../../../../common/assets/icons/ico-refresh-blue.svg'
 import { Description } from '../Typography/Typography'
 
-interface IPasswordProps {
+type TPasswordProps = {
   newPassword: string
   confirmPassword: string
   setNewPassword: (pass: string) => void
@@ -41,7 +41,7 @@ const passOptions: IPasswordOption[] = [
   },
 ]
 
-const Password: React.FC<IPasswordProps> = ({
+const Password: React.FC<TPasswordProps> = ({
   newPassword,
   confirmPassword,
   setNewPassword,

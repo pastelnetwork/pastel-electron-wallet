@@ -12,15 +12,15 @@ import Button from '../components/Button/Button'
 import Key from '../components/Crypto/Crypto'
 import Card from '../components/Card'
 
-interface IProps {
+type TProps = {
   currencyName: string
 }
-interface IPDFDocumentProps {
+type TPDFDocumentProps = {
   publicKey: string
   secretKey: string
 }
 
-const PDFDocument = ({ publicKey, secretKey }: IPDFDocumentProps) => {
+const PDFDocument = ({ publicKey, secretKey }: TPDFDocumentProps) => {
   return (
     <Document title='Crypto Keys'>
       <Page size='A4'>
@@ -35,7 +35,7 @@ const PDFDocument = ({ publicKey, secretKey }: IPDFDocumentProps) => {
   )
 }
 
-const CryptoKey: React.FC<IProps> = props => {
+const CryptoKey: React.FC<TProps> = props => {
   const { currencyName } = props
   const publicKey =
     'ps19jxlfdl8mhnsqlxlfdl8mhnsqlf7x0cwlhx0cwlhf7x0cwlhx0cwlheq0v34'

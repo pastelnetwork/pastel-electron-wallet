@@ -2,14 +2,14 @@ import React, { ReactNode } from 'react'
 
 import { Title, Description } from '../Typography/Typography'
 
-interface ICardProps {
+type TCardProps = {
   title: string
   description: string
   content: ReactNode
   footer: ReactNode
 }
 
-const Card: React.FC<ICardProps> = ({
+const Card: React.FC<TCardProps> = ({
   title,
   description,
   content,

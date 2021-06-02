@@ -1,11 +1,11 @@
 import React from 'react'
 
-interface IButtonProps {
+type TButtonProps = {
   type?: 'submit' | 'button'
   onClick?: () => void
 }
 
-const Button: React.FC<IButtonProps> = ({
+const Button: React.FC<TButtonProps> = ({
   children,
   type = 'button',
   onClick,
