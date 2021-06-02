@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import AutoComplete, { AutoCompleteProps } from './AutoComplete'
@@ -8,11 +8,12 @@ export default {
   component: AutoComplete,
 } as Meta
 
-const Template: Story<AutoCompleteProps> = ({
-  selected,
-  ...args
-}: AutoCompleteProps) => {
-  return <AutoComplete {...args} selected={selected} />
+const Template: Story<AutoCompleteProps> = ({ selected, ...args }) => {
+  const [selectedItem, setSelected] = useState(selected)
+
+  return (
+    <AutoComplete {...args} selected={selectedItem} onChange={setSelected} />
+  )
 }
 
 export const SimpleAutocomplete = Template.bind({})
@@ -22,5 +23,5 @@ SimpleAutocomplete.args = {
   startNumber,
   endNumber,
   diffNumber: 5000,
-  selected: startNumber.toString(),
+  selected: { value: startNumber.toString() },
 }
