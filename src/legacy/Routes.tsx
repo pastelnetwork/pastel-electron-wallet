@@ -584,7 +584,10 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
 
-            <Route path={routes.MYSECURITY} render={() => <MySecurity />} />
+            <Route
+              path={routes.MYSECURITY}
+              render={() => <MySecurity info={info} />}
+            />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
 

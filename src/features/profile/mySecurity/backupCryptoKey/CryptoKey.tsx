@@ -6,12 +6,15 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer'
-import dateformat from 'dateformat'
+import dayjs from 'dayjs'
 
 import Button from '../../../../common/components/MySecurity/Button/Button'
 import Key from '../../../../common/components/MySecurity/Crypto/Crypto'
 import Card from '../../../../common/components/MySecurity/Card'
 
+interface IProps {
+  currencyName: string
+}
 interface IPDFDocumentProps {
   publicKey: string
   secretKey: string
@@ -32,7 +35,8 @@ const PDFDocument = ({ publicKey, secretKey }: IPDFDocumentProps) => {
   )
 }
 
-const CryptoKey: React.FC = () => {
+const CryptoKey: React.FC<IProps> = props => {
+  const { currencyName } = props
   const publicKey =
     'ps19jxlfdl8mhnsqlxlfdl8mhnsqlf7x0cwlhx0cwlhf7x0cwlhx0cwlheq0v34'
   const secretKey =
@@ -50,9 +54,10 @@ const CryptoKey: React.FC = () => {
       Download PDF with all keys
       <PDFDownloadLink
         document={<PDFDocument publicKey={publicKey} secretKey={secretKey} />}
-        fileName={`PSL_Paper_Wallet__Shielded_Address_${dateformat(
-          new Date(),
-          'mm_dd_yyyy__HH_MM_ss',
+        fileName={`${
+          currencyName ? currencyName : 'PSL'
+        }_Paper_Wallet__Shielded_Address_${dayjs(new Date()).format(
+          'MM_DD_YYYY__HH_MM_ss',
         )}`}
         className='inline-block w-full h-full absolute top-o left-0'
       />
