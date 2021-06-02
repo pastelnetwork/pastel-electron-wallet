@@ -27,7 +27,12 @@ const CryptoKeys: React.FC = () => {
             Public key
           </Typography>
           <Styles.InfoContainer>
-            <Tooltip content='Public-key cryptography, or asymmetric cryptography, is a cryptographic system which uses pairs of keys'>
+            <Tooltip
+              width={300}
+              type='top'
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content='Public-key cryptography, or asymmetric cryptography, is a cryptographic system which uses pairs of keys'
+            >
               <Styles.InfoIcon src={infoIco} alt='info' />
             </Tooltip>
           </Styles.InfoContainer>
