@@ -15,7 +15,7 @@ import user2Icon from '../../common/assets/icons/ico-user2.svg'
 import radioIcon from '../../common/assets/icons/ico-radio.svg'
 import radioCheckedIcon from '../../common/assets/icons/ico-radio-checked.svg'
 
-interface IDataType {
+type IDataType = {
   date: string
   address: string
   type: string
@@ -26,7 +26,7 @@ interface IDataType {
   amount: string
 }
 
-export interface TransactionHistoryModalProps {
+export type TransactionHistoryModalProps = {
   isOpen: boolean
   handleClose: () => void
   transactionHistory: Array<IDataType>

@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import * as Styles from './Checkbox.styles'
 
-interface CheckboxProps {
+type CheckboxProps = {
   isChecked: boolean
   clickHandler: (
     event: React.MouseEvent<HTMLLabelElement, MouseEvent>,

@@ -6,7 +6,7 @@ import ButtonClose from '../../../common/components/button-close'
 
 ReactModal.setAppElement('#root')
 
-export interface ModalProps {
+export type ModalProps = {
   isOpen: boolean
   handleClose?: () => void
   size?: string

@@ -12,11 +12,11 @@ import add2Icon from '../../common/assets/icons/ico-add-2.svg'
 import checkIcon from '../../common/assets/icons/ico-check.svg'
 import Select from '../../common/components/Select/Select'
 
-interface IDataType {
+type IDataType = {
   hash: string
 }
 
-export interface PaymentModalProps {
+export type PaymentModalProps = {
   isOpen: boolean
   handleClose: () => void
   paymentSources: Array<IDataType>

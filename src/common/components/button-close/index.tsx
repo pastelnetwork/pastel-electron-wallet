@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 
-export interface ButtonCloseProps {
+export type ButtonCloseProps = {
   onClick?: React.MouseEventHandler
   className?: string
 }
