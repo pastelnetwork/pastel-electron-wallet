@@ -5,7 +5,7 @@ import pencilIcon from '../../assets/icons/ico-pencil.svg'
 import viewIcon from '../../assets/icons/ico-view.svg'
 import Select from '../../components/Select/Select'
 import cn from 'classnames'
-import Tooltip from '../Tooltip1'
+import Tooltip from '../Tooltip'
 
 export type ColumnDefinitionType<T, K extends keyof T> = {
   key: K
