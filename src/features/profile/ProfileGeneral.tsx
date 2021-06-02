@@ -1,5 +1,5 @@
 import React from 'react'
-import StarRate from './StarRate'
+import StarRate from '../../common/components/Profile/StarRate'
 
 const ProfileGeneral = (): JSX.Element => {
   return (
