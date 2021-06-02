@@ -48,21 +48,19 @@
   .flex-center {
     @apply flex justify-center items-center;
   }
-}
 
-@layer utilities {
-  .text-gradient {
-    background: radial-gradient(
-      87.68% 87.68% at 95.36% 14.36%,
-      #ffcf14 0%,
-      #ee8fff 55.86%,
-      #38deff 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  /* For containers with white BG such as MemberStrip images */
+  .scrollbar-bg-white::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 14px 14px #eeeeef;
+    border: solid 6px white;
   }
-  .flex-center {
-    @apply flex justify-center items-center;
+  .scrollbar-bg-white::-webkit-scrollbar-thumb:vertical {
+    border-right: solid 6px white;
+    border-left: solid 6px white;
+  }
+  .scrollbar-bg-white::-webkit-scrollbar-thumb:horizontal {
+    border-top: solid 6px white;
+    border-bottom: solid 6px white;
   }
 }
 
@@ -70,19 +68,27 @@
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';
 
+/* total width */
 ::-webkit-scrollbar {
-  width: 0.5em;
-  height: 0.5em;
+  width: 14px;
 }
 
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px grey;
-  background-color: rgb(1, 1, 1);
+  box-shadow: inset 0 0 14px 14px #eeeeef;
+  border: solid 6px #f8f9fa;
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: white;
-  outline: 1px solid slategrey;
+::-webkit-scrollbar-thumb:vertical {
+  box-shadow: inset 0 0 14px 14px #c5c9d2;
+  border-right: solid 6px #f8f9fa;
+  border-left: solid 6px #f8f9fa;
+  border-radius: 14px;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  box-shadow: inset 0 0 14px 14px #c5c9d2;
+  border-top: solid 6px #f8f9fa;
+  border-bottom: solid 6px #f8f9fa;
+  border-radius: 14px;
 }
 
 .react-tabs {

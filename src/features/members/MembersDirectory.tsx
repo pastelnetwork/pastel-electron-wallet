@@ -1,22 +1,65 @@
 import React, { useState } from 'react'
-import MemberStrip, { MemberStripProps } from './MemberStrip'
-import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
-import image from '../../common/assets/images/member-image-placeholder.png'
+
+import MemberStrip, { TMemberStripProps } from './MemberStrip'
 import Select, { Option } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
-const mockMemberStrips: MemberStripProps = {
-  memberCard: {
-    avatar: mockAvatar,
-    followers: 161,
-    name: 'Sally Fadel',
+import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
+import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
+
+const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
+const mockMemberStrips: TMemberStripProps[] = [
+  {
+    memberCard: {
+      avatar: mockAvatar,
+      followers: 161,
+      name: 'Sally Fadel',
+      isVerified: false,
+    },
+    heighestSold: '1.700,000K',
+    totalSell: '1.500K',
+    images: stripMockImages,
+    currencyName: 'PSL',
   },
-  heighestSold: '1.700,000k',
-  totalSell: '1.500K',
-  images: [image, image, image, image],
-}
+  {
+    memberCard: {
+      avatar: mockAvatar,
+      followers: 8.082,
+      name: 'Anyia Harber',
+      isVerified: true,
+    },
+    heighestSold: '800,000K',
+    totalSell: '1.500.200K',
+    images: stripMockImages,
+    currencyName: 'PSL',
+  },
+  {
+    memberCard: {
+      avatar: mockAvatar,
+      followers: 1.024,
+      name: 'Edwardo Bea',
+      isVerified: false,
+    },
+    heighestSold: '1.300K',
+    totalSell: '1.110.230K',
+    images: stripMockImages,
+    currencyName: 'PSL',
+  },
+  {
+    memberCard: {
+      avatar: mockAvatar,
+      followers: 1.024,
+      name: 'Reymundo Longnamefortestinghowitlooks Smith',
+      isVerified: true,
+    },
+    heighestSold: '6.240K',
+    totalSell: '2.109.230K',
+    images: stripMockImages,
+    currencyName: 'PSL',
+  },
+]
 
 const mockOptions: Option[] = [
   { value: 'All', label: 'All' },
@@ -96,8 +139,8 @@ const MembersDirectory: React.FC = () => {
             </div>
           </div>
           <div className='space-y-5'>
-            {Array.from({ length: 5 }).map(() => (
-              <MemberStrip {...mockMemberStrips} />
+            {mockMemberStrips.map(item => (
+              <MemberStrip {...item} />
             ))}
           </div>
         </div>

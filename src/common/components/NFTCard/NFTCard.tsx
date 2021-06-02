@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { NFTCardProps } from '.'
 
 const NFTCard = ({
@@ -20,14 +19,14 @@ const NFTCard = ({
           <h4 className='pl-2 font-semibold'>@{author}</h4>
         </div>
         <div className='flex items-center'>
-          <Link to='#' className='text-blue-450'>
+          <a href='#' className='text-blue-450'>
             follow
-          </Link>
+          </a>
         </div>
       </div>
       {/* Image */}
-      <div className='h-230px object-cover'>
-        <img src={imageSrc} className='h-full w-full' />
+      <div className='h-230px'>
+        <img src={imageSrc} className='object-cover h-full w-full' />
       </div>
       {/* Footer */}
       <div className='px-18px pt-2'>

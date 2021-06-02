@@ -1,18 +1,20 @@
 import React from 'react'
 
 import mockAvatar from '../../../common/assets/images/avatar2-placeholder.png'
-import image from '../../../common/assets/images/member-image-placeholder.png'
-import MemberStripComponent, { MemberStripProps } from '../MemberStrip'
+import mockMemberImage from '../../../common/assets/images/member-image-placeholder.png'
+import MemberStripComponent, { TMemberStripProps } from '../MemberStrip'
 
-const mockMemberStrips: MemberStripProps = {
+const mockMemberStrips: TMemberStripProps = {
   memberCard: {
     avatar: mockAvatar,
     followers: 161,
     name: 'Sally Fadel',
+    isVerified: true,
   },
   heighestSold: '1.700,000k',
   totalSell: '1.500K',
-  images: [image, image, image, image],
+  images: [mockMemberImage, mockMemberImage, mockMemberImage, mockMemberImage],
+  currencyName: 'PSL',
 }
 export default {
   title: 'Members/MemberStrip',
