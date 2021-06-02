@@ -1,7 +1,7 @@
 import React from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 
-export type DateTimeWithDotProps = {
+export type TDateTimeWithDotProps = {
   value: number | string | Dayjs
   className?: string
 }
@@ -9,7 +9,7 @@ export type DateTimeWithDotProps = {
 export default function DateTimeWithDot({
   value,
   className,
-}: DateTimeWithDotProps): JSX.Element {
+}: TDateTimeWithDotProps): JSX.Element {
   const date = typeof value === 'object' ? value : dayjs(value)
 
   return (

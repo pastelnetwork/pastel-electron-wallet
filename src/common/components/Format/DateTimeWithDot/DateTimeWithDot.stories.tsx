@@ -1,7 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import DateTimeWithDot, { DateTimeWithDotProps } from './DateTimeWithDot'
+import DateTimeWithDot, { TDateTimeWithDotProps } from './DateTimeWithDot'
 import dayjs from 'dayjs'
 
 export default {
@@ -9,7 +9,7 @@ export default {
   component: DateTimeWithDot,
 } as Meta
 
-const TemplateOptions: Story<DateTimeWithDotProps> = ({ ...args }) => {
+const TemplateOptions: Story<TDateTimeWithDotProps> = ({ ...args }) => {
   return <DateTimeWithDot {...args} />
 }
 

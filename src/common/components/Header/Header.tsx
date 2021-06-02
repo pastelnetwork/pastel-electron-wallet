@@ -46,13 +46,13 @@ const SearchBar = () => {
   )
 }
 
-type IconProps = {
+type TIconProps = {
   src: string
   background?: boolean
   notification?: boolean
 }
 
-const Icon = ({ src, background, notification }: IconProps) => {
+const Icon = ({ src, background, notification }: TIconProps) => {
   return (
     <div className={cn('w-6 h-6 flex-center', background && 'bg-gray-f8')}>
       <div className='relative'>
