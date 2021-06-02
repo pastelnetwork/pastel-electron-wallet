@@ -10,6 +10,7 @@ const mockCardProps: NFTCardProps = {
   avatarSrc: avatar,
   imageSrc: image,
   likes: 23,
+  liked: true,
   onSale: true,
   price: '222K',
   currencyName: 'PSL',
