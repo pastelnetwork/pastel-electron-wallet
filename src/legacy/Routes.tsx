@@ -651,6 +651,11 @@ class RouteApp extends React.Component<any, any> {
               />
 
               <Route
+                path={routes.HASHRATEOVERTIME}
+                render={() => <HashrateOvertime info={info} />}
+              />
+
+              <Route
                 path={routes.NETTOTALSOVERTIME}
                 render={() => <NetTotalsOvertime info={info} />}
               />
