@@ -16,7 +16,9 @@ const mockCardProps: NFTCardProps = {
   likes: 23,
   onSale: true,
   price: '222K',
+  currencyName: 'PSL',
   title: 'Cosmic Perspective',
+  liked: true,
 }
 
 const NFTMarketFeed: React.FC = () => {

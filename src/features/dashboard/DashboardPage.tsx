@@ -31,6 +31,7 @@ const NFTCardProps: NFTCompactCardProps = {
   imageSrc: image,
   likes: 23,
   title: 'Cosmic Perspective',
+  liked: false,
 }
 
 const date = dayjs()
@@ -66,7 +67,7 @@ export default function DashboardPage(): JSX.Element {
             ))}
           </div>
           <LinkSection to='#' absolute gradient>
-            Wallet Details
+            Wallet details
           </LinkSection>
         </div>
         <div className='paper flex-grow w-0 ml-5 pt-6 relative md:flex md:flex-col'>
@@ -75,10 +76,9 @@ export default function DashboardPage(): JSX.Element {
             <div className='font-extrabold text-gray-a0 text-xs ml-3'>
               23 items
             </div>
-            <Dots
-              size={24}
-              className='text-gray-b0 ml-auto relative -right-2px'
-            />
+            <button type='button' className='ml-auto relative -right-2px'>
+              <Dots size={24} className='text-gray-b0 hover:opacity-80' />
+            </button>
           </div>
           <div className='md:flex-grow md:flex'>
             <PortfolioColumn title='Sales in progress'>
@@ -107,7 +107,9 @@ export default function DashboardPage(): JSX.Element {
             <div className='font-black text-gray-1d text-lg ml-2.5'>
               312,000 listed
             </div>
-            <Dots size={24} className='text-gray-b0 ml-auto' />
+            <button type='button' className='ml-auto'>
+              <Dots size={24} className='text-gray-b0 hover:opacity-80' />
+            </button>
           </div>
           <div className='lg:flex-grow px-30px pb-14'>
             <div className='flex flex-col items-center space-y-30px lg:space-y-0 lg:grid lg:grid-flow-col lg:gap-30px'>
@@ -129,7 +131,7 @@ export default function DashboardPage(): JSX.Element {
               4 unread
             </div>
           </div>
-          <div className='flex-grow pl-8 pr-3.5 mr-18px pb-5 h-0 overflow-auto'>
+          <div className='flex-grow pl-8 pr-3.5 mr-18px h-0 overflow-auto'>
             {notifications.map((notification, i) => (
               <Notification key={i} {...notification} />
             ))}

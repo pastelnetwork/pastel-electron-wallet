@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react'
 
 import avatar from '../../../common/assets/images/avatar-placeholder.png'
 import image from '../../../common/assets/images/nft-card-placeholder.png'
-import NFTCardComponent, { NFTCardProps } from '.'
+import NFTCardComponent, { NFTCardProps } from './NFTCard'
 
 const mockCardProps: NFTCardProps = {
   author: 'zndrson',
@@ -12,7 +12,9 @@ const mockCardProps: NFTCardProps = {
   likes: 23,
   onSale: true,
   price: '222K',
+  currencyName: 'PSL',
   title: 'Cosmic Perspective',
+  className: 'w-300px',
 }
 
 export default {

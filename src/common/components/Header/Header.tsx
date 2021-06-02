@@ -67,7 +67,7 @@ const Icon = ({ src, background, notification }: IconProps) => {
 
 export default function Header(): JSX.Element {
   return (
-    <div className='page-container flex-shrink-0 flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display'>
+    <div className='page-container flex-shrink-0 flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed'>
       <Link to={routes.DASHBOARD} className='w-36px h-36px'>
         <img src={Logo} alt='logo' />
       </Link>

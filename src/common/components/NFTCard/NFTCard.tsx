@@ -1,19 +1,37 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { NFTCompactCardProps, NFTCardProps } from '.'
 import cn from 'classnames'
+
+export interface NFTCompactCardProps {
+  imageSrc: string
+  title: string
+  likes: number
+  liked: boolean
+  className?: string
+}
+
+export interface NFTCardProps extends NFTCompactCardProps {
+  author: string
+  avatarSrc: string
+  price: number | string
+  currencyName: string
+  onSale: boolean
+}
 
 const NFTCard = ({
   imageSrc,
   title,
   likes,
   className,
+  liked,
   ...props
 }: NFTCompactCardProps | NFTCardProps): JSX.Element => {
   const fullCardProps = 'author' in props && (props as NFTCardProps)
 
   const wrapperPaddingClass = fullCardProps ? 'pt-4 pb-27px' : 'pb-18px'
-  const titleWeightClass = fullCardProps ? 'font-extrabold' : 'font-medium'
+  const titleClass = fullCardProps
+    ? 'font-extrabold text-h4 leading-6'
+    : 'font-medium'
   const imageHeightClass = fullCardProps ? 'h-230px' : 'h-220px'
 
   return (
@@ -45,9 +63,14 @@ const NFTCard = ({
       {/* Footer */}
       <div className='px-18px pt-2'>
         <div className='flex justify-between'>
-          <h4 className={cn('text-gray-4a', titleWeightClass)}>{title}</h4>
+          <div className={cn('text-gray-4a', titleClass)}>{title}</div>
           <span className='flex-center'>
-            <i className='far fa-heart text-error'></i>
+            <i
+              className={cn(
+                'far fa-heart',
+                liked ? 'text-error' : 'text-gray-400',
+              )}
+            />
             <span className='pl-6px text-gray-4a text-h6'>{likes}</span>
           </span>
         </div>
@@ -56,7 +79,7 @@ const NFTCard = ({
             <div className='flex-center'>
               <span className='text-h5 leading-none text-gray-71'>Listed</span>
               <span className='text-h4 leading-none text-gradient pl-1 font-semibold'>
-                {fullCardProps.price} PSL
+                {fullCardProps.price} {fullCardProps.currencyName}
               </span>
             </div>
 

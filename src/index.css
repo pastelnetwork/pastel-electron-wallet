@@ -23,6 +23,18 @@
   h5 {
     @apply text-h6;
   }
+
+  ::-webkit-scrollbar {
+    @apply w-3px h-3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-f3;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-cd rounded-full;
+  }
 }
 
 @tailwind components;
@@ -37,19 +49,7 @@
   }
 
   .page-container {
-    @apply px-20px;
-  }
-
-  @screen md {
-    .page-container {
-      @apply px-30px;
-    }
-  }
-
-  @screen lg {
-    .page-container {
-      @apply px-60px;
-    }
+    @apply px-20px md:px-30px lg:px-60px;
   }
 }
 
@@ -94,20 +94,6 @@ body,
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';
-
-::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f3f3f3;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #cdd2db;
-  border-radius: 30px;
-}
 
 .react-tabs {
   -webkit-tap-highlight-color: transparent;

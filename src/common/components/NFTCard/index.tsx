@@ -1,4 +1,4 @@
 import NFTCard from './NFTCard'
 
-export * from './NFTCardProps'
 export default NFTCard
+export * from './NFTCard'
