@@ -5,7 +5,7 @@ import elminationIcon from '../../common/assets/icons/ico-elmination.svg'
 import clockIcon from '../../common/assets/icons/ico-clock.svg'
 import plusIcon from '../../common/assets/icons/ico-plus.svg'
 import electIcon from '../../common/assets/icons/ico-elect.svg'
-import Tooltip from '../../common/components/Tooltip/Tooltip'
+import Tooltip from '../../common/components/Tooltip1'
 import Toggle from '../../common/components/Toggle'
 import { ThemeProvider } from 'styled-components/macro'
 import { theme } from '../../common/theme'
@@ -138,18 +138,6 @@ const WalletScreen: React.FC = () => {
     },
   ]
 
-  // const checkHandler = (
-  //   event: React.MouseEvent<HTMLLabelElement, MouseEvent>,
-  //   index: number,
-  // ) => {
-  //   if ((event?.target as HTMLElement).tagName === 'LABEL') {
-  //     return
-  //   }
-  //   console.log(index)
-  //   const temp = walletdatas
-  //   // temp[index] = { ...temp[index], checked: !temp[index].checked }
-  //   // setWalletDatas([...temp])
-  // }
   return (
     <ThemeProvider theme={theme}>
       <div className='bg-gray-f8 pt-5 sm:px-10 md:px-60px'>
@@ -158,7 +146,12 @@ const WalletScreen: React.FC = () => {
             <div key={index} className='mr-18px relative'>
               <div className='absolute top-15px right-15px'>
                 {card.style.info ? (
-                  <Tooltip content='Transparent Info'>
+                  <Tooltip
+                    classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                    content='Transparent Info'
+                    width={108}
+                    type='top'
+                  >
                     <img src={elminationIcon} />
                   </Tooltip>
                 ) : null}

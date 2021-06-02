@@ -176,3 +176,11 @@ th,
 td {
   border-collapse: collapse;
 }
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltip:hover .tooltiparrow {
+  visibility: visible;
+}

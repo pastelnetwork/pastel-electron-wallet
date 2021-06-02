@@ -1,8 +1,5 @@
 import * as React from 'react'
 
-import Typography from '../../../common/components/Typography/Typography'
-import { colors } from '../../theme/colors'
-
 import * as Styles from './Tooltip.styles'
 
 interface TooltipProps {

@@ -22,8 +22,10 @@ module.exports = {
         //2px: 0.5 default
         '3px': '0.188rem',
         //4px: 1 default
+        '5px': '0.313rem',
         //6px: 1.5 default
         //8px: 2 default
+        '9px': '0.563rem',
         //10px: 2.5 default
         '11px': '0.688rem',
         //12px: 3 default

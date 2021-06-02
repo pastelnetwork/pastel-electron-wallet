@@ -5,6 +5,7 @@ import pencilIcon from '../../assets/icons/ico-pencil.svg'
 import viewIcon from '../../assets/icons/ico-view.svg'
 import Select from '../../components/Select/Select'
 import cn from 'classnames'
+import Tooltip from '../Tooltip1'
 
 export type ColumnDefinitionType<T, K extends keyof T> = {
   key: K
@@ -73,7 +74,14 @@ const Table = <T, K extends keyof T>({
                     key={index + i}
                     className='flex items-center lg:ml-16 xl:ml-75px'
                   >
-                    <img src={viewIcon} />
+                    <Tooltip
+                      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                      content='View QR Code'
+                      width={108}
+                      type='top'
+                    >
+                      <img src={viewIcon} />
+                    </Tooltip>
                   </td>
                 )
               }
