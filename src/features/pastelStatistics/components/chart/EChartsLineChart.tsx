@@ -24,6 +24,8 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     chartName,
     dataX,
     dataY,
+    dataY1,
+    dataY2,
     title,
     info,
     offset,
@@ -62,6 +64,17 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         })
         setCsvData(data)
       }
+    } else if (dataY1?.length && dataY2?.length) {
+      if (dataX) {
+        const data: Data = []
+        dataY1.map((o, index) => {
+          data.push({
+            value: `${o} : ${dataY2[index]}`,
+            time: dataX[index],
+          })
+        })
+        setCsvData(data)
+      }
     }
   }, [dataX, dataY])
 
@@ -69,6 +82,8 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     theme: currentTheme,
     dataX,
     dataY,
+    dataY1,
+    dataY2,
     chartName: chartName,
     minY,
     maxY,
