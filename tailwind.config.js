@@ -95,6 +95,7 @@ module.exports = {
         //320px: 80 default
         '335px': '20.938rem',
         '352px': '22rem',
+        '371px': '23.1875rem',
         //384px: 96 default
         '427px': '26.688rem',
         '456px': '28.5rem',
@@ -195,6 +196,9 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
         '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
+        input:
+          '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
       },
       fontSize: {
         h1: '2rem',
