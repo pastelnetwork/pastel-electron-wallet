@@ -15,9 +15,9 @@ const Template: Story<SelectProps> = ({ selected, ...args }) => {
 }
 
 const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
+  { value: 'chocolate', label: 'Chocolate3' },
+  { value: 'strawberry', label: 'Strawberry5' },
+  { value: 'vanilla', label: 'Vanilla7' },
 ]
 
 export const SimpleSelect = Template.bind({})

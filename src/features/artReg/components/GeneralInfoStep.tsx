@@ -1,23 +1,17 @@
 import React, { useState } from 'react'
-import {
-  Formik,
-  // FormikHelpers,
-  // FormikProps,
-  Form,
-  // Field,
-  // FieldProps,
-} from 'formik'
+import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from 'formik'
 
 // import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
-import { FormControl, Input, Textarea, Button } from '../../common'
-// import cstyles from '../../common/Common.module.css'
+import { FormControl } from '../../../common/components/FormControl/FormControl'
+import { Input, Textarea, Button } from '../../common'
 import styles from './ArtRegForm.module.css'
 // import { IArtRegFormData, setFormData, setStep } from '../artRegSlice'
 import Select from 'react-select'
 
-interface MyFormValues {
+interface artRegFormStep1Values {
   title: string
   category: string
+  copies: number
 }
 
 export function GeneralInfoStep(): JSX.Element {
@@ -56,22 +50,19 @@ export function GeneralInfoStep(): JSX.Element {
   const [copies, setCountOne] = useState(10)
   const [royaltyPercent, setCountTwo] = useState(10)
 
-  const initialValues: MyFormValues = { title: '', category: '' }
+  const [title, setTitle] = useState('')
+
   return (
     <Formik
-      initialValues={initialValues}
-      onSubmit={(values, actions) => {
-        console.log({ values, actions })
+      initialValues={
+        { title: '', category: '', copies: copies }
+      }
+      onSubmit={(values: artRegFormStep1Values, { setSubmitting }: FormikHelpers<artRegFormStep1Values>) => {
+        console.log({ values })
         alert(JSON.stringify(values, null, 2))
-        actions.setSubmitting(false)
+        // actions.setSubmitting(false)
       }}
     >
-      {/* <Form>
-            <label htmlFor="firstName">First Name</label>
-            <Field id="firstName" name="firstName" placeholder="First Name" />
-            <button type="submit">Submit</button>
-          </Form> */}
-
       <Form>
         <h1 className={styles.artRegFormTitle}>Input NFT data</h1>
         <h2 className={styles.artRegFormSubTitle}>Description</h2>
@@ -101,31 +92,33 @@ export function GeneralInfoStep(): JSX.Element {
 
         <div className={styles.artRegFormInputContainer}>
           <div className={styles.artRegFormRow}>
-            <div className={styles.artRegFormInputTitle}>
-              <FormControl title='Title'>
-                <Input
-                  name='title'
-                  placeholder='The Starry Night'
-                  // defaultValue={title}
-                  onChange={() => null}
-                />
-              </FormControl>
-            </div>
+            <label className={styles.artRegFormInputTitle} htmlFor="title">
+              <p className={styles.artRegFormLabel}>Title</p>
+              <Field id="title" name="title" placeholder="The Starry Night" onChange={event => setTitle(event.target.value)} />
+            </label>
           </div>
 
           <div className={styles.artRegFormRow}>
-            <div className={styles.artRegFormInputCategory}>
-              <FormControl title='Category'>
-                <Select
+            <label className={styles.artRegFormInputCategory} htmlFor="category">
+              <p className={styles.artRegFormLabel}>Title</p>
+              <Select
                   name='category'
                   isMulti
                   className={styles.artRegFormInputCategorySelect}
                   classNamePrefix='react-select'
                   options={categoriesOptions}
                   styles={{
+                    control: styles => ({
+                      ...styles,
+                      borderColor: '#9ca0a533'
+                    }),
+                    input: base => ({
+                      ...base,
+                      position: 'absolute'
+                    }),
                     valueContainer: base => ({
                       ...base,
-                      minHeight: '36px',
+                      minHeight: '38px',
                       display: 'flex',
                       flexDirection: 'row',
                       flexWrap: 'nowrap',
@@ -136,24 +129,31 @@ export function GeneralInfoStep(): JSX.Element {
                       backgroundColor: '#718096',
                       borderRadius: '12px',
                       padding: '0px 8px',
-                      lineHeight: '24px',
                     }),
                     multiValueLabel: base => ({
                       ...base,
                       color: '#F8F8FA',
                     }),
+                    multiValueRemove: (styles, { data }) => ({
+                      ...styles,
+                      color: 'transparent',
+                      ':hover': {
+                        backgroundColor: 'transparent',
+                        color: 'white',
+                      },
+                    }),
+                    indicatorSeparator: base => ({
+                      ...base,
+                      display: 'none',
+                    })
                   }}
                 />
-              </FormControl>
-            </div>
+            </label>
 
-            <div className={styles.artRegFormInputCollection}>
-              <FormControl title='Collection'>
-                <Input
-                  placeholder='Choose'
-                  // defaultValue={category}
-                />
-              </FormControl>
+            <label className={styles.artRegFormInputCollection} htmlFor="collection">
+              <p className={styles.artRegFormLabel}>Collection</p>
+              <Field id="collection" name="collection" placeholder="Collection" />
+
               <div className={styles.artRegFormInputCollectionPlusButton}>
                 <svg
                   width='24'
@@ -179,14 +179,13 @@ export function GeneralInfoStep(): JSX.Element {
                   />
                 </svg>
               </div>
-            </div>
+            </label>
           </div>
 
           <div className={styles.artRegFormRow}>
-            <div className={styles.artRegFormInputCopies}>
-              <FormControl title='Copies'>
-                <Input type='number' min={0} value={copies} />
-              </FormControl>
+            <label className={styles.artRegFormInputCopies} htmlFor="copies">
+              <p className={styles.artRegFormLabel}>Collection</p>
+              <Field id="copies" name="copies" value={copies} />
 
               <div
                 className={styles.artRegFormInputCopiesStepperPlus}
@@ -227,22 +226,62 @@ export function GeneralInfoStep(): JSX.Element {
                   />
                 </svg>
               </div>
-            </div>
+            </label>
 
-            <div className={styles.artRegFormInputCompensation}>
-              <FormControl title='Compensation'>
-                <Select
-                  isMulti
-                  className={styles.artRegFormInputCompensationSelect}
-                  options={compensationOptions}
-                />
-              </FormControl>
-            </div>
+            <label className={styles.artRegFormInputCompensation} htmlFor="compensation">
+              <p className={styles.artRegFormLabel}>Compensation</p>
+              <Select
+                name='compensation'
+                isMulti
+                className={styles.artRegFormInputCategorySelect}
+                classNamePrefix='react-select'
+                options={compensationOptions}
+                styles={{
+                  control: styles => ({
+                    ...styles,
+                    borderColor: '#9ca0a533'
+                  }),
+                  input: base => ({
+                    ...base,
+                    position: 'absolute'
+                  }),
+                  valueContainer: base => ({
+                    ...base,
+                    minHeight: '38px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    flexWrap: 'nowrap',
+                    justifyContent: 'flex-start',
+                  }),
+                  multiValue: base => ({
+                    ...base,
+                    backgroundColor: '#718096',
+                    borderRadius: '12px',
+                    padding: '0px 8px',
+                  }),
+                  multiValueLabel: base => ({
+                    ...base,
+                    color: '#F8F8FA',
+                  }),
+                  multiValueRemove: (styles, { data }) => ({
+                    ...styles,
+                    color: 'transparent',
+                    ':hover': {
+                      backgroundColor: 'transparent',
+                      color: 'white',
+                    },
+                  }),
+                  indicatorSeparator: base => ({
+                    ...base,
+                    display: 'none',
+                  })
+                }}
+              />
+            </label>
 
-            <div className={styles.artRegFormInputCompensationPercent}>
-              <FormControl title='&nbsp;'>
-                <Input type='number' min={0} value={royaltyPercent} />
-              </FormControl>
+            <label className={styles.artRegFormInputCompensationPercent} htmlFor="royaltyPercent">
+              <p className={styles.artRegFormLabel}>&nbsp;</p>
+              <Field id="royaltyPercent" name="royaltyPercent" value={royaltyPercent} />
 
               <div
                 className={styles.artRegFormInputCopiesStepperPlus}
@@ -283,22 +322,19 @@ export function GeneralInfoStep(): JSX.Element {
                   />
                 </svg>
               </div>
-            </div>
+            </label>
           </div>
 
           <div className={styles.artRegFormRow}>
-            <div className={styles.artRegFormInputExternalProfile}>
-              <FormControl title='Extenral Profile'>
-                <Input
-                  placeholder='https://behance.com/'
-                  // defaultValue={externalProfile}
-                />
-              </FormControl>
-            </div>
+            <label className={styles.artRegFormInputExternalProfile}>
+              <p className={styles.artRegFormLabel}>External profile</p>
+              <Field id="externalProfile" name="externalProfile" placeholder="https://behance.com/" />
+            </label>
           </div>
 
           <div className={styles.artRegFormRow}>
-            <div className={styles.artRegFormInputDescription}>
+            <label className={styles.artRegFormInputDescription} htmlFor="description">
+              <p className={styles.artRegFormLabel}>Description</p>
               <div className={styles.artRegFormInputDescriptionControls}>
                 <input
                   id='switch-1'
@@ -341,13 +377,14 @@ export function GeneralInfoStep(): JSX.Element {
                   />
                 </svg>
               </div>
-              <FormControl title='Description'>
+
                 <Textarea
                   // defaultValue={description}
                   placeholder=''
+                  name="description"
                 />
-              </FormControl>
-            </div>
+
+            </label>
           </div>
 
           <div className={styles.artRegFormRow}>
