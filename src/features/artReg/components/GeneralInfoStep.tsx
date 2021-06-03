@@ -34,17 +34,18 @@ export function GeneralInfoStep(): JSX.Element {
   // }
 
   const categoriesOptions = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-    { value: 'option4', label: 'Option 4' },
-    { value: 'option5', label: 'Option 5' },
-    { value: 'option6', label: 'Option 6' },
+    { value: 'option1', label: 'First' },
+    { value: 'option2', label: 'Second' },
+    { value: 'option3', label: 'Third' },
+    { value: 'option4', label: 'Fourth' },
+    { value: 'option5', label: 'Fifth' },
+    { value: 'option6', label: 'Sixth' },
   ]
 
   const compensationOptions = [
     { value: 'royalty', label: 'Royalty' },
-    { value: 'option2', label: 'Option 2' },
+    { value: 'option2', label: 'Percent' },
+    { value: 'option3', label: 'Big thanks' },
   ]
 
   const [copies, setCountOne] = useState(10)
@@ -99,7 +100,7 @@ export function GeneralInfoStep(): JSX.Element {
               className={styles.artRegFormInputCategory}
               htmlFor='category'
             >
-              <p className={styles.artRegFormLabel}>Title</p>
+              <p className={styles.artRegFormLabel}>Category</p>
               <Select
                 name='category'
                 isMulti
@@ -118,13 +119,11 @@ export function GeneralInfoStep(): JSX.Element {
                   valueContainer: base => ({
                     ...base,
                     minHeight: '38px',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'flex-start',
                   }),
                   multiValue: base => ({
                     ...base,
+                    position: 'relative',
+                    display: 'inline-block',
                     backgroundColor: '#718096',
                     borderRadius: '12px',
                     padding: '0px 8px',
@@ -132,12 +131,18 @@ export function GeneralInfoStep(): JSX.Element {
                   multiValueLabel: base => ({
                     ...base,
                     color: '#F8F8FA',
+                    paddingLeft: '0px',
                   }),
                   multiValueRemove: styles => ({
                     ...styles,
                     color: 'transparent',
+                    position: 'absolute',
+                    top: '0px',
+                    right: '0px',
+                    height: '100%',
+                    borderRadius: '12px',
                     ':hover': {
-                      backgroundColor: 'transparent',
+                      backgroundColor: '#718096',
                       color: 'white',
                     },
                   }),
@@ -257,13 +262,11 @@ export function GeneralInfoStep(): JSX.Element {
                   valueContainer: base => ({
                     ...base,
                     minHeight: '38px',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'nowrap',
-                    justifyContent: 'flex-start',
                   }),
                   multiValue: base => ({
                     ...base,
+                    position: 'relative',
+                    display: 'inline-block',
                     backgroundColor: '#718096',
                     borderRadius: '12px',
                     padding: '0px 8px',
@@ -271,12 +274,18 @@ export function GeneralInfoStep(): JSX.Element {
                   multiValueLabel: base => ({
                     ...base,
                     color: '#F8F8FA',
+                    paddingLeft: '0px',
                   }),
                   multiValueRemove: styles => ({
                     ...styles,
                     color: 'transparent',
+                    position: 'absolute',
+                    top: '0px',
+                    right: '0px',
+                    height: '100%',
+                    borderRadius: '12px',
                     ':hover': {
-                      backgroundColor: 'transparent',
+                      backgroundColor: '#718096',
                       color: 'white',
                     },
                   }),

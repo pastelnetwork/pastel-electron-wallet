@@ -118,9 +118,9 @@
 
 .artRegFormMainBlock {
   position: absolute;
-  width: 610px;
-  left: calc(50% - 610px / 2 + 110px);
-  top: calc(50% - 726px / 2 - 4px);
+  width: 690px;
+  left: calc(50% - 345px);
+  top: calc(50% - 363px);
   border: 1px solid #e6e8ec;
   box-shadow: 0px 64px 64px -48px #1f2f461f;
   background: #ffffff;
