@@ -164,7 +164,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
           {title}
         </div>
         {granularities && (
-          <div className={styles.periodSelect}>
+          <div className={styles.granularitySelect}>
             <span style={{ color: currentTheme?.color }}>Granularity: </span>
             {granularities?.map((o, index) => {
               return (

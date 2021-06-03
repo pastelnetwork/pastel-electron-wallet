@@ -506,10 +506,19 @@ export const whereTransactionIDMatchingQuery =
 export const orderByIDQuery = ' ORDER BY id DESC LIMIT 1'
 
 export const averageFilterByDailyPeriodQuery = `SELECT strftime('%Y-%m-%d', datetime(create_timestamp / 1000, 'unixepoch')), 
-  AVG(size) FROM blockinfo GROUP BY strftime('%Y-%m-%d', datetime(create_timestamp / 1000, 'unixepoch'))`
+  AVG(size) FROM blockinfo`
 
 export const averageFilterByMonthlyPeriodQuery = `SELECT strftime('%Y-%m', datetime(create_timestamp / 1000, 'unixepoch')), 
-  AVG(size) FROM blockinfo GROUP BY strftime('%Y-%m', datetime(create_timestamp / 1000, 'unixepoch'))`
+  AVG(size) FROM blockinfo`
 
 export const averageFilterByYearlyPeriodQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
-  AVG(size) FROM blockinfo GROUP BY strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch'))`
+  AVG(size) FROM blockinfo`
+
+export const groupbyDaily =
+  "GROUP BY strftime('%Y-%m-%d', datetime(create_timestamp / 1000, 'unixepoch'))"
+
+export const groupByMonthly =
+  "GROUP BY strftime('%Y-%m', datetime(create_timestamp / 1000, 'unixepoch'))"
+
+export const groupByYearly =
+  "GROUP BY strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch'))"

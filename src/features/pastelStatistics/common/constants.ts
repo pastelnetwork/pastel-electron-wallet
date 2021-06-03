@@ -63,10 +63,10 @@ export const themes = [
 
 export const periods: TPeriod[][] = [
   ['2h', '2d', '4d', 'all'],
-  ['30d', '60d', '180d', '1y', 'all'],
+  ['30d', '180d', '1y', 'all'],
 ]
 
-export const granularities: TGranularity[][] = [['1d', '30d', '1y', 'all']]
+export const granularities: TGranularity[][] = [['1d', '30d', '1y']]
 
 export const csvHeaders = [
   { label: 'Value', key: 'value' },

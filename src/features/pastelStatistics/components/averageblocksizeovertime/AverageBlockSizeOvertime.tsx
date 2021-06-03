@@ -51,6 +51,7 @@ const AverageBlockSizeOvertime = (
         pasteldb,
         pastelTableNames.blockinfo,
         granularity,
+        period,
       )
       if (result.length) {
         const transforms = transformBlockSizeInfo(result[0].values)
@@ -69,7 +70,7 @@ const AverageBlockSizeOvertime = (
         clearInterval(ticker)
       }
     }
-  }, [period])
+  }, [granularity, period])
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)

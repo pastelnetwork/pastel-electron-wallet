@@ -51,6 +51,9 @@ import {
   averageFilterByDailyPeriodQuery,
   averageFilterByMonthlyPeriodQuery,
   averageFilterByYearlyPeriodQuery,
+  groupbyDaily,
+  groupByMonthly,
+  groupByYearly,
 } from './constants'
 import {
   TBlockChainInfo,
@@ -444,6 +447,7 @@ export function getDatasFromDB(
 export function getFilteredDataFromDBByPeriod(
   pastelDB: Database,
   tableName: string,
+  granularity: string,
   period: string,
 ): QueryExecResult[] {
   if (tableNames[tableName] !== true) {
@@ -452,16 +456,32 @@ export function getFilteredDataFromDBByPeriod(
     )
   }
 
+  let duration = 0
   let sqlText = ''
-  switch (period) {
+
+  let whereSqlText = ' '
+  if (period !== 'all') {
+    if (period === '30d') {
+      duration = 30 * 24
+    } else if (period === '180d') {
+      duration = 180 * 24
+    } else if (period === '1y') {
+      duration = 360 * 24
+    }
+    const time_stamp = Date.now() - duration * 60 * 60 * 1000
+    whereSqlText = ` where create_timestamp > ${time_stamp} `
+  }
+
+  switch (granularity) {
     case '1d':
-      sqlText = averageFilterByDailyPeriodQuery
+      sqlText = averageFilterByDailyPeriodQuery + whereSqlText + groupbyDaily
       break
     case '30d':
-      sqlText = averageFilterByMonthlyPeriodQuery
+      sqlText =
+        averageFilterByMonthlyPeriodQuery + whereSqlText + groupByMonthly
       break
     case '1y':
-      sqlText = averageFilterByYearlyPeriodQuery
+      sqlText = averageFilterByYearlyPeriodQuery + whereSqlText + groupByYearly
       break
     case 'all':
       sqlText = selectAllQuery + tableName
