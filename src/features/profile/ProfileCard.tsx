@@ -11,6 +11,7 @@ import svg_facebook from '../../common/assets/icons/facebook.svg'
 import svg_twitter from '../../common/assets/icons/twitter.svg'
 
 export type ProfileCardProps = {
+  isMyProfile: boolean
   username: string
   walletId: string
   reputation: number
@@ -24,6 +25,7 @@ export type ProfileCardProps = {
 }
 
 const ProfileCard = ({
+  isMyProfile,
   username,
   walletId,
   reputation,
@@ -51,45 +53,47 @@ const ProfileCard = ({
           </div>
         </div>
       </div>
-      <div className='flex flex-col px-5'>
-        <div className='text-xs text-gray-71 pt-2'>
-          <div className='flex items-center'>
-            <StarRate />
-            <div className='pl-1 text-gray-71'>{reputation} reputation</div>
+      {isMyProfile && (
+        <div className='flex flex-col px-5'>
+          <div className='text-xs text-gray-71 pt-2'>
+            <div className='flex items-center'>
+              <StarRate />
+              <div className='pl-1 text-gray-71'>{reputation} reputation</div>
+            </div>
+          </div>
+          <div className='font-bold text-2xl py-2'>{name}</div>
+          <div className='text-sm text-gray-71 py-1'>{description}</div>
+          <div className='text-sm text-gray-4a flex'>
+            <img
+              src={svg_location}
+              className='cursor-pointer pr-14px filter hover:contrast-200'
+            />
+            {address}
+          </div>
+          <div className='py-4 flex'>
+            <img
+              src={svg_facebook}
+              className='cursor-pointer mr-3 filter hover:contrast-200'
+            />
+            <img
+              src={svg_twitter}
+              className='cursor-pointer filter hover:contrast-200'
+            />
+          </div>
+          <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-4 h-10 bg-blue-3f text-white hover:bg-blue-500'>
+            <img src={svg_plus} className='mr-9px' />
+            Follow
+          </div>
+          <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-2 h-10 text-blue-3f border-blue-3f hover:border-blue-600'>
+            <img src={svg_envelope} className='mr-9px' />
+            Message
+          </div>
+          <div className='cursor-pointer text-xs text-blue-3f pt-2 flex items-center justify-center filter hover:contrast-200'>
+            <img src={svg_flag} className='mr-2 mt-1' />
+            report
           </div>
         </div>
-        <div className='font-bold text-2xl py-2'>{name}</div>
-        <div className='text-sm text-gray-71 py-1'>{description}</div>
-        <div className='text-sm text-gray-4a flex'>
-          <img
-            src={svg_location}
-            className='cursor-pointer pr-14px filter hover:contrast-200'
-          />
-          {address}
-        </div>
-        <div className='py-4 flex'>
-          <img
-            src={svg_facebook}
-            className='cursor-pointer mr-3 filter hover:contrast-200'
-          />
-          <img
-            src={svg_twitter}
-            className='cursor-pointer filter hover:contrast-200'
-          />
-        </div>
-        <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-4 h-10 bg-blue-3f text-white hover:bg-blue-500'>
-          <img src={svg_plus} className='mr-9px' />
-          Follow
-        </div>
-        <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-2 h-10 text-blue-3f border-blue-3f hover:border-blue-600'>
-          <img src={svg_envelope} className='mr-9px' />
-          Message
-        </div>
-        <div className='cursor-pointer text-xs text-blue-3f pt-2 flex items-center justify-center filter hover:contrast-200'>
-          <img src={svg_flag} className='mr-2 mt-1' />
-          report
-        </div>
-      </div>
+      )}
     </div>
   )
 }
