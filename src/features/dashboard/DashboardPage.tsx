@@ -12,13 +12,13 @@ import image from '../../common/assets/images/nft-card-placeholder.png'
 import { formatNumber } from '../../common/utils/format'
 
 const transactions: { type: 'in' | 'out'; amount: string }[] = [
-  { type: 'in', amount: '320,000 PSL' },
-  { type: 'out', amount: '123,000 PSL' },
-  { type: 'in', amount: '320,000 PSL' },
-  { type: 'out', amount: '123,000 PSL' },
-  { type: 'in', amount: '320,000 PSL' },
-  { type: 'out', amount: '123,000 PSL' },
-  { type: 'in', amount: '320,000 PSL' },
+  { type: 'in', amount: '320,000 PSTL' },
+  { type: 'out', amount: '123,000 PSTL' },
+  { type: 'in', amount: '320,000 PSTL' },
+  { type: 'out', amount: '123,000 PSTL' },
+  { type: 'in', amount: '320,000 PSTL' },
+  { type: 'out', amount: '123,000 PSTL' },
+  { type: 'in', amount: '320,000 PSTL' },
 ]
 
 const portfolioItemProps: PortfolioItemProps = {
@@ -53,7 +53,7 @@ let notifications = [
 notifications = [...notifications, ...notifications, ...notifications]
 
 const walletBalance = 32000
-const currencyName = 'PSL'
+const currencyName = 'PSTL'
 
 export default function DashboardPage(): JSX.Element {
   return (
