@@ -38,12 +38,3 @@ export type TThemeInitOption = {
   minY: number
   maxY: number
 }
-
-export type TThemeInitOption = {
-  theme?: TThemeColor | null
-  dataX?: string[]
-  dataY?: number[]
-  chartName: string
-  minY: number
-  maxY: number
-}
