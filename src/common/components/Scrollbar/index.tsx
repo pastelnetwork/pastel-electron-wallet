@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react'
 import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
 import 'simplebar/src/simplebar.css'
-import './styles.css'
 
 export interface ScrollBarProps {
   children?: ReactNode
