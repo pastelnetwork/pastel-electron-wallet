@@ -23,7 +23,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '1.700,000K',
     totalSell: '1.500K',
     images: stripMockImages,
-    currencyName: 'PSTL',
+    currencyName: 'PSL',
   },
   {
     id: uuidv4(),
@@ -36,7 +36,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '800,000K',
     totalSell: '1.500.200K',
     images: stripMockImages,
-    currencyName: 'PSTL',
+    currencyName: 'PSL',
   },
   {
     id: uuidv4(),
@@ -49,7 +49,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '1.300K',
     totalSell: '1.110.230K',
     images: stripMockImages,
-    currencyName: 'PSTL',
+    currencyName: 'PSL',
   },
   {
     id: uuidv4(),
@@ -62,7 +62,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '6.240K',
     totalSell: '2.109.230K',
     images: stripMockImages,
-    currencyName: 'PSTL',
+    currencyName: 'PSL',
   },
 ]
 
