@@ -6,17 +6,27 @@ import * as htmlToImage from 'html-to-image'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { csvHeaders, themes } from '../../common/constants'
-import { LineChartProps, TThemeColor } from '../../common/types'
+import {
+  TLineChartProps,
+  TThemeColor,
+  TThemeInitOption,
+} from '../../common/types'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 
 import styles from './LineChart.module.css'
+import {
+  getThemeInitOption,
+  getThemeUpdateOption,
+} from '../../utils/ChartOptions'
 
-export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
+export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   const {
+    chartName,
     dataX,
     dataY,
     title,
     info,
+    offset,
     periods,
     handlePeriodFilterChange,
     handleBgColorChange,
@@ -40,8 +50,8 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
     if (dataY?.length) {
       const min = Math.min(...dataY)
       const max = Math.max(...dataY)
-      setMinY(Math.round(min) - 1000)
-      setMaxY(Math.floor(max) + 1000)
+      setMinY(Math.round(min) - offset)
+      setMaxY(Math.floor(max) + offset)
       if (dataX) {
         const data: Data = []
         dataY.map((o, index) => {
@@ -55,62 +65,15 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
     }
   }, [dataX, dataY])
 
-  const options = {
-    grid: {
-      top: 8,
-      right: 8,
-      bottom: 40,
-      left: 70,
-      show: false,
-    },
-    visualMap: {
-      show: false,
-      type: 'continuous',
-      seriesIndex: 0,
-      min: minY,
-      max: maxY,
-    },
-    tooltip: {
-      trigger: 'axis',
-    },
-    xAxis: {
-      type: 'category',
-      data: dataX,
-    },
-    yAxis: {
-      type: 'value',
-      min: minY,
-      max: maxY,
-      splitLine: {
-        lineStyle: {
-          color: currentTheme?.splitLineColor,
-        },
-      },
-      axisLine: {
-        show: true,
-      },
-      axisLabel: {
-        formatter: function (value: string) {
-          return Number.parseFloat(value).toExponential(2)
-        },
-      },
-    },
-    series: {
-      type: 'line',
-      showSymbol: false,
-      data: dataY,
-      lineStyle: {
-        width: 3,
-        shadowColor: 'rgba(0,0,0,0.5)',
-        shadowBlur: 10,
-        shadowOffsetY: 12,
-      },
-    },
-    stateAnimation: {
-      duration: 300,
-      easing: 'cubicOut',
-    },
+  const params: TThemeInitOption = {
+    theme: currentTheme,
+    dataX,
+    dataY,
+    chartName: chartName,
+    minY,
+    maxY,
   }
+  const options = getThemeInitOption(params)
 
   const downloadPNG = () => {
     if (eChartRef?.ele) {
@@ -120,7 +83,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           if (blob) {
             saveAs(
               blob,
-              makeDownloadFileName(info.currencyName, title ?? '') + '.png',
+              makeDownloadFileName(info.currencyName, chartName) + '.png',
             )
           }
         })
@@ -134,36 +97,16 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
     setCurrentTheme(theme)
     setSelectedThemeButton(index)
     handleBgColorChange(theme.backgroundColor)
-    const option = {
-      backgroundColor: theme.backgroundColor,
-      textStyle: {
-        color: theme.color,
-      },
-      yAxis: {
-        splitLine: {
-          lineStyle: {
-            color: theme.splitLineColor,
-          },
-        },
-        axisLine: {
-          show: true,
-        },
-      },
-      series: [
-        {
-          type: 'line',
-          showSymbol: false,
-          data: dataY,
-          smooth: theme.smooth,
-          lineStyle: {
-            width: 3,
-            shadowColor: 'rgba(0,0,0,0.5)',
-            shadowBlur: 10,
-            shadowOffsetY: 8,
-          },
-        },
-      ],
+
+    const params: TThemeInitOption = {
+      theme: theme,
+      dataX,
+      dataY,
+      chartName: chartName,
+      minY,
+      maxY,
     }
+    const option = getThemeUpdateOption(params)
     eChartInstance?.setOption(option)
   }
 
@@ -249,7 +192,7 @@ export const EChartsLineChart = (props: LineChartProps): JSX.Element => {
           <CSVLink
             data={csvData}
             filename={
-              makeDownloadFileName(info.currencyName, title ?? '') + '.csv'
+              makeDownloadFileName(info.currencyName, chartName) + '.csv'
             }
             headers={csvHeaders}
             separator={';'}

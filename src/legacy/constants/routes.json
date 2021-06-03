@@ -12,6 +12,7 @@
   "EXPERT_CONSOLE": "/expert_console",
   "STATISTICS": "/statistics",
   "PRICEOVERTIME": "/statistics/priceovertime",
+  "HASHRATEOVERTIME": "/statistics/hashrateovertime",
   "DIFFICULTYOVERTIME": "/statistics/difficultyovertime",
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
