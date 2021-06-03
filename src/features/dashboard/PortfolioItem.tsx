@@ -1,10 +1,11 @@
 import React from 'react'
 
-export type PortfolioItemProps = {
+export type TPortfolioItemProps = {
   image: string
   title: string
   author: string
   price: number
+  currencyName: string
 }
 
 export default function PortfolioItem({
@@ -12,7 +13,8 @@ export default function PortfolioItem({
   title,
   author,
   price,
-}: PortfolioItemProps): JSX.Element {
+  currencyName,
+}: TPortfolioItemProps): JSX.Element {
   return (
     <div className='rounded-lg flex items-center border border-gray-e7 p-1.5 mb-3 whitespace-nowrap'>
       <div className='w-9 h-9 flex-shrink-0 object-cover'>
@@ -29,7 +31,9 @@ export default function PortfolioItem({
         </div>
         <div className='text-10 md:flex 1200px:block'>
           <div className='text-gray-a0 font-medium mr-1'>Bid</div>
-          <div className='text-gray-33 font-extrabold'>{price} PSTL</div>
+          <div className='text-gray-33 font-extrabold'>
+            {price} {currencyName}
+          </div>
         </div>
       </div>
     </div>

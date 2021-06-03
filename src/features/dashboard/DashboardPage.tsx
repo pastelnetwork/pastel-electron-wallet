@@ -1,8 +1,8 @@
 import React from 'react'
 import Dots from '../../common/components/Icons/Dots'
-import TransactionItem from './TransactionItem'
+import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
-import PortfolioItem, { PortfolioItemProps } from './PortfolioItem'
+import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
 import NFTCard, { INFTCompactCardProps } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
@@ -11,21 +11,27 @@ import smallImage from '../../common/assets/images/mock/small-image.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import { formatNumber } from '../../common/utils/format'
 
-const transactions: { type: 'in' | 'out'; amount: string }[] = [
-  { type: 'in', amount: '320,000 PSTL' },
-  { type: 'out', amount: '123,000 PSTL' },
-  { type: 'in', amount: '320,000 PSTL' },
-  { type: 'out', amount: '123,000 PSTL' },
-  { type: 'in', amount: '320,000 PSTL' },
-  { type: 'out', amount: '123,000 PSTL' },
-  { type: 'in', amount: '320,000 PSTL' },
+const date = dayjs('2021-04-04')
+
+const walletBalance = 32000
+const currencyName = 'PSTL'
+
+const transactions: TTransactionItemProps[] = [
+  { type: 'in', amount: 320000, date, currencyName },
+  { type: 'out', amount: 123000, date, currencyName },
+  { type: 'in', amount: 320000, date, currencyName },
+  { type: 'out', amount: 123000, date, currencyName },
+  { type: 'in', amount: 320000, date, currencyName },
+  { type: 'out', amount: 123000, date, currencyName },
+  { type: 'in', amount: 320000, date, currencyName },
 ]
 
-const portfolioItemProps: PortfolioItemProps = {
+const portfolioItemProps: TPortfolioItemProps = {
   image: smallImage,
   title: 'Comic Perspective',
   author: '@zndrson',
   price: 5000,
+  currencyName,
 }
 
 const NFTCardProps: INFTCompactCardProps = {
@@ -35,7 +41,6 @@ const NFTCardProps: INFTCompactCardProps = {
   liked: false,
 }
 
-const date = dayjs()
 let notifications = [
   {
     message: '1 new listing',
@@ -51,9 +56,6 @@ let notifications = [
   },
 ]
 notifications = [...notifications, ...notifications, ...notifications]
-
-const walletBalance = 32000
-const currencyName = 'PSTL'
 
 export default function DashboardPage(): JSX.Element {
   return (
