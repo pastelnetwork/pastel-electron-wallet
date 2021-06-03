@@ -2,7 +2,7 @@ import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import React from 'react'
 
-type LinkSectionProps = {
+type TLinkSectionProps = {
   to: string
   children: React.ReactNode
   absolute?: boolean
@@ -14,7 +14,7 @@ export default function LinkSection({
   children,
   absolute,
   gradient,
-}: LinkSectionProps): JSX.Element {
+}: TLinkSectionProps): JSX.Element {
   return (
     <div
       className={cn('pt-22px pb-6 text-center rounded-b-md leading-none', {

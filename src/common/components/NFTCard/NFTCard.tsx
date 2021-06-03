@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import cn from 'classnames'
 
-export interface NFTCompactCardProps {
+export interface INFTCompactCardProps {
   imageSrc: string
   title: string
   likes: number
@@ -10,7 +10,7 @@ export interface NFTCompactCardProps {
   className?: string
 }
 
-export interface NFTCardProps extends NFTCompactCardProps {
+export interface INFTCardProps extends INFTCompactCardProps {
   author: string
   avatarSrc: string
   price: number | string
@@ -25,14 +25,15 @@ const NFTCard = ({
   className,
   liked,
   ...props
-}: NFTCompactCardProps | NFTCardProps): JSX.Element => {
-  const fullCardProps = 'author' in props && (props as NFTCardProps)
+}: INFTCompactCardProps | INFTCardProps): JSX.Element => {
+  const fullCardProps = 'author' in props && (props as INFTCardProps)
 
   const wrapperPaddingClass = fullCardProps ? 'pt-4 pb-27px' : 'pb-18px'
   const titleClass = fullCardProps
     ? 'font-extrabold text-h4 leading-6'
     : 'font-medium'
   const imageHeightClass = fullCardProps ? 'h-230px' : 'h-220px'
+  const footerClass = fullCardProps ? 'pt-2' : 'pt-2.5 pb-2px'
 
   return (
     <div
@@ -61,7 +62,7 @@ const NFTCard = ({
         <img src={imageSrc} className='object-cover h-full w-full' />
       </div>
       {/* Footer */}
-      <div className='px-18px pt-2'>
+      <div className={cn('px-18px', footerClass)}>
         <div className='flex justify-between'>
           <div className={cn('text-gray-4a', titleClass)}>{title}</div>
           <span className='flex-center'>

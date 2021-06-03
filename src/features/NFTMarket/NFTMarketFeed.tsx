@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import NFTCard, { NFTCardProps } from '../../common/components/NFTCard'
+import NFTCard, { INFTCardProps } from '../../common/components/NFTCard'
 
 import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
@@ -9,7 +9,7 @@ import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
-const mockCardProps: NFTCardProps = {
+const mockCardProps: INFTCardProps = {
   author: 'zndrson',
   avatarSrc: avatar,
   imageSrc: image,

@@ -3,12 +3,13 @@ import Dots from '../../common/components/Icons/Dots'
 import TransactionItem from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { PortfolioItemProps } from './PortfolioItem'
-import NFTCard, { NFTCompactCardProps } from '../../common/components/NFTCard'
+import NFTCard, { INFTCompactCardProps } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
 import dayjs from 'dayjs'
 import smallImage from '../../common/assets/images/mock/small-image.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
+import { formatNumber } from '../../common/utils/format'
 
 const transactions: { type: 'in' | 'out'; amount: string }[] = [
   { type: 'in', amount: '320,000 PSL' },
@@ -27,7 +28,7 @@ const portfolioItemProps: PortfolioItemProps = {
   price: 5000,
 }
 
-const NFTCardProps: NFTCompactCardProps = {
+const NFTCardProps: INFTCompactCardProps = {
   imageSrc: image,
   likes: 23,
   title: 'Cosmic Perspective',
@@ -51,6 +52,9 @@ let notifications = [
 ]
 notifications = [...notifications, ...notifications, ...notifications]
 
+const walletBalance = 32000
+const currencyName = 'PSL'
+
 export default function DashboardPage(): JSX.Element {
   return (
     <div className='page-container py-5 w-full max-w-screen-xl mx-auto'>
@@ -59,7 +63,9 @@ export default function DashboardPage(): JSX.Element {
         <div className='paper pt-6 pb-5 w-335px flex flex-col relative'>
           <div className='flex items-center justify-between h-6 mb-3 flex-shrink-0 px-8'>
             <div className='font-extrabold text-gray-2d'>Wallet balance</div>
-            <div className='font-black text-gray-1d text-lg'>32,000 PSTL</div>
+            <div className='font-black text-gray-1d text-lg'>
+              {formatNumber(walletBalance)} {currencyName}
+            </div>
           </div>
           <div className='flex-grow pl-8 pr-3.5 mr-18px pb-5 h-0 overflow-auto'>
             {transactions.map((transaction, i) => (
