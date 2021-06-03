@@ -16,6 +16,7 @@ module.exports = {
     },
     fontFamily: {
       body: 'Avenir, Roboto, Arial, Helvetica, Helvetica Neue, serif',
+      display: 'Poppins',
     },
     extend: {
       spacing: {
@@ -47,8 +48,10 @@ module.exports = {
         '70px': '4.375rem',
         '82px': '5.125rem',
         '88px': '5.5rem',
+        '101px': '6.313rem',
         '111px': '6.938rem',
         '120px': '7.5rem',
+        '142px': '8.875rem',
         '220px': '13.75rem',
         '230px': '14.375rem',
         '244px': '15.25rem',

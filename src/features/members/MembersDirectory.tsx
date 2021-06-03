@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 import MemberStrip, { TMemberStripProps } from './MemberStrip'
 import Select, { Option } from '../../common/components/Select/Select'
@@ -12,6 +13,7 @@ import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
 const mockMemberStrips: TMemberStripProps[] = [
   {
+    id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
       followers: 161,
@@ -21,9 +23,10 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '1.700,000K',
     totalSell: '1.500K',
     images: stripMockImages,
-    currencyName: 'PSL',
+    currencyName: 'PSTL',
   },
   {
+    id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
       followers: 8.082,
@@ -33,9 +36,10 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '800,000K',
     totalSell: '1.500.200K',
     images: stripMockImages,
-    currencyName: 'PSL',
+    currencyName: 'PSTL',
   },
   {
+    id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
       followers: 1.024,
@@ -45,9 +49,10 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '1.300K',
     totalSell: '1.110.230K',
     images: stripMockImages,
-    currencyName: 'PSL',
+    currencyName: 'PSTL',
   },
   {
+    id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
       followers: 1.024,
@@ -57,7 +62,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     heighestSold: '6.240K',
     totalSell: '2.109.230K',
     images: stripMockImages,
-    currencyName: 'PSL',
+    currencyName: 'PSTL',
   },
 ]
 
@@ -117,7 +122,7 @@ const MembersDirectory: React.FC = () => {
         ]}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <div className='wrapper'>
+      <div className='wrapper content with-page-header bg-background-main'>
         <div className='bg-white p-5 rounded-lg'>
           <div className='flex justify-between pb-25px'>
             <div className='w-244px'>
@@ -140,7 +145,7 @@ const MembersDirectory: React.FC = () => {
           </div>
           <div className='space-y-5'>
             {mockMemberStrips.map(item => (
-              <MemberStrip {...item} />
+              <MemberStrip {...item} key={item.id} />
             ))}
           </div>
         </div>

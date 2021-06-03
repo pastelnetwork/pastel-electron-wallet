@@ -47,20 +47,29 @@ const childRoutes = (
 
 interface RoutesProps {
   setUser: React.Dispatch<React.SetStateAction<boolean>>
+  user: boolean
 }
 
-const Routes: React.FC<RoutesProps> = ({ setUser }) => {
+const Routes: React.FC<RoutesProps> = ({ setUser, user }) => {
   const location = useLocation()
   const history = useHistory()
 
-  React.useEffect(() => history.push(ROUTES.WELCOME_PAGE), [])
+  React.useEffect(() => {
+    if (!user) {
+      history.push(ROUTES.WELCOME_PAGE)
+    } else {
+      history.push(ROUTES.MARKET) // should maybe be redirected to `dashboard`, leaving market for now
+    }
+  }, [user])
 
   return (
     <Styles.Container>
       <TransitionGroup>
         <CSSTransition key={location.key} classNames='fade' timeout={300}>
           <Switch location={location}>
-            {childRoutes(pageRoutes, setUser)}
+            <div className='routes-wrapper'>
+              {childRoutes(pageRoutes, setUser)}
+            </div>
           </Switch>
         </CSSTransition>
       </TransitionGroup>

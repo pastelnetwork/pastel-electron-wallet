@@ -1,10 +1,11 @@
 import React from 'react'
 
-import mockAvatar from '../../../common/assets/images/avatar2-placeholder.png'
-import mockMemberImage from '../../../common/assets/images/member-image-placeholder.png'
-import MemberStripComponent, { TMemberStripProps } from '../MemberStrip'
+import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
+import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
+import MemberStripComponent, { TMemberStripProps } from './MemberStrip'
 
 const mockMemberStrips: TMemberStripProps = {
+  id: 'mock-strip',
   memberCard: {
     avatar: mockAvatar,
     followers: 161,
@@ -14,10 +15,10 @@ const mockMemberStrips: TMemberStripProps = {
   heighestSold: '1.700,000k',
   totalSell: '1.500K',
   images: [mockMemberImage, mockMemberImage, mockMemberImage, mockMemberImage],
-  currencyName: 'PSL',
+  currencyName: 'PSTL',
 }
 export default {
-  title: 'Members/MemberStrip',
+  title: 'MemberStrip',
 }
 
 export const MemberStrip: React.FC = () => (

@@ -41,7 +41,7 @@ const NFTCard = ({
           <div className='flex-center'>
             <span className='text-h5 leading-none text-gray-71'>Listed</span>
             <span className='text-h4 leading-none text-gradient pl-1 font-semibold'>
-              {price} PSL
+              {price} PSTL
             </span>
           </div>
 
