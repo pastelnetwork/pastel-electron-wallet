@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import * as Styles from './Checkbox.styles'
 
-type CheckboxProps = {
+type TCheckboxProps = {
   isChecked: boolean
   clickHandler: (
     event: React.MouseEvent<HTMLLabelElement, MouseEvent>,
@@ -10,7 +10,7 @@ type CheckboxProps = {
   ) => void
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
+const Checkbox: React.FC<TCheckboxProps> = ({
   children,
   isChecked,
   clickHandler,

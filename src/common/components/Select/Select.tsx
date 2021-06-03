@@ -5,25 +5,25 @@ import cn from 'classnames'
 import { parseFormattedNumber } from '../../utils/format'
 import { useSelectOptions } from './select.utils'
 
-export type Option = {
+export type TOption = {
   label: string
   value: string
 }
 
-export type BaseProps = {
+export type TBaseProps = {
   placeholder?: string
   className?: string
   label?: string
   autocomplete?: boolean
 }
 
-export type OptionsProps = BaseProps & {
-  options: Option[]
-  onChange: (option: Option | null) => void
-  selected?: Option | null
+export type TOptionsProps = TBaseProps & {
+  options: TOption[]
+  onChange: (option: TOption | null) => void
+  selected?: TOption | null
 }
 
-export type RangeProps = BaseProps & {
+export type TRangeProps = TBaseProps & {
   min: number
   max: number
   step: number
@@ -31,9 +31,9 @@ export type RangeProps = BaseProps & {
   value: number | null
 }
 
-export type SelectProps = OptionsProps | RangeProps
+export type TSelectProps = TOptionsProps | TRangeProps
 
-export default function Select(props: SelectProps): JSX.Element {
+export default function Select(props: TSelectProps): JSX.Element {
   const { placeholder, className, label, autocomplete = false } = props
 
   const {

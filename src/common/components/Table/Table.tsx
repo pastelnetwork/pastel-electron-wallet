@@ -7,7 +7,7 @@ import Select from '../../components/Select/Select'
 import cn from 'classnames'
 import Tooltip from '../Tooltip'
 
-export type ColumnDefinitionType<T, K extends keyof T> = {
+export type TColumnDefinitionType<T, K extends keyof T> = {
   key: K
   header: string
   classnames?: string

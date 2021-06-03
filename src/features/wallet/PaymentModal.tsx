@@ -12,17 +12,17 @@ import add2Icon from '../../common/assets/icons/ico-add-2.svg'
 import checkIcon from '../../common/assets/icons/ico-check.svg'
 import Select from '../../common/components/Select/Select'
 
-type IDataType = {
+type TDataType = {
   hash: string
 }
 
-export type PaymentModalProps = {
+export type TPaymentModalProps = {
   isOpen: boolean
   handleClose: () => void
-  paymentSources: Array<IDataType>
+  paymentSources: Array<TDataType>
 }
 
-const PaymentModal: React.FC<PaymentModalProps> = ({
+const PaymentModal: React.FC<TPaymentModalProps> = ({
   isOpen,
   handleClose,
   paymentSources,
@@ -65,7 +65,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </div>
         <table className='w-full'>
           <tbody>
-            {paymentSources.map((data: IDataType, index: number) => (
+            {paymentSources.map((data: TDataType, index: number) => (
               <tr
                 key={index}
                 className='h-67px border-b border-line-DEFAULT mr-4 justify-between'

@@ -15,7 +15,7 @@ import user2Icon from '../../common/assets/icons/ico-user2.svg'
 import radioIcon from '../../common/assets/icons/ico-radio.svg'
 import radioCheckedIcon from '../../common/assets/icons/ico-radio-checked.svg'
 
-type IDataType = {
+type TDataType = {
   date: string
   address: string
   type: string
@@ -26,13 +26,13 @@ type IDataType = {
   amount: string
 }
 
-export type TransactionHistoryModalProps = {
+export type TTransactionHistoryModalProps = {
   isOpen: boolean
   handleClose: () => void
-  transactionHistory: Array<IDataType>
+  transactionHistory: Array<TDataType>
 }
 
-const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
+const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
   isOpen,
   handleClose,
   transactionHistory,
@@ -149,7 +149,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
                 </div>
               </th>
             </tr>
-            {transactionHistory.map((data: IDataType, index: number) => (
+            {transactionHistory.map((data: TDataType, index: number) => (
               <tr key={index} className='h-67px'>
                 <td>{data.date}</td>
                 <td className=''>

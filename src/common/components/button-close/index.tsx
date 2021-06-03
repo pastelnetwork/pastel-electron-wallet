@@ -1,12 +1,12 @@
 import React from 'react'
 import cn from 'classnames'
 
-export type ButtonCloseProps = {
+export type TButtonCloseProps = {
   onClick?: React.MouseEventHandler
   className?: string
 }
 
-const ButtonClose: React.FC<ButtonCloseProps> = ({ onClick, className }) => {
+const ButtonClose: React.FC<TButtonCloseProps> = ({ onClick, className }) => {
   const classes = cn(
     {
       'border flex items-center justify-center border-button-text w-7 h-7 rounded-lg focus:outline-none': true,

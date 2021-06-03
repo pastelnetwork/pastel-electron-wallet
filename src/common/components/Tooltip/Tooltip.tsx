@@ -3,14 +3,14 @@ import ArrowToolTip from '../../assets/icons/ico-triangle.svg'
 import cn from 'classnames'
 import CSS from 'csstype'
 
-export type TooltipProps = {
+export type TTooltipProps = {
   type: 'left' | 'right' | 'top' | 'bottom'
   classnames?: string
   content: string
   width: number
 }
 
-const Tooltip: FunctionComponent<TooltipProps> = ({
+const Tooltip: FunctionComponent<TTooltipProps> = ({
   type,
   classnames,
   content,

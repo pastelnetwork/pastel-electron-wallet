@@ -1,14 +1,14 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Tooltip, { TooltipProps } from './Tooltip'
+import Tooltip, { TTooltipProps } from './Tooltip'
 
 export default {
   title: 'Tooltip',
   component: Tooltip,
 } as Meta
 
-const Template: Story<TooltipProps> = ({ type, ...args }: TooltipProps) => {
+const Template: Story<TTooltipProps> = ({ type, ...args }: TTooltipProps) => {
   return (
     <Tooltip {...args} type={type}>
       This is the tooltip component

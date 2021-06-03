@@ -11,12 +11,12 @@ import { ThemeProvider } from 'styled-components/macro'
 import { theme } from '../../common/theme'
 import Button from '../../common/components/Button/Button'
 import Table, {
-  ColumnDefinitionType,
+  TColumnDefinitionType,
 } from '../../common/components/Table/Table'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 
-type Transaction = {
+type TTransaction = {
   hash: string
   time: string
   viewing_key?: string
@@ -25,7 +25,7 @@ type Transaction = {
   qr_code?: string
 }
 
-const columns: ColumnDefinitionType<Transaction, keyof Transaction>[] = [
+const columns: TColumnDefinitionType<TTransaction, keyof TTransaction>[] = [
   {
     key: 'hash',
     header: 'Hash',
@@ -57,7 +57,7 @@ const columns: ColumnDefinitionType<Transaction, keyof Transaction>[] = [
   },
 ]
 
-const walletdatas: Transaction[] = [
+const walletdatas: TTransaction[] = [
   {
     hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
     time: '1d 1 h 25m ago',

@@ -5,10 +5,10 @@ import {
   parseFormattedNumber,
 } from '../../../common/utils/format'
 import {
-  Option,
-  OptionsProps,
-  RangeProps,
-  SelectProps,
+  TOption,
+  TOptionsProps,
+  TRangeProps,
+  TSelectProps,
 } from '../../../common/components/Select/Select'
 
 const noop = () => {
@@ -21,34 +21,34 @@ const inputEventTypesToIgnore: string[] = [
   Downshift.stateChangeTypes.controlledPropUpdatedSelectedItem,
 ]
 
-type Options = {
-  options: Option[]
-  selected: Option | null
-  onChange: (option: Option | null) => void
+type TOptions = {
+  options: TOption[]
+  selected: TOption | null
+  onChange: (option: TOption | null) => void
   onInputValueChange:
     | undefined
-    | ((value: string, options: ControllerStateAndHelpers<Option>) => void)
+    | ((value: string, options: ControllerStateAndHelpers<TOption>) => void)
   inputValueRef: RefObject<string>
 }
 
-export const useSelectOptions = (props: SelectProps): Options => {
+export const useSelectOptions = (props: TSelectProps): TOptions => {
   const inputValueRef = useRef('')
 
-  let selected: Options['selected']
-  let onChange: Options['onChange']
-  let onInputValueChange: Options['onInputValueChange']
+  let selected: TOptions['selected']
+  let onChange: TOptions['onChange']
+  let onInputValueChange: TOptions['onInputValueChange']
 
-  const optionsProps = props as OptionsProps
-  const rangeProps = props as RangeProps
+  const optionsProps = props as TOptionsProps
+  const rangeProps = props as TRangeProps
 
-  const options = useMemo<Options['options']>(() => {
+  const options = useMemo<TOptions['options']>(() => {
     if ('options' in props) {
       return props.options
     }
     {
       const { min, max, step } = props
 
-      const options: Options['options'] = []
+      const options: TOptions['options'] = []
       for (let i = min; i <= max; i += step) {
         const option = {
           label: formatNumber(i),
