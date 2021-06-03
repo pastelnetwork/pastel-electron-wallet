@@ -14,6 +14,8 @@ const cx_tab_active =
 
 const ProfileRelations = (): JSX.Element => {
   const [tab, setTab] = useState('Followers')
+  const relationCounts = { followers: 235, following: 162, mutual: 73 }
+
   return (
     <div className='w-full xl:w-2/5 flex flex-col flex-grow px-4 xl:pl-6 xl:pr-0'>
       <div className='flex'>
@@ -21,19 +23,19 @@ const ProfileRelations = (): JSX.Element => {
           className={tab == 'Followers' ? cx_tab_active : cx_tab}
           onClick={() => setTab('Followers')}
         >
-          Followers (235)
+          Followers ({relationCounts.followers})
         </div>
         <div
           className={tab == 'Following' ? cx_tab_active : cx_tab}
           onClick={() => setTab('Following')}
         >
-          Following (162)
+          Following ({relationCounts.following})
         </div>
         <div
           className={tab == 'Mutual' ? cx_tab_active : cx_tab}
           onClick={() => setTab('Mutual')}
         >
-          Mutual (73)
+          Mutual ({relationCounts.mutual})
         </div>
       </div>
       <Followers followers={followers} />
@@ -47,6 +49,7 @@ export type FollowersProps = {
 
 export type FollowerProps = {
   name: string
+  count: number
   avatar: string
   diamond?: boolean
 }
@@ -61,7 +64,12 @@ const Followers = ({ followers }: FollowersProps): JSX.Element => {
   )
 }
 
-const Follower = ({ name, avatar, diamond }: FollowerProps): JSX.Element => {
+const Follower = ({
+  name,
+  count,
+  avatar,
+  diamond,
+}: FollowerProps): JSX.Element => {
   return (
     <div className='flex items-center py-2 text-md'>
       <div className='rounded-full bg-pink-300 w-10 h-10 relative'>
@@ -71,7 +79,7 @@ const Follower = ({ name, avatar, diamond }: FollowerProps): JSX.Element => {
         )}
       </div>
       <div className='flex-grow font-bold pl-4 text-gray-23'> {name} </div>
-      <div className='text-gray-a0 text-sm'>161 followers</div>
+      <div className='text-gray-a0 text-sm'>{count} followers</div>
     </div>
   )
 }
@@ -85,17 +93,17 @@ const followers = [
   },
   {
     name: 'Aniya Harber',
-    count: 161,
+    count: 162,
     avatar: svg_oval_2,
   },
   {
     name: 'Reymundo',
-    count: 161,
+    count: 16,
     avatar: svg_oval_3,
   },
   {
     name: 'Edwardo Bea',
-    count: 161,
+    count: 163,
     avatar: svg_oval_4,
     diamond: true,
   },

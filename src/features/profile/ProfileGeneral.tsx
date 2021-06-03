@@ -50,7 +50,7 @@ const ProfileGeneral = ({
         <div className='flex pt-2'>
           <div className='w-190px text-sm text-gray-71'>Buyer reputation</div>
           <div className='flex flex-grow text-gray-4a flex-wrap'>
-            <StarRate />
+            <StarRate rate={reputation} />
             <div className='pl-6px text-gray-500'>{reputation} reputation</div>
           </div>
         </div>
