@@ -50,6 +50,7 @@ import {
   DifficultyOvertime,
   PriceOvertime,
   PastelStatistics,
+  HashrateOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
@@ -646,6 +647,11 @@ class RouteApp extends React.Component<any, any> {
               <Route
                 path={routes.PRICEOVERTIME}
                 render={() => <PriceOvertime info={info} />}
+              />
+
+              <Route
+                path={routes.HASHRATEOVERTIME}
+                render={() => <HashrateOvertime info={info} />}
               />
 
               <Route

@@ -6,7 +6,11 @@ import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
 import styles from '../../Common.module.css'
-import { periods } from '../../common/constants'
+import {
+  CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  CHART_DEFAULT_PERIOD,
+  periods,
+} from '../../common/constants'
 
 type TLineChartData = {
   dataX: string[]
@@ -20,12 +24,14 @@ type TPriceOvertimeProps = {
   }
 }
 
-const redrawCycle = 60000
+const redrawCycle = 6000
 
 const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   const { info } = props
-  const [currentBgColor, setCurrentBgColor] = useState('#100c2a')
-  const [period, setPeriod] = useState<TPeriod>('2d')
+  const [currentBgColor, setCurrentBgColor] = useState(
+    CHART_THEME_BACKGROUND_DEFAULT_COLOR,
+  )
+  const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,
@@ -49,8 +55,8 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
     setTicker(newTicker)
 
     return () => {
-      if (ticker) {
-        clearInterval(ticker)
+      if (newTicker) {
+        clearInterval(newTicker)
       }
     }
   }, [period])
@@ -73,11 +79,13 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsMultiLineChart
+              chartName='prices'
               dataX={transformLineChartData?.dataX}
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}
               title={`${info.currencyName} Prices`}
               info={info}
+              offset={0.0001}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
