@@ -16,7 +16,7 @@ import Table, {
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 
-interface Transaction {
+type Transaction = {
   hash: string
   time: string
   viewing_key?: string
