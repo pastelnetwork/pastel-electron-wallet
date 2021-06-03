@@ -1,5 +1,6 @@
 import React from 'react'
-import Downshift, {useCombobox, useMultipleSelection} from 'downshift'
+// import Downshift, { useCombobox, useMultipleSelection } from 'downshift'
+import Downshift from 'downshift'
 import caretDownIcon from '../../../common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
 
@@ -25,9 +26,6 @@ export default function Select({
   className,
   label,
 }: SelectProps): JSX.Element {
-
-  
-
   return (
     <Downshift
       selectedItem={selected}
@@ -41,7 +39,7 @@ export default function Select({
         isOpen,
         highlightedIndex,
         selectedItem,
-      } = useMultipleSelection()) => (
+      }) => (
         <button
           type='button'
           {...getToggleButtonProps()}
