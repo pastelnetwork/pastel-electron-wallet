@@ -30,7 +30,7 @@
 @layer components {
   /* Used to wrap main routes, should be used with `content` */
   .wrapper {
-    @apply px-4 md:px-60px xl:container pt-5;
+    @apply px-4 md:px-60px md:container pt-5;
   }
   .content {
     @apply overflow-y-auto;

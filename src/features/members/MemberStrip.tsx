@@ -43,7 +43,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
           {/* Images */}
           <div
             className='flex space-x-5 overflow-x-auto overflow-y-hidden scrollbar-bg-white'
-            style={{ height: 'calc(100% + 6px)' }}
+            style={{ height: 'calc(100% + 7px)' }}
           >
             {images.map((imgSrc, i) => (
               <div
