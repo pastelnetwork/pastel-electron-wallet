@@ -15,7 +15,7 @@ export type TColumnDefinitionType<T, K extends keyof T> = {
 
 type TableProps<T, K extends keyof T> = {
   data: Array<T>
-  columns: Array<ColumnDefinitionType<T, K>>
+  columns: Array<TColumnDefinitionType<T, K>>
   checkHandler: (param: number[]) => void
   clickedHandler?: (param: T) => void
 }
