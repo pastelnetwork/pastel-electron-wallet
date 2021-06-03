@@ -48,6 +48,9 @@ import {
   selectIDQuery,
   tableNames,
   whereTransactionIDMatchingQuery,
+  averageFilterByDailyPeriodQuery,
+  averageFilterByMonthlyPeriodQuery,
+  averageFilterByYearlyPeriodQuery,
 } from './constants'
 import {
   TBlockChainInfo,
@@ -434,6 +437,36 @@ export function getDatasFromDB(
   }
 
   const sqlText = selectAllQuery + tableName
+  const sqlResult = pastelDB.exec(sqlText)
+  return sqlResult
+}
+
+export function getFilteredDataFromDBByPeriod(
+  pastelDB: Database,
+  tableName: string,
+  period: string,
+): QueryExecResult[] {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      `pastelDB getFilteredDataFromDBByPeriod error: ${tableName} is invalid table name`,
+    )
+  }
+
+  let sqlText = ''
+  switch (period) {
+    case '1d':
+      sqlText = averageFilterByDailyPeriodQuery
+      break
+    case '30d':
+      sqlText = averageFilterByMonthlyPeriodQuery
+      break
+    case '1y':
+      sqlText = averageFilterByYearlyPeriodQuery
+      break
+    case 'all':
+      sqlText = selectAllQuery + tableName
+      break
+  }
   const sqlResult = pastelDB.exec(sqlText)
   return sqlResult
 }

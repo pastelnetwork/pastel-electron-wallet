@@ -11,6 +11,7 @@
   "CONNECTMOBILE": "/connectmobile",
   "EXPERT_CONSOLE": "/expert_console",
   "STATISTICS": "/statistics",
+  "AVERAGEBLOCKSIZEOVERTIME": "/statistics/averageblocksizeovertime",
   "PRICEOVERTIME": "/statistics/priceovertime",
   "HASHRATEOVERTIME": "/statistics/hashrateovertime",
   "MEMPOOLSIZEOVERTIME": "/statistics/mempoolsizeovertime",

@@ -4,6 +4,8 @@ import { TLineChartData, TMultiLineChartData } from '../../pastelDB/type'
 
 export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
 
+export type TGranularity = '1d' | '30d' | '1y' | 'all'
+
 export function getStartPoint(period: TPeriod): number {
   let duration = 1
   switch (period) {
@@ -164,6 +166,20 @@ export function transformMempoolInfo(
         dataX.push(new Date(createTime).toLocaleString())
       }
     }
+  }
+
+  return { dataX, dataY }
+}
+
+export function transformBlockSizeInfo(
+  blocksizes: SqlValue[][],
+): TLineChartData {
+  const dataX: string[] = []
+  const dataY: number[] = []
+
+  for (let i = 0; i < blocksizes.length; i++) {
+    dataY.push(Number(blocksizes[i][1]) / 1000)
+    dataX.push(String(blocksizes[i][0]))
   }
 
   return { dataX, dataY }

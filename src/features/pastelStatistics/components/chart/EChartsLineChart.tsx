@@ -30,12 +30,15 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     info,
     offset,
     periods,
+    granularities,
     handlePeriodFilterChange,
+    handleGranularityFilterChange,
     handleBgColorChange,
   } = props
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedGranularityButton, setSelectedGranularityButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
@@ -137,6 +140,13 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     return ''
   }
 
+  const getActiveGranularityButtonStyle = (index: number): string => {
+    if (selectedGranularityButton === index) {
+      return styles.activeButton
+    }
+    return ''
+  }
+
   const getActiveThemeButtonStyle = (index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
@@ -153,6 +163,30 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         >
           {title}
         </div>
+        {granularities && (
+          <div className={styles.periodSelect}>
+            <span style={{ color: currentTheme?.color }}>Granularity: </span>
+            {granularities?.map((o, index) => {
+              return (
+                <button
+                  className={`${getActiveGranularityButtonStyle(index)} ${
+                    styles.filterButton
+                  }`}
+                  onClick={() => {
+                    setSelectedGranularityButton(index)
+                    if (handleGranularityFilterChange) {
+                      handleGranularityFilterChange(o)
+                    }
+                  }}
+                  type='button'
+                  key={`button-filter-${o}`}
+                >
+                  {o}
+                </button>
+              )
+            })}
+          </div>
+        )}
         <div className={styles.periodSelect}>
           <span style={{ color: currentTheme?.color }}>period: </span>
           {periods.map((period, index) => (
