@@ -282,7 +282,8 @@ const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
 
   if (
     (currentRoute.endsWith('app.html') && routeName === (routes as any).HOME) ||
-    currentRoute === routeName
+    currentRoute === routeName ||
+    currentRoute.includes(routeName)
   ) {
     isActive = true
   }
@@ -713,6 +714,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-chart-bar'
           /> */}
+          <SidebarMenuItem
+            name='Statistics'
+            routeName={routes.STATISTICS}
+            currentRoute={location.pathname}
+            iconname='fa-chart-bar'
+          />
           <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}

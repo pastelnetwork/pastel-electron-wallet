@@ -1,8 +1,7 @@
 export const createStatisticinfo = `CREATE TABLE statisticinfo (
   id int NOT NULL,
-  hashrate VARCHAR(255),
-  miner_distribution VARCHAR(255),
-  difficulty VARCHAR(255),
+  solutions int,
+  difficulty float,
   create_timestamp int
 )`
 
@@ -110,23 +109,21 @@ export const createBlock = `CREATE TABLE blockinfo (
 
 export const createRawtransaction = `CREATE TABLE rawtransaction (
   id int NOT NULL,
-  bindingSig VARCHAR(255),
-  blockhash VARCHAR(255),
-  blocktime int,
-  confirmations int,
-  expiryheight int,
   hex VARCHAR(255),
-  locktime int,
-  overwintered boolean,
-  time int,
   txid VARCHAR(255),
-  vShieldedOutput text,
-  vShieldedSpend text,
-  valueBalance float,
+  overwintered boolean,
   version int,
   versiongroupid VARCHAR(255),
+  locktime int,
+  expiryheight int,
+  vin text,
+  vout text,
   vjoinsplit text,
-  create_timestamp int      
+  blockhash VARCHAR(255),
+  confirmations int,
+  time int,
+  blocktime int,
+  createTimestamp int
 )`
 
 export const createTransaction = `CREATE TABLE transaction_tbl (
@@ -263,8 +260,7 @@ export const insertPastelPriceInfoQuery = `INSERT INTO pslprice VALUES (
 
 export const insertStatisticinfoQuery = `INSERT INTO statisticinfo VALUES (
   $newId,
-  $hashrate,
-  '',
+  $solutions,
   $difficulty,
   $createTimestamp
 )`
@@ -373,22 +369,20 @@ export const insertBlockinfoQuery = `INSERT INTO blockinfo VALUES (
 
 export const insertRawtransactionQuery = `INSERT INTO rawtransaction VALUES (
   $newId,
-  $bindingSig,
-  $blockhash,
-  $blocktime,
-  $confirmations,
-  $expiryheight,
   $hex,
-  $locktime,
-  $overwintered,
-  $time,
   $txid,
-  $vShieldedOutput,
-  $vShieldedSpend,
-  $valueBalance,
+  $overwintered,
   $version,
   $versiongroupid,
+  $locktime,
+  $expiryheight,
+  $vin,
+  $vout,
   $vjoinsplit,
+  $blockhash,
+  $confirmations,
+  $time,
+  $blocktime,
   $createTimestamp
 )`
 
