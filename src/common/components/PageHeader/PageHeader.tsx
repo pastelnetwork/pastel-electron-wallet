@@ -31,12 +31,13 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
       <div className='wrapper py-30px'>
         <div className='flex justify-between'>
           <div className='flex items-center'>
-            <h1 className='pr-20 font-semibold'>{props.title}</h1>
+            <h1 className='pr-20 font-semibold text-gray-23'>{props.title}</h1>
             {props.routes.map(route => (
               <div
                 className={cn({
                   'mr-6 rounded-3xl bg-gray-2d px-3 py-1': route.isSelected,
                 })}
+                key={route.label}
               >
                 <a
                   className={cn({
@@ -58,6 +59,7 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
                   options={item.options}
                   selected={item.selected}
                   onChange={item.onOptionChange}
+                  key={item.placeholder}
                 />
               ))}
             </div>
