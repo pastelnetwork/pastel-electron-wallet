@@ -1,5 +1,6 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import avatar from '../../../common/assets/images/avatar-placeholder.png'
 import image from '../../../common/assets/images/nft-card-placeholder.png'
@@ -25,9 +26,11 @@ export default {
 
 const Template: Story<NFTCardProps> = props => {
   return (
-    <div className='grid grid-cols-4 gap-10'>
-      <NFTCardComponent {...props} />
-    </div>
+    <MemoryRouter>
+      <div className='grid grid-cols-4 gap-10'>
+        <NFTCardComponent {...props} />
+      </div>
+    </MemoryRouter>
   )
 }
 
