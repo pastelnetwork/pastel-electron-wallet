@@ -76,10 +76,12 @@ module.exports = {
         gray: {
           // text
           a0: '#A0AEC0',
+          a6: '#A6B0C2',
           71: '#718096',
           '4a': '#4A5568',
           '2d': '#2D3748',
           '1a': '#1A202C',
+          '8e': '#8e98a3',
           // --
           f8: '#F8F9FA',
           f7: '#F7F8F9',
@@ -103,6 +105,8 @@ module.exports = {
           hover: '#278DF6',
           background: '#F2F2F2',
           text: '#8E98A3',
+          hoverAlt: '#F0F7FE',
+          pressedAlt: '#E7F2FD',
         },
         navigation: {
           default: '#A6B0C2',

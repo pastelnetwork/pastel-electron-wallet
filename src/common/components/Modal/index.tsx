@@ -9,7 +9,7 @@ ReactModal.setAppElement('#root')
 export interface ModalProps {
   isOpen: boolean
   handleClose?: React.MouseEventHandler<Element>
-  size?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   children?: ReactNode
 }
 
@@ -28,7 +28,7 @@ const Modal: React.FC<ModalProps> = ({
     <ReactModal
       isOpen={isOpen}
       className={modalClasses}
-      overlayClassName='fixed top-0 left-0 right-0 bottom-0 flex items-center bg-navigation-default p-4'
+      overlayClassName='fixed top-0 left-0 right-0 bottom-0 flex items-center bg-gray-a6'
       onRequestClose={handleClose}
     >
       <ButtonClose

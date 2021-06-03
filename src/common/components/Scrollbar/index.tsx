@@ -1,14 +1,15 @@
 import React, { ReactNode } from 'react'
 import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
+import 'simplebar/src/simplebar.css'
 import './styles.css'
 
 export interface ScrollBarProps {
   children?: ReactNode
-  maxHeight?: string
+  maxHeight?: number
   className?: string
   autoHide?: boolean
-  [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
+  [x: string]: ReactNode | string | undefined
 }
 
 const Scrollbar: React.FC<ScrollBarProps> = ({

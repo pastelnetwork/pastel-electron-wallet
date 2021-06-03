@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import cn from 'classnames'
 
 export interface LinkProps {
-  children?: ReactNode
+  children?: string | ReactNode
   className?: string
   href?: string
   variant?: string

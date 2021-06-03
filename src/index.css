@@ -22,8 +22,24 @@
   h5 {
     @apply text-h5 text-text-default;
   }
-  h5 {
+  h6 {
     @apply text-h6 text-text-default;
+  }
+  p {
+    @apply text-text-default;
+  }
+
+  .input-field:focus + fieldset {
+    @apply border border-gray-8e;
+  }
+  .input-field:active + fieldset {
+    @apply border border-blue-3f;
+  }
+  .input-field.is-valid + fieldset {
+    @apply border border-success-default;
+  }
+  .input-field.is-invalid + fieldset {
+    @apply border border-red-7a;
   }
 }
 
@@ -44,7 +60,6 @@ body,
 body {
   margin: 0;
   position: relative;
-  color: white;
   background-color: #212124;
   font-family: Avenir, Roboto, Arial, serif;
 }

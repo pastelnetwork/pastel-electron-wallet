@@ -1,21 +1,16 @@
 import React, { ReactNode } from 'react'
-import cn from 'classnames'
 
 export interface AlertProps {
-  variant: string
-  children?: ReactNode
+  variant: 'success' | 'warning' | 'error'
+  children?: string | ReactNode
 }
 
 const Alert: React.FC<AlertProps> = ({ variant, children }) => {
-  const classes = cn({
-    '': true,
-    'bg-success-background border-l-4 border-success-default px-4 py-3 rounded':
-      variant === 'success',
-  })
+  const classes = `bg-${variant}-background border-l-4 border-${variant}-default px-4 py-3 rounded`
 
   return (
     <div className={classes}>
-      <p className='text-success-default'>{children}</p>
+      <p className='text-${variant}-default'>{children}</p>
     </div>
   )
 }

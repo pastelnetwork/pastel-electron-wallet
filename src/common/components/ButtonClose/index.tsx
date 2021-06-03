@@ -4,12 +4,19 @@ import cn from 'classnames'
 export interface ButtonCloseProps {
   onClick?: React.MouseEventHandler
   className?: string
+  disabled?: boolean
 }
 
-const ButtonClose: React.FC<ButtonCloseProps> = ({ onClick, className }) => {
+const ButtonClose: React.FC<ButtonCloseProps> = ({
+  onClick,
+  className,
+  disabled,
+}) => {
   const classes = cn(
     {
-      'border flex items-center justify-center border-button-text w-7 h-7 rounded-lg focus:outline-none': true,
+      'border flex items-center justify-center w-7 h-7 rounded-lg focus:outline-none active:shadow-none transition duration-300': true,
+      'border-icon text-icon hover:text-gray-8e active:border-gray-650 active:text-tab-active focus:shadow-btnOutline': !disabled,
+      'border border-blue-3f-text text-icon cursor-not-allowed': disabled,
     },
     className,
   )
