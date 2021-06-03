@@ -317,7 +317,6 @@ class Sidebar extends PureComponent<any, any> {
       exportPrivKeysModalIsOpen: false,
       exportedPrivKeys: null,
       privKeyInputValue: null,
-      showProfile: true,
     }
     this.setupMenuHandlers()
   } // Handle menu items
@@ -332,6 +331,7 @@ class Sidebar extends PureComponent<any, any> {
       openAboutModal,
       openUpdateToast,
       openSquooshToolModal,
+      openGlitchImageModal,
     } = this.props
 
     ipcRenderer.on('payuri', (event, uri) => {
@@ -446,6 +446,10 @@ class Sidebar extends PureComponent<any, any> {
 
     ipcRenderer.on('squooshTool', () => {
       openSquooshToolModal()
+    })
+
+    ipcRenderer.on('glitchImage', () => {
+      openGlitchImageModal()
     })
 
     ipcRenderer.send('app-ready')
@@ -703,20 +707,30 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
+          {/* <SidebarMenuItem
+            name='Statistics'
+            routeName={routes.STATISTICS}
+            currentRoute={location.pathname}
+            iconname='fa-chart-bar'
+          /> */}
           <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}
             currentRoute={location.pathname}
             iconname='fa-file-code'
           />
-          {this.state.showProfile && (
-            <SidebarMenuItem
-              name='Profile'
-              routeName={routes.PROFILE}
-              currentRoute={location.pathname}
-              iconname='fa-id-card'
-            />
-          )}
+          <SidebarMenuItem
+            name='Profile'
+            routeName={routes.PROFILE}
+            currentRoute={location.pathname}
+            iconname='fa-id-card'
+          />
+          <SidebarMenuItem
+            name='Market'
+            routeName={routes.MARKET}
+            currentRoute={location.pathname}
+            iconname='fa-shopping-cart'
+          />
         </div>
 
         <div className={cstyles.center}>

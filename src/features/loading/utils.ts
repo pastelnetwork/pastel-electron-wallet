@@ -8,6 +8,7 @@ export interface IDownloadItem {
   name: string
   url: string
   sha256: string
+  originalName?: string
 }
 
 export interface ICheckHashAndDownloadParams {
@@ -87,6 +88,17 @@ export const checkHashAndDownloadParams = async ({
     const promise = new Promise<void>((resolve, reject) => {
       writer.on('finish', () => {
         writer.close()
+
+        if (p?.originalName) {
+          fs.copyFile(absPath, path.join(outputDir, p.originalName), err => {
+            if (err) {
+              console.warn(
+                `utils checkHashAndDownloadParams rename error: ${err.message}`,
+                err,
+              )
+            }
+          })
+        }
         resolve()
       })
 

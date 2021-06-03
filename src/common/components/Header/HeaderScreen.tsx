@@ -112,7 +112,7 @@ const Header = (props: PropsType) => {
     },
     {
       name: 'NFTs',
-      routeName: routes.SEND,
+      routeName: routes.MARKET,
       currentRoute: location.pathname,
       style: 'xl:psl-mr-37px',
     },
@@ -140,7 +140,7 @@ const Header = (props: PropsType) => {
     },
   ]
   return (
-    <div className='flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display'>
+    <div className='flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-e6'>
       <div className='flex items-center'>
         <div className='ml-20px md:ml-30px lg:ml-50px xl:ml-60px mr-13px md:mr-20px lg:mr-30px xl:mr-40px w-30px md:w-36px h-30px md:h-36px'>
           <img src={Logo} alt='logo' />
@@ -159,7 +159,7 @@ const Header = (props: PropsType) => {
             <Link to='#' className='psl-flex psl-items-center'>
               <img
                 src={addBtn}
-                className='psl-w-20px psl-h-20px psl-mr-2px md:psl-mr-8px'
+                className='w-20px h-20px mr-2px md:mr-2'
                 alt='add button'
               ></img>
               <span className='psl-text-blue-450 psl-whitespace-nowrap'>
