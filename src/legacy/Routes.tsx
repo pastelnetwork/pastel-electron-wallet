@@ -112,7 +112,7 @@ class RouteApp extends React.Component<any, any> {
     this.rpc = rpc
 
     // Auto refresh every 10s
-    if (process.env.NODE_ENV === 'production') {
+    if (!app?.isPackaged) {
       this.rpcRefreshIntervalId = window.setInterval(() => {
         if (this.state.rpcConfig.username) {
           rpc.refresh()
@@ -652,7 +652,7 @@ class RouteApp extends React.Component<any, any> {
                     this.setRPCConfig(rpcConfig)
 
                     // set pastel DB thread update timer
-                    if (process.env.NODE_ENV === 'production') {
+                    if (!app?.isPackaged) {
                       setInterval(() => {
                         PastelDBThread(rpcConfig)
                       }, period)

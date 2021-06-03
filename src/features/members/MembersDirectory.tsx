@@ -86,7 +86,7 @@ const MembersDirectory: React.FC = () => {
     options: mockOptions,
   }
 
-  // Upper Section
+  // Page Header
   const [ranking, setRanking] = useState<Option | null>(null)
   const [sold, setSold] = useState<Option | null>(null)
   const [followers, setFollowers] = useState<Option | null>(null)
