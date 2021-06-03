@@ -233,6 +233,67 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
+    mempoolsize: {
+      grid: {
+        top: 8,
+        right: 8,
+        bottom: 40,
+        left: 70,
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: dataX,
+      },
+      yAxis: {
+        type: 'value',
+        min: minY,
+        max: maxY,
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            const val = Number(value).toFixed(2)
+            return `${val} k`
+          },
+        },
+      },
+      series: {
+        type: 'line',
+        sampling: 'lttb',
+        lineStyle: {
+          color: 'rgb(23,105,135)',
+        },
+        smooth: true,
+        symbol: false,
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: 'rgba(26, 67, 105, 1)',
+            },
+            {
+              offset: 1,
+              color: 'rgba(26, 39, 42, 0.3)',
+            },
+          ]),
+        },
+        data: dataY,
+      },
+      stateAnimation: {
+        duration: 300,
+        easing: 'cubicOut',
+      },
+    },
   }
 
   return chartOptions[chartName]
@@ -270,31 +331,47 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
       },
     ],
   }
-  const netTotalsOption: EChartsOption = {
-    backgroundColor: theme?.backgroundColor,
-    textStyle: {
-      color: theme?.color,
-    },
-    yAxis: {
-      splitLine: {
-        lineStyle: {
-          color: theme?.splitLineColor,
-        },
-      },
-      axisLine: {
-        show: true,
-      },
-    },
-    legend: {
-      textStyle: {
-        color: theme?.color,
-      },
-    },
-  }
+
   const chartOptions: TChartOption = {
     difficulty: defaultOption,
     hashrate: defaultOption,
-    nettotals: netTotalsOption,
+    nettotals: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      legend: {
+        textStyle: {
+          color: theme?.color,
+        },
+      },
+    },
+    mempoolsize: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+    },
   }
 
   return chartOptions[chartName]
