@@ -10,11 +10,11 @@ export interface InputProps {
   prepend?: ReactSVGElement
   append?: ReactSVGElement
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
-  isValid?: boolean
+  isValid?: boolean | undefined
   label?: string
   id?: string
   hint?: string
-  errorMessage?: string
+  errorMessage?: string | null
   disabled?: boolean
   placeholder?: string
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined

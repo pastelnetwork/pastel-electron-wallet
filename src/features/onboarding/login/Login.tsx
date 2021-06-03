@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 
-import Input from '../../../common/components/Input/Input'
-import Button from '../../../common/components/Button/Button'
+import Input from '../../../common/components/Input'
+import Button from '../../../common/components/Button'
 import Typography from '../../../common/components/Typography/Typography'
 
 import * as ROUTES from '../../../common/utils/constants/routes'

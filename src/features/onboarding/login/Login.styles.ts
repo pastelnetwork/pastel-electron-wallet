@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import ButtonComponent from '../../../common/components/Button/Button'
+import ButtonComponent from '../../../common/components/Button'
 
 export const Container = styled.div`
   width: 397px;
