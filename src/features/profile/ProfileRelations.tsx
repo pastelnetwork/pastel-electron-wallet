@@ -41,11 +41,11 @@ const ProfileRelations = (): JSX.Element => {
   )
 }
 
-export interface FollowersProps {
+export type FollowersProps = {
   followers: FollowerProps[]
 }
 
-export interface FollowerProps {
+export type FollowerProps = {
   name: string
   avatar: string
   diamond?: boolean
