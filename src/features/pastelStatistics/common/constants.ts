@@ -53,5 +53,11 @@ export const csvHeaders = [
   { label: 'Created time', key: 'time' },
 ]
 
+export const pricesCSVHeaders = [
+  { label: 'USD Price', key: 'usd' },
+  { label: 'BTC Price', key: 'btc' },
+  { label: 'Created time', key: 'time' },
+]
+
 export const CHART_THEME_BACKGROUND_DEFAULT_COLOR = '#0d0d0d'
 export const CHART_DEFAULT_PERIOD = '2h'

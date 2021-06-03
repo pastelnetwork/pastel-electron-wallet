@@ -7,7 +7,7 @@ import { Data } from 'react-csv/components/CommonPropTypes'
 import { saveAs } from 'file-saver'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 import { TLineChartProps, TThemeColor } from '../../common/types'
-import { csvHeaders, themes } from '../../common/constants'
+import { pricesCSVHeaders, themes } from '../../common/constants'
 
 import styles from './LineChart.module.css'
 
@@ -25,7 +25,7 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
     handleBgColorChange,
   } = props
   const downloadRef = useRef(null)
-  const [csvData] = useState<string | Data>('')
+  const [csvData, setCsvData] = useState<string | Data>('')
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
@@ -52,6 +52,17 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
         setMaxY1(max + offset)
         setMinY2(min1)
         setMaxY2(max1)
+        if (dataX) {
+          const data: Data = []
+          dataY1.map((o, index) => {
+            data.push({
+              usd: o,
+              btc: dataY2[index],
+              time: dataX[index],
+            })
+          })
+          setCsvData(data)
+        }
       }
     }
   }, [dataY1, dataY2])
@@ -304,7 +315,7 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
             filename={
               makeDownloadFileName(info.currencyName, chartName) + '.csv'
             }
-            headers={csvHeaders}
+            headers={pricesCSVHeaders}
             separator={';'}
             ref={downloadRef}
             className={styles.uploadButton}
