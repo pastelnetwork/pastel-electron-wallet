@@ -16,15 +16,17 @@ export type TColumnDefinitionType<T, K extends keyof T> = {
 type TableProps<T, K extends keyof T> = {
   data: Array<T>
   columns: Array<TColumnDefinitionType<T, K>>
-  checkHandler: (param: number[]) => void
-  clickedHandler?: (param: T) => void
+  hasChecked: boolean
+  checkHandler?: (param: number[]) => void
+  autocompleteHandler?: (param: T) => void
 }
 
 const Table = <T, K extends keyof T>({
   data,
   columns,
   checkHandler,
-  clickedHandler,
+  hasChecked = true,
+  autocompleteHandler,
 }: TableProps<T, K>): JSX.Element => {
   const [selected, setSelected] = useState<number[]>([])
   return (
@@ -38,25 +40,27 @@ const Table = <T, K extends keyof T>({
               selected.includes(i) && 'bg-blue-f8',
             )}
           >
-            <td className='flex items-center whitespace-nowrap w-5'>
-              <div className='mb-4'>
-                <Checkbox
-                  isChecked={selected.includes(i) ? true : false}
-                  clickHandler={() => {
-                    if (selected.includes(i)) {
-                      const ind = selected.indexOf(i)
-                      if (ind > -1) {
-                        selected.splice(ind, 1)
+            {hasChecked && (
+              <td className='flex items-center whitespace-nowrap w-5'>
+                <div className='mb-4'>
+                  <Checkbox
+                    isChecked={selected.includes(i) ? true : false}
+                    clickHandler={() => {
+                      if (selected.includes(i)) {
+                        const ind = selected.indexOf(i)
+                        if (ind > -1) {
+                          selected.splice(ind, 1)
+                        }
+                      } else {
+                        selected.push(i)
                       }
-                    } else {
-                      selected.push(i)
-                    }
-                    setSelected([...selected])
-                    checkHandler(selected)
-                  }}
-                ></Checkbox>
-              </div>
-            </td>
+                      setSelected([...selected])
+                      checkHandler && checkHandler(selected)
+                    }}
+                  ></Checkbox>
+                </div>
+              </td>
+            )}
             {columns.map((c, index) => {
               if (c.key === 'hash') {
                 return (
@@ -104,10 +108,8 @@ const Table = <T, K extends keyof T>({
                           step={100}
                           value={value}
                           onChange={(value: number | null) => {
-                            if (clickedHandler) {
-                              d = { ...d, psl: value }
-                              clickedHandler(d)
-                            }
+                            d = { ...d, psl: value }
+                            autocompleteHandler && autocompleteHandler(d)
                           }}
                         />
                       </div>

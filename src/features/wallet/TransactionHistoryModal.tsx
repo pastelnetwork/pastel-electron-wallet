@@ -14,6 +14,9 @@ import addressbookIcon from '../../common/assets/icons/ico-addressbook.svg'
 import user2Icon from '../../common/assets/icons/ico-user2.svg'
 import radioIcon from '../../common/assets/icons/ico-radio.svg'
 import radioCheckedIcon from '../../common/assets/icons/ico-radio-checked.svg'
+import Table, {
+  TColumnDefinitionType,
+} from '../../common/components/Table/Table'
 
 type TDataType = {
   date: string
@@ -25,6 +28,43 @@ type TDataType = {
   fee: string
   amount: string
 }
+
+const columns: TColumnDefinitionType<TDataType, keyof TDataType>[] = [
+  {
+    key: 'date',
+    header: 'Date',
+  },
+  {
+    key: 'address',
+    header: 'Recipient address',
+    classnames: '',
+  },
+  {
+    key: 'type',
+    header: 'Source type',
+  },
+  {
+    key: 'status',
+    header: 'Status',
+    classnames: 'text-gray-a0 lg:ml-16 xl:ml-86px',
+  },
+  {
+    key: 'id',
+    header: 'ID',
+  },
+  {
+    key: 'comments',
+    header: 'Comments',
+  },
+  {
+    key: 'fee',
+    header: 'Fee',
+  },
+  {
+    key: 'amount',
+    header: 'Amount',
+  },
+]
 
 export type TTransactionHistoryModalProps = {
   isOpen: boolean
@@ -97,6 +137,7 @@ const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
         </div>
       </div>
       <div className='pt-6'>
+        <Table columns={columns} data={transactionHistory} hasChecked={false} />
         <table className='w-full text-gray-71'>
           <tbody>
             <tr className='h-12 text-gray-4a  border-b border-gray-a0'>

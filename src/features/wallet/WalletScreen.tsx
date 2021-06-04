@@ -193,7 +193,7 @@ const WalletScreen: React.FC = () => {
       <div className='bg-gray-f8 pt-5 sm:px-10 md:px-60px'>
         <div className='flex justify-between '>
           {card_items.map((card, index) => (
-            <div key={index} className='mr-18px relative'>
+            <div key={index} className='relative'>
               <div className='absolute top-15px right-15px'>
                 {card.style.info ? (
                   <Tooltip
@@ -263,12 +263,13 @@ const WalletScreen: React.FC = () => {
           </div>
           <div className='mb-15px h-456px overflow-y-scroll mt-15px mr-4'>
             <Table
+              hasChecked={true}
               data={walletdatas}
               columns={columns}
               checkHandler={e => {
                 console.log(e)
               }}
-              clickedHandler={d => {
+              autocompleteHandler={d => {
                 console.log(d)
               }}
             />
