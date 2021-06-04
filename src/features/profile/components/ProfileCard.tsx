@@ -104,9 +104,6 @@ function truncateMiddle(
   backLen: number,
   truncateStr = '&hellip;',
 ) {
-  if (!str) {
-    return ''
-  }
   // Setting default values
   frontLen = Math.floor(frontLen)
   backLen = Math.floor(backLen)
