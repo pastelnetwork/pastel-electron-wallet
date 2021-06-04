@@ -11,7 +11,7 @@ export type TMultiToggle = {
   containerClassName?: string
   itemInActiveClassName?: string
   itemActiveClassName?: string
-  countInActiveClassName?: string
+  countInactiveClassName?: string
   countActiveClassName?: string
   onToggle: (index: number) => void
 }
@@ -22,7 +22,7 @@ const MultiToggleSwitch: React.FC<TMultiToggle> = ({
   containerClassName,
   itemInActiveClassName,
   itemActiveClassName,
-  countInActiveClassName,
+  countInactiveClassName,
   countActiveClassName,
   onToggle,
 }) => {
@@ -45,8 +45,8 @@ const MultiToggleSwitch: React.FC<TMultiToggle> = ({
     const activeClass = countActiveClassName
       ? countActiveClassName
       : 'bg-yellow-ff'
-    const inActiveClass = countInActiveClassName
-      ? countInActiveClassName
+    const inActiveClass = countInactiveClassName
+      ? countInactiveClassName
       : 'bg-gray-a0'
 
     return `ml-2.5 text-9px text-white pt-2.5px pb-1.5px px-3px  leading-11px rounded-xl ${
