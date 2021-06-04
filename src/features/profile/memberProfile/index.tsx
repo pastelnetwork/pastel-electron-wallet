@@ -28,7 +28,7 @@ const general_data = {
   postcode: '#121',
   language: 'English',
   categories: 'motion graphics, illustration, abstract',
-  reputation: 3.89,
+  reputation: 4.89,
   buyerBans: 3,
   highestFeeRecieved: '136,200,000k PSL (#632)',
   totalSalesAmount: '560,600,00k PSL (#211)',
