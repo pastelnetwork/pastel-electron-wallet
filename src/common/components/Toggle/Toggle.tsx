@@ -4,7 +4,8 @@ import cn from 'classnames'
 export type TToggleProps = {
   classNames?: string
   selectedClass?: string
-  toggleHandler: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+  selected?: boolean
+  toggleHandler: (checked: boolean) => void
 }
 
 const Toggle: React.FC<TToggleProps> = ({
@@ -12,21 +13,21 @@ const Toggle: React.FC<TToggleProps> = ({
   toggleHandler,
   classNames = 'w-34px h-5 rounded-full',
   selectedClass = 'bg-green-68',
+  selected = false,
 }) => {
-  const [checked, setChecked] = useState(false)
+  const [checked, setChecked] = useState(selected)
   return (
     <div>
       <label className='flex items-center cursor-pointer'>
         <div className='relative'>
-          <input type='checkbox' id='toggleB' className='sr-only' />
           <div
             className={cn(
               'block bg-gray-dd flex items-center',
               classNames,
               checked && selectedClass,
             )}
-            onClick={e => {
-              toggleHandler(e)
+            onClick={() => {
+              toggleHandler(checked)
               setChecked(!checked)
             }}
           >
