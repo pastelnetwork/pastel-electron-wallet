@@ -1,6 +1,10 @@
 import { SqlValue } from 'sql.js'
 
-import { TLineChartData, TMultiLineChartData } from '../../pastelDB/type'
+import {
+  TLineChartData,
+  TMultiLineChartData,
+  TScatterChartData,
+} from '../../pastelDB/type'
 
 export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
 
@@ -183,4 +187,28 @@ export function transformBlockSizeInfo(
   }
 
   return { dataX, dataY }
+}
+
+export function transformTransactionInBlock(
+  blockinfos: SqlValue[][],
+  period: TPeriod,
+): TScatterChartData {
+  const data: number[][] = []
+  const dataX: string[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < blockinfos.length; i++) {
+    if (blockinfos[i][8]) {
+      const createTime = Number(blockinfos[i][19])
+      if (createTime > startDate) {
+        const txs = JSON.parse(String(blockinfos[i][8]))
+        const xAxisValue = Number(blockinfos[i][4])
+        const yAxisValue = txs.length
+        data.push([xAxisValue, yAxisValue])
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+  return { data, dataX }
 }
