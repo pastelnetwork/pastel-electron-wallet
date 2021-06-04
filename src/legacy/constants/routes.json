@@ -15,7 +15,7 @@
   "PRICEOVERTIME": "/statistics/priceovertime",
   "HASHRATEOVERTIME": "/statistics/hashrateovertime",
   "MEMPOOLSIZEOVERTIME": "/statistics/mempoolsizeovertime",
-  "NETTOTALSOVERTIME": "/statistics/nettotalsovertime",
+  "NETWORKTOTALSOVERTIME": "/statistics/networktotalsovertime",
   "DIFFICULTYOVERTIME": "/statistics/difficultyovertime",
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",

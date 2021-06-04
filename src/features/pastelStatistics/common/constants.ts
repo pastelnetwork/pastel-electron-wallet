@@ -28,12 +28,12 @@ export const pastelChartFields = [
     backgroundImage: Hashrate,
   },
   {
-    name: 'Nettotals',
-    routeName: '/statistics/nettotalsovertime',
+    name: 'Network Totals',
+    routeName: '/statistics/networktotalsovertime',
     backgroundImage: Nettotals,
   },
   {
-    name: 'MempoolSize',
+    name: 'Mempool Size',
     routeName: '/statistics/mempoolsizeovertime',
     backgroundImage: Mempoolsize,
   },

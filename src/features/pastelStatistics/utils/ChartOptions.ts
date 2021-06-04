@@ -127,7 +127,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
-    nettotals: {
+    network_totals: {
       color: ['#80FFA5', '#37A2FF'],
       grid: {
         top: 8,
@@ -148,9 +148,9 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
       legend: {
         top: 10,
         right: 10,
-        data: ['traffic recv', 'traffic sent'],
+        data: ['Traffic receive', 'Traffic sent'],
         textStyle: {
-          color: '#FFF',
+          color: theme?.color,
         },
       },
       xAxis: {
@@ -176,7 +176,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
       },
       series: [
         {
-          name: 'traffic recv',
+          name: 'Traffic receive',
           type: 'line',
           smooth: true,
           lineStyle: {
@@ -188,11 +188,11 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: 'rgba(128, 255, 165)',
+                color: '#80ffa5',
               },
               {
                 offset: 1,
-                color: 'rgba(1, 191, 236)',
+                color: '#00BFEC',
               },
             ]),
           },
@@ -202,7 +202,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           data: dataY1,
         },
         {
-          name: 'traffic sent',
+          name: 'Traffic sent',
           type: 'line',
           smooth: true,
           lineStyle: {
@@ -214,11 +214,11 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: 'rgba(55, 162, 255)',
+                color: '#37a2ff',
               },
               {
                 offset: 1,
-                color: 'rgba(116, 21, 219)',
+                color: '#7415db',
               },
             ]),
           },
@@ -271,7 +271,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         type: 'line',
         sampling: 'lttb',
         lineStyle: {
-          color: 'rgb(23,105,135)',
+          color: '#176987',
         },
         smooth: true,
         symbol: false,
@@ -279,11 +279,11 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgba(26, 67, 105, 1)',
+              color: '#1A4369',
             },
             {
               offset: 1,
-              color: 'rgba(26, 39, 42, 0.3)',
+              color: '#1A272A4D',
             },
           ]),
         },
@@ -403,7 +403,7 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
     },
     difficulty: defaultOption,
     hashrate: defaultOption,
-    nettotals: {
+    network_totals: {
       backgroundColor: theme?.backgroundColor,
       textStyle: {
         color: theme?.color,
@@ -441,6 +441,5 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
       },
     },
   }
-
   return chartOptions[chartName]
 }
