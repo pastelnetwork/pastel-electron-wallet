@@ -29,13 +29,8 @@ const StepLogin: React.FC = () => {
   )
   const [isChecked, setIsChecked] = React.useState(false)
 
-  const handleCheckboxClick = (
-    event: React.MouseEvent<HTMLLabelElement, MouseEvent>,
-  ) => {
-    if ((event?.target as HTMLElement).tagName === 'LABEL') {
-      return
-    }
-    setIsChecked(previousValue => !previousValue)
+  const handleCheckboxClick = (param: boolean) => {
+    setIsChecked(param)
   }
 
   return (

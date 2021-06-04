@@ -4,10 +4,7 @@ import IconCheckBlue from '../../assets/icons/ico-check-blue.svg'
 
 export type TCheckboxProps = {
   isChecked: boolean
-  clickHandler: (
-    event: React.MouseEvent<HTMLLabelElement, MouseEvent>,
-    index?: string,
-  ) => void
+  clickHandler?: (checked: boolean) => void
 }
 
 const Checkbox: React.FC<TCheckboxProps> = ({
@@ -26,7 +23,9 @@ const Checkbox: React.FC<TCheckboxProps> = ({
         onChange={() => setSelected(!selected)}
       />
       <span
-        onClick={clickHandler}
+        onClick={() => {
+          clickHandler && clickHandler(selected)
+        }}
         className={cn(
           'transition-all absolute top-0 left-0 w-5 h-5 rounded-md checkboxCheckmark',
           !selected && 'border-gray-dd border hover:border-gray-8e border',

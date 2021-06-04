@@ -245,7 +245,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                     {props.info.currencyName}{' '}
                     <NumberFormat
                       value={card.psl}
-                      displayType={'text'}
+                      displayType='text'
                       thousandSeparator={true}
                     />
                   </div>
@@ -281,24 +281,14 @@ const WalletScreen = (props: Tprops): JSX.Element => {
             <span className='text-blue-3f font-extrabold text-h3 ml-3'>
               <NumberFormat
                 value='22000'
-                displayType={'text'}
+                displayType='text'
                 thousandSeparator={true}
               />{' '}
               PSL
             </span>
           </div>
           <div className='mb-15px h-456px overflow-y-scroll mt-15px mr-4 scrollbar'>
-            <Table
-              hasChecked={true}
-              data={walletdatas}
-              columns={columns}
-              checkHandler={e => {
-                console.log(e)
-              }}
-              autocompleteHandler={d => {
-                console.log(d)
-              }}
-            />
+            <Table hasChecked={true} data={walletdatas} columns={columns} />
           </div>
         </div>
 

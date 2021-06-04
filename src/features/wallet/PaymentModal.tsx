@@ -1,5 +1,4 @@
 import React from 'react'
-// Components
 import Modal from './modal'
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import Button from '../../common/components/Button/Button'
@@ -72,12 +71,7 @@ const PaymentModal: React.FC<TPaymentModalProps> = ({
               >
                 <td className='whitespace-nowrap'>
                   <div className='flex'>
-                    <Checkbox
-                      isChecked={true}
-                      clickHandler={() => {
-                        console.log('checkbox clicked')
-                      }}
-                    >
+                    <Checkbox isChecked={true}>
                       <span className='text-blue-3f'>{data.hash}</span>
                     </Checkbox>
                     <img className='ml-6' src={pencilIcon} />
@@ -146,12 +140,7 @@ const PaymentModal: React.FC<TPaymentModalProps> = ({
             <span className='text-sm '>Cancel</span>
           </div>
         </Button>
-        <Button
-          className='ml-11px'
-          onClick={() => {
-            handleClose()
-          }}
-        >
+        <Button className='ml-11px' onClick={handleClose}>
           <div className='flex items-center px-5'>
             <img src={checkIcon} className='py-3.5' />
             <span className='text-sm ml-2'>

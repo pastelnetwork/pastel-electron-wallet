@@ -80,7 +80,7 @@ const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={handleClose}
       size='7xl'
       title='Transaction history'
     >
@@ -198,15 +198,15 @@ const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
             {transactionHistory.map((data: TDataType, index: number) => (
               <tr key={index} className='h-67px'>
                 <td>{data.date}</td>
-                <td className=''>
+                <td>
                   <div className='flex'>
                     <span className='text-blue-3f'>{data.address}</span>
                     <img className='ml-6' src={pencilIcon} />
                     <img className='ml-18px' src={passEyeIcon} />
                   </div>
                 </td>
-                <td className=''>{data.type}</td>
-                <td className=''>
+                <td>{data.type}</td>
+                <td>
                   <img
                     src={
                       data.status == 'success'
@@ -220,12 +220,12 @@ const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
                     className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
                   />
                 </td>
-                <td className=''>{data.id}</td>
-                <td className=''>
+                <td>{data.id}</td>
+                <td>
                   <img src={commentIcon} className='ml-8' />
                 </td>
-                <td className=''>{data.fee}</td>
-                <td className=''>{data.amount}</td>
+                <td>{data.fee}</td>
+                <thead>{data.amount}</thead>
               </tr>
             ))}
           </tbody>
