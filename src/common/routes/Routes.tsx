@@ -17,10 +17,12 @@ export default function Routes(): JSX.Element {
     return (
       <div className='flex flex-col h-full'>
         <Header />
-        <Switch>
-          <Route exact path={routes.DASHBOARD} component={Dashboard} />
-          <Route exact path={routes.MARKET} component={NFTMarketFeed} />
-        </Switch>
+        <div className='flex-grow overflow-auto'>
+          <Switch>
+            <Route exact path={routes.DASHBOARD} component={Dashboard} />
+            <Route exact path={routes.MARKET} component={NFTMarketFeed} />
+          </Switch>
+        </div>
       </div>
     )
   }
