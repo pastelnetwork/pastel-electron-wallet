@@ -14,7 +14,7 @@ import { formatNumber } from '../../common/utils/format'
 const date = dayjs('2021-04-04')
 
 const walletBalance = 32000
-const currencyName = 'PSTL'
+const currencyName = 'PSL'
 
 const transactions: TTransactionItemProps[] = [
   { type: 'in', amount: 320000, date, currencyName },
@@ -120,9 +120,13 @@ export default function DashboardPage(): JSX.Element {
             </button>
           </div>
           <div className='lg:flex-grow px-30px pb-14'>
-            <div className='flex flex-col items-center space-y-30px lg:space-y-0 lg:grid lg:grid-flow-col lg:gap-30px'>
+            <div className='flex flex-col items-center space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-30px lg:grid-cols-3'>
               {Array.from({ length: 3 }).map((_, i) => (
-                <NFTCard key={i} {...NFTCardProps} className='max-w-xs' />
+                <NFTCard
+                  key={i}
+                  {...NFTCardProps}
+                  className='max-w-sm md:max-w-full'
+                />
               ))}
             </div>
           </div>
