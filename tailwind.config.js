@@ -53,6 +53,7 @@ module.exports = {
         '70px': '4.375rem',
         '82px': '5.125rem',
         '100px': '6.25rem',
+        '110px': '6.875rem',
         '111px': '6.9375rem',
         '112px': '7rem',
         '120px': '7.5rem',
@@ -182,9 +183,13 @@ module.exports = {
         10: '0.625rem',
         12: '0.75rem',
         15: '0.938rem',
+        26: '1.625rem',
       },
       borderRadius: {
         '4px': '0.25rem',
+      },
+      borderWidth: {
+        '5px': '0.3125rem',
       },
       container: {
         center: true,
