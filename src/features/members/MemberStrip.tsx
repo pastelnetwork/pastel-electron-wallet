@@ -33,7 +33,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
               {heighestSold} {currencyName}
             </div>
             <div className='text-gray-1a font-semibold pt-3 text-12 whitespace-nowrap w-120px overflow-x-hidden'>
-              Total sell{' '}
+              Total sold{' '}
               <div className='font-display'>
                 <span className='text-gradient'>{totalSell}</span>
                 <span className='text-gradient'> {currencyName}</span>

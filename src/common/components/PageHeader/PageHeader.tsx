@@ -31,7 +31,9 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
       <div className='wrapper py-30px'>
         <div className='flex justify-between'>
           <div className='flex items-center'>
-            <h1 className='pr-20 font-semibold text-gray-23'>{props.title}</h1>
+            <h1 className='pr-70px font-semibold text-gray-23'>
+              {props.title}
+            </h1>
             {props.routes.map(route => (
               <div
                 className={cn({

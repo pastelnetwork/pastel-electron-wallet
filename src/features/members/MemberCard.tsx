@@ -1,4 +1,6 @@
 import React from 'react'
+import cn from 'classnames'
+
 import verifiedIcon from '../../common/assets/images/verified-icon.svg'
 
 export type TMemberCard = {
@@ -7,10 +9,11 @@ export type TMemberCard = {
   followers: number | string
   role?: string
   isVerified: boolean
+  followedByUser: boolean
 }
 
 const MemberCard: React.FC<TMemberCard> = props => {
-  const { avatar, name, followers, isVerified } = props
+  const { avatar, name, followers, isVerified, followedByUser } = props
   return (
     <div className='px-5 py-7 bg-background-main rounded-2xl overflow-visible h-142px'>
       <div className='flex space-x-4 relative'>
@@ -27,8 +30,13 @@ const MemberCard: React.FC<TMemberCard> = props => {
           </h5>
           <h6 className='text-gray-a0 text-12 pb-3'>{followers} followers</h6>
 
-          <button className='rounded-3xl border-blue-450 text-blue-450 border py-3px px-3 w-max font-medium'>
-            Follow
+          <button
+            className={cn('rounded-3xl border py-3px px-3 w-max font-medium', {
+              'border-blue-450 text-blue-450': !followedByUser,
+              'border-button-text text-button-text': followedByUser,
+            })}
+          >
+            {followedByUser ? 'Unfollow' : 'Follow'}
           </button>
         </div>
       </div>

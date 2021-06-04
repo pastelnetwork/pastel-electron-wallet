@@ -9,6 +9,7 @@ const memberCard: TMemberCard = {
   followers: 161,
   name: 'Sally Fadel',
   isVerified: false,
+  followedByUser: true,
 }
 
 export default {
