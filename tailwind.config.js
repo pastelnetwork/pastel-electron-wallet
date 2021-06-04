@@ -123,6 +123,7 @@ module.exports = {
         blue: {
           '3f': '#3F9AF7',
           f8: '#F8FBFF',
+          e5: '#E5F1FF',
         },
         gray: {
           // text
