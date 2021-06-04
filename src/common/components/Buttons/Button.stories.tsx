@@ -1,8 +1,8 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Button, { ButtonProps } from './Button'
+import Button, { TButton } from './Button'
 
-const Template: Story<ButtonProps> = ({
+const Template: Story<TButton> = ({
   children,
   variant,
   href,

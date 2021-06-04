@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import cn from 'classnames'
 
-export type LinkProps = {
+export type TLink = {
   children?: string | ReactNode
   className?: string
   href?: string
@@ -9,7 +9,7 @@ export type LinkProps = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Link: React.FC<LinkProps> = ({
+const Link: React.FC<TLink> = ({
   href,
   className,
   children,

@@ -1,12 +1,12 @@
 import React from 'react'
 import Input from '../Input'
 
-export type BidInputProps = {
+export type TBidInput = {
   onBidChange(value: string): void
   bid?: string
 }
 
-const BidInput: React.FC<BidInputProps> = ({ onBidChange, bid }) => {
+const BidInput: React.FC<TBidInput> = ({ onBidChange, bid }) => {
   const [fee, setFee] = React.useState(0)
   const handleBid = (e: React.ChangeEvent<HTMLInputElement>) => {
     onBidChange(e.target.value)

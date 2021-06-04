@@ -1,8 +1,8 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Alert, { AlertProps } from './index'
+import Alert, { TAlert } from './index'
 
-const Template: Story<AlertProps> = ({ variant, children }) => {
+const Template: Story<TAlert> = ({ variant, children }) => {
   return <Alert variant={variant}>{children}</Alert>
 }
 

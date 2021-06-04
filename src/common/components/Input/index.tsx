@@ -4,7 +4,7 @@ import Icon from '../Icon'
 import CheckIcon from '../../assets/icons/ico-check.svg'
 import TimesIcon from '../../assets/icons/ico-times.svg'
 
-export type InputProps = {
+export type TInput = {
   className?: string
   type?: 'text' | 'password' | 'number'
   prepend?: ReactSVGElement
@@ -20,7 +20,7 @@ export type InputProps = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Input: React.FC<InputProps> = React.forwardRef(
+const Input: React.FC<TInput> = React.forwardRef(
   (
     {
       className,

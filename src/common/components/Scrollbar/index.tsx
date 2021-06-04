@@ -3,7 +3,7 @@ import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
 import 'simplebar/src/simplebar.css'
 
-export type ScrollBarProps = {
+export type TScrollBar = {
   children?: ReactNode
   maxHeight?: number
   className?: string
@@ -11,7 +11,7 @@ export type ScrollBarProps = {
   [x: string]: ReactNode | string | undefined
 }
 
-const Scrollbar: React.FC<ScrollBarProps> = ({
+const Scrollbar: React.FC<TScrollBar> = ({
   children,
   maxHeight,
   className,

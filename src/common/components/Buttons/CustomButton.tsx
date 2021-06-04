@@ -1,14 +1,14 @@
 import React from 'react'
 import cn from 'classnames'
 
-export type CustomButtonProps = {
+export type TCustomButton = {
   onClick?: React.MouseEventHandler
   className?: string
   type: 'add' | 'close'
   disabled?: boolean
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({
+const CustomButton: React.FC<TCustomButton> = ({
   type,
   onClick,
   className,

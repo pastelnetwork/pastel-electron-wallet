@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react'
 
-export type AlertProps = {
+export type TAlert = {
   variant: 'success' | 'warning' | 'error'
   children?: string | ReactNode
 }
 
-const Alert: React.FC<AlertProps> = ({ variant, children }) => {
+const Alert: React.FC<TAlert> = ({ variant, children }) => {
   const classes = `bg-${variant}-background border-l-4 border-${variant} px-4 py-3 rounded`
 
   return (

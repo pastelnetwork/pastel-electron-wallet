@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import cn from 'classnames'
 
-export type ButtonProps = {
+export type TButton = {
   children?: ReactNode | string
   variant?: 'default' | 'secondary' | 'transparent' | 'navigation'
   disabled?: boolean
@@ -14,7 +14,7 @@ export type ButtonProps = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<TButton> = ({
   children,
   variant,
   href,

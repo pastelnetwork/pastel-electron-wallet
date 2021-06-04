@@ -1,8 +1,8 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Modal, { ModalProps } from './index'
+import Modal, { TModal } from './index'
 
-const Template: Story<ModalProps> = ({ isOpen, ...args }) => {
+const Template: Story<TModal> = ({ isOpen, ...args }) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

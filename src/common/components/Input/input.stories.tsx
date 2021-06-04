@@ -1,8 +1,8 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Input, { InputProps } from './index'
+import Input, { TInput } from './index'
 
-const Template: Story<InputProps> = ({
+const Template: Story<TInput> = ({
   type,
   prepend,
   append,

@@ -6,19 +6,14 @@ import { CustomButton } from '../Buttons'
 
 ReactModal.setAppElement('#root')
 
-export type ModalProps = {
+export type TModal = {
   isOpen: boolean
   handleClose?: React.MouseEventHandler<Element>
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   children?: ReactNode
 }
 
-const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  handleClose,
-  size,
-  children,
-}) => {
+const Modal: React.FC<TModal> = ({ isOpen, handleClose, size, children }) => {
   const modalClasses = cn({
     'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 px-12 overflow-auto mx-auto': true,
     [`max-w-${size}`]: size,

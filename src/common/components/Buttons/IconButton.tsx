@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import cn from 'classnames'
 
-export type IconButtonProps = {
+export type TIconButton = {
   className?: string
   type?: 'border' | 'shadow'
   children: ReactNode | null
@@ -10,7 +10,7 @@ export type IconButtonProps = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-export const IconButton: React.FC<IconButtonProps> = ({
+export const IconButton: React.FC<TIconButton> = ({
   children,
   className,
   type,

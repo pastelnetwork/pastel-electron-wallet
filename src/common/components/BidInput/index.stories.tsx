@@ -1,8 +1,8 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import BidInput, { BidInputProps } from './index'
+import BidInput, { TBidInput } from './index'
 
-export const BidInputDefault: Story<BidInputProps> = ({ bid }) => {
+export const BidInputDefault: Story<TBidInput> = ({ bid }) => {
   const [bidValue, setBidValue] = React.useState(bid)
   const onBidChangeFunc = (value: string) => {
     setBidValue(value)

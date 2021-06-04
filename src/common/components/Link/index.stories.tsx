@@ -1,8 +1,8 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Link, { LinkProps } from './index'
+import Link, { TLink } from './index'
 
-const Template: Story<LinkProps> = ({ children, ...args }) => {
+const Template: Story<TLink> = ({ children, ...args }) => {
   return <Link {...args}>{children}</Link>
 }
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import CustomButton, { CustomButtonProps } from './CustomButton'
+import CustomButton, { TCustomButton } from './CustomButton'
 
-const Template: Story<CustomButtonProps> = ({ type, disabled, ...args }) => {
+const Template: Story<TCustomButton> = ({ type, disabled, ...args }) => {
   return <CustomButton type={type} disabled={disabled} {...args}></CustomButton>
 }
 
