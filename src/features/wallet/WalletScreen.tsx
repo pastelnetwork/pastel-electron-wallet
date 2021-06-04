@@ -169,7 +169,15 @@ const transactionHistory = [
   },
 ]
 
-const WalletScreen: React.FC = () => {
+type TInfoProps = {
+  currencyName: string
+}
+
+type Tprops = {
+  info: TInfoProps
+}
+
+const WalletScreen = (props: Tprops): JSX.Element => {
   const card_items = [
     {
       style: {
@@ -234,7 +242,7 @@ const WalletScreen: React.FC = () => {
                 </div>
                 <div className='pt-36px sm:pl-1 md:pl-3 lg:pl-35px'>
                   <div className='sm:text-xl md:text-2xl leading-6 text-gray-4e pt-9'>
-                    PSL{' '}
+                    {props.info.currencyName}{' '}
                     <NumberFormat
                       value={card.psl}
                       displayType={'text'}

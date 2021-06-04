@@ -568,7 +568,10 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
 
-            <Route path={routes.WALLET} render={() => <WalletScreen />} />
+            <Route
+              path={routes.WALLET}
+              render={() => <WalletScreen info={info} />}
+            />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
 
