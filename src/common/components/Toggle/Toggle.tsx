@@ -10,8 +10,8 @@ export type TToggleProps = {
 const Toggle: React.FC<TToggleProps> = ({
   children,
   toggleHandler,
-  classNames,
-  selectedClass,
+  classNames = 'w-34px h-5 rounded-full',
+  selectedClass = 'bg-green-68',
 }) => {
   const [checked, setChecked] = useState(false)
   return (
@@ -27,7 +27,6 @@ const Toggle: React.FC<TToggleProps> = ({
               !checked && 'bg-opacity-10',
             )}
             onClick={e => {
-              console.log(checked)
               toggleHandler(e)
               setChecked(!checked)
             }}

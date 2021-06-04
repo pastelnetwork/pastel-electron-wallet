@@ -231,8 +231,9 @@ const WalletScreen: React.FC = () => {
         </div>
         <div className='mt-3.5 flex items-center justify-between'>
           <div className='flex items-center'>
-            <Toggle />
-            <img className='ml-2' src={elminationIcon} />
+            <Toggle>
+              <img className='ml-2' src={elminationIcon} />
+            </Toggle>
           </div>
           <div
             className='flex cursor-pointer'
