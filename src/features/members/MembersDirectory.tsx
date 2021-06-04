@@ -122,7 +122,7 @@ const MembersDirectory: React.FC = () => {
         ]}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <div className='wrapper content with-page-header'>
+      <div className='wrapper content with-page-header pr-6px'>
         <div className='bg-white p-5 rounded-lg'>
           <div className='flex justify-between pb-25px'>
             <div className='w-244px'>
