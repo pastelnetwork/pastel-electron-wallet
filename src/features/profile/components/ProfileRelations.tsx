@@ -1,24 +1,19 @@
 import React, { useState } from 'react'
-import svg_diamond from '../../../common/assets/icons/diamond.svg'
-import svg_oval_1 from '../../../common/assets/icons/avatars/oval_1.svg'
-import svg_oval_2 from '../../../common/assets/icons/avatars/oval_2.svg'
-import svg_oval_3 from '../../../common/assets/icons/avatars/oval_3.svg'
-import svg_oval_4 from '../../../common/assets/icons/avatars/oval_4.svg'
-import svg_oval_5 from '../../../common/assets/icons/avatars/oval_5.svg'
-import svg_oval_6 from '../../../common/assets/icons/avatars/oval_6.svg'
-import svg_oval_7 from '../../../common/assets/icons/avatars/oval_7.svg'
+import Followers from './ProfileFollowers'
 
-const cx_tab = 'text-sm border-b px-4 pt-1 pb-3 text-gray-b0 border-gray-b0'
+const cx_tab =
+  'text-sm border-b font-bold px-4 pt-1 pb-3 text-gray-b0 border-gray-b0 cursor-pointer flex-grow'
 const cx_tab_active =
-  'text-sm border-b px-4 pt-1 pb-3 text-gray-33 border-gray-33'
+  'text-sm border-b font-bold px-4 pt-1 pb-3 text-gray-33 border-gray-33 cursor-pointer flex-grow'
+
+const relationCounts = { followers: 235, following: 162, mutual: 73 }
 
 const ProfileRelations = (): JSX.Element => {
   const [tab, setTab] = useState('Followers')
-  const relationCounts = { followers: 235, following: 162, mutual: 73 }
 
   return (
     <div className='w-full xl:w-2/5 flex flex-col flex-grow px-4 xl:pl-6 xl:pr-0'>
-      <div className='flex'>
+      <div className='flex justify-between'>
         <div
           className={tab == 'Followers' ? cx_tab_active : cx_tab}
           onClick={() => setTab('Followers')}
@@ -38,117 +33,19 @@ const ProfileRelations = (): JSX.Element => {
           Mutual ({relationCounts.mutual})
         </div>
       </div>
-      <Followers followers={followers} />
+      {tab == 'Followers' && <Followers />}
+      {tab == 'Following' && (
+        <div className='text-center pt-8'>
+          This is placeholder for Following View.
+        </div>
+      )}
+      {tab == 'Mutual' && (
+        <div className='text-center pt-8'>
+          This is placeholder for Mutual View.
+        </div>
+      )}
     </div>
   )
 }
-
-export type FollowersProps = {
-  followers: FollowerProps[]
-}
-
-export type FollowerProps = {
-  name: string
-  count: number
-  avatar: string
-  diamond?: boolean
-}
-
-const Followers = ({ followers }: FollowersProps): JSX.Element => {
-  return (
-    <div className='flex flex-col pt-2 pr-4'>
-      {followers.map((follower: FollowerProps, index: number) => (
-        <Follower {...follower} key={index} />
-      ))}
-    </div>
-  )
-}
-
-const Follower = ({
-  name,
-  count,
-  avatar,
-  diamond,
-}: FollowerProps): JSX.Element => {
-  return (
-    <div className='flex items-center py-2 text-md'>
-      <div className='rounded-full bg-pink-300 w-10 h-10 relative'>
-        <img src={avatar} />
-        {diamond && (
-          <img src={svg_diamond} className='absolute bottom-0 right-0' />
-        )}
-      </div>
-      <div className='flex-grow font-bold pl-4 text-gray-23'> {name} </div>
-      <div className='text-gray-a0 text-sm'>{count} followers</div>
-    </div>
-  )
-}
-
-const followers = [
-  {
-    name: 'Salley Fadel',
-    count: 161,
-    avatar: svg_oval_1,
-    diamond: true,
-  },
-  {
-    name: 'Aniya Harber',
-    count: 162,
-    avatar: svg_oval_2,
-  },
-  {
-    name: 'Reymundo',
-    count: 16,
-    avatar: svg_oval_3,
-  },
-  {
-    name: 'Edwardo Bea',
-    count: 163,
-    avatar: svg_oval_4,
-    diamond: true,
-  },
-  {
-    name: 'Aiya Gerald',
-    count: 161,
-    avatar: svg_oval_5,
-  },
-  {
-    name: 'Reymundo',
-    count: 161,
-    avatar: svg_oval_6,
-  },
-  {
-    name: 'Aniya Harber',
-    count: 161,
-    avatar: svg_oval_7,
-  },
-  {
-    name: 'Aniya Harber',
-    count: 161,
-    avatar: svg_oval_1,
-  },
-  {
-    name: 'Reymundo',
-    count: 161,
-    avatar: svg_oval_2,
-  },
-  {
-    name: 'Edwardo Bea',
-    count: 161,
-    avatar: svg_oval_3,
-    diamond: true,
-  },
-  {
-    name: 'Reymundo',
-    count: 161,
-    avatar: svg_oval_4,
-  },
-  {
-    name: 'Sally Fadel',
-    count: 161,
-    avatar: svg_oval_5,
-    diamond: true,
-  },
-]
 
 export default ProfileRelations
