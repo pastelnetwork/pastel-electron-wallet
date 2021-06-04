@@ -27,7 +27,7 @@ const Toggle: React.FC<TToggleProps> = ({
               checked && selectedClass,
             )}
             onClick={() => {
-              toggleHandler(checked)
+              toggleHandler(!checked)
               setChecked(!checked)
             }}
           >
