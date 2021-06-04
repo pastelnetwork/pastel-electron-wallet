@@ -49,29 +49,14 @@ export function GeneralInfoStep(): JSX.Element {
     { value: 'option3', label: 'Big thanks' },
   ]
 
-  const [copies, setCountOne] = useState(10)
+  const [copies, setCountOne] = useState(100)
   const [royaltyPercent, setCountTwo] = useState(10)
+  const royaltyPercentString = `${royaltyPercent}%`
 
   function showHideHeader() {
     const headerElement = document.getElementById('headerPanel')
     headerElement?.classList.toggle('hideHeaderPanel')
   }
-
-  // state = {
-  //   content: '',
-  //   charLimit: 10
-  // }
-  // handleOnChange = (e) => {
-  //   this.setState({[e.target.name]:e.target.value})
-  // }
-  // handleOnSubmit = (e) => {
-  //   e.preventDefault()
-  //   if(this.state.content.length <= this.state.charLimit){
-  //     Swal.fire({icon: 'success', text: 'Successful Submission'})
-  //   }else{
-  //     Swal.fire({icon: 'error', text: 'Character Limit Exceeded'})
-  //   }
-  // }
 
   return (
     <Formik
@@ -109,7 +94,29 @@ export function GeneralInfoStep(): JSX.Element {
 
         <div className={styles.artRegFormCloseButton} onClick={showHideHeader}>
           <Link to='/dashboard' className='flex items-center'>
-            <span className='text-blue-450 whitespace-nowrap'>close</span>
+            <svg
+              width='31'
+              height='28'
+              viewBox='0 0 31 28'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path
+                fill-rule='evenodd'
+                clip-rule='evenodd'
+                d='M12.2914 10.1391C12.092 9.94798 11.7755 9.95463 11.5844 10.154C11.3933 10.3533 11.3999 10.6698 11.5993 10.8609L14.9385 14.0627L11.5997 17.2641C11.4004 17.4552 11.3937 17.7717 11.5849 17.971C11.776 18.1704 12.0925 18.177 12.2918 17.9859L15.6609 14.7554L19.03 17.9859C19.2294 18.177 19.5459 18.1704 19.737 17.971C19.9281 17.7717 19.9215 17.4552 19.7221 17.2641L16.3834 14.0627L19.7226 10.8609C19.9219 10.6698 19.9286 10.3533 19.7374 10.154C19.5463 9.95463 19.2298 9.94798 19.0305 10.1391L15.6609 13.37L12.2914 10.1391Z'
+                fill='#B0B7C3'
+              />
+              <rect
+                opacity='0.3'
+                x='1.30078'
+                y='0.5'
+                width='28.7231'
+                height='27'
+                rx='7.5'
+                stroke='#8E98A3'
+              />
+            </svg>
           </Link>
         </div>
 
@@ -117,7 +124,11 @@ export function GeneralInfoStep(): JSX.Element {
           <div className={styles.artRegFormRow}>
             <label className={styles.artRegFormInputTitle} htmlFor='title'>
               <p className={styles.artRegFormLabel}>Title</p>
-              <Field id='title' name='title' placeholder='The Starry Night' />
+              <Field
+                id='title'
+                name='title'
+                placeholder='At least 10 characters'
+              />
             </label>
           </div>
 
@@ -132,6 +143,7 @@ export function GeneralInfoStep(): JSX.Element {
                 isMulti
                 className={styles.artRegFormInputCategorySelect}
                 classNamePrefix='react-select'
+                placeholder='choose'
                 options={categoriesOptions}
                 styles={{
                   control: styles => ({
@@ -141,6 +153,7 @@ export function GeneralInfoStep(): JSX.Element {
                   input: base => ({
                     ...base,
                     position: 'absolute',
+                    opacity: '0',
                   }),
                   valueContainer: base => ({
                     ...base,
@@ -185,11 +198,7 @@ export function GeneralInfoStep(): JSX.Element {
               htmlFor='collection'
             >
               <p className={styles.artRegFormLabel}>Collection</p>
-              <Field
-                id='collection'
-                name='collection'
-                placeholder='Collection'
-              />
+              <Field id='collection' name='collection' placeholder='choose' />
 
               <div className={styles.artRegFormInputCollectionPlusButton}>
                 <svg
@@ -221,7 +230,7 @@ export function GeneralInfoStep(): JSX.Element {
 
           <div className={styles.artRegFormRow}>
             <label className={styles.artRegFormInputCopies} htmlFor='copies'>
-              <p className={styles.artRegFormLabel}>Collection</p>
+              <p className={styles.artRegFormLabel}>Copies</p>
               <Field id='copies' name='copies' value={copies} />
 
               <div
@@ -275,6 +284,7 @@ export function GeneralInfoStep(): JSX.Element {
                 isMulti
                 className={styles.artRegFormInputCategorySelect}
                 classNamePrefix='react-select'
+                placeholder='royalty'
                 options={compensationOptions}
                 styles={{
                   control: styles => ({
@@ -284,6 +294,7 @@ export function GeneralInfoStep(): JSX.Element {
                   input: base => ({
                     ...base,
                     position: 'absolute',
+                    opacity: '0',
                   }),
                   valueContainer: base => ({
                     ...base,
@@ -331,7 +342,7 @@ export function GeneralInfoStep(): JSX.Element {
               <Field
                 id='royaltyPercent'
                 name='royaltyPercent'
-                value={royaltyPercent}
+                value={royaltyPercentString}
               />
 
               <div
@@ -382,7 +393,7 @@ export function GeneralInfoStep(): JSX.Element {
               <Field
                 id='externalProfile'
                 name='externalProfile'
-                placeholder='https://behance.com/'
+                placeholder='website or social profile link'
               />
             </label>
           </div>

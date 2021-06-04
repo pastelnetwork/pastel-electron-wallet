@@ -164,3 +164,12 @@ input[type='number']::-webkit-outer-spin-button {
   margin-top: 0px;
   transition: all 300ms ease-out;
 }
+
+.react-select__placeholder {
+  font-family: Avenir;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #a0aec0 !important;
+  margin-left: 8px !important;
+}
