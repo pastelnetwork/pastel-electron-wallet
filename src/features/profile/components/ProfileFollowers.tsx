@@ -1,3 +1,4 @@
+import React from 'react'
 import svg_diamond from '../../../common/assets/icons/diamond.svg'
 import svg_oval_1 from '../../../common/assets/icons/avatars/oval_1.svg'
 import svg_oval_2 from '../../../common/assets/icons/avatars/oval_2.svg'
