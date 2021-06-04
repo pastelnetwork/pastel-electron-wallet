@@ -3,10 +3,10 @@ import Navbar from '../components/Header'
 
 const PageLayout: React.FC = ({ children }) => {
   return (
-    <React.Fragment>
+    <div className='w-screen'>
       <Navbar />
-      {children}
-    </React.Fragment>
+      <div className='routes-wrapper bg-background-main'>{children}</div>
+    </div>
   )
 }
 

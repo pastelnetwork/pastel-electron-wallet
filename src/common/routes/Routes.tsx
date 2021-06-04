@@ -67,9 +67,7 @@ const Routes: React.FC<RoutesProps> = ({ setUser, user }) => {
       <TransitionGroup>
         <CSSTransition key={location.key} classNames='fade' timeout={300}>
           <Switch location={location}>
-            <div className='routes-wrapper'>
-              {childRoutes(pageRoutes, setUser)}
-            </div>
+            {childRoutes(pageRoutes, setUser)}
           </Switch>
         </CSSTransition>
       </TransitionGroup>

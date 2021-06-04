@@ -53,7 +53,7 @@ import Collector from '../features/collector'
 import Nft from '../features/nft'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
-import NFTMarketFeed from '../features/NFTMarket'
+import NFTMarketFeed from '../features/nftMarket'
 
 export type TWalletInfo = {
   connections: number

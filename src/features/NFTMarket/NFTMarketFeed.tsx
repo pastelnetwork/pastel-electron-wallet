@@ -119,7 +119,7 @@ const NFTMarketFeed: React.FC = () => {
         routes={[{ label: 'Feed', isSelected: true }, { label: 'Statistics' }]}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <div className='wrapper content with-page-header bg-background-main h-full '>
+      <div className='wrapper content with-page-header h-full'>
         {/* Filters */}
         <div className='flex justify-between pb-50px'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>

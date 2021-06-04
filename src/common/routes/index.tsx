@@ -14,7 +14,7 @@ import {
 
 import * as ROUTES from '../utils/constants/routes'
 import { MembersDirectory } from '../../features/members'
-import NFTMarketFeed from '../../features/NFTMarket'
+import NFTMarketFeed from '../../features/nftMarket'
 
 const onboardingRoute = {
   id: 'welcomePage',
