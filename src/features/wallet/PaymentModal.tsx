@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import cx from 'classnames'
+// Components
 import Modal from './modal'
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import Button from '../../common/components/Button/Button'
@@ -11,17 +14,26 @@ import add2Icon from '../../common/assets/icons/ico-add-2.svg'
 import checkIcon from '../../common/assets/icons/ico-check.svg'
 import Select from '../../common/components/Select/Select'
 
-type TDataType = {
+type IDataType = {
   hash: string
 }
 
-export type TPaymentModalProps = {
+export type PaymentModalProps = {
   isOpen: boolean
   handleClose: () => void
-  paymentSources: Array<TDataType>
+  paymentSources: Array<IDataType>
 }
 
-const PaymentModal: React.FC<TPaymentModalProps> = ({
+const Triangle = styled.div`
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 16px solid white;
+  filter: drop-shadow(1px 1px 1px #e5e7eb);
+`
+
+const PaymentModal: React.FC<PaymentModalProps> = ({
   isOpen,
   handleClose,
   paymentSources,
@@ -64,78 +76,14 @@ const PaymentModal: React.FC<TPaymentModalProps> = ({
         </div>
         <table className='w-full'>
           <tbody>
-            {paymentSources.map((data: TDataType, index: number) => (
-              <tr
-                key={index}
-                className='h-67px border-b border-line-DEFAULT mr-4 justify-between'
-              >
-                <td className='whitespace-nowrap'>
-                  <div className='flex'>
-                    <Checkbox isChecked={true}>
-                      <span className='text-blue-3f'>{data.hash}</span>
-                    </Checkbox>
-                    <img className='ml-6' src={pencilIcon} />
-                    <img className='ml-18px' src={passEyeIcon} />
-                    <img className='ml-18px' src={pasteIcon} />
-                  </div>
-                </td>
-                <td className='w-24'>
-                  <div className='relative'>
-                    <img className='cursor-pointer' src={add2Icon} />
-                    {index == 10 && (
-                      <div className='w-371px absolute bottom-12 transform -translate-x-1/2 border border-gray-f3 rounded bg-white shadow-textbox'>
-                        <div className='px-4 flex text-gray-a0 border-b border-gray-f3 justify-between'>
-                          <div className='flex'>
-                            <div className='px-4 py-2 text-gray-71 border-b border-gray-71'>
-                              Comments
-                            </div>
-                            <div className='px-4 py-2'>Notes</div>
-                          </div>
-                          <img src={infoIcon} />
-                        </div>
-                        <div className='px-7 pt-4'>
-                          <textarea
-                            placeholder='Type something ...'
-                            className='resize-none w-full focus:outline-none'
-                          />
-                        </div>
-                        <div className='flex justify-end px-7'>
-                          <div className='text-blue-3f hover:text-blue-600 px-1 pb-4 cursor-pointer'>
-                            Save
-                          </div>
-                        </div>
-                        <div></div>
-                      </div>
-                    )}
-                  </div>
-                </td>
-                <td>
-                  <div className='flex justify-end pr-4'>
-                    <Select
-                      className='text-gray-2d w-28'
-                      autocomplete={true}
-                      min={10000}
-                      max={20000}
-                      step={100}
-                      value={100}
-                      onChange={(value: number | null) => {
-                        console.log(value)
-                      }}
-                    />
-                  </div>
-                </td>
-              </tr>
+            {paymentSources.map((data: IDataType, index: number) => (
+              <PaymentSource key={index} {...data} />
             ))}
           </tbody>
         </table>
       </div>
       <div className='flex justify-end mt-5'>
-        <Button
-          variant='transparent'
-          onClick={() => {
-            handleClose()
-          }}
-        >
+        <Button variant='transparent' onClick={handleClose}>
           <div className='flex items-center  px-5'>
             <span className='text-sm '>Cancel</span>
           </div>
@@ -150,6 +98,112 @@ const PaymentModal: React.FC<TPaymentModalProps> = ({
         </Button>
       </div>
     </Modal>
+  )
+}
+
+export interface CommentModalProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+const CommentModal = ({ isOpen, onClose }: CommentModalProps) => {
+  const [tab, setTab] = useState('Comments')
+  return (
+    <div
+      className={cx(
+        !isOpen && 'hidden',
+        'ml-2 w-371px absolute bottom-12 transform -translate-x-1/2 border border-gray-f3 rounded bg-white shadow-textbox',
+      )}
+    >
+      <div className='px-4 flex text-gray-a0 border-b border-gray-f3 justify-between'>
+        <div className='flex'>
+          {['Comments', 'Notes'].map((each, index) => (
+            <div
+              key={index}
+              onClick={() => setTab(each)}
+              className={cx(
+                'px-4 py-2 cursor-pointer',
+                each == tab && 'text-gray-71 border-b border-gray-71',
+              )}
+            >
+              {each}
+            </div>
+          ))}
+        </div>
+        <img src={infoIcon} />
+      </div>
+      <div className='px-7 pt-4'>
+        <textarea
+          placeholder='Type something ...'
+          className='resize-none w-full focus:outline-none'
+        />
+      </div>
+      <div className='flex justify-end px-7'>
+        <div
+          onClick={() => onClose()}
+          className='text-blue-3f hover:text-blue-600 px-1 pb-4 cursor-pointer'
+        >
+          Save
+        </div>
+      </div>
+      <div>
+        <Triangle className='absolute bottom-0 left-1/2 transform -translate-x-2/4 translate-y-full' />
+      </div>
+    </div>
+  )
+}
+
+const PaymentSource = ({ hash }: IDataType) => {
+  const [isCommentOpen, setCommentOpen] = useState(false)
+  const [value, setValue] = useState(15000)
+  return (
+    <tr className='h-67px border-b border-line-DEFAULT mr-4 justify-between'>
+      <td className='whitespace-nowrap'>
+        <div className='flex'>
+          <Checkbox
+            isChecked={false}
+            clickHandler={() => {
+              console.log('clicked')
+            }}
+          >
+            <span className='text-blue-3f'>{hash}</span>
+          </Checkbox>
+          <img className='ml-6' src={pencilIcon} />
+          <img className='ml-18px' src={passEyeIcon} />
+          <img className='ml-18px' src={pasteIcon} />
+        </div>
+      </td>
+      <td className='w-24'>
+        <div className='relative'>
+          <img
+            className='cursor-pointer'
+            onClick={() => setCommentOpen(true)}
+            src={add2Icon}
+          />
+          <CommentModal
+            isOpen={isCommentOpen}
+            onClose={() => setCommentOpen(false)}
+          />
+        </div>
+      </td>
+      <td>
+        <div className='flex justify-end pr-4'>
+          <Select
+            className='text-gray-2d w-28'
+            autocomplete={true}
+            min={10000}
+            max={20000}
+            step={1000}
+            value={value}
+            onChange={(value: number | null) => {
+              if (value) {
+                setValue(value)
+              }
+            }}
+          />
+        </div>
+      </td>
+    </tr>
   )
 }
 

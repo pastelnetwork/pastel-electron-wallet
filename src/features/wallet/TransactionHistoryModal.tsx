@@ -1,6 +1,7 @@
-import React from 'react'
-// Components
+import React, { useState } from 'react'
 import Modal from './modal'
+import Table from './table'
+import Radio from '../../common/components/Radio/Radio'
 import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
 import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
@@ -8,79 +9,106 @@ import checkGreenIcon from '../../common/assets/icons/ico-check-green.svg'
 import clockYellowIcon from '../../common/assets/icons/ico-clock-yellow.svg'
 import crossIcon from '../../common/assets/icons/ico-cross.svg'
 import caretDownIcon from '../../common/assets/icons/ico-caret-down.svg'
-import caretDown2Icon from '../../common/assets/icons/ico-caret-down2.svg'
 import calendarIcon from '../../common/assets/icons/ico-calendar.svg'
 import addressbookIcon from '../../common/assets/icons/ico-addressbook.svg'
 import user2Icon from '../../common/assets/icons/ico-user2.svg'
-import radioIcon from '../../common/assets/icons/ico-radio.svg'
-import radioCheckedIcon from '../../common/assets/icons/ico-radio-checked.svg'
-import Table, {
-  TColumnDefinitionType,
-} from '../../common/components/Table/Table'
 
-type TDataType = {
-  date: string
-  address: string
-  type: string
-  status: string
-  id: string
-  comments: string
-  fee: string
-  amount: string
-}
-
-const columns: TColumnDefinitionType<TDataType, keyof TDataType>[] = [
+const Columns = [
   {
-    key: 'date',
-    header: 'Date',
+    name: 'date',
   },
   {
-    key: 'address',
-    header: 'Recipient address',
-    classnames: '',
+    name: 'address',
+    custom: (value: string | number) => (
+      <div className='flex'>
+        <span className='text-blue-3f cursor-pointer'>{value}</span>
+        <img className='ml-6 cursor-pointer' src={pencilIcon} />
+        <img className='ml-18px cursor-pointer' src={passEyeIcon} />
+      </div>
+    ),
   },
   {
-    key: 'type',
-    header: 'Source type',
+    name: 'type',
   },
   {
-    key: 'status',
-    header: 'Status',
-    classnames: 'text-gray-a0 lg:ml-16 xl:ml-86px',
+    name: 'status',
+    custom: (value: string | number) => (
+      <img
+        src={
+          value == 'success'
+            ? checkGreenIcon
+            : value == 'pending'
+            ? clockYellowIcon
+            : value == 'failed'
+            ? crossIcon
+            : undefined
+        }
+        className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
+      />
+    ),
   },
   {
-    key: 'id',
-    header: 'ID',
+    name: 'id',
   },
   {
-    key: 'comments',
-    header: 'Comments',
+    name: 'comments',
+    custom: () => <img src={commentIcon} className='ml-8 cursor-pointer' />,
   },
   {
-    key: 'fee',
-    header: 'Fee',
+    name: 'fee',
   },
   {
-    key: 'amount',
-    header: 'Amount',
+    name: 'amount',
   },
 ]
 
-export type TTransactionHistoryModalProps = {
+const transactionHistory = [
+  {
+    date: '11.04.21 01:43',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    type: 'Shielded',
+    status: 'success',
+    id: '2654843-5933',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '24.000',
+  },
+  {
+    date: '11.04.21 05:00',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    type: 'Shielded',
+    status: 'pending',
+    id: '2654843',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '22.000',
+  },
+  {
+    date: '11.04.21 17:33',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v35',
+    type: 'Shielded',
+    status: 'failed',
+    id: '2654843',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '23.000',
+  },
+]
+
+export type TransactionHistoryModalProps = {
   isOpen: boolean
   handleClose: () => void
-  transactionHistory: Array<TDataType>
 }
 
-const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
+const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   isOpen,
   handleClose,
-  transactionHistory,
 }) => {
+  const [selectedOption, setSelectedOption] = useState(1)
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={handleClose}
+      handleClose={() => handleClose()}
       size='7xl'
       title='Transaction history'
     >
@@ -117,119 +145,35 @@ const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
             </div>
           </div>
         </div>
-        <div className='w-1/3 flex justify-end  items-end pb-2'>
-          <div className='flex items-center pl-4'>
-            <img src={radioIcon} className='pr-2' />
+        <div className='w-1/3 flex justify-end  items-end pb-2 space-x-4'>
+          <Radio
+            isChecked={selectedOption === 1}
+            clickHandler={() => setSelectedOption(1)}
+          >
             All
-          </div>
-          <div className='flex items-center pl-4'>
-            <img src={radioIcon} className='pr-2' />
+          </Radio>
+          <Radio
+            isChecked={selectedOption === 2}
+            clickHandler={() => setSelectedOption(2)}
+          >
             Received
-          </div>
-          <div className='flex items-center pl-4'>
-            <img src={radioCheckedIcon} className='pr-2' />
+          </Radio>
+          <Radio
+            isChecked={selectedOption === 3}
+            clickHandler={() => setSelectedOption(3)}
+          >
             Sent
-          </div>
-          <div className='flex items-center pl-4'>
-            <img src={radioIcon} className='pr-2' />
+          </Radio>
+          <Radio
+            isChecked={selectedOption === 4}
+            clickHandler={() => setSelectedOption(4)}
+          >
             In progress
-          </div>
+          </Radio>
         </div>
       </div>
       <div className='pt-6'>
-        <Table
-          columns={columns}
-          data={transactionHistory}
-          trClasses='pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between'
-          hasChecked={false}
-        />
-        <table className='w-full text-gray-71'>
-          <tbody>
-            <tr className='h-12 text-gray-4a  border-b border-gray-a0'>
-              <th className='text-left'>
-                <div className='flex items-center'>
-                  Date
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-              <th className='text-left'>
-                <div className='flex items-center'>
-                  Recipient address
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-              <th className='text-left'>
-                <div className='flex items-center'>
-                  Source type
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-              <th className='text-left'>
-                <div className='flex items-center'>
-                  Status
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-              <th className='text-left'>
-                <div className='flex items-center'>
-                  ID
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-              <th className='text-left'>
-                <div className='flex items-center'>
-                  Comments
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-              <th className='text-left pr-4'>
-                <div className='flex items-center'>
-                  Fee
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-              <th className='text-left'>
-                <div className='flex items-center'>
-                  Amount
-                  <img src={caretDown2Icon} className='ml-2 mt-1' />
-                </div>
-              </th>
-            </tr>
-            {transactionHistory.map((data: TDataType, index: number) => (
-              <tr key={index} className='h-67px'>
-                <td>{data.date}</td>
-                <td>
-                  <div className='flex'>
-                    <span className='text-blue-3f'>{data.address}</span>
-                    <img className='ml-6' src={pencilIcon} />
-                    <img className='ml-18px' src={passEyeIcon} />
-                  </div>
-                </td>
-                <td>{data.type}</td>
-                <td>
-                  <img
-                    src={
-                      data.status == 'success'
-                        ? checkGreenIcon
-                        : data.status == 'pending'
-                        ? clockYellowIcon
-                        : data.status == 'failed'
-                        ? crossIcon
-                        : undefined
-                    }
-                    className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
-                  />
-                </td>
-                <td>{data.id}</td>
-                <td>
-                  <img src={commentIcon} className='ml-8' />
-                </td>
-                <td>{data.fee}</td>
-                <thead>{data.amount}</thead>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table columns={Columns} data={transactionHistory} />
       </div>
     </Modal>
   )

@@ -116,59 +116,6 @@ const paymentSources = [
   },
 ]
 
-const transactionHistory = [
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'success',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
-  },
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'success',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
-  },
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'success',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
-  },
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'pending',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
-  },
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'failed',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
-  },
-]
-
 type TInfoProps = {
   currencyName: string
 }
@@ -318,7 +265,6 @@ const WalletScreen = (props: Tprops): JSX.Element => {
         }}
       ></PaymentModal>
       <TransactionHistoryModal
-        transactionHistory={transactionHistory}
         isOpen={isTransactionHistoryModalOpen}
         handleClose={() => {
           setTransactionHistoryModalOpen(false)
