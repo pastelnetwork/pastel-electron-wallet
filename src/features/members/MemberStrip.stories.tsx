@@ -11,6 +11,7 @@ const mockMemberStrips: TMemberStripProps = {
     followers: 161,
     name: 'Sally Fadel',
     isVerified: true,
+    followedByUser: true,
   },
   heighestSold: '1.700,000k',
   totalSell: '1.500K',
