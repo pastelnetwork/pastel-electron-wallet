@@ -44,13 +44,15 @@ export default function Select({
           type='button'
           {...getToggleButtonProps()}
           className={cn(
-            'bg-white text-gray-71 flex items-center justify-between shadow-2 h-40px px-14px rounded relative focus-visible',
+            'bg-white text-gray-71 flex items-center justify-between shadow-xs h-40px px-14px rounded relative focus-visible',
             className,
           )}
         >
           <div className='whitespace-nowrap'>
             {label && <span className='text-gray-b0 mr-2'>{label}:</span>}
-            {selectedItem ? selectedItem.value : placeholder}
+            <span className='text-gray-2d'>
+              {selectedItem ? selectedItem.value : placeholder}
+            </span>
           </div>
           <img
             className='text-gray-b0 ml-2'
@@ -59,7 +61,7 @@ export default function Select({
           />
           <ul
             {...getMenuProps()}
-            className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16'
+            className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-xs z-10'
             onClick={e => e.stopPropagation()}
           >
             {isOpen

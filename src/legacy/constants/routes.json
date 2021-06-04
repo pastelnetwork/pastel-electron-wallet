@@ -14,5 +14,6 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
-  "ART_REGISTRATION": "/art_registration"
+  "ART_REGISTRATION": "/art_registration",
+  "MARKET": "/market"
 }
