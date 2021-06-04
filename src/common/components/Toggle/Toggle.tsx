@@ -40,7 +40,7 @@ const Toggle: React.FC<TToggleProps> = ({
             ></div>
           </div>
         </div>
-        <div className='text-sm text-gray-33 ml-3 text-opacity-50'>
+        <div className='text-sm text-gray-33 ml-3 text-opacity-50 flex items-center'>
           {children}
         </div>
       </label>

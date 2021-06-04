@@ -236,6 +236,7 @@ const WalletScreen: React.FC = () => {
                 console.log(e)
               }}
             >
+              Hide empty accounts
               <img className='ml-2' src={elminationIcon} />
             </Toggle>
           </div>
@@ -260,7 +261,7 @@ const WalletScreen: React.FC = () => {
               PSL
             </span>
           </div>
-          <div className='mb-15px h-456px overflow-y-scroll mr-4'>
+          <div className='mb-15px h-456px overflow-y-scroll mt-15px mr-4'>
             <Table
               data={walletdatas}
               columns={columns}

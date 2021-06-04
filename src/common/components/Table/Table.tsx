@@ -28,7 +28,7 @@ const Table = <T, K extends keyof T>({
 }: TableProps<T, K>): JSX.Element => {
   const [selected, setSelected] = useState<number[]>([])
   return (
-    <table className='w-full mt-15px'>
+    <table className='w-full'>
       <tbody>
         {data.map((d, i) => (
           <tr
@@ -39,21 +39,23 @@ const Table = <T, K extends keyof T>({
             )}
           >
             <td className='flex items-center whitespace-nowrap w-5'>
-              <Checkbox
-                isChecked={selected.includes(i) ? true : false}
-                clickHandler={() => {
-                  if (selected.includes(i)) {
-                    const ind = selected.indexOf(i)
-                    if (ind > -1) {
-                      selected.splice(ind, 1)
+              <div className='mb-4'>
+                <Checkbox
+                  isChecked={selected.includes(i) ? true : false}
+                  clickHandler={() => {
+                    if (selected.includes(i)) {
+                      const ind = selected.indexOf(i)
+                      if (ind > -1) {
+                        selected.splice(ind, 1)
+                      }
+                    } else {
+                      selected.push(i)
                     }
-                  } else {
-                    selected.push(i)
-                  }
-                  setSelected([...selected])
-                  checkHandler(selected)
-                }}
-              ></Checkbox>
+                    setSelected([...selected])
+                    checkHandler(selected)
+                  }}
+                ></Checkbox>
+              </div>
             </td>
             {columns.map((c, index) => {
               if (c.key === 'hash') {
