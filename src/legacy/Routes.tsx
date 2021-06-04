@@ -51,7 +51,7 @@ import {
   PriceOvertime,
   PastelStatistics,
   HashrateOvertime,
-  NetTotalsOvertime,
+  NetworkTotalsOvertime,
   MempoolSizeOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
@@ -657,8 +657,8 @@ class RouteApp extends React.Component<any, any> {
               />
 
               <Route
-                path={routes.NETTOTALSOVERTIME}
-                render={() => <NetTotalsOvertime info={info} />}
+                path={routes.NETWORKTOTALSOVERTIME}
+                render={() => <NetworkTotalsOvertime info={info} />}
               />
 
               <Route
