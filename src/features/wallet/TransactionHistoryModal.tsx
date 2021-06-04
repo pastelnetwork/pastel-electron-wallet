@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 // Components
 import Modal from './modal'
+import Radio from '../../common/components/Radio/Radio'
 import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
 import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
@@ -12,8 +13,6 @@ import caretDown2Icon from '../../common/assets/icons/ico-caret-down2.svg'
 import calendarIcon from '../../common/assets/icons/ico-calendar.svg'
 import addressbookIcon from '../../common/assets/icons/ico-addressbook.svg'
 import user2Icon from '../../common/assets/icons/ico-user2.svg'
-import radioIcon from '../../common/assets/icons/ico-radio.svg'
-import radioCheckedIcon from '../../common/assets/icons/ico-radio-checked.svg'
 
 type IDataType = {
   date: string
@@ -37,6 +36,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   handleClose,
   transactionHistory,
 }) => {
+  const [selectedOption, setSelectedOption] = useState(1)
   return (
     <Modal
       isOpen={isOpen}
@@ -77,23 +77,31 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
             </div>
           </div>
         </div>
-        <div className='w-1/3 flex justify-end  items-end pb-2'>
-          <div className='flex items-center pl-4'>
-            <img src={radioIcon} className='pr-2' />
+        <div className='w-1/3 flex justify-end  items-end pb-2 space-x-4'>
+          <Radio
+            isChecked={selectedOption === 1}
+            clickHandler={() => setSelectedOption(1)}
+          >
             All
-          </div>
-          <div className='flex items-center pl-4'>
-            <img src={radioIcon} className='pr-2' />
+          </Radio>
+          <Radio
+            isChecked={selectedOption === 2}
+            clickHandler={() => setSelectedOption(2)}
+          >
             Received
-          </div>
-          <div className='flex items-center pl-4'>
-            <img src={radioCheckedIcon} className='pr-2' />
+          </Radio>
+          <Radio
+            isChecked={selectedOption === 3}
+            clickHandler={() => setSelectedOption(3)}
+          >
             Sent
-          </div>
-          <div className='flex items-center pl-4'>
-            <img src={radioIcon} className='pr-2' />
+          </Radio>
+          <Radio
+            isChecked={selectedOption === 4}
+            clickHandler={() => setSelectedOption(4)}
+          >
             In progress
-          </div>
+          </Radio>
         </div>
       </div>
       <div className='pt-6'>
