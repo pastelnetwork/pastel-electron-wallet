@@ -14,6 +14,7 @@ export type TColumnDefinitionType<T, K extends keyof T> = {
 }
 
 type TableProps<T, K extends keyof T> = {
+  trClasses?: string
   data: Array<T>
   columns: Array<TColumnDefinitionType<T, K>>
   hasChecked: boolean
@@ -26,6 +27,7 @@ const Table = <T, K extends keyof T>({
   columns,
   checkHandler,
   hasChecked = true,
+  trClasses = 'pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between',
   autocompleteHandler,
 }: TableProps<T, K>): JSX.Element => {
   const [selected, setSelected] = useState<number[]>([])
@@ -35,10 +37,7 @@ const Table = <T, K extends keyof T>({
         {data.map((d, i) => (
           <tr
             key={i}
-            className={cn(
-              'pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between',
-              selected.includes(i) && 'bg-blue-f8',
-            )}
+            className={cn(trClasses, selected.includes(i) && 'bg-blue-f8')}
           >
             {hasChecked && (
               <td className='flex items-center whitespace-nowrap w-5'>

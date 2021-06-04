@@ -137,7 +137,12 @@ const TransactionHistoryModal: React.FC<TTransactionHistoryModalProps> = ({
         </div>
       </div>
       <div className='pt-6'>
-        <Table columns={columns} data={transactionHistory} hasChecked={false} />
+        <Table
+          columns={columns}
+          data={transactionHistory}
+          trClasses='pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between'
+          hasChecked={false}
+        />
         <table className='w-full text-gray-71'>
           <tbody>
             <tr className='h-12 text-gray-4a  border-b border-gray-a0'>
