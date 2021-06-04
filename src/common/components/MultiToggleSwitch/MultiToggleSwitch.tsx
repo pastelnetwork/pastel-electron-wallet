@@ -36,7 +36,7 @@ const MultiToggleSwitch: React.FC<TProps> = ({
       ? itemInActiveClassName
       : 'text-gray-71'
 
-    return `flex font-avenir font-extrabold leading-4 text-sm py-1.5 px-3 hover:cursor-pointer ${
+    return `flex font-avenir font-extrabold leading-4 text-sm py-1.5 px-3 cursor-pointer ${
       isActive ? activeClass : inActiveClass
     }`
   }
@@ -69,7 +69,7 @@ const MultiToggleSwitch: React.FC<TProps> = ({
                 key={index}
                 onClick={() => handleClick(index)}
               >
-                <label>{item.label}</label>
+                <span>{item.label}</span>
                 {typeof item.count !== 'undefined' && (
                   <span className={getCountClassName(index === activeIndex)}>
                     {item.count > 99 ? 99 : item.count}
