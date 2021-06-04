@@ -101,7 +101,7 @@ const Header = (props: PropsType) => {
     {
       src: UserIcon,
       variant: 'background',
-      func: () => history.push(routes.MYSECURITY),
+      func: () => history.push(routes.PROFILE),
     },
   ]
 

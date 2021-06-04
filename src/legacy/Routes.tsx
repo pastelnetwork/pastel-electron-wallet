@@ -51,7 +51,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import MySecurity from '../features/profile/mySecurity'
+import Profile from '../features/profile'
 import NFTMarketFeed from '../features/NFTMarket'
 import { app } from 'electron'
 
@@ -585,8 +585,8 @@ class RouteApp extends React.Component<any, any> {
             />
 
             <Route
-              path={routes.MYSECURITY}
-              render={() => <MySecurity info={info} />}
+              path={routes.PROFILE}
+              render={() => <Profile info={info} />}
             />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
