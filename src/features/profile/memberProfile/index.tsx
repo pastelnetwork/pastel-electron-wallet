@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const profile_data = {
   username: '@zndrson',
   walletId: '0xc4c16a645aaaa4123b21a',
-  reputation: 4.89,
+  reputation: 3.69,
   name: 'Katy Jaison',
   description: 'Cosmic Perspective: Galatic Arch',
   address: 'New York, US',
@@ -28,7 +28,7 @@ const general_data = {
   postcode: '#121',
   language: 'English',
   categories: 'motion graphics, illustration, abstract',
-  reputation: 4.89,
+  reputation: 3.89,
   buyerBans: 3,
   highestFeeRecieved: '136,200,000k PSL (#632)',
   totalSalesAmount: '560,600,00k PSL (#211)',
