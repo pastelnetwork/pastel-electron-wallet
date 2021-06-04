@@ -29,9 +29,8 @@ const ChangePassword: React.FC = () => {
         isMatch={!noMatch}
       />
       <div className='text-gray-a0 text-h6 leading-relaxed'>
-        {noMatch && <div className='text-red-fe'>Passwords do not match</div>}
+        {noMatch && <div className='text-red-fe'>Passwords must match</div>}
         <span>
-          {' '}
           We strongly suggest that you save your password in a password manager
           such as{' '}
         </span>
@@ -40,7 +39,7 @@ const ChangePassword: React.FC = () => {
           target='_blank'
           className='underline text-blue-3f'
         >
-          LastPase
+          LastPass
         </a>
         <span> or </span>
         <a
@@ -50,6 +49,7 @@ const ChangePassword: React.FC = () => {
         >
           1Password
         </a>
+        <span>.</span>
       </div>
     </>
   )
@@ -59,7 +59,7 @@ const ChangePassword: React.FC = () => {
   return (
     <Card
       title='Change password'
-      description='Contain at least 1 letter, 1 number and 1 symbol. Minimum length is 12 characters'
+      description='Must contain at least 1 letter, 1 number and 1 symbol. Minimum length is 12 characters.'
       content={content}
       footer={footer}
     />

@@ -130,7 +130,7 @@ const Password: React.FC<TPasswordProps> = ({
   const getInputClassnames = (hasRefresh: boolean) => {
     return `relative w-full shadow-input h-10 mt-2.5 rounded border text-gray-2d
     border-solid ${
-      isMatch ? 'border-input-border' : 'border-loader-red'
+      isMatch ? 'border-input-border' : 'border-red-fe'
     }  outline-none focus:border-blue-450 box-border px-4 ${
       hasRefresh ? 'pr-20' : 'pr-10'
     }`
