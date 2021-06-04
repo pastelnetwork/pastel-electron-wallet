@@ -1,16 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
+import cn from 'classnames'
 
-const Toggle: React.FC = () => {
+export type TToggleProps = {
+  classNames?: string
+  selectedClass?: string
+  toggleHandler: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+}
+
+const Toggle: React.FC<TToggleProps> = ({
+  children,
+  toggleHandler,
+  classNames,
+  selectedClass,
+}) => {
+  const [checked, setChecked] = useState(false)
   return (
     <div>
       <label className='flex items-center cursor-pointer'>
         <div className='relative'>
           <input type='checkbox' id='toggleB' className='sr-only' />
-          <div className='block bg-gray-57 bg-opacity-10 w-8 h-21px rounded-full'></div>
-          <div className='dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition'></div>
+          <div
+            className={cn(
+              'block bg-gray-57 flex items-center',
+              classNames,
+              checked && selectedClass,
+              !checked && 'bg-opacity-10',
+            )}
+            onClick={e => {
+              console.log(checked)
+              toggleHandler(e)
+              setChecked(!checked)
+            }}
+          >
+            <div
+              className={cn(
+                'dot absolute bg-white w-3 h-3 rounded-full',
+                !checked && 'left-1',
+                checked && 'right-1',
+              )}
+            ></div>
+          </div>
         </div>
         <div className='text-sm text-gray-33 ml-3 text-opacity-50'>
-          Hide empty accounts
+          {children}
         </div>
       </label>
     </div>

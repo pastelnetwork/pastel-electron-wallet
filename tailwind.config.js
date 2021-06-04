@@ -147,6 +147,9 @@ module.exports = {
           57: '#57657B',
           23: '#23262F',
         },
+        green: {
+          68: '#68CC67',
+        },
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
