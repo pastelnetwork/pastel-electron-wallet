@@ -21,7 +21,7 @@ const Columns = [
   },
   {
     name: 'address',
-    custom: (value: string) => (
+    custom: (value: string | number) => (
       <div className='flex'>
         <span className='text-blue-3f cursor-pointer'>{value}</span>
         <img className='ml-6 cursor-pointer' src={pencilIcon} />
@@ -34,7 +34,7 @@ const Columns = [
   },
   {
     name: 'status',
-    custom: (value: string) => (
+    custom: (value: string | number) => (
       <img
         src={
           value == 'success'
@@ -73,27 +73,27 @@ const transactionHistory = [
     id: '2654843-5933',
     comments: 'abcdefg',
     fee: '100',
-    amount: '22.000',
+    amount: '24.000',
   },
   {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    date: '11.04.21 05:00',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     type: 'Shielded',
     status: 'pending',
-    id: '2654843-5933',
+    id: '2654843',
     comments: 'abcdefg',
     fee: '100',
     amount: '22.000',
   },
   {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    date: '11.04.21 17:33',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v35',
     type: 'Shielded',
     status: 'failed',
-    id: '2654843-5933',
+    id: '2654843',
     comments: 'abcdefg',
     fee: '100',
-    amount: '22.000',
+    amount: '23.000',
   },
 ]
 

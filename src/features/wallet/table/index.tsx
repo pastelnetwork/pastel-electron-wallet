@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import cx from 'classnames'
 import caretDown2Icon from '../../../common/assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../../common/assets/icons/ico-caret-up2.svg'
@@ -14,13 +14,34 @@ export type Column = {
 }
 
 export type TableProps = {
-  columns: Column[]
-  data: Row[]
+  columns: Array<Column>
+  data: Array<Row>
 }
 
 const Table = ({ columns, data }: TableProps): JSX.Element => {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
+  const [tableData, setTableData] = useState(Array<Row>())
+
+  useEffect(() => {
+    setTableData(data)
+  }, [data])
+
+  useEffect(() => {
+    console.log(sortIndex, sortOrder)
+    if (sortOrder == 0) {
+      return
+    }
+    setTableData(
+      data
+        .map(each => each)
+        .sort(
+          (a, b) =>
+            sortOrder *
+            (a[columns[sortIndex].name] > b[columns[sortIndex].name] ? 1 : -1),
+        ),
+    )
+  }, [sortIndex, sortOrder])
 
   const setSort = (index: number) => {
     if (index === sortIndex) {
@@ -65,7 +86,7 @@ const Table = ({ columns, data }: TableProps): JSX.Element => {
             </th>
           ))}
         </tr>
-        {data.map((row: Row, index: number) => (
+        {tableData.map((row: Row, index: number) => (
           <tr key={index} className='h-67px'>
             {columns.map((column, index) => (
               <td key={index}>
