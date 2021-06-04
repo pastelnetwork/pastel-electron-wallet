@@ -1,12 +1,12 @@
 import React from 'react'
 
-export type TItem = {
+export type TMultiToggleDataItem = {
   label: string
   count?: number
 }
 
-export type TProps = {
-  data: TItem[]
+export type TMultiToggle = {
+  data: TMultiToggleDataItem[]
   activeIndex: number
   containerClassName?: string
   itemInActiveClassName?: string
@@ -16,7 +16,7 @@ export type TProps = {
   onToggle: (index: number) => void
 }
 
-const MultiToggleSwitch: React.FC<TProps> = ({
+const MultiToggleSwitch: React.FC<TMultiToggle> = ({
   data,
   activeIndex,
   containerClassName,
@@ -62,7 +62,7 @@ const MultiToggleSwitch: React.FC<TProps> = ({
     <>
       {data?.length && (
         <div className={container_className}>
-          {data?.map((item: TItem, index: number) => {
+          {data?.map((item: TMultiToggleDataItem, index: number) => {
             return (
               <div
                 className={getItemClassName(index === activeIndex)}
