@@ -81,6 +81,7 @@ module.exports = {
         //128px: 32 default
         //144px: 36 default
         //160px: 40 default
+        '174px': '10.875rem',
         //176px: 44 default
         //192px: 48 default
         //208px: 52 default

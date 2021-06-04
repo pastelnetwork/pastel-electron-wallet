@@ -7,8 +7,6 @@ import plusIcon from '../../common/assets/icons/ico-plus.svg'
 import electIcon from '../../common/assets/icons/ico-elect.svg'
 import Tooltip from '../../common/components/Tooltip'
 import Toggle from '../../common/components/Toggle'
-import { ThemeProvider } from 'styled-components/macro'
-import { theme } from '../../common/theme'
 import Button from '../../common/components/Button/Button'
 import Table, {
   TColumnDefinitionType,
@@ -209,7 +207,7 @@ const WalletScreen: React.FC = () => {
   ] = useState(false)
 
   return (
-    <ThemeProvider theme={theme}>
+    <div>
       <div className='bg-gray-f8 pt-5 sm:px-10 md:px-60px'>
         <div className='flex justify-between '>
           {card_items.map((card, index) => (
@@ -297,7 +295,7 @@ const WalletScreen: React.FC = () => {
         </div>
 
         <div className='flex justify-end mt-5 mb-10'>
-          <Button variant='transparent' style={{ width: '247px' }}>
+          <Button variant='transparent' className='w-247px'>
             <div className='flex items-center  ml-6'>
               <img src={electIcon} className='py-3' />
               <span className='text-sm ml-11px'>Create a new PSL address</span>
@@ -305,8 +303,7 @@ const WalletScreen: React.FC = () => {
           </Button>
           <Button
             onClick={() => setPaymentModalOpen(true)}
-            className='ml-11px'
-            style={{ width: '174px' }}
+            className='ml-11px w-174px'
           >
             <div className='flex items-center ml-5'>
               <img src={plusIcon} className='py-3.5' />
@@ -329,7 +326,7 @@ const WalletScreen: React.FC = () => {
           setTransactionHistoryModalOpen(false)
         }}
       ></TransactionHistoryModal>
-    </ThemeProvider>
+    </div>
   )
 }
 

@@ -8,9 +8,7 @@ export type TButtonCloseProps = {
 
 const ButtonClose: React.FC<TButtonCloseProps> = ({ onClick, className }) => {
   const classes = cn(
-    {
-      'border flex items-center justify-center border-button-text w-7 h-7 rounded-lg focus:outline-none': true,
-    },
+    'border flex items-center justify-center border-button-text w-7 h-7 rounded-lg focus:outline-none',
     className,
   )
 
