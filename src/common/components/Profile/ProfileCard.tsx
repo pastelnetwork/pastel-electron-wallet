@@ -24,7 +24,10 @@ const ProfileCard = (): JSX.Element => {
           <div className='px-1 pt-1 text-gray-71'>@zndrson</div>
           <div className='px-1 pt-2 text-blue-3f flex'>
             {truncateMiddle('0xc4c16a645aaaa4123b21a', 11, 4, '...')}
-            <img src={svg_copy} className='pl-10px cursor-pointer' />
+            <img
+              src={svg_copy}
+              className='pl-10px cursor-pointer filter hover:contrast-200'
+            />
           </div>
         </div>
       </div>
@@ -40,22 +43,31 @@ const ProfileCard = (): JSX.Element => {
           Cosmic Perspective: Galactic Arch
         </div>
         <div className='text-sm text-gray-4a flex'>
-          <img src={svg_location} className='cursor-pointer pr-14px' />
+          <img
+            src={svg_location}
+            className='cursor-pointer pr-14px filter hover:contrast-200'
+          />
           New York, US
         </div>
         <div className='py-4 flex'>
-          <img src={svg_facebook} className='cursor-pointer mr-3' />
-          <img src={svg_twitter} className='cursor-pointer' />
+          <img
+            src={svg_facebook}
+            className='cursor-pointer mr-3 filter hover:contrast-200'
+          />
+          <img
+            src={svg_twitter}
+            className='cursor-pointer filter hover:contrast-200'
+          />
         </div>
-        <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-4 bg-blue-400 text-white h-10'>
+        <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-4 h-10 bg-blue-3f text-white hover:bg-blue-500'>
           <img src={svg_plus} className='mr-9px' />
           Follow
         </div>
-        <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-2 text-blue-400 h-10 border-blue-400'>
+        <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-2 h-10 text-blue-3f border-blue-3f hover:border-blue-600'>
           <img src={svg_envelope} className='mr-9px' />
           Message
         </div>
-        <div className='cursor-pointer text-xs text-blue-3f pt-2 flex items-center justify-center'>
+        <div className='cursor-pointer text-xs text-blue-3f pt-2 flex items-center justify-center filter hover:contrast-200'>
           <img src={svg_flag} className='mr-2 mt-1' />
           report
         </div>
@@ -68,27 +80,25 @@ function truncateMiddle(
   str: string,
   frontLen: number,
   backLen: number,
-  truncateStr: string,
+  truncateStr = '&hellip;',
 ) {
-  if (str === null) {
+  if (!str) {
     return ''
   }
-  const strLen = str.length
   // Setting default values
-  frontLen = ~~frontLen // will cast to integer
-  backLen = ~~backLen
-  truncateStr = truncateStr || '&hellip;'
+  frontLen = Math.floor(frontLen)
+  backLen = Math.floor(backLen)
   if (
     (frontLen === 0 && backLen === 0) ||
-    frontLen >= strLen ||
-    backLen >= strLen ||
-    frontLen + backLen >= strLen
+    frontLen >= str.length ||
+    backLen >= str.length ||
+    frontLen + backLen >= str.length
   ) {
     return str
   } else if (backLen === 0) {
     return str.slice(0, frontLen) + truncateStr
   }
-  return str.slice(0, frontLen) + truncateStr + str.slice(strLen - backLen)
+  return str.slice(0, frontLen) + truncateStr + str.slice(str.length - backLen)
 }
 
 export default ProfileCard

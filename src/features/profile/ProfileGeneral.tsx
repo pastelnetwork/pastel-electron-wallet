@@ -1,5 +1,5 @@
 import React from 'react'
-import StarRate from './StarRate'
+import StarRate from '../../common/components/Profile/StarRate'
 
 const ProfileGeneral = (): JSX.Element => {
   return (
@@ -26,7 +26,7 @@ const ProfileGeneral = (): JSX.Element => {
         </div>
         <div className='flex pt-2'>
           <div className='w-190px text-sm text-gray-71'>Buyer reputation</div>
-          <div className='flex flex-grow text-gray-4a flex-col xl:flex-row'>
+          <div className='flex flex-grow text-gray-4a flex-wrap'>
             <StarRate />
             <div className='pl-6px text-gray-500'>4.89 reputation</div>
           </div>

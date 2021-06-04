@@ -15,7 +15,7 @@ module.exports = {
       '2xl': '1700px',
     },
     fontFamily: {
-      body: 'Roboto, Arial, Helvetica, Helvetica Neue, serif',
+      body: 'Avenir, Roboto, Arial, Helvetica, Helvetica Neue, serif',
     },
     extend: {
       spacing: {
@@ -25,6 +25,7 @@ module.exports = {
         '6px': '0.375rem',
         '9px': '0.5625rem',
         '10px': '0.625rem',
+        '8px': '0.188rem',
         '13px': '0.813rem',
         '14px': '0.875rem',
         '15px': '0.938rem',
@@ -32,6 +33,8 @@ module.exports = {
         '18px': '1.125rem',
         '22px': '1.375rem',
         '26px': '1.625rem',
+        '27px': '1.688rem',
+        '28px': '1.75rem',
         '30px': '1.875rem',
         '32px': '2rem',
         '35px': '2.1875rem',
@@ -55,6 +58,7 @@ module.exports = {
         '120px': '7.5rem',
         '190px': '11.875rem',
         '220px': '13.75rem',
+        '230px': '14.375rem',
         '300px': '18.75rem',
         '315px': '19.6875rem',
         '335px': '20.938rem',
@@ -99,6 +103,13 @@ module.exports = {
           '3f': '#3F9AF7',
         },
         gray: {
+          // text
+          a0: '#A0AEC0',
+          71: '#718096',
+          '4a': '#4A5568',
+          '2d': '#2D3748',
+          '1a': '#1A202C',
+          // --
           f9: '#F9FAFB',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
@@ -108,10 +119,6 @@ module.exports = {
           e6: '#E6E8EC',
           dd: '#DDE0E3',
           b0: '#B0B7C3',
-          a0: '#A0AEC0',
-          71: '#718096',
-          '4a': '#4A5568',
-          '1a': '#1A202C',
           110: '#F2F2F2',
           35: '#353941',
           33: '#334D6E',
@@ -120,6 +127,7 @@ module.exports = {
           '1f': '#1F1F39',
           '1d': '#1D263A',
           14: '#141416',
+          23: '#23262F',
         },
         red: {
           '7a': '#FF7A00',
@@ -133,6 +141,7 @@ module.exports = {
         navigation: {
           DEFAULT: '#A6B0C2',
           selected: '#334D6E',
+          background: '#E6E8EC',
         },
         tab: {
           active: '#353945',
@@ -141,17 +150,33 @@ module.exports = {
         line: {
           DEFAULT: '#F2F4F7',
         },
+        icon: {
+          DEFAULT: '#8E98A3',
+          active: '#334D6E',
+        },
         background: {
           onboarding: '#FCFCFD',
           main: '#F8F9FA',
           modal: '#1A1A1A',
         },
       },
+      boxShadow: {
+        xs:
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 1px 1px rgba(10, 22, 70, 0.1)',
+        sm:
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
+        md:
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 6px 8px rgba(10, 22, 70, 0.1)',
+        lg:
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
+        xl:
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+      },
       fontSize: {
         h1: '2rem',
         h2: '1.5rem',
-        h3: '1.375',
-        h4: '1.125',
+        h3: '1.375rem',
+        h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
         10: '0.625rem',
@@ -161,8 +186,15 @@ module.exports = {
       borderRadius: {
         '4px': '0.25rem',
       },
+      container: {
+        center: true,
+      },
     },
   },
-  variants: {},
+  variants: {
+    extend: {
+      contrast: ['hover', 'focus'],
+    },
+  },
   plugins: [],
 }
