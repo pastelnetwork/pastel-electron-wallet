@@ -44,11 +44,11 @@ export default function Select(props: TSelectProps): JSX.Element {
     inputValueRef,
   } = useSelectOptions(props)
 
-  let textClass: string
+  let autoCompleteColor: string
   if ('options' in props) {
-    textClass = props.label ? 'text-gray-2d' : 'text-gray-71'
+    autoCompleteColor = props.label ? 'text-gray-2d' : 'text-gray-71'
   } else {
-    textClass = 'text-gray-35' // color for number autocomplete
+    autoCompleteColor = 'text-gray-35'
   }
 
   return (
@@ -82,7 +82,7 @@ export default function Select(props: TSelectProps): JSX.Element {
           <div
             className={cn(
               'bg-white text-gray-71 flex-center shadow-2px h-10 rounded relative',
-              textClass,
+              autoCompleteColor,
               className,
             )}
           >
