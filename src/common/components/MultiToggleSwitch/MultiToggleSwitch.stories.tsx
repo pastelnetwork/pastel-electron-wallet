@@ -36,8 +36,8 @@ const Template: Story<TProps> = ({ activeIndex, ...args }) => {
 export const Switch = Template.bind({})
 Switch.args = {
   data,
-  containerClassName: '',
   activeIndex: 0,
+  containerClassName: '',
   itemInActiveClassName: '',
   itemActiveClassName: '',
   countInActiveClassName: '',
