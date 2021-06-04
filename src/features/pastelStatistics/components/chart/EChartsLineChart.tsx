@@ -77,9 +77,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     } else if (dataY1?.length && dataY2?.length) {
       if (dataX) {
         const data: Data = []
-        dataY1.map((o, index) => {
+        dataY1.map((value, index) => {
           data.push({
-            value: `${o} : ${dataY2[index]}`,
+            value: `${value} : ${dataY2[index]}`,
             time: dataX[index],
           })
         })
@@ -168,7 +168,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         {granularities && (
           <div className={styles.granularitySelect}>
             <span style={{ color: currentTheme?.color }}>Granularity: </span>
-            {granularities?.map((o, index) => {
+            {granularities?.map((granularity, index) => {
               return (
                 <button
                   className={`${getActiveGranularityButtonStyle(index)} ${
@@ -177,20 +177,20 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
                   onClick={() => {
                     setSelectedGranularityButton(index)
                     if (handleGranularityFilterChange) {
-                      handleGranularityFilterChange(o)
+                      handleGranularityFilterChange(granularity)
                     }
                   }}
                   type='button'
-                  key={`button-filter-${o}`}
+                  key={`button-filter-${granularity}`}
                 >
-                  {o}
+                  {granularity}
                 </button>
               )
             })}
           </div>
         )}
         <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>period: </span>
+          <span style={{ color: currentTheme?.color }}>Period: </span>
           {periods.map((period, index) => (
             <button
               className={`${getActivePriodButtonStyle(index)} ${

@@ -262,8 +262,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         },
         axisLabel: {
           formatter: function (value: string) {
-            const val = Number(value).toFixed(2)
-            return `${val} k`
+            return `${Number(value).toFixed(2)} k`
           },
         },
       },

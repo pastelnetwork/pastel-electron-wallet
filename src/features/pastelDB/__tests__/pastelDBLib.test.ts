@@ -1224,4 +1224,134 @@ describe('managePastelDatabase', () => {
       )
     }
   })
+
+  test('getFilteredDataFromDBByPeriod should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [
+        {
+          columns: [
+            'id',
+            'hash',
+            'confirmations',
+            'size',
+            'height',
+            'version',
+            'merkleroot',
+            'finalsaplingroot',
+            'tx',
+            'time',
+            'nonce',
+            'solution',
+            'bits',
+            'difficulty',
+            'chainwork',
+            'anchor',
+            'valuePools',
+            'previousblockhash',
+            'nextblockhash',
+            'create_timestamp',
+          ],
+          values: [
+            [
+              1,
+              'hash',
+              123,
+              456,
+              0,
+              0,
+              '',
+              '',
+              '["txid1"]',
+              0,
+              '',
+              '',
+              '',
+              0,
+              '',
+              '',
+              '',
+              '',
+              '',
+              0,
+            ],
+          ],
+        },
+      ])
+    try {
+      // Act
+      const result = pastelDBLib.getFilteredDataFromDBByPeriod(
+        pastelDB.db,
+        'blockinfo',
+        '1d',
+        'all',
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual([
+        {
+          columns: [
+            'id',
+            'hash',
+            'confirmations',
+            'size',
+            'height',
+            'version',
+            'merkleroot',
+            'finalsaplingroot',
+            'tx',
+            'time',
+            'nonce',
+            'solution',
+            'bits',
+            'difficulty',
+            'chainwork',
+            'anchor',
+            'valuePools',
+            'previousblockhash',
+            'nextblockhash',
+            'create_timestamp',
+          ],
+          values: [
+            [
+              1,
+              'hash',
+              123,
+              456,
+              0,
+              0,
+              '',
+              '',
+              '["txid1"]',
+              0,
+              '',
+              '',
+              '',
+              0,
+              '',
+              '',
+              '',
+              '',
+              '',
+              0,
+            ],
+          ],
+        },
+      ])
+
+      // Act invalid table name
+      pastelDBLib.getFilteredDataFromDBByPeriod(
+        pastelDB.db,
+        'blockinfoError',
+        '1d',
+        'all',
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getFilteredDataFromDBByPeriod error: blockinfoError is invalid table name',
+      )
+    }
+  })
 })

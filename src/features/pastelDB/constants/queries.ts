@@ -505,10 +505,10 @@ export const whereTransactionIDMatchingQuery =
 
 export const orderByIDQuery = ' ORDER BY id DESC LIMIT 1'
 
-export const averageFilterByDailyPeriodQuery = `SELECT strftime('%Y-%m-%d', datetime(create_timestamp / 1000, 'unixepoch')), 
+export const averageFilterByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
   AVG(size) FROM blockinfo`
 
-export const averageFilterByMonthlyPeriodQuery = `SELECT strftime('%Y-%m', datetime(create_timestamp / 1000, 'unixepoch')), 
+export const averageFilterByMonthlyPeriodQuery = `SELECT strftime('%m/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
   AVG(size) FROM blockinfo`
 
 export const averageFilterByYearlyPeriodQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
