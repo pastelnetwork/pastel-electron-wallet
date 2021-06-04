@@ -36,7 +36,7 @@ const ProfileCard = ({
   return (
     <div className='flex flex-col pb-8 rounded-md shadow-sm bg-white w-315px'>
       <div className='bg-blue-300 h-32 rounded-t-md'>
-        <img src={svg_card} />
+        <img className='rounded-t-lg w-315px' src={svg_card} />
       </div>
       <div className='-mt-8 px-5 flex pb-2'>
         <div className='rounded-full border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
