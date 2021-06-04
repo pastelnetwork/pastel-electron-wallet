@@ -36,7 +36,10 @@ const Table = ({ columns, data }: TableProps): JSX.Element => {
       <tbody>
         <tr className='h-12 text-gray-4a  border-b border-gray-a0'>
           {columns.map((column, index) => (
-            <th className={column.align ? 'text-' + column.align : 'text-left'}>
+            <th
+              key={index}
+              className={column.align ? 'text-' + column.align : 'text-left'}
+            >
               <div
                 className='flex items-center cursor-pointer select-none'
                 onClick={() => setSort(index)}
