@@ -8,25 +8,25 @@
 
 @layer base {
   h1 {
-    @apply text-h1 leading-10 font-extrabold text-text-default;
+    @apply text-h1 leading-10 font-extrabold text-text;
   }
   h2 {
-    @apply text-h2 leading-8 font-extrabold text-text-default;
+    @apply text-h2 leading-8 font-extrabold text-text;
   }
   h3 {
-    @apply text-h3 leading-7 font-extrabold text-text-default;
+    @apply text-h3 leading-7 font-extrabold text-text;
   }
   h4 {
-    @apply text-h4 leading-6 text-text-default;
+    @apply text-h4 leading-6 text-text;
   }
   h5 {
-    @apply text-h5 text-text-default;
+    @apply text-h5 text-text;
   }
   h6 {
-    @apply text-h6 text-text-default;
+    @apply text-h6 text-text;
   }
   p {
-    @apply text-text-default;
+    @apply text-text;
   }
 
   .input-field:focus + fieldset {
@@ -36,7 +36,7 @@
     @apply border border-blue-3f;
   }
   .input-field.is-valid + fieldset {
-    @apply border border-success-default;
+    @apply border border-success;
   }
   .input-field.is-invalid + fieldset {
     @apply border border-red-7a;

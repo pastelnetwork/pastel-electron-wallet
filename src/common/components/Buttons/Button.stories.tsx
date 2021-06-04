@@ -1,6 +1,6 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Button, { ButtonProps } from './index'
+import Button, { ButtonProps } from './Button'
 
 const Template: Story<ButtonProps> = ({
   children,
@@ -24,7 +24,7 @@ const Template: Story<ButtonProps> = ({
 }
 
 export const ButtonDefault = Template.bind({})
-const children = 'Button'
+const children = 'button'
 const variant = 'default'
 const disabled = false
 const fulid = false

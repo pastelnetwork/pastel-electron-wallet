@@ -5,7 +5,7 @@ import Typography from '../../../common/components/Typography/Typography'
 import { colors } from '../../../common/theme/colors'
 
 import registerImage from '../../../common/assets/images/registration-fee-pending.png'
-import Button from '../../../common/components/Button'
+import { Button } from '../../../common/components/Buttons'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import * as Styles from './RegistrationPending.styles'
 

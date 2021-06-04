@@ -1,7 +1,7 @@
 import React from 'react'
 import Input from '../Input'
 
-export interface BidInputProps {
+export type BidInputProps = {
   onBidChange(value: string): void
   bid?: string
 }

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 
 import Input from '../../../common/components/Input'
-import Button from '../../../common/components/Button'
+import { Button } from '../../../common/components/Buttons'
 import Typography from '../../../common/components/Typography/Typography'
 
 import * as ROUTES from '../../../common/utils/constants/routes'
@@ -77,9 +77,9 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
             Restore access now
           </Styles.FooterLink>
         </Styles.FooterText>
-        <Styles.Button type='submit' onClick={() => setUser(true)}>
+        <Button type='submit' onClick={() => setUser(true)} fluid>
           Submit
-        </Styles.Button>
+        </Button>
       </Styles.Form>
       <Link to={ROUTES.SIGN_UP}>
         <Button variant='transparent' style={{ width: '100%' }}>

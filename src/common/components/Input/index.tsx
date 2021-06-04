@@ -4,7 +4,7 @@ import Icon from '../Icon'
 import CheckIcon from '../../assets/icons/ico-check.svg'
 import TimesIcon from '../../assets/icons/ico-times.svg'
 
-export interface InputProps {
+export type InputProps = {
   className?: string
   type?: 'text' | 'password' | 'number'
   prepend?: ReactSVGElement

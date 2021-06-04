@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 
 import Input from '../../../common/components/Input'
-import Button from '../../../common/components/Button'
+import { Button } from '../../../common/components/Buttons'
 import FormLoading from '../../../common/components/FormLoading/FormLoading'
 import Typography from '../../../common/components/Typography/Typography'
 import { colors } from '../../../common/theme/colors'

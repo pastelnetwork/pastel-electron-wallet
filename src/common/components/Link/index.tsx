@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import cn from 'classnames'
 
-export interface LinkProps {
+export type LinkProps = {
   children?: string | ReactNode
   className?: string
   href?: string
@@ -20,7 +20,7 @@ const Link: React.FC<LinkProps> = ({
 
   const classes = cn(
     {
-      'text-button-default focus:outline-none hover:text-button-hover active:text-button-active transition duration-300': true,
+      'text-button focus:outline-none hover:text-button-hover active:text-button-active transition duration-300': true,
       'cursor-pointer': !href,
       [`text-${variant}`]: variant,
     },

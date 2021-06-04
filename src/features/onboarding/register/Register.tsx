@@ -4,7 +4,7 @@ import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
 
 import Typography from '../../../common/components/Typography/Typography'
 import { colors } from '../../../common/theme/colors'
-import Button from '../../../common/components/Button'
+import { Button } from '../../../common/components/Buttons'
 import OnboardingSteps from '../../../common/components/OnboardingSteps/OnboardingSteps'
 
 import icoArrowLeft from '../../../common/assets/icons/ico-arrow-left.svg'

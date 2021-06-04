@@ -3,7 +3,7 @@ import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
 import 'simplebar/src/simplebar.css'
 
-export interface ScrollBarProps {
+export type ScrollBarProps = {
   children?: ReactNode
   maxHeight?: number
   className?: string
