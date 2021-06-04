@@ -41,7 +41,7 @@ MultiToggleSwitch.args = {
   data,
   activeIndex: 0,
   containerClassName: '',
-  itemInActiveClassName: '',
+  itemInactiveClassName: '',
   itemActiveClassName: '',
   countInactiveClassName: '',
   countActiveClassName: '',
