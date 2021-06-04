@@ -16,7 +16,7 @@ export const SimpleToggle = Template.bind({})
 SimpleToggle.args = {
   classNames: 'w-34px h-5 rounded-full',
   selectedClass: 'bg-green-68',
-  toggleHandler: e => {
-    console.log(e)
+  toggleHandler: checked => {
+    console.log(checked)
   },
 }
