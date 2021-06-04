@@ -35,7 +35,7 @@ const StarRate = ({ rate }: StarRateProps): JSX.Element => {
     </svg>
   )
   return (
-    <div>
+    <div className='relative'>
       <div className='absolute'>
         <Ratings svgs={svg} widgetSpacings='1.5px'>
           <Ratings.Widget />
