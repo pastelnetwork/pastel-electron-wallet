@@ -9,6 +9,7 @@ import { PageHeaderSortByOptions } from '../../common/components/PageHeader/Page
 
 import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
+import ScrollBar from '../../common/components/ScrollBar'
 
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
 const mockMemberStrips: TMemberStripProps[] = [
@@ -21,7 +22,7 @@ const mockMemberStrips: TMemberStripProps[] = [
       isVerified: false,
       followedByUser: false,
     },
-    heighestSold: '700,000K',
+    heighestSold: '1.700,000K',
     totalSold: '1.500K',
     images: stripMockImages,
     currencyName: 'PSL',
@@ -30,7 +31,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
-      followers: 588,
+      followers: 326,
       name: 'Anyia Harber',
       isVerified: true,
       followedByUser: true,
@@ -44,7 +45,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
-      followers: 790,
+      followers: 124,
       name: 'Edwardo Bea',
       isVerified: false,
       followedByUser: false,
@@ -58,7 +59,7 @@ const mockMemberStrips: TMemberStripProps[] = [
     id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
-      followers: 226,
+      followers: 588,
       name: 'Reymundo Longnamefortestinghowitlooks Smith',
       isVerified: true,
       followedByUser: true,
@@ -126,34 +127,36 @@ const MembersDirectory: React.FC = () => {
         ]}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <div className='wrapper content with-page-header'>
-        <div className='bg-white p-5 rounded-lg'>
-          <div className='flex justify-between pb-25px'>
-            <div className='w-244px'>
-              <Select {...filterOptions} className='w-full' />
-            </div>
-            <div className='flex'>
-              <div className='flex h-full items-center justify-end'>
-                <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
+      <ScrollBar hasPageHeader={true}>
+        <div className='wrapper content with-page-header pt-5'>
+          <div className='bg-white p-5 rounded-lg'>
+            <div className='flex justify-between pb-25px'>
+              <div className='w-244px'>
+                <Select {...filterOptions} className='w-full' />
+              </div>
+              <div className='flex'>
+                <div className='flex h-full items-center justify-end'>
+                  <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
 
-                <Slider
-                  min={100}
-                  max={999}
-                  value={range}
-                  onChange={setRange}
-                  formatValue={formatValue}
-                  formatTooltipValue={formatValue}
-                />
+                  <Slider
+                    min={100}
+                    max={999}
+                    value={range}
+                    onChange={setRange}
+                    formatValue={formatValue}
+                    formatTooltipValue={formatValue}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className='space-y-5'>
-            {mockMemberStrips.map(item => (
-              <MemberStrip {...item} key={item.id} />
-            ))}
+            <div className='space-y-5'>
+              {mockMemberStrips.map(item => (
+                <MemberStrip {...item} key={item.id} />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </ScrollBar>
     </div>
   )
 }

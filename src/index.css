@@ -2,6 +2,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -30,10 +34,7 @@
 @layer components {
   /* Used to wrap main routes, should be used with `content` */
   .wrapper {
-    @apply px-4 md:px-60px md:container pt-5;
-  }
-  .content {
-    @apply overflow-y-auto;
+    @apply px-60px;
   }
   .flex-center {
     @apply flex justify-center items-center;
@@ -65,19 +66,7 @@
     border-top: solid 6px white;
     border-bottom: solid 6px white;
   }
-
-  .routes-wrapper .content {
-    height: calc(100vh - 66px);
-  }
-  .routes-wrapper .content.with-page-header {
-    height: calc(100vh - 166px);
-  }
 }
-
-@import '@fortawesome/fontawesome-free/css/all.css';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-@import 'typeface-roboto/index.css';
-@import '/src/common/assets/fonts/font.css';
 
 body {
   margin: 0;
@@ -85,28 +74,50 @@ body {
   overflow: hidden;
 }
 
-/* total width */
-::-webkit-scrollbar {
-  width: 14px;
-  height: 14px;
+/* VERTICAL SCROLLBAR */
+.custom-scroll,
+.custom-scroll .simplebar-vertical {
+  margin-top: 1.25rem;
+}
+.custom-scroll .simplebar-vertical .simplebar-scrollbar::before {
+  background-color: #a6b0c2 !important;
+  opacity: 1 !important;
+  position: absolute;
+  width: 0.188rem;
+  left: 0 !important;
+}
+.custom-scroll .simplebar-track.simplebar-vertical {
+  box-shadow: inset 0.188rem 0px 0px 0px rgba(196, 196, 196, 0.3);
+  width: 1.875rem !important;
 }
 
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 14px 14px #eeeeef;
-  border: solid 6px #f8f9fa;
+@media only screen and (max-width: 1100px) {
+  .custom-scroll .simplebar-track.simplebar-vertical {
+    width: 0.5rem !important;
+  }
 }
 
-::-webkit-scrollbar-thumb:vertical {
-  box-shadow: inset 0 0 14px 14px #c5c9d2;
-  border-right: solid 6px #f8f9fa;
-  border-left: solid 6px #f8f9fa;
-  border-radius: 14px;
+/* HORIZONTAL SCROLLBAR */
+.custom-scroll .simplebar-horizontal .simplebar-scrollbar {
+  top: 0 !important;
 }
-::-webkit-scrollbar-thumb:horizontal {
-  box-shadow: inset 0 0 14px 14px #c5c9d2;
-  border-top: solid 6px #f8f9fa;
-  border-bottom: solid 6px #f8f9fa;
-  border-radius: 14px;
+.custom-scroll .simplebar-horizontal .simplebar-scrollbar::before {
+  background-color: #a6b0c2 !important;
+  opacity: 1 !important;
+  position: absolute;
+  height: 0.188rem !important;
+  top: 0 !important;
+}
+.custom-scroll .simplebar-track.simplebar-horizontal {
+  box-shadow: inset 0px 0.188rem 0px 0px rgba(196, 196, 196, 0.3);
+  height: 0.188rem !important;
+  bottom: -0.094rem;
+}
+.custom-scroll .simplebar-content-wrapper {
+  height: 100% !important;
+}
+.custom-scroll .simplebar-content-wrapper .simplebar-content {
+  height: 100% !important;
 }
 
 .react-tabs {
