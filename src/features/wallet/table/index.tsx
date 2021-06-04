@@ -38,7 +38,7 @@ const Table = ({ columns, data }: TableProps): JSX.Element => {
         .sort(
           (a, b) =>
             sortOrder *
-            (a[columns[sortIndex].name] > b[columns[sortIndex].name] ? 1 : -1),
+            (a[columns[sortIndex].name] < b[columns[sortIndex].name] ? 1 : -1),
         ),
     )
   }, [sortIndex, sortOrder])
