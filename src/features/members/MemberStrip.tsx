@@ -5,7 +5,7 @@ export type TMemberStripProps = {
   id: string
   memberCard: TMemberCard
   heighestSold: number | string
-  totalSell: number | string
+  totalSold: number | string
   images: string[]
   currencyName: string
 }
@@ -15,7 +15,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   memberCard,
   heighestSold,
   images,
-  totalSell,
+  totalSold,
   currencyName,
 }) => {
   return (
@@ -35,7 +35,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
             <div className='text-gray-1a font-semibold pt-3 text-12 whitespace-nowrap w-120px overflow-x-hidden'>
               Total sold{' '}
               <div className='font-display'>
-                <span className='text-gradient'>{totalSell}</span>
+                <span className='text-gradient'>{totalSold}</span>
                 <span className='text-gradient'> {currencyName}</span>
               </div>
             </div>
