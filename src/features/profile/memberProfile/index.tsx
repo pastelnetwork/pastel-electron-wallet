@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import ProfileCard from '../ProfileCard'
-import ProfileRelations from '../ProfileRelations'
-import ProfileTabs from '../ProfileTabs'
-import ProfileGeneral from '../ProfileGeneral'
+import ProfileCard from '../components/ProfileCard'
+import ProfileRelations from '../components/ProfileRelations'
+import ProfileTabs from '../components/ProfileTabs'
+import ProfileGeneral from '../components/ProfileGeneral'
 
 const Wrapper = styled.div`
   height: calculate(100vh - 40px);

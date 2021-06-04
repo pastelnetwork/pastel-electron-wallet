@@ -1,6 +1,6 @@
 import React from 'react'
-import svg_star from '../../common/assets/icons/star.svg'
-import svg_star2 from '../../common/assets/icons/star2.svg'
+import svg_star from '../../../common/assets/icons/star.svg'
+import svg_star2 from '../../../common/assets/icons/star2.svg'
 
 type StarRateProps = {
   rate: number

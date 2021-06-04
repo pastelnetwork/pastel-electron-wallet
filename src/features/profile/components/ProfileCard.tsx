@@ -1,14 +1,14 @@
 import React from 'react'
 import StarRate from './StarRate'
-import svg_card from '../../common/assets/icons/card.svg'
-import svg_avatar from '../../common/assets/icons/avatar.svg'
-import svg_copy from '../../common/assets/icons/copy.svg'
-import svg_plus from '../../common/assets/icons/plus_white.svg'
-import svg_envelope from '../../common/assets/icons/envelope.svg'
-import svg_location from '../../common/assets/icons/location.svg'
-import svg_flag from '../../common/assets/icons/flag.svg'
-import svg_facebook from '../../common/assets/icons/facebook.svg'
-import svg_twitter from '../../common/assets/icons/twitter.svg'
+import svg_card from '../../../common/assets/icons/card.svg'
+import svg_avatar from '../../../common/assets/icons/avatar.svg'
+import svg_copy from '../../../common/assets/icons/copy.svg'
+import svg_plus from '../../../common/assets/icons/plus_white.svg'
+import svg_envelope from '../../../common/assets/icons/envelope.svg'
+import svg_location from '../../../common/assets/icons/location.svg'
+import svg_flag from '../../../common/assets/icons/flag.svg'
+import svg_facebook from '../../../common/assets/icons/facebook.svg'
+import svg_twitter from '../../../common/assets/icons/twitter.svg'
 
 export type ProfileCardProps = {
   isMyProfile: boolean
