@@ -136,8 +136,17 @@ const Header = (props: PropsType) => {
       currentRoute: location.pathname,
     },
   ]
+
+  function showHideHeader() {
+    const headerElement = document.getElementById('headerPanel')
+    headerElement?.classList.toggle('hideHeaderPanel')
+  }
+
   return (
-    <div className='flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display'>
+    <div
+      className='flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display'
+      id='headerPanel'
+    >
       <div className='flex items-center'>
         <div className='ml-20px md:ml-30px lg:ml-50px xl:ml-60px mr-13px md:mr-20px lg:mr-30px xl:mr-40px w-30px md:w-36px h-30px md:h-36px'>
           <img src={Logo} alt='logo' />
@@ -153,12 +162,16 @@ const Header = (props: PropsType) => {
             />
           ))}
           <div className='md:ml-13px lg:ml-40px xl:ml-50px'>
-            <Link to='/art_registration' className='flex items-center'>
+            <Link
+              to='/art_registration'
+              className='flex items-center'
+              onClick={showHideHeader}
+            >
               <img
                 src={addBtn}
                 className='w-20px h-20px mr-2px md:mr-8px'
                 alt='add button'
-              ></img>
+              />
               <span className='text-blue-450 whitespace-nowrap'>new NFT</span>
             </Link>
           </div>

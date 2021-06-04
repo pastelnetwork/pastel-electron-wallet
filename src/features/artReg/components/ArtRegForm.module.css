@@ -120,7 +120,7 @@
   position: absolute;
   width: 690px;
   left: calc(50% - 345px);
-  top: calc(50% - 363px);
+  top: calc(50% - 330px);
   border: 1px solid #e6e8ec;
   box-shadow: 0px 64px 64px -48px #1f2f461f;
   background: #ffffff;
@@ -308,9 +308,11 @@
     0px 0px 4px rgba(50, 50, 71, 0.1);
   border-radius: 4px;
   width: 100%;
+  height: 66px;
   color: #a0aec0;
   padding-left: 16px;
   padding-top: 10px;
+  resize: none;
 }
 
 .artRegFormInputCategorySelect {

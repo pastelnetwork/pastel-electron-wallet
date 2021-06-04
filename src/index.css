@@ -154,3 +154,13 @@ input[type='number']::-webkit-outer-spin-button {
 .focus-visible:focus-visible {
   outline: 1px solid #3f9af7;
 }
+
+.hideHeaderPanel {
+  margin-top: -65px !important;
+  transition: all 300ms ease-in;
+}
+
+#headerPanel {
+  margin-top: 0px;
+  transition: all 300ms ease-out;
+}

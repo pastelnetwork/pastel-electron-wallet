@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Formik, Form, Field } from 'formik'
 
 // import { useAppDispatch, useAppSelector } from '../../../redux/hooks'
@@ -51,6 +52,27 @@ export function GeneralInfoStep(): JSX.Element {
   const [copies, setCountOne] = useState(10)
   const [royaltyPercent, setCountTwo] = useState(10)
 
+  function showHideHeader() {
+    const headerElement = document.getElementById('headerPanel')
+    headerElement?.classList.toggle('hideHeaderPanel')
+  }
+
+  // state = {
+  //   content: '',
+  //   charLimit: 10
+  // }
+  // handleOnChange = (e) => {
+  //   this.setState({[e.target.name]:e.target.value})
+  // }
+  // handleOnSubmit = (e) => {
+  //   e.preventDefault()
+  //   if(this.state.content.length <= this.state.charLimit){
+  //     Swal.fire({icon: 'success', text: 'Successful Submission'})
+  //   }else{
+  //     Swal.fire({icon: 'error', text: 'Character Limit Exceeded'})
+  //   }
+  // }
+
   return (
     <Formik
       initialValues={{ title: '', category: '', copies: copies }}
@@ -85,7 +107,11 @@ export function GeneralInfoStep(): JSX.Element {
           </svg>
         </div>
 
-        <div className={styles.artRegFormCloseButton}></div>
+        <div className={styles.artRegFormCloseButton} onClick={showHideHeader}>
+          <Link to='/dashboard' className='flex items-center'>
+            <span className='text-blue-450 whitespace-nowrap'>close</span>
+          </Link>
+        </div>
 
         <div className={styles.artRegFormInputContainer}>
           <div className={styles.artRegFormRow}>
@@ -414,6 +440,7 @@ export function GeneralInfoStep(): JSX.Element {
                 // defaultValue={description}
                 placeholder=''
                 name='description'
+                // onChange={this.handleOnChange}
               />
             </label>
           </div>

@@ -4,6 +4,10 @@
 
 .contentcontainer {
   width: 100%;
+  /* height: 100%;
+  top: 0px;
+  position: absolute;
+  z-index: 100; */
 }
 
 .well {
