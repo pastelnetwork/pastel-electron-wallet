@@ -15,7 +15,4 @@ const Template: Story<TCheckboxProps> = ({ ...args }: TCheckboxProps) => {
 export const SimpleCheckbox = Template.bind({})
 SimpleCheckbox.args = {
   isChecked: false,
-  clickHandler: e => {
-    console.log(e)
-  },
 }

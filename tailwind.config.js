@@ -19,6 +19,9 @@ module.exports = {
     },
     extend: {
       spacing: {
+        '1.5px': '0.09375rem',
+        '2px': '0.125rem',
+        '2.5px': '0.15625rem',
         '3px': '0.188rem',
         '5px': '0.313rem',
         '9px': '0.563rem',
@@ -36,8 +39,11 @@ module.exports = {
         '31px': '1.938rem',
         '34px': '2.215rem',
         '35px': '2.188rem',
+        '34px': '2.215rem',
         '37px': '2.313rem',
         '38px': '2.375rem',
+        '40px': '2.5rem',
+        '41.5px': '2.59375rem',
         '41px': '2.563rem',
         '46px': '2.875rem',
         '50px': '3.125rem',
@@ -71,19 +77,19 @@ module.exports = {
       },
       colors: {
         success: {
-          DEFAULT: '#00D097',
+          default: '#00D097',
           pressed: '#00B282',
           hover: '#00C28D',
           background: '#E0F9F2',
         },
         warning: {
-          DEFAULT: '#FA9501',
+          default: '#FA9501',
           pressed: '#E88A00',
           hover: '#FFA21B',
           background: '#FEF0DC',
         },
         error: {
-          DEFAULT: '#DA8AB8',
+          default: '#DA8AB8',
           pressed: '#C85195',
           hover: '#CE64A1',
           background: '#FAEFF5',
@@ -100,6 +106,7 @@ module.exports = {
           '4a': '#4A5568',
           '2d': '#2D3748',
           '1a': '#1A202C',
+          dd: '#DDE0E3',
           // --
           f8: '#F8F9FA',
           f7: '#F7F8F9',
@@ -123,13 +130,19 @@ module.exports = {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
         },
+        yellow: {
+          ff: '#FFBE3D',
+        },
+        green: {
+          68: '#68CC67',
+        },
         button: {
           pressed: '#0E80F5',
           hover: '#278DF6',
           text: '#8E98A3',
         },
         navigation: {
-          DEFAULT: '#A6B0C2',
+          default: '#A6B0C2',
           selected: '#334D6E',
           background: '#E6E8EC',
         },
@@ -138,10 +151,10 @@ module.exports = {
           hover: '#F4F5F6',
         },
         line: {
-          DEFAULT: '#F2F4F7',
+          default: '#F2F4F7',
         },
         icon: {
-          DEFAULT: '#8E98A3',
+          default: '#8E98A3',
           active: '#334D6E',
         },
         background: {
@@ -180,9 +193,13 @@ module.exports = {
         h5: '1rem',
         h6: '0.875rem',
         15: '0.938rem',
+        '9px': '0.5625rem',
       },
       borderRadius: {
         '4px': '0.25rem',
+      },
+      lineHeight: {
+        '11px': '0.6875rem',
       },
       container: {
         center: true,

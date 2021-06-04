@@ -9,7 +9,7 @@ export default {
 } as Meta
 
 const Template: Story<TToggleProps> = ({ ...args }: TToggleProps) => {
-  return <Toggle {...args}>This is the tooltip component</Toggle>
+  return <Toggle {...args} />
 }
 
 export const SimpleToggle = Template.bind({})

@@ -21,10 +21,9 @@ const Toggle: React.FC<TToggleProps> = ({
           <input type='checkbox' id='toggleB' className='sr-only' />
           <div
             className={cn(
-              'block bg-gray-57 flex items-center',
+              'block bg-gray-dd flex items-center',
               classNames,
               checked && selectedClass,
-              !checked && 'bg-opacity-10',
             )}
             onClick={e => {
               toggleHandler(e)
