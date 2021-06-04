@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Button from '../components/Button/Button'
 import Password from '../components/Password/Password'
 import Card from '../components/Card'
+import MultiToggleSwitch from '../../../../common/components/MultiToggleSwitch'
 
 const ChangePassword: React.FC = () => {
   const [newPassword, setNewPassword] = useState('')
@@ -21,6 +22,7 @@ const ChangePassword: React.FC = () => {
 
   const content = (
     <>
+      <MultiToggleSwitch />
       <Password
         newPassword={newPassword}
         confirmPassword={confirmPassword}
