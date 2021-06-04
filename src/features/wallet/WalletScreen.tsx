@@ -279,7 +279,7 @@ const WalletScreen: React.FC = () => {
               PSL
             </span>
           </div>
-          <div className='mb-15px h-456px overflow-y-scroll mt-15px mr-4'>
+          <div className='mb-15px h-456px overflow-y-scroll mt-15px mr-4 scrollbar'>
             <Table
               hasChecked={true}
               data={walletdatas}

@@ -19,85 +19,52 @@ module.exports = {
     },
     extend: {
       spacing: {
-        //2px: 0.5 default
         '3px': '0.188rem',
-        //4px: 1 default
         '5px': '0.313rem',
-        //6px: 1.5 default
-        //8px: 2 default
         '9px': '0.563rem',
-        //10px: 2.5 default
         '11px': '0.688rem',
-        //12px: 3 default
         '13px': '0.813rem',
-        //14px: 3.5 default
         '15px': '0.938rem',
-        //16px: 4 default
         '18px': '1.125rem',
         '19px': '1.188rem',
-        //20px: 5 default
         '21px': '1.313rem',
         '22px': '1.375rem',
-        //24px: 6 default
         '25px': '1.563rem',
         '26px': '1.625rem',
         '27px': '1.688rem',
-        //28px: 7 default
         '30px': '1.875rem',
         '31px': '1.938rem',
-        //32px: 8 default
         '34px': '2.215rem',
         '35px': '2.188rem',
-        //36px: 9 default
         '37px': '2.313rem',
         '38px': '2.375rem',
-        //40px: 10 default
         '41px': '2.563rem',
-        //44px: 11 default
         '46px': '2.875rem',
-        //48px: 12 default
         '50px': '3.125rem',
-        //56px: 14 default
         '58px': '3.625rem',
         '59px': '3.688rem',
         '60px': '3.75rem',
-        //64px: 16 default
         '66px': '4.125rem',
         '67px': '4.188rem',
         '68px': '4.25rem',
         '70px': '4.375rem',
         '75px': '4.688rem',
-        //80px: 20 default
         '82px': '5.125rem',
         '86px': '5.375rem',
         '87px': '5.438rem',
         '92px': '5.75rem',
-        //96px: 24 default
         '111px': '6.938rem',
-        //112px: 28 default
         '117px': '7.313rem',
         '120px': '7.5rem',
         '124px': '7.75rem',
-        //128px: 32 default
-        //144px: 36 default
-        //160px: 40 default
         '174px': '10.875rem',
-        //176px: 44 default
-        //192px: 48 default
-        //208px: 52 default
         '220px': '13.75rem',
-        //224px: 56 default
         '230px': '14.375rem',
-        //240px: 60 default
         '247px': '15.438rem',
-        //256px: 64 default
-        //288px: 72 default
         '300px': '18.75rem',
-        //320px: 80 default
         '335px': '20.938rem',
         '352px': '22rem',
         '371px': '23.1875rem',
-        //384px: 96 default
         '427px': '26.688rem',
         '456px': '28.5rem',
         '553px': '34.563rem',
