@@ -70,7 +70,7 @@ const MultiToggleSwitch: React.FC<TMultiToggle> = ({
                 onClick={() => handleClick(index)}
               >
                 <span>{item.label}</span>
-                {typeof item.count !== 'undefined' && (
+                {item?.count && item.count > 0 && (
                   <span className={getCountClassName(index === activeIndex)}>
                     {item.count > 99 ? 99 : item.count}
                   </span>
