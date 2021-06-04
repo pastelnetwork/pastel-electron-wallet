@@ -7,7 +7,7 @@ import plusIcon from '../../common/assets/icons/ico-plus.svg'
 import electIcon from '../../common/assets/icons/ico-elect.svg'
 import Tooltip from '../../common/components/Tooltip'
 import Toggle from '../../common/components/Toggle'
-import { ThemeProvider } from 'styled-components/macro'
+import { ThemeProvider } from 'styled-components'
 import { theme } from '../../common/theme'
 import Button from '../../common/components/Button/Button'
 import Table, {
@@ -115,39 +115,6 @@ const paymentSources = [
   },
   {
     hash: 'Michael Francis',
-  },
-]
-
-const transactionHistory = [
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'success',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
-  },
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'pending',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
-  },
-  {
-    date: '11.04.21 01:43',
-    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-    type: 'Shielded',
-    status: 'failed',
-    id: '2654843-5933',
-    comments: 'abcdefg',
-    fee: '100',
-    amount: '22.000',
   },
 ]
 
@@ -296,7 +263,6 @@ const WalletScreen: React.FC = () => {
         }}
       ></PaymentModal>
       <TransactionHistoryModal
-        transactionHistory={transactionHistory}
         isOpen={isTransactionHistoryModalOpen}
         handleClose={() => {
           setTransactionHistoryModalOpen(false)
