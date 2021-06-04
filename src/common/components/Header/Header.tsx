@@ -13,14 +13,17 @@ import cn from 'classnames'
 
 const MenuItem = ({
   to,
+  exact,
   children,
 }: {
   to: string
+  exact?: boolean
   children: React.ReactNode
 }) => {
   return (
     <NavLink
       to={to}
+      exact={exact}
       className='font-medium text-navigation'
       activeClassName='font-extrabold text-navigation-selected'
     >
@@ -71,7 +74,9 @@ export default function Header(): JSX.Element {
       <Link to={routes.DASHBOARD} className='w-36px h-36px'>
         <img src={Logo} alt='logo' />
       </Link>
-      <MenuItem to={routes.DASHBOARD}>Dashboard</MenuItem>
+      <MenuItem exact to={routes.DASHBOARD}>
+        Dashboard
+      </MenuItem>
       <MenuItem to={routes.MARKET}>Market</MenuItem>
       <MenuItem to={routes.RECEIVE}>Members</MenuItem>
       <MenuItem to={routes.TRANSACTIONS}>Wallet</MenuItem>

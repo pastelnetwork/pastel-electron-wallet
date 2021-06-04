@@ -116,6 +116,7 @@ module.exports = {
         },
         orange: {
           63: '#FE634C',
+        },
         yellow: {
           ff: '#FFBE3D',
         },
