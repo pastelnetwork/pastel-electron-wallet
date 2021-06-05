@@ -1,5 +1,4 @@
 import React from 'react'
-import ScrollBar from '../../common/components/ScrollBar'
 import MemberCard, { TMemberCard } from './MemberCard'
 
 export type TMemberStripProps = {
@@ -42,20 +41,18 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
             </div>
           </div>
           {/* Images */}
-          <ScrollBar style={{ width: '100%' }} maxHeight='auto' autoHide={true}>
-            <div className='flex space-x-5 h-full'>
-              {images.map((imgSrc, i) => (
-                <div
-                  className='flex flex-col justify-center h-full '
-                  key={`${id}${i}`}
-                >
-                  <div className='w-28 h-101px'>
-                    <img src={imgSrc} className='object-cover rounded-xl' />
-                  </div>
+          <div className='flex space-x-5 h-full overflow-x-auto overflow-y-hidden scrollbar-bg-white mt-7px'>
+            {images.map((imgSrc, i) => (
+              <div
+                className='flex flex-col justify-center h-full '
+                key={`${id}${i}`}
+              >
+                <div className='w-28 h-101px'>
+                  <img src={imgSrc} className='object-cover rounded-xl' />
                 </div>
-              ))}
-            </div>
-          </ScrollBar>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

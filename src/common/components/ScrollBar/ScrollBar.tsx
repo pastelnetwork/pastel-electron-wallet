@@ -29,12 +29,12 @@ const Scrollbar: React.FC<TScrollBar> = ({
   const calcMaxHeight = maxHeight
     ? maxHeight
     : hasPageHeader
-    ? 'calc(100vh - 166px)'
-    : 'calc(100vh - 66px)'
+    ? 'calc(100vh - 186px)'
+    : 'calc(100vh - 86px)'
   return (
     <SimpleBar
       className={classes}
-      style={{ maxHeight: calcMaxHeight }}
+      style={{ height: calcMaxHeight }}
       {...otherProps}
       autoHide={autoHide}
     >

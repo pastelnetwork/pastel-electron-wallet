@@ -75,10 +75,29 @@ body {
 }
 
 /* VERTICAL SCROLLBAR */
-.custom-scroll,
+.custom-scroll {
+  margin: 1.25rem auto;
+}
 .custom-scroll .simplebar-vertical {
   margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
 }
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 14px 14px #eeeeef;
+  border: solid 6px #f8f9fa;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  box-shadow: inset 0 0 14px 14px #c5c9d2;
+  border-top: solid 6px #f8f9fa;
+  border-bottom: solid 6px #f8f9fa;
+  border-radius: 14px;
+}
+
 .custom-scroll .simplebar-vertical .simplebar-scrollbar::before {
   background-color: #a6b0c2 !important;
   opacity: 1 !important;

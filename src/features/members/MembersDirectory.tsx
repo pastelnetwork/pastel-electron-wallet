@@ -139,7 +139,7 @@ const MembersDirectory: React.FC = () => {
         sortByOptions={pageHeaderSortByOptions}
       />
       <ScrollBar hasPageHeader={true}>
-        <div className='wrapper content with-page-header pt-5'>
+        <div className='wrapper content with-page-header pb-5'>
           <div className='bg-white p-5 rounded-lg'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>
