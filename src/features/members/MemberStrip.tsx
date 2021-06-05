@@ -21,7 +21,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   return (
     <div className='flex space-x-30px'>
       {/* Member Card */}
-      <div className='w-4/12 md:w-244px h-142px'>
+      <div className='w-4/12 min-w-244px md:max-w-244px h-142px'>
         <MemberCard {...memberCard} />
       </div>
       <div className='w-8/12 md:flex-grow border-b border-navigation-background'>

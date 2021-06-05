@@ -173,6 +173,12 @@ module.exports = {
       container: {
         center: true,
       },
+      minWidth: {
+        '244px': '15.25rem',
+      },
+      maxWidth: {
+        '244px': '15.25rem',
+      },
     },
   },
   variants: {},

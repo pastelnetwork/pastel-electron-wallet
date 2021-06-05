@@ -25,9 +25,7 @@ const MemberCard: React.FC<TMemberCard> = props => {
           />
         )}
         <div className='flex flex-col justify-between w-111px'>
-          <h5 className='text-gray-1a font-semibold whitespace-nowrap truncate'>
-            {name}
-          </h5>
+          <h5 className='text-gray-1a font-semibold truncate'>{name}</h5>
           <h6 className='text-gray-a0 text-12 pb-3'>{followers} followers</h6>
 
           <button
