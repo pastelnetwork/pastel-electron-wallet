@@ -69,6 +69,6 @@ workflows:
           filters: &filters-build
             branches:
               only:
-                - master
+                - /release.*/
           requires:
             - lint-and-test
