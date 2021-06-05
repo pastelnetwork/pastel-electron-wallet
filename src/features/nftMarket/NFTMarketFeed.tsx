@@ -130,7 +130,7 @@ const NFTMarketFeed: React.FC = () => {
         sortByOptions={pageHeaderSortByOptions}
       />
       <ScrollBar hasPageHeader={true}>
-        <div className='wrapper content with-page-header h-full'>
+        <div className='wrapper content with-page-header h-full w-screen'>
           {/* Filters */}
           <div className='flex justify-between pb-50px'>
             <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>

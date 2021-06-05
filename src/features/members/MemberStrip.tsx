@@ -21,18 +21,18 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   return (
     <div className='flex space-x-30px'>
       {/* Member Card */}
-      <div className='w-4/12 min-w-244px md:max-w-244px h-142px'>
+      <div className='w-244px h-142px'>
         <MemberCard {...memberCard} />
       </div>
       <div className='w-8/12 md:flex-grow border-b border-navigation-background'>
         <div className='flex space-x-4 h-full'>
           {/* Sale data */}
-          <div className='flex flex-col justify-center h-full'>
+          <div className='flex flex-col justify-center h-full min-w-120px pr-21px'>
             <h6 className='text-gray-77 pb-1 text-12'>Highest sold</h6>
             <div className='w-max text-12 font-semibold border py-1 px-2 rounded-4px border-success-pressed text-success-pressed'>
               {heighestSold} {currencyName}
             </div>
-            <div className='text-gray-1a font-semibold pt-3 text-12 whitespace-nowrap w-120px overflow-x-hidden'>
+            <div className='text-gray-1a font-semibold pt-3 text-12 whitespace-nowrap overflow-x-hidden'>
               Total sold{' '}
               <div className='font-display'>
                 <span className='text-gradient'>{totalSold}</span>

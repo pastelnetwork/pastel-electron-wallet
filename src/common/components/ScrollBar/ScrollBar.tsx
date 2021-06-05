@@ -2,9 +2,6 @@ import React, { ReactNode } from 'react'
 import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
 
-// eslint-disable-next-line
-import 'simplebar/src/simplebar.css' //for some reason eslint was not accepting this
-
 export type TScrollBar = {
   maxHeight?: number | string
   hasPageHeader?: boolean

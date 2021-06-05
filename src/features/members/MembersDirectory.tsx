@@ -23,8 +23,8 @@ const mockMemberStrips: TMemberStripProps[] = [
       isVerified: false,
       followedByUser: false,
     },
-    heighestSold: '1.700,000K',
-    totalSold: '1.500K',
+    heighestSold: '1,700,000K',
+    totalSold: '1,500K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -37,8 +37,8 @@ const mockMemberStrips: TMemberStripProps[] = [
       isVerified: true,
       followedByUser: true,
     },
-    heighestSold: '800,000K',
-    totalSold: '1.500.200K',
+    heighestSold: '1,700,000K',
+    totalSold: '1,500K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -51,8 +51,8 @@ const mockMemberStrips: TMemberStripProps[] = [
       isVerified: false,
       followedByUser: false,
     },
-    heighestSold: '1.300K',
-    totalSold: '1.110.230K',
+    heighestSold: '1,700,000K',
+    totalSold: '1,500K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -61,12 +61,12 @@ const mockMemberStrips: TMemberStripProps[] = [
     memberCard: {
       avatar: mockAvatar,
       followers: 588,
-      name: 'Reymundo Longnamefortestinghowitlooks Smith',
+      name: 'Reymundo',
       isVerified: true,
       followedByUser: true,
     },
-    heighestSold: '6.240K',
-    totalSold: '2.109.230K',
+    heighestSold: '1,700,000K',
+    totalSold: '1,500K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -132,14 +132,14 @@ const MembersDirectory: React.FC = () => {
   }
 
   return (
-    <div className=''>
+    <div>
       <PageHeader
         title='Members'
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
       <ScrollBar hasPageHeader={true}>
-        <div className='wrapper content with-page-header pb-5'>
+        <div className='wrapper content with-page-header pb-5 w-screen'>
           <div className='bg-white p-5 rounded-lg'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>

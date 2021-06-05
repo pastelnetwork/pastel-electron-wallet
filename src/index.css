@@ -6,6 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';
+@import 'simplebar/src/simplebar.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
