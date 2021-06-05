@@ -21,9 +21,7 @@ export function ArtRegForm(): JSX.Element {
   return (
     <ScrollPane offsetHeight={0}>
       <div className={styles.artRegFormContainer}>
-        <div className={styles.artRegFormMainBlock}>
-          <div className={styles.artRegFormStep}>{stepMap[step]}</div>
-        </div>
+        <div className={styles.artRegFormMainBlock}>{stepMap[step]}</div>
       </div>
     </ScrollPane>
   )

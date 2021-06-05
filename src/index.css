@@ -178,3 +178,11 @@ input[type='number']::-webkit-outer-spin-button {
   color: #a0aec0 !important;
   margin-left: 8px !important;
 }
+
+.hiddenStep {
+  display: none !important;
+}
+
+.unhiddenStep {
+  display: block !important;
+}
