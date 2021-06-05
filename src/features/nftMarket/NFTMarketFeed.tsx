@@ -76,6 +76,8 @@ const NFTMarketFeed: React.FC = () => {
     },
   ]
 
+  console.log(pageHeaderSortByOptions)
+
   // Filters
   const [category, setCategory] = useState<Option | null>(mockCategories[0])
   const [status, setStatus] = useState<Option | null>(mockStatus[0])
@@ -114,11 +116,7 @@ const NFTMarketFeed: React.FC = () => {
 
   return (
     <div className=''>
-      <PageHeader
-        title='Market'
-        routes={[{ label: 'Feed', isSelected: true }, { label: 'Statistics' }]}
-        sortByOptions={pageHeaderSortByOptions}
-      />
+      <PageHeader title='Market' />
       <div className='wrapper content with-page-header h-full'>
         {/* Filters */}
         <div className='flex justify-between pb-50px'>
