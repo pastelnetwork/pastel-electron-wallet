@@ -80,8 +80,8 @@ body {
   margin: 1.25rem auto;
 }
 .custom-scroll .simplebar-vertical {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 ::-webkit-scrollbar {
