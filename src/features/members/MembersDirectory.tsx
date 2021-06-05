@@ -5,8 +5,12 @@ import MemberStrip, { TMemberStripProps } from './MemberStrip'
 import Select, { Option } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 
+import PageHeader from '../../common/components/PageHeader'
+import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
+
 import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
+import ScrollBar from '../../common/components/ScrollBar'
 
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
 const mockMemberStrips: TMemberStripProps[] = [
@@ -20,7 +24,7 @@ const mockMemberStrips: TMemberStripProps[] = [
       followedByUser: false,
     },
     heighestSold: '1.700,000K',
-    totalSell: '1.500K',
+    totalSold: '1.500K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -28,13 +32,13 @@ const mockMemberStrips: TMemberStripProps[] = [
     id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
-      followers: 8.082,
+      followers: 326,
       name: 'Anyia Harber',
       isVerified: true,
       followedByUser: true,
     },
     heighestSold: '800,000K',
-    totalSell: '1.500.200K',
+    totalSold: '1.500.200K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -42,13 +46,13 @@ const mockMemberStrips: TMemberStripProps[] = [
     id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
-      followers: 1.024,
+      followers: 124,
       name: 'Edwardo Bea',
       isVerified: false,
       followedByUser: false,
     },
     heighestSold: '1.300K',
-    totalSell: '1.110.230K',
+    totalSold: '1.110.230K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -56,13 +60,13 @@ const mockMemberStrips: TMemberStripProps[] = [
     id: uuidv4(),
     memberCard: {
       avatar: mockAvatar,
-      followers: 1.024,
+      followers: 588,
       name: 'Reymundo Longnamefortestinghowitlooks Smith',
       isVerified: true,
       followedByUser: true,
     },
     heighestSold: '6.240K',
-    totalSell: '2.109.230K',
+    totalSold: '2.109.230K',
     images: stripMockImages,
     currencyName: 'PSL',
   },
@@ -88,34 +92,82 @@ const MembersDirectory: React.FC = () => {
     options: mockOptions,
   }
 
-  return (
-    <div className='wrapper content with-page-header'>
-      <div className='bg-white p-5 rounded-lg'>
-        <div className='flex justify-between pb-25px'>
-          <div className='w-244px'>
-            <Select {...filterOptions} className='w-full' />
-          </div>
-          <div className='flex'>
-            <div className='flex h-full items-center justify-end'>
-              <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
+  // Page Header
+  const [ranking, setRanking] = useState<Option | null>(null)
+  const [sold, setSold] = useState<Option | null>(null)
+  const [followers, setFollowers] = useState<Option | null>(null)
+  const [selectedItem, setSelectedItem] = useState(0)
 
-              <Slider
-                min={100}
-                max={999}
-                value={range}
-                onChange={setRange}
-                formatValue={formatValue}
-                formatTooltipValue={formatValue}
-              />
+  const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
+    {
+      placeholder: 'Ranking',
+      selected: ranking,
+      onOptionChange: setRanking,
+      options: mockOptions,
+    },
+    {
+      placeholder: 'Sold',
+      selected: sold,
+      onOptionChange: setSold,
+      options: mockOptions,
+    },
+    {
+      placeholder: 'Followers',
+      selected: followers,
+      onOptionChange: setFollowers,
+      options: mockOptions,
+    },
+  ]
+
+  const data = [
+    { label: 'Creators' },
+    { label: 'Sellers' },
+    { label: 'Buyers' },
+  ]
+
+  const routes = {
+    data,
+    activeIndex: selectedItem,
+    onToggle: setSelectedItem,
+  }
+
+  return (
+    <div className=''>
+      <PageHeader
+        title='Members'
+        routes={routes}
+        sortByOptions={pageHeaderSortByOptions}
+      />
+      <ScrollBar hasPageHeader={true}>
+        <div className='wrapper content with-page-header pt-5'>
+          <div className='bg-white p-5 rounded-lg'>
+            <div className='flex justify-between pb-25px'>
+              <div className='w-244px'>
+                <Select {...filterOptions} className='w-full' />
+              </div>
+              <div className='flex'>
+                <div className='flex h-full items-center justify-end'>
+                  <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
+
+                  <Slider
+                    min={100}
+                    max={999}
+                    value={range}
+                    onChange={setRange}
+                    formatValue={formatValue}
+                    formatTooltipValue={formatValue}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className='space-y-5'>
+              {mockMemberStrips.map(item => (
+                <MemberStrip {...item} key={item.id} />
+              ))}
             </div>
           </div>
         </div>
-        <div className='space-y-5'>
-          {mockMemberStrips.map(item => (
-            <MemberStrip {...item} key={item.id} />
-          ))}
-        </div>
-      </div>
+      </ScrollBar>
     </div>
   )
 }

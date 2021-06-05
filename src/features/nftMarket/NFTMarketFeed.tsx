@@ -8,6 +8,7 @@ import Select, { Option } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
+import ScrollBar from '../../common/components/ScrollBar'
 
 const mockCardProps: NFTCardProps = {
   author: 'zndrson',
@@ -24,6 +25,7 @@ const NFTMarketFeed: React.FC = () => {
   const [priceSold, setPriceSold] = useState<Option | null>(null)
   const [bidPrice, setBidPrice] = useState<Option | null>(null)
   const [likes, setLikes] = useState<Option | null>(null)
+  const [selectedItem, setSelectedItem] = useState(0)
 
   const mockCategories: Option[] = [
     { value: 'AI', label: 'AI' },
@@ -76,8 +78,6 @@ const NFTMarketFeed: React.FC = () => {
     },
   ]
 
-  console.log(pageHeaderSortByOptions)
-
   // Filters
   const [category, setCategory] = useState<Option | null>(mockCategories[0])
   const [status, setStatus] = useState<Option | null>(mockStatus[0])
@@ -114,38 +114,52 @@ const NFTMarketFeed: React.FC = () => {
   const [range, setRange] = useState(500)
   const formatValue = (value: number) => `${value}k`
 
+  const data = [{ label: 'Feed' }, { label: 'Statistics' }]
+
+  const routes = {
+    data,
+    activeIndex: selectedItem,
+    onToggle: setSelectedItem,
+  }
+
   return (
     <div className=''>
-      <PageHeader title='Market' />
-      <div className='wrapper content with-page-header h-full'>
-        {/* Filters */}
-        <div className='flex justify-between pb-50px'>
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
-            {filterOptions.map(option => (
-              <Select {...option} key={option.label} />
-            ))}
-          </div>
-          <div className='flex'>
-            <div className='flex h-full items-center justify-end'>
-              <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
+      <PageHeader
+        title='Market'
+        routes={routes}
+        sortByOptions={pageHeaderSortByOptions}
+      />
+      <ScrollBar hasPageHeader={true}>
+        <div className='wrapper content with-page-header h-full'>
+          {/* Filters */}
+          <div className='flex justify-between pb-50px'>
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
+              {filterOptions.map(option => (
+                <Select {...option} key={option.label} />
+              ))}
+            </div>
+            <div className='flex'>
+              <div className='flex h-full items-center justify-end'>
+                <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
 
-              <Slider
-                min={100}
-                max={999}
-                value={range}
-                onChange={setRange}
-                formatValue={formatValue}
-                formatTooltipValue={formatValue}
-              />
+                <Slider
+                  min={100}
+                  max={999}
+                  value={range}
+                  onChange={setRange}
+                  formatValue={formatValue}
+                  formatTooltipValue={formatValue}
+                />
+              </div>
             </div>
           </div>
+          <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-gray-1a'>
+            {Array.from({ length: 6 }).map((_, i) => (
+              <NFTCard {...mockCardProps} key={i} />
+            ))}
+          </div>
         </div>
-        <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-gray-1a'>
-          {Array.from({ length: 6 }).map((_, i) => (
-            <NFTCard {...mockCardProps} key={i} />
-          ))}
-        </div>
-      </div>
+      </ScrollBar>
     </div>
   )
 }

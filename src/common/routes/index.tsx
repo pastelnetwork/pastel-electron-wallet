@@ -13,7 +13,7 @@ import {
 } from '../../features/onboarding/index'
 
 import * as ROUTES from '../utils/constants/routes'
-import Member from '../../features/members'
+import { MembersDirectory } from '../../features/members'
 import NFTMarketFeed from '../../features/nftMarket'
 
 const onboardingRoute = {
@@ -75,7 +75,7 @@ const newPassword = {
 const members = {
   id: 'members',
   path: ROUTES.MEMBERS,
-  component: Member,
+  component: MembersDirectory,
   layout: PageLayout,
 }
 

@@ -14,7 +14,7 @@ const mockMemberStrips: TMemberStripProps = {
     followedByUser: true,
   },
   heighestSold: '1.700,000k',
-  totalSell: '1.500K',
+  totalSold: '1.500K',
   images: [mockMemberImage, mockMemberImage, mockMemberImage, mockMemberImage],
   currencyName: 'PSL',
 }

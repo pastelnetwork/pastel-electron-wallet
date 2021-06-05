@@ -1,11 +1,12 @@
 import React from 'react'
+import ScrollBar from '../../common/components/ScrollBar'
 import MemberCard, { TMemberCard } from './MemberCard'
 
 export type TMemberStripProps = {
   id: string
   memberCard: TMemberCard
   heighestSold: number | string
-  totalSell: number | string
+  totalSold: number | string
   images: string[]
   currencyName: string
 }
@@ -15,7 +16,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   memberCard,
   heighestSold,
   images,
-  totalSell,
+  totalSold,
   currencyName,
 }) => {
   return (
@@ -35,27 +36,26 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
             <div className='text-gray-1a font-semibold pt-3 text-12 whitespace-nowrap w-120px overflow-x-hidden'>
               Total sold{' '}
               <div className='font-display'>
-                <span className='text-gradient'>{totalSell}</span>
+                <span className='text-gradient'>{totalSold}</span>
                 <span className='text-gradient'> {currencyName}</span>
               </div>
             </div>
           </div>
           {/* Images */}
-          <div
-            className='flex space-x-5 overflow-x-auto overflow-y-hidden scrollbar-bg-white'
-            style={{ height: 'calc(100% + 7px)' }}
-          >
-            {images.map((imgSrc, i) => (
-              <div
-                className='flex flex-col justify-center h-full '
-                key={`${id}${i}`}
-              >
-                <div className='w-28 h-101px'>
-                  <img src={imgSrc} className='object-cover rounded-xl' />
+          <ScrollBar style={{ width: '100%' }} maxHeight='auto' autoHide={true}>
+            <div className='flex space-x-5 h-full'>
+              {images.map((imgSrc, i) => (
+                <div
+                  className='flex flex-col justify-center h-full '
+                  key={`${id}${i}`}
+                >
+                  <div className='w-28 h-101px'>
+                    <img src={imgSrc} className='object-cover rounded-xl' />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </ScrollBar>
         </div>
       </div>
     </div>
