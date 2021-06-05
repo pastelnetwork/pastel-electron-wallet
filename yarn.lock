@@ -12968,7 +12968,7 @@ react-transition-group@^2.2.1:
     prop-types "^15.6.2"
     react-lifecycles-compat "^3.0.4"
 
-react-upload-gallery@^0.2.0:
+react-upload-gallery@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-upload-gallery/-/react-upload-gallery-0.2.0.tgz#cff21872e64572be30fc5b1e9e598c20ba3d2938"
   integrity sha512-01Y8earKFh5fZ2ZKVlz93z/7DgAMxYhZypOyY7LIWPLHjYehqAjgrf+i5bJYFjSVjwrLCZ+zEG5N28+GIAwCng==
