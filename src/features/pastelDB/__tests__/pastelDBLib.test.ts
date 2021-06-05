@@ -41,6 +41,8 @@ import {
   selectAllQuery,
 } from '../constants'
 
+import * as pastelDBLib from '../pastelDBLib'
+
 type Databaseinstance = {
   db: Database
 }
@@ -91,7 +93,7 @@ describe('managePastelDatabase', () => {
   test('the data should be added correctly to staticinfo table', async () => {
     const values = {
       $newId: 1,
-      $hashrate: 1.0,
+      $solutions: 1,
       $difficulty: 1.2345678,
       $createTimestamp: 0,
     }
@@ -100,14 +102,8 @@ describe('managePastelDatabase', () => {
     const result: QueryExecResult[] = getDatafromDB('statisticinfo')
     expect(result).toStrictEqual([
       {
-        columns: [
-          'id',
-          'hashrate',
-          'miner_distribution',
-          'difficulty',
-          'create_timestamp',
-        ],
-        values: [[1, '1', '', '1.2345678', 0]],
+        columns: ['id', 'solutions', 'difficulty', 'create_timestamp'],
+        values: [[1, 1, 1.2345678, 0]],
       },
     ])
   })
@@ -482,6 +478,750 @@ describe('managePastelDatabase', () => {
     const result: QueryExecResult[] = getDatafromDB('listaddresses')
     expect(result[0].values).toStrictEqual([[1, 'address', 0]])
   })
-})
 
-export {}
+  test('validateDuplicatedRawmempoolInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: [
+              'id',
+              'transactionid',
+              'size',
+              'fee',
+              'time',
+              'height',
+              'startingpriority',
+              'currentpriority',
+              'depends',
+            ],
+            values: [[1, '123456789', 0, 0, 1621518133277, 0, 0, 0, '']],
+          },
+        ])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedRawmempoolInfo(
+        pastelDB.db,
+        'rawmempoolinfo',
+        {
+          transactionid: '123456789',
+          time: 1621518133277,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(false)
+
+      // if same data is not exist on db, should return true
+      const DatabaseSqlQuerySpy1 = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [])
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedRawmempoolInfo(
+        pastelDB.db,
+        'rawmempoolinfo',
+        {
+          transactionid: '12345',
+          time: 0,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy1).toHaveBeenCalled()
+      expect(result1).toEqual(true)
+
+      // Act
+      pastelDBLib.validateDuplicatedRawmempoolInfo(
+        pastelDB.db,
+        'rawmempoolinfoerror',
+        {
+          transactionid: '12345',
+          time: 0,
+        },
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB validateDuplicatedRawmempoolInfo error: rawmempoolinfoerror is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedBlockchainInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: [
+              'id',
+              'bestblockhash',
+              'blocks',
+              'chain',
+              'chainwork',
+              'commitments',
+              'consensus',
+              'difficulty',
+              'headers',
+              'pruned',
+              'softforks',
+              'upgrades',
+              'valuePools',
+              'verificationprogress',
+            ],
+            values: [
+              [1, 'abcd12345', 0, 0, '', 0, '', 0, 0, 'false', '', '', '', 0],
+            ],
+          },
+        ])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedBlockchainInfo(
+        pastelDB.db,
+        'blockchaininfo',
+        {
+          bestBlockHash: 'abcd12345',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(false)
+
+      // if same data is not exist on db, should return true
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedBlockchainInfo(
+        pastelDB.db,
+        'blockchaininfo',
+        {
+          bestBlockHash: 'best',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result1).toEqual(true)
+
+      pastelDBLib.validateDuplicatedBlockchainInfo(
+        pastelDB.db,
+        'blockchaininfoError',
+        {
+          bestBlockHash: 'best',
+        },
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: blockchaininfoError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedBlockInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedBlockInfo(
+        pastelDB.db,
+        'blockinfo',
+        {
+          hash: 'abcd12345',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(true)
+
+      // if same data exist on db, should return false
+      // Arrange
+      const DatabaseSqlQuerySpy1 = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: [
+              'id',
+              'hash',
+              'confirmations',
+              'size',
+              'height',
+              'version',
+              'merkleroot',
+              'finalsaplingroot',
+              'tx',
+              'time',
+              'nonce',
+              'solution',
+              'bits',
+              'difficulty',
+              'chainwork',
+              'anchor',
+              'valuePools',
+              'previousblockhash',
+              'nextblockhash',
+            ],
+            values: [
+              [
+                1,
+                'abcd12345',
+                0,
+                0,
+                0,
+                0,
+                '',
+                '',
+                '',
+                0,
+                '',
+                '',
+                '',
+                0,
+                '',
+                '',
+                '',
+                '',
+                '',
+              ],
+            ],
+          },
+        ])
+
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedBlockInfo(
+        pastelDB.db,
+        'blockinfo',
+        {
+          hash: 'abcd12345',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy1).toHaveBeenCalled()
+      expect(result1).toEqual(false)
+
+      // Act
+      pastelDBLib.validateDuplicatedBlockInfo(pastelDB.db, 'blockinfoError', {
+        hash: 'abcd12345',
+      })
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: blockinfoError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedBlocksubsidy should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedBlocksubsidy(
+        pastelDB.db,
+        'blocksubsidy',
+        {
+          miner: 12345,
+          masterNode: 11111,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(true)
+
+      // if same data exist on db, should return false
+      // Arrange
+      const DatabaseSqlQuerySpy1 = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: ['id', 'miner', 'masternode', 'governance'],
+            values: [[1, 12345, 11111, 0]],
+          },
+        ])
+
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedBlocksubsidy(
+        pastelDB.db,
+        'blocksubsidy',
+        {
+          miner: 12345,
+          masterNode: 11111,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy1).toHaveBeenCalled()
+      expect(result1).toEqual(false)
+
+      // Act
+      pastelDBLib.validateDuplicatedBlocksubsidy(
+        pastelDB.db,
+        'blocksubsidyError',
+        {
+          miner: 12345,
+          masterNode: 11111,
+        },
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: blocksubsidyError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedPriceInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedPriceInfo(
+        pastelDB.db,
+        'pslprice',
+        {
+          price: 12345,
+        },
+      )
+
+      // if same data exist on db, should return false
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(true)
+
+      // Arrange
+      const DatabaseSqlQuerySpy1 = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: ['id', 'price_usd', 'create_timestamp'],
+            values: [[1, 12345, 0]],
+          },
+        ])
+
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedPriceInfo(
+        pastelDB.db,
+        'pslprice',
+        {
+          price: 12345,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy1).toHaveBeenCalled()
+      expect(result1).toEqual(false)
+
+      // Act
+      pastelDBLib.validateDuplicatedPriceInfo(pastelDB.db, 'pslpriceError', {
+        price: 12345,
+      })
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: pslpriceError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedMempoolInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedMempoolInfo(
+        pastelDB.db,
+        'mempoolinfo',
+        {
+          mempoolSize: 123,
+          mempoolByte: 456,
+          mempoolUsage: 789,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(true)
+
+      // if same data exist on db, should return false
+      // Arrange
+      const DatabaseSqlQuerySpy1 = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: ['id', 'size', 'bytes', 'usage'],
+            values: [[1, 123, 456, 789]],
+          },
+        ])
+
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedMempoolInfo(
+        pastelDB.db,
+        'mempoolinfo',
+        {
+          mempoolSize: 123,
+          mempoolByte: 456,
+          mempoolUsage: 789,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy1).toHaveBeenCalled()
+      expect(result1).toEqual(false)
+
+      // Act
+      pastelDBLib.validateDuplicatedMempoolInfo(
+        pastelDB.db,
+        'mempoolinfoError',
+        {
+          mempoolSize: 123,
+          mempoolByte: 456,
+          mempoolUsage: 789,
+        },
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: mempoolinfoError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedMiningInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedMiningInfo(
+        pastelDB.db,
+        'mininginfo',
+        {
+          miningBlocks: 123,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(true)
+
+      // if same data exist on db, should return false
+      // Arrange
+      const DatabaseSqlQuerySpy1 = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: [
+              'id',
+              'blocks',
+              'currentblocksize',
+              'currentblocktx',
+              'difficulty',
+              'errors',
+              'genproclimit',
+              'localsolps',
+              'networksolps',
+              'networkhashps',
+              'pooledtx',
+              'testnet',
+              'chain',
+              'generate',
+            ],
+            values: [[1, 123, 0, 0, '', 0, 0, 0, 0, 0, 0, '', 0]],
+          },
+        ])
+
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedMiningInfo(
+        pastelDB.db,
+        'mininginfo',
+        {
+          miningBlocks: 123,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy1).toHaveBeenCalled()
+      expect(result1).toEqual(false)
+
+      // Act
+      pastelDBLib.validateDuplicatedMiningInfo(pastelDB.db, 'mininginfoError', {
+        miningBlocks: 123,
+      })
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: mininginfoError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedStatisticInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: ['id', 'solutions', 'difficulty', 'create_timestamp'],
+            values: [[1, 1, 99.265, 0]],
+          },
+        ])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedStatisticInfo(
+        pastelDB.db,
+        'statisticinfo',
+        {
+          solutions: 1,
+          difficulty: 99.265,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(false)
+
+      // if same data is not exist on db, should return true
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedStatisticInfo(
+        pastelDB.db,
+        'statisticinfo',
+        {
+          solutions: 1,
+          difficulty: 99,
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result1).toEqual(true)
+
+      // Act
+      pastelDBLib.validateDuplicatedStatisticInfo(
+        pastelDB.db,
+        'statisticinfoError',
+        {
+          solutions: 1,
+          difficulty: 99,
+        },
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: statisticinfoError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedTotalbalance should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: [
+              'id',
+              'transparent',
+              'private',
+              'total',
+              'create_timestamp',
+            ],
+            values: [[1, 'transparent', '', 'total', 0]],
+          },
+        ])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedTotalbalance(
+        pastelDB.db,
+        'totalbalance',
+        {
+          balanceTransparent: 'transparent',
+          balanceTotal: 'total',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(false)
+
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedTotalbalance(
+        pastelDB.db,
+        'totalbalance',
+        {
+          balanceTransparent: 'trans',
+          balanceTotal: 'to',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result1).toEqual(true)
+
+      // Act
+      pastelDBLib.validateDuplicatedTotalbalance(
+        pastelDB.db,
+        'totalbalanceError',
+        {
+          balanceTransparent: 'trans',
+          balanceTotal: 'to',
+        },
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: totalbalanceError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedTxoutsetInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: [
+              'id',
+              'height',
+              'bestblock',
+              'transactions',
+              'txouts',
+              'bytes_serialized',
+              'hash_serialized',
+              'total_amount',
+              'create_timestamp',
+            ],
+            values: [[1, 496, 'bestblock', 0, 0, 0, '', 1.0, 0]],
+          },
+        ])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedTxoutsetInfo(
+        pastelDB.db,
+        'txoutsetinfo',
+        {
+          height: 496,
+          bestBlockHash: 'bestblock',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(false)
+
+      // if same data is not exist on db, should return true
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedTxoutsetInfo(
+        pastelDB.db,
+        'txoutsetinfo',
+        {
+          height: 497,
+          bestBlockHash: 'best',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result1).toEqual(true)
+
+      // Act
+      pastelDBLib.validateDuplicatedTxoutsetInfo(
+        pastelDB.db,
+        'txoutsetinfoError',
+        {
+          height: 497,
+          bestBlockHash: 'best',
+        },
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: txoutsetinfoError is invalid table name',
+      )
+    }
+  })
+
+  test('validateDuplicatedWalletInfo should works correctly', async () => {
+    try {
+      // Arrange
+      const DatabaseSqlQuerySpy = jest
+        .spyOn(pastelDB.db, 'exec')
+        .mockImplementation(() => [
+          {
+            columns: [
+              'id',
+              'walletversion',
+              'balance',
+              'unconfirmed_balance',
+              'immature_balance',
+              'txcount',
+              'keypoololdest',
+              'keypoolsize',
+              'paytxfee',
+              'seedfp',
+              'create_timestamp',
+            ],
+            values: [[1, 123, 456, 0, 0, 0, 789, 0, 0, 'seedfp', 0]],
+          },
+        ])
+
+      // Act
+      const result = pastelDBLib.validateDuplicatedWalletInfo(
+        pastelDB.db,
+        'walletinfo',
+        {
+          walletversion: 123,
+          balance: 456,
+          keypoololdest: 789,
+          seedfp: 'seedfp',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual(false)
+
+      // if same data is not exist on db, should return true
+      // Act
+      const result1 = pastelDBLib.validateDuplicatedWalletInfo(
+        pastelDB.db,
+        'walletinfo',
+        {
+          walletversion: 12,
+          balance: 34,
+          keypoololdest: 56,
+          seedfp: 'seedfp',
+        },
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result1).toEqual(true)
+
+      // Act
+      pastelDBLib.validateDuplicatedWalletInfo(pastelDB.db, 'walletinfoError', {
+        walletversion: 12,
+        balance: 34,
+        keypoololdest: 56,
+        seedfp: 'seedfp',
+      })
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getLastDataFromDB error: walletinfoError is invalid table name',
+      )
+    }
+  })
+})

@@ -33,7 +33,7 @@ type fetchFuncConfig = {
 }
 
 type TStatistic = {
-  hashrate: number
+  estimatedSolutions: number
   difficulty: number
 }
 
@@ -46,7 +46,7 @@ export async function getStatisticInfo(
       rpc<types.TGetdifficulty>('getdifficulty', [], config),
     ])
     return {
-      hashrate: networkhasps.result,
+      estimatedSolutions: networkhasps.result,
       difficulty: difficulty.result,
     }
   } catch (error) {
@@ -63,7 +63,7 @@ export async function fetchStatisticInfo(
     const results = await getStatisticInfo(props.rpcConfig)
     insertStatisticDataToDB(
       props.pastelDB,
-      results.hashrate,
+      results.estimatedSolutions,
       results.difficulty,
     )
   } catch (error) {
@@ -167,7 +167,9 @@ export async function fetchBlock(props: fetchFuncConfig): Promise<void> {
       [hash.result],
       props.rpcConfig,
     )
-    insertBlockInfoToDB(props.pastelDB, blockInfo.result)
+    if (insertBlockInfoToDB(props.pastelDB, blockInfo.result)) {
+      await fetchRawtransaction(props, blockInfo.result.tx)
+    }
   } catch (error) {
     throw new Error(`pastelDBThread fetchBlock error: ${error}`)
   }
@@ -175,21 +177,14 @@ export async function fetchBlock(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchRawtransaction(
   props: fetchFuncConfig,
+  txIds: string[],
 ): Promise<void> {
   try {
-    const { result } = await rpc<types.TListsinceblock>(
-      'listsinceblock',
-      [],
-      props.rpcConfig,
-    )
-    const listSinceBlock = result
-    for (let i = 0; i < listSinceBlock.transactions.length; i++) {
-      const transaction: types.TSinceblockTransaction =
-        listSinceBlock.transactions[i]
-      if (transaction.txid) {
+    for (let i = 0; i < txIds.length; i++) {
+      if (txIds[i]) {
         const { result } = await rpc<types.TGetrawtransaction>(
           'getrawtransaction',
-          [transaction.txid, 1],
+          [txIds[i], 1],
           props.rpcConfig,
         )
         insertRawtransaction(props.pastelDB, result)
@@ -379,6 +374,7 @@ export async function fetchBlockChainInfo(
 }
 
 export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
+  PastelDB.setValid(false)
   const pastelDB = await PastelDB.getDatabaseInstance()
   if (pastelDB && rpcConfig && rpcConfig.username !== '') {
     // fetch whole data from RPC and save to pastel DB.
@@ -388,26 +384,20 @@ export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
     }
     await Promise.all([
       fetchStatisticInfo(pastelConfig),
-      fetchNetworkInfo(pastelConfig),
       fetchNettotals(pastelConfig),
       fetchMempoolInfo(pastelConfig),
       fetchRawMempoolInfo(pastelConfig),
       fetchMiningInfo(pastelConfig),
       fetchBlock(pastelConfig),
-      fetchRawtransaction(pastelConfig),
-      fetchTransaction(pastelConfig),
       fetchTxoutsetInfo(pastelConfig),
-      fetchChaintips(pastelConfig),
       fetchBlocksubsidy(pastelConfig),
       fetchWalletInfo(pastelConfig),
-      fetchListTransactions(pastelConfig),
-      fetchListunspent(pastelConfig),
       fetchTotalbalance(pastelConfig),
-      fetchListaddresses(pastelConfig),
       fetchPastelPrices(pastelConfig),
       fetchBlockChainInfo(pastelConfig),
     ])
     await exportSqliteDB(pastelDB)
+    PastelDB.setValid(true)
   }
   return
 }
