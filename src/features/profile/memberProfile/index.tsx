@@ -41,19 +41,21 @@ const Profile = (): JSX.Element => {
   return (
     <div>
       <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
-        <div className='flex h-100px items-center bg-white px-60px'>
-          <div className='font-bold pr-8 text-32'>Katy Jailson Profile</div>
-          <MultiToggleSwitch
-            data={[
-              { label: 'General' },
-              { label: 'Portfolio' },
-              { label: 'Board' },
-            ]}
-            activeIndex={tab}
-            onToggle={onTabToggle}
-          />
+        <div className='bg-white'>
+          <div className='wrapper flex h-100px items-center bg-white px-60px'>
+            <div className='font-bold pr-8 text-32'>Katy Jailson Profile</div>
+            <MultiToggleSwitch
+              data={[
+                { label: 'General' },
+                { label: 'Portfolio' },
+                { label: 'Board' },
+              ]}
+              activeIndex={tab}
+              onToggle={onTabToggle}
+            />
+          </div>
         </div>
-        <div className='flex py-8 px-60px'>
+        <div className='wrapper flex py-8 px-60px'>
           <div className='flex max-w-screen-xl'>
             <div className='flex flex-col items-center lg:justify-between'>
               <ProfileCard {...profile_data} isMyProfile={true} />
