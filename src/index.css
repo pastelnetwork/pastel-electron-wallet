@@ -54,21 +54,6 @@
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';
 
-::-webkit-scrollbar {
-  width: 0.5em;
-  height: 0.5em;
-}
-
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px grey;
-  background-color: rgb(1, 1, 1);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: white;
-  outline: 1px solid slategrey;
-}
-
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
 }
@@ -158,4 +143,25 @@ input[type='number']::-webkit-outer-spin-button {
 
 .focus-visible:focus-visible {
   outline: 1px solid #3f9af7;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  -webkit-border-radius: 3px;
+}
+
+/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+::-webkit-scrollbar-thumb:vertical {
+  background-color: rgb(166, 176, 194, 0.5);
+  opacity: 0.5;
+  -webkit-border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  background-color: rgb(166, 176, 194, 0.5);
+  -webkit-border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(196, 196, 196, 0.2);
+  border-radius: 3px;
 }
