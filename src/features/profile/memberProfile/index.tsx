@@ -1,14 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react'
 import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
-import ProfileTabs from '../components/ProfileTabs'
 import ProfileGeneral from '../components/ProfileGeneral'
-
-const Wrapper = styled.div`
-  height: calculate(100vh - 40px);
-  overflow-x: auto;
-`
+import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
 
 const profile_data = {
   username: '@zndrson',
@@ -25,9 +19,8 @@ const profile_data = {
 
 const general_data = {
   location: 'New York, US',
-  postcode: '#121',
   language: 'English',
-  categories: 'motion graphics, illustration, abstract',
+  categories: 'motion graphics, illustration, \nabstract',
   reputation: 3.89,
   buyerBans: 3,
   highestFeeRecieved: '136,200,000k PSL (#632)',
@@ -39,26 +32,48 @@ const general_data = {
 }
 
 const Profile = (): JSX.Element => {
+  const [tab, setTab] = useState(0)
+
+  const onTabToggle = (index: number) => {
+    setTab(index)
+  }
+
   return (
-    <Wrapper>
-      <div className='mx-auto w-full px-60px py-8 flex bg-gray-f8 text-gray-23 justify-center'>
-        <div className='flex max-w-screen-xl'>
-          <div className='flex flex-col items-center lg:justify-between'>
-            <ProfileCard {...profile_data} isMyProfile={true} />
-            <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
-              Member Since May 15, 2021
-            </div>
+    <div>
+      <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
+        <div className='bg-white'>
+          <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
+            <div className='font-bold pr-8 text-32'>Katy Jailson Profile</div>
+            <MultiToggleSwitch
+              data={[
+                { label: 'General' },
+                { label: 'Portfolio' },
+                { label: 'Board' },
+              ]}
+              activeIndex={tab}
+              onToggle={onTabToggle}
+            />
           </div>
-          <div className='flex flex-col flex-grow pl-8'>
-            <ProfileTabs />
-            <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
-              <ProfileGeneral {...general_data} />
-              <ProfileRelations />
+        </div>
+        <div className='wrapper flex py-8 px-60px'>
+          <div className='flex max-w-screen-xl'>
+            <div className='flex flex-col items-center lg:justify-between'>
+              <ProfileCard {...profile_data} isMyProfile={true} />
+              <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
+                Member Since May 15, 2021
+              </div>
+            </div>
+            <div className='flex flex-col flex-grow pl-8'>
+              {/* <ProfileTabs /> */}
+              <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
+                <ProfileGeneral {...general_data} />
+                <ProfileRelations />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </Wrapper>
+    </div>
   )
 }
 
