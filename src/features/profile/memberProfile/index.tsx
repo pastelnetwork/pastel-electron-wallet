@@ -42,7 +42,7 @@ const Profile = (): JSX.Element => {
     <div>
       <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
         <div className='bg-white'>
-          <div className='wrapper flex h-100px items-center bg-white px-60px'>
+          <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
             <div className='font-bold pr-8 text-32'>Katy Jailson Profile</div>
             <MultiToggleSwitch
               data={[
