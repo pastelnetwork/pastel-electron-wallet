@@ -1,14 +1,8 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
 import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
-
-const Wrapper = styled.div`
-  height: calculate(100vh - 40px);
-  overflow-x: auto;
-`
 
 const profile_data = {
   username: '@zndrson',
@@ -45,7 +39,7 @@ const Profile = (): JSX.Element => {
   }
 
   return (
-    <Wrapper>
+    <div>
       <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
         <div className='flex h-100px items-center bg-white px-60px'>
           <div className='font-bold pr-8 text-32'>Katy Jailson Profile</div>
@@ -77,7 +71,7 @@ const Profile = (): JSX.Element => {
           </div>
         </div>
       </div>
-    </Wrapper>
+    </div>
   )
 }
 
