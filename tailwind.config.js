@@ -20,7 +20,9 @@ module.exports = {
     extend: {
       spacing: {
         '1px': '0.0625rem',
+        '1.5px': '0.09375rem',
         '2px': '0.125rem',
+        '2.5px': '0.15625rem',
         '3px': '0.188rem',
         '6px': '0.375rem',
         '9px': '0.5625rem',
@@ -42,6 +44,7 @@ module.exports = {
         '37px': '2.3125rem',
         '40px': '2.5rem',
         '41px': '2.5625rem',
+        '41.5px': '2.59375rem',
         '46px': '2.875rem',
         '50px': '3.125rem',
         '54px': '3.375rem',
@@ -82,19 +85,19 @@ module.exports = {
       },
       colors: {
         success: {
-          DEFAULT: '#00D097',
+          default: '#00D097',
           pressed: '#00B282',
           hover: '#00C28D',
           background: '#E0F9F2',
         },
         warning: {
-          DEFAULT: '#FA9501',
+          default: '#FA9501',
           pressed: '#E88A00',
           hover: '#FFA21B',
           background: '#FEF0DC',
         },
         error: {
-          DEFAULT: '#DA8AB8',
+          default: '#DA8AB8',
           pressed: '#C85195',
           hover: '#CE64A1',
           background: '#FAEFF5',
@@ -134,13 +137,16 @@ module.exports = {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
         },
+        yellow: {
+          ff: '#FFBE3D',
+        },
         button: {
           pressed: '#0E80F5',
           hover: '#278DF6',
           text: '#8E98A3',
         },
         navigation: {
-          DEFAULT: '#A6B0C2',
+          default: '#A6B0C2',
           selected: '#334D6E',
           background: '#E6E8EC',
         },
@@ -149,10 +155,10 @@ module.exports = {
           hover: '#F4F5F6',
         },
         line: {
-          DEFAULT: '#F2F4F7',
+          default: '#F2F4F7',
         },
         icon: {
-          DEFAULT: '#8E98A3',
+          default: '#8E98A3',
           active: '#334D6E',
         },
         background: {
@@ -184,12 +190,16 @@ module.exports = {
         12: '0.75rem',
         15: '0.938rem',
         26: '1.625rem',
+        '9px': '0.5625rem',
       },
       borderRadius: {
         '4px': '0.25rem',
       },
       borderWidth: {
         '5px': '0.3125rem',
+      },
+      lineHeight: {
+        '11px': '0.6875rem',
       },
       container: {
         center: true,
