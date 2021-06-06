@@ -118,6 +118,7 @@ module.exports = {
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           fc: '#FCFCFD',
+          f3: '#F3F3F3',
           eb: '#EBEBFC',
           e7: '#E7EAF2',
           e6: '#E6E8EC',
@@ -191,6 +192,7 @@ module.exports = {
         15: '0.938rem',
         26: '1.625rem',
         '9px': '0.5625rem',
+        32: '2rem',
       },
       borderRadius: {
         '4px': '0.25rem',
@@ -203,6 +205,9 @@ module.exports = {
       },
       container: {
         center: true,
+      },
+      maxHeight: {
+        700: '700px',
       },
     },
   },

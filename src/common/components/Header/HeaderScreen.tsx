@@ -118,7 +118,7 @@ const Header = (props: PropsType) => {
     },
     {
       name: 'Members',
-      routeName: routes.RECEIVE,
+      routeName: routes.PROFILE,
       currentRoute: location.pathname,
       style: 'xl:psl-mr-28px',
     },
@@ -131,11 +131,6 @@ const Header = (props: PropsType) => {
     {
       name: 'Portfolio',
       routeName: routes.ADDRESSBOOK,
-      currentRoute: location.pathname,
-    },
-    {
-      name: 'Profile',
-      routeName: routes.PROFILE,
       currentRoute: location.pathname,
     },
   ]

@@ -15,7 +15,7 @@ const RATING_STAR_SVG_PROPS = {
 }
 
 const StarRate = ({ rate }: StarRateProps): JSX.Element => {
-  const svg = (
+  const emptyStar = (
     <svg
       width='14'
       height='14'
@@ -35,9 +35,9 @@ const StarRate = ({ rate }: StarRateProps): JSX.Element => {
     </svg>
   )
   return (
-    <div className='relative'>
+    <div className='relative pb-2px'>
       <div className='absolute'>
-        <Ratings svgs={svg} widgetSpacings='1.5px'>
+        <Ratings svgs={emptyStar} widgetSpacings='1.5px'>
           <Ratings.Widget />
           <Ratings.Widget />
           <Ratings.Widget />
