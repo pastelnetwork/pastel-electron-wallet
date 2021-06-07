@@ -40,7 +40,7 @@ export const pastelChartFields = [
   },
   {
     name: 'Transactions Per Second',
-    routeName: '/statistics/transactionspersecondovertime',
+    routeName: '/statistics/transactionpersecondovertime',
     backgroundImage: TransactionsPerSecond,
   },
 ]

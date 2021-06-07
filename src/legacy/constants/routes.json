@@ -17,7 +17,7 @@
   "MEMPOOLSIZEOVERTIME": "/statistics/mempoolsizeovertime",
   "NETWORKTOTALSOVERTIME": "/statistics/networktotalsovertime",
   "DIFFICULTYOVERTIME": "/statistics/difficultyovertime",
-  "TRANSACTIONSPERSECONDOVERTIME": "/statistics/transactionspersecondovertime",
+  "TRANSACTIONSPERSECONDOVERTIME": "/statistics/transactionpersecondovertime",
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft"
