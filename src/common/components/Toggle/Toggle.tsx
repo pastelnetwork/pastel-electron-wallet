@@ -34,8 +34,7 @@ const Toggle: React.FC<TToggleProps> = ({
             <div
               className={cn(
                 'dot absolute bg-white w-3 h-3 rounded-full',
-                !checked && 'left-1',
-                checked && 'right-1',
+                checked ? 'right-1' : 'right-1',
               )}
             ></div>
           </div>
