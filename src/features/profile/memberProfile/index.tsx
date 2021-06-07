@@ -56,7 +56,7 @@ const Profile = (): JSX.Element => {
           </div>
         </div>
         <div className='wrapper flex py-8 px-60px'>
-          <div className='flex max-w-screen-xl'>
+          <div className='flex w-full'>
             <div className='flex flex-col items-center lg:justify-between'>
               <ProfileCard {...profile_data} isMyProfile={true} />
               <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
