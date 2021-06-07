@@ -8,7 +8,7 @@ import cstyles from './components/Common.module.css'
 import routes from './constants/routes.json'
 import App from './containers/App'
 import Dashboard from './components/Dashboard'
-import Profile from '../features/profile/memberProfile'
+import MemberProfile from '../features/profile/memberProfile/MemberProfile'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
@@ -590,7 +590,7 @@ class RouteApp extends React.Component<any, any> {
 
             <Route path={routes.NFT} render={() => <Nft />} />
 
-            <Route path={routes.PROFILE} render={() => <Profile />} />
+            <Route path={routes.MEMBERS} render={() => <MemberProfile />} />
 
             <Route
               path={routes.PASTELD}

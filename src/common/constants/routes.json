@@ -13,6 +13,6 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
-  "PROFILE": "/profile",
+  "MEMBERS": "/member_profile",
   "MARKET": "/market"
 }

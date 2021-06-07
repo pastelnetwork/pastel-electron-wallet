@@ -118,7 +118,7 @@ const Header = (props: PropsType) => {
     },
     {
       name: 'Members',
-      routeName: routes.PROFILE,
+      routeName: routes.MEMBERS,
       currentRoute: location.pathname,
       style: 'xl:psl-mr-28px',
     },
