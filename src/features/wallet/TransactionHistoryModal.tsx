@@ -1,17 +1,112 @@
 import React, { useState } from 'react'
 import Modal from './modal'
 import Table from './table'
+import * as momentRange from 'moment-range'
+import { OnSelectCallbackParam } from 'react-daterange-picker'
+import DateRangeSelector from '../../common/components/DateRangeSelector/DateRangeSelector'
 import Radio from '../../common/components/Radio/Radio'
+import Select, { TOption } from '../../common/components/Select/Select'
 import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
 import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
 import checkGreenIcon from '../../common/assets/icons/ico-check-green.svg'
 import clockYellowIcon from '../../common/assets/icons/ico-clock-yellow.svg'
 import crossIcon from '../../common/assets/icons/ico-cross.svg'
-import caretDownIcon from '../../common/assets/icons/ico-caret-down.svg'
-import calendarIcon from '../../common/assets/icons/ico-calendar.svg'
 import addressbookIcon from '../../common/assets/icons/ico-addressbook.svg'
 import user2Icon from '../../common/assets/icons/ico-user2.svg'
+
+export type TransactionHistoryModalProps = {
+  isOpen: boolean
+  handleClose: () => void
+}
+
+const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
+  isOpen,
+  handleClose,
+}) => {
+  const [selectedOption, setSelectedOption] = useState(1)
+  const [dates, setDates] = useState<momentRange.DateRange>()
+  const [address, setAddress] = useState<TOption | null>({
+    label: 'All',
+    value: '',
+  })
+  const [recipient, setRecipient] = useState<TOption | null>({
+    label: 'All',
+    value: '',
+  })
+
+  const onSelectDateRange = (dates: OnSelectCallbackParam) => {
+    setDates(dates as momentRange.DateRange)
+  }
+  return (
+    <Modal
+      isOpen={isOpen}
+      handleClose={() => handleClose()}
+      size='7xl'
+      title='Transaction history'
+    >
+      <div>
+        <div className='flex text-gray-71 text-sm'>
+          <div className='w-2/3 flex'>
+            <div className='w-1/3 pr-6'>
+              <div>Time range</div>
+              <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
+            </div>
+            <div className='w-1/3 pr-6'>
+              <div className='mb-1'>Source address</div>
+              <Select
+                label={<img src={addressbookIcon} className='ml-4 mr-2' />}
+                className='text-gray-2d w-112px'
+                selected={address}
+                options={sourceAddresses}
+                onChange={setAddress}
+              />
+            </div>
+            <div className='w-1/3 pr-6'>
+              <div className='mb-1'>Recipients</div>
+              <Select
+                label={<img src={user2Icon} className='ml-4 mr-2' />}
+                className='text-gray-2d w-112px'
+                selected={recipient}
+                options={recipients}
+                onChange={setRecipient}
+              />
+            </div>
+          </div>
+          <div className='w-1/3 flex justify-end  items-end pb-2 space-x-4'>
+            <Radio
+              isChecked={selectedOption === 1}
+              clickHandler={() => setSelectedOption(1)}
+            >
+              All
+            </Radio>
+            <Radio
+              isChecked={selectedOption === 2}
+              clickHandler={() => setSelectedOption(2)}
+            >
+              Received
+            </Radio>
+            <Radio
+              isChecked={selectedOption === 3}
+              clickHandler={() => setSelectedOption(3)}
+            >
+              Sent
+            </Radio>
+            <Radio
+              isChecked={selectedOption === 4}
+              clickHandler={() => setSelectedOption(4)}
+            >
+              In progress
+            </Radio>
+          </div>
+        </div>
+        <div className='pt-6'>
+          <Table columns={Columns} data={transactionHistory} />
+        </div>
+      </div>
+    </Modal>
+  )
+}
 
 const Columns = [
   {
@@ -95,88 +190,34 @@ const transactionHistory = [
   },
 ]
 
-export type TransactionHistoryModalProps = {
-  isOpen: boolean
-  handleClose: () => void
-}
+const sourceAddresses: Array<TOption> = [
+  {
+    label: 'All',
+    value: '0',
+  },
+  {
+    label: 'Test',
+    value: '1',
+  },
+  {
+    label: 'Test2',
+    value: '2',
+  },
+]
 
-const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
-  isOpen,
-  handleClose,
-}) => {
-  const [selectedOption, setSelectedOption] = useState(1)
-  return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={() => handleClose()}
-      size='7xl'
-      title='Transaction history'
-    >
-      <div className='flex text-gray-71 text-sm'>
-        <div className='w-2/3 flex'>
-          <div className='w-1/3 pr-6'>
-            <div>Time range</div>
-            <div className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between'>
-              <div className='flex'>
-                <img src={calendarIcon} className='ml-4 mr-2' />
-                All
-              </div>
-              <img src={caretDownIcon} className='pr-4' />
-            </div>
-          </div>
-          <div className='w-1/3 pr-6'>
-            <div>Source address</div>
-            <div className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between'>
-              <div className='flex'>
-                <img src={addressbookIcon} className='ml-4 mr-2' />
-                All
-              </div>
-              <img src={caretDownIcon} className='pr-4' />
-            </div>
-          </div>
-          <div className='w-1/3 pr-6'>
-            <div>Recipients</div>
-            <div className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between'>
-              <div className='flex'>
-                <img src={user2Icon} className='ml-4 mr-2' />
-                All
-              </div>
-              <img src={caretDownIcon} className='pr-4' />
-            </div>
-          </div>
-        </div>
-        <div className='w-1/3 flex justify-end  items-end pb-2 space-x-4'>
-          <Radio
-            isChecked={selectedOption === 1}
-            clickHandler={() => setSelectedOption(1)}
-          >
-            All
-          </Radio>
-          <Radio
-            isChecked={selectedOption === 2}
-            clickHandler={() => setSelectedOption(2)}
-          >
-            Received
-          </Radio>
-          <Radio
-            isChecked={selectedOption === 3}
-            clickHandler={() => setSelectedOption(3)}
-          >
-            Sent
-          </Radio>
-          <Radio
-            isChecked={selectedOption === 4}
-            clickHandler={() => setSelectedOption(4)}
-          >
-            In progress
-          </Radio>
-        </div>
-      </div>
-      <div className='pt-6'>
-        <Table columns={Columns} data={transactionHistory} />
-      </div>
-    </Modal>
-  )
-}
+const recipients: Array<TOption> = [
+  {
+    label: 'All',
+    value: '0',
+  },
+  {
+    label: 'Test',
+    value: '1',
+  },
+  {
+    label: 'Test2',
+    value: '2',
+  },
+]
 
 export default TransactionHistoryModal

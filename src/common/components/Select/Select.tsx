@@ -13,7 +13,7 @@ export type TOption = {
 export type TBaseProps = {
   placeholder?: string
   className?: string
-  label?: string
+  label?: string | JSX.Element
   autocomplete?: boolean
 }
 
@@ -93,7 +93,7 @@ export default function Select(props: TSelectProps): JSX.Element {
                 className='w-full h-full flex items-center whitespace-nowrap pl-14px pr-7 focus-visible-border'
                 {...getToggleButtonProps()}
               >
-                {label && <span className='text-gray-b0 mr-2'>{label}:</span>}
+                {label && <span className='text-gray-b0 mr-2'>{label}</span>}
                 {selectedItem ? selectedItem.label : placeholder}
               </button>
             )}

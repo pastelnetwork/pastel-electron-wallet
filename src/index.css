@@ -34,6 +34,13 @@
   }
 }
 
+@layer components {
+  /* It's used to wrap main routes  */
+  .DateRangePicker__Month {
+    @apply shadow-input;
+  }
+}
+
 @layer utilities {
   .text-gradient {
     background: radial-gradient(
@@ -70,6 +77,11 @@
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';
+
+.DateRangePicker__Month {
+  margin: 0 !important;
+  padding: 0 10px;
+}
 
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
