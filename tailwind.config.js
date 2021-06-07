@@ -67,7 +67,6 @@ module.exports = {
         '315px': '19.6875rem',
         '335px': '20.938rem',
         '352px': '22rem',
-        30: '7.5rem',
       },
       boxShadow: {
         xs:
@@ -187,12 +186,12 @@ module.exports = {
         h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
-        10: '0.625rem',
-        12: '0.75rem',
-        15: '0.938rem',
-        26: '1.625rem',
+        '10px': '0.625rem',
+        '12px': '0.75rem',
+        '15px': '0.938rem',
+        '26px': '1.625rem',
         '9px': '0.5625rem',
-        32: '2rem',
+        '32px': '2rem',
       },
       borderRadius: {
         '4px': '0.25rem',

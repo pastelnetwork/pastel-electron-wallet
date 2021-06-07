@@ -63,7 +63,7 @@ const ProfileCard = ({
               <div className='pl-6px text-gray-71'>{reputation} reputation</div>
             </div>
           </div>
-          <div className='font-bold text-26 pt-7px pb-2'>{name}</div>
+          <div className='font-bold text-26px pt-7px pb-2'>{name}</div>
           <div className='text-sm text-gray-71'>{description}</div>
           <div className='text-sm text-gray-4a flex pt-3'>
             <img
