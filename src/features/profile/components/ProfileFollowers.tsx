@@ -8,9 +8,9 @@ import svg_oval_5 from '../../../common/assets/images/avatars/oval-5.svg'
 import svg_oval_6 from '../../../common/assets/images/avatars/oval-6.svg'
 import svg_oval_7 from '../../../common/assets/images/avatars/oval-7.svg'
 
-export type FollowersProps = FollowerProps[]
+export type TFollowersProps = TFollowerProps[]
 
-export type FollowerProps = {
+export type TFollowerProps = {
   name: string
   count: number
   avatar: string
@@ -21,7 +21,7 @@ const Followers = (): JSX.Element => {
   return (
     <div className='flex flex-col pt-2 pr-4 max-h-700 overflow-y-auto pr-8 -mt-7'>
       <div className='pt-7' />
-      {followers.map((follower: FollowerProps, index: number) => (
+      {followers.map((follower: TFollowerProps, index: number) => (
         <Follower {...follower} key={index} />
       ))}
     </div>
@@ -33,7 +33,7 @@ const Follower = ({
   count,
   avatar,
   diamond,
-}: FollowerProps): JSX.Element => {
+}: TFollowerProps): JSX.Element => {
   return (
     <div className='flex items-center py-2 text-md'>
       <div className='rounded-full bg-pink-300 w-10 h-10 relative'>
@@ -48,7 +48,7 @@ const Follower = ({
   )
 }
 
-const followers: FollowersProps = [
+const followers: TFollowersProps = [
   {
     name: 'Salley Fadel',
     count: 161,

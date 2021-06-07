@@ -10,7 +10,7 @@ import svg_flag from '../../../common/assets/icons/ico-flag.svg'
 import svg_facebook from '../../../common/assets/icons/ico-facebook.svg'
 import svg_twitter from '../../../common/assets/icons/ico-twitter.svg'
 
-export type ProfileCardProps = {
+export type TProfileCardProps = {
   isMyProfile: boolean
   username: string
   walletId: string
@@ -32,7 +32,7 @@ const ProfileCard = ({
   name,
   description,
   address,
-}: ProfileCardProps): JSX.Element => {
+}: TProfileCardProps): JSX.Element => {
   return (
     <div className='flex flex-col pb-28px rounded-md shadow-sm bg-white w-315px'>
       <div className='bg-blue-300 rounded-t-md'>

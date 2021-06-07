@@ -1,7 +1,7 @@
 import React from 'react'
 import StarRate from './StarRate'
 
-export type ProfileGeneralProps = {
+export type TProfileGeneralProps = {
   location: string
   language: string
   categories: string
@@ -25,7 +25,7 @@ const ProfileGeneral = ({
   totalItemsSold,
   topCategoryPercentage,
   bio,
-}: ProfileGeneralProps): JSX.Element => {
+}: TProfileGeneralProps): JSX.Element => {
   return (
     <div className='flex-grow divide-y divide-grey-400 w-full xl:w-3/5 xl:pr-14 leading-tight'>
       {/* First Row Group of General */}
