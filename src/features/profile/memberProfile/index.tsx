@@ -64,7 +64,6 @@ const Profile = (): JSX.Element => {
               </div>
             </div>
             <div className='flex flex-col flex-grow pl-8'>
-              {/* <ProfileTabs /> */}
               <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
                 <ProfileGeneral {...general_data} />
                 <ProfileRelations />

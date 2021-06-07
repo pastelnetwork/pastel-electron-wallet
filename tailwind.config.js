@@ -207,7 +207,7 @@ module.exports = {
         center: true,
       },
       maxHeight: {
-        700: '700px',
+        700: '43rem',
       },
     },
   },
