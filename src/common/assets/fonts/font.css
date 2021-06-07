@@ -1,37 +1,6 @@
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-Black.eot');
-  src: url('Avenir-Black.woff2') format('woff2'),
-    url('Avenir-Black.woff') format('woff'),
-    url('Avenir-Black.ttf') format('truetype'),
-    url('Avenir-Black.svg#Avenir-Black') format('svg'),
-    url('Avenir-Black.eot?#iefix') format('embedded-opentype');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Avenir';
-  src: url('Avenir-BlackOblique.eot');
-  src: url('Avenir-BlackOblique.woff2') format('woff2'),
-    url('Avenir-BlackOblique.woff') format('woff'),
-    url('Avenir-BlackOblique.ttf') format('truetype'),
-    url('Avenir-BlackOblique.svg#Avenir-BlackOblique') format('svg'),
-    url('Avenir-BlackOblique.eot?#iefix') format('embedded-opentype');
-  font-weight: 800;
-  font-style: oblique;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Avenir';
-  src: url('Avenir-Heavy.eot');
-  src: url('Avenir-Heavy.woff2') format('woff2'),
-    url('Avenir-Heavy.woff') format('woff'),
-    url('Avenir-Heavy.ttf') format('truetype'),
-    url('Avenir-Heavy.svg#Avenir-Heavy') format('svg'),
-    url('Avenir-Heavy.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-Black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -39,12 +8,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-HeavyOblique.eot');
-  src: url('Avenir-HeavyOblique.woff2') format('woff2'),
-    url('Avenir-HeavyOblique.woff') format('woff'),
-    url('Avenir-HeavyOblique.ttf') format('truetype'),
-    url('Avenir-HeavyOblique.svg#Avenir-HeavyOblique') format('svg'),
-    url('Avenir-HeavyOblique.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-BlackOblique.woff2') format('woff2');
   font-weight: 900;
   font-style: oblique;
   font-display: swap;
@@ -52,12 +16,23 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-Light.eot');
-  src: url('Avenir-Light.woff2') format('woff2'),
-    url('Avenir-Light.woff') format('woff'),
-    url('Avenir-Light.ttf') format('truetype'),
-    url('Avenir-Light.svg#Avenir-Light') format('svg'),
-    url('Avenir-Light.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-Heavy.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-HeavyOblique.woff2') format('woff2');
+  font-weight: 800;
+  font-style: oblique;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -65,12 +40,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-LightOblique.eot');
-  src: url('Avenir-LightOblique.woff2') format('woff2'),
-    url('Avenir-LightOblique.woff') format('woff'),
-    url('Avenir-LightOblique.ttf') format('truetype'),
-    url('Avenir-LightOblique.svg#Avenir-LightOblique') format('svg'),
-    url('Avenir-LightOblique.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-LightOblique.woff2') format('woff2');
   font-weight: 300;
   font-style: oblique;
   font-display: swap;
@@ -78,12 +48,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-Medium.eot');
-  src: url('Avenir-Medium.woff2') format('woff2'),
-    url('Avenir-Medium.woff') format('woff'),
-    url('Avenir-Medium.ttf') format('truetype'),
-    url('Avenir-Medium.svg#Avenir-Medium') format('svg'),
-    url('Avenir-Medium.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -91,12 +56,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-MediumOblique.eot');
-  src: url('Avenir-MediumOblique.woff2') format('woff2'),
-    url('Avenir-MediumOblique.woff') format('woff'),
-    url('Avenir-MediumOblique.ttf') format('truetype'),
-    url('Avenir-MediumOblique.svg#Avenir-MediumOblique') format('svg'),
-    url('Avenir-MediumOblique.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-MediumOblique.woff2') format('woff2');
   font-weight: 500;
   font-style: oblique;
   font-display: swap;
@@ -104,12 +64,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-Oblique.eot');
-  src: url('Avenir-Oblique.woff2') format('woff2'),
-    url('Avenir-Oblique.woff') format('woff'),
-    url('Avenir-Oblique.ttf') format('truetype'),
-    url('Avenir-Oblique.svg#Avenir-Oblique') format('svg'),
-    url('Avenir-Oblique.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-Oblique.woff2') format('woff2');
   font-weight: 400;
   font-style: oblique;
   font-display: swap;
@@ -117,12 +72,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-Roman.eot');
-  src: url('Avenir-Roman.woff2') format('woff2'),
-    url('Avenir-Roman.woff') format('woff'),
-    url('Avenir-Roman.ttf') format('truetype'),
-    url('Avenir-Roman.svg#Avenir-Roman') format('svg'),
-    url('Avenir-Roman.eot?#iefix') format('embedded-opentype');
+  src: url('Avenir-Roman.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -130,12 +80,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-Semibold.eot');
-  src: url('Avenir-Semibold.eot?#iefix') format('embedded-opentype'),
-    url('Avenir-Semibold.woff2') format('woff2'),
-    url('Avenir-Semibold.woff') format('woff'),
-    url('Avenir-Semibold.ttf') format('truetype'),
-    url('Avenir-Semibold.svg#Avenir-Semibold') format('svg');
+  src: url('Avenir-Semibold.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -143,12 +88,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-SemiboldOblique.eot');
-  src: url('Avenir-SemiboldOblique.eot?#iefix') format('embedded-opentype'),
-    url('Avenir-SemiboldOblique.woff2') format('woff2'),
-    url('Avenir-SemiboldOblique.woff') format('woff'),
-    url('Avenir-SemiboldOblique.ttf') format('truetype'),
-    url('Avenir-SemiboldOblique.svg#Avenir-SemiboldOblique') format('svg');
+  src: url('Avenir-SemiboldOblique.woff2') format('woff2');
   font-weight: 600;
   font-style: oblique;
   font-display: swap;
@@ -156,12 +96,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-Bold.eot');
-  src: url('Avenir-Bold.eot?#iefix') format('embedded-opentype'),
-    url('Avenir-Bold.woff2') format('woff2'),
-    url('Avenir-Bold.woff') format('woff'),
-    url('Avenir-Bold.ttf') format('truetype'),
-    url('Avenir-Bold.svg#Avenir-Bold') format('svg');
+  src: url('Avenir-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -169,12 +104,7 @@
 
 @font-face {
   font-family: 'Avenir';
-  src: url('Avenir-BoldOblique.eot');
-  src: url('Avenir-BoldOblique.eot?#iefix') format('embedded-opentype'),
-    url('Avenir-BoldOblique.woff2') format('woff2'),
-    url('Avenir-BoldOblique.woff') format('woff'),
-    url('Avenir-BoldOblique.ttf') format('truetype'),
-    url('Avenir-BoldOblique.svg#Avenir-BoldOblique') format('svg');
+  src: url('Avenir-BoldOblique.woff2') format('woff2');
   font-weight: 700;
   font-style: oblique;
   font-display: swap;

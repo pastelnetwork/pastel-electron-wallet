@@ -3,8 +3,6 @@
 @import 'tailwindcss/utilities';
 
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @layer base {
   h1 {
@@ -25,13 +23,56 @@
   h5 {
     @apply text-h6;
   }
+
+  ::-webkit-scrollbar {
+    @apply w-3px h-3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-f3;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-cd rounded-full;
+  }
 }
 
+@tailwind components;
 @layer components {
   /* It's used to wrap main routes  */
   .wrapper {
     @apply px-4 md:px-60px xl:container pt-5;
   }
+
+  .paper {
+    @apply bg-white shadow-44px rounded-lg border border-gray-e7;
+  }
+
+  .page-container {
+    @apply px-20px md:px-30px lg:px-60px;
+  }
+}
+
+@tailwind utilities;
+
+@layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+}
+
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
+
+html {
+  overflow: hidden;
+}
+html,
+body,
+#root {
+  min-height: 100vh;
+  height: 100%;
 }
 
 @layer utilities {
@@ -53,21 +94,6 @@
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';
-
-::-webkit-scrollbar {
-  width: 0.5em;
-  height: 0.5em;
-}
-
-::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px grey;
-  background-color: rgb(1, 1, 1);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: white;
-  outline: 1px solid slategrey;
-}
 
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
@@ -152,7 +178,8 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.focus-visible:focus {
+.focus-visible:focus,
+.focus-visible-border:focus {
   outline: none;
 }
 
@@ -166,4 +193,5 @@ input[type='number']::-webkit-outer-spin-button {
 
 .tooltip:hover .tooltiparrow {
   visibility: visible;
-}
+.focus-visible:focus-visible {
+  @apply border border-blue-3f;
