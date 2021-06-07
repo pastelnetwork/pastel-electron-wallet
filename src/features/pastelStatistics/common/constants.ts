@@ -4,6 +4,7 @@ import PSLPrice from '../assets/images/pslprice.jpg'
 import Hashrate from '../assets/images/hashrate.jpg'
 import Nettotals from '../assets/images/nettotals.jpg'
 import Mempoolsize from '../assets/images/mempoolsize.jpg'
+import TransactionsPerSecond from '../assets/images/transactionspersecond.jpg'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
@@ -36,6 +37,11 @@ export const pastelChartFields = [
     name: 'Mempool Size',
     routeName: '/statistics/mempoolsizeovertime',
     backgroundImage: Mempoolsize,
+  },
+  {
+    name: 'Transactions Per Second',
+    routeName: '/statistics/transactionspersecondovertime',
+    backgroundImage: TransactionsPerSecond,
   },
 ]
 
@@ -80,6 +86,6 @@ export const pricesCSVHeaders = [
 ]
 
 export const CHART_THEME_BACKGROUND_DEFAULT_COLOR = '#0d0d0d'
-export const CHART_DEFAULT_PERIOD = '2h'
+export const CHART_DEFAULT_PERIOD = 'all'
 export const BLOCK_CHART_DEFAULT_GRANULARITY = '1d'
 export const BLOCK_CHART_DEFAULT_PERIOD = '30d'

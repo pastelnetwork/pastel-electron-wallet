@@ -59,6 +59,49 @@ describe('managePastelDatabase', () => {
     [2, 1621518133357],
   ]
 
+  const mockTransactionsInBlock = [
+    [
+      1,
+      '1',
+      0,
+      0,
+      1.0,
+      '',
+      '["tx1", "tx2"]',
+      1621518133277,
+      '',
+      '',
+      '',
+      1.0,
+      '',
+      '',
+      '',
+      '',
+      '',
+      1621518133277,
+    ],
+    [
+      2,
+      '2',
+      0,
+      0,
+      1.0,
+      '',
+      '["tx1", "tx2"]',
+      1621518133357,
+      '',
+      '',
+      '',
+      1.0,
+      '',
+      '',
+      '',
+      '',
+      '',
+      1621518133357,
+    ],
+  ]
+
   test('getStartPoint function works correctly', async () => {
     // Arrange
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -190,6 +233,24 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual({
       dataX: ['1', '2'],
       dataY: [1621518133.277, 1621518133.357],
+    })
+  })
+
+  test('transformTransactionInBlock function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformTransactionPerSecond(
+      mockTransactionsInBlock,
+    )
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      dataX: ['1', '2'],
+      dataY: [0.000011574074074074073, 0.000023148148148148147],
     })
   })
 })

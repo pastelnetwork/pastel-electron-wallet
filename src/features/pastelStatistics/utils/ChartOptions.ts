@@ -338,6 +338,50 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
+    transactionspersecond: {
+      color: ['#5470c6', '#91cc75', '#fac858'],
+      grid: {
+        top: 8,
+        right: 8,
+        bottom: 40,
+        left: 70,
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: dataX,
+      },
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: maxY,
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            return Number.parseFloat(value)
+          },
+        },
+      },
+      series: {
+        type: 'line',
+        data: dataY,
+        areaStyle: {},
+      },
+      stateAnimation: {
+        duration: 300,
+        easing: 'cubicOut',
+      },
+    },
   }
 
   return chartOptions[chartName]
@@ -438,6 +482,45 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
           show: true,
         },
       },
+    },
+    transactionspersecond: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      xAxis: {
+        splitLine: {
+          show: false,
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+      },
+      yAxis: {
+        splitLine: {
+          show: false,
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY,
+          smooth: theme?.smooth,
+          lineStyle: {
+            width: 3,
+            shadowColor: 'rgba(0,0,0,0.5)',
+            shadowBlur: 10,
+            shadowOffsetY: 8,
+          },
+        },
+      ],
     },
   }
   return chartOptions[chartName]

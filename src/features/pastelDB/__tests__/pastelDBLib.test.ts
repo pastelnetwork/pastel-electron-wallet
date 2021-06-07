@@ -1354,4 +1354,50 @@ describe('managePastelDatabase', () => {
       )
     }
   })
+
+  test('getTransactionsDataFromDBByPeriod should works correctly', async () => {
+    // Arrange
+    const DatabaseSqlQuerySpy = jest
+      .spyOn(pastelDB.db, 'exec')
+      .mockImplementation(() => [
+        {
+          columns: ['time', 'counts'],
+          values: [
+            ['5/21/2021', 5],
+            ['5/22/2021', 10],
+          ],
+        },
+      ])
+    try {
+      // Act
+      const result = pastelDBLib.getTransactionsDataFromDBByPeriod(
+        pastelDB.db,
+        'rawtransaction',
+        'all',
+      )
+
+      // Assert
+      expect(DatabaseSqlQuerySpy).toHaveBeenCalled()
+      expect(result).toEqual([
+        {
+          columns: ['time', 'counts'],
+          values: [
+            ['5/21/2021', 5],
+            ['5/22/2021', 10],
+          ],
+        },
+      ])
+
+      // Act invalid table name
+      pastelDBLib.getTransactionsDataFromDBByPeriod(
+        pastelDB.db,
+        'rawtransactionError',
+        'all',
+      )
+    } catch (e) {
+      expect(e.message).toEqual(
+        'pastelDB getTransactionsDataFromDBByPeriod error: rawtransactionError is invalid table name',
+      )
+    }
+  })
 })
