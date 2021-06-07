@@ -38,8 +38,11 @@
     "@hot-loader/react-dom": "17.0.1",
     "@react-pdf/renderer": "2.0.0",
     "@reduxjs/toolkit": "1.5.1",
+<<<<<<< HEAD
     "@tailwindcss/postcss7-compat": "2.1.2",
     "@testing-library/react": "11.2.7",
+=======
+>>>>>>> new_development
     "as-table": "1.0.55",
     "autoprefixer": "10.2.5",
     "axios": "0.21.1",
@@ -75,7 +78,10 @@
     "react-dom": "17.0.1",
     "react-hot-loader": "4.13.0",
     "react-modal": "3.11.1",
+<<<<<<< HEAD
     "react-number-format": "4.6.0",
+=======
+>>>>>>> new_development
     "react-range": "1.8.8",
     "react-redux": "7.2.3",
     "react-router": "5.2.0",
