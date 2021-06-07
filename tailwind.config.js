@@ -79,6 +79,7 @@ module.exports = {
         blue: {
           450: '#3F9AF7',
           '3f': '#3F9AF7',
+          e5: '#E5F1FF',
         },
         gray: {
           // text
