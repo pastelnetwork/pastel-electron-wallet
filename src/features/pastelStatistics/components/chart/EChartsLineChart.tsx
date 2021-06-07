@@ -40,7 +40,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
   const [selectedGranularityButton, setSelectedGranularityButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
-  const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
+  const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>(
+    themes[0],
+  )
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
   const [minY, setMinY] = useState(0)
@@ -64,9 +66,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
       }
       if (dataX) {
         const data: Data = []
-        dataY.map((o, index) => {
+        dataY.map((yAxis, index) => {
           data.push({
-            value: o,
+            value: yAxis,
             time: dataX[index],
           })
         })
@@ -75,9 +77,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     } else if (dataY1?.length && dataY2?.length) {
       if (dataX) {
         const data: Data = []
-        dataY1.map((o, index) => {
+        dataY1.map((yAxis, index) => {
           data.push({
-            value: `${o} : ${dataY2[index]}`,
+            value: `${yAxis} : ${dataY2[index]}`,
             time: dataX[index],
           })
         })

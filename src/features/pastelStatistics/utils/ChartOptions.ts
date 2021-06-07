@@ -22,7 +22,6 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
     minY,
     maxY,
   } = args
-
   const chartOptions: TChartOption = {
     difficulty: {
       grid: {
@@ -142,7 +141,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
-    nettotals: {
+    network_totals: {
       color: ['#80FFA5', '#37A2FF'],
       grid: {
         top: 8,
@@ -163,9 +162,9 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
       legend: {
         top: 10,
         right: 10,
-        data: ['traffic recv', 'traffic sent'],
+        data: ['Traffic receive', 'Traffic sent'],
         textStyle: {
-          color: '#FFF',
+          color: theme?.color,
         },
       },
       xAxis: {
@@ -182,7 +181,8 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         },
         axisLabel: {
           formatter: function (value: string) {
-            return Number.parseFloat(value)
+            const val = Number.parseFloat(value)
+            return `${val / 1000000} M`
           },
         },
         axisLine: {
@@ -191,7 +191,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
       },
       series: [
         {
-          name: 'traffic recv',
+          name: 'Traffic receive',
           type: 'line',
           smooth: true,
           lineStyle: {
@@ -203,11 +203,11 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: 'rgba(128, 255, 165)',
+                color: '#80ffa5',
               },
               {
                 offset: 1,
-                color: 'rgba(1, 191, 236)',
+                color: '#00BFEC',
               },
             ]),
           },
@@ -217,7 +217,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           data: dataY1,
         },
         {
-          name: 'traffic sent',
+          name: 'Traffic sent',
           type: 'line',
           smooth: true,
           lineStyle: {
@@ -460,30 +460,10 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
       },
     ],
   }
-
-  const chartOptions: TChartOption = {
-    averageblocksize: {
-      backgroundColor: theme?.backgroundColor,
-      textStyle: {
-        color: theme?.color,
-      },
-      yAxis: {
-        splitLine: {
-          lineStyle: {
-            color: theme?.splitLineColor,
-          },
-        },
-        axisLine: {
-          show: true,
-        },
-      },
-      series: [
-        {
-          type: 'line',
-          showSymbol: false,
-          data: dataY,
-        },
-      ],
+  const netTotalsOption: EChartsOption = {
+    backgroundColor: theme?.backgroundColor,
+    textStyle: {
+      color: theme?.color,
     },
     difficulty: defaultOption,
     hashrate: defaultOption,
@@ -563,6 +543,11 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
         },
       ],
     },
+  }
+  const chartOptions: TChartOption = {
+    difficulty: defaultOption,
+    hashrate: defaultOption,
+    network_totals: netTotalsOption,
   }
 
   return chartOptions[chartName]

@@ -29,7 +29,7 @@ export const pastelChartFields = [
     backgroundImage: Hashrate,
   },
   {
-    name: 'Nettotals',
+    name: 'Network Totals',
     routeName: '/statistics/nettotalsovertime',
     backgroundImage: Nettotals,
   },
