@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react'
-
+import PastelDB from '../../../pastelDB/database'
+import { EChartsLineChart } from '../chart/EChartsLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
-import PastelDB from '../../../pastelDB/database'
-import { TLineChartData } from '../../../pastelDB/type'
 import {
-  TPeriod,
-  transformDifficultyInfo,
-} from '../../utils/PastelStatisticsLib'
-import { EChartsLineChart } from '../chart/EChartsLineChart'
-import styles from '../../Common.module.css'
-import {
+  periods,
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   CHART_DEFAULT_PERIOD,
-  periods,
 } from '../../common/constants'
+import { TLineChartData } from '../../../pastelDB/type'
+import { TPeriod, transformHashrateInfo } from '../../utils/PastelStatisticsLib'
 
-type TDifficultyOvertimeProps = {
+import styles from '../../Common.module.css'
+
+type THashrateOvertimeProps = {
   info: {
     [key: string]: string | number
   }
@@ -24,7 +21,7 @@ type TDifficultyOvertimeProps = {
 
 const redrawCycle = 6000
 
-const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
+const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -39,9 +36,9 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.statisticinfo)
+      const result = getDatasFromDB(pasteldb, pastelTableNames.mininginfo)
       if (result.length) {
-        const transforms = transformDifficultyInfo(result[0].values, period)
+        const transforms = transformHashrateInfo(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -77,12 +74,12 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='difficulty'
+              chartName='hashrate'
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
-              title='Network Difficulty'
+              title='Hashrate(MH/s)'
               info={info}
-              offset={1000}
+              offset={1}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
@@ -94,4 +91,4 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   )
 }
 
-export default DifficultyOvertime
+export default HashrateOvertime
