@@ -167,7 +167,8 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         },
         axisLabel: {
           formatter: function (value: string) {
-            return Number.parseFloat(value)
+            const val = Number.parseFloat(value)
+            return `${val / 1000000} M`
           },
         },
         axisLine: {
