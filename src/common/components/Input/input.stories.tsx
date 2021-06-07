@@ -1,6 +1,6 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Input, { TInput } from './index'
+import Input, { TInput } from './Input'
 
 const Template: Story<TInput> = ({
   type,

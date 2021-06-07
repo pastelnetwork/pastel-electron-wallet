@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import Input from '../../../../common/components/Input'
+import Input from '../../../../common/components/Input/Input'
 import Checkbox from '../../../../common/components/Checkbox/Checkbox'
 import FormLoading from '../../../../common/components/FormLoading/FormLoading'
 
