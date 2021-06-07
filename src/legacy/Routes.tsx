@@ -50,7 +50,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import NFTMarketFeed from '../features/nftMarket'
+import NFTMarketFeed from '../features/NFTMarket'
 import { app } from 'electron'
 
 export type TWalletInfo = {
