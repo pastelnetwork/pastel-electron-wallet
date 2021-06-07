@@ -47,19 +47,19 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
 
   useEffect(() => {
     if (data?.length) {
-      const dataY = data.reduce((acc, cur) => {
-        acc.push(cur[1])
-        return acc
+      const dataY = data.reduce((yAxis, item) => {
+        yAxis.push(item[1])
+        return yAxis
       }, [])
       const min = Math.min(...dataY)
       const max = Math.max(...dataY)
       setMinY(min - offset)
       setMaxY(max + offset)
       const dataCsv: Data = []
-      data.map((o, index) => {
+      data.map((row, index) => {
         dataCsv.push({
-          height: o[0],
-          transactions: o[1],
+          height: row[0],
+          transactions: row[1],
           time: dataX[index],
         })
       })
@@ -160,9 +160,7 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
           lazyUpdate={true}
           option={options}
           className={styles.reactECharts}
-          ref={e => {
-            setEChartRef(e)
-          }}
+          ref={e => setEChartRef(e)}
         />
       </div>
       <div className={styles.lineChartFooter}>

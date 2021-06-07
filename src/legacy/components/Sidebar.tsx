@@ -280,10 +280,12 @@ const PayURIModal = ({
 const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
   let isActive = false
 
+  let splitedCurrentRouteNames = currentRoute.split('/')
+  let splitedRouteNames = routeName.split('/')
   if (
     (currentRoute.endsWith('app.html') && routeName === (routes as any).HOME) ||
     currentRoute === routeName ||
-    currentRoute.includes(routeName)
+    splitedRouteNames[1] === splitedCurrentRouteNames[1]
   ) {
     isActive = true
   }
@@ -708,12 +710,6 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
-          {/* <SidebarMenuItem
-            name='Statistics'
-            routeName={routes.STATISTICS}
-            currentRoute={location.pathname}
-            iconname='fa-chart-bar'
-          /> */}
           <SidebarMenuItem
             name='Statistics'
             routeName={routes.STATISTICS}

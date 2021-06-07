@@ -229,11 +229,11 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: 'rgba(55, 162, 255)',
+                color: '#37a2ff',
               },
               {
                 offset: 1,
-                color: 'rgba(116, 21, 219)',
+                color: '#7415db',
               },
             ]),
           },
@@ -277,8 +277,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         },
         axisLabel: {
           formatter: function (value: string) {
-            const val = Number(value).toFixed(2)
-            return `${val} k`
+            return `${Number(value).toFixed(2)} k`
           },
         },
       },
@@ -286,7 +285,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         type: 'line',
         sampling: 'lttb',
         lineStyle: {
-          color: 'rgb(23,105,135)',
+          color: '#176987',
         },
         smooth: true,
         symbol: false,
@@ -294,7 +293,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: 'rgba(26, 67, 105, 1)',
+              color: '#1a4369',
             },
             {
               offset: 1,
@@ -404,8 +403,8 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           type: 'scatter',
           symbolSize: 15,
           itemStyle: {
-            color: 'rgba(255, 85, 0)',
-            borderColor: 'rgb(0, 0, 0)',
+            color: '#FF5500',
+            borderColor: '#000000',
           },
           tooltip: {
             trigger: 'item',
