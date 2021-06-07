@@ -4,15 +4,13 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
 import { ErrorModal, ErrorModalData } from './components/ErrorModal'
-import cstyles from './components/Common.module.css'
 import routes from './constants/routes.json'
-import App from './containers/App'
-import Dashboard from './components/Dashboard'
 import MemberProfile from '../features/profile/memberProfile/MemberProfile'
+import Dashboard from '../features/dashboard/DashboardPage'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
-import HeaderScreen from '../common/components/Header'
+import Header from '../common/components/Header'
 import {
   TotalBalance,
   SendPageState,
@@ -52,7 +50,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import NFTMarketFeed from '../features/NFTMarket'
+import NFTMarketFeed from '../features/nftMarket'
 import { app } from 'electron'
 
 export type TWalletInfo = {
@@ -482,7 +480,7 @@ class RouteApp extends React.Component<any, any> {
     }
 
     return (
-      <App>
+      <div className='flex flex-col h-full'>
         <ErrorModal
           title={errorModalData.title}
           body={errorModalData.body}
@@ -494,28 +492,8 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
-        {info && info.version && (
-          <div className={cstyles.sidebarcontainer}>
-            <HeaderScreen
-            // info={info}
-            // setSendTo={this.setSendTo}
-            // getPrivKeyAsString={this.getPrivKeyAsString}
-            // importPrivKeys={this.importPrivKeys}
-            // importANIPrivKeys={this.importANIPrivKeys}
-            // addresses={addresses}
-            // transactions={transactions}
-            // openPastelSpriteEditorToolModal={
-            //   this.props.openPastelSpriteEditorToolModal
-            // }
-            // {...(standardProps as any)}
-            // openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
-            // openAboutModal={this.props.openAboutModal}
-            // openUpdateToast={this.props.openUpdateToast}
-            // openSquooshToolModal={this.props.openSquooshToolModal}
-            />
-          </div>
-        )}
-        <div className={cstyles.contentcontainer}>
+        {info?.version && <Header />}
+        <div className='flex-grow overflow-auto'>
           <Switch>
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
             <Route
@@ -562,16 +540,7 @@ class RouteApp extends React.Component<any, any> {
                 />
               )}
             />
-            <Route
-              path={routes.DASHBOARD}
-              render={() => (
-                <Dashboard
-                  totalBalance={totalBalance}
-                  info={info}
-                  addressesWithBalance={addressesWithBalance}
-                />
-              )}
-            />
+            <Route path={routes.DASHBOARD} component={Dashboard} />
             <Route
               path={routes.TRANSACTIONS}
               render={() => (
@@ -664,7 +633,7 @@ class RouteApp extends React.Component<any, any> {
             />
           </Switch>
         </div>
-      </App>
+      </div>
     )
   }
 }
