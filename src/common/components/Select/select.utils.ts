@@ -66,7 +66,7 @@ export const useSelectOptions = (props: TSelectProps): TOptions => {
   } else {
     const { value, onChange: propsOnChange } = props
 
-    if (value) {
+    if (value && typeof value == 'number') {
       inputValueRef.current = formatNumber(value)
     }
 
@@ -89,7 +89,7 @@ export const useSelectOptions = (props: TSelectProps): TOptions => {
         inputValueRef.current = filteredValue
       } else {
         inputValueRef.current = formatNumber(parsed)
-        propsOnChange(parsed)
+        propsOnChange && propsOnChange(parsed)
       }
     }
   }

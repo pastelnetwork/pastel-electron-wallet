@@ -15,10 +15,12 @@ import user2Icon from '../../common/assets/icons/ico-user2.svg'
 
 const Columns = [
   {
-    name: 'date',
+    name: 'Date',
+    key: 'date',
   },
   {
-    name: 'address',
+    key: 'address',
+    name: 'Recipient address',
     custom: (value: string | number) => (
       <div className='flex'>
         <span className='text-blue-3f cursor-pointer'>{value}</span>
@@ -28,10 +30,12 @@ const Columns = [
     ),
   },
   {
-    name: 'type',
+    name: 'Source Type',
+    key: 'type',
   },
   {
-    name: 'status',
+    name: 'Status',
+    key: 'status',
     custom: (value: string | number) => (
       <img
         src={
@@ -48,17 +52,21 @@ const Columns = [
     ),
   },
   {
-    name: 'id',
+    name: 'ID',
+    key: 'id',
   },
   {
-    name: 'comments',
+    name: 'Comments',
+    key: 'comments',
     custom: () => <img src={commentIcon} className='ml-8 cursor-pointer' />,
   },
   {
-    name: 'fee',
+    name: 'Fee',
+    key: 'fee',
   },
   {
-    name: 'amount',
+    name: 'Amount',
+    key: 'amount',
   },
 ]
 
@@ -82,6 +90,16 @@ const transactionHistory = [
     comments: 'abcdefg',
     fee: '100',
     amount: '22.000',
+  },
+  {
+    date: '11.04.21 17:33',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v35',
+    type: 'Shielded',
+    status: 'failed',
+    id: '2654843',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '23.000',
   },
   {
     date: '11.04.21 17:33',

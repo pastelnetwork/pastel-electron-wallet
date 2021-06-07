@@ -185,3 +185,18 @@ td {
 .tooltip:hover .tooltiparrow {
   visibility: visible;
 }
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #a6b0c2;
+  opacity: 0.5;
+  border-radius: 30px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  opacity: 0.2;
+}

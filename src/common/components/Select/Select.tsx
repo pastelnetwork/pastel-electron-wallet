@@ -27,8 +27,8 @@ export type TRangeProps = TBaseProps & {
   min: number
   max: number
   step: number
-  onChange: (value: number | null) => void
-  value: number | null
+  onChange?: (value: number) => void
+  value: number | string
 }
 
 export type TSelectProps = TOptionsProps | TRangeProps

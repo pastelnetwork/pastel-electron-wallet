@@ -8,99 +8,139 @@ import electIcon from '../../common/assets/icons/ico-elect.svg'
 import Tooltip from '../../common/components/Tooltip'
 import Toggle from '../../common/components/Toggle'
 import Button from '../../common/components/Button/Button'
-import Table, {
-  TColumnDefinitionType,
-} from '../../common/components/Table/Table'
+import Select from '../../common/components/Select/Select'
+
+import pasetIcon from '../../common/assets/icons/ico-paste.svg'
+import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
+import viewIcon from '../../common/assets/icons/ico-view.svg'
+
+import Table, { TRow } from './table'
+
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 
-type TTransaction = {
-  hash: string
-  time: string
-  viewing_key?: string
-  private_key?: string
-  psl: number
-  qr_code?: string
-}
-
-const columns: TColumnDefinitionType<TTransaction, keyof TTransaction>[] = [
+const Columns = [
   {
-    key: 'hash',
-    header: 'Hash',
-  },
-  {
-    key: 'qr_code',
-    header: 'QR Code',
-    classnames: '',
+    key: 'address',
+    name: 'Account name',
+    custom: (value: string | number) => (
+      <div className='flex'>
+        <span className='text-blue-3f cursor-pointer'>{value}</span>
+        <img className='ml-6 cursor-pointer' src={pasetIcon} />
+        <img className='ml-18px cursor-pointer' src={pencilIcon} />
+      </div>
+    ),
   },
   {
     key: 'time',
-    header: 'Time',
-    classnames: 'text-gray-a0 lg:ml-20 xl:ml-117px',
+    name: 'Time',
+  },
+  {
+    key: 'qr_code',
+    name: '',
+    custom: () => (
+      <div className='flex'>
+        <img src={viewIcon} />
+      </div>
+    ),
+  },
+  {
+    key: 'amount',
+    name: 'Amount',
+    custom: (value: string | number) => (
+      <div className='text-gray-2d'>PSL {value}</div>
+    ),
   },
   {
     key: 'viewing_key',
-    header: 'Viewing Key',
-    classnames: 'text-gray-a0 lg:ml-16 xl:ml-86px',
+    name: 'Key',
   },
   {
     key: 'private_key',
-    header: 'Private Key',
-    classnames: 'text-gray-a0 lg:ml-11 xl:ml-59px',
+    name: 'Key',
   },
   {
     key: 'psl',
-    header: 'psl',
-    classnames: 'psl',
+    name: '',
+    custom: (value: string | number, row: TRow | undefined) => (
+      <div>
+        <Select
+          className='text-gray-2d w-28'
+          autocomplete={true}
+          min={10000}
+          max={20000}
+          step={100}
+          value={value}
+          onChange={(value: number | null) => {
+            console.log(row)
+            console.log(value)
+          }}
+        />
+      </div>
+    ),
   },
 ]
 
-const walletdatas: TTransaction[] = [
+const walletdatas = [
   {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
     time: '1d 1 h 25m ago',
+    qr_code: '',
+    amount: 145,
     viewing_key: 'viewing key',
     private_key: 'private key',
     psl: 15000,
   },
   {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
+    qr_code: '',
+    amount: 50,
     viewing_key: 'viewing key',
     private_key: 'private key',
     psl: 15000,
   },
   {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
+    qr_code: '',
+    amount: 400,
     viewing_key: 'viewing key',
     private_key: 'private key',
     psl: 18000,
   },
   {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
+    qr_code: '',
+    amount: 25,
     viewing_key: 'viewing key',
     private_key: 'private key',
     psl: 18000,
   },
   {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
+    qr_code: '',
+    amount: 250,
     viewing_key: 'viewing key',
     private_key: 'private key',
     psl: 18000,
   },
   {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
+    qr_code: '',
+    amount: 110,
     viewing_key: 'viewing key',
     private_key: 'private key',
     psl: 18000,
   },
   {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v34',
     time: '1d 1 h 25m ago',
+    qr_code: '',
+    amount: 110,
     viewing_key: 'viewing key',
     private_key: 'private key',
     psl: 18000,
@@ -234,8 +274,13 @@ const WalletScreen = (props: Tprops): JSX.Element => {
               PSL
             </span>
           </div>
-          <div className='mb-15px h-456px overflow-y-scroll mt-15px mr-4 scrollbar'>
-            <Table hasChecked={true} data={walletdatas} columns={columns} />
+          <div className='mb-15px h-456px overflow-y-scroll mt-15px mr-4 scrollbar ml-30px'>
+            <Table
+              data={walletdatas}
+              columns={Columns}
+              headerTrClasses='text-gray-a0 font-normal'
+              showCheckbox={true}
+            />
           </div>
         </div>
 
