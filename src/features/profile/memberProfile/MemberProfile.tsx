@@ -41,8 +41,11 @@ const Profile = (): JSX.Element => {
   return (
     <div>
       <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
+        <div className='wrapper pt-0 h-35px flex items-center'>
+          <div className='text-sm text-gray-71'>Member Profile / General</div>
+        </div>
         <div className='bg-white'>
-          <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
+          <div className='wrapper flex h-20 items-center bg-white pl-60px pt-0'>
             <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
             <MultiToggleSwitch
               data={[
@@ -55,7 +58,7 @@ const Profile = (): JSX.Element => {
             />
           </div>
         </div>
-        <div className='wrapper flex py-8 px-60px'>
+        <div className='wrapper flex py-8 pl-60px pr-25px'>
           <div className='flex w-full'>
             <div className='flex flex-col items-center lg:justify-between'>
               <ProfileCard {...profile_data} isMyProfile={true} />

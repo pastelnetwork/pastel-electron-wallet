@@ -19,7 +19,7 @@ export type TFollowerProps = {
 
 const Followers = (): JSX.Element => {
   return (
-    <div className='flex flex-col pt-2 pr-4 max-h-700 overflow-y-auto pr-8 -mt-7'>
+    <div className='flex flex-col pt-2 pr-4 max-h-700px overflow-y-auto pr-8 -mt-7'>
       <div className='pt-7' />
       {followers.map((follower: TFollowerProps, index: number) => (
         <Follower {...follower} key={index} />

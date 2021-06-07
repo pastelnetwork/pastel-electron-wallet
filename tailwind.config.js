@@ -34,6 +34,7 @@ module.exports = {
         '17px': '1.0625rem',
         '18px': '1.125rem',
         '22px': '1.375rem',
+        '25px': '1.5625rem',
         '26px': '1.625rem',
         '27px': '1.688rem',
         '28px': '1.75rem',
@@ -206,7 +207,10 @@ module.exports = {
         center: true,
       },
       maxHeight: {
-        700: '43rem',
+        '700px': '43.75rem',
+      },
+      width: {
+        fit: 'fit-content',
       },
     },
   },
