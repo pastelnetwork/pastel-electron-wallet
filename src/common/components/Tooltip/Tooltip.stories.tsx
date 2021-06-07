@@ -1,7 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Tooltip, { TTooltipProps } from './Tooltip'
+import Tooltip, { TTooltipProps } from './index'
 
 export default {
   title: 'Tooltip',
