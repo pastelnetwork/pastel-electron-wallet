@@ -30,34 +30,6 @@ async function exists(path: string): Promise<boolean> {
   return Promise.resolve(true)
 }
 
-async function cloneFile(downloadItem: IDownloadItem, outputDir: string) {
-  if (downloadItem?.originalName) {
-    const originalFileExists = await exists(
-      `${path.join(outputDir, downloadItem.originalName)}`,
-    )
-
-    if (!originalFileExists) {
-      const absPath = path.join(outputDir, downloadItem.name)
-      const absPathExists = await exists(absPath)
-
-      if (absPathExists) {
-        fs.copyFile(
-          absPath,
-          path.join(outputDir, downloadItem.originalName),
-          err => {
-            if (err) {
-              console.warn(
-                `utils checkHashAndDownloadParams rename error: ${err.message}`,
-                err,
-              )
-            }
-          },
-        )
-      }
-    }
-  }
-}
-
 export const checkHashAndDownloadParams = async ({
   params,
   outputDir,
@@ -78,7 +50,6 @@ export const checkHashAndDownloadParams = async ({
     if (fileExists) {
       const sha256 = sha256File(absPath)
       if (sha256 == p.sha256) {
-        await cloneFile(p, outputDir)
         continue
       }
       try {
@@ -112,7 +83,6 @@ export const checkHashAndDownloadParams = async ({
     const promise = new Promise<void>((resolve, reject) => {
       writer.on('finish', async () => {
         writer.close()
-        await cloneFile(p, outputDir)
         resolve()
       })
 
