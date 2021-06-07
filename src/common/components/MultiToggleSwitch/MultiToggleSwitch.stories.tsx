@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import MultiToggleSwitch, { TProps, TItem } from './MultiToggleSwitch'
+import MultiToggleSwitchComponent, {
+  TMultiToggle,
+  TMultiToggleDataItem,
+} from './MultiToggleSwitch'
 
 export default {
   title: 'MultiToggleSwitch',
-  component: MultiToggleSwitch,
+  component: MultiToggleSwitchComponent,
 } as Meta
 
-const data: TItem[] = [
+const data: TMultiToggleDataItem[] = [
   {
     label: 'General',
   },
@@ -21,11 +24,11 @@ const data: TItem[] = [
   },
 ]
 
-const Template: Story<TProps> = ({ activeIndex, ...args }) => {
+const Template: Story<TMultiToggle> = ({ activeIndex, ...args }) => {
   const [selectedItem, setSelected] = useState(activeIndex)
 
   return (
-    <MultiToggleSwitch
+    <MultiToggleSwitchComponent
       {...args}
       activeIndex={selectedItem}
       onToggle={setSelected}
@@ -33,13 +36,13 @@ const Template: Story<TProps> = ({ activeIndex, ...args }) => {
   )
 }
 
-export const Switch = Template.bind({})
-Switch.args = {
+export const MultiToggleSwitch = Template.bind({})
+MultiToggleSwitch.args = {
   data,
   activeIndex: 0,
   containerClassName: '',
-  itemInActiveClassName: '',
+  itemInactiveClassName: '',
   itemActiveClassName: '',
-  countInActiveClassName: '',
+  countInactiveClassName: '',
   countActiveClassName: '',
 }

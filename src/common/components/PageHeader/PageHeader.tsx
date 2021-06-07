@@ -1,5 +1,5 @@
 import React from 'react'
-import Select, { Option } from '../Select/Select'
+import Select, { TOption } from '../Select/Select'
 import cn from 'classnames'
 
 export type PageHeaderRoutes = {
@@ -10,9 +10,9 @@ export type PageHeaderRoutes = {
 
 export type PageHeaderSortByOptions = {
   placeholder: string
-  onOptionChange: (option: Option | null) => void
-  selected: Option | null
-  options: Option[]
+  onOptionChange: (option: TOption | null) => void
+  selected: TOption | null
+  options: TOption[]
 }
 
 export interface PageHeaderProps {

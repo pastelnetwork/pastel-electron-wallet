@@ -7,7 +7,7 @@ import { ThemeProvider } from 'styled-components/macro'
 import { PastelModal } from '../../features/pastelModal'
 import UpdateToast from '../../features/updateToast'
 import Routes from '../Routes'
-import OnboardingRoutes from '../../common/routes/Routes'
+import OnboardingRoutes from '../../common/routes/OnboardingRoutes'
 import { theme } from '../../common/theme'
 
 const Root = (): JSX.Element => {

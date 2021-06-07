@@ -1,28 +1,28 @@
 import React from 'react'
 
-export type TItem = {
+export type TMultiToggleDataItem = {
   label: string
   count?: number
 }
 
-export type TProps = {
-  data: TItem[]
+export type TMultiToggle = {
+  data: TMultiToggleDataItem[]
   activeIndex: number
   containerClassName?: string
-  itemInActiveClassName?: string
+  itemInactiveClassName?: string
   itemActiveClassName?: string
-  countInActiveClassName?: string
+  countInactiveClassName?: string
   countActiveClassName?: string
   onToggle: (index: number) => void
 }
 
-const MultiToggleSwitch: React.FC<TProps> = ({
+const MultiToggleSwitch: React.FC<TMultiToggle> = ({
   data,
   activeIndex,
   containerClassName,
-  itemInActiveClassName,
+  itemInactiveClassName,
   itemActiveClassName,
-  countInActiveClassName,
+  countInactiveClassName,
   countActiveClassName,
   onToggle,
 }) => {
@@ -32,12 +32,12 @@ const MultiToggleSwitch: React.FC<TProps> = ({
     const activeClass = itemActiveClassName
       ? itemActiveClassName
       : 'bg-tab-active rounded-full text-white'
-    const inActiveClass = itemInActiveClassName
-      ? itemInActiveClassName
+    const inactiveClass = itemInactiveClassName
+      ? itemInactiveClassName
       : 'text-gray-71'
 
     return `flex font-avenir font-extrabold leading-4 text-sm py-1.5 px-3 cursor-pointer ${
-      isActive ? activeClass : inActiveClass
+      isActive ? activeClass : inactiveClass
     }`
   }
 
@@ -45,12 +45,12 @@ const MultiToggleSwitch: React.FC<TProps> = ({
     const activeClass = countActiveClassName
       ? countActiveClassName
       : 'bg-yellow-ff'
-    const inActiveClass = countInActiveClassName
-      ? countInActiveClassName
+    const inactiveClass = countInactiveClassName
+      ? countInactiveClassName
       : 'bg-gray-a0'
 
-    return `ml-2.5 text-9px text-white pt-2.5px pb-1.5px px-3px  leading-11px rounded-xl ${
-      isActive ? activeClass : inActiveClass
+    return `ml-2.5 text-9 text-white pt-2.5px pb-1.5px px-3px  leading-11px rounded-xl ${
+      isActive ? activeClass : inactiveClass
     }`
   }
 
@@ -62,7 +62,7 @@ const MultiToggleSwitch: React.FC<TProps> = ({
     <>
       {data?.length && (
         <div className={container_className}>
-          {data?.map((item: TItem, index: number) => {
+          {data?.map((item: TMultiToggleDataItem, index: number) => {
             return (
               <div
                 className={getItemClassName(index === activeIndex)}
@@ -70,7 +70,7 @@ const MultiToggleSwitch: React.FC<TProps> = ({
                 onClick={() => handleClick(index)}
               >
                 <span>{item.label}</span>
-                {typeof item.count !== 'undefined' && (
+                {item?.count && item.count > 0 && (
                   <span className={getCountClassName(index === activeIndex)}>
                     {item.count > 99 ? 99 : item.count}
                   </span>
