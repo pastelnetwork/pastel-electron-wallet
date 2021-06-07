@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router'
 import OnboardingRoutes from './OnboardingRoutes'
 import routes from '../constants/routes.json'
 import Header from '../components/Header'
-import NFTMarketFeed from '../../features/nftMarket'
+import NFTMarketFeed from '../../features/NFTMarket'
 import Dashboard from '../../features/dashboard/DashboardPage'
 
 export default function Routes(): JSX.Element {
