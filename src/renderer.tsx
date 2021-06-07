@@ -37,8 +37,13 @@ import { Provider } from 'react-redux'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
-import Root from './legacy/containers/Root'
+import Routes from './common/routes/Routes'
 import store from './redux/store'
+import { ThemeProvider } from 'styled-components/macro'
+import { theme } from './common/theme'
+import { MemoryRouter } from 'react-router-dom'
+import { PastelModal } from './features/pastelModal'
+import UpdateToast from './features/updateToast'
 
 const oneHour = 1000 * 60 * 60
 /**
@@ -65,7 +70,13 @@ try {
 
 const application = (
   <Provider store={store}>
-    <Root />
+    <ThemeProvider theme={theme}>
+      <MemoryRouter>
+        <Routes />
+        <PastelModal />
+        <UpdateToast />
+      </MemoryRouter>
+    </ThemeProvider>
   </Provider>
 )
 
