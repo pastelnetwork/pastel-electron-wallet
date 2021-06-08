@@ -18,6 +18,7 @@ const stepMap = {
 
 export function ArtRegForm(): JSX.Element {
   const { step } = useAppSelector(state => state.artRegForm)
+
   return (
     <ScrollPane offsetHeight={0}>
       <div className={styles.artRegFormContainer}>

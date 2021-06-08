@@ -108,6 +108,7 @@ export function GeneralInfoStep(): JSX.Element {
             />
           </div>
 
+          {/*
           <div
             className={styles.artRegFormCloseButton}
             onClick={showHideHeader}
@@ -116,6 +117,7 @@ export function GeneralInfoStep(): JSX.Element {
               <img src={formCloseButton} />
             </Link>
           </div>
+          */}
 
           <div className={styles.artRegFormInputContainer}>
             <div className={styles.artRegFormRow}>

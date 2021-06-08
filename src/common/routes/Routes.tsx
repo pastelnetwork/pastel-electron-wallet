@@ -5,6 +5,7 @@ import routes from '../constants/routes.json'
 import Header from '../components/Header'
 import NFTMarketFeed from '../../features/nftMarket'
 import Dashboard from '../../features/dashboard/DashboardPage'
+import { ArtRegForm } from '../../features/artReg'
 
 export default function Routes(): JSX.Element {
   /**
@@ -21,6 +22,11 @@ export default function Routes(): JSX.Element {
           <Switch>
             <Route exact path={routes.DASHBOARD} component={Dashboard} />
             <Route exact path={routes.MARKET} component={NFTMarketFeed} />
+            <Route
+              exact
+              path={routes.ART_REGISTRATION}
+              component={ArtRegForm}
+            />
           </Switch>
         </div>
       </div>
