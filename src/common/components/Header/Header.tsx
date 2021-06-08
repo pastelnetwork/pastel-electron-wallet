@@ -78,7 +78,7 @@ export default function Header(): JSX.Element {
         Dashboard
       </MenuItem>
       <MenuItem to={routes.MARKET}>Market</MenuItem>
-      <MenuItem to={routes.RECEIVE}>Members</MenuItem>
+      <MenuItem to={routes.MEMBERS}>Members</MenuItem>
       <MenuItem to={routes.TRANSACTIONS}>Wallet</MenuItem>
       <MenuItem to={routes.ADDRESSBOOK}>Portfolio</MenuItem>
       <Link to='#' className='flex items-center'>

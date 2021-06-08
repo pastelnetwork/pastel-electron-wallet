@@ -5,6 +5,7 @@ import routes from '../constants/routes.json'
 import Header from '../components/Header'
 import NFTMarketFeed from '../../features/nftMarket/NFTMarketFeed'
 import Dashboard from '../../features/dashboard/DashboardPage'
+import MemberProfile from '../../features/profile/memberProfile/MemberProfile'
 
 export default function Routes(): JSX.Element {
   /**
@@ -21,6 +22,7 @@ export default function Routes(): JSX.Element {
           <Switch>
             <Route exact path={routes.DASHBOARD} component={Dashboard} />
             <Route exact path={routes.MARKET} component={NFTMarketFeed} />
+            <Route exact path={routes.MEMBERS} component={MemberProfile} />
           </Switch>
         </div>
       </div>
