@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 
 import Button from '../components/Button/Button'
 import Password from '../components/Password/Password'
-import Card from '../components/Card'
+import Card from '../components/Card/Card'
 
-const ChangePassword: React.FC = () => {
+const ChangePassword = (): JSX.Element => {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [noMatch, setNoMatch] = useState(false)

@@ -9,7 +9,8 @@ type TCryptoProps = {
   children: string
 }
 
-const Crypto: React.FC<TCryptoProps> = ({ label, children }) => {
+const Crypto = (props: TCryptoProps): JSX.Element => {
+  const { label, children } = props
   const copyClipboard = () => {
     clipboard.writeText(children)
   }

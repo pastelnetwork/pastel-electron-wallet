@@ -41,13 +41,15 @@ const passOptions: IPasswordOption[] = [
   },
 ]
 
-const Password: React.FC<TPasswordProps> = ({
-  newPassword,
-  confirmPassword,
-  setNewPassword,
-  setConfirmPassword,
-  isMatch,
-}) => {
+const Password = (props: TPasswordProps): JSX.Element => {
+  const {
+    newPassword,
+    confirmPassword,
+    setNewPassword,
+    setConfirmPassword,
+    isMatch,
+  } = props
+
   const [newPasswordVisible, setNewPasswordVisible] = useState(false)
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
   const [passStrength, setPassStrength] = useState<string[]>([])

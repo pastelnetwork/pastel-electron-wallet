@@ -10,9 +10,9 @@ import dayjs from 'dayjs'
 
 import Button from '../components/Button/Button'
 import Key from '../components/Crypto/Crypto'
-import Card from '../components/Card'
+import Card from '../components/Card/Card'
 
-type TProps = {
+type TCryptoProps = {
   currencyName?: string
 }
 type TPDFDocumentProps = {
@@ -35,7 +35,7 @@ const PDFDocument = ({ publicKey, secretKey }: TPDFDocumentProps) => {
   )
 }
 
-const CryptoKey: React.FC<TProps> = props => {
+const CryptoKey = (props: TCryptoProps): JSX.Element => {
   const { currencyName } = props
   const publicKey =
     'ps19jxlfdl8mhnsqlxlfdl8mhnsqlf7x0cwlhx0cwlhf7x0cwlhx0cwlheq0v34'

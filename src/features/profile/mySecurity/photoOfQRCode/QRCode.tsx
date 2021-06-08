@@ -2,7 +2,7 @@ import React from 'react'
 import QRCode from 'qrcode.react'
 
 import Button from '../components/Button/Button'
-import Card from '../components/Card'
+import Card from '../components/Card/Card'
 
 const downloadQR = () => {
   const canvas = document.getElementById('qrcode') as HTMLCanvasElement
@@ -18,7 +18,7 @@ const downloadQR = () => {
   document.body.removeChild(downloadLink)
 }
 
-const QR: React.FC = () => {
+const QR = (): JSX.Element => {
   const content = (
     <div className='flex justify-center h-348px rounded-lg py-33px px-42px bg-tab-hover'>
       <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center shadow-64px  min-w-118px border border-solid border-gray-e6'>

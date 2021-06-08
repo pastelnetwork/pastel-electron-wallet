@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 
-import MySecurity from './mySecurity'
+import MySecurity from './mySecurity/MySecurity'
 import MultiToggleSwitch from '../../common/components/MultiToggleSwitch'
 
-type TProps = {
+type TProfileProps = {
   info: {
     currencyName: string
   }
 }
 
-const Profile: React.FC<TProps> = props => {
+const Profile = (props: TProfileProps): JSX.Element => {
   const { info } = props
 
   const tabs = [

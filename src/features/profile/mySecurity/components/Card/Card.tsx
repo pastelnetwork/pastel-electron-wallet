@@ -9,12 +9,9 @@ type TCardProps = {
   footer: ReactNode
 }
 
-const Card: React.FC<TCardProps> = ({
-  title,
-  description,
-  content,
-  footer,
-}) => {
+const Card = (props: TCardProps): JSX.Element => {
+  const { title, description, content, footer } = props
+
   return (
     <div className='relative flex flex-col max-w-427px h-full rounded-lg p-30px border border-solid border-gray-e7 rounded-lg bg-white shadow-44px'>
       <Title>{title}</Title>
