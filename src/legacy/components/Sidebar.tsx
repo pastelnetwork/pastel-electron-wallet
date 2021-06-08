@@ -280,10 +280,12 @@ const PayURIModal = ({
 const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
   let isActive = false
 
+  let splitedCurrentRouteNames = currentRoute.split('/')
+  let splitedRouteNames = routeName.split('/')
   if (
     (currentRoute.endsWith('app.html') && routeName === (routes as any).HOME) ||
     currentRoute === routeName ||
-    currentRoute.includes(routeName)
+    splitedRouteNames[1] === splitedCurrentRouteNames[1]
   ) {
     isActive = true
   }
