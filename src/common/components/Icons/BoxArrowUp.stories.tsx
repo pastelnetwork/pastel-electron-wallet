@@ -1,10 +1,10 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { Heart as Icon, THeartProps as Props } from './Heart'
+import { BoxArrowUp as Icon, TBoxArrowUpProps as Props } from './BoxArrowUp'
 
 export default {
-  title: 'Icons/Heart',
+  title: 'Icons/Box Arrow Up',
   component: Icon,
 } as Meta
 
@@ -12,8 +12,8 @@ const Template: Story<Props> = ({ ...args }) => {
   return <Icon {...args} />
 }
 
-export const Heart = Template.bind({})
-Heart.args = {
+export const BoxArrowUp = Template.bind({})
+BoxArrowUp.args = {
   size: 30,
-  className: 'text-error',
+  className: 'text-black',
 }

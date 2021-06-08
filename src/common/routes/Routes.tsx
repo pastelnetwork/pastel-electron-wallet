@@ -1,10 +1,11 @@
 import React from 'react'
 import { Switch, Route } from 'react-router'
 import OnboardingRoutes from './OnboardingRoutes'
-import routes from '../constants/routes.json'
-import Header from '../components/Header'
-import NFTMarketFeed from '../../features/nftMarket'
-import Dashboard from '../../features/dashboard/DashboardPage'
+import routes from 'common/constants/routes.json'
+import Header from 'common/components/Header'
+import Dashboard from 'features/dashboard/DashboardPage'
+import NFTMarketFeed from 'features/nftMarket'
+import Portfolio from 'features/nft/portfolio'
 
 export default function Routes(): JSX.Element {
   /**
@@ -21,6 +22,7 @@ export default function Routes(): JSX.Element {
           <Switch>
             <Route exact path={routes.DASHBOARD} component={Dashboard} />
             <Route exact path={routes.MARKET} component={NFTMarketFeed} />
+            <Route exact path={routes.PORTFOLIO} component={Portfolio} />
           </Switch>
         </div>
       </div>

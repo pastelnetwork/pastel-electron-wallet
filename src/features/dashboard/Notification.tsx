@@ -1,4 +1,4 @@
-import Dots from '../../common/components/Icons/Dots'
+import { Dots } from 'common/components/Icons'
 import React from 'react'
 import { Dayjs } from 'dayjs'
 import DateTimeWithDot from '../../common/components/Format/DateTimeWithDot/DateTimeWithDot'

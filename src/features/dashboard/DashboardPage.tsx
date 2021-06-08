@@ -1,5 +1,5 @@
 import React from 'react'
-import Dots from '../../common/components/Icons/Dots'
+import { Dots } from 'common/components/Icons'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
@@ -28,7 +28,7 @@ const transactions: TTransactionItemProps[] = [
 
 const portfolioItemProps: TPortfolioItemProps = {
   image: smallImage,
-  title: 'Cosmic Perspective',
+  title: 'Comic Perspective',
   author: '@zndrson',
   price: 5000,
   currencyName,
@@ -131,7 +131,7 @@ export default function DashboardPage(): JSX.Element {
             </div>
           </div>
           <LinkSection to='#' absolute>
-            Check NFT-art market
+            Check your NFT feed
           </LinkSection>
         </div>
         <div className='paper pt-6 w-419px flex-shrink-0 flex flex-col relative'>

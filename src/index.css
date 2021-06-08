@@ -24,6 +24,10 @@
     @apply text-h6;
   }
 
+  hr {
+    @apply border-0 h-px bg-gray-e4;
+  }
+
   ::-webkit-scrollbar {
     @apply w-3px h-3px;
   }
@@ -51,6 +55,10 @@
   .page-container {
     @apply px-20px md:px-30px lg:px-60px;
   }
+
+  .link {
+    @apply text-blue-3f hover:text-button-hover;
+  }
 }
 
 @tailwind utilities;
@@ -58,6 +66,10 @@
 @layer utilities {
   .flex-center {
     @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
   }
 }
 

@@ -44,6 +44,7 @@ import { theme } from './common/theme'
 import { MemoryRouter } from 'react-router-dom'
 import { PastelModal } from './features/pastelModal'
 import UpdateToast from './features/updateToast'
+import 'common/utils/initDayjs'
 
 const oneHour = 1000 * 60 * 60
 /**
