@@ -59,7 +59,7 @@ const Icon = ({ src, background, notification }: TIconProps) => {
   return (
     <div className={cn('w-6 h-6 flex-center', background && 'bg-gray-f8')}>
       <div className='relative'>
-        <img src={src} />
+        <img src={src} className='cursor-pointer' />
         {notification && (
           <div className='absolute -top-px -right-px w-2 h-2 rounded-full bg-orange-63' />
         )}
@@ -90,7 +90,10 @@ export default function Header(): JSX.Element {
       <Icon src={BellIcon} />
       <Icon src={MessageIcon} />
       <Icon src={SettingIcon} />
-      <Icon src={UserIcon} background />
+
+      <NavLink to={routes.PROFILE}>
+        <Icon src={UserIcon} />
+      </NavLink>
     </div>
   )
 }

@@ -62,7 +62,7 @@ const MultiToggleSwitch: React.FC<TMultiToggle> = ({
     <>
       {data?.length && (
         <div className={container_className}>
-          {data?.map((item: TMultiToggleDataItem, index: number) => {
+          {data.map((item: TMultiToggleDataItem, index: number) => {
             return (
               <div
                 className={getItemClassName(index === activeIndex)}

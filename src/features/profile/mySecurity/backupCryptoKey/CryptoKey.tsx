@@ -13,7 +13,7 @@ import Key from '../components/Crypto/Crypto'
 import Card from '../components/Card'
 
 type TProps = {
-  currencyName: string
+  currencyName?: string
 }
 type TPDFDocumentProps = {
   publicKey: string
@@ -55,7 +55,7 @@ const CryptoKey: React.FC<TProps> = props => {
       <PDFDownloadLink
         document={<PDFDocument publicKey={publicKey} secretKey={secretKey} />}
         fileName={`${
-          currencyName ? currencyName : 'PSL'
+          currencyName ? currencyName : 'LSP'
         }_Paper_Wallet__Shielded_Address_${dayjs(new Date()).format(
           'MM_DD_YYYY__HH_MM_ss',
         )}`}

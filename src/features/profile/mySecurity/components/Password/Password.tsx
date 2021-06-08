@@ -122,16 +122,16 @@ const Password: React.FC<TPasswordProps> = ({
   }
 
   const getIconClassnames = (isRefresh: boolean) => {
-    return `absolute top-5 hover:cursor-pointer w-5 h-5 object-none ${
+    return `absolute top-5 cursor-pointer w-5 h-5 object-none ${
       isRefresh ? 'right-12' : 'right-3'
     }`
   }
 
   const getInputClassnames = (hasRefresh: boolean) => {
-    return `relative w-full shadow-input h-10 mt-2.5 rounded border text-gray-2d
+    return `relative w-full h-10 mt-2.5 rounded border text-gray-2d
     border-solid ${
       isMatch ? 'border-input-border' : 'border-red-fe'
-    }  outline-none focus:border-blue-450 box-border px-4 ${
+    }  outline-none focus:border-blue-3f box-border px-4 ${
       hasRefresh ? 'pr-20' : 'pr-10'
     }`
   }

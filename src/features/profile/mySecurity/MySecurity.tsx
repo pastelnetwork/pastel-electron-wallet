@@ -5,7 +5,7 @@ import QRCode from './photoOfQRCode/QRCode'
 import CryptoKey from './backupCryptoKey/CryptoKey'
 
 type TProps = {
-  info: {
+  info?: {
     currencyName: string
   }
 }
@@ -18,7 +18,7 @@ const MySecurity: React.FC<TProps> = props => {
       <div className='grid grid-cols-3 gap-5 min-h-672px'>
         <ChangePassword />
         <QRCode />
-        <CryptoKey currencyName={info.currencyName} />
+        <CryptoKey currencyName={info?.currencyName} />
       </div>
     </div>
   )

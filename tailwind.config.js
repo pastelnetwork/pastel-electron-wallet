@@ -113,7 +113,7 @@ module.exports = {
           '1d': '#1D263A',
           14: '#141416',
           23: '#23262F',
-          e7: 'E7EBF0',
+          e7: '#E7EBF0',
         },
         red: {
           '7a': '#FF7A00',
@@ -177,10 +177,13 @@ module.exports = {
         'depth-1': '0px 8px 16px -8px rgba(15, 15, 15, 0.2)',
         '2px':
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        '4px':
+          '0px 1px 12px rgba(50, 50, 71, 0.04), 0px 0px 4px rgba(50, 50, 71, 0.2)',
         '16px':
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
         '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
+        '64px': '0px 32px 64px 0px rgba(31, 47, 70, 0.12)',
       },
       fontSize: {
         h1: '2rem',
@@ -192,13 +195,22 @@ module.exports = {
         9: '0.5625rem',
         10: '0.625rem',
         15: '0.938rem',
-        '9px': '0.5625rem',
       },
       borderRadius: {
         '4px': '0.25rem',
       },
       lineHeight: {
         '11px': '0.6875rem',
+      },
+      minHeight: {
+        '78px': '4.875rem',
+        '672px': '42rem',
+      },
+      maxWidth: {
+        '427px': '26.6875rem',
+      },
+      minWidth: {
+        '118px': '7.375rem',
       },
       container: {
         center: true,
