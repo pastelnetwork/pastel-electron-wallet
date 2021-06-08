@@ -63,9 +63,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
       }
       if (dataX) {
         const data: Data = []
-        dataY.map((o, index) => {
+        dataY.map((yAxis, index) => {
           data.push({
-            value: o,
+            value: yAxis,
             time: dataX[index],
           })
         })
@@ -74,9 +74,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     } else if (dataY1?.length && dataY2?.length) {
       if (dataX) {
         const data: Data = []
-        dataY1.map((o, index) => {
+        dataY1.map((yAxis, index) => {
           data.push({
-            value: `${o} : ${dataY2[index]}`,
+            value: `${yAxis} : ${dataY2[index]}`,
             time: dataX[index],
           })
         })
