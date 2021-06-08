@@ -13,7 +13,7 @@ import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 import cn from 'classnames'
 
-import Icon from '../Icon'
+import Icon from '../Icon/Icon'
 
 interface IMenuType {
   name: string
