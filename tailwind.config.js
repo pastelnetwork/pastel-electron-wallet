@@ -10,6 +10,7 @@ module.exports = {
     screens: {
       sm: '900px',
       md: '1100px',
+      '1200px': '1200px',
       lg: '1300px',
       xl: '1440px',
       '2xl': '1700px',
@@ -33,6 +34,7 @@ module.exports = {
         '15px': '0.938rem',
         '17px': '1.0625rem',
         '18px': '1.125rem',
+        '20px': '1.25rem',
         '22px': '1.375rem',
         '25px': '1.5625rem',
         '26px': '1.625rem',
@@ -61,6 +63,7 @@ module.exports = {
         '111px': '6.9375rem',
         '112px': '7rem',
         '120px': '7.5rem',
+        '180px': '11.25rem',
         '190px': '11.875rem',
         '220px': '13.75rem',
         '230px': '14.375rem',
@@ -68,6 +71,8 @@ module.exports = {
         '315px': '19.6875rem',
         '335px': '20.938rem',
         '352px': '22rem',
+        '380px': '23.75rem',
+        '419px': '26.187rem',
       },
       boxShadow: {
         xs:
@@ -103,28 +108,31 @@ module.exports = {
           background: '#FAEFF5',
         },
         blue: {
-          450: '#3F9AF7',
           '3f': '#3F9AF7',
         },
+        green: {
+          e5: '#E5F6EF',
+          38: '#38CB89',
+        },
         gray: {
-          // text
           a0: '#A0AEC0',
           71: '#718096',
           '4a': '#4A5568',
           '2d': '#2D3748',
           '1a': '#1A202C',
-          // --
           f9: '#F9FAFB',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           fc: '#FCFCFD',
           f3: '#F3F3F3',
+          f2: '#F2F2F2',
+          ed: '#EDEEF1',
           eb: '#EBEBFC',
           e7: '#E7EAF2',
           e6: '#E6E8EC',
           dd: '#DDE0E3',
+          cd: '#CDD2DB',
           b0: '#B0B7C3',
-          110: '#F2F2F2',
           35: '#353941',
           33: '#334D6E',
           '2d': '#2D3748',
@@ -137,6 +145,9 @@ module.exports = {
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
+        },
+        orange: {
+          63: '#FE634C',
         },
         yellow: {
           ff: '#FFBE3D',
@@ -179,6 +190,13 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         xl:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+        'depth-1': '0px 8px 16px -8px rgba(15, 15, 15, 0.2)',
+        '2px':
+          '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        '16px':
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
+        '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
+        '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
       },
       fontSize: {
         h1: '2rem',
@@ -193,6 +211,9 @@ module.exports = {
         '26px': '1.625rem',
         '9px': '0.5625rem',
         '32px': '2rem',
+        9: '0.5625rem',
+        10: '0.625rem',
+        15: '0.938rem',
       },
       borderRadius: {
         '4px': '0.25rem',
