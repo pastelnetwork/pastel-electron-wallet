@@ -9,8 +9,6 @@ export default {
 } as Meta
 
 const Template: Story<TTableProps> = ({ ...args }: TTableProps) => {
-  //   const [checked, setChecked] = useState(isChecked)
-
   return <Table {...args} />
 }
 
@@ -29,11 +27,11 @@ const columns = [
 const data = [
   {
     data1: 100,
-    data2: 101,
+    data2: 'data1',
   },
   {
     data1: 102,
-    data2: 103,
+    data2: 'data2',
   },
 ]
 SimpleTable.args = {

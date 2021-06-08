@@ -92,7 +92,7 @@ const Table = ({
                   <img
                     src={caretDown2Icon}
                     className={cx(
-                      'ml-2 mt-1',
+                      'ml-2 mt-px',
                       sortOrder == 0 || sortIndex != index
                         ? 'invisible'
                         : (index != sortIndex || sortOrder != 1) && 'hidden',
@@ -101,7 +101,7 @@ const Table = ({
                   <img
                     src={caretUp2Icon}
                     className={cx(
-                      'ml-2 mt-1',
+                      'ml-2',
                       (index != sortIndex || sortOrder != -1) && 'hidden',
                     )}
                   />

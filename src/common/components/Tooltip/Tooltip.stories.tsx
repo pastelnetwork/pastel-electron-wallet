@@ -10,9 +10,11 @@ export default {
 
 const Template: Story<TTooltipProps> = ({ type, ...args }: TTooltipProps) => {
   return (
-    <Tooltip {...args} type={type}>
-      This is the tooltip component
-    </Tooltip>
+    <div className='mt-10 ml-48'>
+      <Tooltip {...args} type={type}>
+        This is the tooltip component
+      </Tooltip>
+    </div>
   )
 }
 
