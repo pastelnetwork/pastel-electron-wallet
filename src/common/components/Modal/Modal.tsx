@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import ReactModal from 'react-modal'
 import cn from 'classnames'
 // Components
-import { CustomButton } from '../Buttons'
+import { CloseButton } from '../Buttons'
 
 ReactModal.setAppElement('#root')
 
@@ -26,9 +26,8 @@ const Modal: React.FC<TModal> = ({ isOpen, handleClose, size, children }) => {
       overlayClassName='fixed top-0 left-0 right-0 bottom-0 flex items-center bg-gray-a6'
       onRequestClose={handleClose}
     >
-      <CustomButton
+      <CloseButton
         onClick={handleClose}
-        type='close'
         className='absolute md:right-5 right-3 md:top-5 top-3 '
       />
       {children}

@@ -1,5 +1,6 @@
 import Button from './Button'
-import CustomButton from './CustomButton'
+import CircleAddButton from './CircleAddButton'
+import CloseButton from './CloseButton'
 import IconButton from './IconButton'
 
-export { Button, CustomButton, IconButton }
+export { Button, CircleAddButton, CloseButton, IconButton }
