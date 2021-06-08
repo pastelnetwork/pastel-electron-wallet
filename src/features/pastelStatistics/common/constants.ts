@@ -29,7 +29,7 @@ export const pastelChartFields = [
     backgroundImage: Hashrate,
   },
   {
-    name: 'Network Totals',
+    name: 'Network Total',
     routeName: '/statistics/nettotalsovertime',
     backgroundImage: Nettotals,
   },
@@ -88,6 +88,6 @@ export const pricesCSVHeaders = [
 
 export const CHART_THEME_BACKGROUND_DEFAULT_COLOR = '#0d0d0d'
 export const TRANSACTIONS_IN_BLOCK_CHART_DEFAULT_PERIOD = 'all'
-export const CHART_DEFAULT_PERIOD = '2h'
+export const CHART_DEFAULT_PERIOD = 'all'
 export const BLOCK_CHART_DEFAULT_GRANULARITY = '1d'
 export const BLOCK_CHART_DEFAULT_PERIOD = '30d'

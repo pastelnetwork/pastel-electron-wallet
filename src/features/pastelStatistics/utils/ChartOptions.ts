@@ -460,14 +460,33 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
       },
     ],
   }
-  const netTotalsOption: EChartsOption = {
-    backgroundColor: theme?.backgroundColor,
-    textStyle: {
-      color: theme?.color,
+  const chartOptions: TChartOption = {
+    averageblocksize: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY,
+        },
+      ],
     },
     difficulty: defaultOption,
     hashrate: defaultOption,
-    nettotals: {
+    network_totals: {
       backgroundColor: theme?.backgroundColor,
       textStyle: {
         color: theme?.color,
@@ -543,11 +562,6 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
         },
       ],
     },
-  }
-  const chartOptions: TChartOption = {
-    difficulty: defaultOption,
-    hashrate: defaultOption,
-    network_totals: netTotalsOption,
   }
 
   return chartOptions[chartName]

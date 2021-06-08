@@ -168,7 +168,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         {granularities && (
           <div className={styles.granularitySelect}>
             <span style={{ color: currentTheme?.color }}>Granularity: </span>
-            {granularities?.map((o, index) => {
+            {granularities?.map((granularity, index) => {
               return (
                 <button
                   className={`${getActiveGranularityButtonStyle(index)} ${
@@ -177,13 +177,13 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
                   onClick={() => {
                     setSelectedGranularityButton(index)
                     if (handleGranularityFilterChange) {
-                      handleGranularityFilterChange(o)
+                      handleGranularityFilterChange(granularity)
                     }
                   }}
                   type='button'
-                  key={`button-filter-${o}`}
+                  key={`button-filter-${granularity}`}
                 >
-                  {o}
+                  {granularity}
                 </button>
               )
             })}
