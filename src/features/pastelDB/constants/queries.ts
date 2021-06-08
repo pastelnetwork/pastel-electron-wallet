@@ -522,3 +522,6 @@ export const groupByMonthly =
 
 export const groupByYearly =
   "GROUP BY strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch'))"
+
+export const averageTransactionFeeDailyQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+  AVG(size) FROM blockinfo`

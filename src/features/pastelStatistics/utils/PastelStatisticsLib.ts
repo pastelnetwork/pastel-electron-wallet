@@ -184,3 +184,18 @@ export function transformBlockSizeInfo(
 
   return { dataX, dataY }
 }
+
+export function transformTransactionAverageFee(
+  blockinfos: SqlValue[][],
+): TLineChartData {
+  const dataY: number[] = []
+  const dataX: string[] = []
+
+  for (let i = 0; i < blockinfos.length; i++) {
+    if (blockinfos[i][1]) {
+      dataY.push(Number(blockinfos[i][1]))
+      dataX.push(String(blockinfos[i][0]))
+    }
+  }
+  return { dataY, dataX }
+}
