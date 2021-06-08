@@ -40,6 +40,7 @@ module.exports = {
         '30px': '1.875rem',
         '34px': '2.215rem',
         '35px': '2.188rem',
+        '34px': '2.215rem',
         '36px': '2.29rem',
         '37px': '2.313rem',
         '40px': '2.5rem',
