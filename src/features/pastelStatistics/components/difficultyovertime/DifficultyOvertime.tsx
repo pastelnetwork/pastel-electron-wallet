@@ -82,7 +82,7 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
               dataY={transformLineChartData?.dataY}
               title='Network Difficulty'
               info={info}
-              offset={1000}
+              offset={10000}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
