@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 49 50" width="24px" height="24px" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="filter1_i" x="14.5" y="9" width="20" height="22" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="-2"/>
+      <feGaussianBlur stdDeviation="2.5"/>
+      <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0"/>
+      <feBlend mode="normal" in2="shape" result="effect1_innerShadow"/>
+    </filter>
+    <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(33.5711 13.8714) rotate(134.407) scale(24.5464)">
+      <stop stop-color="#FFCF14"/>
+      <stop offset="0.5586" stop-color="#EE8FFF"/>
+      <stop offset="1" stop-color="#38DEFF"/>
+    </radialGradient>
+  </defs>
+  <g filter="url(#filter1_i)" transform="matrix(2.445006, 0, 0, 2.445006, -35.318462, -26.332771)" style="">
+    <circle cx="24.5" cy="21" r="10" fill="url(#paint1_radial)"/>
+  </g>
+  <path d="M 26.461 27.32 L 33.405 27.32 C 34.53 27.296 35.435 26.391 35.435 25.266 C 35.435 24.142 34.53 23.237 33.405 23.237 L 26.461 23.237 L 26.461 16.342 C 26.461 15.218 25.556 14.313 24.432 14.313 C 23.308 14.313 22.403 15.218 22.403 16.342 L 22.403 23.237 L 15.483 23.237 C 14.946 23.237 14.433 23.456 14.041 23.824 C 13.67 24.212 13.46 24.729 13.454 25.266 C 13.454 26.391 14.359 27.296 15.483 27.32 L 22.403 27.32 L 22.403 34.24 C 22.403 35.364 23.308 36.269 24.432 36.269 C 25.556 36.269 26.461 35.364 26.461 34.24 L 26.461 27.32 Z" fill="white" style=""/>
+</svg>
