@@ -20,8 +20,7 @@ const mockCardProps: INFTCardProps = {
   title: 'Cosmic Perspective',
   liked: true,
 }
-
-const NFTMarketFeed = (): JSX.Element => {
+const NFTMarketFeed: React.FC = () => {
   // Upper Section
   const [priceSold, setPriceSold] = useState<TOption | null>(null)
   const [bidPrice, setBidPrice] = useState<TOption | null>(null)
