@@ -1,6 +1,7 @@
 import Difficulty from '../assets/images/difficulty.jpg'
 import PSLPrice from '../assets/images/pslprice.jpg'
 import Hashrate from '../assets/images/hashrate.jpg'
+import Nettotals from '../assets/images/nettotals.jpg'
 import { TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
@@ -18,6 +19,11 @@ export const pastelChartFields = [
     name: 'Hashrate',
     routeName: '/statistics/hashrateovertime',
     backgroundImage: Hashrate,
+  },
+  {
+    name: 'Network Totals',
+    routeName: '/statistics/nettotalsovertime',
+    backgroundImage: Nettotals,
   },
 ]
 
