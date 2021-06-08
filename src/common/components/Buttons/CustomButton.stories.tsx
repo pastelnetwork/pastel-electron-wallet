@@ -16,5 +16,5 @@ CustomButtonDefault.args = {
 
 export default {
   component: CustomButton,
-  title: 'CustomButton',
+  title: 'Buttons/CustomButton',
 } as Meta

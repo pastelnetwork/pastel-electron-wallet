@@ -31,5 +31,5 @@ export const IconButtonShadow: React.FC = () => (
 
 export default {
   component: IconButton,
-  title: 'Icon Button',
+  title: 'Buttons/Icon Button',
 } as Meta

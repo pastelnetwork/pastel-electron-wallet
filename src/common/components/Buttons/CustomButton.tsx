@@ -37,7 +37,7 @@ const CustomButton: React.FC<TCustomButton> = ({
     <button onClick={onClick} className={classes}>
       {type === 'add' ? (
         <svg
-          className='transition duration-300 button-add-icon fill-current text-blue-450'
+          className='transition duration-300 button-add-icon fill-current text-blue-3f'
           width='12'
           height='12'
           viewBox='0 0 12 12'

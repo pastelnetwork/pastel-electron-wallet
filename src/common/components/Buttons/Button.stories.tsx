@@ -27,15 +27,15 @@ export const ButtonDefault = Template.bind({})
 const children = 'button'
 const variant = 'default'
 const disabled = false
-const fulid = false
+const fluid = false
 ButtonDefault.args = {
   children,
   variant,
   disabled,
-  fulid,
+  fluid,
 }
 
-export const Button2Default: React.FC = () => (
+export const ButtonIconDefault: React.FC = () => (
   <Button
     variant='default'
     prepend={
@@ -73,5 +73,5 @@ export const Button2Default: React.FC = () => (
 
 export default {
   component: Button,
-  title: 'Button',
+  title: 'Buttons/Button',
 } as Meta

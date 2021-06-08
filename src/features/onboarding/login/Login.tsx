@@ -77,7 +77,7 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
             Restore access now
           </Styles.FooterLink>
         </Styles.FooterText>
-        <Button type='submit' onClick={() => setUser(true)} fluid>
+        <Button type='submit' onClick={() => setUser(true)} fluid={true}>
           Submit
         </Button>
       </Styles.Form>
