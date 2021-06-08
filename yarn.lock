@@ -3237,14 +3237,14 @@
     form-data "^3.0.0"
 
 "@types/node@*":
-  version "15.12.1"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.1.tgz#9b60797dee1895383a725f828a869c86c6caa5c2"
-  integrity sha512-zyxJM8I1c9q5sRMtVF+zdd13Jt6RU4r4qfhTd7lQubyThvLfx6yYekWSQjGCGV2Tkecgxnlpl/DNlb6Hg+dmEw==
+  version "15.12.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.2.tgz#1f2b42c4be7156ff4a6f914b2fb03d05fa84e38d"
+  integrity sha512-zjQ69G564OCIWIOHSXyQEEDpdpGl+G348RAKY0XXy9Z5kU9Vzv1GMNnkar/ZJ8dzXB3COzD9Mo9NtRZ4xfgUww==
 
 "@types/node@^14.0.10", "@types/node@^14.6.2":
-  version "14.17.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.2.tgz#1e94476db57ec93a372c7f7d29aa5707cfb92339"
-  integrity sha512-sld7b/xmFum66AAKuz/rp/CUO8+98fMpyQ3SBfzzBNGMd/1iHBTAg9oyAvcYlAj46bpc74r91jSw2iFdnx29nw==
+  version "14.17.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.3.tgz#6d327abaa4be34a74e421ed6409a0ae2f47f4c3d"
+  integrity sha512-e6ZowgGJmTuXa3GyaPbTGxX17tnThl2aSSizrFthQ7m9uLGZBXiGhgE55cjRZTF5kjZvYn9EOPOMljdjwbflxw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -13716,7 +13716,7 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
-simplebar-react@^2.3.3:
+simplebar-react@2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/simplebar-react/-/simplebar-react-2.3.3.tgz#938c5e6a0ecc68eba9a953097d62e26338d008ce"
   integrity sha512-hfyRz3MVSAoyZfTB2zZcpzVtz+BQ7mMBVN+BNMgaAKujKyIrBQ69xIcwrZpBRWRqPd4WHmM0x6DMQpRGPJa7MQ==
@@ -13724,7 +13724,7 @@ simplebar-react@^2.3.3:
     prop-types "^15.6.1"
     simplebar "^5.3.3"
 
-simplebar@^5.3.3:
+simplebar@5.3.3, simplebar@^5.3.3:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/simplebar/-/simplebar-5.3.3.tgz#7d89fa4374a637da96c493b2662ab5af4408d02e"
   integrity sha512-OfuSX47Axq9aR6rp9WK3YefAg+1Qw3UKKxS46PdElPpd+FWXMj17/nispYxsHtU3F7mv+ilmqELWmRt7KUgHgg==
