@@ -42,9 +42,10 @@ module.exports = {
         '28px': '1.75rem',
         '30px': '1.875rem',
         '32px': '2rem',
-        '35px': '2.1875rem',
-        '36px': '2.25rem',
-        '37px': '2.3125rem',
+        '35px': '2.188rem',
+        '34px': '2.215rem',
+        '36px': '2.29rem',
+        '37px': '2.313rem',
         '40px': '2.5rem',
         '41px': '2.5625rem',
         '41.5px': '2.59375rem',
@@ -151,6 +152,9 @@ module.exports = {
         },
         yellow: {
           ff: '#FFBE3D',
+        },
+        green: {
+          68: '#68CC67',
         },
         button: {
           pressed: '#0E80F5',
