@@ -119,3 +119,29 @@ export function transformHashrateInfo(
 
   return { dataX, dataY }
 }
+
+export function transformNetTotals(
+  nettotals: SqlValue[][],
+  period: TPeriod,
+): TMultiLineChartData {
+  const dataX: string[] = []
+  const dataY1: number[] = []
+  const dataY2: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < nettotals.length; i++) {
+    if (nettotals[i][3] !== null) {
+      const createTime = Number(nettotals[i][3])
+      if (createTime > startDate) {
+        const recv = Number(nettotals[i][1])
+        const sent = Number(nettotals[i][2])
+        dataY1.push(recv)
+        dataY2.push(sent)
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+
+  return { dataX, dataY1, dataY2 }
+}
