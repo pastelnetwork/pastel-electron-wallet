@@ -38,12 +38,20 @@ const NFTCard = ({
 }: INFTCompactCardProps | INFTCardProps): JSX.Element => {
   const fullCardProps = 'author' in props && (props as INFTCardProps)
 
-  const wrapperPaddingClass = fullCardProps ? 'pt-4 pb-27px' : 'pb-18px'
+  const wrapperPaddingClass = fullCardProps
+    ? variant === 'portfolio'
+      ? 'pt-4 pb-18px'
+      : 'pt-4 pb-27px'
+    : 'pb-18px'
   const titleClass = fullCardProps
     ? 'font-extrabold text-h4 leading-6'
     : 'font-medium'
   const imageHeightClass = fullCardProps ? 'h-230px' : 'h-220px'
-  const footerClass = fullCardProps ? 'pt-2' : 'pt-2.5 pb-2px'
+  const footerClass = fullCardProps
+    ? variant === 'portfolio'
+      ? 'pt-13px'
+      : 'pt-2'
+    : 'pt-2.5 pb-2px'
 
   return (
     <div
@@ -84,7 +92,11 @@ const NFTCard = ({
           ></div>
         </div>
       ) : null}
-      <div className={`${imageHeightClass} relative`}>
+      <div
+        className={`${
+          variant === 'portfolio' ? 'h-220px' : imageHeightClass
+        } relative`}
+      >
         <img src={imageSrc} className='object-cover h-full w-full' />
         {fullCardProps && fullCardProps.onSale && variant === 'portfolio' ? (
           <div
@@ -108,17 +120,30 @@ const NFTCard = ({
             {title}
           </div>
           <span className='flex-center'>
-            <i
-              className={cn(
-                'far fa-heart',
-                liked ? 'text-error' : 'text-gray-400',
-              )}
-            />
+            {variant === 'portfolio' ? (
+              <i
+                className={cn(
+                  'fa-heart',
+                  liked ? 'text-red-6f fas' : 'text-gray-400 far',
+                )}
+              />
+            ) : (
+              <i
+                className={cn(
+                  'far fa-heart',
+                  liked ? 'text-error' : 'text-gray-400',
+                )}
+              />
+            )}
             <span className='pl-6px text-gray-4a text-h6'>{likes}</span>
           </span>
         </div>
         {fullCardProps && (
-          <div className='flex justify-between pt-4'>
+          <div
+            className={`flex justify-between ${
+              variant === 'portfolio' ? 'pt-16px' : 'pt-4'
+            }`}
+          >
             <div className='flex-center'>
               <span
                 className={`${

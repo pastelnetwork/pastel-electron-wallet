@@ -66,7 +66,7 @@ const mockNFTCard: INFTCardProps[] = [
     price: '222K',
     currencyName: 'PSL',
     title: 'Cosmic Perspective',
-    liked: true,
+    liked: false,
     percentage: 55,
     variant: 'portfolio',
     isLastBid: true,
@@ -80,7 +80,7 @@ const mockNFTCard: INFTCardProps[] = [
     price: '222K',
     currencyName: 'PSL',
     title: 'Cosmic Perspective',
-    liked: true,
+    liked: false,
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
@@ -293,7 +293,7 @@ export default function PortfolioBuyer(): JSX.Element {
                 </div>
               ))}
             </div>
-            <div className='max-h-54vh overflow-y-auto pr-28px'>
+            <div className='max-h-54vh overflow-y-auto pr-28px pb-16px'>
               <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-30px gap-y-18px'>
                 {mockNFTCard?.map((nftItem, index) => (
                   <NFTCard {...nftItem} key={index} hideFollow />
@@ -309,7 +309,7 @@ export default function PortfolioBuyer(): JSX.Element {
               {categories?.map((category, index) => (
                 <li key={index} className='list-none mb-8px'>
                   <span
-                    className={`font-medium cursor-pointer text-h5 py-8px px-12px rounded-8px inline-block ${
+                    className={`font-medium cursor-pointer text-h5 leading-none py-8px px-12px rounded-8px inline-block ${
                       index === 0 ? 'text-gray-2d bg-gray-a6' : 'text-gray-a0'
                     } hover:text-gray-2d hover:bg-gray-a6`}
                   >

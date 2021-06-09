@@ -34,6 +34,7 @@ module.exports = {
         '13px': '0.813rem',
         '14px': '0.875rem',
         '15px': '0.938rem',
+        '16px': '1rem',
         '18px': '1.125rem',
         '20px': '1.25rem',
         '22px': '1.375rem',
@@ -130,6 +131,7 @@ module.exports = {
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
+          '6f': '#EF466F',
         },
         orange: {
           63: '#FE634C',
