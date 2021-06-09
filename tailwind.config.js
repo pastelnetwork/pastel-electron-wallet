@@ -245,6 +245,10 @@ module.exports = {
       borderWidth: {
         '3px': '0.1875rem',
       },
+      maxHeight: {
+        '244px': '15.25rem',
+        '700px': '43.75rem',
+      },
       minWidth: {
         '244px': '15.25rem',
         '700px': '43.75rem',
