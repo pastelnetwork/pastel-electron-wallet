@@ -89,8 +89,10 @@ export const makeDownloadFileName = (
   const date = new Date()
 
   imageTitle = title
-  if (title === 'Network Difficulty') {
-    imageTitle = 'Network_Difficulty'
+  if (title === 'mempoolsize') {
+    imageTitle = 'mempool_size'
+  } else if (title === 'transactionfee') {
+    imageTitle = 'transaction_fee'
   }
 
   const dateTime = `${
@@ -185,17 +187,24 @@ export function transformBlockSizeInfo(
   return { dataX, dataY }
 }
 
-export function transformTransactionAverageFee(
-  blockinfos: SqlValue[][],
+export function transformTransactionFee(
+  transactionFees: SqlValue[][],
+  period: TPeriod,
 ): TLineChartData {
-  const dataY: number[] = []
   const dataX: string[] = []
+  const dataY: number[] = []
 
-  for (let i = 0; i < blockinfos.length; i++) {
-    if (blockinfos[i][1]) {
-      dataY.push(Number(blockinfos[i][1]))
-      dataX.push(String(blockinfos[i][0]))
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < transactionFees.length; i++) {
+    if (transactionFees[i][9] !== null && transactionFees[i][3] !== 0) {
+      const createTime = Number(transactionFees[i][9])
+      if (createTime > startDate) {
+        dataY.push(Number(transactionFees[i][3]))
+        dataX.push(new Date(createTime).toLocaleString())
+      }
     }
   }
-  return { dataY, dataX }
+
+  return { dataX, dataY }
 }

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-import { getTransactionAverageFeeDataFromDB } from '../../../pastelDB'
+import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
 import {
   TPeriod,
-  transformTransactionAverageFee,
+  transformTransactionFee,
 } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
@@ -24,7 +24,7 @@ type TTransactionsInBlockOvertimeProps = {
 
 const redrawCycle = 6000
 
-const TransactionsPerSecondOvertime = (
+const TransactionFeeOvertime = (
   props: TTransactionsInBlockOvertimeProps,
 ): JSX.Element => {
   const { info } = props
@@ -41,13 +41,9 @@ const TransactionsPerSecondOvertime = (
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getTransactionAverageFeeDataFromDB(
-        pasteldb,
-        pastelTableNames.rawtransaction,
-        period,
-      )
+      const result = getDatasFromDB(pasteldb, pastelTableNames.rawmempoolinfo)
       if (result.length) {
-        const transforms = transformTransactionAverageFee(result[0].values)
+        const transforms = transformTransactionFee(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -83,13 +79,13 @@ const TransactionsPerSecondOvertime = (
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='transactionspersecond'
+              chartName='transactionfee'
               dataY={transformLineChartData?.dataY}
               dataX={transformLineChartData?.dataX}
-              title='Transactions Per Second'
+              title='Transaction Fee'
               info={info}
               offset={0.01}
-              periods={periods[1]}
+              periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
             />
@@ -100,4 +96,4 @@ const TransactionsPerSecondOvertime = (
   )
 }
 
-export default TransactionsPerSecondOvertime
+export default TransactionFeeOvertime

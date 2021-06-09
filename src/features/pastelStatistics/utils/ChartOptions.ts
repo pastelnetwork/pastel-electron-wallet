@@ -338,6 +338,63 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
+    transactionfee: {
+      color: ['#53c79f'],
+      grid: {
+        top: 8,
+        right: 8,
+        bottom: 40,
+        left: 70,
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: dataX,
+      },
+      yAxis: {
+        type: 'value',
+        min: 0,
+        max: maxY,
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            return Number.parseFloat(value)
+          },
+        },
+      },
+      series: {
+        type: 'line',
+        sampling: 'lttb',
+        data: dataY,
+        smooth: true,
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: '#53c79f',
+            },
+            {
+              offset: 1,
+              color: theme?.backgroundColor ?? '#F4F4F4',
+            },
+          ]),
+        },
+      },
+      stateAnimation: {
+        duration: 300,
+        easing: 'cubicOut',
+      },
+    },
   }
 
   return chartOptions[chartName]
@@ -397,6 +454,39 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
           type: 'line',
           showSymbol: false,
           data: dataY,
+        },
+      ],
+    },
+    transactionfee: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      xAxis: {
+        splitLine: {
+          show: false,
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+      },
+      yAxis: {
+        splitLine: {
+          show: false,
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY,
+          smooth: theme?.smooth,
         },
       ],
     },

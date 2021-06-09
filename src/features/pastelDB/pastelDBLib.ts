@@ -51,7 +51,7 @@ import {
   averageFilterByDailyPeriodQuery,
   averageFilterByMonthlyPeriodQuery,
   averageFilterByYearlyPeriodQuery,
-  averageTransactionFeeDailyQuery,
+  transactionFeeDailyQuery,
   groupbyDaily,
   groupByMonthly,
   groupByYearly,
@@ -1001,8 +1001,7 @@ export function getTransactionAverageFeeDataFromDB(
     const time_stamp = Date.now() - duration * 60 * 60 * 1000
     whereSqlText = ` where create_timestamp > ${time_stamp} `
   }
-  sqlText =
-    averageTransactionFeeDailyQuery + tableName + whereSqlText + groupbyDaily
+  sqlText = transactionFeeDailyQuery + tableName + whereSqlText + groupbyDaily
 
   const sqlResult = pastelDB.exec(sqlText)
   return sqlResult

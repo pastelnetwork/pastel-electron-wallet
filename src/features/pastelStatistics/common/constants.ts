@@ -4,6 +4,7 @@ import PSLPrice from '../assets/images/pslprice.jpg'
 import Hashrate from '../assets/images/hashrate.jpg'
 import Nettotals from '../assets/images/nettotals.jpg'
 import Mempoolsize from '../assets/images/mempoolsize.jpg'
+import TransactionFee from '../assets/images/transactionfee.jpg'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
@@ -36,6 +37,11 @@ export const pastelChartFields = [
     name: 'Mempool Size',
     routeName: '/statistics/mempoolsizeovertime',
     backgroundImage: Mempoolsize,
+  },
+  {
+    name: 'Transaction Fee',
+    routeName: '/statistics/transactionfeeovertime',
+    backgroundImage: TransactionFee,
   },
 ]
 
