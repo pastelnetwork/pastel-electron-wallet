@@ -1,4 +1,4 @@
-import { TPeriod } from '../utils/PastelStatisticsLib'
+import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export type TThemeColor = {
   name: string
@@ -16,6 +16,7 @@ export type TLineChartProps = {
   dataY?: number[]
   dataY1?: number[]
   dataY2?: number[]
+  granularities?: TGranularity[]
   title?: string
   info: {
     [key: string]: string | number
@@ -24,12 +25,15 @@ export type TLineChartProps = {
   periods: TPeriod[]
   handleBgColorChange: (color: string) => void
   handlePeriodFilterChange?: (period: TPeriod) => void
+  handleGranularityFilterChange?: (granularity: TGranularity) => void
 }
 
 export type TThemeInitOption = {
   theme?: TThemeColor | null
   dataX?: string[]
   dataY?: number[]
+  dataY1?: number[]
+  dataY2?: number[]
   chartName: string
   minY: number
   maxY: number

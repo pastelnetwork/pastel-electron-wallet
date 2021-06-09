@@ -7,7 +7,7 @@ type TChartOption = {
 }
 
 export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
-  const { theme, dataX, dataY, chartName, minY, maxY } = args
+  const { theme, dataX, dataY, dataY1, dataY2, chartName, minY, maxY } = args
   const chartOptions: TChartOption = {
     difficulty: {
       grid: {
@@ -127,6 +127,218 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
+    network_totals: {
+      color: ['#80FFA5', '#37A2FF'],
+      grid: {
+        top: 8,
+        right: 8,
+        bottom: 40,
+        left: 70,
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          label: {
+            backgroundColor: '#6a7985',
+          },
+        },
+      },
+      legend: {
+        top: 10,
+        right: 10,
+        data: ['Traffic receive', 'Traffic sent'],
+        textStyle: {
+          color: theme?.color,
+        },
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: dataX,
+      },
+      yAxis: {
+        type: 'value',
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            const val = Number.parseFloat(value)
+            return `${val / 1000000} M`
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          name: 'Traffic receive',
+          type: 'line',
+          smooth: true,
+          lineStyle: {
+            width: 0,
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#80ffa5',
+              },
+              {
+                offset: 1,
+                color: '#00BFEC',
+              },
+            ]),
+          },
+          emphasis: {
+            focus: 'series',
+          },
+          data: dataY1,
+        },
+        {
+          name: 'Traffic sent',
+          type: 'line',
+          smooth: true,
+          lineStyle: {
+            width: 0,
+          },
+          showSymbol: false,
+          areaStyle: {
+            opacity: 0.8,
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: '#37a2ff',
+              },
+              {
+                offset: 1,
+                color: '#7415db',
+              },
+            ]),
+          },
+          emphasis: {
+            focus: 'series',
+          },
+          data: dataY2,
+        },
+      ],
+      stateAnimation: {
+        duration: 300,
+        easing: 'cubicOut',
+      },
+    },
+    mempoolsize: {
+      grid: {
+        top: 8,
+        right: 8,
+        bottom: 40,
+        left: 70,
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: dataX,
+      },
+      yAxis: {
+        type: 'value',
+        min: minY,
+        max: maxY,
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            return `${Number(value).toFixed(2)} k`
+          },
+        },
+      },
+      series: {
+        type: 'line',
+        sampling: 'lttb',
+        lineStyle: {
+          color: '#176987',
+        },
+        smooth: true,
+        symbol: false,
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: '#1A4369',
+            },
+            {
+              offset: 1,
+              color: '#1A272A4D',
+            },
+          ]),
+        },
+        data: dataY,
+      },
+      stateAnimation: {
+        duration: 300,
+        easing: 'cubicOut',
+      },
+    },
+    averageblocksize: {
+      color: ['#5470c6', '#91cc75', '#fac858'],
+      grid: {
+        top: 8,
+        right: 8,
+        bottom: 40,
+        left: 70,
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: dataX,
+      },
+      yAxis: {
+        type: 'value',
+        min: minY,
+        max: maxY,
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            return Number.parseFloat(value)
+          },
+        },
+      },
+      series: {
+        type: 'line',
+        smooth: true,
+        showSymbol: false,
+        data: dataY,
+      },
+      stateAnimation: {
+        duration: 300,
+        easing: 'cubicOut',
+      },
+    },
   }
 
   return chartOptions[chartName]
@@ -166,9 +378,68 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
   }
 
   const chartOptions: TChartOption = {
+    averageblocksize: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY,
+        },
+      ],
+    },
     difficulty: defaultOption,
     hashrate: defaultOption,
+    network_totals: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      legend: {
+        textStyle: {
+          color: theme?.color,
+        },
+      },
+    },
+    mempoolsize: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+    },
   }
-
   return chartOptions[chartName]
 }

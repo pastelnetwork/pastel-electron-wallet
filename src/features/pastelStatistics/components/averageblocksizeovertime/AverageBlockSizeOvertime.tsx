@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react'
 
-import { getDatasFromDB } from '../../../pastelDB'
+import { getFilteredDataFromDBByPeriod } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
 import {
+  TGranularity,
   TPeriod,
-  transformDifficultyInfo,
+  transformBlockSizeInfo,
 } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
 import {
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   CHART_DEFAULT_PERIOD,
+  BLOCK_CHART_DEFAULT_GRANULARITY,
+  granularities,
   periods,
 } from '../../common/constants'
 
@@ -22,14 +25,19 @@ type TDifficultyOvertimeProps = {
   }
 }
 
-const redrawCycle = 6000
+const redrawCycle = 60000
 
-const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
+const AverageBlockSizeOvertime = (
+  props: TDifficultyOvertimeProps,
+): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
   const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
+  const [granularity, setGranularity] = useState<TGranularity>(
+    BLOCK_CHART_DEFAULT_GRANULARITY,
+  )
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,
@@ -39,9 +47,14 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.statisticinfo)
+      const result = getFilteredDataFromDBByPeriod(
+        pasteldb,
+        pastelTableNames.blockinfo,
+        granularity,
+        period,
+      )
       if (result.length) {
-        const transforms = transformDifficultyInfo(result[0].values, period)
+        const transforms = transformBlockSizeInfo(result[0].values)
         setTransformLineChartData(transforms)
       }
     }
@@ -53,14 +66,19 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
     setTicker(newTicker)
 
     return () => {
-      if (newTicker) {
-        clearInterval(newTicker)
+      if (ticker) {
+        clearInterval(ticker)
       }
     }
-  }, [period])
+  }, [granularity, period])
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
+    clearInterval(ticker as NodeJS.Timeout)
+  }
+
+  const handleGranularityFilterChange = (granularity: TGranularity) => {
+    setGranularity(granularity)
     clearInterval(ticker as NodeJS.Timeout)
   }
 
@@ -77,15 +95,17 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='difficulty'
+              chartName='averageblocksize'
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
-              title='Network Difficulty'
+              title='Average Block Size(KB)'
               info={info}
-              offset={10000}
-              periods={periods[0]}
+              offset={1}
+              granularities={granularities[0]}
+              periods={periods[1]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
+              handleGranularityFilterChange={handleGranularityFilterChange}
             />
           )}
         </div>
@@ -94,4 +114,4 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   )
 }
 
-export default DifficultyOvertime
+export default AverageBlockSizeOvertime

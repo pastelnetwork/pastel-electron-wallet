@@ -51,6 +51,9 @@ import {
   PriceOvertime,
   PastelStatistics,
   HashrateOvertime,
+  NetworkTotalsOvertime,
+  MempoolSizeOvertime,
+  AverageBlockSizeOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
@@ -640,6 +643,11 @@ class RouteApp extends React.Component<any, any> {
               />
 
               <Route
+                path={routes.AVERAGEBLOCKSIZEOVERTIME}
+                render={() => <AverageBlockSizeOvertime info={info} />}
+              />
+
+              <Route
                 path={routes.DIFFICULTYOVERTIME}
                 render={() => <DifficultyOvertime info={info} />}
               />
@@ -652,6 +660,16 @@ class RouteApp extends React.Component<any, any> {
               <Route
                 path={routes.HASHRATEOVERTIME}
                 render={() => <HashrateOvertime info={info} />}
+              />
+
+              <Route
+                path={routes.NETWORKTOTALSOVERTIME}
+                render={() => <NetworkTotalsOvertime info={info} />}
+              />
+
+              <Route
+                path={routes.MEMPOOLSIZEOVERTIME}
+                render={() => <MempoolSizeOvertime info={info} />}
               />
 
               <Route
