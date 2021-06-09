@@ -4,6 +4,8 @@ import { TLineChartData, TMultiLineChartData } from '../../pastelDB/type'
 
 export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
 
+export type TGranularity = '1d' | '30d' | '1y' | 'all'
+
 export function getStartPoint(period: TPeriod): number {
   let duration = 1
   switch (period) {
@@ -87,8 +89,10 @@ export const makeDownloadFileName = (
   const date = new Date()
 
   imageTitle = title
-  if (title === 'Network Difficulty') {
-    imageTitle = 'Network_Difficulty'
+  if (title === 'mempoolsize') {
+    imageTitle = 'mempool_size'
+  } else if (title === 'averageblocksize') {
+    imageTitle = 'average_block_size'
   }
 
   const dateTime = `${
@@ -115,6 +119,69 @@ export function transformHashrateInfo(
         dataX.push(new Date(createTime).toLocaleString())
       }
     }
+  }
+
+  return { dataX, dataY }
+}
+
+export function transformNetTotals(
+  nettotals: SqlValue[][],
+  period: TPeriod,
+): TMultiLineChartData {
+  const dataX: string[] = []
+  const dataY1: number[] = []
+  const dataY2: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < nettotals.length; i++) {
+    if (nettotals[i][3] !== null) {
+      const createTime = Number(nettotals[i][3])
+      if (createTime > startDate) {
+        const recv = Number(nettotals[i][1])
+        const sent = Number(nettotals[i][2])
+        dataY1.push(recv)
+        dataY2.push(sent)
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+
+  return { dataX, dataY1, dataY2 }
+}
+
+export function transformMempoolInfo(
+  mempoolInfo: SqlValue[][],
+  period: TPeriod,
+): TLineChartData {
+  const dataX: string[] = []
+  const dataY: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < mempoolInfo.length; i++) {
+    if (mempoolInfo[i][4] !== null && mempoolInfo[i][3] !== 0) {
+      const createTime = Number(mempoolInfo[i][4])
+      if (createTime > startDate) {
+        const bytes = Number(mempoolInfo[i][3]) / 1000
+        dataY.push(bytes)
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+
+  return { dataX, dataY }
+}
+
+export function transformBlockSizeInfo(
+  blocksizes: SqlValue[][],
+): TLineChartData {
+  const dataX: string[] = []
+  const dataY: number[] = []
+
+  for (let i = 0; i < blocksizes.length; i++) {
+    dataY.push(Number(blocksizes[i][1]) / 1000)
+    dataX.push(String(blocksizes[i][0]))
   }
 
   return { dataX, dataY }

@@ -3,11 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
-import { TLineChartData } from '../../../pastelDB/type'
-import {
-  TPeriod,
-  transformDifficultyInfo,
-} from '../../utils/PastelStatisticsLib'
+import { TMultiLineChartData } from '../../../pastelDB/type'
+import { TPeriod, transformNetTotals } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
 import {
@@ -16,7 +13,7 @@ import {
   periods,
 } from '../../common/constants'
 
-type TDifficultyOvertimeProps = {
+type TNetTotalOvertimeProps = {
   info: {
     [key: string]: string | number
   }
@@ -24,7 +21,7 @@ type TDifficultyOvertimeProps = {
 
 const redrawCycle = 6000
 
-const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
+const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -34,14 +31,14 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TLineChartData>()
+  ] = useState<TMultiLineChartData>()
 
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.statisticinfo)
+      const result = getDatasFromDB(pasteldb, pastelTableNames.nettotals)
       if (result.length) {
-        const transforms = transformDifficultyInfo(result[0].values, period)
+        const transforms = transformNetTotals(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -77,12 +74,13 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='difficulty'
+              chartName='network_totals'
               dataX={transformLineChartData?.dataX}
-              dataY={transformLineChartData?.dataY}
-              title='Network Difficulty'
+              dataY1={transformLineChartData?.dataY1}
+              dataY2={transformLineChartData?.dataY2}
+              title='Network Totals'
               info={info}
-              offset={10000}
+              offset={0}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
@@ -94,4 +92,4 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   )
 }
 
-export default DifficultyOvertime
+export default NetworkTotalsOvertime

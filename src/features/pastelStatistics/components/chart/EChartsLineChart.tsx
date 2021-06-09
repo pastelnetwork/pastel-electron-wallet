@@ -24,18 +24,25 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     chartName,
     dataX,
     dataY,
+    dataY1,
+    dataY2,
     title,
     info,
     offset,
     periods,
+    granularities,
     handlePeriodFilterChange,
+    handleGranularityFilterChange,
     handleBgColorChange,
   } = props
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedGranularityButton, setSelectedGranularityButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
-  const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
+  const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>(
+    themes[0],
+  )
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
   const [minY, setMinY] = useState(0)
@@ -50,13 +57,32 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     if (dataY?.length) {
       const min = Math.min(...dataY)
       const max = Math.max(...dataY)
-      setMinY(Math.round(min) - offset)
-      setMaxY(Math.floor(max) + offset)
+      if (chartName === 'mempoolsize') {
+        setMinY(Math.floor(min))
+        setMaxY(Math.ceil(max))
+      } else if (chartName === 'difficulty') {
+        setMinY(Math.floor(min / offset) * offset)
+        setMaxY(Math.ceil(max / offset) * offset)
+      } else {
+        setMinY(Math.round(min) - offset)
+        setMaxY(Math.floor(max) + offset)
+      }
       if (dataX) {
         const data: Data = []
-        dataY.map((o, index) => {
+        dataY.map((yAxis, index) => {
           data.push({
-            value: o,
+            value: yAxis,
+            time: dataX[index],
+          })
+        })
+        setCsvData(data)
+      }
+    } else if (dataY1?.length && dataY2?.length) {
+      if (dataX) {
+        const data: Data = []
+        dataY1.map((value, index) => {
+          data.push({
+            value: `${value} : ${dataY2[index]}`,
             time: dataX[index],
           })
         })
@@ -69,6 +95,8 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     theme: currentTheme,
     dataX,
     dataY,
+    dataY1,
+    dataY2,
     chartName: chartName,
     minY,
     maxY,
@@ -117,6 +145,13 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     return ''
   }
 
+  const getActiveGranularityButtonStyle = (index: number): string => {
+    if (selectedGranularityButton === index) {
+      return styles.activeButton
+    }
+    return ''
+  }
+
   const getActiveThemeButtonStyle = (index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
@@ -133,8 +168,32 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         >
           {title}
         </div>
+        {granularities && (
+          <div className={styles.granularitySelect}>
+            <span style={{ color: currentTheme?.color }}>Granularity: </span>
+            {granularities?.map((granularity, index) => {
+              return (
+                <button
+                  className={`${getActiveGranularityButtonStyle(index)} ${
+                    styles.filterButton
+                  }`}
+                  onClick={() => {
+                    setSelectedGranularityButton(index)
+                    if (handleGranularityFilterChange) {
+                      handleGranularityFilterChange(granularity)
+                    }
+                  }}
+                  type='button'
+                  key={`button-filter-${granularity}`}
+                >
+                  {granularity}
+                </button>
+              )
+            })}
+          </div>
+        )}
         <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>period: </span>
+          <span style={{ color: currentTheme?.color }}>Period: </span>
           {periods.map((period, index) => (
             <button
               className={`${getActivePriodButtonStyle(index)} ${

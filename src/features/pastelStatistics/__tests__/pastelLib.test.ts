@@ -45,6 +45,20 @@ describe('managePastelDatabase', () => {
       1621518133357,
     ],
   ]
+  const mockNetTotals = [
+    [1, 123434, 21296, 1621518133277],
+    [2, 147102, 27015, 1621518133357],
+  ]
+  const mockMempoolInfos = [
+    [1, 1, 492, 1344, 1621518133277],
+    [2, 3, 816, 1560, 1621518133357],
+  ]
+
+  const mockBlockSizes = [
+    [1, 1621518133277],
+    [2, 1621518133357],
+  ]
+
   test('getStartPoint function works correctly', async () => {
     // Arrange
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -118,6 +132,64 @@ describe('managePastelDatabase', () => {
         '2021-05-20T13:42:13.357Z UTC (MockDate: GMT-0700)',
       ],
       dataY: [2.696909, 2.696909],
+    })
+  })
+
+  test('transformNetTotals function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformNetTotals(mockNetTotals, '2h')
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      dataX: [
+        '2021-05-20T13:42:13.277Z UTC (MockDate: GMT-0700)',
+        '2021-05-20T13:42:13.357Z UTC (MockDate: GMT-0700)',
+      ],
+      dataY1: [123434, 147102],
+      dataY2: [21296, 27015],
+    })
+  })
+
+  test('transformMempoolInfo function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformMempoolInfo(
+      mockMempoolInfos,
+      '2h',
+    )
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      dataX: [
+        '2021-05-20T13:42:13.277Z UTC (MockDate: GMT-0700)',
+        '2021-05-20T13:42:13.357Z UTC (MockDate: GMT-0700)',
+      ],
+      dataY: [1.344, 1.56],
+    })
+  })
+
+  test('transformBlockSizeInfo function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformBlockSizeInfo(mockBlockSizes)
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      dataX: ['1', '2'],
+      dataY: [1621518133.277, 1621518133.357],
     })
   })
 })
