@@ -54,8 +54,16 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     if (dataY?.length) {
       const min = Math.min(...dataY)
       const max = Math.max(...dataY)
-      setMinY(Math.round(min) - offset)
-      setMaxY(Math.floor(max) + offset)
+      if (chartName === 'mempoolsize') {
+        setMinY(Math.floor(min))
+        setMaxY(Math.ceil(max))
+      } else if (chartName === 'difficulty') {
+        setMinY(Math.floor(min / offset) * offset)
+        setMaxY(Math.ceil(max / offset) * offset)
+      } else {
+        setMinY(Math.round(min) - offset)
+        setMaxY(Math.floor(max) + offset)
+      }
       if (dataX) {
         const data: Data = []
         dataY.map((yAxis, index) => {

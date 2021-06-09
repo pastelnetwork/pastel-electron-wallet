@@ -87,8 +87,8 @@ export const makeDownloadFileName = (
   const date = new Date()
 
   imageTitle = title
-  if (title === 'Network Difficulty') {
-    imageTitle = 'Network_Difficulty'
+  if (title === 'mempoolsize') {
+    imageTitle = 'mempool_size'
   }
 
   const dateTime = `${
@@ -144,4 +144,27 @@ export function transformNetTotals(
   }
 
   return { dataX, dataY1, dataY2 }
+}
+
+export function transformMempoolInfo(
+  mempoolInfo: SqlValue[][],
+  period: TPeriod,
+): TLineChartData {
+  const dataX: string[] = []
+  const dataY: number[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < mempoolInfo.length; i++) {
+    if (mempoolInfo[i][4] !== null && mempoolInfo[i][3] !== 0) {
+      const createTime = Number(mempoolInfo[i][4])
+      if (createTime > startDate) {
+        const bytes = Number(mempoolInfo[i][3]) / 1000
+        dataY.push(bytes)
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+
+  return { dataX, dataY }
 }

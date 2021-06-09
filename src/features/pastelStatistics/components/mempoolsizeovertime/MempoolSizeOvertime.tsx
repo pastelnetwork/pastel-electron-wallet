@@ -4,10 +4,7 @@ import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
-import {
-  TPeriod,
-  transformDifficultyInfo,
-} from '../../utils/PastelStatisticsLib'
+import { TPeriod, transformMempoolInfo } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
 import {
@@ -16,7 +13,7 @@ import {
   periods,
 } from '../../common/constants'
 
-type TDifficultyOvertimeProps = {
+type TMempoolSizeOvertimeProps = {
   info: {
     [key: string]: string | number
   }
@@ -24,7 +21,7 @@ type TDifficultyOvertimeProps = {
 
 const redrawCycle = 6000
 
-const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
+const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -39,9 +36,9 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.statisticinfo)
+      const result = getDatasFromDB(pasteldb, pastelTableNames.mempoolinfo)
       if (result.length) {
-        const transforms = transformDifficultyInfo(result[0].values, period)
+        const transforms = transformMempoolInfo(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -77,12 +74,12 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='difficulty'
+              chartName='mempoolsize'
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
-              title='Network Difficulty'
+              title='Mempool Size(KByte)'
               info={info}
-              offset={10000}
+              offset={0.5}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
@@ -94,4 +91,4 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
   )
 }
 
-export default DifficultyOvertime
+export default MempoolSizeOvertime

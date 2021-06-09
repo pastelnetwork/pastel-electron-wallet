@@ -2,6 +2,7 @@ import Difficulty from '../assets/images/difficulty.jpg'
 import PSLPrice from '../assets/images/pslprice.jpg'
 import Hashrate from '../assets/images/hashrate.jpg'
 import Nettotals from '../assets/images/nettotals.jpg'
+import Mempoolsize from '../assets/images/mempoolsize.jpg'
 import { TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
@@ -22,8 +23,13 @@ export const pastelChartFields = [
   },
   {
     name: 'Network Totals',
-    routeName: '/statistics/nettotalsovertime',
+    routeName: '/statistics/networktotalsovertime',
     backgroundImage: Nettotals,
+  },
+  {
+    name: 'Mempool Size',
+    routeName: '/statistics/mempoolsizeovertime',
+    backgroundImage: Mempoolsize,
   },
 ]
 
