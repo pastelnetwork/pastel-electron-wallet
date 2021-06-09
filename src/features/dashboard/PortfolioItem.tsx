@@ -29,7 +29,7 @@ export default function PortfolioItem({
             {author}
           </div>
         </div>
-        <div className='text-10 md:flex 1200px:block'>
+        <div className='text-10px md:flex 1200px:block'>
           <div className='text-gray-a0 font-medium mr-1'>Bid</div>
           <div className='text-gray-33 font-extrabold'>
             {price} {currencyName}

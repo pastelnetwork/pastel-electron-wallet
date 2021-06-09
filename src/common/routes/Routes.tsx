@@ -12,7 +12,7 @@ export default function Routes(): JSX.Element {
    * TODO
    * Make redux flow for the logged used and avoid passing props
    */
-  const [user, setUser] = React.useState(true)
+  const [user, setUser] = React.useState(false)
 
   if (user) {
     return (

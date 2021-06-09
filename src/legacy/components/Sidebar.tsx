@@ -723,7 +723,7 @@ class Sidebar extends PureComponent<any, any> {
             name='Members'
             routeName={routes.MEMBERS}
             currentRoute={location.pathname}
-            iconname='fa-id-card'
+            iconname='fa-file-code'
           />
           <SidebarMenuItem
             name='Market'

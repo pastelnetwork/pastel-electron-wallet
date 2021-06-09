@@ -50,8 +50,9 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import NFTMarketFeed from '../features/nftMarket/NFTMarketFeed'
 import { app } from 'electron'
+import { MembersDirectory } from '../features/members'
+import NFTMarketFeed from '../features/nftMarket'
 
 export type TWalletInfo = {
   connections: number
@@ -506,26 +507,6 @@ class RouteApp extends React.Component<any, any> {
                   setSendPageState={this.setSendPageState}
                   addressBook={addressBook}
                   {...standardProps}
-                />
-              )}
-            />
-            <Route
-              path={routes.RECEIVE}
-              render={() => (
-                <Receive
-                  rerenderKey={receivePageState.rerenderKey}
-                  addresses={addresses}
-                  addressesWithBalance={addressesWithBalance}
-                  addressPrivateKeys={addressPrivateKeys}
-                  addressViewKeys={addressViewKeys}
-                  receivePageState={receivePageState}
-                  addressBook={addressBook}
-                  transactions={transactions}
-                  {...standardProps}
-                  fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
-                  hidePrivKey={this.hidePrivKey}
-                  fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
-                  createNewAddress={this.createNewAddress}
                 />
               )}
             />
