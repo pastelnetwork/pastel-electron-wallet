@@ -1,5 +1,7 @@
 {
-  "DASHBOARD": "/",
+  "LOADING": "/",
+  "MEMBERS": "/members",
+  "DASHBOARD": "/dashboard",
   "SEND": "/send",
   "RECEIVE": "/receive",
   "ADDRESSBOOK": "/addressbook",
