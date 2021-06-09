@@ -224,9 +224,6 @@ module.exports = {
         '118px': '7.375rem',
         '171px': '10.688rem',
       },
-      maxHeight: {
-        '54vh': '54vh',
-      },
     },
   },
   variants: {},

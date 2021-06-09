@@ -129,7 +129,7 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
               <h1
                 className={`${
                   props.variant === 'portfolio'
-                    ? 'pr-18px sm:pr-28px whitespace-nowrap'
+                    ? 'pr-18px md:pr-28px whitespace-nowrap'
                     : 'pr-20'
                 } font-semibold text-gray-23`}
               >
@@ -141,7 +141,7 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
               <p
                 className={`pr-4 text-h5 ${
                   props.variant === 'portfolio'
-                    ? 'font-medium text-gray-2d leading-4 hidden sm:block'
+                    ? 'font-medium text-gray-2d leading-4 hidden md:block'
                     : ''
                 }`}
               >

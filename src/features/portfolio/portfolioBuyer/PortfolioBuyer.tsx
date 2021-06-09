@@ -7,6 +7,8 @@ import { PageHeaderSortByOptions } from '../../../common/components/PageHeader/P
 import Select, { TOption } from '../../../common/components/Select/Select'
 import NFTCard, { INFTCardProps } from '../../../common/components/NFTCard'
 
+import styles from '../Portfolio.module.css'
+
 import avatar from '../../../common/assets/images/avatar-placeholder.png'
 import portfolio1 from '../../../common/assets/images/mock/portfolio-1.jpg'
 import portfolio2 from '../../../common/assets/images/mock/portfolio-2.jpg'
@@ -285,7 +287,7 @@ export default function PortfolioBuyer(): JSX.Element {
       />
       <div className='wrapper'>
         <div className='flex'>
-          <div className='w-9/12 sm:w-full'>
+          <div className='w-9/12 md:w-full'>
             <div className='flex items-center mt-10px mb-30px'>
               {filterOptions.map(option => (
                 <div className='mr-24px' key={option.label}>
@@ -293,7 +295,9 @@ export default function PortfolioBuyer(): JSX.Element {
                 </div>
               ))}
             </div>
-            <div className='max-h-54vh overflow-y-auto pr-28px pb-16px'>
+            <div
+              className={`${styles.portfolioContent} overflow-y-auto pr-28px pb-16px`}
+            >
               <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-30px gap-y-29px'>
                 {mockNFTCard?.map((nftItem, index) => (
                   <NFTCard {...nftItem} key={index} hideFollow />
