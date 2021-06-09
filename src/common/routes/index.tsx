@@ -1,5 +1,4 @@
 import OnboardingLayout from '../layout/Onboarding'
-import PageLayout from '../layout/PageLayout'
 
 import {
   WelcomePage,
@@ -13,8 +12,6 @@ import {
 } from '../../features/onboarding/index'
 
 import * as ROUTES from '../utils/constants/routes'
-import { MembersDirectory } from '../../features/members'
-import NFTMarketFeed from '../../features/nftMarket'
 
 const onboardingRoute = {
   id: 'welcomePage',
@@ -72,20 +69,6 @@ const newPassword = {
   layout: OnboardingLayout,
 }
 
-const members = {
-  id: 'members',
-  path: ROUTES.MEMBERS,
-  component: MembersDirectory,
-  layout: PageLayout,
-}
-
-const market = {
-  id: 'market',
-  path: ROUTES.MARKET,
-  component: NFTMarketFeed,
-  layout: PageLayout,
-}
-
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -95,6 +78,4 @@ export const pageRoutes = [
   registrationSuccessful,
   cryptoKeys,
   newPassword,
-  members,
-  market,
 ]
