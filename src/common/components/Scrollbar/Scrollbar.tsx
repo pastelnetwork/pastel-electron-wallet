@@ -1,21 +1,20 @@
 import React, { ReactNode } from 'react'
 import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
-import 'simplebar/src/simplebar.css'
 
 export type TScrollBar = {
-  children?: ReactNode
-  maxHeight?: number
+  maxHeight?: number | string
+  hasPageHeader?: boolean
   className?: string
   autoHide?: boolean
   [x: string]: ReactNode | string | undefined
 }
-
 const Scrollbar: React.FC<TScrollBar> = ({
   children,
   maxHeight,
   className,
-  autoHide,
+  autoHide = false,
+  hasPageHeader,
   ...otherProps
 }) => {
   const classes = cn(
@@ -24,11 +23,15 @@ const Scrollbar: React.FC<TScrollBar> = ({
     },
     className,
   )
-
+  const calcMaxHeight = maxHeight
+    ? maxHeight
+    : hasPageHeader
+    ? 'calc(100vh - 186px)'
+    : 'calc(100vh - 86px)'
   return (
     <SimpleBar
       className={classes}
-      style={{ maxHeight: `${maxHeight}px` }}
+      style={{ height: calcMaxHeight }}
       {...otherProps}
       autoHide={autoHide}
     >
@@ -36,9 +39,7 @@ const Scrollbar: React.FC<TScrollBar> = ({
     </SimpleBar>
   )
 }
-
 Scrollbar.defaultProps = {
   autoHide: true,
 }
-
 export default Scrollbar

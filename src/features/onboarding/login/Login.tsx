@@ -79,10 +79,14 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
             Restore access now
           </Styles.FooterLink>
         </Styles.FooterText>
-        <Button type='submit' onClick={() => {
+        <Button
+          type='submit'
+          onClick={() => {
             setUser(true)
             history.push(ROUTES.DASHBOARD)
-          }} fluid={true}>
+          }}
+          fluid={true}
+        >
           Submit
         </Button>
       </Styles.Form>
