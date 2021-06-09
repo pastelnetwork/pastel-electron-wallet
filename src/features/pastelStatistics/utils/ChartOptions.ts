@@ -339,7 +339,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
       },
     },
     transactionfee: {
-      color: ['#53c79f'],
+      color: ['#cd6661'],
       grid: {
         top: 8,
         right: 8,
@@ -381,7 +381,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: '#53c79f',
+              color: '#cd6661',
             },
             {
               offset: 1,
