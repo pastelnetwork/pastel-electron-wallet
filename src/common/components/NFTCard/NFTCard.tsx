@@ -142,7 +142,7 @@ const NFTCard = ({
         {fullCardProps && (
           <div
             className={`flex justify-between ${
-              variant === 'portfolio' ? 'pt-16px' : 'pt-4'
+              variant === 'portfolio' ? 'pt-10px' : 'pt-4'
             }`}
           >
             <div className='flex-center'>
