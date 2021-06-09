@@ -293,11 +293,11 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
               offset: 0,
-              color: '#1a4369',
+              color: '#1A4369',
             },
             {
               offset: 1,
-              color: 'rgba(26, 39, 42, 0.3)',
+              color: '#1A272A4D',
             },
           ]),
         },
@@ -563,6 +563,5 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
       ],
     },
   }
-
   return chartOptions[chartName]
 }

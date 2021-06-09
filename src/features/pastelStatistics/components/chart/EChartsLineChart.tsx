@@ -58,8 +58,11 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
       const min = Math.min(...dataY)
       const max = Math.max(...dataY)
       if (chartName === 'mempoolsize') {
-        setMinY(min - offset)
-        setMaxY(max + offset)
+        setMinY(Math.floor(min))
+        setMaxY(Math.ceil(max))
+      } else if (chartName === 'difficulty') {
+        setMinY(Math.floor(min / offset) * offset)
+        setMaxY(Math.ceil(max / offset) * offset)
       } else {
         setMinY(Math.round(min) - offset)
         setMaxY(Math.floor(max) + offset)
@@ -77,9 +80,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     } else if (dataY1?.length && dataY2?.length) {
       if (dataX) {
         const data: Data = []
-        dataY1.map((yAxis, index) => {
+        dataY1.map((value, index) => {
           data.push({
-            value: `${yAxis} : ${dataY2[index]}`,
+            value: `${value} : ${dataY2[index]}`,
             time: dataX[index],
           })
         })
@@ -190,7 +193,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
           </div>
         )}
         <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>period: </span>
+          <span style={{ color: currentTheme?.color }}>Period: </span>
           {periods.map((period, index) => (
             <button
               className={`${getActivePriodButtonStyle(index)} ${

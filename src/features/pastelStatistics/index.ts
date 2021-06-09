@@ -3,7 +3,7 @@ import AverageBlockSizeOvertime from './components/averageblocksizeovertime/Aver
 import PriceOvertime from './components/priceovertime/PriceOvertime'
 import DifficultyOvertime from './components/difficultyovertime/DifficultyOvertime'
 import HashrateOvertime from './components/hashrateovertime/HashrateOvertime'
-import NetTotalsOvertime from './components/nettotalsovertime/NetTotalsOvertime'
+import NetworkTotalsOvertime from './components/networktotalsovertime/NetworkTotalsOvertime'
 import MempoolSizeOvertime from './components/mempoolsizeovertime/MempoolSizeOvertime'
 import TransactionsInBlockOvertime from './components/transactionsinblockovertime/TransactionsInBlockOverTime'
 
@@ -13,7 +13,7 @@ export {
   PriceOvertime,
   DifficultyOvertime,
   HashrateOvertime,
-  NetTotalsOvertime,
+  NetworkTotalsOvertime,
   MempoolSizeOvertime,
   TransactionsInBlockOvertime,
 }

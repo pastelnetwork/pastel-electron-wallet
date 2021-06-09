@@ -93,7 +93,11 @@ export const makeDownloadFileName = (
   const date = new Date()
 
   imageTitle = title
-  if (title === 'transactionsinblock') {
+  if (title === 'mempoolsize') {
+    imageTitle = 'mempool_size'
+  } else if (title === 'averageblocksize') {
+    imageTitle = 'average_block_size'
+  } else if (title === 'transactionsinblock') {
     imageTitle = 'transactions_in_block'
   }
 

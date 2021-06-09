@@ -1,60 +1,44 @@
 import React, { useEffect, useState } from 'react'
 
-import { getFilteredDataFromDBByPeriod } from '../../../pastelDB'
+import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
-import { TLineChartData } from '../../../pastelDB/type'
-import {
-  TGranularity,
-  TPeriod,
-  transformBlockSizeInfo,
-} from '../../utils/PastelStatisticsLib'
+import { TMultiLineChartData } from '../../../pastelDB/type'
+import { TPeriod, transformNetTotals } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
 import {
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   CHART_DEFAULT_PERIOD,
-  BLOCK_CHART_DEFAULT_GRANULARITY,
-  granularities,
   periods,
 } from '../../common/constants'
 
-type TDifficultyOvertimeProps = {
+type TNetTotalOvertimeProps = {
   info: {
     [key: string]: string | number
   }
 }
 
-const redrawCycle = 60000
+const redrawCycle = 6000
 
-const AverageBlockSizeOvertime = (
-  props: TDifficultyOvertimeProps,
-): JSX.Element => {
+const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
   const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
-  const [granularity, setGranularity] = useState<TGranularity>(
-    BLOCK_CHART_DEFAULT_GRANULARITY,
-  )
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TLineChartData>()
+  ] = useState<TMultiLineChartData>()
 
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getFilteredDataFromDBByPeriod(
-        pasteldb,
-        pastelTableNames.blockinfo,
-        granularity,
-        period,
-      )
+      const result = getDatasFromDB(pasteldb, pastelTableNames.nettotals)
       if (result.length) {
-        const transforms = transformBlockSizeInfo(result[0].values)
+        const transforms = transformNetTotals(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -66,19 +50,14 @@ const AverageBlockSizeOvertime = (
     setTicker(newTicker)
 
     return () => {
-      if (ticker) {
-        clearInterval(ticker)
+      if (newTicker) {
+        clearInterval(newTicker)
       }
     }
-  }, [granularity, period])
+  }, [period])
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
-  }
-
-  const handleGranularityFilterChange = (granularity: TGranularity) => {
-    setGranularity(granularity)
     clearInterval(ticker as NodeJS.Timeout)
   }
 
@@ -95,17 +74,16 @@ const AverageBlockSizeOvertime = (
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='averageblocksize'
+              chartName='network_totals'
               dataX={transformLineChartData?.dataX}
-              dataY={transformLineChartData?.dataY}
-              title='Average Block Size(KB)'
+              dataY1={transformLineChartData?.dataY1}
+              dataY2={transformLineChartData?.dataY2}
+              title='Network Totals'
               info={info}
-              offset={1}
-              granularities={granularities[0]}
-              periods={periods[1]}
+              offset={0}
+              periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
-              handleGranularityFilterChange={handleGranularityFilterChange}
             />
           )}
         </div>
@@ -114,4 +92,4 @@ const AverageBlockSizeOvertime = (
   )
 }
 
-export default AverageBlockSizeOvertime
+export default NetworkTotalsOvertime

@@ -40,6 +40,7 @@ export type TScatterChartProps = {
   periods: TPeriod[]
   handleBgColorChange: (color: string) => void
   handlePeriodFilterChange?: (period: TPeriod) => void
+  handleGranularityFilterChange?: (granularity: TGranularity) => void
 }
 
 export type TThemeInitOption = {
