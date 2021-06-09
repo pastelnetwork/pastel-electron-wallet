@@ -37,7 +37,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   } = props
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
-  const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedPeriodButton, setSelectedPeriodButton] = useState(
+    periods.length - 1,
+  )
   const [selectedGranularityButton, setSelectedGranularityButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>(
