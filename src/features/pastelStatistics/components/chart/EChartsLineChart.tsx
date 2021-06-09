@@ -37,7 +37,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   } = props
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
-  const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedPeriodButton, setSelectedPeriodButton] = useState(
+    periods.length - 1,
+  )
   const [selectedGranularityButton, setSelectedGranularityButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>(
@@ -66,6 +68,16 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
       } else {
         setMinY(Math.round(min) - offset)
         setMaxY(Math.floor(max) + offset)
+      }
+      if (dataX) {
+        const data: Data = []
+        dataY.map((yAxis, index) => {
+          data.push({
+            value: yAxis,
+            time: dataX[index],
+          })
+        })
+        setCsvData(data)
       }
     } else if (dataY1?.length && dataY2?.length) {
       if (dataX) {

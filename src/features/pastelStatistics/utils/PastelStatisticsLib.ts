@@ -91,6 +91,8 @@ export const makeDownloadFileName = (
   imageTitle = title
   if (title === 'mempoolsize') {
     imageTitle = 'mempool_size'
+  } else if (title === 'averageblocksize') {
+    imageTitle = 'average_block_size'
   }
 
   const dateTime = `${
