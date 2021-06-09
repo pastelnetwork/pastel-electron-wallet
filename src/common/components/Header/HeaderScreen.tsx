@@ -13,8 +13,6 @@ import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 import cn from 'classnames'
 
-import Icon from '../Icon'
-
 interface IMenuType {
   name: string
   routeName: string
@@ -168,7 +166,7 @@ const Header = (props: PropsType) => {
       <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
           <div className='mr-20px md:mr-26px' key={index}>
-            <Icon src={icon.src} variant={icon.variant} />
+            <img src={icon.src} />
           </div>
         ))}
       </div>
