@@ -49,8 +49,9 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import NFTMarketFeed from '../features/nftMarket'
 import { app } from 'electron'
+import { MembersDirectory } from '../features/members'
+import NFTMarketFeed from '../features/nftMarket'
 
 export type TWalletInfo = {
   connections: number
@@ -494,6 +495,8 @@ class RouteApp extends React.Component<any, any> {
         {info?.version && <Header />}
         <div className='flex-grow overflow-auto'>
           <Switch>
+            <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
+
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
             <Route
               path={routes.SEND}
@@ -509,7 +512,7 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route
-              path={routes.RECEIVE}
+              path={routes.MEMBERS}
               render={() => (
                 <Receive
                   rerenderKey={receivePageState.rerenderKey}

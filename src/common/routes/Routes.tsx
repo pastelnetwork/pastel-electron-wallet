@@ -5,13 +5,14 @@ import routes from '../constants/routes.json'
 import Header from '../components/Header'
 import NFTMarketFeed from '../../features/nftMarket'
 import Dashboard from '../../features/dashboard/DashboardPage'
+import { MembersDirectory } from '../../features/members'
 
 export default function Routes(): JSX.Element {
   /**
    * TODO
    * Make redux flow for the logged used and avoid passing props
    */
-  const [user, setUser] = React.useState(true)
+  const [user, setUser] = React.useState(false)
 
   if (user) {
     return (
@@ -21,6 +22,7 @@ export default function Routes(): JSX.Element {
           <Switch>
             <Route exact path={routes.DASHBOARD} component={Dashboard} />
             <Route exact path={routes.MARKET} component={NFTMarketFeed} />
+            <Route exact path={routes.MEMBERS} component={MembersDirectory} />
           </Switch>
         </div>
       </div>

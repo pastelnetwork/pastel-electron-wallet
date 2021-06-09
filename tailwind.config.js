@@ -17,6 +17,7 @@ module.exports = {
     },
     fontFamily: {
       body: 'Avenir, Roboto, Arial, Helvetica, Helvetica Neue, serif',
+      display: 'Poppins',
     },
     extend: {
       spacing: {
@@ -26,6 +27,7 @@ module.exports = {
         '3px': '0.188rem',
         '5px': '0.3125rem',
         '6px': '0.375rem',
+        '7px': '0.5rem',
         '8px': '0.188rem',
         '9px': '0.5625rem',
         '13px': '0.813rem',
@@ -33,7 +35,9 @@ module.exports = {
         '15px': '0.938rem',
         '18px': '1.125rem',
         '20px': '1.25rem',
+        '21px': '1.313rem',
         '22px': '1.375rem',
+        '25px': '1.563rem',
         '26px': '1.625rem',
         '27px': '1.688rem',
         '28px': '1.75rem',
@@ -55,12 +59,16 @@ module.exports = {
         '69px': '4.313rem',
         '70px': '4.375rem',
         '82px': '5.125rem',
+        '88px': '5.5rem',
+        '101px': '6.313rem',
         '111px': '6.938rem',
         '112px': '7rem',
         '120px': '7.5rem',
+        '142px': '8.875rem',
         '180px': '11.25rem',
         '220px': '13.75rem',
         '230px': '14.375rem',
+        '244px': '15.25rem',
         '300px': '18.75rem',
         '335px': '20.938rem',
         '352px': '22rem',
@@ -90,10 +98,6 @@ module.exports = {
           '3f': '#3F9AF7',
           e5: '#E5F1FF',
         },
-        green: {
-          e5: '#E5F6EF',
-          38: '#38CB89',
-        },
         gray: {
           a0: '#A0AEC0',
           71: '#718096',
@@ -115,6 +119,7 @@ module.exports = {
           '1d': '#1D263A',
           14: '#141416',
           23: '#23262F',
+          77: '#777E90',
         },
         red: {
           '7a': '#FF7A00',
@@ -128,6 +133,8 @@ module.exports = {
         },
         green: {
           68: '#68CC67',
+          e5: '#E5F6EF',
+          38: '#38CB89',
         },
         button: {
           pressed: '#0E80F5',
@@ -185,6 +192,7 @@ module.exports = {
         9: '0.5625rem',
         10: '0.625rem',
         15: '0.938rem',
+        12: '0.75rem',
       },
       borderRadius: {
         '4px': '0.25rem',
@@ -194,6 +202,12 @@ module.exports = {
       },
       container: {
         center: true,
+      },
+      minWidth: {
+        '244px': '15.25rem',
+      },
+      maxWidth: {
+        '244px': '15.25rem',
       },
     },
   },
