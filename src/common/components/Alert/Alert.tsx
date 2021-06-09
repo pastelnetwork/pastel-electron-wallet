@@ -19,7 +19,7 @@ const Alert: React.FC<TAlert> = ({ variant, className, children }) => {
 
   return (
     <div className={classes}>
-      <p className='text-${variant}'>{children}</p>
+      <p className={`text-${variant}`}>{children}</p>
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react'
 import CircleAddButton from './CircleAddButton'
 
 export const CircleAddButtonDefault: React.FC = () => (
-  <CircleAddButton></CircleAddButton>
+  <CircleAddButton className=''></CircleAddButton>
 )
 
 export default {

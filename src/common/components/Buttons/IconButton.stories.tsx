@@ -3,7 +3,12 @@ import { Meta } from '@storybook/react'
 import IconButton from './IconButton'
 
 export const IconButtonBorder: React.FC = () => (
-  <IconButton type='border' hoverColor='error' activeColor='error-pressed'>
+  <IconButton
+    type='border'
+    hoverColor='error'
+    activeColor='error-pressed'
+    className=''
+  >
     <svg
       width='22'
       height='18'
@@ -16,7 +21,12 @@ export const IconButtonBorder: React.FC = () => (
   </IconButton>
 )
 export const IconButtonShadow: React.FC = () => (
-  <IconButton type='shadow' hoverColor='error' activeColor='error-pressed'>
+  <IconButton
+    type='shadow'
+    hoverColor='error'
+    activeColor='error-pressed'
+    className=''
+  >
     <svg
       width='22'
       height='18'

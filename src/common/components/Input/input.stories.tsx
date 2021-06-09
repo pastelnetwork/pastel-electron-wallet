@@ -13,6 +13,7 @@ const Template: Story<TInput> = ({
   hint,
   errorMessage,
   disabled,
+  className,
   ...args
 }) => {
   return (
@@ -27,6 +28,7 @@ const Template: Story<TInput> = ({
       prepend={prepend}
       append={append}
       id={id}
+      className={className}
       {...args}
     />
   )
@@ -40,6 +42,7 @@ const disabled = false
 const placeholder = 'placeholder'
 const isValid = false
 const id = 'id'
+const className = ''
 InputDefault.args = {
   type,
   label,
@@ -48,6 +51,7 @@ InputDefault.args = {
   placeholder,
   isValid,
   id,
+  className,
 }
 
 export default {
