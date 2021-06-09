@@ -1,4 +1,10 @@
 import '!style-loader!css-loader!postcss-loader!../src/index.css'
+import { addDecorator } from '@storybook/react'
+import { MemoryRouter } from 'react-router'
+
+addDecorator(story => (
+  <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>
+))
 
 document.body.style.background = 'white'
 
