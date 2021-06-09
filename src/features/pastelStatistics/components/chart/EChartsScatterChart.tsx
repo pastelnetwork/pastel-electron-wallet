@@ -32,7 +32,9 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
   } = props
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
-  const [selectedPeriodButton, setSelectedPeriodButton] = useState(3)
+  const [selectedPeriodButton, setSelectedPeriodButton] = useState(
+    periods.length - 1,
+  )
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()

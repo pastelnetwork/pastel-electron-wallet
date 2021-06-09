@@ -78,7 +78,7 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
               dataX={transformLineChartData?.dataX}
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}
-              title='Network Totals'
+              title='Network Total'
               info={info}
               offset={0}
               periods={periods[0]}

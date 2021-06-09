@@ -12,7 +12,7 @@ import { EChartsScatterChart } from '../chart/EChartsScatterChart'
 import styles from '../../Common.module.css'
 import {
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
-  TRANSACTIONS_IN_BLOCK_CHART_DEFAULT_PERIOD,
+  CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
 
@@ -31,9 +31,7 @@ const TransactionsInBlockOvertime = (
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
-  const [period, setPeriod] = useState<TPeriod>(
-    TRANSACTIONS_IN_BLOCK_CHART_DEFAULT_PERIOD,
-  )
+  const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
   const [ticker, setTicker] = useState<NodeJS.Timeout>()
   const [
     transformLineChartData,

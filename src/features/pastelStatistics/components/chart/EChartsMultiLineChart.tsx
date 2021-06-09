@@ -29,7 +29,9 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
-  const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedPeriodButton, setSelectedPeriodButton] = useState(
+    periods.length - 1,
+  )
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [minY1, setMinY1] = useState(0)
   const [minY2, setMinY2] = useState(0)
