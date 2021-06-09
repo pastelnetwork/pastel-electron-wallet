@@ -258,7 +258,7 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
           {title}
         </div>
         <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>period: </span>
+          <span style={{ color: currentTheme?.color }}>Period: </span>
           {periods.map((period, index) => (
             <button
               className={`${getActivePriodButtonStyle(index)} 

@@ -54,6 +54,11 @@ describe('managePastelDatabase', () => {
     [2, 3, 816, 1560, 1621518133357],
   ]
 
+  const mockBlockSizes = [
+    [1, 1621518133277],
+    [2, 1621518133357],
+  ]
+
   test('getStartPoint function works correctly', async () => {
     // Arrange
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -169,6 +174,22 @@ describe('managePastelDatabase', () => {
         '2021-05-20T13:42:13.357Z UTC (MockDate: GMT-0700)',
       ],
       dataY: [1.344, 1.56],
+    })
+  })
+
+  test('transformBlockSizeInfo function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformBlockSizeInfo(mockBlockSizes)
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      dataX: ['1', '2'],
+      dataY: [1621518133.277, 1621518133.357],
     })
   })
 })

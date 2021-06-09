@@ -504,3 +504,21 @@ export const whereTransactionIDMatchingQuery =
   ' WHERE transactionid=$tid AND time=$time'
 
 export const orderByIDQuery = ' ORDER BY id DESC LIMIT 1'
+
+export const averageFilterByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+  AVG(size) FROM blockinfo`
+
+export const averageFilterByMonthlyPeriodQuery = `SELECT strftime('%m/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+  AVG(size) FROM blockinfo`
+
+export const averageFilterByYearlyPeriodQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+  AVG(size) FROM blockinfo`
+
+export const groupbyDaily =
+  "GROUP BY strftime('%Y-%m-%d', datetime(create_timestamp / 1000, 'unixepoch'))"
+
+export const groupByMonthly =
+  "GROUP BY strftime('%Y-%m', datetime(create_timestamp / 1000, 'unixepoch'))"
+
+export const groupByYearly =
+  "GROUP BY strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch'))"

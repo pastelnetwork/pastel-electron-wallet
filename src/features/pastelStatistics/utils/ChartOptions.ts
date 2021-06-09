@@ -263,8 +263,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         },
         axisLabel: {
           formatter: function (value: string) {
-            const val = Number(value).toFixed(2)
-            return `${val} k`
+            return `${Number(value).toFixed(2)} k`
           },
         },
       },
@@ -288,6 +287,51 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
             },
           ]),
         },
+        data: dataY,
+      },
+      stateAnimation: {
+        duration: 300,
+        easing: 'cubicOut',
+      },
+    },
+    averageblocksize: {
+      color: ['#5470c6', '#91cc75', '#fac858'],
+      grid: {
+        top: 8,
+        right: 8,
+        bottom: 40,
+        left: 70,
+        show: false,
+      },
+      tooltip: {
+        trigger: 'axis',
+      },
+      xAxis: {
+        type: 'category',
+        data: dataX,
+      },
+      yAxis: {
+        type: 'value',
+        min: minY,
+        max: maxY,
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+        axisLabel: {
+          formatter: function (value: string) {
+            return Number.parseFloat(value)
+          },
+        },
+      },
+      series: {
+        type: 'line',
+        smooth: true,
+        showSymbol: false,
         data: dataY,
       },
       stateAnimation: {
@@ -334,6 +378,29 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
   }
 
   const chartOptions: TChartOption = {
+    averageblocksize: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      yAxis: {
+        splitLine: {
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY,
+        },
+      ],
+    },
     difficulty: defaultOption,
     hashrate: defaultOption,
     network_totals: {

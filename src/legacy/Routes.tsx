@@ -53,6 +53,7 @@ import {
   HashrateOvertime,
   NetworkTotalsOvertime,
   MempoolSizeOvertime,
+  AverageBlockSizeOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
@@ -639,6 +640,11 @@ class RouteApp extends React.Component<any, any> {
                     pastelIDs={pastelIDs}
                   />
                 )}
+              />
+
+              <Route
+                path={routes.AVERAGEBLOCKSIZEOVERTIME}
+                render={() => <AverageBlockSizeOvertime info={info} />}
               />
 
               <Route

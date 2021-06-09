@@ -1,11 +1,17 @@
 import Difficulty from '../assets/images/difficulty.jpg'
+import AverageBlockSize from '../assets/images/averageblocksize.jpg'
 import PSLPrice from '../assets/images/pslprice.jpg'
 import Hashrate from '../assets/images/hashrate.jpg'
 import Nettotals from '../assets/images/nettotals.jpg'
 import Mempoolsize from '../assets/images/mempoolsize.jpg'
-import { TPeriod } from '../utils/PastelStatisticsLib'
+import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
+  {
+    name: 'Average Block Size',
+    routeName: '/statistics/averageblocksizeovertime',
+    backgroundImage: AverageBlockSize,
+  },
   {
     name: 'Difficulty',
     routeName: '/statistics/difficultyovertime',
@@ -57,8 +63,10 @@ export const themes = [
 
 export const periods: TPeriod[][] = [
   ['2h', '2d', '4d', 'all'],
-  ['30d', '60d', '180d', '1y', 'all'],
+  ['30d', '180d', '1y', 'all'],
 ]
+
+export const granularities: TGranularity[][] = [['1d', '30d', '1y']]
 
 export const csvHeaders = [
   { label: 'Value', key: 'value' },
@@ -72,4 +80,6 @@ export const pricesCSVHeaders = [
 ]
 
 export const CHART_THEME_BACKGROUND_DEFAULT_COLOR = '#0d0d0d'
-export const CHART_DEFAULT_PERIOD = '2h'
+export const CHART_DEFAULT_PERIOD = 'all'
+export const BLOCK_CHART_DEFAULT_GRANULARITY = '1d'
+export const BLOCK_CHART_DEFAULT_PERIOD = '30d'

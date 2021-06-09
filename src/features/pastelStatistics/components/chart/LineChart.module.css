@@ -62,6 +62,17 @@
   width: 100%;
   height: calc(100vh - 200px) !important;
 }
+
+.granularitySelect {
+  display: flex;
+  width: 100%;
+  max-width: 200px;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 15px;
+  margin-right: 50px;
+}
+
 .periodSelect {
   display: flex;
   min-width: 200px;

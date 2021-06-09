@@ -30,12 +30,15 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     info,
     offset,
     periods,
+    granularities,
     handlePeriodFilterChange,
+    handleGranularityFilterChange,
     handleBgColorChange,
   } = props
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(0)
+  const [selectedGranularityButton, setSelectedGranularityButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
   const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>(
     themes[0],
@@ -77,9 +80,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     } else if (dataY1?.length && dataY2?.length) {
       if (dataX) {
         const data: Data = []
-        dataY1.map((yAxis, index) => {
+        dataY1.map((value, index) => {
           data.push({
-            value: `${yAxis} : ${dataY2[index]}`,
+            value: `${value} : ${dataY2[index]}`,
             time: dataX[index],
           })
         })
@@ -142,6 +145,13 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     return ''
   }
 
+  const getActiveGranularityButtonStyle = (index: number): string => {
+    if (selectedGranularityButton === index) {
+      return styles.activeButton
+    }
+    return ''
+  }
+
   const getActiveThemeButtonStyle = (index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
@@ -158,8 +168,32 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         >
           {title}
         </div>
+        {granularities && (
+          <div className={styles.granularitySelect}>
+            <span style={{ color: currentTheme?.color }}>Granularity: </span>
+            {granularities?.map((granularity, index) => {
+              return (
+                <button
+                  className={`${getActiveGranularityButtonStyle(index)} ${
+                    styles.filterButton
+                  }`}
+                  onClick={() => {
+                    setSelectedGranularityButton(index)
+                    if (handleGranularityFilterChange) {
+                      handleGranularityFilterChange(granularity)
+                    }
+                  }}
+                  type='button'
+                  key={`button-filter-${granularity}`}
+                >
+                  {granularity}
+                </button>
+              )
+            })}
+          </div>
+        )}
         <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>period: </span>
+          <span style={{ color: currentTheme?.color }}>Period: </span>
           {periods.map((period, index) => (
             <button
               className={`${getActivePriodButtonStyle(index)} ${
