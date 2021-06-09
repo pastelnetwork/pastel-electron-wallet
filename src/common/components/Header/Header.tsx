@@ -75,7 +75,7 @@ const Icon = ({ src, background, notification, classes }: TIconProps) => {
       )}
     >
       <div className='relative'>
-        <img src={src} />
+        <img className='cursor-pointer' src={src} />
         {notification && (
           <div className='absolute -top-px -right-px w-2 h-2 rounded-full bg-orange-63 border border-white' />
         )}
