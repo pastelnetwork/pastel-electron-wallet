@@ -61,6 +61,7 @@ module.exports = {
         '60px': '3.75rem',
         '63px': '3.938rem',
         '66px': '4.125rem',
+        '67px': '4.1875em',
         '68px': '4.25rem',
         '69px': '4.313rem',
         '70px': '4.375rem',
@@ -86,6 +87,7 @@ module.exports = {
         '352px': '22rem',
         '380px': '23.75rem',
         '419px': '26.187rem',
+        '478px': '29.875rem',
       },
       boxShadow: {
         xs:
@@ -153,6 +155,7 @@ module.exports = {
           14: '#141416',
           23: '#23262F',
           77: '#777E90',
+          '8e': '#8E98A3',
         },
         red: {
           '7a': '#FF7A00',
@@ -251,6 +254,15 @@ module.exports = {
       },
       width: {
         '244px': '15.25rem',
+        fit: 'fit-content',
+      },
+      height: {
+        '401px': '25.0625rem',
+        fit: 'fit-content',
+      },
+      maxWidth: {
+        '478px': '29.875rem',
+        '690px': '43.125rem',
         fit: 'fit-content',
       },
     },

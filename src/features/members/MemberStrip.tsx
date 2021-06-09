@@ -1,5 +1,7 @@
 import React from 'react'
 import MemberCard, { TMemberCard } from './MemberCard'
+import { useHistory } from 'react-router-dom'
+import routes from '../../common/constants/routes.json'
 
 export type TMemberStripProps = {
   id: string
@@ -18,10 +20,14 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   totalSold,
   currencyName,
 }) => {
+  const history = useHistory()
+  const toMemberProfile = () => {
+    history.replace(routes.MEMBERS_PROFILE)
+  }
   return (
     <div className='flex space-x-30px'>
       {/* Member Card */}
-      <div className='w-244px h-142px'>
+      <div className='w-244px h-142px' onClick={toMemberProfile}>
         <MemberCard {...memberCard} />
       </div>
       <div className='w-8/12 md:flex-grow border-b border-navigation-background'>

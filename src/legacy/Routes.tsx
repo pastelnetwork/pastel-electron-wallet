@@ -540,7 +540,11 @@ class RouteApp extends React.Component<any, any> {
 
             <Route path={routes.NFT} render={() => <Nft />} />
 
-            <Route path={routes.MEMBERS} render={() => <MemberProfile />} />
+            <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
+            <Route
+              path={routes.MEMBERS_PROFILE}
+              render={() => <MemberProfile />}
+            />
 
             <Route
               path={routes.PASTELD}
