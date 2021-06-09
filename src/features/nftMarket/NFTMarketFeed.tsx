@@ -8,7 +8,7 @@ import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
-import ScrollBar from '../../common/components/ScrollBar'
+import ScrollBar from '../../common/components/Scrollbar'
 
 const mockCardProps: INFTCardProps = {
   author: 'zndrson',
