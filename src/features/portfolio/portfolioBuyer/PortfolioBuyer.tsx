@@ -285,7 +285,7 @@ export default function PortfolioBuyer(): JSX.Element {
       />
       <div className='wrapper'>
         <div className='flex'>
-          <div className='w-full'>
+          <div className='w-9/12 sm:w-full'>
             <div className='flex items-center mt-10px mb-30px'>
               {filterOptions.map(option => (
                 <div className='mr-24px' key={option.label}>

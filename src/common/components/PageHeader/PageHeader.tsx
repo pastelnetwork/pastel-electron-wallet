@@ -128,7 +128,9 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
             <div className='flex items-center'>
               <h1
                 className={`${
-                  props.variant === 'portfolio' ? 'pr-28px' : 'pr-20'
+                  props.variant === 'portfolio'
+                    ? 'pr-18px sm:pr-28px whitespace-nowrap'
+                    : 'pr-20'
                 } font-semibold text-gray-23`}
               >
                 {props.title}
@@ -139,7 +141,7 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
               <p
                 className={`pr-4 text-h5 ${
                   props.variant === 'portfolio'
-                    ? 'font-medium text-gray-2d leading-4'
+                    ? 'font-medium text-gray-2d leading-4 hidden sm:block'
                     : ''
                 }`}
               >
