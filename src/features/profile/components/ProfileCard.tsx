@@ -40,7 +40,7 @@ const ProfileCard = ({
       </div>
       <div className='-mt-50px px-5 flex pb-2'>
         <div className='rounded-full border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
-          <img src={svg_avatar} className='rounded-full' />
+          <img src={svg_avatar} className='rounded-full w-full h-full' />
         </div>
         <div className='mt-54px pl-10px'>
           <div className='px-1 pt-1 text-gray-71  text-base'>{username}</div>
