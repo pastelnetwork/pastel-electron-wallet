@@ -28,7 +28,7 @@ const general_data = {
   totalItemsSold: 14,
   topCategoryPercentage: 'motion graphics 30%',
   bio:
-    'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',
+    'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
 }
 
 const Profile = (): JSX.Element => {
@@ -49,7 +49,7 @@ const Profile = (): JSX.Element => {
             <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
             <MultiToggleSwitch
               data={[
-                { label: 'General' },
+                { label: 'Info' },
                 { label: 'Portfolio' },
                 { label: 'Board' },
               ]}
