@@ -1,5 +1,7 @@
 import React from 'react'
 import MemberCard, { TMemberCard } from './MemberCard'
+import { useHistory } from 'react-router-dom'
+import routes from '../../common/constants/routes.json'
 
 export type TMemberStripProps = {
   id: string
@@ -18,21 +20,25 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   totalSold,
   currencyName,
 }) => {
+  const history = useHistory()
+  const toMemberProfile = () => {
+    history.replace(routes.MEMBERS_PROFILE)
+  }
   return (
     <div className='flex space-x-30px'>
       {/* Member Card */}
-      <div className='w-244px h-142px'>
+      <div className='w-244px h-142px' onClick={toMemberProfile}>
         <MemberCard {...memberCard} />
       </div>
       <div className='w-8/12 md:flex-grow border-b border-navigation-background'>
         <div className='flex space-x-4 h-full'>
           {/* Sale data */}
           <div className='flex flex-col justify-center h-full min-w-120px pr-21px'>
-            <h6 className='text-gray-77 pb-1 text-12'>Highest sold</h6>
-            <div className='w-max text-12 font-semibold border py-1 px-2 rounded-4px border-success-pressed text-success-pressed'>
+            <h6 className='text-gray-77 pb-1 text-12px'>Highest sold</h6>
+            <div className='w-max text-12px font-semibold border py-1 px-2 rounded-4px border-success-pressed text-success-pressed'>
               {heighestSold} {currencyName}
             </div>
-            <div className='text-gray-1a font-semibold pt-3 text-12 whitespace-nowrap overflow-x-hidden'>
+            <div className='text-gray-1a font-semibold pt-3 text-12px whitespace-nowrap overflow-x-hidden'>
               Total sold{' '}
               <div className='font-display'>
                 <span className='text-gradient'>{totalSold}</span>

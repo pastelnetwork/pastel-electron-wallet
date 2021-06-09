@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import styles from './HeaderScreen.module.css'
 import routes from '../../constants/routes.json'
 import Logo from '../../assets/icons/ico-logo.svg'
-import addBtn from '../../assets/icons/ico-addbtn.png'
+import addBtn from '../../assets/icons/ico-add-btn.svg'
 import searchIcon from '../../assets/icons/ico-search.svg'
 import QuestionTag from '../../assets/icons/ico-question.svg'
 import BellIcon from '../../assets/icons/ico-bell.svg'
@@ -109,7 +109,7 @@ const Header = (props: PropsType) => {
       style: 'xl:mr-35px',
     },
     {
-      name: 'NFTs',
+      name: 'Market',
       routeName: routes.MARKET,
       currentRoute: location.pathname,
       style: 'xl:mr-37px',

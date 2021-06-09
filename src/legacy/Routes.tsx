@@ -5,6 +5,7 @@ import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
 import { ErrorModal, ErrorModalData } from './components/ErrorModal'
 import routes from './constants/routes.json'
+import MemberProfile from '../features/profile/memberProfile/MemberProfile'
 import Dashboard from '../features/dashboard/DashboardPage'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
@@ -495,8 +496,6 @@ class RouteApp extends React.Component<any, any> {
         {info?.version && <Header />}
         <div className='flex-grow overflow-auto'>
           <Switch>
-            <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
-
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
             <Route
               path={routes.SEND}
@@ -508,26 +507,6 @@ class RouteApp extends React.Component<any, any> {
                   setSendPageState={this.setSendPageState}
                   addressBook={addressBook}
                   {...standardProps}
-                />
-              )}
-            />
-            <Route
-              path={routes.MEMBERS}
-              render={() => (
-                <Receive
-                  rerenderKey={receivePageState.rerenderKey}
-                  addresses={addresses}
-                  addressesWithBalance={addressesWithBalance}
-                  addressPrivateKeys={addressPrivateKeys}
-                  addressViewKeys={addressViewKeys}
-                  receivePageState={receivePageState}
-                  addressBook={addressBook}
-                  transactions={transactions}
-                  {...standardProps}
-                  fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
-                  hidePrivKey={this.hidePrivKey}
-                  fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
-                  createNewAddress={this.createNewAddress}
                 />
               )}
             />
@@ -560,6 +539,12 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.COLLECTOR} render={() => <Collector />} />
 
             <Route path={routes.NFT} render={() => <Nft />} />
+
+            <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
+            <Route
+              path={routes.MEMBERS_PROFILE}
+              render={() => <MemberProfile />}
+            />
 
             <Route
               path={routes.PASTELD}
