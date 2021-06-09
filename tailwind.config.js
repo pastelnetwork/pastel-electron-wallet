@@ -21,14 +21,14 @@ module.exports = {
     },
     extend: {
       spacing: {
+        'm1.5px': '-0.09375rem',
         '1.5px': '0.09375rem',
         '2px': '0.125rem',
         '2.5px': '0.15625rem',
         '3px': '0.188rem',
         '5px': '0.3125rem',
         '6px': '0.375rem',
-        '7px': '0.5rem',
-        '8px': '0.188rem',
+        '7px': '0.4375rem',
         '9px': '0.5625rem',
         '13px': '0.813rem',
         '14px': '0.875rem',
@@ -39,7 +39,7 @@ module.exports = {
         '22px': '1.375rem',
         '25px': '1.563rem',
         '26px': '1.625rem',
-        '27px': '1.688rem',
+        '27px': '1.6875rem',
         '28px': '1.75rem',
         '30px': '1.875rem',
         '34px': '2.215rem',
@@ -59,6 +59,7 @@ module.exports = {
         '69px': '4.313rem',
         '70px': '4.375rem',
         '82px': '5.125rem',
+        '95px': '5.9375rem',
         '88px': '5.5rem',
         '101px': '6.313rem',
         '111px': '6.938rem',
@@ -202,6 +203,9 @@ module.exports = {
       },
       container: {
         center: true,
+      },
+      borderWidth: {
+        '3px': '0.1875rem',
       },
       minWidth: {
         '244px': '15.25rem',
