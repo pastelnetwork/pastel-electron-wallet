@@ -11,7 +11,7 @@ const BidInput: React.FC<TBidInput> = ({ onBidChange, bid }) => {
   const [fee, setFee] = React.useState(0)
   const handleBid = (e: React.ChangeEvent<HTMLInputElement>) => {
     onBidChange(e.target.value)
-    setFee(Number(e.target.value.replace(',', '')) * 5)
+    setFee(Number(e.target.value.replaceAll(',', '')) * 5)
   }
 
   return (
