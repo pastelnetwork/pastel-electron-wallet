@@ -157,7 +157,7 @@ const Header = (props: PropsType) => {
                 className='w-20px h-20px mr-2px md:mr-2'
                 alt='add button'
               ></img>
-              <span className='text-blue-450 whitespace-nowrap'>new NFT</span>
+              <span className='text-blue-3f whitespace-nowrap'>new NFT</span>
             </Link>
           </div>
         </div>

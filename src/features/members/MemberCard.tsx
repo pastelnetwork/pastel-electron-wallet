@@ -30,7 +30,7 @@ const MemberCard: React.FC<TMemberCard> = props => {
 
           <button
             className={cn('rounded-3xl border py-3px px-3 w-max font-medium', {
-              'border-blue-450 text-blue-450': !followedByUser,
+              'border-blue-3f text-blue-3f': !followedByUser,
               'border-button-text text-button-text': followedByUser,
             })}
           >
