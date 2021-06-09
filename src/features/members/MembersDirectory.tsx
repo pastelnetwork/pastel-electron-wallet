@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import MemberStrip, { TMemberStripProps } from './MemberStrip'
-import Select, { Option } from '../../common/components/Select/Select'
+import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 
 import PageHeader from '../../common/components/PageHeader'
@@ -72,15 +72,15 @@ const mockMemberStrips: TMemberStripProps[] = [
   },
 ]
 
-const mockOptions: Option[] = [
+const mockOptions: TOption[] = [
   { value: 'All', label: 'All' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
+  { value: 'option_2', label: 'TOption 2' },
+  { value: 'option_3', label: 'TOption 3' },
 ]
 
 const MembersDirectory: React.FC = () => {
   // Filters
-  const [category, setCategory] = useState<Option | null>(mockOptions[0])
+  const [category, setCategory] = useState<TOption | null>(mockOptions[0])
 
   const [range, setRange] = useState(500)
   const formatValue = (value: number) => `${value}k`
@@ -93,9 +93,9 @@ const MembersDirectory: React.FC = () => {
   }
 
   // Page Header
-  const [ranking, setRanking] = useState<Option | null>(null)
-  const [sold, setSold] = useState<Option | null>(null)
-  const [followers, setFollowers] = useState<Option | null>(null)
+  const [ranking, setRanking] = useState<TOption | null>(null)
+  const [sold, setSold] = useState<TOption | null>(null)
+  const [followers, setFollowers] = useState<TOption | null>(null)
   const [selectedItem, setSelectedItem] = useState(0)
 
   const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [

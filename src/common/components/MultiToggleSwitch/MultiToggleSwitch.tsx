@@ -49,7 +49,7 @@ const MultiToggleSwitch: React.FC<TMultiToggle> = ({
       ? countInactiveClassName
       : 'bg-gray-a0'
 
-    return `ml-2.5 text-9px text-white pt-2.5px pb-1.5px px-3px  leading-11px rounded-xl ${
+    return `ml-2.5 text-9 text-white pt-2.5px pb-1.5px px-3px  leading-11px rounded-xl ${
       isActive ? activeClass : inactiveClass
     }`
   }

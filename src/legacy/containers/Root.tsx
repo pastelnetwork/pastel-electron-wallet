@@ -14,12 +14,11 @@ const Root = (): JSX.Element => {
    * TODO
    * Make redux flow for the logged used and avoid passing props
    */
-  const [user, setUser] = React.useState(false)
 
   return (
     <ThemeProvider theme={theme}>
       <MemoryRouter>
-        <Routes setUser={setUser} user={user} />
+        <Routes />
       </MemoryRouter>
       <PastelModal />
       <UpdateToast />
