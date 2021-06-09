@@ -109,7 +109,7 @@ const Header = (props: PropsType) => {
       style: 'xl:mr-35px',
     },
     {
-      name: 'NFTs',
+      name: 'Market',
       routeName: routes.MARKET,
       currentRoute: location.pathname,
       style: 'xl:mr-37px',
