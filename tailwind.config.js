@@ -24,8 +24,10 @@ module.exports = {
         '2px': '0.125rem',
         '2.5px': '0.15625rem',
         '3px': '0.188rem',
+        '5px': '0.3125rem',
         '6px': '0.375rem',
         '8px': '0.188rem',
+        '9px': '0.5625rem',
         '13px': '0.813rem',
         '14px': '0.875rem',
         '15px': '0.938rem',
@@ -36,6 +38,7 @@ module.exports = {
         '27px': '1.688rem',
         '28px': '1.75rem',
         '30px': '1.875rem',
+        '34px': '2.215rem',
         '35px': '2.188rem',
         '34px': '2.215rem',
         '36px': '2.29rem',
@@ -85,6 +88,7 @@ module.exports = {
         },
         blue: {
           '3f': '#3F9AF7',
+          e5: '#E5F1FF',
         },
         green: {
           e5: '#E5F6EF',
