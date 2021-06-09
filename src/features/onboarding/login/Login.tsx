@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import Input from '../../../common/components/Input/Input'
 import { Button } from '../../../common/components/Buttons'
@@ -26,6 +26,8 @@ const initialInputState = {
 }
 
 const Login: React.FC<LoginProps> = ({ setUser }) => {
+  const history = useHistory()
+
   const [username, setUsername] = React.useState<LoginFormInput>(
     initialInputState,
   )
@@ -77,7 +79,10 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
             Restore access now
           </Styles.FooterLink>
         </Styles.FooterText>
-        <Button type='submit' onClick={() => setUser(true)} fluid={true}>
+        <Button type='submit' onClick={() => {
+            setUser(true)
+            history.push(ROUTES.DASHBOARD)
+          }} fluid={true}>
           Submit
         </Button>
       </Styles.Form>
