@@ -56,7 +56,8 @@ const NFTCard = ({
   return (
     <div
       className={cn(
-        'bg-white rounded-lg shadow-md',
+        'bg-white rounded-lg',
+        variant === 'portfolio' ? 'shadow-30px' : 'shadow-md',
         wrapperPaddingClass,
         className,
       )}
