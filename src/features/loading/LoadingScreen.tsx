@@ -131,33 +131,31 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     const params = [
       {
         name: 'sapling-output.params',
-        url: 'https://z.cash/downloads/sapling-output.params',
+        url: 'https://download.pastel.network/sapling-output.params',
         sha256:
           '2f0ebbcbb9bb0bcffe95a397e7eba89c29eb4dde6191c339db88570e3f3fb0e4',
       },
       {
         name: 'sapling-spend.params',
-        url: 'https://z.cash/downloads/sapling-spend.params',
+        url: 'https://download.pastel.network/sapling-spend.params',
         sha256:
           '8e48ffd23abb3a5fd9c5589204f32d9c31285a04b78096ba40a79b75677efc13',
       },
       {
         name: 'sprout-groth16.params',
-        url: 'https://z.cash/downloads/sprout-groth16.params',
+        url: 'https://download.pastel.network/sprout-groth16.params',
         sha256:
           'b685d700c60328498fbde589c8c7c484c722b788b265b72af448a5bf0ee55b50',
       },
       {
-        name: 'sprout-proving.key.deprecated-sworn-elves',
-        url:
-          'https://z.cash/downloads/sprout-proving.key.deprecated-sworn-elves',
+        name: 'sprout-proving.key',
+        url: 'https://download.pastel.network/sprout-proving.key',
         sha256:
           '8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7',
-        originalName: 'sprout-proving.key',
       },
       {
         name: 'sprout-verifying.key',
-        url: 'https://z.cash/downloads/sprout-verifying.key',
+        url: 'https://download.pastel.network/sprout-verifying.key',
         sha256:
           '4bd498dae0aacfd8e98dc306338d017d9c08dd0918ead18172bd0aec2fc5df82',
       },

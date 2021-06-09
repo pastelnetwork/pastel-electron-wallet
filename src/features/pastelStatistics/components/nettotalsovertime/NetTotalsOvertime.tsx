@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
-import { TLineChartData } from '../../../pastelDB/type'
-import { TPeriod, transformMempoolInfo } from '../../utils/PastelStatisticsLib'
+import { TMultiLineChartData } from '../../../pastelDB/type'
+import { TPeriod, transformNetTotals } from '../../utils/PastelStatisticsLib'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
 import {
@@ -13,7 +13,7 @@ import {
   periods,
 } from '../../common/constants'
 
-type TMempoolSizeOvertimeProps = {
+type TNetTotalOvertimeProps = {
   info: {
     [key: string]: string | number
   }
@@ -21,7 +21,7 @@ type TMempoolSizeOvertimeProps = {
 
 const redrawCycle = 6000
 
-const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
+const NetTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -31,14 +31,14 @@ const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TLineChartData>()
+  ] = useState<TMultiLineChartData>()
 
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.mempoolinfo)
+      const result = getDatasFromDB(pasteldb, pastelTableNames.nettotals)
       if (result.length) {
-        const transforms = transformMempoolInfo(result[0].values, period)
+        const transforms = transformNetTotals(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -74,12 +74,13 @@ const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='mempoolsize'
+              chartName='network_totals'
               dataX={transformLineChartData?.dataX}
-              dataY={transformLineChartData?.dataY}
-              title='Mempool Size(KByte)'
+              dataY1={transformLineChartData?.dataY1}
+              dataY2={transformLineChartData?.dataY2}
+              title='Network Total'
               info={info}
-              offset={0.5}
+              offset={0}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
@@ -91,4 +92,4 @@ const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
   )
 }
 
-export default MempoolSizeOvertime
+export default NetTotalsOvertime
