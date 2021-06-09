@@ -20,18 +20,24 @@ module.exports = {
     },
     extend: {
       spacing: {
+        '1px': '0.062667rem',
         '1.5px': '0.09375rem',
         '2px': '0.125rem',
         '2.5px': '0.15625rem',
         '3px': '0.188rem',
+        '4px': '0.250667rem',
         '6px': '0.375rem',
-        '8px': '0.188rem',
+        '8px': '0.5rem',
+        '10px': '0.625rem',
+        '11px': '0.688rem',
+        '12px': '0.752rem',
         '13px': '0.813rem',
         '14px': '0.875rem',
         '15px': '0.938rem',
         '18px': '1.125rem',
         '20px': '1.25rem',
         '22px': '1.375rem',
+        '24px': '1.5rem',
         '26px': '1.625rem',
         '27px': '1.688rem',
         '28px': '1.75rem',
@@ -52,10 +58,12 @@ module.exports = {
         '69px': '4.313rem',
         '70px': '4.375rem',
         '82px': '5.125rem',
+        '100px': '6.25rem',
         '111px': '6.938rem',
         '112px': '7rem',
         '120px': '7.5rem',
         '180px': '11.25rem',
+        '200px': '12.5rem',
         '220px': '13.75rem',
         '230px': '14.375rem',
         '300px': '18.75rem',
@@ -89,6 +97,7 @@ module.exports = {
         green: {
           e5: '#E5F6EF',
           38: '#38CB89',
+          68: '#68CC67',
         },
         gray: {
           a0: '#A0AEC0',
@@ -111,6 +120,11 @@ module.exports = {
           '1d': '#1D263A',
           14: '#141416',
           23: '#23262F',
+          42: '#425466',
+          a6: 'rgba(166, 176, 194, .15)',
+          77: '#777E91',
+          '1b': '#1B2942',
+          f9: '#F9F9F9',
         },
         red: {
           '7a': '#FF7A00',
@@ -121,9 +135,6 @@ module.exports = {
         },
         yellow: {
           ff: '#FFBE3D',
-        },
-        green: {
-          68: '#68CC67',
         },
         button: {
           pressed: '#0E80F5',
@@ -181,15 +192,32 @@ module.exports = {
         9: '0.5625rem',
         10: '0.625rem',
         15: '0.938rem',
+        '14px': '0.875rem',
       },
       borderRadius: {
         '4px': '0.25rem',
+        '8px': '0.5rem',
+        '11px': '0.6875rem',
+        '65px': '4.0625rem',
       },
       lineHeight: {
         '11px': '0.6875rem',
+        '19px': '1.1875',
       },
       container: {
         center: true,
+      },
+      inset: {
+        '10px': '0.625rem',
+      },
+      borderWidth: {
+        '3px': '0.188rem',
+      },
+      minWidth: {
+        '15px': '0.938rem',
+      },
+      maxHeight: {
+        '54vh': '54vh',
       },
     },
   },

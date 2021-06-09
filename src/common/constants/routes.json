@@ -12,5 +12,6 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
-  "MARKET": "/market"
+  "MARKET": "/market",
+  "PORTFOLIO_BUYER": "/portfolio/buyer"
 }

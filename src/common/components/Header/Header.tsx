@@ -80,7 +80,7 @@ export default function Header(): JSX.Element {
       <MenuItem to={routes.MARKET}>Market</MenuItem>
       <MenuItem to={routes.RECEIVE}>Members</MenuItem>
       <MenuItem to={routes.TRANSACTIONS}>Wallet</MenuItem>
-      <MenuItem to={routes.ADDRESSBOOK}>Portfolio</MenuItem>
+      <MenuItem to={routes.PORTFOLIO_BUYER}>Portfolio</MenuItem>
       <Link to='#' className='flex items-center'>
         <img src={addBtn} className='w-5 h-5 mr-2' alt='add button' />
         <span className='text-blue-3f whitespace-nowrap'>new NFT</span>
