@@ -77,7 +77,7 @@ const NFTCard = ({
       )}
       {/* Image */}
       {percentage ? (
-        <div className='h-6px w-full bg-gray-f9 relative'>
+        <div className='h-6px w-full bg-gray-f9 relative mb-1px mt-2px'>
           <div
             className={`absolute h-6px inline-block rounded-r-8px ${styles.bgPercentage}`}
             style={{ width: `${percentage}%` }}

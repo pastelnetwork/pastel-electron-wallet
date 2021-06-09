@@ -213,8 +213,8 @@ export default function PortfolioBuyer(): JSX.Element {
       totalItem: 2,
     },
     {
-      label: 'Buyer',
-      totalItem: 3,
+      label: 'Owned',
+      totalItem: 2,
       isSelected: true,
     },
     {
@@ -249,24 +249,28 @@ export default function PortfolioBuyer(): JSX.Element {
       selected: category,
       onChange: setCategory,
       options: mockCategories,
+      className: 'min-w-171px',
     },
     {
       label: 'Type',
       selected: type,
       onChange: settType,
       options: mockStatus,
+      className: 'min-w-171px',
     },
     {
       label: 'Time',
       selected: time,
       onChange: setTime,
       options: mockTime,
+      className: 'min-w-171px',
     },
     {
       label: 'Rareness',
       selected: rareness,
       onChange: setRareness,
       options: mockRareness,
+      className: 'min-w-171px',
     },
   ]
 
@@ -281,7 +285,7 @@ export default function PortfolioBuyer(): JSX.Element {
       />
       <div className='wrapper'>
         <div className='flex'>
-          <div className='w-4/5'>
+          <div className='w-full'>
             <div className='flex items-center mt-10px mb-30px'>
               {filterOptions.map(option => (
                 <div className='mr-24px' key={option.label}>
@@ -297,7 +301,7 @@ export default function PortfolioBuyer(): JSX.Element {
               </div>
             </div>
           </div>
-          <div className='mt-100px w-200px pl-36px'>
+          <div className='mt-90px w-196px ml-36px'>
             <p className='text-h5 leading-3 font-medium text-gray-42 pl-12px'>
               Filter by:
             </p>

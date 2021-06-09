@@ -46,7 +46,7 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
               key={route.label}
             >
               <a
-                className={`flex items-center text-14px font-extrabold ${
+                className={`flex items-center text-14px font-extrabold leading-4 ${
                   route.isSelected
                     ? 'text-background-onboarding'
                     : 'text-gray-71'
@@ -54,9 +54,9 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
               >
                 {route.label}
                 {route.totalItem ? (
-                  <span>
+                  <span className='leading-none'>
                     <span
-                      className={`ml-6px font-black text-9 rounded-11px px-4px pt-2px pb-1px ${
+                      className={`ml-6px font-black text-9 rounded-11px px-4px py-1px min-w-14px leading-15px ${
                         route.isSelected
                           ? 'bg-yellow-ff text-gray-2d'
                           : 'bg-gray-a0 text-white'
@@ -126,13 +126,25 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
         >
           <div className='flex justify-between'>
             <div className='flex items-center'>
-              <h1 className='pr-20 font-semibold text-gray-23'>
+              <h1
+                className={`${
+                  props.variant === 'portfolio' ? 'pr-28px' : 'pr-20'
+                } font-semibold text-gray-23`}
+              >
                 {props.title}
               </h1>
               {renderRoutes()}
             </div>
             <div className='flex items-center'>
-              <p className='pr-4 text-h5'>Sort by</p>
+              <p
+                className={`pr-4 text-h5 ${
+                  props.variant === 'portfolio'
+                    ? 'font-medium text-gray-2d leading-4'
+                    : ''
+                }`}
+              >
+                Sort by
+              </p>
               <div className='flex space-x-6'>
                 {props.sortByOptions.map(item => (
                   <Select
@@ -141,6 +153,9 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
                     selected={item.selected}
                     onChange={item.onOptionChange}
                     key={item.placeholder}
+                    className={
+                      props.variant === 'portfolio' ? 'min-w-118px' : ''
+                    }
                   />
                 ))}
               </div>
