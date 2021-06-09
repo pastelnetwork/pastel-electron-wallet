@@ -8,7 +8,7 @@ import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
   {
-    name: 'AverageBlockSize',
+    name: 'Average Block Size',
     routeName: '/statistics/averageblocksizeovertime',
     backgroundImage: AverageBlockSize,
   },
