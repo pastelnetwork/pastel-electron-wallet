@@ -4,6 +4,7 @@ import Input, { TInput } from './Input'
 
 const Template: Story<TInput> = ({
   type,
+  kind,
   prepend,
   append,
   isValid,
@@ -19,6 +20,7 @@ const Template: Story<TInput> = ({
   return (
     <Input
       type={type}
+      kind={kind}
       label={label}
       hint={hint}
       errorMessage={errorMessage}
@@ -43,6 +45,7 @@ const placeholder = 'placeholder'
 const isValid = false
 const id = 'id'
 const className = ''
+const kind = 'numberFormat'
 InputDefault.args = {
   type,
   label,
@@ -52,6 +55,7 @@ InputDefault.args = {
   isValid,
   id,
   className,
+  kind,
 }
 
 export default {

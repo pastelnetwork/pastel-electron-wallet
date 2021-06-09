@@ -3,10 +3,12 @@ import cn from 'classnames'
 import Icon from '../Icon/Icon'
 import CheckIcon from '../../assets/icons/ico-check.svg'
 import TimesIcon from '../../assets/icons/ico-times.svg'
+import NumberFormat from 'react-number-format'
 
 export type TInput = {
   className?: string
   type?: 'text' | 'password' | 'number'
+  kind?: 'numberFormat'
   prepend?: ReactSVGElement
   append?: ReactSVGElement
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -26,6 +28,7 @@ const Input: React.FC<TInput> = React.forwardRef(
       className,
       onChange,
       type,
+      kind,
       prepend,
       append,
       isValid,
@@ -80,16 +83,28 @@ const Input: React.FC<TInput> = React.forwardRef(
         <div className={classes}>
           {prepend && <div className='pl-2'>{prepend}</div>}
 
-          <input
-            id={id}
-            ref={ref}
-            className={inputClasses}
-            onChange={onChange}
-            type={type}
-            placeholder={placeholder}
-            {...otherProps}
-            disabled={disabled}
-          />
+          {kind === 'numberFormat' ? (
+            <NumberFormat
+              id={id}
+              className={inputClasses}
+              onChange={onChange}
+              placeholder={placeholder}
+              thousandSeparator={true}
+              {...otherProps}
+              disabled={disabled}
+            />
+          ) : (
+            <input
+              id={id}
+              ref={ref}
+              className={inputClasses}
+              onChange={onChange}
+              type={type}
+              placeholder={placeholder}
+              {...otherProps}
+              disabled={disabled}
+            />
+          )}
           <fieldset className={fieldsetClasses} />
 
           {append && <div className='pr-2'>{append}</div>}
