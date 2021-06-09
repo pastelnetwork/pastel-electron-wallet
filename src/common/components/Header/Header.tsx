@@ -88,7 +88,9 @@ export default function Header(): JSX.Element {
       <SearchBar />
       <Icon src={QuestionTag} />
       <Icon src={BellIcon} />
-      <Icon src={MessageIcon} />
+      <Link to={routes.CHAT}>
+        <Icon src={MessageIcon} />
+      </Link>
       <Icon src={SettingIcon} />
       <Icon src={UserIcon} background />
     </div>
