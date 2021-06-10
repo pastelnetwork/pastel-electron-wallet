@@ -1,3 +1,4 @@
+import { LabelKeyObject } from 'react-csv/components/CommonPropTypes'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export type TThemeColor = {
@@ -53,4 +54,8 @@ export type TThemeInitOption = {
   chartName: string
   minY: number
   maxY: number
+}
+
+export type TCsvHeaderType = {
+  [key: string]: LabelKeyObject[]
 }

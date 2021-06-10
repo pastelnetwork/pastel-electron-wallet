@@ -54,6 +54,7 @@ import {
   NetworkTotalsOvertime,
   MempoolSizeOvertime,
   AverageBlockSizeOvertime,
+  TransactionsPerSecondOvertime,
   TransactionsInBlockOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
@@ -676,6 +677,11 @@ class RouteApp extends React.Component<any, any> {
               <Route
                 path={routes.MEMPOOLSIZEOVERTIME}
                 render={() => <MempoolSizeOvertime info={info} />}
+              />
+
+              <Route
+                path={routes.TRANSACTIONSPERSECONDOVERTIME}
+                render={() => <TransactionsPerSecondOvertime info={info} />}
               />
 
               <Route

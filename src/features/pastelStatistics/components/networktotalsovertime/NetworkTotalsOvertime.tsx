@@ -74,7 +74,7 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
         >
           {transformLineChartData && (
             <EChartsLineChart
-              chartName='network_totals'
+              chartName='networktotals'
               dataX={transformLineChartData?.dataX}
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}

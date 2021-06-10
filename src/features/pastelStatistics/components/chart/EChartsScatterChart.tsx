@@ -194,7 +194,7 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
             filename={
               makeDownloadFileName(info.currencyName, chartName) + '.csv'
             }
-            headers={csvHeaders}
+            headers={csvHeaders[chartName]}
             separator={';'}
             ref={downloadRef}
             className={styles.uploadButton}
