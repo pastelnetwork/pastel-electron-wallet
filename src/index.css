@@ -1,10 +1,16 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+@import 'typeface-roboto/index.css';
+@import '/src/common/assets/fonts/font.css';
+@import 'simplebar/src/simplebar.css';
 
 @tailwind base;
 
 @layer base {
+  body {
+    font-family: Avenir, Roboto, Arial, serif;
+  }
+
   h1 {
     @apply text-h1 leading-10 font-extrabold;
   }
@@ -20,7 +26,7 @@
   h5 {
     @apply text-h5;
   }
-  h5 {
+  h6 {
     @apply text-h6;
   }
 
@@ -43,9 +49,9 @@
 
 @tailwind components;
 @layer components {
-  /* It's used to wrap main routes  */
+  /* Used to wrap main routes, should be used with `content` */
   .wrapper {
-    @apply px-4 md:px-60px xl:container pt-5;
+    @apply px-60px;
   }
 
   .paper {
@@ -64,6 +70,17 @@
 @tailwind utilities;
 
 @layer utilities {
+  .text-gradient {
+    background: radial-gradient(
+      105.31% 107.86% at 95.36% 14.36%,
+      #ffcf14 0%,
+      #ee8fff 55.86%,
+      #38deff 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .flex-center {
     @apply flex justify-center items-center;
   }
@@ -72,10 +89,6 @@
     @apply flex justify-between items-center;
   }
 }
-
-@import '@fortawesome/fontawesome-free/css/all.css';
-@import 'typeface-roboto/index.css';
-@import '/src/common/assets/fonts/font.css';
 
 html {
   overflow: hidden;
@@ -87,25 +100,52 @@ body,
   height: 100%;
 }
 
-@layer utilities {
-  .text-gradient {
-    background: radial-gradient(
-      87.68% 87.68% at 95.36% 14.36%,
-      #ffcf14 0%,
-      #ee8fff 55.86%,
-      #38deff 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
+/* VERTICAL SCROLLBAR */
+.custom-scroll {
+  margin: 1.25rem auto;
+}
+.custom-scroll .simplebar-vertical {
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
-@import '@fortawesome/fontawesome-free/css/all.css';
-@import 'typeface-roboto/index.css';
-@import '/src/common/assets/fonts/font.css';
+.custom-scroll .simplebar-vertical .simplebar-scrollbar::before {
+  background-color: #a6b0c2 !important;
+  opacity: 1 !important;
+  position: absolute;
+  width: 0.188rem;
+  left: 0 !important;
+}
+.custom-scroll .simplebar-track.simplebar-vertical {
+  box-shadow: inset 0.188rem 0px 0px 0px rgba(196, 196, 196, 0.3);
+  width: 1.875rem !important;
+}
+
+/* HORIZONTAL SCROLLBAR */
+.custom-scroll .simplebar-horizontal {
+  display: none;
+}
+.custom-scroll .simplebar-horizontal .simplebar-scrollbar {
+  top: 0 !important;
+}
+.custom-scroll .simplebar-horizontal .simplebar-scrollbar::before {
+  background-color: #a6b0c2 !important;
+  opacity: 1 !important;
+  position: absolute;
+  height: 0.188rem !important;
+  top: 0 !important;
+}
+.custom-scroll .simplebar-track.simplebar-horizontal {
+  box-shadow: inset 0px 0.188rem 0px 0px rgba(196, 196, 196, 0.3);
+  height: 0.188rem !important;
+  bottom: -0.094rem;
+}
+.custom-scroll .simplebar-content-wrapper {
+  height: 100% !important;
+}
+.custom-scroll .simplebar-content-wrapper .simplebar-content {
+  height: 100% !important;
+}
 
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
@@ -179,7 +219,6 @@ a::before {
 }
 
 a:hover {
-  opacity: 0.8;
   text-decoration: none;
   cursor: pointer;
 }
@@ -201,4 +240,37 @@ input[type='number']::-webkit-outer-spin-button {
 
 .focus-visible:focus-visible {
   @apply border border-blue-3f;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltip:hover .tooltiparrow {
+  visibility: visible;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  -webkit-border-radius: 3px;
+}
+
+/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+::-webkit-scrollbar-thumb:vertical {
+  background-color: rgb(166, 176, 194, 0.5);
+  opacity: 0.5;
+  -webkit-border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  background-color: rgb(166, 176, 194, 0.5);
+  -webkit-border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(196, 196, 196, 0.2);
+  border-radius: 3px;
+}
+
+.widget-ratings {
+  display: flex !important;
 }

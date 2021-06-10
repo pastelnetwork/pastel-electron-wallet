@@ -1,5 +1,5 @@
 import React from 'react'
-import { TComment } from './comment.types'
+import { TComment } from 'features/nft/portfolio/comments/Comment.types'
 import Comment from './Comment'
 import { Link } from 'react-router-dom'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'

@@ -1,5 +1,5 @@
 import React from 'react'
-import style from './style.module.css'
+import style from 'features/nft/portfolio/image/Image.module.css'
 import { BoxArrowUp, HeartFilled } from 'common/components/Icons'
 
 type TImageProps = {

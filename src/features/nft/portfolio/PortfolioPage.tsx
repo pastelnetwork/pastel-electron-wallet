@@ -1,5 +1,5 @@
 import React from 'react'
-import { TNFT } from 'features/nft/nft.types'
+import { TNFT } from 'features/nft/Nft.types'
 import dayjs from 'dayjs'
 import Breadcrumbs from './Breadcrumbs'
 import Header from './Header'

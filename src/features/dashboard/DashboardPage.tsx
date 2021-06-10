@@ -28,7 +28,7 @@ const transactions: TTransactionItemProps[] = [
 
 const portfolioItemProps: TPortfolioItemProps = {
   image: smallImage,
-  title: 'Comic Perspective',
+  title: 'Cosmic Perspective',
   author: '@zndrson',
   price: 5000,
   currencyName,
@@ -131,7 +131,7 @@ export default function DashboardPage(): JSX.Element {
             </div>
           </div>
           <LinkSection to='#' absolute>
-            Check your NFT feed
+            Check NFT-art market
           </LinkSection>
         </div>
         <div className='paper pt-6 w-419px flex-shrink-0 flex flex-col relative'>

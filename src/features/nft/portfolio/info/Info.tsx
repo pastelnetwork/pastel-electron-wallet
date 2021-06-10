@@ -1,5 +1,5 @@
 import React from 'react'
-import { TNFT } from 'features/nft/nft.types'
+import { TNFT } from 'features/nft/Nft.types'
 import { HeartFilled, Eye } from 'common/components/Icons'
 import dayjs from 'dayjs'
 import { formatDatesDistance } from 'common/utils/format'

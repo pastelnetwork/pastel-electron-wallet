@@ -1,7 +1,8 @@
 {
-  "DASHBOARD": "/",
+  "DASHBOARD": "/dashboard",
   "MARKET": "/market",
   "MEMBERS": "/members",
   "WALLET": "/wallet",
-  "PORTFOLIO": "/portfolio"
+  "PORTFOLIO": "/portfolio",
+  "MEMBERS_PROFILE": "/members_profile"
 }

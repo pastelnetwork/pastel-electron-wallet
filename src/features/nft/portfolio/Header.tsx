@@ -1,5 +1,5 @@
 import React from 'react'
-import { TNFT } from 'features/nft/nft.types'
+import { TNFT } from 'features/nft/Nft.types'
 import {
   FirTreeInHexagon,
   Bookmark,

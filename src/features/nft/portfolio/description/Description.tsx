@@ -1,8 +1,8 @@
 import React from 'react'
-import { TNFT } from 'features/nft/nft.types'
+import { TNFT } from 'features/nft/Nft.types'
 import { useToggle } from 'react-use'
 import cn from 'classnames'
-import style from './style.module.css'
+import style from 'features/nft/portfolio/description/Description.module.css'
 
 type TDescriptionProps = {
   nft: TNFT
