@@ -263,7 +263,31 @@ input[type='number']::-webkit-outer-spin-button {
   visibility: visible;
 }
 
+::-webkit-scrollbar {
+  width: 3px;
+  -webkit-border-radius: 3px;
+}
+
+/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+::-webkit-scrollbar-thumb:vertical {
+  background-color: rgb(166, 176, 194, 0.5);
+  opacity: 0.5;
+  -webkit-border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  background-color: rgb(166, 176, 194, 0.5);
+  -webkit-border-radius: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(196, 196, 196, 0.2);
+  border-radius: 3px;
+}
 .focus-visible:focus-visible {
   @apply border;
   @apply border-blue-3f;
+}
+
+.widget-ratings {
+  display: flex !important;
 }
