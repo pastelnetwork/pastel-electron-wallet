@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import cn from 'classnames'
 
 export interface INFTCompactCardProps {
@@ -48,12 +47,9 @@ const NFTCard = ({
         <div className='w-full px-18px flex justify-between pb-2'>
           <div className='flex items-center'>
             <img src={fullCardProps.avatarSrc} className='w-9' />
-            <h4 className='pl-2 font-semibold'>@{fullCardProps.author}</h4>
-          </div>
-          <div className='flex items-center'>
-            <Link to='#' className='text-blue-3f'>
-              follow
-            </Link>
+            <h4 className='pl-2 font-extrabold text-gray-1b'>
+              @{fullCardProps.author}
+            </h4>
           </div>
         </div>
       )}

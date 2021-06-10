@@ -3,6 +3,7 @@ import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
 import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
+import Select, { TOption } from '../../../common/components/Select/Select'
 
 const profile_data = {
   username: '@zndrson',
@@ -31,10 +32,22 @@ const general_data = {
     'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
 }
 
+const categories_options: TOption[] = [
+  { value: 'All', label: 'All' },
+  { value: 'option_2', label: 'TOption 2' },
+  { value: 'option_3', label: 'TOption 3' },
+]
+
 const Profile = (): JSX.Element => {
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(1)
+  const [category, setCategory] = useState<TOption | null>(
+    categories_options[0],
+  )
+  const [type, setType] = useState<TOption | null>(categories_options[0])
+  const [sort, setSort] = useState<TOption | null>(categories_options[0])
 
   const onTabToggle = (index: number) => {
+    console.log(index)
     setTab(index)
   }
 
@@ -67,9 +80,44 @@ const Profile = (): JSX.Element => {
               </div>
             </div>
             <div className='flex flex-col flex-grow pl-8'>
-              <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
-                <ProfileGeneral {...general_data} />
-                <ProfileRelations />
+              {tab === 0 && (
+                <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
+                  <ProfileGeneral {...general_data} />
+                  <ProfileRelations />
+                </div>
+              )}
+              <div>
+                <div className='flex items-center justify-between text-gray-42 text-base'>
+                  <div className='flex items-center'>
+                    <div className='flex items-center mr-6'>
+                      <p className='mr-4'>Categories</p>
+                      <Select
+                        options={categories_options}
+                        selected={category}
+                        onChange={setCategory}
+                        className='w-113px'
+                      />
+                    </div>
+                    <div className='flex items-center'>
+                      <p className='mr-4'>Type</p>
+                      <Select
+                        options={categories_options}
+                        selected={type}
+                        onChange={setType}
+                        className='w-113px'
+                      />
+                    </div>
+                  </div>
+                  <div className='flex items-center mr-8'>
+                    <p className='mr-4'>Sorty by</p>
+                    <Select
+                      options={categories_options}
+                      selected={sort}
+                      onChange={setSort}
+                      className='w-113px'
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

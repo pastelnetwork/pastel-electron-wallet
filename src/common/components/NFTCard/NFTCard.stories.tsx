@@ -16,7 +16,7 @@ const mockCardProps: INFTCardProps = {
   price: '222K',
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
-  className: 'w-300px',
+  className: 'w-300px h-393px',
 }
 
 export default {
