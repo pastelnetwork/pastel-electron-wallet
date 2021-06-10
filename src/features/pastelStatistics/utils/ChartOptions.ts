@@ -141,7 +141,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
-    network_totals: {
+    networktotals: {
       color: ['#80FFA5', '#37A2FF'],
       grid: {
         top: 8,
@@ -530,7 +530,7 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
     },
     difficulty: defaultOption,
     hashrate: defaultOption,
-    network_totals: {
+    networktotals: {
       backgroundColor: theme?.backgroundColor,
       textStyle: {
         color: theme?.color,

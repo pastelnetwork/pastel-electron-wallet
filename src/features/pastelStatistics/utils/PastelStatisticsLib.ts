@@ -97,8 +97,12 @@ export const makeDownloadFileName = (
     imageTitle = 'mempool_size'
   } else if (title === 'averageblocksize') {
     imageTitle = 'average_block_size'
+  } else if (title === 'networktotals') {
+    imageTitle = 'network_total'
   } else if (title === 'transactionsinblock') {
     imageTitle = 'transactions_in_block'
+  } else if (title === 'transactionspersecond') {
+    imageTitle = 'transactions_per_second'
   }
 
   const dateTime = `${

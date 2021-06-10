@@ -250,8 +250,8 @@ describe('managePastelDatabase', () => {
     //Assert
     expect(dateSpy).toHaveBeenCalled()
     expect(result).toEqual({
-      dataX: ['1', '2'],
-      dataY: [0.000011574074074074073, 0.000023148148148148147],
+      data: [],
+      dataX: [],
     })
   })
 })

@@ -523,8 +523,5 @@ export const groupByMonthly =
 export const groupByYearly =
   "GROUP BY strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch'))"
 
-export const countIdByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(createTimestamp / 1000, 'unixepoch')), 
+export const countIdByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
 COUNT(id) from `
-
-export const groupbyDaily1 =
-  "GROUP BY strftime('%Y-%m-%d', datetime(createTimestamp / 1000, 'unixepoch'))"

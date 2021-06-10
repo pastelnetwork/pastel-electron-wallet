@@ -7,6 +7,7 @@ import Mempoolsize from '../assets/images/mempoolsize.jpg'
 import TransactionsPerSecond from '../assets/images/transactionspersecond.jpg'
 import TransactionsInBlock from '../assets/images/transactionsinblock.jpg'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
+import { TCsvHeaderType } from './types'
 
 export const pastelChartFields = [
   {
@@ -80,11 +81,30 @@ export const periods: TPeriod[][] = [
 
 export const granularities: TGranularity[][] = [['1d', '30d', '1y']]
 
-export const csvHeaders = [
-  { label: 'Block Height', key: 'height' },
-  { label: 'Transactions', key: 'transactions' },
+const commonCsvFields = [
+  { label: 'Value', key: 'value' },
   { label: 'Created time', key: 'time' },
 ]
+
+export const csvHeaders: TCsvHeaderType = {
+  averageblocksize: commonCsvFields,
+  difficulty: commonCsvFields,
+  hashrate: commonCsvFields,
+  mempoolsize: commonCsvFields,
+  networktotals: [
+    { label: 'Receive, Sent', key: 'value' },
+    { label: 'Created time', key: 'time' },
+  ],
+  transactionsinblock: [
+    { label: 'Block Height', key: 'height' },
+    { label: 'Transactions', key: 'transactions' },
+    { label: 'Created time', key: 'time' },
+  ],
+  transactionspersecond: [
+    { label: 'Transactions', key: 'value' },
+    { label: 'Created time', key: 'time' },
+  ],
+}
 
 export const pricesCSVHeaders = [
   { label: 'USD Price', key: 'usd' },

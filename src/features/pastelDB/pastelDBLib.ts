@@ -53,7 +53,6 @@ import {
   averageFilterByYearlyPeriodQuery,
   countIdByDailyPeriodQuery,
   groupbyDaily,
-  groupbyDaily1,
   groupByMonthly,
   groupByYearly,
 } from './constants'
@@ -518,9 +517,9 @@ export function getTransactionsDataFromDBByPeriod(
       duration = 360 * 24
     }
     const time_stamp = Date.now() - duration * 60 * 60 * 1000
-    whereSqlText = ` where createTimestamp > ${time_stamp} `
+    whereSqlText = ` where create_timestamp > ${time_stamp} `
   }
-  sqlText = countIdByDailyPeriodQuery + tableName + whereSqlText + groupbyDaily1
+  sqlText = countIdByDailyPeriodQuery + tableName + whereSqlText + groupbyDaily
 
   const sqlResult = pastelDB.exec(sqlText)
   return sqlResult
