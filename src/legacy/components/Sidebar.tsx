@@ -710,12 +710,6 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
-          {/* <SidebarMenuItem
-            name='Statistics'
-            routeName={routes.STATISTICS}
-            currentRoute={location.pathname}
-            iconname='fa-chart-bar'
-          /> */}
           <SidebarMenuItem
             name='Statistics'
             routeName={routes.STATISTICS}

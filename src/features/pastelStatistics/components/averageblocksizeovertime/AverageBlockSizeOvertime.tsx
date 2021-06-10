@@ -13,7 +13,7 @@ import { EChartsLineChart } from '../chart/EChartsLineChart'
 import styles from '../../Common.module.css'
 import {
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
-  BLOCK_CHART_DEFAULT_PERIOD,
+  CHART_DEFAULT_PERIOD,
   BLOCK_CHART_DEFAULT_GRANULARITY,
   granularities,
   periods,
@@ -34,7 +34,7 @@ const AverageBlockSizeOvertime = (
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
-  const [period, setPeriod] = useState<TPeriod>(BLOCK_CHART_DEFAULT_PERIOD)
+  const [period, setPeriod] = useState<TPeriod>(CHART_DEFAULT_PERIOD)
   const [granularity, setGranularity] = useState<TGranularity>(
     BLOCK_CHART_DEFAULT_GRANULARITY,
   )

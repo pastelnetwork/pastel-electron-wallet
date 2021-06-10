@@ -52,10 +52,12 @@ import {
   averageFilterByMonthlyPeriodQuery,
   averageFilterByYearlyPeriodQuery,
   transactionFeeDailyQuery,
+  countIdByDailyPeriodQuery,
   groupbyDaily,
   groupByMonthly,
   groupByYearly,
 } from './constants'
+
 import {
   TBlockChainInfo,
   TBlockInfo,
@@ -488,6 +490,38 @@ export function getFilteredDataFromDBByPeriod(
       sqlText = selectAllQuery + tableName
       break
   }
+  const sqlResult = pastelDB.exec(sqlText)
+  return sqlResult
+}
+
+export function getTransactionsDataFromDBByPeriod(
+  pastelDB: Database,
+  tableName: string,
+  period: string,
+): QueryExecResult[] {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      `pastelDB getTransactionsDataFromDBByPeriod error: ${tableName} is invalid table name`,
+    )
+  }
+
+  let duration = 0
+  let sqlText = ''
+
+  let whereSqlText = ' '
+  if (period !== 'all') {
+    if (period === '30d') {
+      duration = 30 * 24
+    } else if (period === '180d') {
+      duration = 180 * 24
+    } else if (period === '1y') {
+      duration = 360 * 24
+    }
+    const time_stamp = Date.now() - duration * 60 * 60 * 1000
+    whereSqlText = ` where create_timestamp > ${time_stamp} `
+  }
+  sqlText = countIdByDailyPeriodQuery + tableName + whereSqlText + groupbyDaily
+
   const sqlResult = pastelDB.exec(sqlText)
   return sqlResult
 }

@@ -79,7 +79,7 @@ const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
               dataY={transformLineChartData?.dataY}
               title='Mempool Size(KByte)'
               info={info}
-              offset={0.1}
+              offset={0.5}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}

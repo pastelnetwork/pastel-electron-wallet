@@ -123,7 +123,7 @@ export const createRawtransaction = `CREATE TABLE rawtransaction (
   confirmations int,
   time int,
   blocktime int,
-  createTimestamp int
+  create_timestamp int
 )`
 
 export const createTransaction = `CREATE TABLE transaction_tbl (
@@ -525,3 +525,5 @@ export const groupByYearly =
 
 export const transactionFeeDailyQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
   SUM(fee) FROM `
+export const countIdByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+COUNT(id) from `

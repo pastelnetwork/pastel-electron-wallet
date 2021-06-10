@@ -5,7 +5,10 @@ import Hashrate from '../assets/images/hashrate.jpg'
 import Nettotals from '../assets/images/nettotals.jpg'
 import Mempoolsize from '../assets/images/mempoolsize.jpg'
 import TransactionFee from '../assets/images/transactionfee.jpg'
+import TransactionsPerSecond from '../assets/images/transactionspersecond.jpg'
+import TransactionsInBlock from '../assets/images/transactionsinblock.jpg'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
+import { TCsvHeaderType } from './types'
 
 export const pastelChartFields = [
   {
@@ -29,7 +32,7 @@ export const pastelChartFields = [
     backgroundImage: Hashrate,
   },
   {
-    name: 'Network Totals',
+    name: 'Network Total',
     routeName: '/statistics/networktotalsovertime',
     backgroundImage: Nettotals,
   },
@@ -42,6 +45,16 @@ export const pastelChartFields = [
     name: 'Transaction Fee',
     routeName: '/statistics/transactionfeeovertime',
     backgroundImage: TransactionFee,
+  },
+  {
+    name: 'Transactions Per Second',
+    routeName: '/statistics/transactionpersecondovertime',
+    backgroundImage: TransactionsPerSecond,
+  },
+  {
+    name: 'Transactions In Block',
+    routeName: '/statistics/transactionsinblockovertime',
+    backgroundImage: TransactionsInBlock,
   },
 ]
 
@@ -74,10 +87,30 @@ export const periods: TPeriod[][] = [
 
 export const granularities: TGranularity[][] = [['1d', '30d', '1y']]
 
-export const csvHeaders = [
+const commonCsvFields = [
   { label: 'Value', key: 'value' },
   { label: 'Created time', key: 'time' },
 ]
+
+export const csvHeaders: TCsvHeaderType = {
+  averageblocksize: commonCsvFields,
+  difficulty: commonCsvFields,
+  hashrate: commonCsvFields,
+  mempoolsize: commonCsvFields,
+  networktotals: [
+    { label: 'Receive, Sent', key: 'value' },
+    { label: 'Created time', key: 'time' },
+  ],
+  transactionsinblock: [
+    { label: 'Block Height', key: 'height' },
+    { label: 'Transactions', key: 'transactions' },
+    { label: 'Created time', key: 'time' },
+  ],
+  transactionspersecond: [
+    { label: 'Transactions', key: 'value' },
+    { label: 'Created time', key: 'time' },
+  ],
+}
 
 export const pricesCSVHeaders = [
   { label: 'USD Price', key: 'usd' },
