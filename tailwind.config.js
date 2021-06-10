@@ -30,14 +30,12 @@ module.exports = {
         '4px': '0.25rem',
         '5px': '0.3125rem',
         '6px': '0.375rem',
+        '7px': '0.5rem',
         '8px': '0.5rem',
         '9px': '0.5625rem',
-        '7px': '0.5rem',
         '10px': '0.625rem',
         '11px': '0.688rem',
         '12px': '0.752rem',
-        '9px': '0.5625rem',
-        '10px': '0.625rem',
         '13px': '0.813rem',
         '14px': '0.875rem',
         '15px': '0.938rem',
@@ -78,7 +76,6 @@ module.exports = {
         '95px': '5.9375rem',
         '88px': '5.5rem',
         '100px': '6.25rem',
-        '111px': '6.938rem',
         '101px': '6.313rem',
         '110px': '6.875rem',
         '111px': '6.9375rem',
@@ -98,20 +95,6 @@ module.exports = {
         '380px': '23.75rem',
         '419px': '26.187rem',
         '478px': '29.875rem',
-      },
-      boxShadow: {
-        xs:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        sm:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
-        md:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 6px 8px rgba(10, 22, 70, 0.1)',
-        lg:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
-        xl:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        editbox:
-          '0px 1px 12pxrgba(50, 50, 71, 0.04), 0px 0px 4px rgba(50, 50, 71, 0.2)',
       },
       colors: {
         success: {
@@ -143,7 +126,6 @@ module.exports = {
           '4a': '#4A5568',
           '2d': '#2D3748',
           '1a': '#1A202C',
-          f9: '#F9FAFB',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           fc: '#FCFCFD',
@@ -158,8 +140,6 @@ module.exports = {
           b0: '#B0B7C3',
           35: '#353941',
           33: '#334D6E',
-          '2d': '#2D3748',
-          23: '#23272F',
           '1f': '#1F1F39',
           '1d': '#1D263A',
           14: '#141416',
@@ -168,8 +148,8 @@ module.exports = {
           '8e': '#8E98A3',
           '1b': '#1B2942',
           42: '#425466',
-          a6: '#a6b0c226',
-          77: '#777E91',
+          26: '#a6b0c226',
+          91: '#777E91',
           f9: '#F9F9F9',
         },
         red: {
@@ -226,6 +206,8 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         xl:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+        editbox:
+          '0px 1px 12pxrgba(50, 50, 71, 0.04), 0px 0px 4px rgba(50, 50, 71, 0.2)',
         'depth-1': '0px 8px 16px -8px rgba(15, 15, 15, 0.2)',
         '2px':
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
@@ -246,7 +228,6 @@ module.exports = {
         '12px': '0.75rem',
         '15px': '0.938rem',
         '26px': '1.625rem',
-        '9px': '0.5625rem',
         '32px': '2rem',
         '14px': '0.875rem',
       },
@@ -257,6 +238,7 @@ module.exports = {
         '65px': '4.063rem',
       },
       borderWidth: {
+        '3px': '0.1875rem',
         '5px': '0.3125rem',
       },
       lineHeight: {
@@ -270,9 +252,6 @@ module.exports = {
       inset: {
         '10px': '0.625rem',
       },
-      borderWidth: {
-        '3px': '0.1875rem',
-      },
       maxHeight: {
         '244px': '15.25rem',
         '700px': '43.75rem',
@@ -280,6 +259,7 @@ module.exports = {
       minWidth: {
         '14px': '0.875rem',
         '15px': '0.938rem',
+        '16px': '1rem',
         '118px': '7.375rem',
         '171px': '10.688rem',
         '244px': '15.25rem',

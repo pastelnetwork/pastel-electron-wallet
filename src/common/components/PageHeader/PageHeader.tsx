@@ -35,7 +35,7 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
     }
 
     return (
-      <div className='wrapper py-0 flex font-normal text-14px leading-19px text-gray-71 my-12px'>
+      <div className='wrapper py-0 flex font-normal text-14px leading-19px text-gray-71 mb-12px pt-12px'>
         {breadcrumbs.map((breadcrumb, index) => {
           if (breadcrumb.route) {
             return (

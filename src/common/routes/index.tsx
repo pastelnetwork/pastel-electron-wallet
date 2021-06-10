@@ -1,4 +1,5 @@
 import OnboardingLayout from '../layout/Onboarding'
+import PageLayout from '../layout/PageLayout'
 
 import {
   WelcomePage,
@@ -74,7 +75,7 @@ const portfolioBuyer = {
   id: 'portfolioBuyer',
   path: ROUTES.PORTFOLIO_BUYER,
   component: PortfolioBuyer,
-  layout: OnboardingLayout,
+  layout: PageLayout,
 }
 
 export const pageRoutes = [

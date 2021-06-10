@@ -9,11 +9,11 @@ import NFTCard, { INFTCardProps } from '../../common/components/NFTCard'
 
 import styles from './Portfolio.module.css'
 
-import avatar from '../../../common/assets/images/avatar-placeholder.png'
-import portfolio1 from '../../../common/assets/images/mock/portfolio-1.jpg'
-import portfolio2 from '../../../common/assets/images/mock/portfolio-2.jpg'
-import portfolio3 from '../../../common/assets/images/mock/portfolio-3.jpg'
-import portfolio4 from '../../../common/assets/images/mock/portfolio-4.jpg'
+import avatar from '../../common/assets/images/avatar-placeholder.png'
+import portfolio1 from '../../common/assets/images/mock/portfolio-1.jpg'
+import portfolio2 from '../../common/assets/images/mock/portfolio-2.jpg'
+import portfolio3 from '../../common/assets/images/mock/portfolio-3.jpg'
+import portfolio4 from '../../common/assets/images/mock/portfolio-4.jpg'
 
 const mockOptions: TOption[] = [
   { value: 'option_1', label: 'Option 1' },
@@ -293,7 +293,7 @@ export default function PortfolioBuyer(): JSX.Element {
       <div className='wrapper'>
         <div className='flex'>
           <div className='w-9/12 md:w-full'>
-            <div className='flex items-center mt-10px mb-30px'>
+            <div className='flex items-center mt-30px mb-30px'>
               {filterOptions.map(option => (
                 <div className='mr-24px' key={option.label}>
                   <Select {...option} />
@@ -319,8 +319,8 @@ export default function PortfolioBuyer(): JSX.Element {
                 <li key={index} className='list-none mb-8px'>
                   <span
                     className={`font-medium cursor-pointer text-h5 leading-none py-8px px-12px rounded-8px inline-block ${
-                      index === 0 ? 'text-gray-2d bg-gray-a6' : 'text-gray-a0'
-                    } hover:text-gray-2d hover:bg-gray-a6`}
+                      index === 0 ? 'text-gray-2d bg-gray-26' : 'text-gray-a0'
+                    } hover:text-gray-2d hover:bg-gray-26`}
                   >
                     {category.name} ({category.totalItem})
                   </span>
