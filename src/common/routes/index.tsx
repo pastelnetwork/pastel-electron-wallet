@@ -10,6 +10,7 @@ import {
   CryptoKeys,
   NewPassword,
 } from '../../features/onboarding/index'
+import { PortfolioBuyer } from '../../features/portfolio'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -69,6 +70,13 @@ const newPassword = {
   layout: OnboardingLayout,
 }
 
+const portfolioBuyer = {
+  id: 'portfolioBuyer',
+  path: ROUTES.PORTFOLIO_BUYER,
+  component: PortfolioBuyer,
+  layout: OnboardingLayout,
+}
+
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -78,4 +86,5 @@ export const pageRoutes = [
   registrationSuccessful,
   cryptoKeys,
   newPassword,
+  portfolioBuyer,
 ]

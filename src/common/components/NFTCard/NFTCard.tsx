@@ -77,7 +77,7 @@ const NFTCard = ({
           </div>
           {!hideFollow ? (
             <div className='flex items-center'>
-              <Link to='#' className='text-blue-450'>
+              <Link to='#' className='text-blue-3f'>
                 follow
               </Link>
             </div>

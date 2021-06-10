@@ -1,3 +1,3 @@
-import PortfolioBuyer from './portfolioBuyer/PortfolioBuyer'
+import PortfolioBuyer from './PortfolioBuyer'
 
 export { PortfolioBuyer }
