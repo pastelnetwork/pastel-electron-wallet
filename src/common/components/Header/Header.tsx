@@ -102,7 +102,7 @@ export default function Header(): JSX.Element {
           classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
           to={routes.MARKET}
         >
-          NFTs
+          Market
         </MenuItem>
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'

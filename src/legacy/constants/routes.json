@@ -16,5 +16,7 @@
   "COLLECTOR": "/collector",
   "NFT": "/nft",
   "PROFILE": "/profile",
+  "MEMBERS_PROFILE": "/member_profile",
+  "MEMBERS": "/members",
   "MARKET": "/market"
 }

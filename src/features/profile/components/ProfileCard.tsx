@@ -10,7 +10,7 @@ import svg_flag from '../../../common/assets/icons/ico-flag.svg'
 import svg_facebook from '../../../common/assets/icons/ico-facebook.svg'
 import svg_twitter from '../../../common/assets/icons/ico-twitter.svg'
 
-export type ProfileCardProps = {
+export type TProfileCard = {
   isMyProfile: boolean
   username: string
   walletId: string
@@ -32,7 +32,7 @@ const ProfileCard = ({
   name,
   description,
   address,
-}: ProfileCardProps): JSX.Element => {
+}: TProfileCard): JSX.Element => {
   return (
     <div className='flex flex-col pb-28px rounded-md shadow-sm bg-white w-315px'>
       <div className='bg-blue-300 rounded-t-md'>
@@ -40,7 +40,7 @@ const ProfileCard = ({
       </div>
       <div className='-mt-50px px-5 flex pb-2'>
         <div className='rounded-full border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
-          <img src={svg_avatar} className='rounded-full' />
+          <img src={svg_avatar} className='rounded-full w-full h-full' />
         </div>
         <div className='mt-54px pl-10px'>
           <div className='px-1 pt-1 text-gray-71  text-base'>{username}</div>
@@ -63,7 +63,7 @@ const ProfileCard = ({
               <div className='pl-6px text-gray-71'>{reputation} reputation</div>
             </div>
           </div>
-          <div className='font-bold text-26 pt-7px pb-2'>{name}</div>
+          <div className='font-bold text-26px pt-7px pb-2'>{name}</div>
           <div className='text-sm text-gray-71'>{description}</div>
           <div className='text-sm text-gray-4a flex pt-3'>
             <img
