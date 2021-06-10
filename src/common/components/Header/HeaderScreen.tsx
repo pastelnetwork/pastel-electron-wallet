@@ -13,8 +13,6 @@ import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 import cn from 'classnames'
 
-import Icon from '../Icon'
-
 interface IMenuType {
   name: string
   routeName: string
@@ -60,7 +58,7 @@ const MenubarItem = ({ name, routeName, currentRoute, style }: IMenuType) => {
 const SearhBar = () => {
   const placeholder = 'Search creator or NFT'
   return (
-    <div className='psl-flex psl-relative'>
+    <div className='flex relative'>
       <img width='16' className={styles.searchIconPosition} src={searchIcon} />
       <input
         className=' placeholder-gray-b0 h-41px bg-gray-110 rounded-full pl-46px md:w-300px lg:w-300px xl:w-352px'
@@ -108,25 +106,25 @@ const Header = (props: PropsType) => {
       name: 'Dashboard',
       routeName: routes.DASHBOARD,
       currentRoute: location.pathname,
-      style: 'xl:psl-mr-35px',
+      style: 'xl:mr-35px',
     },
     {
       name: 'NFTs',
       routeName: routes.MARKET,
       currentRoute: location.pathname,
-      style: 'xl:psl-mr-37px',
+      style: 'xl:mr-37px',
     },
     {
       name: 'Members',
-      routeName: routes.PROFILE,
+      routeName: routes.MEMBERS,
       currentRoute: location.pathname,
-      style: 'xl:psl-mr-28px',
+      style: 'xl:mr-28px',
     },
     {
       name: 'Wallet',
       routeName: routes.TRANSACTIONS,
       currentRoute: location.pathname,
-      style: 'xl:psl-mr-35px',
+      style: 'xl:mr-35px',
     },
     {
       name: 'Portfolio',
@@ -150,27 +148,25 @@ const Header = (props: PropsType) => {
               style={item.style}
             />
           ))}
-          <div className='md:psl-ml-13px lg:psl-ml-40px xl:psl-ml-50px'>
-            <Link to='#' className='psl-flex psl-items-center'>
+          <div className='md:ml-13px lg:ml-40px xl:ml-50px'>
+            <Link to='#' className='flex items-center'>
               <img
                 src={addBtn}
                 className='w-20px h-20px mr-2px md:mr-2'
                 alt='add button'
               ></img>
-              <span className='psl-text-blue-450 psl-whitespace-nowrap'>
-                new NFT
-              </span>
+              <span className='text-blue-3f whitespace-nowrap'>new NFT</span>
             </Link>
           </div>
         </div>
-        <div className='psl-ml-20px md:psl-ml-40px lg:psl-ml-50px xl:psl-ml-68px md:psl-mr-8px lg:psl-mr-8px xl:psl-mr-8px'>
+        <div className='ml-20px md:ml-40px lg:ml-50px xl:ml-68px md:mr-8px lg:mr-8px xl:mr-8px'>
           <SearhBar />
         </div>
       </div>
       <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
-          <div className='psl-mr-20px md:psl-mr-26px' key={index}>
-            <Icon src={icon.src} variant={icon.variant} />
+          <div className='mr-20px md:mr-26px' key={index}>
+            <img src={icon.src} />
           </div>
         ))}
       </div>
