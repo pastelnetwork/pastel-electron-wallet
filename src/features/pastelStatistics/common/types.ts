@@ -28,8 +28,24 @@ export type TLineChartProps = {
   handleGranularityFilterChange?: (granularity: TGranularity) => void
 }
 
+export type TScatterChartProps = {
+  chartName: string
+  data: number[][]
+  dataX: string[]
+  title?: string
+  info: {
+    [key: string]: string | number
+  }
+  offset: number
+  periods: TPeriod[]
+  handleBgColorChange: (color: string) => void
+  handlePeriodFilterChange?: (period: TPeriod) => void
+  handleGranularityFilterChange?: (granularity: TGranularity) => void
+}
+
 export type TThemeInitOption = {
   theme?: TThemeColor | null
+  data?: number[][]
   dataX?: string[]
   dataY?: number[]
   dataY1?: number[]

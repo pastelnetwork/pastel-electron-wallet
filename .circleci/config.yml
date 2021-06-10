@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   install-deps:
     docker:
-      - image: circleci/node:14.16.0
+      - image: electronuserland/builder:14
     working_directory: ~/project
     steps:
       - checkout
@@ -11,7 +11,7 @@ jobs:
           keys:
             - node_deps-{{ checksum "yarn.lock" }}
       - run:
-          # https://circleci.com/docs/2.0/caching/
+          name: install dependencies
           command: yarn --frozen-lockfile
       - save_cache:
           key: node_deps-{{ checksum "yarn.lock" }}
@@ -24,7 +24,7 @@ jobs:
 
   lint-and-test:
     docker:
-      - image: circleci/node:14.16.0
+      - image: electronuserland/builder:14
     working_directory: ~/project
     steps:
       - attach_workspace:
@@ -35,11 +35,40 @@ jobs:
       - run:
           name: tests
           command: yarn test
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  build-ubuntu:
+    docker:
+      - image: electronuserland/builder:14
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: install dpkg and fakeroot
+          command: |
+            apt-get update -y
+            apt-get install -y dpkg fakeroot
+      - run:
+          name: generate builds
+          command: yarn make
+      - store_artifacts:
+          path: ~/project/out/make
 
 workflows:
-  lint-and-test:
+  lint-test-package:
     jobs:
       - install-deps
       - lint-and-test:
           requires:
             - install-deps
+      - build-ubuntu:
+          filters: &filters-build
+            branches:
+              only:
+                - /release.*/
+          requires:
+            - lint-and-test

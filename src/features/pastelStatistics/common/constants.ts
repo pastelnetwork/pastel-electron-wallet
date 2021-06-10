@@ -5,11 +5,12 @@ import Hashrate from '../assets/images/hashrate.jpg'
 import Nettotals from '../assets/images/nettotals.jpg'
 import Mempoolsize from '../assets/images/mempoolsize.jpg'
 import TransactionsPerSecond from '../assets/images/transactionspersecond.jpg'
+import TransactionsInBlock from '../assets/images/transactionsinblock.jpg'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export const pastelChartFields = [
   {
-    name: 'AverageBlockSize',
+    name: 'Average Block Size',
     routeName: '/statistics/averageblocksizeovertime',
     backgroundImage: AverageBlockSize,
   },
@@ -29,7 +30,7 @@ export const pastelChartFields = [
     backgroundImage: Hashrate,
   },
   {
-    name: 'Network Totals',
+    name: 'Network Total',
     routeName: '/statistics/networktotalsovertime',
     backgroundImage: Nettotals,
   },
@@ -42,6 +43,11 @@ export const pastelChartFields = [
     name: 'Transactions Per Second',
     routeName: '/statistics/transactionpersecondovertime',
     backgroundImage: TransactionsPerSecond,
+  },
+  {
+    name: 'Transactions In Block',
+    routeName: '/statistics/transactionsinblockovertime',
+    backgroundImage: TransactionsInBlock,
   },
 ]
 
@@ -75,7 +81,8 @@ export const periods: TPeriod[][] = [
 export const granularities: TGranularity[][] = [['1d', '30d', '1y']]
 
 export const csvHeaders = [
-  { label: 'Value', key: 'value' },
+  { label: 'Block Height', key: 'height' },
+  { label: 'Transactions', key: 'transactions' },
   { label: 'Created time', key: 'time' },
 ]
 

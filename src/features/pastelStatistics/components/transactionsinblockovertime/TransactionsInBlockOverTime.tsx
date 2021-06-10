@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
-import { TMultiLineChartData } from '../../../pastelDB/type'
-import { TPeriod, transformNetTotals } from '../../utils/PastelStatisticsLib'
-import { EChartsLineChart } from '../chart/EChartsLineChart'
+import { TScatterChartData } from '../../../pastelDB/type'
+import {
+  TPeriod,
+  transformTransactionInBlock,
+} from '../../utils/PastelStatisticsLib'
+import { EChartsScatterChart } from '../chart/EChartsScatterChart'
 import styles from '../../Common.module.css'
 import {
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -13,7 +16,7 @@ import {
   periods,
 } from '../../common/constants'
 
-type TNetTotalOvertimeProps = {
+type TTransactionsInBlockOvertimeProps = {
   info: {
     [key: string]: string | number
   }
@@ -21,7 +24,9 @@ type TNetTotalOvertimeProps = {
 
 const redrawCycle = 6000
 
-const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
+const TransactionsInBlockOvertime = (
+  props: TTransactionsInBlockOvertimeProps,
+): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -31,14 +36,14 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TMultiLineChartData>()
+  ] = useState<TScatterChartData>()
 
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.nettotals)
+      const result = getDatasFromDB(pasteldb, pastelTableNames.blockinfo)
       if (result.length) {
-        const transforms = transformNetTotals(result[0].values, period)
+        const transforms = transformTransactionInBlock(result[0].values, period)
         setTransformLineChartData(transforms)
       }
     }
@@ -73,14 +78,13 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
           style={{ backgroundColor: currentBgColor }}
         >
           {transformLineChartData && (
-            <EChartsLineChart
-              chartName='network_totals'
+            <EChartsScatterChart
+              chartName='transactionsinblock'
+              data={transformLineChartData?.data}
               dataX={transformLineChartData?.dataX}
-              dataY1={transformLineChartData?.dataY1}
-              dataY2={transformLineChartData?.dataY2}
-              title='Network Total'
+              title='Transactions In Block'
               info={info}
-              offset={0}
+              offset={1}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
               handlePeriodFilterChange={handlePeriodFilterChange}
@@ -92,4 +96,4 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   )
 }
 
-export default NetworkTotalsOvertime
+export default TransactionsInBlockOvertime

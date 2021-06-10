@@ -21,7 +21,7 @@ type TNetTotalOvertimeProps = {
 
 const redrawCycle = 6000
 
-const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
+const NetTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -92,4 +92,4 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   )
 }
 
-export default NetworkTotalsOvertime
+export default NetTotalsOvertime

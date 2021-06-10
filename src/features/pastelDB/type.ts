@@ -671,3 +671,8 @@ export type TMultiLineChartData = {
   dataY1: number[]
   dataY2: number[]
 }
+
+export type TScatterChartData = {
+  data: number[][]
+  dataX: string[]
+}

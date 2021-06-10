@@ -242,8 +242,9 @@ describe('managePastelDatabase', () => {
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
 
     // Act
-    const result = pastelStatisticsLib.transformTransactionPerSecond(
+    const result = pastelStatisticsLib.transformTransactionInBlock(
       mockTransactionsInBlock,
+      'all',
     )
 
     //Assert

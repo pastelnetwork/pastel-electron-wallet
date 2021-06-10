@@ -1,6 +1,10 @@
 import { SqlValue } from 'sql.js'
 
-import { TLineChartData, TMultiLineChartData } from '../../pastelDB/type'
+import {
+  TLineChartData,
+  TMultiLineChartData,
+  TScatterChartData,
+} from '../../pastelDB/type'
 
 export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
 
@@ -89,7 +93,11 @@ export const makeDownloadFileName = (
   const date = new Date()
 
   imageTitle = title
-  if (title === 'transactionsinblock') {
+  if (title === 'mempoolsize') {
+    imageTitle = 'mempool_size'
+  } else if (title === 'averageblocksize') {
+    imageTitle = 'average_block_size'
+  } else if (title === 'transactionsinblock') {
     imageTitle = 'transactions_in_block'
   }
 
@@ -198,4 +206,28 @@ export function transformTransactionPerSecond(
     }
   }
   return { dataY, dataX }
+}
+
+export function transformTransactionInBlock(
+  blockinfos: SqlValue[][],
+  period: TPeriod,
+): TScatterChartData {
+  const data: number[][] = []
+  const dataX: string[] = []
+
+  const startDate = getStartPoint(period)
+
+  for (let i = 0; i < blockinfos.length; i++) {
+    if (blockinfos[i][8]) {
+      const createTime = Number(blockinfos[i][19])
+      if (createTime > startDate) {
+        const txs = JSON.parse(String(blockinfos[i][8]))
+        const xAxisValue = Number(blockinfos[i][4])
+        const yAxisValue = txs.length
+        data.push([xAxisValue, yAxisValue])
+        dataX.push(new Date(createTime).toLocaleString())
+      }
+    }
+  }
+  return { data, dataX }
 }
