@@ -6,8 +6,22 @@ type TChartOption = {
   [index: string]: EChartsOption
 }
 
+type TTxInBlock = {
+  value: string[][]
+}
+
 export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
-  const { theme, dataX, dataY, dataY1, dataY2, chartName, minY, maxY } = args
+  const {
+    theme,
+    data,
+    dataX,
+    dataY,
+    dataY1,
+    dataY2,
+    chartName,
+    minY,
+    maxY,
+  } = args
   const chartOptions: TChartOption = {
     difficulty: {
       grid: {
@@ -339,6 +353,76 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         easing: 'cubicOut',
       },
     },
+    transactionsinblock: {
+      tooltip: {
+        trigger: 'axis',
+        showDelay: 0,
+        axisPointer: {
+          type: 'cross',
+          lineStyle: {
+            type: 'dashed',
+            width: 2,
+          },
+        },
+      },
+      xAxis: [
+        {
+          type: 'value',
+          scale: true,
+          axisLabel: {
+            formatter: '{value}',
+          },
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: theme?.splitLineColor,
+            },
+          },
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          scale: true,
+          axisLabel: {
+            formatter: '{value}',
+          },
+          splitLine: {
+            show: false,
+            lineStyle: {
+              color: theme?.splitLineColor,
+            },
+          },
+          min: minY,
+          max: maxY,
+        },
+      ],
+      series: [
+        {
+          name: 'transactions : block',
+          type: 'scatter',
+          symbolSize: 15,
+          itemStyle: {
+            color: '#FF5500',
+            borderColor: '#000000',
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: function (params: TTxInBlock) {
+              return (
+                'block id: ' +
+                params.value[0] +
+                '<br/>' +
+                'count: ' +
+                params.value[1] +
+                ' '
+              )
+            },
+          },
+          data,
+        },
+      ],
+    },
   }
 
   return chartOptions[chartName]
@@ -376,7 +460,6 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
       },
     ],
   }
-
   const chartOptions: TChartOption = {
     averageblocksize: {
       backgroundColor: theme?.backgroundColor,
@@ -439,6 +522,45 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
           show: true,
         },
       },
+    },
+    transactionsinblock: {
+      backgroundColor: theme?.backgroundColor,
+      textStyle: {
+        color: theme?.color,
+      },
+      xAxis: {
+        splitLine: {
+          show: false,
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+      },
+      yAxis: {
+        splitLine: {
+          show: false,
+          lineStyle: {
+            color: theme?.splitLineColor,
+          },
+        },
+        axisLine: {
+          show: true,
+        },
+      },
+      series: [
+        {
+          type: 'line',
+          showSymbol: false,
+          data: dataY,
+          smooth: theme?.smooth,
+          lineStyle: {
+            width: 3,
+            shadowColor: 'rgba(0,0,0,0.5)',
+            shadowBlur: 10,
+            shadowOffsetY: 8,
+          },
+        },
+      ],
     },
   }
   return chartOptions[chartName]

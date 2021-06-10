@@ -396,8 +396,12 @@ export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
       fetchPastelPrices(pastelConfig),
       fetchBlockChainInfo(pastelConfig),
     ])
-    await exportSqliteDB(pastelDB)
     PastelDB.setValid(true)
   }
   return
+}
+
+export async function saveSqliteDB(): Promise<void> {
+  const pastelDB = await PastelDB.getDatabaseInstance()
+  await exportSqliteDB(pastelDB)
 }

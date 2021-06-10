@@ -7,32 +7,27 @@ import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { csvHeaders, themes } from '../../common/constants'
 import {
-  TLineChartProps,
+  TScatterChartProps,
   TThemeColor,
   TThemeInitOption,
 } from '../../common/types'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
-
-import styles from './LineChart.module.css'
 import {
   getThemeInitOption,
   getThemeUpdateOption,
 } from '../../utils/ChartOptions'
+import styles from './LineChart.module.css'
 
-export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
+export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
   const {
     chartName,
+    data,
     dataX,
-    dataY,
-    dataY1,
-    dataY2,
     title,
     info,
     offset,
     periods,
-    granularities,
     handlePeriodFilterChange,
-    handleGranularityFilterChange,
     handleBgColorChange,
   } = props
   const downloadRef = useRef(null)
@@ -40,11 +35,8 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(
     periods.length - 1,
   )
-  const [selectedGranularityButton, setSelectedGranularityButton] = useState(0)
   const [selectedThemeButton, setSelectedThemeButton] = useState(0)
-  const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>(
-    themes[0],
-  )
+  const [currentTheme, setCurrentTheme] = useState<TThemeColor | null>()
   const [eChartRef, setEChartRef] = useState<ReactECharts | null>()
   const [eChartInstance, setEChartInstance] = useState<echarts.ECharts>()
   const [minY, setMinY] = useState(0)
@@ -56,49 +48,30 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   }, [eChartRef])
 
   useEffect(() => {
-    if (dataY?.length) {
+    if (data?.length) {
+      const dataY = data.reduce((yAxis, item) => {
+        yAxis.push(item[1])
+        return yAxis
+      }, [])
       const min = Math.min(...dataY)
       const max = Math.max(...dataY)
-      if (chartName === 'mempoolsize') {
-        setMinY(Math.floor(min))
-        setMaxY(Math.ceil(max))
-      } else if (chartName === 'difficulty') {
-        setMinY(Math.floor(min / offset) * offset)
-        setMaxY(Math.ceil(max / offset) * offset)
-      } else {
-        setMinY(Math.round(min) - offset)
-        setMaxY(Math.floor(max) + offset)
-      }
-      if (dataX) {
-        const data: Data = []
-        dataY.map((yAxis, index) => {
-          data.push({
-            value: yAxis,
-            time: dataX[index],
-          })
+      setMinY(min - offset)
+      setMaxY(max + offset)
+      const dataCsv: Data = []
+      data.map((row, index) => {
+        dataCsv.push({
+          height: row[0],
+          transactions: row[1],
+          time: dataX[index],
         })
-        setCsvData(data)
-      }
-    } else if (dataY1?.length && dataY2?.length) {
-      if (dataX) {
-        const data: Data = []
-        dataY1.map((value, index) => {
-          data.push({
-            value: `${value} : ${dataY2[index]}`,
-            time: dataX[index],
-          })
-        })
-        setCsvData(data)
-      }
+      })
+      setCsvData(dataCsv)
     }
-  }, [dataX, dataY])
+  }, [data])
 
   const params: TThemeInitOption = {
     theme: currentTheme,
-    dataX,
-    dataY,
-    dataY1,
-    dataY2,
+    data,
     chartName: chartName,
     minY,
     maxY,
@@ -130,11 +103,10 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
 
     const params: TThemeInitOption = {
       theme: theme,
-      dataX,
-      dataY,
-      chartName: chartName,
+      data,
       minY,
       maxY,
+      chartName: chartName,
     }
     const option = getThemeUpdateOption(params)
     eChartInstance?.setOption(option)
@@ -142,13 +114,6 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
 
   const getActivePriodButtonStyle = (index: number): string => {
     if (selectedPeriodButton === index) {
-      return styles.activeButton
-    }
-    return ''
-  }
-
-  const getActiveGranularityButtonStyle = (index: number): string => {
-    if (selectedGranularityButton === index) {
       return styles.activeButton
     }
     return ''
@@ -170,32 +135,8 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         >
           {title}
         </div>
-        {granularities && (
-          <div className={styles.granularitySelect}>
-            <span style={{ color: currentTheme?.color }}>Granularity: </span>
-            {granularities?.map((granularity, index) => {
-              return (
-                <button
-                  className={`${getActiveGranularityButtonStyle(index)} ${
-                    styles.filterButton
-                  }`}
-                  onClick={() => {
-                    setSelectedGranularityButton(index)
-                    if (handleGranularityFilterChange) {
-                      handleGranularityFilterChange(granularity)
-                    }
-                  }}
-                  type='button'
-                  key={`button-filter-${granularity}`}
-                >
-                  {granularity}
-                </button>
-              )
-            })}
-          </div>
-        )}
         <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>Period: </span>
+          <span style={{ color: currentTheme?.color }}>period: </span>
           {periods.map((period, index) => (
             <button
               className={`${getActivePriodButtonStyle(index)} ${
@@ -221,9 +162,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
           lazyUpdate={true}
           option={options}
           className={styles.reactECharts}
-          ref={e => {
-            setEChartRef(e)
-          }}
+          ref={e => setEChartRef(e)}
         />
       </div>
       <div className={styles.lineChartFooter}>

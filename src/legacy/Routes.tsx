@@ -33,7 +33,7 @@ import { PastelID } from '../features/pastelID'
 import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
-import { PastelDBThread } from '../features/pastelDB'
+import { PastelDBThread, saveSqliteDB } from '../features/pastelDB'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
@@ -54,6 +54,7 @@ import {
   NetworkTotalsOvertime,
   MempoolSizeOvertime,
   AverageBlockSizeOvertime,
+  TransactionsInBlockOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
@@ -74,6 +75,7 @@ export type TWalletInfo = {
 }
 
 const period = 1000 * 10
+const exportPastelDBPeriod = 1000 * 60 * 1
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -104,6 +106,8 @@ class RouteApp extends React.Component<any, any> {
   rpc: any
   companionAppListener: any
   rpcRefreshIntervalId = 0
+  pastelDBThreadIntervalID = 0
+  exportSqliteDBIntervalID = 0
 
   async componentDidMount() {
     const rpc = new RPC(
@@ -139,6 +143,8 @@ class RouteApp extends React.Component<any, any> {
 
   componentWillUnmount() {
     window.clearInterval(this.rpcRefreshIntervalId)
+    window.clearInterval(this.pastelDBThreadIntervalID)
+    window.clearInterval(this.exportSqliteDBIntervalID)
   }
 
   getFullState = () => {
@@ -673,6 +679,11 @@ class RouteApp extends React.Component<any, any> {
               />
 
               <Route
+                path={routes.TRANSACTIONSINBLOCKOVERTIME}
+                render={() => <TransactionsInBlockOvertime info={info} />}
+              />
+
+              <Route
                 path={routes.STATISTICS}
                 render={() => <PastelStatistics />}
               />
@@ -695,9 +706,12 @@ class RouteApp extends React.Component<any, any> {
                       this.setRPCConfig(rpcConfig)
 
                       // set pastel DB thread update timer
-                      setInterval(() => {
+                      this.pastelDBThreadIntervalID = window.setInterval(() => {
                         PastelDBThread(rpcConfig)
                       }, period)
+                      this.exportSqliteDBIntervalID = window.setInterval(() => {
+                        saveSqliteDB()
+                      }, exportPastelDBPeriod)
                     }}
                     setInfo={this.setInfo}
                   />
