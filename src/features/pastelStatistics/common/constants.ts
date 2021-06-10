@@ -101,6 +101,10 @@ export const csvHeaders: TCsvHeaderType = {
     { label: 'Receive, Sent', key: 'value' },
     { label: 'Created time', key: 'time' },
   ],
+  transactionfee: [
+    { label: 'Transaction Fee', key: 'value' },
+    { label: 'Created time', key: 'time' },
+  ],
   transactionsinblock: [
     { label: 'Block Height', key: 'height' },
     { label: 'Transactions', key: 'transactions' },
