@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 
 import Typography from '../../../common/components/Typography/Typography'
 import Tooltip from '../../../common/components/Tooltip/Tooltip'
-import Button from '../../../common/components/Button/Button'
+import { Button } from '../../../common/components/Buttons'
 import { colors } from '../../../common/theme/colors'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import infoIco from '../../../common/assets/icons/ico-info.svg'
