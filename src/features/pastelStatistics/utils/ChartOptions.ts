@@ -458,13 +458,6 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
       tooltip: {
         trigger: 'axis',
         showDelay: 0,
-        axisPointer: {
-          type: 'cross',
-          lineStyle: {
-            type: 'dashed',
-            width: 2,
-          },
-        },
       },
       xAxis: [
         {
