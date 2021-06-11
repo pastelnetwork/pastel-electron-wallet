@@ -377,7 +377,7 @@ export default function PortfolioBuyer(): JSX.Element {
           <div
             className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
           >
-            <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-40px gap-y-61px'>
+            <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-16px gap-y-16px'>
               {mockNFTCard?.map((nftItem, index) => (
                 <NFTCard {...nftItem} key={index} hideFollow />
               ))}
