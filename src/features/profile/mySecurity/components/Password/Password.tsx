@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createRef } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
+import generatePassword from 'generate-password'
 
 import IconEye from '../../../../../common/assets/icons/ico-eye.svg'
 import IconEyeHidden from '../../../../../common/assets/icons/ico-eye-hidden.svg'
@@ -54,6 +55,7 @@ const Password = (props: TPassword): JSX.Element => {
   const [newPasswordVisible, setNewPasswordVisible] = useState(false)
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
   const [passStrength, setPassStrength] = useState<string[]>([])
+  const inputRef = createRef<HTMLInputElement>()
 
   useEffect(() => {
     if (!newPassword) {
@@ -75,39 +77,34 @@ const Password = (props: TPassword): JSX.Element => {
     const validation = passwordStrength(newPass, passOptions)
 
     let status = [
-      'bg-navigation-default opacity-20',
-      'bg-navigation-default opacity-20',
-      'bg-navigation-default opacity-20',
-      'bg-navigation-default opacity-20',
+      'bg-navigation opacity-20',
+      'bg-navigation opacity-20',
+      'bg-navigation opacity-20',
+      'bg-navigation opacity-20',
     ]
     if (validation.id === 0) {
       status = [
         'bg-red-fe',
-        'bg-navigation-default opacity-20',
-        'bg-navigation-default opacity-20',
-        'bg-navigation-default opacity-20',
+        'bg-navigation opacity-20',
+        'bg-navigation opacity-20',
+        'bg-navigation opacity-20',
       ]
     } else if (validation.id === 1) {
       status = [
         'bg-yellow-ff',
         'bg-yellow-ff',
-        'bg-navigation-default opacity-20',
-        'bg-navigation-default opacity-20',
+        'bg-navigation opacity-20',
+        'bg-navigation opacity-20',
       ]
     } else if (validation.id === 2) {
       status = [
         'bg-yellow-ff',
         'bg-yellow-ff',
         'bg-yellow-ff',
-        'bg-navigation-default opacity-20',
+        'bg-navigation opacity-20',
       ]
     } else if (validation.id === 3) {
-      status = [
-        'bg-success-default',
-        'bg-success-default',
-        'bg-success-default',
-        'bg-success-default',
-      ]
+      status = ['bg-success', 'bg-success', 'bg-success', 'bg-success']
     }
 
     setPassStrength(status)
@@ -118,10 +115,38 @@ const Password = (props: TPassword): JSX.Element => {
     setConfirmPassword(confirmPass)
   }
 
-  const handleRefresh = () => {
-    setNewPassword('')
-    setConfirmPassword('')
-    setPassStrength([])
+  const handleGenerateRandomPassword = () => {
+    const newPass = generatePassword.generate({
+      length: 12,
+      numbers: true,
+      symbols: true,
+      lowercase: true,
+      uppercase: true,
+      strict: true,
+    })
+    setNewPassword(newPass)
+
+    const setNativeValue = (element: HTMLInputElement, value: string) => {
+      const valueSetter = Object.getOwnPropertyDescriptor(element, 'value')?.set
+      const prototype = Object.getPrototypeOf(element)
+      const prototypeValueSetter = Object.getOwnPropertyDescriptor(
+        prototype,
+        'value',
+      )?.set
+
+      if (valueSetter && valueSetter !== prototypeValueSetter) {
+        prototypeValueSetter?.call(element, value)
+      } else {
+        valueSetter?.call(element, value)
+      }
+    }
+
+    const event = new Event('input', { bubbles: true })
+    const element = inputRef.current
+    if (element) {
+      setNativeValue(element, newPass)
+      element.dispatchEvent(event)
+    }
   }
 
   const getIconClassnames = (isRefresh: boolean) => {
@@ -148,6 +173,7 @@ const Password = (props: TPassword): JSX.Element => {
           onChange={checkPasswordStrength}
           value={newPassword}
           className={getInputClassnames(true)}
+          ref={inputRef}
         />
         {newPassword && (
           <>
@@ -163,7 +189,7 @@ const Password = (props: TPassword): JSX.Element => {
                 content='Generate a new secure 12-digit password'
                 classnames='text-xs leading-4 pt-5px pb-1'
               >
-                <img onClick={handleRefresh} src={IconRefresh} />
+                <img onClick={handleGenerateRandomPassword} src={IconRefresh} />
               </Tooltip>
             </div>
           </>
