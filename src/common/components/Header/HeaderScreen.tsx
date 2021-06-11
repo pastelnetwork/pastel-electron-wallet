@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styles from './HeaderScreen.module.css'
 import routes from '../../constants/routes.json'
 import Logo from '../../assets/icons/ico-logo.svg'
@@ -35,12 +35,6 @@ const MenubarItem = ({ name, routeName, currentRoute, style }: TMenuType) => {
 
   return (
     <div
-      // className={[
-      //   styles.headermenuitem,
-      //   activeColorClass,
-      //   'mr-8px md:mr-13px lg:mr-28px',
-      //   style,
-      // ].join(' ')}
       className={cn(
         styles.headermenuitem,
         activeColorClass,
@@ -78,6 +72,8 @@ type TPropsType = {
 
 const Header = (props: TPropsType) => {
   const { location } = props
+  const history = useHistory()
+
   const icons = [
     {
       src: QuestionTag,
@@ -98,6 +94,7 @@ const Header = (props: TPropsType) => {
     {
       src: UserIcon,
       variant: 'background',
+      func: () => history.push(routes.PROFILE),
     },
   ]
 
@@ -166,7 +163,11 @@ const Header = (props: TPropsType) => {
       <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
           <div className='mr-20px md:mr-26px' key={index}>
-            <img src={icon.src} />
+            <img
+              src={icon.src}
+              className='cursor-pointer'
+              onClick={icon.func}
+            />
           </div>
         ))}
       </div>
