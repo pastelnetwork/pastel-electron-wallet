@@ -5,6 +5,7 @@ import IconEye from '../../../../../common/assets/icons/ico-eye.svg'
 import IconEyeHidden from '../../../../../common/assets/icons/ico-eye-hidden.svg'
 import IconRefresh from '../../../../../common/assets/icons/ico-refresh-blue.svg'
 import { Description } from '../Typography/Typography'
+import Tooltip from '../../../../../common/components/Tooltip'
 
 type TPassword = {
   newPassword: string
@@ -155,11 +156,16 @@ const Password = (props: TPassword): JSX.Element => {
               onClick={handleNewVisibility}
               src={newPasswordVisible ? IconEye : IconEyeHidden}
             />
-            <img
-              className={getIconClassnames(true)}
-              onClick={handleRefresh}
-              src={IconRefresh}
-            />
+            <div className={getIconClassnames(true)}>
+              <Tooltip
+                width={250}
+                type='top'
+                content='Generate a new secure 12-digit password'
+                classnames='text-xs leading-4 pt-5px pb-1'
+              >
+                <img onClick={handleRefresh} src={IconRefresh} />
+              </Tooltip>
+            </div>
           </>
         )}
       </div>
