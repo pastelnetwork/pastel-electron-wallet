@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react'
 
-type TButtonProps = {
+type TButton = {
   children: string | ReactNode
   type?: 'submit' | 'button'
   onClick?: () => void
 }
 
-const Button = (props: TButtonProps): JSX.Element => {
+const Button = (props: TButton): JSX.Element => {
   const { children, type = 'button', onClick, ...restProps } = props
 
   return (

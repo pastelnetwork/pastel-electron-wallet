@@ -4,12 +4,12 @@ import { clipboard } from 'electron'
 import { Description } from '../Typography/Typography'
 import IconClipboard from '../../../../../common/assets/icons/ico-clipboard.svg'
 
-type TCryptoProps = {
+type TCrypto = {
   label: string
   children: string
 }
 
-const Crypto = (props: TCryptoProps): JSX.Element => {
+const Crypto = (props: TCrypto): JSX.Element => {
   const { label, children } = props
   const copyClipboard = () => {
     clipboard.writeText(children)

@@ -4,13 +4,13 @@ import ChangePassword from './changePassword/Password'
 import QRCode from './photoOfQRCode/QRCode'
 import CryptoKey from './backupCryptoKey/CryptoKey'
 
-type TSecurityProps = {
+type TSecurity = {
   info?: {
     currencyName: string
   }
 }
 
-const MySecurity = (props: TSecurityProps): JSX.Element => {
+const MySecurity = (props: TSecurity): JSX.Element => {
   const { info } = props
 
   return (

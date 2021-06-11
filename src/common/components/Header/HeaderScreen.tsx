@@ -13,14 +13,14 @@ import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 import cn from 'classnames'
 
-interface IMenuType {
+type TMenuType = {
   name: string
   routeName: string
   currentRoute: string
   style: string | undefined
 }
 
-const MenubarItem = ({ name, routeName, currentRoute, style }: IMenuType) => {
+const MenubarItem = ({ name, routeName, currentRoute, style }: TMenuType) => {
   let isActive = false
 
   if (currentRoute.endsWith('app.html') || currentRoute === routeName) {
@@ -68,15 +68,15 @@ const SearhBar = () => {
   )
 }
 
-interface Location {
+type TLocation = {
   pathname: string
 }
 
-interface PropsType {
-  location: Location
+type TPropsType = {
+  location: TLocation
 }
 
-const Header = (props: PropsType) => {
+const Header = (props: TPropsType) => {
   const { location } = props
   const icons = [
     {

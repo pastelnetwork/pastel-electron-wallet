@@ -2,14 +2,14 @@ import React, { ReactNode } from 'react'
 
 import { Title, Description } from '../Typography/Typography'
 
-type TCardProps = {
+type TCard = {
   title: string
   description: string
   content: ReactNode
   footer: ReactNode
 }
 
-const Card = (props: TCardProps): JSX.Element => {
+const Card = (props: TCard): JSX.Element => {
   const { title, description, content, footer } = props
 
   return (

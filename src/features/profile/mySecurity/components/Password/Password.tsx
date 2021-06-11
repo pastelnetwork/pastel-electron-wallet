@@ -6,7 +6,7 @@ import IconEyeHidden from '../../../../../common/assets/icons/ico-eye-hidden.svg
 import IconRefresh from '../../../../../common/assets/icons/ico-refresh-blue.svg'
 import { Description } from '../Typography/Typography'
 
-type TPasswordProps = {
+type TPassword = {
   newPassword: string
   confirmPassword: string
   setNewPassword: (pass: string) => void
@@ -41,7 +41,7 @@ const passOptions: IPasswordOption[] = [
   },
 ]
 
-const Password = (props: TPasswordProps): JSX.Element => {
+const Password = (props: TPassword): JSX.Element => {
   const {
     newPassword,
     confirmPassword,
