@@ -48,6 +48,7 @@ module.exports = {
         '28px': '1.75rem',
         '30px': '1.875rem',
         '32px': '2rem',
+        '33px': '2.0625rem',
         '34px': '2.215rem',
         '35px': '2.188rem',
         '36px': '2.29rem',
@@ -75,10 +76,12 @@ module.exports = {
         '111px': '6.9375rem',
         '112px': '7rem',
         '113px': '7.0625rem',
+        '118px': '7.375rem',
         '120px': '7.5rem',
         '142px': '8.875rem',
         '180px': '11.25rem',
         '190px': '11.875rem',
+        '219px': '13.6875rem',
         '220px': '13.75rem',
         '230px': '14.375rem',
         '244px': '15.25rem',
@@ -90,6 +93,7 @@ module.exports = {
         '393px': '24.5625rem',
         '419px': '26.187rem',
         '478px': '29.875rem',
+        '608px': '38rem',
       },
       boxShadow: {
         xs:
@@ -136,6 +140,7 @@ module.exports = {
           '2d': '#2D3748',
           '1a': '#1A202C',
           f9: '#F9FAFB',
+          f9f: '#F9F9F9',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           fc: '#FCFCFD',
@@ -164,17 +169,20 @@ module.exports = {
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
+          14: '#14B85F',
         },
         orange: {
           63: '#FE634C',
         },
         yellow: {
           ff: '#FFBE3D',
+          e9: '#E9DB60',
         },
         green: {
           68: '#68CC67',
           e5: '#E5F6EF',
           38: '#38CB89',
+          e9: '#E98160',
         },
         button: {
           pressed: '#0E80F5',

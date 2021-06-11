@@ -14,12 +14,11 @@ const mockCardProps: INFTCardProps = {
   author: 'zndrson',
   avatarSrc: avatar,
   imageSrc: image,
-  likes: 23,
   onSale: true,
   price: '222K',
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
-  liked: true,
+  rarenessPercent: 75,
 }
 const NFTMarketFeed: React.FC = () => {
   // Upper Section
@@ -142,7 +141,6 @@ const NFTMarketFeed: React.FC = () => {
             <div className='flex'>
               <div className='flex h-full items-center justify-end'>
                 <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
-
                 <Slider
                   min={100}
                   max={999}

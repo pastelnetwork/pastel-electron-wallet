@@ -10,13 +10,12 @@ const mockCardProps: INFTCardProps = {
   author: 'zndrson',
   avatarSrc: avatar,
   imageSrc: image,
-  likes: 23,
-  liked: true,
   onSale: true,
   price: '222K',
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
-  className: 'w-300px h-393px',
+  className: 'w-300px',
+  rarenessPercent: 75,
 }
 
 export default {

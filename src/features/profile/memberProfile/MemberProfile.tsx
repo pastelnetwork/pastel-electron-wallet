@@ -4,6 +4,9 @@ import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
 import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
 import Select, { TOption } from '../../../common/components/Select/Select'
+import NFTCard, { INFTCardProps } from '../../../common/components/NFTCard'
+import image from '../../../common/assets/images/nft-card-placeholder.png'
+import avatar from '../../../common/assets/images/avatar-placeholder.png'
 
 const profile_data = {
   username: '@zndrson',
@@ -30,6 +33,17 @@ const general_data = {
   topCategoryPercentage: 'motion graphics 30%',
   bio:
     'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
+}
+
+const mockCardProps: INFTCardProps = {
+  author: 'vanecha',
+  avatarSrc: avatar,
+  imageSrc: image,
+  onSale: true,
+  price: '222K',
+  currencyName: 'PSL',
+  title: 'Infinity I',
+  rarenessPercent: 75,
 }
 
 const categories_options: TOption[] = [
@@ -75,9 +89,6 @@ const Profile = (): JSX.Element => {
           <div className='flex w-full'>
             <div className='flex flex-col items-center lg:justify-between'>
               <ProfileCard {...profile_data} isMyProfile={true} />
-              <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
-                Member Since May 15, 2021
-              </div>
             </div>
             <div className='flex flex-col flex-grow pl-8'>
               {tab === 0 && (
@@ -117,6 +128,11 @@ const Profile = (): JSX.Element => {
                       className='w-113px'
                     />
                   </div>
+                </div>
+                <div className='mt-10 grid grid-cols-3 lg:grid-cols-3 gap-9 text-gray-1a overflow-y-auto pr-33px h-608px'>
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <NFTCard {...mockCardProps} key={i} />
+                  ))}
                 </div>
               </div>
             </div>

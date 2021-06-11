@@ -90,9 +90,12 @@ const ProfileCard = ({
             <img src={svg_envelope} className='mr-9px' />
             Message
           </div>
-          <div className='cursor-pointer text-sm text-blue-3f pt-3 flex items-center justify-center filter hover:contrast-200'>
+          <div className='cursor-pointer text-sm text-blue-3f pt-118px flex items-center justify-center filter hover:contrast-200'>
             <img src={svg_flag} className='mr-2 mt-1' />
             report
+          </div>
+          <div className='text-gray-400 text-sm mt-3 lg:mt-0 text-center'>
+            Member Since May 15, 2021
           </div>
         </div>
       )}

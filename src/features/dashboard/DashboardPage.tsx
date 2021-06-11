@@ -36,9 +36,7 @@ const portfolioItemProps: TPortfolioItemProps = {
 
 const NFTCardProps: INFTCompactCardProps = {
   imageSrc: image,
-  likes: 23,
   title: 'Cosmic Perspective',
-  liked: false,
 }
 
 let notifications = [
