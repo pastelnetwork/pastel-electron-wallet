@@ -14,8 +14,7 @@ const Checkbox: React.FC<TCheckboxProps> = ({
 }) => {
   const [selected, setSelected] = useState(isChecked)
   return (
-    <div className='cursor-pointer select-none'>
-      {children}
+    <div className='cursor-pointer select-none flex items-center'>
       <div
         onClick={() => {
           setSelected(!selected)
@@ -33,6 +32,14 @@ const Checkbox: React.FC<TCheckboxProps> = ({
             !selected ? 'hidden transition-all' : 'transition-all'
           }`}
         />
+      </div>
+      <div
+        className={cn(
+          'text-12px font-medium ml-2',
+          selected ? 'text-gray-11' : 'text-gray-80',
+        )}
+      >
+        {children}
       </div>
     </div>
   )

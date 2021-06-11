@@ -3,13 +3,13 @@ import cn from 'classnames'
 import Rarenessbar from '../Rarenessbar'
 import OnSaleImage from '../../assets/images/on_sale.png'
 
-export interface INFTCompactCardProps {
+export type TNFTCompactCardProps = {
   imageSrc: string
   title: string
   className?: string
 }
 
-export interface INFTCardProps extends INFTCompactCardProps {
+export type TNFTCardProps = TNFTCompactCardProps & {
   author: string
   avatarSrc: string
   price: number | string
@@ -23,8 +23,8 @@ const NFTCard = ({
   title,
   className,
   ...props
-}: INFTCompactCardProps | INFTCardProps): JSX.Element => {
-  const fullCardProps = 'author' in props && (props as INFTCardProps)
+}: TNFTCompactCardProps | TNFTCardProps): JSX.Element => {
+  const fullCardProps = 'author' in props && (props as TNFTCardProps)
 
   const wrapperPaddingClass = fullCardProps ? 'pt-4 pb-17px' : 'pb-18px'
   const titleClass = fullCardProps
