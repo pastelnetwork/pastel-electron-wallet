@@ -149,7 +149,7 @@ const NFTCard = ({
               <span
                 className={`${
                   variant === 'portfolio'
-                    ? 'font-medium leading-6 text-h6 text-gray-91'
+                    ? 'font-medium leading-6 text-h6 text-gray-77'
                     : 'leading-none text-h5 text-gray-71'
                 }`}
               >
