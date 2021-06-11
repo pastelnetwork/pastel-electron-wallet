@@ -3,27 +3,26 @@
   overflow: hidden;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .colLeft {
   width: 32%;
   min-width: 315px;
-  margin-right: 24px;
-  padding: 1.25rem 0 1.25rem 1.25rem;
+  margin-right: 6px;
+  padding: 1.25rem 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
+  padding: 0 18px 0 1.25rem;
   display: flex;
   justify-content: space-between;
 }
 
-.title button {
-  cursor: pointer;
-}
-
-.title button img {
-  cursor: inherit;
-}
-
-.title button {
+.title i {
   width: 40px;
   height: 40px;
   display: inline-flex;
@@ -36,13 +35,16 @@
   cursor: pointer;
 }
 
-.titleBtn button img {
+.titleBtn i img {
   width: 22px;
   height: 22px;
   cursor: inherit;
 }
 
 .chatsList {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 0 18px 0 1.25rem;
 }
 
 .chatRight {
@@ -73,11 +75,19 @@
 
 .chatMenu {
   cursor: pointer;
+  height: 1em;
+  display: flex;
+  align-items: center;
+}
+
+.chatMenu i {
+  cursor: inherit;
 }
 
 .chatMessages {
   flex-grow: 1;
   padding: 0 20px;
+  overflow: auto;
 }
 
 .chatFooter {
@@ -87,21 +97,58 @@
   border: 1px solid #e6e8ec;
   box-sizing: border-box;
   border-radius: 8px;
-  padding: 18px 14px;
+  padding: 10px 14px;
 }
 
 .chatNewMsg {
   flex-grow: 1;
+  margin-right: 15px;
+  position: relative;
+  height: 100%;
+}
+
+.chatNewMsg label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  z-index: 0;
+  color: #b0b7c3;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.chatNewMsg textarea {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  font-weight: 500;
+  font-size: 16px;
+  color: #b0b7c3;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  resize: none;
+}
+
+.chatNewMsg textarea:active,
+.chatNewMsg textarea:focus {
+  outline: none;
 }
 
 .chatMsgBtn {
   cursor: pointer;
-  margin: 0px 26px 0px 0px;
+  margin: 0px 18px 0px 0px;
   cursor: pointer;
 }
 
 .chatMsgBtn img {
   cursor: inherit;
+  width: 24px;
+  height: 24px;
 }
 
 .chatMsgBtnSend {
@@ -231,12 +278,17 @@
   height: 100%;
   background-position: 50%;
   background-size: cover;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #f0f0f0;
 }
 
 .userAvatarSm {
   height: 35px;
   width: 35px;
+}
+
+.userAvatarSm2 {
+  height: 40px;
+  width: 40px;
 }
 
 .unread {
@@ -245,4 +297,19 @@
   display: inline-block;
   background: #45b26b;
   border-radius: 100%;
+}
+
+.chatMessageAttachments {
+  margin-top: 10px;
+}
+
+.oneAttachment {
+  display: inline-block;
+  width: 192px;
+  height: 173px;
+  background: #c4c4c4;
+  border-radius: 15px;
+  background-position: 50%;
+  background-size: cover;
+  cursor: pointer;
 }

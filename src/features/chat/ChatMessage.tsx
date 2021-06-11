@@ -12,10 +12,22 @@ export interface ChatMessageProps {
   date: Date
   // unread: boolean
   direction: number // incoming (1) / outcoming (0)
-  //attachments: ? images only? any files? TODO:
+  attachments?: string[] //images only? any files?
+  onSaveAttachment?: (url: string) => void
 }
 
 export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
+  const prepareFileThumb = (url: string) => {
+    // TODO: default icons for non-images?
+    return url
+  }
+
+  const saveAttachment = (url: string) => {
+    if (props.onSaveAttachment) {
+      props.onSaveAttachment(url)
+    }
+  }
+
   return (
     <div
       className={cx(styles.chatMessage, props.direction ? '' : styles.msgOut)}
@@ -29,7 +41,23 @@ export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
         {props.text && (
           <div className={styles.chatMessageText}>{props.text}</div>
         )}
-        {/* props.attachments && (<div className='chat-message-attachments'>???</div>) */}
+
+        {props.attachments && (
+          <div className={styles.chatMessageAttachments}>
+            {props.attachments.map((att, i) => (
+              <div
+                key={i}
+                className={styles.oneAttachment}
+                onClick={() => saveAttachment(att)}
+              >
+                <i
+                  style={{ backgroundImage: `url(${prepareFileThumb(att)})` }}
+                ></i>
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className={styles.chatMessageTime}>
           {chatMsgDatetime(props.date)}
         </div>
