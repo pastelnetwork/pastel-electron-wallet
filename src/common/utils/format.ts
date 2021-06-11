@@ -7,5 +7,5 @@ export const parseFormattedNumber = (input: string, delimiter = ','): number =>
   parseFloat(input.replaceAll(delimiter, ''))
 
 export const chatMsgDatetime = (val: Date): string => {
-  return dateformat(val, 'hh::MM') // TODO: change if another format required
+  return dateformat(val, 'hh:MM') // TODO: change if another format required
 }

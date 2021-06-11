@@ -1,0 +1,248 @@
+.chat {
+  background: #fcfcfd;
+  overflow: hidden;
+}
+
+.colLeft {
+  width: 32%;
+  min-width: 315px;
+  margin-right: 24px;
+  padding: 1.25rem 0 1.25rem 1.25rem;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title button {
+  cursor: pointer;
+}
+
+.title button img {
+  cursor: inherit;
+}
+
+.title button {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  border-radius: 100%;
+  margin: 3px 3px 10px 3px;
+  box-shadow: 0px 3px 8px #e0e0e0;
+  cursor: pointer;
+}
+
+.titleBtn button img {
+  width: 22px;
+  height: 22px;
+  cursor: inherit;
+}
+
+.chatsList {
+}
+
+.chatRight {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /*
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(100px);
+  */
+}
+
+.chatHeader {
+  background: #fff;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.1);
+}
+
+.chatTitle {
+  flex-grow: 1;
+  font-weight: 800;
+  font-size: 18px;
+  color: #4a5568;
+}
+
+.chatMenu {
+  cursor: pointer;
+}
+
+.chatMessages {
+  flex-grow: 1;
+  padding: 0 20px;
+}
+
+.chatFooter {
+  display: flex;
+  align-items: center;
+  margin: 15px 20px;
+  border: 1px solid #e6e8ec;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 18px 14px;
+}
+
+.chatNewMsg {
+  flex-grow: 1;
+}
+
+.chatMsgBtn {
+  cursor: pointer;
+  margin: 0px 26px 0px 0px;
+  cursor: pointer;
+}
+
+.chatMsgBtn img {
+  cursor: inherit;
+}
+
+.chatMsgBtnSend {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
+
+.chatMsgBtnSend img {
+  cursor: inherit;
+  width: 100%;
+  height: 100%;
+}
+
+.chatMessage {
+  display: flex;
+  margin-top: 20px;
+}
+
+.chatMessageContent {
+}
+
+.chatMessageTime {
+  margin-top: 10px;
+  font-weight: 500;
+  font-size: 10px;
+  color: #b0b7c3;
+}
+
+.chatMessageText {
+  background: #f4f3fd;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 12px;
+  color: #38385e;
+  padding: 16px;
+}
+
+.msgOut {
+  justify-content: flex-end;
+}
+
+.msgOut .userAvatar {
+  order: 3;
+  margin-right: 0px;
+  margin-left: 18px;
+}
+
+.msgOut .chatMessageTime {
+  text-align: right;
+}
+
+.msgOut .chatMessageText {
+  background: #f9f9fb;
+}
+
+.chatItem {
+  background: #ffffff;
+  box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin: 12px 0px 0px 0px;
+  padding: 6px 14px;
+  display: flex;
+  cursor: pointer;
+}
+
+.chatItemAvatar {
+  display: flex;
+  align-items: center;
+}
+
+.chatItemContent {
+  flex-grow: 1;
+  min-width: 0; /* trick to make working text ellipsis in child tags */
+}
+
+.chatItemTime {
+  font-size: 12px;
+  text-align: right;
+  color: #c1c7d0;
+}
+
+.chatItemTitle {
+  font-weight: 800;
+  font-size: 16px;
+  color: #4a5568;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatItemText {
+  color: #a0aec0;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatItemUnread {
+  text-align: right;
+  line-height: 6px;
+  height: 6px;
+}
+
+.userAvatar {
+  position: relative;
+  margin-right: 18px;
+  height: 47px;
+  width: 47px;
+}
+
+.userAvatar .unread {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  z-index: 2;
+}
+
+.userAvatar i {
+  display: inline-block;
+  border-radius: 100%;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-position: 50%;
+  background-size: cover;
+  border: 1px solid #e0e0e0;
+}
+
+.userAvatarSm {
+  height: 35px;
+  width: 35px;
+}
+
+.unread {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  background: #45b26b;
+  border-radius: 100%;
+}
