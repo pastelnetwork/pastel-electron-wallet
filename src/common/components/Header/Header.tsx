@@ -1,5 +1,5 @@
-import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
 import addBtn from '../../../common/assets/icons/ico-addbtn.png'
@@ -68,9 +68,25 @@ const Icon = ({ src, background, notification }: TIconProps) => {
   )
 }
 
+const checkUrlForHide = (url: string) => {
+  return [routes.CHAT].includes(url)
+}
+
 export default function Header(): JSX.Element {
+  const location = useLocation()
+  let isHidden = checkUrlForHide(location.pathname)
+
+  useEffect(() => {
+    isHidden = checkUrlForHide(location.pathname)
+  }, [location])
+
   return (
-    <div className='page-container flex-shrink-0 flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed'>
+    <div
+      className={cn(
+        'page-container flex-shrink-0 flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed',
+        isHidden ? 'hidden' : '',
+      )}
+    >
       <Link to={routes.DASHBOARD} className='w-36px h-36px'>
         <img src={Logo} alt='logo' />
       </Link>

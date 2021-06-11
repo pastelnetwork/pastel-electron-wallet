@@ -1,6 +1,6 @@
 import React /*, { CSSProperties }*/ from 'react'
 import { chatMsgDatetime } from '../../common/utils/format'
-import cx from 'classnames'
+import cn from 'classnames'
 import styles from './Chat.module.css'
 
 export interface ChatMessageProps {
@@ -30,9 +30,9 @@ export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
 
   return (
     <div
-      className={cx(styles.chatMessage, props.direction ? '' : styles.msgOut)}
+      className={cn(styles.chatMessage, props.direction ? '' : styles.msgOut)}
     >
-      <div className={cx(styles.userAvatar, styles.userAvatarSm)}>
+      <div className={cn(styles.userAvatar, styles.userAvatarSm)}>
         {props.showAvatar && (
           <i style={{ backgroundImage: `url(${props.sender.avatar})` }}></i>
         )}
