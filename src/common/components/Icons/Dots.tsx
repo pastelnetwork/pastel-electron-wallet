@@ -1,16 +1,15 @@
 import React from 'react'
+import { TIconProps } from './iconProps'
 
-export type TDotsProps = {
-  size: number
+export type TDotsProps = TIconProps & {
   vertical?: boolean
-  className?: string
 }
 
-export default function Dots({
+export const Dots: React.FC<TDotsProps> = ({
   size,
   className,
   vertical = false,
-}: TDotsProps): JSX.Element {
+}) => {
   const style = vertical === true ? { transform: 'rotate(90deg)' } : undefined
 
   return (

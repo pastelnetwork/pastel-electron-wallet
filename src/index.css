@@ -1,15 +1,16 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
 @import '@fortawesome/fontawesome-free/css/all.css';
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'typeface-roboto/index.css';
-@import '/src/common/assets/fonts/font.css';
+@import 'common/assets/fonts/font.css';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'simplebar/src/simplebar.css';
+
 @tailwind base;
 
 @layer base {
+  body {
+    font-family: Avenir, Roboto, Arial, serif;
+  }
+
   h1 {
     @apply text-h1 leading-10 font-extrabold;
   }
@@ -48,9 +49,6 @@
   .wrapper {
     @apply px-60px;
   }
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
 
   .paper {
     @apply bg-white shadow-44px rounded-lg border border-gray-e7;
@@ -59,27 +57,42 @@
   .page-container {
     @apply px-20px md:px-30px lg:px-60px;
   }
+
+  .btn-primary,
+  .btn-primary-outline {
+    @apply h-10 flex-center font-extrabold rounded-full select-none;
+  }
+
+  .btn-primary {
+    @apply bg-blue-3f text-neutrals-8 hover:bg-button-hover;
+  }
+
+  .btn-primary:active {
+    @apply bg-button-pressed;
+  }
+
+  .btn-primary-outline {
+    @apply border border-blue-3f text-blue-3f hover:border-button-hover hover:text-button-hover;
+  }
+
+  .btn-primary-outline:active {
+    @apply border-button-pressed text-button-pressed;
+  }
+
+  .btn-primary:disabled {
+    @apply bg-gray-cd hover:bg-gray-cd cursor-not-allowed;
+  }
 }
 
 @tailwind utilities;
 
-@import '@fortawesome/fontawesome-free/css/all.css';
-@import 'typeface-roboto/index.css';
-@import '/src/common/assets/fonts/font.css';
-
-html {
-  overflow: hidden;
-}
-html,
-body,
-#root {
-  min-height: 100vh;
-  height: 100%;
-}
-
 @layer utilities {
   .flex-center {
     @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
   }
 
   .text-gradient {
@@ -92,6 +105,16 @@ body,
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+}
+
+html {
+  overflow: hidden;
+}
+html,
+body,
+#root {
+  min-height: 100vh;
+  height: 100%;
 }
 
 /* VERTICAL SCROLLBAR */
@@ -240,6 +263,10 @@ input[type='number']::-webkit-outer-spin-button {
   visibility: visible;
 }
 
+.focus-visible:focus-visible {
+  @apply border border-blue-3f;
+}
+
 ::-webkit-scrollbar {
   width: 3px;
   -webkit-border-radius: 3px;
@@ -259,9 +286,6 @@ input[type='number']::-webkit-outer-spin-button {
 ::-webkit-scrollbar-track {
   background-color: rgba(196, 196, 196, 0.2);
   border-radius: 3px;
-}
-.focus-visible:focus-visible {
-  @apply border border-blue-3f;
 }
 
 .widget-ratings {

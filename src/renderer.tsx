@@ -39,6 +39,7 @@ import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
+import { ToastContainer } from 'react-toastify'
 
 const oneHour = 1000 * 60 * 60
 /**
@@ -66,6 +67,7 @@ try {
 const application = (
   <Provider store={store}>
     <Root />
+    <ToastContainer hideProgressBar autoClose={5000} />
   </Provider>
 )
 
