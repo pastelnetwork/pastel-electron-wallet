@@ -84,7 +84,7 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
     'r',
   )
   const stat = await file.stat()
-  if (stat.birthtimeMs > +new Date('2021-06-01')) {
+  if (stat.birthtimeMs > +new Date('2021-06-10')) {
     return await fs.promises.readFile(
       path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
     )
