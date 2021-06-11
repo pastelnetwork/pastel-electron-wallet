@@ -291,6 +291,7 @@ module.exports = {
         fit: 'fit-content',
       },
       maxWidth: {
+        '278px': '17.375rem',
         '478px': '29.875rem',
         '690px': '43.125rem',
         fit: 'fit-content',
