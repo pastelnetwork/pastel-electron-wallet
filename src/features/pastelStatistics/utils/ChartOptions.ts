@@ -590,17 +590,8 @@ export function getThemeUpdateOption(args: TThemeInitOption): EChartsOption {
       textStyle: {
         color: theme?.color,
       },
-      xAxis: {
-        splitLine: {
-          show: false,
-          lineStyle: {
-            color: theme?.splitLineColor,
-          },
-        },
-      },
       yAxis: {
         splitLine: {
-          show: false,
           lineStyle: {
             color: theme?.splitLineColor,
           },

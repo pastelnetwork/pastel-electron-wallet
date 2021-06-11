@@ -51,7 +51,6 @@ import {
   averageFilterByDailyPeriodQuery,
   averageFilterByMonthlyPeriodQuery,
   averageFilterByYearlyPeriodQuery,
-  transactionFeeDailyQuery,
   countIdByDailyPeriodQuery,
   groupbyDaily,
   groupByMonthly,
@@ -1007,36 +1006,4 @@ export function insertBlockChainInfo(
     }
     pastelDB.exec(insertBlockChainInfoQuery, values)
   }
-}
-
-export function getTransactionAverageFeeDataFromDB(
-  pastelDB: Database,
-  tableName: string,
-  period: string,
-): QueryExecResult[] {
-  if (tableNames[tableName] !== true) {
-    throw new Error(
-      `pastelDB getTransactionAverageFeeDataFromDB error: ${tableName} is invalid table name`,
-    )
-  }
-
-  let duration = 0
-  let sqlText = ''
-
-  let whereSqlText = ' '
-  if (period !== 'all') {
-    if (period === '30d') {
-      duration = 30 * 24
-    } else if (period === '180d') {
-      duration = 180 * 24
-    } else if (period === '1y') {
-      duration = 360 * 24
-    }
-    const time_stamp = Date.now() - duration * 60 * 60 * 1000
-    whereSqlText = ` where create_timestamp > ${time_stamp} `
-  }
-  sqlText = transactionFeeDailyQuery + tableName + whereSqlText + groupbyDaily
-
-  const sqlResult = pastelDB.exec(sqlText)
-  return sqlResult
 }

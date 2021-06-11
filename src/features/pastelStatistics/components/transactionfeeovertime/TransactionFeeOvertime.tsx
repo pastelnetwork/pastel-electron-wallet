@@ -36,7 +36,10 @@ const TransactionFeeOvertime = (
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TLineChartData>()
+  ] = useState<TLineChartData>({
+    dataX: [],
+    dataY: [],
+  })
 
   useEffect(() => {
     const loadLineChartData = async () => {
