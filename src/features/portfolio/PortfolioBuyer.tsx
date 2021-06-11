@@ -182,6 +182,51 @@ const mockNFTCard: INFTCardProps[] = [
     isLastBid: true,
     hideLikeButton: true,
   },
+  {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolio1,
+    likes: 23,
+    onSale: true,
+    price: '222K',
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective',
+    liked: true,
+    percentage: 75,
+    variant: 'portfolio',
+    isLastBid: true,
+    hideLikeButton: true,
+  },
+  {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolio1,
+    likes: 23,
+    onSale: true,
+    price: '222K',
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective',
+    liked: true,
+    percentage: 75,
+    variant: 'portfolio',
+    isLastBid: true,
+    hideLikeButton: true,
+  },
+  {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolio1,
+    likes: 23,
+    onSale: true,
+    price: '222K',
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective',
+    liked: true,
+    percentage: 75,
+    variant: 'portfolio',
+    isLastBid: true,
+    hideLikeButton: true,
+  },
 ]
 
 const mockBreadcrumbs: TBreadcrumbProps[] = [
@@ -332,7 +377,7 @@ export default function PortfolioBuyer(): JSX.Element {
           <div
             className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
           >
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-40px gap-y-61px'>
+            <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-40px gap-y-61px'>
               {mockNFTCard?.map((nftItem, index) => (
                 <NFTCard {...nftItem} key={index} hideFollow />
               ))}
