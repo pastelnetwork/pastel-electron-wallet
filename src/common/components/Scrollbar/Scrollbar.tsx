@@ -2,14 +2,15 @@ import React, { ReactNode } from 'react'
 import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
 
-export type TScrollBar = {
+export type TScrollbar = {
   maxHeight?: number | string
   hasPageHeader?: boolean
   className?: string
   autoHide?: boolean
   [x: string]: ReactNode | string | undefined
 }
-const Scrollbar: React.FC<TScrollBar> = ({
+
+const Scrollbar: React.FC<TScrollbar> = ({
   children,
   maxHeight,
   className,
@@ -39,7 +40,9 @@ const Scrollbar: React.FC<TScrollBar> = ({
     </SimpleBar>
   )
 }
+
 Scrollbar.defaultProps = {
   autoHide: true,
 }
+
 export default Scrollbar

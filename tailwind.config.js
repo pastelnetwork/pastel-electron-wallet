@@ -97,20 +97,26 @@ module.exports = {
         '478px': '29.875rem',
       },
       colors: {
+        link: '#3F9AF7',
+        white: '#FFFFFF',
+        transparent: 'transparent',
+        text: {
+          DEFAULT: '#171F46',
+        },
         success: {
-          default: '#00D097',
+          DEFAULT: '#00D097',
           pressed: '#00B282',
           hover: '#00C28D',
           background: '#E0F9F2',
         },
         warning: {
-          default: '#FA9501',
+          DEFAULT: '#FA9501',
           pressed: '#E88A00',
           hover: '#FFA21B',
           background: '#FEF0DC',
         },
         error: {
-          default: '#DA8AB8',
+          DEFAULT: '#DA8AB8',
           pressed: '#C85195',
           hover: '#CE64A1',
           background: '#FAEFF5',
@@ -122,10 +128,12 @@ module.exports = {
         gray: {
           a6: '#A6B0C2',
           a0: '#A0AEC0',
+          a6: '#A6B0C2',
           71: '#718096',
           '4a': '#4A5568',
           '2d': '#2D3748',
           '1a': '#1A202C',
+          '8e': '#8e98a3',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           fc: '#FCFCFD',
@@ -169,12 +177,16 @@ module.exports = {
           38: '#38CB89',
         },
         button: {
+          DEFAULT: '#3F9AF7',
           pressed: '#0E80F5',
           hover: '#278DF6',
+          background: '#F2F2F2',
           text: '#8E98A3',
+          hoverAlt: '#F0F7FE',
+          pressedAlt: '#E7F2FD',
         },
         navigation: {
-          default: '#A6B0C2',
+          DEFAULT: '#A6B0C2',
           selected: '#334D6E',
           background: '#E6E8EC',
         },
@@ -183,10 +195,10 @@ module.exports = {
           hover: '#F4F5F6',
         },
         line: {
-          default: '#F2F4F7',
+          DEFAULT: '#F2F4F7',
         },
         icon: {
-          default: '#8E98A3',
+          DEFAULT: '#8E98A3',
           active: '#334D6E',
         },
         background: {
@@ -230,6 +242,11 @@ module.exports = {
         '26px': '1.625rem',
         '32px': '2rem',
         '14px': '0.875rem',
+      },
+      fontWeight: {
+        roman: '400',
+        medium: '500',
+        heavy: '800',
       },
       borderRadius: {
         '4px': '0.25rem',
@@ -282,6 +299,8 @@ module.exports = {
   },
   variants: {
     extend: {
+      textColor: ['active'],
+      backgroundColor: ['active'],
       contrast: ['hover', 'focus'],
     },
   },
