@@ -293,7 +293,7 @@ export default function PortfolioLiked(): JSX.Element {
         sortByTextClassName='font-medium text-gray-2d leading-4'
       />
       <div className='wrapper px-33px'>
-        <div className='flex items-center xl:justify-between flex-col xl:flex-row mt-30px mb-30px px-33px'>
+        <div className='flex items-center xl:justify-between flex-col xl:flex-row mt-30px mb-30px px-27px'>
           <div className='flex items-center w-full xl:w-auto'>
             {filterOptions.map(option => (
               <div className='mr-24px' key={option.label}>
