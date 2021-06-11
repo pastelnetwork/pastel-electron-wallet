@@ -128,7 +128,7 @@ const Header = (props: PropsType) => {
     },
     {
       name: 'Portfolio',
-      routeName: routes.PORTFOLIO_BUYER,
+      routeName: routes.PORTFOLIO_LIKED,
       currentRoute: location.pathname,
     },
   ]

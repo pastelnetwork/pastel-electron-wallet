@@ -20,6 +20,8 @@ export interface PageHeaderProps {
   sortByOptions?: PageHeaderSortByOptions[]
   variant?: string
   breadcrumbs?: TBreadcrumbProps[]
+  sortByText?: string
+  sortByTextClassName?: string
 }
 
 /**
@@ -27,7 +29,15 @@ export interface PageHeaderProps {
  * State should be handled by parent component.
  */
 const PageHeader = (props: PageHeaderProps): JSX.Element => {
-  const { title, routes, sortByOptions, breadcrumbs, variant } = props
+  const {
+    title,
+    routes,
+    sortByOptions,
+    breadcrumbs,
+    variant,
+    sortByText,
+    sortByTextClassName = '',
+  } = props
 
   const renderBreadcrumbs = () => {
     if (!breadcrumbs) {
@@ -76,14 +86,8 @@ const PageHeader = (props: PageHeaderProps): JSX.Element => {
             </div>
             {sortByOptions?.length && (
               <div className='flex items-center'>
-                <p
-                  className={`pr-4 text-h5 ${
-                    variant === 'portfolio'
-                      ? 'font-medium text-gray-2d leading-4 hidden md:block'
-                      : ''
-                  }`}
-                >
-                  Sort by
+                <p className={`pr-4 text-h5 ${sortByTextClassName}`}>
+                  {sortByText || 'Sort by'}
                 </p>
                 <div className='flex space-x-6'>
                   {sortByOptions.map(item => (

@@ -1,3 +1,3 @@
-import PortfolioBuyer from './PortfolioBuyer'
+import PortfolioLiked from './PortfolioLiked'
 
-export { PortfolioBuyer }
+export { PortfolioLiked }

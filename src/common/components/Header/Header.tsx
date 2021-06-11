@@ -118,7 +118,7 @@ export default function Header(): JSX.Element {
         </MenuItem>
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
-          to={routes.ADDRESSBOOK}
+          to={routes.PORTFOLIO_LIKED}
         >
           Portfolio
         </MenuItem>
