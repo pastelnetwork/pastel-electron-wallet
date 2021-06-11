@@ -11,6 +11,7 @@ export interface INFTCompactCardProps {
   liked: boolean
   className?: string
   hideFollow?: boolean
+  hideLikeButton?: boolean
   percentage?: number
   variant?: string
   isLastBid?: boolean
@@ -34,6 +35,7 @@ const NFTCard = ({
   percentage,
   variant,
   isLastBid,
+  hideLikeButton,
   ...props
 }: INFTCompactCardProps | INFTCardProps): JSX.Element => {
   const fullCardProps = 'author' in props && (props as INFTCardProps)
@@ -120,24 +122,26 @@ const NFTCard = ({
           >
             {title}
           </div>
-          <span className='flex-center'>
-            {variant === 'portfolio' ? (
-              <i
-                className={cn(
-                  'fa-heart',
-                  liked ? 'text-red-6f fas' : 'text-gray-400 far',
-                )}
-              />
-            ) : (
-              <i
-                className={cn(
-                  'far fa-heart',
-                  liked ? 'text-error' : 'text-gray-400',
-                )}
-              />
-            )}
-            <span className='pl-6px text-gray-4a text-h6'>{likes}</span>
-          </span>
+          {!hideLikeButton ? (
+            <span className='flex-center'>
+              {variant === 'portfolio' ? (
+                <i
+                  className={cn(
+                    'fa-heart',
+                    liked ? 'text-red-6f fas' : 'text-gray-400 far',
+                  )}
+                />
+              ) : (
+                <i
+                  className={cn(
+                    'far fa-heart',
+                    liked ? 'text-error' : 'text-gray-400',
+                  )}
+                />
+              )}
+              <span className='pl-6px text-gray-4a text-h6'>{likes}</span>
+            </span>
+          ) : null}
         </div>
         {fullCardProps && (
           <div

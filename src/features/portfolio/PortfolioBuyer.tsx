@@ -6,6 +6,7 @@ import PageHeader, {
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 import Select, { TOption } from '../../common/components/Select/Select'
 import NFTCard, { INFTCardProps } from '../../common/components/NFTCard'
+import Slider from '../../common/components/Slider/Slider'
 
 import styles from './Portfolio.module.css'
 
@@ -20,6 +21,7 @@ const mockOptions: TOption[] = [
   { value: 'option_2', label: 'Option 2' },
   { value: 'option_3', label: 'Option 3' },
 ]
+
 const mockCategories: TOption[] = [
   { value: 'AI', label: 'AI' },
   { value: 'option_2', label: 'Option 2' },
@@ -58,6 +60,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -72,6 +75,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 55,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -86,6 +90,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -100,6 +105,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -114,6 +120,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -128,6 +135,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -142,6 +150,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -156,6 +165,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
   {
     author: 'zndrson',
@@ -170,6 +180,7 @@ const mockNFTCard: INFTCardProps[] = [
     percentage: 75,
     variant: 'portfolio',
     isLastBid: true,
+    hideLikeButton: true,
   },
 ]
 
@@ -183,44 +194,30 @@ const mockBreadcrumbs: TBreadcrumbProps[] = [
     route: '#',
   },
   {
-    label: 'Buyer',
+    label: 'Owned',
   },
 ]
 
 export default function PortfolioBuyer(): JSX.Element {
   const [selectedItem, setSelectedItem] = useState(2)
-  const [price, setPrice] = useState<TOption | null>(null)
+  const [filter, setFilter] = useState<TOption | null>(null)
   const [likes, setLikes] = useState<TOption | null>(null)
 
   const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
     {
-      placeholder: 'Price',
-      selected: price,
-      onOptionChange: setPrice,
-      options: mockOptions,
-    },
-    {
-      placeholder: 'Likes',
-      selected: likes,
-      onOptionChange: setLikes,
+      placeholder: 'In review (87)',
+      selected: filter,
+      onOptionChange: setFilter,
       options: mockOptions,
     },
   ]
 
-  const categories = [
-    {
-      name: 'Bookmarked',
-      totalItem: 87,
-    },
-    {
-      name: 'Buying',
-      totalItem: 1,
-    },
-    {
-      name: 'Bought',
-      totalItem: 9,
-    },
-  ]
+  const sortByOptions: PageHeaderSortByOptions = {
+    placeholder: 'Likes',
+    selected: likes,
+    onOptionChange: setLikes,
+    options: mockOptions,
+  }
 
   // Filters
   const [category, setCategory] = useState<TOption | null>(mockCategories[0])
@@ -281,6 +278,9 @@ export default function PortfolioBuyer(): JSX.Element {
     onToggle: setSelectedItem,
   }
 
+  const [range, setRange] = useState<[number, number]>([400, 700])
+  const formatValue = (value: number) => `${value}k`
+
   return (
     <div>
       <PageHeader
@@ -289,44 +289,54 @@ export default function PortfolioBuyer(): JSX.Element {
         sortByOptions={pageHeaderSortByOptions}
         variant='portfolio'
         breadcrumbs={mockBreadcrumbs}
+        sortByText='Filter by'
+        sortByTextClassName='font-medium text-gray-2d leading-4'
       />
-      <div className='wrapper'>
-        <div className='flex'>
-          <div className='w-9/12 md:w-full'>
-            <div className='flex items-center mt-30px mb-30px'>
-              {filterOptions.map(option => (
-                <div className='mr-24px' key={option.label}>
-                  <Select {...option} />
-                </div>
-              ))}
-            </div>
-            <div
-              className={`${styles.portfolioContent} overflow-y-auto pr-28px pb-16px`}
-            >
-              <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-30px gap-y-29px'>
-                {mockNFTCard?.map((nftItem, index) => (
-                  <NFTCard {...nftItem} key={index} hideFollow />
-                ))}
+      <div className='wrapper px-33px'>
+        <div className='flex items-center xl:justify-between flex-col xl:flex-row mt-30px mb-30px px-27px'>
+          <div className='flex items-center w-full xl:w-auto'>
+            {filterOptions.map(option => (
+              <div className='mr-24px' key={option.label}>
+                <Select {...option} />
+              </div>
+            ))}
+          </div>
+          <div className='flex items-center xl:justify-between mt-30px xl:mt-0 w-full xl:w-auto'>
+            <div className='flex items-center mr-24px'>
+              <p className='pr-4 text-h5'>Sort by</p>
+              <div className='flex space-x-6'>
+                <Select
+                  placeholder={sortByOptions.placeholder}
+                  options={sortByOptions.options}
+                  selected={sortByOptions.selected}
+                  onChange={sortByOptions.onOptionChange}
+                  className='min-w-118px'
+                />
               </div>
             </div>
+            <div className='flex h-full items-center justify-end max-w-278px'>
+              <p className='text-h6 pr-12px text-gray-2d'>Price:</p>
+              <Slider
+                min={100}
+                max={999}
+                hideLabel
+                values={range}
+                onChange={setRange}
+                formatValue={formatValue}
+                formatTooltipValue={formatValue}
+              />
+            </div>
           </div>
-          <div className='mt-90px w-196px ml-36px'>
-            <p className='text-h5 leading-3 font-medium text-gray-42 pl-12px'>
-              Filter by:
-            </p>
-            <ul className='mt-20px'>
-              {categories?.map((category, index) => (
-                <li key={index} className='list-none mb-8px'>
-                  <span
-                    className={`font-medium cursor-pointer text-h5 leading-none py-8px px-12px rounded-8px inline-block ${
-                      index === 0 ? 'text-gray-2d bg-gray-26' : 'text-gray-a0'
-                    } hover:text-gray-2d hover:bg-gray-26`}
-                  >
-                    {category.name} ({category.totalItem})
-                  </span>
-                </li>
+        </div>
+        <div className='w-full'>
+          <div
+            className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
+          >
+            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-40px gap-y-61px'>
+              {mockNFTCard?.map((nftItem, index) => (
+                <NFTCard {...nftItem} key={index} hideFollow />
               ))}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
