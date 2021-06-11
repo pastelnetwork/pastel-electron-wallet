@@ -523,5 +523,7 @@ export const groupByMonthly =
 export const groupByYearly =
   "GROUP BY strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch'))"
 
+export const transactionFeeDailyQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+  SUM(fee) FROM `
 export const countIdByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
 COUNT(id) from `

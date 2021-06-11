@@ -4,6 +4,7 @@ import PSLPrice from '../assets/images/pslprice.jpg'
 import Hashrate from '../assets/images/hashrate.jpg'
 import Nettotals from '../assets/images/nettotals.jpg'
 import Mempoolsize from '../assets/images/mempoolsize.jpg'
+import TransactionFee from '../assets/images/transactionfee.jpg'
 import TransactionsPerSecond from '../assets/images/transactionspersecond.jpg'
 import TransactionsInBlock from '../assets/images/transactionsinblock.jpg'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
@@ -39,6 +40,11 @@ export const pastelChartFields = [
     name: 'Mempool Size',
     routeName: '/statistics/mempoolsizeovertime',
     backgroundImage: Mempoolsize,
+  },
+  {
+    name: 'Transaction Fee',
+    routeName: '/statistics/transactionfeeovertime',
+    backgroundImage: TransactionFee,
   },
   {
     name: 'Transactions Per Second',
@@ -93,6 +99,10 @@ export const csvHeaders: TCsvHeaderType = {
   mempoolsize: commonCsvFields,
   networktotals: [
     { label: 'Receive, Sent', key: 'value' },
+    { label: 'Created time', key: 'time' },
+  ],
+  transactionfee: [
+    { label: 'Transaction Fee', key: 'value' },
     { label: 'Created time', key: 'time' },
   ],
   transactionsinblock: [

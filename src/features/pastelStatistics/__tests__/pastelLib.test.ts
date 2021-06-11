@@ -59,6 +59,10 @@ describe('managePastelDatabase', () => {
     [2, 1621518133357],
   ]
 
+  const mockTransactionFees = [
+    [1, 'txid1', 1, 0.0539, 0, 0, 0, 0, '', 1621518133277],
+    [2, 'txid2', 2, 0.0705, 0, 0, 0, 0, '', 1621518133357],
+  ]
   const mockTransactionsInBlock = [
     [
       1,
@@ -254,6 +258,26 @@ describe('managePastelDatabase', () => {
       dataX: [],
     })
   })
-})
 
-export {}
+  test('transformTransactionFee function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformTransactionFee(
+      mockTransactionFees,
+      '2h',
+    )
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      dataX: [
+        '2021-05-20T13:42:13.277Z UTC (MockDate: GMT-0700)',
+        '2021-05-20T13:42:13.357Z UTC (MockDate: GMT-0700)',
+      ],
+      dataY: [0.0539, 0.0705],
+    })
+  })
+})
