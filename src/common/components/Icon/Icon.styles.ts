@@ -6,13 +6,21 @@ export const IconContainer = styled.div<{ $variant: string }>`
   height: ${({ $variant }) => ($variant == 'background' ? '40px' : '24px')};
   margin-top: 1px;
   ${({ $variant }) =>
-    $variant == 'background' &&
+    $variant == 'center' &&
     css`
-      background-color: #f8f8fa;
-      border-radius: 50%;
+      margin-top: 0px;
       display: flex;
       justify-content: center;
       align-items: center;
+    `}
+  ${({ $variant }) =>
+    $variant == 'background' &&
+    css`
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f8f8fa;
+      border-radius: 50%;
       margin-bottom: 5px;
     `}
 `
