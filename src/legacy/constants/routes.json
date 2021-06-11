@@ -17,6 +17,7 @@
   "MEMPOOLSIZEOVERTIME": "/statistics/mempoolsizeovertime",
   "NETWORKTOTALSOVERTIME": "/statistics/networktotalsovertime",
   "DIFFICULTYOVERTIME": "/statistics/difficultyovertime",
+  "TRANSACTIONFEEOVERTIME": "/statistics/transactionfeeovertime",
   "TRANSACTIONSPERSECONDOVERTIME": "/statistics/transactionpersecondovertime",
   "TRANSACTIONSINBLOCKOVERTIME": "/statistics/transactionsinblockovertime",
   "CREATOR": "/creator",
