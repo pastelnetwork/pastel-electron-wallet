@@ -46,7 +46,7 @@ export default function Comments(): JSX.Element {
     <div className='flex-grow flex flex-col'>
       <div className='font-extrabold text-sm text-gray-a1 mb-18px'>
         Latest comments{' '}
-        <span className='text-gray-600'>
+        <span className='text-gray-71'>
           ({commentsPerPageCount} of {commentsCount})
         </span>
       </div>
@@ -58,7 +58,7 @@ export default function Comments(): JSX.Element {
       <div className='flex-grow' />
       <div className='py-6 text-center'>
         <Link to='#' className='link font-extrabold text-xs leading-3'>
-          Check all comments
+          All comments
         </Link>
       </div>
     </div>

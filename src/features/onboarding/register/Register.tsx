@@ -3,9 +3,8 @@ import { useHistory } from 'react-router-dom'
 import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
 
 import Typography from '../../../common/components/Typography/Typography'
-import { Button } from '../../../common/components/Button/Button.styles'
 import { colors } from '../../../common/theme/colors'
-import NavigationButton from '../../../common/components/Button/Button'
+import { Button } from '../../../common/components/Buttons'
 import OnboardingSteps from '../../../common/components/OnboardingSteps/OnboardingSteps'
 
 import icoArrowLeft from '../../../common/assets/icons/ico-arrow-left.svg'
@@ -84,7 +83,7 @@ const Register: React.FC = () => {
           <Styles.StepsButtonsContainer>
             <Button
               onClick={handleNextStepChange}
-              $variant='default'
+              variant='default'
               width='130px'
             >
               {isLastStep
@@ -92,12 +91,9 @@ const Register: React.FC = () => {
                 : `Next step ${activeStep + 1}`}
             </Button>
             {!isFirstStep && (
-              <NavigationButton
-                onClick={handlePrevStepChange}
-                variant='navigation'
-              >
+              <Button onClick={handlePrevStepChange} variant='navigation'>
                 <img src={icoArrowLeft} />
-              </NavigationButton>
+              </Button>
             )}
           </Styles.StepsButtonsContainer>
         </Styles.FormContainer>

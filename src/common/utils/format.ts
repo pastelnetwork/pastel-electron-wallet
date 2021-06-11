@@ -31,3 +31,13 @@ export const formatDatesDistance = (from: Dayjs, to: Dayjs): string => {
 
   return result.join(' ')
 }
+
+// convert string to title case -> Convert String To Title Case
+export const formatToTitleCase = (string: string): string =>
+  string.replace(
+    /\w\S*/g,
+    word =>
+      word.charAt(0).toLocaleUpperCase() + word.substr(1).toLocaleLowerCase(),
+  )
+
+export const formatDate = (time: Dayjs): string => time.format('MM/DD/YY')

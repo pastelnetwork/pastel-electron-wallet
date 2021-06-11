@@ -16,7 +16,7 @@ export default function Button({
     <button
       type='button'
       className={cn(
-        'flex-center border-2 p-2 lg:p-3 text-sm rounded h-10 whitespace-nowrap bg-gray-f8',
+        'flex-center border-2 p-2 lg:p-3 text-sm rounded h-38px whitespace-nowrap bg-gray-f8',
         className,
       )}
       onClick={onClick}

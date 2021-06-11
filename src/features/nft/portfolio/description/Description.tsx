@@ -2,7 +2,7 @@ import React from 'react'
 import { TNFT } from 'features/nft/Nft.types'
 import { useToggle } from 'react-use'
 import cn from 'classnames'
-import style from 'features/nft/portfolio/description/Description.module.css'
+import style from './Description.module.css'
 
 type TDescriptionProps = {
   nft: TNFT
@@ -13,10 +13,10 @@ export default function Description({ nft }: TDescriptionProps): JSX.Element {
 
   return (
     <div>
-      <div className='font-extrabold text-sm text-gray-900'>Description</div>
+      <div className='font-extrabold text-sm text-gray-1a'>Description</div>
       <div
         className={cn(
-          'my-3 font-medium text-sm text-gray-700',
+          'my-3 font-medium text-sm text-gray-4a',
           !showFullText && style.clampText,
         )}
       >

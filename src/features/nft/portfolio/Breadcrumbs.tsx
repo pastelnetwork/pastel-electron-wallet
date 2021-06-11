@@ -10,12 +10,12 @@ export type TBreadcrumbsProps = {
 
 export default function Breadcrumbs({ items }: TBreadcrumbsProps): JSX.Element {
   return (
-    <div className='page-container h-35px flex items-center text-gray-600 text-sm'>
+    <div className='page-container h-35px flex items-center text-gray-71 text-sm'>
       {items.map((item, i) => (
         <React.Fragment key={i}>
           {i !== 0 && <div className='mx-1'>/</div>}
           {item.link && (
-            <Link to={item.link} className='hover:text-gray-800'>
+            <Link to={item.link} className='hover:text-gray-2d'>
               {item.title}
             </Link>
           )}

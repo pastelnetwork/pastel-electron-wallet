@@ -1,18 +1,18 @@
 import React from 'react'
-import { TNFT } from 'features/nft/Nft.types'
+import { TNFT } from '../Nft.types'
 import dayjs from 'dayjs'
 import Breadcrumbs from './Breadcrumbs'
-import Header from './Header'
+import Header from './header/Header'
 import Image from './image/Image'
-import Info from 'features/nft/portfolio/info/Info'
-import Description from 'features/nft/portfolio/description/Description'
-import Comments from 'features/nft/portfolio/comments/Comments'
+import Info from './info/Info'
+import Description from './description/Description'
+import Comments from './comments/Comments'
 import nftImage from 'common/assets/images/mock/nft-big-image.png'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 
 const nft: TNFT = {
   id: 230456346,
-  title: 'Super Nfty Floating Head',
+  title: 'Super nfty floating head professional',
   image: nftImage,
   pastelRareness: 65,
   internetRareness: 45,
@@ -47,8 +47,8 @@ export default function PortfolioPage(): JSX.Element {
       />
       <Header nft={nft} />
       <div className='page-container py-30px space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:gap-10'>
-        <Image image={nft.image} />
-        <div className='flex space-x-5 lg:space-x-10'>
+        <Image nft={nft} />
+        <div className='flex space-x-5 lg:space-x-10 md:pb-12'>
           <Info nft={nft} />
           <div className='bg-white pt-30px px-5 lg:px-22px rounded-lg flex-grow flex flex-col'>
             <Description nft={nft} />

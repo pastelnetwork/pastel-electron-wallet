@@ -15,7 +15,7 @@ export default function Comment({ comment }: TCommentProps): JSX.Element {
         <div className='text-extrabold text-black text-13px'>
           {comment.author.name}
         </div>
-        <div className='text-gray-700 text-13px'>{comment.message}</div>
+        <div className='text-gray-4a text-13px'>{comment.message}</div>
         <div className='flex text-xs space-x-18px'>
           <div className='text-gray-a6 leading-5'>
             {comment.publishedAt.fromNow(true)}

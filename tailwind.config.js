@@ -29,7 +29,6 @@ module.exports = {
         '3px': '0.188rem',
         '5px': '0.3125rem',
         '6px': '0.375rem',
-        '9px': '0.5625rem',
         '7px': '0.5rem',
         '8px': '0.188rem',
         '9px': '0.5625rem',
@@ -52,6 +51,7 @@ module.exports = {
         '35px': '2.188rem',
         '36px': '2.29rem',
         '37px': '2.313rem',
+        '38px': '2.375rem',
         '40px': '2.5rem',
         '41px': '2.5625rem',
         '41.5px': '2.59375rem',
@@ -91,14 +91,20 @@ module.exports = {
         '478px': '29.875rem',
       },
       colors: {
+        link: '#3F9AF7',
+        white: '#FFFFFF',
+        transparent: 'transparent',
+        text: {
+          DEFAULT: '#171F46',
+        },
         success: {
-          default: '#00D097',
+          DEFAULT: '#00D097',
           pressed: '#00B282',
           hover: '#00C28D',
           background: '#E0F9F2',
         },
         warning: {
-          default: '#FA9501',
+          DEFAULT: '#FA9501',
           pressed: '#E88A00',
           hover: '#FFA21B',
           background: '#FEF0DC',
@@ -114,11 +120,6 @@ module.exports = {
           e5: '#E5F1FF',
         },
         gray: {
-          500: '#A0AEC0',
-          600: '#718096',
-          700: '#4A5568',
-          800: '#2D3748',
-          900: '#1A202C',
           f9: '#F9FAFB',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
@@ -145,9 +146,9 @@ module.exports = {
           23: '#23262F',
           '1f': '#1F1F39',
           '1d': '#1D263A',
+          '1a': '#1A202C',
           14: '#141416',
           11: '#11142D',
-          '1a': '#1A202C',
         },
         red: {
           '7a': '#FF7A00',
@@ -165,19 +166,23 @@ module.exports = {
           ff: '#FFBE3D',
         },
         green: {
-          68: '#68CC67',
           e5: '#E5F6EF',
-          38: '#38CB89',
+          68: '#68CC67',
           45: '#45B36B',
+          38: '#38CB89',
         },
         button: {
+          DEFAULT: '#3F9AF7',
           pressed: '#0E80F5',
           hover: '#278DF6',
+          background: '#F2F2F2',
           text: '#8E98A3',
+          hoverAlt: '#F0F7FE',
+          pressedAlt: '#E7F2FD',
         },
-        nav: {
+        navigation: {
           DEFAULT: '#A6B0C2',
-          selection: '#334D6E',
+          selected: '#334D6E',
           background: '#E6E8EC',
         },
         tab: {
@@ -185,10 +190,10 @@ module.exports = {
           hover: '#F4F5F6',
         },
         line: {
-          default: '#F2F4F7',
+          DEFAULT: '#F2F4F7',
         },
         icon: {
-          default: '#8E98A3',
+          DEFAULT: '#8E98A3',
           active: '#334D6E',
         },
         background: {
@@ -234,10 +239,16 @@ module.exports = {
         '26px': '1.625rem',
         '32px': '2rem',
       },
+      fontWeight: {
+        roman: '400',
+        medium: '500',
+        heavy: '800',
+      },
       borderRadius: {
         '4px': '0.25rem',
       },
       borderWidth: {
+        '3px': '0.1875rem',
         '5px': '0.3125rem',
       },
       lineHeight: {
@@ -245,9 +256,6 @@ module.exports = {
       },
       container: {
         center: true,
-      },
-      borderWidth: {
-        '3px': '0.1875rem',
       },
       maxHeight: {
         '244px': '15.25rem',
@@ -274,6 +282,8 @@ module.exports = {
   },
   variants: {
     extend: {
+      textColor: ['active'],
+      backgroundColor: ['active'],
       contrast: ['hover', 'focus'],
     },
   },

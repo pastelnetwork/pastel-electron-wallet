@@ -34,7 +34,7 @@ const ProfileGeneral = ({
         <ProfileGeneralRow title='Categories'>{categories}</ProfileGeneralRow>
         <ProfileGeneralRow title='Buyer reputatio'>
           <StarRate rate={reputation} />
-          <div className='pl-6px text-gray-500 text-sm'>
+          <div className='pl-6px text-gray-a0 text-sm'>
             {reputation} reputation
           </div>
         </ProfileGeneralRow>

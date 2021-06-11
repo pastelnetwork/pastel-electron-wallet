@@ -1,35 +1,49 @@
 import React from 'react'
-import style from 'features/nft/portfolio/image/Image.module.css'
-import { BoxArrowUp, HeartFilled } from 'common/components/Icons'
+import style from './Image.module.css'
+import { Expand, Flag, Trash } from 'common/components/Icons'
+import { TNFT } from 'features/nft/Nft.types'
+import { formatDate } from 'common/utils/format'
 
 type TImageProps = {
-  image: string
+  nft: TNFT
 }
 
-export default function Image({ image }: TImageProps): JSX.Element {
+export default function Image({ nft }: TImageProps): JSX.Element {
   return (
-    <div className='flex items-start justify-center'>
-      <div className='relative'>
-        <img src={image} className='object-cover' />
-        <div
-          className={`absolute -bottom-5 bg-contain ${style.shadow}`}
-          style={{
-            backgroundImage: `url(${encodeURI(image)})`,
-          }}
-        />
-        <div
-          className={`absolute w-full flex-center ${style.buttonsContainer}`}
-        >
+    <div className='flex-center flex-col'>
+      <div>
+        <div className='relative'>
+          <img src={nft.image} className='object-cover' />
           <div
-            className={`bg-white h-16 rounded-full flex-between px-2 ${style.buttons}`}
+            className={`absolute -bottom-5 bg-contain ${style.shadow}`}
+            style={{
+              backgroundImage: `url(${encodeURI(nft.image)})`,
+            }}
+          />
+          <button
+            type='button'
+            className='w-10 h-10 absolute left-6 bottom-6 rounded-full bg-gray-fc flex-center duration-200 transition text-gray-77 hover:text-gray-8e'
           >
-            <button className='rounded-full flex-center w-12 h-12 border-2 border-gray-e6 hover:bg-gray-100 text-gray-77'>
-              <BoxArrowUp size={24} />
-            </button>
-            <button className='rounded-full flex-center w-12 h-12 border-2 border-gray-e6 hover:bg-gray-100 text-pink-46'>
-              <HeartFilled size={22} />
+            <Expand size={14} />
+          </button>
+          <button
+            type='button'
+            className={`w-10 h-10 absolute right-6 bottom-6 rounded-full flex-center duration-200 transition text-gray-f8 hover:text-white ${style.deleteButton}`}
+          >
+            <Trash size={15} />
+          </button>
+        </div>
+        <div className='w-full flex-between mt-6 font-medium text-gray-71'>
+          <div>
+            NFT ID {nft.id}
+            <button
+              type='button'
+              className='ml-18px text-gray-a6 relative top-3px opacity-50 duration-200 transition hover:opacity-100'
+            >
+              <Flag size={16} />
             </button>
           </div>
+          <div>My NFT before {formatDate(nft.time)}</div>
         </div>
       </div>
     </div>
