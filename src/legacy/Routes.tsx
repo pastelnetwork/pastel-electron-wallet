@@ -5,6 +5,7 @@ import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
 import { ErrorModal, ErrorModalData } from './components/ErrorModal'
 import routes from './constants/routes.json'
+import MemberProfile from '../features/profile/memberProfile/MemberProfile'
 import Dashboard from '../features/dashboard/DashboardPage'
 import Send from './components/Send'
 import { Receive } from '../features/receive'
@@ -52,6 +53,7 @@ import Nft from '../features/nft'
 import Profile from '../features/profile'
 import NFTMarketFeed from '../features/nftMarket'
 import { app } from 'electron'
+import { MembersDirectory } from '../features/members'
 
 export type TWalletInfo = {
   connections: number
@@ -510,26 +512,6 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route
-              path={routes.RECEIVE}
-              render={() => (
-                <Receive
-                  rerenderKey={receivePageState.rerenderKey}
-                  addresses={addresses}
-                  addressesWithBalance={addressesWithBalance}
-                  addressPrivateKeys={addressPrivateKeys}
-                  addressViewKeys={addressViewKeys}
-                  receivePageState={receivePageState}
-                  addressBook={addressBook}
-                  transactions={transactions}
-                  {...standardProps}
-                  fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
-                  hidePrivKey={this.hidePrivKey}
-                  fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
-                  createNewAddress={this.createNewAddress}
-                />
-              )}
-            />
-            <Route
               path={routes.ADDRESSBOOK}
               render={() => (
                 <AddressBook
@@ -563,6 +545,12 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.COLLECTOR} render={() => <Collector />} />
 
             <Route path={routes.NFT} render={() => <Nft />} />
+
+            <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
+            <Route
+              path={routes.MEMBERS_PROFILE}
+              render={() => <MemberProfile />}
+            />
 
             <Route
               path={routes.PASTELD}

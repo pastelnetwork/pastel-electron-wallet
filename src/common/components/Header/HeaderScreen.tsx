@@ -1,10 +1,10 @@
 import React from 'react'
-import { withRouter, useHistory } from 'react-router'
+import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import styles from './HeaderScreen.module.css'
 import routes from '../../constants/routes.json'
 import Logo from '../../assets/icons/ico-logo.svg'
-import addBtn from '../../assets/icons/ico-addbtn.png'
+import addBtn from '../../assets/icons/ico-add-btn.svg'
 import searchIcon from '../../assets/icons/ico-search.svg'
 import QuestionTag from '../../assets/icons/ico-question.svg'
 import BellIcon from '../../assets/icons/ico-bell.svg'
@@ -12,8 +12,6 @@ import MessageIcon from '../../assets/icons/ico-msg.svg'
 import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 import cn from 'classnames'
-
-import Icon from '../Icon'
 
 interface IMenuType {
   name: string
@@ -80,7 +78,6 @@ interface PropsType {
 
 const Header = (props: PropsType) => {
   const { location } = props
-  const history = useHistory()
   const icons = [
     {
       src: QuestionTag,
@@ -101,7 +98,6 @@ const Header = (props: PropsType) => {
     {
       src: UserIcon,
       variant: 'background',
-      func: () => history.push(routes.PROFILE),
     },
   ]
 
@@ -113,14 +109,14 @@ const Header = (props: PropsType) => {
       style: 'xl:mr-35px',
     },
     {
-      name: 'NFTs',
+      name: 'Market',
       routeName: routes.MARKET,
       currentRoute: location.pathname,
       style: 'xl:mr-37px',
     },
     {
       name: 'Members',
-      routeName: routes.RECEIVE,
+      routeName: routes.MEMBERS,
       currentRoute: location.pathname,
       style: 'xl:mr-28px',
     },
@@ -159,7 +155,7 @@ const Header = (props: PropsType) => {
                 className='w-20px h-20px mr-2px md:mr-2'
                 alt='add button'
               ></img>
-              <span className='text-blue-450 whitespace-nowrap'>new NFT</span>
+              <span className='text-blue-3f whitespace-nowrap'>new NFT</span>
             </Link>
           </div>
         </div>
@@ -169,8 +165,8 @@ const Header = (props: PropsType) => {
       </div>
       <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
-          <div className='mr-20px md:mr-26px' key={index} onClick={icon.func}>
-            <Icon src={icon.src} variant={icon.variant} />
+          <div className='mr-20px md:mr-26px' key={index}>
+            <img src={icon.src} />
           </div>
         ))}
       </div>
