@@ -1,6 +1,6 @@
 import React from 'react'
 import StarRate from './StarRate'
-import svg_card from '../../../common/assets/images/profile-card-placeholder.svg'
+import ProfileCardFrame from './ProfileCardFrame'
 import svg_avatar from '../../../common/assets/images/avatar.svg'
 import svg_copy from '../../../common/assets/icons/ico-copy2.svg'
 import svg_plus from '../../../common/assets/icons/ico-plus-white.svg'
@@ -35,10 +35,8 @@ const ProfileCard = ({
 }: TProfileCard): JSX.Element => {
   return (
     <div className='flex flex-col pb-28px rounded-md shadow-sm bg-white w-315px'>
-      <div className='bg-blue-300 rounded-t-md'>
-        <img className='rounded-t-lg w-315px' src={svg_card} />
-      </div>
-      <div className='-mt-50px px-5 flex pb-2'>
+      <ProfileCardFrame />
+      <div className='-mt-61px px-5 flex pb-2'>
         <div className='rounded-full border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
           <img src={svg_avatar} className='rounded-full w-full h-full' />
         </div>

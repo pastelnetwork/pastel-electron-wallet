@@ -2,7 +2,6 @@ import React from 'react'
 import Downshift from 'downshift'
 import caretDownIcon from '../../../common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
-import { parseFormattedNumber } from '../../utils/format'
 import { useSelectOptions } from './select.utils'
 
 export type TOption = {
@@ -36,13 +35,9 @@ export type TSelectProps = TOptionsProps | TRangeProps
 export default function Select(props: TSelectProps): JSX.Element {
   const { placeholder, className, label, autocomplete = false } = props
 
-  const {
-    options,
-    selected,
-    onChange,
-    onInputValueChange,
-    inputValueRef,
-  } = useSelectOptions(props)
+  const { options, selected, onChange, onInputValueChange } = useSelectOptions(
+    props,
+  )
 
   let autoCompleteColor: string
   if ('options' in props) {
@@ -68,10 +63,7 @@ export default function Select(props: TSelectProps): JSX.Element {
         inputValue,
         getInputProps,
       }) => {
-        const value =
-          autocomplete &&
-          inputValue &&
-          parseFormattedNumber(inputValue).toString()
+        const value = autocomplete && inputValue && inputValue.toString()
         const filteredOptions = isOpen
           ? value
             ? options.filter(option => option.value.startsWith(value))
@@ -88,12 +80,12 @@ export default function Select(props: TSelectProps): JSX.Element {
           >
             {autocomplete && (
               <input
-                className='h-full w-full rounded pl-18px pr-7 text-gray-35 font-extrabold focus-visible-border'
+                className='h-full w-full rounded pl-18px pr-7 text-gray-35 focus-visible-border'
                 {...getToggleButtonProps()}
                 {...getInputProps()}
                 type='text'
                 role='input'
-                value={inputValueRef.current}
+                value={inputValue}
               />
             )}
             {!autocomplete && (

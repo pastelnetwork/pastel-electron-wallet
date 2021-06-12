@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Followers from './ProfileFollowers'
+import ico_users from '../../../common/assets/icons/ico-users.svg'
 
 const cx_tab =
   'text-sm w-fit font-medium pt-1 pb-3 text-gray-b0 border-gray-f3 cursor-pointer'
@@ -8,7 +9,11 @@ const cx_tab_active =
 
 const relationCounts = { followers: 235, following: 162, mutual: 73 }
 
-const ProfileRelations = (): JSX.Element => {
+export type TProfileRelations = {
+  isEmpty?: boolean
+}
+
+const ProfileRelations = ({ isEmpty }: TProfileRelations): JSX.Element => {
   const [tab, setTab] = useState('Followers')
 
   return (
@@ -40,7 +45,18 @@ const ProfileRelations = (): JSX.Element => {
         </div>
         <div className='absolute left-0 bottom-0 z-0 w-full border-t text-gray-b0' />
       </div>
-      {tab == 'Followers' && <Followers />}
+      {tab == 'Followers' &&
+        (isEmpty ? (
+          <div className='bg-gray-e6 opacity-60 opacity mt-4 p-2 flex flex-col text-gray-71 rounded flex-center h-234px'>
+            <img src={ico_users} />
+            <div className='text-gray-71 mt-2'>You have no followers</div>
+            <div className='text-gray-a0 mt-1 whitespace-pre text-center'>
+              {'No one has subscribed to you yet \nbut you can'}
+            </div>
+          </div>
+        ) : (
+          <Followers />
+        ))}
       {tab == 'Following' && (
         <div className='text-center pt-8'>
           This is placeholder for Following View.
