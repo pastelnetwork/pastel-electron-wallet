@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import styles from './NFTCard.module.css'
 
-export type INFTCompactCardProps = {
+export type TNFTCompactCardProps = {
   imageSrc: string
   title: string
   likes: number
@@ -17,7 +17,7 @@ export type INFTCompactCardProps = {
   isLastBid?: boolean
 }
 
-export interface INFTCardProps extends INFTCompactCardProps {
+export interface INFTCardProps extends TNFTCompactCardProps {
   author: string
   avatarSrc: string
   price: number | string
@@ -37,7 +37,7 @@ const NFTCard = ({
   isLastBid,
   hideLikeButton,
   ...props
-}: INFTCompactCardProps | INFTCardProps): JSX.Element => {
+}: TNFTCompactCardProps | INFTCardProps): JSX.Element => {
   const fullCardProps = 'author' in props && (props as INFTCardProps)
 
   const wrapperPaddingClass = fullCardProps

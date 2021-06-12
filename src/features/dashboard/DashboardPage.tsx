@@ -3,7 +3,7 @@ import Dots from '../../common/components/Icons/Dots'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
-import NFTCard, { INFTCompactCardProps } from '../../common/components/NFTCard'
+import NFTCard, { TNFTCompactCardProps } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
 import dayjs from 'dayjs'
@@ -34,7 +34,7 @@ const portfolioItemProps: TPortfolioItemProps = {
   currencyName,
 }
 
-const NFTCardProps: INFTCompactCardProps = {
+const NFTCardProps: TNFTCompactCardProps = {
   imageSrc: image,
   likes: 23,
   title: 'Cosmic Perspective',
