@@ -48,6 +48,7 @@ module.exports = {
         '28px': '1.75rem',
         '30px': '1.875rem',
         '32px': '2rem',
+        '33px': '2.0625rem',
         '34px': '2.215rem',
         '35px': '2.188rem',
         '36px': '2.29rem',
@@ -55,6 +56,9 @@ module.exports = {
         '40px': '2.5rem',
         '41px': '2.5625rem',
         '41.5px': '2.59375rem',
+        '41px': '2.563rem',
+        '41.5px': '2.59375rem',
+        '42px': '2.625rem',
         '46px': '2.875rem',
         '50px': '3.125rem',
         '54px': '3.375rem',
@@ -84,32 +88,16 @@ module.exports = {
         '300px': '18.75rem',
         '315px': '19.6875rem',
         '335px': '20.938rem',
+        '348px': '21.75rem',
         '352px': '22rem',
         '380px': '23.75rem',
         '419px': '26.187rem',
         '478px': '29.875rem',
       },
-      boxShadow: {
-        xs:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        sm:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
-        md:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 6px 8px rgba(10, 22, 70, 0.1)',
-        lg:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
-        xl:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        editbox:
-          '0px 1px 12pxrgba(50, 50, 71, 0.04), 0px 0px 4px rgba(50, 50, 71, 0.2)',
-      },
       colors: {
         link: '#3F9AF7',
         white: '#FFFFFF',
         transparent: 'transparent',
-        text: {
-          DEFAULT: '#171F46',
-        },
         success: {
           DEFAULT: '#00D097',
           pressed: '#00B282',
@@ -161,13 +149,14 @@ module.exports = {
           '1f': '#1F1F39',
           '1d': '#1D263A',
           14: '#141416',
-          23: '#23262F',
+          e7: '#E7EBF0',
           77: '#777E90',
           '8e': '#8E98A3',
         },
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
+          fe: '#FE634C',
         },
         orange: {
           63: '#FE634C',
@@ -188,6 +177,9 @@ module.exports = {
           text: '#8E98A3',
           hoverAlt: '#F0F7FE',
           pressedAlt: '#E7F2FD',
+        },
+        input: {
+          border: '#8E98A333',
         },
         navigation: {
           DEFAULT: '#A6B0C2',
@@ -210,6 +202,11 @@ module.exports = {
           main: '#F8F9FA',
           modal: '#1A1A1A',
         },
+        text: {
+          DEFAULT: '#171F46',
+          23: '#23262F',
+          77: '#777E90',
+        },
       },
       boxShadow: {
         xs:
@@ -225,10 +222,13 @@ module.exports = {
         'depth-1': '0px 8px 16px -8px rgba(15, 15, 15, 0.2)',
         '2px':
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        '4px':
+          '0px 1px 12px rgba(50, 50, 71, 0.04), 0px 0px 4px rgba(50, 50, 71, 0.2)',
         '16px':
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
         '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
+        '64px': '0px 32px 64px 0px rgba(31, 47, 70, 0.12)',
       },
       fontSize: {
         h1: '2rem',
@@ -253,23 +253,32 @@ module.exports = {
       borderRadius: {
         '4px': '0.25rem',
       },
-      borderWidth: {
-        '5px': '0.3125rem',
-      },
       lineHeight: {
         '11px': '0.6875rem',
+      },
+      minHeight: {
+        '78px': '4.875rem',
+        '672px': '42rem',
+      },
+      maxWidth: {
+        '427px': '26.6875rem',
+        '478px': '29.875rem',
+        '690px': '43.125rem',
+        fit: 'fit-content',
+      },
+      minWidth: {
+        '118px': '7.375rem',
+        '244px': '15.25rem',
+        '700px': '43.75rem',
       },
       container: {
         center: true,
       },
       borderWidth: {
         '3px': '0.1875rem',
+        '5px': '0.3125rem',
       },
       maxHeight: {
-        '244px': '15.25rem',
-        '700px': '43.75rem',
-      },
-      minWidth: {
         '244px': '15.25rem',
         '700px': '43.75rem',
       },
@@ -279,11 +288,6 @@ module.exports = {
       },
       height: {
         '401px': '25.0625rem',
-        fit: 'fit-content',
-      },
-      maxWidth: {
-        '478px': '29.875rem',
-        '690px': '43.125rem',
         fit: 'fit-content',
       },
     },
