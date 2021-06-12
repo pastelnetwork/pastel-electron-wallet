@@ -1,32 +1,53 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'typeface-roboto/index.css';
 @import '/src/common/assets/fonts/font.css';
 @import 'simplebar/src/simplebar.css';
+
 @tailwind base;
 
 @layer base {
+  body {
+    font-family: Avenir, Roboto, Arial, serif;
+  }
+
   h1 {
-    @apply text-h1 leading-10 font-extrabold;
+    @apply text-h1 leading-10 font-extrabold text-text;
   }
   h2 {
-    @apply text-h2 leading-8 font-extrabold;
+    @apply text-h2 leading-8 font-extrabold text-text;
   }
   h3 {
-    @apply text-h3 leading-7 font-extrabold;
+    @apply text-h3 leading-7 font-extrabold text-text;
   }
   h4 {
-    @apply text-h4 leading-6;
+    @apply text-h4 leading-6 text-text;
   }
   h5 {
-    @apply text-h5;
+    @apply text-h5 text-text;
   }
   h6 {
-    @apply text-h6;
+    @apply text-h6 text-text;
+  }
+  p {
+    @apply text-text;
+  }
+
+  .input-field:focus + fieldset {
+    @apply border border-gray-8e;
+  }
+  .input-field:active + fieldset {
+    @apply border border-blue-3f;
+  }
+  .input-field.is-valid + fieldset {
+    @apply border border-success;
+  }
+  .input-field.is-invalid + fieldset {
+    @apply border border-red-7a;
+  }
+
+  hr {
+    @apply border-0 h-px bg-gray-e4;
   }
 
   ::-webkit-scrollbar {
@@ -48,9 +69,6 @@
   .wrapper {
     @apply px-60px;
   }
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
 
   .paper {
     @apply bg-white shadow-44px rounded-lg border border-gray-e7;
@@ -59,29 +77,15 @@
   .page-container {
     @apply px-20px md:px-30px lg:px-60px;
   }
+
+  .link {
+    @apply text-blue-3f hover:text-button-hover;
+  }
 }
 
 @tailwind utilities;
 
-@import '@fortawesome/fontawesome-free/css/all.css';
-@import 'typeface-roboto/index.css';
-@import '/src/common/assets/fonts/font.css';
-
-html {
-  overflow: hidden;
-}
-html,
-body,
-#root {
-  min-height: 100vh;
-  height: 100%;
-}
-
 @layer utilities {
-  .flex-center {
-    @apply flex justify-center items-center;
-  }
-
   .text-gradient {
     background: radial-gradient(
       105.31% 107.86% at 95.36% 14.36%,
@@ -92,6 +96,24 @@ body,
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+}
+
+html {
+  overflow: hidden;
+}
+html,
+body,
+#root {
+  min-height: 100vh;
+  height: 100%;
 }
 
 /* VERTICAL SCROLLBAR */
@@ -232,12 +254,24 @@ input[type='number']::-webkit-outer-spin-button {
   outline: 1px solid #3f9af7;
 }
 
+.focus-visible:focus-visible {
+  @apply border border-blue-3f;
+}
+
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
 
 .tooltip:hover .tooltiparrow {
   visibility: visible;
+}
+
+.custom-scroll .simplebar-scrollbar:before {
+  background: #a6b0c2;
+  right: 0;
+  left: auto;
+  width: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar {
@@ -259,9 +293,6 @@ input[type='number']::-webkit-outer-spin-button {
 ::-webkit-scrollbar-track {
   background-color: rgba(196, 196, 196, 0.2);
   border-radius: 3px;
-}
-.focus-visible:focus-visible {
-  @apply border border-blue-3f;
 }
 
 .widget-ratings {

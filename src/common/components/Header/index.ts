@@ -1,3 +1,3 @@
-import HeaderScreen from './HeaderScreen'
+import Header from './Header'
 
-export default HeaderScreen
+export default Header

@@ -1,11 +1,10 @@
 import React from 'react'
+import { TIconProps } from './iconProps'
 
 type TDir = 'top' | 'right' | 'bottom' | 'left'
 
-export type TArrowProps = {
-  size: number
+export type TArrowProps = TIconProps & {
   to?: TDir
-  className?: string
 }
 
 const rotate: Record<TDir, number> = {
@@ -15,11 +14,11 @@ const rotate: Record<TDir, number> = {
   left: 180,
 }
 
-export default function Arrow({
+export const Arrow: React.FC<TArrowProps> = ({
   size,
   to = 'right',
   className,
-}: TArrowProps): JSX.Element {
+}) => {
   const style = { transform: `rotate(${rotate[to]}deg)` }
 
   return (

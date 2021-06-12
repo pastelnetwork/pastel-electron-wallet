@@ -1,3 +1,4 @@
+const path = require('path')
 const rules = require('./webpack.rules')
 const plugins = require('./webpack.plugins')
 
@@ -51,5 +52,6 @@ module.exports = {
     alias: {
       'react-dom': '@hot-loader/react-dom',
     },
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
 }

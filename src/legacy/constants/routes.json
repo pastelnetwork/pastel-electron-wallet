@@ -2,6 +2,7 @@
   "LOADING": "/",
   "MEMBERS": "/members",
   "DASHBOARD": "/dashboard",
+  "PORTFOLIO": "/portfolio",
   "SEND": "/send",
   "RECEIVE": "/receive",
   "ADDRESSBOOK": "/addressbook",
