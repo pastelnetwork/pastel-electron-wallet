@@ -1,18 +1,19 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Heart, { THeartProps } from './Heart'
+import { Heart as Icon, THeartProps as Props } from './Heart'
 
 export default {
   title: 'Icons/Heart',
-  component: Heart,
+  component: Icon,
 } as Meta
 
-const Template: Story<THeartProps> = ({ ...args }) => {
-  return <Heart {...args} className='text-black' />
+const Template: Story<Props> = ({ ...args }) => {
+  return <Icon {...args} />
 }
 
-export const HeartIcon = Template.bind({})
-HeartIcon.args = {
+export const Heart = Template.bind({})
+Heart.args = {
   size: 30,
+  className: 'text-error',
 }

@@ -7,8 +7,8 @@ import { ErrorModal, ErrorModalData } from './components/ErrorModal'
 import routes from './constants/routes.json'
 import MemberProfile from '../features/profile/memberProfile/MemberProfile'
 import Dashboard from '../features/dashboard/DashboardPage'
+import PortfolioPage from '../features/nft/portfolio'
 import Send from './components/Send'
-import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
 import Header from '../common/components/Header'
 import {
@@ -523,6 +523,7 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
+            <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
             <Route
               path={routes.TRANSACTIONS}
               render={() => (

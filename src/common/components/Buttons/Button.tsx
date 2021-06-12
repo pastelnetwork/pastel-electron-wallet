@@ -16,7 +16,7 @@ export type TButton = {
 
 const Button: React.FC<TButton> = ({
   children,
-  variant,
+  variant = 'default',
   href,
   disabled,
   prepend,

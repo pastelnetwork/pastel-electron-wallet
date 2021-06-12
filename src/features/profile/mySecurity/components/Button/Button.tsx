@@ -14,6 +14,7 @@ const TransparentButton = (props: TButton): JSX.Element => {
   return (
     <Button
       className='relative w-full font-body font-extrabold hover:cursor-pointer h-10 rounded-2xl border border border-blue-3f text-blue-3f focus:outline-none leading-4'
+      variant='transparent'
       type={type}
       {...restProps}
       onClick={onClick}

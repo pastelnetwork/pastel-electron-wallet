@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
 import addBtn from '../../../common/assets/icons/ico-add-btn.svg'
@@ -63,9 +63,12 @@ type TIconProps = {
   background?: boolean
   notification?: boolean
   classes?: string
+  path?: string
 }
 
-const Icon = ({ src, background, notification, classes }: TIconProps) => {
+const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
+  const history = useHistory()
+
   return (
     <div
       className={cn(
@@ -75,7 +78,11 @@ const Icon = ({ src, background, notification, classes }: TIconProps) => {
       )}
     >
       <div className='relative'>
-        <img className='cursor-pointer' src={src} />
+        <img
+          className='cursor-pointer'
+          src={src}
+          onClick={() => (path ? history.push(path) : {})}
+        />
         {notification && (
           <div className='absolute -top-px -right-px w-2 h-2 rounded-full bg-orange-63 border border-white' />
         )}
@@ -106,19 +113,19 @@ export default function Header(): JSX.Element {
         </MenuItem>
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-          to={routes.RECEIVE}
+          to={routes.MEMBERS}
         >
           Members
         </MenuItem>
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-28px xl:w-46px'
-          to={routes.TRANSACTIONS}
+          to={routes.WALLET}
         >
           Wallet
         </MenuItem>
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
-          to={routes.ADDRESSBOOK}
+          to={routes.PORTFOLIO}
         >
           Portfolio
         </MenuItem>
@@ -138,7 +145,12 @@ export default function Header(): JSX.Element {
         <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
         <Icon classes='ml-6 lg:ml-26px w-18px' src={MessageIcon} notification />
         <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
-        <Icon classes='ml-6 lg:ml-22px' src={UserIcon} background />
+        <Icon
+          classes='ml-6 lg:ml-22px'
+          src={UserIcon}
+          background
+          path={routes.PROFILE}
+        />
       </div>
     </div>
   )
