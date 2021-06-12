@@ -1,1 +1,1 @@
-export { default } from 'features/nft/addNFT/AddNFT'
+export { default } from './AddNFT'

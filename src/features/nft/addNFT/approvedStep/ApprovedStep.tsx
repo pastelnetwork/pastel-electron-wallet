@@ -1,6 +1,6 @@
 import React from 'react'
 import { TAddNFTState } from '../AddNFT.state'
-import ModalLayout from 'features/nft/addNFT/modalLayout/ModalLayout'
+import ModalLayout from '../modalLayout/ModalLayout'
 import { Button } from 'common/components/Buttons'
 
 type TApprovedStepProps = {

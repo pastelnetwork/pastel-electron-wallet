@@ -1,11 +1,8 @@
 import React, { useEffect } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
 import ModalLayout from '../modalLayout/ModalLayout'
-import {
-  useChangeableImage,
-  useImagePreview,
-} from 'features/nft/addNFT/previewStep/PreviewStep.service'
-import style from 'features/nft/addNFT/previewStep/PreviewStep.module.css'
+import { useChangeableImage, useImagePreview } from './PreviewStep.service'
+import style from './PreviewStep.module.css'
 import { Expand, Crop } from 'common/components/Icons'
 import Tooltip from '../tooltip'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
