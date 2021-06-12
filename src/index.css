@@ -46,6 +46,10 @@
     @apply border border-red-7a;
   }
 
+  hr {
+    @apply border-0 h-px bg-gray-e4;
+  }
+
   ::-webkit-scrollbar {
     @apply w-3px h-3px;
   }
@@ -73,6 +77,10 @@
   .page-container {
     @apply px-20px md:px-30px lg:px-60px;
   }
+
+  .link {
+    @apply text-blue-3f hover:text-button-hover;
+  }
 }
 
 @tailwind utilities;
@@ -96,6 +104,24 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+}
+
+html {
+  overflow: hidden;
+}
+html,
+body,
+#root {
+  min-height: 100vh;
+  height: 100%;
 }
 
 html {

@@ -40,6 +40,7 @@ import { fetchPastelPrice } from './features/pastelPrice'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 import { ToastContainer } from 'react-toastify'
+import 'common/utils/initDayjs'
 
 const oneHour = 1000 * 60 * 60
 /**
