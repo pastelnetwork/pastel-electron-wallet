@@ -1,7 +1,7 @@
 import React from 'react'
 import style from './Image.module.css'
 import { Expand, Flag, Trash } from 'common/components/Icons'
-import { TNFT } from 'features/nft/Nft.types'
+import { TNFT } from '../../Nft.types'
 import { formatDate } from 'common/utils/format'
 
 type TImageProps = {

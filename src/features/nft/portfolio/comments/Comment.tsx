@@ -1,5 +1,5 @@
 import React from 'react'
-import { TComment } from 'features/nft/portfolio/comments/Comment.types'
+import { TComment } from './Comment.types'
 
 type TCommentProps = {
   comment: TComment
