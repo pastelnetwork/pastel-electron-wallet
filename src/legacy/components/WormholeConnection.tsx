@@ -5,7 +5,7 @@ import QRCode from 'qrcode.react'
 import dateformat from 'dateformat'
 import cstyles from './Common.module.css'
 import styles from './WormholeConnection.module.css'
-// import CompanionAppListener from '../companion'
+import CompanionAppListener from '../companion'
 import { ConnectedCompanionApp } from './AppState'
 export default class WormholeConnection extends PureComponent<any, any> {
   constructor(props: any) {
@@ -16,33 +16,36 @@ export default class WormholeConnection extends PureComponent<any, any> {
   }
 
   componentDidMount() {
-    // // If there is no temp key, create one
-    // const { companionAppListener } = this.props
-    // const { tempKeyHex } = this.state
-    // if (!tempKeyHex) {
-    //   const newKey = companionAppListener.genNewKeyHex()
-    //   companionAppListener.createTmpClient(newKey)
-    //   this.setState({
-    //     tempKeyHex: newKey,
-    //   })
-    // }
+    // If there is no temp key, create one
+    const { companionAppListener } = this.props
+    const { tempKeyHex } = this.state
+
+    if (!tempKeyHex) {
+      const newKey = companionAppListener.genNewKeyHex()
+      companionAppListener.createTmpClient(newKey)
+      this.setState({
+        tempKeyHex: newKey,
+      })
+    }
   }
 
   componentWillUnmount() {
-    // const { companionAppListener } = this.props
-    // companionAppListener.closeTmpClient()
+    const { companionAppListener } = this.props
+    companionAppListener.closeTmpClient()
   }
 
   disconnectCurrentMobile = () => {
-    // const { companionAppListener } = this.props
-    // companionAppListener.disconnectLastClient()
+    const { companionAppListener } = this.props
+    companionAppListener.disconnectLastClient()
   }
 
   render() {
     const { tempKeyHex } = this.state
-    // const { connectedCompanionApp } = this.props
-    const clientName = null
-    const lastSeen = null
+    const { connectedCompanionApp } = this.props
+    const clientName =
+      (connectedCompanionApp && connectedCompanionApp.name) || null
+    const lastSeen =
+      (connectedCompanionApp && connectedCompanionApp.lastSeen) || null
     let datePart = null
     let timePart = null
 
