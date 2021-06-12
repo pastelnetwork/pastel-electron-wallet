@@ -50,9 +50,10 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import Profile from '../features/profile'
+import NFTMarketFeed from '../features/nftMarket'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
-import NFTMarketFeed from '../features/nftMarket'
 
 export type TWalletInfo = {
   connections: number
@@ -533,6 +534,11 @@ class RouteApp extends React.Component<any, any> {
                   setSendTo={this.setSendTo}
                 />
               )}
+            />
+
+            <Route
+              path={routes.PROFILE}
+              render={() => <Profile info={info} />}
             />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
