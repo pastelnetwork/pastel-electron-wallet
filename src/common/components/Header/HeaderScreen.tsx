@@ -168,7 +168,7 @@ const Header = (props: PropsType) => {
         {icons.map((icon, index) => (
           <div className='mr-20px md:mr-26px' key={index}>
             <Link to={icon.routeName ?? '#'} className='flex items-center'>
-              <img src={icon.src} />
+              <img src={icon.src} className='cursor-pointer' />
             </Link>
           </div>
         ))}
