@@ -12,22 +12,38 @@
   }
 
   h1 {
-    @apply text-h1 leading-10 font-extrabold;
+    @apply text-h1 leading-10 font-extrabold text-text;
   }
   h2 {
-    @apply text-h2 leading-8 font-extrabold;
+    @apply text-h2 leading-8 font-extrabold text-text;
   }
   h3 {
-    @apply text-h3 leading-7 font-extrabold;
+    @apply text-h3 leading-7 font-extrabold text-text;
   }
   h4 {
-    @apply text-h4 leading-6;
+    @apply text-h4 leading-6 text-text;
   }
   h5 {
-    @apply text-h5;
+    @apply text-h5 text-text;
   }
   h6 {
-    @apply text-h6;
+    @apply text-h6 text-text;
+  }
+  p {
+    @apply text-text;
+  }
+
+  .input-field:focus + fieldset {
+    @apply border border-gray-8e;
+  }
+  .input-field:active + fieldset {
+    @apply border border-blue-3f;
+  }
+  .input-field.is-valid + fieldset {
+    @apply border border-success;
+  }
+  .input-field.is-invalid + fieldset {
+    @apply border border-red-7a;
   }
 
   ::-webkit-scrollbar {
@@ -56,31 +72,6 @@
 
   .page-container {
     @apply px-20px md:px-30px lg:px-60px;
-  }
-
-  .btn-primary,
-  .btn-primary-outline {
-    @apply h-10 flex-center font-extrabold rounded-full select-none;
-  }
-
-  .btn-primary {
-    @apply bg-blue-3f text-neutrals-8 hover:bg-button-hover;
-  }
-
-  .btn-primary:active {
-    @apply bg-button-pressed;
-  }
-
-  .btn-primary-outline {
-    @apply border border-blue-3f text-blue-3f hover:border-button-hover hover:text-button-hover;
-  }
-
-  .btn-primary-outline:active {
-    @apply border-button-pressed text-button-pressed;
-  }
-
-  .btn-primary:disabled {
-    @apply bg-gray-cd hover:bg-gray-cd cursor-not-allowed;
   }
 }
 
@@ -255,6 +246,10 @@ input[type='number']::-webkit-outer-spin-button {
   outline: 1px solid #3f9af7;
 }
 
+.focus-visible:focus-visible {
+  @apply border border-blue-3f;
+}
+
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
@@ -263,8 +258,12 @@ input[type='number']::-webkit-outer-spin-button {
   visibility: visible;
 }
 
-.focus-visible:focus-visible {
-  @apply border border-blue-3f;
+.custom-scroll .simplebar-scrollbar:before {
+  background: #a6b0c2;
+  right: 0;
+  left: auto;
+  width: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar {

@@ -1,6 +1,7 @@
 import React from 'react'
 import { TAddNFTState } from '../AddNFT.state'
 import ModalLayout from 'features/nft/addNFT/modalLayout/ModalLayout'
+import { Button } from 'common/components/Buttons'
 
 type TApprovedStepProps = {
   state: TAddNFTState
@@ -15,13 +16,13 @@ export default function ApprovedStep({
       titleClass='mb-3'
       leftColumnContent={null}
       rightColumnContent={
-        <button
+        <Button
           type='button'
-          className='btn-primary w-full'
+          className='font-extrabold w-full'
           onClick={goToNextStep}
         >
           Proceed to final registration fee payment
-        </button>
+        </Button>
       }
     />
   )

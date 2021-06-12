@@ -3,9 +3,10 @@ import { Story, Meta } from '@storybook/react'
 
 import Component from './AddNFT'
 import { useToggle } from 'react-use'
+import { Button } from 'common/components/Buttons'
 
 export default {
-  title: 'AddNFT',
+  title: 'Add NFT',
   component: Component,
 } as Meta
 
@@ -14,13 +15,13 @@ const TemplateOptions: Story = () => {
 
   return (
     <>
-      <button
+      <Button
         type='button'
-        className='btn-primary inline-block px-6'
+        className='font-extrabold inline-block px-6'
         onClick={toggle}
       >
         Add NFT
-      </button>
+      </Button>
       <Component open={open} onClose={toggle} />
     </>
   )

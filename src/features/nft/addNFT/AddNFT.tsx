@@ -1,6 +1,6 @@
 import React from 'react'
 import { Step, TUseAddNFTProps, useAddNFTState } from './AddNFT.state'
-import Modal from 'common/components/Modal'
+import Modal from 'common/components/AnimatedModal'
 import PreviewStep from 'features/nft/addNFT/previewStep/PreviewStep'
 import UploadStep from './uploadStep/UploadStep'
 import SubmitStep from 'features/nft/addNFT/submitStep/SubmitStep'

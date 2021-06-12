@@ -2,6 +2,7 @@ import React from 'react'
 import { TAddNFTState } from '../AddNFT.state'
 import ModalLayout from 'features/nft/addNFT/modalLayout/ModalLayout'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
+import { Button } from 'common/components/Buttons'
 
 type TSubmitStepProps = {
   state: TAddNFTState
@@ -26,13 +27,13 @@ export default function SubmitStep({
           >
             <ArrowSlim to='left' size={14} />
           </button>
-          <button
+          <Button
             type='button'
-            className='btn-primary px-3'
+            className='font-extrabold px-3'
             onClick={goToNextStep}
           >
             Submit and proceed to fee payment
-          </button>
+          </Button>
         </div>
       }
     />

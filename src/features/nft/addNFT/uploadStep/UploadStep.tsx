@@ -2,6 +2,7 @@ import React from 'react'
 import { TAddNFTState } from '../AddNFT.state'
 import ModalLayout from '../modalLayout/ModalLayout'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
+import { Button } from 'common/components/Buttons'
 
 type TUploadStepProps = {
   state: TAddNFTState
@@ -26,13 +27,9 @@ export default function UploadStep({
           >
             <ArrowSlim to='left' size={14} />
           </button>
-          <button
-            type='button'
-            className='btn-primary px-6'
-            onClick={goToNextStep}
-          >
+          <Button className='font-extrabold px-6' onClick={goToNextStep}>
             Go to Optimization
-          </button>
+          </Button>
         </div>
       }
     />

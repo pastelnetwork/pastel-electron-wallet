@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
 import { CroppedImage, getCroppedImage, loadImage } from './PreviewStep.service'
+import { Button } from 'common/components/Buttons'
 
 type CropperModalProps = {
   image: string
@@ -83,12 +84,12 @@ export default function Cropping({
         className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'
         hidden
       >
-        <button className='w-1/2 btn-primary-outline' onClick={onClose}>
+        <Button secondary className='w-1/2' onClick={onClose}>
           Cancel
-        </button>
-        <button className='w-1/2 btn-primary' onClick={submit}>
+        </Button>
+        <Button className='w-1/2' onClick={submit}>
           Accept
-        </button>
+        </Button>
       </div>
     </div>
   )

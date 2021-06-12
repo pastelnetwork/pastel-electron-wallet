@@ -89,29 +89,21 @@ module.exports = {
         '419px': '26.187rem',
         '478px': '29.875rem',
       },
-      boxShadow: {
-        xs:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        sm:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
-        md:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 6px 8px rgba(10, 22, 70, 0.1)',
-        lg:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
-        xl:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
-        editbox:
-          '0px 1px 12pxrgba(50, 50, 71, 0.04), 0px 0px 4px rgba(50, 50, 71, 0.2)',
-      },
       colors: {
+        link: '#3F9AF7',
+        white: '#FFFFFF',
+        transparent: 'transparent',
+        text: {
+          DEFAULT: '#171F46',
+        },
         success: {
-          default: '#00D097',
+          DEFAULT: '#00D097',
           pressed: '#00B282',
           hover: '#00C28D',
           background: '#E0F9F2',
         },
         warning: {
-          default: '#FA9501',
+          DEFAULT: '#FA9501',
           pressed: '#E88A00',
           hover: '#FFA21B',
           background: '#FEF0DC',
@@ -176,12 +168,16 @@ module.exports = {
           38: '#38CB89',
         },
         button: {
+          DEFAULT: '#3F9AF7',
           pressed: '#0E80F5',
           hover: '#278DF6',
+          background: '#F2F2F2',
           text: '#8E98A3',
+          hoverAlt: '#F0F7FE',
+          pressedAlt: '#E7F2FD',
         },
         navigation: {
-          default: '#A6B0C2',
+          DEFAULT: '#A6B0C2',
           selected: '#334D6E',
           background: '#E6E8EC',
         },
@@ -190,19 +186,16 @@ module.exports = {
           hover: '#F4F5F6',
         },
         line: {
-          default: '#F2F4F7',
+          DEFAULT: '#F2F4F7',
         },
         icon: {
-          default: '#8E98A3',
+          DEFAULT: '#8E98A3',
           active: '#334D6E',
         },
         background: {
           onboarding: '#FCFCFD',
           main: '#F8F9FA',
           modal: '#1A1A1A',
-        },
-        neutrals: {
-          8: '#FCFCFD',
         },
       },
       boxShadow: {
@@ -236,13 +229,18 @@ module.exports = {
         '12px': '0.75rem',
         '15px': '0.938rem',
         '26px': '1.625rem',
-        '9px': '0.5625rem',
         '32px': '2rem',
+      },
+      fontWeight: {
+        roman: '400',
+        medium: '500',
+        heavy: '800',
       },
       borderRadius: {
         '4px': '0.25rem',
       },
       borderWidth: {
+        '3px': '0.1875rem',
         '5px': '0.3125rem',
       },
       lineHeight: {
@@ -250,9 +248,6 @@ module.exports = {
       },
       container: {
         center: true,
-      },
-      borderWidth: {
-        '3px': '0.1875rem',
       },
       maxHeight: {
         '244px': '15.25rem',
@@ -279,6 +274,8 @@ module.exports = {
   },
   variants: {
     extend: {
+      textColor: ['active'],
+      backgroundColor: ['active'],
       contrast: ['hover', 'focus'],
     },
   },

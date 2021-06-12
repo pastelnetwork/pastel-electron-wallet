@@ -1,98 +1,38 @@
-import React, { MouseEvent, useEffect, useRef, useState } from 'react'
-import { useKey } from 'react-use'
+import React, { ReactNode } from 'react'
+import ReactModal from 'react-modal'
 import cn from 'classnames'
-import { X } from 'common/components/Icons'
+// Components
+import { CloseButton } from '../Buttons'
 
-export type TModalProps = {
-  open: boolean
-  onClose?(): void
-  render(): React.ReactNode
-  className?: string
-  closeButton?: boolean
-  easyToClose?: boolean // close by clicking on background or pressing Esc
+ReactModal.setAppElement('#root')
+
+export type TModal = {
+  isOpen: boolean
+  handleClose?: React.MouseEventHandler<Element>
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  children?: ReactNode
 }
 
-const Modal = (props: TModalProps): JSX.Element | null => {
-  // local open state is for closing animation
-  const [localOpen, setLocalOpen] = useState(props.open)
+const Modal: React.FC<TModal> = ({ isOpen, handleClose, size, children }) => {
+  const modalClasses = cn({
+    'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 px-12 overflow-auto mx-auto': true,
+    [`max-w-${size}`]: size,
+  })
 
-  if (!props.open && !localOpen) {
-    return null
-  }
-
-  // logic is moved to separate component to init hooks, functions, variables only when Modal is open
-  return <ModalInner {...props} setLocalOpen={setLocalOpen} />
+  return (
+    <ReactModal
+      isOpen={isOpen}
+      className={modalClasses}
+      overlayClassName='fixed top-0 left-0 right-0 bottom-0 flex items-center bg-gray-a6'
+      onRequestClose={handleClose}
+    >
+      <CloseButton
+        onClick={handleClose}
+        className='absolute md:right-5 right-3 md:top-5 top-3 '
+      />
+      {children}
+    </ReactModal>
+  )
 }
 
 export default Modal
-
-const ModalInner = ({
-  open,
-  onClose,
-  closeButton,
-  easyToClose,
-  render,
-  className,
-  setLocalOpen,
-}: TModalProps & { setLocalOpen(open: boolean): void }) => {
-  const modalRef = useRef<HTMLDivElement>()
-
-  useEffect(() => {
-    if (!open) {
-      const el = modalRef.current
-      if (!el) {
-        return
-      }
-
-      el.classList.remove('opacity-100')
-      el.addEventListener(
-        'transitionend',
-        () => {
-          setLocalOpen(false)
-        },
-        {
-          once: true,
-        },
-      )
-    }
-  }, [open])
-
-  useKey('Escape', () => easyToClose && onClose?.())
-
-  const setModalRef = (el: HTMLDivElement | null) => {
-    modalRef.current = el || undefined
-    if (el) {
-      setLocalOpen(true)
-      el.getBoundingClientRect()
-      el.classList.add('opacity-100')
-    }
-  }
-
-  const onClickBackground = (e: MouseEvent) => {
-    if (easyToClose && e.target === modalRef.current) {
-      onClose?.()
-    }
-  }
-
-  return (
-    <div
-      ref={setModalRef}
-      className='fixed inset-0 z-50 bg-gray-1a bg-opacity-60 transition duration-200 opacity-0'
-      onClick={onClickBackground}
-    >
-      <div className='w-full h-full overflow-auto flex-center relative z-10 pointer-events-none'>
-        <div className={cn('relative pointer-events-auto', className)}>
-          {closeButton && (
-            <button
-              className='absolute top-6 right-6 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-b0 hover:text-gray-8e border border-gray-8e border-opacity-30 hover:border-opacity-40'
-              onClick={onClose}
-            >
-              <X size={8} />
-            </button>
-          )}
-          {render()}
-        </div>
-      </div>
-    </div>
-  )
-}

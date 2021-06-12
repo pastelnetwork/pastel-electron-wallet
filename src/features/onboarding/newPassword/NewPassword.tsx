@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Link } from 'react-router-dom'
 
 import Input from '../../../common/components/Input/Input'
-import Button from '../../../common/components/Button/Button'
+import { Button } from '../../../common/components/Buttons'
 import FormLoading from '../../../common/components/FormLoading/FormLoading'
 import Typography from '../../../common/components/Typography/Typography'
 import { colors } from '../../../common/theme/colors'
@@ -86,7 +86,7 @@ const NewPassword: React.FC = () => {
           }
         />
         <Link to={ROUTES.LOGIN}>
-          <Button style={{ width: '100%' }}>Confirm</Button>
+          <Button className='w-full'>Confirm</Button>
         </Link>
       </Styles.Form>
     </Styles.Container>

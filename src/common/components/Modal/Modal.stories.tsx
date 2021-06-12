@@ -1,33 +1,38 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Story, Meta } from '@storybook/react'
+import Modal, { TModal } from './Modal'
 
-import Component, { TModalProps as Props } from './Modal'
-
-export default {
-  title: 'Modal',
-  component: Component,
-} as Meta
-
-const TemplateOptions: Story<Props> = props => {
-  const [open, setOpen] = useState(false)
+const Template: Story<TModal> = ({ isOpen, ...args }) => {
+  const [showModal, setShowModal] = React.useState(isOpen)
 
   return (
     <>
-      <button className='btn-primary w-32' onClick={() => setOpen(true)}>
-        Open modal
-      </button>
-      <Component
-        {...props}
-        open={open}
-        onClose={() => setOpen(false)}
-        render={() => <div className='paper w-96 p-5'>Modal content</div>}
-      />
+      <p className='cursor-pointer' onClick={() => setShowModal(true)}>
+        Show modal
+      </p>
+      <Modal
+        isOpen={showModal}
+        handleClose={() => setShowModal(false)}
+        {...args}
+      >
+        <p>
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque
+          rerum, sequi voluptatibus, repellendus, laboriosam ut deserunt fugit
+          necessitatibus quae dolore quod! Iste, id nesciunt! Ex corrupti a
+          autem. Corrupti, ratione!
+        </p>
+      </Modal>
     </>
   )
 }
 
-export const Modal = TemplateOptions.bind({})
-Modal.args = {
-  easyToClose: true,
-  closeButton: true,
+export const ModalDefault = Template.bind({})
+const size = 'md'
+ModalDefault.args = {
+  size,
 }
+
+export default {
+  component: Modal,
+  title: 'Modal',
+} as Meta

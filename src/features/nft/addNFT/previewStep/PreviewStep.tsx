@@ -12,6 +12,7 @@ import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { useToggle } from 'react-use'
 import Cropping from './Cropping'
 import OptimizationSlider from './OptimizationSlider'
+import { Button } from 'common/components/Buttons'
 
 type TPreviewStepProps = {
   state: TAddNFTState
@@ -55,36 +56,27 @@ export default function PreviewStep({
       subtitle='Description'
       step={3}
       leftColumnContent={
-        <div className={`relative ${style.imageContainer}`}>
-          {croppedImage && (
-            <>
+        <div className='relative'>
+          <button
+            className={`absolute top-3.5 left-3.5 w-8 h-8 bg-gray-fc text-gray-77 flex-center rounded-full ${style.fullscreenButton}`}
+          >
+            <Expand size={13} />
+          </button>
+          <Tooltip text='Crop thumbnail'>
+            {ref => (
               <button
-                className={`absolute top-3.5 left-3.5 w-8 h-8 bg-gray-fc text-gray-77 flex-center rounded-full ${style.fullscreenButton}`}
+                ref={ref}
+                className={`absolute bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full ${style.cropButton}`}
+                onClick={toggleCropping}
               >
-                <Expand size={13} />
+                <Crop size={18} />
               </button>
-              <Tooltip text='Crop thumbnail'>
-                {ref => (
-                  <button
-                    ref={ref}
-                    className={`absolute bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full ${style.cropButton}`}
-                    onClick={toggleCropping}
-                  >
-                    <Crop size={18} />
-                  </button>
-                )}
-              </Tooltip>
-              <label>
-                <img src={croppedImage.src} className='rounded' />
-                <input type='file' hidden onChange={onImageChange} />
-              </label>
-              {croppedImage.error && (
-                <div className='text-sm text-error font-medium mt-3'>
-                  Error text error text
-                </div>
-              )}
-            </>
-          )}
+            )}
+          </Tooltip>
+          <label className='block'>
+            <img src={image} className='rounded' />
+            <input type='file' hidden onChange={onImageChange} />
+          </label>
         </div>
       }
       rightColumnContent={
@@ -122,6 +114,21 @@ export default function PreviewStep({
               <OptimizationSlider />
             </div>
           </div>
+          <div>
+            <div className='font-medium text-gray-71 mb-3'>
+              Thumbnail preview
+            </div>
+            <div className='w-48 h-48'>
+              {croppedImage && (
+                <img src={croppedImage.src} className='rounded w-full h-full' />
+              )}
+            </div>
+            {croppedImage?.error && (
+              <div className='text-sm text-error font-medium mt-3'>
+                Error text error text
+              </div>
+            )}
+          </div>
           <div className='flex-between pt-18px'>
             <button
               type='button'
@@ -130,14 +137,14 @@ export default function PreviewStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <button
+            <Button
               type='button'
-              className='btn-primary px-6'
+              className='font-extrabold px-6'
               onClick={submit}
               disabled={!croppedImage || Boolean(croppedImage.error)}
             >
               Go to Overview
-            </button>
+            </Button>
           </div>
         </div>
       }
