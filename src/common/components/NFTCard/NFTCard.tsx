@@ -4,7 +4,7 @@ import cn from 'classnames'
 
 import styles from './NFTCard.module.css'
 
-export interface INFTCompactCardProps {
+export type INFTCompactCardProps = {
   imageSrc: string
   title: string
   likes: number
