@@ -98,6 +98,7 @@ const Header = (props: PropsType) => {
     {
       src: UserIcon,
       variant: 'background',
+      routeName: routes.MY_PROFILE,
     },
   ]
 
@@ -166,7 +167,9 @@ const Header = (props: PropsType) => {
       <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
           <div className='mr-20px md:mr-26px' key={index}>
-            <img src={icon.src} />
+            <Link to={icon.routeName ?? '#'} className='flex items-center'>
+              <img src={icon.src} />
+            </Link>
           </div>
         ))}
       </div>
