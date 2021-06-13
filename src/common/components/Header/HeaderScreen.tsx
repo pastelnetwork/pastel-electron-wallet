@@ -125,7 +125,7 @@ const Header = (props: TPropsType) => {
     },
     {
       name: 'Portfolio',
-      routeName: routes.ADDRESSBOOK,
+      routeName: routes.PORTFOLIO_BUYER,
       currentRoute: location.pathname,
     },
   ]
