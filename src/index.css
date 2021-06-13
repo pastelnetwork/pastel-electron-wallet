@@ -1,4 +1,4 @@
-@import 'tailwindcss/base';
+/* @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
@@ -25,7 +25,7 @@
   h5 {
     @apply text-h6;
   }
-}
+} */
 
 @import '@fortawesome/fontawesome-free/css/all.css';
 @import 'typeface-roboto/index.css';
