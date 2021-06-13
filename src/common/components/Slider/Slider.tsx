@@ -24,7 +24,7 @@ const SliderShape = ({
   )
 }
 
-export type SliderProps = {
+export type TSlider = {
   min: number
   max: number
   style?: CSSProperties
@@ -56,7 +56,7 @@ export default function Slider({
   formatValue = defaultFormat,
   formatTooltipValue = formatValue,
   ...props
-}: SliderProps): JSX.Element {
+}: TSlider): JSX.Element {
   let values: number[]
   let setValues: (values: number[]) => void
   let startPercent: number

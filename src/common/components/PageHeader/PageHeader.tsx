@@ -2,11 +2,6 @@ import React from 'react'
 import Select, { TOption } from '../Select/Select'
 import MultiToggleSwitch, { TMultiToggle } from '../MultiToggleSwitch'
 
-export type TBreadcrumbProps = {
-  label: string
-  route?: string
-}
-
 export type PageHeaderSortByOptions = {
   placeholder: string
   onOptionChange: (option: TOption | null) => void
@@ -14,12 +9,11 @@ export type PageHeaderSortByOptions = {
   options: TOption[]
 }
 
-export interface PageHeaderProps {
+export type PageHeader = {
   title: string
   routes?: TMultiToggle
   sortByOptions?: PageHeaderSortByOptions[]
   variant?: string
-  breadcrumbs?: TBreadcrumbProps[]
   sortByText?: string
   sortByTextClassName?: string
 }
@@ -28,43 +22,18 @@ export interface PageHeaderProps {
  * This is a presentational component, meaning it holds no state.
  * State should be handled by parent component.
  */
-const PageHeader = (props: PageHeaderProps): JSX.Element => {
+const PageHeader = (props: PageHeader): JSX.Element => {
   const {
     title,
     routes,
     sortByOptions,
-    breadcrumbs,
     variant,
     sortByText,
     sortByTextClassName = '',
   } = props
 
-  const renderBreadcrumbs = () => {
-    if (!breadcrumbs) {
-      return null
-    }
-
-    return (
-      <div className='wrapper py-0 flex font-normal text-14px leading-19px text-gray-71 mb-12px pt-12px'>
-        {breadcrumbs.map((breadcrumb, index) => {
-          if (breadcrumb.route) {
-            return (
-              <React.Fragment key={index}>
-                <a href={breadcrumb.route}>{breadcrumb.label}</a>
-                <span className='px-6px'>/</span>
-              </React.Fragment>
-            )
-          }
-
-          return <span key={index}>{breadcrumb.label}</span>
-        })}
-      </div>
-    )
-  }
-
   return (
     <>
-      {renderBreadcrumbs()}
       <div className='bg-white text-gray-1a'>
         <div
           className={`wrapper ${
