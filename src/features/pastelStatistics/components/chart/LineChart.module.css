@@ -34,7 +34,7 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  padding-top: 30px;
+  padding-top: 50px;
   padding-bottom: 10px;
 }
 
@@ -83,7 +83,6 @@
 
 .lineChartDownloadButtonBar {
   display: flex;
-  width: 100%;
   justify-content: flex-end;
   height: 30px;
 }
@@ -91,7 +90,7 @@
 .lineChartFooter {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -136,4 +135,52 @@
 .activeThemeButton {
   border-color: #008000;
   border-width: 5px;
+}
+
+.backButtonLink {
+  display: flex;
+  position: absolute;
+  top: 0;
+}
+
+.arrowBackButton {
+  width: 40px;
+  height: 40px;
+  margin-right: 20px;
+  display: inline-block;
+  position: relative;
+  color: #c3921f;
+  border-radius: 50px;
+  border: 1px solid #c3921f;
+}
+
+.arrowBackButton::before {
+  content: '';
+  display: block;
+  width: 12px;
+  height: 12px;
+  top: 75%;
+  left: 57%;
+  border-style: solid;
+  border-color: #c3921f;
+  border-width: 2px 2px 0 0;
+  position: absolute;
+  transform-origin: 50% 50%;
+  transform: rotate(-135deg);
+  margin: -15px 0 0 -10px;
+}
+
+.arrowBackButton::after {
+  content: '';
+  display: block;
+  width: 15px;
+  height: 0;
+  top: 52%;
+  left: 70%;
+  border-style: solid;
+  border-color: #c3921f;
+  position: absolute;
+  transform-origin: 50% 50%;
+  border-width: 2px 0 0 0;
+  transform: translate(-14px, -1px);
 }

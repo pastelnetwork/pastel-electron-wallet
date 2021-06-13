@@ -36,7 +36,10 @@ const TransactionsInBlockOvertime = (
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TScatterChartData>()
+  ] = useState<TScatterChartData>({
+    data: [],
+    dataX: [],
+  })
 
   useEffect(() => {
     const loadLineChartData = async () => {

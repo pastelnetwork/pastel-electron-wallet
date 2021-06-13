@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -6,6 +7,7 @@ import * as htmlToImage from 'html-to-image'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { csvHeaders, themes } from '../../common/constants'
+import routes from '../../../../legacy/constants/routes.json'
 import {
   TScatterChartProps,
   TThemeColor,
@@ -129,6 +131,9 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
+        <Link to={routes.STATISTICS} className={styles.backButtonLink}>
+          <span className={styles.arrowBackButton}></span>
+        </Link>
         <div
           className={styles.lineChartTitle}
           style={{ color: currentTheme?.color }}
