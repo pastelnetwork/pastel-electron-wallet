@@ -28,6 +28,7 @@ export default function Chat(): JSX.Element {
   const [newMsg, setNewMsg] = useState('')
   const [activeChatId, setActiveChatId] = useState<number>(mockChats[0].id)
   const [activeChat, setActiveChat] = useState<ChatItemProps>(mockChats[0])
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [chats, setChats] = useState<ChatItemProps[]>(mockChats) // DEBUG: init state
 
