@@ -42,10 +42,9 @@ export default function Chat(): JSX.Element {
   }, [location])
   */
 
-  const endRef = useRef(null)
+  const endRef = useRef<HTMLDivElement>(null)
   const scroll2End = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(endRef as any).current?.scrollIntoView({ behavior: 'smooth' })
+    endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   const onNewMsgFocus = () => {
