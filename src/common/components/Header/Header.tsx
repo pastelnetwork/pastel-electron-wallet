@@ -158,15 +158,10 @@ export default function Header(): JSX.Element {
       </div>
       <div className='flex items-center h-full'>
         <Icon src={QuestionTag} />
-<<<<<<< HEAD
-        <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
-        <Link to={routes.CHAT}>
-          <Icon classes='ml-6 lg:ml-22px' src={MessageIcon} />
-        </Link>
-=======
         <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
-        <Icon classes='ml-6 lg:ml-26px w-18px' src={MessageIcon} notification />
->>>>>>> new_development
+        <Link to={routes.CHAT}>
+          <Icon classes='ml-6 lg:ml-18px' src={MessageIcon} />
+        </Link>
         <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
         <Icon
           classes='ml-6 lg:ml-22px'

@@ -525,17 +525,14 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
-<<<<<<< HEAD
             <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
             <Route path={routes.CHAT} exact component={Chat} />
-=======
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
               path={routes.PORTFOLIO_DETAIL}
               exact
               component={PortfolioPage}
             />
->>>>>>> new_development
             <Route
               path={routes.TRANSACTIONS}
               render={() => (
