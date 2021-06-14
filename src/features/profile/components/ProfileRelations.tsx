@@ -7,7 +7,7 @@ const cx_tab =
 const cx_tab_active =
   'text-sm w-fit border-b font-bold pt-1 pb-3 text-gray-33 border-gray-33 cursor-pointer'
 
-const relationCounts = { followers: 235, following: 162, mutual: 73 }
+const relationCounts = { followers: 235, friends: 162, mutual: 73 }
 
 export type TProfileRelations = {
   isEmpty?: boolean
@@ -29,10 +29,10 @@ const ProfileRelations = ({ isEmpty }: TProfileRelations): JSX.Element => {
         </div>
         <div className='flex-grow z-10'>
           <div
-            className={tab == 'Following' ? cx_tab_active : cx_tab}
-            onClick={() => setTab('Following')}
+            className={tab == 'Friends' ? cx_tab_active : cx_tab}
+            onClick={() => setTab('Friends')}
           >
-            Following ({relationCounts.following})
+            Friends ({relationCounts.friends})
           </div>
         </div>
         <div className='flex-grow z-10'>
@@ -57,9 +57,9 @@ const ProfileRelations = ({ isEmpty }: TProfileRelations): JSX.Element => {
         ) : (
           <Followers />
         ))}
-      {tab == 'Following' && (
+      {tab == 'friends' && (
         <div className='text-center pt-8'>
-          This is placeholder for Following View.
+          This is placeholder for friends View.
         </div>
       )}
       {tab == 'Mutual' && (
