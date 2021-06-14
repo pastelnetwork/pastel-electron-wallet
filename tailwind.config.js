@@ -137,6 +137,7 @@ module.exports = {
         blue: {
           '3f': '#3F9AF7',
           e5: '#E5F1FF',
+          eb: '#EBF2FF',
         },
         gray: {
           a6: '#A6B0C2',
@@ -173,6 +174,7 @@ module.exports = {
           11: '#11142D',
           80: '#808191',
           e4: '#E4E4E4',
+          '1b': '#1B1D21',
         },
         red: {
           '7a': '#FF7A00',

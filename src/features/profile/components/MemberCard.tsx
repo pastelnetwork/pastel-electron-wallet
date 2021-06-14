@@ -1,7 +1,7 @@
 import React from 'react'
 import Avatar from '../../../common/components/Avatar'
-import chatIcon from '../../../common/assets/icons/ico-chat-icon.svg'
-import voteIcon from '../../../common/assets/icons/ico-vote-icon.svg'
+import VoteIcon from '../../../common/components/Icons/Vote'
+import ChatIcon from '../../../common/components/Icons/Chat'
 import { Link } from 'react-router-dom'
 import cn from 'classnames'
 
@@ -16,8 +16,8 @@ export type TMemberBoardProps = {
   object: string
   behaviour: 'commented' | 'purchased' | 'liked'
   active: boolean
-  onClickChat?: (event: React.MouseEvent<HTMLImageElement>) => void
-  onClickVote?: (event: React.MouseEvent<HTMLImageElement>) => void
+  onClickChat?: (event: React.MouseEvent<SVGSVGElement>) => void
+  onClickVote?: (event: React.MouseEvent<SVGSVGElement>) => void
 }
 
 const MemberCard = ({
@@ -65,18 +65,15 @@ const MemberCard = ({
             {description}
           </div>
           <div className='mt-13px flex'>
-            <img
-              role='button'
-              onClick={onClickChat}
-              src={chatIcon}
-              alt='Chat Icon Image'
+            <ChatIcon
+              size={30}
+              clickHandler={onClickChat}
+              className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400 mr-3 cursor-pointer'
             />
-            <img
-              role='button'
-              onClick={onClickVote}
-              className='ml-3'
-              src={voteIcon}
-              alt='Chat Icon Image'
+            <VoteIcon
+              size={30}
+              clickHandler={onClickVote}
+              className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400 cursor-pointer'
             />
           </div>
         </div>
