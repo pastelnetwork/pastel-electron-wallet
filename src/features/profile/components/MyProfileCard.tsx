@@ -60,7 +60,7 @@ const ProfileCard = ({
   ]
 
   return (
-    <div className='flex flex-col pb-4 rounded-md shadow-sm bg-white w-315px h-full justify-between'>
+    <div className='flex flex-col pb-4 rounded-md shadow-sm bg-white w-315px h-full justify-between max-h-'>
       <div className='flex flex-col flex-grow'>
         <ProfileCardFrame isEmpty={isEmpty} editMode={isEmpty || editMode} />
         <div className='-mt-61px px-4 flex relative justify-center'>
