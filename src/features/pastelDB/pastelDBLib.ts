@@ -91,7 +91,6 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
         path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
       )
     }
-    await RemoveSqliteDBFile()
   } catch (e) {
     log(`pastelDB readSqliteDBFile error: ${e}`)
   }
