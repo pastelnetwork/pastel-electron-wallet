@@ -8,6 +8,7 @@ import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { csvHeaders, themes } from '../../common/constants'
 import routes from '../../../../legacy/constants/routes.json'
+import FontAwesomeIcon from '../../../../common/components/FontAwesomeIcon/FontAwesomeIcon'
 import {
   TScatterChartProps,
   TThemeColor,
@@ -132,7 +133,11 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
         <Link to={routes.STATISTICS} className={styles.backButtonLink}>
-          <span className={styles.arrowBackButton}></span>
+          <FontAwesomeIcon
+            className={'fas fa-arrow-circle-left'}
+            color={'#c3921f'}
+            size={30}
+          />
         </Link>
         <div
           className={styles.lineChartTitle}

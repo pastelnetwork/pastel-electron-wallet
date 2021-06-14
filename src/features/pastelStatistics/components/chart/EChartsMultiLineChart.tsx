@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 import { TLineChartProps, TThemeColor } from '../../common/types'
 import { pricesCSVHeaders, themes } from '../../common/constants'
+import FontAwesomeIcon from '../../../../common/components/FontAwesomeIcon/FontAwesomeIcon'
 import routes from '../../../../legacy/constants/routes.json'
 
 import styles from './LineChart.module.css'
@@ -256,7 +257,11 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
         <Link to={routes.STATISTICS} className={styles.backButtonLink}>
-          <span className={styles.arrowBackButton}></span>
+          <FontAwesomeIcon
+            className={'fas fa-arrow-circle-left'}
+            color={'#c3921f'}
+            size={30}
+          />
         </Link>
         <div
           className={styles.lineChartTitle}
