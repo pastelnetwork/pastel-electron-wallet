@@ -3,15 +3,17 @@ import { chatMsgDatetime } from '../../common/utils/format'
 import cn from 'classnames'
 import styles from './Chat.module.css'
 
+export const DIR_SENT = 0
+export const DIR_RECV = 1
+
 export interface ChatMessageProps {
   text?: string
-  sender: {
-    avatar: string
-  }
-  showAvatar: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  sender: any
   date: Date
-  // unread: boolean
+  unread: boolean
   direction: number // incoming (1) / outcoming (0)
+  showAvatar?: boolean
   attachments?: string[] //images only? any files?
   onSaveAttachment?: (url: string) => void
 }
@@ -48,12 +50,9 @@ export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
               <div
                 key={i}
                 className={styles.oneAttachment}
+                style={{ backgroundImage: `url(${prepareFileThumb(att)})` }}
                 onClick={() => saveAttachment(att)}
-              >
-                <i
-                  style={{ backgroundImage: `url(${prepareFileThumb(att)})` }}
-                ></i>
-              </div>
+              ></div>
             ))}
           </div>
         )}

@@ -182,9 +182,6 @@
   margin-top: 20px;
 }
 
-.chatMessageContent {
-}
-
 .chatMessageTime {
   margin-top: 10px;
   font-weight: 500;
@@ -223,7 +220,7 @@
   background: #ffffff;
   box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  margin: 12px 0px 0px 0px;
+  margin: 12px 0px;
   padding: 6px 14px;
   display: flex;
   cursor: pointer;
@@ -279,6 +276,7 @@
   margin-right: 18px;
   height: 47px;
   width: 47px;
+  flex-shrink: 0;
 }
 
 .userAvatar .unread {
@@ -319,6 +317,8 @@
 
 .chatMessageAttachments {
   margin-top: 10px;
+  flex-wrap: wrap;
+  display: flex;
 }
 
 .oneAttachment {
@@ -330,4 +330,5 @@
   background-position: 50%;
   background-size: cover;
   cursor: pointer;
+  margin: 0 10px 10px 0;
 }
