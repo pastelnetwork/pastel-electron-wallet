@@ -1,16 +1,14 @@
-import React, { ReactNode, ReactSVGElement } from 'react'
+import React, { ReactNode } from 'react'
 import cn from 'classnames'
-import Icon from '../Icon/Icon'
+import Icon from '../Icon'
 import CheckIcon from '../../assets/icons/ico-check.svg'
 import TimesIcon from '../../assets/icons/ico-times.svg'
-import NumberFormat from 'react-number-format'
 
 export type TInput = {
   className?: string
-  type?: 'text' | 'password' | 'number'
-  kind?: 'numberFormat'
-  prepend?: ReactSVGElement
-  append?: ReactSVGElement
+  type?: 'text' | 'number' | 'tel' | 'email' | 'password'
+  prepend?: ReactNode
+  append?: ReactNode
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   isValid?: boolean | undefined
   label?: string
@@ -22,13 +20,12 @@ export type TInput = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Input: React.FC<TInput> = React.forwardRef(
+const Input = React.forwardRef<HTMLInputElement, TInput>(
   (
     {
       className,
       onChange,
-      type,
-      kind,
+      type = 'text',
       prepend,
       append,
       isValid,
@@ -40,14 +37,9 @@ const Input: React.FC<TInput> = React.forwardRef(
       disabled,
       ...otherProps
     },
-    ref: React.LegacyRef<HTMLInputElement>,
+    ref,
   ) => {
-    const classes = cn(
-      {
-        'relative flex items-center': true,
-      },
-      className,
-    )
+    const classes = cn('relative flex items-center', className)
 
     const wrapperClasses = cn({
       'cursor-not-allowed': disabled,
@@ -66,7 +58,7 @@ const Input: React.FC<TInput> = React.forwardRef(
     })
 
     const fieldsetClasses = cn({
-      'absolute top-0 right-0 bottom-0 left-0 shadow-input rounded pointer-events-none': true,
+      'absolute top-0 right-0 bottom-0 left-0 shadow-2px rounded pointer-events-none': true,
       'bg-line -z-10': disabled,
     })
 
@@ -75,7 +67,7 @@ const Input: React.FC<TInput> = React.forwardRef(
         {label && (
           <label
             htmlFor={id}
-            className='inline-block text-gray-8e text-h4 pb-1'
+            className='inline-block text-gray-71 text-h5 pb-2'
           >
             {label}
           </label>
@@ -83,28 +75,16 @@ const Input: React.FC<TInput> = React.forwardRef(
         <div className={classes}>
           {prepend && <div className='pl-2'>{prepend}</div>}
 
-          {kind === 'numberFormat' ? (
-            <NumberFormat
-              id={id}
-              className={inputClasses}
-              onChange={onChange}
-              placeholder={placeholder}
-              thousandSeparator={true}
-              {...otherProps}
-              disabled={disabled}
-            />
-          ) : (
-            <input
-              id={id}
-              ref={ref}
-              className={inputClasses}
-              onChange={onChange}
-              type={type}
-              placeholder={placeholder}
-              {...otherProps}
-              disabled={disabled}
-            />
-          )}
+          <input
+            id={id}
+            ref={ref}
+            className={inputClasses}
+            onChange={onChange}
+            type={type}
+            placeholder={placeholder}
+            {...otherProps}
+            disabled={disabled}
+          />
           <fieldset className={fieldsetClasses} />
 
           {append && <div className='pr-2'>{append}</div>}
@@ -133,9 +113,5 @@ const Input: React.FC<TInput> = React.forwardRef(
     )
   },
 )
-
-Input.defaultProps = {
-  type: 'text',
-}
 
 export default Input
