@@ -21,7 +21,7 @@ import styles from './LoadingScreen.module.css'
 import { checkHashAndDownloadParams } from './utils'
 import PastelDB from '../../features/pastelDB/database'
 
-export const locatePastelConfDir = () => {
+const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
     return path.join(remote.app.getPath('appData'), 'Pastel')
   }

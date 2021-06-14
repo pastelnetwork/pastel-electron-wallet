@@ -35,11 +35,9 @@ import { render } from 'react-dom'
 import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
 import log from 'electron-log'
-import path from 'path'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
-import { locatePastelConfDir } from './features/loading'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 
@@ -66,15 +64,7 @@ try {
   console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
 }
 
-const now = new Date()
 log.transports.console.level = false
-log.transports.file.resolvePath = () =>
-  path.join(
-    locatePastelConfDir(),
-    `logs/Pastel__${
-      now.getMonth() + 1
-    }_${now.getDate()}_${now.getFullYear()}.log`,
-  )
 
 const application = (
   <Provider store={store}>
