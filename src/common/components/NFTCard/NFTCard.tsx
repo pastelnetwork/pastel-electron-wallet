@@ -53,7 +53,7 @@ const NFTCard = ({
     ? variant === 'portfolio'
       ? 'pt-13px'
       : 'pt-2'
-    : 'pt-2.5 pb-2px'
+    : 'pt-2.5 pb-0.5'
 
   return (
     <div
@@ -88,9 +88,9 @@ const NFTCard = ({
       )}
       {/* Image */}
       {percentage ? (
-        <div className='h-6px w-full bg-gray-f9 relative mb-1px mt-2px'>
+        <div className='h-1.5 w-full bg-gray-f9 relative mb-px mt-0.5'>
           <div
-            className={`absolute h-6px inline-block rounded-r-8px ${styles.bgPercentage}`}
+            className={`absolute h-1.5 inline-block rounded-r-lg ${styles.bgPercentage}`}
             style={{ width: `${percentage}%` }}
           ></div>
         </div>
@@ -103,7 +103,7 @@ const NFTCard = ({
         <img src={imageSrc} className='object-cover h-full w-full' />
         {fullCardProps && fullCardProps.onSale && variant === 'portfolio' ? (
           <div
-            className={`absolute left-10px bottom-10px inline-block rounded-md overflow-hidden p-3px ${styles.statusBgColor}`}
+            className={`absolute left-2.5 bottom-2.5 inline-block rounded-md overflow-hidden p-3px ${styles.statusBgColor}`}
           >
             <div className='rounded-md overflow-hidden py-3px px-11px text-h5 font-extrabold text-gray-2d leading-6 bg-white'>
               On Sale
@@ -116,7 +116,7 @@ const NFTCard = ({
         <div className='flex justify-between'>
           <div
             className={cn('text-gray-4a', titleClass, {
-              'whitespace-nowrap overflow-ellipsis pr-8px text-h5 font-extrabold m-w-full overflow-hidden':
+              'whitespace-nowrap overflow-ellipsis pr-2 text-h5 font-extrabold m-w-full overflow-hidden':
                 variant === 'portfolio',
             })}
           >
@@ -139,14 +139,14 @@ const NFTCard = ({
                   )}
                 />
               )}
-              <span className='pl-6px text-gray-4a text-h6'>{likes}</span>
+              <span className='pl-1.5 text-gray-4a text-h6'>{likes}</span>
             </span>
           ) : null}
         </div>
         {fullCardProps && (
           <div
             className={`flex justify-between ${
-              variant === 'portfolio' ? 'pt-10px' : 'pt-4'
+              variant === 'portfolio' ? 'pt-2.5' : 'pt-4'
             }`}
           >
             <div className='flex-center'>

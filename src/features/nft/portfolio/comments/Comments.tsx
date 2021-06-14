@@ -50,7 +50,7 @@ export default function Comments(): JSX.Element {
           ({commentsPerPageCount} of {commentsCount})
         </span>
       </div>
-      <div className='space-y-14px'>
+      <div className='space-y-3.5'>
         {comments.map(comment => (
           <Comment key={comment.id} comment={comment} />
         ))}

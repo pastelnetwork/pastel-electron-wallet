@@ -192,13 +192,13 @@ export default function Portfolio(): JSX.Element {
           <div className='flex items-center xl:justify-between flex-col xl:flex-row mt-30px mb-30px px-27px'>
             <div className='flex items-center w-full xl:w-auto'>
               {filterOptions.map(option => (
-                <div className='mr-24px' key={option.label}>
+                <div className='mr-6' key={option.label}>
                   <Select {...option} />
                 </div>
               ))}
             </div>
             <div className='flex items-center xl:justify-between mt-30px xl:mt-0 w-full xl:w-auto'>
-              <div className='flex items-center mr-24px'>
+              <div className='flex items-center mr-6'>
                 <p className='pr-4 text-h5'>Sort by</p>
                 <div className='flex space-x-6'>
                   <Select
@@ -211,7 +211,7 @@ export default function Portfolio(): JSX.Element {
                 </div>
               </div>
               <div className='flex h-full items-center justify-end max-w-278px'>
-                <p className='text-h6 pr-12px text-gray-2d'>Price:</p>
+                <p className='text-h6 pr-3 text-gray-2d'>Price:</p>
                 <Slider
                   min={100}
                   max={999}
@@ -228,7 +228,7 @@ export default function Portfolio(): JSX.Element {
             <div
               className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
             >
-              <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-16px gap-y-16px'>
+              <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
                 {cards.map((nftItem, index) => (
                   <NFTCard {...nftItem} key={index} hideFollow />
                 ))}

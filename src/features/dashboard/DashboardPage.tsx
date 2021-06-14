@@ -84,7 +84,7 @@ export default function DashboardPage(): JSX.Element {
             <div className='font-extrabold text-gray-a0 text-xs ml-3'>
               23 items
             </div>
-            <button type='button' className='ml-auto relative -right-2px'>
+            <button type='button' className='ml-auto relative -right-0.5'>
               <Dots size={24} className='text-gray-b0 hover:opacity-80' />
             </button>
           </div>

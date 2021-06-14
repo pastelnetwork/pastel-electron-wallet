@@ -19,7 +19,7 @@ const Breadcrumbs = (props: TBreadcrumbs): JSX.Element => {
   return (
     <div
       className={cn(
-        'wrapper py-0 flex font-normal text-14px leading-19px text-gray-71 mb-12px pt-12px',
+        'wrapper py-0 flex font-normal text-14px leading-19px text-gray-71 mb-3 pt-3',
         className,
       )}
     >
@@ -33,7 +33,7 @@ const Breadcrumbs = (props: TBreadcrumbs): JSX.Element => {
               >
                 {breadcrumb.label}
               </Link>
-              <span className='px-6px'>/</span>
+              <span className='px-1.5'>/</span>
             </React.Fragment>
           )
         }

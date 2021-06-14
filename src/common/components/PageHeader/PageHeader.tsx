@@ -45,7 +45,7 @@ const PageHeader = (props: PageHeader): JSX.Element => {
               <h1
                 className={`${
                   variant === 'portfolio'
-                    ? 'pr-18px md:pr-28px whitespace-nowrap'
+                    ? 'pr-18px md:pr-7 whitespace-nowrap'
                     : 'pr-70px'
                 } font-semibold text-gray-23`}
               >
