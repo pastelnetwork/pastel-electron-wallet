@@ -1,6 +1,5 @@
 import { remote } from 'electron'
 import fs from 'fs'
-import { open } from 'fs/promises'
 import path from 'path'
 import initSqlJs, { Database, QueryExecResult, SqlJsStatic } from 'sql.js'
 
@@ -78,23 +77,8 @@ import {
   TWalletInfo,
 } from './type'
 
-export const readSqliteDBFile = async (): Promise<Buffer | null> => {
-  const file = await open(
-    path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-    'r',
-  )
-  const stat = await file.stat()
-  if (stat.birthtimeMs > +new Date('2021-06-10')) {
-    return await fs.promises.readFile(
-      path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-    )
-  }
-  await RemoveSqliteDBFile()
-  return null
-}
-
-const RemoveSqliteDBFile = async (): Promise<void> => {
-  fs.promises.unlink(
+export const readSqliteDBFile = async (): Promise<Buffer> => {
+  return await fs.promises.readFile(
     path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
   )
 }
@@ -129,7 +113,7 @@ export const createDatabase = async (): Promise<Database> => {
   const SQL = await initSqlJS()
 
   try {
-    const filebuffer: Buffer | null = await readSqliteDBFile()
+    const filebuffer = await readSqliteDBFile()
     if (filebuffer && filebuffer.length) {
       const db = new SQL.Database(filebuffer)
 
@@ -141,7 +125,6 @@ export const createDatabase = async (): Promise<Database> => {
   } catch (error) {
     console.log(`pastelDB createDatabase error: ${error}`)
   }
-  RemoveSqliteDBFile()
   const newdb: Database = new SQL.Database()
   await createTables(newdb)
   return newdb

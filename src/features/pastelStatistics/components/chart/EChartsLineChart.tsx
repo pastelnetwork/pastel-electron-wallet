@@ -20,6 +20,7 @@ import {
   getThemeInitOption,
   getThemeUpdateOption,
 } from '../../utils/ChartOptions'
+import FontAwesomeIcon from '../../../../common/components/FontAwesomeIcon/FontAwesomeIcon'
 
 export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   const {
@@ -167,7 +168,11 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
         <Link to={routes.STATISTICS} className={styles.backButtonLink}>
-          <span className={styles.arrowBackButton}></span>
+          <FontAwesomeIcon
+            className={'fas fa-arrow-circle-left'}
+            color={'#c3921f'}
+            size={30}
+          />
         </Link>
         <div
           className={styles.lineChartTitle}
