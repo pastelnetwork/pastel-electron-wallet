@@ -93,16 +93,14 @@ export default class RPC {
 
           if (e.response && e.response.data) {
             log.error(
-              `legacy/rpc error: ${
+              `legacy/rpc response error: ${
                 e.response.data.error.message
               }. Detail: ${JSON.stringify(e)}`,
             )
             reject(e.response.data.error.message)
           } else {
             log.error(
-              `legacy/rpc error: ${NO_CONNECTION}. Detail: ${JSON.stringify(
-                e,
-              )}`,
+              `legacy/rpc Noconnection error. Detail: ${JSON.stringify(e)}`,
             )
             reject(NO_CONNECTION)
           }

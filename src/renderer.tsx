@@ -34,6 +34,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
+import log from 'electron-log'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
@@ -62,6 +63,8 @@ try {
   // TODO log errors to a central logger so we can address them later.
   console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
 }
+
+log.transports.console.level = false
 
 const application = (
   <Provider store={store}>
