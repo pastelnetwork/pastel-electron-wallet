@@ -4,7 +4,7 @@ import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 import Select, { TOption } from '../../common/components/Select/Select'
-import NFTCard, { INFTCardProps } from '../../common/components/NFTCard'
+import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
 import Slider from '../../common/components/Slider/Slider'
 
 import styles from './Portfolio.module.css'
@@ -66,7 +66,7 @@ export default function Portfolio(): JSX.Element {
   const [filter, setFilter] = useState<TOption | null>(null)
   const [likes, setLikes] = useState<TOption | null>(null)
   const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
-  const [cards, setCards] = useState<INFTCardProps[]>([])
+  const [cards, setCards] = useState<TNFTCard[]>([])
 
   const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
     {
@@ -150,7 +150,7 @@ export default function Portfolio(): JSX.Element {
 
     const randomCount = Math.floor(Math.random() * 15)
 
-    const randomCards: INFTCardProps[] = []
+    const randomCards: TNFTCard[] = []
     Array.from({ length: randomCount }).map(() => {
       const randomPortfolioIndex = Math.floor(Math.random() * 4)
 

@@ -2,9 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import cn from 'classnames'
 
+import { Override } from '../../../common/utils/types'
 import styles from './NFTCard.module.css'
 
-export type TNFTCompactCardProps = {
+export type TNFTCompactCard = {
   imageSrc: string
   title: string
   likes: number
@@ -17,13 +18,16 @@ export type TNFTCompactCardProps = {
   isLastBid?: boolean
 }
 
-export interface INFTCardProps extends TNFTCompactCardProps {
-  author: string
-  avatarSrc: string
-  price: number | string
-  currencyName: string
-  onSale: boolean
-}
+export type TNFTCard = Override<
+  TNFTCompactCard,
+  {
+    author: string
+    avatarSrc: string
+    price: number | string
+    currencyName: string
+    onSale: boolean
+  }
+>
 
 const NFTCard = ({
   imageSrc,
@@ -37,8 +41,8 @@ const NFTCard = ({
   isLastBid,
   hideLikeButton,
   ...props
-}: TNFTCompactCardProps | INFTCardProps): JSX.Element => {
-  const fullCardProps = 'author' in props && (props as INFTCardProps)
+}: TNFTCompactCard | TNFTCard): JSX.Element => {
+  const fullCardProps = 'author' in props && (props as TNFTCard)
 
   const wrapperPaddingClass = fullCardProps
     ? variant === 'portfolio'
