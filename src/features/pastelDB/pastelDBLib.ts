@@ -1,4 +1,5 @@
 import { remote } from 'electron'
+import { log } from 'electron-log'
 import fs from 'fs'
 import { open } from 'fs/promises'
 import path from 'path'
@@ -79,24 +80,32 @@ import {
 } from './type'
 
 export const readSqliteDBFile = async (): Promise<Buffer | null> => {
-  const file = await open(
-    path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-    'r',
-  )
-  const stat = await file.stat()
-  if (stat.birthtimeMs > +new Date('2021-06-10')) {
-    return await fs.promises.readFile(
+  try {
+    const file = await open(
       path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+      'r',
     )
+    const stat = await file.stat()
+    if (stat.birthtimeMs > +new Date('2021-06-10')) {
+      return await fs.promises.readFile(
+        path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+      )
+    }
+    await RemoveSqliteDBFile()
+  } catch (e) {
+    log(`pastelDB readSqliteDBFile error: ${e}`)
   }
-  await RemoveSqliteDBFile()
   return null
 }
 
-const RemoveSqliteDBFile = async (): Promise<void> => {
-  fs.promises.unlink(
-    path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-  )
+export const RemoveSqliteDBFile = async (): Promise<void> => {
+  try {
+    fs.promises.unlink(
+      path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+    )
+  } catch (e) {
+    log(`pastelDB RemoveSqliteDBFile error: ${e}`)
+  }
 }
 
 export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
@@ -139,9 +148,9 @@ export const createDatabase = async (): Promise<Database> => {
       return db
     }
   } catch (error) {
-    console.log(`pastelDB createDatabase error: ${error}`)
+    log(`pastelDB createDatabase error: ${error}`)
   }
-  RemoveSqliteDBFile()
+  await RemoveSqliteDBFile()
   const newdb: Database = new SQL.Database()
   await createTables(newdb)
   return newdb

@@ -1,4 +1,6 @@
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
+import fs from 'fs'
+import electron from 'electron'
 
 import {
   createBlock,
@@ -46,6 +48,16 @@ import * as pastelDBLib from '../pastelDBLib'
 type Databaseinstance = {
   db: Database
 }
+
+jest.mock('electron', () => ({
+  remote: {
+    app: {
+      getPath: jest.fn(),
+      getName: jest.fn(),
+      getVersion: jest.fn(),
+    },
+  },
+}))
 
 describe('managePastelDatabase', () => {
   const loadDatabase = jest.fn(async () => {
@@ -1400,6 +1412,25 @@ describe('managePastelDatabase', () => {
       expect(e.message).toEqual(
         'pastelDB getTransactionsDataFromDBByPeriod error: rawtransactionError is invalid table name',
       )
+    }
+  })
+
+  test('RemoveSqliteDBFile should remove sqlite file correctly', async () => {
+    // Arrange
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
+    const remoteSpy = jest
+      .spyOn(electron.remote.app, 'getPath')
+      .mockImplementation(() => '')
+
+    try {
+      // Act
+      await pastelDBLib.RemoveSqliteDBFile()
+
+      // Assert
+      expect(remoteSpy).toBeCalledTimes(1)
+      expect(unlinkSpy).toBeCalledTimes(1)
+    } catch (e) {
+      expect(e).toEqual(`pastelDB RemoveSqliteDBFile error: ${e}`)
     }
   })
 })
