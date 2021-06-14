@@ -3,5 +3,12 @@ declare module 'check-password-strength' {
     id: 0 | 1 | 2 | 3
     value: 'Too weak' | 'Weak' | 'Medium' | 'Strong'
   }
-  export function passwordStrength(password: string): TPasswordStrengthResult
+  export interface IPasswordOption extends TPasswordStrengthResult {
+    minDiversity: number
+    minLength: number
+  }
+  export function passwordStrength(
+    password: string,
+    options?: IPasswordOption[],
+  ): TPasswordStrengthResult
 }

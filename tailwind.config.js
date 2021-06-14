@@ -59,9 +59,11 @@ module.exports = {
         '35px': '2.188rem',
         '36px': '2.29rem',
         '37px': '2.313rem',
+        '38px': '2.375rem',
         '40px': '2.5rem',
         '41px': '2.5625rem',
         '41.5px': '2.59375rem',
+        '42px': '2.625rem',
         '46px': '2.875rem',
         '50px': '3.125rem',
         '54px': '3.375rem',
@@ -94,7 +96,9 @@ module.exports = {
         '300px': '18.75rem',
         '315px': '19.6875rem',
         '335px': '20.938rem',
+        '348px': '21.75rem',
         '352px': '22rem',
+        '360px': '22.5rem',
         '380px': '23.75rem',
         '419px': '26.187rem',
         '478px': '29.875rem',
@@ -103,9 +107,6 @@ module.exports = {
         link: '#3F9AF7',
         white: '#FFFFFF',
         transparent: 'transparent',
-        text: {
-          DEFAULT: '#171F46',
-        },
         success: {
           DEFAULT: '#00D097',
           pressed: '#00B282',
@@ -145,16 +146,18 @@ module.exports = {
           eb: '#EBEBFC',
           e7: '#E7EAF2',
           e6: '#E6E8EC',
+          e4: '#E4E4E4',
           dd: '#DDE0E3',
           cd: '#CDD2DB',
           b0: '#B0B7C3',
+          77: '#777E91',
           35: '#353941',
           33: '#334D6E',
+          23: '#23262F',
           '1f': '#1F1F39',
           '1d': '#1D263A',
           14: '#141416',
-          23: '#23262F',
-          77: '#777E90',
+          11: '#11142D',
           '1b': '#1B2942',
           42: '#425466',
           26: '#a6b0c226',
@@ -163,17 +166,24 @@ module.exports = {
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
+          fe: '#FE634C',
           '6f': '#EF466F',
+        },
+        pink: {
+          46: '#EF466F',
+          61: '#f56185',
         },
         orange: {
           63: '#FE634C',
+          75: '#FF754C',
         },
         yellow: {
           ff: '#FFBE3D',
         },
         green: {
-          68: '#68CC67',
           e5: '#E5F6EF',
+          68: '#68CC67',
+          45: '#45B36B',
           38: '#38CB89',
         },
         button: {
@@ -184,6 +194,9 @@ module.exports = {
           text: '#8E98A3',
           hoverAlt: '#F0F7FE',
           pressedAlt: '#E7F2FD',
+        },
+        input: {
+          border: '#8E98A333',
         },
         navigation: {
           DEFAULT: '#A6B0C2',
@@ -206,6 +219,14 @@ module.exports = {
           main: '#F8F9FA',
           modal: '#1A1A1A',
         },
+        primary: {
+          DEFAULT: '#6C5DD3',
+        },
+        text: {
+          DEFAULT: '#171F46',
+          23: '#23262F',
+          77: '#777E90',
+        },
       },
       boxShadow: {
         xs:
@@ -223,10 +244,13 @@ module.exports = {
         'depth-1': '0px 8px 16px -8px rgba(15, 15, 15, 0.2)',
         '2px':
           '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
+        '4px':
+          '0px 1px 12px rgba(50, 50, 71, 0.04), 0px 0px 4px rgba(50, 50, 71, 0.2)',
         '16px':
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
         '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
+        '64px': '0px 32px 64px 0px rgba(31, 47, 70, 0.12)',
       },
       fontSize: {
         h1: '2rem',
@@ -238,6 +262,7 @@ module.exports = {
         '9px': '0.5625rem',
         '10px': '0.625rem',
         '12px': '0.75rem',
+        '13px': '0.8125rem',
         '15px': '0.938rem',
         '26px': '1.625rem',
         '32px': '2rem',
@@ -263,11 +288,16 @@ module.exports = {
         '15px': '0.938rem',
         '19px': '1.1875',
       },
+      minHeight: {
+        '78px': '4.875rem',
+        '672px': '42rem',
+      },
       container: {
         center: true,
       },
       inset: {
         '10px': '0.625rem',
+        '5px': '0.3125rem',
       },
       maxHeight: {
         '244px': '15.25rem',
@@ -292,6 +322,7 @@ module.exports = {
       },
       maxWidth: {
         '278px': '17.375rem',
+        '427px': '26.6875rem',
         '478px': '29.875rem',
         '690px': '43.125rem',
         fit: 'fit-content',
