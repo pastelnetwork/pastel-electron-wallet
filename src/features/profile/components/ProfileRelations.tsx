@@ -17,7 +17,7 @@ const ProfileRelations = ({ isEmpty }: TProfileRelations): JSX.Element => {
   const [tab, setTab] = useState('Followers')
 
   return (
-    <div className='w-full 1200px:w-2/5 flex flex-col flex-grow px-4 1200px:pr-0 md:pl-10 1200px:pl-4'>
+    <div className='w-full 1200px:w-2/5 flex flex-col flex-grow pr-4 pl-10 1200px:pr-0 1200px:pl-4'>
       <div className='flex justify-between mr-8 bg-gray-f8 z-10 relative'>
         <div className='flex-grow z-10'>
           <div

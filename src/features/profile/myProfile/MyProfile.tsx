@@ -53,7 +53,7 @@ const Profile = (): JSX.Element => {
               setEmpty={setEmpty}
             />
           </div>
-          <div className='flex pl-2 justify-between flex-col md:flex-col 1200px:flex-row flex-grow'>
+          <div className='flex pl-2 justify-between flex-col 1200px:flex-row flex-grow'>
             <ProfileGeneral editMode={editMode} isEmpty={isEmpty} />
             <ProfileRelations isEmpty={isEmpty} />
           </div>

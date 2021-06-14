@@ -296,9 +296,6 @@ module.exports = {
       container: {
         center: true,
       },
-      maxHeight: {
-        700: '700px',
-      },
       borderWidth: {
         '3px': '0.1875rem',
         '5px': '0.3125rem',
@@ -306,6 +303,7 @@ module.exports = {
       maxHeight: {
         '244px': '15.25rem',
         '700px': '43.75rem',
+        '750px': '46.875rem',
       },
       width: {
         '244px': '15.25rem',
