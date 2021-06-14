@@ -1,3 +1,4 @@
+import { LabelKeyObject } from 'react-csv/components/CommonPropTypes'
 import { TGranularity, TPeriod } from '../utils/PastelStatisticsLib'
 
 export type TThemeColor = {
@@ -28,8 +29,24 @@ export type TLineChartProps = {
   handleGranularityFilterChange?: (granularity: TGranularity) => void
 }
 
+export type TScatterChartProps = {
+  chartName: string
+  data: number[][]
+  dataX: string[]
+  title?: string
+  info: {
+    [key: string]: string | number
+  }
+  offset: number
+  periods: TPeriod[]
+  handleBgColorChange: (color: string) => void
+  handlePeriodFilterChange?: (period: TPeriod) => void
+  handleGranularityFilterChange?: (granularity: TGranularity) => void
+}
+
 export type TThemeInitOption = {
   theme?: TThemeColor | null
+  data?: number[][]
   dataX?: string[]
   dataY?: number[]
   dataY1?: number[]
@@ -37,4 +54,8 @@ export type TThemeInitOption = {
   chartName: string
   minY: number
   maxY: number
+}
+
+export type TCsvHeaderType = {
+  [key: string]: LabelKeyObject[]
 }

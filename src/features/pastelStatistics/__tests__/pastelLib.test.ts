@@ -59,6 +59,53 @@ describe('managePastelDatabase', () => {
     [2, 1621518133357],
   ]
 
+  const mockTransactionFees = [
+    [1, 'txid1', 1, 0.0539, 0, 0, 0, 0, '', 1621518133277],
+    [2, 'txid2', 2, 0.0705, 0, 0, 0, 0, '', 1621518133357],
+  ]
+  const mockTransactionsInBlock = [
+    [
+      1,
+      '1',
+      0,
+      0,
+      1.0,
+      '',
+      '["tx1", "tx2"]',
+      1621518133277,
+      '',
+      '',
+      '',
+      1.0,
+      '',
+      '',
+      '',
+      '',
+      '',
+      1621518133277,
+    ],
+    [
+      2,
+      '2',
+      0,
+      0,
+      1.0,
+      '',
+      '["tx1", "tx2"]',
+      1621518133357,
+      '',
+      '',
+      '',
+      1.0,
+      '',
+      '',
+      '',
+      '',
+      '',
+      1621518133357,
+    ],
+  ]
+
   test('getStartPoint function works correctly', async () => {
     // Arrange
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -192,6 +239,45 @@ describe('managePastelDatabase', () => {
       dataY: [1621518133.277, 1621518133.357],
     })
   })
-})
 
-export {}
+  test('transformTransactionInBlock function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformTransactionInBlock(
+      mockTransactionsInBlock,
+      'all',
+    )
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      data: [],
+      dataX: [],
+    })
+  })
+
+  test('transformTransactionFee function works correctly', async () => {
+    // Arrange
+    timezone_mock.register('US/Pacific')
+    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
+
+    // Act
+    const result = pastelStatisticsLib.transformTransactionFee(
+      mockTransactionFees,
+      '2h',
+    )
+
+    //Assert
+    expect(dateSpy).toHaveBeenCalled()
+    expect(result).toEqual({
+      dataX: [
+        '2021-05-20T13:42:13.277Z UTC (MockDate: GMT-0700)',
+        '2021-05-20T13:42:13.357Z UTC (MockDate: GMT-0700)',
+      ],
+      dataY: [0.0539, 0.0705],
+    })
+  })
+})
