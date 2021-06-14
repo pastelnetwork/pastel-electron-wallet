@@ -16,16 +16,17 @@ export type TMultiToggle = {
   onToggle: (index: number) => void
 }
 
-const MultiToggleSwitch: React.FC<TMultiToggle> = ({
-  data,
-  activeIndex,
-  containerClassName,
-  itemInactiveClassName,
-  itemActiveClassName,
-  countInactiveClassName,
-  countActiveClassName,
-  onToggle,
-}) => {
+const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
+  const {
+    data,
+    activeIndex,
+    containerClassName,
+    itemInactiveClassName,
+    itemActiveClassName,
+    countInactiveClassName,
+    countActiveClassName,
+    onToggle,
+  } = props
   const container_className = `inline-flex gap-3 p-3px rounded-full border border-navigation-default ${containerClassName}`
 
   const getItemClassName = (isActive: boolean) => {
@@ -49,7 +50,7 @@ const MultiToggleSwitch: React.FC<TMultiToggle> = ({
       ? countInactiveClassName
       : 'bg-gray-a0'
 
-    return `ml-2.5 text-9 text-white pt-2.5px pb-1.5px px-3px  leading-11px rounded-xl ${
+    return `ml-2.5 text-9px text-white pt-2.5px pb-1.5px px-3px  leading-11px rounded-xl ${
       isActive ? activeClass : inactiveClass
     }`
   }
@@ -62,7 +63,7 @@ const MultiToggleSwitch: React.FC<TMultiToggle> = ({
     <>
       {data?.length && (
         <div className={container_className}>
-          {data?.map((item: TMultiToggleDataItem, index: number) => {
+          {data.map((item: TMultiToggleDataItem, index: number) => {
             return (
               <div
                 className={getItemClassName(index === activeIndex)}

@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import Input from '../../../common/components/Input/Input'
-import Button from '../../../common/components/Button/Button'
+import { Button } from '../../../common/components/Buttons'
 import Typography from '../../../common/components/Typography/Typography'
 
 import * as ROUTES from '../../../common/utils/constants/routes'
@@ -26,6 +26,8 @@ const initialInputState = {
 }
 
 const Login: React.FC<LoginProps> = ({ setUser }) => {
+  const history = useHistory()
+
   const [username, setUsername] = React.useState<LoginFormInput>(
     initialInputState,
   )
@@ -77,9 +79,16 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
             Restore access now
           </Styles.FooterLink>
         </Styles.FooterText>
-        <Styles.Button type='submit' onClick={() => setUser(true)}>
+        <Button
+          type='submit'
+          onClick={() => {
+            setUser(true)
+            history.push(ROUTES.DASHBOARD)
+          }}
+          fluid={true}
+        >
           Submit
-        </Styles.Button>
+        </Button>
       </Styles.Form>
       <Link to={ROUTES.SIGN_UP}>
         <Button variant='transparent' style={{ width: '100%' }}>

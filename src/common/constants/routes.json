@@ -1,5 +1,8 @@
 {
-  "DASHBOARD": "/",
+  "DASHBOARD": "/dashboard",
+  "MEMBERS": "/members",
+  "WALLET": "/wallet",
+  "PORTFOLIO": "/portfolio",
   "SEND": "/send",
   "RECEIVE": "/receive",
   "ADDRESSBOOK": "/addressbook",
@@ -12,6 +15,12 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
+<<<<<<< HEAD
   "MARKET": "/market",
   "CHAT": "/chat"
+=======
+  "PROFILE": "/profile",
+  "MEMBERS_PROFILE": "/member_profile",
+  "MARKET": "/market"
+>>>>>>> new_development
 }
