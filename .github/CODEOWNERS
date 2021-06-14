@@ -8,9 +8,7 @@
 .*                @CrazyOptimist
 
 # Frontend assets
-*.ts *.tsx *.css *.html *.json yarn.lock tailwind.config.js           @ngvtuan @westalert @sanjanadhikari1 @CrazyOptimist
+*.ts *.tsx *.css *.html *.json yarn.lock tailwind.config.js           @ngvtuan @westalert @sanjanadhikari1 @ArthurVogelsang @CrazyOptimist
 
 # Restricted
-/docs/            @ngvtuan @westalert
-/static/          @ngvtuan @westalert
-/tools/           @ngvtuan @westalert
+/docs/ /static/ /tools/                                               @ngvtuan @westalert
