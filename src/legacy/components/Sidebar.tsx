@@ -431,10 +431,6 @@ class Sidebar extends PureComponent<any, any> {
       history.push(routes.PASTELD)
     }) // Connect mobile app
 
-    ipcRenderer.on('connectmobile', () => {
-      history.push(routes.CONNECTMOBILE)
-    })
-
     ipcRenderer.on('pastelSpriteEditorTool', () => {
       openPastelSpriteEditorToolModal()
     })
