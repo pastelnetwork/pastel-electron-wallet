@@ -3,11 +3,30 @@ import ProfileCard from '../components/MyProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/MyProfileGeneral'
 import PageHeader from '../../../common/components/PageHeader'
+import Breadcrumbs, {
+  TBreadcrumb,
+} from '../../../common/components/Breadcrumbs'
 
 const Profile = (): JSX.Element => {
   const [editMode, setEditMode] = useState(false)
   const [isEmpty, setEmpty] = useState<boolean>(false)
   const [tab, setTab] = useState(0)
+
+  const headers = [
+    { label: 'Info' },
+    { label: 'Comments', count: 2 },
+    { label: 'Security', count: 2 },
+  ]
+
+  const breadcrumbs: TBreadcrumb[] = [
+    {
+      label: 'My account',
+      route: '#',
+    },
+    {
+      label: headers[tab].label,
+    },
+  ]
 
   const onTabToggle = (index: number) => {
     setTab(index)
@@ -15,17 +34,11 @@ const Profile = (): JSX.Element => {
 
   return (
     <div className='mx-auto w-full bg-gray-f8 text-gray-23'>
-      <div className='wrapper pt-0 h-35px flex items-center'>
-        <div className='text-sm text-gray-71'>My account / General</div>
-      </div>
+      <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader
         title='My Account'
         routes={{
-          data: [
-            { label: 'Info' },
-            { label: 'Comments', count: 2 },
-            { label: 'Security', count: 2 },
-          ],
+          data: headers,
           activeIndex: tab,
           onToggle: onTabToggle,
         }}
