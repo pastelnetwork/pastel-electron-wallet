@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
-import Input from '../../../common/components/Input/Input'
+import { Input } from '../../../common/components/Inputs'
 import { Button } from '../../../common/components/Buttons'
 import Typography from '../../../common/components/Typography/Typography'
 
