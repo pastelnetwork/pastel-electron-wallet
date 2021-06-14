@@ -1,5 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
+import { Link } from 'react-router-dom'
 
 export type TBreadcrumb = {
   label: string
@@ -26,7 +27,12 @@ const Breadcrumbs = (props: TBreadcrumbs): JSX.Element => {
         if (breadcrumb.route) {
           return (
             <React.Fragment key={index}>
-              <a href={breadcrumb.route}>{breadcrumb.label}</a>
+              <Link
+                to={breadcrumb.route}
+                className={cn('hover:text-gray-2d', breadcrumb.className)}
+              >
+                {breadcrumb.label}
+              </Link>
               <span className='px-6px'>/</span>
             </React.Fragment>
           )
