@@ -16,25 +16,25 @@ const mockAv1 =
 export const mockUsers = [
   {
     id: 1,
-    name: 'User1',
+    name: 'User 1',
     avatar: mockAv1,
     isOnline: false,
   },
   {
     id: 2,
-    name: 'User2',
+    name: 'User 2',
     avatar: mockAv2,
     isOnline: true,
   },
   {
     id: 3,
-    name: 'User3',
+    name: 'User 3',
     avatar: mockAv3,
     isOnline: false,
   },
   {
     id: 4,
-    name: 'User4',
+    name: 'User 4',
     avatar: mockAv4,
     isOnline: true,
   },
