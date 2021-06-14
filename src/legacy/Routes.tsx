@@ -54,6 +54,7 @@ import Profile from '../features/profile'
 import NFTMarketFeed from '../features/nftMarket'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
+import Chat from '../features/chat'
 
 export type TWalletInfo = {
   connections: number
@@ -524,6 +525,7 @@ class RouteApp extends React.Component<any, any> {
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
             <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
+            <Route path={routes.CHAT} exact component={Chat} />
             <Route
               path={routes.TRANSACTIONS}
               render={() => (

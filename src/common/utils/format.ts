@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 import dateformat from 'dateformat'
-=======
 import { Dayjs } from 'dayjs'
 
->>>>>>> new_development
 // taken from here: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 export const formatNumber = (x: number, delimiter = ','): string =>
   x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, delimiter)
@@ -11,11 +8,10 @@ export const formatNumber = (x: number, delimiter = ','): string =>
 export const parseFormattedNumber = (input: string, delimiter = ','): number =>
   parseFloat(input.replaceAll(delimiter, ''))
 
-<<<<<<< HEAD
 export const chatMsgDatetime = (val: Date): string => {
   return dateformat(val, 'hh:MM') // TODO: change if another format required
 }
-=======
+
 const distanceUnits = [
   'year',
   'month',
@@ -50,4 +46,3 @@ export const formatToTitleCase = (string: string): string =>
   )
 
 export const formatDate = (time: Dayjs): string => time.format('MM/DD/YY')
->>>>>>> new_development

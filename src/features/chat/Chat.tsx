@@ -90,6 +90,11 @@ export default function Chat(): JSX.Element {
   }
 
   const onSendMsg = () => {
+    const val = newMsg.replace(/\s{1,}$/, '')
+    if (val.length === 0) {
+      setNewMsg('')
+      return
+    }
     // TODO:
 
     // DEBUG

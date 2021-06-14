@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import React, { useEffect } from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
-=======
-import React from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
->>>>>>> new_development
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
 import addBtn from '../../../common/assets/icons/ico-add-btn.svg'
@@ -109,37 +104,12 @@ export default function Header(): JSX.Element {
   }, [location])
 
   return (
-<<<<<<< HEAD
     <div
       className={cn(
-        'page-container flex-shrink-0 flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed',
+        'page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed text-gray-71',
         isHidden ? 'hidden' : '',
       )}
     >
-      <Link to={routes.DASHBOARD} className='w-36px h-36px'>
-        <img src={Logo} alt='logo' />
-      </Link>
-      <MenuItem exact to={routes.DASHBOARD}>
-        Dashboard
-      </MenuItem>
-      <MenuItem to={routes.MARKET}>Market</MenuItem>
-      <MenuItem to={routes.RECEIVE}>Members</MenuItem>
-      <MenuItem to={routes.TRANSACTIONS}>Wallet</MenuItem>
-      <MenuItem to={routes.ADDRESSBOOK}>Portfolio</MenuItem>
-      <Link to='#' className='flex items-center'>
-        <img src={addBtn} className='w-5 h-5 mr-2' alt='add button' />
-        <span className='text-blue-3f whitespace-nowrap'>new NFT</span>
-      </Link>
-      <SearchBar />
-      <Icon src={QuestionTag} />
-      <Icon src={BellIcon} />
-      <Link to={routes.CHAT}>
-        <Icon src={MessageIcon} />
-      </Link>
-      <Icon src={SettingIcon} />
-      <Icon src={UserIcon} background />
-=======
-    <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed text-gray-71'>
       <div className='flex items-center h-full'>
         <Link to={routes.DASHBOARD} className='w-36px h-36px'>
           <img src={Logo} alt='logo' />
@@ -189,7 +159,9 @@ export default function Header(): JSX.Element {
       <div className='flex items-center h-full'>
         <Icon src={QuestionTag} />
         <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
-        <Icon classes='ml-6 lg:ml-26px w-18px' src={MessageIcon} notification />
+        <Link to={routes.CHAT}>
+          <Icon classes='ml-6 lg:ml-22px' src={MessageIcon} />
+        </Link>
         <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
         <Icon
           classes='ml-6 lg:ml-22px'
@@ -198,7 +170,6 @@ export default function Header(): JSX.Element {
           path={routes.PROFILE}
         />
       </div>
->>>>>>> new_development
     </div>
   )
 }

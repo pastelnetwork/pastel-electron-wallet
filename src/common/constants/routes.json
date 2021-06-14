@@ -15,12 +15,8 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
-<<<<<<< HEAD
-  "MARKET": "/market",
-  "CHAT": "/chat"
-=======
+  "CHAT": "/chat",
   "PROFILE": "/profile",
   "MEMBERS_PROFILE": "/member_profile",
   "MARKET": "/market"
->>>>>>> new_development
 }
