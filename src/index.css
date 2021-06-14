@@ -75,7 +75,7 @@
   }
 
   .page-container {
-    @apply px-20px md:px-30px lg:px-60px;
+    @apply px-5 md:px-30px lg:px-60px;
   }
 
   .link {

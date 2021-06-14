@@ -1,0 +1,17 @@
+.bgPercentage {
+  background: linear-gradient(
+    270deg,
+    #14b85f -36.53%,
+    #e9db60 40.93%,
+    #e98160 109.79%
+  );
+}
+
+.statusBgColor {
+  background: radial-gradient(
+    115.63% 1108.84% at 109.38% -14.52%,
+    #fec927 0%,
+    #ef91f8 46.35%,
+    #41daff 100%
+  );
+}

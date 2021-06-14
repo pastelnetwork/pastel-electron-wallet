@@ -35,7 +35,7 @@ const MenuItem = ({
     >
       {children}
       {location.pathname === to && (
-        <div className='absolute bottom-m1.5px w-full h-3px bg-gray-33 rounded-full'></div>
+        <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full'></div>
       )}
     </NavLink>
   )
@@ -73,7 +73,7 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
     <div
       className={cn(
         'flex-center',
-        background ? 'bg-gray-f8 w-40px h-40px rounded-full' : '',
+        background ? 'bg-gray-f8 w-10 h-10 rounded-full' : '',
         classes,
       )}
     >
@@ -111,7 +111,7 @@ export default function Header(): JSX.Element {
       )}
     >
       <div className='flex items-center h-full'>
-        <Link to={routes.DASHBOARD} className='w-36px h-36px'>
+        <Link to={routes.DASHBOARD} className='w-9 h-9'>
           <img src={Logo} alt='logo' />
         </Link>
         <MenuItem
@@ -134,7 +134,7 @@ export default function Header(): JSX.Element {
           Members
         </MenuItem>
         <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-28px xl:w-46px'
+          classes='ml-4 1200px:ml-7 xl:ml-7 xl:w-46px'
           to={routes.WALLET}
         >
           Wallet
@@ -158,10 +158,15 @@ export default function Header(): JSX.Element {
       </div>
       <div className='flex items-center h-full'>
         <Icon src={QuestionTag} />
+<<<<<<< HEAD
         <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
         <Link to={routes.CHAT}>
           <Icon classes='ml-6 lg:ml-22px' src={MessageIcon} />
         </Link>
+=======
+        <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
+        <Icon classes='ml-6 lg:ml-26px w-18px' src={MessageIcon} notification />
+>>>>>>> new_development
         <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
         <Icon
           classes='ml-6 lg:ml-22px'

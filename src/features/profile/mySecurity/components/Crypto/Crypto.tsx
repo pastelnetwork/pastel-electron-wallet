@@ -24,7 +24,7 @@ const Crypto = (props: TCrypto): JSX.Element => {
     <div>
       <Description>{label}</Description>
       <div className='flex gap-4 mt-2.5'>
-        <div className='flex flex-grow px-3.5 pt-2 rounded-4px shadow-2px text-gray-2d h-10 overflow-ellipsis whitespace-nowrap overflow-hidden'>
+        <div className='flex flex-grow px-3.5 pt-2 rounded shadow-2px text-gray-2d h-10 overflow-ellipsis whitespace-nowrap overflow-hidden'>
           <div className='overflow-ellipsis whitespace-nowrap overflow-hidden'>
             {firstPart}
           </div>

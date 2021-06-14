@@ -19,5 +19,9 @@
   "PROFILE": "/profile",
   "MEMBERS_PROFILE": "/member_profile",
   "MARKET": "/market",
+<<<<<<< HEAD
   "CHAT": "/chat"
+=======
+  "PORTFOLIO_DETAIL": "/portfolio_detail"
+>>>>>>> new_development
 }
