@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
-import Slider, { SliderProps } from './Slider'
+import Slider, { TSlider } from './Slider'
 
 export default {
   title: 'Slider',
@@ -17,7 +17,7 @@ export const SingleValue: Story = () => {
   )
 }
 
-export const RangeSlider: Story<SliderProps> = () => {
+export const RangeSlider: Story<TSlider> = () => {
   const [values, setValues] = useState<[number, number]>([25, 75])
 
   return (
@@ -27,7 +27,7 @@ export const RangeSlider: Story<SliderProps> = () => {
   )
 }
 
-export const FormatValues: Story<SliderProps> = () => {
+export const FormatValues: Story<TSlider> = () => {
   const [value, setValue] = useState(100)
 
   const formatValue = (value: number) => `${value}K`

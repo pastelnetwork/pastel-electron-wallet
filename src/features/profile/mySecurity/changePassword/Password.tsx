@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import Button from '../components/Button/Button'
+import { Button } from '../../../../common/components/Buttons'
 import Password from '../components/Password/Password'
 import Card from '../components/Card/Card'
 
@@ -54,7 +54,15 @@ const ChangePassword = (): JSX.Element => {
     </>
   )
 
-  const footer = <Button onClick={submitPassword}>Submit new password</Button>
+  const footer = (
+    <Button
+      variant='secondary'
+      className='w-full font-extrabold'
+      onClick={submitPassword}
+    >
+      Submit new password
+    </Button>
+  )
 
   return (
     <Card
