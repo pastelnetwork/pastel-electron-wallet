@@ -52,7 +52,7 @@ const ProfileGeneral = ({
   }, [isEmpty])
 
   return (
-    <div className='flex-grow w-full xl:w-3/5 xl:pr-10 px-10'>
+    <div className='flex-grow w-full 1200px:w-3/5 1200px:pr-10 px-10'>
       <div className='w-full pb-4 space-y-4'>
         <ProfileGeneralRow title='Location'>
           {editMode ? (
@@ -91,7 +91,7 @@ const ProfileGeneral = ({
 
         <ProfileGeneralRow title='Buyer reputation'>
           <StarRate rate={data.reputation} />
-          <div className='xl:pl-2 text-gray-500'>
+          <div className='1200px:pl-2 text-gray-500'>
             {data.reputation} reputation
           </div>
         </ProfileGeneralRow>
