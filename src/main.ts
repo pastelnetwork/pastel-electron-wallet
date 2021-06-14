@@ -46,6 +46,7 @@ if (!app.isPackaged) {
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info'
+    log.transports.console.level = false
   }
 }
 
