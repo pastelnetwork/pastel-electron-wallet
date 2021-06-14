@@ -7,15 +7,16 @@ export interface IButtonProps {
   type?: 'submit' | 'button'
   style?: CSSProperties
   onClick?: () => void
+  children: React.ReactNode
 }
 
-const Button: React.FC<IButtonProps> = ({
+function Button({
   children,
   variant = 'default',
   type = 'button',
   onClick,
   ...restProps
-}) => {
+}: IButtonProps): JSX.Element {
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {

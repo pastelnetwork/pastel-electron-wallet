@@ -48,13 +48,13 @@ const mockCardProps: TNFTCardProps = {
   rarenessPercent: 75,
 }
 
-const categories_options: TOption[] = [
+const categoriesOptions: TOption[] = [
   { value: 'All', label: 'All' },
   { value: 'option_2', label: 'TOption 2' },
   { value: 'option_3', label: 'TOption 3' },
 ]
 
-const filterdata = [
+const filterData = [
   { label: 'Likes', value: 'Likes', checked: false },
   { label: 'Comments', value: 'Comments', checked: false },
   { label: 'Mention', value: 'Mention', checked: false },
@@ -63,11 +63,9 @@ const filterdata = [
 
 const Profile = (): JSX.Element => {
   const [tab, setTab] = useState(2)
-  const [category, setCategory] = useState<TOption | null>(
-    categories_options[0],
-  )
-  const [type, setType] = useState<TOption | null>(categories_options[0])
-  const [sort, setSort] = useState<TOption | null>(categories_options[0])
+  const [category, setCategory] = useState<TOption | null>(categoriesOptions[0])
+  const [type, setType] = useState<TOption | null>(categoriesOptions[0])
+  const [sort, setSort] = useState<TOption | null>(categoriesOptions[0])
 
   const onTabToggle = (index: number) => {
     setTab(index)
@@ -112,7 +110,7 @@ const Profile = (): JSX.Element => {
                       <div className='flex items-center mr-6'>
                         <p className='mr-4'>Categories</p>
                         <Select
-                          options={categories_options}
+                          options={categoriesOptions}
                           selected={category}
                           onChange={setCategory}
                           className='w-113px'
@@ -121,7 +119,7 @@ const Profile = (): JSX.Element => {
                       <div className='flex items-center'>
                         <p className='mr-4'>Type</p>
                         <Select
-                          options={categories_options}
+                          options={categoriesOptions}
                           selected={type}
                           onChange={setType}
                           className='w-113px'
@@ -131,7 +129,7 @@ const Profile = (): JSX.Element => {
                     <div className='flex items-center mr-8'>
                       <p className='mr-4'>Sorty by</p>
                       <Select
-                        options={categories_options}
+                        options={categoriesOptions}
                         selected={sort}
                         onChange={setSort}
                         className='w-113px'
@@ -167,7 +165,7 @@ const Profile = (): JSX.Element => {
                     </div>
                   </div>
                   <div className='w-239px pt-34px'>
-                    {filterdata.map((item, index) => (
+                    {filterData.map((item, index) => (
                       <div key={index} className='pl-33px pb-14px'>
                         <Checkbox isChecked={item.checked}>
                           {item.label}

@@ -146,7 +146,6 @@ module.exports = {
           '2d': '#2D3748',
           '1a': '#1A202C',
           f9: '#F9FAFB',
-          f9f: '#F9F9F9',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
           fc: '#FCFCFD',

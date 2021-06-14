@@ -5,13 +5,14 @@ import IconCheckBlue from '../../assets/icons/ico-check-blue.svg'
 export type TCheckboxProps = {
   isChecked: boolean
   clickHandler?: (checked: boolean) => void
+  children?: React.ReactNode
 }
 
-const Checkbox: React.FC<TCheckboxProps> = ({
+function Checkbox({
   children,
   isChecked,
   clickHandler,
-}) => {
+}: TCheckboxProps): JSX.Element {
   const [selected, setSelected] = useState(isChecked)
   return (
     <div className='cursor-pointer select-none flex items-center'>

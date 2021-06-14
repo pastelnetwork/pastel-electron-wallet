@@ -7,7 +7,7 @@ export type TRarenessProps = {
   classes?: string
 }
 
-const Rarenessbar: React.FC<TRarenessProps> = ({
+const RarenessBar: React.FC<TRarenessProps> = ({
   percent,
   classes = 'w-full',
 }) => {
@@ -18,9 +18,7 @@ const Rarenessbar: React.FC<TRarenessProps> = ({
       type='top'
       width={107}
     >
-      <div
-        className={cn(classes, 'bg-gray-f9f cursor-pointer overflow-y-auto')}
-      >
+      <div className={cn(classes, 'bg-gray-f9 cursor-pointer overflow-y-auto')}>
         <div
           className='rounded-r-full h-1.5 bg-gradient-to-r from-red-14 via-yellow-e9 to-green-e9'
           style={{ width: `${percent}%` }}
@@ -30,4 +28,4 @@ const Rarenessbar: React.FC<TRarenessProps> = ({
   )
 }
 
-export default Rarenessbar
+export default RarenessBar

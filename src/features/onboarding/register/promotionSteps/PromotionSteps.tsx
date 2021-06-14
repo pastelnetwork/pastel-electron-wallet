@@ -5,7 +5,7 @@ import { colors } from '../../../../common/theme/colors'
 
 import * as Styles from './PromotionSteps.styles'
 
-const PromotionSteps: React.FC = () => {
+const PromotionSteps = (): JSX.Element => {
   return (
     <Styles.Container>
       <Typography variant='h3' weight={800}>

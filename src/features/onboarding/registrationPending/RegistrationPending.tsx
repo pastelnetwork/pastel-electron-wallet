@@ -9,7 +9,7 @@ import Button from '../../../common/components/Button/Button'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import * as Styles from './RegistrationPending.styles'
 
-const RegistrationPending: React.FC = () => {
+const RegistrationPending = (): JSX.Element => {
   return (
     <Styles.Container>
       <Typography variant='h1'>Registration fee pending</Typography>

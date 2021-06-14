@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import Rarenessbar from '../Rarenessbar'
+import RarenessBar from '../Rarenessbar'
 import OnSaleImage from '../../assets/images/on_sale.png'
 
 export type TNFTCompactCardProps = {
@@ -53,7 +53,7 @@ const NFTCard = ({
             </div>
           </div>
           <div>
-            <Rarenessbar
+            <RarenessBar
               classes='w-full'
               percent={fullCardProps.rarenessPercent}
             />

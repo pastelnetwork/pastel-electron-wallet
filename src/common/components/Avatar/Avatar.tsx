@@ -8,21 +8,21 @@ export type TAvatarProps = {
   avatarSrc: string
   iconType?: 'comment' | 'key' | 'heart' | 'none'
   position?: 'top' | 'bottom'
-  classes?: string
+  className?: string
 }
 
-const MemberCard: React.FC<TAvatarProps> = ({
+function MemberCard({
   avatarSrc,
   iconType = 'none',
-  classes = 'w-12 h-12',
+  className = 'w-12 h-12',
   position = 'bottom',
-}) => {
+}: TAvatarProps): JSX.Element {
   return (
-    <div className={cn(classes, 'relative')}>
+    <div className={cn(className, 'relative')}>
       <img
         src={avatarSrc}
         alt='avatar image'
-        className={cn(classes, 'rounded-full')}
+        className={cn(className, 'rounded-full')}
       />
       {iconType === 'comment' && (
         <img

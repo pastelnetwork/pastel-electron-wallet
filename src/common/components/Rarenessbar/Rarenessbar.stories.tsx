@@ -1,17 +1,17 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Rarenessbar, { TRarenessProps } from './index'
+import RarenessBar, { TRarenessProps } from './index'
 
 export default {
   title: 'Rarenessbar',
-  component: Rarenessbar,
+  component: RarenessBar,
 } as Meta
 
 const Template: Story<TRarenessProps> = ({ ...args }: TRarenessProps) => {
   return (
     <div className='mt-10 ml-10'>
-      <Rarenessbar {...args} />
+      <RarenessBar {...args} />
     </div>
   )
 }

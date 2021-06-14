@@ -20,7 +20,7 @@ export type TMemberBoardProps = {
   onClickVote?: (event: React.MouseEvent<HTMLImageElement>) => void
 }
 
-const MemberCard: React.FC<TMemberBoardProps> = ({
+const MemberCard = ({
   name,
   avatarSrc,
   time,
@@ -33,7 +33,7 @@ const MemberCard: React.FC<TMemberBoardProps> = ({
   onClickChat,
   onClickVote,
   active = false,
-}: TMemberBoardProps) => {
+}: TMemberBoardProps): JSX.Element => {
   return (
     <div
       className={cn(
