@@ -1,8 +1,8 @@
 import React from 'react'
 import Input, { TInput } from './Input'
 import NumberFormat from 'react-number-format'
+import { Override } from '../../utils/types'
 
-type Override<T1, T2> = Omit<T1, keyof T2> & T2
 type TInputNumberFormat = Override<
   TInput,
   { type: 'text' | 'password'; displayType: 'text' | 'input' }

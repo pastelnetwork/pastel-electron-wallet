@@ -7,7 +7,7 @@ const InputPassword: React.FC<TInput> = props => {
   const [type, setType] = React.useState<string>('password')
 
   const toggleType = (): void =>
-    setType(type => (type === 'password' ? 'string' : 'password'))
+    setType(type => (type === 'password' ? 'text' : 'password'))
 
   return (
     <Input

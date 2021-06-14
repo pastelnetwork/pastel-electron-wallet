@@ -6,7 +6,7 @@ import TimesIcon from '../../assets/icons/ico-times.svg'
 
 export type TInput = {
   className?: string
-  type?: string
+  type?: 'text' | 'number' | 'tel' | 'email' | 'password'
   prepend?: ReactNode
   append?: ReactNode
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -39,7 +39,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     },
     ref,
   ) => {
-    const classes = cn({ 'relative flex items-center': true }, className)
+    const classes = cn('relative flex items-center', className)
 
     const wrapperClasses = cn({
       'cursor-not-allowed': disabled,
