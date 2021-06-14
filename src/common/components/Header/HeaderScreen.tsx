@@ -1,6 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import styles from './HeaderScreen.module.css'
 import routes from '../../constants/routes.json'
 import Logo from '../../assets/icons/ico-logo.svg'
@@ -13,14 +13,14 @@ import SettingIcon from '../../assets/icons/ico-setting.svg'
 import UserIcon from '../../assets/icons/ico-user.svg'
 import cn from 'classnames'
 
-interface IMenuType {
+type TMenuType = {
   name: string
   routeName: string
   currentRoute: string
   style: string | undefined
 }
 
-const MenubarItem = ({ name, routeName, currentRoute, style }: IMenuType) => {
+const MenubarItem = ({ name, routeName, currentRoute, style }: TMenuType) => {
   let isActive = false
 
   if (currentRoute.endsWith('app.html') || currentRoute === routeName) {
@@ -35,12 +35,6 @@ const MenubarItem = ({ name, routeName, currentRoute, style }: IMenuType) => {
 
   return (
     <div
-      // className={[
-      //   styles.headermenuitem,
-      //   activeColorClass,
-      //   'mr-8px md:mr-13px lg:mr-28px',
-      //   style,
-      // ].join(' ')}
       className={cn(
         styles.headermenuitem,
         activeColorClass,
@@ -68,16 +62,18 @@ const SearhBar = () => {
   )
 }
 
-interface Location {
+type TLocation = {
   pathname: string
 }
 
-interface PropsType {
-  location: Location
+type TPropsType = {
+  location: TLocation
 }
 
-const Header = (props: PropsType) => {
+const Header = (props: TPropsType) => {
   const { location } = props
+  const history = useHistory()
+
   const icons = [
     {
       src: QuestionTag,
@@ -98,6 +94,7 @@ const Header = (props: PropsType) => {
     {
       src: UserIcon,
       variant: 'background',
+      func: () => history.push(routes.PROFILE),
     },
   ]
 
@@ -166,7 +163,11 @@ const Header = (props: PropsType) => {
       <div className='flex items-center mr-33px'>
         {icons.map((icon, index) => (
           <div className='mr-20px md:mr-26px' key={index}>
-            <img src={icon.src} />
+            <img
+              src={icon.src}
+              className='cursor-pointer'
+              onClick={icon.func}
+            />
           </div>
         ))}
       </div>

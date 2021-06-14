@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import Arrow from '../../common/components/Icons/Arrow'
+import { Arrow } from 'common/components/Icons'
 import { Dayjs } from 'dayjs'
 import { formatNumber } from '../../common/utils/format'
 

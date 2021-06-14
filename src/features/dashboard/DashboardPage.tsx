@@ -1,5 +1,5 @@
 import React from 'react'
-import Dots from '../../common/components/Icons/Dots'
+import { Dots } from 'common/components/Icons'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
