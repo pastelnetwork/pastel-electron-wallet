@@ -115,8 +115,9 @@ const ProfileCard = ({
                 selected={!isEmpty}
                 toggleHandler={() => setEmpty(!isEmpty)}
                 selectedClass='bg-blue-3f'
-              />
-              <div className='pl-2'>Active display currency: PSL</div>
+              >
+                Active display currency: PSL
+              </Toggle>
             </div>
           </div>
         )}
