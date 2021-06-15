@@ -4,7 +4,7 @@ import ico_close from '../../../common/assets/icons/ico-close-round.svg'
 
 export type TCategories = {
   value: Array<string>
-  onChange: React.Dispatch<React.SetStateAction<Array<string>>>
+  onChange(value: Array<string>): void
 }
 
 const Categories = ({ value, onChange }: TCategories): JSX.Element => {
@@ -45,10 +45,10 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
       ))}
       <button
         hidden={isAdding}
-        className='cursor-pointer mb-2'
+        className='mb-2'
         onClick={() => setAdding(true)}
       >
-        <img src={ico_add} className=' w-21px' />
+        <img src={ico_add} className='cursor-pointer w-21px' />
       </button>
       {isAdding && (
         <div className='flex'>
@@ -60,10 +60,10 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
               contentEditable={true}
             />
             <button
-              className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center cursor-pointer'
+              className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
               onClick={() => setAdding(false)}
             >
-              <img src={ico_close} />
+              <img src={ico_close} className='cursor-pointer' />
             </button>
           </div>
         </div>

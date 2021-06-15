@@ -3,7 +3,7 @@ import ico_close from '../../../common/assets/icons/ico-close-round.svg'
 
 export type TLineEdit = {
   value: string
-  onChange: React.Dispatch<React.SetStateAction<string>>
+  onChange(value: string): void
 }
 
 const LineEdit = ({ value, onChange }: TLineEdit): JSX.Element => {
@@ -14,9 +14,9 @@ const LineEdit = ({ value, onChange }: TLineEdit): JSX.Element => {
         value={value}
         onChange={e => onChange(e.target.value)}
       />
-      <button className='cursor-pointer mx-2'>
+      <button className='mx-2'>
         <img
-          className='w-18px'
+          className='w-18px cursor-pointer'
           onClick={() => onChange('')}
           src={ico_close}
           hidden={!value.length}

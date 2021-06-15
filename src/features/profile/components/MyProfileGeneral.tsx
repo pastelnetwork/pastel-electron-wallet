@@ -3,7 +3,7 @@ import StarRate from './StarRate'
 import Categories from './Categories'
 import ProfileGeneralRow from './ProfileGeneralRow'
 import Tooltip from '../../../common/components/Tooltip/Tooltip'
-import Select, { TOption } from '../../../common/components/Select/Select'
+import Select, { TOption } from './Select/Select'
 
 export type TProfileGeneral = {
   editMode: boolean
@@ -74,6 +74,7 @@ const ProfileGeneral = ({
               selected={language}
               options={languages}
               onChange={setLanguage}
+              autocomplete={true}
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>English</div>
