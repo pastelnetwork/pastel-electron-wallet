@@ -1,6 +1,6 @@
 import React from 'react'
-import img_card from '../../../common/assets/images/profile-card-placeholder.svg'
-import ico_camera from '../../../common/assets/icons/ico-camera.svg'
+import img_card from 'common/assets/images/profile-card-placeholder.svg'
+import ico_camera from 'common/assets/icons/ico-camera.svg'
 
 export type TProfileCardFrame = {
   isEmpty?: boolean

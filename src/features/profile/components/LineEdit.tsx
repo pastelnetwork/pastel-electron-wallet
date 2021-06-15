@@ -1,5 +1,5 @@
 import React from 'react'
-import ico_close from '../../../common/assets/icons/ico-close-round.svg'
+import ico_close from 'common/assets/icons/ico-close-round.svg'
 
 export type TLineEdit = {
   value: string

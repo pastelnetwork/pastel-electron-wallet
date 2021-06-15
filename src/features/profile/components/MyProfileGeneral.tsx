@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import StarRate from './StarRate'
 import Categories from './Categories'
 import ProfileGeneralRow from './ProfileGeneralRow'
-import Tooltip from '../../../common/components/Tooltip/Tooltip'
+import Tooltip from 'common/components/Tooltip/Tooltip'
 import Select, { TOption } from './Select/Select'
 
 export type TProfileGeneral = {

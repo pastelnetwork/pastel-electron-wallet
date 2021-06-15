@@ -1,15 +1,12 @@
 import { RefObject, useMemo, useRef } from 'react'
 import Downshift, { ControllerStateAndHelpers } from 'downshift'
-import {
-  formatNumber,
-  parseFormattedNumber,
-} from '../../../common/utils/format'
+import { formatNumber, parseFormattedNumber } from 'common/utils/format'
 import {
   TOption,
   TOptionsProps,
   TRangeProps,
   TSelectProps,
-} from '../../../common/components/Select/Select'
+} from 'common/components/Select/Select'
 
 const noop = () => {
   // noop

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
-import ico_add from '../../../common/assets/icons/ico-add.svg'
-import ico_close from '../../../common/assets/icons/ico-close-round.svg'
+import ico_add from 'common/assets/icons/ico-add.svg'
+import ico_close from 'common/assets/icons/ico-close-round.svg'
 
 export type TCategories = {
   value: Array<string>

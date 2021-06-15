@@ -1,6 +1,6 @@
 import React from 'react'
 import Downshift from 'downshift'
-import caretDownIcon from '../../../common/assets/icons/ico-caret-down.svg'
+import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
 import { useSelectOptions } from './select.utils'
 

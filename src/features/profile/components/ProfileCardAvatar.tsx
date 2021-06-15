@@ -1,7 +1,7 @@
 import React from 'react'
 import cx from 'classnames'
-import img_avatar_empty from '../../../common/assets/images/avatar-placeholder.svg'
-import ico_camera from '../../../common/assets/icons/ico-camera.svg'
+import img_avatar_empty from 'common/assets/images/avatar-placeholder.svg'
+import ico_camera from 'common/assets/icons/ico-camera.svg'
 
 export type TProfileCardAvatar = {
   src: string

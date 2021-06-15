@@ -1,14 +1,14 @@
 import React from 'react'
 import StarRate from './StarRate'
 import ProfileCardFrame from './ProfileCardFrame'
-import svg_avatar from '../../../common/assets/images/avatar.svg'
-import svg_copy from '../../../common/assets/icons/ico-copy2.svg'
-import svg_plus from '../../../common/assets/icons/ico-plus-white.svg'
-import svg_envelope from '../../../common/assets/icons/ico-envelope.svg'
-import svg_location from '../../../common/assets/icons/ico-location.svg'
-import svg_flag from '../../../common/assets/icons/ico-flag.svg'
-import svg_facebook from '../../../common/assets/icons/ico-facebook.svg'
-import svg_twitter from '../../../common/assets/icons/ico-twitter.svg'
+import svg_avatar from 'common/assets/images/avatar.svg'
+import svg_copy from 'common/assets/icons/ico-copy2.svg'
+import svg_plus from 'common/assets/icons/ico-plus-white.svg'
+import svg_envelope from 'common/assets/icons/ico-envelope.svg'
+import svg_location from 'common/assets/icons/ico-location.svg'
+import svg_flag from 'common/assets/icons/ico-flag.svg'
+import svg_facebook from 'common/assets/icons/ico-facebook.svg'
+import svg_twitter from 'common/assets/icons/ico-twitter.svg'
 
 export type TProfileCard = {
   isMyProfile: boolean

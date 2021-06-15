@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Followers from './ProfileFollowers'
-import ico_users from '../../../common/assets/icons/ico-users.svg'
+import ico_users from 'common/assets/icons/ico-users.svg'
 
 const cx_tab =
   'text-sm w-fit font-medium pt-1 pb-3 text-gray-b0 border-gray-f3 cursor-pointer'

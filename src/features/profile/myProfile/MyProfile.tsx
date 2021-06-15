@@ -3,10 +3,8 @@ import ProfileCard from '../components/MyProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/MyProfileGeneral'
 import MySecurity from '../mySecurity/MySecurity'
-import PageHeader from '../../../common/components/PageHeader'
-import Breadcrumbs, {
-  TBreadcrumb,
-} from '../../../common/components/Breadcrumbs'
+import PageHeader from 'common/components/PageHeader'
+import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 
 const Profile = (): JSX.Element => {
   const [editMode, setEditMode] = useState(false)
