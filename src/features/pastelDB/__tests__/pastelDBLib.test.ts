@@ -49,16 +49,6 @@ type Databaseinstance = {
   db: Database
 }
 
-// jest.mock('electron', () => ({
-//   remote: {
-//     app: {
-//       getPath: jest.fn(),
-//       getName: jest.fn(),
-//       getVersion: jest.fn(),
-//     },
-//   },
-// }))
-
 describe('managePastelDatabase', () => {
   const loadDatabase = jest.fn(async () => {
     const SQL = await initSqlJs()

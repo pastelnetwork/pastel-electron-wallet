@@ -12,10 +12,6 @@ jest.mock('electron', () => ({
   },
 }))
 
-// jest.mock('log', () => ({
-//   error: jest.fn(),
-// }))
-
 export { log }
 export { electron }
 export { BrowserWindow }
