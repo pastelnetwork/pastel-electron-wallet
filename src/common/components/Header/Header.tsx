@@ -111,12 +111,14 @@ export default function Header(): JSX.Element {
         >
           Market
         </MenuItem>
+        {/* need to be removed once decide how to show this form page*/}
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
           to={routes.FORUM}
         >
           Forum
         </MenuItem>
+        {/* by this line */}
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
           to={routes.MEMBERS}
