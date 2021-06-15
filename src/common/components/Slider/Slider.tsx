@@ -41,10 +41,11 @@ const SliderShape = ({
   )
 }
 
-export type SliderProps = {
+export type TSliderProps = {
   min: number
   max: number
   width?: Width
+  hideLabel?: boolean
   formatValue?: (value: number) => number | string
   formatTooltipValue?: (value: number) => number | string
   minMaxClassName?: string
@@ -65,11 +66,12 @@ export default function Slider({
   min,
   max,
   width = 311,
+  hideLabel,
   formatValue = defaultFormat,
   formatTooltipValue = formatValue,
   minMaxClassName = 'top-5 text-gray-2d text-sm',
   ...props
-}: SliderProps): JSX.Element {
+}: TSliderProps): JSX.Element {
   let values: number[]
   let setValues: (values: number[]) => void
   let startPercent: number
@@ -108,12 +110,16 @@ export default function Slider({
             }}
           />
           {children}
-          <div className={cn('absolute left-0', minMaxClassName)}>
-            {formatValue(min)}
-          </div>
-          <div className={cn('absolute right-0', minMaxClassName)}>
-            {formatValue(max)}
-          </div>
+          {!hideLabel && (
+            <>
+              <div className={cn('absolute left-0', minMaxClassName)}>
+                {formatValue(min)}
+              </div>
+              <div className={cn('absolute right-0', minMaxClassName)}>
+                {formatValue(max)}
+              </div>
+            </>
+          )}
         </div>
       )}
       renderThumb={({ props, value }) => (

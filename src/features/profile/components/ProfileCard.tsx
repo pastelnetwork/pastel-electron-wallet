@@ -34,7 +34,7 @@ const ProfileCard = ({
   address,
 }: TProfileCard): JSX.Element => {
   return (
-    <div className='flex flex-col pb-28px rounded-md shadow-sm bg-white w-315px'>
+    <div className='flex flex-col pb-7 rounded-md shadow-sm bg-white w-315px'>
       <div className='bg-blue-300 rounded-t-md'>
         <img className='rounded-t-lg w-315px' src={svg_card} />
       </div>
@@ -42,7 +42,7 @@ const ProfileCard = ({
         <div className='rounded-full border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
           <img src={svg_avatar} className='rounded-full w-full h-full' />
         </div>
-        <div className='mt-54px pl-10px'>
+        <div className='mt-54px pl-2.5'>
           <div className='px-1 pt-1 text-gray-71  text-base'>{username}</div>
           <div className='px-1 pt-2 text-blue-3f flex text-sm'>
             <div className='underline'>
@@ -50,7 +50,7 @@ const ProfileCard = ({
             </div>
             <img
               src={svg_copy}
-              className='pl-10px cursor-pointer filter hover:contrast-200'
+              className='pl-2.5 cursor-pointer filter hover:contrast-200'
             />
           </div>
         </div>
@@ -60,7 +60,7 @@ const ProfileCard = ({
           <div className='text-xs text-gray-71 pt-5'>
             <div className='flex items-center'>
               <StarRate rate={reputation} />
-              <div className='pl-6px text-gray-71'>{reputation} reputation</div>
+              <div className='pl-1.5 text-gray-71'>{reputation} reputation</div>
             </div>
           </div>
           <div className='font-bold text-26px pt-7px pb-2'>{name}</div>
@@ -86,13 +86,16 @@ const ProfileCard = ({
             <img src={svg_plus} className='mr-9px' />
             Follow
           </div>
-          <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-10px h-10 text-blue-3f border-blue-3f hover:border-blue-600'>
+          <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-2.5 h-10 text-blue-3f border-blue-3f hover:border-blue-600'>
             <img src={svg_envelope} className='mr-9px' />
             Message
           </div>
-          <div className='cursor-pointer text-sm text-blue-3f pt-3 flex items-center justify-center filter hover:contrast-200'>
+          <div className='cursor-pointer text-sm text-blue-3f pt-118px flex items-center justify-center filter hover:contrast-200'>
             <img src={svg_flag} className='mr-2 mt-1' />
             report
+          </div>
+          <div className='text-gray-400 text-sm mt-3 lg:mt-0 text-center'>
+            Member Since May 15, 2021
           </div>
         </div>
       )}

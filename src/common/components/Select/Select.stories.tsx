@@ -61,7 +61,7 @@ const TemplateRange: Story<TRangeProps> = ({
 
 export const AutoCompleteNumber = TemplateRange.bind({})
 AutoCompleteNumber.args = {
-  className: 'w-112px',
+  className: 'w-28',
   autocomplete: true,
   min: 10000,
   max: 20000,

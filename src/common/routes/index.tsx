@@ -1,4 +1,5 @@
 import OnboardingLayout from '../layout/Onboarding'
+import PageLayout from '../layout/PageLayout'
 
 import {
   WelcomePage,
@@ -10,6 +11,7 @@ import {
   CryptoKeys,
   NewPassword,
 } from '../../features/onboarding/index'
+import PortfolioPage from '../../features/portfolio'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -69,6 +71,13 @@ const newPassword = {
   layout: OnboardingLayout,
 }
 
+const Portfolio = {
+  id: 'portfolio',
+  path: ROUTES.PORTFOLIO,
+  component: PortfolioPage,
+  layout: PageLayout,
+}
+
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -78,4 +87,5 @@ export const pageRoutes = [
   registrationSuccessful,
   cryptoKeys,
   newPassword,
+  Portfolio,
 ]
