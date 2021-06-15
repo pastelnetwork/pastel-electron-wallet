@@ -20,7 +20,9 @@ const RegistrationPending = (): JSX.Element => {
       </Styles.TitleContainer>
       <Styles.Image src={registerImage}></Styles.Image>
       <Link to={ROUTES.REGISTER_SUCCESSFUL}>
-        <Button variant='default'>Check payment status</Button>
+        <Button variant='default' className='w-60'>
+          Check payment status
+        </Button>
       </Link>
     </Styles.Container>
   )
