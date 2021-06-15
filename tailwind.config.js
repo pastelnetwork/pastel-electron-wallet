@@ -28,6 +28,7 @@ module.exports = {
         '7px': '0.5rem',
         '8px': '0.5rem',
         '9px': '0.5625rem',
+        '10px': '0.625rem',
         '11px': '0.688rem',
         '13px': '0.813rem',
         '15px': '0.938rem',

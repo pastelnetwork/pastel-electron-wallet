@@ -75,7 +75,7 @@ const ProfileCard = ({
               <div className='font-bold text-2xl py-2 text-center'>{name}</div>
               <div className='pt-2 text-gray-71 flex flex-center'>
                 {PastelUtils.truncateMiddle(data.walletId, 8, 4, '...')}
-                <button className='pl-10px cursor-pointer'>
+                <button className='ml-10px cursor-pointer'>
                   <img src={ico_copy} />
                 </button>
               </div>
