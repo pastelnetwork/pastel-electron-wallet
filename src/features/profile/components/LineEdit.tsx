@@ -1,5 +1,4 @@
 import React from 'react'
-import cx from 'classnames'
 import ico_close from '../../../common/assets/icons/ico-close-round.svg'
 
 export type TLineEdit = {
@@ -15,11 +14,14 @@ const LineEdit = ({ value, onChange }: TLineEdit): JSX.Element => {
         value={value}
         onChange={e => onChange(e.target.value)}
       />
-      <img
-        className={cx('cursor-pointer w-18px mx-2', !value.length && 'hidden')}
-        onClick={() => onChange('')}
-        src={ico_close}
-      />
+      <button className='cursor-pointer mx-2'>
+        <img
+          className='w-18px'
+          onClick={() => onChange('')}
+          src={ico_close}
+          hidden={!value.length}
+        />
+      </button>
     </div>
   )
 }

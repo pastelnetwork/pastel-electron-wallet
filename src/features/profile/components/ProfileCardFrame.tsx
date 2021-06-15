@@ -20,7 +20,7 @@ const ProfileCardFrame = ({
         </div>
       )}
       {editMode && (
-        <div className='text-right w-88px absolute right-4 top-54px text-white text-12'>
+        <div className='text-right w-88px absolute right-4 top-54px text-white text-12px'>
           max 5 mb / min 1200x1000
         </div>
       )}

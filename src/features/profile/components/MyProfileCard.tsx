@@ -75,22 +75,19 @@ const ProfileCard = ({
               <div className='font-bold text-2xl py-2 text-center'>{name}</div>
               <div className='pt-2 text-gray-71 flex flex-center'>
                 {PastelUtils.truncateMiddle(data.walletId, 8, 4, '...')}
-                <img src={ico_copy} className='pl-10px cursor-pointer' />
+                <button className='pl-10px cursor-pointer'>
+                  <img src={ico_copy} />
+                </button>
               </div>
-              <div className='py-4 flex justify-center'>
-                <img
-                  src={ico_facebook}
-                  className={cx(
-                    'cursor-pointer mr-3',
-                    !facebook.length && 'hidden',
-                  )}
-                />
-                <img
-                  src={ico_twitter}
-                  className={cx('cursor-pointer', !twitter.length && 'hidden')}
-                />
+              <div className='py-4 flex justify-center space-x-3'>
+                <button className='cursor-pointer'>
+                  <img src={ico_facebook} hidden={!facebook.length} />
+                </button>
+                <button className='cursor-pointer'>
+                  <img src={ico_twitter} hidden={!twitter.length} />
+                </button>
               </div>
-              <div
+              <button
                 className={cx(
                   'filter hover:contrast-125 w-full cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-2 h-10 w-120px',
                   isEmpty
@@ -103,7 +100,7 @@ const ProfileCard = ({
               >
                 Edit Profile
                 <img src={ico_pencil} className='ml-1 w-13px' />
-              </div>
+              </button>
             </div>
             <div className='flex flex-center pb-4 text-gray-71'>
               <Toggle
@@ -123,7 +120,9 @@ const ProfileCard = ({
               </div>
               <div className='pt-2 pb-4 text-gray-71 flex flex-center'>
                 {PastelUtils.truncateMiddle(data.walletId, 8, 4, '...')}
-                <img src={ico_copy} className='pl-10px cursor-pointer' />
+                <button className='pl-10px cursor-pointer'>
+                  <img src={ico_copy} />
+                </button>
               </div>
               <div className='space-y-4'>
                 {edits.map((each, index) => (

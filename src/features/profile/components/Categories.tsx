@@ -44,31 +44,29 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
           </div>
         </div>
       ))}
-      {!isAdding && (
-        <img
-          src={ico_add}
-          onClick={() => setAdding(true)}
-          className='cursor-pointer w-21px mb-2'
-        />
-      )}
-      {isAdding && (
-        <div className='flex'>
-          <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center  mb-2'>
-            <div
-              onKeyPress={onAddCategory}
-              ref={inputRef}
-              className='h-6 text-gray-4a min-w-32px outline-none'
-              contentEditable={true}
-            />
-            <div
-              className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
-              onClick={() => setAdding(false)}
-            >
-              <img src={ico_close} className='cursor-pointer' />
-            </div>
-          </div>
+      <button
+        hidden={isAdding}
+        className='cursor-pointer mb-2'
+        onClick={() => setAdding(true)}
+      >
+        <img src={ico_add} className=' w-21px' />
+      </button>
+      <div className='flex' hidden={!isAdding}>
+        <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center  mb-2'>
+          <div
+            onKeyPress={onAddCategory}
+            ref={inputRef}
+            className='h-6 text-gray-4a min-w-32px outline-none'
+            contentEditable={true}
+          />
+          <button
+            className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center cursor-pointer'
+            onClick={() => setAdding(false)}
+          >
+            <img src={ico_close} />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   )
 }
