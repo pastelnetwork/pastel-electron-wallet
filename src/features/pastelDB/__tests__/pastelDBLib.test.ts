@@ -1,6 +1,6 @@
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 import fs from 'fs'
-import electron from 'electron'
+import { electron, log } from '../../../../__mocks__/electron'
 
 import {
   createBlock,
@@ -49,15 +49,15 @@ type Databaseinstance = {
   db: Database
 }
 
-jest.mock('electron', () => ({
-  remote: {
-    app: {
-      getPath: jest.fn(),
-      getName: jest.fn(),
-      getVersion: jest.fn(),
-    },
-  },
-}))
+// jest.mock('electron', () => ({
+//   remote: {
+//     app: {
+//       getPath: jest.fn(),
+//       getName: jest.fn(),
+//       getVersion: jest.fn(),
+//     },
+//   },
+// }))
 
 describe('managePastelDatabase', () => {
   const loadDatabase = jest.fn(async () => {
@@ -1417,20 +1417,38 @@ describe('managePastelDatabase', () => {
 
   test('RemoveSqliteDBFile should remove sqlite file correctly', async () => {
     // Arrange
-    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink').mockRejectedValue(null)
     const remoteSpy = jest
       .spyOn(electron.remote.app, 'getPath')
       .mockImplementation(() => '')
 
-    try {
-      // Act
-      await pastelDBLib.RemoveSqliteDBFile()
+    // Act
+    await pastelDBLib.RemoveSqliteDBFile()
 
+    // Assert
+    expect(remoteSpy).toBeCalledTimes(1)
+    expect(unlinkSpy).toBeCalledTimes(1)
+  })
+
+  test('RemoveSqliteDBFile should throw an error', async () => {
+    // Arrange
+    const mError = new Error('file not found')
+    const unlinkSpy = jest
+      .spyOn(fs.promises, 'unlink')
+      .mockRejectedValue(mError)
+    const remoteSpy = jest
+      .spyOn(electron.remote.app, 'getPath')
+      .mockImplementation(() => 'errorPath')
+    const logSpy = jest.spyOn(log, 'error')
+
+    // Act
+    try {
+      await pastelDBLib.RemoveSqliteDBFile()
       // Assert
       expect(remoteSpy).toBeCalledTimes(1)
       expect(unlinkSpy).toBeCalledTimes(1)
-    } catch (e) {
-      expect(e).toEqual(`pastelDB RemoveSqliteDBFile error: ${e}`)
+    } catch (error) {
+      expect(logSpy).toBeCalledWith('file not round')
     }
   })
 })

@@ -1,5 +1,5 @@
 import { remote } from 'electron'
-import { log } from 'electron-log'
+import log from 'electron-log'
 import fs from 'fs'
 import { open } from 'fs/promises'
 import path from 'path'
@@ -92,7 +92,7 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
       )
     }
   } catch (e) {
-    log(`pastelDB readSqliteDBFile error: ${e}`)
+    log.error(`pastelDB readSqliteDBFile error: ${e}`)
   }
   return null
 }
@@ -103,7 +103,7 @@ export const RemoveSqliteDBFile = async (): Promise<void> => {
       path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
     )
   } catch (e) {
-    log(`pastelDB RemoveSqliteDBFile error: ${e}`)
+    log.error(`pastelDB RemoveSqliteDBFile error: ${e}`)
   }
 }
 
@@ -147,7 +147,7 @@ export const createDatabase = async (): Promise<Database> => {
       return db
     }
   } catch (error) {
-    log(`pastelDB createDatabase error: ${error}`)
+    log.error(`pastelDB createDatabase error: ${error}`)
   }
   await RemoveSqliteDBFile()
   const newdb: Database = new SQL.Database()
