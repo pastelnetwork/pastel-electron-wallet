@@ -41,6 +41,9 @@ jspm_packages/
 # TypeScript v1 declaration files
 typings/
 
+# Storybook static
+storybook-static
+
 # TypeScript cache
 *.tsbuildinfo
 

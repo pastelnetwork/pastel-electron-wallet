@@ -1,12 +1,12 @@
 import React from 'react'
-import svg_diamond from '../../../common/assets/icons/ico-diamond.svg'
-import svg_oval_1 from '../../../common/assets/images/avatars/oval-1.svg'
-import svg_oval_2 from '../../../common/assets/images/avatars/oval-2.svg'
-import svg_oval_3 from '../../../common/assets/images/avatars/oval-3.svg'
-import svg_oval_4 from '../../../common/assets/images/avatars/oval-4.svg'
-import svg_oval_5 from '../../../common/assets/images/avatars/oval-5.svg'
-import svg_oval_6 from '../../../common/assets/images/avatars/oval-6.svg'
-import svg_oval_7 from '../../../common/assets/images/avatars/oval-7.svg'
+import svg_diamond from 'common/assets/icons/ico-diamond.svg'
+import svg_oval_1 from 'common/assets/images/avatars/oval-1.svg'
+import svg_oval_2 from 'common/assets/images/avatars/oval-2.svg'
+import svg_oval_3 from 'common/assets/images/avatars/oval-3.svg'
+import svg_oval_4 from 'common/assets/images/avatars/oval-4.svg'
+import svg_oval_5 from 'common/assets/images/avatars/oval-5.svg'
+import svg_oval_6 from 'common/assets/images/avatars/oval-6.svg'
+import svg_oval_7 from 'common/assets/images/avatars/oval-7.svg'
 
 export type TFollowers = TFollower[]
 
