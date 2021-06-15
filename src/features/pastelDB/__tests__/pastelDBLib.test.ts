@@ -1,6 +1,7 @@
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 import fs from 'fs'
-import { electron, log } from '../../../../__mocks__/electron'
+import { remote } from 'electron'
+import log from 'electron-log'
 
 import {
   createBlock,
@@ -1409,7 +1410,7 @@ describe('managePastelDatabase', () => {
     // Arrange
     const unlinkSpy = jest.spyOn(fs.promises, 'unlink').mockRejectedValue(null)
     const remoteSpy = jest
-      .spyOn(electron.remote.app, 'getPath')
+      .spyOn(remote.app, 'getPath')
       .mockImplementation(() => '')
 
     // Act
@@ -1427,7 +1428,7 @@ describe('managePastelDatabase', () => {
       .spyOn(fs.promises, 'unlink')
       .mockRejectedValue(mError)
     const remoteSpy = jest
-      .spyOn(electron.remote.app, 'getPath')
+      .spyOn(remote.app, 'getPath')
       .mockImplementation(() => 'errorPath')
     const logSpy = jest.spyOn(log, 'error')
 
