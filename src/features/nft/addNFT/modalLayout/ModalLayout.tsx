@@ -8,6 +8,8 @@ type TModalLayoutProps = {
   titleClass?: string
   subtitle?: string
   step?: number
+  contentClass?: string
+  rightColumnWidth?: number
   leftColumnContent: React.ReactNode
   rightColumnContent: React.ReactNode
 }
@@ -19,12 +21,14 @@ export default function CroppingStep({
   titleClass,
   subtitle,
   step,
+  contentClass,
+  rightColumnWidth,
   leftColumnContent,
   rightColumnContent,
 }: TModalLayoutProps): JSX.Element {
   return (
-    <div className='paper p-10'>
-      <div className={cn('flex-between', style.leftColumn, titleClass)}>
+    <div className={`paper p-10 flex flex-col ${style.wrap}`}>
+      <div className={cn('flex-between', step && style.leftColumn, titleClass)}>
         <div>
           <div className='text-gray-800 text-2xl font-extrabold mb-3'>
             {title}
@@ -44,9 +48,16 @@ export default function CroppingStep({
           </PercentCircle>
         )}
       </div>
-      <div className='flex space-x-7'>
+      <div className={cn('flex space-x-7 flex-grow', contentClass)}>
         <div className={style.leftColumn}>{leftColumnContent}</div>
-        <div className={style.rightColumn}>{rightColumnContent}</div>
+        <div
+          className={style.rightColumn}
+          style={
+            rightColumnWidth ? { width: `${rightColumnWidth}px` } : undefined
+          }
+        >
+          {rightColumnContent}
+        </div>
       </div>
     </div>
   )

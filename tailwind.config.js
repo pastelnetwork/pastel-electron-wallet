@@ -126,6 +126,7 @@ module.exports = {
           f9: '#F9FAFB',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
+          f4: '#F4F5F6',
           f3: '#F3F3F3',
           f2: '#F2F2F2',
           ed: '#EDEEF1',

@@ -35,7 +35,7 @@ export type TUseAddNFTProps = {
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
-  const [step, setStep] = useState<Step>(Step.preview)
+  const [step, setStep] = useState<Step>(Step.upload)
   const [crop, setCrop] = useState<Crop>()
 
   return {

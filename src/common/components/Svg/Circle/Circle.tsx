@@ -1,4 +1,4 @@
-import React, { SVGProps } from 'react'
+import React, { forwardRef, SVGProps } from 'react'
 
 export type TCircleProps = Omit<
   SVGProps<SVGCircleElement>,
@@ -12,22 +12,37 @@ export type TCircleProps = Omit<
 const defaultStrokeWidth = 6
 const defaultRadius = 50
 
-export default function Circle({
-  className,
-  strokeWidth = defaultStrokeWidth,
-  radius = defaultRadius,
-  percent,
-  ...props
-}: TCircleProps): JSX.Element {
+const getCircleLength = (radius: number, strokeWidth: number) =>
+  (radius * 2 - strokeWidth) * Math.PI
+
+export const getStrokeDashOffsetForPercent = (
+  radius: number,
+  strokeWidth: number,
+  percent: number,
+): number => {
+  const length = getCircleLength(radius, strokeWidth)
+  return (length * (100 - percent)) / 100
+}
+
+export default forwardRef<SVGCircleElement, TCircleProps>(function Circle(
+  {
+    className,
+    strokeWidth = defaultStrokeWidth,
+    radius = defaultRadius,
+    percent,
+    ...props
+  },
+  ref,
+) {
   let dashArray, dashOffset
-  if (percent) {
-    const length = radius * 2 * Math.PI
-    dashArray = String(length)
-    dashOffset = (length * (100 - percent)) / 100
+  if (percent !== undefined) {
+    dashArray = String(getCircleLength(radius, strokeWidth))
+    dashOffset = getStrokeDashOffsetForPercent(radius, strokeWidth, percent)
   }
 
   return (
     <circle
+      ref={ref}
       cx='50%'
       cy='50%'
       fill='none'
@@ -41,4 +56,4 @@ export default function Circle({
       strokeDashoffset={dashOffset || props.strokeDashoffset}
     />
   )
-}
+})

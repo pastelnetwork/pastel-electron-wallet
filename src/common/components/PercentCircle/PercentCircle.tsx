@@ -22,7 +22,7 @@ export default function PercentCircle({
   return (
     <div
       className={cn(
-        'w-16 h-16 rounded-full ml-2 md:ml-3 lg:ml-18px text-orange-75 relative',
+        'w-16 h-16 rounded-full ml-2 md:ml-3 lg:ml-18px relative',
         color,
       )}
     >

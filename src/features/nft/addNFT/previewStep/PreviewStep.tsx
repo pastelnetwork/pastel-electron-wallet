@@ -10,6 +10,7 @@ import { useToggle } from 'react-use'
 import Cropping from './Cropping'
 import OptimizationSlider from './OptimizationSlider'
 import { Button } from 'common/components/Buttons'
+import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 
 type TPreviewStepProps = {
   state: TAddNFTState
@@ -21,6 +22,7 @@ export default function PreviewStep({
   const { image, onImageChange } = useChangeableImage(providedImage)
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
+  const [fullScreen, toggleFullScreen] = useToggle(false)
 
   useEffect(() => {
     if (croppedImage) {
@@ -37,6 +39,10 @@ export default function PreviewStep({
         onClose={toggleCropping}
       />
     )
+  }
+
+  if (fullScreen) {
+    return <FullScreenImage image={image} onClose={toggleFullScreen} />
   }
 
   const submit = () => {
@@ -56,6 +62,7 @@ export default function PreviewStep({
         <div className='relative'>
           <button
             className={`absolute top-3.5 left-3.5 w-8 h-8 bg-gray-fc text-gray-77 flex-center rounded-full ${style.fullscreenButton}`}
+            onClick={toggleFullScreen}
           >
             <Expand size={13} />
           </button>
@@ -104,7 +111,7 @@ export default function PreviewStep({
             <div className='text-gray-2d text-sm font-extrabold'>5,000 PSL</div>
           </div>
           <div>
-            <div className='font-medium text-gray-71 mb-10'>
+            <div className='font-medium text-gray-71 mb-3'>
               Image size and fee optimization
             </div>
             <div className='pb-5'>
