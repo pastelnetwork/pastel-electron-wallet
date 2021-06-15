@@ -9,7 +9,7 @@ import { colors } from '../../../common/theme/colors'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import * as Styles from './Welcome.styles'
 
-const OnboardingWelcome: React.FC = () => {
+const OnboardingWelcome = (): JSX.Element => {
   return (
     <>
       <Typography variant='h1' weight={800}>

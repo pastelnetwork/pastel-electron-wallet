@@ -20,7 +20,7 @@ const initialInputState = {
   isTouched: false,
 }
 
-const StepLogin: React.FC = () => {
+const StepLogin = (): JSX.Element => {
   const [username, setUsername] = React.useState<LoginFormInput>(
     initialInputState,
   )
