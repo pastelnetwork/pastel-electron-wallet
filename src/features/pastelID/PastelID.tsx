@@ -4,8 +4,10 @@ import {
 } from 'check-password-strength'
 import React, { useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid'
+import fs from 'fs'
+import path from 'path'
 
-import LoadingOverlay from '../..//legacy/components/LoadingOverlay'
+import LoadingOverlay from '../../legacy/components/LoadingOverlay'
 import cstyles from '../../legacy/components/Common.module.css'
 import List from '../../legacy/components/List'
 import ListItem from '../../legacy/components/ListItem'
@@ -15,6 +17,8 @@ import { openPastelModal } from '../pastelModal'
 import styles from './PastelID.module.css'
 import { createPastelID, fetchPastelIDs } from './pastelIDSlice'
 
+import { locatePastelConfDir } from '../loading'
+
 function passphraseStatusColor(validation: TPasswordStrengthResult) {
   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green]
 
@@ -23,6 +27,16 @@ function passphraseStatusColor(validation: TPasswordStrengthResult) {
   }
 
   return colors[validation.id]
+}
+
+function createPastelKeysFolder() {
+  const rootPath = locatePastelConfDir()
+  if (rootPath) {
+    const pastelKeysFolder = path.join(rootPath, 'pastelkeys')
+    if (!fs.existsSync(pastelKeysFolder)) {
+      fs.mkdirSync(pastelKeysFolder)
+    }
+  }
 }
 
 type TAddressesWithBalanceProps = {
@@ -72,6 +86,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
 
   // fetch pastel ids
   useEffect(() => {
+    createPastelKeysFolder()
     dispatch(fetchPastelIDs(pastelConfig))
   }, [])
 

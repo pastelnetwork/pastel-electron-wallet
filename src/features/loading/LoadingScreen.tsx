@@ -21,7 +21,7 @@ import styles from './LoadingScreen.module.css'
 import { checkHashAndDownloadParams } from './utils'
 import PastelDB from '../../features/pastelDB/database'
 
-const locatePastelConfDir = () => {
+export const locatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
     return path.join(remote.app.getPath('appData'), 'Pastel')
   }
@@ -227,7 +227,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       (confValues.testnet && confValues.testnet === '1') || false
     const server = confValues.rpcbind || '127.0.0.1'
     const port = confValues.rpcport || (isTestnet ? '19932' : '9932')
-    rpcConfig.url = `http://${server}:${port}`
+    rpcConfig.url = `//${server}:${port}`
     this.setState({
       rpcConfig,
     }) // And setup the next getinfo
@@ -272,9 +272,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       if (this.pasteld) {
         const { history } = this.props
         const { rpcConfig } = this.state
-        this.setState({
-          currentStatus: 'Waiting for pasteld to exit...',
-        })
         history.push(routes.LOADING)
         while (!PastelDB.isValidDB()) {
           // wait if database is reading or writing status

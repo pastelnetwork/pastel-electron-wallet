@@ -31,9 +31,9 @@ export async function rpc<T>(
   } catch (err) {
     if (err.response) {
       log.error(
-        `api/pastel-rpc server error. Response: ${JSON.stringify(err.response)}. Error: ${JSON.stringify(
-          err,
-        )}`,
+        `api/pastel-rpc server error. Response: ${JSON.stringify(
+          err.response?.data,
+        )}. Status code: ${JSON.stringify(err.response?.status)}`,
       )
       throw new Error(`api/pastel-rpc server error: ${err.response?.message}`)
     }
@@ -41,9 +41,9 @@ export async function rpc<T>(
     if (err.request) {
       // The request was made but no response was received
       log.error(
-        `api/pastel-rpc no response error. Request: ${JSON.stringify(err.request)}. Error: ${JSON.stringify(
-          err,
-        )}`,
+        `api/pastel-rpc no response error. Request: ${JSON.stringify(
+          err.request,
+        )}.`,
       )
       throw new Error(
         `api/pastel-rpc no response error: ${err.request?.message}`,
