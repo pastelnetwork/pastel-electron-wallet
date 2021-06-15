@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Checkbox, { TCheckboxProps } from './Checkbox'
+import Checkbox, { TCheckboxProps } from './index'
 
 export default {
   title: 'Checkbox',

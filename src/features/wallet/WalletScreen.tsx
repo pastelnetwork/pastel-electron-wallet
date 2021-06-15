@@ -13,7 +13,7 @@ import Select from '../../common/components/Select/Select'
 import pasetIcon from '../../common/assets/icons/ico-paste.svg'
 import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
 import viewIcon from '../../common/assets/icons/ico-view.svg'
-
+import PDFIcon from '../../common/assets/icons/ico-key-pdf.svg'
 import Table, { TRow } from './table'
 
 import PaymentModal from './PaymentModal'
@@ -33,36 +33,39 @@ const Columns = [
   },
   {
     key: 'time',
-    name: 'Time',
+    name: 'Last Activity',
   },
   {
     key: 'qr_code',
-    name: '',
+    name: 'QR',
     custom: () => (
       <div className='flex'>
         <img src={viewIcon} />
       </div>
     ),
   },
+
+  {
+    key: 'public_key',
+    name: 'Keys',
+    custom: (value: string | number) => (
+      <div>
+        <span>public key</span>
+        <img key={value} src={PDFIcon} alt='PDF Icon' />
+      </div>
+    ),
+  },
   {
     key: 'amount',
-    name: 'Amount',
+    name: 'Balence',
     custom: (value: string | number) => (
       <div className='text-gray-2d'>PSL {value}</div>
     ),
   },
   {
-    key: 'viewing_key',
-    name: 'Key',
-  },
-  {
-    key: 'private_key',
-    name: 'Key',
-  },
-  {
     key: 'psl',
-    name: '',
-    custom: (value: string | number, row: TRow | undefined) => (
+    name: 'Selected Amount',
+    custom: (value: number | string, row: TRow | undefined) => (
       <div>
         <Select
           className='text-gray-2d w-28'
@@ -70,7 +73,7 @@ const Columns = [
           min={10000}
           max={20000}
           step={100}
-          value={value}
+          value={typeof value === 'string' ? parseInt(value) : value}
           onChange={(value: number | null) => {
             console.log(row)
             console.log(value)

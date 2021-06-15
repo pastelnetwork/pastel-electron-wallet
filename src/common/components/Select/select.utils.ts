@@ -66,12 +66,13 @@ export const useSelectOptions = (props: TSelectProps): TOptions => {
   } else {
     const { value, onChange: propsOnChange } = props
 
-    if (value && typeof value == 'number') {
+    if (value) {
       inputValueRef.current = formatNumber(value)
     }
 
     selected = null
 
+    // onChange is required by Downshift but not needed for autocomplete mode
     onChange = noop
 
     onInputValueChange = (value, options) => {
@@ -89,7 +90,7 @@ export const useSelectOptions = (props: TSelectProps): TOptions => {
         inputValueRef.current = filteredValue
       } else {
         inputValueRef.current = formatNumber(parsed)
-        propsOnChange && propsOnChange(parsed)
+        propsOnChange(parsed)
       }
     }
   }

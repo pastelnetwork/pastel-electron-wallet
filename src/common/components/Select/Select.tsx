@@ -27,8 +27,8 @@ export type TRangeProps = TBaseProps & {
   min: number
   max: number
   step: number
-  onChange?: (value: number) => void
-  value: number | string
+  onChange: (value: number | null) => void
+  value: number | null
 }
 
 export type TSelectProps = TOptionsProps | TRangeProps
@@ -43,6 +43,13 @@ export default function Select(props: TSelectProps): JSX.Element {
     onInputValueChange,
     inputValueRef,
   } = useSelectOptions(props)
+
+  let autoCompleteColor: string
+  if ('options' in props) {
+    autoCompleteColor = props.label ? 'text-gray-2d' : 'text-gray-71'
+  } else {
+    autoCompleteColor = 'text-gray-35'
+  }
 
   return (
     <Downshift
@@ -75,6 +82,7 @@ export default function Select(props: TSelectProps): JSX.Element {
           <div
             className={cn(
               'bg-white text-gray-71 flex-center shadow-2px h-10 rounded relative',
+              autoCompleteColor,
               className,
             )}
           >
@@ -90,7 +98,7 @@ export default function Select(props: TSelectProps): JSX.Element {
             )}
             {!autocomplete && (
               <button
-                className='w-full h-full flex items-center whitespace-nowrap pl-14px pr-7 focus-visible-border'
+                className='w-full h-full flex items-center whitespace-nowrap pl-3.5 pr-7 focus-visible-border'
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}:</span>}
@@ -107,7 +115,7 @@ export default function Select(props: TSelectProps): JSX.Element {
             />
             <ul
               {...getMenuProps()}
-              className='z-10 absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto'
+              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-10'
               onClick={e => e.stopPropagation()}
             >
               {filteredOptions?.map((item, index) => {

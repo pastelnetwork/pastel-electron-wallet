@@ -1,6 +1,8 @@
 {
   "LOADING": "/",
+  "MEMBERS": "/members",
   "DASHBOARD": "/dashboard",
+  "PORTFOLIO": "/portfolio",
   "SEND": "/send",
   "RECEIVE": "/receive",
   "ADDRESSBOOK": "/addressbook",
@@ -15,5 +17,8 @@
   "COLLECTOR": "/collector",
   "NFT": "/nft",
   "WALLET": "/wallet",
-  "MARKET": "/market"
+  "PROFILE": "/profile",
+  "MEMBERS_PROFILE": "/member_profile",
+  "MARKET": "/market",
+  "PORTFOLIO_DETAIL": "/portfolio_detail"
 }

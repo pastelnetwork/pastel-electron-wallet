@@ -4,6 +4,7 @@ import * as Styles from './Icon.styles'
 export interface IIconProps {
   variant?: string
   src: string
+  [x: string]: React.ReactNode | string | undefined
 }
 
 const Icon: React.FC<IIconProps> = ({

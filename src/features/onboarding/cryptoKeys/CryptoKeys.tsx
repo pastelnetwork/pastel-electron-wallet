@@ -2,8 +2,8 @@ import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
 import Typography from '../../../common/components/Typography/Typography'
-import Tooltip from '../../../common/components/Tooltip'
-import Button from '../../../common/components/Button/Button'
+import Tooltip from '../../../common/components/Tooltip/Tooltip'
+import { Button } from '../../../common/components/Buttons'
 import { colors } from '../../../common/theme/colors'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import infoIco from '../../../common/assets/icons/ico-info.svg'
@@ -28,9 +28,8 @@ const CryptoKeys: React.FC = () => {
           </Typography>
           <Styles.InfoContainer>
             <Tooltip
-              width={300}
               type='top'
-              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              width={108}
               content='Public-key cryptography, or asymmetric cryptography, is a cryptographic system which uses pairs of keys'
             >
               <Styles.InfoIcon src={infoIco} alt='info' />
@@ -50,9 +49,8 @@ const CryptoKeys: React.FC = () => {
           </Typography>
           <Styles.InfoContainer>
             <Tooltip
-              width={300}
               type='top'
-              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              width={108}
               content='Secret-key cryptography, or asymmetric cryptography, is a cryptographic system which uses pairs of keys'
             >
               <Styles.InfoIcon src={infoIco} alt='info' />

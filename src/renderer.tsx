@@ -39,6 +39,7 @@ import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
+import 'common/utils/initDayjs'
 
 const oneHour = 1000 * 60 * 60
 /**

@@ -4,15 +4,16 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
 import { ErrorModal, ErrorModalData } from './components/ErrorModal'
-import cstyles from './components/Common.module.css'
-import routes from '../common/constants/routes.json'
-import App from './containers/App'
-import Dashboard from './components/Dashboard'
+import routes from './constants/routes.json'
+import MemberProfile from '../features/profile/memberProfile/MemberProfile'
+import Dashboard from '../features/dashboard/DashboardPage'
+import PortfolioPage from '../features/nft/portfolio'
+import Portfolio from '../features/portfolio'
 import Send from './components/Send'
-import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
 import WalletScreen from '../features/wallet'
 import HeaderScreen from '../common/components/Header'
+import Header from '../common/components/Header'
 import {
   TotalBalance,
   SendPageState,
@@ -52,8 +53,10 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import NFTMarketFeed from '../features/NFTMarket'
+import Profile from '../features/profile'
+import NFTMarketFeed from '../features/NFTMarketFeed'
 import { app } from 'electron'
+import { MembersDirectory } from '../features/members'
 
 export type TWalletInfo = {
   connections: number
@@ -482,7 +485,7 @@ class RouteApp extends React.Component<any, any> {
     }
 
     return (
-      <App>
+      <div className='flex flex-col h-full'>
         <ErrorModal
           title={errorModalData.title}
           body={errorModalData.body}
@@ -494,12 +497,8 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
-        {info && info.version && (
-          <div className={cstyles.sidebarcontainer}>
-            <HeaderScreen />
-          </div>
-        )}
-        <div className={cstyles.contentcontainer}>
+        {info?.version && <Header />}
+        <div className='flex-grow overflow-auto'>
           <Switch>
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
             <Route
@@ -516,26 +515,6 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route
-              path={routes.RECEIVE}
-              render={() => (
-                <Receive
-                  rerenderKey={receivePageState.rerenderKey}
-                  addresses={addresses}
-                  addressesWithBalance={addressesWithBalance}
-                  addressPrivateKeys={addressPrivateKeys}
-                  addressViewKeys={addressViewKeys}
-                  receivePageState={receivePageState}
-                  addressBook={addressBook}
-                  transactions={transactions}
-                  {...standardProps}
-                  fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
-                  hidePrivKey={this.hidePrivKey}
-                  fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
-                  createNewAddress={this.createNewAddress}
-                />
-              )}
-            />
-            <Route
               path={routes.ADDRESSBOOK}
               render={() => (
                 <AddressBook
@@ -546,15 +525,12 @@ class RouteApp extends React.Component<any, any> {
                 />
               )}
             />
+            <Route path={routes.DASHBOARD} component={Dashboard} />
+            <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
-              path={routes.DASHBOARD}
-              render={() => (
-                <Dashboard
-                  totalBalance={totalBalance}
-                  info={info}
-                  addressesWithBalance={addressesWithBalance}
-                />
-              )}
+              path={routes.PORTFOLIO_DETAIL}
+              exact
+              component={PortfolioPage}
             />
             <Route
               path={routes.TRANSACTIONS}
@@ -569,6 +545,11 @@ class RouteApp extends React.Component<any, any> {
             />
 
             <Route
+              path={routes.PROFILE}
+              render={() => <Profile info={info} />}
+            />
+
+            <Route
               path={routes.WALLET}
               render={() => <WalletScreen info={info} />}
             />
@@ -578,6 +559,12 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.COLLECTOR} render={() => <Collector />} />
 
             <Route path={routes.NFT} render={() => <Nft />} />
+
+            <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
+            <Route
+              path={routes.MEMBERS_PROFILE}
+              render={() => <MemberProfile />}
+            />
 
             <Route
               path={routes.PASTELD}
@@ -651,7 +638,7 @@ class RouteApp extends React.Component<any, any> {
             />
           </Switch>
         </div>
-      </App>
+      </div>
     )
   }
 }

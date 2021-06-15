@@ -1,130 +1,136 @@
-import React, { useState } from 'react'
-import Checkbox from '../../components/Checkbox/Checkbox'
-import pasteIcon from '../../assets/icons/ico-paste.svg'
-import pencilIcon from '../../assets/icons/ico-pencil.svg'
-import viewIcon from '../../assets/icons/ico-view.svg'
-import Select from '../../components/Select/Select'
-import cn from 'classnames'
-import Tooltip from '../Tooltip'
+import React, { useEffect, useState } from 'react'
+import cx from 'classnames'
+import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
+import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
+import Checkbox from '../Checkbox/Checkbox'
 
-export type TColumnDefinitionType<T, K extends keyof T> = {
-  key: K
-  header: string
-  classnames?: string
+export type TRow = {
+  [index: string]: string | number
 }
 
-type TableProps<T, K extends keyof T> = {
-  trClasses?: string
-  data: Array<T>
-  columns: Array<TColumnDefinitionType<T, K>>
-  hasChecked: boolean
-  checkHandler?: (param: number[]) => void
-  autocompleteHandler?: (param: T) => void
+export type TColumn = {
+  colClasses?: string
+  name: string
+  key: string
+  align?: string
+  custom?: (value: string | number, row?: TRow | undefined) => JSX.Element
 }
 
-const Table = <T, K extends keyof T>({
-  data,
+export type TTableProps = {
+  columns: Array<TColumn>
+  data: Array<TRow>
+  haveHeader?: boolean
+  headerTrClasses?: string
+  bodyTrClasses?: string
+  bodyClasses?: string
+  showCheckbox?: boolean
+  selectedRow?: (index: number, row: TRow, selected: boolean) => void
+}
+
+const Table = ({
   columns,
-  checkHandler,
-  hasChecked = true,
-  trClasses = 'pt-18px pb-19px ml-2 md:ml-3 lg:ml-6 xl:ml-38px pl-4 md:pl-31px pr-4 md:pr-31px flex border-b border-line-DEFAULT mr-4 justify-between',
-  autocompleteHandler,
-}: TableProps<T, K>): JSX.Element => {
-  const [selected, setSelected] = useState<number[]>([])
+  data,
+  haveHeader = true,
+  headerTrClasses = 'h-12 text-gray-4a  border-b border-gray-a0',
+  bodyTrClasses = 'h-67px',
+  bodyClasses = 'h-220px overflow-y-scroll',
+  showCheckbox = false,
+  selectedRow,
+}: TTableProps): JSX.Element => {
+  const [sortIndex, setSortIndex] = useState(0)
+  const [sortOrder, setSortOrder] = useState(0)
+  const [tableData, setTableData] = useState(Array<TRow>())
+
+  useEffect(() => {
+    setTableData(data)
+  }, [data])
+
+  useEffect(() => {
+    console.log(sortIndex, sortOrder)
+    if (sortOrder == 0) {
+      return
+    }
+    setTableData(
+      data
+        .map(each => each)
+        .sort(
+          (a, b) =>
+            sortOrder *
+            (a[columns[sortIndex].key] < b[columns[sortIndex].key] ? 1 : -1),
+        ),
+    )
+  }, [sortIndex, sortOrder])
+
+  const setSort = (index: number) => {
+    if (index === sortIndex) {
+      setSortOrder(((sortOrder + 2) % 3) - 1)
+    } else {
+      setSortIndex(index)
+      setSortOrder(1)
+    }
+  }
+
   return (
-    <table className='w-full'>
-      <tbody>
-        {data.map((d, i) => (
-          <tr
-            key={i}
-            className={cn(trClasses, selected.includes(i) && 'bg-blue-f8')}
-          >
-            {hasChecked && (
-              <td className='flex items-center whitespace-nowrap w-5'>
-                <div className='mb-4'>
-                  <Checkbox
-                    isChecked={selected.includes(i) ? true : false}
-                    clickHandler={() => {
-                      if (selected.includes(i)) {
-                        const ind = selected.indexOf(i)
-                        if (ind > -1) {
-                          selected.splice(ind, 1)
-                        }
-                      } else {
-                        selected.push(i)
-                      }
-                      setSelected([...selected])
-                      checkHandler && checkHandler(selected)
-                    }}
-                  ></Checkbox>
+    <table className='w-full text-gray-71 relative'>
+      {haveHeader && (
+        <thead>
+          <tr className={headerTrClasses}>
+            {showCheckbox ? <td></td> : null}
+            {columns.map((column, index) => (
+              <td
+                key={index}
+                className={cx(
+                  column.align ? 'text-' + column.align : 'text-left',
+                  'sticky top-0 bg-white',
+                )}
+              >
+                <div
+                  className='flex items-center cursor-pointer select-none'
+                  onClick={() => setSort(index)}
+                >
+                  {column.name}
+                  <img
+                    src={caretDown2Icon}
+                    className={cx(
+                      'ml-2 mt-px',
+                      sortOrder == 0 || sortIndex != index
+                        ? 'invisible'
+                        : (index != sortIndex || sortOrder != 1) && 'hidden',
+                    )}
+                  />
+                  <img
+                    src={caretUp2Icon}
+                    className={cx(
+                      'ml-2',
+                      (index != sortIndex || sortOrder != -1) && 'hidden',
+                    )}
+                  />
                 </div>
               </td>
-            )}
-            {columns.map((c, index) => {
-              if (c.key === 'hash') {
-                return (
-                  <td
-                    key={index + i}
-                    className='flex items-center whitespace-nowrap ml-1 md:ml-3'
-                  >
-                    <span className='text-blue-3f'>{d[c.key]}</span>
-                    <img className='ml-7' src={pasteIcon} />
-                    <img className='ml-25px' src={pencilIcon} />
-                  </td>
-                )
-              }
-              if (c.key === 'qr_code') {
-                return (
-                  <td
-                    key={index + i}
-                    className='flex items-center lg:ml-16 xl:ml-75px'
-                  >
-                    <Tooltip
-                      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                      content='View QR Code'
-                      width={108}
-                      type='top'
-                    >
-                      <img src={viewIcon} />
-                    </Tooltip>
-                  </td>
-                )
-              }
-              if (c.key === 'psl') {
-                const value = d[c.key]
-                if (typeof value == 'number') {
-                  return (
-                    <td
-                      className='flex items-center md:8 lg:ml-60px'
-                      key={index + i}
-                    >
-                      <div>
-                        <Select
-                          className='text-gray-2d w-28'
-                          autocomplete={true}
-                          min={10000}
-                          max={20000}
-                          step={100}
-                          value={value}
-                          onChange={(value: number | null) => {
-                            d = { ...d, psl: value }
-                            autocompleteHandler && autocompleteHandler(d)
-                          }}
-                        />
-                      </div>
-                    </td>
-                  )
-                }
-              }
-              return (
-                <td
-                  key={index + i}
-                  className='flex items-center whitespace-nowrap'
-                >
-                  <span className={c.classnames}>{d[c.key]}</span>
-                </td>
-              )
-            })}
+            ))}
+          </tr>
+        </thead>
+      )}
+      <tbody className={bodyClasses}>
+        {tableData.map((row: TRow, index: number) => (
+          <tr key={index} className={bodyTrClasses}>
+            {showCheckbox ? (
+              <td>
+                <Checkbox
+                  isChecked={false}
+                  clickHandler={selected => {
+                    selectedRow && selectedRow(index, row, selected)
+                  }}
+                ></Checkbox>
+              </td>
+            ) : null}
+            {columns.map((column, index) => (
+              <td key={index}>
+                {column.custom
+                  ? column.custom(row[column.key], row)
+                  : row[column.key]}
+              </td>
+            ))}
           </tr>
         ))}
       </tbody>

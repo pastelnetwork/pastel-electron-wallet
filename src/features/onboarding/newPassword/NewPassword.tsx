@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
 
-import Input from '../../../common/components/Input/Input'
-import Button from '../../../common/components/Button/Button'
+import { Input } from '../../../common/components/Inputs'
+import { Button } from '../../../common/components/Buttons'
 import FormLoading from '../../../common/components/FormLoading/FormLoading'
 import Typography from '../../../common/components/Typography/Typography'
 import { colors } from '../../../common/theme/colors'

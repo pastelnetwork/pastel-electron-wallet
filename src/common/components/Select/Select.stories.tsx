@@ -24,7 +24,7 @@ export const SimpleSelect = TemplateOptions.bind({})
 SimpleSelect.args = {
   options,
   selected: options[0],
-  className: 'text-gray-71 w-220px',
+  className: 'w-220px',
 }
 
 export const WithLabel = TemplateOptions.bind({})
@@ -32,7 +32,7 @@ WithLabel.args = {
   options,
   selected: options[0],
   label: 'Categories',
-  className: 'text-gray-2d w-220px',
+  className: 'w-220px',
 }
 
 // not using ...args because this is causing wrong behaviour by passing options={undefined}
@@ -61,7 +61,7 @@ const TemplateRange: Story<TRangeProps> = ({
 
 export const AutoCompleteNumber = TemplateRange.bind({})
 AutoCompleteNumber.args = {
-  className: 'text-gray-2d w-112px',
+  className: 'w-28',
   autocomplete: true,
   min: 10000,
   max: 20000,
