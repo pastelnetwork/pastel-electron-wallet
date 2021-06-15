@@ -23,8 +23,7 @@ export type PageHeader = {
  * This is a presentational component, meaning it holds no state.
  * State should be handled by parent component.
  */
-<<<<<<< HEAD
-const PageHeader = ( {
+const PageHeader = ({
   showTitle = false,
   title,
   routes,
@@ -32,7 +31,7 @@ const PageHeader = ( {
   variant,
   sortByText,
   sortByTextClassName = '',
-  }: PageHeader): JSX.Element => {
+}: PageHeader): JSX.Element => {
   return (
     <>
       <div className='bg-white text-gray-1a'>
@@ -44,15 +43,15 @@ const PageHeader = ( {
           <div className='flex justify-between'>
             <div className='flex items-center'>
               {showTitle && (
-                  <h1
-                      className={`${
-                          variant === 'portfolio'
-                              ? 'pr-18px md:pr-7 whitespace-nowrap'
-                              : 'pr-70px'
-                      } font-semibold text-gray-23`}
-                  >
-                    {title}
-                  </h1>
+                <h1
+                  className={`${
+                    variant === 'portfolio'
+                      ? 'pr-18px md:pr-7 whitespace-nowrap'
+                      : 'pr-70px'
+                  } font-semibold text-gray-23`}
+                >
+                  {title}
+                </h1>
               )}
               {routes && <MultiToggleSwitch {...routes} />}
             </div>
