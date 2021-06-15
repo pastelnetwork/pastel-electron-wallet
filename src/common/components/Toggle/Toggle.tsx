@@ -9,13 +9,13 @@ export type TToggleProps = {
   children: React.ReactNode
 }
 
-function Toggle({
+const Toggle = ({
   children,
   toggleHandler,
   classNames = 'w-34px h-5 rounded-full',
   selectedClass = 'bg-green-68',
   selected = false,
-}: TToggleProps): JSX.Element {
+}: TToggleProps): JSX.Element => {
   const [checked, setChecked] = useState(selected)
   return (
     <div>

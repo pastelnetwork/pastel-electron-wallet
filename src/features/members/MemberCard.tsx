@@ -12,13 +12,13 @@ export type TMemberCard = {
   followedByUser: boolean
 }
 
-function MemberCard({
+const MemberCard = ({
   avatar,
   name,
   followers,
   isVerified,
   followedByUser,
-}: TMemberCard): JSX.Element {
+}: TMemberCard): JSX.Element => {
   return (
     <div className='px-5 py-7 bg-background-main rounded-2xl overflow-visible h-142px'>
       <div className='flex space-x-4 relative'>

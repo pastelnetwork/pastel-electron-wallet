@@ -10,13 +10,13 @@ export interface IButtonProps {
   children: React.ReactNode
 }
 
-function Button({
+const Button = ({
   children,
   variant = 'default',
   type = 'button',
   onClick,
   ...restProps
-}: IButtonProps): JSX.Element {
+}: IButtonProps): JSX.Element => {
   const handleClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {

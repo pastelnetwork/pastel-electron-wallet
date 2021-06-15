@@ -8,11 +8,11 @@ export type TCheckboxProps = {
   children?: React.ReactNode
 }
 
-function Checkbox({
+const Checkbox = ({
   children,
   isChecked,
   clickHandler,
-}: TCheckboxProps): JSX.Element {
+}: TCheckboxProps): JSX.Element => {
   const [selected, setSelected] = useState(isChecked)
   return (
     <div className='cursor-pointer select-none flex items-center'>
