@@ -1,5 +1,5 @@
 import React from 'react'
-import cx from 'classnames'
+import cn from 'classnames'
 import img_avatar_empty from 'common/assets/images/avatar-placeholder.svg'
 import ico_camera from 'common/assets/icons/ico-camera.svg'
 
@@ -17,7 +17,7 @@ const ProfileCardAvatar = ({
       {!isEmpty && <img src={src} className='w-full' />}
       {isEmpty && <img src={img_avatar_empty} className='w-9' />}
       <div
-        className={cx(
+        className={cn(
           isEmpty ? 'flex' : 'hidden',
           'hover:flex h-1/3 absolute bottom-0 flex-grow w-full bg-gray-71 justify-center items-center',
         )}

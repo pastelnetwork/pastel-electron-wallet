@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import cx from 'classnames'
+import cn from 'classnames'
 import LineEdit from './LineEdit'
 import ProfileCardFrame from './ProfileCardFrame'
 import ProfileCardAvatar from './ProfileCardAvatar'
@@ -96,7 +96,7 @@ const ProfileCard = ({
                 </button>
               </div>
               <button
-                className={cx(
+                className={cn(
                   'filter hover:contrast-125 w-full border text-center rounded-2xl flex items-center justify-center mt-2 h-10 w-120px',
                   isEmpty
                     ? 'text-white bg-blue-3f'
