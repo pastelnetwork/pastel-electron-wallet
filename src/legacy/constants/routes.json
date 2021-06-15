@@ -19,5 +19,6 @@
   "PROFILE": "/profile",
   "MEMBERS_PROFILE": "/member_profile",
   "MY_PROFILE": "/my_profile",
-  "MARKET": "/market"
+  "MARKET": "/market",
+  "PORTFOLIO_DETAIL": "/portfolio_detail"
 }
