@@ -112,6 +112,12 @@ export default function Header(): JSX.Element {
           Market
         </MenuItem>
         <MenuItem
+          classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
+          to={routes.FORUM}
+        >
+          Forum
+        </MenuItem>
+        <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
           to={routes.MEMBERS}
         >

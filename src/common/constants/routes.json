@@ -1,6 +1,7 @@
 {
   "DASHBOARD": "/dashboard",
   "MEMBERS": "/members",
+  "FORUM": "/forum",
   "WALLET": "/wallet",
   "PORTFOLIO": "/portfolio",
   "SEND": "/send",

@@ -10,6 +10,7 @@ export type PageHeaderSortByOptions = {
 }
 
 export type PageHeader = {
+  showTitle?: boolean
   title: string
   routes?: TMultiToggle
   sortByOptions?: PageHeaderSortByOptions[]
@@ -22,16 +23,16 @@ export type PageHeader = {
  * This is a presentational component, meaning it holds no state.
  * State should be handled by parent component.
  */
-const PageHeader = (props: PageHeader): JSX.Element => {
-  const {
-    title,
-    routes,
-    sortByOptions,
-    variant,
-    sortByText,
-    sortByTextClassName = '',
-  } = props
-
+<<<<<<< HEAD
+const PageHeader = ( {
+  showTitle = false,
+  title,
+  routes,
+  sortByOptions,
+  variant,
+  sortByText,
+  sortByTextClassName = '',
+  }: PageHeader): JSX.Element => {
   return (
     <>
       <div className='bg-white text-gray-1a'>
@@ -42,15 +43,17 @@ const PageHeader = (props: PageHeader): JSX.Element => {
         >
           <div className='flex justify-between'>
             <div className='flex items-center'>
-              <h1
-                className={`${
-                  variant === 'portfolio'
-                    ? 'pr-18px md:pr-7 whitespace-nowrap'
-                    : 'pr-70px'
-                } font-semibold text-gray-23`}
-              >
-                {title}
-              </h1>
+              {showTitle && (
+                  <h1
+                      className={`${
+                          variant === 'portfolio'
+                              ? 'pr-18px md:pr-7 whitespace-nowrap'
+                              : 'pr-70px'
+                      } font-semibold text-gray-23`}
+                  >
+                    {title}
+                  </h1>
+              )}
               {routes && <MultiToggleSwitch {...routes} />}
             </div>
             {sortByOptions?.length && (
