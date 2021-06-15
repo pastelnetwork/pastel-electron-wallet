@@ -78,9 +78,9 @@ const MemberCard = ({
           </div>
         </div>
       </div>
-      <div className='w-103px h-104px flex-none'>
+      <div className='w-104px h-104px flex-none'>
         <img
-          className='object-fill w-103px h-104px rounded-xl shadow-lg'
+          className='object-fill w-104px h-104px rounded-xl shadow-lg'
           src={productURL}
           alt='Product Image'
         />
