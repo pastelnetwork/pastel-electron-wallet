@@ -4,7 +4,7 @@ import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
 import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
 import Select, { TOption } from '../../../common/components/Select/Select'
-import NFTCard, { TNFTCardProps } from '../../../common/components/NFTCard'
+import NFTCard, { TNFTCard } from '../../../common/components/NFTCard'
 import image from '../../../common/assets/images/nft-card-placeholder.png'
 import avatar from '../../../common/assets/images/avatar-placeholder.png'
 import MemberCard from '../components/MemberCard'
@@ -37,15 +37,21 @@ const general_data = {
     'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
 }
 
-const mockCardProps: TNFTCardProps = {
-  author: 'vanecha',
-  avatarSrc: avatar,
-  imageSrc: image,
+const mockCardProps: TNFTCard = {
+  likes: 23,
   onSale: true,
   price: '222K',
   currencyName: 'PSL',
+  liked: true,
+  percentage: 75,
+  variant: 'portfolio',
+  isLastBid: false,
+  hideLikeButton: true,
+  author: 'vanecha',
+  avatarSrc: avatar,
+  imageSrc: image,
   title: 'Infinity I',
-  rarenessPercent: 75,
+  hideFollow: true,
 }
 
 const categoriesOptions: TOption[] = [

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import NFTCard, { TNFTCardProps } from '../../common/components/NFTCard'
+import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
 
 import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
@@ -8,17 +8,18 @@ import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
 import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
-import ScrollBar from '../../common/components/ScrollBar'
+import ScrollBar from '../../common/components/Scrollbar'
 
-const mockCardProps: TNFTCardProps = {
+const mockCardProps: TNFTCard = {
   author: 'zndrson',
   avatarSrc: avatar,
   imageSrc: image,
+  likes: 23,
   onSale: true,
   price: '222K',
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
-  rarenessPercent: 75,
+  liked: true,
 }
 const NFTMarketFeed: React.FC = () => {
   // Upper Section
@@ -141,6 +142,7 @@ const NFTMarketFeed: React.FC = () => {
             <div className='flex'>
               <div className='flex h-full items-center justify-end'>
                 <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
+
                 <Slider
                   min={100}
                   max={999}

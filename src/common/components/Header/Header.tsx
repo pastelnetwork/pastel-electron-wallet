@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
 import addBtn from '../../../common/assets/icons/ico-add-btn.svg'
@@ -35,7 +35,7 @@ const MenuItem = ({
     >
       {children}
       {location.pathname === to && (
-        <div className='absolute bottom-m1.5px w-full h-3px bg-gray-33 rounded-full'></div>
+        <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full'></div>
       )}
     </NavLink>
   )
@@ -63,19 +63,26 @@ type TIconProps = {
   background?: boolean
   notification?: boolean
   classes?: string
+  path?: string
 }
 
-const Icon = ({ src, background, notification, classes }: TIconProps) => {
+const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
+  const history = useHistory()
+
   return (
     <div
       className={cn(
         'flex-center',
-        background ? 'bg-gray-f8 w-40px h-40px rounded-full' : '',
+        background ? 'bg-gray-f8 w-10 h-10 rounded-full' : '',
         classes,
       )}
     >
       <div className='relative'>
-        <img className='cursor-pointer' src={src} />
+        <img
+          className='cursor-pointer'
+          src={src}
+          onClick={() => (path ? history.push(path) : {})}
+        />
         {notification && (
           <div className='absolute -top-px -right-px w-2 h-2 rounded-full bg-orange-63 border border-white' />
         )}
@@ -88,7 +95,7 @@ export default function Header(): JSX.Element {
   return (
     <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed text-gray-71'>
       <div className='flex items-center h-full'>
-        <Link to={routes.DASHBOARD} className='w-36px h-36px'>
+        <Link to={routes.DASHBOARD} className='w-9 h-9'>
           <img src={Logo} alt='logo' />
         </Link>
         <MenuItem
@@ -106,19 +113,19 @@ export default function Header(): JSX.Element {
         </MenuItem>
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-          to={routes.RECEIVE}
+          to={routes.MEMBERS}
         >
           Members
         </MenuItem>
         <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-28px xl:w-46px'
-          to={routes.TRANSACTIONS}
+          classes='ml-4 1200px:ml-7 xl:ml-7 xl:w-46px'
+          to={routes.WALLET}
         >
           Wallet
         </MenuItem>
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
-          to={routes.ADDRESSBOOK}
+          to={routes.PORTFOLIO}
         >
           Portfolio
         </MenuItem>
@@ -135,10 +142,15 @@ export default function Header(): JSX.Element {
       </div>
       <div className='flex items-center h-full'>
         <Icon src={QuestionTag} />
-        <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
+        <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
         <Icon classes='ml-6 lg:ml-26px w-18px' src={MessageIcon} notification />
         <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
-        <Icon classes='ml-6 lg:ml-22px' src={UserIcon} background />
+        <Icon
+          classes='ml-6 lg:ml-22px'
+          src={UserIcon}
+          background
+          path={routes.PROFILE}
+        />
       </div>
     </div>
   )

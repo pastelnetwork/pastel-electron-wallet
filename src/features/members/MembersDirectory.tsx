@@ -10,7 +10,7 @@ import { PageHeaderSortByOptions } from '../../common/components/PageHeader/Page
 
 import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
-import ScrollBar from '../../common/components/ScrollBar'
+import ScrollBar from '../../common/components/Scrollbar'
 
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
 const mockMemberStrips: TMemberStripProps[] = [

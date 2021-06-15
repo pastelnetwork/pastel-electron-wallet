@@ -1,9 +1,9 @@
 import React from 'react'
-import Dots from '../../common/components/Icons/Dots'
+import { Dots } from 'common/components/Icons'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
-import NFTCard, { TNFTCompactCardProps } from '../../common/components/NFTCard'
+import NFTCard, { TNFTCompactCard } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
 import dayjs from 'dayjs'
@@ -34,9 +34,11 @@ const portfolioItemProps: TPortfolioItemProps = {
   currencyName,
 }
 
-const NFTCardProps: TNFTCompactCardProps = {
+const NFTCardProps: TNFTCompactCard = {
   imageSrc: image,
+  likes: 23,
   title: 'Cosmic Perspective',
+  liked: false,
 }
 
 let notifications = [
@@ -82,7 +84,7 @@ export default function DashboardPage(): JSX.Element {
             <div className='font-extrabold text-gray-a0 text-xs ml-3'>
               23 items
             </div>
-            <button type='button' className='ml-auto relative -right-2px'>
+            <button type='button' className='ml-auto relative -right-0.5'>
               <Dots size={24} className='text-gray-b0 hover:opacity-80' />
             </button>
           </div>

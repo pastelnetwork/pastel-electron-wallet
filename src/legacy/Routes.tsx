@@ -7,8 +7,9 @@ import { ErrorModal, ErrorModalData } from './components/ErrorModal'
 import routes from './constants/routes.json'
 import MemberProfile from '../features/profile/memberProfile/MemberProfile'
 import Dashboard from '../features/dashboard/DashboardPage'
+import PortfolioPage from '../features/nft/portfolio'
+import Portfolio from '../features/portfolio'
 import Send from './components/Send'
-import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
 import Header from '../common/components/Header'
 import {
@@ -50,9 +51,10 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import Profile from '../features/profile'
+import NFTMarketFeed from '../features/nftMarket'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
-import NFTMarketFeed from '../features/nftMarket'
 
 export type TWalletInfo = {
   connections: number
@@ -522,6 +524,12 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
+            <Route path={routes.PORTFOLIO} exact component={Portfolio} />
+            <Route
+              path={routes.PORTFOLIO_DETAIL}
+              exact
+              component={PortfolioPage}
+            />
             <Route
               path={routes.TRANSACTIONS}
               render={() => (
@@ -532,6 +540,11 @@ class RouteApp extends React.Component<any, any> {
                   setSendTo={this.setSendTo}
                 />
               )}
+            />
+
+            <Route
+              path={routes.PROFILE}
+              render={() => <Profile info={info} />}
             />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
