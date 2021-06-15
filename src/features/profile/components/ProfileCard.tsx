@@ -36,7 +36,7 @@ const ProfileCard = ({
   return (
     <div className='flex flex-col pb-28px rounded-md shadow-sm bg-white w-315px'>
       <ProfileCardFrame />
-      <div className='-mt-61px px-5 flex pb-2'>
+      <div className='-mt-61px px-5 flex pb-2 z-10'>
         <div className='rounded-full border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
           <img src={svg_avatar} className='rounded-full w-full h-full' />
         </div>
