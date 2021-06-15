@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react'
+import CustomInput from './CustomInput'
 import ico_add from 'common/assets/icons/ico-add.svg'
 import ico_close from 'common/assets/icons/ico-close-round.svg'
 
@@ -9,18 +10,17 @@ export type TCategories = {
 
 const Categories = ({ value, onChange }: TCategories): JSX.Element => {
   const [isAdding, setAdding] = useState<boolean>(false)
-  const inputRef = useRef<HTMLDivElement>(null)
+  const [newText, setNewText] = useState('')
+  const customInputRef = useRef<HTMLInputElement>(null)
 
-  const onAddCategory = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key == 'Enter') {
-      const newCategory = inputRef?.current?.innerHTML
-      if (!newCategory) {
-        return
-      }
-      const newValue = [...value, newCategory]
-      onChange(newValue)
-      setAdding(false)
+  const onAdd = () => {
+    if (!newText) {
+      return
     }
+    const newValue = [...value, newText]
+    onChange(newValue)
+    setAdding(false)
+    setNewText('')
   }
 
   const onDeleteCategory = (index: number) => {
@@ -28,12 +28,21 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
     newValue.splice(index, 1)
     onChange(newValue)
   }
+
+  const startAdd = () => {
+    if (!customInputRef.current) {
+      return
+    }
+    setAdding(true)
+    setTimeout(() => customInputRef.current?.focus(), 10)
+  }
+
   return (
     <div className='bg-white border rounded flex flex-grow shadow-editbox flex-wrap p-2 items-center'>
       {value.map((category: string, index: number) => (
         <div className='flex' key={index}>
           <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center  mb-2'>
-            <div className='h-6 text-gray-4a'>{category}</div>
+            <div className='h-6 text-gray-4a flex items-center'>{category}</div>
             <div
               className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
               onClick={() => onDeleteCategory(index)}
@@ -43,31 +52,28 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
           </div>
         </div>
       ))}
-      <button
-        hidden={isAdding}
-        className='mb-2'
-        onClick={() => setAdding(true)}
-      >
+      <button hidden={isAdding} className='mb-2' onClick={startAdd}>
         <img src={ico_add} className='cursor-pointer w-21px' />
       </button>
-      {isAdding && (
-        <div className='flex'>
-          <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center  mb-2'>
-            <div
-              onKeyPress={onAddCategory}
-              ref={inputRef}
-              className='h-6 text-gray-4a min-w-32px outline-none'
-              contentEditable={true}
-            />
-            <button
-              className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
-              onClick={() => setAdding(false)}
-            >
-              <img src={ico_close} className='cursor-pointer' />
-            </button>
-          </div>
+
+      <div className={isAdding ? 'flex' : 'hidden'}>
+        <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center  mb-2'>
+          <CustomInput
+            ref={customInputRef}
+            value={newText}
+            onChange={setNewText}
+            onEnter={onAdd}
+          />
+          <button
+            className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
+            onClick={() => {
+              setAdding(false), setNewText('')
+            }}
+          >
+            <img src={ico_close} className='cursor-pointer' />
+          </button>
         </div>
-      )}
+      </div>
     </div>
   )
 }
