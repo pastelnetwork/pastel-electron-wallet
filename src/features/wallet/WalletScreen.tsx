@@ -23,6 +23,7 @@ import Table, { TRow } from '../../common/components/Table'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
+import Breadcrumbs from '../../common/components/Breadcrumbs'
 
 export type TWalletData = {
   id: number
@@ -170,21 +171,21 @@ const WalletScreen = (props: Tprops): JSX.Element => {
   const Columns = [
     {
       key: 'address',
-      colClasses: 'w-380px 1500px:w-478px',
+      colClasses: 'lg:w-380px xl:w-428px 1500px:w-478px',
       name: 'Address name',
       headerColClasses: '-ml-5',
       custom: (value: string | number, row: TRow | undefined) => (
-        <div className='flex ml-21px items-center'>
+        <div className='flex ml-3 xl:ml-21px items-center mr-2 md:mr-0'>
           {edit === value ? (
             <input
               value={editName}
               onChange={e => {
                 setEditName(e.target.value)
               }}
-              className='w-262px h-10 border border-link text-sm font-medium rounded px-4'
+              className='w-220px md:w-262px h-10 border border-link text-sm font-medium rounded px-4'
             ></input>
           ) : !!row && row.address_nick.toString() ? (
-            <div className='w-262px'>
+            <div className='w-220px md:w-262px'>
               <Tooltip
                 width={300}
                 type='right'
@@ -196,10 +197,12 @@ const WalletScreen = (props: Tprops): JSX.Element => {
               </Tooltip>
             </div>
           ) : (
-            <span className='w-262px text-blue-3f cursor-pointer'>{value}</span>
+            <span className='w-220px md:w-262px text-blue-3f cursor-pointer'>
+              {value}
+            </span>
           )}
           {edit === value ? (
-            <div className='w-5 h-5 flex items-center ml-7'>
+            <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
               <img
                 className='cursor-pointer'
                 onClick={() => {
@@ -209,12 +212,12 @@ const WalletScreen = (props: Tprops): JSX.Element => {
               />
             </div>
           ) : (
-            <div className='w-5 h-5 flex items-center ml-7'>
+            <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
               <img className='cursor-pointer w-5 h-5' src={pasetIcon} />
             </div>
           )}
           {edit === value ? (
-            <div className='w-5 h-5 flex items-center ml-26px'>
+            <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
               <img
                 className='cursor-pointer'
                 onClick={() => {
@@ -232,7 +235,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
               />
             </div>
           ) : (
-            <div className='w-5 h-5 flex items-center ml-26px'>
+            <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
               <img
                 className='cursor-pointer'
                 onClick={() => {
@@ -251,12 +254,15 @@ const WalletScreen = (props: Tprops): JSX.Element => {
     {
       key: 'time',
       name: 'Last Activity',
-      colClasses: 'w-189px 1500px:w-244px',
+      colClasses: 'w-190px 1500px:w-244px',
+      custom: (value: string | number) => (
+        <div className='mr-3 md:mr-0'>{value}</div>
+      ),
     },
     {
       key: 'qr_code',
       name: 'Address QR',
-      colClasses: 'w-113px 1500px:w-244px',
+      colClasses: 'min-w-80px w-132px 1500px:w-244px',
       custom: () => (
         <div className='flex'>
           <img src={viewIcon} />
@@ -267,12 +273,12 @@ const WalletScreen = (props: Tprops): JSX.Element => {
     {
       key: 'private_key',
       name: 'Keys',
-      colClasses: 'w-196px 1500px:w-244px',
+      colClasses: 'min-w-130px w-176px 1500px:w-244px flex-grow-0',
       custom: (value: string | number) => (
         <div className='flex items-center'>
           <span>public key</span>
           <img
-            className='ml-4 cursor-pointer'
+            className='ml-9px cursor-pointer'
             onClick={() => {
               setExportKeysModalOpen(true)
             }}
@@ -294,6 +300,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
     {
       key: 'psl',
       name: 'Selected Amount',
+      colClasses: 'min-w-130px w-141px 1500px:w-244px',
       custom: (value: number | string, row: TRow | undefined) => (
         <div className='z-0'>
           <Select
@@ -408,6 +415,17 @@ const WalletScreen = (props: Tprops): JSX.Element => {
 
   return (
     <div>
+      <Breadcrumbs
+        breadcrumbs={[
+          {
+            label: 'Wallet',
+            route: '/wallet',
+          },
+          {
+            label: 'Transparent',
+          },
+        ]}
+      />
       <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
         <div className='font-extrabold text-h1 text-gray-1a'>Wallet</div>
         <div
@@ -447,13 +465,13 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                   active === index && 'bg-white',
                 )}
               >
-                <div className='pt-18px sm:pl-2 md:pl-0 lg:pl-2.5 xl:pl-26px pb-19px'>
+                <div className='pt-18px pl-4 md:pl-4 lg:pl-4 xl:pl-26px pb-19px'>
                   <img
                     className='w-92px h-87px cursor-pointer'
                     src={card.icon}
                   />
                 </div>
-                <div className='pt-36px sm:pl-1 md:pl-3 lg:pl-35px'>
+                <div className='pt-36px pl-2 md:pl-3 lg:pl-35px'>
                   <div
                     className={cn(
                       'sm:text-xl md:text-2xl leading-6 pt-9',
@@ -494,7 +512,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
 
         {walletDatas.length > 0 && (
           <div className='bg-white mt-3.5 pt-6 rounded-lg mt-27px min-w-594px'>
-            <div className='h-526px overflow-y-scroll mr-4 pr-4 scrollbar ml-9'>
+            <div className='h-526px overflow-y-auto mr-4 pr-4 overflow-x-hidden ml-9'>
               {active !== 0 && (
                 <Table
                   data={
@@ -504,7 +522,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                   }
                   columns={Columns}
                   headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                  bodyTrClasses='h-76px border-b border-line'
+                  bodyTrClasses='h-76px border-b border-line text-sm 1200px:text-base'
                   showCheckbox={true}
                   selectedRow={setSelectedRowsFunction}
                 />
@@ -520,7 +538,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                     )}
                     columns={Columns}
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line'
+                    bodyTrClasses='h-76px border-b border-line text-sm 1200px:text-base'
                     showCheckbox={true}
                     selectedRow={setSelectedRowsFunction}
                   />
@@ -531,7 +549,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                     data={walletDatas.filter(item => item.type === 'shielded')}
                     columns={Columns}
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line'
+                    bodyTrClasses='h-76px border-b border-line text-sm 1200px:text-base'
                     showCheckbox={true}
                     selectedRow={setSelectedRowsFunction}
                   />

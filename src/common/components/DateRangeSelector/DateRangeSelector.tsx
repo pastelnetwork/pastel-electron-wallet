@@ -55,7 +55,7 @@ const DateRangeSelector = ({
       </div>
       {isOpenCalendar && (
         <div
-          className='absolute bg-white'
+          className='absolute bg-white z-20'
           onBlur={() => setOpenCalendar(false)}
         >
           <DateRangePicker onSelect={onSelect} value={value} />

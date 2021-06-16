@@ -38,7 +38,7 @@ const Modal: React.FC<TModalProps> = ({
         <div className='text-h2 leading-none font-bold'>{title}</div>
         <ButtonClose onClick={handleClose} />
       </div>
-      <div className='px-30px'>{children}</div>
+      <div className='pl-10 pr-18px'>{children}</div>
     </ReactModal>
   )
 }

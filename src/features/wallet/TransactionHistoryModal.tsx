@@ -48,7 +48,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
       <div>
         <div className='flex text-gray-71 text-sm'>
           <div className='w-2/3 flex'>
-            <div className='w-1/3 pr-6'>
+            <div className='w-1/3 pr-10'>
               <div>Time range</div>
               <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
             </div>
@@ -73,7 +73,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
               />
             </div>
           </div>
-          <div className='w-1/3 flex justify-end  items-end pb-2 space-x-4'>
+          <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
             <Radio
               isChecked={selectedOption === 1}
               clickHandler={() => setSelectedOption(1)}
@@ -92,16 +92,15 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
             >
               Sent
             </Radio>
-            <Radio
-              isChecked={selectedOption === 4}
-              clickHandler={() => setSelectedOption(4)}
-            >
-              In progress
-            </Radio>
           </div>
         </div>
-        <div className='pt-6'>
-          <Table columns={Columns} data={transactionHistory} />
+        <div className='h-409px overflow-y-auto scrollbar mt-3 pr-2'>
+          <Table
+            columns={Columns}
+            data={transactionHistory}
+            headerTrClasses='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'
+            bodyTrClasses='h-67px border-b border-line text-sm md:text-base'
+          />
         </div>
       </div>
     </Modal>
@@ -112,25 +111,27 @@ const Columns = [
   {
     name: 'Date',
     key: 'date',
+    headerColClasses: 'ml-15px',
+    custom: (value: string | number) => <div className='ml-15px'>{value}</div>,
   },
   {
     key: 'address',
-    name: 'address',
+    name: 'Recipient address',
     custom: (value: string | number) => (
-      <div className='flex'>
+      <div className='flex mr-2 lg:mr-0'>
         <span className='text-blue-3f cursor-pointer'>{value}</span>
-        <img className='ml-6 cursor-pointer' src={pencilIcon} />
-        <img className='ml-18px cursor-pointer' src={passEyeIcon} />
+        <img className='ml-2 md:ml-6 cursor-pointer' src={pencilIcon} />
+        <img className='ml-2 md:ml-18px cursor-pointer' src={passEyeIcon} />
       </div>
     ),
   },
   {
     key: 'type',
-    name: 'type',
+    name: 'Source type',
   },
   {
     key: 'status',
-    name: 'status',
+    name: 'Status',
     custom: (value: string | number) => (
       <img
         src={
@@ -148,20 +149,20 @@ const Columns = [
   },
   {
     key: 'id',
-    name: 'id',
+    name: 'ID',
   },
   {
     key: 'comments',
-    name: 'comments',
+    name: 'Private Notes',
     custom: () => <img src={commentIcon} className='ml-8 cursor-pointer' />,
   },
   {
     key: 'fee',
-    name: 'fee',
+    name: 'Fee',
   },
   {
     key: 'amount',
-    name: 'amount',
+    name: 'Amount',
   },
 ]
 
@@ -174,7 +175,7 @@ const transactionHistory = [
     id: '2654843-5933',
     comments: 'abcdefg',
     fee: '100',
-    amount: '24.000',
+    amount: '24,000',
   },
   {
     date: '11.04.21 05:00',
@@ -184,7 +185,7 @@ const transactionHistory = [
     id: '2654843',
     comments: 'abcdefg',
     fee: '100',
-    amount: '22.000',
+    amount: '22,000',
   },
   {
     date: '11.04.21 17:33',
@@ -194,7 +195,37 @@ const transactionHistory = [
     id: '2654843',
     comments: 'abcdefg',
     fee: '100',
-    amount: '23.000',
+    amount: '23,000',
+  },
+  {
+    date: '11.04.21 17:33',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v35',
+    type: 'Shielded',
+    status: 'failed',
+    id: '2654843',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '23,000',
+  },
+  {
+    date: '11.04.21 17:33',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v35',
+    type: 'Shielded',
+    status: 'failed',
+    id: '2654843',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '23,000',
+  },
+  {
+    date: '11.04.21 17:33',
+    address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v35',
+    type: 'Shielded',
+    status: 'failed',
+    id: '2654843',
+    comments: 'abcdefg',
+    fee: '100',
+    amount: '23,000',
   },
 ]
 

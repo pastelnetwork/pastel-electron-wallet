@@ -38,23 +38,57 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
   handleClose,
   paymentSources,
 }) => {
+  const [balance, setBalance] = useState<number>(12)
+  const [psl, setPSL] = useState<number>(22000)
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} size='4xl' title='Payment'>
       <div className='flex'>
         <div className='w-1/3'>
-          <div className='h-10 shadow-input pl-4 items-center flex mr-6'>
+          {/* <div className='h-10 shadow-input pl-4 items-center flex mr-6'>
             22,000 PSL
-          </div>
+          </div> */}
+          <Select
+            label='PSL'
+            className='text-gray-2d w-264px'
+            autocomplete={true}
+            min={10000}
+            max={20000}
+            step={1000}
+            value={psl}
+            onChange={(value: number | null) => {
+              if (value) {
+                setPSL(psl)
+              }
+            }}
+          />
           <div className='text-gray-a0 text-sm pt-2'>
             220,000 balance remaining
           </div>
         </div>
-        <div className='flex w-1/3 h-10 shadow-input items-center pl-3 mr-5'>
-          12%
-          <div className='pl-3 text-gray-71'>of your balance</div>
+        <div className='flex w-1/3 pl-3 mr-5'>
+          <Select
+            append='%'
+            label='of your balence'
+            labelClasses='text-gray-71 mr-2 absolute font-medium left-16'
+            className='text-gray-2d w-264px'
+            autocomplete={true}
+            min={1}
+            max={100}
+            step={1}
+            value={balance}
+            onChange={(value: number | null) => {
+              console.log(value)
+              if (value) {
+                setBalance(balance)
+              }
+            }}
+          />
+          {/* 12%
+          <div className='pl-3 text-gray-71'>of your balance</div> */}
         </div>
-        <div className='w-1/3 h-10 flex items-center'>
-          10 &nbsp;<span className='text-gray-71'>PSL fee</span>
+        <div className='w-1/3 h-10 flex items-center text-gray-2d'>
+          <span className='font-extrabold'>10</span> &nbsp;
+          <span className='text-gray-71'>PSL fee</span>
         </div>
       </div>
       <div>
@@ -159,15 +193,14 @@ const PaymentSource = ({ hash }: IDataType) => {
   return (
     <tr className='h-67px border-b border-line-DEFAULT mr-4 justify-between'>
       <td className='whitespace-nowrap'>
-        <div className='flex'>
+        <div className='flex items-center'>
           <Checkbox
             isChecked={false}
             clickHandler={() => {
               console.log('clicked')
             }}
-          >
-            <span className='text-blue-3f'>{hash}</span>
-          </Checkbox>
+          ></Checkbox>
+          <span className='text-blue-3f ml-5'>{hash}</span>
           <img className='ml-6' src={pencilIcon} />
           <img className='ml-18px' src={passEyeIcon} />
           <img className='ml-18px' src={pasteIcon} />

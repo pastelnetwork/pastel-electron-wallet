@@ -127,7 +127,7 @@ const Table = ({
             )}
           >
             {showCheckbox ? (
-              <td className='pl-30px w-5'>
+              <td className='pl-4 md:pl-30px w-5'>
                 <Checkbox
                   isChecked={false}
                   clickHandler={() => {

@@ -115,10 +115,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   componentDidMount() {
-    const { history } = this.props
-
-    history.push(routes.WALLET)
-    // this.loadingConfigs()
+    this.loadingConfigs()
   }
 
   loadingConfigs = async () => {
