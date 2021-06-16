@@ -13,7 +13,7 @@ export type TOption = {
 export type TBaseProps = {
   placeholder?: string
   className?: string
-  label?: string
+  label?: string | JSX.Element
   autocomplete?: boolean
   prepend?: JSX.Element
 }
