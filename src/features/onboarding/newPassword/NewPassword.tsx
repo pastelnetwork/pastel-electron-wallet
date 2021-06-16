@@ -86,7 +86,7 @@ const NewPassword: React.FC = () => {
           }
         />
         <Link to={ROUTES.LOGIN}>
-          <Button style={{ width: '100%' }}>Confirm</Button>
+          <Button className='w-full'>Confirm</Button>
         </Link>
       </Styles.Form>
     </Styles.Container>

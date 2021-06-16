@@ -6,15 +6,16 @@ export type TToggleProps = {
   selectedClass?: string
   selected?: boolean
   toggleHandler: (checked: boolean) => void
+  children: React.ReactNode
 }
 
-const Toggle: React.FC<TToggleProps> = ({
+const Toggle = ({
   children,
   toggleHandler,
   classNames = 'w-34px h-5 rounded-full',
   selectedClass = 'bg-green-68',
   selected = false,
-}) => {
+}: TToggleProps): JSX.Element => {
   const [checked, setChecked] = useState(selected)
   return (
     <div>

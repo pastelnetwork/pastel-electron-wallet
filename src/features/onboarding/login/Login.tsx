@@ -80,18 +80,18 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
           </Styles.FooterLink>
         </Styles.FooterText>
         <Button
+          className='w-full'
           type='submit'
           onClick={() => {
             setUser(true)
             history.push(ROUTES.DASHBOARD)
           }}
-          fluid={true}
         >
           Submit
         </Button>
       </Styles.Form>
       <Link to={ROUTES.SIGN_UP}>
-        <Button variant='transparent' style={{ width: '100%' }}>
+        <Button variant='transparent' className='w-full'>
           Don't have an account? Sign up
         </Button>
       </Link>

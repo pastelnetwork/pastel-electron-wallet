@@ -6,7 +6,7 @@ import { colors } from '../../../common/theme/colors'
 import successImage from '../../../common/assets/images/registration-successful.png'
 import * as Styles from './registrationSuccessful.styles'
 
-const RegistrationSuccessful: React.FC = () => {
+const RegistrationSuccessful = (): JSX.Element => {
   return (
     <Styles.Container>
       <Styles.Image src={successImage} />
