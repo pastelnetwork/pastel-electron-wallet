@@ -21,13 +21,6 @@ const ClaimTicketModal: React.FC<TClaimTicketModal> = ({
       "I'm baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kicktstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pintrest mumblecore tousled occupy brunch whatever ugh",
   }
 
-  const Segment = ({ title, value }: { title: string; value: string }) => (
-    <div className='w-1/2'>
-      <div className='font-bold leading-tight'>{title}</div>
-      <div className='mt-10px text-gray-71'>{value}</div>
-    </div>
-  )
-
   return (
     <Modal
       isOpen={isOpen}
@@ -66,5 +59,17 @@ const ClaimTicketModal: React.FC<TClaimTicketModal> = ({
     </Modal>
   )
 }
+
+type TSegment = {
+  title: string
+  value: string
+}
+
+const Segment = ({ title, value }: TSegment) => (
+  <div className='w-1/2'>
+    <div className='font-bold leading-tight'>{title}</div>
+    <div className='mt-10px text-gray-71'>{value}</div>
+  </div>
+)
 
 export default ClaimTicketModal
