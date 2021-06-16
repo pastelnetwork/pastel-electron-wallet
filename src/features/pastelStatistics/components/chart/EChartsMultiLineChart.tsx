@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import ReactECharts from 'echarts-for-react'
 import * as htmlToImage from 'html-to-image'
 import * as echarts from 'echarts'
@@ -9,8 +8,7 @@ import { saveAs } from 'file-saver'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 import { TLineChartProps, TThemeColor } from '../../common/types'
 import { pricesCSVHeaders, themes } from '../../common/constants'
-import FontAwesomeIcon from '../../../../common/components/FontAwesomeIcon/FontAwesomeIcon'
-import routes from '../../../../legacy/constants/routes.json'
+import { PrevButton } from '../PrevButton'
 
 import styles from './LineChart.module.css'
 
@@ -256,13 +254,7 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
-        <Link to={routes.STATISTICS} className={styles.backButtonLink}>
-          <FontAwesomeIcon
-            className={'fas fa-arrow-circle-left'}
-            color={'#c3921f'}
-            size={30}
-          />
-        </Link>
+        <PrevButton color='#c3921f' />
         <div
           className={styles.lineChartTitle}
           style={{ color: currentTheme?.color }}
