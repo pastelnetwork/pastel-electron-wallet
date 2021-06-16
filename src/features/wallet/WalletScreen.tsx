@@ -228,7 +228,6 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                     }
                   })
                   setEdit(null)
-                  console.log(temp)
                   setWalletDatas([...temp])
                 }}
                 src={SaveIcon}
@@ -559,11 +558,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
 
             <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
               <div className='flex items-center'>
-                <Toggle
-                  toggleHandler={e => {
-                    console.log(e)
-                  }}
-                >
+                <Toggle>
                   Hide empty addresses
                   <img className='ml-2' src={elminationIcon} />
                 </Toggle>
@@ -632,15 +627,11 @@ const WalletScreen = (props: Tprops): JSX.Element => {
       ></PaymentModal>
       <TransactionHistoryModal
         isOpen={isTransactionHistoryModalOpen}
-        handleClose={() => {
-          setTransactionHistoryModalOpen(false)
-        }}
+        handleClose={() => setTransactionHistoryModalOpen(false)}
       ></TransactionHistoryModal>
       <ExportKeysModal
         isOpen={isExportKeysModalOpen}
-        handleClose={() => {
-          setExportKeysModalOpen(false)
-        }}
+        handleClose={() => setExportKeysModalOpen(false)}
       ></ExportKeysModal>
     </div>
   )

@@ -7,21 +7,21 @@ export type TButton = {
   disabled?: boolean
   href?: string
   className?: string
-  fluid?: boolean
   prepend?: ReactNode
   append?: ReactNode
   type?: 'button' | 'submit'
+  secondary?: true
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Button: React.FC<TButton> = ({
   children,
-  variant = 'default',
+  secondary,
+  variant = secondary ? 'secondary' : 'default',
   href,
   disabled,
   prepend,
   append,
-  fluid,
   type,
   className,
   ...otherProps
@@ -31,8 +31,6 @@ const Button: React.FC<TButton> = ({
   const classes = cn(
     {
       'button inline-flex items-center px-2 h-10 justify-center rounded-2xl transition duration-300 focus:outline-none active:shadow-none focus:shadow-btnOutline max-w-full leading-none': true,
-      'w-full': fluid,
-      'w-60': !fluid,
       'bg-button hover:bg-button-hover active:bg-blue-pressed text-white':
         variant === 'default' && !disabled,
       'bg-button-background text-button-text cursor-not-allowed':

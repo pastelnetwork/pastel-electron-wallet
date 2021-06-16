@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Modal from './modal'
+import { TitleModal } from '../../common/components/Modal'
 import { InputExportKey } from 'common/components/Inputs'
 import Button from '../../common/components/Button/Button'
 import DownloadWhite from '../../common/assets/icons/ico-download-white.svg'
@@ -44,7 +44,7 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
   const [publicKey, setPublicKey] = useState('')
   const [privateKey, setPrivateKey] = useState('')
   return (
-    <Modal
+    <TitleModal
       isOpen={isOpen}
       handleClose={() => handleClose()}
       size='598px'
@@ -77,7 +77,7 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
           </div>
         </Button>
       </div>
-    </Modal>
+    </TitleModal>
   )
 }
 

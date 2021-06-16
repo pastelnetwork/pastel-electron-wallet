@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Modal from './modal'
+import { TitleModal } from '../../common/components/Modal'
 import Table from '../../common/components/Table'
 import * as momentRange from 'moment-range'
 import { OnSelectCallbackParam } from 'react-daterange-picker'
@@ -24,7 +24,9 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   isOpen,
   handleClose,
 }) => {
-  const [selectedOption, setSelectedOption] = useState(1)
+  const [selectedOption, setSelectedOption] = useState<
+    'all' | 'received' | 'sent' | 'in progress'
+  >('all')
   const [dates, setDates] = useState<momentRange.DateRange>()
   const [address, setAddress] = useState<TOption | null>({
     label: 'All',
@@ -39,7 +41,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
     setDates(dates as momentRange.DateRange)
   }
   return (
-    <Modal
+    <TitleModal
       isOpen={isOpen}
       handleClose={() => handleClose()}
       size='7xl'
@@ -75,20 +77,20 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
           </div>
           <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
             <Radio
-              isChecked={selectedOption === 1}
-              clickHandler={() => setSelectedOption(1)}
+              isChecked={selectedOption === 'all'}
+              clickHandler={() => setSelectedOption('all')}
             >
               All
             </Radio>
             <Radio
-              isChecked={selectedOption === 2}
-              clickHandler={() => setSelectedOption(2)}
+              isChecked={selectedOption === 'received'}
+              clickHandler={() => setSelectedOption('received')}
             >
               Received
             </Radio>
             <Radio
-              isChecked={selectedOption === 3}
-              clickHandler={() => setSelectedOption(3)}
+              isChecked={selectedOption === 'sent'}
+              clickHandler={() => setSelectedOption('sent')}
             >
               Sent
             </Radio>
@@ -103,7 +105,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
           />
         </div>
       </div>
-    </Modal>
+    </TitleModal>
   )
 }
 

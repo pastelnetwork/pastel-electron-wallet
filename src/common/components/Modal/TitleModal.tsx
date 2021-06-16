@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react'
 import ReactModal from 'react-modal'
 import cn from 'classnames'
 // Components
-import ButtonClose from '../../../common/components/button-close'
+import { ButtonClose } from '../../../common/components/Buttons'
 
 ReactModal.setAppElement('#root')
 
@@ -14,7 +14,7 @@ export type TModalProps = {
   title?: string
 }
 
-const Modal: React.FC<TModalProps> = ({
+const TitleModal: React.FC<TModalProps> = ({
   isOpen,
   handleClose,
   size,
@@ -43,4 +43,4 @@ const Modal: React.FC<TModalProps> = ({
   )
 }
 
-export default Modal
+export default TitleModal

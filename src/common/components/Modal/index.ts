@@ -1,3 +1,4 @@
 import Modal from './Modal'
+import TitleModal from './TitleModal'
 
-export default Modal
+export { Modal, TitleModal }

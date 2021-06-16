@@ -41,7 +41,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
     top: {
       width: '10px',
       top: 'calc(150% - 8px)',
-      left: 'calc(50%)',
+      left: '50%',
       marginLeft: '-5px',
     },
     bottom: {
@@ -66,25 +66,25 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       marginTop: '-5px',
     },
   }
-  let style: CSS.Properties, astyle: CSS.Properties
+  let style: CSS.Properties, arrowStyle: CSS.Properties
   if (type === 'top') {
     style = styles.top
-    astyle = arrow_styles.bottom
+    arrowStyle = arrow_styles.bottom
   } else if (type === 'bottom') {
     style = styles.bottom
-    astyle = arrow_styles.top
+    arrowStyle = arrow_styles.top
   } else if (type === 'right') {
     style = styles.right
-    astyle = arrow_styles.left
+    arrowStyle = arrow_styles.left
   } else {
     style = styles.left
-    astyle = arrow_styles.right
+    arrowStyle = arrow_styles.right
   }
   return (
-    <div className='relative inline-block tooltip z-50'>
+    <div className='relative tooltip'>
       {children}
       <img
-        style={astyle}
+        style={arrowStyle}
         className='absolute tooltiparrow invisible'
         src={ArrowToolTip}
       />

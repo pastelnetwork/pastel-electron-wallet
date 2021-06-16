@@ -1,18 +1,11 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
-import cx from 'classnames'
-// Components
-import Modal from './modal'
-import Checkbox from '../../common/components/Checkbox/Checkbox'
+import { TitleModal } from '../../common/components/Modal'
 import Button from '../../common/components/Button/Button'
-import pasteIcon from '../../common/assets/icons/ico-paste.svg'
-import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
-import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
 import infoIcon from '../../common/assets/icons/ico-info.svg'
 import addIcon from '../../common/assets/icons/ico-add.svg'
-import add2Icon from '../../common/assets/icons/ico-add-2.svg'
 import checkIcon from '../../common/assets/icons/ico-check.svg'
 import Select from '../../common/components/Select/Select'
+import PaymentSource from './PaymentSource'
 
 type IDataType = {
   hash: string
@@ -24,24 +17,20 @@ export type PaymentModalProps = {
   paymentSources: Array<IDataType>
 }
 
-const Triangle = styled.div`
-  width: 0;
-  height: 0;
-  border-left: 16px solid transparent;
-  border-right: 16px solid transparent;
-  border-top: 16px solid white;
-  filter: drop-shadow(1px 1px 1px #e5e7eb);
-`
-
 const PaymentModal: React.FC<PaymentModalProps> = ({
   isOpen,
   handleClose,
   paymentSources,
-}) => {
+}): JSX.Element => {
   const [balance, setBalance] = useState<number>(12)
   const [psl, setPSL] = useState<number>(22000)
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='4xl' title='Payment'>
+    <TitleModal
+      isOpen={isOpen}
+      handleClose={handleClose}
+      size='4xl'
+      title='Payment'
+    >
       <div className='flex'>
         <div className='w-1/3'>
           {/* <div className='h-10 shadow-input pl-4 items-center flex mr-6'>
@@ -131,112 +120,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
           </div>
         </Button>
       </div>
-    </Modal>
-  )
-}
-
-export interface CommentModalProps {
-  isOpen: boolean
-  onClose: () => void
-}
-
-const CommentModal = ({ isOpen, onClose }: CommentModalProps) => {
-  const [tab, setTab] = useState('Comments')
-  return (
-    <div
-      className={cx(
-        !isOpen && 'hidden',
-        'ml-2 w-371px absolute bottom-12 transform -translate-x-1/2 border border-gray-f3 rounded bg-white shadow-textbox',
-      )}
-    >
-      <div className='px-4 flex text-gray-a0 border-b border-gray-f3 justify-between'>
-        <div className='flex'>
-          {['Comments', 'Notes'].map((each, index) => (
-            <div
-              key={index}
-              onClick={() => setTab(each)}
-              className={cx(
-                'px-4 py-2 cursor-pointer',
-                each == tab && 'text-gray-71 border-b border-gray-71',
-              )}
-            >
-              {each}
-            </div>
-          ))}
-        </div>
-        <img src={infoIcon} />
-      </div>
-      <div className='px-7 pt-4'>
-        <textarea
-          placeholder='Type something ...'
-          className='resize-none w-full focus:outline-none'
-        />
-      </div>
-      <div className='flex justify-end px-7'>
-        <div
-          onClick={() => onClose()}
-          className='text-blue-3f hover:text-blue-600 px-1 pb-4 cursor-pointer'
-        >
-          Save
-        </div>
-      </div>
-      <div>
-        <Triangle className='absolute bottom-0 left-1/2 transform -translate-x-2/4 translate-y-full' />
-      </div>
-    </div>
-  )
-}
-
-const PaymentSource = ({ hash }: IDataType) => {
-  const [isCommentOpen, setCommentOpen] = useState(false)
-  const [value, setValue] = useState(15000)
-  return (
-    <tr className='h-67px border-b border-line-DEFAULT mr-4 justify-between'>
-      <td className='whitespace-nowrap'>
-        <div className='flex items-center'>
-          <Checkbox
-            isChecked={false}
-            clickHandler={() => {
-              console.log('clicked')
-            }}
-          ></Checkbox>
-          <span className='text-blue-3f ml-5'>{hash}</span>
-          <img className='ml-6' src={pencilIcon} />
-          <img className='ml-18px' src={passEyeIcon} />
-          <img className='ml-18px' src={pasteIcon} />
-        </div>
-      </td>
-      <td className='w-24'>
-        <div className='relative'>
-          <img
-            className='cursor-pointer'
-            onClick={() => setCommentOpen(true)}
-            src={add2Icon}
-          />
-          <CommentModal
-            isOpen={isCommentOpen}
-            onClose={() => setCommentOpen(false)}
-          />
-        </div>
-      </td>
-      <td>
-        <div className='flex justify-end pr-4'>
-          <Select
-            className='text-gray-2d w-28'
-            autocomplete={true}
-            min={10000}
-            max={20000}
-            step={1000}
-            value={value}
-            onChange={(value: number | null) => {
-              if (value) {
-                setValue(value)
-              }
-            }}
-          />
-        </div>
-      </td>
-    </tr>
+    </TitleModal>
   )
 }
 

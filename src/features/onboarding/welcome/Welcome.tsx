@@ -9,7 +9,7 @@ import { colors } from '../../../common/theme/colors'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import * as Styles from './Welcome.styles'
 
-const OnboardingWelcome: React.FC = () => {
+const OnboardingWelcome = (): JSX.Element => {
   return (
     <>
       <Typography variant='h1' weight={800}>
@@ -25,10 +25,12 @@ const OnboardingWelcome: React.FC = () => {
         <Styles.Image src={image} alt='astro boy' />
       </Styles.ImageWrapper>
       <Link to={ROUTES.SIGN_UP}>
-        <Button>Register account</Button>
+        <Button className='w-60'>Register account</Button>
       </Link>
       <Styles.Spacing />
-      <Button variant='transparent'>Take a tour first</Button>
+      <Button variant='transparent' className='w-60'>
+        Take a tour first
+      </Button>
       <Styles.Spacing />
       <Styles.FooterText>
         Already have account?
