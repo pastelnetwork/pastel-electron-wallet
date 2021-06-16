@@ -288,7 +288,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
           color: '#176987',
         },
         smooth: true,
-        symbol: false,
+        showSymbol: false,
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {
@@ -392,6 +392,7 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
         sampling: 'lttb',
         data: dataY,
         smooth: true,
+        showSymbol: false,
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
             {

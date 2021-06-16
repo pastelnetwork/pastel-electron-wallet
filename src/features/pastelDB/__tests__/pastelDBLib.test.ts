@@ -1,4 +1,7 @@
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
+import fs from 'fs'
+import { remote } from 'electron'
+import log from 'electron-log'
 
 import {
   createBlock,
@@ -1400,6 +1403,43 @@ describe('managePastelDatabase', () => {
       expect(e.message).toEqual(
         'pastelDB getTransactionsDataFromDBByPeriod error: rawtransactionError is invalid table name',
       )
+    }
+  })
+
+  test('RemoveSqliteDBFile should remove sqlite file correctly', async () => {
+    // Arrange
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink').mockRejectedValue(null)
+    const remoteSpy = jest
+      .spyOn(remote.app, 'getPath')
+      .mockImplementation(() => '')
+
+    // Act
+    await pastelDBLib.RemoveSqliteDBFile()
+
+    // Assert
+    expect(remoteSpy).toBeCalledTimes(1)
+    expect(unlinkSpy).toBeCalledTimes(1)
+  })
+
+  test('RemoveSqliteDBFile should throw an error', async () => {
+    // Arrange
+    const mError = new Error('file not found')
+    const unlinkSpy = jest
+      .spyOn(fs.promises, 'unlink')
+      .mockRejectedValue(mError)
+    const remoteSpy = jest
+      .spyOn(remote.app, 'getPath')
+      .mockImplementation(() => 'errorPath')
+    const logSpy = jest.spyOn(log, 'error')
+
+    // Act
+    try {
+      await pastelDBLib.RemoveSqliteDBFile()
+      // Assert
+      expect(remoteSpy).toBeCalledTimes(1)
+      expect(unlinkSpy).toBeCalledTimes(1)
+    } catch (error) {
+      expect(logSpy).toBeCalledWith('file not round')
     }
   })
 })
