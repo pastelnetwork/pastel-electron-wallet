@@ -96,7 +96,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
             </Radio>
           </div>
         </div>
-        <div className='h-409px overflow-y-auto scrollbar mt-3 pr-2'>
+        <div className='h-409px overflow-y-auto mt-3 pr-2'>
           <Table
             columns={Columns}
             data={transactionHistory}

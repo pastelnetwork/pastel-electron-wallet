@@ -5,6 +5,7 @@ import cn from 'classnames'
 import * as momentRange from 'moment-range'
 import caretDownIcon from '../../assets/icons/ico-caret-down.svg'
 import calendarIcon from '../../assets/icons/ico-calendar.svg'
+import './DateRangeSelector.css'
 
 export type DateRangeSelectorProp = {
   value: momentRange.DateRange | undefined

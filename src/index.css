@@ -84,12 +84,6 @@
 }
 
 @tailwind utilities;
-@layer components {
-  /* It's used to wrap main routes  */
-  .DateRangePicker__Month {
-    @apply shadow-input;
-  }
-}
 
 @layer utilities {
   .flex-center {
@@ -185,11 +179,6 @@ body,
 }
 .custom-scroll .simplebar-content-wrapper .simplebar-content {
   height: 100% !important;
-}
-
-.DateRangePicker__Month {
-  margin: 0 !important;
-  padding: 0 10px;
 }
 
 .react-tabs {
@@ -326,8 +315,4 @@ input[type='number']::-webkit-outer-spin-button {
 
 .widget-ratings {
   display: flex !important;
-}
-
-.ReactModal__Overlay {
-  z-index: 1000;
 }

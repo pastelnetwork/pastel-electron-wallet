@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react'
 import ReactModal from 'react-modal'
 import cn from 'classnames'
+import './Modal.css'
 // Components
 import { ButtonClose } from '../../../common/components/Buttons'
 
