@@ -1,6 +1,6 @@
 import React /*, { CSSProperties }*/ from 'react'
 import cn from 'classnames'
-import { chatMsgDatetime } from '../../common/utils/format'
+import { formatTime } from '../../common/utils/format'
 import { ChatMessageProps } from './ChatMessage'
 import styles from './Chat.module.css'
 
@@ -19,7 +19,9 @@ export const ChatItem = (props: ChatItemProps): JSX.Element => {
     }
   }
 
-  const lastMessage = props ? props.messages[props.messages.length - 1] : null
+  const lastMessage = props.messages.length
+    ? props.messages[props.messages.length - 1]
+    : null
 
   return (
     <div
@@ -42,7 +44,7 @@ export const ChatItem = (props: ChatItemProps): JSX.Element => {
       </div>
       <div className={styles.chatItemContent}>
         <div className={styles.chatItemTime}>
-          {lastMessage ? chatMsgDatetime(lastMessage.date) : ''}
+          {lastMessage ? formatTime(lastMessage.date) : ''}
         </div>
         <div className={styles.chatItemTitle}>{props.title}</div>
         <div className={styles.chatItemText}>

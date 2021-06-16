@@ -4,12 +4,7 @@ import cn from 'classnames'
 import routes from '../../common/constants/routes.json'
 import { useHistory } from 'react-router-dom'
 import { ChatItem, ChatItemProps } from './ChatItem'
-import {
-  ChatMessage,
-  ChatMessageProps,
-  DIR_RECV,
-  DIR_SENT,
-} from './ChatMessage'
+import { ChatMessage } from './ChatMessage'
 import editIcon from '../../common/assets/icons/ico-edit.svg'
 import chatMenuIcon from '../../common/assets/icons/ico-chat-menu.svg'
 import msgEmojiIcon from '../../common/assets/icons/ico-chatmsg-emoji.svg'
@@ -19,10 +14,6 @@ import chatCloseIcon from '../../common/assets/icons/ico-close2.svg'
 import styles from './Chat.module.css'
 import { mockChats, curUser } from './mock-data'
 
-export type LocationState = {
-  param: string
-}
-
 export default function Chat(): JSX.Element {
   const [newMsgPlaceholder, setNewMsgPlaceholder] = useState(true)
   const [newMsg, setNewMsg] = useState('')
@@ -31,16 +22,6 @@ export default function Chat(): JSX.Element {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [chats, setChats] = useState<ChatItemProps[]>(mockChats) // DEBUG: init state
-
-  /*
-  const location = useLocation<LocationState>()
-
-  useEffect(() => {
-    if (location.state) {
-      setParam(location.state?.param)
-    }
-  }, [location])
-  */
 
   const endRef = useRef<HTMLDivElement>(null)
   const scroll2End = () => {
@@ -59,29 +40,15 @@ export default function Chat(): JSX.Element {
     setNewMsg(ev.currentTarget.value)
   }
 
-  /**
-   * Click by active chat menu button "..."
-   */
-  const onActiveChatMenu = () => {
-    // TODO:
+  const toggleActiveChatMenu = () => {
     console.log('show/hide active chat menu')
   }
 
-  /**
-   * Click by edit button (pencil icon)
-   */
   const onChatEdit = () => {
-    // TODO:
     console.log('edit chat')
   }
 
-  /**
-   * Click by chat in chats' list (select another chat)
-   * @param idx
-   */
   const onSelectChat = (id: number) => {
-    // TODO:
-
     const active = chats.find(item => item.id === id)
     if (active) {
       setActiveChatId(id)
@@ -90,40 +57,27 @@ export default function Chat(): JSX.Element {
   }
 
   const onSendMsg = () => {
-    const val = newMsg.replace(/\s{1,}$/, '')
+    const val = newMsg.replace(/\s{1,}$/, '') // strip ending whitespaces
     if (val.length === 0) {
+      // don't send empty messages
       setNewMsg('')
       return
     }
-    // TODO:
 
-    // DEBUG
-    const tmp: ChatMessageProps = {
-      text: newMsg,
-      sender: curUser,
-      date: new Date(),
-      unread: true,
-      direction: DIR_SENT,
-    }
+    // send message code here
 
-    if (activeChat) {
-      activeChat.messages.push(tmp)
-    }
     setNewMsg('')
   }
 
   const onEmoji = () => {
-    // TODO:
     console.log('show/hide emoji panel')
   }
 
   const onAttach = () => {
-    // TODO:
     console.log('show/hide attachment panel')
   }
 
   const saveAttachment = (url: string) => {
-    // TODO:
     console.log('save attached file', url)
   }
 
@@ -134,7 +88,7 @@ export default function Chat(): JSX.Element {
   }
 
   const chatAvatar = (chat: ChatItemProps): string => {
-    const recv = chat.messages.filter(item => item.direction === DIR_RECV)
+    const recv = chat.messages.filter(item => item.sender.id !== curUser.id)
     if (recv.length > 0) {
       return recv[recv.length - 1].sender.avatar
     }
@@ -198,7 +152,7 @@ export default function Chat(): JSX.Element {
               {activeChat ? activeChat.title : ''}
             </div>
 
-            <div className={styles.chatMenu} onClick={onActiveChatMenu}>
+            <div className={styles.chatMenu} onClick={toggleActiveChatMenu}>
               <img src={chatMenuIcon} />
             </div>
 
@@ -212,8 +166,10 @@ export default function Chat(): JSX.Element {
               activeChat.messages.map((msg, i) => {
                 const props = {
                   ...msg,
+                  isCurUserMessage: msg.sender.id === curUser.id,
                   showAvatar:
-                    !i || activeChat.messages[i - 1].sender !== msg.sender,
+                    !i ||
+                    activeChat.messages[i - 1].sender.id !== msg.sender.id,
                 }
                 return (
                   <ChatMessage
@@ -232,9 +188,7 @@ export default function Chat(): JSX.Element {
             </div>
 
             <div className={styles.chatNewMsg}>
-              <label className={newMsgPlaceholder ? '' : styles.hidden}>
-                Write your message here...
-              </label>
+              {newMsgPlaceholder && <label>Write your message here...</label>}
               <textarea
                 onFocus={onNewMsgFocus}
                 onBlur={onNewMsgBlur}

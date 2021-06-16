@@ -3,10 +3,6 @@
   overflow: hidden;
 }
 
-.hidden {
-  display: none !important;
-}
-
 .colLeft {
   width: 32%;
   min-width: 315px;

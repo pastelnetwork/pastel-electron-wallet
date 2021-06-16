@@ -1,18 +1,21 @@
 import React /*, { CSSProperties }*/ from 'react'
-import { chatMsgDatetime } from '../../common/utils/format'
+import { formatTime } from '../../common/utils/format'
 import cn from 'classnames'
 import styles from './Chat.module.css'
 
-export const DIR_SENT = 0
-export const DIR_RECV = 1
+export interface ChatUser {
+  id: number
+  name: string
+  avatar: string
+  isOnline: boolean
+}
 
 export interface ChatMessageProps {
   text?: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  sender: any
+  sender: ChatUser
   date: Date
   unread: boolean
-  direction: number // incoming (1) / outcoming (0)
+  isCurUserMessage?: boolean
   showAvatar?: boolean
   attachments?: string[] //images only? any files?
   onSaveAttachment?: (url: string) => void
@@ -32,7 +35,10 @@ export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
 
   return (
     <div
-      className={cn(styles.chatMessage, props.direction ? '' : styles.msgOut)}
+      className={cn(
+        styles.chatMessage,
+        props.isCurUserMessage ? styles.msgOut : '',
+      )}
     >
       <div className={cn(styles.userAvatar, styles.userAvatarSm)}>
         {props.showAvatar && (
@@ -57,9 +63,7 @@ export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
           </div>
         )}
 
-        <div className={styles.chatMessageTime}>
-          {chatMsgDatetime(props.date)}
-        </div>
+        <div className={styles.chatMessageTime}>{formatTime(props.date)}</div>
       </div>
     </div>
   )
