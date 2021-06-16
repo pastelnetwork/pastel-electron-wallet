@@ -17,5 +17,6 @@
   "NFT": "/nft",
   "PROFILE": "/profile",
   "MEMBERS_PROFILE": "/member_profile",
-  "MARKET": "/market"
+  "MARKET": "/market",
+  "PORTFOLIO_DETAIL": "/portfolio_detail"
 }

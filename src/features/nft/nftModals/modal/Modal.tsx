@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react'
 import ReactModal from 'react-modal'
 import cn from 'classnames'
-// Components
-import ButtonClose from 'common/components/button-close'
+import ButtonClose from 'common/components/Buttons/CloseButton'
 import iconInfo from 'common/assets/icons/ico-info.svg'
 
 ReactModal.setAppElement('#root')
@@ -38,11 +37,11 @@ const Modal: React.FC<TModal> = ({
       onRequestClose={handleClose}
     >
       <div className='flex justify-between px-10 pb-6'>
-        <div className='text-h2 font-medium whitespace-pre leading-tight flex'>
+        <div className='text-h2 mt-2 font-bold whitespace-pre leading-tight flex items-end'>
           {title}
-          {infoIcon ? <img src={iconInfo} className='ml-14px mt-8px' /> : ''}
+          {infoIcon ? <img src={iconInfo} className='ml-14px mb-6px' /> : ''}
         </div>
-        <ButtonClose onClick={handleClose} />
+        <ButtonClose className='-mt-4 -mr-4' onClick={handleClose} />
       </div>
       <div className='px-10'>{children}</div>
     </ReactModal>

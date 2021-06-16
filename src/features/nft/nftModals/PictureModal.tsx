@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import ReactModal from 'react-modal'
 import Slider from './slider'
-import img_astronaut from 'common/assets/images/img-astronaut.svg'
+import img_astronaut from 'common/assets/images/img-astronaut.png'
 import ico_minus from 'common/assets/icons/ico-minus.svg'
 import ico_plus from 'common/assets/icons/ico-plus.svg'
-import ButtonClose from 'common/components/button-close'
+import ButtonClose from 'common/components/Buttons/CloseButton'
 
 export type TPictureModal = {
   isOpen: boolean

@@ -25,6 +25,7 @@ const CopiesDetailsModal: React.FC<TCopiesDetailsModal> = ({
           data={tableData}
           fixedHeader={true}
           bodyClassName='h-401px'
+          trClassName='border-b border-gray-f2'
         />
       </div>
     </Modal>
@@ -43,51 +44,51 @@ const Columns = [
 
 const tableData = [
   {
-    'Copy ID': '1',
+    'Copy ID': 1,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 2,
     Owner: 'Superhumanartist',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 3,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 4,
     Owner: 'Snikers288',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 5,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 6,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 7,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 8,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 9,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 10,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 11,
     Owner: 'Banksy123',
   },
   {
-    'Copy ID': '1',
+    'Copy ID': 12,
     Owner: 'Banksy123',
   },
 ]

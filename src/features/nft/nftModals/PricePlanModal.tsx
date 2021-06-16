@@ -4,7 +4,8 @@ import Table, { TRow } from './table'
 import Slider from 'common/components/Slider/Slider'
 import pencilIcon from 'common/assets/icons/ico-pencil.svg'
 import astronautIcon from 'common/assets/icons/ico-astronaut.png'
-import Button from 'common/components/Button/Button'
+import Button from 'common/components/Buttons/Button'
+import cn from 'classnames'
 
 export type TPricePlanModal = {
   isOpen: boolean
@@ -16,6 +17,10 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
     null,
   )
 
+  const onClose = () => {
+    setCellEdit(null)
+    handleClose()
+  }
   const Columns = [
     {
       name: 'Copies',
@@ -64,7 +69,7 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
         <div className='text-gray-a0 flex justify-between rounded shadow-2px h-40px text-lg py-1 px-4 w-200px'>
           <input
             value={value + 'k'}
-            className='outline-none border-none flex-grow min-w-0 text-gray-71'
+            className='outline-none border-none flex-grow min-w-0 text-gray-2d'
           />
           <span>PSL</span>
         </div>
@@ -75,13 +80,13 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onClose}
       size='874px'
       title={'“Diamonds in the sky”: copies buy-it-now price plan:'}
       infoIcon={true}
     >
-      <div>
-        <div className='text-lg text-gray-77 pb-5'>
+      <div className='-mt-18px'>
+        <div className='text-lg text-gray-77 pb-3'>
           For every additional copy sold, the price will be changed according to
           your desired settings.
         </div>
@@ -90,7 +95,10 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
           data={tableData}
           fixedHeader={true}
           bodyClassName='h-401px'
-          trClassName='border-b border-gray-f2 h-100px'
+          trClassName={cn(
+            'border-b border-gray-f2',
+            cellEdit ? 'h-104px' : 'h-82px',
+          )}
         />
         {cellEdit && (
           <div className='mt-8 flex justify-between'>

@@ -23,7 +23,7 @@ const ClaimTicketModal: React.FC<TClaimTicketModal> = ({
 
   const Segment = ({ title, value }: { title: string; value: string }) => (
     <div className='w-1/2'>
-      <div className='mt-22px font-medium leading-tight'>{title}</div>
+      <div className='font-bold leading-tight'>{title}</div>
       <div className='mt-10px text-gray-71'>{value}</div>
     </div>
   )
@@ -44,10 +44,10 @@ const ClaimTicketModal: React.FC<TClaimTicketModal> = ({
           <Segment title='Date' value={data.Date} />
         </div>
         <div>
-          <div className='font-medium text-xl pb-3 pt-10'>
+          <div className='font-bold text-xl pb-3 pt-30px'>
             Make a photo of Claim details
           </div>
-          <div className='text-lg text-gray-71'>{data.detail}</div>
+          <div className='text-lg text-gray-4a'>{data.detail}</div>
         </div>
         <div>
           <div className='mt-30px text-gray-71 leading-tight'>

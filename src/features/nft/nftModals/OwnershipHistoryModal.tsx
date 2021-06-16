@@ -34,18 +34,20 @@ const OwnershipHistoryModal: React.FC<TOwnershipHistoryModal> = ({
 const Columns = [
   {
     name: 'Deal',
-    className: 'text-gray-4a font-bold pl-8',
+    className: 'pl-8',
+    tdClassName: 'text-gray-71 font-medium',
   },
   {
     name: 'Date',
+    tdClassName: 'text-gray-a0 font-medium',
   },
   {
     name: 'Owner',
-    className: 'text-gray-4a',
+    tdClassName: 'text-gray-4a font-medium',
   },
   {
     name: 'Fee paid',
-    className: 'text-gray-4a',
+    tdClassName: 'text-gray-4a font-medium',
   },
 ]
 

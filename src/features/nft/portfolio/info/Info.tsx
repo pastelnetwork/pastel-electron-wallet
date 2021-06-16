@@ -13,6 +13,12 @@ import OutlineButton from './Button'
 import Row from './Row'
 import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
+import Modal3 from 'features/nft/nftModals/TransferAuthorshipModal'
+import Modal4 from 'features/nft/nftModals/AuthorshipClaimModal'
+import Modal5 from 'features/nft/nftModals/ClaimTicketModal'
+import Modal6 from 'features/nft/nftModals/CopiesDetailsModal'
+import Modal7 from 'features/nft/nftModals/PricePlanModal'
+import Modal8 from 'features/nft/nftModals/OwnershipHistoryModal'
 
 type TInfoProps = {
   nft: TNFT
@@ -24,6 +30,12 @@ const pinkButtonClass =
 
 export default function Info({ nft }: TInfoProps): JSX.Element {
   const [liked, toggleLiked] = useToggle(nft.liked)
+  const [isShowModal3, toggleShowModal3] = useToggle(false)
+  const [isShowModal4, toggleShowModal4] = useToggle(false)
+  const [isShowModal5, toggleShowModal5] = useToggle(false)
+  const [isShowModal6, toggleShowModal6] = useToggle(false)
+  const [isShowModal7, toggleShowModal7] = useToggle(false)
+  const [isShowModal8, toggleShowModal8] = useToggle(false)
 
   return (
     <div className='flex-shrink-0 w-1/3 md:w-auto'>
@@ -55,6 +67,16 @@ export default function Info({ nft }: TInfoProps): JSX.Element {
             {nft.bids} PSL
           </Row>
           <Button className='w-full font-extrabold'>Bid now</Button>
+          <div className='flex flex-row w-120px space-x-3'>
+            <Button onClick={toggleShowModal3}>Modal3</Button>
+            <Button onClick={toggleShowModal4}>Modal4</Button>
+            <Button onClick={toggleShowModal5}>Modal5</Button>
+          </div>
+          <div className='flex flex-row w-120px space-x-3'>
+            <Button onClick={toggleShowModal6}>Modal6</Button>
+            <Button onClick={toggleShowModal7}>Modal7</Button>
+            <Button onClick={toggleShowModal8}>Modal8</Button>
+          </div>
         </div>
         <hr />
         <div className='space-y-3'>
@@ -98,6 +120,12 @@ export default function Info({ nft }: TInfoProps): JSX.Element {
           </Row>
         </div>
       </div>
+      <Modal3 isOpen={isShowModal3} handleClose={toggleShowModal3} />
+      <Modal4 isOpen={isShowModal4} handleClose={toggleShowModal4} />
+      <Modal5 isOpen={isShowModal5} handleClose={toggleShowModal5} />
+      <Modal6 isOpen={isShowModal6} handleClose={toggleShowModal6} />
+      <Modal7 isOpen={isShowModal7} handleClose={toggleShowModal7} />
+      <Modal8 isOpen={isShowModal8} handleClose={toggleShowModal8} />
     </div>
   )
 }

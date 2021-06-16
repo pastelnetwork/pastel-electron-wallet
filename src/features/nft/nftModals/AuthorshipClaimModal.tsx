@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Modal from './modal'
-import Button from 'common/components/Button/Button'
+import Button from 'common/components/Buttons/Button'
 
 export type TAuthorshipClaimModal = {
   isOpen: boolean
@@ -28,7 +28,7 @@ const AuthorshipClaimModal: React.FC<TAuthorshipClaimModal> = ({
       <div>
         <div className='flex space-x-50px'>
           <div className='w-1/2'>
-            <div className='mt-22px text-gray-71 leading-tight'>NFT Name</div>
+            <div className='mt-22px text-gray-71 leading-tight'>NFT name</div>
             <div className='mt-10px'>{data.nftName}</div>
           </div>
           <div className='w-1/2'>
@@ -40,7 +40,7 @@ const AuthorshipClaimModal: React.FC<TAuthorshipClaimModal> = ({
         </div>
         <div>
           <div className='mt-30px text-gray-71 leading-tight'>Claim detils</div>
-          <div className='mt-10px h-180px border rounded border-gray-e7 flex items-center relative'>
+          <div className='mt-10px h-173px border rounded border-gray-e7 flex items-center relative'>
             <div className='absolute bottom-2 right-2 text-gray-a0 text-sm'>
               {200 - text.length}/200
             </div>

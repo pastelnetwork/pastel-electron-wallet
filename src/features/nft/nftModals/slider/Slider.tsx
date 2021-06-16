@@ -17,13 +17,17 @@ export default function Slider({ value, setValue }: TSlider): JSX.Element {
       renderTrack={({ props, children }) => (
         <div
           {...props}
-          className='bg-white bg-opacity-20 w-full rounded-full h-1'
+          className='bg-white bg-opacity-20 w-full rounded-full h-1 relative'
         >
           {children}
+          <div
+            className='absolute bg-white h-1 rounded-full'
+            style={{ width: `${value}%` }}
+          />
         </div>
       )}
       renderThumb={({ props }) => (
-        <div {...props} className='bg-white rounded-full h-3 w-3'>
+        <div {...props} className='bg-white rounded-full h-3 w-3 outline-none'>
           <div className='absolute -top-9 flex flex-col items-center w-48px transform -translate-x-18px'>
             <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white'>
               {props['aria-valuenow']}%
