@@ -13,7 +13,7 @@ export type TPictureModal = {
 
 const PictureModal: React.FC<TPictureModal> = ({ isOpen, handleClose }) => {
   const [zoom, setZoom] = useState<number>(42)
-
+  const imageSize = (1382 * zoom) / 100
   return (
     <ReactModal
       isOpen={isOpen}
@@ -24,12 +24,17 @@ const PictureModal: React.FC<TPictureModal> = ({ isOpen, handleClose }) => {
     >
       <ButtonClose
         onClick={handleClose}
-        className='absolute top-0 -right-10 filter brightness-125'
+        className='absolute top-0 -right-10 filter brightness-125 bg-gray-71 bg-opacity-10 z-10'
       />
-      <div className='w-full h-full rounded-3xl overflow-auto'>
+      <div className='w-540px h-540px rounded-3xl overflow-auto'>
         <img
+          className='absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2'
           src={img_astronaut}
-          style={{ width: `${(1382 * zoom) / 100}px` }}
+          style={{
+            width: `${imageSize}px`,
+            height: `${imageSize}px`,
+            maxWidth: 'initial',
+          }}
         />
       </div>
       <div className='absolute bottom-30px left-1/2 rounded-lg transform -translate-x-1/2 w-180px h-34px bg-gray-1a bg-opacity-60 flex items-center'>
