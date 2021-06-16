@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid'
 import fs from 'fs'
 import path from 'path'
+import os from 'os'
+import { remote } from 'electron'
 
 import LoadingOverlay from '../../legacy/components/LoadingOverlay'
 import cstyles from '../../legacy/components/Common.module.css'
@@ -17,7 +19,17 @@ import { openPastelModal } from '../pastelModal'
 import styles from './PastelID.module.css'
 import { createPastelID, fetchPastelIDs } from './pastelIDSlice'
 
-import { locatePastelConfDir } from '../loading'
+const locatePastelConfDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(remote.app.getPath('appData'), 'Pastel')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(remote.app.getPath('home'), '.pastel')
+  }
+
+  return path.join(remote.app.getPath('appData'), 'Pastel')
+}
 
 function passphraseStatusColor(validation: TPasswordStrengthResult) {
   const colors = [cstyles.red, cstyles.yellow, cstyles.yellow, cstyles.green]

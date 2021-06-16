@@ -1,7 +1,5 @@
-import LoadingScreen, { locatePastelConfDir } from './LoadingScreen'
+import LoadingScreen from './LoadingScreen'
 
 export * from './utils'
-
-export { locatePastelConfDir }
 
 export default LoadingScreen
