@@ -102,7 +102,7 @@ export default function Select(props: TSelectProps): JSX.Element {
                 className='w-full h-full flex items-center whitespace-nowrap pl-3.5 pr-7 focus-visible-border'
                 {...getToggleButtonProps()}
               >
-                {label && <span className='text-gray-b0 mr-2'>{label}:</span>}
+                {label && <span className='text-gray-b0 mr-2'>{label}</span>}
                 {selectedItem ? selectedItem.label : placeholder}
               </button>
             )}
