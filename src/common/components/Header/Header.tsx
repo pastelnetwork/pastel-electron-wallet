@@ -149,7 +149,7 @@ export default function Header(): JSX.Element {
           classes='ml-6 lg:ml-22px'
           src={UserIcon}
           background
-          path={routes.PROFILE}
+          path={routes.MY_PROFILE}
         />
       </div>
     </div>

@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
 import Followers from './ProfileFollowers'
+import ico_users from 'common/assets/icons/ico-users.svg'
 
 const cx_tab =
   'text-sm w-fit font-medium pt-1 pb-3 text-gray-b0 border-gray-f3 cursor-pointer'
 const cx_tab_active =
   'text-sm w-fit border-b font-bold pt-1 pb-3 text-gray-33 border-gray-33 cursor-pointer'
 
-const relationCounts = { followers: 235, following: 162, mutual: 73 }
+const relationCounts = { followers: 235, friends: 162, mutual: 73 }
 
-const ProfileRelations = (): JSX.Element => {
+export type TProfileRelations = {
+  isEmpty?: boolean
+}
+
+const ProfileRelations = ({ isEmpty }: TProfileRelations): JSX.Element => {
   const [tab, setTab] = useState('Followers')
 
   return (
-    <div className='w-full xl:w-2/5 flex flex-col flex-grow px-4 xl:pr-0'>
+    <div className='w-full 1200px:w-2/5 flex flex-col flex-grow pr-4 pl-10 1200px:pr-0 1200px:pl-4'>
       <div className='flex justify-between mr-8 bg-gray-f8 z-10 relative'>
         <div className='flex-grow z-10'>
           <div
@@ -24,10 +29,10 @@ const ProfileRelations = (): JSX.Element => {
         </div>
         <div className='flex-grow z-10'>
           <div
-            className={tab == 'Following' ? cx_tab_active : cx_tab}
-            onClick={() => setTab('Following')}
+            className={tab == 'Friends' ? cx_tab_active : cx_tab}
+            onClick={() => setTab('Friends')}
           >
-            Following ({relationCounts.following})
+            Friends ({relationCounts.friends})
           </div>
         </div>
         <div className='flex-grow z-10'>
@@ -40,10 +45,21 @@ const ProfileRelations = (): JSX.Element => {
         </div>
         <div className='absolute left-0 bottom-0 z-0 w-full border-t text-gray-b0' />
       </div>
-      {tab == 'Followers' && <Followers />}
-      {tab == 'Following' && (
+      {tab == 'Followers' &&
+        (isEmpty ? (
+          <div className='bg-gray-e6 opacity-60 opacity mt-4 p-2 flex flex-col text-gray-71 rounded flex-center h-234px'>
+            <img src={ico_users} />
+            <div className='text-gray-71 mt-2'>You have no followers</div>
+            <div className='text-gray-a0 mt-1 whitespace-pre text-center'>
+              {'No one has subscribed to you yet \nbut you can'}
+            </div>
+          </div>
+        ) : (
+          <Followers />
+        ))}
+      {tab == 'friends' && (
         <div className='text-center pt-8'>
-          This is placeholder for Following View.
+          This is placeholder for friends View.
         </div>
       )}
       {tab == 'Mutual' && (
