@@ -1,62 +1,28 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
 import ModalLayout from '../modalLayout/ModalLayout'
-import { ArrowSlim, UploadFile, Info } from 'common/components/Icons'
+import { ArrowSlim, Info } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
 import UploadingCircle from './UploadingCircle'
+import UploadArea from './UploadArea'
 
 type TUploadStepProps = {
   state: TAddNFTState
 }
 
-const imageTypes = {
-  PNG: 'image/png',
-  JPG: 'image/jpeg',
-  GIF: 'image/gif',
-}
-
-const allowedTypeNames = Object.keys(imageTypes)
-const allowedMimeTypes = Object.values(imageTypes)
-
 export default function UploadStep({
-  state: { goBack, goToNextStep },
+  state: { goBack, goToNextStep, setImage, image },
 }: TUploadStepProps): JSX.Element {
   const [file, setFile] = useState<File>()
-  const [error, setError] = useState<string>()
+  const [isReady, setReady] = useState(Boolean(image))
 
-  const selectFile = (file?: File) => {
-    if (!file) {
-      return
+  const submit = () => {
+    if (file) {
+      setImage(URL.createObjectURL(file))
     }
-    if (allowedMimeTypes.includes(file.type)) {
-      setFile(file)
-    } else {
-      setError(`Selected file has unsupported format: ${file.type}`)
-    }
+
+    goToNextStep()
   }
-
-  const onChangeFile = (e: ChangeEvent<HTMLInputElement>) =>
-    selectFile(e.target.files?.[0])
-
-  useEffect(() => {
-    const onDrop = (e: DragEvent) => {
-      e.preventDefault()
-      selectFile(e.dataTransfer?.files[0])
-    }
-    const preventDefault = (e: DragEvent) => e.preventDefault()
-
-    document.addEventListener('drop', onDrop)
-    document.addEventListener('dragover', preventDefault)
-    document.addEventListener('dragend', preventDefault)
-    document.addEventListener('dragleave', preventDefault)
-
-    return () => {
-      document.removeEventListener('drop', onDrop)
-      document.removeEventListener('dragover', preventDefault)
-      document.removeEventListener('dragend', preventDefault)
-      document.removeEventListener('dragleave', preventDefault)
-    }
-  }, [])
 
   return (
     <ModalLayout
@@ -64,22 +30,18 @@ export default function UploadStep({
       titleClass='mb-3'
       subtitle='Description'
       step={2}
+      fixedHeight
       contentClass='pt-2'
       leftColumnContent={
-        file ? (
-          <UploadingCircle file={file} setFile={setFile} />
+        file || isReady ? (
+          <UploadingCircle
+            file={file}
+            setFile={setFile}
+            isReady={isReady}
+            setReady={setReady}
+          />
         ) : (
-          <label className='bg-gray-f4 rounded-md h-full flex-center flex-col text-gray-77 text-xs'>
-            <UploadFile size={22} className='mb-3' />
-            <div className='mb-2'>{allowedTypeNames.join(', ')} Max 100Mb.</div>
-            <div className='text-gray-a0'>
-              Drag or choose your file to upload
-            </div>
-            {error && (
-              <div className='text-error font-medium mt-2 text-md'>{error}</div>
-            )}
-            <input type='file' hidden onChange={onChangeFile} />
-          </label>
+          <UploadArea setFile={setFile} />
         )
       }
       rightColumnWidth={355}
@@ -110,7 +72,11 @@ export default function UploadStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button className='font-extrabold px-6' onClick={goToNextStep}>
+            <Button
+              className='font-extrabold px-6'
+              onClick={submit}
+              disabled={!isReady}
+            >
               Go to Optimization
             </Button>
           </div>

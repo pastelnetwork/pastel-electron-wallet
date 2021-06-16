@@ -22,7 +22,7 @@ const Toggle: React.FC<TToggleProps> = ({
         <div className='relative'>
           <div
             className={cn(
-              'block bg-gray-dd flex items-center',
+              'block bg-gray-dd flex items-center duration-200 transition',
               classNames,
               checked && selectedClass,
             )}
@@ -33,10 +33,10 @@ const Toggle: React.FC<TToggleProps> = ({
           >
             <div
               className={cn(
-                'dot absolute bg-white w-3 h-3 rounded-full',
-                checked ? 'right-1' : 'left-1',
+                'dot absolute bg-white w-3 h-3 rounded-full duration-200 transition left-1',
+                checked && 'transform translate-x-4',
               )}
-            ></div>
+            />
           </div>
         </div>
         <div className='text-sm text-gray-33 ml-3 text-opacity-50 flex items-center'>

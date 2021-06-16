@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import image from 'common/assets/images/mock/add-nft-image.png'
+import tmpImage from 'common/assets/images/mock/add-nft-image.png'
 
 export enum Step {
   upload,
+  afterUpload,
   preview,
   submit,
   approved,
@@ -22,10 +23,11 @@ export type Crop = {
 export type TAddNFTState = {
   step: Step
   stepsCount: number
-  image: string
+  image?: string
   crop?: Crop
   setStep(step: Step): void
   setCrop(crop: Crop): void
+  setImage(image: string): void
   goBack(): void
   goToNextStep(): void
 }
@@ -35,8 +37,9 @@ export type TUseAddNFTProps = {
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
-  const [step, setStep] = useState<Step>(Step.upload)
-  const [crop, setCrop] = useState<Crop>()
+  const [step, setStep] = useState<Step>(Step.approved)
+  const [crop, setCrop] = useState<Crop>({ x: 0, y: 0, width: 0, height: 0 })
+  const [image, setImage] = useState<string>(tmpImage)
 
   return {
     step,
@@ -45,6 +48,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     crop,
     setStep,
     setCrop,
+    setImage,
     goBack() {
       if (step > firstStep) {
         setStep(step - 1)

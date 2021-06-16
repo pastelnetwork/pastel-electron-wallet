@@ -1,0 +1,18 @@
+.scaleControls {
+  width: 165px;
+}
+
+.deleteButton {
+  background: rgba(46, 46, 46, 0.27);
+}
+
+.scaleControls,
+.track {
+  backdrop-filter: blur(55px);
+}
+
+.scaleControls,
+.track,
+.deleteButton:hover {
+  background: rgba(46, 46, 46, 0.55);
+}

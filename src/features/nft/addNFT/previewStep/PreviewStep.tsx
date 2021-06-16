@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
 import ModalLayout from '../modalLayout/ModalLayout'
 import { useChangeableImage, useImagePreview } from './PreviewStep.service'
-import style from './PreviewStep.module.css'
-import { Expand, Crop } from 'common/components/Icons'
+import { Crop } from 'common/components/Icons'
 import Tooltip from '../tooltip'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { useToggle } from 'react-use'
@@ -11,13 +10,17 @@ import Cropping from './Cropping'
 import OptimizationSlider from './OptimizationSlider'
 import { Button } from 'common/components/Buttons'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
+import FullScreenButton from '../fullScreenButton/FullScreenButton'
+import style from './PreviewStep.module.css'
 
 type TPreviewStepProps = {
   state: TAddNFTState
+  image: string
 }
 
 export default function PreviewStep({
-  state: { image: providedImage, goBack, setCrop, goToNextStep },
+  state: { goBack, setCrop, goToNextStep },
+  image: providedImage,
 }: TPreviewStepProps): JSX.Element {
   const { image, onImageChange } = useChangeableImage(providedImage)
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
@@ -60,12 +63,7 @@ export default function PreviewStep({
       step={3}
       leftColumnContent={
         <div className='relative'>
-          <button
-            className={`absolute top-3.5 left-3.5 w-8 h-8 bg-gray-fc text-gray-77 flex-center rounded-full ${style.fullscreenButton}`}
-            onClick={toggleFullScreen}
-          >
-            <Expand size={13} />
-          </button>
+          <FullScreenButton onClick={toggleFullScreen} />
           <Tooltip text='Crop thumbnail'>
             {ref => (
               <button

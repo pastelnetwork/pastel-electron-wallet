@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import style from './UploadCircle.module.css'
 import Circle, {
   getStrokeDashOffsetForPercent,
@@ -6,8 +6,10 @@ import Circle, {
 import { UploadFile, Checkmark } from 'common/components/Icons'
 
 type TUploadingCircleProps = {
-  file: File
+  file?: File
   setFile(file: undefined): void
+  isReady: boolean
+  setReady(ready: boolean): void
 }
 
 const circleRadius = 50
@@ -15,13 +17,19 @@ const circleBorderWidth = 3
 
 export default function UploadingCircle({
   setFile,
+  isReady,
+  setReady,
 }: TUploadingCircleProps): JSX.Element {
   const circleRef = useRef<SVGCircleElement>(null)
   const displayPercentRef = useRef<HTMLDivElement>(null)
-  const [isReady, setReady] = useState(false)
 
+  // fake uploading progress animation
   useEffect(() => {
-    const timeToUpload = 10000
+    if (isReady) {
+      return
+    }
+
+    const timeToUpload = 5000
     const uploadTime = Date.now() + timeToUpload
     const interval = setInterval(() => {
       const uploadedPercent = Math.min(
@@ -54,7 +62,9 @@ export default function UploadingCircle({
     return () => {
       clearInterval(interval)
     }
-  }, [])
+  }, [isReady])
+
+  const initialPercent = isReady ? 100 : 0
 
   return (
     <div
@@ -70,7 +80,7 @@ export default function UploadingCircle({
             className='text-blue-3f'
             radius={circleRadius}
             strokeWidth={circleBorderWidth}
-            percent={0}
+            percent={initialPercent}
           />
         </svg>
         <div className='absolute inset-0 flex-center flex-col'>
@@ -83,17 +93,19 @@ export default function UploadingCircle({
             File name
           </div>
           <div ref={displayPercentRef} className='text-sm'>
-            0%
+            {initialPercent}%
           </div>
         </div>
       </div>
-      <button
-        type='button'
-        className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0'
-        onClick={() => setFile(undefined)}
-      >
-        Cancel
-      </button>
+      {!isReady && (
+        <button
+          type='button'
+          className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0'
+          onClick={() => setFile(undefined)}
+        >
+          Cancel
+        </button>
+      )}
     </div>
   )
 }
