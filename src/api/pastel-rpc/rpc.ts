@@ -35,7 +35,7 @@ export async function rpc<T>(
           err.response?.data,
         )}. Status code: ${JSON.stringify(err.response?.status)}`,
       )
-      throw new Error(`api/pastel-rpc server error: ${err.response?.message}`)
+      throw new Error(`api/pastel-rpc server error: ${err.message}`)
     }
 
     if (err.request) {
@@ -45,9 +45,7 @@ export async function rpc<T>(
           err.request,
         )}.`,
       )
-      throw new Error(
-        `api/pastel-rpc no response error: ${err.request?.message}`,
-      )
+      throw new Error(`api/pastel-rpc no response error: ${err.request}`)
     }
 
     log.error(

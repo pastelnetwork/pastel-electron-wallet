@@ -227,7 +227,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       (confValues.testnet && confValues.testnet === '1') || false
     const server = confValues.rpcbind || '127.0.0.1'
     const port = confValues.rpcport || (isTestnet ? '19932' : '9932')
-    rpcConfig.url = `//${server}:${port}`
+    rpcConfig.url = `http://${server}:${port}`
     this.setState({
       rpcConfig,
     }) // And setup the next getinfo
