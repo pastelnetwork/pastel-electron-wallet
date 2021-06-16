@@ -42,11 +42,11 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
       custom: (value: number, row: TRow) => (
         <div className='flex leading-tight space-x-4'>
           <div className='text-gray-a0'>{value.toLocaleString('en')}k PSL</div>
-          <img
-            src={pencilIcon}
-            className='cursor-pointer'
+          <button
             onClick={() => setCellEdit({ row: row.id as number, col: 1 })}
-          />
+          >
+            <img src={pencilIcon} />
+          </button>
         </div>
       ),
     },
@@ -119,13 +119,12 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
   )
 }
 
-function SliderComponent({
-  range,
-  disabled,
-}: {
+type TSliderComponent = {
   range: [number, number]
-  disabled?: boolean
-}): JSX.Element {
+  disabled: boolean
+}
+
+function SliderComponent({ range, disabled }: TSliderComponent): JSX.Element {
   const [values, setValues] = useState<[number, number]>(range)
   return (
     <div className={disabled ? 'filter grayscale' : ''}>
