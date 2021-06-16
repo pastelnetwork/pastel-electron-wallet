@@ -65,6 +65,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
       } else if (chartName === 'difficulty') {
         setMinY(Math.floor(min / offset) * offset)
         setMaxY(Math.ceil(max / offset) * offset)
+      } else if (chartName === 'transactionfee') {
+        setMinY(Math.round(min) - offset)
+        setMaxY(Math.ceil(max / offset) * offset)
       } else {
         setMinY(Math.round(min) - offset)
         setMaxY(Math.floor(max) + offset)
