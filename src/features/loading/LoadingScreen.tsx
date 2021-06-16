@@ -115,7 +115,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   componentDidMount() {
-    this.loadingConfigs()
+    const { history } = this.props
+
+    history.push(routes.WALLET)
+    // this.loadingConfigs()
   }
 
   loadingConfigs = async () => {
@@ -276,7 +279,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         this.setState({
           currentStatus: 'Waiting for pasteld to exit...',
         })
-        history.push(routes.LOADING)
+        history.push(routes.WALLET)
         this.pasteld.on('close', () => {
           ipcRenderer.send('appquitdone')
         })

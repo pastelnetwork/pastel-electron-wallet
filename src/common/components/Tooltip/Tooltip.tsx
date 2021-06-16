@@ -81,7 +81,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
     astyle = arrow_styles.right
   }
   return (
-    <div className='relative inline-block tooltip'>
+    <div className='relative inline-block tooltip z-50'>
       {children}
       <img
         style={astyle}

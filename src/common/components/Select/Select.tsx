@@ -15,6 +15,7 @@ export type TBaseProps = {
   className?: string
   label?: string
   autocomplete?: boolean
+  prepend?: JSX.Element
 }
 
 export type TOptionsProps = TBaseProps & {

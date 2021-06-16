@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Modal from './modal'
-import Table from './table'
+import Table from '../../common/components/Table'
 import Radio from '../../common/components/Radio/Radio'
 import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
 import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'

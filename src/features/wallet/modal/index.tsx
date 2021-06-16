@@ -22,7 +22,7 @@ const Modal: React.FC<TModalProps> = ({
   title,
 }) => {
   const modalClasses = cn({
-    'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
+    'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
     [`max-w-${size}`]: size,
   })
 
@@ -38,7 +38,7 @@ const Modal: React.FC<TModalProps> = ({
         <div className='text-h2 leading-none font-bold'>{title}</div>
         <ButtonClose onClick={handleClose} />
       </div>
-      <div className='px-10'>{children}</div>
+      <div className='px-30px'>{children}</div>
     </ReactModal>
   )
 }
