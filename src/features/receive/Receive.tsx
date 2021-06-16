@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import React from 'react'
+import React, { useState } from 'react'
 import { Accordion } from 'react-accessible-accordion'
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 
@@ -59,6 +59,7 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
     transactions,
   } = props
 
+  const [currentTab, setCurrentTab] = useState(0)
   const addressMap = addressesWithBalance.reduce((map, a) => {
     map[a.address] = a.balance
     return map
@@ -107,7 +108,7 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
 
   return (
     <div className={styles.receivecontainer}>
-      <Tabs>
+      <Tabs onSelect={(index: number) => setCurrentTab(index)}>
         <TabList>
           <Tab>Shielded</Tab>
           <Tab>Transparent</Tab>
@@ -175,7 +176,10 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
           </ScrollPane>
         </TabPanel>
       </Tabs>
-      <PastelPaperWalletModal info={info} />
+      <PastelPaperWalletModal
+        info={info}
+        currentName={currentTab === 0 ? 'Shielded' : 'Transparent'}
+      />
     </div>
   )
 }
