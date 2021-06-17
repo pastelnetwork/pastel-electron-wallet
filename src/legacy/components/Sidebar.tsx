@@ -8,6 +8,8 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { ipcRenderer, remote } from 'electron'
 import TextareaAutosize from 'react-textarea-autosize'
+import querystring from 'querystring'
+import { Base64 } from 'js-base64'
 import PropTypes from 'prop-types'
 import styles from './Sidebar.module.css'
 import cstyles from './Common.module.css'
@@ -335,6 +337,9 @@ class Sidebar extends PureComponent<any, any> {
       openUpdateToast,
       openSquooshToolModal,
       openGlitchImageModal,
+      setSendTo,
+      addresses,
+      createNewAddress,
     } = this.props
 
     ipcRenderer.on('payuri', (event, uri) => {
@@ -457,9 +462,28 @@ class Sidebar extends PureComponent<any, any> {
     })
     ipcRenderer.on(
       'deepLink',
-      (event, { view, param }: { view: string; param: string }) => {
+      async (event, { view, param }: { view: string; param: string }) => {
         const allRoutes = Object.assign(routes)
         const page = allRoutes[view.toUpperCase()] ? view : routes.DASHBOARD
+        if (routes.SEND.includes(page) && param.includes('amount=')) {
+          const params = querystring.parse(param || '')
+          let uri = ''
+          if (params?.to) {
+            uri = params.to.toString()
+          } else {
+            uri = await createNewAddress(true)
+          }
+          uri = `${uri}?amount=${params.amount}`
+
+          if (params?.memo) {
+            uri = `${uri}&memo=${Base64.encode(params.memo.toString())}`
+          }
+          const parsedUri = parsePastelURI(`pastel:${uri}`)
+          if (typeof parsedUri !== 'string') {
+            setSendTo(parsedUri)
+          }
+        }
+
         history.replace({
           pathname: page,
           state: { param },

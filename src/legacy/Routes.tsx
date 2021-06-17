@@ -529,6 +529,7 @@ class RouteApp extends React.Component<any, any> {
                 openUpdateToast={this.props.openUpdateToast}
                 openSquooshToolModal={this.props.openSquooshToolModal}
                 openGlitchImageModal={this.props.openGlitchImageModal}
+                createNewAddress={this.createNewAddress}
               />
             </div>
           )}
