@@ -53,11 +53,10 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import Profile from '../features/profile'
 import NFTMarketFeed from '../features/NFTMarketFeed'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
-import MyProfile from '../features/profile/myProfile'
+import { MyProfile } from '../features/profile'
 
 export type TWalletInfo = {
   connections: number
@@ -546,11 +545,6 @@ class RouteApp extends React.Component<any, any> {
             />
 
             <Route
-              path={routes.PROFILE}
-              render={() => <Profile info={info} />}
-            />
-
-            <Route
               path={routes.WALLET}
               render={() => <WalletScreen info={info} />}
             />
@@ -563,7 +557,10 @@ class RouteApp extends React.Component<any, any> {
 
             <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
 
-            <Route path={routes.MY_PROFILE} render={() => <MyProfile />} />
+            <Route
+              path={routes.MY_PROFILE}
+              render={() => <MyProfile info={info} />}
+            />
 
             <Route
               path={routes.MEMBERS_PROFILE}

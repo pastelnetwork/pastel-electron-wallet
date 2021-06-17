@@ -9,8 +9,8 @@ import {
 import dayjs from 'dayjs'
 
 import { Button } from '../../../../common/components/Buttons'
-import Key from '../components/Crypto/Crypto'
-import Card from '../components/Card/Card'
+import Key from '../../components/Crypto'
+import Card from '../../components/Card'
 
 type TCrypto = {
   currencyName?: string

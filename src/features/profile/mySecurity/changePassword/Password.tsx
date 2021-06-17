@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
 import { Button } from '../../../../common/components/Buttons'
-import Password from '../components/Password/Password'
-import Card from '../components/Card/Card'
+import Password from '../../components/Password'
+import Card from '../../components/Card'
 
 const ChangePassword = (): JSX.Element => {
   const [newPassword, setNewPassword] = useState('')

@@ -2,7 +2,7 @@ import React from 'react'
 import QRCode from 'qrcode.react'
 
 import { Button } from '../../../../common/components/Buttons'
-import Card from '../components/Card/Card'
+import Card from '../../components/Card'
 
 const downloadQR = () => {
   const canvas = document.getElementById('qrcode') as HTMLCanvasElement
