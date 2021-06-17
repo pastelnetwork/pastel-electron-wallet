@@ -5,7 +5,7 @@ export type TToggleProps = {
   classNames?: string
   selectedClass?: string
   selected?: boolean
-  toggleHandler: (checked: boolean) => void
+  toggleHandler?: (checked: boolean) => void
   children: React.ReactNode
 }
 
@@ -28,7 +28,7 @@ const Toggle = ({
               checked && selectedClass,
             )}
             onClick={() => {
-              toggleHandler(!checked)
+              !!toggleHandler && toggleHandler(!checked)
               setChecked(!checked)
             }}
           >
