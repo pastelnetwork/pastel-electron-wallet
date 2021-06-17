@@ -53,11 +53,11 @@ const mockBreadcrumbs: TBreadcrumb[] = [
     route: '#',
   },
   {
-    label: 'My portfolio',
+    label: 'My NFT Portfolio',
     route: '#',
   },
   {
-    label: 'Creator',
+    label: '',
   },
 ]
 
@@ -124,11 +124,11 @@ export default function Portfolio(): JSX.Element {
   const routes = {
     data: [
       {
-        label: 'Creator',
+        label: 'Created by Me',
         count: 26,
       },
       {
-        label: 'Seller',
+        label: 'Sold',
         count: 2,
       },
       {
@@ -151,7 +151,7 @@ export default function Portfolio(): JSX.Element {
     const randomCount = Math.floor(Math.random() * 15)
 
     const randomCards: TNFTCard[] = []
-    Array.from({ length: randomCount }).map(() => {
+    Array.from({ length: randomCount }).map((_, index) => {
       const randomPortfolioIndex = Math.floor(Math.random() * 4)
 
       randomCards.push({
@@ -159,14 +159,14 @@ export default function Portfolio(): JSX.Element {
         avatarSrc: avatar,
         imageSrc: portfolios[randomPortfolioIndex],
         likes: 23,
-        onSale: true,
+        onSale: index % 4 ? true : false,
         price: '222K',
         currencyName: 'PSL',
         title: 'Cosmic Perspective Cosmic Perspective',
         liked: true,
         percentage: 75,
         variant: 'portfolio',
-        isLastBid: true,
+        isLastBid: false,
         hideLikeButton: true,
       })
     })
@@ -180,7 +180,7 @@ export default function Portfolio(): JSX.Element {
     <div className='flex flex-col w-full min-h-full'>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PageHeader
-        title='My portfolio'
+        title='My NFT Portfolio'
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
         variant='portfolio'
