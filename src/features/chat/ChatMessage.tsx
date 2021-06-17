@@ -2,13 +2,8 @@ import React /*, { CSSProperties }*/ from 'react'
 import { formatTime } from '../../common/utils/format'
 import cn from 'classnames'
 import styles from './Chat.module.css'
-
-export interface ChatUser {
-  id: number
-  name: string
-  avatar: string
-  isOnline: boolean
-}
+import { ChatUser } from './common'
+import { UserAvatar } from './components/UserAvatar'
 
 export interface ChatMessageProps {
   text?: string
@@ -34,28 +29,35 @@ export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
   }
 
   return (
-    <div
-      className={cn(
-        styles.chatMessage,
-        props.isCurUserMessage ? styles.msgOut : '',
-      )}
-    >
-      <div className={cn(styles.userAvatar, styles.userAvatarSm)}>
-        {props.showAvatar && (
-          <i style={{ backgroundImage: `url(${props.sender.avatar})` }}></i>
-        )}
-      </div>
-      <div className={styles.chatMessageContent}>
+    <div className={cn('flex', props.isCurUserMessage ? 'justify-end' : '')}>
+      <UserAvatar
+        extraClasses={props.isCurUserMessage ? 'order-3 ml-5 mr-0' : ''}
+        size={9}
+        user={props.sender}
+        hideAvatar={!props.showAvatar}
+        hideOnline={true}
+      />
+      <div>
         {props.text && (
-          <div className={styles.chatMessageText}>{props.text}</div>
+          <div
+            className={cn(
+              'text-gray-35 rounded-lg font-medium text-xs p-4',
+              props.isCurUserMessage ? styles.msgSent : styles.msgRecv,
+            )}
+          >
+            {props.text}
+          </div>
         )}
 
         {props.attachments && (
-          <div className={styles.chatMessageAttachments}>
+          <div className='flex flex-wrap mt-3'>
             {props.attachments.map((att, i) => (
               <div
                 key={i}
-                className={styles.oneAttachment}
+                className={cn(
+                  'inline-block bg-gray-300 rounded-2xl bg-cover bg-center cursor-pointer mr-3 mb-3 w-48 h-44',
+                  styles.oneAttachment,
+                )}
                 style={{ backgroundImage: `url(${prepareFileThumb(att)})` }}
                 onClick={() => saveAttachment(att)}
               ></div>
@@ -63,7 +65,15 @@ export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
           </div>
         )}
 
-        <div className={styles.chatMessageTime}>{formatTime(props.date)}</div>
+        <div
+          className={cn(
+            'mt-1 font-medium text-gray-400',
+            styles.chatMessageTime,
+            props.isCurUserMessage ? 'text-right' : '',
+          )}
+        >
+          {formatTime(props.date)}
+        </div>
       </div>
     </div>
   )

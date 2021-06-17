@@ -5,6 +5,7 @@ import routes from '../../common/constants/routes.json'
 import { useHistory } from 'react-router-dom'
 import { ChatItem, ChatItemProps } from './ChatItem'
 import { ChatMessage } from './ChatMessage'
+import { UserAvatar } from './components/UserAvatar'
 import editIcon from '../../common/assets/icons/ico-edit.svg'
 import chatMenuIcon from '../../common/assets/icons/ico-chat-menu.svg'
 import msgEmojiIcon from '../../common/assets/icons/ico-chatmsg-emoji.svg'
@@ -13,6 +14,7 @@ import msgSendIcon from '../../common/assets/icons/ico-chatmsg-send.svg'
 import chatCloseIcon from '../../common/assets/icons/ico-close2.svg'
 import styles from './Chat.module.css'
 import { mockChats, curUser } from './mock-data'
+import { ChatUser } from './common'
 
 export default function Chat(): JSX.Element {
   const [newMsgPlaceholder, setNewMsgPlaceholder] = useState(true)
@@ -87,13 +89,13 @@ export default function Chat(): JSX.Element {
     history.push(routes.DASHBOARD)
   }
 
-  const chatAvatar = (chat: ChatItemProps): string => {
+  const chatUser = (chat: ChatItemProps): ChatUser | undefined => {
     const recv = chat.messages.filter(item => item.sender.id !== curUser.id)
     if (recv.length > 0) {
-      return recv[recv.length - 1].sender.avatar
+      return recv[recv.length - 1].sender
     }
 
-    return ''
+    return undefined
   }
 
   const onKeypress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
@@ -115,17 +117,20 @@ export default function Chat(): JSX.Element {
       onClick={onCloseChat}
     >
       <div
-        className={cn(styles.chat, 'paper flex flex-grow')}
+        className='paper flex flex-grow bg-gray-fc overflow-hidden'
         onClick={ev => ev.stopPropagation()}
       >
-        <div className={styles.colLeft}>
-          <div className={styles.title}>
+        <div className={cn('mr-2 flex flex-col py-5', styles.colLeft)}>
+          <div className='px-5 flex justify-between'>
             <h1>Chat</h1>
-            <i onClick={onChatEdit}>
-              <img src={editIcon} />
+            <i
+              onClick={onChatEdit}
+              className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
+            >
+              <img className='w-5' src={editIcon} />
             </i>
           </div>
-          <div className={styles.chatsList}>
+          <div className='px-5 flex-grow overflow-auto'>
             {chats.map((chat, i) => (
               <ChatItem
                 key={i}
@@ -137,31 +142,41 @@ export default function Chat(): JSX.Element {
           </div>
         </div>
 
-        <div className={styles.chatRight}>
-          <div className={styles.chatHeader}>
-            <div className={cn(styles.userAvatar, styles.userAvatarSm)}>
-              {activeChat && (
-                <i
-                  style={{ backgroundImage: `url(${chatAvatar(activeChat)})` }}
-                ></i>
-              )}
-              {/* insert user avatar */}
-            </div>
+        <div className='flex flex-grow flex-col'>
+          <div
+            className={cn(
+              styles.chatHeader,
+              'bg-white flex items-center px-4 h-14',
+            )}
+          >
+            {activeChat && (
+              <UserAvatar
+                user={chatUser(activeChat)}
+                size={9}
+                hideOnline={true}
+              />
+            )}
 
-            <div className={styles.chatTitle}>
+            <div className='flex-grow font-extrabold text-lg text-gray-600'>
               {activeChat ? activeChat.title : ''}
             </div>
 
-            <div className={styles.chatMenu} onClick={toggleActiveChatMenu}>
-              <img src={chatMenuIcon} />
+            <div
+              className='cursor-pointer flex items-center h-4'
+              onClick={toggleActiveChatMenu}
+            >
+              <img className='cursor-pointer' src={chatMenuIcon} />
             </div>
 
-            <div className={styles.chatClose} onClick={onCloseChat}>
-              <img src={chatCloseIcon} />
+            <div
+              className='cursor-pointer flex items-center ml-4 h-4'
+              onClick={onCloseChat}
+            >
+              <img className='cursor-pointer w-6 h-6' src={chatCloseIcon} />
             </div>
           </div>
 
-          <div className={styles.chatMessages}>
+          <div className='flex-grow px-5 overflow-auto'>
             {activeChat &&
               activeChat.messages.map((msg, i) => {
                 const props = {
@@ -181,15 +196,17 @@ export default function Chat(): JSX.Element {
               })}
             <div ref={endRef}></div>
           </div>
-          <div className={styles.chatFooter}>
-            <div className={cn(styles.userAvatar, styles.userAvatarSm2)}>
-              <i style={{ backgroundImage: `url(${curUser.avatar})` }}></i>
-              {/* insert current user avatar */}
-            </div>
+          <div className='flex items-center mx-5 my-4 box-border rounded-lg px-4 py-2 border border-gray-300'>
+            <UserAvatar user={curUser} size={10} hideOnline={true} />
 
-            <div className={styles.chatNewMsg}>
-              {newMsgPlaceholder && <label>Write your message here...</label>}
+            <div className='flex-grow mr-4 h-full relative'>
+              {newMsgPlaceholder && (
+                <label className='absolute top-0 left-0 right-0 bottom-0 flex items-center z-0 font-medium text-base text-gray-300'>
+                  Write your message here...
+                </label>
+              )}
               <textarea
+                className='w-full h-full border-0 font-medium text-base text-gray-400 relative z-10 resize-none bg-transparent outline-none focus:outline-none'
                 onFocus={onNewMsgFocus}
                 onBlur={onNewMsgBlur}
                 onChange={onNewMsgChange}
@@ -198,16 +215,16 @@ export default function Chat(): JSX.Element {
               ></textarea>
             </div>
 
-            <div className={styles.chatMsgBtn} onClick={onEmoji}>
-              <img src={msgEmojiIcon} />
+            <div className='cursor-pointer mr-4' onClick={onEmoji}>
+              <img className='cursor-pointer' src={msgEmojiIcon} />
             </div>
 
-            <div className={styles.chatMsgBtn} onClick={onAttach}>
-              <img src={msgAttachIcon} />
+            <div className='cursor-pointer mr-4' onClick={onAttach}>
+              <img className='cursor-pointer' src={msgAttachIcon} />
             </div>
 
-            <div className={styles.chatMsgBtnSend} onClick={onSendMsg}>
-              <img src={msgSendIcon} />
+            <div className='cursor-pointer w-10 h-10' onClick={onSendMsg}>
+              <img className='cursor-pointer w-full h-full' src={msgSendIcon} />
             </div>
           </div>
         </div>
