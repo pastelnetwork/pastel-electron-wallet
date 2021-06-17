@@ -1,6 +1,7 @@
 import React from 'react'
 import QRCode from 'qrcode.react'
 
+import Link from '../../../../common/components/Link'
 import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
 
@@ -19,8 +20,22 @@ const downloadQR = () => {
 }
 
 const QR = (): JSX.Element => {
+  const description = (
+    <div className='max-w-330px'>
+      As a more convenient way to backup your secrets, you can either click the
+      button below to download a QR Code video, or make a video of the code on
+      your smartphone camera. Then to restore, you can play the video on your
+      phone and hold the phone screen up to your webcam. You can test that it
+      worked by clicking{' '}
+      <Link href='#' className='underline'>
+        here
+      </Link>
+      .
+    </div>
+  )
+
   const content = (
-    <div className='flex justify-center h-348px rounded-lg py-33px px-42px bg-tab-hover'>
+    <div className='flex justify-center h-270px rounded-lg py-33px px-42px bg-tab-hover'>
       <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center shadow-64px  min-w-118px border border-solid border-gray-e6'>
         <QRCode
           id='qrcode'
@@ -37,14 +52,14 @@ const QR = (): JSX.Element => {
       className='w-full font-extrabold'
       onClick={downloadQR}
     >
-      Download QR-code
+      Download QR Code Video
     </Button>
   )
 
   return (
     <Card
-      title='Make a photo of QR-code'
-      description='Take a photo of this with your smartphone to use as a backup in case you forget your password'
+      title='Generate a QR Code Video'
+      description={description}
       content={content}
       footer={footer}
     />

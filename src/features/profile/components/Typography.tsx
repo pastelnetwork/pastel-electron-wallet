@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type TTextProps = {
-  children: string
+  children: string | ReactNode
 }
 
 export const Title = (props: TTextProps): JSX.Element => {
