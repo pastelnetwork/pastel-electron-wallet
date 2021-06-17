@@ -5,6 +5,7 @@ import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
 
 export type TRow = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [index: string]: any
 }
 
@@ -14,6 +15,7 @@ export type TColumn = {
   name: string
   key: string
   align?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   custom?: (value: any, row?: TRow | undefined) => JSX.Element
 }
 
@@ -36,8 +38,8 @@ const Table = ({
   haveHeader = true,
   headerTrClasses = 'h-12 text-gray-4a  border-b border-gray-a0',
   bodyTrClasses = 'h-67px',
-  headerTdClasses = '',
-  bodyTdClasses = '',
+  headerTdClasses,
+  bodyTdClasses,
   bodyClasses = 'h-220px overflow-y-scroll',
   showCheckbox = false,
   selectedRow,

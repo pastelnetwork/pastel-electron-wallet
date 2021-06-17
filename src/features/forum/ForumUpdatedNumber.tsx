@@ -2,7 +2,7 @@ import cx from 'classnames'
 import React from 'react'
 
 import { Arrow } from '../../common/components/Icons'
-import { nFormattedNumber } from '../../common/utils/format'
+import { formatAbbreviatedNumber } from '../../common/utils/format'
 
 export type TForumUpdatedNumberProps = {
   value: string | number
@@ -22,7 +22,7 @@ const ForumUpdatedNumber = ({
         value < oldValue && 'text-red-75',
       )}
     >
-      {nFormattedNumber(+value, 1)}{' '}
+      {formatAbbreviatedNumber(+value, 1)}{' '}
       {value !== oldValue && <Arrow size={10} to={iconType} />}
     </div>
   )

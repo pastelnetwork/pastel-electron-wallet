@@ -2,18 +2,17 @@ import React from 'react'
 import Select, { TOption } from '../Select/Select'
 import MultiToggleSwitch, { TMultiToggle } from '../MultiToggleSwitch'
 
-export type PageHeaderSortByOptions = {
+export type TPageHeaderSortByOptions = {
   placeholder: string
   onOptionChange: (option: TOption | null) => void
   selected: TOption | null
   options: TOption[]
 }
 
-export type PageHeader = {
-  showTitle?: boolean
-  title: string
+export type TPageHeaderProps = {
+  title?: string
   routes?: TMultiToggle
-  sortByOptions?: PageHeaderSortByOptions[]
+  sortByOptions?: TPageHeaderSortByOptions[]
   variant?: string
   sortByText?: string
   sortByTextClassName?: string
@@ -24,14 +23,13 @@ export type PageHeader = {
  * State should be handled by parent component.
  */
 const PageHeader = ({
-  showTitle = false,
   title,
   routes,
   sortByOptions,
   variant,
   sortByText,
   sortByTextClassName = '',
-}: PageHeader): JSX.Element => {
+}: TPageHeaderProps): JSX.Element => {
   return (
     <>
       <div className='bg-white text-gray-1a'>
@@ -42,7 +40,7 @@ const PageHeader = ({
         >
           <div className='flex justify-between'>
             <div className='flex items-center'>
-              {showTitle && (
+              {title && (
                 <h1
                   className={`${
                     variant === 'portfolio'

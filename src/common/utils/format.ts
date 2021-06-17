@@ -6,8 +6,11 @@ export const formatNumber = (x: number, delimiter = ','): string =>
 
 export const parseFormattedNumber = (input: string, delimiter = ','): number =>
   parseFloat(input.replaceAll(delimiter, ''))
-
-export const nFormattedNumber = (x: number, digits: number): string => {
+// taken from https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
+// Example input, output
+// case 1: formatAbbreviatedNumber(759878, 1) = 759.9k
+// case 2: formatAbbreviatedNumber(759878, 0) = 760k
+export const formatAbbreviatedNumber = (x: number, digits: number): string => {
   const lookup = [
     { value: 1, symbol: '' },
     { value: 1e3, symbol: 'k' },

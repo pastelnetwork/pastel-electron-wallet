@@ -499,7 +499,7 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
-        {info?.version && <Header />}
+        { <Header />}
         <div className='flex-grow overflow-auto'>
           <Switch>
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />

@@ -9,11 +9,12 @@ type TForumMemberProps = {
   members: TForumMember[]
 }
 
+const DISPLAY_NUMBER = 5
+
 const ForumMembers = ({ members }: TForumMemberProps): JSX.Element => {
-  const DISPLAY_NUMBER = 5
   const displayMembers =
     members.length > DISPLAY_NUMBER ? members.slice(0, DISPLAY_NUMBER) : members
-  const leftover = members.length - DISPLAY_NUMBER
+  const leftOver = members.length - DISPLAY_NUMBER
   return (
     <div className='flex'>
       {displayMembers.map((member, index) => (
@@ -21,15 +22,13 @@ const ForumMembers = ({ members }: TForumMemberProps): JSX.Element => {
           key={index}
           className='rounded-full bg-line-default w-8 h-8 relative -mr-2.5 border-2 border-white border-solid'
         >
-          <img src={member.avatar} />
+          <img src={member.avatar} className='opacity-30' />
         </div>
       ))}
-      {leftover > 0 ? (
+      {leftOver > 0 && (
         <div className='rounded-full flex-center bg-line-default bg-gray-100 w-8 h-8 relative -mr-2.5 border-2 border-white border-solid text-gray-500 text-sm'>
-          <span className='block -ml-1'>+{leftover}</span>
+          <span className='block -ml-1'>+{leftOver}</span>
         </div>
-      ) : (
-        ''
       )}
     </div>
   )

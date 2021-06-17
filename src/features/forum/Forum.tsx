@@ -103,10 +103,10 @@ export const Forum: React.FC = () => {
     data: data,
     headerTrClasses: 'h-12 text-gray-700 font-extrabold',
     headerTdClasses:
-      'first:pl-6 last:pr-6 border-b-1px border-line-default border-solid z-10',
+      'first:pl-6 last:pr-6 border-b-1px border-line-default border-gray-100 z-10',
     bodyTrClasses: 'h-12 hover:bg-line-default text-gray-2d',
     bodyTdClasses:
-      'first:rounded-l first:pl-6 last:pr-6 last:rounded-r border-b-1px border-line-default border-solid',
+      'first:rounded-l first:pl-6 last:pr-6 last:rounded-r border-b-1px border-line-default border-gray-100',
     bodyClasses: 'overflow-y-scroll',
   }
 

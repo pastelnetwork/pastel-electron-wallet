@@ -25,7 +25,6 @@ module.exports = {
     'import/newline-after-import': 2,
     'import/no-duplicates': 2,
     'import/no-extraneous-dependencies': 2,
-    '@typescript-eslint/no-explicit-any': ['off'],
     // compatible with other tools like prettier and so on
     '@typescript-eslint/member-delimiter-style': [
       2,
