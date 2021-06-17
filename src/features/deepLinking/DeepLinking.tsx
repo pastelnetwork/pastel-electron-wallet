@@ -6,7 +6,7 @@ export const redirectDeepLinkingUrl = (
   deepLink: string[] | string,
   mainWindow: BrowserWindow | null,
 ): void => {
-  if (deepLink && deepLink.includes('://')) {
+  if (deepLink && deepLink.toString().includes('://')) {
     const deepLinkingUrl = deepLink.toString()
     if (deepLinkingUrl.includes(`${pkg.protocolSchemes.native}://`)) {
       const url = deepLinkingUrl
