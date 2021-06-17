@@ -36,7 +36,11 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TLineChartData>()
+  ] = useState<TLineChartData>({
+    dataX: [],
+    dataY1: [],
+    dataY2: [],
+  })
 
   useEffect(() => {
     const loadLineChartData = async () => {

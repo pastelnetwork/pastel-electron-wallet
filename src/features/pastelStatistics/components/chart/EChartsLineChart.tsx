@@ -18,6 +18,7 @@ import {
   getThemeInitOption,
   getThemeUpdateOption,
 } from '../../utils/ChartOptions'
+import { PrevButton } from '../PrevButton'
 
 export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   const {
@@ -167,6 +168,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
+        <PrevButton color='#c3921f' />
         <div
           className={styles.lineChartTitle}
           style={{ color: currentTheme?.color }}

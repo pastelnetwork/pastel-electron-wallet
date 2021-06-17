@@ -31,7 +31,10 @@ const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TLineChartData>()
+  ] = useState<TLineChartData>({
+    dataX: [],
+    dataY: [],
+  })
 
   useEffect(() => {
     const loadLineChartData = async () => {
