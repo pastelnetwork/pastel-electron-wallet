@@ -42,6 +42,11 @@ export interface IReceiveProps {
   transactions?: ITransactionsProps[]
 }
 
+const receiveTab = {
+  shielded: 0,
+  transparent: 1,
+}
+
 export const Receive = (props: IReceiveProps): JSX.Element => {
   const {
     addresses,
@@ -59,7 +64,7 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
     transactions,
   } = props
 
-  const [currentTab, setCurrentTab] = useState(0)
+  const [currentTab, setCurrentTab] = useState(receiveTab.shielded)
   const addressMap = addressesWithBalance.reduce((map, a) => {
     map[a.address] = a.balance
     return map
@@ -178,7 +183,9 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
       </Tabs>
       <PastelPaperWalletModal
         info={info}
-        currentName={currentTab === 0 ? 'Shielded' : 'Transparent'}
+        currentName={
+          currentTab === receiveTab.shielded ? 'Shielded' : 'Transparent'
+        }
       />
     </div>
   )
