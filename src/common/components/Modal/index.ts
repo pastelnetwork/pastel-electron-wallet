@@ -1,1 +1,4 @@
-export { default } from './Modal'
+import Modal from './Modal'
+import TitleModal from './TitleModal'
+
+export { Modal, TitleModal }

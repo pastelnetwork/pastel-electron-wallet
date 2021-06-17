@@ -13,8 +13,11 @@ export type TOption = {
 export type TBaseProps = {
   placeholder?: string
   className?: string
-  label?: string
+  label?: string | JSX.Element
+  append?: string
   autocomplete?: boolean
+  prepend?: JSX.Element
+  labelClasses?: string
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -34,7 +37,14 @@ export type TRangeProps = TBaseProps & {
 export type TSelectProps = TOptionsProps | TRangeProps
 
 export default function Select(props: TSelectProps): JSX.Element {
-  const { placeholder, className, label, autocomplete = false } = props
+  const {
+    placeholder,
+    className,
+    label,
+    autocomplete = false,
+    append,
+    labelClasses = 'text-gray-71 mr-2 absolute right-2.5',
+  } = props
 
   const {
     options,
@@ -87,21 +97,28 @@ export default function Select(props: TSelectProps): JSX.Element {
             )}
           >
             {autocomplete && (
-              <input
-                className='h-full w-full rounded pl-18px pr-7 text-gray-35 font-extrabold focus-visible-border'
-                {...getToggleButtonProps()}
-                {...getInputProps()}
-                type='text'
-                role='input'
-                value={inputValueRef.current}
-              />
+              <div className='relative'>
+                <input
+                  className='h-full w-full rounded pl-18px pr-7 text-gray-35 font-extrabold focus-visible-border'
+                  {...getToggleButtonProps()}
+                  {...getInputProps()}
+                  type='text'
+                  role='input'
+                  value={
+                    append
+                      ? `${inputValueRef.current}${append}`
+                      : `${inputValueRef.current}`
+                  }
+                />
+                {label && <span className={labelClasses}>{label}</span>}
+              </div>
             )}
             {!autocomplete && (
               <button
                 className='w-full h-full flex items-center whitespace-nowrap pl-3.5 pr-7 focus-visible-border'
                 {...getToggleButtonProps()}
               >
-                {label && <span className='text-gray-b0 mr-2'>{label}:</span>}
+                {label && <span className='text-gray-b0 mr-2'>{label}</span>}
                 {selectedItem ? selectedItem.label : placeholder}
               </button>
             )}
@@ -115,7 +132,7 @@ export default function Select(props: TSelectProps): JSX.Element {
             />
             <ul
               {...getMenuProps()}
-              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-10'
+              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-20'
               onClick={e => e.stopPropagation()}
             >
               {filteredOptions?.map((item, index) => {
@@ -135,6 +152,7 @@ export default function Select(props: TSelectProps): JSX.Element {
                     )}
                   >
                     {item.label}
+                    {append ? append : ''}
                   </li>
                 )
               })}
