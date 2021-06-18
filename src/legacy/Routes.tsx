@@ -8,8 +8,11 @@ import routes from './constants/routes.json'
 import MemberProfile from '../features/profile/memberProfile/MemberProfile'
 import Dashboard from '../features/dashboard/DashboardPage'
 import PortfolioPage from '../features/nft/portfolio'
+import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
+import WalletScreen from '../features/wallet'
+import HeaderScreen from '../common/components/Header'
 import Header from '../common/components/Header'
 import {
   TotalBalance,
@@ -51,9 +54,11 @@ import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
 import Profile from '../features/profile'
-import NFTMarketFeed from '../features/nftMarket'
+import NFTMarketFeed from '../features/NFTMarketFeed'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
+import MyProfile from '../features/profile/myProfile'
+import { Forum } from '../features/forum'
 
 export type TWalletInfo = {
   connections: number
@@ -523,7 +528,12 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
-            <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
+            <Route path={routes.PORTFOLIO} exact component={Portfolio} />
+            <Route
+              path={routes.PORTFOLIO_DETAIL}
+              exact
+              component={PortfolioPage}
+            />
             <Route
               path={routes.TRANSACTIONS}
               render={() => (
@@ -541,13 +551,21 @@ class RouteApp extends React.Component<any, any> {
               render={() => <Profile info={info} />}
             />
 
+            <Route
+              path={routes.WALLET}
+              render={() => <WalletScreen info={info} />}
+            />
+
             <Route path={routes.CREATOR} render={() => <Creator />} />
 
             <Route path={routes.COLLECTOR} render={() => <Collector />} />
 
             <Route path={routes.NFT} render={() => <Nft />} />
-
+            <Route path={routes.FORUM} render={() => <Forum />} />
             <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
+
+            <Route path={routes.MY_PROFILE} render={() => <MyProfile />} />
+
             <Route
               path={routes.MEMBERS_PROFILE}
               render={() => <MemberProfile />}

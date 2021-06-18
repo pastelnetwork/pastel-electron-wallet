@@ -8,7 +8,7 @@ import {
 } from '@react-pdf/renderer'
 import dayjs from 'dayjs'
 
-import Button from '../components/Button/Button'
+import { Button } from '../../../../common/components/Buttons'
 import Key from '../components/Crypto/Crypto'
 import Card from '../components/Card/Card'
 
@@ -50,7 +50,7 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
   )
 
   const footer = (
-    <Button>
+    <Button variant='secondary' className='w-full font-extrabold'>
       Download PDF with all keys
       <PDFDownloadLink
         document={<PDFDocument publicKey={publicKey} secretKey={secretKey} />}

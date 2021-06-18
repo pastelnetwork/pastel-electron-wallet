@@ -6,6 +6,7 @@ export interface IButtonProps {
   variant?: 'default' | 'transparent' | 'navigation'
   type?: 'submit' | 'button'
   style?: CSSProperties
+  className?: string
   onClick?: () => void
 }
 

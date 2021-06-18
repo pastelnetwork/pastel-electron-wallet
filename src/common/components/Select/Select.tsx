@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Downshift from 'downshift'
 import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
@@ -18,8 +18,11 @@ export type TBaseProps = {
   placeholder?: string
   className?: string
   selectClassName?: string
-  label?: string
+  label?: ReactNode
   autocomplete?: boolean
+  append?: ReactNode
+  prepend?: ReactNode
+  labelClasses?: string
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -67,7 +70,14 @@ export default function Select(props: TSelectProps): JSX.Element {
 }
 
 const SelectInner = (props: TOptionsProps | TRangeProps) => {
-  const { placeholder, selectClassName, label, autocomplete = false } = props
+  const {
+    placeholder,
+    selectClassName,
+    label,
+    autocomplete = false,
+    append,
+    labelClasses = 'text-gray-71 mr-2 absolute right-2.5',
+  } = props
 
   const {
     options,
@@ -120,21 +130,28 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
             )}
           >
             {autocomplete && (
-              <input
-                className='h-full w-full rounded pl-18px pr-7 text-gray-35 font-extrabold focus-visible-border'
-                {...getToggleButtonProps()}
-                {...getInputProps()}
-                type='text'
-                role='input'
-                value={inputValueRef.current}
-              />
+              <div className='relative'>
+                <input
+                  className='h-full w-full rounded pl-18px pr-7 text-gray-35 font-extrabold focus-visible-border'
+                  {...getToggleButtonProps()}
+                  {...getInputProps()}
+                  type='text'
+                  role='input'
+                  value={
+                    append
+                      ? `${inputValueRef.current}${append}`
+                      : `${inputValueRef.current}`
+                  }
+                />
+                {label && <span className={labelClasses}>{label}</span>}
+              </div>
             )}
             {!autocomplete && (
               <button
-                className='w-full h-full flex items-center whitespace-nowrap pl-14px pr-7 focus-visible-border'
+                className='w-full h-full flex items-center whitespace-nowrap pl-3.5 pr-7 focus-visible-border'
                 {...getToggleButtonProps()}
               >
-                {label && <span className='text-gray-b0 mr-2'>{label}:</span>}
+                {label && <span className='text-gray-b0 mr-2'>{label}</span>}
                 {selectedItem ? selectedItem.label : placeholder}
               </button>
             )}
@@ -148,7 +165,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
             />
             <ul
               {...getMenuProps()}
-              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-10'
+              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-20'
               onClick={e => e.stopPropagation()}
             >
               {filteredOptions?.map((item, index) => {
@@ -168,6 +185,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                     )}
                   >
                     {item.label}
+                    {append}
                   </li>
                 )
               })}

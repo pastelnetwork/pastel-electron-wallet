@@ -37,7 +37,7 @@ const MenuItem = ({
     >
       {children}
       {location.pathname === to && (
-        <div className='absolute bottom-m1.5px w-full h-3px bg-gray-33 rounded-full'></div>
+        <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full'></div>
       )}
     </NavLink>
   )
@@ -75,7 +75,7 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
     <div
       className={cn(
         'flex-center',
-        background ? 'bg-gray-f8 w-40px h-40px rounded-full' : '',
+        background ? 'bg-gray-f8 w-10 h-10 rounded-full' : '',
         classes,
       )}
     >
@@ -102,7 +102,7 @@ export default function Header(): JSX.Element {
 
       <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 border-b border-gray-ed text-gray-71'>
         <div className='flex items-center h-full'>
-          <Link to={routes.DASHBOARD} className='w-36px h-36px'>
+          <Link to={routes.DASHBOARD} className='w-9 h-9'>
             <img src={Logo} alt='logo' />
           </Link>
           <MenuItem
@@ -118,6 +118,14 @@ export default function Header(): JSX.Element {
           >
             Market
           </MenuItem>
+          {/* need to be removed once decide how to show this form page*/}
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
+            to={routes.FORUM}
+          >
+            Forum
+          </MenuItem>
+          {/* by this line */}
           <MenuItem
             classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
             to={routes.MEMBERS}
@@ -125,7 +133,7 @@ export default function Header(): JSX.Element {
             Members
           </MenuItem>
           <MenuItem
-            classes='ml-4 1200px:ml-7 xl:ml-28px xl:w-46px'
+            classes='ml-4 1200px:ml-7 xl:ml-7 xl:w-46px'
             to={routes.WALLET}
           >
             Wallet
@@ -149,7 +157,7 @@ export default function Header(): JSX.Element {
         </div>
         <div className='flex items-center h-full'>
           <Icon src={QuestionTag} />
-          <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
+          <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
           <Icon
             classes='ml-6 lg:ml-26px w-18px'
             src={MessageIcon}
@@ -160,7 +168,7 @@ export default function Header(): JSX.Element {
             classes='ml-6 lg:ml-22px'
             src={UserIcon}
             background
-            path={routes.PROFILE}
+            path={routes.MY_PROFILE}
           />
         </div>
       </div>

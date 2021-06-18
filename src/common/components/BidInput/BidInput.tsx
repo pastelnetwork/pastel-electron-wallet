@@ -1,5 +1,5 @@
 import React from 'react'
-import Input from '../Input'
+import { InputNumberFormat } from '../Inputs'
 import NumberFormat from 'react-number-format'
 
 export type TBidInput = {
@@ -16,8 +16,9 @@ const BidInput: React.FC<TBidInput> = ({ onBidChange, bid }) => {
 
   return (
     <>
-      <Input
-        kind='numberFormat'
+      <InputNumberFormat
+        type='text'
+        displayType='input'
         placeholder='Enter your bid higher then current one'
         className='mb-6'
         value={bid}

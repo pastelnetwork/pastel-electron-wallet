@@ -1,5 +1,6 @@
 import React from 'react'
 import StarRate from './StarRate'
+import ProfileGeneralRow from './ProfileGeneralRow'
 
 export type TProfileGeneral = {
   location: string
@@ -34,7 +35,7 @@ const ProfileGeneral = ({
         <ProfileGeneralRow title='Categories'>{categories}</ProfileGeneralRow>
         <ProfileGeneralRow title='Buyer reputatio'>
           <StarRate rate={reputation} />
-          <div className='pl-6px text-gray-a0 text-sm'>
+          <div className='pl-1.5 text-gray-a0 text-sm'>
             {reputation} reputation
           </div>
         </ProfileGeneralRow>
@@ -64,25 +65,6 @@ const ProfileGeneral = ({
         <div className='flex pt-4'>
           <div className='flex-grow leading-normal text-gray-4a'>{bio}</div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-type TProfileGeneralRow = {
-  title: string
-  children: string | number | JSX.Element | JSX.Element[]
-}
-
-const ProfileGeneralRow = ({
-  title,
-  children,
-}: TProfileGeneralRow): JSX.Element => {
-  return (
-    <div className='flex'>
-      <div className='w-190px text-gray-71'>{title}</div>
-      <div className='flex flex-grow font-medium text-gray-4a whitespace-pre'>
-        {children}
       </div>
     </div>
   )

@@ -1,6 +1,7 @@
 {
   "LOADING": "/",
   "MEMBERS": "/members",
+  "FORUM": "/forum",
   "DASHBOARD": "/dashboard",
   "PORTFOLIO": "/portfolio",
   "SEND": "/send",
@@ -16,7 +17,10 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
+  "WALLET": "/wallet",
   "PROFILE": "/profile",
   "MEMBERS_PROFILE": "/member_profile",
-  "MARKET": "/market"
+  "MY_PROFILE": "/my_profile",
+  "MARKET": "/market",
+  "PORTFOLIO_DETAIL": "/portfolio_detail"
 }

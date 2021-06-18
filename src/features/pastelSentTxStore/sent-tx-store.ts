@@ -83,7 +83,7 @@ export type TxDetail = {
   memo?: string | null
 }
 
-export type Transaction = {
+export type TTransaction = {
   account: string
   address: string
   category: string

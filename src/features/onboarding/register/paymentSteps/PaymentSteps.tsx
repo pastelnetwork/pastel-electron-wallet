@@ -6,7 +6,7 @@ import { colors } from '../../../../common/theme/colors'
 
 import * as Styles from './PaymentSteps.styles'
 
-const BackupSteps: React.FC = () => {
+const BackupSteps = (): JSX.Element => {
   const [selectedOption, setSelectedOption] = React.useState(1)
 
   return (

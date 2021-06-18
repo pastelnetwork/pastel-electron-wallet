@@ -1,7 +1,7 @@
 import React from 'react'
 import QRCode from 'qrcode.react'
 
-import Button from '../components/Button/Button'
+import { Button } from '../../../../common/components/Buttons'
 import Card from '../components/Card/Card'
 
 const downloadQR = () => {
@@ -31,7 +31,15 @@ const QR = (): JSX.Element => {
     </div>
   )
 
-  const footer = <Button onClick={downloadQR}>Download QR-code</Button>
+  const footer = (
+    <Button
+      variant='secondary'
+      className='w-full font-extrabold'
+      onClick={downloadQR}
+    >
+      Download QR-code
+    </Button>
+  )
 
   return (
     <Card
