@@ -239,6 +239,8 @@ module.exports = {
         '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
         '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
         '64px': '0px 32px 64px 0px rgba(31, 47, 70, 0.12)',
+        input:
+          '0 1px 12px rgba(50, 50, 71, 0.008), 0 0 4px rgba(50, 50, 71, 0.04)',
       },
       fontSize: {
         h1: '2rem',

@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.12.0",
+    "@hookform/error-message": "2.0.0",
+    "@hookform/resolvers": "2.5.2",
     "@hot-loader/react-dom": "17.0.1",
     "@react-pdf/renderer": "2.0.0",
     "@reduxjs/toolkit": "1.5.1",
@@ -73,6 +75,7 @@
     "react-circular-progressbar": "2.0.4",
     "react-dom": "17.0.1",
     "react-draggable": "4.4.3",
+    "react-hook-form": "7.8.7",
     "react-hot-loader": "4.13.0",
     "react-modal": "3.11.1",
     "react-number-format": "4.6.0",
@@ -105,7 +108,8 @@
     "underscore": "1.9.2",
     "update-electron-app": "2.0.1",
     "uuid": "8.3.2",
-    "ws": "7.2.1"
+    "ws": "7.2.1",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "7.13.14",

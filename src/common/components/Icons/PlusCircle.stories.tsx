@@ -19,3 +19,9 @@ export const PlusCircle = Template.bind({})
 PlusCircle.args = {
   size: 30,
 }
+
+export const PlusCircleBold = Template.bind({})
+PlusCircleBold.args = {
+  size: 30,
+  bold: true,
+}

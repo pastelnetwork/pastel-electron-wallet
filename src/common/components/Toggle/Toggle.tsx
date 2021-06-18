@@ -12,7 +12,7 @@ const Toggle: React.FC<TToggleProps> = ({
   children,
   toggleHandler,
   classNames = 'w-34px h-5 rounded-full',
-  selectedClass = 'bg-green-68',
+  selectedClass = 'bg-blue-3f',
   selected = false,
 }) => {
   const [checked, setChecked] = useState(selected)

@@ -1,9 +1,13 @@
 import React from 'react'
 import Downshift from 'downshift'
-import caretDownIcon from '../../../common/assets/icons/ico-caret-down.svg'
+import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
-import { parseFormattedNumber } from '../../utils/format'
+import { parseFormattedNumber } from 'common/utils/format'
 import { useSelectOptions } from './select.utils'
+import FormControl, {
+  TFormControlProps,
+} from 'common/components/Form/FormControl'
+import { Controller } from 'react-hook-form'
 
 export type TOption = {
   label: string
@@ -13,6 +17,7 @@ export type TOption = {
 export type TBaseProps = {
   placeholder?: string
   className?: string
+  selectClassName?: string
   label?: string
   autocomplete?: boolean
 }
@@ -31,10 +36,38 @@ export type TRangeProps = TBaseProps & {
   value: number | null
 }
 
-export type TSelectProps = TOptionsProps | TRangeProps
+export type TFormOptionsProps = TBaseProps &
+  Omit<TFormControlProps, 'children'> & {
+    options: TOption[]
+  }
+
+export type TSelectProps = TOptionsProps | TFormOptionsProps | TRangeProps
 
 export default function Select(props: TSelectProps): JSX.Element {
-  const { placeholder, className, label, autocomplete = false } = props
+  if ('form' in props) {
+    return (
+      <FormControl {...props}>
+        <Controller
+          name={props.name}
+          control={props.form.control}
+          render={({ field: { value, onChange } }) => (
+            <SelectInner
+              {...props}
+              label={undefined}
+              selected={value}
+              onChange={onChange}
+            />
+          )}
+        />
+      </FormControl>
+    )
+  }
+
+  return <SelectInner {...props} />
+}
+
+const SelectInner = (props: TOptionsProps | TRangeProps) => {
+  const { placeholder, selectClassName, label, autocomplete = false } = props
 
   const {
     options,
@@ -81,9 +114,9 @@ export default function Select(props: TSelectProps): JSX.Element {
         return (
           <div
             className={cn(
-              'bg-white text-gray-71 flex-center shadow-2px h-10 rounded relative',
+              'input flex-center p-0 relative',
               autoCompleteColor,
-              className,
+              selectClassName,
             )}
           >
             {autocomplete && (

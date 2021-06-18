@@ -10,6 +10,8 @@ import MessageIcon from '../../../common/assets/icons/ico-msg.svg'
 import SettingIcon from '../../../common/assets/icons/ico-setting.svg'
 import UserIcon from '../../../common/assets/icons/ico-user.svg'
 import cn from 'classnames'
+import { useToggle } from 'react-use'
+import AddNFT from 'features/nft/addNFT'
 
 const MenuItem = ({
   to,
@@ -92,66 +94,76 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
 }
 
 export default function Header(): JSX.Element {
+  const [openAddNFT, toggleAddNFT] = useToggle(false)
+
   return (
-    <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed text-gray-71'>
-      <div className='flex items-center h-full'>
-        <Link to={routes.DASHBOARD} className='w-36px h-36px'>
-          <img src={Logo} alt='logo' />
-        </Link>
-        <MenuItem
-          classes='ml-4 1200px:ml-8 xl:ml-10 lg:w-82px'
-          exact
-          to={routes.DASHBOARD}
-        >
-          Dashboard
-        </MenuItem>
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
-          to={routes.MARKET}
-        >
-          Market
-        </MenuItem>
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-          to={routes.MEMBERS}
-        >
-          Members
-        </MenuItem>
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-28px xl:w-46px'
-          to={routes.WALLET}
-        >
-          Wallet
-        </MenuItem>
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
-          to={routes.PORTFOLIO}
-        >
-          Portfolio
-        </MenuItem>
-        <Link
-          to='#'
-          className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
-        >
-          <img src={addBtn} className='w-5 h-5 mr-2' alt='add button' />
-          <span className='text-blue-3f whitespace-nowrap font-extrabold'>
-            new NFT
-          </span>
-        </Link>
-        <SearchBar />
+    <>
+      <AddNFT open={openAddNFT} onClose={toggleAddNFT} />
+
+      <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 border-b border-gray-ed text-gray-71'>
+        <div className='flex items-center h-full'>
+          <Link to={routes.DASHBOARD} className='w-36px h-36px'>
+            <img src={Logo} alt='logo' />
+          </Link>
+          <MenuItem
+            classes='ml-4 1200px:ml-8 xl:ml-10 lg:w-82px'
+            exact
+            to={routes.DASHBOARD}
+          >
+            Dashboard
+          </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
+            to={routes.MARKET}
+          >
+            Market
+          </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
+            to={routes.MEMBERS}
+          >
+            Members
+          </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-28px xl:w-46px'
+            to={routes.WALLET}
+          >
+            Wallet
+          </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
+            to={routes.PORTFOLIO}
+          >
+            Portfolio
+          </MenuItem>
+          <button
+            className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
+            onClick={toggleAddNFT}
+          >
+            <img src={addBtn} className='w-5 h-5 mr-2' alt='add button' />
+            <span className='text-blue-3f whitespace-nowrap font-extrabold'>
+              new NFT
+            </span>
+          </button>
+          <SearchBar />
+        </div>
+        <div className='flex items-center h-full'>
+          <Icon src={QuestionTag} />
+          <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
+          <Icon
+            classes='ml-6 lg:ml-26px w-18px'
+            src={MessageIcon}
+            notification
+          />
+          <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
+          <Icon
+            classes='ml-6 lg:ml-22px'
+            src={UserIcon}
+            background
+            path={routes.PROFILE}
+          />
+        </div>
       </div>
-      <div className='flex items-center h-full'>
-        <Icon src={QuestionTag} />
-        <Icon classes='ml-6 lg:ml-27px w-16px' src={BellIcon} notification />
-        <Icon classes='ml-6 lg:ml-26px w-18px' src={MessageIcon} notification />
-        <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
-        <Icon
-          classes='ml-6 lg:ml-22px'
-          src={UserIcon}
-          background
-          path={routes.PROFILE}
-        />
-      </div>
-    </div>
+    </>
   )
 }

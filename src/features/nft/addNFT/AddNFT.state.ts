@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import tmpImage from 'common/assets/images/mock/add-nft-image.png'
 
 export enum Step {
+  inputData,
   upload,
   afterUpload,
   preview,
@@ -13,6 +13,18 @@ const firstStep = Step.upload
 const lastStep = Step.approved
 const stepsCount = lastStep + 1
 
+export type NFTData = {
+  title: string
+  categories: string[]
+  collection: string
+  copies: number
+  compensation: string
+  compensationPercent: number
+  externalProfile?: string
+  green: boolean
+  description?: string
+}
+
 export type Crop = {
   x: number
   y: number
@@ -23,9 +35,11 @@ export type Crop = {
 export type TAddNFTState = {
   step: Step
   stepsCount: number
+  nftData?: NFTData
   image?: string
   crop?: Crop
   setStep(step: Step): void
+  setNftData(data: NFTData): void
   setCrop(crop: Crop): void
   setImage(image: string): void
   goBack(): void
@@ -37,13 +51,16 @@ export type TUseAddNFTProps = {
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
-  const [step, setStep] = useState<Step>(Step.approved)
-  const [crop, setCrop] = useState<Crop>({ x: 0, y: 0, width: 0, height: 0 })
-  const [image, setImage] = useState<string>(tmpImage)
+  const [step, setStep] = useState<Step>(Step.inputData)
+  const [nftData, setNftData] = useState<NFTData>()
+  const [crop, setCrop] = useState<Crop>()
+  const [image, setImage] = useState<string>()
 
   return {
     step,
     stepsCount,
+    nftData,
+    setNftData,
     image,
     crop,
     setStep,

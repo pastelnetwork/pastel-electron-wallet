@@ -1,15 +1,11 @@
 import { RefObject, useMemo, useRef } from 'react'
 import Downshift, { ControllerStateAndHelpers } from 'downshift'
-import {
-  formatNumber,
-  parseFormattedNumber,
-} from '../../../common/utils/format'
+import { formatNumber, parseFormattedNumber } from 'common/utils/format'
 import {
   TOption,
   TOptionsProps,
   TRangeProps,
-  TSelectProps,
-} from '../../../common/components/Select/Select'
+} from 'common/components/Select/Select'
 
 const noop = () => {
   // noop
@@ -31,7 +27,9 @@ type TOptions = {
   inputValueRef: RefObject<string>
 }
 
-export const useSelectOptions = (props: TSelectProps): TOptions => {
+export const useSelectOptions = (
+  props: TOptionsProps | TRangeProps,
+): TOptions => {
   const inputValueRef = useRef('')
 
   let selected: TOptions['selected']
@@ -45,24 +43,27 @@ export const useSelectOptions = (props: TSelectProps): TOptions => {
     if ('options' in props) {
       return props.options
     }
-    {
-      const { min, max, step } = props
 
-      const options: TOptions['options'] = []
-      for (let i = min; i <= max; i += step) {
-        const option = {
-          label: formatNumber(i),
-          value: i.toString(), // used for filtering
-        }
-        options.push(option)
+    const { min, max, step } = props
+
+    const options: TOptions['options'] = []
+    for (let i = min; i <= max; i += step) {
+      const option = {
+        label: formatNumber(i),
+        value: i.toString(), // used for filtering
       }
-      return options
+      options.push(option)
     }
+    return options
   }, [optionsProps.options, rangeProps.min, rangeProps.max, rangeProps.step])
 
   if ('options' in props) {
     onChange = props.onChange
     selected = props.selected || null
+
+    onInputValueChange = value => {
+      inputValueRef.current = value
+    }
   } else {
     const { value, onChange: propsOnChange } = props
 

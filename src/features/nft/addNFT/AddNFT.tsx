@@ -6,6 +6,7 @@ import AfterUploadStep from './afterUploadStep/AfterUploadStep'
 import PreviewStep from './previewStep/PreviewStep'
 import SubmitStep from './submitStep/SubmitStep'
 import ApprovedStep from './approvedStep/ApprovedStep'
+import InputNFTDataStep from './inputNFTDataStep/InputNFTDataStep'
 
 export type TAddNFTProps = { open: boolean } & TUseAddNFTProps
 
@@ -22,21 +23,20 @@ export default function AddNFT({ open, ...props }: TAddNFTProps): JSX.Element {
 
 const AddNFTContent = (props: TUseAddNFTProps) => {
   const state = useAddNFTState(props)
-  const { step, image } = state
+  const { step } = state
 
-  if (step === Step.upload) {
+  if (step === Step.inputData) {
+    return <InputNFTDataStep state={state} />
+  } else if (step === Step.upload) {
     return <UploadStep state={state} />
   }
 
-  // image is set on upload step
-  if (!image) {
-    return null
-  }
+  const image = state.image as string
 
   if (step === Step.afterUpload) {
     return <AfterUploadStep state={state} image={image} />
   } else if (step === Step.preview && state.image) {
-    return <PreviewStep state={state} image={state.image} />
+    return <PreviewStep state={state} image={image} />
   }
 
   if (step === Step.submit) {

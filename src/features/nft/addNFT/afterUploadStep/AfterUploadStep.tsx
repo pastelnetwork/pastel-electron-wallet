@@ -1,6 +1,6 @@
 import React from 'react'
 import { TAddNFTState } from '../AddNFT.state'
-import ModalLayout from '../modalLayout/ModalLayout'
+import ModalLayout from '../ModalLayout'
 import {
   ArrowSlim,
   MinusCircle,
@@ -41,7 +41,8 @@ export default function UploadStep({
         <div className='flex-center'>
           <div className='relative flex-center overflow-hidden'>
             <button
-              className={`absolute top-3 right-3 w-10 h-10 rounded-full flex-center text-white ${style.deleteButton}`}
+              className={`absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white ${style.deleteButton}`}
+              onClick={goBack}
             >
               <Trash size={15} />
             </button>

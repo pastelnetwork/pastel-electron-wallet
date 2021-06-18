@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
-import ModalLayout from '../modalLayout/ModalLayout'
-import { useChangeableImage, useImagePreview } from './PreviewStep.service'
+import ModalLayout from '../ModalLayout'
+import { useImagePreview } from './PreviewStep.service'
 import { Crop } from 'common/components/Icons'
 import Tooltip from '../tooltip'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
@@ -20,9 +20,8 @@ type TPreviewStepProps = {
 
 export default function PreviewStep({
   state: { goBack, setCrop, goToNextStep },
-  image: providedImage,
+  image,
 }: TPreviewStepProps): JSX.Element {
-  const { image, onImageChange } = useChangeableImage(providedImage)
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
   const [fullScreen, toggleFullScreen] = useToggle(false)
@@ -75,10 +74,7 @@ export default function PreviewStep({
               </button>
             )}
           </Tooltip>
-          <label className='block'>
-            <img src={image} className='rounded' />
-            <input type='file' hidden onChange={onImageChange} />
-          </label>
+          <img src={image} className='rounded' />
         </div>
       }
       rightColumnContent={

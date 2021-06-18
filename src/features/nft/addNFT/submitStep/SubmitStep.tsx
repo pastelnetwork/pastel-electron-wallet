@@ -1,6 +1,6 @@
 import React from 'react'
 import { TAddNFTState } from '../AddNFT.state'
-import ModalLayout from '../modalLayout/ModalLayout'
+import ModalLayout from '../ModalLayout'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
