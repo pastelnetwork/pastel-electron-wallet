@@ -37,7 +37,7 @@ const MenuItem = ({
     >
       {children}
       {location.pathname === to && (
-        <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full'></div>
+        <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full' />
       )}
     </NavLink>
   )
@@ -93,8 +93,13 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
   )
 }
 
-export default function Header(): JSX.Element {
+export default function Header(): JSX.Element | null {
   const [openAddNFT, toggleAddNFT] = useToggle(false)
+
+  const location = useLocation()
+  if (location.pathname === routes.CHAT) {
+    return null
+  }
 
   return (
     <>
@@ -158,11 +163,9 @@ export default function Header(): JSX.Element {
         <div className='flex items-center h-full'>
           <Icon src={QuestionTag} />
           <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
-          <Icon
-            classes='ml-6 lg:ml-26px w-18px'
-            src={MessageIcon}
-            notification
-          />
+          <Link to={routes.CHAT}>
+            <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
+          </Link>
           <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
           <Icon
             classes='ml-6 lg:ml-22px'

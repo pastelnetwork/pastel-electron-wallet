@@ -118,6 +118,7 @@ module.exports = {
         '247px': '15.438rem',
         '262px': '16.375rem',
         '264px': '16.5rem',
+        '270px': '16.875rem',
         '284px': '17.75rem',
         '300px': '18.75rem',
         '315px': '19.6875rem',
@@ -217,6 +218,7 @@ module.exports = {
           14: '#141416',
           11: '#11142D',
         },
+        // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
           '7a': '#FF7A00',
           ef: '#FFEFEB',
@@ -353,15 +355,16 @@ module.exports = {
       minHeight: {
         '78px': '4.875rem',
         '672px': '42rem',
-        '594px': '37.125rem',
       },
       maxWidth: {
         '32px': '2rem',
         '118px': '7.375rem',
         '244px': '15.25rem',
         '278px': '17.375rem',
+        '330px': '20.625rem',
         '427px': '26.6875rem',
         '478px': '29.875rem',
+        '594px': '37.125rem',
         '598px': '37.375rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
@@ -389,6 +392,7 @@ module.exports = {
         '244px': '15.25rem',
         '350px': '21.875rem',
         '700px': '43.75rem',
+        '20rem': '20rem',
       },
       width: {
         '244px': '15.25rem',

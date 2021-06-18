@@ -9,8 +9,7 @@ import {
 import dayjs from 'dayjs'
 
 import { Button } from '../../../../common/components/Buttons'
-import Key from '../components/Crypto/Crypto'
-import Card from '../components/Card/Card'
+import Card from '../../components/Card'
 
 type TCrypto = {
   currencyName?: string
@@ -42,16 +41,24 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
   const secretKey =
     'ps19jxlfdl8mhnsqlf7x0cwxlfdl8mhnsqlf7x0cwlhx0cwlhlhx0cwlheq0v34'
 
-  const content = (
-    <div className='flex flex-col gap-30px'>
-      <Key label='Public key'>{publicKey}</Key>
-      <Key label='Secret Key'>{secretKey}</Key>
+  const description = (
+    <div className='max-w-330px'>
+      Clicking the button below will generate a PDF “paper wallet,” which is a
+      single file that contains all your Pastel secret information that gives
+      control over your PastelID (idenity on the Pastel Network) and your PSL
+      coins stored in this wallet. This file can be used to restore your account
+      information on a new computer.
+      <br />
+      <br />
+      <i className='font-normal'>Note:</i> Make sure you keep this file safe,
+      since anyone with access to this file will be able to control your Pastel
+      account and take your PSL coins.
     </div>
   )
 
   const footer = (
     <Button variant='secondary' className='w-full font-extrabold'>
-      Download PDF with all keys
+      Download PDF with All Your Keys
       <PDFDownloadLink
         document={<PDFDocument publicKey={publicKey} secretKey={secretKey} />}
         fileName={`${
@@ -66,9 +73,9 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
 
   return (
     <Card
-      title='Backup crypto-keys'
-      description='Some description goes here'
-      content={content}
+      title='Backup Your Crypto Keys'
+      description={description}
+      content=''
       footer={footer}
     />
   )

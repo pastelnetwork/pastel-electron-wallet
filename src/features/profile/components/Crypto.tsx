@@ -1,8 +1,8 @@
 import React from 'react'
 import { clipboard } from 'electron'
 
-import { Description } from '../Typography/Typography'
-import IconClipboard from '../../../../../common/assets/icons/ico-clipboard.svg'
+import { Description } from './Typography'
+import IconClipboard from '../../../common/assets/icons/ico-clipboard.svg'
 
 type TCrypto = {
   label: string

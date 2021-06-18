@@ -53,11 +53,11 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import Profile from '../features/profile'
 import NFTMarketFeed from '../features/NFTMarketFeed'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
-import MyProfile from '../features/profile/myProfile'
+import Chat from '../features/chat'
+import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
 
 export type TWalletInfo = {
@@ -528,6 +528,8 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
+            <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
+            <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
               path={routes.PORTFOLIO_DETAIL}
@@ -547,11 +549,6 @@ class RouteApp extends React.Component<any, any> {
             />
 
             <Route
-              path={routes.PROFILE}
-              render={() => <Profile info={info} />}
-            />
-
-            <Route
               path={routes.WALLET}
               render={() => <WalletScreen info={info} />}
             />
@@ -564,7 +561,10 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.FORUM} render={() => <Forum />} />
             <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
 
-            <Route path={routes.MY_PROFILE} render={() => <MyProfile />} />
+            <Route
+              path={routes.MY_PROFILE}
+              render={() => <MyProfile info={info} />}
+            />
 
             <Route
               path={routes.MEMBERS_PROFILE}
