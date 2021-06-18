@@ -1,8 +1,7 @@
 import React, { useRef, useState } from 'react'
 import * as yup from 'yup'
-import style from '../AddNFT.module.css'
 import PercentCircle from 'common/components/PercentCircle'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common/components/Form/Input'
 import { Button } from 'common/components/Buttons'
@@ -11,8 +10,19 @@ import CopiesAndCompensation from './CopiesAndCompensation'
 import DescriptionAndGreen from './DescriptionAndGreen'
 import AddCollectionModal from './AddCollectionModal'
 import { useClickAway, useToggle } from 'react-use'
-import { NFTData, TAddNFTState } from '../AddNFT.state'
+import { TNFTData, TAddNFTState } from '../AddNFT.state'
 import { TOption } from 'common/components/Select/Select'
+
+type TFormData = Omit<
+  TNFTData,
+  'categories' | 'collection' | 'compensation'
+> & {
+  categories: TOption[]
+  collection: TOption
+  compensation: TOption
+}
+
+export type TForm = UseFormReturn<TFormData>
 
 export const categories = [
   'Motion graphics',
@@ -32,6 +42,7 @@ export const compensations = ['royalty', 'other'].map(value => ({
   value,
   label: value,
 }))
+const defaultCompensation = compensations[0]
 
 const titleMinLength = 10
 
@@ -69,20 +80,14 @@ const schema = yup.object().shape({
   description: yup.string().label('Description').max(descriptionMaxLength),
 })
 
-type TInputNFTDataStep = {
+type TInputNFTDataStepProps = {
   state: TAddNFTState
 }
 
 export default function InputNFTDataStep({
   state: { nftData, setNftData, goToNextStep },
-}: TInputNFTDataStep): JSX.Element {
-  const form = useForm<
-    Omit<NFTData, 'categories' | 'collection' | 'compensation'> & {
-      categories: TOption[]
-      collection: TOption
-      compensation: TOption
-    }
-  >({
+}: TInputNFTDataStepProps): JSX.Element {
+  const form = useForm<TFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       ...nftData,
@@ -94,7 +99,7 @@ export default function InputNFTDataStep({
       copies: nftData?.copies || 100,
       compensation: nftData
         ? { value: nftData.compensation, label: nftData.compensation }
-        : undefined,
+        : defaultCompensation,
       compensationPercent: 12,
       green: nftData?.green || false,
     },
@@ -145,11 +150,10 @@ export default function InputNFTDataStep({
       />
 
       <form
-        className='paper p-10'
-        style={{ width: '690px' }}
+        className='paper p-10 w-[690px]'
         onSubmit={form.handleSubmit(submit)}
       >
-        <div className={`flex-between ${style.leftColumn}`}>
+        <div className='flex-between w-[320px]'>
           <div>
             <div className='text-gray-800 text-2xl font-extrabold mb-3'>
               Input NFT Data

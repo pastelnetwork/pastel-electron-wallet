@@ -1,5 +1,6 @@
 import React from 'react'
 import { TIconProps } from './iconProps'
+import cn from 'classnames'
 
 export type TDotsProps = TIconProps & {
   vertical?: boolean
@@ -10,14 +11,11 @@ export const Dots: React.FC<TDotsProps> = ({
   className,
   vertical = false,
 }) => {
-  const style = vertical === true ? { transform: 'rotate(90deg)' } : undefined
-
   return (
     <svg
       width={size}
       height={size}
-      className={className}
-      style={style}
+      className={cn(vertical && 'transform rotate-90', className)}
       viewBox='0 0 24 24'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

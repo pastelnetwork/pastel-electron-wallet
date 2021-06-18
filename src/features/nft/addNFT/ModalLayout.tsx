@@ -1,6 +1,5 @@
 import React from 'react'
 import PercentCircle from 'common/components/PercentCircle'
-import style from './AddNFT.module.css'
 import cn from 'classnames'
 
 type TModalLayoutProps = {
@@ -10,7 +9,7 @@ type TModalLayoutProps = {
   step?: number
   fixedHeight?: boolean
   contentClass?: string
-  rightColumnWidth?: number
+  rightColumnClass?: string
   leftColumnContent: React.ReactNode
   rightColumnContent: React.ReactNode
 }
@@ -24,18 +23,13 @@ export default function CroppingStep({
   step,
   fixedHeight,
   contentClass,
-  rightColumnWidth,
+  rightColumnClass,
   leftColumnContent,
   rightColumnContent,
 }: TModalLayoutProps): JSX.Element {
   return (
-    <div
-      className={cn(
-        'paper p-10 flex flex-col',
-        fixedHeight && style.modalHeight,
-      )}
-    >
-      <div className={cn('flex-between', step && style.leftColumn, titleClass)}>
+    <div className={cn('paper p-10 flex flex-col', fixedHeight && 'h-[555px]')}>
+      <div className={cn('flex-between', step && 'w-[320px]', titleClass)}>
         <div>
           <div className='text-gray-800 text-2xl font-extrabold mb-3'>
             {title}
@@ -56,15 +50,8 @@ export default function CroppingStep({
         )}
       </div>
       <div className={cn('flex space-x-7 flex-grow', contentClass)}>
-        <div className={`relative ${style.leftColumn}`}>
-          {leftColumnContent}
-        </div>
-        <div
-          className={style.rightColumn}
-          style={
-            rightColumnWidth ? { width: `${rightColumnWidth}px` } : undefined
-          }
-        >
+        <div className='relative w-[320px]'>{leftColumnContent}</div>
+        <div className={rightColumnClass || 'w-[349px]'}>
           {rightColumnContent}
         </div>
       </div>

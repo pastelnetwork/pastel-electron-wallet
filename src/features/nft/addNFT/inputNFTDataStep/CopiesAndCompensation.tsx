@@ -1,9 +1,9 @@
 import React from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import Input from 'common/components/Form/Input'
 import { MinusCircle, PlusCircle } from 'common/components/Icons'
 import Select from 'common/components/Select/Select'
 import {
+  TForm,
   copiesMin,
   copiesMax,
   compensationPercentMin,
@@ -16,8 +16,8 @@ const Increase = ({
   name,
   max,
 }: {
-  form: UseFormReturn
-  name: string
+  form: TForm
+  name: 'copies' | 'compensationPercent'
   max: number
 }) => {
   return (
@@ -38,8 +38,8 @@ const Decrease = ({
   name,
   min,
 }: {
-  form: UseFormReturn
-  name: string
+  form: TForm
+  name: 'copies' | 'compensationPercent'
   min: number
 }) => {
   return (
@@ -47,7 +47,7 @@ const Decrease = ({
       type='button'
       className='text-gray-33 flex-shrink-0'
       onClick={() =>
-        form.setValue(name, Math.max(min, form.getValues()[name] - 1))
+        form.setValue(name, Math.max(min, +form.getValues()[name] - 1))
       }
     >
       <MinusCircle size={18} />
@@ -58,7 +58,7 @@ const Decrease = ({
 export default function CopiesAndCompensation({
   form,
 }: {
-  form: UseFormReturn
+  form: TForm
 }): JSX.Element {
   return (
     <div className='flex space-x-4'>

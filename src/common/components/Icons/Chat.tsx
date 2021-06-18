@@ -26,8 +26,8 @@ export default function Arrow({
         cy='16'
         r='15.5'
         stroke='#E4E4E4'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
       <path
         d='M16 10C12.7 10 10 12.325 10 15.25C10 18.175 12.7 20.5 16 20.5C16.3 20.5 16.6 20.5 16.825 20.425L20.5 22V18.7C21.4 17.8 22 16.6 22 15.25C22 12.325 19.3 10 16 10Z'

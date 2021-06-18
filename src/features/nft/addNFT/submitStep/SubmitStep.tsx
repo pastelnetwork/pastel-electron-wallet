@@ -1,5 +1,5 @@
 import React from 'react'
-import { TAddNFTState } from '../AddNFT.state'
+import { TNFTData, TAddNFTState } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { Button } from 'common/components/Buttons'
@@ -18,11 +18,13 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 type TSubmitStepProps = {
   state: TAddNFTState
   image: string
+  nftData: TNFTData
 }
 
 export default function SubmitStep({
   state: { goBack, goToNextStep },
   image,
+  nftData,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
 
@@ -40,11 +42,7 @@ export default function SubmitStep({
         <div className='flex-center'>
           <div className='relative flex-center'>
             <FullScreenButton onClick={toggleFullScreen} />
-            <img
-              src={image}
-              className='rounded'
-              style={{ maxWidth: '320px', maxHeight: '410px' }}
-            />
+            <img src={image} className='rounded max-w-[320px] max-h-[410px]' />
           </div>
         </div>
       }
@@ -52,18 +50,31 @@ export default function SubmitStep({
         <>
           <div className='w-full text-sm'>
             <div className='space-y-14px'>
-              <InfoPair title='Title' value='Diamonds in the Sky' />
-              <InfoPair title='Category' value='Illustration' />
-              <InfoPair title='Collection' value='Angels' />
-              <InfoPair title='Copies' value='1 of 1' />
-              <InfoPair title='Compensation' value='Outright' />
-              <InfoPair title='External profile' value='diamondsinthesky.com' />
+              <InfoPair title='Title' value={nftData.title} />
+              <InfoPair
+                title='Category'
+                value={nftData.categories.join(', ')}
+              />
+              <InfoPair title='Collection' value={nftData.collection} />
+              {/* TODO: figure out what to display in Copies */}
+              <InfoPair title='Copies' value={`1 of ${nftData.copies}`} />
+              <InfoPair title='Compensation' value={nftData.compensation} />
+              {nftData.externalProfile && (
+                <InfoPair
+                  title='External profile'
+                  value={nftData.externalProfile}
+                />
+              )}
               <div className='flex items-center'>
                 <div className='text-gray-71 mr-3'>Green</div>
-                <Toggle toggleHandler={value => console.log(value)} />
+                <Toggle selected={nftData.green} />
               </div>
             </div>
-            <div className='mt-4 mb-3 text-blue-3f'>Description</div>
+            {nftData.description && (
+              <div className='mt-4 mb-3 text-blue-3f'>
+                {nftData.description}
+              </div>
+            )}
             <div className='bg-gray-f8 rounded-lg py-4'>
               <div className='flex text-gray-71'>
                 <div className='pl-5 w-36'>Image size</div>

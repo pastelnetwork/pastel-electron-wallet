@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react'
-import style from './UploadCircle.module.css'
 import Circle, {
   getStrokeDashOffsetForPercent,
 } from 'common/components/Svg/Circle'
 import { UploadFile, Checkmark } from 'common/components/Icons'
+import backgroundImage from 'common/assets/images/add-nft-upload-background.png'
 
 type TUploadingCircleProps = {
   file?: File
@@ -68,12 +68,13 @@ export default function UploadingCircle({
 
   return (
     <div
-      className={`pt-16 flex flex-col items-center bg-center ${style.background}`}
+      className='pt-16 flex flex-col items-center bg-center'
+      style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className='rounded-full bg-white p-1 relative text-gray-77 mb-5'>
         <svg
           viewBox='0 0 100 100'
-          className={`transform -rotate-90 ${style.circle}`}
+          className='transform -rotate-90 w-[200px] h-[200px]'
         >
           <Circle
             ref={circleRef}

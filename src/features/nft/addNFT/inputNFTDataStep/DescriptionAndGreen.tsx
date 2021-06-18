@@ -1,14 +1,13 @@
 import React from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import Toggle from 'common/components/Form/Toggle'
 import { Info } from 'common/components/Icons'
 import TextArea from 'common/components/Form/TextArea'
-import { descriptionMaxLength } from './InputNFTDataStep'
+import { descriptionMaxLength, TForm } from './InputNFTDataStep'
 
 export default function DescriptionAndGreen({
   form,
 }: {
-  form: UseFormReturn
+  form: TForm
 }): JSX.Element {
   return (
     <div>
@@ -16,7 +15,7 @@ export default function DescriptionAndGreen({
         Description
         <div className='flex'>
           <Toggle form={form} name='green' />
-          <div className='text-gray-71 font-medium mr-3'>Green</div>
+          <div className='text-gray-71 font-medium mx-3'>Green</div>
           <Info size={18} />
         </div>
       </div>

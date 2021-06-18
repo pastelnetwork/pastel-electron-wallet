@@ -2,7 +2,7 @@ import React, { useState, KeyboardEvent } from 'react'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import { X, Caret } from 'common/components/Icons'
 import cn from 'classnames'
-import { Controller } from 'react-hook-form'
+import { Controller, FieldValues } from 'react-hook-form'
 import FormControl, { TFormControlProps } from '../Form/FormControl'
 
 export type TOption = {
@@ -22,10 +22,11 @@ export type TControlledProps = TBaseProps & {
   onChange(selected: TOption[]): void
 }
 
-export type TFormProps = TBaseProps & Omit<TFormControlProps, 'children'>
+export type TFormProps<TForm> = TBaseProps &
+  Omit<TFormControlProps<TForm>, 'children'>
 
-export default function SelectMultiple(
-  props: TControlledProps | TFormProps,
+export default function SelectMultiple<TForm extends FieldValues>(
+  props: TControlledProps | TFormProps<TForm>,
 ): JSX.Element {
   if ('form' in props) {
     return (

@@ -2,8 +2,7 @@ import React from 'react'
 import SelectMultiple from 'common/components/SelectMultiple/SelectMultiple'
 import Select, { TOption } from 'common/components/Select/Select'
 import { PlusCircle } from 'common/components/Icons'
-import { categories } from './InputNFTDataStep'
-import { UseFormReturn } from 'react-hook-form'
+import { categories, TForm } from './InputNFTDataStep'
 
 export default function CategoryAndCollection({
   form,
@@ -11,7 +10,7 @@ export default function CategoryAndCollection({
   onAddCollectionClick,
   collections,
 }: {
-  form: UseFormReturn
+  form: TForm
   addCollectionButtonRef(el: HTMLButtonElement | null): void
   onAddCollectionClick(): void
   collections: TOption[]

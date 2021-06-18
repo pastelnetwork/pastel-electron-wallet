@@ -12,4 +12,8 @@ module.exports = {
     config.resolve.modules.push(path.join(process.cwd(), 'src'))
     return config
   },
+  typescript: {
+    // docgen is incompatible with TS 4.3.x: https://github.com/styleguidist/react-docgen-typescript/issues/356
+    reactDocgen: 'none',
+  },
 }

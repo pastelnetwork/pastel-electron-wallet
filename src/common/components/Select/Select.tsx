@@ -7,7 +7,7 @@ import { useSelectOptions } from './select.utils'
 import FormControl, {
   TFormControlProps,
 } from 'common/components/Form/FormControl'
-import { Controller } from 'react-hook-form'
+import { Controller, FieldValues } from 'react-hook-form'
 
 export type TOption = {
   label: string
@@ -39,14 +39,19 @@ export type TRangeProps = TBaseProps & {
   value: number | null
 }
 
-export type TFormOptionsProps = TBaseProps &
-  Omit<TFormControlProps, 'children'> & {
+export type TFormOptionsProps<TForm> = TBaseProps &
+  Omit<TFormControlProps<TForm>, 'children'> & {
     options: TOption[]
   }
 
-export type TSelectProps = TOptionsProps | TFormOptionsProps | TRangeProps
+export type TSelectProps<TForm> =
+  | TOptionsProps
+  | TFormOptionsProps<TForm>
+  | TRangeProps
 
-export default function Select(props: TSelectProps): JSX.Element {
+export default function Select<TForm extends FieldValues>(
+  props: TSelectProps<TForm>,
+): JSX.Element {
   if ('form' in props) {
     return (
       <FormControl {...props}>
@@ -57,7 +62,7 @@ export default function Select(props: TSelectProps): JSX.Element {
             <SelectInner
               {...props}
               label={undefined}
-              selected={value}
+              selected={value as TOption | null}
               onChange={onChange}
             />
           )}

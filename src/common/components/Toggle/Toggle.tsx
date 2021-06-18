@@ -6,7 +6,7 @@ export type TToggleProps = {
   selectedClass?: string
   selected?: boolean
   toggleHandler?: (checked: boolean) => void
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 const Toggle = ({
@@ -40,9 +40,11 @@ const Toggle = ({
             />
           </div>
         </div>
-        <div className='text-sm text-gray-33 ml-3 text-opacity-50 flex items-center'>
-          {children}
-        </div>
+        {children && (
+          <div className='text-sm text-gray-33 ml-3 text-opacity-50 flex items-center'>
+            {children}
+          </div>
+        )}
       </label>
     </div>
   )

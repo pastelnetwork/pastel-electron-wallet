@@ -44,7 +44,7 @@ export default function UploadStep({
           <UploadArea setFile={setFile} />
         )
       }
-      rightColumnWidth={355}
+      rightColumnClass='w-[355]'
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
           <div className='text-sm'>

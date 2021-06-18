@@ -5,7 +5,6 @@ import {
   TOption,
   TOptionsProps,
   TRangeProps,
-  TSelectProps,
 } from 'common/components/Select/Select'
 
 const noop = () => {
@@ -28,7 +27,9 @@ type TOptions = {
   inputValueRef: RefObject<string>
 }
 
-export const useSelectOptions = (props: TSelectProps): TOptions => {
+export const useSelectOptions = (
+  props: TOptionsProps | TRangeProps,
+): TOptions => {
   const inputValueRef = useRef('')
 
   let selected: TOptions['selected']

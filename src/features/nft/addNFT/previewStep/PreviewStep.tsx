@@ -11,7 +11,6 @@ import OptimizationSlider from './OptimizationSlider'
 import { Button } from 'common/components/Buttons'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
-import style from './PreviewStep.module.css'
 
 type TPreviewStepProps = {
   state: TAddNFTState
@@ -67,7 +66,7 @@ export default function PreviewStep({
             {ref => (
               <button
                 ref={ref}
-                className={`absolute bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full ${style.cropButton}`}
+                className='absolute bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
                 onClick={toggleCropping}
               >
                 <Crop size={18} />

@@ -1,10 +1,10 @@
 import React, { CSSProperties, ReactNode } from 'react'
-import { UseFormReturn } from 'react-hook-form'
 import ErrorMessage from './ErrorMessage'
+import { UseFormReturn, FieldValues, Path } from 'react-hook-form'
 
-export type TFormControlProps = {
-  form: UseFormReturn
-  name: string
+export type TFormControlProps<TForm> = {
+  form: UseFormReturn<TForm>
+  name: Path<TForm>
   children: ReactNode
   className?: string
   label?: string
@@ -12,7 +12,7 @@ export type TFormControlProps = {
   style?: CSSProperties
 }
 
-export default function FormControl({
+export default function FormControl<TForm extends FieldValues>({
   form,
   name,
   children,
@@ -20,7 +20,7 @@ export default function FormControl({
   label,
   labelClass = 'font-medium text-gray-71 mb-2',
   style,
-}: TFormControlProps): JSX.Element {
+}: TFormControlProps<TForm>): JSX.Element {
   return (
     <div className={className} style={style}>
       {label && <div className={labelClass}>{label}</div>}

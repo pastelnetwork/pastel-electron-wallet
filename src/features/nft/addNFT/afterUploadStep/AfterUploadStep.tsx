@@ -9,13 +9,14 @@ import {
 } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
 import { DraggableCore } from 'react-draggable'
-import style from './AfterUploadStep.module.css'
 import { useImageZoom } from 'common/utils/imageZoom'
 
 type TUploadStepProps = {
   state: TAddNFTState
   image: string
 }
+
+const backdropBlurClass = 'backdrop-filter backdrop-blur-[55px]'
 
 export default function UploadStep({
   state: { goBack, goToNextStep },
@@ -41,7 +42,7 @@ export default function UploadStep({
         <div className='flex-center'>
           <div className='relative flex-center overflow-hidden'>
             <button
-              className={`absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white ${style.deleteButton}`}
+              className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
               onClick={goBack}
             >
               <Trash size={15} />
@@ -62,7 +63,7 @@ export default function UploadStep({
               />
             </DraggableCore>
             <div
-              className={`absolute bottom-3 h-10 px-3 rounded-full flex-center text-white ${style.scaleControls}`}
+              className={`absolute bottom-3 h-10 px-3 rounded-full flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
             >
               <button type='button'>
                 <MinusCircle size={13} />
@@ -73,7 +74,9 @@ export default function UploadStep({
                   onDrag={onDragControl}
                   onStop={onDragControl}
                 >
-                  <div className={`h-1 rounded-full ${style.track}`}>
+                  <div
+                    className={`h-1 rounded-full bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
+                  >
                     <div
                       ref={filledProgressBarRef}
                       className='h-full bg-white w-0 rounded-full relative'
@@ -90,7 +93,7 @@ export default function UploadStep({
           </div>
         </div>
       }
-      rightColumnWidth={355}
+      rightColumnClass='w-[355px]'
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
           <div className='text-gray-71 font-medium pt-1'>

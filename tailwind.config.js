@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'jit',
   purge: [
     './src/**/*.ts',
     './src/**/*.tsx',
@@ -358,8 +359,10 @@ module.exports = {
         '32px': '2rem',
         '118px': '7.375rem',
         '244px': '15.25rem',
+        '278px': '17.375rem',
         '427px': '26.6875rem',
         '478px': '29.875rem',
+        '598px': '37.375rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
         fit: 'fit-content',
@@ -394,14 +397,6 @@ module.exports = {
       },
       height: {
         '401px': '25.0625rem',
-        fit: 'fit-content',
-      },
-      maxWidth: {
-        '278px': '17.375rem',
-        '427px': '26.6875rem',
-        '478px': '29.875rem',
-        '598px': '37.375rem',
-        '690px': '43.125rem',
         fit: 'fit-content',
       },
       opacity: {

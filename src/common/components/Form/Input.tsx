@@ -1,12 +1,13 @@
 import React, { InputHTMLAttributes, ReactNode } from 'react'
 import FormControl, { TFormControlProps } from './FormControl'
+import { FieldValues } from 'react-hook-form'
 
-export type TInputProps = Omit<TFormControlProps, 'children'> & {
+export type TInputProps<TForm> = Omit<TFormControlProps<TForm>, 'children'> & {
   inputClassName?: string
   renderInput?(inputProps: InputHTMLAttributes<HTMLInputElement>): ReactNode
 } & Omit<InputHTMLAttributes<HTMLInputElement>, 'form'>
 
-export default function Input({
+export default function Input<TForm extends FieldValues>({
   form,
   name,
   inputClassName = 'input',
@@ -16,7 +17,7 @@ export default function Input({
   style,
   renderInput,
   ...props
-}: TInputProps): JSX.Element {
+}: TInputProps<TForm>): JSX.Element {
   const inputProps = {
     ...form.register(name),
     ...props,

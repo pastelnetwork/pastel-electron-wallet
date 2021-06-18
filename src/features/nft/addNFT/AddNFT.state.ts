@@ -13,7 +13,7 @@ const firstStep = Step.upload
 const lastStep = Step.approved
 const stepsCount = lastStep + 1
 
-export type NFTData = {
+export type TNFTData = {
   title: string
   categories: string[]
   collection: string
@@ -35,11 +35,11 @@ export type Crop = {
 export type TAddNFTState = {
   step: Step
   stepsCount: number
-  nftData?: NFTData
+  nftData?: TNFTData
   image?: string
   crop?: Crop
   setStep(step: Step): void
-  setNftData(data: NFTData): void
+  setNftData(data: TNFTData): void
   setCrop(crop: Crop): void
   setImage(image: string): void
   goBack(): void
@@ -52,7 +52,7 @@ export type TUseAddNFTProps = {
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [step, setStep] = useState<Step>(Step.inputData)
-  const [nftData, setNftData] = useState<NFTData>()
+  const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<Crop>()
   const [image, setImage] = useState<string>()
 

@@ -3,7 +3,7 @@ import { UseFormReturn } from 'react-hook-form'
 import { ErrorMessage as OriginalErrorMessage } from '@hookform/error-message'
 
 export type TErrorMessageProps = {
-  form: UseFormReturn
+  form: Pick<UseFormReturn, 'formState'>
   name: string
   className?: string
   addClass?: string
