@@ -2,17 +2,17 @@ import React from 'react'
 import Select, { TOption } from '../Select/Select'
 import MultiToggleSwitch, { TMultiToggle } from '../MultiToggleSwitch'
 
-export type PageHeaderSortByOptions = {
+export type TPageHeaderSortByOptions = {
   placeholder: string
   onOptionChange: (option: TOption | null) => void
   selected: TOption | null
   options: TOption[]
 }
 
-export type PageHeader = {
-  title: string
+export type TPageHeaderProps = {
+  title?: string
   routes?: TMultiToggle
-  sortByOptions?: PageHeaderSortByOptions[]
+  sortByOptions?: TPageHeaderSortByOptions[]
   variant?: string
   sortByText?: string
   sortByTextClassName?: string
@@ -22,16 +22,14 @@ export type PageHeader = {
  * This is a presentational component, meaning it holds no state.
  * State should be handled by parent component.
  */
-const PageHeader = (props: PageHeader): JSX.Element => {
-  const {
-    title,
-    routes,
-    sortByOptions,
-    variant,
-    sortByText,
-    sortByTextClassName = '',
-  } = props
-
+const PageHeader = ({
+  title,
+  routes,
+  sortByOptions,
+  variant,
+  sortByText,
+  sortByTextClassName = '',
+}: TPageHeaderProps): JSX.Element => {
   return (
     <>
       <div className='bg-white text-gray-1a'>
@@ -42,15 +40,17 @@ const PageHeader = (props: PageHeader): JSX.Element => {
         >
           <div className='flex justify-between'>
             <div className='flex items-center'>
-              <h1
-                className={`${
-                  variant === 'portfolio'
-                    ? 'pr-18px md:pr-7 whitespace-nowrap'
-                    : 'pr-70px'
-                } font-semibold text-gray-23`}
-              >
-                {title}
-              </h1>
+              {title && (
+                <h1
+                  className={`${
+                    variant === 'portfolio'
+                      ? 'pr-18px md:pr-7 whitespace-nowrap'
+                      : 'pr-70px'
+                  } font-semibold text-gray-23`}
+                >
+                  {title}
+                </h1>
+              )}
               {routes && <MultiToggleSwitch {...routes} />}
             </div>
             {sortByOptions?.length && (

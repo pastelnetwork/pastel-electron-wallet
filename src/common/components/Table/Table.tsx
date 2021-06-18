@@ -5,7 +5,8 @@ import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
 
 export type TRow = {
-  [index: string]: string | number
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [index: string]: any
 }
 
 export type TColumn = {
@@ -14,15 +15,18 @@ export type TColumn = {
   name: string
   key: string
   align?: string
-  custom?: (value: string | number, row?: TRow | undefined) => JSX.Element
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  custom?: (value: any, row?: TRow | undefined) => JSX.Element
 }
 
 export type TTableProps = {
   columns: Array<TColumn>
   data: Array<TRow>
   haveHeader?: boolean
+  headerTdClasses?: string
   headerTrClasses?: string
   bodyTrClasses?: string
+  bodyTdClasses?: string
   bodyClasses?: string
   showCheckbox?: boolean
   selectedRow?: (row: TRow) => void
@@ -34,6 +38,8 @@ const Table = ({
   haveHeader = true,
   headerTrClasses = 'h-12 text-gray-4a  border-b border-gray-a0',
   bodyTrClasses = 'h-67px',
+  headerTdClasses,
+  bodyTdClasses,
   bodyClasses = 'h-220px overflow-y-scroll',
   showCheckbox = false,
   selectedRow,
@@ -85,6 +91,8 @@ const Table = ({
                   column.align ? 'text-' + column.align : 'text-left',
                   'sticky top-0 bg-white z-10',
                   column.colClasses,
+                  'sticky top-0 bg-white',
+                  headerTdClasses,
                 )}
               >
                 <div
@@ -146,7 +154,7 @@ const Table = ({
               </td>
             ) : null}
             {columns.map((column, index) => (
-              <td key={index} className={column.colClasses}>
+              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
                 {column.custom
                   ? column.custom(row[column.key], row)
                   : row[column.key]}

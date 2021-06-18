@@ -7,7 +7,7 @@ import image from '../../common/assets/images/nft-card-placeholder.png'
 import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
-import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
+import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 import ScrollBar from '../../common/components/Scrollbar'
 
 const mockCardProps: TNFTCard = {
@@ -58,7 +58,7 @@ const NFTMarketFeed: React.FC = () => {
     { value: 'option_3', label: 'Option 3' },
   ]
 
-  const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
+  const pageHeaderSortByOptions: TPageHeaderSortByOptions[] = [
     {
       placeholder: 'Price sold',
       selected: priceSold,

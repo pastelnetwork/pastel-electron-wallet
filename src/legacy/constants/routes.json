@@ -1,6 +1,7 @@
 {
   "LOADING": "/",
   "MEMBERS": "/members",
+  "FORUM": "/forum",
   "DASHBOARD": "/dashboard",
   "PORTFOLIO": "/portfolio",
   "SEND": "/send",
