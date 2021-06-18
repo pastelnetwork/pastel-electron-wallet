@@ -2,11 +2,11 @@ import React, { useState, useEffect, createRef } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 import generatePassword from 'generate-password'
 
-import IconEye from '../../../../../common/assets/icons/ico-eye.svg'
-import IconEyeHidden from '../../../../../common/assets/icons/ico-eye-hidden.svg'
-import IconRefresh from '../../../../../common/assets/icons/ico-refresh-blue.svg'
-import { Description } from '../Typography/Typography'
-import Tooltip from '../../../../../common/components/Tooltip'
+import IconEye from '../../../common/assets/icons/ico-eye.svg'
+import IconEyeHidden from '../../../common/assets/icons/ico-eye-hidden.svg'
+import IconRefresh from '../../../common/assets/icons/ico-refresh-blue.svg'
+import { Description } from './Typography'
+import Tooltip from '../../../common/components/Tooltip'
 
 type TPassword = {
   newPassword: string

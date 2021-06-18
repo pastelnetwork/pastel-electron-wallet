@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react'
 
-import { Title, Description } from '../Typography/Typography'
+import { Title, Description } from './Typography'
 
 type TCard = {
   title: string
-  description: string
+  description: ReactNode
   content: ReactNode
   footer: ReactNode
 }

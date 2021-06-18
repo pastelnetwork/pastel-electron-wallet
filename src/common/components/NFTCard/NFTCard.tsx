@@ -110,7 +110,7 @@ const NFTCard = ({
             className={`absolute left-2.5 bottom-2.5 inline-block rounded-md overflow-hidden p-3px ${styles.statusBgColor}`}
           >
             <div className='rounded-md overflow-hidden py-3px px-11px text-h5 font-extrabold text-gray-2d leading-6 bg-white'>
-              On Sale
+              Available
             </div>
           </div>
         ) : null}
