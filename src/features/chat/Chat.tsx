@@ -127,7 +127,7 @@ export default function Chat(): JSX.Element {
               onClick={onChatEdit}
               className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
             >
-              <img className='w-5' src={editIcon} />
+              <img className='w-5 cursor-pointer' src={editIcon} />
             </i>
           </div>
           <div className='px-5 flex-grow overflow-auto'>
