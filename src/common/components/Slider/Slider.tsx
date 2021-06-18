@@ -98,7 +98,7 @@ export default function Slider({
       renderTrack={({ props, children }) => (
         <div
           {...props}
-          className='h-4 rounded relative'
+          className='h-4 rounded relative group'
           style={{ width: `${width}px` }}
         >
           <SliderShape className='w-full h-full text-gray-e6' width={width} />
@@ -128,7 +128,7 @@ export default function Slider({
           {...props}
         >
           <div className='w-4 h-4 bg-blue-3f rounded-full' />
-          <div className='absolute -top-8 -mt-0.5 flex flex-col items-center'>
+          <div className='absolute -top-8 -mt-0.5 flex flex-col items-center duration-200 transition opacity-0 group-hover:opacity-100'>
             <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white font-extrabold'>
               {formatTooltipValue(value)}
             </div>

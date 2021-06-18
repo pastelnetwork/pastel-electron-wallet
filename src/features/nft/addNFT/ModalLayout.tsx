@@ -1,6 +1,5 @@
 import React from 'react'
 import PercentCircle from 'common/components/PercentCircle'
-import style from './ModalLayout.module.css'
 import cn from 'classnames'
 
 type TModalLayoutProps = {
@@ -8,6 +7,9 @@ type TModalLayoutProps = {
   titleClass?: string
   subtitle?: string
   step?: number
+  fixedHeight?: boolean
+  contentClass?: string
+  rightColumnClass?: string
   leftColumnContent: React.ReactNode
   rightColumnContent: React.ReactNode
 }
@@ -19,12 +21,15 @@ export default function CroppingStep({
   titleClass,
   subtitle,
   step,
+  fixedHeight,
+  contentClass,
+  rightColumnClass,
   leftColumnContent,
   rightColumnContent,
 }: TModalLayoutProps): JSX.Element {
   return (
-    <div className='paper p-10'>
-      <div className={cn('flex-between', style.leftColumn, titleClass)}>
+    <div className={cn('paper p-10 flex flex-col', fixedHeight && 'h-[555px]')}>
+      <div className={cn('flex-between', step && 'w-[320px]', titleClass)}>
         <div>
           <div className='text-gray-800 text-2xl font-extrabold mb-3'>
             {title}
@@ -44,9 +49,11 @@ export default function CroppingStep({
           </PercentCircle>
         )}
       </div>
-      <div className='flex space-x-7'>
-        <div className={style.leftColumn}>{leftColumnContent}</div>
-        <div className={style.rightColumn}>{rightColumnContent}</div>
+      <div className={cn('flex space-x-7 flex-grow', contentClass)}>
+        <div className='relative w-[320px]'>{leftColumnContent}</div>
+        <div className={rightColumnClass || 'w-[349px]'}>
+          {rightColumnContent}
+        </div>
       </div>
     </div>
   )

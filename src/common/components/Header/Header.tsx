@@ -10,6 +10,8 @@ import MessageIcon from '../../../common/assets/icons/ico-msg.svg'
 import SettingIcon from '../../../common/assets/icons/ico-setting.svg'
 import UserIcon from '../../../common/assets/icons/ico-user.svg'
 import cn from 'classnames'
+import { useToggle } from 'react-use'
+import AddNFT from 'features/nft/addNFT'
 
 const MenuItem = ({
   to,
@@ -35,7 +37,7 @@ const MenuItem = ({
     >
       {children}
       {location.pathname === to && (
-        <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full'></div>
+        <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full' />
       )}
     </NavLink>
   )
@@ -92,81 +94,87 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
 }
 
 export default function Header(): JSX.Element | null {
+  const [openAddNFT, toggleAddNFT] = useToggle(false)
+
   const location = useLocation()
   if (location.pathname === routes.CHAT) {
     return null
   }
 
   return (
-    <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed text-gray-71'>
-      <div className='flex items-center h-full'>
-        <Link to={routes.DASHBOARD} className='w-9 h-9'>
-          <img src={Logo} alt='logo' />
-        </Link>
-        <MenuItem
-          classes='ml-4 1200px:ml-8 xl:ml-10 lg:w-82px'
-          exact
-          to={routes.DASHBOARD}
-        >
-          Dashboard
-        </MenuItem>
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
-          to={routes.MARKET}
-        >
-          Market
-        </MenuItem>
-        {/* need to be removed once decide how to show this form page*/}
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
-          to={routes.FORUM}
-        >
-          Forum
-        </MenuItem>
-        {/* by this line */}
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-          to={routes.MEMBERS}
-        >
-          Members
-        </MenuItem>
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-7 xl:w-46px'
-          to={routes.WALLET}
-        >
-          Wallet
-        </MenuItem>
-        <MenuItem
-          classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
-          to={routes.PORTFOLIO}
-        >
-          Portfolio
-        </MenuItem>
-        <Link
-          to='#'
-          className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
-        >
-          <img src={addBtn} className='w-5 h-5 mr-2' alt='add button' />
-          <span className='text-blue-3f whitespace-nowrap font-extrabold'>
-            new NFT
-          </span>
-        </Link>
-        <SearchBar />
+    <>
+      <AddNFT open={openAddNFT} onClose={toggleAddNFT} />
+
+      <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 border-b border-gray-ed text-gray-71'>
+        <div className='flex items-center h-full'>
+          <Link to={routes.DASHBOARD} className='w-9 h-9'>
+            <img src={Logo} alt='logo' />
+          </Link>
+          <MenuItem
+            classes='ml-4 1200px:ml-8 xl:ml-10 lg:w-82px'
+            exact
+            to={routes.DASHBOARD}
+          >
+            Dashboard
+          </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
+            to={routes.MARKET}
+          >
+            Market
+          </MenuItem>
+          {/* need to be removed once decide how to show this form page*/}
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
+            to={routes.FORUM}
+          >
+            Forum
+          </MenuItem>
+          {/* by this line */}
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
+            to={routes.MEMBERS}
+          >
+            Members
+          </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-7 xl:w-46px'
+            to={routes.WALLET}
+          >
+            Wallet
+          </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
+            to={routes.PORTFOLIO}
+          >
+            Portfolio
+          </MenuItem>
+          <button
+            className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
+            onClick={toggleAddNFT}
+          >
+            <img src={addBtn} className='w-5 h-5 mr-2' alt='add button' />
+            <span className='text-blue-3f whitespace-nowrap font-extrabold'>
+              new NFT
+            </span>
+          </button>
+          <SearchBar />
+        </div>
+        <div className='flex items-center h-full'>
+          <Icon src={QuestionTag} />
+          <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
+          <Link to={routes.CHAT}>
+            <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
+          </Link>
+          <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
+          <Icon
+            classes='ml-6 lg:ml-22px'
+            src={UserIcon}
+            background
+            path={routes.MY_PROFILE}
+          />
+        </div>
       </div>
-      <div className='flex items-center h-full'>
-        <Icon src={QuestionTag} />
-        <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
-        <Link to={routes.CHAT}>
-          <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
-        </Link>
-        <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
-        <Icon
-          classes='ml-6 lg:ml-22px'
-          src={UserIcon}
-          background
-          path={routes.MY_PROFILE}
-        />
-      </div>
-    </div>
+    </>
   )
 }

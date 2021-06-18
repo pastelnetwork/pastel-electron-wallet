@@ -44,7 +44,7 @@ const AnimatedModalInner = ({
         return
       }
 
-      el.classList.remove('opacity-100')
+      el.classList.add('opacity-0')
       el.addEventListener(
         'transitionend',
         () => {
@@ -64,7 +64,7 @@ const AnimatedModalInner = ({
     if (el) {
       setLocalOpen(true)
       el.getBoundingClientRect()
-      el.classList.add('opacity-100')
+      el.classList.remove('opacity-0')
     }
   }
 

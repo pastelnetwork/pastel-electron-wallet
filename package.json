@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.12.0",
+    "@hookform/error-message": "2.0.0",
+    "@hookform/resolvers": "2.5.2",
     "@hot-loader/react-dom": "17.0.1",
     "@react-pdf/renderer": "2.0.0",
     "@reduxjs/toolkit": "1.5.1",
@@ -79,6 +81,8 @@
     "react-circular-progressbar": "2.0.4",
     "react-daterange-picker": "2.0.1",
     "react-dom": "17.0.1",
+    "react-draggable": "4.4.3",
+    "react-hook-form": "7.8.7",
     "react-hot-loader": "4.13.0",
     "react-modal": "3.11.1",
     "react-number-format": "4.6.0",
@@ -111,7 +115,8 @@
     "underscore": "1.9.2",
     "update-electron-app": "2.0.1",
     "uuid": "8.3.2",
-    "ws": "7.2.1"
+    "ws": "7.2.1",
+    "yup": "0.32.9"
   },
   "devDependencies": {
     "@babel/core": "7.13.14",
@@ -153,8 +158,8 @@
     "@types/underscore": "1.11.0",
     "@types/uuid": "8.3.0",
     "@types/ws": "7.4.0",
-    "@typescript-eslint/eslint-plugin": "4.0.1",
-    "@typescript-eslint/parser": "4.20.0",
+    "@typescript-eslint/eslint-plugin": "4.27.0",
+    "@typescript-eslint/parser": "4.27.0",
     "@types/faker": "5.5.6",
     "axios-mock-adapter": "1.19.0",
     "babel-loader": "8.2.2",
@@ -179,7 +184,7 @@
     "storybook-css-modules-preset": "1.1.1",
     "style-loader": "1.2.1",
     "type-coverage": "2.17.0",
-    "typescript": "4.0.2",
+    "typescript": "4.3.4",
     "url-loader": "4.1.1",
     "webpack-cli": "4.6.0"
   },

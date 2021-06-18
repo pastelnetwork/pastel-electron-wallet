@@ -1,26 +1,37 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Alert, { TAlert } from './Alert'
+import Component, { TAlert } from './Alert'
 
 const Template: Story<TAlert> = ({ variant, children, className }) => {
   return (
-    <Alert variant={variant} className={className}>
+    <Component variant={variant} className={className}>
       {children}
-    </Alert>
+    </Component>
   )
 }
 
-export const AlertSuccessDefault = Template.bind({})
-const variant = 'success'
-const children = 'Alert Success'
-const className = 'w-full'
-AlertSuccessDefault.args = {
-  variant,
-  children,
-  className,
+export const Success = Template.bind({})
+Success.args = {
+  variant: 'success',
+  children: 'Alert Success',
+  className: 'w-full',
+}
+
+export const Warning = Template.bind({})
+Warning.args = {
+  variant: 'warning',
+  children: 'Alert Warning',
+  className: 'w-full',
+}
+
+export const Error = Template.bind({})
+Error.args = {
+  variant: 'error',
+  children: 'Alert Error',
+  className: 'w-full',
 }
 
 export default {
-  component: Alert,
+  component: Component,
   title: 'Alert',
 } as Meta

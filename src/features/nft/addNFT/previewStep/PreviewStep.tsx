@@ -1,26 +1,29 @@
 import React, { useEffect } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
-import ModalLayout from '../modalLayout/ModalLayout'
-import { useChangeableImage, useImagePreview } from './PreviewStep.service'
-import style from './PreviewStep.module.css'
-import { Expand, Crop } from 'common/components/Icons'
+import ModalLayout from '../ModalLayout'
+import { useImagePreview } from './PreviewStep.service'
+import { Crop } from 'common/components/Icons'
 import Tooltip from '../tooltip'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { useToggle } from 'react-use'
 import Cropping from './Cropping'
 import OptimizationSlider from './OptimizationSlider'
 import { Button } from 'common/components/Buttons'
+import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
+import FullScreenButton from '../fullScreenButton/FullScreenButton'
 
 type TPreviewStepProps = {
   state: TAddNFTState
+  image: string
 }
 
 export default function PreviewStep({
-  state: { image: providedImage, goBack, setCrop, goToNextStep },
+  state: { goBack, setCrop, goToNextStep },
+  image,
 }: TPreviewStepProps): JSX.Element {
-  const { image, onImageChange } = useChangeableImage(providedImage)
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
+  const [fullScreen, toggleFullScreen] = useToggle(false)
 
   useEffect(() => {
     if (croppedImage) {
@@ -39,6 +42,10 @@ export default function PreviewStep({
     )
   }
 
+  if (fullScreen) {
+    return <FullScreenImage image={image} onClose={toggleFullScreen} />
+  }
+
   const submit = () => {
     if (croppedImage) {
       setCrop(croppedImage.crop)
@@ -54,26 +61,19 @@ export default function PreviewStep({
       step={3}
       leftColumnContent={
         <div className='relative'>
-          <button
-            className={`absolute top-3.5 left-3.5 w-8 h-8 bg-gray-fc text-gray-77 flex-center rounded-full ${style.fullscreenButton}`}
-          >
-            <Expand size={13} />
-          </button>
+          <FullScreenButton onClick={toggleFullScreen} />
           <Tooltip text='Crop thumbnail'>
             {ref => (
               <button
                 ref={ref}
-                className={`absolute bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full ${style.cropButton}`}
+                className='absolute bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
                 onClick={toggleCropping}
               >
                 <Crop size={18} />
               </button>
             )}
           </Tooltip>
-          <label className='block'>
-            <img src={image} className='rounded' />
-            <input type='file' hidden onChange={onImageChange} />
-          </label>
+          <img src={image} className='rounded' />
         </div>
       }
       rightColumnContent={
@@ -104,7 +104,7 @@ export default function PreviewStep({
             <div className='text-gray-2d text-sm font-extrabold'>5,000 PSL</div>
           </div>
           <div>
-            <div className='font-medium text-gray-71 mb-10'>
+            <div className='font-medium text-gray-71 mb-3'>
               Image size and fee optimization
             </div>
             <div className='pb-5'>

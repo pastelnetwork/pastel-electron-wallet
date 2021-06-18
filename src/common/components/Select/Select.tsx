@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Downshift from 'downshift'
-import caretDownIcon from '../../../common/assets/icons/ico-caret-down.svg'
+import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
-import { parseFormattedNumber } from '../../utils/format'
+import { parseFormattedNumber } from 'common/utils/format'
 import { useSelectOptions } from './select.utils'
+import FormControl, {
+  TFormControlProps,
+} from 'common/components/Form/FormControl'
+import { Controller, FieldValues } from 'react-hook-form'
 
 export type TOption = {
   label: string
@@ -13,10 +17,11 @@ export type TOption = {
 export type TBaseProps = {
   placeholder?: string
   className?: string
-  label?: string | JSX.Element
-  append?: string
+  selectClassName?: string
+  label?: ReactNode
   autocomplete?: boolean
-  prepend?: JSX.Element
+  append?: ReactNode
+  prepend?: ReactNode
   labelClasses?: string
 }
 
@@ -34,12 +39,45 @@ export type TRangeProps = TBaseProps & {
   value: number | null
 }
 
-export type TSelectProps = TOptionsProps | TRangeProps
+export type TFormOptionsProps<TForm> = TBaseProps &
+  Omit<TFormControlProps<TForm>, 'children'> & {
+    options: TOption[]
+  }
 
-export default function Select(props: TSelectProps): JSX.Element {
+export type TSelectProps<TForm> =
+  | TOptionsProps
+  | TFormOptionsProps<TForm>
+  | TRangeProps
+
+export default function Select<TForm extends FieldValues>(
+  props: TSelectProps<TForm>,
+): JSX.Element {
+  if ('form' in props) {
+    return (
+      <FormControl {...props}>
+        <Controller
+          name={props.name}
+          control={props.form.control}
+          render={({ field: { value, onChange } }) => (
+            <SelectInner
+              {...props}
+              label={undefined}
+              selected={value as TOption | null}
+              onChange={onChange}
+            />
+          )}
+        />
+      </FormControl>
+    )
+  }
+
+  return <SelectInner {...props} />
+}
+
+const SelectInner = (props: TOptionsProps | TRangeProps) => {
   const {
     placeholder,
-    className,
+    selectClassName,
     label,
     autocomplete = false,
     append,
@@ -91,9 +129,9 @@ export default function Select(props: TSelectProps): JSX.Element {
         return (
           <div
             className={cn(
-              'bg-white text-gray-71 flex-center shadow-2px h-10 rounded relative',
+              'input flex-center p-0 relative',
               autoCompleteColor,
-              className,
+              selectClassName,
             )}
           >
             {autocomplete && (
@@ -152,7 +190,7 @@ export default function Select(props: TSelectProps): JSX.Element {
                     )}
                   >
                     {item.label}
-                    {append ? append : ''}
+                    {append}
                   </li>
                 )
               })}

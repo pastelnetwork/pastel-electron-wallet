@@ -1,16 +1,16 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Component from './AddNFT'
+import Component, { TAddNFTProps } from './AddNFT'
 import { useToggle } from 'react-use'
 import { Button } from 'common/components/Buttons'
 
 export default {
-  title: 'Add NFT',
+  title: 'Features/Add NFT',
   component: Component,
 } as Meta
 
-const TemplateOptions: Story = () => {
+const Template: Story<TAddNFTProps> = () => {
   const [open, toggle] = useToggle(true)
 
   return (
@@ -27,4 +27,5 @@ const TemplateOptions: Story = () => {
   )
 }
 
-export const AddNFT = TemplateOptions.bind({})
+export const AddNFT = Template.bind({})
+AddNFT.args = {}

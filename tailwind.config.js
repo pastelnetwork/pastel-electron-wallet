@@ -1,4 +1,5 @@
 module.exports = {
+  mode: 'jit',
   purge: [
     './src/**/*.ts',
     './src/**/*.tsx',
@@ -81,10 +82,10 @@ module.exports = {
         '90px': '5.625rem',
         '92px': '5.75rem',
         '95px': '5.9375rem',
+        '100px': '6.25rem',
         '101px': '6.313rem',
         '103px': '6.4375rem',
         '104px': '6.5rem',
-        '100px': '6.25rem',
         '110px': '6.875rem',
         '111px': '6.938rem',
         '112px': '7rem',
@@ -180,9 +181,9 @@ module.exports = {
         gray: {
           fc: '#FCFCFD',
           f9: '#F9FAFB',
-          '1a': '#1A202C',
           f8: '#F8F9FA',
           f7: '#F7F8F9',
+          f4: '#F4F5F6',
           f3: '#F3F3F3',
           f2: '#F2F2F2',
           ed: '#EDEEF1',
@@ -196,10 +197,13 @@ module.exports = {
           b0: '#B0B7C3',
           a6: '#A6B0C2',
           a0: '#A0AEC0',
+          93: '#939EAB',
           '8e': '#8E98A3',
           80: '#808191',
           77: '#777E91',
           71: '#718096',
+          57: '#57657B',
+          '4e': '#4E5D78',
           '4a': '#4A5568',
           42: '#425466',
           35: '#353941',
@@ -210,10 +214,8 @@ module.exports = {
           '1f': '#1F1F39',
           '1d': '#1D263A',
           '1b': '#1B2942',
+          '1a': '#1A202C',
           14: '#141416',
-          '4e': '#4E5D78',
-          93: '#939EAB',
-          57: '#57657B',
           11: '#11142D',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
@@ -290,7 +292,7 @@ module.exports = {
       },
       boxShadow: {
         xs:
-          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 32px 40px rgba(10, 22, 70, 0.12)',
+          '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 1px 1px rgba(10, 22, 70, 0.1)',
         sm:
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 3px 3px rgba(10, 22, 70, 0.1)',
         md:
@@ -308,10 +310,10 @@ module.exports = {
           '0px 0px 1px rgba(10, 22, 70, 0.06), 0px 16px 16px rgba(10, 22, 70, 0.1)',
         '30px': '0px 4px 30px rgba(48, 64, 106, 0.1)',
         '44px': '0px 23px 44px rgba(176, 183, 195, 0.14)',
-        input:
-          '0px 1px 2px rgba(50, 50, 71, 0.08), 0px 0px 1px rgba(50, 50, 71, 0.2)',
-        textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
         '64px': '0px 32px 64px 0px rgba(31, 47, 70, 0.12)',
+        input:
+          '0 1px 12px rgba(50, 50, 71, 0.008), 0 0 4px rgba(50, 50, 71, 0.04)',
+        textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
       },
       fontSize: {
         h1: '2rem',

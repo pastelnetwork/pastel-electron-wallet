@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import image from 'common/assets/images/mock/add-nft-image.png'
 
 export enum Step {
+  inputData,
   upload,
+  afterUpload,
   preview,
   submit,
   approved,
@@ -11,6 +12,18 @@ export enum Step {
 const firstStep = Step.upload
 const lastStep = Step.approved
 const stepsCount = lastStep + 1
+
+export type TNFTData = {
+  title: string
+  categories: string[]
+  collection: string
+  copies: number
+  compensation: string
+  compensationPercent: number
+  externalProfile?: string
+  green: boolean
+  description?: string
+}
 
 export type Crop = {
   x: number
@@ -22,10 +35,13 @@ export type Crop = {
 export type TAddNFTState = {
   step: Step
   stepsCount: number
-  image: string
+  nftData?: TNFTData
+  image?: string
   crop?: Crop
   setStep(step: Step): void
+  setNftData(data: TNFTData): void
   setCrop(crop: Crop): void
+  setImage(image: string): void
   goBack(): void
   goToNextStep(): void
 }
@@ -35,16 +51,21 @@ export type TUseAddNFTProps = {
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
-  const [step, setStep] = useState<Step>(Step.preview)
+  const [step, setStep] = useState<Step>(Step.inputData)
+  const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<Crop>()
+  const [image, setImage] = useState<string>()
 
   return {
     step,
     stepsCount,
+    nftData,
+    setNftData,
     image,
     crop,
     setStep,
     setCrop,
+    setImage,
     goBack() {
       if (step > firstStep) {
         setStep(step - 1)
