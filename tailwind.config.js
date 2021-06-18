@@ -331,6 +331,7 @@ module.exports = {
         '171px': '10.688rem',
         '244px': '15.25rem',
         '700px': '43.75rem',
+        '20rem': '20rem',
       },
       width: {
         '244px': '15.25rem',

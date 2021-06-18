@@ -1,8 +1,8 @@
 import React /*, { CSSProperties }*/ from 'react'
-import { ChatUser } from '../common'
+import { TChatUser } from '../common'
 
 export interface ChatUserAvatarProps {
-  user?: ChatUser
+  user?: TChatUser
   size?: number
   hideAvatar?: boolean
   hideOnline?: boolean

@@ -1,19 +1,19 @@
 import React /*, { CSSProperties }*/ from 'react'
 import cn from 'classnames'
 import { formatTime } from '../../common/utils/format'
-import { ChatMessageProps } from './ChatMessage'
+import { TChatMessageProps } from './ChatMessage'
 import { UserAvatar } from './components/UserAvatar'
 import styles from './Chat.module.css'
 
-export interface ChatItemProps {
+export type TChatItemProps = {
   id: number
   title: string
-  messages: ChatMessageProps[]
+  messages: TChatMessageProps[]
   onClick?: (id: number) => void
   isActive?: boolean
 }
 
-export const ChatItem = (props: ChatItemProps): JSX.Element => {
+export const ChatItem = (props: TChatItemProps): JSX.Element => {
   const onClickMe = () => {
     if (props.onClick) {
       props.onClick(props.id)
@@ -48,7 +48,7 @@ export const ChatItem = (props: ChatItemProps): JSX.Element => {
         </div>
         <div className='text-right h-2 relative'>
           {lastMessage && lastMessage.unread && (
-            <i className='inline-block rounded-full bg-green-500 w-1.5 h-1.5 absolute right-0 top-0'></i>
+            <i className='inline-block rounded-full bg-green-500 w-1.5 h-1.5 absolute right-0 bottom-0'></i>
           )}
         </div>
       </div>

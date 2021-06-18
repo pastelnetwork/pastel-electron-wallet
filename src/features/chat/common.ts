@@ -1,4 +1,4 @@
-export interface ChatUser {
+export type TChatUser = {
   id: number
   name: string
   avatar: string

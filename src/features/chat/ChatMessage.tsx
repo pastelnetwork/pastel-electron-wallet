@@ -2,12 +2,12 @@ import React /*, { CSSProperties }*/ from 'react'
 import { formatTime } from '../../common/utils/format'
 import cn from 'classnames'
 import styles from './Chat.module.css'
-import { ChatUser } from './common'
+import { TChatUser } from './common'
 import { UserAvatar } from './components/UserAvatar'
 
-export interface ChatMessageProps {
+export type TChatMessageProps = {
   text?: string
-  sender: ChatUser
+  sender: TChatUser
   date: Date
   unread: boolean
   isCurUserMessage?: boolean
@@ -16,7 +16,7 @@ export interface ChatMessageProps {
   onSaveAttachment?: (url: string) => void
 }
 
-export const ChatMessage = (props: ChatMessageProps): JSX.Element => {
+export const ChatMessage = (props: TChatMessageProps): JSX.Element => {
   const prepareFileThumb = (url: string) => {
     // TODO: default icons for non-images?
     return url

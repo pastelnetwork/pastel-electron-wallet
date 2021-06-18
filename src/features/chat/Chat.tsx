@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, KeyboardEvent } from 'react'
 import cn from 'classnames'
 import routes from '../../common/constants/routes.json'
 import { useHistory } from 'react-router-dom'
-import { ChatItem, ChatItemProps } from './ChatItem'
+import { ChatItem, TChatItemProps } from './ChatItem'
 import { ChatMessage } from './ChatMessage'
 import { UserAvatar } from './components/UserAvatar'
 import editIcon from '../../common/assets/icons/ico-edit.svg'
@@ -14,16 +14,16 @@ import msgSendIcon from '../../common/assets/icons/ico-chatmsg-send.svg'
 import chatCloseIcon from '../../common/assets/icons/ico-close2.svg'
 import styles from './Chat.module.css'
 import { mockChats, curUser } from './mock-data'
-import { ChatUser } from './common'
+import { TChatUser } from './common'
 
 export default function Chat(): JSX.Element {
   const [newMsgPlaceholder, setNewMsgPlaceholder] = useState(true)
   const [newMsg, setNewMsg] = useState('')
   const [activeChatId, setActiveChatId] = useState<number>(mockChats[0].id)
-  const [activeChat, setActiveChat] = useState<ChatItemProps>(mockChats[0])
+  const [activeChat, setActiveChat] = useState<TChatItemProps>(mockChats[0])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [chats, setChats] = useState<ChatItemProps[]>(mockChats) // DEBUG: init state
+  const [chats, setChats] = useState<TChatItemProps[]>(mockChats) // DEBUG: init state
 
   const endRef = useRef<HTMLDivElement>(null)
   const scroll2End = () => {
@@ -43,11 +43,11 @@ export default function Chat(): JSX.Element {
   }
 
   const toggleActiveChatMenu = () => {
-    console.log('show/hide active chat menu')
+    //
   }
 
   const onChatEdit = () => {
-    console.log('edit chat')
+    //
   }
 
   const onSelectChat = (id: number) => {
@@ -89,7 +89,7 @@ export default function Chat(): JSX.Element {
     history.push(routes.DASHBOARD)
   }
 
-  const chatUser = (chat: ChatItemProps): ChatUser | undefined => {
+  const TChatUser = (chat: TChatItemProps): TChatUser | undefined => {
     const recv = chat.messages.filter(item => item.sender.id !== curUser.id)
     if (recv.length > 0) {
       return recv[recv.length - 1].sender
@@ -120,7 +120,7 @@ export default function Chat(): JSX.Element {
         className='paper flex flex-grow bg-gray-fc overflow-hidden'
         onClick={ev => ev.stopPropagation()}
       >
-        <div className={cn('mr-2 flex flex-col py-5', styles.colLeft)}>
+        <div className='mr-2 flex flex-col py-5 min-w-20rem w-1/3'>
           <div className='px-5 flex justify-between'>
             <h1>Chat</h1>
             <i
@@ -151,7 +151,7 @@ export default function Chat(): JSX.Element {
           >
             {activeChat && (
               <UserAvatar
-                user={chatUser(activeChat)}
+                user={TChatUser(activeChat)}
                 size={9}
                 hideOnline={true}
               />
