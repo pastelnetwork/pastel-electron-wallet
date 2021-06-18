@@ -19,6 +19,7 @@ type PastelPaperWalletModalProps = {
   info: {
     currencyName: string
   }
+  currentName: string
 }
 
 interface PDFDocumentProps {
@@ -171,6 +172,7 @@ function PDFDocument({
 
 export default function PastelPaperWalletModal({
   info,
+  currentName,
 }: PastelPaperWalletModalProps): JSX.Element | null {
   const { address, privateKey, modalIsOpen } = useAppSelector(
     state => state.pastelPaperWalletModal,
@@ -183,7 +185,9 @@ export default function PastelPaperWalletModal({
 
   const generateFileName = () => {
     const firstPartOfTheAddress = splitStringIntoChunks(address, 6)[0]
-    const title = `PSL_Paper_Wallet__Shielded_Address_${firstPartOfTheAddress}`
+    const title = `PSL_Paper_Wallet__${
+      currentName || 'Shielded'
+    }_Address_${firstPartOfTheAddress}`
     const date = new Date()
     const dateTime = `${
       date.getMonth() + 1

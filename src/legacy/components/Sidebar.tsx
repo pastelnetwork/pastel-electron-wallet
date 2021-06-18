@@ -767,9 +767,8 @@ class Sidebar extends PureComponent<any, any> {
             >
               <div>
                 <i className={[cstyles.yellow, 'fas', 'fa-sync'].join(' ')} />
-                &nbsp; Syncing
+                &nbsp; Syncing {progress}%
               </div>
-              <div>{`${progress}%`}</div>
             </div>
           )}
           {state === 'DISCONNECTED' && (

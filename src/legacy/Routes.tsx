@@ -176,7 +176,6 @@ class RouteApp extends React.Component<any, any> {
     this.setState({
       info: newInfo,
     })
-    this.openErrorModal('Disconnected', err)
   }
 
   // TODO duplicated with below, discovered by TypeScript

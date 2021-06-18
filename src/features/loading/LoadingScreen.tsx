@@ -272,9 +272,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       if (this.pasteld) {
         const { history } = this.props
         const { rpcConfig } = this.state
-        this.setState({
-          currentStatus: 'Waiting for pasteld to exit...',
-        })
         history.push(routes.LOADING)
         while (!PastelDB.isValidDB()) {
           // wait if database is reading or writing status

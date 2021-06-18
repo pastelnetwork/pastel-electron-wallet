@@ -11,6 +11,8 @@ import installExtension, {
 } from 'electron-devtools-installer'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
+import path from 'path'
+import os from 'os'
 
 import pkg from '../package.json'
 import {
@@ -46,6 +48,7 @@ if (!app.isPackaged) {
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info'
+    log.transports.console.level = false
   }
 }
 
@@ -83,10 +86,12 @@ const createWindow = async () => {
 
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
-  // Open the DevTools.
-  if (!app.isPackaged) {
-    w.webContents.openDevTools()
-  }
+  w.webContents.on('did-frame-finish-load', () => {
+    // Open the DevTools.
+    if (!app.isPackaged) {
+      w.webContents.openDevTools()
+    }
+  })
 
   // Protocol handler for win32
   if (process.platform == 'win32') {
@@ -98,6 +103,11 @@ const createWindow = async () => {
     contents.on('new-window', async (eventInner, navigationUrl) => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
+    })
+
+    w.webContents.send('app-info', {
+      isPackaged: app.isPackaged,
+      locatePastelConfDir: locatePastelConfDir(),
     })
   })
   // @TODO: Use 'ready-to-show' event
@@ -236,3 +246,15 @@ autoUpdater.on(
 autoUpdater.on('error', err => {
   console.warn(`autoUpdater error: ${err.message}`, err)
 })
+
+const locatePastelConfDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), '.pastel')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel')
+}
