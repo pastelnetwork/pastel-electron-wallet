@@ -4,7 +4,7 @@ import { Title, Description } from './Typography'
 
 type TCard = {
   title: string
-  description: string | ReactNode
+  description: ReactNode
   content: ReactNode
   footer: ReactNode
 }
