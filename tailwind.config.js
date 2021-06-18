@@ -231,6 +231,7 @@ module.exports = {
           ef: '#FFEFEB',
           14: '#14B85F',
           fe: '#FE634C',
+          75: '#FF754C',
         },
         pink: {
           46: '#EF466F',
@@ -349,6 +350,7 @@ module.exports = {
         '65px': '4.063rem',
       },
       borderWidth: {
+        '1px': '0.0625rem',
         '3px': '0.1875rem',
         '5px': '0.3125rem',
       },
@@ -417,6 +419,8 @@ module.exports = {
       textColor: ['active'],
       backgroundColor: ['active'],
       contrast: ['hover', 'focus'],
+      padding: ['first', 'last'],
+      borderRadius: ['first', 'last'],
     },
   },
   plugins: [],

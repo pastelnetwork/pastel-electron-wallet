@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
-import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
+import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 import Select, { TOption } from '../../common/components/Select/Select'
 import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
 import Slider from '../../common/components/Slider/Slider'
@@ -68,7 +68,7 @@ export default function Portfolio(): JSX.Element {
   const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
   const [cards, setCards] = useState<TNFTCard[]>([])
 
-  const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
+  const pageHeaderSortByOptions: TPageHeaderSortByOptions[] = [
     {
       placeholder: 'In review (87)',
       selected: filter,
@@ -77,7 +77,7 @@ export default function Portfolio(): JSX.Element {
     },
   ]
 
-  const sortByOptions: PageHeaderSortByOptions = {
+  const sortByOptions: TPageHeaderSortByOptions = {
     placeholder: 'Likes',
     selected: likes,
     onOptionChange: setLikes,
