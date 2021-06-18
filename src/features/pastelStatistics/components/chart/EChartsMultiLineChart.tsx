@@ -8,6 +8,7 @@ import { saveAs } from 'file-saver'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 import { TLineChartProps, TThemeColor } from '../../common/types'
 import { pricesCSVHeaders, themes } from '../../common/constants'
+import { PrevButton } from '../PrevButton'
 
 import styles from './LineChart.module.css'
 
@@ -253,6 +254,7 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
+        <PrevButton color='#c3921f' />
         <div
           className={styles.lineChartTitle}
           style={{ color: currentTheme?.color }}

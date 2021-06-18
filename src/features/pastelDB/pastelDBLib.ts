@@ -99,11 +99,11 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
 
 export const RemoveSqliteDBFile = async (): Promise<void> => {
   try {
-    fs.promises.unlink(
+    await fs.promises.unlink(
       path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
     )
   } catch (e) {
-    log.error(`pastelDB RemoveSqliteDBFile error: ${e}`)
+    log.error('File not found')
   }
 }
 

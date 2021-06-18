@@ -6,6 +6,7 @@ import * as htmlToImage from 'html-to-image'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { csvHeaders, themes } from '../../common/constants'
+import { PrevButton } from '../PrevButton'
 import {
   TScatterChartProps,
   TThemeColor,
@@ -129,6 +130,7 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
+        <PrevButton color='#c3921f' />
         <div
           className={styles.lineChartTitle}
           style={{ color: currentTheme?.color }}

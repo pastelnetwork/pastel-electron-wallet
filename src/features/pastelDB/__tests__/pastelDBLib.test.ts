@@ -1408,7 +1408,7 @@ describe('managePastelDatabase', () => {
 
   test('RemoveSqliteDBFile should remove sqlite file correctly', async () => {
     // Arrange
-    const unlinkSpy = jest.spyOn(fs.promises, 'unlink').mockRejectedValue(null)
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
     const remoteSpy = jest
       .spyOn(remote.app, 'getPath')
       .mockImplementation(() => '')
@@ -1421,25 +1421,20 @@ describe('managePastelDatabase', () => {
     expect(unlinkSpy).toBeCalledTimes(1)
   })
 
-  test('RemoveSqliteDBFile should throw an error', async () => {
+  test('RemoveSqliteDBFile should log the error', async () => {
     // Arrange
-    const mError = new Error('file not found')
-    const unlinkSpy = jest
-      .spyOn(fs.promises, 'unlink')
-      .mockRejectedValue(mError)
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
     const remoteSpy = jest
       .spyOn(remote.app, 'getPath')
-      .mockImplementation(() => 'errorPath')
+      .mockImplementation(() => '')
     const logSpy = jest.spyOn(log, 'error')
 
     // Act
-    try {
-      await pastelDBLib.RemoveSqliteDBFile()
-      // Assert
-      expect(remoteSpy).toBeCalledTimes(1)
-      expect(unlinkSpy).toBeCalledTimes(1)
-    } catch (error) {
-      expect(logSpy).toBeCalledWith('file not round')
-    }
+    await pastelDBLib.RemoveSqliteDBFile()
+
+    // Assert
+    expect(remoteSpy).toBeCalledTimes(1)
+    expect(unlinkSpy).toBeCalledTimes(1)
+    expect(logSpy).toBeCalledTimes(1)
   })
 })
