@@ -116,6 +116,14 @@ export default function Header(): JSX.Element | null {
         >
           Market
         </MenuItem>
+        {/* need to be removed once decide how to show this form page*/}
+        <MenuItem
+          classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
+          to={routes.FORUM}
+        >
+          Forum
+        </MenuItem>
+        {/* by this line */}
         <MenuItem
           classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
           to={routes.MEMBERS}
@@ -149,7 +157,7 @@ export default function Header(): JSX.Element | null {
         <Icon src={QuestionTag} />
         <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
         <Link to={routes.CHAT}>
-          <Icon classes='ml-6 lg:ml-18px' src={MessageIcon} />
+          <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
         </Link>
         <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
         <Icon

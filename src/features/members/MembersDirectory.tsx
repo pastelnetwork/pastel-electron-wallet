@@ -6,7 +6,7 @@ import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 
 import PageHeader from '../../common/components/PageHeader'
-import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
+import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
 import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
@@ -98,7 +98,7 @@ const MembersDirectory: React.FC = () => {
   const [followers, setFollowers] = useState<TOption | null>(null)
   const [selectedItem, setSelectedItem] = useState(0)
 
-  const pageHeaderSortByOptions: PageHeaderSortByOptions[] = [
+  const pageHeaderSortByOptions: TPageHeaderSortByOptions[] = [
     {
       placeholder: 'Ranking',
       selected: ranking,

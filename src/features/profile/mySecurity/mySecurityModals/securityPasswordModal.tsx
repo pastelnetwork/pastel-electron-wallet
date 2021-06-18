@@ -1,6 +1,6 @@
 import React from 'react'
 // Components
-import Modal from '../../../../common/components/Modal'
+import { Modal } from '../../../../common/components/Modal'
 import { Button } from '../../../../common/components/Buttons'
 import { InputPassword } from '../../../../common/components/Inputs'
 import Link from '../../../../common/components/Link'

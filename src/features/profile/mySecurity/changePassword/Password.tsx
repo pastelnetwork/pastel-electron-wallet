@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
+import Link from '../../../../common/components/Link'
 import { Button } from '../../../../common/components/Buttons'
-import Password from '../components/Password/Password'
-import Card from '../components/Card/Card'
+import Password from '../../components/Password'
+import Card from '../../components/Card'
 
 const ChangePassword = (): JSX.Element => {
   const [newPassword, setNewPassword] = useState('')
@@ -34,21 +35,21 @@ const ChangePassword = (): JSX.Element => {
           We strongly suggest that you save your password in a password manager
           such as{' '}
         </span>
-        <a
+        <Link
           href='https://www.lastpass.com/'
           target='_blank'
-          className='underline text-blue-3f'
+          className='underline'
         >
           LastPass
-        </a>
+        </Link>
         <span> or </span>
-        <a
+        <Link
           href='https://1password.com/'
           target='_blank'
-          className='underline text-blue-3f'
+          className='underline'
         >
           1Password
-        </a>
+        </Link>
         <span>.</span>
       </div>
     </>
@@ -60,14 +61,14 @@ const ChangePassword = (): JSX.Element => {
       className='w-full font-extrabold'
       onClick={submitPassword}
     >
-      Submit new password
+      Submit New Password
     </Button>
   )
 
   return (
     <Card
-      title='Change password'
-      description='Must contain at least 1 letter, 1 number and 1 symbol. Minimum length is 12 characters.'
+      title='Change Password'
+      description='Password must contain at least 1 letter, 1 number, and 1 symbol. Minimum length is 12 characters.'
       content={content}
       footer={footer}
     />
