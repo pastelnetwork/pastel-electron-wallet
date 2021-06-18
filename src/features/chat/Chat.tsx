@@ -16,7 +16,7 @@ import styles from './Chat.module.css'
 import { mockChats, curUser } from './mock-data'
 import { TChatUser } from './common'
 
-export default function Chat(): JSX.Element {
+const Chat = (): JSX.Element => {
   const [newMsgPlaceholder, setNewMsgPlaceholder] = useState(true)
   const [newMsg, setNewMsg] = useState('')
   const [activeChatId, setActiveChatId] = useState<number>(mockChats[0].id)
@@ -232,3 +232,5 @@ export default function Chat(): JSX.Element {
     </div>
   )
 }
+
+export default Chat
