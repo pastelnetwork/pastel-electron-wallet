@@ -91,7 +91,12 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
   )
 }
 
-export default function Header(): JSX.Element {
+export default function Header(): JSX.Element | null {
+  const location = useLocation()
+  if (location.pathname === routes.CHAT) {
+    return null
+  }
+
   return (
     <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed text-gray-71'>
       <div className='flex items-center h-full'>
@@ -151,7 +156,9 @@ export default function Header(): JSX.Element {
       <div className='flex items-center h-full'>
         <Icon src={QuestionTag} />
         <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
-        <Icon classes='ml-6 lg:ml-26px w-18px' src={MessageIcon} notification />
+        <Link to={routes.CHAT}>
+          <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
+        </Link>
         <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
         <Icon
           classes='ml-6 lg:ml-22px'

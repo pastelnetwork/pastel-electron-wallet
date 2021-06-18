@@ -56,6 +56,7 @@ import Nft from '../features/nft'
 import NFTMarketFeed from '../features/NFTMarketFeed'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
+import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
 
@@ -527,6 +528,8 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
+            <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
+            <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
               path={routes.PORTFOLIO_DETAIL}
