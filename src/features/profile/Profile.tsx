@@ -10,18 +10,23 @@ type TProfileProps = {
   }
 }
 
+enum Tabs {
+  info,
+  comments,
+  security,
+}
+
 const Profile = (props: TProfileProps): JSX.Element => {
   const { info } = props
-  const [selectIndex, setSelectIndex] = useState(0)
+  const [tab, setTab] = useState(Tabs.info)
 
   const tabs = [
-    { label: 'Info', count: 2, component: <ProfileGeneral /> },
+    { label: 'Info', count: 2 },
     {
       label: 'Comments',
       count: 26,
-      component: <div className='text-center'> No comments </div>,
     },
-    { label: 'Security', component: <MySecurity info={info} /> },
+    { label: 'Security' },
   ]
 
   const breadcrumbs: TBreadcrumb[] = [
@@ -30,12 +35,12 @@ const Profile = (props: TProfileProps): JSX.Element => {
       route: '#',
     },
     {
-      label: tabs[selectIndex].label,
+      label: tabs[tab].label,
     },
   ]
 
   const onTabToggle = (index: number) => {
-    setSelectIndex(index)
+    setTab(index)
   }
 
   return (
@@ -45,11 +50,15 @@ const Profile = (props: TProfileProps): JSX.Element => {
         title='My Account'
         routes={{
           data: tabs,
-          activeIndex: selectIndex,
+          activeIndex: tab,
           onToggle: onTabToggle,
         }}
       />
-      {tabs[selectIndex]?.component}
+      {tab === Tabs.info && <ProfileGeneral />}
+      {tab === Tabs.comments && (
+        <div className='text-center'> No comments </div>
+      )}
+      {tab === Tabs.security && <MySecurity info={info} />}
     </div>
   )
 }
