@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { KeyboardEvent } from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
@@ -41,6 +41,12 @@ const MenuItem = ({
   )
 }
 
+const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
+  if (['Enter', 'NumpadEnter'].includes(e.code)) {
+    // const tmp = e.nativeEvent.target.
+  }
+}
+
 const SearchBar = () => {
   return (
     <div className='flex-center md:flex-grow md:max-w-sm xl:max-w-lg ml-6 1200px:ml-10 xl:ml-68px'>
@@ -52,6 +58,7 @@ const SearchBar = () => {
         <input
           className='placeholder-gray-b0 h-41px bg-gray-f2 bg-opacity-50 rounded-full px-3 w-180px md:pl-46px md:pr-5 md:w-300px lg:w-300px xl:w-352px'
           placeholder='Search creator or NFT'
+          onKeyPress={onKey}
         />
       </div>
     </div>
