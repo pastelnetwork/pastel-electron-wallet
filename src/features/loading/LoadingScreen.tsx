@@ -276,7 +276,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         this.setState({
           currentStatus: 'Waiting for pasteld to exit...',
         })
-        history.push(routes.LOADING)
+        history.push(routes.WALLET)
         this.pasteld.on('close', () => {
           ipcRenderer.send('appquitdone')
         })
@@ -469,7 +469,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       )
     }
 
-    return <Redirect to={routes.DASHBOARD} />
+    return <Redirect to={routes.WALLET} />
   }
 }
 

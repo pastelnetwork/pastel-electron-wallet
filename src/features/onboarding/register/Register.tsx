@@ -84,14 +84,18 @@ const Register: React.FC = () => {
             <Button
               onClick={handleNextStepChange}
               variant='default'
-              width='130px'
+              style={{ width: '130px' }}
             >
               {isLastStep
                 ? 'Proceed to 1,000 PSL payment'
                 : `Next step ${activeStep + 1}`}
             </Button>
             {!isFirstStep && (
-              <Button onClick={handlePrevStepChange} variant='navigation'>
+              <Button
+                onClick={handlePrevStepChange}
+                variant='navigation'
+                className='w-60'
+              >
                 <img src={icoArrowLeft} />
               </Button>
             )}

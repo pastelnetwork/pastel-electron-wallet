@@ -1,0 +1,23 @@
+.chatHeader {
+  box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.1);
+}
+
+.chatMessageTime {
+  font-size: 0.625rem;
+}
+
+.chatItem {
+  box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.1);
+}
+
+.chatActive {
+  background: rgba(0, 84, 254, 0.0261);
+}
+
+.msgRecv {
+  background: #f4f3fd;
+}
+
+.msgSent {
+  background: #f9f9fb;
+}

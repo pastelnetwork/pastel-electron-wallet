@@ -1,6 +1,7 @@
 {
   "DASHBOARD": "/dashboard",
   "MEMBERS": "/members",
+  "FORUM": "/forum",
   "WALLET": "/wallet",
   "PORTFOLIO": "/portfolio",
   "SEND": "/send",
@@ -15,7 +16,10 @@
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
   "NFT": "/nft",
+  "CHAT": "/chat",
   "PROFILE": "/profile",
   "MEMBERS_PROFILE": "/member_profile",
+  "PORTFOLIO_DETAIL": "/portfolio_detail",
+  "MY_PROFILE": "/my_profile",
   "MARKET": "/market"
 }

@@ -1,3 +1,4 @@
+import dateformat from 'dateformat'
 import { Dayjs } from 'dayjs'
 
 // taken from here: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
@@ -6,6 +7,35 @@ export const formatNumber = (x: number, delimiter = ','): string =>
 
 export const parseFormattedNumber = (input: string, delimiter = ','): number =>
   parseFloat(input.replaceAll(delimiter, ''))
+// taken from https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
+// Example input, output
+// case 1: formatAbbreviatedNumber(759878, 1) = 759.9k
+// case 2: formatAbbreviatedNumber(759878, 0) = 760k
+export const formatAbbreviatedNumber = (x: number, digits: number): string => {
+  const lookup = [
+    { value: 1, symbol: '' },
+    { value: 1e3, symbol: 'k' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e9, symbol: 'G' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e18, symbol: 'E' },
+  ]
+  const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
+  const item = lookup
+    .slice()
+    .reverse()
+    .find(item => {
+      return x >= item.value
+    })
+  return item
+    ? (x / item.value).toFixed(digits).replace(rx, '$1') + item.symbol
+    : '0'
+}
+
+export const formatTime = (val: Date): string => {
+  return dateformat(val, 'hh:MM') // TODO: change if another format required
+}
 
 const distanceUnits = [
   'year',

@@ -11,6 +11,8 @@ import PortfolioPage from '../features/nft/portfolio'
 import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
+import WalletScreen from '../features/wallet'
+import HeaderScreen from '../common/components/Header'
 import Header from '../common/components/Header'
 import {
   TotalBalance,
@@ -41,9 +43,6 @@ import PastelPhotopeaModal, {
   openPastelPhotopeaModal,
 } from '../features/pastelPhotopea'
 import AboutModal, { openAboutModal } from '../features/about'
-import SearchResultsModal, {
-  openSearchResultsModal,
-} from '../features/searchResults'
 import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
@@ -54,10 +53,12 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
-import Profile from '../features/profile'
-import NFTMarketFeed from '../features/nftMarket'
+import NFTMarketFeed from '../features/NFTMarketFeed'
 import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
+import Chat from '../features/chat'
+import { MyProfile } from '../features/profile'
+import { Forum } from '../features/forum'
 
 export type TWalletInfo = {
   connections: number
@@ -496,7 +497,6 @@ class RouteApp extends React.Component<any, any> {
         <PastelPhotopeaModal />
         <PastelSpriteEditorToolModal />
         <AboutModal />
-        <SearchResultsModal />
         <SquooshToolModal />
         <GlitchImageModal />
         {info?.version && <Header />}
@@ -528,6 +528,8 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
+            <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
+            <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
               path={routes.PORTFOLIO_DETAIL}
@@ -547,8 +549,8 @@ class RouteApp extends React.Component<any, any> {
             />
 
             <Route
-              path={routes.PROFILE}
-              render={() => <Profile info={info} />}
+              path={routes.WALLET}
+              render={() => <WalletScreen info={info} />}
             />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
@@ -556,8 +558,14 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.COLLECTOR} render={() => <Collector />} />
 
             <Route path={routes.NFT} render={() => <Nft />} />
-
+            <Route path={routes.FORUM} render={() => <Forum />} />
             <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
+
+            <Route
+              path={routes.MY_PROFILE}
+              render={() => <MyProfile info={info} />}
+            />
+
             <Route
               path={routes.MEMBERS_PROFILE}
               render={() => <MemberProfile />}
@@ -649,5 +657,4 @@ export default connect(null, {
   openSquooshToolModal,
   openUpdateToast,
   openGlitchImageModal,
-  openSearchResultsModal,
 })(RouteApp)

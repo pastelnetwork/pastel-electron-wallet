@@ -1,6 +1,7 @@
 import React from 'react'
 import Input, { TInput } from './Input'
 import EyeIcon from '../../assets/icons/ico-eye.svg'
+import EyeIconHidden from '../../assets/icons/ico-eye-hidden.svg'
 import Icon from '../Icon'
 
 const InputPassword: React.FC<TInput> = props => {
@@ -14,12 +15,21 @@ const InputPassword: React.FC<TInput> = props => {
       {...props}
       type={type}
       append={
-        <Icon
-          src={EyeIcon}
-          variant='center'
-          className='cursor-pointer'
-          onClick={toggleType}
-        />
+        type === 'text' ? (
+          <Icon
+            src={EyeIcon}
+            variant='center'
+            className='cursor-pointer'
+            onClick={toggleType}
+          />
+        ) : (
+          <Icon
+            src={EyeIconHidden}
+            variant='center'
+            className='cursor-pointer'
+            onClick={toggleType}
+          />
+        )
       }
     />
   )
