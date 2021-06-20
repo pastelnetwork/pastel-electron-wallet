@@ -272,7 +272,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
     await addOutputThenDisplay(textConsole)
     setExecutingCommand(false)
-    Input_Terminal.focus()
+    Input_Terminal?.focus()
   }
 
   const addOutputThenDisplay = async (text: string) => {
