@@ -1,4 +1,4 @@
-import React, { KeyboardEvent } from 'react'
+import React, { /*useState,*/ KeyboardEvent } from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
@@ -10,6 +10,7 @@ import MessageIcon from '../../../common/assets/icons/ico-msg.svg'
 import SettingIcon from '../../../common/assets/icons/ico-setting.svg'
 import UserIcon from '../../../common/assets/icons/ico-user.svg'
 import cn from 'classnames'
+import { openSearchResultsModal } from '../../../features/searchResults'
 
 const MenuItem = ({
   to,
@@ -41,13 +42,15 @@ const MenuItem = ({
   )
 }
 
-const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
-  if (['Enter', 'NumpadEnter'].includes(e.code)) {
-    // const tmp = e.nativeEvent.target.
-  }
-}
-
 const SearchBar = () => {
+  const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (['Enter', 'NumpadEnter'].includes(e.code)) {
+      // const tmp = e.nativeEvent.target.
+      console.log('search')
+      openSearchResultsModal()
+    }
+  }
+
   return (
     <div className='flex-center md:flex-grow md:max-w-sm xl:max-w-lg ml-6 1200px:ml-10 xl:ml-68px'>
       <div className='relative'>
@@ -99,6 +102,8 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
 }
 
 export default function Header(): JSX.Element {
+  // const [searchStr, setSearchStr] = useState('')
+
   return (
     <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 font-display border-b border-gray-ed text-gray-71'>
       <div className='flex items-center h-full'>
