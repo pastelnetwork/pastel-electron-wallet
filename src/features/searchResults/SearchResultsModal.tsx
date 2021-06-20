@@ -5,8 +5,9 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './SearchResultsModal.css'
 import { closeSearchResultsModal } from './SearchResultsModalSlice'
 
-export default function SearchResultsModal(): JSX.Element {
+const SearchResultsModal = (): JSX.Element => {
   const { modalIsOpen } = useAppSelector(state => state.searchResultsModal)
+  console.log('modalIsOpen', modalIsOpen)
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen) {
@@ -27,7 +28,7 @@ export default function SearchResultsModal(): JSX.Element {
             textAlign: 'center',
           }}
         >
-          Pastelwallet Fullnode
+          Search Results
         </div>
 
         <div
@@ -49,7 +50,10 @@ export default function SearchResultsModal(): JSX.Element {
         >
           x
         </button>
+        SEARCH RES
       </div>
     </Modal>
   )
 }
+
+export default SearchResultsModal
