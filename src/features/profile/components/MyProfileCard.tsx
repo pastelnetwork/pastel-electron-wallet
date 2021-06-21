@@ -97,7 +97,7 @@ const ProfileCard = ({
               </div>
               <button
                 className={cn(
-                  'filter hover:contrast-125 w-full border text-center rounded-2xl flex items-center justify-center mt-2 h-10 w-120px',
+                  'filter hover:contrast-125 w-full border text-center rounded-2xl flex items-center justify-center mt-2 h-10 w-full',
                   isEmpty
                     ? 'text-white bg-blue-3f'
                     : 'text-blue-3f border-blue-3f',
