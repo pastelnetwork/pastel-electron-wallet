@@ -84,7 +84,7 @@ jobs:
 
   build-macos:
     macos:
-      xcode: 12.4
+      xcode: 11.7
     working_directory: ~/project
     steps:
       - attach_workspace:
