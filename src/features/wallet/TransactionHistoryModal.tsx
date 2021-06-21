@@ -77,20 +77,20 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
           </div>
           <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
             <Radio
-              isChecked={selectedOption === 'all'}
-              clickHandler={param => param && setSelectedOption('all')}
+              checked={selectedOption === 'all'}
+              onChange={param => param && setSelectedOption('all')}
             >
               All
             </Radio>
             <Radio
-              isChecked={selectedOption === 'received'}
-              clickHandler={param => param && setSelectedOption('received')}
+              checked={selectedOption === 'received'}
+              onChange={param => param && setSelectedOption('received')}
             >
               Received
             </Radio>
             <Radio
-              isChecked={selectedOption === 'sent'}
-              clickHandler={param => param && setSelectedOption('sent')}
+              checked={selectedOption === 'sent'}
+              onChange={param => param && setSelectedOption('sent')}
             >
               Sent
             </Radio>

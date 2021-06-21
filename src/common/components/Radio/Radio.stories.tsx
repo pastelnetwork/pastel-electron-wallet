@@ -9,13 +9,13 @@ export default {
 } as Meta
 
 const Template: Story<TRadioProps> = ({ ...args }: TRadioProps) => {
-  const [checked, setChecked] = useState<boolean>(false)
+  const [isChecked, setIsChecked] = useState<boolean>(false)
   return (
     <div>
       <Radio
         {...args}
-        isChecked={checked}
-        clickHandler={param => setChecked(param)}
+        checked={isChecked}
+        onChange={param => setIsChecked(param)}
       >
         All
       </Radio>
@@ -25,5 +25,5 @@ const Template: Story<TRadioProps> = ({ ...args }: TRadioProps) => {
 
 export const SimpleRadio = Template.bind({})
 SimpleRadio.args = {
-  isChecked: true,
+  checked: true,
 }

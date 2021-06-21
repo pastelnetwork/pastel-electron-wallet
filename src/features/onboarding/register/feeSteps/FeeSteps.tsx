@@ -22,26 +22,26 @@ const FeeSteps: React.FC = () => {
       </Typography>
       <Styles.RadioContainer>
         <Radio
-          isChecked={selectedOption === 1}
-          clickHandler={() => setSelectedOption(1)}
+          checked={selectedOption === 1}
+          onChange={() => setSelectedOption(1)}
         >
           Binance.com
         </Radio>
         <Radio
-          isChecked={selectedOption === 2}
-          clickHandler={() => setSelectedOption(2)}
+          checked={selectedOption === 2}
+          onChange={() => setSelectedOption(2)}
         >
           Kucoin.com
         </Radio>
         <Radio
-          isChecked={selectedOption === 3}
-          clickHandler={() => setSelectedOption(3)}
+          checked={selectedOption === 3}
+          onChange={() => setSelectedOption(3)}
         >
           Bircoin.com
         </Radio>
         <Radio
-          isChecked={selectedOption === 4}
-          clickHandler={() => setSelectedOption(4)}
+          checked={selectedOption === 4}
+          onChange={() => setSelectedOption(4)}
         >
           Choose your own variant in web-browser
         </Radio>
