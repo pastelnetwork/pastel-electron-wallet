@@ -108,11 +108,19 @@ workflows:
           requires:
             - install-deps
       - build-ubuntu:
+          filters: &filters-build
+            branches:
+              only:
+                - /release.*/
           requires:
             - lint-and-test
       - build-windows:
+          filters:
+            <<: *filters-build
           requires:
             - lint-and-test
       - build-macos:
+          filters:
+            <<: *filters-build
           requires:
             - lint-and-test
