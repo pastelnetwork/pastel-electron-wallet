@@ -89,7 +89,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: yarn add 'fs/promises'
+      - run: yarn add 'fs'
       - run: yarn make
       - store_artifacts:
           path: ~/project/out/make
