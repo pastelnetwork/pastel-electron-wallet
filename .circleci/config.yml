@@ -57,6 +57,26 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  build-windows:
+    docker:
+      - image: electronuserland/builder:wine-mono-05.21
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: reconfigure wine for x64
+          command: rm -rf /root/.wine
+      - run:
+          name: generate builds
+          command: yarn make --platform=win32
+      - store_artifacts:
+          path: ~/project/out/make/squirrel.windows/x64
 
 workflows:
   lint-test-package:
@@ -70,5 +90,8 @@ workflows:
             branches:
               only:
                 - /release.*/
+          requires:
+            - lint-and-test
+      - build-windows:
           requires:
             - lint-and-test
