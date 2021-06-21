@@ -77,21 +77,23 @@ jobs:
           command: yarn make --platform=win32
       - store_artifacts:
           path: ~/project/out/make/squirrel.windows/x64
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
 
   build-macos:
     macos:
       xcode: 11.7
     working_directory: ~/project
     steps:
-      - attach_workspace:
-          at: ~/project
+      - checkout
+      - restore_cache:
+          keys:
+            - node_deps-{{ checksum "yarn.lock" }}
       - run:
-          name: install missing global dependency
-          command: yarn global add 'fs'
+          name: install dependencies
+          command: yarn --frozen-lockfile
+      - save_cache:
+          key: node_deps-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/project/node_modules
       - run:
           name: build for macos(dmg)
           command: yarn make
@@ -106,12 +108,19 @@ workflows:
           requires:
             - install-deps
       - build-ubuntu:
+          filters: &filters-build
+            branches:
+              only:
+                - /release.*/
           requires:
             - lint-and-test
       - build-windows:
+          filters:
+            <<: *filters-build
           requires:
             - lint-and-test
       - build-macos:
-          context: Release
+          filters:
+            <<: *filters-build
           requires:
             - lint-and-test
