@@ -86,12 +86,12 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - node_deps-{{ checksum "yarn.lock" }}
+            - node_deps_mac-{{ checksum "yarn.lock" }}
       - run:
           name: install dependencies
           command: yarn --frozen-lockfile
       - save_cache:
-          key: node_deps-{{ checksum "yarn.lock" }}
+          key: node_deps_mac-{{ checksum "yarn.lock" }}
           paths:
             - ~/project/node_modules
       - run:
