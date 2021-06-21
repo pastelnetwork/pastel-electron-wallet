@@ -71,7 +71,7 @@ jobs:
           at: ~/project
       - run:
           name: reconfigure wine for x64
-          command: rm -rf /root/.wine
+          command: rm -rf /root/.wine && winecfg
       - run:
           name: generate builds
           command: yarn make --platform=win32
