@@ -53,7 +53,7 @@ jobs:
             apt-get update -y
             apt-get install -y dpkg fakeroot
       - run:
-          name: generate builds
+          name: build for linux(deb)
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
@@ -73,7 +73,7 @@ jobs:
           name: reconfigure wine for x64
           command: rm -rf /root/.wine && winecfg
       - run:
-          name: generate builds
+          name: build for windows
           command: yarn make --platform=win32
       - store_artifacts:
           path: ~/project/out/make/squirrel.windows/x64
@@ -89,8 +89,12 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: yarn add 'fs'
-      - run: yarn make
+      - run:
+          name: install missing global dependency
+          command: yarn global add 'fs'
+      - run:
+          name: build for macos(dmg)
+          command: yarn make
       - store_artifacts:
           path: ~/project/out/make
 
@@ -102,15 +106,9 @@ workflows:
           requires:
             - install-deps
       - build-ubuntu:
-          filters: &filters-build
-            branches:
-              only:
-                - /release.*/
           requires:
             - lint-and-test
       - build-windows:
-          filters:
-            <<: *filters-build
           requires:
             - lint-and-test
       - build-macos:
