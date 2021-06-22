@@ -1,7 +1,7 @@
 import { TMemberCard } from 'features/members/MemberCard'
 import { TNFTCard } from '../../common/components/NFTCard'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
-import image from '../../common/assets/images/nft-card-placeholder.png'
+import nftImage from '../../common/assets/images/nft-card-placeholder.png'
 import { TOption } from 'common/components/Select/Select'
 
 export const mockMembers: TMemberCard[] = [
@@ -54,12 +54,40 @@ export const mockMembers: TMemberCard[] = [
     isVerified: true,
     followedByUser: true,
   },
+  {
+    avatar: mockAvatar,
+    followers: 588,
+    name: 'Reymundo',
+    isVerified: true,
+    followedByUser: true,
+  },
+  {
+    avatar: mockAvatar,
+    followers: 208,
+    name: 'Emilio Canzoni',
+    isVerified: true,
+    followedByUser: false,
+  },
+  {
+    avatar: mockAvatar,
+    followers: 443,
+    name: 'Romario Alabente',
+    isVerified: true,
+    followedByUser: false,
+  },
+  {
+    avatar: mockAvatar,
+    followers: 502,
+    name: 'Petro Doroshenko',
+    isVerified: true,
+    followedByUser: true,
+  },
 ]
 
 const mockCardProps: TNFTCard = {
   author: 'zndrson',
   avatarSrc: mockAvatar,
-  imageSrc: image,
+  imageSrc: nftImage,
   likes: 23,
   onSale: true,
   price: '222K',

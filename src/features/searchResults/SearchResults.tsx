@@ -31,8 +31,8 @@ const SearchResultsContent = (
   }
 
   return (
-    <div className='paper px-10 py-7 h-full'>
-      <div className='flex items-center'>
+    <div className='paper px-10 py-7 pb-9 flex flex-col h-full'>
+      <div className='flex items-center pr-7'>
         <div className='text-2xl font-extrabold text-gray-900'>
           Search Results
         </div>
@@ -81,7 +81,7 @@ const SearchResultsContent = (
         </div>
       </div>
 
-      <div className='h-4/5 overflow-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 mt-7 pr-3 pb-3 pt-3'>
+      <div className='flex-grow overflow-auto grid auto-rows-max grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 mt-10 pr-3 pb-3'>
         {showResult === ResultTypes.NFTs &&
           props.foundNFTs.map((item, i) => (
             <NFTCard
@@ -112,7 +112,7 @@ const SearchResults = ({
 }: TSearchResultsProps): JSX.Element => {
   return (
     <Modal
-      className='w-11/12 h-4/5'
+      className='w-1440px max-w-9/10 h-645px max-h-9/10'
       open={open}
       onClose={props.onClose}
       closeButton
