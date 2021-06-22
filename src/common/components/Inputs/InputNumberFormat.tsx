@@ -3,13 +3,10 @@ import Input, { TInput } from './Input'
 import NumberFormat from 'react-number-format'
 import { Override } from '../../utils/types'
 
-type TInputNumberFormat = Override<
-  TInput,
-  { type: 'text' | 'password'; displayType: 'text' | 'input' }
->
+type TInputNumberFormat = Override<TInput, { displayType?: 'text' | 'input' }>
 
 const InputNumberFormat = ({
-  displayType,
+  displayType = 'input',
   ...props
 }: TInputNumberFormat): JSX.Element => {
   return (
@@ -17,6 +14,7 @@ const InputNumberFormat = ({
       displayType={displayType}
       customInput={Input}
       thousandSeparator={true}
+      className='w-full'
       {...props}
     />
   )

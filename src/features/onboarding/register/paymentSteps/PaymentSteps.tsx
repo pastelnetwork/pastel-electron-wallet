@@ -19,26 +19,26 @@ const BackupSteps = (): JSX.Element => {
       </Typography>
       <Styles.RadioContainer>
         <Radio
-          isChecked={selectedOption === 1}
-          clickHandler={() => setSelectedOption(1)}
+          checked={selectedOption === 1}
+          onChange={() => setSelectedOption(1)}
         >
           Centralized exchange (Coinbase, Binance etc.)
         </Radio>
         <Radio
-          isChecked={selectedOption === 2}
-          clickHandler={() => setSelectedOption(2)}
+          checked={selectedOption === 2}
+          onChange={() => setSelectedOption(2)}
         >
           Decentralized exchange (Uniwap etc.)
         </Radio>
         <Radio
-          isChecked={selectedOption === 3}
-          clickHandler={() => setSelectedOption(3)}
+          checked={selectedOption === 3}
+          onChange={() => setSelectedOption(3)}
         >
           PSL Address Private Key Import
         </Radio>
         <Radio
-          isChecked={selectedOption === 4}
-          clickHandler={() => setSelectedOption(4)}
+          checked={selectedOption === 4}
+          onChange={() => setSelectedOption(4)}
         >
           Airdrop promotion code
         </Radio>

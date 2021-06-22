@@ -368,7 +368,6 @@ module.exports = {
         '598px': '37.375rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
-        '1215px': '75.9375rem',
         '9/10': '90%',
         fit: 'fit-content',
       },
@@ -400,6 +399,7 @@ module.exports = {
       width: {
         '244px': '15.25rem',
         '300px': '17.75rem',
+        '1215px': '75.9375rem',
         fit: 'fit-content',
       },
       height: {

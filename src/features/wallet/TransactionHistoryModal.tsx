@@ -4,7 +4,7 @@ import Table from '../../common/components/Table'
 import * as momentRange from 'moment-range'
 import { OnSelectCallbackParam } from 'react-daterange-picker'
 import DateRangeSelector from '../../common/components/DateRangeSelector/DateRangeSelector'
-import Radio from '../../common/components/Radio/Radio'
+import Radio from '../../common/components/Radio'
 import Select, { TOption } from '../../common/components/Select/Select'
 import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
 import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
@@ -25,7 +25,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   handleClose,
 }) => {
   const [selectedOption, setSelectedOption] = useState<
-    'all' | 'received' | 'sent' | 'in progress'
+    'all' | 'received' | 'sent'
   >('all')
   const [dates, setDates] = useState<momentRange.DateRange>()
   const [address, setAddress] = useState<TOption | null>({
@@ -77,20 +77,20 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
           </div>
           <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
             <Radio
-              isChecked={selectedOption === 'all'}
-              clickHandler={() => setSelectedOption('all')}
+              checked={selectedOption === 'all'}
+              onChange={param => param && setSelectedOption('all')}
             >
               All
             </Radio>
             <Radio
-              isChecked={selectedOption === 'received'}
-              clickHandler={() => setSelectedOption('received')}
+              checked={selectedOption === 'received'}
+              onChange={param => param && setSelectedOption('received')}
             >
               Received
             </Radio>
             <Radio
-              isChecked={selectedOption === 'sent'}
-              clickHandler={() => setSelectedOption('sent')}
+              checked={selectedOption === 'sent'}
+              onChange={param => param && setSelectedOption('sent')}
             >
               Sent
             </Radio>
@@ -143,7 +143,7 @@ const Columns = [
             ? clockYellowIcon
             : value == 'failed'
             ? crossIcon
-            : undefined
+            : ''
         }
         className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
       />

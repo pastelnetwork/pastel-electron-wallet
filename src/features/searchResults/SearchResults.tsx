@@ -39,8 +39,8 @@ const SearchResultsContent = (
         <div className='flex ml-12'>
           <div>
             <Radio
-              isChecked={showResult === ResultTypes.NFTs}
-              clickHandler={() => setShowResult(ResultTypes.NFTs)}
+              checked={showResult === ResultTypes.NFTs}
+              onChange={() => setShowResult(ResultTypes.NFTs)}
             >
               <span
                 className={cn(
@@ -54,8 +54,8 @@ const SearchResultsContent = (
           </div>
           <div className='ml-5'>
             <Radio
-              isChecked={showResult === ResultTypes.Members}
-              clickHandler={() => setShowResult(ResultTypes.Members)}
+              checked={showResult === ResultTypes.Members}
+              onChange={() => setShowResult(ResultTypes.Members)}
             >
               <span
                 className={cn(
@@ -112,7 +112,7 @@ const SearchResults = ({
 }: TSearchResultsProps): JSX.Element => {
   return (
     <Modal
-      className='w-1440px max-w-9/10 h-645px max-h-9/10'
+      className='w-1215px max-w-9/10 h-645px max-h-9/10'
       open={open}
       onClose={props.onClose}
       closeButton
