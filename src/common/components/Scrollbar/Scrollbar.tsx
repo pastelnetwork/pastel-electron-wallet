@@ -3,46 +3,39 @@ import SimpleBar from 'simplebar-react'
 import cn from 'classnames'
 
 export type TScrollbar = {
-  maxHeight?: number | string
-  hasPageHeader?: boolean
+  maxHeight?: string
   className?: string
   autoHide?: boolean
-  [x: string]: ReactNode | string | undefined
+  children?: ReactNode
+  hasPageHeader?: boolean
 }
 
-const Scrollbar: React.FC<TScrollbar> = ({
+const Scrollbar = ({
   children,
   maxHeight,
   className,
-  autoHide = false,
+  autoHide = true,
   hasPageHeader,
-  ...otherProps
-}) => {
-  const classes = cn(
-    {
-      'custom-scroll': true,
-    },
-    className,
-  )
+}: TScrollbar): JSX.Element => {
+  const classes = cn({
+    'custom-scroll': true,
+    ...(typeof className === 'string' ? { [className]: true } : {}),
+  })
   const calcMaxHeight = maxHeight
     ? maxHeight
     : hasPageHeader
     ? 'calc(100vh - 186px)'
     : 'calc(100vh - 86px)'
+
   return (
     <SimpleBar
       className={classes}
-      style={{ height: calcMaxHeight }}
-      {...otherProps}
+      style={{ maxHeight: `${calcMaxHeight}px`, height: calcMaxHeight }}
       autoHide={autoHide}
     >
       {children}
     </SimpleBar>
   )
-}
-
-Scrollbar.defaultProps = {
-  autoHide: true,
 }
 
 export default Scrollbar
