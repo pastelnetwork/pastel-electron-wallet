@@ -50,7 +50,7 @@ export default function Select(props: TSelectProps): JSX.Element {
     <Downshift
       selectedItem={selected}
       onChange={onChange}
-      itemToString={item => (item ? item.value : '')}
+      itemToString={item => (item ? item.label : '')}
       onInputValueChange={onInputValueChange}
     >
       {({
@@ -66,7 +66,7 @@ export default function Select(props: TSelectProps): JSX.Element {
         const value = autocomplete && inputValue && inputValue.toString()
         const filteredOptions = isOpen
           ? value
-            ? options.filter(option => option.value.startsWith(value))
+            ? options.filter(option => option.label.startsWith(value))
             : options
           : undefined
 

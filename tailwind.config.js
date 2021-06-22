@@ -24,6 +24,7 @@ module.exports = {
     extend: {
       spacing: {
         '1.5px': '0.09375rem',
+        '2px': '0.125rem',
         '2.5px': '0.15625rem',
         '3px': '0.1875rem',
         '5px': '0.3125rem',
@@ -55,10 +56,12 @@ module.exports = {
         '35px': '2.188rem',
         '37px': '2.313rem',
         '38px': '2.375rem',
+        '39px': '2.4375rem',
         '40px': '2.5rem',
         '41px': '2.5625rem',
         '41.5px': '2.59375rem',
         '42px': '2.625rem',
+        '43px': '2.6875rem',
         '46px': '2.875rem',
         '50px': '3.125rem',
         '54px': '3.375rem',

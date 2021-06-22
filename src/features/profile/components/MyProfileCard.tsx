@@ -30,11 +30,15 @@ const ProfileCard = ({
     twitter: 'www.twitter.com/@dirk_jaison',
     walletId: '0xc4c16a645a23ffb21a',
     username: '@zndrson',
+    nativeCurrency: 'USD',
   }
 
   const [name, setName] = useState<string>(data.name)
   const [facebook, setFacebook] = useState<string>(data.facebook)
   const [twitter, setTwitter] = useState<string>(data.twitter)
+  const [nativeCurrency, setNativeCurrency] = useState<string>(
+    data.nativeCurrency,
+  )
 
   useEffect(() => {
     setFacebook(isEmpty ? '' : data.facebook)
@@ -84,20 +88,20 @@ const ProfileCard = ({
                   <img
                     src={ico_facebook}
                     hidden={!facebook.length}
-                    className='cursor-pointer'
+                    className={!facebook.length ? 'hidden' : ''}
                   />
                 </button>
                 <button>
                   <img
                     src={ico_twitter}
                     hidden={!twitter.length}
-                    className='cursor-pointer'
+                    className={!twitter.length ? 'hidden' : ''}
                   />
                 </button>
               </div>
               <button
                 className={cn(
-                  'filter hover:contrast-125 w-full border text-center rounded-2xl flex items-center justify-center mt-2 h-10 w-full',
+                  'filter hover:contrast-125 w-full border text-center rounded-2xl flex items-center justify-center mt-2 h-10',
                   isEmpty
                     ? 'text-white bg-blue-3f'
                     : 'text-blue-3f border-blue-3f',
@@ -109,6 +113,9 @@ const ProfileCard = ({
                 Edit Profile
                 <img src={ico_pencil} className='ml-1 w-13px cursor-pointer' />
               </button>
+              <div className='flex px-10px text-gray-71 mt-33px text-sm'>
+                Native Currency: {nativeCurrency}
+              </div>
             </div>
             <div className='flex flex-center pb-4 text-gray-71'>
               <Toggle
@@ -141,9 +148,17 @@ const ProfileCard = ({
                   </div>
                 ))}
               </div>
+              <div className='flex px-10px text-gray-71 mt-21px text-sm items-center'>
+                Native Currency:
+                <input
+                  value={nativeCurrency}
+                  onChange={e => setNativeCurrency(e.target.value)}
+                  className='w-43px h-39px ml-1 border rounded pl-1'
+                />
+              </div>
             </div>
             <button
-              className='filter hover:contrast-125 w-full cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-2 h-10 w-120px text-gray-fc bg-blue-3f border-blue-3f'
+              className='filter hover:contrast-125 w-full cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-2 h-10 text-gray-fc bg-blue-3f border-blue-3f'
               onClick={() => {
                 setEditMode(false)
               }}

@@ -17,13 +17,11 @@ const ProfileGeneral = ({
   const data = {
     location: 'New York, US',
     language: 'English',
-    categories: ['motion graphics', 'illustration', 'abstract'],
-    reputation: 3.89,
-    buyerBans: 3,
-    highestFeeRecieved: { value: '136,200,000', comment: 632 },
-    totalSalesAmount: { value: '560,600,00', comment: 211 },
-    totalItemsSold: 14,
-    topCategoryPercentage: 'motion graphics 30%',
+    categories: ['Motion Graphics', 'Illustration', 'Abstract'],
+    reputation: 4.89,
+    highestFeeRecieved: { value: '136,200', comment: 632 },
+    totalSalesAmount: { value: '560,600', comment: 211 },
+    totalNFTsSold: '124 Copies across 5 NFTs',
     bio:
       'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
   }
@@ -35,10 +33,14 @@ const ProfileGeneral = ({
       buyerBans: 0,
       highestFeeRecieved: { value: 0 },
       totalSalesAmount: { value: 0 },
-      totalItemsSold: 0,
+      totalNFTsSold: '0 Copies across 0 NFTs',
       topCategoryPercentage: '0%',
     })
   }
+
+  useEffect(() => {
+    setCategories(data.categories)
+  }, [isEmpty])
 
   const [categories, setCategories] = useState<Array<string>>(data.categories)
   const [bio, setBio] = useState<string>(data.bio)
@@ -52,8 +54,8 @@ const ProfileGeneral = ({
   }, [isEmpty])
 
   return (
-    <div className='flex-grow w-full 1200px:w-3/5 1200px:pr-10 px-10'>
-      <div className='w-full pb-4 space-y-4'>
+    <div className='flex-grow w-full 1200px:w-3/5 1200px:pr-10 px-10 space-y-24'>
+      <div className='w-full space-y-4'>
         <ProfileGeneralRow title='Location'>
           {editMode ? (
             <Select
@@ -85,27 +87,31 @@ const ProfileGeneral = ({
             <Categories value={categories} onChange={setCategories} />
           ) : (
             <div className='flex whitespace-pre-wrap text-gray-4a'>
-              {categories.join(', ')}
+              {categories.length == 0 ? 'None' : categories.join(', ')}
             </div>
           )}
         </ProfileGeneralRow>
 
         <ProfileGeneralRow title='Buyer reputation'>
           <StarRate rate={data.reputation} />
-          <div className='1200px:pl-2 text-gray-500'>
-            {data.reputation} reputation
+          <div className='1200px:pl-2 text-gray-500 text-sm flex items-center'>
+            {data.reputation.toFixed(2)}
           </div>
         </ProfileGeneralRow>
-        <ProfileGeneralRow title='Buyer bans'>
-          <Tooltip content='Text placeholder' type='top' width={140}>
-            <div className='text-blue-400 cursor-pointer'>3</div>
-          </Tooltip>
-        </ProfileGeneralRow>
       </div>
-      <div className='w-full pb-4 pt-4 space-y-4'>
+      <div className='w-full space-y-4'>
         <ProfileGeneralRow title='Highest fee recieved'>
-          <div>
-            {data.highestFeeRecieved.value}k PSL
+          <div className='flex'>
+            <Tooltip
+              content='-$681 based on current PSL price'
+              classnames='text-12px'
+              type='top'
+              width={200}
+            >
+              <div className='cursor-pointer'>
+                {data.highestFeeRecieved.value} PSL
+              </div>
+            </Tooltip>
             {data.highestFeeRecieved.comment && (
               <span className='ml-2 bg-gray-e6 rounded px-1 font-medium py-2px'>
                 Top #{data.highestFeeRecieved.comment}
@@ -114,8 +120,17 @@ const ProfileGeneral = ({
           </div>
         </ProfileGeneralRow>
         <ProfileGeneralRow title='Total sales amount'>
-          <div>
-            {data.totalSalesAmount.value}k PSL
+          <div className='flex'>
+            <Tooltip
+              content='-$681 based on current PSL price'
+              classnames='text-12px'
+              type='top'
+              width={200}
+            >
+              <div className='cursor-pointer'>
+                {data.totalSalesAmount.value} PSL
+              </div>
+            </Tooltip>
             {data.totalSalesAmount.comment && (
               <span className='ml-2 bg-gray-e6 rounded px-1 font-medium py-2px'>
                 Top #{data.totalSalesAmount.comment}
@@ -123,14 +138,11 @@ const ProfileGeneral = ({
             )}
           </div>
         </ProfileGeneralRow>
-        <ProfileGeneralRow title='Total items sold'>
-          {data.totalItemsSold}
-        </ProfileGeneralRow>
-        <ProfileGeneralRow title='Top category persentage'>
-          {data.topCategoryPercentage}
+        <ProfileGeneralRow title='Total NFTs Sold'>
+          {data.totalNFTsSold}
         </ProfileGeneralRow>
       </div>
-      <div className='w-full pt-6'>
+      <div className='w-full'>
         <div className='flex pt-2'>
           <div className='w-190px text-gray-71'>Bio</div>
         </div>
@@ -171,11 +183,11 @@ const locations: Array<TOption> = [
 const languages: Array<TOption> = [
   {
     label: 'English',
-    value: '0',
+    value: 'English',
   },
   {
     label: 'Spanish',
-    value: '1',
+    value: 'English',
   },
 ]
 
