@@ -7,21 +7,20 @@ export type TAlert = {
   className?: string
 }
 
-const classes = {
+const classesByCase = {
   success: 'border-success bg-success-background',
   warning: 'border-warning bg-warning-background',
   error: 'border-error bg-error-background',
 }
 
-const Alert: React.FC<TAlert> = ({ variant, className, children }) => {
+const Alert = ({ variant, className, children }: TAlert): JSX.Element => {
+  const classes = cn(
+    'border-l-4 px-4 py-3 rounded',
+    classesByCase[variant],
+    className,
+  )
   return (
-    <div
-      className={cn(
-        'border-l-4 px-4 py-3 rounded',
-        classes[variant],
-        className,
-      )}
-    >
+    <div className={classes}>
       <p className={`text-${variant}`}>{children}</p>
     </div>
   )

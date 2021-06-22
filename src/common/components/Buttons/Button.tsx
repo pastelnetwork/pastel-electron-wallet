@@ -10,11 +10,12 @@ export type TButton = {
   prepend?: ReactNode
   append?: ReactNode
   type?: 'button' | 'submit'
+  width?: number
   secondary?: true
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Button: React.FC<TButton> = ({
+const Button = ({
   children,
   secondary,
   variant = secondary ? 'secondary' : 'default',
@@ -25,7 +26,7 @@ const Button: React.FC<TButton> = ({
   type,
   className,
   ...otherProps
-}) => {
+}: TButton): JSX.Element => {
   const Tag = href ? 'a' : 'button'
 
   const classes = cn(

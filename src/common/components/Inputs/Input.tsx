@@ -8,8 +8,11 @@ export type TInput = {
   className?: string
   type?: 'text' | 'number' | 'tel' | 'email' | 'password'
   prepend?: ReactNode
+  prependOutside?: ReactNode
   append?: ReactNode
+  appendOutside?: ReactNode
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onClick?: () => void
   isValid?: boolean | undefined
   label?: string
   id?: string
@@ -27,7 +30,9 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       onChange,
       type = 'text',
       prepend,
+      prependOutside,
       append,
+      appendOutside,
       isValid,
       label,
       placeholder,
@@ -35,6 +40,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       hint,
       errorMessage,
       disabled,
+      onClick,
       ...otherProps
     },
     ref,
@@ -72,34 +78,46 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
             {label}
           </label>
         )}
-        <div className={classes}>
-          {prepend && <div className='pl-2'>{prepend}</div>}
-
-          <input
-            id={id}
-            ref={ref}
-            className={inputClasses}
-            onChange={onChange}
-            type={type}
-            placeholder={placeholder}
-            {...otherProps}
-            disabled={disabled}
-          />
-          <fieldset className={fieldsetClasses} />
-
-          {append && <div className='pr-2'>{append}</div>}
-
-          {isValid === true && (
-            <div className='pr-2'>
-              <Icon src={CheckIcon} variant='center' />
+        <div className='flex items-center' onClick={onClick}>
+          {prependOutside && (
+            <div className='mr-4 select-none' onClick={onClick}>
+              {prependOutside}
             </div>
           )}
-          {isValid === false && (
-            <div className='pr-2 text-red-7a'>
-              <Icon src={TimesIcon} className='fill-current' />
+          <div className={classes} onClick={onClick}>
+            {prepend && <div className='pl-2 select-none'>{prepend}</div>}
+            <input
+              id={id}
+              ref={ref}
+              className={inputClasses}
+              onChange={onChange}
+              type={type}
+              placeholder={placeholder}
+              {...otherProps}
+              disabled={disabled}
+            />
+            <fieldset className={fieldsetClasses} />
+
+            {append && <div className='pr-2'>{append}</div>}
+
+            {isValid === true && (
+              <div className='pr-2'>
+                <Icon src={CheckIcon} variant='center' />
+              </div>
+            )}
+            {isValid === false && (
+              <div className='pr-2 text-red-7a'>
+                <Icon src={TimesIcon} className='fill-current' />
+              </div>
+            )}
+          </div>
+          {appendOutside && (
+            <div className='ml-4 select-none' onClick={onClick}>
+              {appendOutside}
             </div>
           )}
         </div>
+
         {(errorMessage || hint) && (
           <p
             className={`${

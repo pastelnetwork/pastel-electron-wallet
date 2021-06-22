@@ -9,11 +9,16 @@ ReactModal.setAppElement('#root')
 export type TModal = {
   isOpen: boolean
   handleClose?: React.MouseEventHandler<Element>
-  size?: string
+  size?: 'md' | 'lg' | '3xl' | 'xl' | '4xl'
   children?: ReactNode
 }
 
-const Modal: React.FC<TModal> = ({ isOpen, handleClose, size, children }) => {
+const Modal = ({
+  isOpen,
+  handleClose,
+  size,
+  children,
+}: TModal): JSX.Element => {
   const modalClasses = cn({
     'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 px-12 overflow-auto mx-auto': true,
     [`max-w-${size}`]: size,
