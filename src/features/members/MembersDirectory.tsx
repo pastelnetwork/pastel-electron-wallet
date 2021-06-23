@@ -178,7 +178,7 @@ const MembersDirectory: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className='overflow-y-autospace-y-5'>
+            <div className='space-y-5'>
               {mockMemberStrips.map(item => (
                 <MemberStrip {...item} key={item.id} />
               ))}
