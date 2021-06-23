@@ -26,7 +26,7 @@ const SecurityPasswordModal = ({
           <Link>I&apos;ve forgot my password</Link>
         </div>
       </div>
-      <Button variant='default' onClick={handleClose} fluid>
+      <Button variant='default' onClick={handleClose} className='w-full'>
         Confirm
       </Button>
     </Modal>
