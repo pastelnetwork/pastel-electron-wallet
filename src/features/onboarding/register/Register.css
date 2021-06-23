@@ -1,0 +1,13 @@
+.step:not(:last-of-type) {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.step:not(:last-of-type):after {
+  content: '';
+  position: absolute;
+  height: 32px;
+  border-left: 1.6px dashed #a6b0c2;
+  bottom: -40px;
+  left: 55px;
+}

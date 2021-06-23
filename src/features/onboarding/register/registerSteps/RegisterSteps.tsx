@@ -1,12 +1,18 @@
-import * as React from 'react'
-
+import React, { useState, FormEvent } from 'react'
+import { useForm, UseFormReturn } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Link } from 'react-router-dom'
 import { Input } from '../../../../common/components/Inputs'
 import Checkbox from '../../../../common/components/Checkbox/Checkbox'
-import FormLoading from '../../../../common/components/FormLoading/FormLoading'
+import { NextButton } from '../Buttons'
 
-import { colors } from '../../../../common/theme/colors'
+type TFormData = {
+  username: string
+  password: string
+}
 
-import * as Styles from './RegisterSteps.styles'
+export type TForm = UseFormReturn<TFormData>
 
 interface LoginFormInput {
   value: string
@@ -20,80 +26,107 @@ const initialInputState = {
   isTouched: false,
 }
 
-const StepLogin = (): JSX.Element => {
-  const [username, setUsername] = React.useState<LoginFormInput>(
-    initialInputState,
-  )
-  const [password, setPassword] = React.useState<LoginFormInput>(
-    initialInputState,
-  )
-  const [isChecked, setIsChecked] = React.useState(false)
+const usernameMinLength = 4
+const passMinLength = 8
 
-  const handleCheckboxClick = (selected: boolean) => {
+const schema = yup.object().shape({
+  username: yup.string().label('User Name').min(usernameMinLength).required(),
+  password: yup.string().label('Password').min(passMinLength).required(),
+})
+
+export type TStepRegisterProps = {
+  goNext(): void
+}
+
+const StepRegister = (props: TStepRegisterProps): JSX.Element => {
+  const [username, setUsername] = useState<LoginFormInput>(initialInputState)
+  const [password, setPassword] = useState<LoginFormInput>(initialInputState)
+  const [isChecked, setIsChecked] = useState(false)
+
+  const onAgreementClicked = (selected: boolean) => {
     setIsChecked(selected)
   }
 
+  const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {
+    // validate user name
+    setUsername({
+      ...username,
+      value: event.currentTarget.value,
+      hasError: true,
+    })
+  }
+
+  const form = useForm<TFormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  })
+
+  const submit = () => {
+    //const values = form.getValues()
+    //goToNextStep()
+  }
+
+  const nextActive = !username.hasError && !password.hasError && isChecked
+
   return (
-    <Styles.Container>
-      <Input
-        type='text'
-        label='User name'
-        placeholder='i.e banksy168'
-        value={username.value}
-        onChange={(event: React.FormEvent<HTMLInputElement>) =>
-          setUsername({
-            ...username,
-            value: event.currentTarget.value,
-            hasError: true,
-          })
-        }
-        ref={null}
-        errorMessage={
-          username.hasError ? 'Please enter a valid username' : null
-        }
-      />
-      <Input
-        type='password'
-        label='Password'
-        value={password.value}
-        onChange={(event: React.FormEvent<HTMLInputElement>) =>
-          setPassword({
-            ...password,
-            value: event.currentTarget.value,
-          })
-        }
-        ref={null}
-        errorMessage={
-          password.hasError ? 'Please enter a valid password' : null
-        }
-        hint='at least 8 characters and at least 2 numbers'
-      />
-      <Styles.LoadingContainer>
-        <FormLoading
-          background={
-            password.value ? colors.success.default : colors.loader.red
+    <div className='pt-12 flex flex-col h-full'>
+      <form className='flex-grow' onSubmit={form.handleSubmit(submit)}>
+        <Input
+          form={form}
+          className='w-full'
+          type='text'
+          label='User name'
+          placeholder='i.e banksy168'
+          value={username.value}
+          onChange={onUsernameChanged}
+          ref={null}
+          errorMessage={
+            username.hasError ? 'Please enter a valid username' : null
           }
         />
-        <FormLoading
-          background={
-            password.value ? colors.success.default : colors.loader.default
-          }
+        <div className=' mt-6'>
+          <Input
+            form={form}
+            className='w-full'
+            type='password'
+            label='Password'
+            value={password.value}
+            onChange={(event: FormEvent<HTMLInputElement>) =>
+              setPassword({
+                ...password,
+                value: event.currentTarget.value,
+              })
+            }
+            ref={null}
+            errorMessage={
+              password.hasError ? 'Please enter a valid password' : null
+            }
+            hint='at least 8 characters and at least 2 numbers'
+          />
+        </div>
+
+        <div className='mt-6'>
+          <Checkbox isChecked={isChecked} clickHandler={onAgreementClicked}>
+            I certify that I’m 18 years of age or older, and agree to the{' '}
+            <Link to='#' className='link'>
+              User Agreement and Privacy Policy
+            </Link>
+          </Checkbox>
+        </div>
+      </form>
+
+      <div className='mt-7 flex justify-end'>
+        <NextButton
+          onClick={() => props.goNext()}
+          text='Next step 2'
+          active={nextActive}
         />
-        <FormLoading
-          background={
-            password.value ? colors.success.default : colors.loader.default
-          }
-        />
-        <FormLoading background={colors.loader.default} />
-      </Styles.LoadingContainer>
-      <Styles.CheckboxContainer>
-        <Checkbox isChecked={isChecked} clickHandler={handleCheckboxClick}>
-          I certify that I’m 18 years of age or older, and agree to the User
-          Agreement and Privacy Policy
-        </Checkbox>
-      </Styles.CheckboxContainer>
-    </Styles.Container>
+      </div>
+    </div>
   )
 }
 
-export default StepLogin
+export default StepRegister
