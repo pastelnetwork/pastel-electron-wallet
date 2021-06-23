@@ -10,6 +10,7 @@ import PageHeader from '../../common/components/PageHeader'
 import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 import ScrollBar from '../../common/components/Scrollbar'
 
+
 const mockCardProps: TNFTCard = {
   author: 'zndrson',
   avatarSrc: avatar,

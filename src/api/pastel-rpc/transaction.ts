@@ -257,7 +257,8 @@ export class TransactionRPC {
    * @returns ITTransactionResult[]
    */
   async fetchTandZTransactions(): Promise<ITTransactionResult[]> {
-    const senttxstorePromise = await this.loadSentTxns()
+    const senttxstore = await this.loadSentTxns()
+    console.log(senttxstore, '<><><><>')
     const { result: txtListResult } = await this.fetchTxns()
 
     // Flat list of transactions
@@ -292,7 +293,7 @@ export class TransactionRPC {
       ),
     )
 
-    const transactions = ttxlist.concat(ztxlist).concat(senttxstorePromise)
+    const transactions = ttxlist.concat(ztxlist).concat(senttxstore)
 
     return sortTxnsResult(transactions)
   }

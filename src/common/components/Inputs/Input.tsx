@@ -8,6 +8,7 @@ export type TInput = {
   className?: string
   type?: 'text' | 'number' | 'tel' | 'email' | 'password'
   prepend?: ReactNode
+  prependOutside?: ReactNode
   append?: ReactNode
   appendOutside?: ReactNode
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -15,6 +16,7 @@ export type TInput = {
   isValid?: boolean | undefined
   label?: string
   id?: string
+  value?: string
   hint?: string
   errorMessage?: string | null
   disabled?: boolean
@@ -30,12 +32,14 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       onChange,
       type = 'text',
       prepend,
+      prependOutside,
       append,
       appendOutside,
       isValid,
       label,
       placeholder,
       id,
+      value,
       hint,
       errorMessage,
       disabled,
@@ -71,13 +75,26 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
 
     return (
       <div className={wrapperClasses}>
-        {label && <div className={labelClassName}>{label}</div>}
-        <div className={classes}>
-          <div className='relative flex items-center w-full' onClick={onClick}>
+        {label && (
+          <label
+            htmlFor={id || ''}
+            className='inline-block text-gray-71 text-h5 pb-2'
+          >
+            {label}
+          </label>
+        )}
+        <div className={classes} onClick={onClick}>
+          {prependOutside && (
+            <div className='mr-4 select-none' onClick={onClick}>
+              {prependOutside}
+            </div>
+          )}
+          <div className={classes} onClick={onClick}>
             {prepend && <div className='pl-2 select-none'>{prepend}</div>}
             <input
               id={id}
               ref={ref}
+              value={value}
               className={inputClasses}
               onChange={onChange}
               type={type}
@@ -86,7 +103,6 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
               disabled={disabled}
             />
             <fieldset className={fieldsetClasses} />
-
             {append && <div className='pr-2'>{append}</div>}
 
             {isValid === true && (
@@ -106,15 +122,11 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
             </div>
           )}
         </div>
-
         {(errorMessage || hint) && (
           <p
-            className={cn(
-              `${
-                isValid === false ? 'text-red-7a' : 'text-button-text'
-              } text-h6 pt-1`,
-              hintClassName,
-            )}
+            className={`${
+              isValid === false ? 'text-red-7a' : 'text-button-text'
+            } text-h6 pt-1`}
           >
             {errorMessage ? errorMessage : hint}
           </p>

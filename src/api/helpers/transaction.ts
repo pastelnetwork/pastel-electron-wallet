@@ -1,11 +1,14 @@
 import transcoder from 'hex-string'
+import Utils from 'legacy/utils/utils'
 
 import {
+  IAddressBalance,
   IBaseAddAm,
   IBaseTransaction,
   ITransaction,
   ITTransactionInfoResult,
   ITTransactionResult,
+  TransactionType,
 } from '../../types/rpc'
 
 /**
@@ -88,10 +91,24 @@ const mapTxnsResult = (
     vjoinsplit: [],
     size: 0,
     lastblock: '',
-    type: 'receive',
+    type: TransactionType.RECEIVE,
     detailedTxns,
     inputAddresses: [],
   }
 }
 
-export { mapTxnsResult, parseMemo, sortTxnsResult }
+const getAddressesWithHighBalances = (
+  addressesWithBalance: IAddressBalance[],
+): IAddressBalance[] => {
+  // Find a z-address with the high balance
+  return addressesWithBalance
+    .filter((ab: IAddressBalance) => Utils.isSapling(ab.address))
+    .filter((ab: IAddressBalance) => ab.balance > 0)
+}
+
+export {
+  mapTxnsResult,
+  parseMemo,
+  sortTxnsResult,
+  getAddressesWithHighBalances,
+}

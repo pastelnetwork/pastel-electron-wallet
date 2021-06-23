@@ -12,30 +12,28 @@ import Toggle from '../../common/components/Toggle'
 import Button from '../../common/components/Button/Button'
 import Select from '../../common/components/Select/Select'
 
-import pasetIcon from '../../common/assets/icons/ico-paste.svg'
-import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
-import viewIcon from '../../common/assets/icons/ico-view.svg'
 import PDFIcon from '../../common/assets/icons/ico-key-pdf.svg'
-import CrossIcon from '../../common/assets/icons/ico-cross-btn.svg'
-import SaveIcon from '../../common/assets/icons/ico-save.svg'
 import Table, { TRow } from '../../common/components/Table'
-
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
 import Breadcrumbs from '../../common/components/Breadcrumbs'
-
-export type TWalletData = {
-  id: number
-  address: string
-  time: string
-  qr_code: string
-  public_key: string
-  amount: number
-  psl: number
-  type: 'transparent' | 'shielded'
-  address_nick: string
-}
+import { ControlRPC, WalletRPC } from 'api/pastel-rpc'
+import {
+  IAddressBook,
+  IAddressRow,
+  IBalanceCard,
+  Info,
+  ITotalBalanceResult,
+} from 'types/rpc'
+import QRCode from 'qrcode.react'
+import Utils from 'legacy/utils/utils'
+import { useAppSelector } from 'redux/hooks'
+import { RootState } from '../../redux/store'
+import dayjs from 'dayjs'
+import { AddressForm } from './AddressForm'
+import AddressbookImpl from 'legacy/utils/AddressbookImpl'
+import Alert from 'common/components/Alert'
 
 const paymentSources = [
   {
@@ -46,128 +44,7 @@ const paymentSources = [
   },
 ]
 
-type TInfoProps = {
-  currencyName: string
-}
-
-type Tprops = {
-  info: TInfoProps
-}
-
-const WalletScreen = (props: Tprops): JSX.Element => {
-  const [walletDatas, setWalletDatas] = useState<Array<TWalletData>>([
-    {
-      id: 7,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v40',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'transparent',
-      address_nick: '',
-    },
-    {
-      id: 8,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v41',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'transparent',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v42',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'transparent',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v43',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'shielded',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v44',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'shielded',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v45',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'shielded',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v46',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'shielded',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v47',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'shielded',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v48',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'shielded',
-      address_nick: '',
-    },
-    {
-      id: 9,
-      address: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v49',
-      time: '1d 1 h 25m ago',
-      qr_code: '',
-      public_key: '',
-      amount: 110,
-      psl: 18000,
-      type: 'shielded',
-      address_nick: '',
-    },
-  ])
-
+const WalletScreen = (): JSX.Element => {
   const Columns = [
     {
       key: 'address',
@@ -175,125 +52,67 @@ const WalletScreen = (props: Tprops): JSX.Element => {
       name: 'Address name',
       headerColClasses: '-ml-5',
       custom: (value: string | number, row: TRow | undefined) => (
-        <div className='flex ml-3 xl:ml-21px items-center mr-2 md:mr-0'>
-          {edit === value ? (
-            <input
-              value={editName}
-              onChange={e => {
-                setEditName(e.target.value)
-              }}
-              className='w-220px md:w-262px h-10 border border-link text-sm font-medium rounded px-4'
-            ></input>
-          ) : !!row && row.address_nick.toString() ? (
-            <div className='w-220px md:w-262px'>
-              <Tooltip
-                width={300}
-                type='right'
-                content={row.address.toString()}
-              >
-                <span className='text-blue-3f cursor-pointer'>
-                  {row.address_nick.toString()}
-                </span>
-              </Tooltip>
-            </div>
-          ) : (
-            <span className='w-220px md:w-262px text-blue-3f cursor-pointer'>
-              {value}
-            </span>
-          )}
-          {edit === value ? (
-            <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-              <img
-                className='cursor-pointer'
-                onClick={() => {
-                  setEdit(null)
-                }}
-                src={CrossIcon}
-              />
-            </div>
-          ) : (
-            <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-              <img className='cursor-pointer w-5 h-5' src={pasetIcon} />
-            </div>
-          )}
-          {edit === value ? (
-            <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-              <img
-                className='cursor-pointer'
-                onClick={() => {
-                  const temp = walletDatas
-                  temp.forEach((item, index) => {
-                    if (item.address == edit) {
-                      temp[index].address_nick = editName
-                    }
-                  })
-                  setEdit(null)
-                  setWalletDatas([...temp])
-                }}
-                src={SaveIcon}
-              />
-            </div>
-          ) : (
-            <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-              <img
-                className='cursor-pointer'
-                onClick={() => {
-                  if (row) {
-                    setEditName(row.address.toString())
-                    setEdit(row.address.toString())
-                  }
-                }}
-                src={pencilIcon}
-              />
-            </div>
-          )}
-        </div>
+        <AddressForm
+          address={value.toString()}
+          currentRow={row}
+          saveAddressLabel={saveAddressLabel}
+        />
       ),
     },
     {
       key: 'time',
       name: 'Last Activity',
       colClasses: 'w-190px 1500px:w-244px',
-      custom: (value: string | number) => (
-        <div className='mr-3 md:mr-0'>{value}</div>
+      custom: () => (
+        <div className='mr-3 md:mr-0'>{dayjs(lastFetched).fromNow(true)}</div>
       ),
     },
     {
-      key: 'qr_code',
+      key: 'qrCode',
       name: 'Address QR',
       colClasses: 'min-w-80px w-132px 1500px:w-244px',
-      custom: () => (
+      custom: (value: string | number) => (
         <div className='flex'>
-          <img src={viewIcon} />
+          <QRCode size={50} value={value.toString()} />
         </div>
       ),
     },
 
     {
-      key: 'private_key',
+      key: 'address',
       name: 'Keys',
       colClasses: 'min-w-130px w-176px 1500px:w-244px flex-grow-0',
-      custom: (value: string | number) => (
-        <div className='flex items-center'>
-          <span>public key</span>
-          <img
-            className='ml-9px cursor-pointer'
-            onClick={() => {
-              setExportKeysModalOpen(true)
-            }}
-            key={value}
-            src={PDFIcon}
-            alt='PDF Icon'
-          />
-        </div>
-      ),
+      custom: (value: string | number) => {
+        return (
+          <div className='flex items-center'>
+            <span>public key</span>
+            <img
+              className='ml-9px cursor-pointer'
+              onClick={() => {
+                setCurrentAddress(value.toString())
+                setExportKeysModalOpen(true)
+              }}
+              key={value}
+              src={PDFIcon}
+              alt='PDF Icon'
+            />
+          </div>
+        )
+      },
     },
     {
       key: 'amount',
       name: 'Balance',
       colClasses: 'w-131px 1500px:w-244px',
       custom: (value: string | number) => (
-        <div className='text-gray-2d'>PSL {value}</div>
+        <div className='text-gray-2d'>
+          {info?.currencyName}{' '}
+          <NumberFormat
+            value={value}
+            displayType='text'
+            thousandSeparator={true}
+          />
+        </div>
       ),
     },
     {
@@ -310,13 +129,13 @@ const WalletScreen = (props: Tprops): JSX.Element => {
             step={100}
             value={typeof value === 'string' ? parseInt(value) : value}
             onChange={(value: number | null) => {
-              const temp = walletDatas
+              const temp = walletAddresses
               temp.forEach((item, index) => {
                 if (row && item.address === row.address && value) {
                   temp[index].psl = value
                 }
               })
-              setWalletDatas([...temp])
+              setWalletAddresses([...temp])
             }}
           />
         </div>
@@ -324,13 +143,13 @@ const WalletScreen = (props: Tprops): JSX.Element => {
     },
   ]
 
-  const card_items = [
+  const cardItems = [
     {
       style: {
         type: 'total_balance',
         info: false,
       },
-      psl: 210000,
+      psl: 0,
       icon: placeholderIcon,
       info: 'Total Balance',
     },
@@ -339,7 +158,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
         type: 'transparent',
         info: true,
       },
-      psl: 110000,
+      psl: 0,
       icon: placeholderIcon,
       info: 'Transparent Information',
     },
@@ -348,11 +167,22 @@ const WalletScreen = (props: Tprops): JSX.Element => {
         type: 'shielded',
         info: true,
       },
-      psl: 100000,
+      psl: 0,
       icon: placeholderIcon,
       info: 'Shielded Information',
     },
   ]
+
+  const { lastFetched } = useAppSelector<RootState['pastelPrice']>(
+    ({ pastelPrice }) => pastelPrice,
+  )
+  const { url, username, password } = useAppSelector<RootState['pastelConf']>(
+    ({ pastelConf }) => pastelConf,
+  )
+
+  const rpcConfig = { url, username, password }
+  const walletRPC = new WalletRPC(rpcConfig)
+  const controlRPC = new ControlRPC(rpcConfig)
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
 
@@ -362,33 +192,159 @@ const WalletScreen = (props: Tprops): JSX.Element => {
   ] = useState(false)
 
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
+  const [currentAddress, setCurrentAddress] = useState('')
 
   const [active, setActive] = useState(1)
 
-  const [edit, setEdit] = useState<string | null>(null)
-  const [editName, setEditName] = useState<string>('')
-  const [transparentAmount, setTransparentAmount] = useState(0)
-  const [shieldedAmount, setShieldedAmount] = useState(0)
+  const [info, setInfo] = useState<Info>({} as Info)
   const [selectedAmount, setSelectedAmount] = useState(0)
   const [selectedRows, setSelectedRows] = useState<Array<string>>([])
+  const [balanceCards, setBalanceCards] = useState<IBalanceCard[]>(cardItems)
+  const [totalBalances, setTotalBalances] = useState<ITotalBalanceResult>()
+  const [walletAddresses, setWalletAddresses] = useState<IAddressRow[]>([])
+  const [addressBook, setAddressBook] = useState<IAddressBook[]>([])
 
-  useEffect(() => {
-    let tempTransparentAmount = 0
-    let tempShieldedAmount = 0
-    walletDatas.forEach(item => {
-      if (item.type === 'transparent') {
-        tempTransparentAmount += item.psl
-      } else if (item.type === 'shielded') {
-        tempShieldedAmount += item.psl
+  /**
+   * Fetch total balances
+   */
+  const fetchTotalBalances = async () => {
+    // Total balance
+    const balances: ITotalBalanceResult = await walletRPC.fetchTotalBalance()
+    setTotalBalances(balances)
+    setBalanceCards([
+      {
+        style: {
+          type: 'total_balance',
+          info: false,
+        },
+        psl: balances.total,
+        icon: placeholderIcon,
+        info: 'Total Balance',
+      },
+      {
+        style: {
+          type: 'transparent',
+          info: false,
+        },
+        psl: balances.transparent,
+        icon: placeholderIcon,
+        info: 'Transparent Information',
+      },
+      {
+        style: {
+          type: 'shielded',
+          info: false,
+        },
+        psl: balances.private,
+        icon: placeholderIcon,
+        info: 'Shielded Information',
+      },
+    ])
+  }
+
+  /**
+   * Fetch wallet addresses
+   */
+  const fetchWalletAddresses = async () => {
+    // Get addresses with balance
+    const addressesWithBalance = await walletRPC.fetchTandZAddressesWithBalance()
+    const addressMap = addressesWithBalance.reduce((map, a) => {
+      map[a.address] = a.balance
+      return map
+    }, {} as { [addr: string]: number })
+
+    const addressBook = await fetchAddressBook()
+
+    // Get addresses
+    const addressMapper = async (a: string) => {
+      const type = Utils.isSapling(a) ? 'shielded' : 'transparent'
+      const [book] = addressBook.filter(b => b.address === a) || []
+      return {
+        id: a,
+        address: a,
+        amount: addressMap[a],
+        psl: info.pslPrice || 0,
+        type: type,
+        time: '',
+        qrCode: '',
+        viewKey: '',
+        privateKey: '',
+        addressNick: book ? book.label : '',
+      } as IAddressRow
+    }
+
+    const addresses = await walletRPC.fetchAllAddresses()
+    const zaddrs: IAddressRow[] = await Promise.all(
+      addresses.filter(a => Utils.isSapling(a)).map(addressMapper),
+    )
+    const taddrs: IAddressRow[] = await Promise.all(
+      addresses.filter(a => Utils.isTransparent(a)).map(addressMapper),
+    )
+    setWalletAddresses(zaddrs.concat(taddrs))
+  }
+
+  /**
+   * Fetch info
+   */
+  const fetchInfo = async () => {
+    const inf = await controlRPC.fetchInfo()
+    setInfo(inf)
+  }
+
+  /**
+   * Fetch address book from JSON file
+   */
+  const fetchAddressBook = async (): Promise<IAddressBook[]> => {
+    const addrBook: IAddressBook[] = await AddressbookImpl.readAddressBook()
+    setAddressBook(addrBook)
+    return addrBook
+  }
+
+  const saveAddressLabel = (address: string, label: string): void => {
+    // Update address nick
+    const newWalletAddress: IAddressRow[] = walletAddresses.map(a => {
+      return {
+        ...a,
+        addressNick: a.address === address ? label : a.addressNick || '',
       }
     })
-    setTransparentAmount(tempTransparentAmount)
-    setShieldedAmount(tempShieldedAmount)
-  }, [walletDatas])
+    setWalletAddresses(newWalletAddress)
+
+    // Update address book
+    const [book] = addressBook.filter(b => b.address === address) || []
+    let newAddressBook = addressBook
+    if (book) {
+      newAddressBook = addressBook.map(b => {
+        return {
+          ...b,
+          label: b.address === address ? label : b.label,
+        }
+      })
+    } else {
+      newAddressBook = addressBook.concat([
+        {
+          address,
+          label,
+        },
+      ])
+    }
+
+    AddressbookImpl.writeAddressBook(newAddressBook)
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      await Promise.all([
+        fetchInfo(),
+        fetchTotalBalances(),
+        fetchWalletAddresses(),
+      ])
+    })()
+  }, [])
 
   useEffect(() => {
     let tempSelectedAmount = 0
-    walletDatas.forEach(item => {
+    walletAddresses.forEach(item => {
       for (let i = 0; i < selectedRows.length; i++) {
         if (selectedRows[i] === item.address) {
           tempSelectedAmount += item.psl
@@ -396,7 +352,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
       }
     })
     setSelectedAmount(tempSelectedAmount)
-  }, [selectedRows, walletDatas])
+  }, [selectedRows, walletAddresses])
 
   const setSelectedRowsFunction = (row: TRow) => {
     if (row) {
@@ -438,7 +394,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
 
       <div className='bg-gray-f8 pt-5 sm:px-10 md:px-60px'>
         <div className='flex justify-between '>
-          {card_items.map((card, index) => (
+          {balanceCards.map((card, index) => (
             <div
               key={index}
               onClick={() => {
@@ -477,15 +433,9 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                       index === active ? 'text-gray-2d' : 'text-gray-71',
                     )}
                   >
-                    {props.info.currencyName}{' '}
+                    {info?.currencyName}{' '}
                     <NumberFormat
-                      value={
-                        card.style.type === 'total_balance'
-                          ? shieldedAmount + transparentAmount
-                          : card.style.type === 'transparent'
-                          ? transparentAmount
-                          : shieldedAmount
-                      }
+                      value={card.psl}
                       displayType='text'
                       thousandSeparator={true}
                     />
@@ -508,16 +458,30 @@ const WalletScreen = (props: Tprops): JSX.Element => {
             </div>
           ))}
         </div>
-
-        {walletDatas.length > 0 && (
+        {totalBalances?.total && totalBalances?.total <= 0 && (
+          <Alert
+            variant='warning'
+            className='mt-7 relative'
+            showClose={true}
+            onShowing={true}
+          >
+            <strong className='font-bold'>Warning! </strong>
+            <span className='block sm:inline'>
+              Your total balance is empty now.
+            </span>
+          </Alert>
+        )}
+        {walletAddresses.length > 0 && (
           <div className='bg-white mt-3.5 pt-6 rounded-lg mt-27px min-w-594px'>
             <div className='h-526px overflow-y-auto mr-4 pr-4 overflow-x-hidden ml-9'>
               {active !== 0 && (
                 <Table
                   data={
                     active === 1
-                      ? walletDatas.filter(item => item.type === 'transparent')
-                      : walletDatas.filter(item => item.type === 'shielded')
+                      ? walletAddresses.filter(
+                          item => item.type === 'transparent',
+                        )
+                      : walletAddresses.filter(item => item.type === 'shielded')
                   }
                   columns={Columns}
                   headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
@@ -532,7 +496,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                     transparent
                   </div>
                   <Table
-                    data={walletDatas.filter(
+                    data={walletAddresses.filter(
                       item => item.type === 'transparent',
                     )}
                     columns={Columns}
@@ -545,7 +509,9 @@ const WalletScreen = (props: Tprops): JSX.Element => {
                     Shielded
                   </div>
                   <Table
-                    data={walletDatas.filter(item => item.type === 'shielded')}
+                    data={walletAddresses.filter(
+                      item => item.type === 'shielded',
+                    )}
                     columns={Columns}
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
                     bodyTrClasses='h-76px border-b border-line text-sm 1200px:text-base'
@@ -578,7 +544,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
           </div>
         )}
 
-        {walletDatas.length == 0 && (
+        {walletAddresses.length == 0 && (
           <div className='bg-white rounded-lg mt-3.5 flex items-center min-h-594px justify-center'>
             <div>
               <div className='text-gray-4a text-base text-center mb-3.5'>
@@ -597,7 +563,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
         )}
 
         <div className='flex justify-end mt-5 mb-10'>
-          {walletDatas.length > 0 && (
+          {walletAddresses.length > 0 && (
             <Button variant='transparent' className='w-247px'>
               <div className='flex items-center  ml-6'>
                 <img src={electIcon} className='py-3' />
@@ -631,6 +597,7 @@ const WalletScreen = (props: Tprops): JSX.Element => {
       ></TransactionHistoryModal>
       <ExportKeysModal
         isOpen={isExportKeysModalOpen}
+        address={currentAddress}
         handleClose={() => setExportKeysModalOpen(false)}
       ></ExportKeysModal>
     </div>

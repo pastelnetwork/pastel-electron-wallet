@@ -5,6 +5,41 @@ type IAddressBalance = {
   balance: number
 }
 
+type IAddressList = {
+  txid: string
+  address: string
+  amount: number
+  type: 'shielded' | 'transparent' | 'balance'
+}
+
+type IBalanceCard = {
+  style: {
+    type: string
+    info: boolean
+  }
+  psl: number
+  icon: string
+  info: string
+}
+
+type IAddressBook = {
+  label: string
+  address: string
+}
+
+type IAddressRow = {
+  id: string
+  address: string
+  time?: string
+  qrCode?: string
+  viewKey: string
+  privateKey: string
+  amount: number
+  psl: number
+  type: 'shielded' | 'transparent' | 'balance'
+  addressNick?: string
+}
+
 // z_gettotalbalance
 type ITotalBalanceResult = {
   transparent: number
@@ -65,6 +100,10 @@ type ITZListReceivedByAddressResponse = IResponse<
 >
 
 export type {
+  IAddressRow,
+  IAddressList,
+  IBalanceCard,
+  IAddressBook,
   IAddressBalance,
   IListAddressesResponse,
   IListUnspentResponse,

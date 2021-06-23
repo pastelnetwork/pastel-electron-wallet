@@ -1,5 +1,11 @@
 import { IResponse } from './response'
 
+enum TransactionType {
+  SEND = 'send',
+  RECEIVE = 'receive',
+  ALL = 'all',
+}
+
 type IBaseAddAm = {
   address: string
   amount: number
@@ -93,6 +99,17 @@ type ITVout = {
   scriptPubkey: ITScriptPubkey
 }
 
+type ITransactionRow = {
+  date: string
+  address: string
+  type: TransactionType
+  status?: string
+  id: string
+  comments: string
+  fee: number
+  amount: number
+}
+
 type ITTransactionInfoDetails = IBaseAddAm & {
   account: string
   category: string
@@ -166,8 +183,11 @@ type ITTransactionResponse = IResponse<ITTransactionResult[]>
 type ITRawTransactionResponse = IResponse<ITRawTransactionResult>
 type ITTransactionInfoResponse = IResponse<ITTransactionInfoResult>
 
+export { TransactionType }
+
 export type {
   IBaseAddAm,
+  ITransactionRow,
   IBaseTransaction,
   ITDetailedTxns,
   ITransaction,

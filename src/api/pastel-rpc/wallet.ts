@@ -2,12 +2,14 @@ import { groupBy } from 'underscore'
 
 import {
   IAddressBalance,
+  IAddressList,
   IListAddressesResponse,
   IListUnspentResponse,
   IResponse,
   ITotalBalanceResponse,
   ITotalBalanceResult,
   IZListUnspentResponse,
+  IZListUnspentResult,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc, TRPCConfig } from './rpc'
@@ -97,12 +99,21 @@ export class WalletRPC {
   }
 
   /**
-   * Get list of addresses.
+   * Get list of T addresses.
    *
    * @returns IListAddressesResponse
    */
   async fetchZAddresses(): Promise<IListAddressesResponse> {
     return rpc<IListAddressesResponse>('z_listaddresses', [], this.config)
+  }
+
+  /**
+   * Get list of T addresses.
+   *
+   * @returns IListAddressesResponse
+   */
+  async fetchTAddresses(): Promise<IListAddressesResponse> {
+    return rpc<IListAddressesResponse>('listaddresses', [], this.config)
   }
 
   /**
@@ -122,9 +133,9 @@ export class WalletRPC {
    * Send a transaction using the already constructed sendJson structure.
    * Please note it's not same the old version that include to call <fnSetAllAddresses>.
    *
-   * @returns Record<'t' | 'z', string[]>
+   * @returns string[]
    */
-  async fetchAllAddresses(): Promise<Record<'t' | 'z', string[]>> {
+  async fetchAllAddresses(): Promise<string[]> {
     const results = await Promise.all([
       this.fetchZAddresses(),
       this.fetchAddressesByAccount(),
@@ -133,7 +144,7 @@ export class WalletRPC {
     const { result: z } = results[0]
     const { result: t } = results[1]
 
-    return { z, t }
+    return z.concat(t)
   }
 
   /**
@@ -155,12 +166,49 @@ export class WalletRPC {
   }
 
   /**
-   * Fetch all T and Z transactions.
+   * Fetch all T and Z addresses with balance.
    * Please note it's not same the old version that include to call <fnSetAddressesWithBalance>.
    *
    * @returns IAddressBalance[]
    */
-  async fetchTandZAddressesWithBalances(): Promise<IAddressBalance[]> {
+  async fetchTandZAddresses(): Promise<IAddressList[]> {
+    const results = await Promise.all([
+      this.fetchZListUnspent(),
+      this.fetchListUnspent(),
+    ])
+
+    const zResult: IAddressList[] = results[0].result.map(
+      (addr: IZListUnspentResult) => {
+        return {
+          txid: addr.txid,
+          address: addr.address,
+          amount: addr.amount,
+          type: 'shielded',
+        }
+      },
+    )
+
+    const tResult: IAddressList[] = results[0].result.map(
+      (addr: IZListUnspentResult) => {
+        return {
+          txid: addr.txid,
+          address: addr.address,
+          amount: addr.amount,
+          type: 'transparent',
+        }
+      },
+    )
+
+    return zResult.concat(tResult)
+  }
+
+  /**
+   * Fetch all T and Z addresses with balance.
+   * Please note it's not same the old version that include to call <fnSetAddressesWithBalance>.
+   *
+   * @returns IAddressBalance[]
+   */
+  async fetchTandZAddressesWithBalance(): Promise<IAddressBalance[]> {
     const results = await Promise.all([
       this.fetchZListUnspent(),
       this.fetchListUnspent(),
@@ -169,6 +217,7 @@ export class WalletRPC {
     // response.result has all the unspent notes.
     const { result: zResult } = results[0]
     const zGroups = groupBy(zResult, 'address')
+
     // Map Z addresses balance
     const zAddresses: IAddressBalance[] = Object.keys(zGroups).map(address => {
       const balance = zGroups[address].reduce(
@@ -198,5 +247,5 @@ export class WalletRPC {
     })
 
     return zAddresses.concat(tAddresses)
-  } // Fetch all T and Z transactions
+  } // Fetch all T and Z addresses
 }

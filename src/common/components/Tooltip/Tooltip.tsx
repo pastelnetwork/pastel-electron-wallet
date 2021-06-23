@@ -7,34 +7,42 @@ export type TTooltipProps = {
   type: 'left' | 'right' | 'top' | 'bottom'
   classnames?: string
   content: string
-  width: number
+  width?: number
+  autoWidth?: boolean
+  padding?: number
 }
 
 const Tooltip: FunctionComponent<TTooltipProps> = ({
   type,
   classnames,
   content,
-  width,
+  width = 0,
+  autoWidth = false,
   children,
+  padding = 0,
 }) => {
   const styles = {
     top: {
-      width: `${width}px`,
+      width: `${autoWidth ? 'auto' : width + 'px'}`,
       bottom: '150%',
       left: `calc(50% - ${width / 2}px)`,
+      padding: `${padding}px`,
     },
     bottom: {
-      width: `${width}px`,
+      width: `${autoWidth ? 'auto' : width + 'px'}`,
       top: '150%',
       left: `calc(50% - ${width / 2}px)`,
+      padding: `${padding}px`,
     },
     right: {
-      width: `${width}px`,
+      width: `${autoWidth ? 'auto' : width + 'px'}`,
       left: 'calc(100% + 10px)',
+      padding: `${padding}px`,
     },
     left: {
-      width: `${width}px`,
+      width: `${autoWidth ? 'auto' : width + 'px'}`,
       right: 'calc(100% + 10px)',
+      padding: `${padding}px`,
     },
   }
   const arrow_styles = {
