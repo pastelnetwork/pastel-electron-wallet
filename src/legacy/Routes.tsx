@@ -478,6 +478,7 @@ class RouteApp extends React.Component<any, any> {
       errorModalData,
       connectedCompanionApp,
       pastelIDs,
+      rpcConfig,
     } = this.state
     const standardProps = {
       openErrorModal: this.openErrorModal,
@@ -563,7 +564,7 @@ class RouteApp extends React.Component<any, any> {
 
             <Route
               path={routes.MY_PROFILE}
-              render={() => <MyProfile info={info} />}
+              render={() => <MyProfile info={info} rpcConfig={rpcConfig} />}
             />
 
             <Route

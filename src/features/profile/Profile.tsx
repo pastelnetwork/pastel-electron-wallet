@@ -4,10 +4,17 @@ import MySecurity from './mySecurity/MySecurity'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 
+export type TRPCConfig = {
+  username: string
+  password: string
+  url: string
+}
+
 type TProfileProps = {
   info: {
     currencyName: string
   }
+  rpcConfig: TRPCConfig
 }
 
 enum Tabs {
@@ -17,7 +24,7 @@ enum Tabs {
 }
 
 const Profile = (props: TProfileProps): JSX.Element => {
-  const { info } = props
+  const { info, rpcConfig } = props
   const [tab, setTab] = useState(Tabs.info)
 
   const tabs = [
@@ -58,7 +65,9 @@ const Profile = (props: TProfileProps): JSX.Element => {
       {tab === Tabs.comments && (
         <div className='text-center'> No comments </div>
       )}
-      {tab === Tabs.security && <MySecurity info={info} />}
+      {tab === Tabs.security && (
+        <MySecurity info={info} rpcConfig={rpcConfig} />
+      )}
     </div>
   )
 }
