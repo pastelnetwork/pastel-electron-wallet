@@ -17,6 +17,7 @@ export type TInput = {
   errorMessage?: string | null
   disabled?: boolean
   placeholder?: string
+  labelClassName?: string
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
@@ -35,6 +36,8 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       hint,
       errorMessage,
       disabled,
+      labelClassName = 'inline-block text-gray-71 text-h5 pb-2',
+      hintClassName = '',
       ...otherProps
     },
     ref,
@@ -64,14 +67,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
 
     return (
       <div className={wrapperClasses}>
-        {label && (
-          <label
-            htmlFor={id}
-            className='inline-block text-gray-71 text-h5 pb-2'
-          >
-            {label}
-          </label>
-        )}
+        {label && <div className={labelClassName}>{label}</div>}
         <div className={classes}>
           {prepend && <div className='pl-2'>{prepend}</div>}
 
@@ -102,9 +98,12 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
         </div>
         {(errorMessage || hint) && (
           <p
-            className={`${
-              isValid === false ? 'text-red-7a' : 'text-button-text'
-            } text-h6 pt-1`}
+            className={cn(
+              `${
+                isValid === false ? 'text-red-7a' : 'text-button-text'
+              } text-h6 pt-1`,
+              hintClassName,
+            )}
           >
             {errorMessage ? errorMessage : hint}
           </p>
