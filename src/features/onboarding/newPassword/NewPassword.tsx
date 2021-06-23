@@ -35,8 +35,8 @@ const NewPassword: React.FC = () => {
 
   return (
     <div className='mt-2.5'>
-      <Typography variant='h1' weight={800}>
-        Set new password
+      <Typography variant='h1' color='#2D3748' weight={800}>
+        Set New Password
       </Typography>
       <div className='mt-1'>
         <Typography variant='body1' color={colors.text.secondary}>
@@ -67,11 +67,11 @@ const NewPassword: React.FC = () => {
           hintClassName='mt-3 text-sm font-medium'
           hint='at least 8 characters and at least 2 numbers'
         />
-        <div className='flex justify-between mt-3'>
-          <FormLoading background={colors.loader.red} />
-          <FormLoading background={colors.loader.default} />
-          <FormLoading background={colors.loader.default} />
-          <FormLoading background={colors.loader.default} />
+        <div className='grid grid-cols-4 gap-6px mt-3'>
+          <FormLoading className='h-[6px] w-full bg-red-fe' />
+          <FormLoading className='h-[6px] w-full bg-gray-a6' />
+          <FormLoading className='h-[6px] w-full bg-gray-a6' />
+          <FormLoading className='h-[6px] w-full bg-gray-a6' />
         </div>
         <Input
           type='password'
@@ -92,7 +92,7 @@ const NewPassword: React.FC = () => {
         <Link to={ROUTES.LOGIN}>
           <Button className='w-full mt-[30px] font-semibold'>Confirm</Button>
         </Link>
-        <div className='text-link text-center mt-[18px] font-medium text-base underline'>
+        <div className='text-link text-center mt-[18px] font-medium text-base underline mb-66px'>
           Generate a Secure Password for Me (recommended!)
         </div>
       </form>

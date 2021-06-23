@@ -97,11 +97,6 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
           Sign Up
         </Link>
       </div>
-      {/* <Link to={ROUTES.SIGN_UP}>
-        <Button variant='transparent' className='w-full'>
-          Don't have an account? Sign up
-        </Button>
-      </Link> */}
     </div>
   )
 }

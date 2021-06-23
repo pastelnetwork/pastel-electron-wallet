@@ -73,7 +73,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       <div className={wrapperClasses}>
         {label && <div className={labelClassName}>{label}</div>}
         <div className={classes}>
-          <div className={classes} onClick={onClick}>
+          <div className='relative flex items-center w-full' onClick={onClick}>
             {prepend && <div className='pl-2 select-none'>{prepend}</div>}
             <input
               id={id}
