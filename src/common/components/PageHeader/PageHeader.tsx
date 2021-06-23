@@ -38,7 +38,7 @@ const PageHeader = ({
             variant === 'portfolio' ? 'py-18px' : 'py-30px'
           }`}
         >
-          <div className='flex justify-between'>
+          <div className='flex justify-between flex-wrap gap-2'>
             <div className='flex items-center'>
               {title && (
                 <h1
@@ -66,7 +66,7 @@ const PageHeader = ({
                       selected={item.selected}
                       onChange={item.onOptionChange}
                       key={item.placeholder}
-                      className={variant === 'portfolio' ? 'min-w-118px' : ''}
+                      selectClassName='min-w-118px'
                     />
                   ))}
                 </div>
