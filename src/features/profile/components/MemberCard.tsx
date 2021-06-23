@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import cn from 'classnames'
 
 export type TMemberBoardProps = {
+  id: number
   name: string
   avatarSrc: string
   time: string
@@ -14,9 +15,11 @@ export type TMemberBoardProps = {
   object: string
   behaviour: 'commented' | 'purchased' | 'liked'
   active: boolean
+  onClick: (index: number) => void
 }
 
 const MemberCard = ({
+  id,
   name,
   avatarSrc,
   time,
@@ -27,13 +30,21 @@ const MemberCard = ({
   behaviour = 'commented',
   object = 'Collab.',
   active = false,
+  onClick,
 }: TMemberBoardProps): JSX.Element => {
   return (
     <div
       className={cn(
-        'flex justify-between w-full py-8 pr-2 pr-10px md:pr-33px pl-4 gap-2',
-        active ? 'bg-white rounded-xl' : 'border-b border-gray-e0',
+        'flex justify-between w-full py-8 gap-2',
+        active
+          ? 'bg-white rounded-xl pr-2.5 md:pr-33px pl-4'
+          : 'border-b border-gray-e0',
       )}
+      onClick={e => {
+        e.preventDefault()
+        console.log('debug')
+        onClick(id)
+      }}
     >
       <div className='flex flex-grow'>
         <div className='flex-none'>

@@ -72,6 +72,7 @@ const Profile = (): JSX.Element => {
   const [category, setCategory] = useState<TOption | null>(categoriesOptions[0])
   const [type, setType] = useState<TOption | null>(categoriesOptions[0])
   const [sort, setSort] = useState<TOption | null>(categoriesOptions[0])
+  const [activeIndex, setActiveIndex] = useState(0)
 
   const onTabToggle = (index: number) => {
     setTab(index)
@@ -155,7 +156,8 @@ const Profile = (): JSX.Element => {
                     <div className='pr-22px'>
                       {Array.from({ length: 10 }).map((_, i) => (
                         <MemberCard
-                          active={i === 0 ? true : false}
+                          id={i}
+                          active={i === activeIndex}
                           name='Glenn Greer'
                           key={i}
                           iconType='comment'
@@ -166,6 +168,7 @@ const Profile = (): JSX.Element => {
                           time='12h ago'
                           description='Love this so much! What tools do you use to create your 3d illustrations?'
                           productURL={image}
+                          onClick={setActiveIndex}
                         />
                       ))}
                     </div>
