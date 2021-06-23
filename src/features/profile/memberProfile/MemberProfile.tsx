@@ -150,7 +150,7 @@ const Profile = (): JSX.Element => {
                 </div>
               )}
               {tab === 2 && (
-                <div className='flex justify-between'>
+                <div className='flex justify-between flex-col-reverse md:flex-row'>
                   <div className='w-full h-screen overflow-y-auto'>
                     <div className='pr-22px'>
                       {Array.from({ length: 10 }).map((_, i) => (
@@ -170,9 +170,12 @@ const Profile = (): JSX.Element => {
                       ))}
                     </div>
                   </div>
-                  <div className='w-239px pt-34px'>
+                  <div className='w-[271px] md:pt-34px flex md:block'>
                     {filterData.map((item, index) => (
-                      <div key={index} className='pl-33px pb-14px'>
+                      <div
+                        key={index}
+                        className='pl-33px md:pl-[106px] pb-14px'
+                      >
                         <Checkbox isChecked={item.checked}>
                           {item.label}
                         </Checkbox>
