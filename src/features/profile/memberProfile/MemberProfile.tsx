@@ -105,7 +105,7 @@ const Profile = (): JSX.Element => {
             </div>
             <div className='flex flex-col flex-grow pl-8'>
               {tab === 0 && (
-                <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
+                <div className='flex justify-between flex-col 1200px:flex-row'>
                   <ProfileGeneral {...general_data} />
                   <ProfileRelations />
                 </div>

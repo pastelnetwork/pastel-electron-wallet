@@ -26,7 +26,7 @@ const ProfileGeneral = ({
   bio,
 }: TProfileGeneral): JSX.Element => {
   return (
-    <div className='flex-grow w-full xl:w-3/5 xl:pr-78px leading-tight'>
+    <div className='flex-grow w-full 1200px:w-3/5 xl:pr-78px leading-tight'>
       <div className='w-full pb-10 space-y-4'>
         <ProfileGeneralRow title='Location'>{location}</ProfileGeneralRow>
         <ProfileGeneralRow title='Language'>{language}</ProfileGeneralRow>
