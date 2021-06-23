@@ -9,7 +9,7 @@ const DEFAULT_MAX_RATE = 5
 
 const RATING_STAR_SVG_PROPS = {
   widgetDimension: '14px',
-  widgetRatedColor: '#FFD12C',
+  widgetRatedColor: '#FF9B00',
   widgetEmptyColor: 'transparent',
   svgIconViewBox: '0 0 14 14',
   svgIconPath:
