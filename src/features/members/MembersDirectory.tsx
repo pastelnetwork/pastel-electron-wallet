@@ -10,7 +10,6 @@ import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/Pag
 
 import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
-import ScrollBar from '../../common/components/Scrollbar'
 
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
 const mockMemberStrips: TMemberStripProps[] = [
@@ -138,36 +137,34 @@ const MembersDirectory: React.FC = () => {
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <ScrollBar hasPageHeader={true}>
-        <div className='wrapper content with-page-header pb-5 w-screen'>
-          <div className='bg-white p-5 rounded-lg'>
-            <div className='flex justify-between pb-25px'>
-              <div className='w-244px'>
-                <Select {...filterOptions} className='w-full' />
-              </div>
-              <div className='flex'>
-                <div className='flex h-full items-center justify-end'>
-                  <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
-
-                  <Slider
-                    min={100}
-                    max={999}
-                    value={range}
-                    onChange={setRange}
-                    formatValue={formatValue}
-                    formatTooltipValue={formatValue}
-                  />
-                </div>
-              </div>
+      <div className='wrapper content with-page-header pb-5 w-screen'>
+        <div className='bg-white p-5 rounded-lg'>
+          <div className='flex justify-between pb-25px'>
+            <div className='w-244px'>
+              <Select {...filterOptions} className='w-full' />
             </div>
-            <div className='space-y-5'>
-              {mockMemberStrips.map(item => (
-                <MemberStrip {...item} key={item.id} />
-              ))}
+            <div className='flex'>
+              <div className='flex h-full items-center justify-end'>
+                <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
+
+                <Slider
+                  min={100}
+                  max={999}
+                  value={range}
+                  onChange={setRange}
+                  formatValue={formatValue}
+                  formatTooltipValue={formatValue}
+                />
+              </div>
             </div>
           </div>
+          <div className='space-y-5'>
+            {mockMemberStrips.map(item => (
+              <MemberStrip {...item} key={item.id} />
+            ))}
+          </div>
         </div>
-      </ScrollBar>
+      </div>
     </div>
   )
 }
