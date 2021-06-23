@@ -111,7 +111,7 @@ const Profile = (): JSX.Element => {
               )}
               {tab === 1 && (
                 <div>
-                  <div className='flex items-center justify-between text-gray-42 text-base'>
+                  <div className='flex items-center justify-between text-gray-42 text-base flex-wrap gap-2'>
                     <div className='flex items-center'>
                       <div className='flex items-center mr-6'>
                         <p className='mr-4'>Categories</p>
@@ -119,7 +119,7 @@ const Profile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={category}
                           onChange={setCategory}
-                          className='w-113px'
+                          selectClassName='w-113px'
                         />
                       </div>
                       <div className='flex items-center'>
@@ -128,7 +128,7 @@ const Profile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={type}
                           onChange={setType}
-                          className='w-113px'
+                          selectClassName='w-113px'
                         />
                       </div>
                     </div>
@@ -138,11 +138,11 @@ const Profile = (): JSX.Element => {
                         options={categoriesOptions}
                         selected={sort}
                         onChange={setSort}
-                        className='w-113px'
+                        selectClassName='w-113px'
                       />
                     </div>
                   </div>
-                  <div className='mt-10 grid grid-cols-3 lg:grid-cols-3 gap-9 text-gray-1a overflow-y-auto pr-33px h-608px'>
+                  <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3  gap-9 text-gray-1a overflow-y-auto pr-33px h-608px'>
                     {Array.from({ length: 10 }).map((_, i) => (
                       <NFTCard {...mockCardProps} key={i} />
                     ))}
