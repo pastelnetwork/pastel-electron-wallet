@@ -76,8 +76,6 @@ ipcRenderer.on(
     }: { isPackaged: string; locatePastelConfDir: string },
   ) => {
     if (isPackaged) {
-      console.log = log.log
-      console.error = log.error
       log.transports.console.level = false
     }
     createPastelKeysFolder(locatePastelConfDir)
