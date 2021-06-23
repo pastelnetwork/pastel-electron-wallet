@@ -11,8 +11,8 @@ import PortfolioPage from '../features/nft/portfolio'
 import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
+import OnboardingWelcome from '../features/onboarding/welcome/Welcome'
 import WalletScreen from '../features/wallet'
-import HeaderScreen from '../common/components/Header'
 import Header from '../common/components/Header'
 import {
   TotalBalance,

@@ -4,8 +4,6 @@ import { Input } from '../../../../common/components/Inputs'
 import Checkbox from '../../../../common/components/Checkbox/Checkbox'
 import FormLoading from '../../../../common/components/FormLoading/FormLoading'
 
-import { colors } from '../../../../common/theme/colors'
-
 import * as Styles from './RegisterSteps.styles'
 
 interface LoginFormInput {
@@ -69,22 +67,10 @@ const StepLogin = (): JSX.Element => {
         hint='at least 8 characters and at least 2 numbers'
       />
       <Styles.LoadingContainer>
-        <FormLoading
-          background={
-            password.value ? colors.success.default : colors.loader.red
-          }
-        />
-        <FormLoading
-          background={
-            password.value ? colors.success.default : colors.loader.default
-          }
-        />
-        <FormLoading
-          background={
-            password.value ? colors.success.default : colors.loader.default
-          }
-        />
-        <FormLoading background={colors.loader.default} />
+        <FormLoading className='h-[6px] w-full bg-red-fe' />
+        <FormLoading className='h-[6px] w-full bg-gray-a6' />
+        <FormLoading className='h-[6px] w-full bg-gray-a6' />
+        <FormLoading className='h-[6px] w-full bg-gray-a6' />
       </Styles.LoadingContainer>
       <Styles.CheckboxContainer>
         <Checkbox isChecked={isChecked} clickHandler={handleCheckboxClick}>
