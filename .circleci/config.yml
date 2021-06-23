@@ -115,6 +115,8 @@ workflows:
           requires:
             - lint-and-test
       - build-windows:
+          filters:
+            <<: *filters-build
           requires:
             - lint-and-test
       - build-macos:
