@@ -8,8 +8,13 @@ import Tooltip from '../../../common/components/Tooltip'
 import { Button } from '../../../common/components/Buttons'
 import infoIco from '../../../common/assets/icons/ico-info.svg'
 
+enum Tabs {
+  qrCode,
+  cryptoKeys,
+}
+
 const PasswordRecovery: React.FC = () => {
-  const [tab, setTab] = useState(0)
+  const [tab, setTab] = useState(Tabs.qrCode)
   const onTabToggle = (index: number) => {
     setTab(index)
   }
@@ -28,7 +33,7 @@ const PasswordRecovery: React.FC = () => {
           onToggle={onTabToggle}
         />
       </div>
-      {tab === 0 && (
+      {tab === Tabs.qrCode && (
         <div>
           <div className='flex justify-center bg-gray-f4 rounded-lg py-[33px] mt-[23px]'>
             <div className='bg-gray-fc border-gray-e6 shadow-textbox w-[282px] h-[282px] flex justify-center items-center rounded-xl'>
@@ -40,7 +45,7 @@ const PasswordRecovery: React.FC = () => {
           </div>
         </div>
       )}
-      {tab === 1 && (
+      {tab === Tabs.cryptoKeys && (
         <div className='mt-[30px] text-base text-gray-71'>
           <div>
             Store your keys in a password manager to back them up in case you
