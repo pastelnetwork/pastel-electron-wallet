@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import Slider from 'react-slick'
 
@@ -12,37 +12,20 @@ import Modal from '../../../../common/components/AnimatedModal'
 import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
 import { TRPCConfig } from '../../Profile'
-import {
-  fetchPastelIDAndPrivateKeys,
-  splitStringIntoChunks,
-} from '../common/utils'
-import { video } from '../../../constants/ServeStatic'
 
 type TQRProps = {
   rpcConfig: TRPCConfig
+  qrcodeData: string[]
 }
 
-const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
-  const [selectedRestoreType, setSelectedRestoreType] = useState('')
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [qrcodeData, setQRcodeData] = useState<string[]>([])
-  const [
-    pastelIDAndPrivateKeysData,
-    setPastelIDAndPrivateKeysData,
-  ] = useState<string>('')
-  const chunkQuantity = 500
+type TQRCodeSliderProps = {
+  qrcodeData: string[]
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const results = await fetchPastelIDAndPrivateKeys(rpcConfig)
-      if (results) {
-        const chunks = splitStringIntoChunks(results, chunkQuantity)
-        setQRcodeData(chunks)
-        setPastelIDAndPrivateKeysData(results)
-      }
-    }
-    fetchData()
-  }, [])
+function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
+  if (!qrcodeData.length) {
+    return null
+  }
 
   const settings = {
     dots: false,
@@ -54,14 +37,24 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
     autoplay: true,
   }
 
-  const generateFileName = () => {
-    const title = 'Paper_Wallet__QRCode'
-    const date = new Date()
-    const dateTime = `${
-      date.getMonth() + 1
-    }_${date.getDate()}_${date.getFullYear()}__${date.getHours()}_${date.getMinutes()}`
-    return `${title}_${dateTime}`
-  }
+  return (
+    <Slider {...settings}>
+      {qrcodeData.map((item, idx) => (
+        <div key={idx} className='d-block'>
+          <QRCode
+            value={`${idx}::${qrcodeData.length}::${item}`}
+            className='h-full w-full'
+            renderAs='svg'
+          />
+        </div>
+      ))}
+    </Slider>
+  )
+}
+
+const QR = ({ rpcConfig, qrcodeData }: TQRProps): JSX.Element => {
+  const [selectedRestoreType, setSelectedRestoreType] = useState('')
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const handleSelectedRestoreType = (type: string) => {
     setSelectedRestoreType(type)
@@ -83,32 +76,19 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
 
   const content = (
     <div className='flex justify-center h-270px rounded-lg py-33px px-42px bg-tab-hover'>
-      <div className='w-full h-full rounded-md shadow-64px border border-solid border-gray-e6 relative'>
-        {qrcodeData.length ? (
-          <Slider {...settings}>
-            {qrcodeData?.map((item, idx) => (
-              <div key={idx} className='d-block'>
-                <QRCode
-                  value={`${idx}::${qrcodeData.length}::${item}`}
-                  renderAs='svg'
-                  className='h-full w-full'
-                />
-              </div>
-            ))}
-          </Slider>
-        ) : null}
+      <div className='w-full h-118px rounded-md shadow-64px border border-solid border-gray-e6 relative'>
+        <QRCodeSlider qrcodeData={qrcodeData} />
       </div>
     </div>
   )
 
   const footer = (
-    <iframe
-      src={`http://localhost:${
-        video.staticPort
-      }/?page=download-video&chunks=${chunkQuantity}&filename=${generateFileName()}&val=${pastelIDAndPrivateKeysData}`}
-      className='w-full h-40px'
-    />
+    <Button variant='secondary' className='w-full font-extrabold relative'>
+      Download QR Code Video
+    </Button>
   )
+
+  console.log(111111, 'Generate a QR Code Video')
 
   return (
     <>

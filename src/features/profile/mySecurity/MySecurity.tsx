@@ -11,16 +11,17 @@ type TSecurity = {
     currencyName: string
   }
   rpcConfig: TRPCConfig
+  qrcodeData: string[]
 }
 
 const MySecurity = (props: TSecurity): JSX.Element => {
-  const { info, rpcConfig } = props
+  const { info, rpcConfig, qrcodeData } = props
 
   return (
     <div className='w-full flex justify-center py-30px px-60px bg-background-main'>
       <div className='grid grid-cols-3 gap-5 min-h-672px'>
         <ChangePassword />
-        <QRCode rpcConfig={rpcConfig} />
+        <QRCode rpcConfig={rpcConfig} qrcodeData={qrcodeData} />
         <CryptoKey rpcConfig={rpcConfig} currencyName={info?.currencyName} />
       </div>
     </div>
