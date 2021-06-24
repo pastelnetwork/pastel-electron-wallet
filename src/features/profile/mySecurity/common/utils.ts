@@ -35,6 +35,12 @@ type TAllAddressesAndPastelID = {
   pastelIDs: TPastelID[]
 }
 
+type TQRCode = {
+  qrCode: string
+  total: number
+  index: number
+}
+
 export type TPrivateKey = {
   address: string
   privateKey: string
@@ -174,34 +180,31 @@ export async function fetcAllPrivateKeys(
 async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
   if (key.startsWith('p-secret-extended-key')) {
     try {
-      const res = await rpc<TPrivKeyResponse>(
+      await rpc<TPrivKeyResponse>(
         'z_importkey',
         [key, rescan ? 'yes' : 'no'],
         config,
       )
-      console.log(5555, 'z_importkey', res)
     } catch (err) {
       console.log(err)
     }
   } else if (key.startsWith('zxview')) {
     try {
-      const res = await rpc<TPrivKeyResponse>(
+      await rpc<TPrivKeyResponse>(
         'z_importviewingkey',
         [key, rescan ? 'yes' : 'no'],
         config,
       )
-      console.log(5555, 'z_importviewingkey', res)
     } catch (err) {
       console.log(err)
     }
   } else {
     try {
-      const res = await rpc<TPrivKeyResponse>(
+      await rpc<TPrivKeyResponse>(
         'importprivkey',
         [key, 'imported', rescan],
         config,
       )
-      console.log(5555, 'importprivkey', res)
     } catch (err) {
       console.log(err)
     }
@@ -215,7 +218,6 @@ export async function doImportPrivKeys(
   console.log(2222, 'doImportPrivKeys privateKeys:', privateKeys)
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
-    console.log(2222, 'doImportPrivKeys', keys)
     if (keys) {
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
@@ -230,8 +232,6 @@ export async function doImportPrivKeys(
           importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1, config)
         }
       }
-
-      console.log(2222, 'doImportPrivKeys done')
     }
   }
 }
@@ -267,4 +267,20 @@ export const decompressPastelIDAndPrivateKeys = (
       inputEncoding: 'Base64',
     }),
   )
+}
+
+export const parseQRCodeFromString = (str: string): TQRCode | null => {
+  if (!str) {
+    return null
+  }
+  const qr = str.split('::')
+  if (qr.length) {
+    return {
+      index: parseInt(qr[0]),
+      total: parseInt(qr[1]),
+      qrCode: qr[2],
+    }
+  }
+
+  return null
 }

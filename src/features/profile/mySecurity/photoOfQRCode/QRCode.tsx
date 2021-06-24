@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import QRCode from 'qrcode.react'
 import Slider from 'react-slick'
-import Modal from 'react-modal'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
+import RestoreByUpload from '../restorePrivateKeyAndPastelID/RestoreByUpload'
+import RestoreByCamera from '../restorePrivateKeyAndPastelID/RestoreByCamera'
 import Link from '../../../../common/components/Link'
+import Modal from '../../../../common/components/AnimatedModal'
+import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
 import { TRPCConfig } from '../../Profile'
 import {
@@ -20,7 +23,7 @@ type TQRProps = {
 }
 
 const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
-  const [currentSlide, setCurrentSlide] = useState(0)
+  const [selectedRestoreType, setSelectedRestoreType] = useState('')
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
   const [
@@ -41,6 +44,29 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
     fetchData()
   }, [])
 
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplay: true,
+  }
+
+  const generateFileName = () => {
+    const title = 'Paper_Wallet__QRCode'
+    const date = new Date()
+    const dateTime = `${
+      date.getMonth() + 1
+    }_${date.getDate()}_${date.getFullYear()}__${date.getHours()}_${date.getMinutes()}`
+    return `${title}_${dateTime}`
+  }
+
+  const handleSelectedRestoreType = (type: string) => {
+    setSelectedRestoreType(type)
+  }
+
   const description = (
     <div className='max-w-330px'>
       As a more convenient way to backup your secrets, you can either click the
@@ -57,44 +83,32 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
 
   const content = (
     <div className='flex justify-center h-270px rounded-lg py-33px px-42px bg-tab-hover'>
-      <div className='flex w-full h-full bg-background-onboarding rounded-md justify-center items-center shadow-64px  min-w-118px border border-solid border-gray-e6'>
-        <QRCode
-          id='qrcode'
-          value='https://explorer.pastel.network/'
-          size={118}
-        />
+      <div className='w-full h-full rounded-md shadow-64px border border-solid border-gray-e6 relative'>
+        {qrcodeData.length ? (
+          <Slider {...settings}>
+            {qrcodeData?.map((item, idx) => (
+              <div key={idx} className='d-block'>
+                <QRCode
+                  value={`${idx}::${qrcodeData.length}::${item}`}
+                  renderAs='svg'
+                  className='h-full w-full'
+                />
+              </div>
+            ))}
+          </Slider>
+        ) : null}
       </div>
     </div>
   )
 
   const footer = (
-    <>
-      {/* <Button
-        variant='secondary'
-        className='w-full font-extrabold'
-      >
-        Download QR Code Video
-      </Button> */}
-      <iframe
-        src={`http://localhost:${video.staticPort}/?page=download-video&chunks=${chunkQuantity}&val=${pastelIDAndPrivateKeysData}`}
-        className='w-full h-40px'
-      />
-    </>
+    <iframe
+      src={`http://localhost:${
+        video.staticPort
+      }/?page=download-video&chunks=${chunkQuantity}&filename=${generateFileName()}&val=${pastelIDAndPrivateKeysData}`}
+      className='w-full h-40px'
+    />
   )
-
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
-    autoplay: true,
-    afterChange: (slick: number) => {
-      setCurrentSlide(slick)
-    },
-  }
-  const totalQRCode = qrcodeData.length
 
   return (
     <>
@@ -104,26 +118,52 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
         content={content}
         footer={footer}
       />
-      <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-        {modalIsOpen ? (
-          <div className='h-540px w-540px mx-auto'>
-            <Slider {...settings}>
-              {qrcodeData?.map((item, idx) => (
-                <div key={idx} className='d-block'>
-                  <QRCode
-                    value={`${idx}::${totalQRCode}::${item}`}
-                    renderAs='svg'
-                    className='h-full w-full'
-                  />
-                </div>
-              ))}
-            </Slider>
-            <h4 className='text-center mt-10px'>
-              {currentSlide + 1}/{totalQRCode}
-            </h4>
+      <Modal
+        open={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
+        closeButton
+        render={() => (
+          <div className='paper p-10 w-[690px]'>
+            <div className='py-5'>
+              {!selectedRestoreType ? (
+                <>
+                  <div>
+                    <Button
+                      className='w-full font-extrabold'
+                      onClick={() => handleSelectedRestoreType('upload')}
+                    >
+                      Upload QR Code Video
+                    </Button>
+                  </div>
+                  <div className='mt-5'>
+                    <Button
+                      className='w-full font-extrabold'
+                      onClick={() => handleSelectedRestoreType('scan')}
+                    >
+                      Scan QR Code Video
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {selectedRestoreType === 'upload' ? (
+                    <RestoreByUpload
+                      rpcConfig={rpcConfig}
+                      onBack={handleSelectedRestoreType}
+                    />
+                  ) : null}
+                  {selectedRestoreType === 'scan' ? (
+                    <RestoreByCamera
+                      rpcConfig={rpcConfig}
+                      onBack={handleSelectedRestoreType}
+                    />
+                  ) : null}
+                </>
+              )}
+            </div>
           </div>
-        ) : null}
-      </Modal>
+        )}
+      />
     </>
   )
 }

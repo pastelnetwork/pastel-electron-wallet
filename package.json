@@ -43,6 +43,7 @@
     "@storybook/addon-postcss": "2.0.0",
     "@tailwindcss/postcss7-compat": "2.1.2",
     "@types/react-daterange-picker": "2.0.4",
+    "@types/react-qr-reader": "2.1.3",
     "as-table": "1.0.55",
     "autoprefixer": "10.2.5",
     "axios": "0.21.1",
@@ -79,7 +80,7 @@
     "rc-rate": "2.9.1",
     "react": "17.0.1",
     "react-accessible-accordion": "3.3.4",
-    "react-app": "ngvtuan/react-app#434bfa5",
+    "react-app": "ngvtuan/react-app#769a00c",
     "react-circular-progressbar": "2.0.4",
     "react-daterange-picker": "2.0.1",
     "react-dom": "17.0.1",
@@ -89,6 +90,7 @@
     "react-modal": "3.11.1",
     "react-number-format": "4.6.0",
     "react-popper-tooltip": "4.3.0",
+    "react-qr-reader": "2.2.1",
     "react-range": "1.8.8",
     "react-ratings-declarative": "3.4.1",
     "react-redux": "7.2.3",
@@ -121,7 +123,7 @@
     "uuid": "8.3.2",
     "ws": "7.2.1",
     "yup": "0.32.9",
-    "zbar.wasm": "^2.0.3"
+    "zbar.wasm": "2.0.3"
   },
   "devDependencies": {
     "@babel/core": "7.13.14",

@@ -4,7 +4,7 @@ import fs from 'fs'
 import path from 'path'
 
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
-import { doImportPrivKeys } from '../common/utils'
+import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 
 import { TRPCConfig } from '../../Profile'
 
@@ -12,17 +12,18 @@ import { Button } from '../../../../common/components/Buttons'
 
 type TRestoreByUploadProps = {
   rpcConfig: TRPCConfig
+  onBack: (type: string) => void
 }
 
 export default function RestoreByUpload({
   rpcConfig,
+  onBack,
 }: TRestoreByUploadProps): JSX.Element {
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
-  const [fileSelected, setFileSelected] = React.useState<File>()
+  const [fileSelected, setFileSelected] = useState<File>()
 
   useEffect(() => {
     if (qrCodeData.length) {
-      console.log(1111, 'doImportPrivKeys')
       doImportPrivKeys(qrCodeData.join(''), rpcConfig)
     }
   }, [qrCodeData])
@@ -34,25 +35,41 @@ export default function RestoreByUpload({
         const newpath = path.join(
           `${process.cwd()}/static/videos/${fileSelected.name}`,
         )
-
         fs.copyFileSync(oldpath, newpath)
-
         const qrCode: string[] = []
         VideoToImages.getFrames(
           `local-video://static/videos/${fileSelected.name}`,
           VideoToFramesMethod.totalFrames,
-        ).then(frames => {
-          console.log(1111, 'frames', frames)
-          frames.forEach(async (frame, idx) => {
-            const res = await scanImageData(frame)
-            console.log(1111, idx, 'scanImageData', res)
-            if (res[0] && !qrCode.includes(res[0].decode())) {
-              qrCode.push(res[0].decode())
+        )
+          .then(async frames => {
+            console.log(1111, 'getFrames', frames)
+            let currentQRCode = 0
+            let totalQRCode = 0
+            for (let i = 0; i < frames.length; i++) {
+              const res = await scanImageData(frames[i])
+              console.log(1111, 'scanImageData', res)
+              if (res[0]) {
+                const qr = parseQRCodeFromString(res[0].decode())
+                if (qr && !qrCode.includes(qr.qrCode)) {
+                  if (currentQRCode < qr.index) {
+                    currentQRCode = qr.index
+                  }
+
+                  qrCode.push(qr.qrCode)
+                  if (totalQRCode < qr.total) {
+                    totalQRCode = qr.total
+                  }
+                }
+              }
+            }
+
+            if (currentQRCode === totalQRCode - 1) {
+              setQRCodeData(qrCode)
             }
           })
-          console.log(9999, 'setQRCodeData')
-          setQRCodeData(qrCode)
-        })
+          .catch(err => {
+            console.log(1111, 'Error', err)
+          })
       } catch (error) {
         console.log(1111, 'Error', error)
       }
@@ -71,7 +88,12 @@ export default function RestoreByUpload({
 
   return (
     <div className='m-4'>
-      <div className='mb-3 bg-white max-w-690px p-5'>
+      <div className='mb-5'>
+        <a href='#' className='underline' onClick={() => onBack('')}>
+          Back
+        </a>
+      </div>
+      <div className='mb-3 max-w-690px'>
         <div>
           <input
             type='file'
@@ -80,21 +102,14 @@ export default function RestoreByUpload({
             onChange={handleImageChange}
           />
         </div>
-        <div className='w-300px mt-4'>
+        <div className='w-300px mt-5'>
           <Button
-            variant='secondary'
             className='w-full font-extrabold'
             onClick={handleRestoreByUpload}
           >
             Start Restore
           </Button>
         </div>
-        {qrCodeData ? (
-          <div className='mt-4 break-all whitespace-pre-wrap'>
-            Result: {qrCodeData?.join('')}
-          </div>
-        ) : null}
-        <div></div>
       </div>
     </div>
   )
