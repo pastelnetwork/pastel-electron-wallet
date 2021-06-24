@@ -10,6 +10,7 @@ import dayjs from 'dayjs'
 import smallImage from '../../common/assets/images/mock/small-image.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import { formatNumber } from '../../common/utils/format'
+import Header from '../../common/components/Header'
 
 const date = dayjs('2021-04-04')
 
@@ -60,6 +61,7 @@ notifications = [...notifications, ...notifications, ...notifications]
 export default function DashboardPage(): JSX.Element {
   return (
     <div className='page-container py-5 w-full max-w-screen-xl mx-auto'>
+      <Header />
       <div className='flex mb-5'>
         <div className='h-380px' />
         <div className='paper pt-6 pb-5 w-335px flex flex-col relative'>

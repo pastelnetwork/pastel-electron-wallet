@@ -7,49 +7,35 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 import Link from '../../../../common/components/Link'
-import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
 import { TRPCConfig } from '../../Profile'
-import { fetchPastelIDAndPrivateKeys, splitStringIntoChunks } from '../utils'
+import {
+  fetchPastelIDAndPrivateKeys,
+  splitStringIntoChunks,
+} from '../common/utils'
+import { video } from '../../../constants/ServeStatic'
 
 type TQRProps = {
   rpcConfig: TRPCConfig
 }
 
-const downloadQR = () => {
-  const canvas = document.getElementById('qrcode') as HTMLCanvasElement
-
-  const pngUrl = canvas
-    ?.toDataURL('image/png')
-    .replace('image/png', 'image/octet-stream')
-  const downloadLink = document.createElement('a')
-  downloadLink.href = pngUrl
-  downloadLink.download = 'qrcode.png'
-  document.body.appendChild(downloadLink)
-  downloadLink.click()
-  document.body.removeChild(downloadLink)
-}
-
-const handleDownloadQRCodeVideo = () => {
-  const svgs = document.querySelectorAll('.qrcode')
-  const images = []
-  for (let i = 0; i < svgs.length; i++) {
-    const str = new XMLSerializer().serializeToString(svgs[i])
-    images.push(window.btoa(str))
-  }
-  downloadQR()
-}
-
 const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
+  const [currentSlide, setCurrentSlide] = useState(0)
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
+  const [
+    pastelIDAndPrivateKeysData,
+    setPastelIDAndPrivateKeysData,
+  ] = useState<string>('')
+  const chunkQuantity = 500
 
   useEffect(() => {
     const fetchData = async () => {
       const results = await fetchPastelIDAndPrivateKeys(rpcConfig)
       if (results) {
-        const chunks = splitStringIntoChunks(results, 300)
+        const chunks = splitStringIntoChunks(results, chunkQuantity)
         setQRcodeData(chunks)
+        setPastelIDAndPrivateKeysData(results)
       }
     }
     fetchData()
@@ -82,13 +68,18 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
   )
 
   const footer = (
-    <Button
-      variant='secondary'
-      className='w-full font-extrabold'
-      onClick={handleDownloadQRCodeVideo}
-    >
-      Download QR Code Video
-    </Button>
+    <>
+      {/* <Button
+        variant='secondary'
+        className='w-full font-extrabold'
+      >
+        Download QR Code Video
+      </Button> */}
+      <iframe
+        src={`http://localhost:${video.staticPort}/?page=download-video&chunks=${chunkQuantity}&val=${pastelIDAndPrivateKeysData}`}
+        className='w-full h-40px'
+      />
+    </>
   )
 
   const settings = {
@@ -99,18 +90,11 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
     slidesToScroll: 1,
     arrows: false,
     autoplay: true,
+    afterChange: (slick: number) => {
+      setCurrentSlide(slick)
+    },
   }
-  const totalQRCode = qrcodeData?.length
-  const qrcodeList = (qrcodeClassName: string) =>
-    qrcodeData?.map((item, idx) => (
-      <div key={idx} className='d-block'>
-        <QRCode
-          value={`${idx}::${totalQRCode}::${item}`}
-          renderAs='svg'
-          className={qrcodeClassName}
-        />
-      </div>
-    ))
+  const totalQRCode = qrcodeData.length
 
   return (
     <>
@@ -120,11 +104,23 @@ const QR = ({ rpcConfig }: TQRProps): JSX.Element => {
         content={content}
         footer={footer}
       />
-      <div className='hidden'>{qrcodeList('qrcode w-1px h-1px')}</div>
       <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
         {modalIsOpen ? (
           <div className='h-540px w-540px mx-auto'>
-            <Slider {...settings}>{qrcodeList('h-full w-full')}</Slider>
+            <Slider {...settings}>
+              {qrcodeData?.map((item, idx) => (
+                <div key={idx} className='d-block'>
+                  <QRCode
+                    value={`${idx}::${totalQRCode}::${item}`}
+                    renderAs='svg'
+                    className='h-full w-full'
+                  />
+                </div>
+              ))}
+            </Slider>
+            <h4 className='text-center mt-10px'>
+              {currentSlide + 1}/{totalQRCode}
+            </h4>
           </div>
         ) : null}
       </Modal>

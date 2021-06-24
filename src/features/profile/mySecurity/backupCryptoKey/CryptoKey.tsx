@@ -17,7 +17,7 @@ import {
   fetcAllPrivateKeys,
   TPrivateKey,
   addLineBreakForContent,
-} from '../utils'
+} from '../common/utils'
 
 type TCrypto = {
   currencyName?: string

@@ -5,3 +5,7 @@ export const glitch = {
 export const squoosh = {
   staticPort: 5200,
 }
+
+export const video = {
+  staticPort: 5400,
+}

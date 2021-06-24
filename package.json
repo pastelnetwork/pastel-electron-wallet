@@ -79,6 +79,7 @@
     "rc-rate": "2.9.1",
     "react": "17.0.1",
     "react-accessible-accordion": "3.3.4",
+    "react-app": "ngvtuan/react-app#434bfa5",
     "react-circular-progressbar": "2.0.4",
     "react-daterange-picker": "2.0.1",
     "react-dom": "17.0.1",
@@ -119,7 +120,8 @@
     "update-electron-app": "2.0.1",
     "uuid": "8.3.2",
     "ws": "7.2.1",
-    "yup": "0.32.9"
+    "yup": "0.32.9",
+    "zbar.wasm": "^2.0.3"
   },
   "devDependencies": {
     "@babel/core": "7.13.14",

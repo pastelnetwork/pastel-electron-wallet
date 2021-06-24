@@ -20,6 +20,10 @@ module.exports = [
         from: 'node_modules/jpg-glitch/production',
         to: 'static/glitch',
       },
+      {
+        from: 'node_modules/react-app/build',
+        to: 'static/ffmpeg',
+      },
     ],
   }),
 ]

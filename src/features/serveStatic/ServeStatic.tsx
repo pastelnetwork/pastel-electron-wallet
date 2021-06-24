@@ -2,13 +2,14 @@ import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
 
-import { glitch, squoosh } from '../constants/ServeStatic'
+import { glitch, squoosh, video } from '../constants/ServeStatic'
 
 const servers: Server[] = []
 
 export default function initServeStatic(isPackaged: boolean): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
+  let videoStaticPath = `${process.cwd()}/node_modules/react-app/build`
   if (isPackaged) {
     squooshStaticPath = path.join(
       process.resourcesPath,
@@ -18,9 +19,14 @@ export default function initServeStatic(isPackaged: boolean): void {
       process.resourcesPath,
       '/app.asar/.webpack/renderer/static/glitch',
     )
+    videoStaticPath = path.join(
+      process.resourcesPath,
+      '/app.asar/.webpack/renderer/static/ffmpeg',
+    )
   }
   setupServeStatic(squooshStaticPath, squoosh.staticPort)
   setupServeStatic(glitchStaticPath, glitch.staticPort)
+  setupServeStatic(videoStaticPath, video.staticPort)
 }
 
 function setupServeStatic(staticPath: string, port: number) {

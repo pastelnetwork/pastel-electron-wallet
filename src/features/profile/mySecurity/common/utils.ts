@@ -1,6 +1,6 @@
 import LZUTF8 from 'lzutf8'
 
-import { rpc, TRPCConfig } from '../../../api/pastel-rpc/rpc'
+import { rpc, TRPCConfig } from '../../../../api/pastel-rpc/rpc'
 
 type TAddressesResponse = {
   error: string | null
@@ -27,6 +27,12 @@ type TAllAddresses = {
 
 type TPastelID = {
   pastelid: string
+}
+
+type TAllAddressesAndPastelID = {
+  zPrivateKeys: string[]
+  tPrivateKeys: string[]
+  pastelIDs: TPastelID[]
 }
 
 export type TPrivateKey = {
@@ -117,9 +123,11 @@ export async function fetchPastelIDAndPrivateKeys(
       pastelIDs,
     }
 
-    return LZUTF8.compress(JSON.stringify(data), {
-      outputEncoding: 'Base64',
-    })
+    return encodeURIComponent(
+      LZUTF8.compress(JSON.stringify(data), {
+        outputEncoding: 'Base64',
+      }),
+    )
   }
 
   return null
@@ -163,6 +171,71 @@ export async function fetcAllPrivateKeys(
   return zPrivateKeys.concat(tPrivateKeys)
 }
 
+async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
+  if (key.startsWith('p-secret-extended-key')) {
+    try {
+      const res = await rpc<TPrivKeyResponse>(
+        'z_importkey',
+        [key, rescan ? 'yes' : 'no'],
+        config,
+      )
+      console.log(5555, 'z_importkey', res)
+    } catch (err) {
+      console.log(err)
+    }
+  } else if (key.startsWith('zxview')) {
+    try {
+      const res = await rpc<TPrivKeyResponse>(
+        'z_importviewingkey',
+        [key, rescan ? 'yes' : 'no'],
+        config,
+      )
+      console.log(5555, 'z_importviewingkey', res)
+    } catch (err) {
+      console.log(err)
+    }
+  } else {
+    try {
+      const res = await rpc<TPrivKeyResponse>(
+        'importprivkey',
+        [key, 'imported', rescan],
+        config,
+      )
+      console.log(5555, 'importprivkey', res)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+export async function doImportPrivKeys(
+  privateKeys: string,
+  config: TRPCConfig,
+): Promise<void> {
+  console.log(2222, 'doImportPrivKeys privateKeys:', privateKeys)
+  if (privateKeys) {
+    const keys = decompressPastelIDAndPrivateKeys(privateKeys)
+    console.log(2222, 'doImportPrivKeys', keys)
+    if (keys) {
+      const zPrivateKeys = keys.zPrivateKeys
+      if (zPrivateKeys?.length) {
+        for (let i = 0; i < zPrivateKeys.length; i++) {
+          importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1, config)
+        }
+      }
+
+      const tPrivateKeys = keys.tPrivateKeys
+      if (tPrivateKeys?.length) {
+        for (let i = 0; i < tPrivateKeys.length; i++) {
+          importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1, config)
+        }
+      }
+
+      console.log(2222, 'doImportPrivKeys done')
+    }
+  }
+}
+
 export const splitStringIntoChunks = (
   str: string,
   chunkQuantity: number,
@@ -180,4 +253,18 @@ export const splitStringIntoChunks = (
 export const addLineBreakForContent = (str: string): string => {
   const breakChar = '\u00ad'
   return str.replace(/(.{40})/g, `$1${breakChar}`)
+}
+
+export const decompressPastelIDAndPrivateKeys = (
+  str: string,
+): TAllAddressesAndPastelID | null => {
+  if (!str) {
+    return null
+  }
+
+  return JSON.parse(
+    LZUTF8.decompress(decodeURIComponent(str), {
+      inputEncoding: 'Base64',
+    }),
+  )
 }
