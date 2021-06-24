@@ -7,7 +7,6 @@ import {
 } from './mySecurity/common/utils'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
-import CreateVideo from './mySecurity/restorePrivateKeyAndPastelID/CreateVideo'
 
 export type TRPCConfig = {
   username: string
@@ -32,7 +31,6 @@ const Profile = (props: TProfileProps): JSX.Element => {
   const { info, rpcConfig } = props
   const [tab, setTab] = useState(Tabs.info)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
-  const [videoUrl, setVideoUrl] = useState<string>('')
 
   const tabs = [
     { label: 'Info', count: 2 },
@@ -89,10 +87,6 @@ const Profile = (props: TProfileProps): JSX.Element => {
       {tab === Tabs.security && (
         <MySecurity info={info} rpcConfig={rpcConfig} qrcodeData={qrcodeData} />
       )}
-      <div>
-        <p>{videoUrl}</p>
-        <CreateVideo qrcodeData={qrcodeData} setVideoUrl={setVideoUrl} />
-      </div>
     </div>
   )
 }

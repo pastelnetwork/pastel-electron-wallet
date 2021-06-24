@@ -4497,7 +4497,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-qr-reader@^2.1.3":
+"@types/react-qr-reader@2.1.3":
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/@types/react-qr-reader/-/react-qr-reader-2.1.3.tgz#cf3a27e7bde37a585a7baff8dbf242d1ebe70ddd"
   integrity sha512-quTZl76whDvR+Xp87jh2roDbL6SC8Pzi8Ef59EP5RheobKZWQBbcDM33r7/Ndi63NBOz89MEDtkiHDkAvXxPhg==
@@ -9517,6 +9517,17 @@ fd-slicer@~1.1.0:
   integrity sha1-JcfInLH5B3+IkbvmHY85Dq4lbx4=
   dependencies:
     pend "~1.2.0"
+
+ffmpegwasm-create-video@pastelnetwork/ffmpegwasm-create-video#6cb259e:
+  version "0.1.0"
+  resolved "https://codeload.github.com/pastelnetwork/ffmpegwasm-create-video/tar.gz/6cb259eb08c07178077fcd570ab26f2b3dbcb026"
+  dependencies:
+    "@ffmpeg/core" "0.10.0"
+    "@ffmpeg/ffmpeg" "0.10.1"
+    cross-env "7.0.3"
+    react "17.0.1"
+    react-dom "17.0.1"
+    react-scripts "4.0.3"
 
 figgy-pudding@^3.5.1:
   version "3.5.2"
@@ -15687,15 +15698,6 @@ qrcode.react@1.0.0:
     prop-types "^15.6.0"
     qr.js "0.0.0"
 
-qrcode.react@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/qrcode.react/-/qrcode.react-1.0.1.tgz#2834bb50e5e275ffe5af6906eff15391fe9e38a5"
-  integrity sha512-8d3Tackk8IRLXTo67Y+c1rpaiXjoz/Dd2HpcMdW//62/x8J1Nbho14Kh8x974t9prsLHN6XqVgcnRiBGFptQmg==
-  dependencies:
-    loose-envify "^1.4.0"
-    prop-types "^15.6.0"
-    qr.js "0.0.0"
-
 qs@6.7.0:
   version "6.7.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.7.0.tgz#41dc1a015e3d581f1621776be31afb2876a9b1bc"
@@ -15878,13 +15880,13 @@ react-app-polyfill@^2.0.0:
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
 
-react-app@ngvtuan/react-app#434bfa5:
+react-app@pastelnetwork/ffmpegwasm-create-video#9cdf231:
   version "0.1.0"
-  resolved "https://codeload.github.com/ngvtuan/react-app/tar.gz/434bfa5b728e1abaa048f4dfe74348bfdc90a5be"
+  resolved "https://codeload.github.com/pastelnetwork/ffmpegwasm-create-video/tar.gz/9cdf231824bdc59a25b121f1440298723f5ed540"
   dependencies:
     "@ffmpeg/core" "0.10.0"
     "@ffmpeg/ffmpeg" "0.10.1"
-    qrcode.react "1.0.1"
+    cross-env "7.0.3"
     react "17.0.1"
     react-dom "17.0.1"
     react-scripts "4.0.3"
@@ -16112,7 +16114,7 @@ react-popper@^2.2.4, react-popper@^2.2.5:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
-react-qr-reader@^2.2.1:
+react-qr-reader@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-qr-reader/-/react-qr-reader-2.2.1.tgz#dc89046d1c1a1da837a683dd970de5926817d55b"
   integrity sha512-EL5JEj53u2yAOgtpAKAVBzD/SiKWn0Bl7AZy6ZrSf1lub7xHwtaXe6XSx36Wbhl1VMGmvmrwYMRwO1aSCT2fwA==
@@ -20173,7 +20175,7 @@ yup@0.32.9:
     property-expr "^2.0.4"
     toposort "^2.0.2"
 
-zbar.wasm@^2.0.3:
+zbar.wasm@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/zbar.wasm/-/zbar.wasm-2.0.3.tgz#0e6c954c92e8bc5fba67892600544ba8c3126b85"
   integrity sha512-kpdc9S4rSO9fxtuShJQMNFYDcT+sA399oXBoWfPtUvfl1ytxrVs/2aklfrBsxmFPcvrFejLb3ZlwrubTNb17xg==

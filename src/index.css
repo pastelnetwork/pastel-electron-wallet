@@ -3,6 +3,8 @@
 @import 'common/assets/fonts/font.css';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'simplebar/src/simplebar.css';
+@import 'slick-carousel/slick/slick.css';
+@import 'slick-carousel/slick/slick-theme.css';
 
 @tailwind base;
 

@@ -2,9 +2,6 @@ import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import Slider from 'react-slick'
 
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-
 import RestoreByUpload from '../restorePrivateKeyAndPastelID/RestoreByUpload'
 import RestoreByCamera from '../restorePrivateKeyAndPastelID/RestoreByCamera'
 import Link from '../../../../common/components/Link'
@@ -16,6 +13,7 @@ import { TRPCConfig } from '../../Profile'
 type TQRProps = {
   rpcConfig: TRPCConfig
   qrcodeData: string[]
+  handleDownloadVideo: () => void
 }
 
 type TQRCodeSliderProps = {
@@ -26,25 +24,30 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
   if (!qrcodeData.length) {
     return null
   }
-
+  let slider: Slider | null
   const settings = {
     dots: false,
-    infinite: true,
-    speed: 500,
+    infinite: false,
+    speed: 1500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: false,
     autoplay: true,
+    afterChange: (currentSlide: number) => {
+      if (currentSlide === qrcodeData.length - 1) {
+        slider?.slickGoTo(0)
+      }
+    },
   }
 
   return (
-    <Slider {...settings}>
+    <Slider {...settings} ref={node => (slider = node)}>
       {qrcodeData.map((item, idx) => (
-        <div key={idx} className='d-block'>
+        <div key={idx} className='d-block h-205px'>
           <QRCode
             value={`${idx}::${qrcodeData.length}::${item}`}
-            className='h-full w-full'
-            renderAs='svg'
+            className='qrCodeData h-full w-full max-h-205px max-w-full'
+            size={1024}
           />
         </div>
       ))}
@@ -52,7 +55,11 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
   )
 }
 
-const QR = ({ rpcConfig, qrcodeData }: TQRProps): JSX.Element => {
+const QR = ({
+  rpcConfig,
+  qrcodeData,
+  handleDownloadVideo,
+}: TQRProps): JSX.Element => {
   const [selectedRestoreType, setSelectedRestoreType] = useState('')
   const [modalIsOpen, setModalIsOpen] = useState(false)
 
@@ -76,19 +83,21 @@ const QR = ({ rpcConfig, qrcodeData }: TQRProps): JSX.Element => {
 
   const content = (
     <div className='flex justify-center h-270px rounded-lg py-33px px-42px bg-tab-hover'>
-      <div className='w-full h-118px rounded-md shadow-64px border border-solid border-gray-e6 relative'>
+      <div className='w-full h-205px rounded-md shadow-64px border border-solid border-gray-e6 relative'>
         <QRCodeSlider qrcodeData={qrcodeData} />
       </div>
     </div>
   )
 
   const footer = (
-    <Button variant='secondary' className='w-full font-extrabold relative'>
+    <Button
+      variant='secondary'
+      className='w-full font-extrabold relative'
+      onClick={handleDownloadVideo}
+    >
       Download QR Code Video
     </Button>
   )
-
-  console.log(111111, 'Generate a QR Code Video')
 
   return (
     <>

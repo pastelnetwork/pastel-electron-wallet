@@ -9,7 +9,7 @@ const servers: Server[] = []
 export default function initServeStatic(isPackaged: boolean): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
-  let videoStaticPath = `${process.cwd()}/node_modules/react-app/build`
+  let videoStaticPath = `${process.cwd()}/node_modules/ffmpegwasm-create-video/production`
   if (isPackaged) {
     squooshStaticPath = path.join(
       process.resourcesPath,

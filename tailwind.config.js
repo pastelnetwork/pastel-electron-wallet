@@ -108,6 +108,7 @@ module.exports = {
         '191px': '11.9375rem',
         '196px': '12.25rem',
         '200px': '12.5rem',
+        '205px': '12.813rem',
         '219px': '13.6875rem',
         '220px': '13.75rem',
         '223px': '13.9375rem',
@@ -377,6 +378,7 @@ module.exports = {
         '10px': '0.625rem',
       },
       maxHeight: {
+        '205px': '12.813rem',
         '244px': '15.25rem',
         '700px': '43.75rem',
         '750px': '46.875rem',

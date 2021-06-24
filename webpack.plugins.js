@@ -21,7 +21,7 @@ module.exports = [
         to: 'static/glitch',
       },
       {
-        from: 'node_modules/react-app/build',
+        from: 'node_modules/ffmpegwasm-create-video/production',
         to: 'static/ffmpeg',
       },
     ],
