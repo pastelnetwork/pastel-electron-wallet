@@ -1,0 +1,21 @@
+/* Radio-button */
+.input-radio-button:after {
+  content: '';
+  @apply absolute top-2/4 left-2/4 transform -translate-y-2/4 -translate-x-2/4 bg-blue-3f w-2 h-2 rounded-full opacity-0 transition duration-300;
+}
+
+.input-radio:checked ~ .input-radio-button {
+  @apply bg-blue-e5 border-transparent;
+}
+
+.input-radio:checked ~ .input-radio-button:after {
+  @apply opacity-100;
+}
+
+.input-radio:checked ~ .input-radio-button:after {
+  @apply opacity-100;
+}
+
+.input-radio:checked ~ .input-radio-text {
+  @apply font-extrabold text-gray-4a;
+}
