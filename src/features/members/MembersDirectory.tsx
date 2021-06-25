@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import MemberStrip, { TMemberStripProps } from './MemberStrip'
 import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
-
+import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 import PageHeader from '../../common/components/PageHeader'
 import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
 import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
-import ScrollBar from '../../common/components/Scrollbar'
+import styles from './MembersDirectory.module.css'
 
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
 const mockMemberStrips: TMemberStripProps[] = [
@@ -78,11 +78,21 @@ const mockOptions: TOption[] = [
   { value: 'option_3', label: 'TOption 3' },
 ]
 
+const mockBreadcrumbs: TBreadcrumb[] = [
+  {
+    label: 'Members',
+    route: '#',
+  },
+  {
+    label: '',
+  },
+]
+
 const MembersDirectory: React.FC = () => {
   // Filters
   const [category, setCategory] = useState<TOption | null>(mockOptions[0])
-
-  const [range, setRange] = useState(500)
+  const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
+  const [range, setRange] = useState<[number, number]>([400, 700])
   const formatValue = (value: number) => `${value}k`
 
   const filterOptions = {
@@ -131,15 +141,23 @@ const MembersDirectory: React.FC = () => {
     onToggle: setSelectedItem,
   }
 
+  useEffect(() => {
+    const updatedbreadcrumbs = [...breadcrumbs]
+    updatedbreadcrumbs[mockBreadcrumbs.length - 1].label =
+      routes.data[selectedItem].label
+    setBreadcrumbs(updatedbreadcrumbs)
+  }, [selectedItem])
+
   return (
     <div>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PageHeader
         title='Members'
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <ScrollBar hasPageHeader={true}>
-        <div className='wrapper content with-page-header pb-5 w-screen'>
+      <div className='wrapper content with-page-header pb-5 pt-5 pr-30px w-screen'>
+        <div className={`${styles.content} pr-30px overflow-y-auto pt-2.5`}>
           <div className='bg-white p-5 rounded-lg'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>
@@ -147,12 +165,12 @@ const MembersDirectory: React.FC = () => {
               </div>
               <div className='flex'>
                 <div className='flex h-full items-center justify-end'>
-                  <p className='text-h6 px-22px text-gray-2d'>Sales turover:</p>
+                  <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
 
                   <Slider
                     min={100}
                     max={999}
-                    value={range}
+                    values={range}
                     onChange={setRange}
                     formatValue={formatValue}
                     formatTooltipValue={formatValue}
@@ -167,7 +185,7 @@ const MembersDirectory: React.FC = () => {
             </div>
           </div>
         </div>
-      </ScrollBar>
+      </div>
     </div>
   )
 }

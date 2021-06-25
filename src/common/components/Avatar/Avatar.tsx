@@ -31,7 +31,7 @@ const Avatar = ({
           className={
             position === 'bottom'
               ? 'absolute -bottom-1 -right-5px'
-              : 'absolute top-0 right-0'
+              : 'absolute bottom-0 right-0'
           }
         />
       )}
