@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import cn from 'classnames'
 import { useHistory } from 'react-router-dom'
+import cn from 'classnames'
+
 import PercentCircle from 'common/components/PercentCircle'
 
 import OnboardingLayout from 'common/layout/Onboarding2' // DEBUG
@@ -19,19 +20,14 @@ import infoIco from 'common/assets/icons/ico-info.svg'
 import * as ROUTES from 'common/utils/constants/routes'
 import styles from './Register.css'
 
+import { Steps, useRegisterState } from './Regiser.state'
+
 import StepLogin from './registerSteps/RegisterSteps'
-/*
 import StepBackup from './backupSteps/BackupSteps'
 import StepPayment from './paymentSteps/PaymentSteps'
+/*
 import StepFee from './feeSteps/FeeSteps'
 */
-
-enum Steps {
-  Login = 1,
-  Backup,
-  Payment,
-  Fee,
-}
 
 const STEPS = [
   {
@@ -65,48 +61,28 @@ const STEPS = [
 ]
 
 const RegisterContent = (): JSX.Element => {
-  const history = useHistory()
-  const [activeStep, setActiveStep] = useState<Steps>(Steps.Login)
-
-  /*
-  const toPrevStep = () => {
-    if (activeStep === Steps.Login) {
-      return null
-    }
-
-    setActiveStep(activeStep - 1)
-    return true
-  }
-  */
-
-  const toNextStep = () => {
-    if (activeStep === Steps.Fee) {
-      history.push(ROUTES.REGISTER_PENDING)
-    } else {
-      setActiveStep(activeStep + 1)
-    }
-  }
+  const state = useRegisterState()
 
   return (
     <>
       <div className='flex w-970px max-w-95p'>
-        <div className='w-1/2 flex-shrink-0 bg-gray-fc pt-10 pl-10 pr-7'>
+        <div className='w-1/2 flex-shrink-0 bg-gray-fc py-10 pl-10 pr-7'>
           <div className='flex justify-between'>
             <div>
               <div className='text-gray-800 text-2xl font-extrabold mb-3'>
                 Onboarding
               </div>
               <div className='font-medium text-sm text-gray-33 opacity-50'>
-                Description
+                Getting Started on Pastel Network
               </div>
             </div>
             <div>
               <PercentCircle
                 color='text-green-6d'
-                percent={Math.round(100 * (activeStep / Steps.Fee))}
+                percent={Math.round(100 * (state.step / state.stepsCount))}
               >
                 <div className='font-extrabold text-gray-11 text-lg mt-1'>
-                  1/4
+                  {state.step}/{state.stepsCount}
                 </div>
               </PercentCircle>
             </div>
@@ -119,25 +95,29 @@ const RegisterContent = (): JSX.Element => {
                   className={cn(
                     'rounded-lg flex items-center px-8 py-3 step',
                     styles.step,
-                    activeStep === id ? 'bg-gray-ed' : '',
+                    state.step === id ? 'bg-gray-ed' : '',
                   )}
                 >
-                  {activeStep <= id ? (
+                  {state.step <= id ? (
                     <img
-                      src={activeStep === id ? iconActive : iconDefault}
+                      src={state.step === id ? iconActive : iconDefault}
                       alt={stepIconLabel}
                     />
                   ) : (
-                    <img src={completedIco} alt={`Step ${id} completed`} />
+                    <img
+                      src={completedIco}
+                      alt={`Step ${id} completed`}
+                      className='ml-1'
+                    />
                   )}
                   <div className='flex-grow flex items-center ml-8'>
                     {label}
-                    {activeStep === id && (
+                    {state.step === id && (
                       <img className='w-5 ml-2' src={infoIco} alt='info' />
                     )}
                   </div>
 
-                  {activeStep === id && (
+                  {state.step === id && (
                     <img
                       className='w-4'
                       src={icoArrowRight}
@@ -151,34 +131,11 @@ const RegisterContent = (): JSX.Element => {
         </div>
 
         <div className='w-1/2 flex-shrink-0 pb-10 pl-10 pr-7 mt-7'>
-          {activeStep === Steps.Login && <StepLogin goNext={toNextStep} />}
+          {state.step === Steps.Login && <StepLogin {...state} />}
+          {state.step === Steps.Backup && <StepBackup {...state} />}
+          {state.step === Steps.Payment && <StepPayment {...state} />}
           {/*
-          {activeStep === Steps.Backup && <StepBackup goBack={toPrevStep} goNext={toNextStep} />}
-          {activeStep === Steps.Payment && <StepPayment goBack={toPrevStep} goNext={toNextStep} />}
-          {activeStep === Steps.Fee && <StepFee goBack={toPrevStep} />}
-          */}
-
-          {/*
-          <div className='mt-7 flex items-center justify-between'>
-            <div>
-              {activeStep !== Steps.Login && (
-                <button
-                  onClick={toPrevStep}
-                  className='w-10 flex items-center justify-center'
-                >
-                  <img className='w-4' src={icoArrowLeft} />
-                </button>
-              )}
-            </div>
-            <button
-              onClick={toNextStep}
-              className=''
-              >
-              {activeStep === Steps.
-                ? 'Proceed to 1,000 PSL payment'
-                : `Next step ${activeStep + 1}`}
-            </button>
-          </div>
+          {state.step === Steps.Fee && <StepFee  {...state} />}
           */}
         </div>
       </div>

@@ -1,61 +1,142 @@
-import * as React from 'react'
+import React, { useState } from 'react'
+import cn from 'classnames'
 import QRCode from 'qrcode.react'
 
-import Typography from '../../../../common/components/Typography/Typography'
-import { colors } from '../../../../common/theme/colors'
+import icoPdf from 'common/assets/icons/ico-pdf.svg'
+import icoDownload from 'common/assets/icons/ico-download-2.svg'
+import { PrevButton, NextButton } from '../Buttons'
+import { BackupMethods } from '../Regiser.state'
+import styles from '../Register.css'
 
-import icoPdf from '../../../../common/assets/icons/ico-pdf.svg'
-import icoDownload from '../../../../common/assets/icons/ico-download-2.svg'
+export type TStepBackupMethodProps = {
+  backupMethod: BackupMethods
+  setBackupMethod(val: BackupMethods): void
+  goToNextStep(): void
+  goBack(): void
+}
 
-import * as Styles from './BackupSteps.styles'
+const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
+  const [pdfPrepareProgress, setPdfPrepareProgress] = useState<number>(0)
 
-const BackupSteps: React.FC = () => {
-  const [isPdfPage, setIsPdfPage] = React.useState(true)
+  const nextActive = true
+  const methods = [
+    {
+      name: 'Download PDF',
+      method: BackupMethods.PDF,
+    },
+    {
+      name: 'QR-code',
+      method: BackupMethods.QR,
+    },
+  ]
+
+  const onDlPdf = () => {
+    // prepare PDF
+    setPdfPrepareProgress(65)
+  }
 
   return (
-    <Styles.Container>
-      <Styles.SwitcherContainer>
-        <Styles.SwitchElement
-          active={isPdfPage}
-          onClick={() => setIsPdfPage(true)}
-        >
-          Download PDF
-        </Styles.SwitchElement>
-        <Styles.SwitchElement
-          active={!isPdfPage}
-          onClick={() => setIsPdfPage(false)}
-        >
-          QR-code
-        </Styles.SwitchElement>
-      </Styles.SwitcherContainer>
-      <Typography variant='h3' weight={800}>
-        Crypto-keys backup method
-      </Typography>
-      <Typography variant='body3' color={colors.text.secondary}>
-        Download PDF file with keys
-      </Typography>
-      <Styles.ContentContainer>
-        {isPdfPage ? (
-          <>
-            <Styles.PdfContainer>
-              <img src={icoPdf} />
-              <Styles.PdfDetails>
-                <Typography variant='body2'>Crypto-keys</Typography>
-                <Typography variant='body3' color={colors.text.secondary}>
-                  6mb
-                </Typography>
-              </Styles.PdfDetails>
-            </Styles.PdfContainer>
-            <Styles.PdfDownload src={icoDownload} />
-          </>
-        ) : (
-          <Styles.QRContainer>
-            <QRCode value='https://explorer.pastel.network/' />
-          </Styles.QRContainer>
+    <div className='pt-16 flex flex-col h-full'>
+      <div>
+        <div className='rounded-full border border-gray-eb p-1 inline-flex'>
+          {methods.map((item, i) => (
+            <div
+              key={i}
+              className={cn(
+                'font-extrabold text-sm rounded-full px-3 py-1.5 cursor-pointer transition-colors',
+                props.backupMethod === item.method
+                  ? 'bg-gray-35 text-white'
+                  : 'text-gray-71',
+              )}
+              onClick={() => props.setBackupMethod(item.method)}
+            >
+              {item.name}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className='flex-grow'>
+        {props.backupMethod === BackupMethods.PDF && (
+          <div className='mt-14'>
+            <h1 className='text-gray-23 text-xl font-black'>
+              Crypto-keys backup method
+            </h1>
+            <h2 className='text-gray-77 text-sm font-normal'>
+              Download PDF “paper wallet” file with keys for your PastelID
+            </h2>
+
+            <div className='mt-6 px-7 py-4 bg-gray-f4 border border-gray-e1 flex rounded-lg'>
+              <img src={icoPdf} className='w-10' />
+
+              <div className='ml-4 mr-4'>
+                <div className='text-base font-medium text-gray-1f'>
+                  Crypto-keys
+                </div>
+                <div className='text-sm font-medium text-gray-8e'>0.5mb</div>
+              </div>
+
+              {pdfPrepareProgress === 0 && (
+                <div className='flex-grow flex justify-end'>
+                  <span
+                    className='w-12 rounded-full bg-gray-eb flex justify-center items-center cursor-pointer'
+                    onClick={() => onDlPdf()}
+                  >
+                    <img src={icoDownload} className='w-5' />
+                  </span>
+                </div>
+              )}
+
+              {pdfPrepareProgress > 0 && (
+                <div className='flex-grow flex items-center justify-end'>
+                  <div className='h-1.5 w-20 rounded-full bg-green-e4 mr-3 overflow-hidden'>
+                    <div
+                      className='h-1.5 rounded-full bg-green-77'
+                      style={{ width: pdfPrepareProgress + '%' }}
+                    ></div>
+                  </div>
+                  <span className='font-extrabold text-sm'>
+                    {pdfPrepareProgress}%
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
         )}
-      </Styles.ContentContainer>
-    </Styles.Container>
+
+        {props.backupMethod === BackupMethods.QR && (
+          <div className='mt-14'>
+            <h1 className='text-gray-23 text-xl font-black'>
+              QR-Code Backup Method
+            </h1>
+            <h2 className='text-gray-77 text-sm font-normal'>
+              Save QR Code Video to a Secure Place, or Take a Video
+              <br />
+              of Changing Code with your Smartphone:
+            </h2>
+
+            <div
+              className={cn(
+                'mt-5 p-5 border border-gray-e1 flex rounded-md justify-center qrWrapper',
+                styles.qrWrapper,
+              )}
+            >
+              <QRCode value='https://explorer.pastel.network/' />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className='mt-7 flex justify-between'>
+        <PrevButton onClick={() => props.goBack()} />
+        <NextButton
+          onClick={() => props.goToNextStep()}
+          text='Next step 3'
+          active={nextActive}
+        />
+      </div>
+    </div>
   )
 }
 
-export default BackupSteps
+export default StepBackupMethod

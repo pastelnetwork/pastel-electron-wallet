@@ -9,18 +9,20 @@ export type TNextBtnProps = {
   text: string
 }
 
-export const NextButton = (props: TNextBtnProps): JSX.Element => {
-  const clickHandler = () => {
-    if (props.active) {
-      props.onClick()
-    }
-  }
+export type TPrevBtnProps = {
+  onClick(): void
+}
 
+export const NextButton = (props: TNextBtnProps): JSX.Element => {
   return (
     <button
-      onClick={() => clickHandler()}
+      onClick={() => {
+        if (props.active) {
+          props.onClick()
+        }
+      }}
       className={cn(
-        'flex items-center justify-center font-medium text-base rounded-2xl h-10 px-3',
+        'flex items-center justify-center font-medium text-base rounded-2xl h-10 px-3 cursor-pointer',
         props.active ? 'bg-blue-3f text-white' : 'bg-gray-f2 text-gray-8e',
       )}
     >
@@ -31,10 +33,13 @@ export const NextButton = (props: TNextBtnProps): JSX.Element => {
   )
 }
 
-export const PrevButton = (): JSX.Element => {
+export const PrevButton = (props: TPrevBtnProps): JSX.Element => {
   return (
-    <button className='w-10 h-10 flex items-center justify-center rounded-full '>
-      <img className='w-4' src={icoArrowLeft} />
+    <button
+      className='w-10 h-10 flex items-center justify-center rounded-full border border-gray-e6 cursor-pointer'
+      onClick={() => props.onClick()}
+    >
+      <img className='w-4 cursor-pointer' src={icoArrowLeft} />
     </button>
   )
 }
