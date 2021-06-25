@@ -3025,7 +3025,7 @@
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
 
-"@react-pdf/font@^2.0.0":
+"@react-pdf/font@^2.0.10":
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/@react-pdf/font/-/font-2.0.10.tgz#a24584bb539ee2159b24a4e92dc67272d012188a"
   integrity sha512-viblR5tbZrZ5a3lOK5N7TSN7Qy6mhTrfypiL9NffF2Yi1vCFg7NyrpYXf6n/IKNZzwEa5ScpBnWSU/k5l3r2vQ==
@@ -3034,20 +3034,6 @@
     "@react-pdf/types" "^2.0.3"
     cross-fetch "^3.0.4"
     is-url "^1.2.4"
-
-"@react-pdf/fontkit@^1.15.0":
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/fontkit/-/fontkit-1.15.0.tgz#81bbf6e02def6628dfa6e82f6ec6238c31da5a8c"
-  integrity sha512-ymyReHUE7o5UjJiImL7WWpDecjZcHxEOf2M47yu3KSCM+2CdvJziCztJamjiR4GTEcjmUdop5z8SvKA4DldnYg==
-  dependencies:
-    "@react-pdf/unicode-properties" "2.3.0"
-    brotli "^1.2.0"
-    clone "^1.0.1"
-    deep-equal "^1.0.0"
-    dfa "^1.0.0"
-    restructure "^0.5.3"
-    tiny-inflate "^1.0.2"
-    unicode-trie "^0.3.0"
 
 "@react-pdf/fontkit@^2.0.6":
   version "2.0.6"
@@ -3071,7 +3057,7 @@
     "@react-pdf/png-js" "^2.0.2"
     cross-fetch "^3.0.4"
 
-"@react-pdf/layout@^2.0.0":
+"@react-pdf/layout@^2.0.15":
   version "2.0.15"
   resolved "https://registry.yarnpkg.com/@react-pdf/layout/-/layout-2.0.15.tgz#0ff181d0cdbe17182509f5eb4e48cbc274915d7a"
   integrity sha512-VY9ixxfRppw/lWOvmA5P/NogDrg49noaZPT1kePqVy8EmQmOs9fR+rCsionN1yk5i32uCivbZVIVXjGFrSeWcw==
@@ -3089,15 +3075,6 @@
     queue "^6.0.1"
     ramda "^0.26.1"
 
-"@react-pdf/pdfkit@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-1.6.0.tgz#85c515d21e803ffcae83f4053c4229f7ed115752"
-  integrity sha512-TVyrESXfqkfLvbg6XekQvHf0MrXiploxga1AxlqUsPUNXSAocg0Iw1/kjRh7xd2MJSKv5RIycLrv9MAdh4zCTw==
-  dependencies:
-    "@react-pdf/fontkit" "^1.15.0"
-    "@react-pdf/png-js" "^1.0.0"
-    lz-string "^1.4.4"
-
 "@react-pdf/pdfkit@^2.0.10":
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/@react-pdf/pdfkit/-/pdfkit-2.0.10.tgz#43e6eac8097cc49fbedb3208a414fb25042725eb"
@@ -3107,11 +3084,6 @@
     "@react-pdf/png-js" "^2.0.2"
     crypto-js "^4.0.0"
     lz-string "^1.4.4"
-
-"@react-pdf/png-js@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/png-js/-/png-js-1.0.0.tgz#00fcb969dca4ce82a0a7673413ade039e47b361e"
-  integrity sha1-APy5adykzoKgp2c0E63gOeR7Nh4=
 
 "@react-pdf/png-js@^2.0.2":
   version "2.0.2"
@@ -3123,7 +3095,7 @@
   resolved "https://registry.yarnpkg.com/@react-pdf/primitives/-/primitives-2.0.0.tgz#2a97ef32c97050e0039a427d73f673da3bd914b5"
   integrity sha512-Yh8TEjzyObnalM271znZVJsy6BiY+s6uTOCjLJL8jSvU1rGA1p45VjK7AnNpgH+n+JzpddXQweT2oE2HWGuYFA==
 
-"@react-pdf/render@^2.0.0":
+"@react-pdf/render@^2.0.10":
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/@react-pdf/render/-/render-2.0.10.tgz#9642143ce532da0a0f81f52a6f195c391bedda96"
   integrity sha512-nAKJDkRlvI0Jvo7sJWBxtb4EGG4GpyZKXAA0XlJQ4dGktZBRcJn5lquBdM3yHWbipLUACRT7rvnufae7alg8fw==
@@ -3138,18 +3110,18 @@
     ramda "^0.26.1"
     svg-arc-to-cubic-bezier "^3.2.0"
 
-"@react-pdf/renderer@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/renderer/-/renderer-2.0.0.tgz#ffffd6a1a046d3a224f43ef9e6ca88545921f287"
-  integrity sha512-EIYNm22D5b3CB7dJIrX93DfDaFf9hixLr7WCweQ/0y0JbHK1KEfeqMnCpZvhjDiPE4OKgq+BEvvaTAARPOFqvg==
+"@react-pdf/renderer@2.0.15":
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/@react-pdf/renderer/-/renderer-2.0.15.tgz#a3ad4cf2ecbe0ce0994ba5abeef7e7c1dcc08f78"
+  integrity sha512-mmVpRiG5Iak5IsKJxFNo/k8/I/GCdq0FTEVdJ8f7k3jog5/XeuJYVUZb/m/8LsKRUwdFH+rEDzu2Hpb3zEcjqQ==
   dependencies:
     "@babel/runtime" "^7.6.2"
-    "@react-pdf/font" "^2.0.0"
-    "@react-pdf/layout" "^2.0.0"
-    "@react-pdf/pdfkit" "^1.6.0"
+    "@react-pdf/font" "^2.0.10"
+    "@react-pdf/layout" "^2.0.15"
+    "@react-pdf/pdfkit" "^2.0.10"
     "@react-pdf/primitives" "^2.0.0"
-    "@react-pdf/render" "^2.0.0"
-    "@react-pdf/types" "^2.0.0"
+    "@react-pdf/render" "^2.0.10"
+    "@react-pdf/types" "^2.0.3"
     blob-stream "^0.1.3"
     queue "^6.0.1"
     ramda "^0.26.1"
@@ -3177,17 +3149,10 @@
     hyphen "^1.6.4"
     ramda "^0.26.1"
 
-"@react-pdf/types@^2.0.0", "@react-pdf/types@^2.0.3":
+"@react-pdf/types@^2.0.3":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@react-pdf/types/-/types-2.0.3.tgz#d80cde1bb4dce7287c6bc1dbfe4cf2fe0bbfc550"
   integrity sha512-yrcq/hkDU7+hcZKf3+NN4sa3gYcOfdPBaJPsaCq7aNI/Wk4FNG+R5qimo5PSiOiaowkkXFZtFadVq0RlbrWXeg==
-
-"@react-pdf/unicode-properties@2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@react-pdf/unicode-properties/-/unicode-properties-2.3.0.tgz#822a7fda81b88a054fafd782170898c898b180ec"
-  integrity sha512-ELUau972GjR9KCZLn3LDtSOeHQ8dAH2QVQUXw9Qn/wFeX0vU13GKZ9LDWRCgL1qBKvPo/lIe4On3U2TS2KzEbQ==
-  dependencies:
-    unicode-trie "^0.3.0"
 
 "@react-pdf/unicode-properties@^2.4.1":
   version "2.4.1"
@@ -6917,7 +6882,7 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
-clone@^1.0.1, clone@^1.0.2, clone@^1.0.4:
+clone@^1.0.2, clone@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
@@ -8072,11 +8037,6 @@ dfa@1.1.0:
   integrity sha1-0wIYvRDQMPpCHfPrvIIoVGOjF4E=
   dependencies:
     babel-runtime "^6.11.6"
-
-dfa@^1.0.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/dfa/-/dfa-1.2.0.tgz#96ac3204e2d29c49ea5b57af8d92c2ae12790657"
-  integrity sha512-ED3jP8saaweFTjeGX8HQPjeC1YYyZs98jGNZx6IiBvxW7JG5v492kamAQB3m2wop07CvU/RQmzcKr6bgcC5D/Q==
 
 didyoumean@^1.2.1:
   version "1.2.1"
@@ -15879,17 +15839,6 @@ react-app-polyfill@^2.0.0:
     raf "^3.4.1"
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
-
-react-app@pastelnetwork/ffmpegwasm-create-video#9cdf231:
-  version "0.1.0"
-  resolved "https://codeload.github.com/pastelnetwork/ffmpegwasm-create-video/tar.gz/9cdf231824bdc59a25b121f1440298723f5ed540"
-  dependencies:
-    "@ffmpeg/core" "0.10.0"
-    "@ffmpeg/ffmpeg" "0.10.1"
-    cross-env "7.0.3"
-    react "17.0.1"
-    react-dom "17.0.1"
-    react-scripts "4.0.3"
 
 react-circular-progressbar@2.0.4:
   version "2.0.4"

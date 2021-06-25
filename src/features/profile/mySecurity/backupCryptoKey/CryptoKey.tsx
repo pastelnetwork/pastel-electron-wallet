@@ -187,20 +187,21 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
   )
 
   const footer = (
-    <Button variant='secondary' className='w-full font-extrabold relative'>
-      Download PDF with All Your Keys
-      <PDFDownloadLink
-        document={
-          <PDFDocument
-            allPrivateKeys={allPrivateKeys}
-            currencyName={currencyName}
-            title={generateFileName()}
-          />
-        }
-        fileName={generateFileName()}
-        className='inline-block w-full h-full absolute top-0 left-0'
-      />
-    </Button>
+    <PDFDownloadLink
+      document={
+        <PDFDocument
+          allPrivateKeys={allPrivateKeys}
+          currencyName={currencyName}
+          title={generateFileName()}
+        />
+      }
+      fileName={generateFileName()}
+      className='block w-full'
+    >
+      <Button variant='secondary' className='w-full font-extrabold relative'>
+        Download PDF with All Your Keys
+      </Button>
+    </PDFDownloadLink>
   )
 
   return (
