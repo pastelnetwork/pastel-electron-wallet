@@ -8,7 +8,6 @@ import {
   PasswordRecoveryPage,
   RegistrationPending,
   RegistrationSuccessful,
-  CryptoKeys,
   NewPassword,
 } from '../../features/onboarding/index'
 import PortfolioPage from '../../features/portfolio'
@@ -57,13 +56,6 @@ const registrationSuccessful = {
   layout: OnboardingLayout,
 }
 
-const cryptoKeys = {
-  id: 'cryptoKeys',
-  path: ROUTES.CRYPTO_KEYS,
-  component: CryptoKeys,
-  layout: OnboardingLayout,
-}
-
 const newPassword = {
   id: 'newPassword',
   path: ROUTES.NEW_PASSWORD,
@@ -85,7 +77,6 @@ export const pageRoutes = [
   passwordRecoveryRoute,
   registrationPending,
   registrationSuccessful,
-  cryptoKeys,
   newPassword,
   Portfolio,
 ]

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { KeyboardEvent } from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
@@ -12,6 +12,8 @@ import UserIcon from '../../../common/assets/icons/ico-user.svg'
 import cn from 'classnames'
 import { useToggle } from 'react-use'
 import AddNFT from 'features/nft/addNFT'
+import SearchResults from 'features/searchResults'
+import { mockMembers, mockNFTs } from 'features/searchResults/mockData'
 
 const MenuItem = ({
   to,
@@ -44,6 +46,15 @@ const MenuItem = ({
 }
 
 const SearchBar = () => {
+  const [openSearchResults, toggleSearchResults] = useToggle(false)
+
+  const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (['Enter', 'NumpadEnter'].includes(e.code)) {
+      // run search for value e.currentTarget.value
+      toggleSearchResults()
+    }
+  }
+
   return (
     <div className='flex-center md:flex-grow md:max-w-sm xl:max-w-lg ml-6 1200px:ml-10 xl:ml-68px'>
       <div className='relative'>
@@ -54,8 +65,19 @@ const SearchBar = () => {
         <input
           className='placeholder-gray-b0 h-41px bg-gray-f2 bg-opacity-50 rounded-full px-3 w-180px md:pl-46px md:pr-5 md:w-300px lg:w-300px xl:w-352px'
           placeholder='Search creator or NFT'
+          onKeyPress={onKey}
         />
       </div>
+
+      <SearchResults
+        open={openSearchResults}
+        onClose={toggleSearchResults}
+        foundNFTs={mockNFTs}
+        foundMembers={mockMembers}
+        onChangeTimeRange={() => {
+          /**/
+        }}
+      />
     </div>
   )
 }
@@ -162,7 +184,9 @@ export default function Header(): JSX.Element | null {
         </div>
         <div className='flex items-center h-full'>
           <Icon src={QuestionTag} />
-          <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
+          <Link to={routes.DASHBOARD}>
+            <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
+          </Link>
           <Link to={routes.CHAT}>
             <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
           </Link>

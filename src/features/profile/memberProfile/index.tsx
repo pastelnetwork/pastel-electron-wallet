@@ -25,7 +25,7 @@ const general_data = {
   buyerBans: 3,
   highestFeeRecieved: '136,200,000k PSL (#632)',
   totalSalesAmount: '560,600,00k PSL (#211)',
-  totalItemsSold: 14,
+  totalItemsSold: '124 Copies across 5 NFTs',
   topCategoryPercentage: 'motion graphics 30%',
   bio:
     'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',

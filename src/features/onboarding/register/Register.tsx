@@ -89,8 +89,8 @@ const RegisterContent = (props: TRegisterContentProps): JSX.Element => {
     <>
       <div
         className={cn(
-          'flex w-970px max-w-full h-full',
-          props.closeRequested ? 'hidden' : '',
+          'flex w-970px max-w-full',
+          props.closeRequested ? 'hidden' : ' h-600px max-h-full',
         )}
       >
         <div className='w-1/2 flex-shrink-0 bg-gray-fc py-10 pl-10 pr-7'>
@@ -218,7 +218,7 @@ export default function Register(): JSX.Element {
 
   const onCloseConfirmed = (val: boolean) => {
     if (val) {
-      history.push(ROUTES.WELCOME_PAGE)
+      history.push(ROUTES.WELCOME_PAGE) // ?
     } else {
       setCloseClicked(false)
     }
@@ -227,7 +227,7 @@ export default function Register(): JSX.Element {
   const onFinish = (data: TRegisterData) => {
     // save user data
     console.log(data)
-    history.push(ROUTES.REGISTER_PENDING)
+    history.push(ROUTES.REGISTER_PENDING) //?
   }
 
   return (

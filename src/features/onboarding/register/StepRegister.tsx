@@ -121,12 +121,13 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
     )
   }
 
-  console.log(
-    `usernameInvalid=${usernameInvalid}, passwordStrength=${passwordStrength}, termsAgreed=${props.termsAgreed}`,
-  )
-
   const nextActive =
     !usernameInvalid && passwordStrength >= 2 && props.termsAgreed
+
+  let usernameIsValid = null
+  if (props.username.length > 0 && usernameInvalid) {
+    usernameIsValid = false
+  }
 
   return (
     <div className='pt-12 flex flex-col h-full'>
@@ -139,7 +140,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           value={props.username}
           onChange={onUsernameChanged}
           ref={null}
-          isValid={props.username.length > 0 ? !usernameInvalid : null}
+          isValid={usernameIsValid}
           errorMessage={
             usernameInvalid ? 'Please enter a valid username' : null
           }

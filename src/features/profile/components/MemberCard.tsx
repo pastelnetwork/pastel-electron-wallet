@@ -1,11 +1,10 @@
 import React from 'react'
 import Avatar from '../../../common/components/Avatar'
-import VoteIcon from '../../../common/components/Icons/Vote'
-import ChatIcon from '../../../common/components/Icons/Chat'
 import { Link } from 'react-router-dom'
 import cn from 'classnames'
 
 export type TMemberBoardProps = {
+  id: number
   name: string
   avatarSrc: string
   time: string
@@ -16,11 +15,11 @@ export type TMemberBoardProps = {
   object: string
   behaviour: 'commented' | 'purchased' | 'liked'
   active: boolean
-  onClickChat?: (event: React.MouseEvent<SVGSVGElement>) => void
-  onClickVote?: (event: React.MouseEvent<SVGSVGElement>) => void
+  onClick: (index: number) => void
 }
 
 const MemberCard = ({
+  id,
   name,
   avatarSrc,
   time,
@@ -30,18 +29,24 @@ const MemberCard = ({
   iconPosition = 'top',
   behaviour = 'commented',
   object = 'Collab.',
-  onClickChat,
-  onClickVote,
   active = false,
+  onClick,
 }: TMemberBoardProps): JSX.Element => {
   return (
     <div
       className={cn(
-        'flex justify-between w-full py-8 pr-2 pr-10px md:pr-33px pl-4',
-        active ? 'bg-white rounded-xl' : 'border-b border-gray-e0',
+        'flex justify-between w-full py-8 gap-2',
+        active
+          ? 'bg-white rounded-xl pr-2.5 md:pr-33px pl-4'
+          : 'border-b border-gray-e0',
       )}
+      onClick={e => {
+        e.preventDefault()
+        console.log('debug')
+        onClick(id)
+      }}
     >
-      <div className='flex'>
+      <div className='flex flex-grow'>
         <div className='flex-none'>
           <Avatar
             iconType={iconType}
@@ -50,7 +55,7 @@ const MemberCard = ({
           />
         </div>
 
-        <div className='ml-6 font-medium lg:w-372px'>
+        <div className='ml-6 font-medium lg:w-372px flex-grow'>
           <div className='text-gray-11 text-base'>{name}</div>
           <div className='text-13px'>
             {behaviour == 'commented' && (
@@ -61,19 +66,13 @@ const MemberCard = ({
             </Link>
             <span className='text-gray-80 ml-2'>{time}</span>
           </div>
-          <div className='mt-4 text-gray-80 text-h6 font-normal'>
+          <div className='mt-4 text-gray-80 text-h5 font-normal'>
             {description}
           </div>
           <div className='mt-13px flex'>
-            <ChatIcon
-              size={30}
-              clickHandler={onClickChat}
-              className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400 mr-3 cursor-pointer'
-            />
-            <VoteIcon
-              size={30}
-              clickHandler={onClickVote}
-              className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400 cursor-pointer'
+            <textarea
+              placeholder='reply'
+              className='border border-gray-f2 w-full px-4 py-[7px] h-10'
             />
           </div>
         </div>

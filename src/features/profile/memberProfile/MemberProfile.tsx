@@ -13,7 +13,7 @@ import Checkbox from '../../../common/components/Checkbox'
 const profile_data = {
   username: '@zndrson',
   walletId: '0xc4c16a645aaaa4123b21a',
-  reputation: 3.69,
+  reputation: 4.89,
   name: 'Katy Jaison',
   description: 'Cosmic Perspective: Galatic Arch',
   address: 'New York, US',
@@ -27,11 +27,11 @@ const general_data = {
   location: 'New York, US',
   language: 'English',
   categories: 'motion graphics, illustration, \nabstract',
-  reputation: 3.89,
+  reputation: 4.89,
   buyerBans: 3,
-  highestFeeRecieved: '136,200,000k PSL (#632)',
-  totalSalesAmount: '560,600,00k PSL (#211)',
-  totalItemsSold: 14,
+  highestFeeRecieved: '136,200 PSL',
+  totalSalesAmount: '560,600 PSL',
+  totalItemsSold: '124 Copies across 5 NFTs',
   topCategoryPercentage: 'motion graphics 30%',
   bio:
     'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
@@ -72,6 +72,7 @@ const Profile = (): JSX.Element => {
   const [category, setCategory] = useState<TOption | null>(categoriesOptions[0])
   const [type, setType] = useState<TOption | null>(categoriesOptions[0])
   const [sort, setSort] = useState<TOption | null>(categoriesOptions[0])
+  const [activeIndex, setActiveIndex] = useState(0)
 
   const onTabToggle = (index: number) => {
     setTab(index)
@@ -104,14 +105,14 @@ const Profile = (): JSX.Element => {
             </div>
             <div className='flex flex-col flex-grow pl-8'>
               {tab === 0 && (
-                <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
+                <div className='flex justify-between flex-col 1200px:flex-row'>
                   <ProfileGeneral {...general_data} />
                   <ProfileRelations />
                 </div>
               )}
               {tab === 1 && (
                 <div>
-                  <div className='flex items-center justify-between text-gray-42 text-base'>
+                  <div className='flex items-center justify-between text-gray-42 text-base flex-wrap gap-2'>
                     <div className='flex items-center'>
                       <div className='flex items-center mr-6'>
                         <p className='mr-4'>Categories</p>
@@ -119,7 +120,7 @@ const Profile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={category}
                           onChange={setCategory}
-                          className='w-113px'
+                          selectClassName='w-113px'
                         />
                       </div>
                       <div className='flex items-center'>
@@ -128,7 +129,7 @@ const Profile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={type}
                           onChange={setType}
-                          className='w-113px'
+                          selectClassName='w-113px'
                         />
                       </div>
                     </div>
@@ -138,11 +139,11 @@ const Profile = (): JSX.Element => {
                         options={categoriesOptions}
                         selected={sort}
                         onChange={setSort}
-                        className='w-113px'
+                        selectClassName='w-113px'
                       />
                     </div>
                   </div>
-                  <div className='mt-10 grid grid-cols-3 lg:grid-cols-3 gap-9 text-gray-1a overflow-y-auto pr-33px h-608px'>
+                  <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3  gap-9 text-gray-1a overflow-y-auto pr-33px h-608px'>
                     {Array.from({ length: 10 }).map((_, i) => (
                       <NFTCard {...mockCardProps} key={i} />
                     ))}
@@ -150,12 +151,13 @@ const Profile = (): JSX.Element => {
                 </div>
               )}
               {tab === 2 && (
-                <div className='flex justify-between'>
+                <div className='flex justify-between flex-col-reverse md:flex-row'>
                   <div className='w-full h-screen overflow-y-auto'>
                     <div className='pr-22px'>
                       {Array.from({ length: 10 }).map((_, i) => (
                         <MemberCard
-                          active={i === 0 ? true : false}
+                          id={i}
+                          active={i === activeIndex}
                           name='Glenn Greer'
                           key={i}
                           iconType='comment'
@@ -166,13 +168,17 @@ const Profile = (): JSX.Element => {
                           time='12h ago'
                           description='Love this so much! What tools do you use to create your 3d illustrations?'
                           productURL={image}
+                          onClick={setActiveIndex}
                         />
                       ))}
                     </div>
                   </div>
-                  <div className='w-239px pt-34px'>
+                  <div className='w-[271px] md:pt-34px flex md:block'>
                     {filterData.map((item, index) => (
-                      <div key={index} className='pl-33px pb-14px'>
+                      <div
+                        key={index}
+                        className='pl-33px md:pl-[106px] pb-14px'
+                      >
                         <Checkbox isChecked={item.checked}>
                           {item.label}
                         </Checkbox>

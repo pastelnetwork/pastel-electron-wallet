@@ -10,7 +10,7 @@ export type TProfileGeneral = {
   buyerBans: number
   highestFeeRecieved: string
   totalSalesAmount: string
-  totalItemsSold: number
+  totalItemsSold: string
   topCategoryPercentage: string
   bio: string
 }
@@ -20,41 +20,31 @@ const ProfileGeneral = ({
   language,
   categories,
   reputation,
-  buyerBans,
   highestFeeRecieved,
   totalSalesAmount,
   totalItemsSold,
-  topCategoryPercentage,
   bio,
 }: TProfileGeneral): JSX.Element => {
   return (
-    <div className='flex-grow divide-y divide-gray-a6 w-full xl:w-3/5 xl:pr-78px leading-tight'>
+    <div className='flex-grow w-full 1200px:w-3/5 xl:pr-78px leading-tight'>
       <div className='w-full pb-10 space-y-4'>
         <ProfileGeneralRow title='Location'>{location}</ProfileGeneralRow>
         <ProfileGeneralRow title='Language'>{language}</ProfileGeneralRow>
         <ProfileGeneralRow title='Categories'>{categories}</ProfileGeneralRow>
-        <ProfileGeneralRow title='Buyer reputatio'>
+        <ProfileGeneralRow title='Pastel Reputation Score'>
           <StarRate rate={reputation} />
-          <div className='pl-1.5 text-gray-a0 text-sm'>
-            {reputation} reputation
-          </div>
-        </ProfileGeneralRow>
-        <ProfileGeneralRow title='Buyer bans'>
-          <div className='text-blue-400'>{buyerBans}</div>
+          <div className='pl-1.5 text-gray-a0 text-sm'>{reputation}</div>
         </ProfileGeneralRow>
       </div>
       <div className='w-full pb-10 pt-10 space-y-4'>
-        <ProfileGeneralRow title='Highest fee recieved'>
+        <ProfileGeneralRow title='Highest Sale Price Received'>
           {highestFeeRecieved}
         </ProfileGeneralRow>
-        <ProfileGeneralRow title='Total sales amount'>
+        <ProfileGeneralRow title='Total Combined Sales'>
           {totalSalesAmount}
         </ProfileGeneralRow>
-        <ProfileGeneralRow title='Total items sold'>
+        <ProfileGeneralRow title='Total NFTs Sold'>
           {totalItemsSold}
-        </ProfileGeneralRow>
-        <ProfileGeneralRow title='Top category persentage'>
-          {topCategoryPercentage}
         </ProfileGeneralRow>
       </div>
       {/* Third Row Group of General */}
