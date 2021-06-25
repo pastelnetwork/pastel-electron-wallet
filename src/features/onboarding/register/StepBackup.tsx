@@ -4,9 +4,9 @@ import QRCode from 'qrcode.react'
 
 import icoPdf from 'common/assets/icons/ico-pdf.svg'
 import icoDownload from 'common/assets/icons/ico-download-2.svg'
-import { PrevButton, NextButton } from '../Buttons'
-import { BackupMethods } from '../Regiser.state'
-import styles from '../Register.css'
+import { PrevButton, NextButton } from './Buttons'
+import { BackupMethods } from './Regiser.state'
+import styles from './Register.css'
 
 export type TStepBackupMethodProps = {
   backupMethod: BackupMethods

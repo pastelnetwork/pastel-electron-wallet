@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 
 import PercentCircle from 'common/components/PercentCircle'
-
-import OnboardingLayout from 'common/layout/Onboarding2' // DEBUG
+import Tooltip from 'common/components/Tooltip'
+import OnboardingLayout from 'common/layout/Onboarding2'
 
 import icoExclamation from 'common/assets/icons/ico-exclamation.svg'
 import creditCardIco from 'common/assets/icons/ico-credit-card.svg'
@@ -20,14 +20,12 @@ import infoIco from 'common/assets/icons/ico-info.svg'
 import * as ROUTES from 'common/utils/constants/routes'
 import styles from './Register.css'
 
-import { Steps, useRegisterState } from './Regiser.state'
+import { Steps, useRegisterState, TRegisterData } from './Regiser.state'
 
-import StepLogin from './registerSteps/RegisterSteps'
-import StepBackup from './backupSteps/BackupSteps'
-import StepPayment from './paymentSteps/PaymentSteps'
-/*
-import StepFee from './feeSteps/FeeSteps'
-*/
+import StepLogin from './StepRegister'
+import StepBackup from './StepBackup'
+import StepPayment from './StepPayment'
+import StepFee from './StepFee'
 
 const STEPS = [
   {
@@ -36,6 +34,8 @@ const STEPS = [
     iconDefault: downloadIcoGray,
     label: 'Primary login',
     stepIconLabel: 'primary login step',
+    tooltipText: 'Primary login tooltip',
+    tooltipWidth: 150,
   },
   {
     id: Steps.Backup,
@@ -43,6 +43,8 @@ const STEPS = [
     iconDefault: downloadIcoGray,
     label: 'Backup access method',
     stepIconLabel: 'Backup access method step',
+    tooltipText: 'Backup access tooltip',
+    tooltipWidth: 150,
   },
   {
     id: Steps.Payment,
@@ -50,6 +52,8 @@ const STEPS = [
     iconDefault: creditCardIcoGray,
     label: 'Payment method',
     stepIconLabel: 'Payment method step',
+    tooltipText: 'Payment method tooltip',
+    tooltipWidth: 150,
   },
   {
     id: Steps.Fee,
@@ -57,15 +61,38 @@ const STEPS = [
     iconDefault: refreshIcoGray,
     label: 'Registration fee',
     stepIconLabel: 'Registration fee step',
+    tooltipText: 'Registration fee tooltip',
+    tooltipWidth: 150,
   },
 ]
 
-const RegisterContent = (): JSX.Element => {
+type TRegisterContentProps = {
+  closeRequested: boolean
+  confirmClose(val: boolean): void
+  onFinish(data: TRegisterData): void
+}
+
+const RegisterContent = (props: TRegisterContentProps): JSX.Element => {
   const state = useRegisterState()
+
+  const onLastStepPassed = () => {
+    props.onFinish({
+      username: state.username,
+      password: state.password,
+      paymentMethod: state.paymentMethod,
+      promoCode: state.promoCode,
+      exchangeAddress: state.exchangeAddress,
+    })
+  }
 
   return (
     <>
-      <div className='flex w-970px max-w-95p'>
+      <div
+        className={cn(
+          'flex w-970px max-w-full h-full',
+          props.closeRequested ? 'hidden' : '',
+        )}
+      >
         <div className='w-1/2 flex-shrink-0 bg-gray-fc py-10 pl-10 pr-7'>
           <div className='flex justify-between'>
             <div>
@@ -88,45 +115,55 @@ const RegisterContent = (): JSX.Element => {
             </div>
           </div>
           <div className='mt-7'>
-            {STEPS.map(
-              ({ id, iconActive, iconDefault, label, stepIconLabel }) => (
-                <div
-                  key={id}
-                  className={cn(
-                    'rounded-lg flex items-center px-8 py-3 step',
-                    styles.step,
-                    state.step === id ? 'bg-gray-ed' : '',
-                  )}
-                >
-                  {state.step <= id ? (
-                    <img
-                      src={state.step === id ? iconActive : iconDefault}
-                      alt={stepIconLabel}
-                    />
-                  ) : (
-                    <img
-                      src={completedIco}
-                      alt={`Step ${id} completed`}
-                      className='ml-1'
-                    />
-                  )}
-                  <div className='flex-grow flex items-center ml-8'>
-                    {label}
-                    {state.step === id && (
-                      <img className='w-5 ml-2' src={infoIco} alt='info' />
+            {STEPS.map(item => (
+              <div
+                key={item.id}
+                className={cn(
+                  'rounded-lg flex items-center px-8 py-3 step',
+                  styles.step,
+                  state.step === item.id ? 'bg-gray-ed' : '',
+                )}
+              >
+                {state.step <= item.id ? (
+                  <img
+                    src={
+                      state.step === item.id
+                        ? item.iconActive
+                        : item.iconDefault
+                    }
+                    alt={item.stepIconLabel}
+                  />
+                ) : (
+                  <img
+                    src={completedIco}
+                    alt={`Step ${item.id} completed`}
+                    className='ml-1'
+                  />
+                )}
+                <div className='flex-grow flex items-center ml-8'>
+                  {item.label}
+                  {state.step === item.id &&
+                    item.tooltipText &&
+                    item.tooltipWidth && (
+                      <div className='ml-2'>
+                        <Tooltip
+                          classnames='text-sm py-1 px-1.5'
+                          content={item.tooltipText}
+                          type='top'
+                          width={item.tooltipWidth}
+                          hPosPercent={140}
+                        >
+                          <img className='w-5' src={infoIco} alt='info' />
+                        </Tooltip>
+                      </div>
                     )}
-                  </div>
-
-                  {state.step === id && (
-                    <img
-                      className='w-4'
-                      src={icoArrowRight}
-                      alt='active step'
-                    />
-                  )}
                 </div>
-              ),
-            )}
+
+                {state.step === item.id && (
+                  <img className='w-4' src={icoArrowRight} alt='active step' />
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
@@ -134,46 +171,40 @@ const RegisterContent = (): JSX.Element => {
           {state.step === Steps.Login && <StepLogin {...state} />}
           {state.step === Steps.Backup && <StepBackup {...state} />}
           {state.step === Steps.Payment && <StepPayment {...state} />}
-          {/*
-          {state.step === Steps.Fee && <StepFee  {...state} />}
-          */}
+          {state.step === Steps.Fee && (
+            <StepFee {...state} finish={onLastStepPassed} />
+          )}
         </div>
       </div>
+
+      {props.closeRequested && (
+        <div className='p-11 w-494px'>
+          <div className='text-center'>
+            <img src={icoExclamation} className='w-10 inline-block' />
+          </div>
+          <div className='mt-7 text-center'>
+            Are you sure you want to close the wizard
+            <br /> and return to the home screen?
+          </div>
+          <div className='mt-5 text-center'>
+            <button
+              className='rounded-full text-sm font-medium text-white bg-orange-63 inline-block w-230px text-center py-3 cursor-pointer'
+              onClick={() => props.confirmClose(true)}
+            >
+              Close
+            </button>
+          </div>
+          <div className='mt-4 text-center'>
+            <button
+              className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-230px text-center py-3 cursor-pointer'
+              onClick={() => props.confirmClose(false)}
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      )}
     </>
-  )
-}
-
-type TConfirmContentProps = {
-  onOk(val: number): void
-}
-
-const ConfirmContent = (props: TConfirmContentProps): JSX.Element => {
-  return (
-    <div className='p-11 w-494px'>
-      <div className='text-center'>
-        <img src={icoExclamation} className='w-10 inline-block' />
-      </div>
-      <div className='mt-7 text-center'>
-        Are you sure you want to close the wizard
-        <br /> and return to the home screen?
-      </div>
-      <div className='mt-5 text-center'>
-        <button
-          className='rounded-full text-sm font-medium text-white bg-orange-63 inline-block w-230px text-center py-3 cursor-pointer'
-          onClick={() => props.onOk(1)}
-        >
-          Close
-        </button>
-      </div>
-      <div className='mt-4 text-center'>
-        <button
-          className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-230px text-center py-3 cursor-pointer'
-          onClick={() => props.onOk(0)}
-        >
-          Back
-        </button>
-      </div>
-    </div>
   )
 }
 
@@ -185,7 +216,7 @@ export default function Register(): JSX.Element {
     setCloseClicked(!closeClicked)
   }
 
-  const onCloseConfirmed = (val: number) => {
+  const onCloseConfirmed = (val: boolean) => {
     if (val) {
       history.push(ROUTES.WELCOME_PAGE)
     } else {
@@ -193,16 +224,22 @@ export default function Register(): JSX.Element {
     }
   }
 
+  const onFinish = (data: TRegisterData) => {
+    // save user data
+    console.log(data)
+    history.push(ROUTES.REGISTER_PENDING)
+  }
+
   return (
     <OnboardingLayout
       onClose={onCloseClick}
-      render={() =>
-        closeClicked ? (
-          <ConfirmContent onOk={onCloseConfirmed} />
-        ) : (
-          <RegisterContent />
-        )
-      }
+      render={() => (
+        <RegisterContent
+          closeRequested={closeClicked}
+          confirmClose={onCloseConfirmed}
+          onFinish={onFinish}
+        />
+      )}
     />
   )
 }

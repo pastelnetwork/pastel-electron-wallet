@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { Link } from 'react-router-dom'
 import { Input } from 'common/components/Inputs'
 import Checkbox from 'common/components/Checkbox/Checkbox'
-import { NextButton } from '../Buttons'
+import { NextButton } from './Buttons'
 import icoShowPwd from 'common/assets/icons/ico-show-pwd.svg'
 import icoHidePwd from 'common/assets/icons/ico-hide-pwd.svg'
 
@@ -67,7 +67,7 @@ function calcPasswordStrength(pass: string): number {
 
 const StepRegister = (props: TStepRegisterProps): JSX.Element => {
   const [usernameInvalid, setUsernameInvalid] = useState<boolean>(
-    validateUserName(props.username),
+    !validateUserName(props.username),
   )
   const [passwordStrength, setPasswordStrength] = useState<number>(
     calcPasswordStrength(props.password),
@@ -121,6 +121,10 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
     )
   }
 
+  console.log(
+    `usernameInvalid=${usernameInvalid}, passwordStrength=${passwordStrength}, termsAgreed=${props.termsAgreed}`,
+  )
+
   const nextActive =
     !usernameInvalid && passwordStrength >= 2 && props.termsAgreed
 
@@ -135,6 +139,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           value={props.username}
           onChange={onUsernameChanged}
           ref={null}
+          isValid={props.username.length > 0 ? !usernameInvalid : null}
           errorMessage={
             usernameInvalid ? 'Please enter a valid username' : null
           }

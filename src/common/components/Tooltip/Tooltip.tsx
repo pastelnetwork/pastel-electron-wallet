@@ -8,6 +8,7 @@ export type TTooltipProps = {
   classnames?: string
   content: string
   width: number
+  hPosPercent?: number
 }
 
 const Tooltip: FunctionComponent<TTooltipProps> = ({
@@ -16,16 +17,17 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   content,
   width,
   children,
+  hPosPercent = 150,
 }) => {
   const styles = {
     top: {
       width: `${width}px`,
-      bottom: '150%',
+      bottom: `${hPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
     },
     bottom: {
       width: `${width}px`,
-      top: '150%',
+      top: `${hPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
     },
     right: {
@@ -40,13 +42,13 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   const arrow_styles = {
     top: {
       width: '10px',
-      top: 'calc(150% - 8px)',
+      top: `calc(${hPosPercent}% - 8px)`,
       left: '50%',
       marginLeft: '-5px',
     },
     bottom: {
       width: '10px',
-      bottom: 'calc(150% - 8px)',
+      bottom: `calc(${hPosPercent}% - 8px)`,
       left: '50%',
       marginLeft: '-5px',
       transform: 'rotate(180deg)',

@@ -392,6 +392,7 @@ module.exports = {
         '80px': '5rem',
         '130px': '8.125rem',
         '118px': '7.375rem',
+        '160px': '10rem',
         '171px': '10.688rem',
         '244px': '15.25rem',
         '350px': '21.875rem',
@@ -407,6 +408,7 @@ module.exports = {
       },
       height: {
         '401px': '25.0625rem',
+        '600px': '37.5rem',
         fit: 'fit-content',
       },
       opacity: {

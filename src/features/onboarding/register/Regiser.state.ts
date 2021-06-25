@@ -20,9 +20,21 @@ export enum PaymentMethods {
   AirdropPromoCode,
 }
 
+export type TCentralizedExchangeEntity = {
+  name: string
+}
+
 const firstStep = Steps.Login
 const lastStep = Steps.Fee
 const stepsCount = Steps.Fee
+
+export type TRegisterData = {
+  username: string
+  password: string
+  paymentMethod: PaymentMethods
+  promoCode: string
+  exchangeAddress: string
+}
 
 export type TRegisterState = {
   step: Steps
@@ -40,6 +52,12 @@ export type TRegisterState = {
   setBackupMethod(val: BackupMethods): void
   paymentMethod: PaymentMethods
   setPaymentMethod(val: PaymentMethods): void
+  centralizedExchangeName: string | null
+  setCentralizedExchangeName(val: string | null): void
+  promoCode: string
+  setPromoCode(val: string): void
+  exchangeAddress: string
+  setExchangeAddress(val: string): void
   goBack(): void
   goToNextStep(): void
 }
@@ -56,6 +74,11 @@ export const useRegisterState = (): TRegisterState => {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethods>(
     PaymentMethods.CentralizedExchange,
   )
+  const [centralizedExchangeName, setCentralizedExchangeName] = useState<
+    string | null
+  >(null)
+  const [promoCode, setPromoCode] = useState<string>('')
+  const [exchangeAddress, setExchangeAddress] = useState<string>('')
 
   return {
     stepsCount,
@@ -73,6 +96,12 @@ export const useRegisterState = (): TRegisterState => {
     setBackupMethod,
     paymentMethod,
     setPaymentMethod,
+    centralizedExchangeName,
+    setCentralizedExchangeName,
+    promoCode,
+    setPromoCode,
+    exchangeAddress,
+    setExchangeAddress,
 
     goBack() {
       if (step > firstStep) {
@@ -82,9 +111,6 @@ export const useRegisterState = (): TRegisterState => {
     goToNextStep() {
       if (step < lastStep) {
         setStep(step + 1)
-      } else {
-        // save user data here
-        // go to ROUTES.REGISTER_PENDING
       }
     },
   }
