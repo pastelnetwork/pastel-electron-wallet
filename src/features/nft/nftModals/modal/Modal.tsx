@@ -13,6 +13,9 @@ export type TModal = {
   children?: ReactNode
   title?: string
   infoIcon?: boolean
+  titleClassName?: string
+  headerClassName?: string
+  bodyClassName?: string
 }
 
 const Modal: React.FC<TModal> = ({
@@ -22,6 +25,9 @@ const Modal: React.FC<TModal> = ({
   children,
   title,
   infoIcon,
+  titleClassName = 'text-h2 mt-2 font-bold',
+  headerClassName = 'px-10 pb-6',
+  bodyClassName = 'px-10',
 }) => {
   const modalClasses = cn({
     'relative bg-white rounded-2xl shadow-xSmall max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
@@ -36,14 +42,14 @@ const Modal: React.FC<TModal> = ({
       contentLabel='modal'
       onRequestClose={handleClose}
     >
-      <div className='flex justify-between px-10 pb-6'>
-        <div className='text-h2 mt-2 font-bold whitespace-pre leading-tight flex items-end'>
+      <div className={cn('flex justify-between', headerClassName)}>
+        <div className={cn('leading-tight flex items-end', titleClassName)}>
           {title}
           {infoIcon ? <img src={iconInfo} className='ml-14px mb-6px' /> : ''}
         </div>
         <ButtonClose className='-mt-4 -mr-4' onClick={handleClose} />
       </div>
-      <div className='px-10'>{children}</div>
+      <div className={bodyClassName}>{children}</div>
     </ReactModal>
   )
 }

@@ -17,9 +17,10 @@ const CopiesDetailsModal: React.FC<TCopiesDetailsModal> = ({
       handleClose={() => handleClose()}
       size='432px'
       title={'List of NFT copies'}
+      titleClassName='font-black text-2xl text-gray-2d mt-2'
       infoIcon={true}
     >
-      <div>
+      <div className='w-[350px] overflow-auto max-h-[401px]'>
         <Table
           columns={Columns}
           data={tableData}
