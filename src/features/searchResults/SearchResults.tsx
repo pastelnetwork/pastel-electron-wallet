@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import cn from 'classnames'
 import Modal from 'common/components/AnimatedModal'
 import Radio from 'common/components/Radio/Radio'
 import MemberCard, { TMemberCard } from 'features/members/MemberCard'
@@ -31,7 +30,7 @@ const SearchResultsContent = (
   }
 
   return (
-    <div className='paper px-10 py-7 pb-9 flex flex-col h-full'>
+    <div className='paper pl-[60px] pr-[30px] py-7 pb-9 flex flex-col h-full'>
       <div className='flex items-center pr-7'>
         <div className='text-2xl font-extrabold text-gray-900'>
           Search Results
@@ -39,40 +38,31 @@ const SearchResultsContent = (
         <div className='flex ml-12'>
           <div>
             <Radio
+              className='w-4 h-4'
               checked={showResult === ResultTypes.NFTs}
               onChange={() => setShowResult(ResultTypes.NFTs)}
+              labelClassName='text-sm ml-2.5'
             >
-              <span
-                className={cn(
-                  'text-gray-700 font-extrabold text-sm',
-                  showResult !== ResultTypes.NFTs ? 'opacity-50' : '',
-                )}
-              >
-                NFTs
-              </span>
+              NFTs
             </Radio>
           </div>
           <div className='ml-5'>
             <Radio
+              className='w-4 h-4'
               checked={showResult === ResultTypes.Members}
               onChange={() => setShowResult(ResultTypes.Members)}
+              labelClassName='text-sm ml-2.5'
             >
-              <span
-                className={cn(
-                  'text-gray-700 font-extrabold text-sm',
-                  showResult !== ResultTypes.Members ? 'opacity-50' : '',
-                )}
-              >
-                Members
-              </span>
+              Members
             </Radio>
           </div>
         </div>
         <div className='ml-6 flex items-center'>
-          <div className='text-sm font-medium text-gray-600 mr-3 whitespace-nowrap'>
+          <div className='text-sm text-gray-42 mr-3 whitespace-nowrap font-medium'>
             Time range
           </div>
           <Select
+            selectClassName='w-[121px] h-[30px]'
             onChange={onChangeTimeRange}
             options={mockTimeRanges}
             selected={timeRange}
@@ -81,7 +71,7 @@ const SearchResultsContent = (
         </div>
       </div>
 
-      <div className='flex-grow overflow-auto grid auto-rows-max grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 mt-10 pr-3 pb-3'>
+      <div className='flex-grow overflow-auto grid auto-rows-max grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 pr-[32px] pb-3'>
         {showResult === ResultTypes.NFTs &&
           props.foundNFTs.map((item, i) => (
             <NFTCard

@@ -217,6 +217,7 @@ module.exports = {
           '1a': '#1A202C',
           14: '#141416',
           11: '#11142D',
+          f5: '#F5F6F7',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {

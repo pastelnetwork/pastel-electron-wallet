@@ -7,6 +7,7 @@ export type TRadioProps = {
   className?: string
   smallCircleClass?: string
   children: React.ReactNode
+  labelClassName?: string
 }
 
 const Radio = ({
@@ -15,6 +16,7 @@ const Radio = ({
   onChange,
   className = 'w-5 h-5',
   smallCircleClass = 'w-2 h-2',
+  labelClassName = 'ml-2 mt-2.5px',
 }: TRadioProps): JSX.Element => {
   return (
     <div>
@@ -44,8 +46,9 @@ const Radio = ({
         </div>
         <div
           className={cn(
-            'text-gray-4a ml-2 mt-2.5px',
-            checked ? 'font-extrabold' : 'font-medium',
+            'text-gray-4a',
+            labelClassName,
+            checked ? 'font-extrabold' : 'font-medium text-opacity-50',
           )}
         >
           {children}

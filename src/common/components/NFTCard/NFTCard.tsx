@@ -12,6 +12,7 @@ export type TNFTCompactCard = {
   liked: boolean
   className?: string
   hideFollow?: boolean
+  hideUnFollow?: boolean
   hideLikeButton?: boolean
   percentage?: number
   variant?: string
@@ -40,6 +41,7 @@ const NFTCard = ({
   variant,
   isLastBid,
   hideLikeButton,
+  hideUnFollow,
   ...props
 }: TNFTCompactCard | TNFTCard): JSX.Element => {
   const fullCardProps = 'author' in props && (props as TNFTCard)
@@ -88,6 +90,13 @@ const NFTCard = ({
               </Link>
             </div>
           ) : null}
+          {!hideUnFollow ? (
+            <div className='flex items-center'>
+              <Link to='#' className='text-gray-a0 font-medium'>
+                unfollow
+              </Link>
+            </div>
+          ) : null}
         </div>
       )}
       {/* Image */}
@@ -110,7 +119,7 @@ const NFTCard = ({
             className={`absolute left-2.5 bottom-2.5 inline-block rounded-md overflow-hidden p-3px ${styles.statusBgColor}`}
           >
             <div className='rounded-md overflow-hidden py-3px px-11px text-h5 font-extrabold text-gray-2d leading-6 bg-white'>
-              Available
+              On sale
             </div>
           </div>
         ) : null}

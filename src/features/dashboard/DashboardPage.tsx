@@ -1,20 +1,21 @@
-import React from 'react'
-import { Dots } from 'common/components/Icons'
+import React, { useState, useEffect } from 'react'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
-import NFTCard, { TNFTCompactCard } from '../../common/components/NFTCard'
+import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import smallImage from '../../common/assets/images/mock/small-image.png'
+import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import { formatNumber } from '../../common/utils/format'
+import Radio from 'common/components/Radio'
 
 const date = dayjs('2021-04-04')
 
 const walletBalance = 32000
-const currencyName = 'PSL'
+const currencyName = 'PSTL'
 
 const transactions: TTransactionItemProps[] = [
   { type: 'in', amount: 320000, date, currencyName },
@@ -26,129 +27,272 @@ const transactions: TTransactionItemProps[] = [
   { type: 'in', amount: 320000, date, currencyName },
 ]
 
-const portfolioItemProps: TPortfolioItemProps = {
-  image: smallImage,
-  title: 'Cosmic Perspective',
-  author: '@zndrson',
-  price: 5000,
-  currencyName,
+const followers: Array<TPortfolioItemProps> = [
+  {
+    image: smallImage,
+    title: 'Cosmic Perspective',
+    author: '@zndrson',
+    price: 5000,
+    currencyName,
+    type: 'progress',
+  },
+  {
+    image: smallImage,
+    title: 'Cosmic Perspective',
+    author: '@zndrson',
+    price: 5000,
+    currencyName,
+    type: 'progress',
+  },
+  {
+    image: smallImage,
+    title: 'Cosmic Perspective',
+    author: '@zndrson',
+    price: 5000,
+    currencyName,
+    type: 'review',
+  },
+  {
+    image: smallImage,
+    title: 'Cosmic Perspective',
+    author: '@zndrson',
+    price: 5000,
+    currencyName,
+    type: 'sale',
+  },
+  {
+    image: smallImage,
+    title: 'Cosmic Perspective',
+    author: '@zndrson',
+    price: 5000,
+    currencyName,
+    type: 'sale',
+  },
+]
+
+enum Tabs {
+  Creators,
+  Nfts,
 }
 
-const NFTCardProps: TNFTCompactCard = {
-  imageSrc: image,
-  likes: 23,
-  title: 'Cosmic Perspective',
-  liked: false,
+type TNotification = {
+  message: string
+  date: Dayjs
+  read: boolean
 }
 
-let notifications = [
+let notifications: Array<TNotification> = [
   {
     message: '1 new listing',
     date,
+    read: false,
   },
   {
     message: '1 new sale',
     date,
+    read: true,
   },
   {
     message: '1 new transfer',
     date,
+    read: true,
+  },
+  {
+    message: '1 new sale',
+    date,
+    read: true,
   },
 ]
 notifications = [...notifications, ...notifications, ...notifications]
 
 export default function DashboardPage(): JSX.Element {
+  const [cards, setCards] = useState<TNFTCard[]>([])
+  const [tab, setTab] = useState<number>(0)
+  useEffect(() => {
+    const randomCards: TNFTCard[] = []
+    Array.from({ length: 3 }).map((_, index) => {
+      randomCards.push({
+        imageSrc: image,
+        likes: 23,
+        title: 'Cosmic Perspective',
+        liked: false,
+        author: 'zndrson',
+        avatarSrc: avatar,
+        onSale: true,
+        price: '222K',
+        currencyName: 'PSL',
+        percentage: 75,
+        variant: 'portfolio',
+        isLastBid: false,
+        hideLikeButton: true,
+        hideFollow: true,
+        hideUnFollow: index % 3 === 0 ? false : true,
+      })
+    })
+    setCards(randomCards)
+  }, [])
   return (
     <div className='page-container py-5 w-full max-w-screen-xl mx-auto'>
       <div className='flex mb-5'>
-        <div className='h-380px' />
-        <div className='paper pt-6 pb-5 w-335px flex flex-col relative'>
-          <div className='flex items-center justify-between h-6 mb-3 flex-shrink-0 px-8'>
-            <div className='font-extrabold text-gray-2d'>Wallet balance</div>
-            <div className='font-black text-gray-1d text-lg'>
+        <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
+          <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
+            <div className='font-black text-gray-2d text-lg'>
+              Wallet balance
+            </div>
+            <div className='font-extrabold text-gray-1d text-sm'>
               {formatNumber(walletBalance)} {currencyName}
             </div>
           </div>
-          <div className='flex-grow pl-8 pr-3.5 mr-18px pb-5 h-0 overflow-auto'>
+          <div className='pl-[30px] pr-4 mr-14px h-0 overflow-auto h-[252px]'>
             {transactions.map((transaction, i) => (
               <TransactionItem key={i} {...transaction} />
             ))}
+            {transactions.length === 0 && (
+              <div className='flex justify-center mt-[91px]'>
+                <span className='text-base text-gray-71'>You have no PSL</span>
+              </div>
+            )}
           </div>
           <LinkSection to='#' absolute gradient>
-            Wallet details
+            Wallet Details
           </LinkSection>
         </div>
         <div className='paper flex-grow w-0 ml-5 pt-6 relative md:flex md:flex-col'>
-          <div className='md:flex-shrink-0 flex items-center h-6 px-6 mb-5'>
-            <div className='font-extrabold text-gray-2d'>Portfolio</div>
-            <div className='font-extrabold text-gray-a0 text-xs ml-3'>
+          <div className='md:flex-shrink-0 flex items-center h-6 px-[30px] mb-5'>
+            <div className='font-extrabold text-lg text-gray-2d'>Portfolio</div>
+            <div className='font-extrabold text-gray-a0 text-sm ml-2 mt-px'>
               23 items
             </div>
-            <button type='button' className='ml-auto relative -right-0.5'>
-              <Dots size={24} className='text-gray-b0 hover:opacity-80' />
-            </button>
           </div>
-          <div className='md:flex-grow md:flex'>
-            <PortfolioColumn title='Sales in progress'>
-              <PortfolioItem {...portfolioItemProps} />
-              <PortfolioItem {...portfolioItemProps} />
-            </PortfolioColumn>
-            <PortfolioColumn
-              title='In review'
-              className='md:border-l md:border-r md:border-gray-e7'
-            >
-              <PortfolioItem {...portfolioItemProps} />
-            </PortfolioColumn>
-            <PortfolioColumn title='On Sale'>
-              <PortfolioItem {...portfolioItemProps} />
-              <PortfolioItem {...portfolioItemProps} />
-            </PortfolioColumn>
-          </div>
-          <LinkSection to='#'>Portfolio details</LinkSection>
-        </div>
-      </div>
-      <div className='flex'>
-        <div className='h-380px' />
-        <div className='paper pt-6 flex-grow lg:flex lg:flex-col relative w-0 mr-5 relative'>
-          <div className='flex items-center h-6 mb-2.5 flex-shrink-0 px-30px'>
-            <div className='font-extrabold text-gray-2d'>Trending NFTs</div>
-            <div className='font-black text-gray-1d text-lg ml-2.5'>
-              312,000 listed
+          {followers.length > 0 && (
+            <div className='grid md:grid-cols-3 gap-[26px] md:flex px-[30px] h-[282px] overflow-auto'>
+              <PortfolioColumn title='Sales in Progress (2)'>
+                {followers
+                  .filter(item => item.type == 'progress')
+                  .map((item, index) => (
+                    <PortfolioItem key={index} {...item} />
+                  ))}
+              </PortfolioColumn>
+              <PortfolioColumn title='In Review (1)'>
+                {followers
+                  .filter(item => item.type == 'review')
+                  .map((item, index) => (
+                    <PortfolioItem key={index} {...item} />
+                  ))}
+              </PortfolioColumn>
+              <PortfolioColumn title='On Sale (2)'>
+                {followers
+                  .filter(item => item.type == 'sale')
+                  .map((item, index) => (
+                    <PortfolioItem key={index} {...item} />
+                  ))}
+              </PortfolioColumn>
             </div>
-            <button type='button' className='ml-auto'>
-              <Dots size={24} className='text-gray-b0 hover:opacity-80' />
-            </button>
-          </div>
-          <div className='lg:flex-grow px-30px pb-14'>
-            <div className='flex flex-col items-center space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-30px lg:grid-cols-3'>
-              {Array.from({ length: 3 }).map((_, i) => (
-                <NFTCard
-                  key={i}
-                  {...NFTCardProps}
-                  className='max-w-sm md:max-w-full'
-                />
-              ))}
+          )}
+          {followers.length == 0 && (
+            <div className='h-[282px]'>
+              <div className='flex justify-center mt-[91px]'>
+                <span className='text-base text-gray-71'>
+                  You have no Followers
+                </span>
+              </div>
             </div>
-          </div>
-          <LinkSection to='#' absolute>
-            Check NFT-art market
+          )}
+          <LinkSection className='' to='#'>
+            Show more
           </LinkSection>
         </div>
-        <div className='paper pt-6 w-419px flex-shrink-0 flex flex-col relative'>
-          <div className='flex items-center justify-between h-6 mb-3 flex-shrink-0 px-8'>
-            <div className='font-extrabold text-gray-2d'>
-              Latest notifications
+      </div>
+      <div className='flex h-'>
+        <div className='paper pt-6 flex-grow lg:flex lg:flex-col relative w-0 mr-5 relative max-w-[850px]'>
+          <div className='flex items-center h-6 mb-4 flex-shrink-0 px-30px justify-between'>
+            <div className='flex'>
+              <div className='font-extrabold text-gray-2d text-lg'>
+                Trending NFTs
+              </div>
+              <div className='font-medium text-gray-71 text-sm ml-2 mt-1'>
+                312,000 listed
+              </div>
             </div>
-            <div className='font-extrabold text-gray-a0 text-xs ml-3'>
-              4 unread
+            <div className='flex items-center'>
+              <div className='mr-6'>
+                <Radio
+                  checked={tab === Tabs.Creators}
+                  onChange={param => {
+                    param && setTab(0)
+                  }}
+                  labelClassName='text-sm ml-3'
+                >
+                  Creators
+                </Radio>
+              </div>
+              <Radio
+                checked={tab === Tabs.Nfts}
+                onChange={param => {
+                  param && setTab(1)
+                }}
+                labelClassName='text-sm ml-3'
+              >
+                Nfts
+              </Radio>
             </div>
           </div>
-          <div className='flex-grow pl-8 pr-3.5 mr-18px h-0 overflow-auto'>
+          <div className='lg:flex-grow px-30px pb-7'>
+            <div
+              className={
+                cards.length > 0
+                  ? 'flex flex-col items-center space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3'
+                  : 'flex justify-center'
+              }
+            >
+              {cards.map((item, i) => (
+                <NFTCard
+                  key={i}
+                  {...item}
+                  className='max-w-sm md:max-w-full min-h-[372px]'
+                />
+              ))}
+              {cards.length === 0 && (
+                <div className='text-gray-71 text-base mt-[86px]'>
+                  You have no NFTs
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className='paper pt-6 w-419px flex-shrink-0 flex flex-col relative md:w-[451px]'>
+          <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
+            <div className='font-black text-lg text-gray-2d'>
+              Latest Notifications
+            </div>
+            <div className='font-extrabold text-gray-71 text-sm'>1 unread</div>
+          </div>
+          <div
+            className={
+              notifications.length > 0
+                ? 'pl-8 pr-3.5 mr-18px overflow-auto h-full md:h-[258px]'
+                : 'flex justify-center'
+            }
+          >
             {notifications.map((notification, i) => (
-              <Notification key={i} {...notification} />
+              <Notification key={i} {...notification} className='h-[52px]' />
             ))}
+            {notifications.length === 0 && (
+              <div className='text-gray-71 text-base mt-[86px]'>
+                You have no Notifications
+              </div>
+            )}
           </div>
-          <LinkSection to='#'>Check all notifications</LinkSection>
+          <LinkSection
+            className={
+              notifications.length > 0
+                ? 'mb-5 md:mb-0 md:mt-[114px]'
+                : 'mb-5 md:mb-4 md:mt-[114px]'
+            }
+            to='#'
+          >
+            Check All Notifications
+          </LinkSection>
         </div>
       </div>
     </div>
