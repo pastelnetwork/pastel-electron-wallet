@@ -59,7 +59,7 @@ import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
-import { StartServeStatic } from '../features/serveStatic'
+import { SetupIPCRendererHandler } from '../features/serveStatic'
 
 export type TWalletInfo = {
   connections: number
@@ -645,7 +645,7 @@ class RouteApp extends React.Component<any, any> {
             />
           </Switch>
         </div>
-        {info?.version && <StartServeStatic />}
+        {info?.version && <SetupIPCRendererHandler />}
       </div>
     )
   }

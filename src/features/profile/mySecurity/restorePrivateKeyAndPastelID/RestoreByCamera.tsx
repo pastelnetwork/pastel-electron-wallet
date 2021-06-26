@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import QrReader from 'react-qr-reader'
 
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
-
 import { TRPCConfig } from '../../Profile'
-
 import Link from '../../../../common/components/Link'
+import RestoreSuccess from './RestoreSuccess'
 
 type TQRReader = {
   index: number
@@ -24,8 +23,9 @@ export default function RestoreByCamera({
 }: TRestoreByCameraProps): JSX.Element {
   const [results, setResults] = useState<TQRReader[]>([])
   const [showQrReader, setShowQrReader] = useState(true)
+  const [currentStatus, setCurrentStatus] = useState<string>('')
 
-  const handleScan = (result: string | null) => {
+  const handleScan = async (result: string | null) => {
     if (result) {
       const qr = parseQRCodeFromString(result)
       const qrExist = results.filter(item => item.qrCode === qr?.qrCode)
@@ -44,7 +44,12 @@ export default function RestoreByCamera({
         if (lastItem.index === lastItem.total - 1) {
           setShowQrReader(false)
           const finalData = data.map(q => q.qrCode).join('')
-          doImportPrivKeys(finalData, rpcConfig)
+          const result = await doImportPrivKeys(finalData, rpcConfig)
+          if (result) {
+            setCurrentStatus('done')
+          } else {
+            setCurrentStatus('error')
+          }
         }
       }
     }
@@ -60,6 +65,10 @@ export default function RestoreByCamera({
   const previewStyle = {
     height: 400,
     width: 400,
+  }
+
+  if (currentStatus === 'done') {
+    return <RestoreSuccess />
   }
 
   return (

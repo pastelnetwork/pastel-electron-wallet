@@ -83,6 +83,7 @@ const QR = ({
       variant='secondary'
       className='w-full font-extrabold relative'
       onClick={handleDownloadVideo}
+      disabled={currentStatus === 'downloading'}
     >
       {currentStatus === 'downloading'
         ? 'Downloading QR Code Video'

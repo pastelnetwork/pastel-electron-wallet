@@ -10,6 +10,7 @@ import { TRPCConfig } from '../../Profile'
 import { restoreVideo } from '../../../constants/ServeStatic'
 import { Button } from '../../../../common/components/Buttons'
 import { useAppSelector } from '../../../../redux/hooks'
+import RestoreSuccess from './RestoreSuccess'
 
 type TRestoreByUploadProps = {
   rpcConfig: TRPCConfig
@@ -21,19 +22,28 @@ export default function RestoreByUpload({
   onBack,
 }: TRestoreByUploadProps): JSX.Element {
   const { isPackaged } = useAppSelector(state => state.profile)
-
+  const [currentStatus, setCurrentStatus] = useState<string>('')
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
   const [fileSelected, setFileSelected] = useState<File>()
 
   useEffect(() => {
+    const doImport = async () => {
+      const result = await doImportPrivKeys(qrCodeData.join(''), rpcConfig)
+      if (result) {
+        setCurrentStatus('done')
+      } else {
+        setCurrentStatus('error')
+      }
+    }
     if (qrCodeData.length) {
-      doImportPrivKeys(qrCodeData.join(''), rpcConfig)
+      doImport()
     }
   }, [qrCodeData])
 
   const handleRestoreByUpload = () => {
     if (fileSelected) {
       try {
+        setCurrentStatus('restoring')
         const oldpath = path.join(fileSelected.path)
         let newpath = path.join(
           `${process.cwd()}/static/videos/${fileSelected.name}`,
@@ -76,10 +86,18 @@ export default function RestoreByUpload({
             }
           })
           .catch(err => {
-            console.log(1111, 'Error', err)
+            setCurrentStatus('error')
+            console.log(
+              `feature/profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByUpload handleRestoreByUpload error: ${err}`,
+              err,
+            )
           })
       } catch (error) {
-        console.log(1111, 'Error', error)
+        setCurrentStatus('error')
+        console.log(
+          `feature/profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByUpload handleRestoreByUpload error: ${error}`,
+          error,
+        )
       }
     }
   }
@@ -92,6 +110,10 @@ export default function RestoreByUpload({
     }
 
     setFileSelected(fileList[0])
+  }
+
+  if (currentStatus === 'done') {
+    return <RestoreSuccess />
   }
 
   return (
@@ -120,8 +142,9 @@ export default function RestoreByUpload({
         <Button
           className='w-full font-extrabold'
           onClick={handleRestoreByUpload}
+          disabled={currentStatus === 'restoring'}
         >
-          Start Restore
+          {currentStatus === 'restoring' ? 'Restoring' : 'Restore'}
         </Button>
       </div>
       <div className='mt-4 text-center'>

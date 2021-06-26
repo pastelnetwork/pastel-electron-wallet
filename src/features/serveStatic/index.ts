@@ -1,6 +1,6 @@
 import initServeStatic, { closeServeStatic } from './ServeStatic'
-import StartServeStatic from './StartServeStatic'
+import SetupIPCRendererHandler from './SetupIPCRendererHandler'
 
-export { closeServeStatic, StartServeStatic }
+export { closeServeStatic, SetupIPCRendererHandler }
 
 export default initServeStatic

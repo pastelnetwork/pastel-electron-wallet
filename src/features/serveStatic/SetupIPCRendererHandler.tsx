@@ -1,10 +1,10 @@
 import React, { memo } from 'react'
 import { ipcRenderer } from 'electron'
 
-const StartServeStatic = memo(function StartServeStatic() {
+const SetupIPCRendererHandler = memo(function SetupIPCRendererHandler() {
   ipcRenderer.send('app-ready')
 
   return <></>
 })
 
-export default StartServeStatic
+export default SetupIPCRendererHandler
