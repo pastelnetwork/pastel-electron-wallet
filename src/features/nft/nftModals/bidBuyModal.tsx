@@ -20,7 +20,7 @@ const BidBuyModal = ({
   info,
 }: TBidBuyModal): JSX.Element => {
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='lg'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6'>Buy now</h2>
       <p className='mb-6'>
         You are buy{' '}

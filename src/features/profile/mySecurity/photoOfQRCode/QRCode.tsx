@@ -27,7 +27,7 @@ const QR = (): JSX.Element => {
       your smartphone camera. Then to restore, you can play the video on your
       phone and hold the phone screen up to your webcam. You can test that it
       worked by clicking{' '}
-      <Link href='#' className='underline'>
+      <Link href='#' className='underline' variant='gray-77'>
         here
       </Link>
       .

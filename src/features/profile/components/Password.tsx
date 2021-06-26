@@ -180,7 +180,7 @@ const Password = (props: TPassword): JSX.Element => {
             <img
               className={getIconClassnames(false)}
               onClick={handleNewVisibility}
-              src={newPasswordVisible ? IconEye : IconEyeHidden}
+              src={!newPasswordVisible ? IconEye : IconEyeHidden}
             />
             <div className={getIconClassnames(true)}>
               <Tooltip
@@ -208,7 +208,7 @@ const Password = (props: TPassword): JSX.Element => {
           <img
             className={getIconClassnames(false)}
             onClick={handleConfirmVisibility}
-            src={confirmPasswordVisible ? IconEye : IconEyeHidden}
+            src={!confirmPasswordVisible ? IconEye : IconEyeHidden}
           />
         )}
       </div>
