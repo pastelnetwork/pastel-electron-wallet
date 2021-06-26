@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dots } from 'common/components/Icons'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
@@ -10,6 +10,9 @@ import dayjs from 'dayjs'
 import smallImage from '../../common/assets/images/mock/small-image.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import { formatNumber } from '../../common/utils/format'
+import NotificationModal from './dashboardModals/notificationModal'
+import Link from 'common/components/Link'
+import notificationData from './dashboardModals/notificationModal.data'
 import Header from '../../common/components/Header'
 
 const date = dayjs('2021-04-04')
@@ -59,6 +62,8 @@ let notifications = [
 notifications = [...notifications, ...notifications, ...notifications]
 
 export default function DashboardPage(): JSX.Element {
+  const [openNotificationModal, setOpenNotificationModal] = useState(false)
+
   return (
     <div className='page-container py-5 w-full max-w-screen-xl mx-auto'>
       <Header />
@@ -150,9 +155,21 @@ export default function DashboardPage(): JSX.Element {
               <Notification key={i} {...notification} />
             ))}
           </div>
-          <LinkSection to='#'>Check all notifications</LinkSection>
+          <div className='pt-22px pb-6 text-center rounded-b-md leading-none'>
+            <Link
+              onClick={() => setOpenNotificationModal(true)}
+              className='text-blue-3f text-xs font-extrabold inline-block h-3'
+            >
+              Check all notifications
+            </Link>
+          </div>
         </div>
       </div>
+      <NotificationModal
+        isOpen={openNotificationModal}
+        notifications={notificationData}
+        handleClose={() => setOpenNotificationModal(false)}
+      />
     </div>
   )
 }

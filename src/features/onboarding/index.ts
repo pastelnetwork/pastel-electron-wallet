@@ -5,7 +5,6 @@ import PasswordRecoveryPage from './passwordRecovery/PasswordRecovery'
 import RegistrationPending from './registrationPending/RegistrationPending'
 import RegistrationSuccessful from './registrationSuccessful/RegistrationSuccessful'
 import NewPassword from './newPassword/NewPassword'
-import CryptoKeys from './cryptoKeys/CryptoKeys'
 
 export {
   WelcomePage,
@@ -15,5 +14,4 @@ export {
   RegistrationPending,
   RegistrationSuccessful,
   NewPassword,
-  CryptoKeys,
 }

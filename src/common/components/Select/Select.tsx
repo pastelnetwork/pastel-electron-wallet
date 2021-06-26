@@ -23,6 +23,8 @@ export type TBaseProps = {
   append?: ReactNode
   prepend?: ReactNode
   labelClasses?: string
+  icon?: string
+  iconClasses?: string
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -82,6 +84,8 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
     autocomplete = false,
     append,
     labelClasses = 'text-gray-71 mr-2 absolute right-2.5',
+    icon = '',
+    iconClasses = '',
   } = props
 
   const {
@@ -134,10 +138,22 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
               selectClassName,
             )}
           >
+            {icon && (
+              <img
+                src={icon}
+                className={cn(
+                  'absolute top-2/4 left-3 transform -translate-y-2/4 w-3',
+                  iconClasses,
+                )}
+              />
+            )}
             {autocomplete && (
               <div className='relative'>
                 <input
-                  className='h-full w-full rounded pl-18px pr-7 text-gray-35 font-extrabold focus-visible-border'
+                  className={cn(
+                    'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border',
+                    icon ? 'pl-9 relative z-10' : 'pl-18px',
+                  )}
                   {...getToggleButtonProps()}
                   {...getInputProps()}
                   type='text'
@@ -153,7 +169,10 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
             )}
             {!autocomplete && (
               <button
-                className='w-full h-full flex items-center whitespace-nowrap pl-3.5 pr-7 focus-visible-border'
+                className={cn(
+                  'w-full h-full flex items-center whitespace-nowrap pr-7 focus-visible-border',
+                  icon ? 'pl-9 relative z-10' : 'pl-3.5',
+                )}
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}

@@ -369,6 +369,7 @@ module.exports = {
         '598px': '37.375rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
+        '9/10': '90%',
         fit: 'fit-content',
       },
       container: {
@@ -382,6 +383,7 @@ module.exports = {
         '244px': '15.25rem',
         '700px': '43.75rem',
         '750px': '46.875rem',
+        '9/10': '90%',
       },
       minWidth: {
         '14px': '0.875rem',
@@ -399,10 +401,12 @@ module.exports = {
       width: {
         '244px': '15.25rem',
         '300px': '17.75rem',
+        '1215px': '75.9375rem',
         fit: 'fit-content',
       },
       height: {
         '401px': '25.0625rem',
+        '645px': '40.3125rem',
         fit: 'fit-content',
       },
       opacity: {

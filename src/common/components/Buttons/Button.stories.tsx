@@ -27,13 +27,11 @@ export const ButtonDefault = Template.bind({})
 const children = 'button'
 const variant = 'default'
 const disabled = false
-const fluid = false
 const className = ''
 ButtonDefault.args = {
   children,
   variant,
   disabled,
-  fluid,
   className,
 }
 

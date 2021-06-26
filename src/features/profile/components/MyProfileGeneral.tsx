@@ -22,7 +22,7 @@ const ProfileGeneral = ({
     buyerBans: 3,
     highestFeeRecieved: { value: '136,200,000', comment: 632 },
     totalSalesAmount: { value: '560,600,00', comment: 211 },
-    totalItemsSold: 14,
+    totalItemsSold: '124 Copies across 5 NFTs',
     topCategoryPercentage: 'motion graphics 30%',
     bio:
       'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',

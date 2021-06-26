@@ -27,10 +27,13 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   return (
     <div className='flex space-x-30px'>
       {/* Member Card */}
-      <div className='w-244px h-142px' onClick={toMemberProfile}>
+      <div
+        className='min-w-[244px] h-142px cursor-pointer'
+        onClick={toMemberProfile}
+      >
         <MemberCard {...memberCard} />
       </div>
-      <div className='w-8/12 md:flex-grow border-b border-navigation-background'>
+      <div className='border-b border-navigation-background overflow-hidden'>
         <div className='flex space-x-4 h-full'>
           {/* Sale data */}
           <div className='flex flex-col justify-center h-full min-w-120px pr-21px'>
@@ -47,7 +50,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
             </div>
           </div>
           {/* Images */}
-          <div className='flex space-x-5 h-full overflow-x-auto overflow-y-hidden scrollbar-bg-white mt-0.5'>
+          <div className='flex space-x-5 h-full overflow-x-auto overflow-y-hidden scrollbar-bg-white'>
             {images.map((imgSrc, i) => (
               <div
                 className='flex flex-col justify-center h-full '
