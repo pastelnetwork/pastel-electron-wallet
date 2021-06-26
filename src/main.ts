@@ -94,7 +94,6 @@ const createWindow = async () => {
   if (!app.isPackaged) {
     w.webContents.openDevTools()
   }
-  w.webContents.openDevTools()
 
   // Protocol handler for win32
   if (process.platform == 'win32') {
