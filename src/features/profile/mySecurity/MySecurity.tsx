@@ -6,7 +6,7 @@ import QRCode from './photoOfQRCode/QRCode'
 import CryptoKey from './backupCryptoKey/CryptoKey'
 
 import { TRPCConfig } from '../Profile'
-import { video } from '../../constants/ServeStatic'
+import { ffmpegwasm } from '../../constants/ServeStatic'
 
 type TSecurity = {
   info?: {
@@ -21,6 +21,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
 
   const [videoUrl, setVideoUrl] = useState<string>('')
   const [imagesData, setImagesData] = useState<string[]>([])
+  const [currentStatus, setCurrentStatus] = useState<string>('')
   const threeSecond = 3 * 1000
 
   useEffect(() => {
@@ -57,6 +58,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
     a.href = url
     a.download = generateFileName()
     a.dispatchEvent(new MouseEvent('click'))
+    setCurrentStatus('downloaded')
   }
 
   const generateFileName = () => {
@@ -68,13 +70,16 @@ const MySecurity = (props: TSecurity): JSX.Element => {
     if (videoUrl) {
       saveFile(videoUrl)
     } else {
+      setCurrentStatus('downloading')
       const canvas = document.querySelectorAll('.qrCodeData')
       if (canvas.length) {
-        const images = []
+        const images: string[] = []
         for (let i = 0; i < canvas.length; i++) {
           const item = canvas[i] as HTMLCanvasElement
           const img = item.toDataURL('image/png')
-          images.push(img)
+          if (!images.includes(img)) {
+            images.push(img)
+          }
         }
 
         if (images.length) {
@@ -92,6 +97,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
           rpcConfig={rpcConfig}
           qrcodeData={qrcodeData}
           handleDownloadVideo={handleDownloadVideo}
+          currentStatus={currentStatus}
         />
         <CryptoKey rpcConfig={rpcConfig} currencyName={info?.currencyName} />
       </div>
@@ -99,7 +105,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
         {imagesData.length ? (
           <iframe
             id='qrCodeIframe'
-            src={`http://localhost:${video.staticPort}/`}
+            src={`http://localhost:${ffmpegwasm.staticPort}/`}
             className='h-1.5px w-1.5px'
             data-images={JSON.stringify(imagesData)}
           />

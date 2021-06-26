@@ -94,6 +94,7 @@ const createWindow = async () => {
   if (!app.isPackaged) {
     w.webContents.openDevTools()
   }
+  w.webContents.openDevTools()
 
   // Protocol handler for win32
   if (process.platform == 'win32') {
@@ -234,6 +235,12 @@ ipcMain.on('app-ready', () => {
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
   initServeStatic(app.isPackaged)
+
+  if (mainWindow?.webContents) {
+    mainWindow.webContents.send('app-info', {
+      isPackaged: app.isPackaged,
+    })
+  }
 })
 
 ipcMain.on('restart_app', () => {

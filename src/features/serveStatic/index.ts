@@ -1,5 +1,6 @@
 import initServeStatic, { closeServeStatic } from './ServeStatic'
+import StartServeStatic from './StartServeStatic'
 
-export { closeServeStatic }
+export { closeServeStatic, StartServeStatic }
 
 export default initServeStatic

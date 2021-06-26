@@ -34,9 +34,11 @@ import React from 'react'
 import { render } from 'react-dom'
 import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
+import { ipcRenderer } from 'electron'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
+import { createVideosFolder, setIsPackaged } from './features/profile'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 import { ToastContainer } from 'react-toastify'
@@ -64,6 +66,11 @@ try {
   // TODO log errors to a central logger so we can address them later.
   console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
 }
+
+ipcRenderer.on('app-info', (event, { isPackaged }: { isPackaged: boolean }) => {
+  createVideosFolder(isPackaged)
+  store.dispatch(setIsPackaged({ isPackaged }))
+})
 
 const application = (
   <Provider store={store}>

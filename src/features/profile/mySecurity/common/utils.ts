@@ -1,4 +1,6 @@
 import LZUTF8 from 'lzutf8'
+import fs from 'fs'
+import path from 'path'
 
 import { rpc, TRPCConfig } from '../../../../api/pastel-rpc/rpc'
 
@@ -214,7 +216,7 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
 export async function doImportPrivKeys(
   privateKeys: string,
   config: TRPCConfig,
-): Promise<void> {
+): Promise<boolean> {
   console.log(2222, 'doImportPrivKeys privateKeys:', privateKeys)
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
@@ -232,8 +234,12 @@ export async function doImportPrivKeys(
           importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1, config)
         }
       }
+
+      return true
     }
   }
+
+  return false
 }
 
 export const splitStringIntoChunks = (
@@ -283,4 +289,18 @@ export const parseQRCodeFromString = (str: string): TQRCode | null => {
   }
 
   return null
+}
+
+export const createVideosFolder = async (
+  isPackaged: boolean,
+): Promise<void> => {
+  let videosFolder = `${process.cwd()}/static/videos`
+  if (isPackaged) {
+    videosFolder = path.join(process.resourcesPath, '/videos')
+  }
+  try {
+    await fs.promises.access(videosFolder)
+  } catch {
+    await fs.promises.mkdir(videosFolder)
+  }
 }

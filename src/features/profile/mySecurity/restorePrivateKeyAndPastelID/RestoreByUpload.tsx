@@ -3,12 +3,13 @@ import { scanImageData } from 'zbar.wasm'
 import fs from 'fs'
 import path from 'path'
 
+import Link from '../../../../common/components/Link'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
-
 import { TRPCConfig } from '../../Profile'
-
+import { restoreVideo } from '../../../constants/ServeStatic'
 import { Button } from '../../../../common/components/Buttons'
+import { useAppSelector } from '../../../../redux/hooks'
 
 type TRestoreByUploadProps = {
   rpcConfig: TRPCConfig
@@ -19,6 +20,8 @@ export default function RestoreByUpload({
   rpcConfig,
   onBack,
 }: TRestoreByUploadProps): JSX.Element {
+  const { isPackaged } = useAppSelector(state => state.profile)
+
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
   const [fileSelected, setFileSelected] = useState<File>()
 
@@ -31,16 +34,21 @@ export default function RestoreByUpload({
   const handleRestoreByUpload = () => {
     if (fileSelected) {
       try {
-        const oldpath = fileSelected.path
-        const newpath = path.join(
+        const oldpath = path.join(fileSelected.path)
+        let newpath = path.join(
           `${process.cwd()}/static/videos/${fileSelected.name}`,
         )
+        if (isPackaged) {
+          newpath = path.join(
+            `${process.resourcesPath}/videos/${fileSelected.name}`,
+          )
+        }
+
         fs.copyFileSync(oldpath, newpath)
         const qrCode: string[] = []
-        VideoToImages.getFrames(
-          `local-video://static/videos/${fileSelected.name}`,
-          VideoToFramesMethod.totalFrames,
-        )
+        const videoPath = `http://localhost:${restoreVideo.staticPort}/${fileSelected.name}`
+        console.log(1111, 'videoPath', videoPath)
+        VideoToImages.getFrames(videoPath, VideoToFramesMethod.totalFrames)
           .then(async frames => {
             console.log(1111, 'getFrames', frames)
             let currentQRCode = 0
@@ -88,28 +96,38 @@ export default function RestoreByUpload({
 
   return (
     <div className='m-4'>
-      <div className='mb-5'>
-        <a href='#' className='underline' onClick={() => onBack('')}>
-          Back
-        </a>
+      <div className='text-gray-800 text-2xl font-extrabold mb-3'>
+        Upload QR Code Video
       </div>
-      <div className='mb-3 max-w-690px'>
-        <div>
+      <div className='font-medium text-sm text-gray-33 opacity-50'>
+        Please select your video key
+      </div>
+      <div className='mt-4'>
+        <label className='bg-gray-71 w-full relative overflow-hidden px-2 h-10 flex items-center text-white font-medium'>
+          <span className='truncate max-w-full'>
+            {fileSelected ? fileSelected.name : 'Choose File'}
+          </span>
           <input
             type='file'
             name='upload'
             accept='video/mp4'
             onChange={handleImageChange}
+            className='hidden'
           />
-        </div>
-        <div className='w-300px mt-5'>
-          <Button
-            className='w-full font-extrabold'
-            onClick={handleRestoreByUpload}
-          >
-            Start Restore
-          </Button>
-        </div>
+        </label>
+      </div>
+      <div className='mt-4'>
+        <Button
+          className='w-full font-extrabold'
+          onClick={handleRestoreByUpload}
+        >
+          Start Restore
+        </Button>
+      </div>
+      <div className='mt-4 text-center'>
+        <Link href='#' onClick={() => onBack('')}>
+          Or try another restore method
+        </Link>
       </div>
     </div>
   )

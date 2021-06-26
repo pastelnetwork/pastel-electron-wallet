@@ -5,6 +5,8 @@ import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 
 import { TRPCConfig } from '../../Profile'
 
+import Link from '../../../../common/components/Link'
+
 type TQRReader = {
   index: number
   total: number
@@ -56,28 +58,38 @@ export default function RestoreByCamera({
   }
 
   const previewStyle = {
-    height: 240,
-    width: 320,
+    height: 400,
+    width: 400,
   }
 
   return (
     <div className='m-4'>
-      <div className='mb-5'>
-        <a href='#' className='underline' onClick={() => onBack('')}>
-          Back
-        </a>
+      <div className='text-gray-800 text-2xl font-extrabold mb-3'>
+        Scan Your QR Code
       </div>
-      <div className='mb-3 mx-auto p-5'>
+      <div className='font-medium text-sm text-gray-33 opacity-50'>
+        Move your QR code to the red square to restore your keys.{' '}
+        {results.length ? (
+          <span>
+            Restoring ... {results.length}/{results[0].total}
+          </span>
+        ) : null}
+      </div>
+      <div className='mt-4 mx-auto p-5'>
         {showQrReader ? (
           <QrReader
             delay={100}
             style={previewStyle}
             onError={handleError}
             onScan={handleScan}
+            className='bg-gray-71 mx-auto'
           />
-        ) : (
-          <p>Done</p>
-        )}
+        ) : null}
+      </div>
+      <div className='mt-4 text-center'>
+        <Link href='#' onClick={() => onBack('')}>
+          Or try another restore method
+        </Link>
       </div>
     </div>
   )

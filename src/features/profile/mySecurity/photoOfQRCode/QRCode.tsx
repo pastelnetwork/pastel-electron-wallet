@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
-import Slider from 'react-slick'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SwiperCore, { Autoplay } from 'swiper/core'
 
-import RestoreByUpload from '../restorePrivateKeyAndPastelID/RestoreByUpload'
-import RestoreByCamera from '../restorePrivateKeyAndPastelID/RestoreByCamera'
+import RestoreModal from '../restorePrivateKeyAndPastelID/RestoreModal'
 import Link from '../../../../common/components/Link'
-import Modal from '../../../../common/components/AnimatedModal'
 import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
 import { TRPCConfig } from '../../Profile'
@@ -14,6 +13,7 @@ type TQRProps = {
   rpcConfig: TRPCConfig
   qrcodeData: string[]
   handleDownloadVideo: () => void
+  currentStatus?: string
 }
 
 type TQRCodeSliderProps = {
@@ -24,34 +24,27 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
   if (!qrcodeData.length) {
     return null
   }
-  let slider: Slider | null
+
+  SwiperCore.use([Autoplay])
+
   const settings = {
-    dots: false,
-    infinite: false,
-    speed: 1500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: false,
     autoplay: true,
-    afterChange: (currentSlide: number) => {
-      if (currentSlide === qrcodeData.length - 1) {
-        slider?.slickGoTo(0)
-      }
-    },
+    navigation: false,
+    pagination: false,
   }
 
   return (
-    <Slider {...settings} ref={node => (slider = node)}>
+    <Swiper {...settings}>
       {qrcodeData.map((item, idx) => (
-        <div key={idx} className='d-block h-205px'>
+        <SwiperSlide key={idx} className='d-block h-205px'>
           <QRCode
             value={`${idx}::${qrcodeData.length}::${item}`}
             className='qrCodeData h-full w-full max-h-205px max-w-full'
             size={1024}
           />
-        </div>
+        </SwiperSlide>
       ))}
-    </Slider>
+    </Swiper>
   )
 }
 
@@ -59,13 +52,9 @@ const QR = ({
   rpcConfig,
   qrcodeData,
   handleDownloadVideo,
+  currentStatus,
 }: TQRProps): JSX.Element => {
-  const [selectedRestoreType, setSelectedRestoreType] = useState('')
   const [modalIsOpen, setModalIsOpen] = useState(false)
-
-  const handleSelectedRestoreType = (type: string) => {
-    setSelectedRestoreType(type)
-  }
 
   const description = (
     <div className='max-w-330px'>
@@ -95,7 +84,9 @@ const QR = ({
       className='w-full font-extrabold relative'
       onClick={handleDownloadVideo}
     >
-      Download QR Code Video
+      {currentStatus === 'downloading'
+        ? 'Downloading QR Code Video'
+        : 'Download QR Code Video'}
     </Button>
   )
 
@@ -107,51 +98,10 @@ const QR = ({
         content={content}
         footer={footer}
       />
-      <Modal
-        open={modalIsOpen}
-        onClose={() => setModalIsOpen(false)}
-        closeButton
-        render={() => (
-          <div className='paper p-10 w-[690px]'>
-            <div className='py-5'>
-              {!selectedRestoreType ? (
-                <>
-                  <div>
-                    <Button
-                      className='w-full font-extrabold'
-                      onClick={() => handleSelectedRestoreType('upload')}
-                    >
-                      Upload QR Code Video
-                    </Button>
-                  </div>
-                  <div className='mt-5'>
-                    <Button
-                      className='w-full font-extrabold'
-                      onClick={() => handleSelectedRestoreType('scan')}
-                    >
-                      Scan QR Code Video
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  {selectedRestoreType === 'upload' ? (
-                    <RestoreByUpload
-                      rpcConfig={rpcConfig}
-                      onBack={handleSelectedRestoreType}
-                    />
-                  ) : null}
-                  {selectedRestoreType === 'scan' ? (
-                    <RestoreByCamera
-                      rpcConfig={rpcConfig}
-                      onBack={handleSelectedRestoreType}
-                    />
-                  ) : null}
-                </>
-              )}
-            </div>
-          </div>
-        )}
+      <RestoreModal
+        rpcConfig={rpcConfig}
+        modalIsOpen={modalIsOpen}
+        onCloseModal={setModalIsOpen}
       />
     </>
   )

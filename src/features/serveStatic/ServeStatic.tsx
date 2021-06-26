@@ -2,14 +2,21 @@ import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
 
-import { glitch, squoosh, video } from '../constants/ServeStatic'
+import {
+  glitch,
+  squoosh,
+  ffmpegwasm,
+  restoreVideo,
+} from '../constants/ServeStatic'
 
 const servers: Server[] = []
 
 export default function initServeStatic(isPackaged: boolean): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
-  let videoStaticPath = `${process.cwd()}/node_modules/ffmpegwasm-create-video/production`
+  let ffmpegStaticPath = `${process.cwd()}/node_modules/ffmpegwasm-create-video/production`
+  let videoStaticPath = `${process.cwd()}/static/videos`
+
   if (isPackaged) {
     squooshStaticPath = path.join(
       process.resourcesPath,
@@ -19,14 +26,21 @@ export default function initServeStatic(isPackaged: boolean): void {
       process.resourcesPath,
       '/app.asar/.webpack/renderer/static/glitch',
     )
-    videoStaticPath = path.join(
+    ffmpegStaticPath = path.join(
       process.resourcesPath,
       '/app.asar/.webpack/renderer/static/ffmpeg',
     )
+
+    videoStaticPath = ffmpegStaticPath = path.join(
+      process.resourcesPath,
+      '/videos',
+    )
   }
+  console.log(1111, 'videoStaticPath', videoStaticPath)
   setupServeStatic(squooshStaticPath, squoosh.staticPort)
   setupServeStatic(glitchStaticPath, glitch.staticPort)
-  setupServeStatic(videoStaticPath, video.staticPort)
+  setupServeStatic(ffmpegStaticPath, ffmpegwasm.staticPort)
+  setupServeStatic(videoStaticPath, restoreVideo.staticPort)
 }
 
 function setupServeStatic(staticPath: string, port: number) {
@@ -37,7 +51,7 @@ function setupServeStatic(staticPath: string, port: number) {
     // Create server
     const server = http.createServer(function onRequest(req, res) {
       serve(req, res, () => {
-        console.log('Created server')
+        console.log(111, 'Created server', port)
       })
     })
     // Listen
