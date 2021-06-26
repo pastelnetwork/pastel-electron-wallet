@@ -1,6 +1,6 @@
 import React from 'react'
 
-import congratulations from '../../../../common/assets/images/congratulations.svg'
+import congratulations from '../../../../common/assets/icons/ico-congratulations.svg'
 
 export default function RestoreSuccess(): JSX.Element {
   return (

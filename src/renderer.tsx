@@ -38,7 +38,8 @@ import { ipcRenderer } from 'electron'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
-import { createVideosFolder, setIsPackaged } from './features/profile'
+import { createVideosFolder } from './features/profile'
+import { setAppInfo } from './features/serveStatic'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 import { ToastContainer } from 'react-toastify'
@@ -67,10 +68,19 @@ try {
   console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
 }
 
-ipcRenderer.on('app-info', (event, { isPackaged }: { isPackaged: boolean }) => {
-  createVideosFolder(isPackaged)
-  store.dispatch(setIsPackaged({ isPackaged }))
-})
+ipcRenderer.on(
+  'app-info',
+  (
+    event,
+    {
+      isPackaged,
+      locatePastelConfDir,
+    }: { isPackaged: boolean; locatePastelConfDir: string },
+  ) => {
+    createVideosFolder(locatePastelConfDir)
+    store.dispatch(setAppInfo({ isPackaged, locatePastelConfDir }))
+  },
+)
 
 const application = (
   <Provider store={store}>

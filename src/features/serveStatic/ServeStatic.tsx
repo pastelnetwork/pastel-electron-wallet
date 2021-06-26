@@ -11,11 +11,14 @@ import {
 
 const servers: Server[] = []
 
-export default function initServeStatic(isPackaged: boolean): void {
+export default function initServeStatic(
+  isPackaged: boolean,
+  locatePastelConfDir: string,
+): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
   let ffmpegStaticPath = `${process.cwd()}/node_modules/ffmpegwasm-create-video/production`
-  let videoStaticPath = `${process.cwd()}/static/videos`
+  const videoStaticPath = `${locatePastelConfDir}/videos`
 
   if (isPackaged) {
     squooshStaticPath = path.join(
@@ -30,13 +33,8 @@ export default function initServeStatic(isPackaged: boolean): void {
       process.resourcesPath,
       '/app.asar/.webpack/renderer/static/ffmpeg',
     )
-
-    videoStaticPath = ffmpegStaticPath = path.join(
-      process.resourcesPath,
-      '/videos',
-    )
   }
-  console.log(1111, 'videoStaticPath', videoStaticPath)
+
   setupServeStatic(squooshStaticPath, squoosh.staticPort)
   setupServeStatic(glitchStaticPath, glitch.staticPort)
   setupServeStatic(ffmpegStaticPath, ffmpegwasm.staticPort)

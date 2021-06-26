@@ -5,6 +5,7 @@ import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
 import Link from '../../../../common/components/Link'
 import RestoreSuccess from './RestoreSuccess'
+import RestoreError from './RestoreError'
 
 type TQRReader = {
   index: number
@@ -69,6 +70,10 @@ export default function RestoreByCamera({
 
   if (currentStatus === 'done') {
     return <RestoreSuccess />
+  }
+
+  if (currentStatus === 'error') {
+    return <RestoreError />
   }
 
   return (

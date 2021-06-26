@@ -3,14 +3,7 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 
-import {
-  app,
-  autoUpdater,
-  BrowserWindow,
-  ipcMain,
-  shell,
-  protocol,
-} from 'electron'
+import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -18,6 +11,8 @@ import installExtension, {
 } from 'electron-devtools-installer'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
+import os from 'os'
+import path from 'path'
 
 import pkg from '../package.json'
 import {
@@ -178,22 +173,7 @@ const createWindow = async () => {
 app.on('window-all-closed', () => {
   app.quit()
 })
-app.on('ready', () => {
-  createWindow()
-
-  protocol.registerFileProtocol('local-video', (request, callback) => {
-    const url = request.url.replace(/^local-video:\/\//, '')
-    const decodedUrl = decodeURI(url) // Needed in case URL contains spaces
-    try {
-      return callback(decodedUrl)
-    } catch (error) {
-      console.error(
-        'ERROR: registerLocalVideoProtocol: Could not get file path:',
-        error,
-      )
-    }
-  })
-})
+app.on('ready', createWindow)
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -233,11 +213,13 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
-  initServeStatic(app.isPackaged)
+  const locatePastelConfDir = getLocatePastelConfDir()
+  initServeStatic(app.isPackaged, locatePastelConfDir)
 
   if (mainWindow?.webContents) {
     mainWindow.webContents.send('app-info', {
       isPackaged: app.isPackaged,
+      locatePastelConfDir,
     })
   }
 })
@@ -264,3 +246,15 @@ autoUpdater.on(
 autoUpdater.on('error', err => {
   console.warn(`autoUpdater error: ${err.message}`, err)
 })
+
+const getLocatePastelConfDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), '.pastel')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel')
+}

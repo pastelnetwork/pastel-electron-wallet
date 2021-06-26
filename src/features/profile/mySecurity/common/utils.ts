@@ -1,6 +1,5 @@
 import LZUTF8 from 'lzutf8'
 import fs from 'fs'
-import path from 'path'
 
 import { rpc, TRPCConfig } from '../../../../api/pastel-rpc/rpc'
 
@@ -292,12 +291,9 @@ export const parseQRCodeFromString = (str: string): TQRCode | null => {
 }
 
 export const createVideosFolder = async (
-  isPackaged: boolean,
+  createVideosFolder: string,
 ): Promise<void> => {
-  let videosFolder = `${process.cwd()}/static/videos`
-  if (isPackaged) {
-    videosFolder = path.join(process.resourcesPath, '/videos')
-  }
+  const videosFolder = `${createVideosFolder}/videos`
   try {
     await fs.promises.access(videosFolder)
   } catch {
