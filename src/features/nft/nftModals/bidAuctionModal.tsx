@@ -28,7 +28,7 @@ const BidAuctionModal = ({
     setBid(event.target.value)
 
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='lg'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6'>
         {type === 'MakeOffer' ? 'Make an offer' : 'Your bid'}
       </h2>
