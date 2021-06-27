@@ -57,10 +57,8 @@ export default function RestoreByUpload({
           .then(async frames => {
             let currentQRCode = 0
             let totalQRCode = 0
-            console.log(11111, 'getFrames', frames)
             for (let i = 0; i < frames.length; i++) {
               const res = await scanImageData(frames[i])
-              console.log(1111, 'scanImageData', res)
               if (res[0]) {
                 const qr = parseQRCodeFromString(res[0].decode())
                 if (qr && !qrCode.includes(qr.qrCode)) {

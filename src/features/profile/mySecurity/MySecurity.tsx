@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import dayjs from 'dayjs'
 
 import ChangePassword from './changePassword/Password'
@@ -20,38 +20,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
   const { info, rpcConfig, qrcodeData } = props
 
   const [videoUrl, setVideoUrl] = useState<string>('')
-  const [imagesData, setImagesData] = useState<string[]>([])
   const [currentStatus, setCurrentStatus] = useState<string>('')
-  const threeSecond = 3 * 1000
-
-  useEffect(() => {
-    let timerCheckVideoLink: ReturnType<typeof setInterval>
-    const getVideoFromIframe = () => {
-      const iframe = document.getElementById(
-        'qrCodeIframe',
-      ) as HTMLIFrameElement
-      if (iframe) {
-        const videoUrl = iframe?.contentWindow?.document?.getElementById(
-          'videourl',
-        )?.innerText
-        if (videoUrl && videoUrl !== 'inprocess') {
-          clearInterval(timerCheckVideoLink)
-          setVideoUrl(videoUrl)
-          saveFile(videoUrl)
-        }
-      }
-    }
-
-    if (imagesData.length && !videoUrl) {
-      timerCheckVideoLink = setInterval(() => {
-        getVideoFromIframe()
-      }, threeSecond)
-    }
-
-    return () => {
-      clearInterval(timerCheckVideoLink)
-    }
-  }, [imagesData])
 
   const saveFile = async (url: string) => {
     const a = document.createElement('a')
@@ -59,6 +28,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
     a.download = generateFileName()
     a.dispatchEvent(new MouseEvent('click'))
     setCurrentStatus('downloaded')
+    a.remove()
   }
 
   const generateFileName = () => {
@@ -81,9 +51,36 @@ const MySecurity = (props: TSecurity): JSX.Element => {
             images.push(img)
           }
         }
-
-        if (images.length) {
-          setImagesData(images)
+        if (images.length && !videoUrl) {
+          try {
+            const iframe = document.getElementById(
+              'qrCodeIframe',
+            ) as HTMLIFrameElement
+            if (iframe && !videoUrl) {
+              iframe?.contentWindow?.postMessage(
+                images,
+                `http://localhost:${ffmpegwasm.staticPort}/`,
+              )
+              const handleReReceivedMessage = (evt: MessageEvent) => {
+                if (evt.data?.videoUrl && !videoUrl) {
+                  setVideoUrl(evt.data.videoUrl)
+                  saveFile(evt.data.videoUrl)
+                  window.removeEventListener(
+                    'message',
+                    handleReReceivedMessage,
+                    false,
+                  )
+                }
+              }
+              window.addEventListener('message', handleReReceivedMessage, false)
+            }
+          } catch (error) {
+            console.log(
+              `feature/profile/mySecurity handleDownloadVideo error: ${error.message}`,
+              error,
+            )
+            setCurrentStatus('downloading')
+          }
         }
       }
     }
@@ -102,14 +99,11 @@ const MySecurity = (props: TSecurity): JSX.Element => {
         <CryptoKey rpcConfig={rpcConfig} currencyName={info?.currencyName} />
       </div>
       <div className='hidden'>
-        {imagesData.length ? (
-          <iframe
-            id='qrCodeIframe'
-            src={`http://localhost:${ffmpegwasm.staticPort}/`}
-            className='h-1.5px w-1.5px'
-            data-images={JSON.stringify(imagesData)}
-          />
-        ) : null}
+        <iframe
+          id='qrCodeIframe'
+          src={`http://localhost:${ffmpegwasm.staticPort}/`}
+          className='h-1.5px w-1.5px'
+        />
       </div>
     </div>
   )

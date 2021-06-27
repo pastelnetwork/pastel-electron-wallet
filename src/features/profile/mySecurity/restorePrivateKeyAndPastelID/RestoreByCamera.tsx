@@ -30,7 +30,6 @@ export default function RestoreByCamera({
     if (result) {
       const qr = parseQRCodeFromString(result)
       const qrExist = results.filter(item => item.qrCode === qr?.qrCode)
-
       if (!qrExist.length && qr) {
         let data: TQRReader[] = results
         data.push({
@@ -43,13 +42,21 @@ export default function RestoreByCamera({
         setResults(data)
         const lastItem = data[data.length - 1]
         if (lastItem.index === lastItem.total - 1) {
-          setShowQrReader(false)
-          const finalData = data.map(q => q.qrCode).join('')
-          const result = await doImportPrivKeys(finalData, rpcConfig)
-          if (result) {
-            setCurrentStatus('done')
-          } else {
+          try {
+            setShowQrReader(false)
+            const finalData = data.map(q => q.qrCode).join('')
+            const result = await doImportPrivKeys(finalData, rpcConfig)
+            if (result) {
+              setCurrentStatus('done')
+            } else {
+              setCurrentStatus('error')
+            }
+          } catch (err) {
             setCurrentStatus('error')
+            console.log(
+              `feature/profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByCamera handleScan error: ${err}`,
+              err,
+            )
           }
         }
       }
@@ -92,13 +99,14 @@ export default function RestoreByCamera({
       <div className='mt-4 mx-auto p-5'>
         {showQrReader ? (
           <QrReader
-            delay={100}
             style={previewStyle}
             onError={handleError}
             onScan={handleScan}
             className='bg-gray-71 mx-auto'
           />
-        ) : null}
+        ) : (
+          <div className='text-gray-800 text-lg font-extrabold'>Restoring</div>
+        )}
       </div>
       <div className='mt-4 text-center'>
         <Link href='#' onClick={() => onBack('')}>
