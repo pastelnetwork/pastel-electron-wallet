@@ -34,6 +34,9 @@ type TAllAddressesAndPastelID = {
   zPrivateKeys: string[]
   tPrivateKeys: string[]
   pastelIDs: TPastelID[]
+  profile: {
+    userName: string
+  }
 }
 
 type TQRCode = {
@@ -128,6 +131,9 @@ export async function fetchPastelIDAndPrivateKeys(
       zPrivateKeys,
       tPrivateKeys,
       pastelIDs,
+      profile: {
+        userName: 'username',
+      },
     }
 
     return encodeURIComponent(
@@ -187,7 +193,10 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
         config,
       )
     } catch (err) {
-      console.log(err)
+      console.log(
+        `profile/mySecurity/common importPrivKey z_importkey error: ${err.message}`,
+        err,
+      )
     }
   } else if (key.startsWith('zxview')) {
     try {
@@ -197,7 +206,10 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
         config,
       )
     } catch (err) {
-      console.log(err)
+      console.log(
+        `profile/mySecurity/common importPrivKey z_importviewingkey error: ${err.message}`,
+        err,
+      )
     }
   } else {
     try {
@@ -207,7 +219,10 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
         config,
       )
     } catch (err) {
-      console.log(err)
+      console.log(
+        `profile/mySecurity/common importPrivKey importprivkey error: ${err.message}`,
+        err,
+      )
     }
   }
 }
@@ -216,10 +231,9 @@ export async function doImportPrivKeys(
   privateKeys: string,
   config: TRPCConfig,
 ): Promise<boolean> {
-  console.log(2222, 'doImportPrivKeys privateKeys:', privateKeys)
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
-    if (keys) {
+    if (keys && keys?.profile?.userName === 'username') {
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {

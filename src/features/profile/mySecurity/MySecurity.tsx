@@ -75,10 +75,6 @@ const MySecurity = (props: TSecurity): JSX.Element => {
               window.addEventListener('message', handleReReceivedMessage, false)
             }
           } catch (error) {
-            console.log(
-              `feature/profile/mySecurity handleDownloadVideo error: ${error.message}`,
-              error,
-            )
             setCurrentStatus('downloading')
           }
         }

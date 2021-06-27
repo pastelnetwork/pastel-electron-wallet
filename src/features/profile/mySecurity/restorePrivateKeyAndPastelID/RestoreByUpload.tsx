@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { scanImageData } from 'zbar.wasm'
 import path from 'path'
+import jsQR from 'jsqr'
 
 import Link from '../../../../common/components/Link'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
@@ -43,47 +43,36 @@ export default function RestoreByUpload({
         setCurrentStatus('restoring')
         const qrCode: string[] = []
         const videoPath = path.join(fileSelected.path)
-        console.log(11111, 'videoPath', videoPath)
-        VideoToImages.getFrames(videoPath, VideoToFramesMethod.totalFrames)
+        VideoToImages.getFrames(
+          'file://' + videoPath,
+          24,
+          VideoToFramesMethod.totalFrames,
+        )
           .then(async frames => {
-            let currentQRCode = 0
             let totalQRCode = 0
             for (let i = 0; i < frames.length; i++) {
-              const res = await scanImageData(frames[i])
-              if (res[0]) {
-                const qr = parseQRCodeFromString(res[0].decode())
-                if (qr && !qrCode.includes(qr.qrCode)) {
-                  if (currentQRCode < qr.index) {
-                    currentQRCode = qr.index
-                  }
-
+              const frame = frames[i]
+              const result = jsQR(frame?.data, frame.width, frame.height)
+              if (result?.data) {
+                const qr = parseQRCodeFromString(result?.data)
+                if (qr && qr?.qrCode && !qrCode.includes(qr.qrCode)) {
                   qrCode.push(qr.qrCode)
-                  if (totalQRCode < qr.total) {
-                    totalQRCode = qr.total
-                  }
+                  totalQRCode = qr.total
                 }
               }
             }
 
-            if (currentQRCode === totalQRCode - 1) {
+            if (qrCode.length === totalQRCode) {
               setQRCodeData(qrCode)
             } else {
               setCurrentStatus('error')
             }
           })
-          .catch(err => {
+          .catch(() => {
             setCurrentStatus('error')
-            console.log(
-              `feature/profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByUpload handleRestoreByUpload error: ${err}`,
-              err,
-            )
           })
-      } catch (error) {
+      } catch {
         setCurrentStatus('error')
-        console.log(
-          `feature/profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByUpload handleRestoreByUpload error: ${error}`,
-          error,
-        )
       }
     }
   }

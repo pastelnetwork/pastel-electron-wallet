@@ -89,7 +89,7 @@ const QR = ({
       disabled={currentStatus === 'downloading'}
     >
       {currentStatus === 'downloading'
-        ? 'Downloading QR Code Video'
+        ? 'Creating QR Code Video'
         : 'Download QR Code Video'}
     </Button>
   )

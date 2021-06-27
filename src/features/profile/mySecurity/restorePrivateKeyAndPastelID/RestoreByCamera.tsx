@@ -53,21 +53,14 @@ export default function RestoreByCamera({
             }
           } catch (err) {
             setCurrentStatus('error')
-            console.log(
-              `feature/profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByCamera handleScan error: ${err}`,
-              err,
-            )
           }
         }
       }
     }
   }
 
-  const handleError = (error: Error) => {
-    console.log(
-      'profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByCamera QrReader error: ',
-      error,
-    )
+  const handleError = () => {
+    setCurrentStatus('error')
   }
 
   const previewStyle = {
