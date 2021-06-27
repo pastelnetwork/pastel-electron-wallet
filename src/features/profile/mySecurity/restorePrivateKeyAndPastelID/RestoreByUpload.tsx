@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { scanImageData } from 'zbar.wasm'
-import fs from 'fs'
 import path from 'path'
 
 import Link from '../../../../common/components/Link'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
-import { restoreVideo } from '../../../constants/ServeStatic'
 import { Button } from '../../../../common/components/Buttons'
-import { useAppSelector } from '../../../../redux/hooks'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 
@@ -22,7 +19,6 @@ export default function RestoreByUpload({
   rpcConfig,
   onBack,
 }: TRestoreByUploadProps): JSX.Element {
-  const { locatePastelConfDir } = useAppSelector(state => state.appInfo)
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
   const [fileSelected, setFileSelected] = useState<File>()
@@ -45,13 +41,8 @@ export default function RestoreByUpload({
     if (fileSelected) {
       try {
         setCurrentStatus('restoring')
-        const oldpath = path.join(fileSelected.path)
-        const newpath = path.join(
-          `${locatePastelConfDir}/videos/${fileSelected.name}`,
-        )
-        fs.copyFileSync(oldpath, newpath)
         const qrCode: string[] = []
-        const videoPath = `http://localhost:${restoreVideo.staticPort}/${fileSelected.name}`
+        const videoPath = path.join(fileSelected.path)
         console.log(11111, 'videoPath', videoPath)
         VideoToImages.getFrames(videoPath, VideoToFramesMethod.totalFrames)
           .then(async frames => {

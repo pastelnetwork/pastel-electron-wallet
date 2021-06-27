@@ -2,23 +2,14 @@ import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
 
-import {
-  glitch,
-  squoosh,
-  ffmpegwasm,
-  restoreVideo,
-} from '../constants/ServeStatic'
+import { glitch, squoosh, ffmpegwasm } from '../constants/ServeStatic'
 
 const servers: Server[] = []
 
-export default function initServeStatic(
-  isPackaged: boolean,
-  locatePastelConfDir: string,
-): void {
+export default function initServeStatic(isPackaged: boolean): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
   let ffmpegStaticPath = `${process.cwd()}/node_modules/ffmpegwasm-create-video/production`
-  const videoStaticPath = `${locatePastelConfDir}/videos`
 
   if (isPackaged) {
     squooshStaticPath = path.join(
@@ -38,7 +29,6 @@ export default function initServeStatic(
   setupServeStatic(squooshStaticPath, squoosh.staticPort)
   setupServeStatic(glitchStaticPath, glitch.staticPort)
   setupServeStatic(ffmpegStaticPath, ffmpegwasm.staticPort)
-  setupServeStatic(videoStaticPath, restoreVideo.staticPort)
 }
 
 function setupServeStatic(staticPath: string, port: number) {

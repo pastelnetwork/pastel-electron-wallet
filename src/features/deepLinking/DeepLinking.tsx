@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, protocol } from 'electron'
 
 import pkg from '../../../package.json'
 
@@ -60,4 +60,16 @@ export const registerCustomProtocol = (): void => {
     // Define custom protocol handler. Deep linking works on packaged versions of the application!
     app.setAsDefaultProtocolClient(pkg.protocolSchemes.native)
   }
+}
+
+export const registerFileProtocol = (): void => {
+  protocol.registerFileProtocol('file', (request, callback) => {
+    const url = request.url.replace(/^file:\/\//, '')
+    const decodedUrl = decodeURI(url) // Needed in case URL contains spaces
+    try {
+      return callback(decodedUrl)
+    } catch (error) {
+      console.error('ERROR: registerProtocol: Could not get file path:', error)
+    }
+  })
 }

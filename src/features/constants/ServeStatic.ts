@@ -9,7 +9,3 @@ export const squoosh = {
 export const ffmpegwasm = {
   staticPort: 5400,
 }
-
-export const restoreVideo = {
-  staticPort: 5500,
-}

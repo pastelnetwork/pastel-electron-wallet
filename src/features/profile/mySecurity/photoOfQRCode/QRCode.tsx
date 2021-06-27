@@ -37,11 +37,13 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
     <Swiper {...settings}>
       {qrcodeData.map((item, idx) => (
         <SwiperSlide key={idx} className='d-block h-205px'>
-          <QRCode
-            value={`${idx}::${qrcodeData.length}::${item}`}
-            className='qrCodeData h-full w-full max-h-205px max-w-full'
-            size={1024}
-          />
+          <div className='d-block h-205px w-190px mx-auto'>
+            <QRCode
+              value={`${idx}::${qrcodeData.length}::${item}`}
+              className='qrCodeData h-full w-full max-h-205px max-w-full p-6'
+              size={1024}
+            />
+          </div>
         </SwiperSlide>
       ))}
     </Swiper>
