@@ -46,7 +46,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
         const images: string[] = []
         for (let i = 0; i < canvas.length; i++) {
           const item = canvas[i] as HTMLCanvasElement
-          const img = item.toDataURL('image/png')
+          const img = item.toDataURL('')
           if (!images.includes(img)) {
             images.push(img)
           }
@@ -87,7 +87,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
   }
 
   return (
-    <div className='w-full flex justify-center py-30px px-60px bg-background-main'>
+    <div className='w-full justify-center py-30px px-60px bg-background-main'>
       <div className='grid grid-cols-3 gap-5 min-h-672px'>
         <ChangePassword />
         <QRCode
