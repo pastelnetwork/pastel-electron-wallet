@@ -500,7 +500,8 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
-        {info?.version && <Header />}
+        {/* info?.version && <Header /> */}
+        <Header />
         <div className='flex-grow overflow-auto'>
           <Switch>
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
@@ -531,7 +532,6 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.DASHBOARD} component={Dashboard} />
             <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
             <Route path={routes.CHAT} exact component={Chat} />
-            <Route path={'/sign-up'} exact component={RegisterPage} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
               path={routes.PORTFOLIO_DETAIL}

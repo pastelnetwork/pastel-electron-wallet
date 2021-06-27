@@ -21,6 +21,7 @@ export type TStepFeeProps = {
 
 const StepFee = (props: TStepFeeProps): JSX.Element => {
   const [copiyng, setCopiyng] = useState<boolean>(false)
+  const [copied, setCopied] = useState<boolean>(false)
 
   // maybe it would be better to load this list from somewhere
   const centralizedExs: TCentralizedExchangeEntity[] = [
@@ -41,8 +42,9 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
     }
     props.setCentralizedExchangeName(platformName)
 
-    const addr = '3984372472874823794723897498237947' // demo
+    const addr = '' + BigInt(Math.random() * 1e60) // demo
     props.setExchangeAddress(addr)
+    setCopied(false)
   }
 
   const toClipboard = () => {
@@ -50,15 +52,24 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
     setTimeout(() => setCopiyng(false), 200)
 
     navigator.clipboard.writeText(props.exchangeAddress)
+    setCopied(true)
   }
+
+  const showWarn =
+    !copied &&
+    ((props.paymentMethod === PaymentMethods.CentralizedExchange &&
+      props.centralizedExchangeName) ||
+      props.paymentMethod === PaymentMethods.DecentralizedExchange ||
+      props.paymentMethod === PaymentMethods.PslAddress)
 
   const nextActive =
     (props.paymentMethod === PaymentMethods.AirdropPromoCode &&
       props.promoCode.length > 0) ||
     (props.paymentMethod === PaymentMethods.CentralizedExchange &&
       props.centralizedExchangeName &&
-      props.centralizedExchangeName.length > 0) ||
-    props.paymentMethod === PaymentMethods.DecentralizedExchange ||
+      props.centralizedExchangeName.length > 0 &&
+      copied) ||
+    (props.paymentMethod === PaymentMethods.DecentralizedExchange && copied) ||
     props.paymentMethod === PaymentMethods.PslAddress
 
   return (
@@ -72,8 +83,15 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             <h2 className='text-gray-77 text-sm font-normal'>Copy address</h2>
 
             <div className='mt-7'>
-              <div className='w-full flex justify-between items-center border border-gray-200 rounded px-4 py-2'>
-                <span>{props.exchangeAddress}</span>
+              <div
+                className={cn(
+                  'w-full flex justify-between items-center border rounded px-4 py-2',
+                  showWarn ? 'border-orange-63' : 'border-gray-200',
+                )}
+              >
+                <div className='mr-3 overflow-hidden overflow-ellipsis h-5'>
+                  {props.exchangeAddress}
+                </div>
                 <img
                   src={icoClipboard}
                   className={cn(
@@ -83,10 +101,13 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                   onClick={() => toClipboard()}
                 />
               </div>
+              <div className='text-sm font-medium text-orange-63 h-4'>
+                {showWarn ? 'copy your address first' : ''}
+              </div>
             </div>
 
             {props.paymentMethod === PaymentMethods.CentralizedExchange && (
-              <div className='mt-5'>
+              <div className='mt-3'>
                 <div className='text-sm text-gray-77 mb-4'>
                   Choose platform and pay
                 </div>

@@ -405,6 +405,7 @@ module.exports = {
         '244px': '15.25rem',
         '300px': '17.75rem',
         '494px': '30.875rem',
+        '660px': '41.25rem',
         '970px': '60.625rem',
         '1215px': '75.9375rem',
         fit: 'fit-content',

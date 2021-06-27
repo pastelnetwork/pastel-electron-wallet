@@ -1,42 +1,56 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
+import cn from 'classnames'
 
-import Typography from '../../../common/components/Typography/Typography'
 import playIco from '../../../common/assets/icons/ico-arrow.svg'
 import image from '../../../common/assets/images/video-placeholder.jpeg'
 import { Button } from '../../../common/components/Buttons'
-import { colors } from '../../../common/theme/colors'
 import * as ROUTES from '../../../common/utils/constants/routes'
-import * as Styles from './Welcome.styles'
+import styles from './Welcome.css'
 
 const OnboardingWelcome = (): JSX.Element => {
   return (
-    <>
-      <Typography variant='h1' weight={800}>
+    <div className='w-660px'>
+      <div className='text-gray-800 text-32px font-black text-center'>
         Welcome to Pastel NFT
-      </Typography>
-      <Typography variant='h2' weight={500} color={colors.text.secondary}>
+      </div>
+      <div className='font-medium text-2xl text-gray-77 mt-2 text-center'>
         Let’s start!
-      </Typography>
-      <Styles.ImageWrapper>
-        <Styles.PlayButton>
-          <img src={playIco} alt='play button' />
-        </Styles.PlayButton>
-        <Styles.Image src={image} alt='astro boy' />
-      </Styles.ImageWrapper>
-      <Link to={ROUTES.SIGN_UP}>
-        <Button className='w-60'>Register account</Button>
-      </Link>
-      <Styles.Spacing />
-      <Button variant='transparent' className='w-60'>
-        Take a tour first
-      </Button>
-      <Styles.Spacing />
-      <Styles.FooterText>
+      </div>
+      <div className='relative rounded-2xl overflow-hidden'>
+        <div
+          className={cn(
+            'absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white w-36 h-36 flex items-center justify-center rounded-full transition cursor-pointer playBtn',
+            styles.playBtn,
+          )}
+        >
+          <div className='flex items-center justify-center rounded-full bg-white w-14 h-14 cursor-pointer'>
+            <img src={playIco} className='cursor-pointer' />
+          </div>
+        </div>
+        <img src={image} className='w-full' />
+      </div>
+      <div className='text-center mt-10'>
+        <Link to={ROUTES.SIGN_UP}>
+          <Button className='w-96'>Register account</Button>
+        </Link>
+      </div>
+      <div className='mt-4 text-center'>
+        <Button
+          variant='transparent'
+          className='w-96 bg-white border border-link text-link'
+        >
+          Take a tour first
+        </Button>
+      </div>
+
+      <div className='mt-4 text-center text-base text-gray-500'>
         Already have account?
-        <Styles.FooterLink to={ROUTES.LOGIN}> Login</Styles.FooterLink>
-      </Styles.FooterText>
-    </>
+        <Link to={ROUTES.LOGIN} className='inline-block ml-3 text-link'>
+          Login
+        </Link>
+      </div>
+    </div>
   )
 }
 

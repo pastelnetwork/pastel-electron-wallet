@@ -3,6 +3,7 @@ import cn from 'classnames'
 import Icon from '../Icon'
 import CheckIcon from '../../assets/icons/ico-check.svg'
 import TimesIcon from '../../assets/icons/ico-times.svg'
+import styles from './Input.css'
 
 export type TInput = {
   className?: string
@@ -21,6 +22,7 @@ export type TInput = {
   placeholder?: string
   labelClassName?: string
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
+  hintAsTooltip?: boolean
 }
 
 const Input = React.forwardRef<HTMLInputElement, TInput>(
@@ -42,6 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       labelClassName = 'inline-block text-gray-71 text-h5 pb-2',
       hintClassName = '',
       onClick,
+      hintAsTooltip,
       ...otherProps
     },
     ref,
@@ -85,6 +88,17 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
               {...otherProps}
               disabled={disabled}
             />
+            {/* DON'T MOVE, it should be directly after <input> to show hint with css :focus rule */}
+            {hint && hintAsTooltip && (
+              <div
+                className={cn(
+                  'absolute bg-black text-white rounded-lg z-10 text-xs font-bold px-2 py-1 right-0 hintAsTooltip',
+                  styles.hintAsTooltip,
+                )}
+              >
+                {hint}
+              </div>
+            )}
             <fieldset className={fieldsetClasses} />
 
             {append && <div className='pr-2'>{append}</div>}
@@ -94,11 +108,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
                 <Icon src={CheckIcon} variant='center' />
               </div>
             )}
-            {isValid === false && (
-              <div className='pr-2 text-red-7a'>
-                <Icon src={TimesIcon} className='fill-current' />
-              </div>
-            )}
+            {isValid === false && <img src={TimesIcon} className='w-3 mr-3' />}
           </div>
           {appendOutside && (
             <div className='ml-4 select-none' onClick={onClick}>
@@ -107,11 +117,11 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
           )}
         </div>
 
-        {(errorMessage || hint) && (
+        {(errorMessage || (hint && !hintAsTooltip)) && (
           <p
             className={cn(
               `${
-                isValid === false ? 'text-red-7a' : 'text-button-text'
+                isValid === false ? 'text-orange-63' : 'text-button-text'
               } text-h6 pt-1`,
               hintClassName,
             )}

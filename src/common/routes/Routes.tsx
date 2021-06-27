@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+// import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import { pageRoutes } from './index'
 import * as Styles from './Routes.styles'
@@ -57,6 +57,9 @@ const Routes: React.FC<RoutesProps> = ({ setUser }) => {
 
   return (
     <Styles.Container>
+      {/*
+      Transitions looks buggy/strange with onboadring pages
+      Off them for now
       <TransitionGroup>
         <CSSTransition key={location.key} classNames='fade' timeout={300}>
           <Switch location={location}>
@@ -64,6 +67,8 @@ const Routes: React.FC<RoutesProps> = ({ setUser }) => {
           </Switch>
         </CSSTransition>
       </TransitionGroup>
+      */}
+      <Switch location={location}>{childRoutes(pageRoutes, setUser)}</Switch>
     </Styles.Container>
   )
 }

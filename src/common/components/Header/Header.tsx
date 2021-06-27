@@ -159,12 +159,7 @@ export default function Header(): JSX.Element | null {
           >
             Members
           </MenuItem>
-          <MenuItem
-            classes='ml-4 1200px:ml-7 xl:ml-7 xl:w-46px'
-            to={'/sign-up'}
-          >
-            Sign-Up
-          </MenuItem>
+
           <MenuItem
             classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
             to={routes.PORTFOLIO}

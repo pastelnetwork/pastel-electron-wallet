@@ -4,7 +4,6 @@ import cn from 'classnames'
 
 import PercentCircle from 'common/components/PercentCircle'
 import Tooltip from 'common/components/Tooltip'
-import OnboardingLayout from 'common/layout/Onboarding2'
 
 import icoExclamation from 'common/assets/icons/ico-exclamation.svg'
 import creditCardIco from 'common/assets/icons/ico-credit-card.svg'
@@ -16,11 +15,12 @@ import refreshIcoGray from 'common/assets/icons/ico-refresh-gray.svg'
 import icoArrowRight from 'common/assets/icons/ico-arrow-right.svg'
 import completedIco from 'common/assets/icons/ico-completed.svg'
 import infoIco from 'common/assets/icons/ico-info.svg'
+import closeIcon from 'common/assets/icons/ico-close.svg'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import styles from './Register.css'
 
-import { Steps, useRegisterState, TRegisterData } from './Regiser.state'
+import { Steps, useRegisterState } from './Regiser.state'
 
 import StepLogin from './StepRegister'
 import StepBackup from './StepBackup'
@@ -66,40 +66,53 @@ const STEPS = [
   },
 ]
 
-type TRegisterContentProps = {
-  closeRequested: boolean
-  confirmClose(val: boolean): void
-  onFinish(data: TRegisterData): void
-}
-
-const RegisterContent = (props: TRegisterContentProps): JSX.Element => {
+const RegisterContent = (): JSX.Element => {
+  const history = useHistory()
+  const [closeRequested, setCloseRequested] = useState(false)
   const state = useRegisterState()
 
+  const confirmClose = (val: boolean) => {
+    if (val) {
+      history.push(ROUTES.WELCOME_PAGE)
+    } else {
+      setCloseRequested(false)
+    }
+  }
+
   const onLastStepPassed = () => {
-    props.onFinish({
-      username: state.username,
-      password: state.password,
-      paymentMethod: state.paymentMethod,
-      promoCode: state.promoCode,
-      exchangeAddress: state.exchangeAddress,
-    })
+    /*
+      process user data
+      state.username,
+      state.password,
+      state.paymentMethod,
+      state.promoCode,
+      state.exchangeAddress,
+    */
+
+    history.push(ROUTES.REGISTER_PENDING)
   }
 
   return (
     <>
+      <button
+        className='absolute flex justify-center items-center top-6 right-6 w-7 h-7 box-border rounded-lg bg-whte border border-gray'
+        onClick={() => setCloseRequested(true)}
+      >
+        <img src={closeIcon} alt='close icon' className='cursor-pointer' />
+      </button>
       <div
         className={cn(
-          'flex w-970px max-w-full',
-          props.closeRequested ? 'hidden' : ' h-600px max-h-full',
+          'flex w-970px max-w-full max-h-full',
+          closeRequested ? 'hidden' : 'h-600px',
         )}
       >
         <div className='w-1/2 flex-shrink-0 bg-gray-fc py-10 pl-10 pr-7'>
           <div className='flex justify-between'>
             <div>
-              <div className='text-gray-800 text-2xl font-extrabold mb-3'>
+              <div className='text-gray-800 text-32px font-extrabold'>
                 Onboarding
               </div>
-              <div className='font-medium text-sm text-gray-33 opacity-50'>
+              <div className='font-medium text-sm text-gray-33 opacity-50 mt-3'>
                 Getting Started on Pastel Network
               </div>
             </div>
@@ -177,7 +190,7 @@ const RegisterContent = (props: TRegisterContentProps): JSX.Element => {
         </div>
       </div>
 
-      {props.closeRequested && (
+      {closeRequested && (
         <div className='p-11 w-494px'>
           <div className='text-center'>
             <img src={icoExclamation} className='w-10 inline-block' />
@@ -189,7 +202,7 @@ const RegisterContent = (props: TRegisterContentProps): JSX.Element => {
           <div className='mt-5 text-center'>
             <button
               className='rounded-full text-sm font-medium text-white bg-orange-63 inline-block w-230px text-center py-3 cursor-pointer'
-              onClick={() => props.confirmClose(true)}
+              onClick={() => confirmClose(true)}
             >
               Close
             </button>
@@ -197,7 +210,7 @@ const RegisterContent = (props: TRegisterContentProps): JSX.Element => {
           <div className='mt-4 text-center'>
             <button
               className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-230px text-center py-3 cursor-pointer'
-              onClick={() => props.confirmClose(false)}
+              onClick={() => confirmClose(false)}
             >
               Back
             </button>
@@ -208,38 +221,4 @@ const RegisterContent = (props: TRegisterContentProps): JSX.Element => {
   )
 }
 
-export default function Register(): JSX.Element {
-  const history = useHistory()
-  const [closeClicked, setCloseClicked] = useState(false)
-
-  const onCloseClick = () => {
-    setCloseClicked(!closeClicked)
-  }
-
-  const onCloseConfirmed = (val: boolean) => {
-    if (val) {
-      history.push(ROUTES.WELCOME_PAGE) // ?
-    } else {
-      setCloseClicked(false)
-    }
-  }
-
-  const onFinish = (data: TRegisterData) => {
-    // save user data
-    console.log(data)
-    history.push(ROUTES.REGISTER_PENDING) //?
-  }
-
-  return (
-    <OnboardingLayout
-      onClose={onCloseClick}
-      render={() => (
-        <RegisterContent
-          closeRequested={closeClicked}
-          confirmClose={onCloseConfirmed}
-          onFinish={onFinish}
-        />
-      )}
-    />
-  )
-}
+export default RegisterContent
