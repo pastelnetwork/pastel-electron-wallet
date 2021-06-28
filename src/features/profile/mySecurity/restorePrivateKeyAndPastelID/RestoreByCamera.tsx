@@ -15,7 +15,7 @@ type TQRReader = {
 
 type TRestoreByCameraProps = {
   rpcConfig: TRPCConfig
-  onBack: (type: string) => void
+  onBack: () => void
 }
 
 export default function RestoreByCamera({
@@ -40,8 +40,7 @@ export default function RestoreByCamera({
 
         data = data.sort((a, b) => a.index - b.index)
         setResults(data)
-        const lastItem = data[data.length - 1]
-        if (lastItem.index === lastItem.total - 1) {
+        if (data.length === data[0]?.total) {
           try {
             setShowQrReader(false)
             const finalData = data.map(q => q.qrCode).join('')
@@ -89,7 +88,7 @@ export default function RestoreByCamera({
           </span>
         ) : null}
       </div>
-      <div className='mt-4 mx-auto p-5'>
+      <div className='mt-4 mx-auto p-5 QrReader'>
         {showQrReader ? (
           <QrReader
             style={previewStyle}
@@ -105,7 +104,7 @@ export default function RestoreByCamera({
         <Link
           href='#'
           onClick={() => {
-            onBack('')
+            onBack()
             setShowQrReader(false)
           }}
         >

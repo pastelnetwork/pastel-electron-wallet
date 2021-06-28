@@ -12,7 +12,7 @@ import Link from '../../../../common/components/Link'
 
 type TRestoreByUploadProps = {
   rpcConfig: TRPCConfig
-  onBack: (type: string) => void
+  onBack: () => void
 }
 
 export default function RestoreByUpload({
@@ -125,7 +125,7 @@ export default function RestoreByUpload({
         </Button>
       </div>
       <div className='mt-4 text-center'>
-        <Link href='#' onClick={() => onBack('')}>
+        <Link href='#' onClick={() => onBack()}>
           Or try another restore method
         </Link>
       </div>

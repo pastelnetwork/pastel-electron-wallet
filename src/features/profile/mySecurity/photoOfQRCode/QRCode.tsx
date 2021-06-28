@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Autoplay } from 'swiper/core'
+import SwiperCore, { Autoplay, EffectFade } from 'swiper/core'
 
 import RestoreModal from '../restorePrivateKeyAndPastelID/RestoreModal'
 import Link from '../../../../common/components/Link'
@@ -25,7 +25,7 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
     return null
   }
 
-  SwiperCore.use([Autoplay])
+  SwiperCore.use([Autoplay, EffectFade])
 
   const settings = {
     autoplay: {
@@ -34,10 +34,16 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
     },
     navigation: false,
     pagination: false,
+    speed: 2000,
   }
 
   return (
-    <Swiper {...settings}>
+    <Swiper
+      {...settings}
+      effect='fade'
+      slidesPerView={1}
+      fadeEffect={{ crossFade: true }}
+    >
       {qrcodeData.map((item, idx) => (
         <SwiperSlide key={idx} className='d-block h-205px'>
           <div className='flex items-center h-205px w-205px max-w-205px mx-auto'>

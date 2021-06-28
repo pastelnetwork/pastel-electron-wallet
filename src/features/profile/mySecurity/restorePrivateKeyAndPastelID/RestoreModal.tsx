@@ -16,7 +16,7 @@ export default function RestoreModal({
   rpcConfig,
   modalIsOpen,
   onCloseModal,
-}: TRestoreModalProps): JSX.Element {
+}: TRestoreModalProps): JSX.Element | null {
   const [selectedRestoreType, setSelectedRestoreType] = useState('')
 
   useEffect(() => {
@@ -69,13 +69,15 @@ export default function RestoreModal({
                 {selectedRestoreType === 'upload' ? (
                   <RestoreByUpload
                     rpcConfig={rpcConfig}
-                    onBack={setSelectedRestoreType}
+                    onBack={() => setSelectedRestoreType('')}
                   />
                 ) : null}
                 {selectedRestoreType === 'scan' ? (
                   <RestoreByCamera
                     rpcConfig={rpcConfig}
-                    onBack={setSelectedRestoreType}
+                    onBack={() => {
+                      setSelectedRestoreType('')
+                    }}
                   />
                 ) : null}
               </>
