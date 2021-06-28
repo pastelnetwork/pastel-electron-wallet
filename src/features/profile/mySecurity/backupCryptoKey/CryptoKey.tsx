@@ -30,7 +30,7 @@ type TPDFDocumentProps = {
   title: string
 }
 
-export const pdfStyles = StyleSheet.create({
+const pdfStyles = StyleSheet.create({
   viewer: {
     width: '100%',
     height: '100%',
@@ -162,7 +162,9 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
       const result = await fetcAllPrivateKeys(rpcConfig)
       setAllPrivateKeys(result)
     }
-    fetchData()
+    if (!allPrivateKeys.length) {
+      fetchData()
+    }
   }, [])
 
   const generateFileName = () => {

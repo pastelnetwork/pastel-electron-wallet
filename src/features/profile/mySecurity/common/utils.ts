@@ -1,5 +1,4 @@
 import LZUTF8 from 'lzutf8'
-import fs from 'fs'
 
 import { rpc, TRPCConfig } from '../../../../api/pastel-rpc/rpc'
 
@@ -292,6 +291,7 @@ export const parseQRCodeFromString = (str: string): TQRCode | null => {
   if (!str) {
     return null
   }
+
   const qr = str.split('::')
   if (qr.length) {
     return {
@@ -302,15 +302,4 @@ export const parseQRCodeFromString = (str: string): TQRCode | null => {
   }
 
   return null
-}
-
-export const createVideosFolder = async (
-  createVideosFolder: string,
-): Promise<void> => {
-  const videosFolder = `${createVideosFolder}/videos`
-  try {
-    await fs.promises.access(videosFolder)
-  } catch {
-    await fs.promises.mkdir(videosFolder)
-  }
 }

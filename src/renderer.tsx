@@ -38,7 +38,6 @@ import { ipcRenderer } from 'electron'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
-import { createVideosFolder } from './features/profile'
 import { setAppInfo } from './features/serveStatic'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
@@ -77,7 +76,6 @@ ipcRenderer.on(
       locatePastelConfDir,
     }: { isPackaged: boolean; locatePastelConfDir: string },
   ) => {
-    createVideosFolder(locatePastelConfDir)
     store.dispatch(setAppInfo({ isPackaged, locatePastelConfDir }))
   },
 )

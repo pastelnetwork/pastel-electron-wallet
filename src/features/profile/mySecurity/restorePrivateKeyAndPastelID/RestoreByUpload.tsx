@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import path from 'path'
 import jsQR from 'jsqr'
 
-import Link from '../../../../common/components/Link'
+import RestoreSuccess from './RestoreSuccess'
+import RestoreError from './RestoreError'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
 import { Button } from '../../../../common/components/Buttons'
-import RestoreSuccess from './RestoreSuccess'
-import RestoreError from './RestoreError'
+import Link from '../../../../common/components/Link'
 
 type TRestoreByUploadProps = {
   rpcConfig: TRPCConfig
@@ -45,7 +45,7 @@ export default function RestoreByUpload({
         const videoPath = path.join(fileSelected.path)
         VideoToImages.getFrames(
           'file://' + videoPath,
-          24,
+          2,
           VideoToFramesMethod.totalFrames,
         )
           .then(async frames => {
@@ -80,11 +80,9 @@ export default function RestoreByUpload({
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files
 
-    if (!fileList) {
-      return
+    if (fileList) {
+      setFileSelected(fileList[0])
     }
-
-    setFileSelected(fileList[0])
   }
 
   if (currentStatus === 'done') {

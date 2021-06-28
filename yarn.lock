@@ -8724,9 +8724,9 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-ffmpegwasm-create-video@pastelnetwork/ffmpegwasm-create-video#438dc4f:
+ffmpegwasm-create-video@pastelnetwork/ffmpegwasm-create-video#1899432:
   version "0.1.0"
-  resolved "https://codeload.github.com/pastelnetwork/ffmpegwasm-create-video/tar.gz/438dc4f6427dcb2d1bd2c48c26c9595438934544"
+  resolved "https://codeload.github.com/pastelnetwork/ffmpegwasm-create-video/tar.gz/1899432b3ee6d4bfdf8270a11facdf6b3f56bf66"
   dependencies:
     "@ffmpeg/core" "0.10.0"
     "@ffmpeg/ffmpeg" "0.10.1"

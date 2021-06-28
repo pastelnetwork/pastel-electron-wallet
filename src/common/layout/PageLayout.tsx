@@ -1,5 +1,4 @@
 import React from 'react'
-
 import Navbar from '../components/Header'
 
 const PageLayout: React.FC = ({ children }) => {

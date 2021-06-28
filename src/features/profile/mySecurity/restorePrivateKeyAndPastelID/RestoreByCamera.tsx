@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import QrReader from 'react-qr-reader'
 
+import RestoreSuccess from './RestoreSuccess'
+import RestoreError from './RestoreError'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
 import Link from '../../../../common/components/Link'
-import RestoreSuccess from './RestoreSuccess'
-import RestoreError from './RestoreError'
 
 type TQRReader = {
   index: number
@@ -63,17 +63,17 @@ export default function RestoreByCamera({
     setCurrentStatus('error')
   }
 
-  const previewStyle = {
-    height: 400,
-    width: 400,
-  }
-
   if (currentStatus === 'done') {
     return <RestoreSuccess />
   }
 
   if (currentStatus === 'error') {
     return <RestoreError />
+  }
+
+  const previewStyle = {
+    height: 400,
+    width: 400,
   }
 
   return (

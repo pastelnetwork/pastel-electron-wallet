@@ -69,7 +69,10 @@ export const registerFileProtocol = (): void => {
     try {
       return callback(decodedUrl)
     } catch (error) {
-      console.error('ERROR: registerProtocol: Could not get file path:', error)
+      console.error(
+        `feature/deepLinking registerFileProtocol error: Could not get file path: ${error?.message}`,
+        error,
+      )
     }
   })
 }

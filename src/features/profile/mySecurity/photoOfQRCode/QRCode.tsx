@@ -28,7 +28,10 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
   SwiperCore.use([Autoplay])
 
   const settings = {
-    autoplay: true,
+    autoplay: {
+      delay: 2000,
+      disableOnInteraction: false,
+    },
     navigation: false,
     pagination: false,
   }

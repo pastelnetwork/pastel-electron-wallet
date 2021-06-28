@@ -39,7 +39,7 @@ function setupServeStatic(staticPath: string, port: number) {
     // Create server
     const server = http.createServer(function onRequest(req, res) {
       serve(req, res, () => {
-        console.log(111, 'Created server', port)
+        console.log('Created server')
       })
     })
     // Listen

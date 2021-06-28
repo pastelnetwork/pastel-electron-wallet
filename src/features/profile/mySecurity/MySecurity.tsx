@@ -16,6 +16,8 @@ type TSecurity = {
   qrcodeData: string[]
 }
 
+const createVideoHost = `http://localhost:${ffmpegwasm.staticPort}/`
+
 const MySecurity = (props: TSecurity): JSX.Element => {
   const { info, rpcConfig, qrcodeData } = props
 
@@ -54,36 +56,43 @@ const MySecurity = (props: TSecurity): JSX.Element => {
         if (images.length && !videoUrl) {
           try {
             const iframe = document.getElementById(
-              'qrCodeIframe',
+              'createVideoIframe',
             ) as HTMLIFrameElement
             if (iframe && !videoUrl) {
-              iframe?.contentWindow?.postMessage(
-                images,
-                `http://localhost:${ffmpegwasm.staticPort}/`,
-              )
+              iframe?.contentWindow?.postMessage(images, createVideoHost)
               const handleReReceivedMessage = (evt: MessageEvent) => {
-                if (evt.data?.videoUrl && !videoUrl) {
-                  setVideoUrl(evt.data.videoUrl)
-                  saveFile(evt.data.videoUrl)
-                  window.removeEventListener(
-                    'message',
-                    handleReReceivedMessage,
-                    false,
-                  )
+                if (!evt.data?.error) {
+                  if (evt.data?.videoUrl && !videoUrl) {
+                    setVideoUrl(evt.data.videoUrl)
+                    saveFile(evt.data.videoUrl)
+                  } else {
+                    setCurrentStatus('error')
+                  }
+                } else {
+                  setCurrentStatus('error')
                 }
+                window.removeEventListener(
+                  'message',
+                  handleReReceivedMessage,
+                  false,
+                )
               }
               window.addEventListener('message', handleReReceivedMessage, false)
+            } else {
+              setCurrentStatus('error')
             }
           } catch (error) {
             setCurrentStatus('downloading')
           }
         }
+      } else {
+        setCurrentStatus('error')
       }
     }
   }
 
   return (
-    <div className='w-full justify-center py-30px px-60px bg-background-main'>
+    <div className='w-full flex justify-center py-30px px-60px bg-background-main'>
       <div className='grid grid-cols-3 gap-5 min-h-672px'>
         <ChangePassword />
         <QRCode
@@ -96,8 +105,8 @@ const MySecurity = (props: TSecurity): JSX.Element => {
       </div>
       <div className='hidden'>
         <iframe
-          id='qrCodeIframe'
-          src={`http://localhost:${ffmpegwasm.staticPort}/`}
+          id='createVideoIframe'
+          src={createVideoHost}
           className='h-1.5px w-1.5px'
         />
       </div>

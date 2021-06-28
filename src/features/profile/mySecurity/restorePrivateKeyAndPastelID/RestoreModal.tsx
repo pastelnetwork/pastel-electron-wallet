@@ -2,9 +2,7 @@ import React, { useState } from 'react'
 
 import RestoreByUpload from './RestoreByUpload'
 import RestoreByCamera from './RestoreByCamera'
-
 import { TRPCConfig } from '../../Profile'
-
 import Modal from '../../../../common/components/AnimatedModal'
 import { Button } from '../../../../common/components/Buttons'
 
