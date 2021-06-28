@@ -254,7 +254,6 @@ const WalletScreen = (): JSX.Element => {
   const fetchWalletAddresses = async () => {
     // Get addresses with balance
     const balanceAddresses = await walletRPC.fetchTandZAddressesWithBalance()
-    setAddressesWithBalance(balanceAddresses)
     const addressMap = balanceAddresses.reduce((map, a) => {
       map[a.address] = a.balance
       return map
