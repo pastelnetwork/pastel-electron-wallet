@@ -7,14 +7,8 @@ import image from '../../common/assets/images/nft-card-placeholder.png'
 import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
-<<<<<<< HEAD
 import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
-import ScrollBar from '../../common/components/Scrollbar'
-
-=======
-import { PageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 import Scrollbar from '../../common/components/Scrollbar'
->>>>>>> fix: update the type names
 
 const mockCardProps: TNFTCard = {
   author: 'zndrson',

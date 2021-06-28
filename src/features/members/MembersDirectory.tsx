@@ -11,6 +11,7 @@ import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/Pag
 import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
 import styles from './MembersDirectory.module.css'
+import Scrollbar from '../../common/components/Scrollbar'
 
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
 const mockMemberStrips: TMemberStripProps[] = [
@@ -156,13 +157,10 @@ const MembersDirectory: React.FC = () => {
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
-<<<<<<< HEAD
-      <div className='wrapper content with-page-header pb-5 pt-5 pr-30px w-screen'>
-        <div className={`${styles.content} pr-30px overflow-y-auto pt-2.5`}>
-=======
       <Scrollbar hasPageHeader={true}>
-        <div className='wrapper content with-page-header pb-5 w-screen'>
->>>>>>> fix: update the type names
+        <div
+          className={`${styles.content}wrapper content with-page-header pb-5 w-screen`}
+        >
           <div className='bg-white p-5 rounded-lg'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>
@@ -190,11 +188,7 @@ const MembersDirectory: React.FC = () => {
             </div>
           </div>
         </div>
-<<<<<<< HEAD
-      </div>
-=======
       </Scrollbar>
->>>>>>> fix: update the type names
     </div>
   )
 }
