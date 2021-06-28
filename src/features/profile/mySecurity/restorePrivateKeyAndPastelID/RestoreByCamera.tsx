@@ -102,7 +102,13 @@ export default function RestoreByCamera({
         )}
       </div>
       <div className='mt-4 text-center'>
-        <Link href='#' onClick={() => onBack('')}>
+        <Link
+          href='#'
+          onClick={() => {
+            onBack('')
+            setShowQrReader(false)
+          }}
+        >
           Or try another restore method
         </Link>
       </div>

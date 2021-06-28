@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import RestoreByUpload from './RestoreByUpload'
 import RestoreByCamera from './RestoreByCamera'
@@ -19,8 +19,13 @@ export default function RestoreModal({
 }: TRestoreModalProps): JSX.Element {
   const [selectedRestoreType, setSelectedRestoreType] = useState('')
 
+  useEffect(() => {
+    if (modalIsOpen) {
+      setSelectedRestoreType('')
+    }
+  }, [modalIsOpen])
+
   const handleCloseModal = (state: boolean) => {
-    setSelectedRestoreType('')
     onCloseModal(state)
   }
 
