@@ -19,7 +19,8 @@ const nft: TNFT = {
   likes: 721,
   liked: true,
   views: 231,
-  status: 'listed',
+  type: 'Live Auction',
+  status: 8,
   price: 12000,
   currencyName: 'PSL',
   time: dayjs().add(1, 'day').add(11, 'hours').add(11, 'seconds'),
@@ -29,22 +30,26 @@ const nft: TNFT = {
     name: 'Banksy86',
   },
   copies: 1,
+  royalty: '10% Perpetual Royalty',
   owner: 'Banksy86',
-  collection: 'angel in the sky',
-  category: 'illustration',
-  tags: ['add your tag'],
+  collection: 'Angel in the sky',
+  category: 'Illustration',
+  tags: ['Add your tag'],
   description:
-    'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',
+    'There is something magical about space and astronauts. Who wouldn’t want to see the earth from space, or run around on the moon? Space is the final frontier for mankind and essentialy to the future of our species. This piece is an hommage to the brave men and women who represent mankind in this most ambitious of endeavors, who strive to push',
 }
+
+const breadcrumbs = [
+  { title: 'My NFT Portfolio', link: '#' },
+  { title: '“Super Nfty Floating Head”' },
+]
 
 nft.description += nft.description // make it longer for "read more"
 
 export default function PortfolioPage(): JSX.Element {
   return (
     <>
-      <Breadcrumbs
-        items={[{ title: 'Portfolio', link: '#' }, { title: nft.title }]}
-      />
+      <Breadcrumbs items={breadcrumbs} />
       <Header nft={nft} />
       <div className='page-container py-30px space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:gap-10'>
         <Image nft={nft} />

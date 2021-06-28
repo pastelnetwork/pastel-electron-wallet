@@ -11,7 +11,7 @@ export type TModal = {
   handleClose?: () => void
   size?: string
   children?: ReactNode
-  title?: string
+  title?: ReactNode
   infoIcon?: boolean
 }
 

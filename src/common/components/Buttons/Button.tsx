@@ -31,7 +31,7 @@ const Button = ({
 
   const classes = cn(
     {
-      'button inline-flex items-center px-2 h-10 justify-center rounded-2xl transition duration-300 focus:outline-none active:shadow-none focus:shadow-btnOutline max-w-full leading-none': true,
+      'button flex items-center px-2 h-10 justify-center rounded-2xl transition duration-300 focus:outline-none active:shadow-none focus:shadow-btnOutline max-w-full leading-none': true,
       'bg-button hover:bg-button-hover active:bg-blue-pressed text-white':
         variant === 'default' && !disabled,
       'bg-button-background text-button-text cursor-not-allowed':
@@ -67,17 +67,13 @@ const Button = ({
         >
           {prepend && (
             <span className='pr-2'>
-              {React.cloneElement(prepend as React.ReactElement, {
-                className: 'fill-current',
-              })}
+              {React.cloneElement(prepend as React.ReactElement)}
             </span>
           )}
           <span>{children}</span>
           {append && (
             <span className='pl-2'>
-              {React.cloneElement(append as React.ReactElement, {
-                className: 'fill-current',
-              })}
+              {React.cloneElement(append as React.ReactElement)}
             </span>
           )}
         </Tag>
