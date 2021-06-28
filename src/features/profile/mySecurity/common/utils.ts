@@ -130,9 +130,6 @@ export async function fetchPastelIDAndPrivateKeys(
       zPrivateKeys,
       tPrivateKeys,
       pastelIDs,
-      profile: {
-        userName: 'username',
-      },
     }
 
     return encodeURIComponent(
@@ -232,7 +229,7 @@ export async function doImportPrivKeys(
 ): Promise<boolean> {
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
-    if (keys && keys?.profile?.userName === 'username') {
+    if (keys) {
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {
