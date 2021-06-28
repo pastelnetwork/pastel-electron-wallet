@@ -44,19 +44,17 @@ const BidsModal: React.FC<TBidsModal> = ({ isOpen, handleClose }) => {
     },
   ]
 
-  const title = (
-    <div>
-      <div className='text-h2'>Bids activity (8 bids)</div>
-      <div className='text-h5 text-gray-71'>NFT ID 230456346</div>
-    </div>
-  )
-
   return (
     <Modal
       isOpen={isOpen}
       handleClose={() => handleClose()}
       size='564px'
-      title={title}
+      title={
+        <div>
+          <div className='text-h2'>Bids activity (8 bids)</div>
+          <div className='text-h5 text-gray-71'>NFT ID 230456346</div>
+        </div>
+      }
       infoIcon={false}
     >
       {comments.map(comment => (

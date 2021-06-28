@@ -65,17 +65,9 @@ const Button = ({
           disabled={disabled}
           {...otherProps}
         >
-          {prepend && (
-            <span className='pr-2'>
-              {React.cloneElement(prepend as React.ReactElement)}
-            </span>
-          )}
+          {prepend && <span className='pr-2'>{prepend}</span>}
           <span>{children}</span>
-          {append && (
-            <span className='pl-2'>
-              {React.cloneElement(append as React.ReactElement)}
-            </span>
-          )}
+          {append && <span className='pl-2'>{append}</span>}
         </Tag>
       )}
     </>

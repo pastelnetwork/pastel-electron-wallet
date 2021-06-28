@@ -34,6 +34,11 @@ const Modal: React.FC<TModal> = ({
       className={modalClasses}
       overlayClassName='fixed top-0 left-0 right-0 bottom-0 flex items-center bg-gray-1a bg-opacity-60 p-4'
       contentLabel='modal'
+      style={{
+        content: {
+          width: size,
+        },
+      }}
       onRequestClose={handleClose}
     >
       <div className='flex justify-between px-10 pb-6'>
