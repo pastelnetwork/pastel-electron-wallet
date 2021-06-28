@@ -69,7 +69,12 @@ const QR = ({
       your smartphone camera. Then to restore, you can play the video on your
       phone and hold the phone screen up to your webcam. You can test that it
       worked by clicking{' '}
-      <Link href='#' className='underline' onClick={() => setModalIsOpen(true)}>
+      <Link
+        href='#'
+        className='underline'
+        variant='gray-77'
+        onClick={() => setModalIsOpen(true)}
+      >
         here
       </Link>
       .

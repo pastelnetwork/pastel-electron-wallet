@@ -27,9 +27,9 @@ const Template: Story<TModal> = ({ isOpen, ...args }) => {
 }
 
 export const ModalDefault = Template.bind({})
-const size = 'md'
+const className = 'max-w-lg'
 ModalDefault.args = {
-  size,
+  className,
 }
 
 export default {

@@ -25,7 +25,7 @@ const BidHistoryModal = ({
   handleClose,
 }: TBidHistoryModal): JSX.Element => {
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='lg'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6'>Bids history</h2>
       <Scrollbar maxHeight='320'>
         {history.map(({ id, avatar, bid, date, name }, idx) => (

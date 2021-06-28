@@ -30,7 +30,7 @@ const ReviewOfferModal = ({
   info,
 }: TReviewOfferModal): JSX.Element => {
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='3xl'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-3xl'>
       <h2 className='mb-6'>Review an offer for “{title}”</h2>
       <div className='mb-10'>
         {offers?.map(({ id, user, price }, idx) => (

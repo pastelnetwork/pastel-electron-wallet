@@ -112,7 +112,7 @@ const NotificationModal = ({
     <Modal
       isOpen={isOpen}
       handleClose={handleClose}
-      size='4xl'
+      className='max-w-4xl'
       overlayClassName='bg-background-modal bg-opacity-60'
     >
       <h2 className='mb-6'>Notifications ({notifications.length})</h2>
