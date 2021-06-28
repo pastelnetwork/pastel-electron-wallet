@@ -5,7 +5,8 @@ import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
 
 export type TRow = {
-  [index: string]: string | number
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [index: string]: any
 }
 
 export type TColumn = {
@@ -14,7 +15,8 @@ export type TColumn = {
   name: string
   key: string
   align?: string
-  custom?: (value: string | number, row?: TRow | undefined) => JSX.Element
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  custom?: (value: any, row?: TRow | undefined) => JSX.Element
 }
 
 export type TTableProps = {
