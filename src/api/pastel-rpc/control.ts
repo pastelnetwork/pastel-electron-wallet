@@ -1,4 +1,4 @@
-import { Info, InfoResponse } from '../../types/rpc'
+import { TInfo, TInfoResponse } from '../../types/rpc'
 import { BlockchainRPC, MiningRPC } from '.'
 import { rpc, TRPCConfig } from './rpc'
 
@@ -19,8 +19,8 @@ export class ControlRPC {
    *
    * @returns InfoResponse
    */
-  async getInfo(): Promise<InfoResponse> {
-    return rpc<InfoResponse>('getinfo', [], this.config)
+  async getInfo(): Promise<TInfoResponse> {
+    return rpc<TInfoResponse>('getinfo', [], this.config)
   }
 
   /**
@@ -29,7 +29,7 @@ export class ControlRPC {
    *
    * @returns Info
    */
-  async fetchInfo(): Promise<Info> {
+  async fetchInfo(): Promise<TInfo> {
     const results = await Promise.all([
       this.getInfo(),
       this.blockchainRPC.fetchBlockchainInfo(),

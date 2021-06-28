@@ -1,4 +1,4 @@
-import { IBlockchainInfoResponse } from '../../types/rpc'
+import { TBlockChainInfoResponse } from '../../types/rpc'
 import { rpc, TRPCConfig } from './rpc'
 
 export class BlockchainRPC {
@@ -13,7 +13,7 @@ export class BlockchainRPC {
    *
    * @returns IBlockchainInfoResponse
    */
-  async fetchBlockchainInfo(): Promise<IBlockchainInfoResponse> {
-    return rpc<IBlockchainInfoResponse>('getblockchaininfo', [], this.config)
+  async fetchBlockchainInfo(): Promise<TBlockChainInfoResponse> {
+    return rpc<TBlockChainInfoResponse>('getblockchaininfo', [], this.config)
   }
 }

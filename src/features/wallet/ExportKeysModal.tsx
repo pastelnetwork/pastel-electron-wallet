@@ -11,9 +11,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer'
-// import { RPCConfig } from 'legacy/components/AppState'
-import { WalletRPC } from '../../api/pastel-rpc/wallet'
-// import { openPastelPaperWalletModal } from '../pastelPaperWalletGenerator'
+import { WalletRPC } from '../../api/pastel-rpc'
 import { useAppSelector } from 'redux/hooks'
 import { RootState } from 'redux/store'
 

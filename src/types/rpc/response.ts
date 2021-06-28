@@ -1,11 +1,11 @@
-type IResonseError = {
+type TResonseError = {
   message: string
 }
 
-type IResponse<T> = {
-  error: IResonseError
+type TResponse<T> = {
+  error: TResonseError
   id: string
   result: T
 }
 
-export type { IResonseError, IResponse }
+export type { TResonseError, TResponse }

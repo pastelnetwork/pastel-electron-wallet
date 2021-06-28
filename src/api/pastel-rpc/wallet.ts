@@ -1,15 +1,15 @@
 import { groupBy } from 'underscore'
 
 import {
-  IAddressBalance,
-  IAddressList,
-  IListAddressesResponse,
-  IListUnspentResponse,
-  IResponse,
-  ITotalBalanceResponse,
-  ITotalBalanceResult,
-  IZListUnspentResponse,
-  IZListUnspentResult,
+  TAddressBalance,
+  TAddressList,
+  TListAddressesResponse,
+  TListUnspentResponse,
+  TResponse,
+  TTotalBalanceResponse,
+  TTotalBalance,
+  TZListUnspentResponse,
+  TZListUnspentResult,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc, TRPCConfig } from './rpc'
@@ -27,8 +27,8 @@ export class WalletRPC {
    * @param address
    * @returns IResponse<string>
    */
-  async exportPrivKey(address: string): Promise<IResponse<string>> {
-    return rpc<IResponse<string>>('z_exportkey', [address], this.config)
+  async exportPrivKey(address: string): Promise<TResponse<string>> {
+    return rpc<TResponse<string>>('z_exportkey', [address], this.config)
   }
 
   /**
@@ -37,8 +37,8 @@ export class WalletRPC {
    * @param address
    * @returns IResponse<string>
    */
-  async dumpPrivKey(address: string): Promise<IResponse<string>> {
-    return rpc<IResponse<string>>('dumpprivkey', [address], this.config)
+  async dumpPrivKey(address: string): Promise<TResponse<string>> {
+    return rpc<TResponse<string>>('dumpprivkey', [address], this.config)
   }
 
   /**
@@ -47,8 +47,8 @@ export class WalletRPC {
    * @param address
    * @returns IResponse<string>
    */
-  async exportViewingKey(address: string): Promise<IResponse<string>> {
-    return rpc<IResponse<string>>('z_exportviewingkey', [address], this.config)
+  async exportViewingKey(address: string): Promise<TResponse<string>> {
+    return rpc<TResponse<string>>('z_exportviewingkey', [address], this.config)
   }
 
   /**
@@ -89,8 +89,8 @@ export class WalletRPC {
    *
    * @returns ITotalBalanceResponse
    */
-  async fetchTotalBalance(): Promise<ITotalBalanceResult> {
-    const { result } = await rpc<ITotalBalanceResponse>(
+  async fetchTotalBalance(): Promise<TTotalBalance> {
+    const { result } = await rpc<TTotalBalanceResponse>(
       'z_gettotalbalance',
       [0],
       this.config,
@@ -103,8 +103,8 @@ export class WalletRPC {
    *
    * @returns IListAddressesResponse
    */
-  async fetchZAddresses(): Promise<IListAddressesResponse> {
-    return rpc<IListAddressesResponse>('z_listaddresses', [], this.config)
+  async fetchZAddresses(): Promise<TListAddressesResponse> {
+    return rpc<TListAddressesResponse>('z_listaddresses', [], this.config)
   }
 
   /**
@@ -112,8 +112,8 @@ export class WalletRPC {
    *
    * @returns IListAddressesResponse
    */
-  async fetchTAddresses(): Promise<IListAddressesResponse> {
-    return rpc<IListAddressesResponse>('listaddresses', [], this.config)
+  async fetchTAddresses(): Promise<TListAddressesResponse> {
+    return rpc<TListAddressesResponse>('listaddresses', [], this.config)
   }
 
   /**
@@ -121,8 +121,8 @@ export class WalletRPC {
    *
    * @returns IListAddressesResponse
    */
-  async fetchAddressesByAccount(): Promise<IListAddressesResponse> {
-    return rpc<IListAddressesResponse>(
+  async fetchAddressesByAccount(): Promise<TListAddressesResponse> {
+    return rpc<TListAddressesResponse>(
       'getaddressesbyaccount',
       [''],
       this.config,
@@ -152,8 +152,8 @@ export class WalletRPC {
    *
    * @returns IZListUnspentResponse
    */
-  async fetchZListUnspent(): Promise<IZListUnspentResponse> {
-    return rpc<IZListUnspentResponse>('z_listunspent', [0], this.config)
+  async fetchZListUnspent(): Promise<TZListUnspentResponse> {
+    return rpc<TZListUnspentResponse>('z_listunspent', [0], this.config)
   }
 
   /**
@@ -161,8 +161,8 @@ export class WalletRPC {
    *
    * @returns IListUnspentResponse
    */
-  async fetchListUnspent(): Promise<IListUnspentResponse> {
-    return rpc<IListUnspentResponse>('listunspent', [0], this.config)
+  async fetchListUnspent(): Promise<TListUnspentResponse> {
+    return rpc<TListUnspentResponse>('listunspent', [0], this.config)
   }
 
   /**
@@ -171,14 +171,14 @@ export class WalletRPC {
    *
    * @returns IAddressBalance[]
    */
-  async fetchTandZAddresses(): Promise<IAddressList[]> {
+  async fetchTandZAddresses(): Promise<TAddressList[]> {
     const results = await Promise.all([
       this.fetchZListUnspent(),
       this.fetchListUnspent(),
     ])
 
-    const zResult: IAddressList[] = results[0].result.map(
-      (addr: IZListUnspentResult) => {
+    const zResult: TAddressList[] = results[0].result.map(
+      (addr: TZListUnspentResult) => {
         return {
           txid: addr.txid,
           address: addr.address,
@@ -188,8 +188,8 @@ export class WalletRPC {
       },
     )
 
-    const tResult: IAddressList[] = results[0].result.map(
-      (addr: IZListUnspentResult) => {
+    const tResult: TAddressList[] = results[0].result.map(
+      (addr: TZListUnspentResult) => {
         return {
           txid: addr.txid,
           address: addr.address,
@@ -208,7 +208,7 @@ export class WalletRPC {
    *
    * @returns IAddressBalance[]
    */
-  async fetchTandZAddressesWithBalance(): Promise<IAddressBalance[]> {
+  async fetchTandZAddressesWithBalance(): Promise<TAddressBalance[]> {
     const results = await Promise.all([
       this.fetchZListUnspent(),
       this.fetchListUnspent(),
@@ -219,7 +219,7 @@ export class WalletRPC {
     const zGroups = groupBy(zResult, 'address')
 
     // Map Z addresses balance
-    const zAddresses: IAddressBalance[] = Object.keys(zGroups).map(address => {
+    const zAddresses: TAddressBalance[] = Object.keys(zGroups).map(address => {
       const balance = zGroups[address].reduce(
         (prev, obj) => prev + obj.amount,
         0,

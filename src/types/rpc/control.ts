@@ -1,6 +1,6 @@
-import { IResponse } from './response'
+import { TResponse } from './response'
 
-type Info = {
+type TInfo = {
   testnet: boolean
   latestBlock: number
   connections: number
@@ -13,7 +13,7 @@ type Info = {
 }
 
 // getinfo
-type InfoResult = {
+type TInfoResult = {
   version: number
   protocolversion: number
   walletversion: number
@@ -31,6 +31,6 @@ type InfoResult = {
   errors: string
 }
 
-type InfoResponse = IResponse<InfoResult>
+type TInfoResponse = TResponse<TInfoResult>
 
-export type { Info, InfoResponse, InfoResult }
+export type { TInfo, TInfoResponse, TInfoResult }

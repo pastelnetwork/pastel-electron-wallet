@@ -7,7 +7,7 @@ import Tooltip from 'common/components/Tooltip'
 import { TRow } from 'features/nft/nftModals/table'
 import React, { useState } from 'react'
 import { clipboard } from 'electron'
-import { IMouseEvent } from 'types/rpc'
+import { TMouseEvent } from 'types/rpc'
 
 interface AddressFormProps {
   address: string
@@ -23,7 +23,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
 
-  const copyAddress = (address: string, e: IMouseEvent) => {
+  const copyAddress = (address: string, e: TMouseEvent) => {
     const image = e.target as HTMLImageElement
     if (image.src === checkIcon) {
       return

@@ -1,4 +1,4 @@
-import { INetworkSolpsResponse } from '../../types/rpc'
+import { TNetworkSolpsResponse } from '../../types/rpc'
 import { rpc, TRPCConfig } from './rpc'
 
 export class MiningRPC {
@@ -13,7 +13,7 @@ export class MiningRPC {
    *
    * @returns INetworkSolpsResponse
    */
-  async fetchNetworkSolps(): Promise<INetworkSolpsResponse> {
-    return rpc<INetworkSolpsResponse>('getnetworksolps', [], this.config)
+  async fetchNetworkSolps(): Promise<TNetworkSolpsResponse> {
+    return rpc<TNetworkSolpsResponse>('getnetworksolps', [], this.config)
   }
 }

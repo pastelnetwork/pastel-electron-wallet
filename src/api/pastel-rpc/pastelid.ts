@@ -1,8 +1,8 @@
 import { TPastelID, TRegisterPastelID } from '../../features/pastelID'
 import {
-  ITCreateNewPastelIdResponse,
-  ITGetPastelIdsResponse,
-  ITTicketsRegisterIdResponse,
+  TCreateNewPastelIdResponse,
+  TGetPastelIdsResponse,
+  TTicketsRegisterIdResponse,
 } from '../../types/rpc'
 import { rpc, TRPCConfig } from './rpc'
 
@@ -11,12 +11,12 @@ export async function createNewPastelID(
   address: string,
   config: TRPCConfig,
 ): Promise<TRegisterPastelID> {
-  const resp = await rpc<ITCreateNewPastelIdResponse>(
+  const resp = await rpc<TCreateNewPastelIdResponse>(
     'pastelid',
     ['newkey', passphrase],
     config,
   )
-  const resRP = await rpc<ITTicketsRegisterIdResponse>(
+  const resRP = await rpc<TTicketsRegisterIdResponse>(
     'tickets',
     ['register', 'id', resp.result.pastelid, passphrase, address],
     config,
@@ -29,10 +29,10 @@ export async function createNewPastelID(
 }
 
 export async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[]> {
-  let resp: ITGetPastelIdsResponse | null = null
+  let resp: TGetPastelIdsResponse | null = null
 
   try {
-    resp = await rpc<ITGetPastelIdsResponse>('pastelid', ['list'], config)
+    resp = await rpc<TGetPastelIdsResponse>('pastelid', ['list'], config)
   } catch (error) {
     if (
       // this happens when there is no PastelIDs created yet, therefore this is a valid state.

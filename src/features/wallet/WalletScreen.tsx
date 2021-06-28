@@ -20,20 +20,26 @@ import ExportKeysModal from './ExportKeysModal'
 import Breadcrumbs from '../../common/components/Breadcrumbs'
 import { ControlRPC, WalletRPC } from 'api/pastel-rpc'
 import {
-  IAddressBook,
-  IAddressRow,
-  IBalanceCard,
-  Info,
-  ITotalBalanceResult,
+  TAddressBook,
+  TAddressRow,
+  TBalanceCard,
+  TInfo,
+  TTotalBalance,
 } from 'types/rpc'
 import QRCode from 'qrcode.react'
-import Utils from 'legacy/utils/utils'
 import { useAppSelector } from 'redux/hooks'
 import { RootState } from '../../redux/store'
 import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
-import AddressbookImpl from 'legacy/utils/AddressbookImpl'
 import Alert from 'common/components/Alert'
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
+import {
+  isSapling,
+  isTransparent,
+  readAddressBook,
+  writeAddressBook,
+} from 'api/helpers'
 
 const paymentSources = [
   {
@@ -119,23 +125,20 @@ const WalletScreen = (): JSX.Element => {
       key: 'psl',
       name: 'Selected Amount',
       colClasses: 'min-w-130px w-141px 1500px:w-244px',
-      custom: (value: number | string, row: TRow | undefined) => (
+      custom: (value: number | string) => (
         <div className='z-0'>
           <Select
             className='text-gray-2d w-28'
             autocomplete={true}
-            min={10000}
-            max={20000}
+            min={100}
+            max={totalBalances?.total || 20000}
             step={100}
             value={typeof value === 'string' ? parseInt(value) : value}
-            onChange={(value: number | null) => {
-              const temp = walletAddresses
-              temp.forEach((item, index) => {
-                if (row && item.address === row.address && value) {
-                  temp[index].psl = value
-                }
-              })
-              setWalletAddresses([...temp])
+            onChange={async () => {
+              // TODO: Implement later
+              // const amount = +(value || 0)
+              // const address = row?.address?.toString() || ''
+              // sendPsl(amount, address)
             }}
           />
         </div>
@@ -196,20 +199,23 @@ const WalletScreen = (): JSX.Element => {
 
   const [active, setActive] = useState(1)
 
-  const [info, setInfo] = useState<Info>({} as Info)
+  const [info, setInfo] = useState<TInfo>({} as TInfo)
   const [selectedAmount, setSelectedAmount] = useState(0)
   const [selectedRows, setSelectedRows] = useState<Array<string>>([])
-  const [balanceCards, setBalanceCards] = useState<IBalanceCard[]>(cardItems)
-  const [totalBalances, setTotalBalances] = useState<ITotalBalanceResult>()
-  const [walletAddresses, setWalletAddresses] = useState<IAddressRow[]>([])
-  const [addressBook, setAddressBook] = useState<IAddressBook[]>([])
+  const [balanceCards, setBalanceCards] = useState<TBalanceCard[]>(cardItems)
+  const [totalBalances, setTotalBalances] = useState<TTotalBalance>()
+  const [walletAddresses, setWalletAddresses] = useState<TAddressRow[]>([])
+  const [walletOriginAddresses, setWalletOriginAddresses] = useState<
+    TAddressRow[]
+  >([])
+  const [addressBook, setAddressBook] = useState<TAddressBook[]>([])
 
   /**
    * Fetch total balances
    */
   const fetchTotalBalances = async () => {
     // Total balance
-    const balances: ITotalBalanceResult = await walletRPC.fetchTotalBalance()
+    const balances: TTotalBalance = await walletRPC.fetchTotalBalance()
     setTotalBalances(balances)
     setBalanceCards([
       {
@@ -247,8 +253,9 @@ const WalletScreen = (): JSX.Element => {
    */
   const fetchWalletAddresses = async () => {
     // Get addresses with balance
-    const addressesWithBalance = await walletRPC.fetchTandZAddressesWithBalance()
-    const addressMap = addressesWithBalance.reduce((map, a) => {
+    const balanceAddresses = await walletRPC.fetchTandZAddressesWithBalance()
+    setAddressesWithBalance(balanceAddresses)
+    const addressMap = balanceAddresses.reduce((map, a) => {
       map[a.address] = a.balance
       return map
     }, {} as { [addr: string]: number })
@@ -257,7 +264,7 @@ const WalletScreen = (): JSX.Element => {
 
     // Get addresses
     const addressMapper = async (a: string) => {
-      const type = Utils.isSapling(a) ? 'shielded' : 'transparent'
+      const type = isSapling(a) ? 'shielded' : 'transparent'
       const [book] = addressBook.filter(b => b.address === a) || []
       return {
         id: a,
@@ -270,17 +277,18 @@ const WalletScreen = (): JSX.Element => {
         viewKey: '',
         privateKey: '',
         addressNick: book ? book.label : '',
-      } as IAddressRow
+      } as TAddressRow
     }
 
     const addresses = await walletRPC.fetchAllAddresses()
-    const zaddrs: IAddressRow[] = await Promise.all(
-      addresses.filter(a => Utils.isSapling(a)).map(addressMapper),
+    const zaddrs: TAddressRow[] = await Promise.all(
+      addresses.filter(a => isSapling(a)).map(addressMapper),
     )
-    const taddrs: IAddressRow[] = await Promise.all(
-      addresses.filter(a => Utils.isTransparent(a)).map(addressMapper),
+    const taddrs: TAddressRow[] = await Promise.all(
+      addresses.filter(a => isTransparent(a)).map(addressMapper),
     )
     setWalletAddresses(zaddrs.concat(taddrs))
+    setWalletOriginAddresses(zaddrs.concat(taddrs))
   }
 
   /**
@@ -294,15 +302,15 @@ const WalletScreen = (): JSX.Element => {
   /**
    * Fetch address book from JSON file
    */
-  const fetchAddressBook = async (): Promise<IAddressBook[]> => {
-    const addrBook: IAddressBook[] = await AddressbookImpl.readAddressBook()
+  const fetchAddressBook = async (): Promise<TAddressBook[]> => {
+    const addrBook: TAddressBook[] = await readAddressBook()
     setAddressBook(addrBook)
     return addrBook
   }
 
   const saveAddressLabel = (address: string, label: string): void => {
     // Update address nick
-    const newWalletAddress: IAddressRow[] = walletAddresses.map(a => {
+    const newWalletAddress: TAddressRow[] = walletAddresses.map(a => {
       return {
         ...a,
         addressNick: a.address === address ? label : a.addressNick || '',
@@ -329,7 +337,7 @@ const WalletScreen = (): JSX.Element => {
       ])
     }
 
-    AddressbookImpl.writeAddressBook(newAddressBook)
+    writeAddressBook(newAddressBook)
   }
 
   useEffect(() => {
@@ -347,7 +355,9 @@ const WalletScreen = (): JSX.Element => {
     walletAddresses.forEach(item => {
       for (let i = 0; i < selectedRows.length; i++) {
         if (selectedRows[i] === item.address) {
-          tempSelectedAmount += item.psl
+          if (item.amount) {
+            tempSelectedAmount += item.amount
+          }
         }
       }
     })
@@ -365,6 +375,14 @@ const WalletScreen = (): JSX.Element => {
         temp.push(row.address.toString())
       }
       setSelectedRows([...temp])
+    }
+  }
+
+  const hideEmptyAddress = (check: boolean) => {
+    if (check) {
+      setWalletAddresses(walletOriginAddresses.filter(a => a.amount > 0))
+    } else {
+      setWalletAddresses(walletOriginAddresses)
     }
   }
 
@@ -524,7 +542,7 @@ const WalletScreen = (): JSX.Element => {
 
             <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
               <div className='flex items-center'>
-                <Toggle>
+                <Toggle toggleHandler={hideEmptyAddress}>
                   Hide empty addresses
                   <img className='ml-2' src={elminationIcon} />
                 </Toggle>
@@ -600,6 +618,11 @@ const WalletScreen = (): JSX.Element => {
         address={currentAddress}
         handleClose={() => setExportKeysModalOpen(false)}
       ></ExportKeysModal>
+      <ToastContainer
+        className='flex flex-grow w-auto'
+        hideProgressBar={true}
+        autoClose={false}
+      />
     </div>
   )
 }

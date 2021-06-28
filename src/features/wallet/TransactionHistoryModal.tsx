@@ -18,9 +18,9 @@ import { useAppSelector } from 'redux/hooks'
 import { RootState } from 'redux/store'
 import { TransactionRPC } from 'api/pastel-rpc'
 import {
-  ITransactionRow,
-  ITTransactionResult,
-  TransactionType,
+  TTransactionRow,
+  TTransaction,
+  TTransactionType,
 } from 'types/rpc'
 import dayjs from 'dayjs'
 import Utils from '../../legacy/utils/utils'
@@ -40,9 +40,9 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   const [selectedOption, setSelectedOption] = useState<
     'all' | 'received' | 'sent'
   >('all')
-  const [transactions, setTransactions] = useState<ITransactionRow[]>([])
+  const [transactions, setTransactions] = useState<TTransactionRow[]>([])
   const [originTransactions, setOriginTransactions] = useState<
-    ITransactionRow[]
+    TTransactionRow[]
   >([])
   const [sourceAddresses, setSourceAddresses] = useState<TOption[]>([
     {
@@ -65,7 +65,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   }
 
   const getFilterAddresses = (
-    trans: ITTransactionResult[],
+    trans: TTransaction[],
     isSource: boolean,
   ) => {
     const filtered = trans
@@ -90,9 +90,9 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   }
 
   const filterTransactionByType = (
-    type: TransactionType = TransactionType.ALL,
+    type: TTransactionType = TTransactionType.ALL,
   ) => {
-    if (type === TransactionType.ALL) {
+    if (type === TTransactionType.ALL) {
       setTransactions(originTransactions)
     } else {
       const filterTransactions = originTransactions.filter(t => t.type === type)
@@ -108,7 +108,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
         return {
           date: dayjs.unix(t.time).format('DD/MM/YY HH:mm'),
           address: t.address,
-          type: (t.type as TransactionType) || TransactionType.ALL,
+          type: (t.type as TTransactionType) || TTransactionType.ALL,
           status: '',
           id: t.txid,
           comments: '',
@@ -186,7 +186,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
             <Radio
               checked={selectedOption === 'all'}
               onChange={() => {
-                filterTransactionByType(TransactionType.ALL)
+                filterTransactionByType(TTransactionType.ALL)
                 setSelectedOption('all')
               }}
             >
@@ -195,7 +195,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
             <Radio
               checked={selectedOption === 'received'}
               onChange={() => {
-                filterTransactionByType(TransactionType.RECEIVE)
+                filterTransactionByType(TTransactionType.RECEIVE)
                 setSelectedOption('received')
               }}
             >
@@ -204,7 +204,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
             <Radio
               checked={selectedOption === 'sent'}
               onChange={() => {
-                filterTransactionByType(TransactionType.SEND)
+                filterTransactionByType(TTransactionType.SEND)
                 setSelectedOption('sent')
               }}
             >

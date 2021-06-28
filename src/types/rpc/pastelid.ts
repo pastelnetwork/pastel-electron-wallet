@@ -1,26 +1,26 @@
-import { IResponse } from '../rpc'
+import { TResponse } from '../rpc'
 
-type ITGetPastelIdsResult = {
+type TGetPastelIdsResult = {
   PastelID: string
 }
 
-type ITTicketsRegisterIdResult = {
+type TTicketsRegisterIdResult = {
   txid: string
 }
 
-type ITCreateNewPastelIdResult = {
+type TCreateNewPastelIdResult = {
   pastelid: string
 }
 
-type ITGetPastelIdsResponse = IResponse<ITGetPastelIdsResult[]>
-type ITCreateNewPastelIdResponse = IResponse<ITCreateNewPastelIdResult>
-type ITTicketsRegisterIdResponse = IResponse<ITTicketsRegisterIdResult>
+type TGetPastelIdsResponse = TResponse<TGetPastelIdsResult[]>
+type TCreateNewPastelIdResponse = TResponse<TCreateNewPastelIdResult>
+type TTicketsRegisterIdResponse = TResponse<TTicketsRegisterIdResult>
 
 export type {
-  ITCreateNewPastelIdResponse,
-  ITCreateNewPastelIdResult,
-  ITGetPastelIdsResponse,
-  ITGetPastelIdsResult,
-  ITTicketsRegisterIdResponse,
-  ITTicketsRegisterIdResult,
+  TCreateNewPastelIdResponse,
+  TCreateNewPastelIdResult,
+  TGetPastelIdsResponse,
+  TGetPastelIdsResult,
+  TTicketsRegisterIdResponse,
+  TTicketsRegisterIdResult,
 }

@@ -1,11 +1,11 @@
 /* eslint-disable */
 
 import {
-  IBlockchainInfoResult,
-  IListUnspentResult,
-  InfoResult,
-  ITotalBalanceResult,
-  IZListUnspentResult,
+  TBlockChainInfo,
+  TListUnspent,
+  TInfoResult,
+  TTotalBalance,
+  TZListUnspentResult,
 } from '../../../types/rpc'
 
 export const METHODS = [
@@ -206,7 +206,7 @@ export type APIMethods = {
     previousblockhash: string
     nextblockhash: string
   }>
-  getblockchaininfo: () => Promise<IBlockchainInfoResult>
+  getblockchaininfo: () => Promise<TBlockChainInfo>
   getblockcount: () => Promise<number>
   getblockhash: (idx: number) => Promise<string>
   getblockheader: (
@@ -276,7 +276,7 @@ export type APIMethods = {
   }>
   verifychain: (checklevel: number, numblocks: number) => Promise<boolean>
   verifytxoutproof: (proof: string) => Promise<string>
-  getinfo: () => Promise<InfoResult>
+  getinfo: () => Promise<TInfoResult>
   help: () => Promise<string>
   stop: () => Promise<void>
   z_getpaymentdisclosure: (
@@ -779,7 +779,7 @@ export type APIMethods = {
     minconf?: number,
     maxconf?: number,
     addresses?: string[],
-  ) => Promise<IListUnspentResult[]>
+  ) => Promise<TListUnspent[]>
   lockunspent: (
     unlock: boolean,
     transactions: { txid: string; vout: string }[],
@@ -826,7 +826,7 @@ export type APIMethods = {
   z_gettotalbalance: (
     minconf?: number,
     includeWatchonly?: boolean,
-  ) => Promise<ITotalBalanceResult>
+  ) => Promise<TTotalBalance>
   z_importkey: (
     zkey: string,
     rescan?: 'yes' | 'no' | 'whenkeyisnew',
@@ -854,7 +854,7 @@ export type APIMethods = {
     maxconf?: number,
     includeWatchonly?: boolean,
     addresses?: string[],
-  ) => Promise<IZListUnspentResult[]>
+  ) => Promise<TZListUnspentResult[]>
   z_mergetoaddress: (
     fromaddresses: string[],
     toaddress: string,

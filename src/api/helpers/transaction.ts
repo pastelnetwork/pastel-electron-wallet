@@ -1,15 +1,15 @@
 import transcoder from 'hex-string'
-import Utils from 'legacy/utils/utils'
+import { TxDetail, TRpcParam, TTransferPayload } from 'types/rpc'
 
 import {
-  IAddressBalance,
-  IBaseAddAm,
-  IBaseTransaction,
-  ITransaction,
-  ITTransactionInfoResult,
-  ITTransactionResult,
-  TransactionType,
+  TAddressBalance,
+  TBaseAddAm,
+  TBaseTransaction,
+  TTransaction,
+  TTransactionInfo,
+  TTransactionType,
 } from '../../types/rpc'
+import { isSapling } from './wallet'
 
 /**
  * Parse memo
@@ -39,10 +39,8 @@ const parseMemo = (memoHex: string): string => {
  * @param transactions
  * @returns ITTransactionResult[]
  */
-const sortTxnsResult = (
-  transactions: ITTransactionResult[],
-): ITTransactionResult[] =>
-  transactions.sort((tx1: ITTransactionResult, tx2: ITTransactionResult) => {
+const sortTxnsResult = (transactions: TTransaction[]): TTransaction[] =>
+  transactions.sort((tx1: TTransaction, tx2: TTransaction) => {
     if (tx1.time && tx2.time) {
       return tx2.time - tx1.time
     }
@@ -58,13 +56,13 @@ const sortTxnsResult = (
  * @returns
  */
 const mapTxnsResult = (
-  tx: IBaseTransaction,
-  txInfoResult: ITTransactionInfoResult,
-): ITransaction => {
+  tx: TBaseTransaction,
+  txInfoResult: TTransactionInfo,
+): TTransaction => {
   const { address, amount, txid, index = 0 } = tx
   const { confirmations, time } = txInfoResult
   const memo = tx.memo ? tx.memo.replace(/\\u0000/g, '') : ''
-  const detailedTxns: (IBaseAddAm & { memo: string | null })[] = [
+  const detailedTxns: (TBaseAddAm & { memo: string | null })[] = [
     {
       address,
       amount,
@@ -91,24 +89,65 @@ const mapTxnsResult = (
     vjoinsplit: [],
     size: 0,
     lastblock: '',
-    type: TransactionType.RECEIVE,
+    type: TTransactionType.RECEIVE,
     detailedTxns,
     inputAddresses: [],
   }
 }
 
+const getDefaultFee = (height: number): number => {
+  if (height >= 1080000) {
+    return 0.00001
+  } else {
+    return 0.0001
+  }
+}
+
 const getAddressesWithHighBalances = (
-  addressesWithBalance: IAddressBalance[],
-): IAddressBalance[] => {
+  addressesWithBalance: TAddressBalance[],
+): TAddressBalance[] => {
   // Find a z-address with the high balance
   return addressesWithBalance
-    .filter((ab: IAddressBalance) => Utils.isSapling(ab.address))
-    .filter((ab: IAddressBalance) => ab.balance > 0)
+    .filter((ab: TAddressBalance) => isSapling(ab.address.toString()))
+    .filter((ab: TAddressBalance) => ab.balance > 0)
+}
+
+const getTransferJson = (
+  data: TTransferPayload,
+  latestBlock: number,
+): TRpcParam[] => {
+  const json = []
+  json.push(data.from)
+  json.push(
+    data.to.map((to: TxDetail) => {
+      const textEncoder = new TextEncoder()
+      const memo = to.memo ? transcoder.encode(textEncoder.encode(to.memo)) : ''
+
+      if (memo === '') {
+        return {
+          address: to.address,
+          amount: to.amount,
+        }
+      } else {
+        return {
+          address: to.address,
+          amount: to.amount,
+          memo,
+        }
+      }
+    }),
+  )
+  json.push(1) // minconf = 1
+
+  json.push(getDefaultFee(latestBlock)) // Control the default fee as well.
+
+  return json
 }
 
 export {
   mapTxnsResult,
   parseMemo,
   sortTxnsResult,
+  getTransferJson,
   getAddressesWithHighBalances,
 }

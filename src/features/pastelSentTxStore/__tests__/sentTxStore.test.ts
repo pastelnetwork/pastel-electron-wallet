@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-import { loadSentTxns } from '../sent-tx-store'
+import { loadSentTxns } from '../sentTxStore'
 
 jest.mock('fs', () => ({
   promises: {

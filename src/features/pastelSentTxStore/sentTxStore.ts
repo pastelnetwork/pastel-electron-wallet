@@ -1,14 +1,10 @@
-import { remote } from 'electron'
+import { remote, app } from 'electron'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
+import { TSentTxStore, TTransaction, TxDetail } from 'types/rpc'
 
-import {
-  TDetailedTxns,
-  TListTransactions,
-  TSentTxStore,
-  TVjoinsplit,
-} from '../pastelDB/type'
+const electronApp = app || remote.app
 
 const locateSentTxStore = (): string => {
   if (os.platform() === 'darwin') {
@@ -17,7 +13,7 @@ const locateSentTxStore = (): string => {
 
   if (os.platform() === 'linux') {
     return path.join(
-      remote.app.getPath('home'),
+      electronApp.getPath('home'),
       '.local',
       'share',
       'psl-qt-wallet-org',
@@ -26,16 +22,16 @@ const locateSentTxStore = (): string => {
     )
   }
 
-  return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+  return path.join(electronApp.getPath('appData'), 'Pastel', 'senttxstore.dat')
 }
 
-export const loadSentTxns = async (): Promise<TListTransactions | []> => {
+export const loadSentTxns = async (): Promise<TTransaction | []> => {
   try {
     const sentTx = JSON.parse(
       (await fs.promises.readFile(locateSentTxStore())).toString(),
     )
     return sentTx.map((s: TSentTxStore) => {
-      const transction: TListTransactions = {
+      const transction: TTransaction = {
         account: '',
         address: '',
         category: '',
@@ -75,34 +71,4 @@ export const loadSentTxns = async (): Promise<TListTransactions | []> => {
     // If error for whatever reason (most likely, file not found), just return an empty array
     return []
   }
-}
-
-export type TxDetail = {
-  address: string
-  amount: number
-  memo?: string | null
-}
-
-export type TTransaction = {
-  account: string
-  address: string
-  category: string
-  amount: number
-  vout: number
-  confirmations: number
-  blockhash: number
-  blockindex: number
-  blocktime: number
-  expiryheight: number
-  txid: string
-  walletconflicts: string[]
-  time: number
-  timereceived: number
-  vjoinsplit: TVjoinsplit[]
-  size: number
-  lastblock: string
-  fee?: number
-  type?: string
-  detailedTxns?: TDetailedTxns[]
-  inputAddresses?: string[]
 }

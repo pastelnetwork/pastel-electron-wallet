@@ -156,8 +156,13 @@ const MembersDirectory: React.FC = () => {
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
+<<<<<<< HEAD
       <div className='wrapper content with-page-header pb-5 pt-5 pr-30px w-screen'>
         <div className={`${styles.content} pr-30px overflow-y-auto pt-2.5`}>
+=======
+      <Scrollbar hasPageHeader={true}>
+        <div className='wrapper content with-page-header pb-5 w-screen'>
+>>>>>>> fix: update the type names
           <div className='bg-white p-5 rounded-lg'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>
@@ -185,7 +190,11 @@ const MembersDirectory: React.FC = () => {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
       </div>
+=======
+      </Scrollbar>
+>>>>>>> fix: update the type names
     </div>
   )
 }

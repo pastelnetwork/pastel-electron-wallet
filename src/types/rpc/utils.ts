@@ -1,5 +1,10 @@
-type IJsonRPCParam = string | number | boolean
+import { TAlert } from 'common/components/Alert/Alert'
 
-type IMouseEvent = React.MouseEvent<HTMLImageElement, MouseEvent>
+type TMouseEvent = React.MouseEvent<HTMLImageElement, MouseEvent>
 
-export type { IJsonRPCParam, IMouseEvent }
+type TAlertData = TAlert & {
+  message: string
+  subMessage: string
+}
+
+export type { TMouseEvent, TAlertData }

@@ -1,21 +1,17 @@
-import { remote } from 'electron'
-import fs from 'fs'
-import os from 'os'
-import path from 'path'
+import { loadSentTxns } from 'features/pastelSentTxStore/sentTxStore'
 
 import {
-  IBaseTransaction,
-  IJsonRPCParam,
-  ITDetailedTxns,
-  ITRawTransactionResponse,
-  ITSentTxStore,
-  ITTransactionDetail,
-  ITTransactionInfoResponse,
-  ITTransactionResponse,
-  ITTransactionResult,
-  ITVin,
-  ITZListReceivedByAddressResponse,
-  ITZListReceivedByAddressResult,
+  TBaseTransaction,
+  TResponse,
+  TRpcParam,
+  TRawTransactionResponse,
+  TTransactionDetail,
+  TTransactionInfoResponse,
+  TTransactionResponse,
+  TTransaction,
+  TVin,
+  TZListReceivedByAddressResponse,
+  TZListReceivedByAddress,
 } from '../../types/rpc'
 import { mapTxnsResult, parseMemo, sortTxnsResult } from '../helpers'
 import { rpc, TRPCConfig } from './rpc'
@@ -28,88 +24,14 @@ export class TransactionRPC {
     this.walletRPC = new WalletRPC(this.config)
   }
 
-  locateSentTxStore(): string {
-    if (os.platform() === 'darwin') {
-      return path.join(
-        remote.app.getPath('appData'),
-        'Pastel',
-        'senttxstore.dat',
-      )
-    }
-
-    if (os.platform() === 'linux') {
-      return path.join(
-        remote.app.getPath('home'),
-        '.local',
-        'share',
-        'psl-qt-wallet-org',
-        'psl-qt-wallet',
-        'senttxstore.dat',
-      )
-    }
-
-    return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
-  }
-
-  /**
-   * @returns ITTransactionResult[]
-   */
-  async loadSentTxns(): Promise<ITTransactionResult[]> {
-    try {
-      const jsonString = await fs.promises.readFile(this.locateSentTxStore())
-      const sentTx = JSON.parse(jsonString.toString())
-      return sentTx.map((s: ITSentTxStore) => {
-        const transction: ITTransactionResult = {
-          account: '',
-          address: '',
-          category: '',
-          amount: 0,
-          vout: 0,
-          confirmations: 0,
-          blockhash: 0,
-          blockindex: 0,
-          blocktime: 0,
-          expiryheight: 0,
-          txid: '',
-          walletconflicts: [],
-          time: 0,
-          timereceived: 0,
-          vjoinsplit: [],
-          size: 0,
-          lastblock: '',
-        }
-        transction.type = s.type
-        transction.amount = s.amount
-        transction.address = s.from
-        transction.txid = s.txid
-        transction.time = s.datetime
-        const detailedTxns: ITDetailedTxns[] = [
-          {
-            address: '',
-            amount: 0,
-          },
-        ]
-        transction.detailedTxns = detailedTxns
-        transction.detailedTxns[0].address = s.address
-        transction.detailedTxns[0].amount = s.amount
-        transction.detailedTxns[0].memo = s.memo
-
-        return transction
-      })
-    } catch (err) {
-      // If error for whatever reason (most likely, file not found), just return an empty array.
-      return []
-    }
-  }
-
   /**
    * Get raw transaction by id.
    *
    * @param txid Raw transaction Id
    * @returns
    */
-  async fetchRawTxn(txid: string): Promise<ITRawTransactionResponse> {
-    return rpc<ITRawTransactionResponse>(
+  async getRawTxn(txid: string): Promise<TRawTransactionResponse> {
+    return rpc<TRawTransactionResponse>(
       'getrawtransaction',
       [txid, 1],
       this.config,
@@ -122,8 +44,8 @@ export class TransactionRPC {
    * @param txid Transaction Id
    * @returns
    */
-  async fetchTxn(txid: string): Promise<ITTransactionInfoResponse> {
-    return rpc<ITTransactionInfoResponse>('gettransaction', [txid], this.config)
+  async getTxn(txid: string): Promise<TTransactionInfoResponse> {
+    return rpc<TTransactionInfoResponse>('gettransaction', [txid], this.config)
   }
 
   /**
@@ -134,14 +56,14 @@ export class TransactionRPC {
    */
   async getInputAddresses(txid: string): Promise<string[]> {
     try {
-      const { result } = await this.fetchRawTxn(txid)
+      const { result } = await this.getRawTxn(txid)
 
       const inputAddresses: string[] = []
-      await result.vin.map(async (v: ITVin) => {
+      await result.vin.map(async (v: TVin) => {
         try {
-          const { result } = await this.fetchTxn(v.txid)
+          const { result } = await this.getTxn(v.txid)
 
-          result.details.map((d: ITTransactionDetail) => {
+          result.details.map((d: TTransactionDetail) => {
             if (d && inputAddresses.indexOf(d.address) === -1) {
               inputAddresses.push(d.address)
             }
@@ -161,8 +83,8 @@ export class TransactionRPC {
    *
    * @returns ITTransactionResponse
    */
-  async fetchTxns(): Promise<ITTransactionResponse> {
-    return rpc<ITTransactionResponse>('listtransactions', [], this.config)
+  async getTxns(): Promise<TTransactionResponse> {
+    return rpc<TTransactionResponse>('listtransactions', [], this.config)
   }
 
   /**
@@ -171,17 +93,12 @@ export class TransactionRPC {
    * @param txtListResult Transaction results from RPC
    * @returns
    */
-  async flatTxns(
-    txtListResult: ITTransactionResult[],
-  ): Promise<ITTransactionResult[]> {
+  async flatTxns(txtListResult: TTransaction[]): Promise<TTransaction[]> {
     const existAddresses: string[] = []
     const ttxlistPromise = txtListResult
-      .sort(
-        (tx1: ITTransactionResult, tx2: ITTransactionResult) =>
-          tx2.time - tx1.time,
-      )
-      .map(async (tx: ITTransactionResult) => {
-        const transaction: ITTransactionResult = {
+      .sort((tx1: TTransaction, tx2: TTransaction) => tx2.time - tx1.time)
+      .map(async (tx: TTransaction) => {
+        const transaction: TTransaction = {
           account: '',
           address: '',
           category: '',
@@ -229,7 +146,7 @@ export class TransactionRPC {
         return transaction
       }) // Now get Z txns
 
-    const ttxlist: ITTransactionResult[] = await Promise.all(ttxlistPromise)
+    const ttxlist: TTransaction[] = await Promise.all(ttxlistPromise)
 
     return ttxlist.flat()
   }
@@ -242,8 +159,8 @@ export class TransactionRPC {
    */
   async fetchZListReceivedByAddress(
     zaddr: string,
-  ): Promise<ITZListReceivedByAddressResponse> {
-    return rpc<ITZListReceivedByAddressResponse>(
+  ): Promise<TZListReceivedByAddressResponse> {
+    return rpc<TZListReceivedByAddressResponse>(
       'z_listreceivedbyaddress',
       [zaddr, 0],
       this.config,
@@ -254,15 +171,14 @@ export class TransactionRPC {
    * Fetch T, Z transactions.
    * Please note it's not same the old version that include to call <fnSetTransactionsList>.
    *
-   * @returns ITTransactionResult[]
+   * @returns ITTransaction[]
    */
-  async fetchTandZTransactions(): Promise<ITTransactionResult[]> {
-    const senttxstore = await this.loadSentTxns()
-    console.log(senttxstore, '<><><><>')
-    const { result: txtListResult } = await this.fetchTxns()
+  async fetchTandZTransactions(): Promise<TTransaction[]> {
+    const senttxstore = await loadSentTxns()
+    const { result: txtListResult } = await this.getTxns()
 
     // Flat list of transactions
-    const ttxlist: ITTransactionResult[] = await this.flatTxns(txtListResult)
+    const ttxlist: TTransaction[] = await this.flatTxns(txtListResult)
 
     const { result: zaddressesResult } = await this.walletRPC.fetchZAddresses()
     const alltxnsPromise = zaddressesResult.map(async (address: string) => {
@@ -270,24 +186,28 @@ export class TransactionRPC {
       const {
         result: incomingTxnsResult,
       } = await this.fetchZListReceivedByAddress(address)
-      const txns: IBaseTransaction[] = incomingTxnsResult
-        .filter((itx: ITZListReceivedByAddressResult) => !itx.change)
-        .map((incomingTx: ITZListReceivedByAddressResult) => {
+
+      const txns: TBaseTransaction[] = incomingTxnsResult
+        .filter((itx: TZListReceivedByAddress) => !itx.change)
+        .map((incomingTx: TZListReceivedByAddress) => {
           const memo = parseMemo(incomingTx.memo) || ''
           const { txid, amount, outindex: index } = incomingTx
           return { address, txid, memo, amount, index }
         })
+
       return txns
     })
 
     // Now, for each tx in the array, call gettransaction.
-    const alltxns = (await Promise.all(alltxnsPromise)).flat()
+    const alltxns: TBaseTransaction[] = (
+      await Promise.all(alltxnsPromise)
+    ).flat()
 
     // Get transactions from the sent tx store.
     const ztxlist = await Promise.all(
       alltxns.map(
-        async (tx): Promise<ITTransactionResult> => {
-          const { result: txInfoResult } = await this.fetchTxn(tx.txid)
+        async (tx): Promise<TTransaction> => {
+          const { result: txInfoResult } = await this.getTxn(tx.txid)
           return mapTxnsResult(tx, txInfoResult)
         },
       ),
@@ -305,7 +225,7 @@ export class TransactionRPC {
    * @param data JSON data
    * @returns
    */
-  async sendTransaction(data: IJsonRPCParam[]): Promise<string> {
-    return rpc<string>('z_sendmany', data, this.config)
+  async sendTransaction(data: TRpcParam[]): Promise<TResponse<string>> {
+    return rpc<TResponse<string>>('z_sendmany', data, this.config)
   }
 }

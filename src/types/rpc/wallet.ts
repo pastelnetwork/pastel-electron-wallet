@@ -1,18 +1,18 @@
-import { IResponse } from './response'
+import { TResponse } from './response'
 
-type IAddressBalance = {
+type TAddressBalance = {
   address: string | number
   balance: number
 }
 
-type IAddressList = {
+type TAddressList = {
   txid: string
   address: string
   amount: number
   type: 'shielded' | 'transparent' | 'balance'
 }
 
-type IBalanceCard = {
+type TBalanceCard = {
   style: {
     type: string
     info: boolean
@@ -22,12 +22,12 @@ type IBalanceCard = {
   info: string
 }
 
-type IAddressBook = {
+type TAddressBook = {
   label: string
   address: string
 }
 
-type IAddressRow = {
+type TAddressRow = {
   id: string
   address: string
   time?: string
@@ -41,14 +41,14 @@ type IAddressRow = {
 }
 
 // z_gettotalbalance
-type ITotalBalanceResult = {
+type TTotalBalance = {
   transparent: number
   private: number
   total: number
 }
 
 // z_listunspent
-type IZListUnspentResult = {
+type TZListUnspentResult = {
   txid: string
   jsindex: number
   jsoutindex: number
@@ -62,7 +62,7 @@ type IZListUnspentResult = {
 }
 
 // listunspent
-type IListUnspentResult = {
+type TListUnspent = {
   txid: string
   vout: number
   generated: boolean
@@ -76,7 +76,7 @@ type IListUnspentResult = {
 }
 
 // z_listreceivedbyaddress
-type ITZListReceivedByAddressResult = {
+type TZListReceivedByAddress = {
   txid: string
   amount: number
   amountZat: number
@@ -91,27 +91,122 @@ type ITZListReceivedByAddressResult = {
   change: boolean
 }
 
-type ITotalBalanceResponse = IResponse<ITotalBalanceResult>
-type IListAddressesResponse = IResponse<string[]>
-type IZListUnspentResponse = IResponse<IZListUnspentResult[]>
-type IListUnspentResponse = IResponse<IListUnspentResult[]>
-type ITZListReceivedByAddressResponse = IResponse<
-  ITZListReceivedByAddressResult[]
->
+type TShieldedOutput = {
+  cv: string
+  anchor: string
+  nullifier: string
+}
+
+type TShieldedSpendInfo = {
+  cmu: string
+  cv: string
+  encCiphertext: string
+  ephemeralKey: string
+  outCiphertext: string
+  proof: string
+}
+
+type TWalletInfo = {
+  walletversion: number
+  balance: number
+  unconfirmed_balance: number
+  immature_balance: number
+  txcount: number
+  keypoololdest: number
+  keypoolsize: number
+  paytxfee: number
+  seedfp: string
+}
+
+type TValidateAddress = {
+  isvalid: boolean
+  address: string
+  scriptPubkey: string
+  ismine: boolean
+  isscript: boolean
+  pubkey: string
+  iscompressed: boolean
+  account: string
+}
+
+type TAddressesBalance = {
+  addresses: string[]
+}
+
+type TAddressDelta = {
+  satoshis: number
+  txid: string
+  index: number
+  height: number
+  address: string
+}
+
+type TAddressUtxo = {
+  utxos: TUtxo[]
+  hash: string
+  height: number
+}
+
+type TUtxo = {
+  address: string
+  txid: string
+  height: number
+  outputIndex: number
+  script: string
+}
+
+type TAddressMempool = {
+  address: string
+  txid: string
+  index: number
+  satoshis: number
+  timestamp: number
+  prevtxid: string
+  prevout: string
+}
+
+type TAddressTxIdResponse = TResponse<string[]>
+type TWalletInfoResponse = TResponse<TWalletInfo>
+type TListAddressesResponse = TResponse<string[]>
+type TAddressTxosResponse = TResponse<TAddressUtxo>
+type TListUnspentResponse = TResponse<TListUnspent[]>
+type TTotalBalanceResponse = TResponse<TTotalBalance>
+type TAddressDeltaResponse = TResponse<TAddressDelta[]>
+type TAddressBalanceResponse = TResponse<TAddressesBalance>
+type TAddressMempoolResponse = TResponse<TAddressMempool[]>
+type TValidateAddressesResponse = TResponse<TValidateAddress>
+type TZListUnspentResponse = TResponse<TZListUnspentResult[]>
+type TZListReceivedByAddressResponse = TResponse<TZListReceivedByAddress[]>
 
 export type {
-  IAddressRow,
-  IAddressList,
-  IBalanceCard,
-  IAddressBook,
-  IAddressBalance,
-  IListAddressesResponse,
-  IListUnspentResponse,
-  IListUnspentResult,
-  ITotalBalanceResponse,
-  ITotalBalanceResult,
-  ITZListReceivedByAddressResponse,
-  ITZListReceivedByAddressResult,
-  IZListUnspentResponse,
-  IZListUnspentResult,
+  TUtxo,
+  TWalletInfo,
+  TAddressRow,
+  TAddressUtxo,
+  TAddressList,
+  TBalanceCard,
+  TAddressBook,
+  TListUnspent,
+  TAddressDelta,
+  TTotalBalance,
+  TAddressMempool,
+  TShieldedOutput,
+  TAddressBalance,
+  TValidateAddress,
+  TAddressesBalance,
+  TShieldedSpendInfo,
+  TWalletInfoResponse,
+  TZListUnspentResult,
+  TAddressTxIdResponse,
+  TListUnspentResponse,
+  TAddressTxosResponse,
+  TAddressDeltaResponse,
+  TZListUnspentResponse,
+  TTotalBalanceResponse,
+  TListAddressesResponse,
+  TAddressMempoolResponse,
+  TZListReceivedByAddress,
+  TAddressBalanceResponse,
+  TValidateAddressesResponse,
+  TZListReceivedByAddressResponse,
 }
