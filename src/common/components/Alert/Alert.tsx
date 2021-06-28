@@ -14,12 +14,12 @@ const classesByCase = {
   error: 'border-error bg-error-background',
 }
 const Alert = ({
-                 variant,
-                 className,
-                 children,
-                 onShowing = true,
-                 showClose = false,
-               }: TAlert): JSX.Element => {
+  variant,
+  className,
+  children,
+  onShowing = true,
+  showClose = false,
+}: TAlert): JSX.Element => {
   const [isShowing, setIsShowing] = useState<boolean>(onShowing)
   const classes = cn(
     'border-l-4 px-4 py-3 rounded',

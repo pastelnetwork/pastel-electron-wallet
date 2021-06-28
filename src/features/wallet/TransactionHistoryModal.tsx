@@ -17,11 +17,7 @@ import user2Icon from '../../common/assets/icons/ico-user2.svg'
 import { useAppSelector } from 'redux/hooks'
 import { RootState } from 'redux/store'
 import { TransactionRPC } from 'api/pastel-rpc'
-import {
-  TTransactionRow,
-  TTransaction,
-  TTransactionType,
-} from 'types/rpc'
+import { TTransactionRow, TTransaction, TTransactionType } from 'types/rpc'
 import dayjs from 'dayjs'
 import Utils from '../../legacy/utils/utils'
 
@@ -64,10 +60,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
     setDates(dates as momentRange.DateRange)
   }
 
-  const getFilterAddresses = (
-    trans: TTransaction[],
-    isSource: boolean,
-  ) => {
+  const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {
     const filtered = trans
       .filter(t => {
         return isSource
