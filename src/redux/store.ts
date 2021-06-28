@@ -11,7 +11,7 @@ import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEdit
 import { squooshToolModalReducer } from '../features/squooshTool'
 import { updateToastReducer } from '../features/updateToast'
 import { glitchImageModalReducer } from '../features/glitchImage'
-import { rpcConfigReducer } from 'features/loading/rpcConfigSlice'
+import { rpcConfigReducer } from '../features/loading/rpcConfigSlice'
 
 const store = configureStore({
   reducer: {

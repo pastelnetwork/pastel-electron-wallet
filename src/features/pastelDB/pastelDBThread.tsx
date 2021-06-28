@@ -1,4 +1,4 @@
-import { TransactionRPC } from 'api/pastel-rpc'
+import { TransactionRPC, rpc, TRPCConfig } from '../../api/pastel-rpc'
 import { Database } from 'sql.js'
 import {
   TBlockChainInfoResponse,
@@ -22,7 +22,6 @@ import {
   TWalletInfoResponse,
 } from 'types/rpc'
 
-import { rpc, TRPCConfig } from '../../api/pastel-rpc/rpc'
 import PastelDB from '../../features/pastelDB/database'
 import coinGeckoClient from '../pastelPrice/coingecko'
 import {

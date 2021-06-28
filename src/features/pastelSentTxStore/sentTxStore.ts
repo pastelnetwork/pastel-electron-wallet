@@ -1,12 +1,12 @@
-import { remote, app } from 'electron'
+import { app, remote } from 'electron'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import { TSentTxStore, TTransaction, TxDetail } from 'types/rpc'
-
-const electronApp = app || remote.app
+import { TSentTxStore, TTransaction } from 'types/rpc'
 
 const locateSentTxStore = (): string => {
+  const electronApp = app || remote.app
+
   if (os.platform() === 'darwin') {
     return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
   }
@@ -55,13 +55,12 @@ export const loadSentTxns = async (): Promise<TTransaction | []> => {
       transction.address = s.from
       transction.txid = s.txid
       transction.time = s.datetime
-      const detailedTxns: TxDetail[] = [
+      transction.detailedTxns = [
         {
           address: '',
           amount: 0,
         },
       ]
-      transction.detailedTxns = detailedTxns
       transction.detailedTxns[0].address = s.address
       transction.detailedTxns[0].amount = s.amount
       transction.detailedTxns[0].memo = s.memo

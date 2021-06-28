@@ -1,4 +1,4 @@
-import { loadSentTxns } from 'features/pastelSentTxStore/sentTxStore'
+import { loadSentTxns } from '../../features/pastelSentTxStore/sentTxStore'
 
 import {
   TBaseTransaction,
