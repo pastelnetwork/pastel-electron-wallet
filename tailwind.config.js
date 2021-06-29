@@ -177,6 +177,7 @@ module.exports = {
           f8: '#F8FBFF',
           e5: '#E5F1FF',
           eb: '#EBF2FF',
+          37: '#3754DB',
         },
         gray: {
           fc: '#FCFCFD',
@@ -225,6 +226,7 @@ module.exports = {
           14: '#14B85F',
           fe: '#FE634C',
           75: '#FF754C',
+          ff: '#FF82AC',
         },
         pink: {
           46: '#EF466F',

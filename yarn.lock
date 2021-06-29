@@ -3312,7 +3312,7 @@
     "@types/d3-interpolate" "*"
     "@types/d3-selection" "*"
 
-"@types/d3@^7.0.0":
+"@types/d3@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@types/d3/-/d3-7.0.0.tgz#d102ec6ea5741e51a1ff7b8228850db0665ccd27"
   integrity sha512-7rMMuS5unvbvFCJXAkQXIxWTo2OUlmVXN5q7sfQFesuVICY55PSP6hhbUhWjTTNpfTTB3iLALsIYDFe7KUNABw==
@@ -6581,7 +6581,7 @@ d3-zoom@3:
     d3-selection "2 - 3"
     d3-transition "2 - 3"
 
-d3@^7.0.0:
+d3@7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/d3/-/d3-7.0.0.tgz#fe6036b38ba2026ff34223e208fd294db1b997da"
   integrity sha512-t+jEKGO2jQiSBLJYYq6RFc500tsCeXBB4x41oQaSnZD3Som95nQrlw9XJGrFTMUOQOkwSMauWy9+8Tz1qm9UZw==
@@ -11577,7 +11577,7 @@ moment-range@4.0.2, moment-range@^4.0.0:
   dependencies:
     es6-symbol "^3.1.0"
 
-moment@^2.18.1:
+moment@^2.18.1, moment@^2.29.1:
   version "2.29.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
   integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
