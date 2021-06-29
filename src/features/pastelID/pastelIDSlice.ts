@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import fs from 'fs'
+import path from 'path'
 
 import {
   createNewPastelID,
@@ -135,6 +137,19 @@ export function createPastelID(
 
       // TODO log errors to a central logger so we can address them later.
       console.warn(err)
+    }
+  }
+}
+
+export async function createPastelKeysFolder(
+  locatePastelConfDir: string,
+): Promise<void> {
+  if (locatePastelConfDir) {
+    const pastelKeysFolder = path.join(locatePastelConfDir, 'pastelkeys')
+    try {
+      await fs.promises.access(pastelKeysFolder)
+    } catch {
+      await fs.promises.mkdir(pastelKeysFolder)
     }
   }
 }

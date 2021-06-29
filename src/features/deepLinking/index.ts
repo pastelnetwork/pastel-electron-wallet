@@ -3,7 +3,7 @@ import {
   redirectDeepLinkingUrl,
   registerCustomProtocol,
   registerFileProtocol,
-} from './DeepLinking'
+} from './DeepLinking.utils'
 
 export {
   forceSingleInstanceApplication,

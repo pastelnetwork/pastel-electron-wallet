@@ -2,7 +2,7 @@ import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
 
-import { glitch, squoosh, ffmpegwasm } from '../constants/ServeStatic'
+import { glitch, squoosh, ffmpegwasm } from '../../common/constants/ServeStatic'
 
 const servers: Server[] = []
 

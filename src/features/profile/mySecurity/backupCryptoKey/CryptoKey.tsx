@@ -109,7 +109,7 @@ const PDFDocument = ({
 }: TPDFDocumentProps) => {
   return (
     <Document title={title}>
-      {allPrivateKeys?.map((privateKey, idx) => (
+      {allPrivateKeys.map((privateKey, idx) => (
         <Page size='A4' key={idx} style={pdfStyles.page}>
           <View style={pdfStyles.section}>
             <View style={pdfStyles.contentTop}>
@@ -167,11 +167,9 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
     }
   }, [])
 
-  const generateFileName = () => {
-    return `${currencyName || 'LSP'}_Paper_Wallet__Private_Keys_${dayjs(
-      new Date(),
-    ).format('MM_DD_YYYY__HH_MM_ss')}`
-  }
+  const fileName = `${currencyName || 'LSP'}_Paper_Wallet__Private_Keys_${dayjs(
+    new Date(),
+  ).format('MM_DD_YYYY__HH_MM_ss')}`
 
   const description = (
     <div className='max-w-330px'>
@@ -194,10 +192,10 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
         <PDFDocument
           allPrivateKeys={allPrivateKeys}
           currencyName={currencyName}
-          title={generateFileName()}
+          title={fileName}
         />
       }
-      fileName={generateFileName()}
+      fileName={fileName}
       className='block w-full'
     >
       <Button variant='secondary' className='w-full font-extrabold relative'>

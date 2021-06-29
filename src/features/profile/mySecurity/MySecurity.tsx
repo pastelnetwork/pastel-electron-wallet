@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 
 import ChangePassword from './changePassword/Password'
@@ -6,7 +6,7 @@ import QRCode from './photoOfQRCode/QRCode'
 import CryptoKey from './backupCryptoKey/CryptoKey'
 
 import { TRPCConfig } from '../Profile'
-import { ffmpegwasm } from '../../constants/ServeStatic'
+import { ffmpegwasm } from '../../../common/constants/ServeStatic'
 
 type TSecurity = {
   info?: {
@@ -16,26 +16,60 @@ type TSecurity = {
   qrcodeData: string[]
 }
 
-const createVideoHost = `http://localhost:${ffmpegwasm.staticPort}/`
-
 const MySecurity = (props: TSecurity): JSX.Element => {
   const { info, rpcConfig, qrcodeData } = props
-
   const [videoUrl, setVideoUrl] = useState<string>('')
+  const [imagesData, setImagesData] = useState<string[]>([])
   const [currentStatus, setCurrentStatus] = useState<string>('')
+  const fileName = `${info?.currencyName}_QR_Code_Video_${dayjs().format(
+    'MM_DD_YYYY__HH_mm',
+  )}.mp4`
+
+  useEffect(() => {
+    if (imagesData.length && !videoUrl) {
+      try {
+        const iframe = document.getElementById(
+          'createVideoIframe',
+        ) as HTMLIFrameElement
+        if (iframe) {
+          iframe?.contentWindow?.postMessage(
+            imagesData,
+            ffmpegwasm.videoHostURL,
+          )
+          window.addEventListener('message', handleReReceivedMessage, false)
+        } else {
+          setCurrentStatus('error')
+        }
+      } catch {
+        setCurrentStatus('error')
+      }
+    }
+
+    return () => {
+      window.removeEventListener('message', handleReReceivedMessage, false)
+    }
+  }, [imagesData])
+
+  const handleReReceivedMessage = (evt: MessageEvent) => {
+    if (!evt.data.error) {
+      if (evt.data.videoUrl && !videoUrl) {
+        setVideoUrl(evt.data.videoUrl)
+        saveFile(evt.data.videoUrl)
+      } else {
+        setCurrentStatus('error')
+      }
+    } else {
+      setCurrentStatus('error')
+    }
+  }
 
   const saveFile = async (url: string) => {
     const a = document.createElement('a')
     a.href = url
-    a.download = generateFileName()
+    a.download = fileName
     a.dispatchEvent(new MouseEvent('click'))
     setCurrentStatus('downloaded')
     a.remove()
-  }
-
-  const generateFileName = () => {
-    const title = `${info?.currencyName}_QR_Code_Video`
-    return `${title}_${dayjs().format('MM_DD_YYYY__HH_mm')}.mp4`
   }
 
   const handleDownloadVideo = () => {
@@ -43,7 +77,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
       saveFile(videoUrl)
     } else {
       setCurrentStatus('downloading')
-      const canvas = document.querySelectorAll('.qrCodeData')
+      const canvas = document.querySelectorAll('.canvasQRCodeData')
       if (canvas.length) {
         const images: string[] = []
         for (let i = 0; i < canvas.length; i++) {
@@ -53,37 +87,8 @@ const MySecurity = (props: TSecurity): JSX.Element => {
             images.push(img)
           }
         }
-        if (images.length && !videoUrl) {
-          try {
-            const iframe = document.getElementById(
-              'createVideoIframe',
-            ) as HTMLIFrameElement
-            if (iframe && !videoUrl) {
-              iframe?.contentWindow?.postMessage(images, createVideoHost)
-              const handleReReceivedMessage = (evt: MessageEvent) => {
-                if (!evt.data?.error) {
-                  if (evt.data?.videoUrl && !videoUrl) {
-                    setVideoUrl(evt.data.videoUrl)
-                    saveFile(evt.data.videoUrl)
-                  } else {
-                    setCurrentStatus('error')
-                  }
-                } else {
-                  setCurrentStatus('error')
-                }
-                window.removeEventListener(
-                  'message',
-                  handleReReceivedMessage,
-                  false,
-                )
-              }
-              window.addEventListener('message', handleReReceivedMessage, false)
-            } else {
-              setCurrentStatus('error')
-            }
-          } catch (error) {
-            setCurrentStatus('downloading')
-          }
+        if (images.length) {
+          setImagesData(images)
         }
       } else {
         setCurrentStatus('error')
@@ -106,7 +111,7 @@ const MySecurity = (props: TSecurity): JSX.Element => {
       <div className='hidden'>
         <iframe
           id='createVideoIframe'
-          src={createVideoHost}
+          src={ffmpegwasm.videoHostURL}
           className='h-1.5px w-1.5px'
         />
       </div>

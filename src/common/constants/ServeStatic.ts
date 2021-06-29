@@ -8,4 +8,5 @@ export const squoosh = {
 
 export const ffmpegwasm = {
   staticPort: 5400,
+  videoHostURL: 'http://localhost:5400/',
 }

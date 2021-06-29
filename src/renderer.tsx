@@ -38,6 +38,7 @@ import { ipcRenderer } from 'electron'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
+import { createPastelKeysFolder } from './features/pastelID'
 import { setAppInfo } from './features/serveStatic'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
@@ -76,6 +77,7 @@ ipcRenderer.on(
       locatePastelConfDir,
     }: { isPackaged: boolean; locatePastelConfDir: string },
   ) => {
+    createPastelKeysFolder(locatePastelConfDir)
     store.dispatch(setAppInfo({ isPackaged, locatePastelConfDir }))
   },
 )

@@ -54,12 +54,11 @@ import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
 import NFTMarketFeed from '../features/NFTMarketFeed'
-import { app } from 'electron'
+import { app, ipcRenderer } from 'electron'
 import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
-import { SetupIPCRendererHandler } from '../features/serveStatic'
 
 export type TWalletInfo = {
   connections: number
@@ -99,6 +98,8 @@ class RouteApp extends React.Component<any, any> {
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
 
     ReactModal.setAppElement('#root')
+
+    ipcRenderer.send('app-ready')
   }
 
   rpc: any
@@ -645,7 +646,6 @@ class RouteApp extends React.Component<any, any> {
             />
           </Switch>
         </div>
-        {info?.version && <SetupIPCRendererHandler />}
       </div>
     )
   }

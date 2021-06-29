@@ -1,4 +1,5 @@
 import LZUTF8 from 'lzutf8'
+import { toast } from 'react-toastify'
 
 import { rpc, TRPCConfig } from '../../../../api/pastel-rpc/rpc'
 
@@ -53,21 +54,28 @@ async function fetchAllAddress(
   config: TRPCConfig,
 ): Promise<TAllAddresses | null> {
   try {
-    const zAddresses = await rpc<TAddressesResponse>(
-      'z_listaddresses',
-      [],
-      config,
-    )
-    const tAddresses = await rpc<TAddressesResponse>(
+    const rpcTAddresses = rpc<TAddressesResponse>('z_listaddresses', [], config)
+    const rpcZAddresses = rpc<TAddressesResponse>(
       'getaddressesbyaccount',
       [''],
       config,
     )
+
+    const [zAddresses, tAddresses] = await Promise.all([
+      rpcTAddresses,
+      rpcZAddresses,
+    ])
+
     return {
-      zAddresses: zAddresses?.result,
-      tAddresses: tAddresses?.result,
+      zAddresses: zAddresses.result,
+      tAddresses: tAddresses.result,
     }
-  } catch {
+  } catch (err) {
+    toast(err.message, { type: 'error' })
+    console.log(
+      `profile/mySecurity/common/utils fetchAllAddress error: ${err.message}`,
+      err,
+    )
     return null
   }
 }
@@ -80,7 +88,12 @@ async function getPrivKeyAsString(
   try {
     const res = await rpc<TPrivKeyResponse>(method, [address], config)
     return res.result
-  } catch {
+  } catch (err) {
+    toast(err.message, { type: 'error' })
+    console.log(
+      `profile/mySecurity/common/utils getPrivKeyAsString error: ${err.message}`,
+      err,
+    )
     return null
   }
 }
@@ -89,7 +102,12 @@ async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[] | null> {
   try {
     const res = await rpc<TPastelIDResponse>('pastelid', ['list'], config)
     return res.result
-  } catch {
+  } catch (err) {
+    toast(err.message, { type: 'error' })
+    console.log(
+      `profile/mySecurity/common/utils getPastelIDs error: ${err.message}`,
+      err,
+    )
     return null
   }
 }
@@ -193,6 +211,7 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
         `profile/mySecurity/common importPrivKey z_importkey error: ${err.message}`,
         err,
       )
+      toast(err.message, { type: 'error' })
     }
   } else if (key.startsWith('zxview')) {
     try {
@@ -206,6 +225,7 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
         `profile/mySecurity/common importPrivKey z_importviewingkey error: ${err.message}`,
         err,
       )
+      toast(err.message, { type: 'error' })
     }
   } else {
     try {
@@ -219,6 +239,7 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
         `profile/mySecurity/common importPrivKey importprivkey error: ${err.message}`,
         err,
       )
+      toast(err.message, { type: 'error' })
     }
   }
 }
