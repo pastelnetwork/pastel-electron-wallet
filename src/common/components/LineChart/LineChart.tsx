@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import moment from 'moment'
 import * as d3 from 'd3'
-import './LineChart.css'
+import style from './LineChart.module.css'
 
 export type TLineChartRow = {
   date: Date
@@ -130,7 +129,7 @@ const LineChart = ({
         tooltipContainer.append('text').attr('x', 15).attr('dy', '.31em')
         tooltipContainer
           .append('rect')
-          .attr('class', 'tooltip')
+          .attr('class', style.tooltip)
           .attr('width', 57)
           .attr('height', 28)
           .attr('x', -28)
@@ -140,6 +139,7 @@ const LineChart = ({
         tooltipContainer
           .append('text')
           .attr('class', 'tooltip-value')
+          .attr('stroke', '#ffffff')
           .attr('x', -13)
           .attr('y', -25)
         tooltipContainer
@@ -158,7 +158,8 @@ const LineChart = ({
         }).left
         svg
           .append('rect')
-          .attr('class', 'overlay')
+          .attr('fill', 'none')
+          .attr('pointer-events', 'all')
           .attr('width', width)
           .attr('height', height)
           .on('mouseover', function () {
@@ -172,10 +173,7 @@ const LineChart = ({
             const i = bisectDate(data, x0, 1)
             const d0 = data[i - 1]
             const d1 = data[i]
-            const d =
-              moment(x0).diff(moment(d0.date)) > moment(d1.date).diff(x0)
-                ? d1
-                : d0
+            const d = +x0 - +d0.date > +d1.date - +x0 ? d1 : d0
             tooltipContainer.attr(
               'transform',
               'translate(' + x(d.date) + ',' + y(d.value) + ')',

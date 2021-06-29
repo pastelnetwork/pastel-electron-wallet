@@ -72,7 +72,6 @@
     "js-base64": "3.5.2",
     "js-sha256": "0.9.0",
     "libsodium-wrappers-sumo": "0.7.6",
-    "moment": "2.29.1",
     "moment-range": "4.0.2",
     "postcss": "8.3.0",
     "postcss-cli": "8.3.1",
