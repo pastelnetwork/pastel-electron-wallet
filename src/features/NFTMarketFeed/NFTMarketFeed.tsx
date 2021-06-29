@@ -7,6 +7,7 @@ import image from '../../common/assets/images/nft-card-placeholder.png'
 import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
+import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 
 const mockCardProps: TNFTCard = {
   author: 'zndrson',
@@ -21,8 +22,13 @@ const mockCardProps: TNFTCard = {
   followers: 256,
   isLastBid: false,
 }
+enum Tabs {
+  feed,
+  statistics,
+}
+
 const NFTMarketFeed: React.FC = () => {
-  const [selectedItem, setSelectedItem] = useState(0)
+  const [selectedItem, setSelectedItem] = useState(Tabs.feed)
 
   const mockCategories: TOption[] = [
     { value: 'AI', label: 'AI' },
@@ -86,6 +92,16 @@ const NFTMarketFeed: React.FC = () => {
 
   const data = [{ label: 'Feed' }, { label: 'Statistics' }]
 
+  const breadcrumbs: TBreadcrumb[] = [
+    {
+      label: 'Market',
+      route: '#',
+    },
+    {
+      label: data[selectedItem].label,
+    },
+  ]
+
   const routes = {
     data,
     activeIndex: selectedItem,
@@ -94,6 +110,7 @@ const NFTMarketFeed: React.FC = () => {
 
   return (
     <div className=''>
+      <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader title='Market' routes={routes} />
       <div className='wrapper content with-page-header h-full w-screen py-30px'>
         {/* Filters */}

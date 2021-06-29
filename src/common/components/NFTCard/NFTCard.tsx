@@ -156,7 +156,7 @@ const NFTCard = ({
               )}
               width={210}
             >
-              <Clipboard size={12} className='ursor-pointer' />
+              <Clipboard size={12} className='cursor-pointer' />
             </Tooltip>
             <span className='ml-2 mr-3 lg:mr-6'>1 of 1,000</span>
             <Tooltip
