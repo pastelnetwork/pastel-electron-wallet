@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import { clipboard } from 'electron'
 import { TMouseEvent } from 'types/rpc'
 
-interface AddressFormProps {
+type AddressFormProps = {
   address: string
   currentRow: TRow | undefined
   saveAddressLabel: (address: string, label: string) => void

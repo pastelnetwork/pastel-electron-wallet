@@ -51,11 +51,7 @@ const Alert = ({
       </div>
     )
   }
-  return (
-    <div className={classes}>
-      <p className={`text-${variant}`}>{children}</p>
-    </div>
-  )
+  return <></>
 }
 
 Alert.defaultProps = {

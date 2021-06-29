@@ -62,7 +62,7 @@
     "electron-store": "5.1.1",
     "faker": "5.5.3",
     "generate-password": "1.6.0",
-    "global": "^4.4.0",
+    "global": "4.4.0",
     "hex-string": "1.0.3",
     "history": "4.10.1",
     "http": "0.0.1-security",
