@@ -9,13 +9,13 @@ import React, { useState } from 'react'
 import { clipboard } from 'electron'
 import { TMouseEvent } from 'types/rpc'
 
-type AddressFormProps = {
+type TAddressFormProps = {
   address: string
   currentRow: TRow | undefined
   saveAddressLabel: (address: string, label: string) => void
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({
+export const AddressForm: React.FC<TAddressFormProps> = ({
   address,
   currentRow,
   saveAddressLabel,
