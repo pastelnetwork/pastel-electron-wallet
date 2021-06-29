@@ -1,4 +1,4 @@
 import LineChart from './LineChart'
 
-export type { TChartProps } from './LineChart'
+export type { TChartProps, TLineChartRow } from './LineChart'
 export default LineChart

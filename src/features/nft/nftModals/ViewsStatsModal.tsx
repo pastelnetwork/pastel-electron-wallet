@@ -2,11 +2,14 @@ import React, { useState } from 'react'
 import cn from 'classnames'
 import Modal from './modal'
 import DatePicker from 'common/components/DatePicker'
-import LineChart from 'common/components/LineChart'
+import LineChart, { TLineChartRow } from 'common/components/LineChart'
 
 export type TViewsStatsModal = {
   isOpen: boolean
   handleClose: () => void
+  data1: Array<TLineChartRow>
+  data2: Array<TLineChartRow>
+  title: string
 }
 
 enum Tab {
@@ -18,6 +21,9 @@ enum Tab {
 const ViewsStatsModal: React.FC<TViewsStatsModal> = ({
   isOpen,
   handleClose,
+  data1,
+  data2,
+  title,
 }) => {
   const [active, setActive] = useState<number>(Tab.WEEK)
   const [date, setDate] = useState<Date | null>(null)
@@ -28,82 +34,16 @@ const ViewsStatsModal: React.FC<TViewsStatsModal> = ({
     bottom: 50,
     right: 0,
   }
-  const viewData = [
-    {
-      value: 10,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 210,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 580,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 800,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 350,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 600,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 600,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 500,
-      date: new Date('2021-02-01'),
-    },
-  ]
-  const likesData = [
-    {
-      value: 8,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 180,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 500,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 780,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 300,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 560,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 560,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 460,
-      date: new Date('2021-02-01'),
-    },
-  ]
+  const viewData = data1
+  const likesData = data2
 
   return (
     <Modal
       isOpen={isOpen}
       handleClose={() => handleClose()}
       size='874px'
-      title={'“Diamonds in the sky” View Stats'}
-      infoIcon={true}
+      title={title}
+      infoIcon={false}
       bodyClassName='pr-9 pl-10'
       headerClassName='px-10 pb-14px'
       titleClassName='font-black text-2xl text-gray-2d'

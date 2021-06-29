@@ -4,6 +4,7 @@ import Button from 'common/components/Buttons/Button'
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import { useToggle } from 'react-use'
 import TransferHistoryModal from 'features/nft/nftModals/TransferHistoryModal'
+import iconInfo from 'common/assets/icons/ico-info.svg'
 
 export type TTransferAuthorshipModal = {
   isOpen: boolean
@@ -28,10 +29,17 @@ const TransferAuthorshipModal: React.FC<TTransferAuthorshipModal> = ({
       isOpen={isOpen}
       handleClose={() => handleClose()}
       size='478px'
-      title={'Tansfer Royalty\nCompensation Rights'}
+      title={
+        <div className='text-gray-2d'>
+          <div>Transfer Royalty</div>
+          <div className='flex items-center'>
+            Compensation Rights <img src={iconInfo} className='ml-2' />
+          </div>
+        </div>
+      }
       titleClassName='text-h2 font-extrabold'
       headerClassName='px-10 pb-3'
-      infoIcon={true}
+      infoIcon={false}
     >
       <div>
         <div>

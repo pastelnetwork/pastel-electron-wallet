@@ -3,7 +3,7 @@ import moment from 'moment'
 import * as d3 from 'd3'
 import './LineChart.css'
 
-type TLineChartRow = {
+export type TLineChartRow = {
   date: Date
   value: number
 }
@@ -122,13 +122,13 @@ const LineChart = ({
                 .curve(d3.curveCardinal),
             )
         }
-        const focus = svg
+        const tooltipContainer = svg
           .append('g')
           .attr('class', 'focus')
           .style('display', 'none')
-        focus.append('circle').attr('r', 6)
-        focus.append('text').attr('x', 15).attr('dy', '.31em')
-        focus
+        tooltipContainer.append('circle').attr('r', 6)
+        tooltipContainer.append('text').attr('x', 15).attr('dy', '.31em')
+        tooltipContainer
           .append('rect')
           .attr('class', 'tooltip')
           .attr('width', 57)
@@ -137,12 +137,12 @@ const LineChart = ({
           .attr('y', -45)
           .attr('rx', 4)
           .attr('ry', 4)
-        focus
+        tooltipContainer
           .append('text')
           .attr('class', 'tooltip-value')
           .attr('x', -13)
           .attr('y', -25)
-        focus
+        tooltipContainer
           .append('path')
           .attr(
             'd',
@@ -162,10 +162,10 @@ const LineChart = ({
           .attr('width', width)
           .attr('height', height)
           .on('mouseover', function () {
-            focus.style('display', null)
+            tooltipContainer.style('display', null)
           })
           .on('mouseout', function () {
-            focus.style('display', 'none')
+            tooltipContainer.style('display', 'none')
           })
           .on('mousemove', () => {
             const x0 = x.invert(d3.pointer(event)[0])
@@ -176,11 +176,11 @@ const LineChart = ({
               moment(x0).diff(moment(d0.date)) > moment(d1.date).diff(x0)
                 ? d1
                 : d0
-            focus.attr(
+            tooltipContainer.attr(
               'transform',
               'translate(' + x(d.date) + ',' + y(d.value) + ')',
             )
-            focus.select('.tooltip-value').text(d.value)
+            tooltipContainer.select('.tooltip-value').text(d.value)
           })
       }
     }

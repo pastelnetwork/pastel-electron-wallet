@@ -21,7 +21,7 @@ const OwnershipHistoryModal: React.FC<TOwnershipHistoryModal> = ({
       bodyClassName='pr-9 pl-10'
       titleClassName='font-black text-2xl text-gray-2d'
     >
-      <div className='overflow-auto pr-8 h-[445px] md:w-[798px]'>
+      <div className='md:w-[798px]'>
         <Table
           columns={Columns}
           data={tableData}

@@ -93,7 +93,7 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
           For every additional copy sold, the price will be changed according to
           your desired settings.
         </div>
-        <div className='h-[399px] pr-8 overflow-auto'>
+        <div>
           <Table
             columns={cellEdit ? Columns_edit : Columns}
             data={tableData}

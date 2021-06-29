@@ -20,7 +20,7 @@ const CopiesDetailsModal: React.FC<TCopiesDetailsModal> = ({
       titleClassName='font-black text-2xl text-gray-2d mt-2'
       infoIcon={true}
     >
-      <div className='w-[350px] overflow-auto max-h-[401px]'>
+      <div className='w-[350px]'>
         <Table
           columns={Columns}
           data={tableData}
