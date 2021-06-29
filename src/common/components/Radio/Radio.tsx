@@ -1,5 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
+import './Radio.css'
 
 export type TRadioProps = {
   checked: boolean

@@ -7,7 +7,7 @@ import { Input } from '../Inputs'
 import CalendarIcon from 'common/assets/icons/ico-calendar.svg'
 import ChevronIcon from 'common/assets/icons/ico-chevron.svg'
 
-import './DatePicker.module.css'
+import './DatePicker.css'
 
 type TBaseProps = {
   positionFixed?: boolean
@@ -97,7 +97,9 @@ const DatePicker = ({
   const customInput = (): JSX.Element | null => {
     if (variant === 'default') {
       const prepend: JSX.Element = label ? (
-        <span className='text-gray-b0'>{label}:</span>
+        <span className='text-gray-b0 inline-block overflow-hidden whitespace-nowrap'>
+          {label}:
+        </span>
       ) : (
         <img src={CalendarIcon} />
       )
