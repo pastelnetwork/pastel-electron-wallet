@@ -15,22 +15,26 @@ type TMarginType = {
 }
 
 export type TChartProps = {
-  viewData: Array<TLineChartRow>
-  likesData?: Array<TLineChartRow>
+  data1: Array<TLineChartRow>
+  data2?: Array<TLineChartRow>
   height?: number
   width?: number
   margin: TMarginType
+  data1Label?: string
+  data2Label?: string
 }
 
 const LineChart = ({
-  viewData,
+  data1,
   height = 300,
   width = 600,
-  likesData,
+  data2,
   margin,
+  data1Label = 'View',
+  data2Label = 'Likes',
 }: TChartProps): JSX.Element => {
   useEffect(() => {
-    const data: TLineChartRow[] = viewData
+    const data: TLineChartRow[] = data1
     const svg = d3
       .select('#container')
       .append('svg')
@@ -73,8 +77,8 @@ const LineChart = ({
           g.call(yAxis)
           g.select('.domain').remove()
           g.selectAll('.tick line')
-            .attr('stroke', '#777')
-            .attr('stroke-dasharray', '2,2')
+            .attr('stroke', '#DFE5EE')
+            .attr('stroke-dasharray', '5,5')
           g.selectAll('.tick text')
             .attr('x', -25)
             .attr('dy', 5)
@@ -98,10 +102,10 @@ const LineChart = ({
               })
               .curve(d3.curveCardinal),
           )
-        if (likesData) {
+        if (data2) {
           svg
             .append('path')
-            .datum(likesData)
+            .datum(data2)
             .attr('fill', 'none')
             .attr('stroke', '#FF82AC')
             .attr('stroke-width', 3)
@@ -190,11 +194,13 @@ const LineChart = ({
         style={{ width: width + margin.left + margin.right }}
       >
         <div className='text-gray-2d font-medium text-sm flex items-center mr-61px'>
-          <div className='w-2 h-2 rounded-full bg-blue-37 mr-1.5'></div>View
+          <div className='w-2 h-2 rounded-full bg-blue-37 mr-1.5'></div>
+          {data1Label}
         </div>
-        {!!viewData && (
+        {!!data2 && (
           <div className='text-gray-2d font-medium text-sm flex items-center'>
-            <div className='w-2 h-2 rounded-full bg-red-ff mr-1.5'></div>Likes
+            <div className='w-2 h-2 rounded-full bg-red-ff mr-1.5'></div>
+            {data2Label}
           </div>
         )}
       </div>

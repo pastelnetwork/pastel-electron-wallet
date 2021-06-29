@@ -340,6 +340,7 @@ module.exports = {
       },
       borderRadius: {
         '4px': '0.25rem',
+        '7px': '0.4375rem',
         '8px': '0.5rem',
         '11px': '0.6875rem',
         '65px': '4.063rem',

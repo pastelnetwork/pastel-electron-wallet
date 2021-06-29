@@ -11,7 +11,7 @@ const Template: Story<TChartProps> = ({ ...args }) => <LineChart {...args} />
 
 export const SimpleLineChart = Template.bind({})
 SimpleLineChart.args = {
-  viewData: [
+  data1: [
     {
       value: 10,
       date: new Date('2020-07-01'),
@@ -45,7 +45,7 @@ SimpleLineChart.args = {
       date: new Date('2021-02-01'),
     },
   ],
-  likesData: [
+  data2: [
     {
       value: 8,
       date: new Date('2020-07-01'),
