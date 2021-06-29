@@ -8,6 +8,9 @@ function getExtraResource() {
     case 'darwin':
       return ['./static/bin/pasteld-mac']
     case 'linux':
+      if (process.argv[3] === 'win32') {
+        return ['./static/bin/pasteld-win.exe']
+      }
       return ['./static/bin/pasteld-linux']
     case 'win32':
       return ['./static/bin/pasteld-win.exe']
@@ -24,6 +27,9 @@ function getIcon() {
     case 'darwin':
       return './static/icons/icon.icns'
     case 'linux':
+      if (process.argv[3] === 'win32') {
+        return './static/icons/icon.ico'
+      }
       return './static/icons/icon.png'
     case 'win32':
       return './static/icons/icon.ico'

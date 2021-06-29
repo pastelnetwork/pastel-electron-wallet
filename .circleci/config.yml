@@ -53,7 +53,49 @@ jobs:
             apt-get update -y
             apt-get install -y dpkg fakeroot
       - run:
-          name: generate builds
+          name: build for linux(deb)
+          command: yarn make
+      - store_artifacts:
+          path: ~/project/out/make
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  build-windows:
+    docker:
+      - image: electronuserland/builder:wine-mono-05.21
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: reconfigure wine for x64
+          command: rm -rf /root/.wine && winecfg
+      - run:
+          name: build for windows
+          command: yarn make --platform=win32
+      - store_artifacts:
+          path: ~/project/out/make/squirrel.windows/x64
+
+  build-macos:
+    macos:
+      xcode: 11.7
+    working_directory: ~/project
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - node_deps_mac-{{ checksum "yarn.lock" }}
+      - run:
+          name: install dependencies
+          command: yarn --frozen-lockfile
+      - save_cache:
+          key: node_deps_mac-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/project/node_modules
+      - run:
+          name: build for macos(dmg)
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
@@ -70,5 +112,15 @@ workflows:
             branches:
               only:
                 - /release.*/
+          requires:
+            - lint-and-test
+      - build-windows:
+          filters:
+            <<: *filters-build
+          requires:
+            - lint-and-test
+      - build-macos:
+          filters:
+            <<: *filters-build
           requires:
             - lint-and-test
