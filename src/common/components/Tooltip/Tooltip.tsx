@@ -6,28 +6,30 @@ import CSS from 'csstype'
 export type TTooltipProps = {
   type: 'left' | 'right' | 'top' | 'bottom'
   classnames?: string
+  wrapperClassNames?: string
   content: string
   width: number
-  hPosPercent?: number
+  vPosPercent?: number
 }
 
 const Tooltip: FunctionComponent<TTooltipProps> = ({
   type,
   classnames,
+  wrapperClassNames,
   content,
   width,
   children,
-  hPosPercent = 150,
+  vPosPercent = 150,
 }) => {
   const styles = {
     top: {
       width: `${width}px`,
-      bottom: `${hPosPercent}%`,
+      bottom: `${vPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
     },
     bottom: {
       width: `${width}px`,
-      top: `${hPosPercent}%`,
+      top: `${vPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
     },
     right: {
@@ -42,13 +44,13 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   const arrow_styles = {
     top: {
       width: '10px',
-      top: `calc(${hPosPercent}% - 8px)`,
+      top: `calc(${vPosPercent}% - 8px)`,
       left: '50%',
       marginLeft: '-5px',
     },
     bottom: {
       width: '10px',
-      bottom: `calc(${hPosPercent}% - 8px)`,
+      bottom: `calc(${vPosPercent}% - 8px)`,
       left: '50%',
       marginLeft: '-5px',
       transform: 'rotate(180deg)',
@@ -83,7 +85,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
     arrowStyle = arrow_styles.right
   }
   return (
-    <div className='relative tooltip'>
+    <div className={cn('relative tooltip', wrapperClassNames)}>
       {children}
       <img
         style={arrowStyle}

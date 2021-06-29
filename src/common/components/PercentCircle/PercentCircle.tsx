@@ -7,7 +7,7 @@ type TRarenessScoreProps = {
   children: React.ReactNode
 }
 
-const strokeWidth = 6
+const strokeWidth = 8
 const radius = 50 - strokeWidth / 2
 const length = radius * 2 * Math.PI
 const dashArray = String(length)

@@ -6,7 +6,7 @@ import playIco from '../../../common/assets/icons/ico-arrow.svg'
 import image from '../../../common/assets/images/video-placeholder.jpeg'
 import { Button } from '../../../common/components/Buttons'
 import * as ROUTES from '../../../common/utils/constants/routes'
-import styles from './Welcome.css'
+import styles from './Welcome.module.css'
 
 const OnboardingWelcome = (): JSX.Element => {
   return (

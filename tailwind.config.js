@@ -371,7 +371,6 @@ module.exports = {
         '598px': '37.375rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
-        '95p': '95%',
         '9/10': '90%',
         fit: 'fit-content',
       },

@@ -11,20 +11,14 @@ export function calcPasswordStrength(pass: string): number {
   let score = 0
 
   // award every unique letter until 5 repetitions
-  type Obj1 = {
-    [key: string]: number
-  }
-  const letters: Obj1 = {}
+  const letters: Record<string, number> = {}
   for (let i = 0; i < pass.length; i++) {
     letters[pass[i]] = (letters[pass[i]] || 0) + 1
     score += 5.0 / letters[pass[i]]
   }
 
   // bonus points for mixing it up
-  type Obj2 = {
-    [key: string]: boolean
-  }
-  const variations: Obj2 = {
+  const variations: Record<string, boolean> = {
     digits: /\d/.test(pass),
     lower: /[a-z]/.test(pass),
     upper: /[A-Z]/.test(pass),

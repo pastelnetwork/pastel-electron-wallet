@@ -6,6 +6,7 @@ import Radio from 'common/components/Radio/Radio'
 import { Input } from 'common/components/Inputs'
 import icoClipboard from 'common/assets/icons/ico-clipboard2.svg'
 import Link from 'common/components/Link'
+import styles from './Register.module.css'
 
 export type TStepFeeProps = {
   paymentMethod: PaymentMethods
@@ -20,7 +21,7 @@ export type TStepFeeProps = {
 }
 
 const StepFee = (props: TStepFeeProps): JSX.Element => {
-  const [copiyng, setCopiyng] = useState<boolean>(false)
+  const [copying, setCopying] = useState<boolean>(false)
   const [copied, setCopied] = useState<boolean>(false)
 
   // maybe it would be better to load this list from somewhere
@@ -48,8 +49,8 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
   }
 
   const toClipboard = () => {
-    setCopiyng(true) // animate icon
-    setTimeout(() => setCopiyng(false), 200)
+    setCopying(true) // animate icon
+    setTimeout(() => setCopying(false), 200)
 
     navigator.clipboard.writeText(props.exchangeAddress)
     setCopied(true)
@@ -96,7 +97,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                   src={icoClipboard}
                   className={cn(
                     'w-4 cursor-pointer transition-transform duration-100 ease-in-out',
-                    copiyng ? 'transform scale-150' : '',
+                    copying ? 'transform scale-150' : '',
                   )}
                   onClick={() => toClipboard()}
                 />
@@ -108,18 +109,28 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
 
             {props.paymentMethod === PaymentMethods.CentralizedExchange && (
               <div className='mt-3'>
-                <div className='text-sm text-gray-77 mb-4'>
+                <div className='text-sm text-gray-77'>
                   Choose platform and pay
                 </div>
 
                 {centralizedExs.map((item, i) => (
-                  <Radio
-                    key={i}
-                    checked={props.centralizedExchangeName === item.name}
-                    onChange={val => onChangePayPlatform(item.name, val)}
-                  >
-                    {item.name}
-                  </Radio>
+                  <div className='mt-18px'>
+                    <Radio
+                      key={i}
+                      checked={props.centralizedExchangeName === item.name}
+                      onChange={val => onChangePayPlatform(item.name, val)}
+                    >
+                      <span
+                        className={cn(
+                          props.centralizedExchangeName === item.name
+                            ? 'text-gray-700'
+                            : 'text-gray-a0',
+                        )}
+                      >
+                        {item.name}
+                      </span>
+                    </Radio>
+                  </div>
                 ))}
               </div>
             )}
@@ -138,7 +149,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
               </Link>
             </h2>
 
-            <div className='mt-4'>
+            <div className={cn('mt-4 airdrop', styles.airdrop)}>
               <Input
                 className='w-full'
                 type='text'
@@ -162,7 +173,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
               ? 'Apply'
               : 'Proceed to 1,000 PSL Payment'
           }
-          active={nextActive}
+          disabled={!nextActive}
         />
       </div>
     </div>

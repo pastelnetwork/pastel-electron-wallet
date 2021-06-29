@@ -15,28 +15,30 @@ export type TPasswordStrengthProps = {
 }
 
 const PasswordStrength = (props: TPasswordStrengthProps): JSX.Element => {
-  let cl = ''
+  let colorClass = ''
 
   // colors logic
   switch (props.strength) {
     case PasswordStrengths.Weak:
-      cl = 'bg-orange-63'
+      colorClass = 'bg-orange-63'
       break
 
     case PasswordStrengths.Moderate:
-      cl = 'bg-yellow-ff'
+      colorClass = 'bg-yellow-ff'
       break
 
     case PasswordStrengths.Good:
     case PasswordStrengths.Excellent:
-      cl = 'bg-green-00'
+      colorClass = 'bg-green-00'
       break
   }
 
-  const items: string[] = []
+  const segmentsClasses: string[] = []
 
   for (let i = 0; i < 4; i++) {
-    items.push(i < props.strength ? cl : 'bg-gray-a6 opacity-20')
+    segmentsClasses.push(
+      i < props.strength ? colorClass : 'bg-gray-a6 opacity-20',
+    )
   }
 
   return (
@@ -46,8 +48,8 @@ const PasswordStrength = (props: TPasswordStrengthProps): JSX.Element => {
         props.className ? props.className : '',
       )}
     >
-      {items.map((e, i) => (
-        <div key={i} className={cn('h-1.5 rounded-full ', e)}></div>
+      {segmentsClasses.map((segClass, i) => (
+        <div key={i} className={cn('h-1.5 rounded-full ', segClass)}></div>
       ))}
     </div>
   )

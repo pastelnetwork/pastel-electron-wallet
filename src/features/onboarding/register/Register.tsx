@@ -18,7 +18,7 @@ import infoIco from 'common/assets/icons/ico-info.svg'
 import closeIcon from 'common/assets/icons/ico-close.svg'
 
 import * as ROUTES from 'common/utils/constants/routes'
-import styles from './Register.css'
+import styles from './Register.module.css'
 
 import { Steps, useRegisterState } from './Regiser.state'
 
@@ -112,7 +112,7 @@ const RegisterContent = (): JSX.Element => {
               <div className='text-gray-800 text-32px font-extrabold'>
                 Onboarding
               </div>
-              <div className='font-medium text-sm text-gray-33 opacity-50 mt-3'>
+              <div className='font-medium text-sm text-gray-93 opacity-50 mt-1'>
                 Getting Started on Pastel Network
               </div>
             </div>
@@ -153,18 +153,25 @@ const RegisterContent = (): JSX.Element => {
                     className='ml-1'
                   />
                 )}
-                <div className='flex-grow flex items-center ml-8'>
-                  {item.label}
+                <div
+                  className={cn(
+                    'flex-grow flex items-center ml-8 text-lg',
+                    state.step === item.id
+                      ? 'font-black text-gray-23'
+                      : 'font-medium text-gray-a0',
+                  )}
+                >
+                  <span>{item.label}</span>
                   {state.step === item.id &&
                     item.tooltipText &&
                     item.tooltipWidth && (
-                      <div className='ml-2'>
+                      <div className='inline-block mx-2'>
                         <Tooltip
-                          classnames='text-sm py-1 px-1.5'
+                          classnames='text-sm py-1 px-1.5 ml-2'
                           content={item.tooltipText}
                           type='top'
                           width={item.tooltipWidth}
-                          hPosPercent={140}
+                          vPosPercent={140}
                         >
                           <img className='w-5' src={infoIco} alt='info' />
                         </Tooltip>

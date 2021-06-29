@@ -6,7 +6,6 @@ import icoPdf from 'common/assets/icons/ico-pdf.svg'
 import icoDownload from 'common/assets/icons/ico-download-2.svg'
 import { PrevButton, NextButton } from './Buttons'
 import { BackupMethods } from './Regiser.state'
-import styles from './Register.css'
 
 export type TStepBackupMethodProps = {
   backupMethod: BackupMethods
@@ -30,7 +29,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
     },
   ]
 
-  const onDlPdf = () => {
+  const onDownloadPdf = () => {
     // prepare PDF
     setPdfPrepareProgress(65)
   }
@@ -60,7 +59,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
         {props.backupMethod === BackupMethods.PDF && (
           <div className='mt-14'>
             <h1 className='text-gray-23 text-xl font-black'>
-              Crypto-keys backup method
+              Crypt keys backup method
             </h1>
             <h2 className='text-gray-77 text-sm font-normal'>
               Download PDF “paper wallet” file with keys for your PastelID
@@ -71,19 +70,19 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
 
               <div className='ml-4 mr-4'>
                 <div className='text-base font-medium text-gray-1f'>
-                  Crypto-keys
+                  Crypto keys
                 </div>
                 <div className='text-sm font-medium text-gray-8e'>0.5mb</div>
               </div>
 
               {pdfPrepareProgress === 0 && (
                 <div className='flex-grow flex justify-end'>
-                  <span
-                    className='w-12 rounded-full bg-gray-eb flex justify-center items-center cursor-pointer'
-                    onClick={() => onDlPdf()}
+                  <button
+                    className='w-12 h-12 rounded-full bg-gray-eb flex justify-center items-center cursor-pointer'
+                    onClick={() => onDownloadPdf()}
                   >
-                    <img src={icoDownload} className='w-5' />
-                  </span>
+                    <img src={icoDownload} className='w-5 cursor-pointer' />
+                  </button>
                 </div>
               )}
 
@@ -115,13 +114,11 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
               of Changing Code with your Smartphone:
             </h2>
 
-            <div
-              className={cn(
-                'mt-5 p-5 border border-gray-e1 flex rounded-md justify-center qrWrapper',
-                styles.qrWrapper,
-              )}
-            >
-              <QRCode value='https://explorer.pastel.network/' />
+            <div className='mt-5 p-5 border border-gray-e1 flex rounded-md justify-center shadow-textbox'>
+              <QRCode
+                size={180}
+                value='sa98d7samd21m7382713987128n37n9821n73981273987128nb37982173bn98172b397828b13798721b3987218b47847b982b1n9c87nb9821nb492871498127sa98d7samd21m7382713987128n37n9821n73981273987128nb37982173bn98172b397828b13798721b3987218b47847b982b1n9c87nb9821nb492871498127sa98d7samd21m7382713987128n37n9821n73981273987128nb37982173bn98172b397828b13798721b3987218b47847b982b1n9c87nb9821nb492871498127sa98d7samd21m7382713987128n37n9821n73981273987128nb37982173bn98172b397828b13798721b3987218b47847b982b1n9c87nb9821nb492871498127'
+              />
             </div>
           </div>
         )}
@@ -132,7 +129,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
         <NextButton
           onClick={() => props.goToNextStep()}
           text='Next step 3'
-          active={nextActive}
+          disabled={!nextActive}
         />
       </div>
     </div>

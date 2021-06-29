@@ -1,5 +1,4 @@
 import { useState } from 'react'
-// import * as ROUTES from 'common/utils/constants/routes'
 
 export enum Steps {
   Login = 1,

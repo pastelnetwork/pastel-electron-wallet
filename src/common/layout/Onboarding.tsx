@@ -11,6 +11,7 @@ const OnboardingLayout: React.FC = ({ children }) => {
   const hideCloseBtn = [
     ROUTES.WELCOME_PAGE,
     ROUTES.SIGN_UP, // sign up page require confirm dialog on close request
+    ROUTES.REGISTER_PENDING,
   ].includes(location.pathname)
 
   const withPaddings = ![ROUTES.REGISTER_SUCCESSFUL, ROUTES.SIGN_UP].includes(

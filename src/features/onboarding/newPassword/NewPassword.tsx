@@ -7,7 +7,7 @@ import Typography from '../../../common/components/Typography/Typography'
 import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 import { colors } from '../../../common/theme/colors'
 import * as ROUTES from '../../../common/utils/constants/routes'
-//import { calcPasswordStrength } from 'common/utils/passwords'
+import { calcPasswordStrength } from 'common/utils/passwords'
 
 interface NewPasswordFormInput {
   value: string
@@ -34,8 +34,7 @@ const NewPassword: React.FC = () => {
     event.preventDefault()
   }
 
-  // calcPasswordStrength() may be used to calc strength
-  const pwdStrength = 0
+  const pwdStrength = calcPasswordStrength(newPassword.value)
 
   return (
     <div className='mt-2.5'>

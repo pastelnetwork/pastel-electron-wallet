@@ -5,7 +5,6 @@ import Typography from '../../../common/components/Typography/Typography'
 import { colors } from '../../../common/theme/colors'
 
 import registerImage from '../../../common/assets/images/registration-fee-pending.png'
-import { Button } from '../../../common/components/Buttons'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import * as Styles from './RegistrationPending.styles'
 
@@ -19,10 +18,8 @@ const RegistrationPending = (): JSX.Element => {
         </Typography>
       </Styles.TitleContainer>
       <Styles.Image src={registerImage}></Styles.Image>
-      <Link to={ROUTES.REGISTER_SUCCESSFUL}>
-        <Button variant='default' className='w-60'>
-          Check payment status
-        </Button>
+      <Link to={ROUTES.REGISTER_SUCCESSFUL} className='link'>
+        Check payment status manually
       </Link>
     </Styles.Container>
   )

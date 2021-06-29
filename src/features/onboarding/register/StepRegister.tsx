@@ -4,9 +4,8 @@ import { Input } from 'common/components/Inputs'
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 import { NextButton } from './Buttons'
-import icoShowPwd from 'common/assets/icons/ico-show-pwd.svg'
-import icoHidePwd from 'common/assets/icons/ico-hide-pwd.svg'
 import { calcPasswordStrength } from 'common/utils/passwords'
+import InputPassword from 'common/components/Inputs/InputPassword'
 
 export type TStepRegisterProps = {
   username: string
@@ -79,21 +78,13 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           hintAsTooltip={true}
         />
         <div className='mt-6'>
-          <Input
+          <InputPassword
             className='w-full'
             type={props.showPassword ? 'text' : 'password'}
             label='Password'
             value={props.password}
             onChange={onPasswordChanged}
-            ref={null}
             hint='at least 8 characters and at least 2 numbers'
-            append={
-              <img
-                className='cursor-pointer'
-                src={props.showPassword ? icoShowPwd : icoHidePwd}
-                onClick={() => props.setShowPassword(!props.showPassword)}
-              />
-            }
           />
         </div>
 
@@ -104,10 +95,12 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
             isChecked={props.termsAgreed}
             clickHandler={onAgreementClicked}
           >
-            I certify that I’m 18 years of age or older, and agree to the{' '}
-            <Link to='#' className='link'>
-              User Agreement and Privacy Policy
-            </Link>
+            <span className='text-14px text-gray-a0'>
+              I certify that I’m 18 years of age or older, and agree to the{' '}
+              <Link to='#' className='link'>
+                User Agreement and Privacy Policy
+              </Link>
+            </span>
           </Checkbox>
         </div>
       </form>
@@ -116,7 +109,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
         <NextButton
           onClick={() => props.goToNextStep()}
           text='Next step 2'
-          active={nextActive}
+          disabled={!nextActive}
         />
       </div>
     </div>

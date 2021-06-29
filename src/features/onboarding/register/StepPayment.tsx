@@ -1,4 +1,5 @@
 import * as React from 'react'
+import cn from 'classnames'
 import Radio from 'common/components/Radio/Radio'
 import Tooltip from 'common/components/Tooltip'
 import { PaymentMethods } from './Regiser.state'
@@ -68,28 +69,46 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
   return (
     <div className='flex flex-col h-full'>
       <div className='flex-grow flex flex-col justify-center'>
-        <h1 className='text-gray-23 text-xl font-black'>
+        <h1 className='text-gray-23 text-xl font-black flex items-center'>
           Choose payment method
+          <Tooltip
+            classnames='text-sm'
+            wrapperClassNames='ml-2 text-base'
+            content={'Payment method tooltip'}
+            type='top'
+            width={150}
+            vPosPercent={120}
+          >
+            <img src={infoIco} className='w-4 inline-block flex-shrink-0' />
+          </Tooltip>
         </h1>
         <h2 className='text-gray-77 text-sm font-normal'>
           1,000 PSL fee (worth ~$5.20 at current PSL price)
         </h2>
         <div className='mt-7'>
-          {methods.map((m, i) => (
-            <div className='flex items-center' key={i}>
+          {methods.map((method, i) => (
+            <div className='flex items-center mt-18px' key={i}>
               <Radio
-                checked={props.paymentMethod === m.method}
-                onChange={val => onChangePayMethod(m.method, val)}
+                checked={props.paymentMethod === method.method}
+                onChange={val => onChangePayMethod(method.method, val)}
               >
-                {m.name}
+                <span
+                  className={cn(
+                    props.paymentMethod === method.method
+                      ? 'text-gray-700'
+                      : 'text-gray-a0',
+                  )}
+                >
+                  {method.name}
+                </span>
               </Radio>
               <div className='ml-4'>
                 <Tooltip
                   classnames='text-sm py-1 px-1.5'
-                  content={m.tooltipText}
+                  content={method.tooltipText}
                   type='top'
-                  width={m.tooltipWidth}
-                  hPosPercent={120}
+                  width={method.tooltipWidth}
+                  vPosPercent={120}
                 >
                   <img
                     src={infoIco}
@@ -106,7 +125,6 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
         <NextButton
           onClick={() => props.goToNextStep()}
           text='Proceed to the Payment Method'
-          active={true}
         />
       </div>
     </div>
