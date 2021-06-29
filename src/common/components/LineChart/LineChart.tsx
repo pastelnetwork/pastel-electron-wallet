@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import * as d3 from 'd3'
-import style from './LineChart.module.css'
 
 export type TLineChartRow = {
   date: Date
@@ -129,7 +128,8 @@ const LineChart = ({
         tooltipContainer.append('text').attr('x', 15).attr('dy', '.31em')
         tooltipContainer
           .append('rect')
-          .attr('class', style.tooltip)
+          .attr('fill', '#141416')
+          .attr('fill-opacity', 0.88)
           .attr('width', 57)
           .attr('height', 28)
           .attr('x', -28)
