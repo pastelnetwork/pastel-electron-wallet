@@ -1,5 +1,6 @@
 import React, { useEffect, useState, forwardRef } from 'react'
 import { Backspace } from '../Icons'
+import cn from 'classnames'
 
 export type TProps = {
   value: number
@@ -7,6 +8,7 @@ export type TProps = {
   min?: number
   max?: number
   fractionDigits?: number
+  className?: string
 }
 
 export default forwardRef<HTMLDivElement, TProps>(function Numpad(
@@ -16,6 +18,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
     min = -Infinity,
     max = Infinity,
     fractionDigits = 0,
+    className,
   },
   ref,
 ) {
@@ -55,11 +58,14 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
   return (
     <div
       ref={ref}
-      className='p-2 bg-white rounded-b shadow-md text-gray-51 space-y-2 border border-gray-e7'
+      className={cn(
+        'p-2 bg-white rounded-b shadow-md text-gray-51 space-y-2 border border-gray-e7',
+        className,
+      )}
     >
       <div className='relative'>
         <input
-          className='input'
+          className='input w-[136px]'
           value={value}
           onChange={e => onChange(e.target.value)}
         />
