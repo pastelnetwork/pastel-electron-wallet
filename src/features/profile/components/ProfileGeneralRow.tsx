@@ -11,7 +11,7 @@ const ProfileGeneralRow = ({
 }: TProfileGeneralRow): JSX.Element => {
   return (
     <div className='flex'>
-      <div className='w-190px text-gray-71 flex-shrink-0'>{title}</div>
+      <div className='w-[215px] text-gray-71 flex-shrink-0'>{title}</div>
       <div className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap'>
         {children}
       </div>

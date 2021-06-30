@@ -45,7 +45,7 @@ const Profile = (props: TProfileProps): JSX.Element => {
   }
 
   return (
-    <div className='mx-auto w-full bg-gray-f8 text-gray-23'>
+    <div className='mx-auto w-full bg-gray-f8 text-gray-23 h-auto overflow-hidden'>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader
         title='My Account'

@@ -4,14 +4,17 @@ import Link from '../../../../common/components/Link'
 import { Button } from '../../../../common/components/Buttons'
 import Password from '../../components/Password'
 import Card from '../../components/Card'
+import { SecurityPasswordModal } from '../mySecurityModals'
 
 const ChangePassword = (): JSX.Element => {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [noMatch, setNoMatch] = useState(false)
+  const [securityPassword, setSecurityPassword] = useState(false)
 
   const submitPassword = () => {
     setNoMatch(newPassword !== confirmPassword)
+    setSecurityPassword(true)
   }
 
   useEffect(() => {
@@ -38,7 +41,8 @@ const ChangePassword = (): JSX.Element => {
         <Link
           href='https://www.lastpass.com/'
           target='_blank'
-          className='underline'
+          className='underline italic'
+          variant='gray-a0'
         >
           LastPass
         </Link>
@@ -46,7 +50,8 @@ const ChangePassword = (): JSX.Element => {
         <Link
           href='https://1password.com/'
           target='_blank'
-          className='underline'
+          className='underline italic'
+          variant='gray-a0'
         >
           1Password
         </Link>
@@ -66,12 +71,18 @@ const ChangePassword = (): JSX.Element => {
   )
 
   return (
-    <Card
-      title='Change Password'
-      description='Password must contain at least 1 letter, 1 number, and 1 symbol. Minimum length is 12 characters.'
-      content={content}
-      footer={footer}
-    />
+    <>
+      <Card
+        title='Change Password'
+        description='Password must contain at least 1 letter, 1 number, and 1 symbol. Minimum length is 12 characters.'
+        content={content}
+        footer={footer}
+      />
+      <SecurityPasswordModal
+        isOpen={securityPassword}
+        handleClose={() => setSecurityPassword(false)}
+      ></SecurityPasswordModal>
+    </>
   )
 }
 

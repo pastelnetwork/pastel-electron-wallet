@@ -9,7 +9,9 @@ export type TInput = {
   type?: 'text' | 'number' | 'tel' | 'email' | 'password'
   prepend?: ReactNode
   append?: ReactNode
+  appendOutside?: ReactNode
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onClick?: () => void
   isValid?: boolean | undefined
   label?: string
   id?: string
@@ -17,6 +19,7 @@ export type TInput = {
   errorMessage?: string | null
   disabled?: boolean
   placeholder?: string
+  labelClassName?: string
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
@@ -28,6 +31,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       type = 'text',
       prepend,
       append,
+      appendOutside,
       isValid,
       label,
       placeholder,
@@ -35,11 +39,14 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       hint,
       errorMessage,
       disabled,
+      labelClassName = 'inline-block text-gray-71 text-h5 pb-2',
+      hintClassName = '',
+      onClick,
       ...otherProps
     },
     ref,
   ) => {
-    const classes = cn('relative flex items-center', className)
+    const classes = cn('relative flex items-center w-full', className)
 
     const wrapperClasses = cn({
       'cursor-not-allowed': disabled,
@@ -64,47 +71,50 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
 
     return (
       <div className={wrapperClasses}>
-        {label && (
-          <label
-            htmlFor={id}
-            className='inline-block text-gray-71 text-h5 pb-2'
-          >
-            {label}
-          </label>
-        )}
+        {label && <div className={labelClassName}>{label}</div>}
         <div className={classes}>
-          {prepend && <div className='pl-2'>{prepend}</div>}
+          <div className='relative flex items-center w-full' onClick={onClick}>
+            {prepend && <div className='pl-2 select-none'>{prepend}</div>}
+            <input
+              id={id}
+              ref={ref}
+              className={inputClasses}
+              onChange={onChange}
+              type={type}
+              placeholder={placeholder}
+              {...otherProps}
+              disabled={disabled}
+            />
+            <fieldset className={fieldsetClasses} />
 
-          <input
-            id={id}
-            ref={ref}
-            className={inputClasses}
-            onChange={onChange}
-            type={type}
-            placeholder={placeholder}
-            {...otherProps}
-            disabled={disabled}
-          />
-          <fieldset className={fieldsetClasses} />
+            {append && <div className='pr-2'>{append}</div>}
 
-          {append && <div className='pr-2'>{append}</div>}
-
-          {isValid === true && (
-            <div className='pr-2'>
-              <Icon src={CheckIcon} variant='center' />
-            </div>
-          )}
-          {isValid === false && (
-            <div className='pr-2 text-red-7a'>
-              <Icon src={TimesIcon} className='fill-current' />
+            {isValid === true && (
+              <div className='pr-2'>
+                <Icon src={CheckIcon} variant='center' />
+              </div>
+            )}
+            {isValid === false && (
+              <div className='pr-2 text-red-7a'>
+                <Icon src={TimesIcon} className='fill-current' />
+              </div>
+            )}
+          </div>
+          {appendOutside && (
+            <div className='ml-4 select-none' onClick={onClick}>
+              {appendOutside}
             </div>
           )}
         </div>
+
         {(errorMessage || hint) && (
           <p
-            className={`${
-              isValid === false ? 'text-red-7a' : 'text-button-text'
-            } text-h6 pt-1`}
+            className={cn(
+              `${
+                isValid === false ? 'text-red-7a' : 'text-button-text'
+              } text-h6 pt-1`,
+              hintClassName,
+            )}
           >
             {errorMessage ? errorMessage : hint}
           </p>

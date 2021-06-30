@@ -1,13 +1,11 @@
 import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Input } from '../../../common/components/Inputs'
+import { Input, InputPassword } from '../../../common/components/Inputs'
 import { Button } from '../../../common/components/Buttons'
 import Typography from '../../../common/components/Typography/Typography'
 
 import * as ROUTES from '../../../common/utils/constants/routes'
-
-import * as Styles from './Login.styles'
 
 interface LoginFormInput {
   value: string
@@ -36,16 +34,17 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
   )
 
   return (
-    <Styles.Container>
-      <Typography variant='h1' weight={800}>
+    <div className='w-[398px]'>
+      <Typography variant='h1' color='#2D3748' weight={800}>
         Login
       </Typography>
-      <Styles.Form>
+      <form className='flex flex-col mt-30px'>
         <Input
           type='text'
-          label='User name'
+          label='Username'
           placeholder='i.e banksy168'
           value={username.value}
+          labelClassName='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
           onChange={(event: React.FormEvent<HTMLInputElement>) =>
             setUsername({
               ...username,
@@ -56,10 +55,12 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
           errorMessage={
             username.hasError ? 'Please enter a valid username' : null
           }
+          className='mb-6'
         />
-        <Input
+        <InputPassword
           type='password'
           label='Password'
+          labelClassName='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
           value={password.value}
           onChange={(event: React.FormEvent<HTMLInputElement>) =>
             setPassword({
@@ -72,13 +73,13 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
             password.hasError ? 'Please enter a valid password' : null
           }
         />
-        <Styles.FooterText>
+        <div className='text-gray-71 text-h6 my-5'>
           Forgot your password?
-          <Styles.FooterLink to={ROUTES.PASSWORD_RECOVERY}>
+          <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
             {' '}
             Restore access now
-          </Styles.FooterLink>
-        </Styles.FooterText>
+          </Link>
+        </div>
         <Button
           className='w-full'
           type='submit'
@@ -87,15 +88,16 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
             history.push(ROUTES.DASHBOARD)
           }}
         >
-          Submit
+          Login
         </Button>
-      </Styles.Form>
-      <Link to={ROUTES.SIGN_UP}>
-        <Button variant='transparent' className='w-full'>
-          Don't have an account? Sign up
-        </Button>
-      </Link>
-    </Styles.Container>
+      </form>
+      <div className='flex justify-center text-gray-a0 font-medium text-h6 mt-30px'>
+        <span className='mr-1'>Don't have an account?</span>
+        <Link className='text-link' to={ROUTES.SIGN_UP}>
+          Sign Up
+        </Link>
+      </div>
+    </div>
   )
 }
 

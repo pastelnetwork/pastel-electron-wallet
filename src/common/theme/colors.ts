@@ -70,5 +70,6 @@ export const colors = {
     modal: '#1A1A1A',
     pinkLight: '#ddd5ff',
     blueLight: '#cde8fd',
+    grayLight: '#D1D1D1',
   },
 }

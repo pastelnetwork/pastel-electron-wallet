@@ -18,13 +18,16 @@ const OwnershipHistoryModal: React.FC<TOwnershipHistoryModal> = ({
       size='874px'
       title={'“Diamonds in the sky”: copy #1 ownership history'}
       infoIcon={true}
+      bodyClassName='pr-9 pl-10'
+      titleClassName='font-black text-2xl text-gray-2d'
     >
-      <div>
+      <div className='md:w-[798px]'>
         <Table
           columns={Columns}
           data={tableData}
           fixedHeader={true}
           bodyClassName='h-401px'
+          trClassName='border-b border-gray-f2'
         />
       </div>
     </Modal>

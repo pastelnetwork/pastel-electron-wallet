@@ -3,6 +3,7 @@
 @import 'common/assets/fonts/font.css';
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'simplebar/src/simplebar.css';
+@import 'react-datepicker/dist/react-datepicker.css';
 
 @tailwind base;
 
@@ -83,7 +84,7 @@
   }
 
   .link {
-    @apply text-blue-3f hover:text-button-hover;
+    @apply text-button hover:text-button-hover;
   }
 
   .input {
@@ -160,7 +161,7 @@ body,
 }
 .custom-scroll .simplebar-track.simplebar-vertical {
   box-shadow: inset 0.188rem 0px 0px 0px rgba(196, 196, 196, 0.3);
-  width: 1.875rem !important;
+  right: -1.875rem !important;
 }
 
 /* HORIZONTAL SCROLLBAR */
@@ -276,7 +277,8 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .focus-visible:focus-visible {
-  @apply border border-blue-3f;
+  @apply border;
+  @apply border-blue-3f;
 }
 
 .tooltip:hover .tooltiptext {

@@ -15,7 +15,7 @@ const InputPassword: React.FC<TInput> = props => {
       {...props}
       type={type}
       append={
-        type === 'text' ? (
+        type !== 'text' ? (
           <Icon
             src={EyeIcon}
             variant='center'
