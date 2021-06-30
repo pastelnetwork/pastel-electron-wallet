@@ -5,6 +5,7 @@ export type TButton = {
   children?: ReactNode | string
   variant?: 'default' | 'secondary' | 'transparent' | 'navigation'
   disabled?: boolean
+  disabledBule?: boolean
   href?: string
   className?: string
   prepend?: ReactNode
@@ -21,6 +22,7 @@ const Button = ({
   variant = secondary ? 'secondary' : 'default',
   href,
   disabled,
+  disabledBule = false,
   prepend,
   append,
   type,
@@ -35,7 +37,9 @@ const Button = ({
       'bg-button hover:bg-button-hover active:bg-blue-pressed text-white':
         variant === 'default' && !disabled,
       'bg-button-background text-button-text cursor-not-allowed':
-        variant === 'default' && disabled,
+        variant === 'default' && disabled && !disabledBule,
+      'bg-blue-3f bg-opacity-50 text-button-text cursor-not-allowed':
+        variant === 'default' && disabled && disabledBule,
       'border border-button hover:bg-button-hoverAlt hover:text-button-hover active:bg-button-pressedAlt active:text-button-pressed text-button':
         variant === 'secondary' && !disabled,
       'border border-gray-8e text-button-text cursor-not-allowed':

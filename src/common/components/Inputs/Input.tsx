@@ -21,6 +21,7 @@ export type TInput = {
   placeholder?: string
   labelClassName?: string
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
+  appliedStyleValid?: boolean
 }
 
 const Input = React.forwardRef<HTMLInputElement, TInput>(
@@ -42,6 +43,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       labelClassName = 'inline-block text-gray-71 text-h5 pb-2',
       hintClassName = '',
       onClick,
+      appliedStyleValid = true,
       ...otherProps
     },
     ref,
@@ -53,20 +55,20 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     })
 
     const inputClasses = cn({
-      'input-field w-full py-2 text-base placeholder-gray500 text-text-gray800 text-h5 focus:outline-none': true,
+      'input-field w-full py-2 text-base placeholder-gray500 text-text-gray800 text-h5 focus:outline-none placeholder-gray-a0': true,
       'pl-4': !prepend,
       'pl-2': prepend,
       'pr-4': !append,
       'pr-2': append,
       'input-number': type === 'number',
-      'is-valid': isValid === true,
+      'is-valid': isValid === true && appliedStyleValid,
       'is-invalid': isValid === false,
-      'pointer-events-none': disabled,
+      'pointer-events-none z-10': disabled,
     })
 
     const fieldsetClasses = cn({
       'absolute top-0 right-0 bottom-0 left-0 shadow-2px rounded pointer-events-none': true,
-      'bg-line -z-10': disabled,
+      'bg-line -z-20': disabled,
     })
 
     return (
