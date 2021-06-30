@@ -55,7 +55,7 @@ const NFTCard = ({
 
   const wrapperPaddingClass = 'pt-4'
   const titleClass = fullCardProps
-    ? 'font-medium text-h5 md:text-h4 leading-6'
+    ? 'font-extrabold text-h5 md:text-h4 leading-6'
     : 'font-medium'
   const imageHeightClass = fullCardProps ? 'h-230px' : 'h-220px'
   const footerClass = fullCardProps
@@ -139,7 +139,7 @@ const NFTCard = ({
         <div className='flex justify-between'>
           <div
             className={cn('text-gray-4a truncate', titleClass, {
-              'whitespace-nowrap overflow-ellipsis pr-2 text-h5 font-extrabold m-w-full overflow-hidden':
+              'whitespace-nowrap overflow-ellipsis pr-2 text-h5 m-w-full overflow-hidden':
                 variant === 'portfolio',
             })}
           >
@@ -239,9 +239,9 @@ const NFTCard = ({
         >
           <div className='flex items-center justify-between'>
             <span
-              className={`text-sm md:text-base ${
+              className={`text-sm md:text-base font-medium ${
                 variant === 'portfolio'
-                  ? 'font-medium leading-6 text-h6 text-gray-77'
+                  ? 'leading-6 text-h6 text-gray-77'
                   : 'leading-none text-h5 text-gray-71'
               }`}
             >
@@ -273,7 +273,7 @@ const NFTCard = ({
               </div>
               <Button
                 variant='transparent'
-                className='h-32px text-sm border border-blue-3f'
+                className='h-32px text-sm font-extrabold border-2 border-blue-3f'
               >
                 {!fullCardProps.onSale
                   ? 'Make an Offer'
