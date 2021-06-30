@@ -114,7 +114,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                 </div>
 
                 {centralizedExs.map((item, i) => (
-                  <div className='mt-18px'>
+                  <div className='mt-18px' key={i}>
                     <Radio
                       key={i}
                       checked={props.centralizedExchangeName === item.name}

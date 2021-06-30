@@ -16,10 +16,12 @@ export type TPrevBtnProps = {
 export const NextButton = (props: TNextBtnProps): JSX.Element => {
   return (
     <button
-      onClick={() => props.onClick()}
+      onClick={() => {
+        props.onClick()
+      }}
       className={cn(
         'flex items-center justify-center font-medium text-base rounded-2xl h-10 px-3 cursor-pointer',
-        !props.disabled ? 'bg-blue-3f text-white' : 'bg-gray-f2 text-gray-8e ',
+        !props.disabled ? 'bg-blue-3f text-white' : 'bg-gray-f2 text-gray-8e',
         props.className ? props.className : '',
       )}
       disabled={props.disabled}

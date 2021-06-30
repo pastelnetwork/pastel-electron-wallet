@@ -65,7 +65,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
               Download PDF “paper wallet” file with keys for your PastelID
             </h2>
 
-            <div className='mt-6 px-7 py-4 bg-gray-f4 border border-gray-e1 flex rounded-lg'>
+            <div className='mt-6 px-6 py-4 border border-gray-e1 flex rounded-lg'>
               <img src={icoPdf} className='w-10' />
 
               <div className='ml-4 mr-4'>

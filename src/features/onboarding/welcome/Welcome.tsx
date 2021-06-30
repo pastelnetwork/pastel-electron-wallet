@@ -10,7 +10,7 @@ import styles from './Welcome.module.css'
 
 const OnboardingWelcome = (): JSX.Element => {
   return (
-    <div className='w-660px'>
+    <div className='w-649px mx-14 my-11'>
       <div className='text-gray-800 text-32px font-black text-center'>
         Welcome to Pastel NFT
       </div>

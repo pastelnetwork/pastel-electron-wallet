@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { InputPassword, Input } from '../../../common/components/Inputs'
 import { Button } from '../../../common/components/Buttons'
+import CloseButton from '../common/closeButton'
 import Typography from '../../../common/components/Typography/Typography'
 import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 import { colors } from '../../../common/theme/colors'
@@ -37,7 +38,8 @@ const NewPassword: React.FC = () => {
   const pwdStrength = calcPasswordStrength(newPassword.value)
 
   return (
-    <div className='mt-2.5'>
+    <div className='my-9 mx-60px'>
+      <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
       <Typography variant='h1' color='#2D3748' weight={800}>
         Set New Password
       </Typography>
