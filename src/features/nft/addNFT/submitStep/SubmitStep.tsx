@@ -55,7 +55,9 @@ export default function SubmitStep({
                 title='Keyword Hashtags'
                 value={nftData.hashtags.join(', ')}
               />
-              <InfoPair title='Collection' value={nftData.collection} />
+              {nftData.series && (
+                <InfoPair title='Series' value={nftData.series} />
+              )}
               {/* TODO: figure out what to display in Copies */}
               <InfoPair title='Copies' value={`1 of ${nftData.copies}`} />
               <InfoPair
