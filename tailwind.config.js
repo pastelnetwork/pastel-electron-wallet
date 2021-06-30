@@ -177,6 +177,7 @@ module.exports = {
           f8: '#F8FBFF',
           e5: '#E5F1FF',
           eb: '#EBF2FF',
+          37: '#3754DB',
         },
         gray: {
           fc: '#FCFCFD',
@@ -220,6 +221,7 @@ module.exports = {
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
+          ff: '#FF82AC',
           fe: '#FE634C',
           ef: '#FFEFEB',
           '7a': '#FF7A00',
@@ -340,6 +342,7 @@ module.exports = {
       },
       borderRadius: {
         '4px': '0.25rem',
+        '7px': '0.4375rem',
         '8px': '0.5rem',
         '11px': '0.6875rem',
         '65px': '4.063rem',
