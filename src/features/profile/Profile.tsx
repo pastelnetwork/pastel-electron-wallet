@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import ProfileInfo from './myProfile/MyProfile'
-import ProfileComments from './myProfile/ProfileComments'
+import ProfileGeneral from './myProfile/MyProfile'
 import MySecurity from './mySecurity/MySecurity'
+import MyComments from './myComments/MyComments'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 
@@ -55,8 +55,8 @@ const Profile = (props: TProfileProps): JSX.Element => {
           onToggle: onTabToggle,
         }}
       />
-      {tab === Tabs.info && <ProfileInfo />}
-      {tab === Tabs.comments && <ProfileComments />}
+      {tab === Tabs.info && <ProfileGeneral />}
+      {tab === Tabs.comments && <MyComments />}
       {tab === Tabs.security && <MySecurity info={info} />}
     </div>
   )

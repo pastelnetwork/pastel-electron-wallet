@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, ReactNode } from 'react'
 import ArrowToolTip from '../../assets/icons/ico-triangle.svg'
 import cn from 'classnames'
 import CSS from 'csstype'
@@ -6,7 +6,7 @@ import CSS from 'csstype'
 export type TTooltipProps = {
   type: 'left' | 'right' | 'top' | 'bottom'
   classnames?: string
-  content: string
+  content: ReactNode
   width: number
 }
 
@@ -88,7 +88,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
         className='absolute tooltiparrow invisible'
         src={ArrowToolTip}
       />
-      <span
+      <div
         style={style}
         className={cn(
           'absolute bg-black text-white text-center rounded-lg z-10 tooltiptext invisible',
@@ -96,7 +96,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
         )}
       >
         {content}
-      </span>
+      </div>
     </div>
   )
 }
