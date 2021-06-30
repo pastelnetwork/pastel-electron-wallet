@@ -115,8 +115,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
               disabled={!validateUserName(username)}
               variant='default'
               type='submit'
-              className='w-full'
-              disabledBule={true}
+              className='w-full bg-blue-3f bg-opacity-50'
             >
               <span className='text-white font-black text-sm'>
                 Submit Username Change Request
