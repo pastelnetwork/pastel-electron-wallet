@@ -1,6 +1,7 @@
 export * from './Arrow'
 export * from './ArrowShare'
 export * from './ArrowSlim'
+export * from './Backspace'
 export * from './Bookmark'
 export * from './BoxArrowUp'
 export * from './Caret'

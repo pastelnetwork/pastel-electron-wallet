@@ -1,16 +1,15 @@
 import React from 'react'
-import { copiesMax, copiesMin, TForm } from './InputNFTDataStep'
+import { TForm } from './InputNFTDataStep'
 import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
 import StepSlider from './StepSlider'
 import { useWatch } from 'react-hook-form'
-import NumberInput from './NumberInput'
 
 const copiesAmountToShowWarning = 100
 
 export default function Copies({ form }: { form: TForm }): JSX.Element {
   return (
-    <div className='bg-gray-fc rounded-lg px-7 flex justify-between'>
+    <div className='bg-gray-fc rounded-lg px-6 flex justify-between'>
       <div className='py-6'>
         <div className='text-gray-4a font-medium flex items-center mb-2'>
           Copies
@@ -20,12 +19,6 @@ export default function Copies({ form }: { form: TForm }): JSX.Element {
             </Tooltip>
           </div>
         </div>
-        <NumberInput
-          form={form}
-          name='copies'
-          min={copiesMin}
-          max={copiesMax}
-        />
         <Warning form={form} />
       </div>
       <StepSlider
@@ -50,7 +43,7 @@ const Warning = ({ form }: { form: TForm }) => {
   }
 
   return (
-    <div className='text-red-63 text-xs font-italic font-medium w-[203px] mt-2'>
+    <div className='text-red-63 text-xs font-italic font-medium w-[190px] mt-2'>
       Warning: the higher the number of copies you create, the less valuable
       each copy is likely to be!
     </div>

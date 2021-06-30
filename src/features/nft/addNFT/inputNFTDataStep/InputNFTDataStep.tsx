@@ -33,7 +33,7 @@ export const hashtags = [
 const titleMinLength = 10
 
 export const copiesMin = 1
-export const copiesMax = 10000
+export const copiesMax = 1000
 
 export const royaltyMin = 0
 export const royaltyMax = 20
