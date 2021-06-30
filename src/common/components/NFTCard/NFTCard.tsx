@@ -53,7 +53,7 @@ const NFTCard = ({
 }: TNFTCompactCard | TNFTCard): JSX.Element => {
   const fullCardProps = 'author' in props && (props as TNFTCard)
 
-  const wrapperPaddingClass = 'pt-4'
+  const wrapperPaddingClass = 'pt-3 md:pt-4'
   const titleClass = fullCardProps
     ? 'font-extrabold text-h5 md:text-h4 leading-6'
     : 'font-medium'
@@ -61,7 +61,7 @@ const NFTCard = ({
   const footerClass = fullCardProps
     ? variant === 'portfolio'
       ? 'pt-13px'
-      : 'pt-2'
+      : 'pt-2 md:pt-3'
     : 'pt-2.5 pb-0.5'
 
   const getTooltip = (title: string, description: string) => (
@@ -82,7 +82,7 @@ const NFTCard = ({
     >
       {/* Header */}
       {fullCardProps && (
-        <div className='w-full px-18px flex justify-between pb-2'>
+        <div className='w-full px-4 pb-2 md:pb-3 md:px-3 flex justify-between'>
           <div className='flex items-center overflow-hidden'>
             <img src={fullCardProps.avatarSrc} className='w-9' />
             {variant === 'portfolio' ? (
@@ -135,7 +135,7 @@ const NFTCard = ({
         ) : null}
       </div>
       {/* Footer */}
-      <div className={cn('px-18px', footerClass)}>
+      <div className={cn('px-3 md:px-4', footerClass)}>
         <div className='flex justify-between'>
           <div
             className={cn('text-gray-4a truncate', titleClass, {
@@ -146,7 +146,7 @@ const NFTCard = ({
             {title}
           </div>
         </div>
-        <div className='flex text-gray-71 text-sm lg:text-base justify-between py-3 flex-wrap'>
+        <div className='flex text-gray-71 text-sm lg:text-base justify-between py-2 md:py-3 flex-wrap'>
           <div className='flex items-center'>
             <Tooltip
               type='top'
@@ -233,8 +233,8 @@ const NFTCard = ({
       </div>
       {fullCardProps && (
         <div
-          className={`px-12px xl:px-18px pb-4 bg-gray-ef bg-opacity-50 flex-grow ${
-            variant === 'portfolio' ? 'pt-2.5' : 'pt-4'
+          className={`px-3 md:px-4 pb-3 md:pb-4 bg-gray-ef bg-opacity-50 flex-grow ${
+            variant === 'portfolio' ? 'pt-2.5' : 'pt-2 md:pt-3'
           }`}
         >
           <div className='flex items-center justify-between'>
@@ -263,7 +263,7 @@ const NFTCard = ({
             ) : null}
           </div>
           {variant !== 'portfolio' && (
-            <div className='flex items-center text-xs md:text-sm font-extrabold justify-between'>
+            <div className='flex items-center text-xs md:text-sm font-extrabold justify-between pt-2 md:pt-3'>
               <div className='nft-text-gradient'>
                 {!fullCardProps.onSale
                   ? ''
