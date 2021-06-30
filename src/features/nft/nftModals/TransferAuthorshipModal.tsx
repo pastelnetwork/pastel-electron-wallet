@@ -4,6 +4,7 @@ import Button from 'common/components/Buttons/Button'
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import { useToggle } from 'react-use'
 import TransferHistoryModal from 'features/nft/nftModals/TransferHistoryModal'
+import iconInfo from 'common/assets/icons/ico-info.svg'
 
 export type TTransferAuthorshipModal = {
   isOpen: boolean
@@ -28,24 +29,33 @@ const TransferAuthorshipModal: React.FC<TTransferAuthorshipModal> = ({
       isOpen={isOpen}
       handleClose={() => handleClose()}
       size='478px'
-      title={'Tansfer Royalty\nCompensation Rights'}
-      infoIcon={true}
+      title={
+        <div className='text-gray-2d'>
+          <div>Transfer Royalty</div>
+          <div className='flex items-center'>
+            Compensation Rights <img src={iconInfo} className='ml-2' />
+          </div>
+        </div>
+      }
+      titleClassName='text-h2 font-extrabold'
+      headerClassName='px-10 pb-3'
+      infoIcon={false}
     >
       <div>
         <div>
           <button
             type='button'
-            className='block link text-sm font-medium'
+            className='block link text-base font-medium'
             onClick={toggleShowTransferHistory}
           >
             Transfer History
           </button>
         </div>
-        <div className='flex text-gray-77 text-18px mt-12px'>
+        <div className='flex text-gray-77 text-lg leading-6 mt-3'>
           {data.history}
         </div>
         <div>
-          <div className='mt-22px text-gray-71 leading-tight'>
+          <div className='mt-22px text-gray-71 leading-tight text-base'>
             Pastel ID of recipient
           </div>
           <div className='mt-10px h-40px border rounded border-gray-e7 flex items-center'>
@@ -60,14 +70,14 @@ const TransferAuthorshipModal: React.FC<TTransferAuthorshipModal> = ({
               isChecked={isChecked}
               clickHandler={() => setChecked(!isChecked)}
             />
-            <span className='ml-3'>
+            <span className='ml-1'>
               Yes, I confirm the transfer of royalty compensation rights
             </span>
           </div>
         </div>
         <Button
           variant='default'
-          className='flex items-center justify-center w-full'
+          className='flex items-center justify-center w-full mb-2'
         >
           <span className='font-bold'>Submit</span>
         </Button>
