@@ -24,7 +24,7 @@ export default function StepSlider({
       control={form.control}
       render={({ field: { value, onChange } }) => {
         return (
-          <div className='pt-12'>
+          <div className='pt-12 flex items-start space-x-4'>
             <Slider
               variant='stickToBottom'
               width={296}
