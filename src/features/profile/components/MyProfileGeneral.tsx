@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { Convert } from 'easy-currencies'
+import getSymbolFromCurrency from 'currency-symbol-map'
+
 import StarRate from './StarRate'
 import Categories from './Categories'
 import ProfileGeneralRow from './ProfileGeneralRow'
@@ -8,17 +11,19 @@ import Select, { TOption } from './Select/Select'
 export type TProfileGeneral = {
   editMode: boolean
   isEmpty: boolean
+  nativeCurrency?: string
 }
 
 const ProfileGeneral = ({
   editMode,
   isEmpty,
+  nativeCurrency,
 }: TProfileGeneral): JSX.Element => {
   const data = {
     location: 'New York, US',
     language: 'English',
     categories: ['motion graphics', 'illustration', 'abstract'],
-    reputation: 3.89,
+    reputation: 4.89,
     buyerBans: 3,
     highestFeeRecieved: { value: '136,200,000', comment: 632 },
     totalSalesAmount: { value: '560,600,00', comment: 211 },
@@ -44,6 +49,7 @@ const ProfileGeneral = ({
   const [bio, setBio] = useState<string>(data.bio)
   const [location, setLocation] = useState<TOption | null>(locations[1])
   const [language, setLanguage] = useState<TOption | null>(languages[0])
+  const [currentPSLPrice, setCurrentPSLPrice] = useState(0)
 
   useEffect(() => {
     setLocation(locations[isEmpty ? 0 : 1])
@@ -51,17 +57,29 @@ const ProfileGeneral = ({
     setBio(isEmpty ? 'None' : data.bio)
   }, [isEmpty])
 
+  useEffect(() => {
+    const getNativeCurrency = async (): Promise<void> => {
+      if (!nativeCurrency) {
+        return
+      }
+
+      const result = await Convert(15).from('USD').to(nativeCurrency)
+      setCurrentPSLPrice(result)
+    }
+    getNativeCurrency()
+  })
+
   return (
-    <div className='flex-grow w-full 1200px:w-3/5 1200px:pr-10 px-10'>
-      <div className='w-full pb-4 space-y-4'>
+    <div className='flex-grow w-full 1200px:w-3/5 pr-74px'>
+      <div className='w-full space-y-4'>
         <ProfileGeneralRow title='Location'>
           {editMode ? (
             <Select
-              className='text-gray-4a flex-grow'
+              className='text-gray-4a flex-grow shadow-4px'
               selected={location}
               options={locations}
               onChange={setLocation}
-              autocomplete={true}
+              autocomplete
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>{location?.label}</div>
@@ -70,76 +88,125 @@ const ProfileGeneral = ({
         <ProfileGeneralRow title='Language'>
           {editMode ? (
             <Select
-              className='text-gray-4a flex-grow'
+              className='text-gray-4a flex-grow shadow-4px'
               selected={language}
               options={languages}
               onChange={setLanguage}
-              autocomplete={true}
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>English</div>
           )}
         </ProfileGeneralRow>
         <ProfileGeneralRow title='Categories'>
-          {editMode ? (
-            <Categories value={categories} onChange={setCategories} />
+          {isEmpty ? (
+            <span className='text-gray-4a font-medium text-base leading-5'>
+              None
+            </span>
           ) : (
-            <div className='flex whitespace-pre-wrap text-gray-4a'>
-              {categories.join(', ')}
-            </div>
+            <>
+              {editMode ? (
+                <Categories value={categories} onChange={setCategories} />
+              ) : (
+                <div className='flex whitespace-pre-wrap text-gray-4a'>
+                  {categories.join(', ')}
+                </div>
+              )}
+            </>
           )}
         </ProfileGeneralRow>
-
-        <ProfileGeneralRow title='Buyer reputation'>
+        <ProfileGeneralRow title='Pastel Reputation Score'>
           <StarRate rate={data.reputation} />
           <div className='1200px:pl-2 text-gray-500'>
-            {data.reputation} reputation
+            {isEmpty ? '0.00' : data.reputation}
           </div>
         </ProfileGeneralRow>
-        <ProfileGeneralRow title='Buyer bans'>
-          <Tooltip content='Text placeholder' type='top' width={140}>
-            <div className='text-blue-400 cursor-pointer'>3</div>
-          </Tooltip>
-        </ProfileGeneralRow>
       </div>
-      <div className='w-full pb-4 pt-4 space-y-4'>
-        <ProfileGeneralRow title='Highest fee recieved'>
-          <div>
-            {data.highestFeeRecieved.value}k PSL
-            {data.highestFeeRecieved.comment && (
-              <span className='ml-2 bg-gray-e6 rounded px-1 font-medium py-2px'>
-                Top #{data.highestFeeRecieved.comment}
+      <div className='w-full mt-98px space-y-4'>
+        <ProfileGeneralRow title='Highest Sale Price Received'>
+          <div className='flex items-center'>
+            {isEmpty ? (
+              <span className='cursor-pointer text-gray-4a text-base leading-5'>
+                0 PSL
               </span>
+            ) : (
+              <>
+                <Tooltip
+                  type='top'
+                  width={200}
+                  content={
+                    <p className='mb-0 px-2 py-1 text-xs leading-5 text-gray-fc'>
+                      ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
+                      {currentPSLPrice}{' '}
+                      <span className='italic font-normal'>
+                        based on current PSL price
+                      </span>
+                    </p>
+                  }
+                >
+                  <span className='cursor-pointer text-gray-4a text-base leading-5'>
+                    {data.highestFeeRecieved.value}k PSL
+                  </span>
+                </Tooltip>
+                {data.highestFeeRecieved.comment && (
+                  <span className='ml-15px bg-gray-e6 text-gray-4a rounded px-5px font-black text-sm leading-6'>
+                    Top #{data.highestFeeRecieved.comment}
+                  </span>
+                )}
+              </>
             )}
           </div>
         </ProfileGeneralRow>
-        <ProfileGeneralRow title='Total sales amount'>
-          <div>
-            {data.totalSalesAmount.value}k PSL
-            {data.totalSalesAmount.comment && (
-              <span className='ml-2 bg-gray-e6 rounded px-1 font-medium py-2px'>
-                Top #{data.totalSalesAmount.comment}
+        <ProfileGeneralRow title='Total Combined Sales'>
+          <div className='flex items-center'>
+            {isEmpty ? (
+              <span className='cursor-pointer text-gray-4a text-base leading-5'>
+                0 PSL
               </span>
+            ) : (
+              <>
+                <Tooltip
+                  type='top'
+                  width={200}
+                  content={
+                    <p className='mb-0 px-2 py-1 text-xs leading-5 text-gray-fc'>
+                      <span className='font-extrabold'>~$681</span>{' '}
+                      <span className='italic font-normal'>
+                        based on current PSL price
+                      </span>
+                    </p>
+                  }
+                >
+                  <span className='cursor-pointer text-gray-4a text-base leading-5'>
+                    {data.totalSalesAmount.value}k PSL
+                  </span>
+                </Tooltip>
+                {data.totalSalesAmount.comment && (
+                  <span className='ml-15px bg-gray-e6 text-gray-4a rounded px-5px font-black text-sm leading-6'>
+                    Top #{data.totalSalesAmount.comment}
+                  </span>
+                )}
+              </>
             )}
           </div>
         </ProfileGeneralRow>
-        <ProfileGeneralRow title='Total items sold'>
-          {data.totalItemsSold}
-        </ProfileGeneralRow>
-        <ProfileGeneralRow title='Top category persentage'>
-          {data.topCategoryPercentage}
+        <ProfileGeneralRow title='Total NFTs Sold'>
+          {isEmpty ? (
+            <span className='text-base leading-5'>0 Copies across 0 NFTs</span>
+          ) : (
+            <span className='text-base leading-5'>{data.totalItemsSold}</span>
+          )}
         </ProfileGeneralRow>
       </div>
-      <div className='w-full pt-6'>
-        <div className='flex pt-2'>
+      <div className='w-full mt-96px mb-50px 1200px:mb-0'>
+        <div className='flex'>
           <div className='w-190px text-gray-71'>Bio</div>
         </div>
-        <div className='flex pt-2'>
-          <div className='flex-grow text-gray-4a '>
+        <div className='flex pt-3'>
+          <div className='flex-grow text-gray-4a font-medium text-base leading-5'>
             {editMode ? (
-              <div className='shadow-xs rounded bg-white p-4 pb-2'>
+              <div className='rounded bg-white p-4 pb-2 shadow-4px'>
                 <textarea
-                  className='w-full rounded outline-none h-220px'
+                  className='w-full rounded outline-none h-220px resize-none'
                   value={bio}
                   onChange={e => setBio(e.target.value)}
                 />
