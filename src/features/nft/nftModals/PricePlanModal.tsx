@@ -84,22 +84,28 @@ const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
       size='874px'
       title={'“Diamonds in the sky”: copies buy-it-now price plan:'}
       infoIcon={true}
+      titleClassName='font-black text-2xl text-gray-2d'
+      headerClassName='px-10'
+      bodyClassName='pl-10 pr-9'
     >
-      <div className='-mt-18px'>
+      <div className='sm:w-[794px] mt-3'>
         <div className='text-lg text-gray-77 pb-3'>
           For every additional copy sold, the price will be changed according to
           your desired settings.
         </div>
-        <Table
-          columns={cellEdit ? Columns_edit : Columns}
-          data={tableData}
-          fixedHeader={true}
-          bodyClassName='h-401px'
-          trClassName={cn(
-            'border-b border-gray-f2',
-            cellEdit ? 'h-104px' : 'h-82px',
-          )}
-        />
+        <div>
+          <Table
+            columns={cellEdit ? Columns_edit : Columns}
+            data={tableData}
+            fixedHeader={true}
+            bodyClassName='h-401px'
+            trClassName={cn(
+              'border-b border-gray-f2',
+              cellEdit ? 'h-104px' : 'h-82px',
+            )}
+          />
+        </div>
+
         {cellEdit && (
           <div className='mt-8 flex justify-between'>
             <Button
