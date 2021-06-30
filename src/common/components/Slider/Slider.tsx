@@ -17,6 +17,8 @@ export type TSliderProps = {
   hideLabel?: boolean
   formatValue?: (value: number) => number | string
   formatTooltipValue?: (value: number) => number | string
+  className?: string
+  valuesClassName?: string
   minMaxClassName?: string
 } & (
   | {
@@ -46,6 +48,8 @@ export default function Slider({
   hideLabel,
   formatValue = defaultFormat,
   formatTooltipValue = formatValue,
+  className,
+  valuesClassName,
   minMaxClassName = 'top-5 text-gray-2d text-sm',
   ...props
 }: TSliderProps): JSX.Element {
@@ -88,7 +92,7 @@ export default function Slider({
       onChange={values => setValues(values as [number, number])}
       renderTrack={({ props: trackProps, children }) => (
         <div
-          className='h-4 rounded relative group'
+          className={cn('h-4 rounded relative group', className)}
           style={{
             width: `${width}px`,
           }}
@@ -99,7 +103,7 @@ export default function Slider({
               stickToBottom
                 ? {
                     ...trackProps.style,
-                    transform: `${trackProps.style.transform} rotate(-1.5deg)`,
+                    transform: `${trackProps.style.transform} rotate(-1.3deg)`,
                   }
                 : trackProps.style
             }
@@ -115,7 +119,9 @@ export default function Slider({
             {children}
           </div>
           {!hideLabel && (
-            <div className='flex-between'>
+            <div
+              className={cn('flex-between whitespace-nowrap', valuesClassName)}
+            >
               <div className='w-0 flex-center'>
                 <div className={minMaxClassName}>{formatValue(min)}</div>
               </div>
@@ -136,6 +142,7 @@ export default function Slider({
       )}
       renderThumb={({ props: thumbProps, value }) => (
         <button
+          type='button'
           className={cn(
             'absolute top-0 -ml-3 w-6 h-6 bg-white rounded-full shadow-depth-1 flex-center focus:outline-none',
             stickToBottom && '-top-1',

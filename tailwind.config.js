@@ -220,11 +220,12 @@ module.exports = {
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
-          '7a': '#FF7A00',
-          ef: '#FFEFEB',
-          14: '#14B85F',
           fe: '#FE634C',
+          ef: '#FFEFEB',
+          '7a': '#FF7A00',
           75: '#FF754C',
+          63: '#FE634C',
+          14: '#14B85F',
         },
         pink: {
           46: '#EF466F',
@@ -238,6 +239,7 @@ module.exports = {
         },
         yellow: {
           ff: '#FFBE3D',
+          c3: '#FFCE14',
           e9: '#E9DB60',
         },
         green: {

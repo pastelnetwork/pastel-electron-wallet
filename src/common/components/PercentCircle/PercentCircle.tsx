@@ -20,12 +20,7 @@ export default function PercentCircle({
   const dashOffset = (length * (100 - percent)) / 100
 
   return (
-    <div
-      className={cn(
-        'w-16 h-16 rounded-full ml-2 md:ml-3 lg:ml-18px relative',
-        color,
-      )}
-    >
+    <div className={cn('w-16 h-16 rounded-full relative', color)}>
       <svg className='w-full h-full transform -rotate-90' viewBox='0 0 100 100'>
         <circle
           cx='50%'
