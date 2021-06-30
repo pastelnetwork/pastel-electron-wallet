@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import ProfileCard from '../components/MyProfileCard'
-import Comments from '../components/Comments'
+import ProfileComments from '../components/ProfileComments'
 import { nativeCurrencyOptions } from '../myProfile/MyProfile'
 import { TOption } from '../components/Select/Select'
 import Checkbox from 'common/components/Checkbox'
@@ -132,7 +132,6 @@ const commentsData: TComment[] = [
 
 const MyComments = (): JSX.Element => {
   const [editMode, setEditMode] = useState(false)
-  const [isEmpty, setEmpty] = useState<boolean>(false)
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
     nativeCurrencyOptions[0],
@@ -146,6 +145,8 @@ const MyComments = (): JSX.Element => {
     console.log(commentId)
   }
 
+  const isEmpty = false
+
   return (
     <div className='flex flex-col flex-grow items-center'>
       <div className='wrapper flex px-60px pb-8 justify-center pt-9 w-full'>
@@ -154,7 +155,6 @@ const MyComments = (): JSX.Element => {
             editMode={editMode}
             setEditMode={setEditMode}
             isEmpty={isEmpty}
-            setEmpty={setEmpty}
             nativeCurrencyOptions={nativeCurrencyOptions}
             nativeCurrency={nativeCurrency}
             onNativeCurrencyChange={setNativeCurrency}
@@ -162,7 +162,7 @@ const MyComments = (): JSX.Element => {
         </div>
         <div className='flex pl-50px justify-between flex-col-reverse lg:flex-row flex-grow'>
           <div className='w-full lg:w-4/5'>
-            <Comments
+            <ProfileComments
               comments={commentsData}
               onReply={handleOnReply}
               onLikeClick={handleOnLikeClick}
