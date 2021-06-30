@@ -79,7 +79,7 @@ const LikeListModal = ({
   const sortedLikes = sortBy(content, sortName, direction)
 
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='4xl'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-4xl'>
       <h2 className='mb-6 text-gray-2d'>“{title}” likes</h2>
       <Scrollbar maxHeight='400'>
         <table

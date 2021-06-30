@@ -1,12 +1,12 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import Component, { TAlert } from './Alert'
+import Alert, { TAlert } from './Alert'
 
 const Template: Story<TAlert> = ({ variant, children, className }) => {
   return (
-    <Component variant={variant} className={className}>
+    <Alert variant={variant} className={className}>
       {children}
-    </Component>
+    </Alert>
   )
 }
 
@@ -32,6 +32,6 @@ Error.args = {
 }
 
 export default {
-  component: Component,
+  component: Alert,
   title: 'Alert',
 } as Meta

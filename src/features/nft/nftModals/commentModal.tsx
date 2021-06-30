@@ -28,7 +28,7 @@ const CommentModal = ({
   handleClose,
 }: TCommentModal): JSX.Element => {
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='xl'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6'>Comments ({comments?.length})</h2>
       <Scrollbar maxHeight='425'>
         {comments.map(

@@ -11,6 +11,9 @@ import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import { formatNumber } from '../../common/utils/format'
 import Radio from 'common/components/Radio'
+import NotificationModal from './dashboardModals/notificationModal'
+import Link from 'common/components/Link'
+import notificationData from './dashboardModals/notificationModal.data'
 
 const date = dayjs('2021-04-04')
 
@@ -108,6 +111,7 @@ notifications = [...notifications, ...notifications, ...notifications]
 export default function DashboardPage(): JSX.Element {
   const [cards, setCards] = useState<TNFTCard[]>([])
   const [tab, setTab] = useState<number>(0)
+  const [openNotificationModal, setOpenNotificationModal] = useState(false)
   useEffect(() => {
     const randomCards: TNFTCard[] = []
     Array.from({ length: 3 }).map((_, index) => {
@@ -131,6 +135,7 @@ export default function DashboardPage(): JSX.Element {
     })
     setCards(randomCards)
   }, [])
+
   return (
     <div className='page-container py-5 w-full max-w-screen-xl mx-auto'>
       <div className='flex mb-5'>
@@ -270,7 +275,7 @@ export default function DashboardPage(): JSX.Element {
           <div
             className={
               notifications.length > 0
-                ? 'pl-8 pr-3.5 mr-18px overflow-auto h-full md:h-[258px]'
+                ? 'pl-8 pr-3.5 mr-18px overflow-y-auto h-full md:h-[258px]'
                 : 'flex justify-center'
             }
           >
@@ -283,18 +288,21 @@ export default function DashboardPage(): JSX.Element {
               </div>
             )}
           </div>
-          <LinkSection
-            className={
-              notifications.length > 0
-                ? 'mb-5 md:mb-0 md:mt-[114px]'
-                : 'mb-5 md:mb-4 md:mt-[114px]'
-            }
-            to='#'
-          >
-            Check All Notifications
-          </LinkSection>
+          <div className='pt-4 pb-4 text-center rounded-b-md leading-none absolute bottom-0 w-full'>
+            <Link
+              onClick={() => setOpenNotificationModal(true)}
+              className='text-blue-3f text-sm font-medium inline-block h-3'
+            >
+              Check All Notifications
+            </Link>
+          </div>
         </div>
       </div>
+      <NotificationModal
+        isOpen={openNotificationModal}
+        notifications={notificationData}
+        handleClose={() => setOpenNotificationModal(false)}
+      />
     </div>
   )
 }

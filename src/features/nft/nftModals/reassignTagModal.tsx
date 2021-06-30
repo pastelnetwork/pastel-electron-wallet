@@ -36,7 +36,7 @@ const ReassignTagModal = ({
     setSelectedTags(option)
 
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='xl'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-xl'>
       <h2 className='mb-6'>Change tag of “{title}”</h2>
       <div className='flex items-center mb-6'>
         <MultiSelect

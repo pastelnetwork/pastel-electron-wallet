@@ -30,7 +30,7 @@ const ChangeStatusModal = ({
   const [date, setDate] = useState<Date | null>(null)
 
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='xl'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6'>Change status of “{title}”</h2>
       <div className='mb-6'>
         <Select
