@@ -5,7 +5,6 @@ import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
 import {
   HeartFilled,
-  Heart,
   Clipboard,
   Diamond,
   DiamondInHexagon,
@@ -83,7 +82,7 @@ const NFTCard = ({
     >
       {/* Header */}
       {fullCardProps && (
-        <div className='w-full px-4 pb-2 md:pb-3 md:px-3 flex justify-between'>
+        <div className='w-full px-3 pb-2 md:pb-3 md:px-3 flex justify-between'>
           <div className='flex items-center overflow-hidden'>
             <img src={fullCardProps.avatarSrc} className='w-9' />
             {variant === 'portfolio' ? (
@@ -105,7 +104,7 @@ const NFTCard = ({
                 </span>
               </>
             ) : (
-              <Heart size={14} />
+              <HeartFilled size={14} className='text-pink-46' />
             )}
           </div>
         </div>
@@ -136,7 +135,7 @@ const NFTCard = ({
         ) : null}
       </div>
       {/* Footer */}
-      <div className={cn('px-3 md:px-4', footerClass)}>
+      <div className={cn('px-3', footerClass)}>
         <div className='flex justify-between'>
           <div
             className={cn('text-gray-4a truncate', titleClass, {
@@ -159,7 +158,9 @@ const NFTCard = ({
             >
               <Clipboard size={12} className='cursor-pointer' />
             </Tooltip>
-            <span className='ml-2 mr-3 lg:mr-6'>1 of 1,000</span>
+            <span className='text-sm ml-[5px] mr-[9px] lg:mr-2.5'>
+              1 of 1,000
+            </span>
             <Tooltip
               type='top'
               content={getTooltip(
@@ -182,7 +183,7 @@ const NFTCard = ({
               width={110}
             >
               <FirTreeInHexagon
-                size={24}
+                size={20}
                 className='text-green-45 cursor-pointer'
               />
             </Tooltip>
@@ -195,7 +196,7 @@ const NFTCard = ({
               width={120}
             >
               <CrownInHexagon
-                size={24}
+                size={20}
                 className='text-orange-ff cursor-pointer'
               />
             </Tooltip>
@@ -208,7 +209,7 @@ const NFTCard = ({
               width={150}
             >
               <DiamondInHexagon
-                size={24}
+                size={20}
                 className='text-blue-79 cursor-pointer'
                 firstStopClassName='text-blue-79'
                 secondStopClassName='text-blue-68'
@@ -223,7 +224,7 @@ const NFTCard = ({
               width={140}
             >
               <ManInHexagon
-                size={24}
+                size={20}
                 className='text-green-16 cursor-pointer'
                 firstStopClassName='text-green-16'
                 secondStopClassName='text-green-23'
@@ -234,16 +235,16 @@ const NFTCard = ({
       </div>
       {fullCardProps && (
         <div
-          className={`px-3 md:px-4 pb-3 md:pb-4 bg-gray-ef bg-opacity-50 flex-grow ${
+          className={`px-3 pb-3 md:pb-4 bg-gray-ef bg-opacity-50 flex-grow ${
             variant === 'portfolio' ? 'pt-2.5' : 'pt-2 md:pt-3'
           }`}
         >
           <div className='flex items-center justify-between'>
             <span
-              className={`text-sm md:text-base font-medium ${
+              className={`text-sm font-medium ${
                 variant === 'portfolio'
-                  ? 'leading-6 text-h6 text-gray-77'
-                  : 'leading-none text-h5 text-gray-71'
+                  ? 'leading-6 text-sm text-gray-77'
+                  : 'leading-none text-sm text-gray-71'
               }`}
             >
               {!fullCardProps.onSale
@@ -252,19 +253,18 @@ const NFTCard = ({
                 ? 'Last Auction Bid'
                 : 'Fixed Price'}
             </span>
-            {variant !== 'portfolio' ? (
-              <div className='flex  text-sm md:text-base lg:text-h5 font-extrabold text-gray-2d'>
-                {fullCardProps.onSale ? '12,000 PSL' : ''}
-                {isLastBid && fullCardProps.onSale && (
-                  <span className='font-bold text-8px green-gradient'>
-                    +100%
-                  </span>
-                )}
-              </div>
-            ) : null}
+
+            <div className='flex  text-sm font-black text-gray-2d'>
+              {fullCardProps.onSale ? '12,000 PSL' : ''}
+              {isLastBid && fullCardProps.onSale && (
+                <span className='font-bold text-8px green-gradient ml-0.5'>
+                  +100%
+                </span>
+              )}
+            </div>
           </div>
           {variant !== 'portfolio' && (
-            <div className='flex items-center text-xs md:text-sm font-extrabold justify-between pt-2 md:pt-3'>
+            <div className='flex items-center text-xs font-extrabold justify-between pt-2 md:pt-3'>
               <div className='nft-text-gradient'>
                 {!fullCardProps.onSale
                   ? ''
@@ -274,7 +274,7 @@ const NFTCard = ({
               </div>
               <Button
                 variant='transparent'
-                className='h-32px text-sm font-extrabold border-2 border-blue-3f'
+                className='h-32px text-sm font-medium border-2 border-blue-3f'
               >
                 {!fullCardProps.onSale
                   ? 'Make an Offer'

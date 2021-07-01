@@ -71,15 +71,15 @@ const SearchResultsContent = (
         </div>
       </div>
 
-      <div className='flex-grow overflow-auto grid auto-rows-max grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 pr-[32px] pb-3'>
+      <div className='flex-grow overflow-y-auto overflow-x-hidden grid auto-rows-max grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 pr-[26px] pb-3'>
         {showResult === ResultTypes.NFTs &&
           props.foundNFTs.map((item, i) => (
             <NFTCard
+              className='w-[250px]'
               key={i}
               hideFollow={true}
               hideLikeButton={true}
               percentage={60}
-              variant={'portfolio'}
               {...item}
             />
           ))}

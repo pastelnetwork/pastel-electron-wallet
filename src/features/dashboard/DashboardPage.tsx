@@ -127,7 +127,7 @@ export default function DashboardPage(): JSX.Element {
         currencyName: 'PSL',
         percentage: 75,
         variant: 'portfolio',
-        isLastBid: false,
+        isLastBid: [true, false][Math.floor(Math.random() * 2)],
         hideLikeButton: true,
         hideFollow: true,
         hideUnFollow: index % 3 === 0 ? false : true,
@@ -208,7 +208,7 @@ export default function DashboardPage(): JSX.Element {
           </LinkSection>
         </div>
       </div>
-      <div className='flex h-'>
+      <div className='flex'>
         <div className='paper pt-6 flex-grow lg:flex lg:flex-col relative w-0 mr-5 relative max-w-[850px]'>
           <div className='flex items-center h-6 mb-4 flex-shrink-0 px-30px justify-between'>
             <div className='flex'>
@@ -254,7 +254,7 @@ export default function DashboardPage(): JSX.Element {
                 <NFTCard
                   key={i}
                   {...item}
-                  className='max-w-sm md:max-w-full min-h-[372px]'
+                  className='max-w-sm md:max-w-full min-[250px] min-h-[372px]'
                 />
               ))}
               {cards.length === 0 && (
