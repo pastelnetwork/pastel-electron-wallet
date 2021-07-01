@@ -1,6 +1,8 @@
 import React, { useLayoutEffect, useRef } from 'react'
+import { useWindowSize } from 'react-use'
 import { TNFT } from '../../Nft.types'
 import {
+  CrownInHexagon,
   FirTreeInHexagon,
   Bookmark,
   Instagram,
@@ -9,7 +11,6 @@ import {
 import RarenessScore from '../RarenessScore'
 import { formatToTitleCase } from 'common/utils/format'
 import style from './Header.module.css'
-import { useWindowSize } from 'react-use'
 
 type HeaderProps = {
   nft: TNFT
@@ -52,7 +53,11 @@ export default function Header({ nft }: HeaderProps): JSX.Element {
         {formatToTitleCase(nft.title)}
         <FirTreeInHexagon
           size={30}
-          className='ml-4 flex-shrink-0 text-green-45'
+          className='ml-4 flex-shrink-0 text-green-45 hover:cursor-pointer'
+        />
+        <CrownInHexagon
+          size={30}
+          className='ml-4 flex-shrink-0 text-orange-ffc hover:cursor-pointer'
         />
       </div>
       <div ref={wrappingContentRef} className='py-2 flex-grow flex'>
@@ -61,15 +66,15 @@ export default function Header({ nft }: HeaderProps): JSX.Element {
           className='flex-grow flex-center px-5 space-x-5 lg:space-x-10'
         >
           <RarenessScore
-            title='Pastel rareness'
-            titleClass='w-24'
+            title='Pastel Rareness:'
             color='text-primary'
+            titleClass='mr-17px'
             percent={65}
           />
           <RarenessScore
-            title='Internet rareness'
-            titleClass='w-28'
+            title='Internet Rareness:'
             color='text-orange-75'
+            titleClass='mr-11px'
             percent={45}
           />
         </div>
