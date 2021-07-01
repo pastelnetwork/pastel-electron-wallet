@@ -23,7 +23,9 @@ module.exports = {
     },
     extend: {
       spacing: {
+        '1px': '0.063rem',
         '1.5px': '0.09375rem',
+        '2px': '0.125rem',
         '2.5px': '0.15625rem',
         '3px': '0.188rem',
         '5px': '0.3125rem',
@@ -331,6 +333,7 @@ module.exports = {
         h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
+        '6px': '0.375rem',
         '8px': '0.5rem',
         '9px': '0.5625rem',
         '10px': '0.625rem',
@@ -361,6 +364,7 @@ module.exports = {
       lineHeight: {
         '11px': '0.6875rem',
         '15px': '0.938rem',
+        '18px': '1.125rem',
         '19px': '1.1875',
       },
       minHeight: {
