@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import cn from 'classnames'
 import Followers from './ProfileFollowers'
 import ico_users from 'common/assets/icons/ico-users.svg'
 
@@ -18,9 +19,10 @@ const ProfileRelations = ({ isEmpty }: TProfileRelations): JSX.Element => {
 
   return (
     <div
-      className={`w-full ${
-        !isEmpty ? '1200px:max-w-398px' : '1200px:max-w-359px'
-      } 1200px:w-2/5 flex flex-col flex-grow pr-4 1200px:pr-0`}
+      className={cn(
+        'w-full lg:w-2/5 flex flex-col flex-grow pr-4 lg:pr-0',
+        !isEmpty ? 'lg:max-w-398px' : 'lg:max-w-359px',
+      )}
     >
       <div
         className={`flex justify-between ${

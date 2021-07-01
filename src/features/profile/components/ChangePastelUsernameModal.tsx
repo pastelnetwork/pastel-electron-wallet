@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import SVG from 'react-inlinesvg'
 
 import LineEdit from './LineEdit'
 import Modal from 'common/components/AnimatedModal'
 import { Button } from 'common/components/Buttons'
+import ico_fire from 'common/assets/icons/ico-fire.svg'
 
 type TChangePastelUsernameModalProps = {
   modalIsOpen: boolean
@@ -23,11 +25,7 @@ export default function ChangePastelUsernameModal({
     }
 
     const pattern = /^[0-9a-zA-Z]+$/
-    if (value.match(pattern)) {
-      return true
-    }
-
-    return false
+    return value.match(pattern)
   }
 
   const handleInputChange = (value: string) => {
@@ -98,7 +96,7 @@ export default function ChangePastelUsernameModal({
                 ) : null}
               </div>
             </div>
-            <div className='mt-5'>
+            <div className='mt-5 opacity-50'>
               <div className='flex justify-between text-sm'>
                 <div className='font-normal text-gray-4a'>
                   Your Current PSL Balance
@@ -109,7 +107,10 @@ export default function ChangePastelUsernameModal({
                 <div className='font-normal text-gray-4a'>
                   Username Change Fee (burned)
                 </div>
-                <div className='font-extrabold text-gray-2d'>5,000 PSL</div>
+                <div className='font-extrabold text-gray-2d flex items-center'>
+                  <SVG src={ico_fire} className='mr-6px' />
+                  5,000 PSL
+                </div>
               </div>
               <div className='flex justify-between text-sm mt-10px'>
                 <div className='font-normal text-gray-4a'>

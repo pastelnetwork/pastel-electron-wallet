@@ -130,9 +130,31 @@ const commentsData: TComment[] = [
   },
 ]
 
+const filters = [
+  {
+    name: 'All',
+    isChecked: false,
+    value: '',
+  },
+  {
+    name: 'Friends',
+    isChecked: true,
+    value: 'friends',
+  },
+  {
+    name: 'Followers',
+    isChecked: true,
+    value: 'followers',
+  },
+  {
+    name: 'Others',
+    isChecked: false,
+    value: 'others',
+  },
+]
+
 const MyComments = (): JSX.Element => {
   const [editMode, setEditMode] = useState(false)
-  const [isChecked, setIsChecked] = useState<boolean>(false)
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
     nativeCurrencyOptions[0],
   )
@@ -143,6 +165,10 @@ const MyComments = (): JSX.Element => {
 
   const handleOnLikeClick = (commentId: number) => {
     console.log(commentId)
+  }
+
+  const onClickFilter = (value: string) => {
+    console.log(value)
   }
 
   const isEmpty = false
@@ -173,46 +199,18 @@ const MyComments = (): JSX.Element => {
               Filter by:
             </p>
             <ul className='mt-4 flex lg:block'>
-              <li className='lg:mb-3 mr-3 lg:mr-0'>
-                <Checkbox
-                  isChecked={isChecked}
-                  clickHandler={() => setIsChecked(!isChecked)}
-                >
-                  <span className='text-sm leading-18px font-medium text-gray-11'>
-                    All
-                  </span>
-                </Checkbox>
-              </li>
-              <li className='lg:mb-3 mr-3 lg:mr-0'>
-                <Checkbox
-                  isChecked={isChecked}
-                  clickHandler={() => setIsChecked(!isChecked)}
-                >
-                  <span className='text-sm leading-18px font-medium text-gray-11'>
-                    Friends
-                  </span>
-                </Checkbox>
-              </li>
-              <li className='lg:mb-3 mr-3 lg:mr-0'>
-                <Checkbox
-                  isChecked={isChecked}
-                  clickHandler={() => setIsChecked(!isChecked)}
-                >
-                  <span className='text-sm leading-18px font-medium text-gray-11'>
-                    Followers
-                  </span>
-                </Checkbox>
-              </li>
-              <li className='lg:mb-3 mr-3 lg:mr-0'>
-                <Checkbox
-                  isChecked={isChecked}
-                  clickHandler={() => setIsChecked(!isChecked)}
-                >
-                  <span className='text-sm leading-18px font-medium text-gray-11'>
-                    Others
-                  </span>
-                </Checkbox>
-              </li>
+              {filters.map((filter, index) => (
+                <li className='lg:mb-3 mr-3 lg:mr-0' key={index}>
+                  <Checkbox
+                    isChecked={filter.isChecked}
+                    clickHandler={() => onClickFilter(filter.value)}
+                  >
+                    <span className='text-sm leading-18px font-medium text-gray-11'>
+                      {filter.name}
+                    </span>
+                  </Checkbox>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

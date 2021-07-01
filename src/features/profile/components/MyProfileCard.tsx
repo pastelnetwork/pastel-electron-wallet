@@ -111,7 +111,7 @@ const ProfileCard = ({
                 variant={`${!isEmpty ? 'secondary' : 'default'}`}
                 className={cn(
                   'w-full font-medium mt-10px',
-                  isEmpty ? 'text-white text-sm leading-4 bg-blue-3f' : '',
+                  isEmpty && 'text-white text-sm leading-4 bg-blue-3f',
                 )}
                 onClick={() => setEditMode(true)}
               >
@@ -119,9 +119,10 @@ const ProfileCard = ({
                   Edit Profile
                   <SVG
                     src={ico_pencil}
-                    className={`ml-6px w-13px ${
-                      isEmpty ? 'fill-white' : 'fill-blue-3f'
-                    }`}
+                    className={cn(
+                      'ml-6px w-13px',
+                      isEmpty ? 'fill-white' : 'fill-blue-3f',
+                    )}
                   />
                 </span>
               </Button>

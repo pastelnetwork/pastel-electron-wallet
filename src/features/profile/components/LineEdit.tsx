@@ -24,7 +24,7 @@ const LineEdit = ({
       className={cn(
         'border rounded h-10 flex flex-grow relative',
         className ? className : 'shadow-4px',
-        readOnly ? 'bg-line border-button-text border-1px border-solid' : '',
+        readOnly && 'bg-line',
       )}
     >
       <input

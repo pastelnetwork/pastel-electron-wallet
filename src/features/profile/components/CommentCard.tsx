@@ -56,7 +56,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
       className={cn(
         'w-full flex pr-33px',
         className,
-        hasBorder ? 'border-b-1px border-solid border-gray-d1' : '',
+        hasBorder && 'border-b-1px border-solid border-gray-d1',
       )}
     >
       <div className='mr-20px w-68px'>
@@ -71,7 +71,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
               <SVG
                 onClick={() => onLikeClick(id)}
                 src={liked ? ico_heart : ico_heart_empty}
-                className={`cursor-pointer w-4 h-13px ${liked ? 'ml-9px' : ''}`}
+                className={cn('cursor-pointer w-4 h-13px', liked && 'ml-9px')}
               />
             </div>
           ) : null}
@@ -80,18 +80,17 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
           {author ? (
             <p className='text-gray-71'>
               Commented on{' '}
-              <Link href='#' className='pl-4px'>
+              <Link href='#' className='pl-1'>
                 {author}.
               </Link>{' '}
             </p>
           ) : null}
-          <span className='text-gray-71 pl-4px'>{dayjs(time).fromNow()}</span>
+          <span className='text-gray-71 pl-1'>{dayjs(time).fromNow()}</span>
         </div>
         <div className='pr-82px'>
           <div className='mt-4 text-base font-medium text-gray-4a mb-6'>
             "{comment}"
           </div>
-
           {children}
           {!hideReply ? (
             <>

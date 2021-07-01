@@ -56,7 +56,7 @@ const Profile = (): JSX.Element => {
             onNativeCurrencyChange={setNativeCurrency}
           />
         </div>
-        <div className='flex pl-80px justify-between flex-col 1200px:flex-row flex-grow'>
+        <div className='flex pl-80px justify-between flex-col lg:flex-row flex-grow'>
           <ProfileGeneral
             editMode={editMode}
             isEmpty={isEmpty}

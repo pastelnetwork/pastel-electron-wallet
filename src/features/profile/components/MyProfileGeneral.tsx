@@ -24,11 +24,9 @@ const ProfileGeneral = ({
     language: 'English',
     categories: ['motion graphics', 'illustration', 'abstract'],
     reputation: 4.89,
-    buyerBans: 3,
     highestFeeRecieved: { value: '136,200,000', comment: 632 },
     totalSalesAmount: { value: '560,600,00', comment: 211 },
     totalItemsSold: '124 Copies across 5 NFTs',
-    topCategoryPercentage: 'motion graphics 30%',
     bio:
       'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
   }
@@ -37,11 +35,9 @@ const ProfileGeneral = ({
     Object.assign(data, {
       categories: [],
       reputation: 0,
-      buyerBans: 0,
       highestFeeRecieved: { value: 0 },
       totalSalesAmount: { value: 0 },
       totalItemsSold: 0,
-      topCategoryPercentage: '0%',
     })
   }
 
@@ -49,7 +45,7 @@ const ProfileGeneral = ({
   const [bio, setBio] = useState<string>(data.bio)
   const [location, setLocation] = useState<TOption | null>(locations[1])
   const [language, setLanguage] = useState<TOption | null>(languages[0])
-  const [currentPSLPrice, setCurrentPSLPrice] = useState(0)
+  const [currentPSLPrice, setCurrentPSLPrice] = useState('0')
 
   useEffect(() => {
     setLocation(locations[isEmpty ? 0 : 1])
@@ -64,13 +60,13 @@ const ProfileGeneral = ({
       }
 
       const result = await Convert(15).from('USD').to(nativeCurrency)
-      setCurrentPSLPrice(result)
+      setCurrentPSLPrice(result.toFixed(2))
     }
     getNativeCurrency()
-  })
+  }, [nativeCurrency])
 
   return (
-    <div className='flex-grow w-full 1200px:w-3/5 pr-74px'>
+    <div className='flex-grow w-full lg:w-3/5 pr-74px'>
       <div className='w-full space-y-4'>
         <ProfileGeneralRow title='Location'>
           {editMode ? (
@@ -117,7 +113,7 @@ const ProfileGeneral = ({
         <ProfileGeneralRow title='Pastel Reputation Score'>
           <StarRate rate={data.reputation} />
           <div className='1200px:pl-2 text-gray-500'>
-            {isEmpty ? '0.00' : data.reputation}
+            {data.reputation.toFixed(2)}
           </div>
         </ProfileGeneralRow>
       </div>
@@ -132,7 +128,7 @@ const ProfileGeneral = ({
               <>
                 <Tooltip
                   type='top'
-                  width={200}
+                  width={220}
                   content={
                     <p className='mb-0 px-2 py-1 text-xs leading-5 text-gray-fc'>
                       ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
@@ -166,10 +162,11 @@ const ProfileGeneral = ({
               <>
                 <Tooltip
                   type='top'
-                  width={200}
+                  width={220}
                   content={
                     <p className='mb-0 px-2 py-1 text-xs leading-5 text-gray-fc'>
-                      <span className='font-extrabold'>~$681</span>{' '}
+                      ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
+                      {currentPSLPrice}{' '}
                       <span className='italic font-normal'>
                         based on current PSL price
                       </span>
