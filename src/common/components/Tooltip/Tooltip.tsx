@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, ReactNode } from 'react'
 import ArrowToolTip from '../../assets/icons/ico-triangle.svg'
 import cn from 'classnames'
 import CSS from 'csstype'
@@ -7,7 +7,7 @@ export type TTooltipProps = {
   type: 'left' | 'right' | 'top' | 'bottom'
   classnames?: string
   wrapperClassNames?: string
-  content: string
+  content: ReactNode
   width: number
   vPosPercent?: number
 }

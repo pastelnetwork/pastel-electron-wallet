@@ -1,13 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import ProfileGeneral from './myProfile/MyProfile'
 import MySecurity from './mySecurity/MySecurity'
+import {
+  fetchPastelIDAndPrivateKeys,
+  splitStringIntoChunks,
+} from './mySecurity/common/utils'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
+
+export type TRPCConfig = {
+  username: string
+  password: string
+  url: string
+}
 
 type TProfileProps = {
   info: {
     currencyName: string
   }
+  rpcConfig: TRPCConfig
 }
 
 enum Tabs {
@@ -17,8 +28,9 @@ enum Tabs {
 }
 
 const Profile = (props: TProfileProps): JSX.Element => {
-  const { info } = props
+  const { info, rpcConfig } = props
   const [tab, setTab] = useState(Tabs.info)
+  const [qrcodeData, setQRcodeData] = useState<string[]>([])
 
   const tabs = [
     { label: 'Info', count: 2 },
@@ -39,12 +51,26 @@ const Profile = (props: TProfileProps): JSX.Element => {
     },
   ]
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const chunkQuantity = 500
+      const results = await fetchPastelIDAndPrivateKeys(rpcConfig)
+      if (results) {
+        const chunks = splitStringIntoChunks(results, chunkQuantity)
+        setQRcodeData(chunks)
+      }
+    }
+    if (!qrcodeData.length) {
+      fetchData()
+    }
+  }, [])
+
   const onTabToggle = (index: number) => {
     setTab(index)
   }
 
   return (
-    <div className='mx-auto w-full bg-gray-f8 text-gray-23'>
+    <div className='mx-auto w-full bg-gray-f8 text-gray-23 h-auto overflow-hidden'>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader
         title='My Account'
@@ -58,7 +84,9 @@ const Profile = (props: TProfileProps): JSX.Element => {
       {tab === Tabs.comments && (
         <div className='text-center'> No comments </div>
       )}
-      {tab === Tabs.security && <MySecurity info={info} />}
+      {tab === Tabs.security && (
+        <MySecurity info={info} rpcConfig={rpcConfig} qrcodeData={qrcodeData} />
+      )}
     </div>
   )
 }

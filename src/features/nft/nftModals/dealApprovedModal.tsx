@@ -14,7 +14,7 @@ const DealApprovedModal = ({
   handleClose,
 }: TDealApprovedModal): JSX.Element => {
   return (
-    <Modal isOpen={isOpen} handleClose={handleClose} size='md'>
+    <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-md'>
       <h2 className='mb-6 text-gray-2d'>Congratulations. deal approved!</h2>
       <p className='text-gray-a6'>{content}</p>
     </Modal>

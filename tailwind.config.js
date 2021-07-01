@@ -108,6 +108,7 @@ module.exports = {
         '191px': '11.9375rem',
         '196px': '12.25rem',
         '200px': '12.5rem',
+        '205px': '12.813rem',
         '219px': '13.6875rem',
         '220px': '13.75rem',
         '223px': '13.9375rem',
@@ -141,6 +142,7 @@ module.exports = {
         '526px': '32.875rem',
         '540px': '33.75rem',
         '553px': '34.563rem',
+        '564px': '35.25rem',
         '594px': '37.125rem',
         '622px': '38.875rem',
         '608px': '38rem',
@@ -171,12 +173,18 @@ module.exports = {
           hover: '#CE64A1',
           background: '#FAEFF5',
         },
+        black: {
+          12: '#121244',
+        },
         blue: {
           '00': '#0054FE',
           '3f': '#3F9AF7',
           f8: '#F8FBFF',
           e5: '#E5F1FF',
           eb: '#EBF2FF',
+          79: '#79A8FA',
+          68: '#687EFE',
+          37: '#3754DB',
         },
         gray: {
           fc: '#FCFCFD',
@@ -192,6 +200,7 @@ module.exports = {
           e6: '#E6E8EC',
           e4: '#E4E4E4',
           e1: '#E1E4E8',
+          ef: '#EFF5FD',
           dd: '#DDE0E3',
           cd: '#CDD2DB',
           b0: '#B0B7C3',
@@ -225,6 +234,7 @@ module.exports = {
           14: '#14B85F',
           fe: '#FE634C',
           75: '#FF754C',
+          ff: '#FF82AC',
         },
         pink: {
           46: '#EF466F',
@@ -235,6 +245,7 @@ module.exports = {
           81: '#E98160',
           63: '#FE634C',
           75: '#FF754C',
+          ff: '#FFCE14',
         },
         yellow: {
           ff: '#FFBE3D',
@@ -250,6 +261,8 @@ module.exports = {
           38: '#38CB89',
           77: '#77C285',
           e4: '#e4f3e7',
+          16: '#16B4EB',
+          23: '#23E73C',
         },
         button: {
           DEFAULT: '#3F9AF7',
@@ -325,6 +338,7 @@ module.exports = {
         h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
+        '8px': '0.5rem',
         '9px': '0.5625rem',
         '10px': '0.625rem',
         '12px': '0.75rem',
@@ -341,6 +355,7 @@ module.exports = {
       },
       borderRadius: {
         '4px': '0.25rem',
+        '7px': '0.4375rem',
         '8px': '0.5rem',
         '11px': '0.6875rem',
         '65px': '4.063rem',
@@ -381,6 +396,7 @@ module.exports = {
         '10px': '0.625rem',
       },
       maxHeight: {
+        '205px': '12.813rem',
         '244px': '15.25rem',
         '700px': '43.75rem',
         '750px': '46.875rem',
@@ -422,6 +438,9 @@ module.exports = {
       },
       opacity: {
         2.61: '0.0261',
+      },
+      letterSpacing: {
+        0.01: '0.01em',
       },
     },
   },

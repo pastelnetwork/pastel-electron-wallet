@@ -54,7 +54,7 @@ import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
 import NFTMarketFeed from '../features/NFTMarketFeed'
-import { app } from 'electron'
+import { app, ipcRenderer } from 'electron'
 import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
@@ -99,6 +99,8 @@ class RouteApp extends React.Component<any, any> {
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
 
     ReactModal.setAppElement('#root')
+
+    ipcRenderer.send('app-ready')
   }
 
   rpc: any
@@ -479,6 +481,7 @@ class RouteApp extends React.Component<any, any> {
       errorModalData,
       connectedCompanionApp,
       pastelIDs,
+      rpcConfig,
     } = this.state
     const standardProps = {
       openErrorModal: this.openErrorModal,
@@ -530,7 +533,11 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
-            <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
+            <Route
+              path={routes.PORTFOLIO}
+              exact
+              render={() => <PortfolioPage currencyName={info.currencyName} />}
+            />
             <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
@@ -565,7 +572,7 @@ class RouteApp extends React.Component<any, any> {
 
             <Route
               path={routes.MY_PROFILE}
-              render={() => <MyProfile info={info} />}
+              render={() => <MyProfile info={info} rpcConfig={rpcConfig} />}
             />
 
             <Route
