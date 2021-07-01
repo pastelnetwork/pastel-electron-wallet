@@ -111,6 +111,20 @@
       #ee8fff 55.86%,
       #38deff 100%
     );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .nft-text-gradient {
+    background: radial-gradient(
+      87.68% 87.68% at 95.36% 14.36%,
+      #ffca00 0%,
+      #da16fd 55.86%,
+      #00a3ff 100%
+    );
+    box-shadow: 0px -2px 5px 0px #ffffff80 inset;
+
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -121,6 +135,24 @@
 
   .flex-between {
     @apply flex justify-between items-center;
+  }
+
+  .green-gradient {
+    background: linear-gradient(140.54deg, #6dbd72 17.88%, #00b282 91.53%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-blue-gradient {
+    background: linear-gradient(94.84deg, #79a8fa 0%, #687efe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .btn-green-gradient {
+    background: linear-gradient(213.66deg, #16b4eb 4.85%, #23e73c 119.17%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }
 
