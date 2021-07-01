@@ -4,6 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 @import 'simplebar/src/simplebar.css';
 @import 'react-datepicker/dist/react-datepicker.css';
+@import 'react-toastify/dist/ReactToastify.css';
 
 @tailwind base;
 

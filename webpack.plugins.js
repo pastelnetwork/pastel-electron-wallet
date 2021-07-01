@@ -20,6 +20,10 @@ module.exports = [
         from: 'node_modules/jpg-glitch/production',
         to: 'static/glitch',
       },
+      {
+        from: 'node_modules/ffmpegwasm-create-video/production',
+        to: 'static/ffmpeg',
+      },
     ],
   }),
 ]
