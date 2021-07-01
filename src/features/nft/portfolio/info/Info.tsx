@@ -10,7 +10,7 @@ import {
   Warning,
 } from 'common/components/Icons'
 import dayjs from 'dayjs'
-import { formatDatesDistance } from 'common/utils/format'
+import { formatDatesDistance, formatNumber } from 'common/utils/format'
 import OutlineButton from './Button'
 import Row from './Row'
 import { Button } from 'common/components/Buttons'
@@ -25,13 +25,14 @@ import Modal8 from 'features/nft/nftModals/OwnershipHistoryModal'
 
 type TInfoProps = {
   nft: TNFT
+  currencyName: string
 }
 
 const grayButtonClass = 'text-gray-77 border-gray-e6 hover:border-gray-cd'
 const pinkButtonClass =
   'text-pink-46 border-pink-46 hover:text-pink-61 hover:border-pink-61'
 
-export default function Info({ nft }: TInfoProps): JSX.Element {
+export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
   const [liked, toggleLiked] = useToggle(nft.liked)
   const [isShowModal3, toggleShowModal3] = useToggle(false)
   const [isShowModal4, toggleShowModal4] = useToggle(false)
@@ -74,11 +75,11 @@ export default function Info({ nft }: TInfoProps): JSX.Element {
                 {formatDatesDistance(dayjs(), nft.time)} left
               </Row>
               <Row title='Min. Price' link='#'>
-                {nft.price} {nft.currencyName}
+                {formatNumber(nft.price)} {currencyName ? currencyName : 'PSL'}
               </Row>
               <Row title='Last bid' link='#'>
                 <span className='flex gap-2 text-gradient'>
-                  {nft.bids} PSL
+                  {formatNumber(nft.bids)} {currencyName ? currencyName : 'PSL'}
                   <Checkmark size={14} className='text-green-6d' />
                 </span>
               </Row>

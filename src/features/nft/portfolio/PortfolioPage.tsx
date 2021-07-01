@@ -10,6 +10,10 @@ import Comments from './comments/Comments'
 import nftImage from 'common/assets/images/mock/nft-big-image.png'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 
+export type TPortfolioPage = {
+  currencyName: string
+}
+
 const nft: TNFT = {
   id: 230456346,
   title: 'Super nfty floating head professional',
@@ -46,7 +50,9 @@ const breadcrumbs = [
 
 nft.description += nft.description // make it longer for "read more"
 
-export default function PortfolioPage(): JSX.Element {
+export default function PortfolioPage({
+  currencyName,
+}: TPortfolioPage): JSX.Element {
   return (
     <>
       <Breadcrumbs items={breadcrumbs} />
@@ -54,7 +60,7 @@ export default function PortfolioPage(): JSX.Element {
       <div className='page-container py-30px space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:gap-10'>
         <Image nft={nft} />
         <div className='flex space-x-5 lg:space-x-10 md:pb-12'>
-          <Info nft={nft} />
+          <Info nft={nft} currencyName={currencyName} />
           <div className='bg-white pt-30px px-5 lg:px-22px rounded-lg flex-grow flex flex-col'>
             <Description nft={nft} />
             <hr className='my-30px' />

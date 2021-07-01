@@ -42,6 +42,26 @@ const BidsModal: React.FC<TBidsModal> = ({ isOpen, handleClose }) => {
       bidPrice: '12,000PSL',
       publishedAt: new Date(),
     },
+    {
+      id: 4,
+      author: {
+        avatar: avatar2,
+        name: 'The Noc Design',
+        username: '@zndrson',
+      },
+      bidPrice: '12,000PSL',
+      publishedAt: new Date(),
+    },
+    {
+      id: 5,
+      author: {
+        avatar: avatar3,
+        name: 'Michael Brewer',
+        username: '@zndrson',
+      },
+      bidPrice: '12,000PSL',
+      publishedAt: new Date(),
+    },
   ]
 
   return (
@@ -51,21 +71,26 @@ const BidsModal: React.FC<TBidsModal> = ({ isOpen, handleClose }) => {
       size='564px'
       title={
         <div>
-          <div className='text-h2'>Bids activity (8 bids)</div>
-          <div className='text-h5 text-gray-71'>NFT ID 230456346</div>
+          <div className='text-h2 tracking-0.01'>Bids activity (8 bids)</div>
+          <div className='text-base text-gray-71 font-medium'>
+            NFT ID 230456346
+          </div>
         </div>
       }
       infoIcon={false}
     >
-      {comments.map(comment => (
-        <div className='flex py-4 border-t border-gray-f2 justify-between'>
+      {comments.map((comment, index) => (
+        <div
+          className='flex py-4 border-t border-gray-f2 justify-between'
+          key={index}
+        >
           <div className='flex space-x-2'>
             <div className='w-8 h-8 rounded-full overflow-hidden'>
               <img src={comment.author.avatar} className='object-cover' />
             </div>
             <div className='leading-5'>
               <div className='text-extrabold text-black text-h4'>
-                {comment.author.name} {''}
+                {comment.author.name}{' '}
                 <span className='text-gray-71 text-h5'>
                   {comment.author.username}
                 </span>

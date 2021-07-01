@@ -418,6 +418,9 @@ module.exports = {
       opacity: {
         2.61: '0.0261',
       },
+      letterSpacing: {
+        0.01: '0.01em',
+      },
     },
   },
   variants: {
