@@ -1,4 +1,4 @@
 export type TIconProps = {
-  size: number
+  size?: number
   className?: string
 }

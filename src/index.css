@@ -45,7 +45,7 @@
     @apply border border-success;
   }
   .input-field.is-invalid + fieldset {
-    @apply border border-red-7a;
+    @apply border border-red-fe;
   }
 
   hr {

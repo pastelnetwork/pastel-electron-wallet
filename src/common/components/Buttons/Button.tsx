@@ -5,6 +5,7 @@ export type TButton = {
   children?: ReactNode | string
   variant?: 'default' | 'secondary' | 'transparent' | 'navigation'
   disabled?: boolean
+  disabledBule?: boolean
   href?: string
   className?: string
   prepend?: ReactNode
