@@ -10,6 +10,8 @@ import ico_copy from 'common/assets/icons/ico-copy2.svg'
 import ico_facebook from 'common/assets/icons/ico-facebook.svg'
 import ico_twitter from 'common/assets/icons/ico-twitter.svg'
 import ico_pencil from 'common/assets/icons/ico-pencil.svg'
+import { Pencil } from 'common/components/Icons/Pencil'
+import ChangeUsernameModal from './ChangeUsernameModal'
 
 export type TProfileCard = {
   editMode: boolean
@@ -35,6 +37,9 @@ const ProfileCard = ({
   const [name, setName] = useState<string>(data.name)
   const [facebook, setFacebook] = useState<string>(data.facebook)
   const [twitter, setTwitter] = useState<string>(data.twitter)
+  const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(
+    false,
+  )
 
   useEffect(() => {
     setFacebook(isEmpty ? '' : data.facebook)
@@ -69,8 +74,16 @@ const ProfileCard = ({
         {!editMode && (
           <div className='flex flex-col px-5 pt-4 flex-grow justify-between'>
             <div>
-              <div className='px-1 text-gray-71 text-center'>
-                {data.username}
+              <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
+                <div>{data.username}</div>
+                <div
+                  className='ml-2 cursor-pointer'
+                  onClick={() => {
+                    setOpenEditUsernameModal(true)
+                  }}
+                >
+                  <Pencil width={11} height={11} className='text-blue-3f' />
+                </div>
               </div>
               <div className='font-bold text-2xl py-2 text-center'>{name}</div>
               <div className='pt-2 text-gray-71 flex flex-center'>
@@ -153,6 +166,10 @@ const ProfileCard = ({
           </div>
         )}
       </div>
+      <ChangeUsernameModal
+        isOpen={openEditUsernameModal}
+        handleClose={() => setOpenEditUsernameModal(false)}
+      />
     </div>
   )
 }
