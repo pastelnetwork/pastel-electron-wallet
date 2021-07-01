@@ -6,4 +6,4 @@ export type {
   TRegisterPastelID,
 } from './pastelIDSlice'
 export { PastelID }
-export { pastelIDReducer } from './pastelIDSlice'
+export { pastelIDReducer, createPastelKeysFolder } from './pastelIDSlice'

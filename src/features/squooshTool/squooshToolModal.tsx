@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './squooshToolModal.module.css'
 import { closeSquooshToolModal } from './squooshToolModalSlice'
 
-import { squoosh } from '../constants/ServeStatic'
+import { squoosh } from '../../common/constants/ServeStatic'
 
 export default function squooshToolModal(): JSX.Element {
   const { modalIsOpen } = useAppSelector(state => state.squooshToolModal)

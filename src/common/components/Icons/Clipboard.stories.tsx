@@ -1,13 +1,10 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import {
-  CrownInHexagon as Icon,
-  TCrownInHexagonProps as Props,
-} from './CrownInHexagon'
+import { Clipboard as Icon, TClipboardProps as Props } from './Clipboard'
 
 export default {
-  title: 'Icons/CrownInHexagon',
+  title: 'Icons/Clipboard',
   component: Icon,
 } as Meta
 
@@ -15,9 +12,8 @@ const Template: Story<Props> = ({ ...args }) => {
   return <Icon {...args} />
 }
 
-export const CrownInHexagon = Template.bind({})
-CrownInHexagon.args = {
+export const Clipboard = Template.bind({})
+Clipboard.args = {
   size: 30,
   className: 'text-green-45',
-  fill: 'text-orange-ff',
 }

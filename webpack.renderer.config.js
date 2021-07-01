@@ -41,6 +41,14 @@ rules.push({
     },
   ],
 })
+rules.push({
+  test: /\.bin$/i,
+  use: [
+    {
+      loader: 'file-loader',
+    },
+  ],
+})
 
 module.exports = {
   module: {
