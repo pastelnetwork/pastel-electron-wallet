@@ -113,7 +113,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
           <p
             className={cn(
               `${
-                isValid === false ? 'text-red-7a' : 'text-button-text'
+                isValid === false ? 'text-red-fe' : 'text-button-text'
               } text-h6 pt-1`,
               hintClassName,
             )}

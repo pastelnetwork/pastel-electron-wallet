@@ -72,7 +72,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
         <div className='pt-6'>
           <div className='flex justify-between items-center'>
             <div className='text-gray-a0 text-sm'>Your Current PSL Balance</div>
-            <div className='text-gray-2d text-sm font-extrabold'>
+            <div className='text-gray-a0 text-sm font-extrabold'>
               <NumberFormat
                 value={25000}
                 displayType='text'
@@ -85,7 +85,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
             <div className='text-gray-a0 text-sm'>
               Username Change Fee (burned)
             </div>
-            <div className='text-gray-2d text-sm font-extrabold flex items-center'>
+            <div className='text-gray-a0 text-sm font-extrabold flex items-center'>
               <div className='mr-[9px]'>
                 <Fire width={18} height={18} />
               </div>
@@ -101,7 +101,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
             <div className='text-gray-a0 text-sm'>
               Remaining Balance after Change
             </div>
-            <div className='text-gray-2d text-sm font-extrabold'>
+            <div className='text-gray-a0 text-sm font-extrabold'>
               <NumberFormat
                 value={20000}
                 displayType='text'
