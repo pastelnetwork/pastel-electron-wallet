@@ -87,6 +87,7 @@ const SearchResultsContent = (
             <NFTCard
               key={i}
               hideFollow={true}
+              hideLikeButton={true}
               percentage={60}
               variant={'portfolio'}
               {...item}

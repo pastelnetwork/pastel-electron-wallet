@@ -23,6 +23,8 @@ export type TNFTCompactCard = {
   likes: number
   liked: boolean
   className?: string
+  hideFollow?: boolean
+  hideLikeButton?: boolean
   percentage?: number
   variant?: string
   isLastBid?: boolean
@@ -38,7 +40,6 @@ export type TNFTCard = Override<
     price: number | string
     currencyName: string
     onSale: boolean
-    hideFollow?: boolean
   }
 >
 
@@ -101,18 +102,22 @@ const NFTCard = ({
             </h4>
           </div>
           <div className='flex items-center'>
-            {followers ? (
+            {fullCardProps.hideLikeButton ? (
               <>
-                <HeartFilled size={14} className='text-pink-46' />
-                {!fullCardProps.hideFollow ? (
-                  <span className='text-sm text-gray-4a ml-2 hidden md:block'>
-                    {followers}
-                  </span>
-                ) : null}
+                {followers ? (
+                  <>
+                    <HeartFilled size={14} className='text-pink-46' />
+                    {!fullCardProps.hideFollow ? (
+                      <span className='text-sm text-gray-4a ml-2 hidden md:block'>
+                        {followers}
+                      </span>
+                    ) : null}
+                  </>
+                ) : (
+                  <Heart size={14} />
+                )}
               </>
-            ) : (
-              <Heart size={14} />
-            )}
+            ) : null}
           </div>
         </div>
       )}
