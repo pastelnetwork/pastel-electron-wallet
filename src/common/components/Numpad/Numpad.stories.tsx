@@ -13,7 +13,13 @@ export const Numpad: Story<TProps> = () => {
 
   return (
     <div className='absolute'>
-      <Component value={value} onChange={setValue} min={0} max={1000} />
+      <Component
+        value={value}
+        onChange={setValue}
+        min={0}
+        max={1000}
+        default={1}
+      />
     </div>
   )
 }
