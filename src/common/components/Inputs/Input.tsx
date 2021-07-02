@@ -58,7 +58,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     })
 
     const inputClasses = cn({
-      'input-field w-full py-2 text-base placeholder-gray500 text-text-gray800 text-h5 focus:outline-none placeholder-gray-a0': true,
+      'input-field w-full py-2 text-base placeholder-gray500 text-text-gray800 text-h5 focus:outline-none placeholder-gray-a0 rounded': true,
       'pl-4': !prepend,
       'pl-2': prepend,
       'pr-4': !append,
@@ -90,18 +90,17 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
               {...otherProps}
               disabled={disabled}
             />
-            {/* DON'T MOVE, it should be directly after <input> to show hint with css :focus rule */}
+            <fieldset className={fieldsetClasses} />
             {hint && hintAsTooltip && (
               <div
                 className={cn(
-                  'absolute bg-black text-white rounded-lg z-10 text-xs font-bold px-2 py-1 right-0 hintAsTooltip',
+                  'absolute bg-gray-35 text-white rounded-lg z-10 text-xs font-bold px-2 py-1 right-0 hintAsTooltip',
                   styles.hintAsTooltip,
                 )}
               >
                 {hint}
               </div>
             )}
-            <fieldset className={fieldsetClasses} />
 
             {append && <div className='pr-2'>{append}</div>}
 

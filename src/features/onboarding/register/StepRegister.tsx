@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { Input } from 'common/components/Inputs'
+import Input from 'common/components/Inputs/Input'
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 import { NextButton } from './Buttons'
@@ -76,6 +76,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           }
           hint='Only Latin Characters and Numbers Allowed'
           hintAsTooltip={true}
+          appliedStyleValid={false}
         />
         <div className='mt-6'>
           <InputPassword

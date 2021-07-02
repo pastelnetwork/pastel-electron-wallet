@@ -17,7 +17,7 @@ const OnboardingWelcome = (): JSX.Element => {
       <div className='font-medium text-2xl text-gray-77 mt-2 text-center'>
         Let’s start!
       </div>
-      <div className='relative rounded-2xl overflow-hidden'>
+      <div className='relative mt-8'>
         <div
           className={cn(
             'absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white w-36 h-36 flex items-center justify-center rounded-full transition cursor-pointer playBtn',
@@ -28,14 +28,21 @@ const OnboardingWelcome = (): JSX.Element => {
             <img src={playIco} className='cursor-pointer' />
           </div>
         </div>
-        <img src={image} className='w-full' />
+        <img
+          src={image}
+          className='rounded-2xl absolute z-0 w-587px filter blur-2xl top-10 left-1/2 transform -translate-x-1/2'
+        />
+        <img
+          src={image}
+          className='w-full rounded-2xl overflow-hidden z-10 relative'
+        />
       </div>
-      <div className='text-center mt-10'>
+      <div className='mt-10 flex flex-col items-center'>
         <Link to={ROUTES.SIGN_UP}>
           <Button className='w-96'>Register account</Button>
         </Link>
       </div>
-      <div className='mt-4 text-center'>
+      <div className='mt-4 flex flex-col items-center'>
         <Button
           variant='transparent'
           className='w-96 bg-white border border-link text-link'
@@ -45,7 +52,7 @@ const OnboardingWelcome = (): JSX.Element => {
       </div>
 
       <div className='mt-4 text-center text-base text-gray-500'>
-        Already have account?
+        Already have an account?
         <Link to={ROUTES.LOGIN} className='inline-block ml-3 text-link'>
           Login
         </Link>

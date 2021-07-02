@@ -167,7 +167,7 @@ const RegisterContent = (): JSX.Element => {
                     item.tooltipWidth && (
                       <div className='inline-block mx-2'>
                         <Tooltip
-                          classnames='text-sm py-1 px-1.5 ml-2'
+                          classnames='font-medium'
                           content={item.tooltipText}
                           type='top'
                           width={item.tooltipWidth}

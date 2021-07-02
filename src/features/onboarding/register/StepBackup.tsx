@@ -5,6 +5,7 @@ import QRCode from 'qrcode.react'
 import icoPdf from 'common/assets/icons/ico-pdf.svg'
 import icoDownload from 'common/assets/icons/ico-download-2.svg'
 import { PrevButton, NextButton } from './Buttons'
+import Tooltip from 'common/components/Tooltip'
 import { BackupMethods } from './Regiser.state'
 
 export type TStepBackupMethodProps = {
@@ -65,8 +66,8 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
               Download PDF “paper wallet” file with keys for your PastelID
             </h2>
 
-            <div className='mt-6 px-6 py-4 border border-gray-e1 flex rounded-lg'>
-              <img src={icoPdf} className='w-10' />
+            <div className='mt-6 px-6 py-4 border border-gray-e1 flex items-center rounded-lg'>
+              <img src={icoPdf} className='w-14' />
 
               <div className='ml-4 mr-4'>
                 <div className='text-base font-medium text-gray-1f'>
@@ -77,12 +78,20 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
 
               {pdfPrepareProgress === 0 && (
                 <div className='flex-grow flex justify-end'>
-                  <button
-                    className='w-12 h-12 rounded-full bg-gray-eb flex justify-center items-center cursor-pointer'
-                    onClick={() => onDownloadPdf()}
+                  <Tooltip
+                    type='bottom'
+                    width={110}
+                    content='Download PDF'
+                    vPosPercent={120}
+                    classnames='font-extrabold'
                   >
-                    <img src={icoDownload} className='w-5 cursor-pointer' />
-                  </button>
+                    <button
+                      className='w-12 h-12 rounded-full bg-gray-ebf2 flex justify-center items-center cursor-pointer'
+                      onClick={() => onDownloadPdf()}
+                    >
+                      <img src={icoDownload} className='w-5 cursor-pointer' />
+                    </button>
+                  </Tooltip>
                 </div>
               )}
 

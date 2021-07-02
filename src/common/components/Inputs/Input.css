@@ -10,11 +10,11 @@
   height: 0;
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
-  border-top: 6px solid #000;
+  border-top: 6px solid #353945;
   bottom: -6px;
   left: calc(50% - 3px);
 }
 
-.input-field:focus + .hintAsTooltip {
+.input-field:focus ~ .hintAsTooltip {
   display: block;
 }
