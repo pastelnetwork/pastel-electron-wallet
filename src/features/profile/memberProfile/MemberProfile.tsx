@@ -46,7 +46,6 @@ const mockCardProps: TNFTCard = {
   percentage: 75,
   variant: 'portfolio',
   isLastBid: false,
-  hideLikeButton: true,
   author: 'vanecha',
   avatarSrc: avatar,
   imageSrc: image,
