@@ -306,6 +306,12 @@ module.exports = {
           23: '#23262F',
           77: '#777E90',
         },
+        rgba: {
+          white: {
+            '02': 'rgba(255, 255, 255, 0.2)',
+            '04': 'rgba(255, 255, 255, 0.4)',
+          },
+        },
       },
       boxShadow: {
         xs:
@@ -331,6 +337,7 @@ module.exports = {
         input:
           '0 1px 12px rgba(50, 50, 71, 0.008), 0 0 4px rgba(50, 50, 71, 0.04)',
         textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
+        '0x4x44px': '0px 4px 44px rgba(0, 0, 0, 0.1)',
       },
       fontSize: {
         h1: '2rem',
