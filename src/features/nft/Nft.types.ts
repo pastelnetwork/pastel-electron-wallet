@@ -9,7 +9,8 @@ export type TNFT = {
   likes: number
   liked: boolean
   views: number
-  status: 'listed'
+  type: string
+  status: number
   price: number
   currencyName: 'PSL'
   time: Dayjs
@@ -19,6 +20,7 @@ export type TNFT = {
     name: string
   }
   copies: number
+  royalty: string
   owner: string
   collection: string
   category: string

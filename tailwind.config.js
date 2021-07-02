@@ -144,6 +144,7 @@ module.exports = {
         '526px': '32.875rem',
         '540px': '33.75rem',
         '553px': '34.563rem',
+        '564px': '35.25rem',
         '594px': '37.125rem',
         '622px': '38.875rem',
         '608px': '38rem',
@@ -173,6 +174,9 @@ module.exports = {
           pressed: '#C85195',
           hover: '#CE64A1',
           background: '#FAEFF5',
+        },
+        black: {
+          12: '#121244',
         },
         blue: {
           '00': '#0054FE',
@@ -425,6 +429,9 @@ module.exports = {
       },
       opacity: {
         2.61: '0.0261',
+      },
+      letterSpacing: {
+        0.01: '0.01em',
       },
     },
   },

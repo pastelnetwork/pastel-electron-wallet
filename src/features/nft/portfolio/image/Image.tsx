@@ -14,7 +14,7 @@ export default function Image({ nft }: TImageProps): JSX.Element {
   const [isShowPictureModal, toggleShowPictureModal] = useToggle(false)
 
   return (
-    <div className='flex-center flex-col'>
+    <div className='flex-center flex-col md:flex-row md:items-start'>
       <div>
         <div className='relative'>
           <img src={nft.image} className='object-cover' />
