@@ -8,10 +8,12 @@ import ProfileGeneralRow from './ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import Select, { TOption } from './Select/Select'
 
+export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
+
 export type TProfileGeneral = {
   editMode: boolean
   isEmpty: boolean
-  nativeCurrency?: string
+  nativeCurrency: TCurrency
 }
 
 const ProfileGeneral = ({

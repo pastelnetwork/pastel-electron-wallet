@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import ProfileCard from '../components/MyProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
-import ProfileGeneral from '../components/MyProfileGeneral'
+import ProfileGeneral, { TCurrency } from '../components/MyProfileGeneral'
 import { TOption } from '../components/Select/Select'
 
 export const nativeCurrencyOptions: TOption[] = [
@@ -42,7 +42,7 @@ const Profile = (): JSX.Element => {
   )
 
   const isEmpty = false
-
+  const currency = nativeCurrency?.value as TCurrency
   return (
     <div className='flex flex-col flex-grow items-center'>
       <div className='wrapper flex px-60px pb-8 justify-center pt-9 w-full'>
@@ -60,7 +60,7 @@ const Profile = (): JSX.Element => {
           <ProfileGeneral
             editMode={editMode}
             isEmpty={isEmpty}
-            nativeCurrency={nativeCurrency?.value}
+            nativeCurrency={currency}
           />
           <ProfileRelations isEmpty={isEmpty} />
         </div>
