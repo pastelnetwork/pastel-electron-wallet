@@ -1,57 +1,52 @@
-import React, { useEffect, useState, forwardRef } from 'react'
-import { Backspace } from '../Icons'
+import React, { useEffect, useState, forwardRef, useRef } from 'react'
 import cn from 'classnames'
 
 export type TProps = {
   value: number
+  default: number
   onChange(value: number): void
   min?: number
   max?: number
-  fractionDigits?: number
   className?: string
 }
 
 export default forwardRef<HTMLDivElement, TProps>(function Numpad(
   {
     value: valueProp,
+    default: defaultValue,
     onChange: onChangeProp,
     min = -Infinity,
     max = Infinity,
-    fractionDigits = 0,
     className,
   },
   ref,
 ) {
   const [value, setValue] = useState('')
 
+  // when input gets empty, default it passed to onChange, valueProp updates and we need to ignore it to keep input empty
+  const skipSetValueRef = useRef(false)
+
   useEffect(() => {
-    setValue(String(valueProp))
+    if (!skipSetValueRef.current) {
+      setValue(String(valueProp))
+    } else {
+      skipSetValueRef.current = false
+    }
   }, [valueProp])
 
   const onChange = (value: string) => {
-    if (value.indexOf('.') === value.length - 1) {
-      return setValue(value)
-    }
-
-    const multiply = Math.pow(10, fractionDigits)
-    const number =
-      fractionDigits > 0
-        ? Math.floor(parseFloat(value) * multiply) / multiply
-        : parseInt(value)
+    const number = parseInt(value)
     if (!isNaN(number) && number >= min && number <= max) {
       setValue(String(number))
       onChangeProp(number)
-      return
-    }
-
-    if (value.length === 0 || value.indexOf('.') === value.length - 1) {
+    } else if (value.length === 0) {
       setValue(value)
+      skipSetValueRef.current = true
+      onChangeProp(defaultValue)
     }
   }
 
-  const onBackspace = () => {
-    onChange(value.slice(0, value.length - 1))
-  }
+  const clear = () => onChange('')
 
   const addChar = (char: string) => onChange(value + char)
 
@@ -59,45 +54,49 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
     <div
       ref={ref}
       className={cn(
-        'p-2 bg-white rounded-b shadow-md text-gray-51 space-y-2 border border-gray-e7',
+        'p-4 bg-white rounded-2xl shadow-4 space-y-2 border border-gray-e7',
         className,
       )}
     >
-      <div className='relative'>
-        <input
-          className='input w-[136px]'
-          value={value}
-          onChange={e => onChange(e.target.value)}
-        />
-        <button
-          type='button'
-          className='absolute right-2 top-2.5 text-gray-71 duration-200 transition hover:text-gray-57'
-          onClick={onBackspace}
-        >
-          <Backspace size={24} />
-        </button>
-      </div>
+      <input
+        className='input h-8 px-2 mb-1 w-[112px]'
+        value={value}
+        onChange={e => onChange(e.target.value)}
+      />
       <div className='flex space-x-2'>
         {[1, 2, 3].map(value => (
-          <NumpadButton value={value} onClick={() => addChar(String(value))} />
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
         ))}
       </div>
       <div className='flex space-x-2'>
         {[3, 4, 5].map(value => (
-          <NumpadButton value={value} onClick={() => addChar(String(value))} />
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
         ))}
       </div>
       <div className='flex space-x-2'>
         {[7, 8, 9].map(value => (
-          <NumpadButton value={value} onClick={() => addChar(String(value))} />
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
         ))}
       </div>
       <div className='flex space-x-2'>
-        <div className='w-10 h-10' />
         <NumpadButton value={0} onClick={() => addChar('0')} />
-        {fractionDigits > 0 && (
-          <NumpadButton value='.' onClick={() => addChar('.')} />
-        )}
+        <NumpadButton value='clear' onClick={clear} className='flex-grow' />
+      </div>
+      <div className='text-gray-a0 text-xs text-center'>
+        number between
+        <br />1 and 1,000
       </div>
     </div>
   )
@@ -106,14 +105,19 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
 const NumpadButton = ({
   value,
   onClick,
+  className,
 }: {
   value: number | string
   onClick(): void
+  className?: string
 }) => {
   return (
     <button
       type='button'
-      className='shadow-input border border-gray-e7 w-10 h-10 flex-center rounded-lg duration-200 transition hover:bg-gray-fc'
+      className={cn(
+        'shadow-sm text-blue-3f border border-blue-3f w-8 h-8 flex-center rounded-lg duration-200 transition hover:bg-blue-e1 flex-shrink-0',
+        className,
+      )}
       onClick={onClick}
     >
       {value}

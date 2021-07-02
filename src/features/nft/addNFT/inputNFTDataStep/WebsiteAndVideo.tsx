@@ -3,6 +3,7 @@ import Input from 'common/components/Form/Input'
 import { TForm } from './InputNFTDataStep'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
+import { useWatch } from 'react-hook-form'
 
 export default function WebsiteAndVideo({
   form,
@@ -26,7 +27,17 @@ const ToggleableInput = ({
   name: 'website' | 'video'
   label: string
 }) => {
-  const [showInput, setShowInput] = useState(false)
+  const showInputKey = name === 'website' ? 'showSiteInput' : 'showVideoInput'
+
+  const showInput = useWatch({
+    control: form.control,
+    name: showInputKey,
+  })
+
+  const setShowInput = (show: boolean) => {
+    form.setValue(showInputKey, show)
+  }
+
   const [value, setValue] = useState('')
 
   // stash input value while input is hidden
@@ -60,7 +71,7 @@ const ToggleableInput = ({
             showInput ? 'h-10 opacity-100' : 'h-0 opacity-0',
           )}
         >
-          <input {...props} />
+          <input {...props} className='input text-sm' />
         </div>
       )}
     />

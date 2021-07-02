@@ -1,7 +1,7 @@
 import React from 'react'
 import { Range } from 'react-range'
 import cn from 'classnames'
-import { SliderShape, Width } from './SliderShape'
+import { SliderShape, TWidth } from './SliderShape'
 import {
   fractionToValue,
   sliderMax,
@@ -9,11 +9,11 @@ import {
   valueToFraction,
 } from './slider.utils'
 
-type Variant = 'default' | 'stickToBottom'
+type TVariant = 'default' | 'stickToBottom'
 
 export type TSliderProps = {
-  width?: Width
-  variant?: Variant
+  width?: TWidth
+  variant?: TVariant
   hideLabel?: boolean
   formatValue?: (value: number) => number | string
   formatTooltipValue?: (value: number) => number | string

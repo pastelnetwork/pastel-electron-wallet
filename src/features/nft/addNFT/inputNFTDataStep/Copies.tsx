@@ -25,6 +25,7 @@ export default function Copies({ form }: { form: TForm }): JSX.Element {
         form={form}
         name='copies'
         steps={[1, 5, 10, 25, 50, 100, 250, 500, 1000]}
+        defaultValue={1}
         roundValue={Math.round}
         formatTooltipValue={Math.round}
       />

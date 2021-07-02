@@ -67,7 +67,6 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     setCrop,
     setImage,
     goBack() {
-      console.log(step, firstStep)
       if (step > firstStep) {
         setStep(step - 1)
       } else {

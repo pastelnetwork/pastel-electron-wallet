@@ -16,9 +16,10 @@ import Royalty from './Royalty'
 import WebsiteAndVideo from './WebsiteAndVideo'
 import TextArea from 'common/components/Form/TextArea'
 
-type TFormData = Omit<TNFTData, 'hashtags' | 'series'> & {
+type TFormData = Omit<TNFTData, 'hashtags'> & {
   hashtags: TOption[]
-  series: TOption
+  showSiteInput: boolean
+  showVideoInput: boolean
 }
 
 export type TForm = UseFormReturn<TFormData>
@@ -35,7 +36,7 @@ const titleMinLength = 10
 export const copiesMin = 1
 export const copiesMax = 1000
 
-export const royaltyMin = 0
+export const royaltyMin = 0.1
 export const royaltyMax = 20
 
 const schema = yup.object().shape({
@@ -49,8 +50,8 @@ const schema = yup.object().shape({
   copies: yup.number().label('Copies').min(copiesMin).max(copiesMax).required(),
   royalty: yup
     .number()
-    .label('Copies')
-    .min(royaltyMin)
+    .label('Royalty')
+    .min(royaltyMin, 'No Royalty Applied')
     .max(royaltyMax)
     .required(),
   externalProfile: yup.string().label('External profile').url(),
@@ -70,12 +71,12 @@ export default function InputNFTDataStep({
     defaultValues: {
       ...nftData,
       hashtags: nftData?.hashtags.map(value => ({ value, label: value })) || [],
-      series: nftData
-        ? { value: nftData.series, label: nftData.series }
-        : undefined,
+      series: nftData?.series,
       copies: nftData?.copies || 1,
       royalty: nftData?.royalty || 0,
       green: nftData?.green || false,
+      showSiteInput: Boolean(nftData?.website?.length),
+      showVideoInput: Boolean(nftData?.video?.length),
     },
   })
 
@@ -84,7 +85,7 @@ export default function InputNFTDataStep({
     setNftData({
       ...values,
       hashtags: values.hashtags.map(option => option.value),
-      series: values.series.value,
+      series: values.series,
     })
     goToNextStep()
   }
@@ -115,11 +116,11 @@ export default function InputNFTDataStep({
               name='title'
               label='Title'
               placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
-              className='w-full'
+              className='w-full text-sm'
             />
             <div className='flex-center h-10'>
               <Toggle form={form} name='green' />
-              <div className='text-gray-71 font-medium mx-3'>Green</div>
+              <div className='text-gray-71 font-medium mx-3'>GreenNFT</div>
               <Tooltip type='top' content='info' width={50}>
                 <Info size={18} />
               </Tooltip>
@@ -131,7 +132,7 @@ export default function InputNFTDataStep({
               label='Keyword Hashtags'
               name='hashtags'
               options={hashtags}
-              className='w-1/2'
+              className='w-1/2 text-sm'
               placeholder='#MotionGraphics, #Abstract'
             />
             <Input
@@ -139,7 +140,7 @@ export default function InputNFTDataStep({
               name='series'
               label='Series Name'
               placeholder='(if the NFT is part of a series)'
-              className='w-1/2'
+              className='w-1/2 text-sm'
             />
           </div>
           <Copies form={form} />
@@ -149,7 +150,8 @@ export default function InputNFTDataStep({
             form={form}
             name='description'
             label='Description'
-            textAreaClassName='input resize-none py-2 overflow-hidden h-[60px]'
+            textAreaClassName='input text-sm resize-none py-2 overflow-hidden h-[60px]'
+            placeholder='Description of the NFT or artist’s statement.'
           />
         </div>
         <Button className='w-full font-extrabold'>Go to preview</Button>

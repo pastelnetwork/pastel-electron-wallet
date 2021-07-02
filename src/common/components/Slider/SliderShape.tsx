@@ -21,7 +21,7 @@ const paths = {
   ),
 } as const
 
-export type Width = keyof typeof paths
+export type TWidth = keyof typeof paths
 
 export const SliderShape = ({
   className,
@@ -29,7 +29,7 @@ export const SliderShape = ({
   style,
 }: {
   className: string
-  width: Width
+  width: TWidth
   style?: CSSProperties
 }): JSX.Element => {
   return (

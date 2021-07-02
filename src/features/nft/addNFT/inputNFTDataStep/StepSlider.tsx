@@ -5,11 +5,13 @@ import Slider from 'common/components/Slider'
 import { Numpad as NumpadIcon } from 'common/components/Icons'
 import Numpad from 'common/components/Numpad'
 import { useClickAway, useToggle } from 'react-use'
+import cn from 'classnames'
 
 export default function StepSlider({
   form,
   name,
   steps,
+  defaultValue,
   roundValue,
   formatValue,
   formatTooltipValue,
@@ -17,6 +19,7 @@ export default function StepSlider({
   form: TForm
   name: 'copies' | 'royalty'
   steps: number[]
+  defaultValue: number
   roundValue(value: number): number
   formatValue?(value: number): string | number
   formatTooltipValue?(value: number): string | number
@@ -36,7 +39,12 @@ export default function StepSlider({
       control={form.control}
       render={({ field: { value, onChange } }) => {
         return (
-          <div className='pt-12 flex items-start space-x-7'>
+          <div
+            className={cn(
+              'pt-12 flex items-start space-x-7',
+              name === 'royalty' && 'pr-16',
+            )}
+          >
             <Slider
               variant='stickToBottom'
               width={296}
@@ -47,22 +55,33 @@ export default function StepSlider({
               formatTooltipValue={formatTooltipValue}
               valuesClassName='mt-2'
             />
-            <div ref={numpadRef} className='relative'>
-              <button type='button' onClick={toggleNumpad}>
-                <NumpadIcon size={36} />
-              </button>
-              {showNumpad && (
-                <div className='absolute top-full -right-7 z-10'>
-                  <Numpad
-                    value={value}
-                    onChange={value => form.setValue(name, value)}
-                    min={steps[0]}
-                    max={steps[steps.length - 1]}
-                    fractionDigits={name === 'royalty' ? 1 : 0}
-                  />
-                </div>
-              )}
-            </div>
+            {name === 'copies' && (
+              <div ref={numpadRef} className='relative -top-3'>
+                <button
+                  type='button'
+                  onClick={toggleNumpad}
+                  className={cn(
+                    'w-9 h-9 flex-center rounded-full transition duration-200',
+                    showNumpad
+                      ? 'bg-blue-eb text-blue-3f'
+                      : 'bg-gray-f4 text-gray-8e',
+                  )}
+                >
+                  <NumpadIcon size={22} className='relative top-0.5' />
+                </button>
+                {showNumpad && (
+                  <div className='absolute top-full mt-1.5 left-0 z-10'>
+                    <Numpad
+                      value={value}
+                      default={defaultValue}
+                      onChange={value => form.setValue(name, value)}
+                      min={steps[0]}
+                      max={steps[steps.length - 1]}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )
       }}

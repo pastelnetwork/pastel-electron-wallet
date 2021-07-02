@@ -71,7 +71,7 @@ export default function SubmitStep({
                 <InfoPair title='Creation video' value={nftData.video} />
               )}
               <div className='flex items-center'>
-                <div className='text-gray-71 mr-3'>Green</div>
+                <div className='text-gray-71 mr-3'>GreenNFT</div>
                 <Toggle selected={nftData.green} />
               </div>
             </div>

@@ -177,6 +177,7 @@ module.exports = {
           f8: '#F8FBFF',
           e5: '#E5F1FF',
           eb: '#EBF2FF',
+          e1: '#E1ECF8',
           37: '#3754DB',
         },
         gray: {
@@ -318,6 +319,7 @@ module.exports = {
         input:
           '0 1px 12px rgba(50, 50, 71, 0.008), 0 0 4px rgba(50, 50, 71, 0.04)',
         textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
+        4: '0px 50px 77px rgba(176, 183, 195, 0.22)',
       },
       fontSize: {
         h1: '2rem',
