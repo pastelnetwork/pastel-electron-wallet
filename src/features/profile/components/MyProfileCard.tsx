@@ -5,7 +5,6 @@ import LineEdit from './LineEdit'
 import ProfileCardFrame from './ProfileCardFrame'
 import ProfileCardAvatar from './ProfileCardAvatar'
 import Select, { TOption } from './Select/Select'
-import ChangePastelUsernameModal from './ChangePastelUsernameModal'
 import PastelUtils from 'common/utils/utils'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import { Button } from 'common/components/Buttons'
@@ -14,7 +13,6 @@ import ico_copy from 'common/assets/icons/ico-copy2.svg'
 import ico_facebook from 'common/assets/icons/ico-facebook.svg'
 import ico_twitter from 'common/assets/icons/ico-twitter.svg'
 import ico_pencil from 'common/assets/icons/ico-pencil-transparent.svg'
-import { Pencil } from 'common/components/Icons/Pencil'
 import ChangeUsernameModal from './ChangeUsernameModal'
 
 export type TProfileCard = {
@@ -49,7 +47,6 @@ const ProfileCard = ({
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(
     false,
   )
-  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   useEffect(() => {
     setFacebook(isEmpty ? '' : data.facebook)
@@ -79,21 +76,17 @@ const ProfileCard = ({
       <div className='flex flex-col flex-grow'>
         <ProfileCardFrame isEmpty={isEmpty} editMode={isEmpty || editMode} />
         <div className='-mt-61px px-4 flex relative justify-center'>
-          <ProfileCardAvatar isEmpty={isEmpty} src={img_avatar} />
+          <ProfileCardAvatar
+            isEmpty={isEmpty}
+            editMode={editMode}
+            src={img_avatar}
+          />
         </div>
         {!editMode && (
           <div className='flex flex-col px-5 pt-3 flex-grow justify-between'>
             <div>
               <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
-                <div>{data.username}</div>
-                <div
-                  className='ml-2 cursor-pointer'
-                  onClick={() => {
-                    setOpenEditUsernameModal(true)
-                  }}
-                >
-                  <Pencil width={11} height={11} className='text-blue-3f' />
-                </div>
+                {data.username}
               </div>
               <div className='font-bold text-26px leading-9 text-center'>
                 {name}
@@ -151,7 +144,7 @@ const ProfileCard = ({
               <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
                 {data.username}{' '}
                 <SVG
-                  onClick={() => setModalIsOpen(true)}
+                  onClick={() => setOpenEditUsernameModal(true)}
                   src={ico_pencil}
                   className='ml-7px w-13px fill-blue-3f cursor-pointer'
                 />
@@ -206,10 +199,6 @@ const ProfileCard = ({
       <ChangeUsernameModal
         isOpen={openEditUsernameModal}
         handleClose={() => setOpenEditUsernameModal(false)}
-      />
-      <ChangePastelUsernameModal
-        modalIsOpen={modalIsOpen}
-        onCloseModal={setModalIsOpen}
       />
     </div>
   )

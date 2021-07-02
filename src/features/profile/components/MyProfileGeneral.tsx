@@ -41,6 +41,7 @@ const ProfileGeneral = ({
     })
   }
 
+  const price = 15
   const [categories, setCategories] = useState<Array<string>>(data.categories)
   const [bio, setBio] = useState<string>(data.bio)
   const [location, setLocation] = useState<TOption | null>(locations[1])
@@ -59,7 +60,7 @@ const ProfileGeneral = ({
         return
       }
 
-      const result = await Convert(15).from('USD').to(nativeCurrency)
+      const result = await Convert(price).from('USD').to(nativeCurrency)
       setCurrentPSLPrice(result.toFixed(2))
     }
     getNativeCurrency()
@@ -112,9 +113,7 @@ const ProfileGeneral = ({
         </ProfileGeneralRow>
         <ProfileGeneralRow title='Pastel Reputation Score'>
           <StarRate rate={data.reputation} />
-          <div className='1200px:pl-2 text-gray-500'>
-            {data.reputation.toFixed(2)}
-          </div>
+          <div className='pl-2 text-gray-500'>{data.reputation.toFixed(2)}</div>
         </ProfileGeneralRow>
       </div>
       <div className='w-full mt-98px space-y-4'>
