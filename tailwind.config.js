@@ -177,14 +177,15 @@ module.exports = {
           12: '#121244',
         },
         blue: {
-          '00': '#0054FE',
-          '3f': '#3F9AF7',
           f8: '#F8FBFF',
           e5: '#E5F1FF',
           eb: '#EBF2FF',
+          e1: '#E1ECF8',
           79: '#79A8FA',
           68: '#687EFE',
+          '3f': '#3F9AF7',
           37: '#3754DB',
+          '00': '#0054FE',
         },
         gray: {
           fc: '#FCFCFD',
@@ -194,13 +195,13 @@ module.exports = {
           f4: '#F4F5F6',
           f3: '#F3F3F3',
           f2: '#F2F2F2',
+          ef: '#EFF5FD',
           ed: '#EDEEF1',
           eb: '#EBEBFC',
           e7: '#E7EAF2',
           e6: '#E6E8EC',
           e4: '#E4E4E4',
           e1: '#E1E4E8',
-          ef: '#EFF5FD',
           dd: '#DDE0E3',
           cd: '#CDD2DB',
           b0: '#B0B7C3',
@@ -229,12 +230,13 @@ module.exports = {
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
-          '7a': '#FF7A00',
-          ef: '#FFEFEB',
-          14: '#14B85F',
-          fe: '#FE634C',
-          75: '#FF754C',
           ff: '#FF82AC',
+          fe: '#FE634C',
+          ef: '#FFEFEB',
+          '7a': '#FF7A00',
+          75: '#FF754C',
+          63: '#FE634C',
+          14: '#14B85F',
         },
         pink: {
           46: '#EF466F',
@@ -249,6 +251,7 @@ module.exports = {
         },
         yellow: {
           ff: '#FFBE3D',
+          c3: '#FFCE14',
           e9: '#E9DB60',
         },
         green: {
@@ -327,6 +330,7 @@ module.exports = {
         input:
           '0 1px 12px rgba(50, 50, 71, 0.008), 0 0 4px rgba(50, 50, 71, 0.04)',
         textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
+        4: '0px 50px 77px rgba(176, 183, 195, 0.22)',
       },
       fontSize: {
         h1: '2rem',

@@ -46,7 +46,7 @@ export default function SelectMultiple<TForm extends FieldValues>(
     )
   }
 
-  return <SelectMultiple {...props} />
+  return <SelectMultipleInner {...props} />
 }
 
 const SelectMultipleInner = ({
@@ -174,10 +174,13 @@ const SelectMultipleInner = ({
             </button>
           </div>
         ))}
-        <div {...getComboboxProps()} className='flex-grow'>
+        <div
+          {...getComboboxProps()}
+          className='flex-grow relative mb-1.5 h-6 min-w-[80px]'
+        >
           <input
             id={id}
-            className='flex-grow h-6 w-16 mb-1.5 pl-2'
+            className='absolute inset-0 w-full pl-2'
             placeholder={placeholder}
             {...inputProps}
           />

@@ -9,18 +9,18 @@ export enum Step {
   approved,
 }
 
-const firstStep = Step.upload
+const firstStep = Step.inputData
 const lastStep = Step.approved
 const stepsCount = lastStep + 1
 
 export type TNFTData = {
   title: string
-  categories: string[]
-  collection: string
+  hashtags: string[]
+  series?: string
   copies: number
-  compensation: string
-  compensationPercent: number
-  externalProfile?: string
+  royalty: number
+  website?: string
+  video?: string
   green: boolean
   description?: string
 }

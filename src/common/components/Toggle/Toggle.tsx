@@ -23,9 +23,9 @@ const Toggle = ({
         <div className='relative'>
           <div
             className={cn(
-              'block bg-gray-dd flex items-center duration-200 transition',
+              'block flex items-center duration-200 transition',
               classNames,
-              checked && selectedClass,
+              checked ? selectedClass : 'bg-gray-dd',
             )}
             onClick={() => {
               !!toggleHandler && toggleHandler(!checked)
