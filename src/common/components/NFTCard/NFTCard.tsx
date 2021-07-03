@@ -30,6 +30,9 @@ export type TNFTCompactCard = {
   isLastBid?: boolean
   followers?: number
   detailUrl?: string
+  copies?: string
+  diamond?: string
+  bidPercentage?: string
 }
 
 export type TNFTCard = Override<
@@ -51,6 +54,9 @@ const NFTCard = ({
   variant,
   isLastBid,
   followers,
+  copies = '1 of 1,000',
+  diamond = '10%',
+  bidPercentage = '+100%',
   detailUrl = '#',
   ...props
 }: TNFTCompactCard | TNFTCard): JSX.Element => {
@@ -196,7 +202,7 @@ const NFTCard = ({
                 isNFTPortfolio ? 'ml-5px mr-9px' : 'ml-2 mr-3 lg:mr-6',
               )}
             >
-              1 of 1,000
+              {copies},
             </span>
             <Tooltip
               type='top'
@@ -211,7 +217,7 @@ const NFTCard = ({
                 className='cursor-pointer'
               />
             </Tooltip>
-            10%
+            {diamond}
           </div>
           <div className='flex items-center'>
             <Tooltip
@@ -284,13 +290,14 @@ const NFTCard = ({
         >
           <div className='flex items-center justify-between'>
             <span
-              className={`${
-                isPortfolio
-                  ? 'leading-6 text-h6 text-gray-77 text-sm md:text-base font-medium'
-                  : isNFTPortfolio
-                  ? 'text-sm font-medium text-gray-4a'
-                  : 'text-sm md:text-base font-medium leading-none text-h5 text-gray-71'
-              }`}
+              className={cn(
+                isPortfolio &&
+                  'leading-6 text-h6 text-gray-77 text-sm md:text-base font-medium',
+                isNFTPortfolio && 'text-sm font-medium text-gray-4a',
+                !isPortfolio &&
+                  !isNFTPortfolio &&
+                  'text-sm md:text-base font-medium leading-none text-h5 text-gray-71',
+              )}
             >
               {!fullCardProps.onSale
                 ? 'Not for sale'
@@ -302,9 +309,9 @@ const NFTCard = ({
               <div
                 className={cn(
                   'flex text-gray-2d',
-                  isNFTPortfolio
-                    ? 'text-sm font-black items-start'
-                    : 'text-sm md:text-base lg:text-h5 font-extrabold',
+                  isNFTPortfolio && 'text-sm font-black items-start',
+                  !isNFTPortfolio &&
+                    'text-sm md:text-base lg:text-h5 font-extrabold',
                 )}
               >
                 {fullCardProps.onSale ? '12,000 PSL' : ''}
@@ -312,10 +319,11 @@ const NFTCard = ({
                   <span
                     className={cn(
                       'font-bold green-gradient',
-                      isNFTPortfolio ? 'pl-2px text-6px' : 'text-8px',
+                      isNFTPortfolio && 'pl-2px text-6px',
+                      !isNFTPortfolio && 'text-8px',
                     )}
                   >
-                    +100%
+                    {bidPercentage}
                   </span>
                 )}
               </div>
