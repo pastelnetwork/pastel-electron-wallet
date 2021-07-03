@@ -17,7 +17,10 @@ const RegistrationPending = (): JSX.Element => {
           src={registerImage}
           className='rounded-2xl absolute z-0 w-539px h-262px filter blur-2xl top-10 left-1/2 transform -translate-x-1/2'
         />
-        <img src={registerImage} className='rounded-2xl overflow-hidden' />
+        <img
+          src={registerImage}
+          className='rounded-2xl overflow-hidden relative z-10'
+        />
       </div>
       <Link to={ROUTES.REGISTER_SUCCESSFUL} className='link'>
         Check payment status manually
