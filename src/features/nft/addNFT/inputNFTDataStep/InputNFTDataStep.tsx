@@ -1,83 +1,62 @@
-import React, { useRef, useState } from 'react'
+import React from 'react'
 import * as yup from 'yup'
 import PercentCircle from 'common/components/PercentCircle'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common/components/Form/Input'
 import { Button } from 'common/components/Buttons'
-import CategoryAndCollection from './CategoryAndCollection'
-import CopiesAndCompensation from './CopiesAndCompensation'
-import DescriptionAndGreen from './DescriptionAndGreen'
-import AddCollectionModal from './AddCollectionModal'
-import { useClickAway, useToggle } from 'react-use'
 import { TNFTData, TAddNFTState } from '../AddNFT.state'
 import { TOption } from 'common/components/Select/Select'
+import Toggle from 'common/components/Form/Toggle'
+import { Info } from 'common/components/Icons'
+import Tooltip from 'common/components/Tooltip'
+import SelectMultiple from 'common/components/SelectMultiple/SelectMultiple'
+import Copies from './Copies'
+import Royalty from './Royalty'
+import WebsiteAndVideo from './WebsiteAndVideo'
+import TextArea from 'common/components/Form/TextArea'
 
-type TFormData = Omit<
-  TNFTData,
-  'categories' | 'collection' | 'compensation'
-> & {
-  categories: TOption[]
-  collection: TOption
-  compensation: TOption
+type TFormData = Omit<TNFTData, 'hashtags'> & {
+  hashtags: TOption[]
+  showSiteInput: boolean
+  showVideoInput: boolean
 }
 
 export type TForm = UseFormReturn<TFormData>
 
-export const categories = [
-  'Motion graphics',
-  'Illustration',
-  'Games',
-  'Music',
-  'Film',
-  'Sports',
+export const hashtags = [
+  '#motiongraphics',
+  '#modern',
+  '#spaceart',
+  '#paintworks',
 ].map(value => ({ value, label: value }))
-
-const initialCollections = ['Collection 1', 'Collection 2'].map(value => ({
-  value,
-  label: value,
-}))
-
-export const compensations = ['royalty', 'other'].map(value => ({
-  value,
-  label: value,
-}))
-const defaultCompensation = compensations[0]
 
 const titleMinLength = 10
 
 export const copiesMin = 1
-export const copiesMax = 10000
+export const copiesMax = 1000
 
-export const compensationPercentMin = 1
-export const compensationPercentMax = 50
-
-export const descriptionMaxLength = 200
+export const royaltyMin = 0.1
+export const royaltyMax = 20
 
 const schema = yup.object().shape({
   title: yup.string().label('Title').min(titleMinLength).required(),
-  categories: yup
+  hashtags: yup
     .array()
-    .min(1, 'Please select at least 1 category')
-    .label('Category')
+    .label('Keyword Hashtags')
     .of(yup.object({ value: yup.string().required() }))
     .required(),
-  collection: yup.object().label('Collection').required(),
-  copies: yup.number().min(copiesMin).label('Copies').max(copiesMax).required(),
-  compensation: yup
-    .object({ value: yup.string().required() })
-    .label('Compensation')
-    .required(),
-  compensationPercent: yup
+  series: yup.string().label('Series Name'),
+  copies: yup.number().label('Copies').min(copiesMin).max(copiesMax).required(),
+  royalty: yup
     .number()
-    .typeError('Please specify a number')
-    .label('Compensation percent')
-    .min(compensationPercentMin)
-    .max(compensationPercentMax)
+    .label('Royalty')
+    .min(royaltyMin, 'No Royalty Applied')
+    .max(royaltyMax)
     .required(),
   externalProfile: yup.string().label('External profile').url(),
   green: yup.boolean().label('Green').required(),
-  description: yup.string().label('Description').max(descriptionMaxLength),
+  description: yup.string().label('Description'),
 })
 
 type TInputNFTDataStepProps = {
@@ -91,17 +70,13 @@ export default function InputNFTDataStep({
     resolver: yupResolver(schema),
     defaultValues: {
       ...nftData,
-      categories:
-        nftData?.categories.map(value => ({ value, label: value })) || [],
-      collection: nftData
-        ? { value: nftData.collection, label: nftData.collection }
-        : undefined,
-      copies: nftData?.copies || 100,
-      compensation: nftData
-        ? { value: nftData.compensation, label: nftData.compensation }
-        : defaultCompensation,
-      compensationPercent: 12,
+      hashtags: nftData?.hashtags.map(value => ({ value, label: value })) || [],
+      series: nftData?.series,
+      copies: nftData?.copies || 1,
+      royalty: nftData?.royalty || 0,
       green: nftData?.green || false,
+      showSiteInput: Boolean(nftData?.website?.length),
+      showVideoInput: Boolean(nftData?.video?.length),
     },
   })
 
@@ -109,84 +84,75 @@ export default function InputNFTDataStep({
     const values = form.getValues()
     setNftData({
       ...values,
-      categories: values.categories.map(option => option.value),
-      collection: values.collection.value,
-      compensation: values.compensation.value || '',
+      hashtags: values.hashtags.map(option => option.value),
+      series: values.series,
     })
     goToNextStep()
   }
 
-  const [collections, setCollections] = useState(initialCollections)
-  const addCollection = (value: string) => {
-    setCollections([...collections, { value, label: value }])
-    toggleAddCollection()
-  }
-
-  const addCollectionModalRef = useRef<HTMLFormElement>(null)
-  const [showAddCollection, toggleAddCollection] = useToggle(false)
-
-  useClickAway(addCollectionModalRef, () => {
-    if (showAddCollection) {
-      toggleAddCollection()
-    }
-  })
-
-  const addCollectionButtonRef = (button: HTMLButtonElement | null) => {
-    const addCollectionModal = addCollectionModalRef.current
-
-    if (!button || !addCollectionModal) {
-      return
-    }
-
-    addCollectionModal.style.top = `${button.offsetTop + button.offsetHeight}px`
-  }
-
   return (
     <>
-      <AddCollectionModal
-        ref={addCollectionModalRef}
-        show={showAddCollection}
-        onSubmit={addCollection}
-      />
-
       <form
         className='paper p-10 w-[690px]'
         onSubmit={form.handleSubmit(submit)}
       >
-        <div className='flex-between w-[320px]'>
-          <div>
-            <div className='text-gray-800 text-2xl font-extrabold mb-3'>
+        <div className='flex'>
+          <div className='mr-7'>
+            <div className='text-gray-800 text-2xl font-extrabold mb-0.5'>
               Input NFT Data
             </div>
             <div className='font-medium text-sm text-gray-33 opacity-50'>
-              Description
+              The Metadata Fields for your NFT
             </div>
           </div>
           <PercentCircle color='text-green-6d' percent={25}>
             <div className='font-extrabold text-gray-11 text-lg mt-1'>1/4</div>
           </PercentCircle>
         </div>
-        <div className='mt-26px mb-22px space-y-6'>
-          <Input
+        <div className='mt-1 mb-22px space-y-6'>
+          <div className='flex items-end space-x-5'>
+            <Input
+              form={form}
+              name='title'
+              label='Title'
+              placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
+              className='w-full text-sm'
+            />
+            <div className='flex-center h-10'>
+              <Toggle form={form} name='green' />
+              <div className='text-gray-71 font-medium mx-3'>GreenNFT</div>
+              <Tooltip type='top' content='info' width={50}>
+                <Info size={18} />
+              </Tooltip>
+            </div>
+          </div>
+          <div className='flex space-x-8'>
+            <SelectMultiple
+              form={form}
+              label='Keyword Hashtags'
+              name='hashtags'
+              options={hashtags}
+              className='w-1/2 text-sm'
+              placeholder='#MotionGraphics, #Abstract'
+            />
+            <Input
+              form={form}
+              name='series'
+              label='Series Name'
+              placeholder='(if the NFT is part of a series)'
+              className='w-1/2 text-sm'
+            />
+          </div>
+          <Copies form={form} />
+          <Royalty form={form} />
+          <WebsiteAndVideo form={form} />
+          <TextArea
             form={form}
-            name='title'
-            label='Title'
-            placeholder={`At least ${titleMinLength} characters`}
+            name='description'
+            label='Description'
+            textAreaClassName='input text-sm resize-none py-2 overflow-hidden h-[60px]'
+            placeholder='Description of the NFT or artist’s statement.'
           />
-          <CategoryAndCollection
-            form={form}
-            addCollectionButtonRef={addCollectionButtonRef}
-            onAddCollectionClick={toggleAddCollection}
-            collections={collections}
-          />
-          <CopiesAndCompensation form={form} />
-          <Input
-            form={form}
-            name='externalProfile'
-            label='External Profile'
-            placeholder='website or social profile link'
-          />
-          <DescriptionAndGreen form={form} />
         </div>
         <Button className='w-full font-extrabold'>Go to preview</Button>
       </form>
