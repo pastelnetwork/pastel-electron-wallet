@@ -1,5 +1,5 @@
 import React from 'react'
-import { TAddNFTState } from '../AddNFT.state'
+import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
 import {
   ArrowSlim,
@@ -13,7 +13,7 @@ import { useImageZoom } from 'common/utils/imageZoom'
 
 type TUploadStepProps = {
   state: TAddNFTState
-  image: string
+  image: TImage
 }
 
 const backdropBlurClass = 'backdrop-filter backdrop-blur-[55px]'
@@ -38,6 +38,7 @@ export default function UploadStep({
       subtitle='Description'
       step={2}
       fixedHeight
+      leftColumnWidth={image.maxWidth}
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative flex-center overflow-hidden'>
@@ -53,11 +54,11 @@ export default function UploadStep({
             >
               <img
                 ref={imageRef}
-                src={image}
+                src={image.url}
                 className='rounded'
                 onWheel={onWheelImage}
                 style={{
-                  maxWidth: '320px',
+                  maxWidth: `${image.maxWidth}px`,
                   maxHeight: '400px',
                 }}
               />

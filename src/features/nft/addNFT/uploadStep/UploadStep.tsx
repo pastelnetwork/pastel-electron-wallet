@@ -10,15 +10,22 @@ type TUploadStepProps = {
   state: TAddNFTState
 }
 
+export type TImageFile = {
+  file: File
+  url: string
+  width: number
+  height: number
+}
+
 export default function UploadStep({
   state: { goBack, goToNextStep, setImage, image },
 }: TUploadStepProps): JSX.Element {
-  const [file, setFile] = useState<File>()
+  const [file, setFile] = useState<TImageFile>()
   const [isReady, setReady] = useState(Boolean(image))
 
-  const submit = () => {
+  const submit = async () => {
     if (file) {
-      setImage(URL.createObjectURL(file))
+      setImage(file)
     }
 
     goToNextStep()
@@ -32,6 +39,7 @@ export default function UploadStep({
       step={2}
       fixedHeight
       contentClass='pt-2'
+      leftColumnWidth={320}
       leftColumnContent={
         file || isReady ? (
           <UploadingCircle

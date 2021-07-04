@@ -1,5 +1,5 @@
 import React from 'react'
-import { TNFTData, TAddNFTState } from '../AddNFT.state'
+import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { Button } from 'common/components/Buttons'
@@ -17,7 +17,7 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 
 type TSubmitStepProps = {
   state: TAddNFTState
-  image: string
+  image: TImage
   nftData: TNFTData
 }
 
@@ -29,7 +29,7 @@ export default function SubmitStep({
   const [fullScreen, toggleFullScreen] = useToggle(false)
 
   if (fullScreen) {
-    return <FullScreenImage image={image} onClose={toggleFullScreen} />
+    return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
   return (
@@ -38,17 +38,23 @@ export default function SubmitStep({
       titleClass='mb-3'
       subtitle='Description'
       step={4}
+      leftColumnWidth={image.maxWidth}
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative flex-center'>
             <FullScreenButton onClick={toggleFullScreen} />
-            <img src={image} className='rounded max-w-[320px] max-h-[410px]' />
+            <img
+              src={image.url}
+              className='rounded max-h-[410px]'
+              style={{ maxWidth: `${image.maxWidth}px` }}
+            />
           </div>
         </div>
       }
+      rightColumnClass='w-[349px] flex flex-col'
       rightColumnContent={
         <>
-          <div className='w-full text-sm'>
+          <div className='flex-grow w-full text-sm flex flex-col justify-between'>
             <div className='space-y-14px'>
               <InfoPair title='Title' value={nftData.title} />
               <InfoPair
@@ -71,11 +77,9 @@ export default function SubmitStep({
               </div>
             </div>
             {nftData.description && (
-              <div className='mt-4 mb-3 text-blue-3f'>
-                {nftData.description}
-              </div>
+              <div className='mt-4 text-blue-3f'>{nftData.description}</div>
             )}
-            <div className='bg-gray-f8 rounded-lg py-4'>
+            <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
               <div className='flex text-gray-71'>
                 <div className='pl-5 w-36'>Image size</div>
                 <div>Estimated registration fee</div>
@@ -86,7 +90,7 @@ export default function SubmitStep({
               </div>
             </div>
           </div>
-          <div className='flex-between mt-3'>
+          <div className='flex-between mt-3 flex-shrink-0'>
             <button
               type='button'
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'

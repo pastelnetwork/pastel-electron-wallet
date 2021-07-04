@@ -4,9 +4,10 @@ import Circle, {
 } from 'common/components/Svg/Circle'
 import { UploadFile, Checkmark } from 'common/components/Icons'
 import backgroundImage from 'common/assets/images/add-nft-upload-background.png'
+import { TImageFile } from './UploadStep'
 
 type TUploadingCircleProps = {
-  file?: File
+  file?: TImageFile
   setFile(file: undefined): void
   isReady: boolean
   setReady(ready: boolean): void
@@ -29,7 +30,8 @@ export default function UploadingCircle({
       return
     }
 
-    const timeToUpload = 5000
+    // const timeToUpload = 5000
+    const timeToUpload = 50
     const uploadTime = Date.now() + timeToUpload
     const interval = setInterval(() => {
       const uploadedPercent = Math.min(

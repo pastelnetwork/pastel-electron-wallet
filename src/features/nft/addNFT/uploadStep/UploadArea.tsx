@@ -1,17 +1,19 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UploadFile } from 'common/components/Icons'
+import { TImageFile } from './UploadStep'
 
 const imageTypes = {
   PNG: 'image/png',
   JPG: 'image/jpeg',
-  GIF: 'image/gif',
 }
 
 const allowedTypeNames = Object.keys(imageTypes)
 const allowedMimeTypes = Object.values(imageTypes)
+const minImageWidth = 250
+const minImageHeight = 250
 
 type TProps = {
-  setFile(file: File): void
+  setFile(file: TImageFile): void
 }
 
 export default function UploadArea({ setFile }: TProps): JSX.Element {
@@ -21,10 +23,38 @@ export default function UploadArea({ setFile }: TProps): JSX.Element {
     if (!file) {
       return
     }
-    if (allowedMimeTypes.includes(file.type)) {
-      setFile(file)
-    } else {
-      setError(`Selected file has unsupported format: ${file.type}`)
+
+    if (!allowedMimeTypes.includes(file.type)) {
+      return setError(`Selected file has unsupported format: ${file.type}`)
+    }
+
+    const image = new Image()
+    const url = URL.createObjectURL(file)
+    image.src = url
+    image.onload = () => {
+      const { width, height } = image
+
+      if (width < minImageWidth) {
+        return setError(
+          `Image width should not be less than ${minImageWidth}px, got ${width}px`,
+        )
+      }
+      if (height < minImageHeight) {
+        return setError(
+          `Image height should not be less than ${minImageHeight}px, got ${height}px`,
+        )
+      }
+
+      setFile({
+        file,
+        url,
+        width,
+        height,
+      })
+    }
+
+    image.onerror = () => {
+      setError('Invalid image file was supplied')
     }
   }
 

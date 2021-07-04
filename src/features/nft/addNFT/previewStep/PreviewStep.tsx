@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { TAddNFTState } from '../AddNFT.state'
+import React, { useState } from 'react'
+import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
 import { useImagePreview } from './PreviewStep.service'
 import { Crop } from 'common/components/Icons'
@@ -11,10 +11,14 @@ import OptimizationSlider from './OptimizationSlider'
 import { Button } from 'common/components/Buttons'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
+import Magnification from './Magnification'
+import Toggle from 'common/components/Toggle'
+import cn from 'classnames'
+import style from './PreviewStep.module.css'
 
 type TPreviewStepProps = {
   state: TAddNFTState
-  image: string
+  image: TImage
 }
 
 export default function PreviewStep({
@@ -24,12 +28,10 @@ export default function PreviewStep({
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
   const [fullScreen, toggleFullScreen] = useToggle(false)
-
-  useEffect(() => {
-    if (croppedImage) {
-      console.log('Cropped region:', croppedImage.crop)
-    }
-  }, [croppedImage?.crop])
+  const [isLossLess, setLossLess] = useToggle(false)
+  const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
+    null,
+  )
 
   if (cropping && croppedImage) {
     return (
@@ -43,7 +45,7 @@ export default function PreviewStep({
   }
 
   if (fullScreen) {
-    return <FullScreenImage image={image} onClose={toggleFullScreen} />
+    return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
   const submit = () => {
@@ -59,8 +61,16 @@ export default function PreviewStep({
       titleClass='mb-3'
       subtitle='Description'
       step={3}
+      leftColumnWidth={image.maxWidth}
       leftColumnContent={
-        <div className='relative'>
+        <div className='relative z-10'>
+          {imageElement && (
+            <Magnification
+              image={image}
+              imageElement={imageElement}
+              isLossLess={isLossLess}
+            />
+          )}
           <FullScreenButton onClick={toggleFullScreen} />
           <Tooltip text='Crop thumbnail'>
             {ref => (
@@ -73,43 +83,58 @@ export default function PreviewStep({
               </button>
             )}
           </Tooltip>
-          <img src={image} className='rounded' />
+          <img
+            ref={setImageElement}
+            src={image.url}
+            className={`rounded ${style.zoomInCursor}`}
+          />
         </div>
       }
       rightColumnContent={
-        <div className='space-y-8'>
-          <div>
-            <div className='font-medium text-gray-71 mb-3'>Image size</div>
-            <div className='flex'>
-              <div className='text-gray-2d text-sm font-extrabold w-20'>
-                50 Mb
+        <div>
+          <div className='flex items-start mb-8'>
+            <div className='font-medium text-gray-4a mr-5'>Image size</div>
+            <div className='text-gray-2d text-sm font-extrabold mr-3 relative top-[3px]'>
+              50 Mb
+            </div>
+            <div className='flex-grow'>
+              <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
+                <div
+                  className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
+                  style={{ width: '65%' }}
+                />
               </div>
-              <div className='flex-grow'>
-                <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-1'>
-                  <div
-                    className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
-                    style={{ width: '65%' }}
-                  />
-                </div>
-                <div className='text-xs text-gray-71'>
-                  65% of average Pastel NFT size
-                </div>
+              <div className='text-xs text-gray-71'>
+                65% of average Pastel NFT size
               </div>
             </div>
           </div>
-          <div>
-            <div className='font-medium text-gray-71 mb-3'>
+          <div className='flex-between mb-5'>
+            <div className='font-medium text-gray-4a'>
               Estimated registration fee
             </div>
             <div className='text-gray-2d text-sm font-extrabold'>5,000 PSL</div>
           </div>
-          <div>
-            <div className='font-medium text-gray-71 mb-3'>
-              Image size and fee optimization
+          <div className='font-medium text-gray-4a mb-5'>
+            Image size and fee optimization
+          </div>
+          <label className='flex items-center mb-10'>
+            <div className='font-medium text-gray-71 mr-2'>
+              Lossless image quality
             </div>
-            <div className='pb-5'>
-              <OptimizationSlider />
-            </div>
+            <Toggle
+              selected={isLossLess}
+              toggleHandler={setLossLess}
+              selectedClass='bg-blue-3f'
+            />
+          </label>
+          <div
+            className={cn(
+              'pb-5 mb-5 duration-200 transition',
+              isLossLess ? 'opacity-0' : 'opacity-100',
+            )}
+          >
+            <OptimizationSlider />
           </div>
           <div>
             <div className='font-medium text-gray-71 mb-3'>

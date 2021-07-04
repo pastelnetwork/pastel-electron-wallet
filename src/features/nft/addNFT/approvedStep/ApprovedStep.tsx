@@ -1,5 +1,5 @@
 import React from 'react'
-import { TAddNFTState } from '../AddNFT.state'
+import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
 import { Button } from 'common/components/Buttons'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
@@ -15,7 +15,7 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 
 type TApprovedStepProps = {
   state: TAddNFTState
-  image: string
+  image: TImage
 }
 
 export default function ApprovedStep({
@@ -25,7 +25,7 @@ export default function ApprovedStep({
   const [fullScreen, toggleFullScreen] = useToggle(false)
 
   if (fullScreen) {
-    return <FullScreenImage image={image} onClose={toggleFullScreen} />
+    return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
   return (
@@ -33,14 +33,15 @@ export default function ApprovedStep({
       title='NFT approved: “Diamonds in the sky”'
       titleClass='mb-3'
       fixedHeight
+      leftColumnWidth={image.maxWidth}
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative flex-center'>
             <FullScreenButton onClick={toggleFullScreen} />
             <img
-              src={image}
+              src={image.url}
               className='rounded'
-              style={{ maxWidth: '320px', maxHeight: '424px' }}
+              style={{ maxWidth: `${image.maxWidth}px`, maxHeight: '424px' }}
             />
           </div>
         </div>

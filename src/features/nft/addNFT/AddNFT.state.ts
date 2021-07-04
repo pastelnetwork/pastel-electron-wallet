@@ -25,23 +25,37 @@ export type TNFTData = {
   description?: string
 }
 
-export type Crop = {
+export type TCrop = {
   x: number
   y: number
   width: number
   height: number
 }
 
+export type TImageOrientation = 'portrait' | 'landscape'
+
+const maxWidthByOrientation: Record<TImageOrientation, number> = {
+  portrait: 320,
+  landscape: 463,
+}
+
+export type TImage = {
+  url: string
+  width: number
+  height: number
+  maxWidth: number
+}
+
 export type TAddNFTState = {
   step: Step
   stepsCount: number
   nftData?: TNFTData
-  image?: string
-  crop?: Crop
+  image?: TImage
+  crop?: TCrop
   setStep(step: Step): void
   setNftData(data: TNFTData): void
-  setCrop(crop: Crop): void
-  setImage(image: string): void
+  setCrop(crop: TCrop): void
+  setImage(file: { url: string; width: number; height: number }): void
   goBack(): void
   goToNextStep(): void
 }
@@ -53,8 +67,8 @@ export type TUseAddNFTProps = {
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [step, setStep] = useState<Step>(Step.inputData)
   const [nftData, setNftData] = useState<TNFTData>()
-  const [crop, setCrop] = useState<Crop>()
-  const [image, setImage] = useState<string>()
+  const [crop, setCrop] = useState<TCrop>()
+  const [image, setImage] = useState<TImage>()
 
   return {
     step,
@@ -65,7 +79,15 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     crop,
     setStep,
     setCrop,
-    setImage,
+    setImage({ url, width, height }) {
+      const orientation = width < height ? 'portrait' : 'landscape'
+      setImage({
+        url,
+        width,
+        height,
+        maxWidth: maxWidthByOrientation[orientation],
+      })
+    },
     goBack() {
       if (step > firstStep) {
         setStep(step - 1)
