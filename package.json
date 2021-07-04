@@ -116,7 +116,7 @@
     "sha256-file": "1.0.0",
     "simplebar": "5.3.3",
     "simplebar-react": "2.3.3",
-    "smartcrop": "jwagner/smartcrop.js",
+    "smartcrop": "jwagner/smartcrop.js#9933f97",
     "sql.js": "pastelnetwork/sql.js#230351f",
     "squoosh": "pastelnetwork/squoosh#b9388e1",
     "styled-components": "5.3.0",
