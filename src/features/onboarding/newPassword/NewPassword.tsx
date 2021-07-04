@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 
 import { InputPassword, Input } from '../../../common/components/Inputs'
 import { Button } from '../../../common/components/Buttons'
-import FormLoading from '../../../common/components/FormLoading/FormLoading'
+import CloseButton from '../common/closeButton'
 import Typography from '../../../common/components/Typography/Typography'
+import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 import { colors } from '../../../common/theme/colors'
 import * as ROUTES from '../../../common/utils/constants/routes'
+import { calcPasswordStrength } from 'common/utils/passwords'
 
 interface NewPasswordFormInput {
   value: string
@@ -33,8 +35,11 @@ const NewPassword: React.FC = () => {
     event.preventDefault()
   }
 
+  const pwdStrength = calcPasswordStrength(newPassword.value)
+
   return (
-    <div className='mt-2.5'>
+    <div className='my-9 mx-60px'>
+      <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
       <Typography variant='h1' color='#2D3748' weight={800}>
         Set New Password
       </Typography>
@@ -67,12 +72,7 @@ const NewPassword: React.FC = () => {
           hintClassName='mt-3 text-sm font-medium'
           hint='at least 8 characters and at least 2 numbers'
         />
-        <div className='grid grid-cols-4 gap-6px mt-3'>
-          <FormLoading className='h-[6px] w-full bg-red-fe' />
-          <FormLoading className='h-[6px] w-full bg-gray-a6' />
-          <FormLoading className='h-[6px] w-full bg-gray-a6' />
-          <FormLoading className='h-[6px] w-full bg-gray-a6' />
-        </div>
+        <PasswordStrength strength={pwdStrength} />
         <Input
           type='password'
           label='Repeat New Password'
