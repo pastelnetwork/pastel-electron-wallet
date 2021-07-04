@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import tmpImage from 'common/assets/images/img-astronaut.png'
 
 export enum Step {
   inputData,
@@ -65,10 +66,15 @@ export type TUseAddNFTProps = {
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
-  const [step, setStep] = useState<Step>(Step.inputData)
+  const [step, setStep] = useState<Step>(Step.preview)
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
-  const [image, setImage] = useState<TImage>()
+  const [image, setImage] = useState<TImage>({
+    url: tmpImage,
+    width: 770,
+    height: 770,
+    maxWidth: maxWidthByOrientation.portrait,
+  })
 
   return {
     step,

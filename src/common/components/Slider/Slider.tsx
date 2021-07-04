@@ -20,6 +20,7 @@ export type TSliderProps = {
   className?: string
   valuesClassName?: string
   minMaxClassName?: string
+  minMaxAlignCenter?: boolean
 } & (
   | {
       value: number
@@ -49,8 +50,9 @@ export default function Slider({
   formatValue = defaultFormat,
   formatTooltipValue = formatValue,
   className,
-  valuesClassName,
+  valuesClassName = 'mt-2',
   minMaxClassName = 'top-5 text-gray-2d text-sm',
+  minMaxAlignCenter = false,
   ...props
 }: TSliderProps): JSX.Element {
   const stickToBottom = variant === 'stickToBottom'
@@ -122,7 +124,7 @@ export default function Slider({
             <div
               className={cn('flex-between whitespace-nowrap', valuesClassName)}
             >
-              <div className='w-0 flex-center'>
+              <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
                 <div className={minMaxClassName}>{formatValue(min)}</div>
               </div>
               {'steps' in props &&
@@ -133,7 +135,7 @@ export default function Slider({
                     </div>
                   </div>
                 ))}
-              <div className='w-0 flex-center'>
+              <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
                 <div className={minMaxClassName}>{formatValue(max)}</div>
               </div>
             </div>
