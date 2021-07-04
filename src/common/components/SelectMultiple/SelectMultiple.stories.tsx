@@ -30,4 +30,5 @@ SelectMultiple.args = {
   selected: [options[1]],
   selectClassName: 'w-56',
   name: 'fruits',
+  placeholder: 'Placeholder',
 }

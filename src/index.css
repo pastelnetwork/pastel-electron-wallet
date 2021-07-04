@@ -64,7 +64,9 @@
     @apply bg-gray-cd rounded-full;
   }
 
-  :focus {
+  /* button:focus to override storybook */
+  :focus,
+  button:focus {
     outline: none;
   }
 }
