@@ -76,7 +76,7 @@ export default function PreviewStep({
             {ref => (
               <button
                 ref={ref}
-                className='absolute bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
+                className='absolute z-10 bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
                 onClick={toggleCropping}
               >
                 <Crop size={18} />
