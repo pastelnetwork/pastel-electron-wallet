@@ -198,6 +198,7 @@ module.exports = {
           ef: '#EFF5FD',
           ed: '#EDEEF1',
           eb: '#EBEBFC',
+          ebf2: '#EBF2FF',
           e7: '#E7EAF2',
           e6: '#E6E8EC',
           e4: '#E4E4E4',
@@ -255,12 +256,15 @@ module.exports = {
           e9: '#E9DB60',
         },
         green: {
+          '00': '#00D097',
           e5: '#E5F6EF',
           '6d': '#6DBD72',
           62: '#62CA76',
           68: '#68CC67',
           45: '#45B36B',
           38: '#38CB89',
+          77: '#77C285',
+          e4: '#e4f3e7',
           16: '#16B4EB',
           23: '#23E73C',
         },
@@ -305,6 +309,12 @@ module.exports = {
           23: '#23262F',
           77: '#777E90',
         },
+        rgba: {
+          white: {
+            '02': 'rgba(255, 255, 255, 0.2)',
+            '04': 'rgba(255, 255, 255, 0.4)',
+          },
+        },
       },
       boxShadow: {
         xs:
@@ -330,6 +340,7 @@ module.exports = {
         input:
           '0 1px 12px rgba(50, 50, 71, 0.008), 0 0 4px rgba(50, 50, 71, 0.04)',
         textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
+        '0x4x44px': '0px 4px 44px rgba(0, 0, 0, 0.1)',
         4: '0px 50px 77px rgba(176, 183, 195, 0.22)',
       },
       fontSize: {
@@ -410,6 +421,7 @@ module.exports = {
         '80px': '5rem',
         '130px': '8.125rem',
         '118px': '7.375rem',
+        '160px': '10rem',
         '171px': '10.688rem',
         '244px': '15.25rem',
         '350px': '21.875rem',
@@ -419,11 +431,21 @@ module.exports = {
       width: {
         '244px': '15.25rem',
         '300px': '17.75rem',
+        '494px': '30.875rem',
+        '517px': '32.3125rem',
+        '539px': '33.6875rem',
+        '587px': '36.6875rem',
+        '609px': '38.0625rem',
+        '649px': '40.5625rem',
+        '970px': '60.625rem',
         '1215px': '75.9375rem',
         fit: 'fit-content',
       },
       height: {
+        '262px': '16.375rem',
+        '290px': '18.125rem',
         '401px': '25.0625rem',
+        '600px': '37.5rem',
         '645px': '40.3125rem',
         fit: 'fit-content',
       },

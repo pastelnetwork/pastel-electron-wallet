@@ -22,8 +22,8 @@ const Checkbox = ({
           clickHandler && clickHandler(!selected)
         }}
         className={cn(
-          'transition-all w-5 h-5 rounded-md checkboxCheckmark',
-          !selected && 'border-gray-dd border hover:border-gray-8e border',
+          'transition-all w-5 h-5 rounded-md checkboxCheckmark flex-shrink-0',
+          !selected && 'border-gray-dd border hover:border-gray-8e',
           selected && 'bg-blue-e5 flex items-center justify-center',
         )}
       >

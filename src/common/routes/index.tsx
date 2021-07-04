@@ -11,6 +11,7 @@ import {
   NewPassword,
 } from '../../features/onboarding/index'
 import PortfolioPage from '../../features/portfolio'
+import DashboardPage from '../../features/dashboard/DashboardPage'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -63,6 +64,13 @@ const newPassword = {
   layout: OnboardingLayout,
 }
 
+const Dashboard = {
+  id: 'dashboard',
+  path: ROUTES.DASHBOARD,
+  component: DashboardPage,
+  layout: PageLayout,
+}
+
 const Portfolio = {
   id: 'portfolio',
   path: ROUTES.PORTFOLIO,
@@ -78,5 +86,6 @@ export const pageRoutes = [
   registrationPending,
   registrationSuccessful,
   newPassword,
+  Dashboard,
   Portfolio,
 ]

@@ -59,6 +59,7 @@ import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
+import { RegisterPage } from '../features/onboarding'
 
 export type TWalletInfo = {
   connections: number
@@ -502,7 +503,8 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
-        {info?.version && <Header />}
+        {/* info?.version && <Header /> */}
+        <Header />
         <div className='flex-grow overflow-auto'>
           <Switch>
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
