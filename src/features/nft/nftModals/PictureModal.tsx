@@ -26,9 +26,9 @@ const PictureModal: React.FC<TPictureModal> = ({ isOpen, handleClose }) => {
         onClick={handleClose}
         className='absolute top-0 -right-10 filter brightness-125 bg-gray-71 bg-opacity-10 z-10'
       />
-      <div className='w-540px h-540px rounded-3xl overflow-auto'>
+      <div className='w-full height-full min-w-[200px] min-h-[200px] rounded-3xl overflow-auto'>
         <img
-          className='absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2'
+          className='m-auto'
           src={img_astronaut}
           style={{
             width: `${imageSize}px`,

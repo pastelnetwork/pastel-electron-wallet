@@ -51,6 +51,7 @@ export default function CroppingStep({
           <PercentCircle
             color='text-green-6d'
             percent={(step * 100) / stepsCount}
+            className='ml-2 md:ml-3 lg:ml-18px'
           >
             <div className='font-extrabold text-gray-11 text-lg mt-1'>
               {step}/{stepsCount}

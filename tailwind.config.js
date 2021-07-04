@@ -108,6 +108,7 @@ module.exports = {
         '191px': '11.9375rem',
         '196px': '12.25rem',
         '200px': '12.5rem',
+        '205px': '12.813rem',
         '219px': '13.6875rem',
         '220px': '13.75rem',
         '223px': '13.9375rem',
@@ -141,6 +142,7 @@ module.exports = {
         '526px': '32.875rem',
         '540px': '33.75rem',
         '553px': '34.563rem',
+        '564px': '35.25rem',
         '594px': '37.125rem',
         '622px': '38.875rem',
         '608px': '38rem',
@@ -171,12 +173,19 @@ module.exports = {
           hover: '#CE64A1',
           background: '#FAEFF5',
         },
+        black: {
+          12: '#121244',
+        },
         blue: {
-          '00': '#0054FE',
-          '3f': '#3F9AF7',
           f8: '#F8FBFF',
           e5: '#E5F1FF',
           eb: '#EBF2FF',
+          e1: '#E1ECF8',
+          79: '#79A8FA',
+          68: '#687EFE',
+          '3f': '#3F9AF7',
+          37: '#3754DB',
+          '00': '#0054FE',
         },
         gray: {
           fc: '#FCFCFD',
@@ -186,6 +195,7 @@ module.exports = {
           f4: '#F4F5F6',
           f3: '#F3F3F3',
           f2: '#F2F2F2',
+          ef: '#EFF5FD',
           ed: '#EDEEF1',
           eb: '#EBEBFC',
           e7: '#E7EAF2',
@@ -220,11 +230,13 @@ module.exports = {
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
-          '7a': '#FF7A00',
-          ef: '#FFEFEB',
-          14: '#14B85F',
+          ff: '#FF82AC',
           fe: '#FE634C',
+          ef: '#FFEFEB',
+          '7a': '#FF7A00',
           75: '#FF754C',
+          63: '#FE634C',
+          14: '#14B85F',
         },
         pink: {
           46: '#EF466F',
@@ -235,9 +247,11 @@ module.exports = {
           81: '#E98160',
           63: '#FE634C',
           75: '#FF754C',
+          ff: '#FFCE14',
         },
         yellow: {
           ff: '#FFBE3D',
+          c3: '#FFCE14',
           e9: '#E9DB60',
         },
         green: {
@@ -247,6 +261,8 @@ module.exports = {
           68: '#68CC67',
           45: '#45B36B',
           38: '#38CB89',
+          16: '#16B4EB',
+          23: '#23E73C',
         },
         button: {
           DEFAULT: '#3F9AF7',
@@ -314,6 +330,7 @@ module.exports = {
         input:
           '0 1px 12px rgba(50, 50, 71, 0.008), 0 0 4px rgba(50, 50, 71, 0.04)',
         textbox: '0px 64px 64px -48px rgba(31, 47, 70, 0.12)',
+        4: '0px 50px 77px rgba(176, 183, 195, 0.22)',
       },
       fontSize: {
         h1: '2rem',
@@ -322,6 +339,7 @@ module.exports = {
         h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
+        '8px': '0.5rem',
         '9px': '0.5625rem',
         '10px': '0.625rem',
         '12px': '0.75rem',
@@ -338,6 +356,7 @@ module.exports = {
       },
       borderRadius: {
         '4px': '0.25rem',
+        '7px': '0.4375rem',
         '8px': '0.5rem',
         '11px': '0.6875rem',
         '65px': '4.063rem',
@@ -378,6 +397,7 @@ module.exports = {
         '10px': '0.625rem',
       },
       maxHeight: {
+        '205px': '12.813rem',
         '244px': '15.25rem',
         '700px': '43.75rem',
         '750px': '46.875rem',
@@ -409,6 +429,9 @@ module.exports = {
       },
       opacity: {
         2.61: '0.0261',
+      },
+      letterSpacing: {
+        0.01: '0.01em',
       },
     },
   },

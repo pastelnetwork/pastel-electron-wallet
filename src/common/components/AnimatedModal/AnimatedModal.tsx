@@ -80,17 +80,19 @@ const AnimatedModalInner = ({
       className='fixed inset-0 z-50 bg-gray-1a bg-opacity-60 transition duration-200 opacity-0'
       onClick={onClickBackground}
     >
-      <div className='w-full h-full overflow-auto flex-center relative z-10 pointer-events-none'>
-        <div className={cn('relative pointer-events-auto', className)}>
-          {closeButton && (
-            <button
-              className='absolute top-6 right-6 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-b0 hover:text-gray-8e border border-gray-8e border-opacity-30 hover:border-opacity-40'
-              onClick={onClose}
-            >
-              <X size={8} />
-            </button>
-          )}
-          {render()}
+      <div className='overflow-auto relative h-full w-full z-10'>
+        <div className='min-h-full py-10 flex-center'>
+          <div className={cn('relative', className)}>
+            {closeButton && (
+              <button
+                className='absolute top-6 right-6 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-b0 hover:text-gray-8e border border-gray-8e border-opacity-30 hover:border-opacity-40'
+                onClick={onClose}
+              >
+                <X size={8} />
+              </button>
+            )}
+            {render()}
+          </div>
         </div>
       </div>
     </div>

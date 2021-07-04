@@ -17,15 +17,19 @@ const TransferHistoryModal: React.FC<TTransferHistoryModal> = ({
       handleClose={() => handleClose()}
       size='874px'
       title={'Royalty rights transfer history'}
+      titleClassName='text-2xl font-black text-gray-2d'
       infoIcon={true}
+      bodyClassName='px-0'
     >
-      <div>
-        <Table
-          columns={Columns}
-          data={tableData}
-          className='h-401px'
-          trClassName='border-b border-gray-f2'
-        />
+      <div className='ml-10 mr-9 mb-6 w- overflow-auto w-[798px]'>
+        <div className='mr-8'>
+          <Table
+            columns={Columns}
+            data={tableData}
+            className='h-401px'
+            trClassName='border-b border-gray-f2'
+          />
+        </div>
       </div>
     </Modal>
   )

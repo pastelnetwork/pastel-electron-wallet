@@ -58,21 +58,26 @@ export default function SubmitStep({
             <div className='space-y-14px'>
               <InfoPair title='Title' value={nftData.title} />
               <InfoPair
-                title='Category'
-                value={nftData.categories.join(', ')}
+                title='Keyword Hashtags'
+                value={nftData.hashtags.join(', ')}
               />
-              <InfoPair title='Collection' value={nftData.collection} />
+              {nftData.series && (
+                <InfoPair title='Series' value={nftData.series} />
+              )}
               {/* TODO: figure out what to display in Copies */}
               <InfoPair title='Copies' value={`1 of ${nftData.copies}`} />
-              <InfoPair title='Compensation' value={nftData.compensation} />
-              {nftData.externalProfile && (
-                <InfoPair
-                  title='External profile'
-                  value={nftData.externalProfile}
-                />
+              <InfoPair
+                title='Perpetual Royalty'
+                value={`${nftData.royalty}%`}
+              />
+              {nftData.website && (
+                <InfoPair title="Creator's website" value={nftData.website} />
+              )}
+              {nftData.video && (
+                <InfoPair title='Creation video' value={nftData.video} />
               )}
               <div className='flex items-center'>
-                <div className='text-gray-71 mr-3'>Green</div>
+                <div className='text-gray-71 mr-3'>GreenNFT</div>
                 <Toggle selected={nftData.green} />
               </div>
             </div>
