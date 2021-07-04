@@ -64,7 +64,9 @@
     @apply bg-gray-cd rounded-full;
   }
 
-  :focus {
+  /* button:focus to override storybook */
+  :focus,
+  button:focus {
     outline: none;
   }
 }
@@ -353,4 +355,8 @@ input[type='number']::-webkit-outer-spin-button {
 
 .widget-ratings {
   display: flex !important;
+}
+
+button:focus {
+  outline: none;
 }

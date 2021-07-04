@@ -10,7 +10,7 @@ export type TTextAreaProps<TForm> = Omit<
   maxLength?: number
 } & Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'form'>
 
-export default function Input<TForm extends FieldValues>({
+export default function TextArea<TForm extends FieldValues>({
   form,
   name,
   textAreaClassName = 'input resize-none h-20 py-2 overflow-hidden',
