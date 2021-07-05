@@ -7,8 +7,7 @@ import image from '../../common/assets/images/nft-card-placeholder.png'
 import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
-import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
-import Scrollbar from '../../common/components/Scrollbar'
+import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 
 const mockCardProps: TNFTCard = {
   author: 'zndrson',
@@ -18,15 +17,18 @@ const mockCardProps: TNFTCard = {
   onSale: true,
   price: '222K',
   currencyName: 'PSL',
-  title: 'Cosmic Perspective',
+  title: 'Cosmic Perspective longname test',
   liked: true,
+  followers: 256,
+  isLastBid: false,
 }
+enum Tabs {
+  feed,
+  statistics,
+}
+
 const NFTMarketFeed: React.FC = () => {
-  // Upper Section
-  const [priceSold, setPriceSold] = useState<TOption | null>(null)
-  const [bidPrice, setBidPrice] = useState<TOption | null>(null)
-  const [likes, setLikes] = useState<TOption | null>(null)
-  const [selectedItem, setSelectedItem] = useState(0)
+  const [selectedItem, setSelectedItem] = useState(Tabs.feed)
 
   const mockCategories: TOption[] = [
     { value: 'AI', label: 'AI' },
@@ -50,33 +52,6 @@ const NFTMarketFeed: React.FC = () => {
     { value: 'High', label: 'High' },
     { value: 'Medium', label: 'Medium' },
     { value: 'Low', label: 'Low' },
-  ]
-
-  const mockOptions: TOption[] = [
-    { value: 'option_1', label: 'Option 1' },
-    { value: 'option_2', label: 'Option 2' },
-    { value: 'option_3', label: 'Option 3' },
-  ]
-
-  const pageHeaderSortByOptions: TPageHeaderSortByOptions[] = [
-    {
-      placeholder: 'Price sold',
-      selected: priceSold,
-      onOptionChange: setPriceSold,
-      options: mockOptions,
-    },
-    {
-      placeholder: 'Bid price',
-      selected: bidPrice,
-      onOptionChange: setBidPrice,
-      options: mockOptions,
-    },
-    {
-      placeholder: 'Likes',
-      selected: likes,
-      onOptionChange: setLikes,
-      options: mockOptions,
-    },
   ]
 
   // Filters
@@ -112,10 +87,20 @@ const NFTMarketFeed: React.FC = () => {
     },
   ]
 
-  const [range, setRange] = useState(500)
+  const [range, setRange] = useState<[number, number]>([500, 700])
   const formatValue = (value: number) => `${value}k`
 
   const data = [{ label: 'Feed' }, { label: 'Statistics' }]
+
+  const breadcrumbs: TBreadcrumb[] = [
+    {
+      label: 'Market',
+      route: '#',
+    },
+    {
+      label: data[selectedItem].label,
+    },
+  ]
 
   const routes = {
     data,
@@ -125,42 +110,45 @@ const NFTMarketFeed: React.FC = () => {
 
   return (
     <div className=''>
-      <PageHeader
-        title='Market'
-        routes={routes}
-        sortByOptions={pageHeaderSortByOptions}
-      />
-      <Scrollbar hasPageHeader={true}>
-        <div className='wrapper content with-page-header h-full w-screen'>
-          {/* Filters */}
-          <div className='flex justify-between pb-50px'>
-            <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
-              {filterOptions.map(option => (
-                <Select {...option} key={option.label} />
-              ))}
-            </div>
-            <div className='flex'>
-              <div className='flex h-full items-center justify-end'>
-                <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
-
-                <Slider
-                  min={100}
-                  max={999}
-                  value={range}
-                  onChange={setRange}
-                  formatValue={formatValue}
-                  formatTooltipValue={formatValue}
-                />
-              </div>
-            </div>
-          </div>
-          <div className='grid grid-cols-3 lg:grid-cols-4 gap-10 text-gray-1a'>
-            {Array.from({ length: 6 }).map((_, i) => (
-              <NFTCard {...mockCardProps} key={i} />
+      <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
+      <PageHeader title='Market' routes={routes} />
+      <div className='wrapper content with-page-header h-full w-screen py-30px'>
+        {/* Filters */}
+        <div className='flex justify-between pb-50px'>
+          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
+            {filterOptions.map(option => (
+              <Select {...option} key={option.label} />
             ))}
           </div>
+          <div className='flex'>
+            <div className='flex h-full items-center justify-end'>
+              <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
+
+              <Slider
+                min={100}
+                max={999}
+                values={range}
+                onChange={setRange}
+                formatValue={formatValue}
+                formatTooltipValue={formatValue}
+              />
+            </div>
+          </div>
         </div>
-      </Scrollbar>
+        <div className='grid grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 text-gray-1a'>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <NFTCard
+              {...{
+                ...mockCardProps,
+                onSale: i % 2 ? true : false,
+                isLastBid: i % 3 ? true : false,
+              }}
+              key={i}
+              className='max-w-[318px] md:max-w-[250]px lg:max-w-[318px] xl:max-w-[364px]'
+            />
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

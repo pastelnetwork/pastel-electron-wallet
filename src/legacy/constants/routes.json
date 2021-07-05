@@ -23,5 +23,7 @@
   "MY_PROFILE": "/my_profile",
   "MARKET": "/market",
   "CHAT": "/chat",
-  "PORTFOLIO_DETAIL": "/portfolio_detail"
+  "PORTFOLIO_DETAIL": "/portfolio_detail",
+  "WELCOME_PAGE": "/welcome-page",
+  "LOGIN": "/login"
 }

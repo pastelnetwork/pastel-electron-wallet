@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+// import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { ipcRenderer } from 'electron'
 
 import { pageRoutes } from './index'
 import * as Styles from './Routes.styles'
@@ -53,17 +54,14 @@ const Routes: React.FC<RoutesProps> = ({ setUser }) => {
   const location = useLocation()
   const history = useHistory()
 
-  React.useEffect(() => history.push(ROUTES.WELCOME_PAGE), [])
+  React.useEffect(() => {
+    ipcRenderer.send('app-ready')
+    history.push(ROUTES.WELCOME_PAGE)
+  }, [])
 
   return (
     <Styles.Container>
-      <TransitionGroup>
-        <CSSTransition key={location.key} classNames='fade' timeout={300}>
-          <Switch location={location}>
-            {childRoutes(pageRoutes, setUser)}
-          </Switch>
-        </CSSTransition>
-      </TransitionGroup>
+      <Switch location={location}>{childRoutes(pageRoutes, setUser)}</Switch>
     </Styles.Container>
   )
 }

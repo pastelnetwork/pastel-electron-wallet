@@ -11,7 +11,6 @@ import PortfolioPage from '../features/nft/portfolio'
 import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
-import OnboardingWelcome from '../features/onboarding/welcome/Welcome'
 import WalletScreen from '../features/wallet'
 import Header from '../common/components/Header'
 import {
@@ -58,6 +57,7 @@ import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
+import { RegisterPage } from '../features/onboarding'
 
 export type TWalletInfo = {
   connections: number
@@ -476,6 +476,7 @@ class RouteApp extends React.Component<any, any> {
       errorModalData,
       connectedCompanionApp,
       pastelIDs,
+      rpcConfig,
     } = this.state
     const standardProps = {
       openErrorModal: this.openErrorModal,
@@ -497,7 +498,8 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
-        {info?.version && <Header />}
+        {/* info?.version && <Header /> */}
+        <Header />
         <div className='flex-grow overflow-auto'>
           <Switch>
             <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
@@ -526,7 +528,11 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
-            <Route path={routes.PORTFOLIO} exact component={PortfolioPage} />
+            <Route
+              path={routes.PORTFOLIO}
+              exact
+              render={() => <PortfolioPage currencyName={info.currencyName} />}
+            />
             <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
             <Route
@@ -557,7 +563,7 @@ class RouteApp extends React.Component<any, any> {
 
             <Route
               path={routes.MY_PROFILE}
-              render={() => <MyProfile info={info} />}
+              render={() => <MyProfile info={info} rpcConfig={rpcConfig} />}
             />
 
             <Route
