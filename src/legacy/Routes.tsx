@@ -54,7 +54,7 @@ import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
 import NFTMarketFeed from '../features/NFTMarketFeed'
-import { app, ipcRenderer } from 'electron'
+import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
@@ -99,8 +99,6 @@ class RouteApp extends React.Component<any, any> {
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
 
     ReactModal.setAppElement('#root')
-
-    ipcRenderer.send('app-ready')
   }
 
   rpc: any

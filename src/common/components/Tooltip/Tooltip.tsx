@@ -92,7 +92,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
         className='absolute tooltiparrow invisible'
         src={ArrowToolTip}
       />
-      <span
+      <div
         style={style}
         className={cn(
           'absolute bg-gray-14 text-white text-center rounded-lg z-10 tooltiptext invisible text-xs py-1 px-1.5',
@@ -100,7 +100,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
         )}
       >
         {content}
-      </span>
+      </div>
     </div>
   )
 }
