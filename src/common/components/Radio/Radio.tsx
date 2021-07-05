@@ -35,7 +35,7 @@ const Radio = ({
             type='radio'
             className='absolute opacity-0 cursor-pointer'
             checked={checked}
-            onClick={() => {
+            onChange={() => {
               onChange(!checked)
             }}
           />

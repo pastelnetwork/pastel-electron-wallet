@@ -5,9 +5,10 @@ type TRarenessScoreProps = {
   color: string
   percent: number
   children: React.ReactNode
+  className?: string
 }
 
-const strokeWidth = 6
+const strokeWidth = 8
 const radius = 50 - strokeWidth / 2
 const length = radius * 2 * Math.PI
 const dashArray = String(length)
@@ -16,16 +17,12 @@ export default function PercentCircle({
   color,
   percent,
   children,
+  className,
 }: TRarenessScoreProps): JSX.Element {
   const dashOffset = (length * (100 - percent)) / 100
 
   return (
-    <div
-      className={cn(
-        'w-16 h-16 rounded-full ml-2 md:ml-3 lg:ml-18px relative',
-        color,
-      )}
-    >
+    <div className={cn('w-16 h-16 rounded-full relative', color, className)}>
       <svg className='w-full h-full transform -rotate-90' viewBox='0 0 100 100'>
         <circle
           cx='50%'

@@ -5,6 +5,7 @@ import {
   fetchPastelIDAndPrivateKeys,
   splitStringIntoChunks,
 } from './mySecurity/common/utils'
+import MyComments from './myComments/MyComments'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 
@@ -81,9 +82,7 @@ const Profile = (props: TProfileProps): JSX.Element => {
         }}
       />
       {tab === Tabs.info && <ProfileGeneral />}
-      {tab === Tabs.comments && (
-        <div className='text-center'> No comments </div>
-      )}
+      {tab === Tabs.comments && <MyComments />}
       {tab === Tabs.security && (
         <MySecurity info={info} rpcConfig={rpcConfig} qrcodeData={qrcodeData} />
       )}
