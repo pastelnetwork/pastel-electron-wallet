@@ -94,7 +94,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   }
 
   useEffect(() => {
-    ;(async () => {
+    const getTransactions = async () => {
       const transactionRPC = new TransactionRPC({ url, username, password })
       const trans = await transactionRPC.fetchTandZTransactions()
       const filterTransactions = trans.map(t => {
@@ -117,7 +117,8 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
       // Map transaction row data
       setTransactions(filterTransactions)
       setOriginTransactions(filterTransactions)
-    })()
+    }
+    getTransactions()
   }, [])
 
   useEffect(() => {

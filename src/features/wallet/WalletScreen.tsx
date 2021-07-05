@@ -340,13 +340,14 @@ const WalletScreen = (): JSX.Element => {
   }
 
   useEffect(() => {
-    ;(async () => {
+    const getTotalBalances = async () => {
       await Promise.all([
         fetchInfo(),
         fetchTotalBalances(),
         fetchWalletAddresses(),
       ])
-    })()
+    }
+    getTotalBalances()
   }, [])
 
   useEffect(() => {

@@ -55,12 +55,13 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
   useEffect(() => {
     const rpcConfig = { url, username, password }
     const walletRPC = new WalletRPC(rpcConfig)
-    ;(async () => {
+    const getKeys = async () => {
       const pubKey = await walletRPC.getViewKeyAsString(address)
       const privKey = await walletRPC.getPrivKeyAsString(address)
       setPublicKey(pubKey)
       setPrivateKey(privKey)
-    })()
+    }
+    getKeys()
   }, [address])
 
   return (

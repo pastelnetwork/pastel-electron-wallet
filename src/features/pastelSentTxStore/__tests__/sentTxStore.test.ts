@@ -1,5 +1,4 @@
 import fs from 'fs'
-
 import { loadSentTxns } from '../sentTxStore'
 
 jest.mock('fs', () => ({
@@ -17,10 +16,8 @@ jest.mock('os', () => ({
 }))
 
 jest.mock('electron', () => ({
-  remote: {
-    app: {
-      getPath: jest.fn(),
-    },
+  ipcRenderer: {
+    on: jest.fn(),
   },
 }))
 

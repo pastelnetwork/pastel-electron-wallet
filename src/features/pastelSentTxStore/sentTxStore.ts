@@ -1,34 +1,18 @@
-import { app, remote } from 'electron'
+import { ipcRenderer } from 'electron'
 import fs from 'fs'
-import os from 'os'
-import path from 'path'
 import { TSentTxStore, TTransaction } from 'types/rpc'
-
-const locateSentTxStore = (): string => {
-  const electronApp = app || remote.app
-
-  if (os.platform() === 'darwin') {
-    return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(
-      electronApp.getPath('home'),
-      '.local',
-      'share',
-      'psl-qt-wallet-org',
-      'psl-qt-wallet',
-      'senttxstore.dat',
-    )
-  }
-
-  return path.join(electronApp.getPath('appData'), 'Pastel', 'senttxstore.dat')
-}
 
 export const loadSentTxns = async (): Promise<TTransaction | []> => {
   try {
+    let locateSetTxtStorePath = ''
+    ipcRenderer.on(
+      'app-info',
+      (event, { locateSentTxStore }: { locateSentTxStore: string }) => {
+        locateSetTxtStorePath = locateSentTxStore
+      },
+    )
     const sentTx = JSON.parse(
-      (await fs.promises.readFile(locateSentTxStore())).toString(),
+      (await fs.promises.readFile(locateSetTxtStorePath)).toString(),
     )
     return sentTx.map((s: TSentTxStore) => {
       const transction: TTransaction = {
