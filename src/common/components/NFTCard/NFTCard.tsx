@@ -23,6 +23,7 @@ export type TNFTCompactCard = {
   liked: boolean
   className?: string
   hideFollow?: boolean
+  hideUnFollow?: boolean
   hideLikeButton?: boolean
   percentage?: number
   variant?: string
