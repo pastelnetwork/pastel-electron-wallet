@@ -11,10 +11,8 @@ import PortfolioPage from '../features/nft/portfolio'
 import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
-import OnboardingWelcome from '../features/onboarding/welcome/Welcome'
 import WalletScreen from '../features/wallet'
 import Header from '../common/components/Header'
-import Warning from '../common/components/Warning'
 import {
   TotalBalance,
   SendPageState,
@@ -503,16 +501,6 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
-        {info?.version && (
-          <Warning className='h-[34px] text-white items-center'>
-            <span>
-              You are using a trial version of Pastel— to use all the functions,{' '}
-            </span>{' '}
-            <a className='ml-1 underline' href='/sign-up'>
-              Please Register
-            </a>
-          </Warning>
-        )}
         {info?.version && <Header />}
         <div className='flex-grow overflow-auto'>
           <Switch>

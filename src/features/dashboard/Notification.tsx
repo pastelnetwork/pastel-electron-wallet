@@ -50,7 +50,6 @@ export default function Notification({
       >
         {message}
       </div>
-      {/* <DateTimeWithDot value={date} className='text-sm text-gray-a0 ml-auto' /> */}
       <div className={read ? 'text-gray-71' : 'text-gray-4a'}>
         {day !== 0 && <span>{day}d</span>} {hour !== 0 && <span>{hour}h</span>}{' '}
         {minute !== 0 && <span>{minute}m</span>} <span>ago</span>

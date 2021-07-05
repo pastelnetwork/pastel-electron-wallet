@@ -18,7 +18,7 @@ import notificationData from './dashboardModals/notificationModal.data'
 const date = dayjs('2021-04-04')
 
 const walletBalance = 32000
-const currencyName = 'PSTL'
+const currencyName = 'PSL'
 
 const transactions: TTransactionItemProps[] = [
   { type: 'in', amount: 320000, date, currencyName },
@@ -144,7 +144,7 @@ export default function DashboardPage(): JSX.Element {
             <div className='font-black text-gray-2d text-lg'>
               Wallet balance
             </div>
-            <div className='font-extrabold text-gray-1d text-sm'>
+            <div className='font-black text-gray-1d text-sm'>
               {formatNumber(walletBalance)} {currencyName}
             </div>
           </div>
