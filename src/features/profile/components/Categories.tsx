@@ -38,7 +38,7 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
   }
 
   return (
-    <div className='bg-white border rounded flex flex-grow shadow-editbox flex-wrap p-2 items-center'>
+    <div className='bg-white border rounded flex flex-grow shadow-4px flex-wrap p-2 items-center'>
       {value.map((category: string, index: number) => (
         <div className='flex' key={index}>
           <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center  mb-2'>

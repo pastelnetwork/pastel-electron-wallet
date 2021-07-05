@@ -26,7 +26,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
     <Modal
       isOpen={isOpen}
       handleClose={() => handleClose()}
-      size='690px'
+      size='492px'
       title={'Change your Pastel Username'}
       titleClassName='text-2xl mt-2 font-extrabold text-gray-2d'
       infoIcon={false}
@@ -56,7 +56,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
               setInputed(true)
             }}
             placeholder='New Username'
-            hintClassName='italic text-gray-a0 text-xs mt-1'
+            hintClassName={`${!inputed ? 'italic font-normal' : 'font-medium'}`}
             hint={
               !inputed
                 ? 'Only Latin Characters and Numbers Allowed'
@@ -115,7 +115,9 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
               disabled={!validateUserName(username)}
               variant='default'
               type='submit'
-              className='w-full bg-blue-3f bg-opacity-50'
+              className={`w-full bg-blue-3f ${
+                !validateUserName(username) ? 'bg-opacity-50' : ''
+              }`}
             >
               <span className='text-white font-black text-sm'>
                 Submit Username Change Request

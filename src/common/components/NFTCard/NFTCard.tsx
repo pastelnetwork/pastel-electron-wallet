@@ -6,7 +6,6 @@ import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
 import {
   HeartFilled,
-  Heart,
   Clipboard,
   Diamond,
   DiamondInHexagon,
@@ -120,7 +119,7 @@ const NFTCard = ({
                     ) : null}
                   </>
                 ) : (
-                  <Heart size={14} />
+                  <HeartFilled size={14} className='text-pink-46' />
                 )}
               </>
             ) : null}
@@ -153,7 +152,7 @@ const NFTCard = ({
               className={`absolute left-2.5 bottom-2.5 inline-block rounded-md overflow-hidden p-3px ${styles.statusBgColor}`}
             >
               <div className='rounded-md overflow-hidden py-3px px-11px text-h5 font-extrabold text-gray-2d leading-6 bg-white'>
-                Available
+                On sale
               </div>
             </div>
           ) : null}
@@ -199,7 +198,9 @@ const NFTCard = ({
             </Tooltip>
             <span
               className={cn(
-                isNFTPortfolio ? 'ml-5px mr-9px' : 'ml-2 mr-3 lg:mr-6',
+                isNFTPortfolio
+                  ? 'ml-5px mr-9px'
+                  : 'text-sm ml-[5px] mr-[9px] lg:mr-2.5',
               )}
             >
               {copies},

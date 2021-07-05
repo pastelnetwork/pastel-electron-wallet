@@ -94,10 +94,16 @@ const mockCardProps: TNFTCard = {
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
   liked: true,
+  followers: 256,
+  isLastBid: false,
 }
 
-export const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map(() => {
-  return { ...mockCardProps }
+export const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {
+  return {
+    ...mockCardProps,
+    onSale: i % 2 ? true : false,
+    isLastBid: i % 3 ? true : false,
+  }
 })
 
 export const mockTimeRanges: TOption[] = [
