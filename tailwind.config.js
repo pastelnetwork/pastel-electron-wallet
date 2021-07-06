@@ -367,6 +367,7 @@ module.exports = {
         h4: '1.125rem',
         h5: '1rem',
         h6: '0.875rem',
+        '6px': '0.375rem',
         '8px': '0.5rem',
         '9px': '0.5625rem',
         '10px': '0.625rem',
