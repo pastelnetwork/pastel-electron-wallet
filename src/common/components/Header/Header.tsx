@@ -158,6 +158,12 @@ export default function Header(): JSX.Element | null {
           >
             Portfolio
           </MenuItem>
+          <MenuItem
+            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
+            to={routes.WALLET}
+          >
+            Wallet
+          </MenuItem>
           <button
             className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
             onClick={toggleAddNFT}
@@ -177,6 +183,7 @@ export default function Header(): JSX.Element | null {
           <Link to={routes.CHAT}>
             <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
           </Link>
+
           <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
           <Icon
             classes='ml-6 lg:ml-22px'
