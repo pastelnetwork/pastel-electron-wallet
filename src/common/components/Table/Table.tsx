@@ -89,7 +89,7 @@ const Table = ({
                 key={index}
                 className={cx(
                   column.align ? 'text-' + column.align : 'text-left',
-                  'sticky top-0 bg-white z-10',
+                  'sticky top-0 bg-white',
                   column.colClasses,
                   'sticky top-0 bg-white',
                   headerTdClasses,

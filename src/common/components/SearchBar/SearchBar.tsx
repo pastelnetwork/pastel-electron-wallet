@@ -134,8 +134,8 @@ const SearchBar = (): JSX.Element => {
         {selectedCategory &&
           categories
             .filter(item => item.type === selectedCategory)
-            .map(category => (
-              <div className='absolute top-2.5 left-[50px]'>
+            .map((category, index) => (
+              <div key={index} className='absolute top-2.5 left-[50px]'>
                 <SearchTag type={category.type} label={category.label} />
               </div>
             ))}
@@ -156,7 +156,7 @@ const SearchBar = (): JSX.Element => {
           />
         )}
         {inputFocused && (
-          <div className='bg-white border border-line rounded-b-10px shadow-xl'>
+          <div className='z-50 bg-white border border-line rounded-b-10px shadow-xl'>
             {selectedCategory === undefined ? (
               <div className='px-6 pt-4 pb-[46px]'>
                 <div className='text-base'>I'm looking for</div>
