@@ -1,7 +1,6 @@
 import fs from 'fs'
-import path from 'path'
-import { app, remote } from 'electron'
 import { TAddressBook } from 'types/rpc'
+import store from '../../redux/store'
 
 const isSapling = (addr: string): boolean => {
   if (!addr) {
@@ -34,30 +33,19 @@ const isTransparent = (addr: string): boolean => {
   return new RegExp('^[tP][a-zA-Z0-9]{34}$').test(addr)
 }
 
-const getAddressBoolFileName = async (): Promise<string> => {
-  const dir = path.join((app || remote.app).getPath('appData'), 'pastelwallet')
-
-  if (!fs.existsSync(dir)) {
-    await fs.promises.mkdir(dir)
-  }
-
-  const fileName = path.join(dir, 'AddressBook.json')
-
-  return fileName
-} // Write the address book to disk
+// Write the address book to disk
 
 const writeAddressBook = async (
   addressBooks: TAddressBook[],
 ): Promise<void> => {
-  const fileName = await getAddressBoolFileName()
-  await fs.promises.writeFile(fileName, JSON.stringify(addressBooks))
+  const { addressBookFileName } = store.getState().appInfo
+  await fs.promises.writeFile(addressBookFileName, JSON.stringify(addressBooks))
 } // Read the address book
 
 const readAddressBook = async (): Promise<Promise<TAddressBook[]>> => {
-  const fileName = await getAddressBoolFileName()
-
+  const { addressBookFileName } = store.getState().appInfo
   try {
-    const buffer = await fs.promises.readFile(fileName)
+    const buffer = await fs.promises.readFile(addressBookFileName)
     return JSON.parse(buffer.toString())
   } catch (err) {
     // File probably doesn't exist, so return nothing

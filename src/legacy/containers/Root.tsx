@@ -22,7 +22,7 @@ const Root = (): JSX.Element => {
    * Remove this CONST when new designs will be applied.
    * For now you can switch between old and new application by changing SHOW_ONBOARDING
    */
-  const SHOW_ONBOARDING = true
+  const SHOW_ONBOARDING = false
 
   return (
     <ThemeProvider theme={theme}>

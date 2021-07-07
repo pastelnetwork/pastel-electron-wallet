@@ -3,16 +3,22 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface IAppInfoState {
   isPackaged: boolean
   locatePastelConfDir: string
+  locateSentTxStore: string
+  addressBookFileName: string
 }
 
 const initialState: IAppInfoState = {
   isPackaged: false,
   locatePastelConfDir: '',
+  locateSentTxStore: '',
+  addressBookFileName: '',
 }
 
 type TAppInfoAction = {
   isPackaged: boolean
   locatePastelConfDir: string
+  locateSentTxStore: string
+  addressBookFileName: string
 }
 
 export const appInfoSlice = createSlice({
@@ -22,6 +28,8 @@ export const appInfoSlice = createSlice({
     setAppInfo(state: IAppInfoState, action: PayloadAction<TAppInfoAction>) {
       state.isPackaged = action.payload.isPackaged
       state.locatePastelConfDir = action.payload.locatePastelConfDir
+      state.locateSentTxStore = action.payload.locateSentTxStore
+      state.addressBookFileName = action.payload.addressBookFileName
     },
   },
 })

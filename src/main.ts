@@ -24,6 +24,7 @@ import {
 } from './features/deepLinking'
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
+import fs from 'fs'
 
 // Deep linked url
 let deepLinkingUrl: string[] | string
@@ -220,12 +221,16 @@ ipcMain.on('app-ready', () => {
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
   const locatePastelConfDir = getLocatePastelConfDir()
+  const locateSentTxStore = getLocateSentTxStore()
+  const addressBookFileName = getAddressBookFileName()
   initServeStatic(app.isPackaged)
 
   if (mainWindow?.webContents) {
     mainWindow.webContents.send('app-info', {
       isPackaged: app.isPackaged,
       locatePastelConfDir,
+      locateSentTxStore,
+      addressBookFileName,
     })
   }
 })
@@ -263,4 +268,35 @@ const getLocatePastelConfDir = () => {
   }
 
   return path.join(app.getPath('appData'), 'Pastel')
+}
+
+const getLocateSentTxStore = (): string => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(
+      app.getPath('home'),
+      '.local',
+      'share',
+      'psl-qt-wallet-org',
+      'psl-qt-wallet',
+      'senttxstore.dat',
+    )
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+}
+
+const getAddressBookFileName = async () => {
+  const dir = path.join(app.getPath('appData'), 'pastelwallet')
+
+  if (!fs.existsSync(dir)) {
+    await fs.promises.mkdir(dir)
+  }
+
+  const fileName = path.join(dir, 'AddressBook.json')
+
+  return fileName
 }

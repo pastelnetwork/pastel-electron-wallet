@@ -1,18 +1,12 @@
-import { ipcRenderer } from 'electron'
 import fs from 'fs'
 import { TSentTxStore, TTransaction } from 'types/rpc'
+import store from '../../redux/store'
 
 export const loadSentTxns = async (): Promise<TTransaction | []> => {
   try {
-    let locateSetTxtStorePath = ''
-    ipcRenderer.on(
-      'app-info',
-      (event, { locateSentTxStore }: { locateSentTxStore: string }) => {
-        locateSetTxtStorePath = locateSentTxStore
-      },
-    )
+    const { locateSentTxStore } = store.getState().appInfo
     const sentTx = JSON.parse(
-      (await fs.promises.readFile(locateSetTxtStorePath)).toString(),
+      (await fs.promises.readFile(locateSentTxStore)).toString(),
     )
     return sentTx.map((s: TSentTxStore) => {
       const transction: TTransaction = {

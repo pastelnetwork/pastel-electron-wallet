@@ -11,9 +11,10 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer'
-import { WalletRPC } from '../../api/pastel-rpc'
+import { ControlRPC, WalletRPC } from '../../api/pastel-rpc'
 import { useAppSelector } from 'redux/hooks'
 import { RootState } from 'redux/store'
+import dayjs from 'dayjs'
 
 type TPDFDocumentProps = {
   publicKey: string
@@ -46,6 +47,7 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
   address,
   handleClose,
 }) => {
+  const [currencyName, setCurrencyName] = useState('PSL')
   const [publicKey, setPublicKey] = useState('')
   const [privateKey, setPrivateKey] = useState('')
   const { url, username, password } = useAppSelector<RootState['pastelConf']>(
@@ -55,14 +57,23 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
   useEffect(() => {
     const rpcConfig = { url, username, password }
     const walletRPC = new WalletRPC(rpcConfig)
+    const controlRPC = new ControlRPC(rpcConfig)
     const getKeys = async () => {
+      const info = await controlRPC.fetchInfo()
       const pubKey = await walletRPC.getViewKeyAsString(address)
       const privKey = await walletRPC.getPrivKeyAsString(address)
       setPublicKey(pubKey)
       setPrivateKey(privKey)
+      setCurrencyName(info.currencyName)
     }
     getKeys()
   }, [address])
+
+  const getPdfFilename = () => {
+    const key = (publicKey || privateKey).substr(0, 16)
+    const datetime = dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')
+    return `[${currencyName}]_Paper_Wallet__Address_${key}_${datetime}.pdf`
+  }
 
   return (
     <TitleModal
@@ -90,7 +101,7 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
               document={
                 <PDFDocument publicKey={publicKey} privateKey={privateKey} />
               }
-              fileName={`${address}.pdf`}
+              fileName={getPdfFilename()}
               className='inline-block w-full h-full absolute top-0 left-0'
             ></PDFDownloadLink>
             <img src={DownloadWhite} className='py-3.5' />

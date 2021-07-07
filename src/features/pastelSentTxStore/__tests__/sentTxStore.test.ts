@@ -15,12 +15,6 @@ jest.mock('os', () => ({
   platform: jest.fn(),
 }))
 
-jest.mock('electron', () => ({
-  ipcRenderer: {
-    on: jest.fn(),
-  },
-}))
-
 const mockTransactions = [
   {
     account: '',
