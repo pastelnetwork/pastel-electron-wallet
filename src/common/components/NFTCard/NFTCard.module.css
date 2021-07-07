@@ -15,3 +15,9 @@
     #41daff 100%
   );
 }
+
+.mark {
+  background-color: #ffbe3d;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}

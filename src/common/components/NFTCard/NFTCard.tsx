@@ -28,6 +28,10 @@ export type TNFTCompactCard = {
   variant?: string
   isLastBid?: boolean
   followers?: number
+  authorClassName?: string
+  exauthorClassName?: string
+  avatarClassName?: string
+  searchText?: string
 }
 
 export type TNFTCard = Override<
@@ -49,6 +53,10 @@ const NFTCard = ({
   variant,
   isLastBid,
   followers,
+  authorClassName = 'text-h5 font-extrabold text-gray-1b ',
+  exauthorClassName = 'font-medium text-gray-4a text-sm md:text-h4',
+  avatarClassName = 'w-9',
+  searchText,
   ...props
 }: TNFTCompactCard | TNFTCard): JSX.Element => {
   const fullCardProps = 'author' in props && (props as TNFTCard)
@@ -84,14 +92,34 @@ const NFTCard = ({
       {fullCardProps && (
         <div className='w-full px-3 pb-2 md:pb-3 md:px-3 flex justify-between'>
           <div className='flex items-center overflow-hidden'>
-            <img src={fullCardProps.avatarSrc} className='w-9' />
+            <img src={fullCardProps.avatarSrc} className={avatarClassName} />
             {variant === 'portfolio' ? (
-              <h4 className='pl-2 text-h5 font-extrabold leading-6 text-gray-1b truncate'>
-                @{fullCardProps.author}
+              <h4 className={cn('pl-2 leading-6 truncate', authorClassName)}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: searchText
+                      ? `@${fullCardProps.author}`.replace(
+                          new RegExp(searchText, 'gi'),
+                          match =>
+                            `<mark class="${styles.mark}">${match}</mark>`,
+                        )
+                      : `@${fullCardProps.author}`,
+                  }}
+                ></div>
               </h4>
             ) : (
-              <h4 className='px-2 font-medium text-gray-4a text-sm md:text-h4 truncate'>
-                @{fullCardProps.author}
+              <h4 className={cn('px-2 truncate', exauthorClassName)}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: searchText
+                      ? `@${fullCardProps.author}`.replace(
+                          new RegExp(searchText, 'gi'),
+                          match =>
+                            `<mark class="${styles.mark}">${match}</mark>`,
+                        )
+                      : `@${fullCardProps.author}`,
+                  }}
+                ></div>
               </h4>
             )}
           </div>
