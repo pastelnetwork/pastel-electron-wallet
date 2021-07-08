@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import cn from 'classnames'
 
 import RestoreByUpload from './RestoreByUpload'
 import RestoreByCamera from './RestoreByCamera'
+import RestoreByPdf from './RestoreByPdf'
 import { TRPCConfig } from '../../Profile'
 import Modal from '../../../../common/components/AnimatedModal'
 import { Button } from '../../../../common/components/Buttons'
@@ -35,8 +37,14 @@ export default function RestoreModal({
       onClose={() => handleCloseModal(false)}
       closeButton
       render={() => (
-        <div className='paper p-10 w-[690px]'>
-          <div className='py-5'>
+        <div
+          className={cn(
+            'paper p-10',
+            selectedRestoreType && 'w-[690px]',
+            !selectedRestoreType && 'w-[791px]',
+          )}
+        >
+          <div className='pt-5'>
             {!selectedRestoreType ? (
               <div>
                 <div className='text-gray-800 text-2xl font-extrabold mb-3'>
@@ -45,8 +53,16 @@ export default function RestoreModal({
                 <div className='font-medium text-sm text-gray-33 opacity-50'>
                   Please select restore method below.
                 </div>
-                <div className='text-center mt-6'>
-                  <div>
+                <div className='text-center mt-6 flex justify-center'>
+                  <div className='mr-4 w-1/3'>
+                    <Button
+                      className='w-full font-extrabold'
+                      onClick={() => setSelectedRestoreType('pdf')}
+                    >
+                      Upload PDF Keys
+                    </Button>
+                  </div>
+                  <div className='mr-4 w-1/3'>
                     <Button
                       className='w-full font-extrabold'
                       onClick={() => setSelectedRestoreType('upload')}
@@ -54,7 +70,7 @@ export default function RestoreModal({
                       Upload QR Code Video
                     </Button>
                   </div>
-                  <div className='mt-4'>
+                  <div className='w-1/3'>
                     <Button
                       className='w-full font-extrabold'
                       onClick={() => setSelectedRestoreType('scan')}
@@ -74,6 +90,14 @@ export default function RestoreModal({
                 ) : null}
                 {selectedRestoreType === 'scan' ? (
                   <RestoreByCamera
+                    rpcConfig={rpcConfig}
+                    onBack={() => {
+                      setSelectedRestoreType('')
+                    }}
+                  />
+                ) : null}
+                {selectedRestoreType === 'pdf' ? (
+                  <RestoreByPdf
                     rpcConfig={rpcConfig}
                     onBack={() => {
                       setSelectedRestoreType('')
