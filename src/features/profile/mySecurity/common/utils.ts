@@ -36,11 +36,6 @@ type TAddressBook = {
   address: string
 }
 
-type TAddressBook = {
-  label: string
-  address: string
-}
-
 type TAllAddressesAndPastelID = {
   zPrivateKeys: string[]
   tPrivateKeys: string[]
