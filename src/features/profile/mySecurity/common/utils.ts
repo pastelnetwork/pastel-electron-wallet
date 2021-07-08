@@ -36,10 +36,16 @@ type TAddressBook = {
   address: string
 }
 
+type TAddressBook = {
+  label: string
+  address: string
+}
+
 type TAllAddressesAndPastelID = {
   zPrivateKeys: string[]
   tPrivateKeys: string[]
   pastelIDs: TPastelID[]
+  addressBook: TAddressBook[]
   profile: {
     userName: string
   }
@@ -160,12 +166,19 @@ export async function fetchPastelIDAndPrivateKeys(
   }
 
   const pastelIDs = await getPastelIDs(config)
+  const addressBook = await getAddressBook()
 
-  if (pastelIDs?.length || zPrivateKeys.length || tPrivateKeys.length) {
+  if (
+    pastelIDs?.length ||
+    zPrivateKeys.length ||
+    tPrivateKeys.length ||
+    addressBook?.length
+  ) {
     const data = {
       zPrivateKeys,
       tPrivateKeys,
       pastelIDs,
+      addressBook,
     }
 
     return encodeURIComponent(
@@ -267,6 +280,24 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
   }
 }
 
+async function importAddressBook(addresses: TAddressBook[]) {
+  const addressBook = await getAddressBook()
+  const newAddressBook: TAddressBook[] = []
+
+  for (let i = 0; i < addresses.length; i++) {
+    const addressExists = addressBook?.some(
+      address =>
+        address.address === addresses[i].address &&
+        address.label === addresses[i].label,
+    )
+    if (!addressExists) {
+      newAddressBook.push(addresses[i])
+    }
+  }
+
+  AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+}
+
 export async function doImportPrivKeys(
   privateKeys: string,
   config: TRPCConfig,
@@ -287,6 +318,11 @@ export async function doImportPrivKeys(
         for (let i = 0; i < tPrivateKeys.length; i++) {
           importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1, config)
         }
+      }
+
+      const addressBook = keys.addressBook
+      if (addressBook.length) {
+        await importAddressBook(addressBook)
       }
 
       return true

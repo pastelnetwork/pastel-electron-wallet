@@ -4,8 +4,7 @@ import cn from 'classnames'
 import { Modal } from '../../../common/components/Modal'
 import Scrollbar from '../../../common/components/Scrollbar'
 // Assets
-import CaretIcon from '../../../common/assets/icons/ico-caret.svg'
-import Icon from '../../../common/components/Icon/Icon'
+import { Caret } from '../../../common/components/Icons'
 
 type TDataType = {
   id: number
@@ -101,9 +100,10 @@ const LikeListModal = ({
                       {title}
                     </span>
                     {direction && name === sortName && (
-                      <Icon
-                        src={CaretIcon}
-                        variant='center'
+                      <Caret
+                        variant='full'
+                        to={direction === 'asc' ? 'top' : 'bottom'}
+                        size={10}
                         className={caretIconClasses}
                       />
                     )}
