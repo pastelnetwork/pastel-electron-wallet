@@ -3807,7 +3807,7 @@
   resolved "https://registry.yarnpkg.com/@types/parse5/-/parse5-5.0.3.tgz#e7b5aebbac150f8b5fdd4a46e7f0bd8e65e19109"
   integrity sha512-kUNnecmtkunAoQ3CnjmMkzNU/gtxG8guhi+Fk2U/kOpIKjIMKnXGp4IJCgQJrXSgMsWYimYG4TGjz/UzbGEBTw==
 
-"@types/pdfjs-dist@^2.7.3":
+"@types/pdfjs-dist@2.7.3":
   version "2.7.3"
   resolved "https://registry.yarnpkg.com/@types/pdfjs-dist/-/pdfjs-dist-2.7.3.tgz#37a2bb1e5046bb423f78df131e8e1ae18372de8e"
   integrity sha512-sMLbO3I8n7sOn/rFSxuUTQAwDkRLT4BUJGXSjcxrswSwsZ49LUlXXs7i8MRBs78XqhPci3on6I3cU/tnQczVOQ==
