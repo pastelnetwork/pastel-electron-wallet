@@ -36,7 +36,7 @@ export default function RestoreByPdf({
         setCurrentStatus('restoring')
         const pdfPath = path.join(fileSelected.path)
         if (pdfPath) {
-          const doc = await pdfjs.getDocument(pdfPath).promise
+          const doc = await pdfjs.getDocument('file://' + pdfPath).promise
           const metaData = await doc.getMetadata()
           doImport(metaData.info?.Keywords)
         }
