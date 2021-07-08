@@ -86,7 +86,7 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
           className='w-full'
           type='submit'
           onClick={() => {
-            setUser(true)
+            setUser(false)
             history.push(ROUTES.DASHBOARD)
           }}
         >

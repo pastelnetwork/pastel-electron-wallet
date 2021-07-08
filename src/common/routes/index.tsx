@@ -12,6 +12,7 @@ import {
 } from '../../features/onboarding/index'
 import PortfolioPage from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
+import { MyProfile } from '../../features/profile'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -76,6 +77,16 @@ const Portfolio = {
   path: ROUTES.PORTFOLIO,
   component: PortfolioPage,
   layout: PageLayout,
+  requiredRPCConfig: true,
+}
+
+const myProfile = {
+  id: 'myProfile',
+  path: ROUTES.MY_PROFILE,
+  component: MyProfile,
+  layout: PageLayout,
+  requiredRPCConfig: true,
+  requiredInfo: true,
 }
 
 export const pageRoutes = [
@@ -88,4 +99,5 @@ export const pageRoutes = [
   newPassword,
   Dashboard,
   Portfolio,
+  myProfile,
 ]

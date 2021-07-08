@@ -94,6 +94,7 @@ interface TLoadingProps {
   }
   setRPCConfig: (data: RPCConfig | null) => void
   setInfo: (data: TWalletInfo) => void
+  redirectTo?: string
 }
 
 class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
@@ -469,7 +470,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       )
     }
 
-    return <Redirect to={routes.WALLET} />
+    return <Redirect to={this.props.redirectTo || routes.WALLET} />
   }
 }
 
