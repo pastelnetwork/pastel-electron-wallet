@@ -13,8 +13,8 @@ export default function PortfolioColumn({
   className,
 }: TProps): JSX.Element {
   return (
-    <div className={cn('flex-grow md:w-1/3 px-6', className)}>
-      <div className='h-5 text-gray-71 text-sm font-medium mb-3'>{title}</div>
+    <div className={cn('flex-grow md:w-1/3', className)}>
+      <div className='h-5 text-gray-71 text-sm font-black mb-3'>{title}</div>
       {children}
     </div>
   )

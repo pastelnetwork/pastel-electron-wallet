@@ -3,6 +3,7 @@ import cn from 'classnames'
 import Icon from '../Icon'
 import CheckIcon from '../../assets/icons/ico-check.svg'
 import TimesIcon from '../../assets/icons/ico-times.svg'
+import styles from './Input.css'
 
 export type TInput = {
   className?: string
@@ -21,6 +22,7 @@ export type TInput = {
   placeholder?: string
   labelClassName?: string
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
+  hintAsTooltip?: boolean
   appliedStyleValid?: boolean
 }
 
@@ -43,6 +45,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       labelClassName = 'inline-block text-gray-71 text-h5 pb-2',
       hintClassName = '',
       onClick,
+      hintAsTooltip,
       appliedStyleValid = true,
       ...otherProps
     },
@@ -55,7 +58,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     })
 
     const inputClasses = cn({
-      'input-field w-full py-2 text-base placeholder-gray500 text-text-gray800 text-h5 focus:outline-none placeholder-gray-a0': true,
+      'input-field w-full py-2 text-base placeholder-gray500 text-text-gray800 text-h5 focus:outline-none placeholder-gray-a0 rounded': true,
       'pl-4': !prepend,
       'pl-2': prepend,
       'pr-4': !append,
@@ -88,6 +91,16 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
               disabled={disabled}
             />
             <fieldset className={fieldsetClasses} />
+            {hint && hintAsTooltip && (
+              <div
+                className={cn(
+                  'absolute bg-gray-35 text-white rounded-lg z-10 text-xs font-bold px-2 py-1 right-0 hintAsTooltip',
+                  styles.hintAsTooltip,
+                )}
+              >
+                {hint}
+              </div>
+            )}
 
             {append && <div className='pr-2'>{append}</div>}
 
@@ -96,11 +109,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
                 <Icon src={CheckIcon} variant='center' />
               </div>
             )}
-            {isValid === false && (
-              <div className='pr-2 text-red-7a'>
-                <Icon src={TimesIcon} className='fill-current' />
-              </div>
-            )}
+            {isValid === false && <img src={TimesIcon} className='w-3 mr-3' />}
           </div>
           {appendOutside && (
             <div className='ml-4 select-none' onClick={onClick}>
@@ -109,12 +118,12 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
           )}
         </div>
 
-        {(errorMessage || hint) && (
+        {(errorMessage || (hint && !hintAsTooltip)) && (
           <p
             className={cn(
               `${
-                isValid === false ? 'text-red-fe' : 'text-button-text'
-              } text-h6 pt-1`,
+                isValid === false ? 'text-red-fe' : 'text-gray-a0'
+              } text-xs leading-5 pt-1`,
               hintClassName,
             )}
           >

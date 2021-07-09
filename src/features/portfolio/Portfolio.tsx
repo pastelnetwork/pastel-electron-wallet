@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
-import PageHeader from '../../common/components/PageHeader'
-import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
-import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
-import Select, { TOption } from '../../common/components/Select/Select'
-import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
-import Slider from '../../common/components/Slider/Slider'
+import PageHeader from 'common/components/PageHeader'
+import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
+import { TPageHeaderSortByOptions } from 'common/components/PageHeader/PageHeader'
+import Select, { TOption } from 'common/components/Select/Select'
+import NFTCard, { TNFTCard } from 'common/components/NFTCard'
+import Slider from 'common/components/Slider/Slider'
+import routes from 'common/constants/routes.json'
 
 import styles from './Portfolio.module.css'
 
-import avatar from '../../common/assets/images/avatar-placeholder.png'
-import portfolio1 from '../../common/assets/images/mock/portfolio-1.jpg'
-import portfolio2 from '../../common/assets/images/mock/portfolio-2.jpg'
-import portfolio3 from '../../common/assets/images/mock/portfolio-3.jpg'
-import portfolio4 from '../../common/assets/images/mock/portfolio-4.jpg'
+import avatar from 'common/assets/images/avatar-placeholder.png'
+import portfolio1 from 'common/assets/images/mock/portfolio-1.jpg'
+import portfolio2 from 'common/assets/images/mock/portfolio-2.jpg'
+import portfolio3 from 'common/assets/images/mock/portfolio-3.jpg'
+import portfolio4 from 'common/assets/images/mock/portfolio-4.jpg'
 
 const portfolios = [portfolio1, portfolio2, portfolio3, portfolio4]
 
@@ -96,28 +97,28 @@ export default function Portfolio(): JSX.Element {
       selected: category,
       onChange: setCategory,
       options: mockCategories,
-      className: 'min-w-171px',
+      selectClassName: 'bg-white min-w-171px',
     },
     {
       label: 'Type',
       selected: type,
       onChange: settType,
       options: mockStatus,
-      className: 'min-w-171px',
+      selectClassName: 'bg-white min-w-171px',
     },
     {
       label: 'Time',
       selected: time,
       onChange: setTime,
       options: mockTime,
-      className: 'min-w-171px',
+      selectClassName: 'bg-white min-w-171px',
     },
     {
       label: 'Rareness',
       selected: rareness,
       onChange: setRareness,
       options: mockRareness,
-      className: 'min-w-171px',
+      selectClassName: 'bg-white min-w-171px',
     },
   ]
 
@@ -125,15 +126,15 @@ export default function Portfolio(): JSX.Element {
     data: [
       {
         label: 'Created by Me',
-        count: 26,
+        count: mockupPortfolio.length,
       },
       {
         label: 'Sold',
-        count: 2,
+        count: mockupPortfolioSold.length,
       },
       {
         label: 'Owned',
-        count: 2,
+        count: mockupPortfolioOwned.length,
       },
       {
         label: 'Liked',
@@ -148,29 +149,19 @@ export default function Portfolio(): JSX.Element {
     updatedbreadcrumbs[2].label = routes.data[selectedItem].label
     setBreadcrumbs(updatedbreadcrumbs)
 
-    const randomCount = Math.floor(Math.random() * 15)
-
-    const randomCards: TNFTCard[] = []
-    Array.from({ length: randomCount }).map((_, index) => {
-      const randomPortfolioIndex = Math.floor(Math.random() * 4)
-
-      randomCards.push({
-        author: 'zndrson',
-        avatarSrc: avatar,
-        imageSrc: portfolios[randomPortfolioIndex],
-        likes: 23,
-        onSale: index % 4 ? true : false,
-        price: '222K',
-        currencyName: 'PSL',
-        title: 'Cosmic Perspective Cosmic Perspective',
-        liked: true,
-        percentage: 75,
-        variant: 'portfolio',
-        isLastBid: false,
-        hideLikeButton: true,
-      })
-    })
-    setCards(randomCards)
+    switch (selectedItem) {
+      case 1:
+        setCards(mockupPortfolioOwned)
+        break
+      case 2:
+        setCards(mockupPortfolioSold)
+        break
+      case 3:
+        setCards(mockupPortfolioLiked)
+        break
+      default:
+        setCards(mockupPortfolio)
+    }
   }, [selectedItem])
 
   const [range, setRange] = useState<[number, number]>([400, 700])
@@ -206,7 +197,7 @@ export default function Portfolio(): JSX.Element {
                     options={sortByOptions.options}
                     selected={sortByOptions.selected}
                     onChange={sortByOptions.onOptionChange}
-                    className='min-w-118px'
+                    selectClassName='bg-white min-w-118px'
                   />
                 </div>
               </div>
@@ -228,9 +219,9 @@ export default function Portfolio(): JSX.Element {
             <div
               className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
             >
-              <div className='grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4'>
+              <div className='grid grid-cols-3 1200px:grid-cols-4 xl:grid-cols-5 gap-4'>
                 {cards.map((nftItem, index) => (
-                  <NFTCard {...nftItem} key={index} hideFollow />
+                  <NFTCard {...nftItem} key={index} variant='nft-portfolio' />
                 ))}
               </div>
             </div>
@@ -247,3 +238,104 @@ export default function Portfolio(): JSX.Element {
     </div>
   )
 }
+
+const mockupPortfolio: TNFTCard[] = []
+Array.from({ length: 26 }).map((_, index) => {
+  const randomPortfolioIndex = Math.floor(Math.random() * 4)
+
+  mockupPortfolio.push({
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolios[randomPortfolioIndex],
+    likes: 23,
+    price: '222K',
+    followers: 10,
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    onSale: index % 2 ? true : false,
+    isLastBid: index % 3 ? true : false,
+    detailUrl: routes.PORTFOLIO_DETAIL,
+  })
+})
+
+const mockupPortfolioOwned: TNFTCard[] = [
+  {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolio1,
+    likes: 23,
+    price: '222K',
+    followers: 10,
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    isLastBid: false,
+    onSale: true,
+    detailUrl: routes.PORTFOLIO_DETAIL,
+  },
+  {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolio2,
+    likes: 23,
+    price: '222K',
+    followers: 10,
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    isLastBid: false,
+    onSale: true,
+    detailUrl: routes.PORTFOLIO_DETAIL,
+  },
+]
+
+const mockupPortfolioSold: TNFTCard[] = [
+  {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolio3,
+    likes: 23,
+    price: '222K',
+    followers: 10,
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    isLastBid: false,
+    onSale: true,
+    detailUrl: routes.PORTFOLIO_DETAIL,
+  },
+  {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolio4,
+    likes: 23,
+    price: '222K',
+    followers: 10,
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    isLastBid: false,
+    onSale: true,
+    detailUrl: routes.PORTFOLIO_DETAIL,
+  },
+]
+
+const mockupPortfolioLiked: TNFTCard[] = []
+Array.from({ length: 32 }).map((_, index) => {
+  const randomPortfolioIndex = Math.floor(Math.random() * 4)
+  mockupPortfolioLiked.push({
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: portfolios[randomPortfolioIndex],
+    likes: 23,
+    price: '222K',
+    followers: 10,
+    currencyName: 'PSL',
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    onSale: index % 2 ? true : false,
+    isLastBid: index % 3 ? true : false,
+    detailUrl: routes.PORTFOLIO_DETAIL,
+  })
+})

@@ -11,7 +11,6 @@ import PortfolioPage from '../features/nft/portfolio'
 import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
-import OnboardingWelcome from '../features/onboarding/welcome/Welcome'
 import WalletScreen from '../features/wallet'
 import Header from '../common/components/Header'
 import {
@@ -54,11 +53,12 @@ import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
 import NFTMarketFeed from '../features/NFTMarketFeed'
-import { app, ipcRenderer } from 'electron'
+import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
+import { RegisterPage } from '../features/onboarding'
 
 export type TWalletInfo = {
   connections: number
@@ -98,8 +98,6 @@ class RouteApp extends React.Component<any, any> {
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
 
     ReactModal.setAppElement('#root')
-
-    ipcRenderer.send('app-ready')
   }
 
   rpc: any
@@ -532,17 +530,12 @@ class RouteApp extends React.Component<any, any> {
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
             <Route
-              path={routes.PORTFOLIO}
+              path={routes.PORTFOLIO_DETAIL}
               exact
               render={() => <PortfolioPage currencyName={info.currencyName} />}
             />
             <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
-            <Route
-              path={routes.PORTFOLIO_DETAIL}
-              exact
-              component={PortfolioPage}
-            />
             <Route
               path={routes.TRANSACTIONS}
               render={() => (

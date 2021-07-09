@@ -17,6 +17,7 @@ const mockCardProps: TNFTCard = {
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
   className: 'w-300px',
+  followers: 0,
 }
 
 export default {

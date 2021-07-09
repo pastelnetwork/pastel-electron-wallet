@@ -1,0 +1,20 @@
+.hintAsTooltip {
+  display: none;
+  bottom: 130%;
+}
+
+.hintAsTooltip::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #353945;
+  bottom: -6px;
+  left: calc(50% - 3px);
+}
+
+.input-field:focus ~ .hintAsTooltip {
+  display: block;
+}
