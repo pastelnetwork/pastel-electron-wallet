@@ -85,10 +85,7 @@ export default function Cropping({
           <img ref={imageRef} src={image.url} />
         </div>
       </div>
-      <div
-        className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'
-        hidden
-      >
+      <div className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'>
         <Button secondary className='w-1/2' onClick={onClose}>
           Cancel
         </Button>

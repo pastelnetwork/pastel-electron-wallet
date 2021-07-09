@@ -32,6 +32,11 @@ export default function SubmitStep({
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
+  const onSubmit = () => {
+    //
+    goToNextStep()
+  }
+
   return (
     <ModalLayout
       title='Submit NFT'
@@ -106,7 +111,7 @@ export default function SubmitStep({
             <Button
               type='button'
               className='font-extrabold px-3'
-              onClick={goToNextStep}
+              onClick={onSubmit}
             >
               Submit and proceed to fee payment
             </Button>
