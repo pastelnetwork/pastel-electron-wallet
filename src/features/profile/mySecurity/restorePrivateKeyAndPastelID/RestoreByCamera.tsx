@@ -16,11 +16,13 @@ type TQRReader = {
 type TRestoreByCameraProps = {
   rpcConfig: TRPCConfig
   onBack: () => void
+  turnOffCamera?: boolean
 }
 
 export default function RestoreByCamera({
   rpcConfig,
   onBack,
+  turnOffCamera,
 }: TRestoreByCameraProps): JSX.Element {
   const [results, setResults] = useState<TQRReader[]>([])
   const [showQrReader, setShowQrReader] = useState(true)
@@ -88,7 +90,7 @@ export default function RestoreByCamera({
         ) : null}
       </div>
       <div className='mt-4 mx-auto p-5 QrReader'>
-        {showQrReader ? (
+        {showQrReader && !turnOffCamera ? (
           <QrReader
             style={previewStyle}
             onError={handleError}
@@ -103,8 +105,8 @@ export default function RestoreByCamera({
         <Link
           href='#'
           onClick={() => {
-            onBack()
             setShowQrReader(false)
+            onBack()
           }}
         >
           Or try another restore method

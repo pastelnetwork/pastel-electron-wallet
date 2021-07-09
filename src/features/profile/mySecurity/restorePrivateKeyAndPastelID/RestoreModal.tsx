@@ -20,14 +20,17 @@ export default function RestoreModal({
   onCloseModal,
 }: TRestoreModalProps): JSX.Element | null {
   const [selectedRestoreType, setSelectedRestoreType] = useState('')
+  const [turnOffCamera, setTurnOffCamera] = useState(false)
 
   useEffect(() => {
     if (modalIsOpen) {
       setSelectedRestoreType('')
+      setTurnOffCamera(false)
     }
   }, [modalIsOpen])
 
   const handleCloseModal = (state: boolean) => {
+    setTurnOffCamera(true)
     onCloseModal(state)
   }
 
@@ -91,6 +94,7 @@ export default function RestoreModal({
                 {selectedRestoreType === 'scan' ? (
                   <RestoreByCamera
                     rpcConfig={rpcConfig}
+                    turnOffCamera={turnOffCamera}
                     onBack={() => {
                       setSelectedRestoreType('')
                     }}

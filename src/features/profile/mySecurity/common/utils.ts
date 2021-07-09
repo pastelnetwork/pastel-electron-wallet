@@ -2,7 +2,7 @@ import LZUTF8 from 'lzutf8'
 import { toast } from 'react-toastify'
 
 import { rpc, TRPCConfig } from 'api/pastel-rpc/rpc'
-import AddressbookImpl from 'legacy/utils/AddressbookImpl'
+import AddressbookImpl from 'common/utils/AddressbookImpl'
 
 type TAddressesResponse = {
   error: string | null
@@ -290,7 +290,14 @@ async function importAddressBook(addresses: TAddressBook[]) {
     }
   }
 
-  AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+  let addressBooks = newAddressBook
+  if (addressBook?.length) {
+    addressBooks = newAddressBook?.concat(addressBook)
+  }
+
+  if (addressBooks?.length) {
+    AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+  }
 }
 
 export async function doImportPrivKeys(
