@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import cn from 'classnames'
-import Icon from '../Icon'
+import SVG from 'react-inlinesvg'
 import CheckIcon from '../../assets/icons/ico-check.svg'
 import TimesIcon from '../../assets/icons/ico-times.svg'
 import styles from './Input.css'
@@ -103,10 +103,12 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
             )}
 
             {append && <div className='pr-2'>{append}</div>}
-
             {isValid === true && (
               <div className='pr-2'>
-                <Icon src={CheckIcon} variant='center' />
+                <SVG
+                  src={CheckIcon}
+                  className='flex justify-center items-center'
+                />
               </div>
             )}
             {isValid === false && <img src={TimesIcon} className='w-3 mr-3' />}
