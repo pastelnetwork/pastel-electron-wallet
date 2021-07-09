@@ -1,5 +1,5 @@
 import React from 'react'
-import { TAddNFTState, TImage } from '../AddNFT.state'
+import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
 import { Button } from 'common/components/Buttons'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
@@ -16,11 +16,13 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 type TApprovedStepProps = {
   state: TAddNFTState
   image: TImage
+  nftData: TNFTData
 }
 
 export default function ApprovedStep({
   state: { goToNextStep },
   image,
+  nftData,
 }: TApprovedStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
 
@@ -28,9 +30,11 @@ export default function ApprovedStep({
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
+  const titleString = `NFT approved: “${nftData.title}”`
+
   return (
     <ModalLayout
-      title='NFT approved: “Diamonds in the sky”'
+      title={titleString}
       titleClass='mb-3'
       fixedHeight
       leftColumnWidth={image.maxWidth}

@@ -41,6 +41,7 @@ const maxWidthByOrientation: Record<TImageOrientation, number> = {
 }
 
 export type TImage = {
+  file: File
   url: string
   width: number
   height: number
@@ -80,13 +81,15 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     crop,
     setStep,
     setCrop,
-    setImage({ url, width, height }) {
+    setImage(params: TImage) {
+      const { url, width, height, file } = params
       const orientation = width < height ? 'portrait' : 'landscape'
       setImage({
         url,
         width,
         height,
         maxWidth: maxWidthByOrientation[orientation],
+        file,
       })
     },
     goBack() {

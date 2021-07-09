@@ -7,6 +7,9 @@ import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
+import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
+import { TArtworkTicket } from 'api/artwork-api/interfaces'
+import { toast } from 'react-toastify'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -32,9 +35,59 @@ export default function SubmitStep({
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
-  const onSubmit = () => {
-    //
-    goToNextStep()
+  const onSubmit = async () => {
+    try {
+      // TODO: apply real data when user auth/register will be ready
+      // it's mock data for local API in debug mode
+      const pastelid =
+          'jXYJud3rmrR1Sk2scvR47N4E4J5Vv48uCC6se2nzHrBRdjaKj3ybPoi1Y2VVoRqi1GnQrYKjSxQAC7NBtvtEdS',
+        pass = 'test',
+        spendableAddr = 'PtiqRXn2VQwBjp1K8QXR2uW2w2oZ3Ns7N6j',
+        userName = 'John Doe'
+
+      const responseUpload = await artworkUploadImage(image.file)
+
+      const regParams: TArtworkTicket = {
+        artist_name: userName,
+        artist_pastelid: pastelid,
+        artist_pastelid_passphrase: pass,
+        image_id: responseUpload.image_id,
+        issued_copies: nftData.copies,
+        maximum_fee: 0.01, // not sure how to get/calc this value, so TODO:
+        name: nftData.title,
+        spendable_address: spendableAddr,
+      }
+
+      if (nftData.website) {
+        regParams.artist_website_url = nftData.website
+      }
+
+      if (nftData.description) {
+        regParams.description = nftData.description
+      }
+
+      if (nftData.hashtags) {
+        regParams.keywords = nftData.hashtags.join(', ')
+      }
+
+      if (nftData.series) {
+        regParams.series_name = nftData.series
+      }
+
+      if (nftData.video) {
+        regParams.youtube_url = nftData.video
+      }
+
+      /*const responseRegister = */ await artworkRegister(regParams)
+      // not clear if we need responseRegister.task_id here or on next step
+
+      toast('Successfully registered new NFT', { type: 'success' })
+
+      goToNextStep()
+    } catch (err) {
+      console.log('err on register new NFT', err)
+      toast('Register new NFT is failed', { type: 'error' })
+    }
   }
 
   return (
