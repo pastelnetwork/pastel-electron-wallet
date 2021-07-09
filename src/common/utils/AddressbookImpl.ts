@@ -7,16 +7,6 @@ type TAddressBook = {
 }
 
 export default class AddressbookImpl {
-  static async createAddressBookFile(path: string): Promise<void> {
-    if (path) {
-      try {
-        await fs.promises.access(path)
-      } catch {
-        fs.createWriteStream(path)
-      }
-    }
-  }
-
   static async getFileName(): Promise<string | null> {
     const appInfo = sessionStorage.getItem('appInfo')
     if (appInfo) {
@@ -28,7 +18,9 @@ export default class AddressbookImpl {
       }
 
       const fileName = path.join(dir, 'AddressBook.json')
-      await this.createAddressBookFile(fileName)
+      if (!fs.existsSync(fileName)) {
+        fs.createWriteStream(fileName)
+      }
 
       return fileName
     }

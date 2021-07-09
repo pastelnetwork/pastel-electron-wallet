@@ -89,17 +89,19 @@ export default function RestoreByCamera({
           </span>
         ) : null}
       </div>
-      <div className='mt-4 mx-auto p-5 QrReader'>
-        {showQrReader && !turnOffCamera ? (
-          <QrReader
-            style={previewStyle}
-            onError={handleError}
-            onScan={handleScan}
-            className='bg-gray-71 mx-auto'
-          />
-        ) : (
-          <div className='text-gray-800 text-lg font-extrabold'>Restoring</div>
-        )}
+      <div className='mt-4 mx-auto p-5 min-h-400px QrReader'>
+        <div className='w-400px h-400px mx-auto bg-gray-71'>
+          {showQrReader && !turnOffCamera ? (
+            <QrReader
+              style={previewStyle}
+              onError={handleError}
+              onScan={handleScan}
+              className='bg-gray-71 mx-auto'
+            />
+          ) : (
+            <div className='text-gray-800 text-lg font-extrabold bg-gray-71 min-h-400px min-w-400px'></div>
+          )}
+        </div>
       </div>
       <div className='mt-4 text-center'>
         <Link
