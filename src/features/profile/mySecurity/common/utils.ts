@@ -342,12 +342,12 @@ export const splitStringIntoChunks = (
 }
 
 export const addLineBreakForContent = (str: string): string => {
-  const breakChar = '\u00ad'
+  const breakChar = '\n'
   return str.replace(/(.{46})/g, `$1${breakChar}`)
 }
 
 export const addLineBreakFoFullrContent = (str: string): string => {
-  const breakChar = '\u00ad'
+  const breakChar = '\n'
   return str.replace(/(.{74})/g, `$1${breakChar}`)
 }
 

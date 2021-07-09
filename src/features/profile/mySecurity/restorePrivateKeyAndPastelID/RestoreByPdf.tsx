@@ -36,6 +36,8 @@ export default function RestoreByPdf({
         setCurrentStatus('restoring')
         const pdfPath = path.join(fileSelected.path)
         if (pdfPath) {
+          pdfjs.GlobalWorkerOptions.workerSrc =
+            '//mozilla.github.io/pdf.js/build/pdf.worker.js'
           const doc = await pdfjs.getDocument('file://' + pdfPath).promise
           const metaData = await doc.getMetadata()
           doImport(metaData.info?.Keywords)

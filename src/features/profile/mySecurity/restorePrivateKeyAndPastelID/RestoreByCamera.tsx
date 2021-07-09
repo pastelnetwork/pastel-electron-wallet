@@ -37,9 +37,8 @@ export default function RestoreByCamera({
           total: qr.total,
           qrCode: qr.qrCode,
         })
-
         data = data.sort((a, b) => a.index - b.index)
-        setResults(data)
+        setResults([...data])
         if (data.length === data[0]?.total) {
           try {
             setShowQrReader(false)
