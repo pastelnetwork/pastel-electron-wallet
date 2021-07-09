@@ -550,11 +550,6 @@ class RouteApp extends React.Component<any, any> {
             />
 
             <Route
-              path={routes.WALLET}
-              render={() => <WalletScreen info={info} />}
-            />
-
-            <Route
               path={routes.SEARCH_RESULT}
               render={() => <SearchScreen />}
             />

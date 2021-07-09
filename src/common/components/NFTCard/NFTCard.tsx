@@ -111,7 +111,7 @@ const NFTCard = ({
                       ? `@${fullCardProps.author}`.replace(
                           new RegExp(searchText, 'gi'),
                           match =>
-                            `<mark class="${styles.mark}">${match}</mark>`,
+                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
                         )
                       : `@${fullCardProps.author}`,
                   }}
@@ -125,7 +125,7 @@ const NFTCard = ({
                       ? `@${fullCardProps.author}`.replace(
                           new RegExp(searchText, 'gi'),
                           match =>
-                            `<mark class="${styles.mark}">${match}</mark>`,
+                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
                         )
                       : `@${fullCardProps.author}`,
                   }}

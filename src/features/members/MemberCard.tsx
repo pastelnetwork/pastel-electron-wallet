@@ -1,6 +1,5 @@
 import React from 'react'
 import cn from 'classnames'
-import styles from './MembersDirectory.module.css'
 
 import verifiedIcon from '../../common/assets/images/verified-icon.svg'
 
@@ -40,7 +39,8 @@ const MemberCard = ({
                   __html: searchText
                     ? name.replace(
                         new RegExp(searchText, 'gi'),
-                        match => `<mark class="${styles.mark}">${match}</mark>`,
+                        match =>
+                          `<mark class='bg-yellow-ff py-1'>${match}</mark>`,
                       )
                     : name,
                 }}

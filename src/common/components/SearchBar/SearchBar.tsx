@@ -88,6 +88,16 @@ const SearchBar = (): JSX.Element => {
       img: Banksyyyy,
       followers: 161,
     },
+    {
+      name: 'banksySuchlol',
+      img: Banksyyyy,
+      followers: 161,
+    },
+    {
+      name: 'banksySuchlol',
+      img: Banksyyyy,
+      followers: 161,
+    },
   ]
 
   const clickedCategory = (
@@ -195,7 +205,7 @@ const SearchBar = (): JSX.Element => {
                     Bans — Search Creators
                   </div>
                 </div>
-                <div className='px-6 pt-[13px] pb-[29px]'>
+                <div className='px-6 pt-[13px] pb-[29px] h-[292px] overflow-y-auto'>
                   {search_results
                     .filter(item => item.name.includes(inputText))
                     .map(item => (
