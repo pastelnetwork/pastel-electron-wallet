@@ -62,7 +62,7 @@ export default function RestoreModal({
                       className='w-full font-extrabold'
                       onClick={() => setSelectedRestoreType('pdf')}
                     >
-                      Upload PDF Keys
+                      Select PDF Keys
                     </Button>
                   </div>
                   <div className='mr-4 w-1/3'>
@@ -70,7 +70,7 @@ export default function RestoreModal({
                       className='w-full font-extrabold'
                       onClick={() => setSelectedRestoreType('upload')}
                     >
-                      Upload QR Code Video
+                      Select QR Code Video
                     </Button>
                   </div>
                   <div className='w-1/3'>

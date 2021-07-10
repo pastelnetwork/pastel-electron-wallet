@@ -37,8 +37,9 @@ type RouteType = {
     | React.FunctionComponent<unknown>
     | React.ComponentClass<unknown>
     | null
-  requiredRPCConfig?: boolean
-  requiredInfo?: boolean
+  required?: {
+    [name: string]: boolean
+  }
 }
 
 const childRoutes = (
@@ -47,42 +48,33 @@ const childRoutes = (
   rpcConfig?: TRPCConfig,
   info?: TWalletInfo,
 ) =>
-  routes.map(
-    ({
-      component: Component,
-      layout: Layout,
-      path,
-      id,
-      requiredRPCConfig,
-      requiredInfo,
-    }) => {
-      if (!Component || !Layout) {
-        return null
-      }
+  routes.map(({ component: Component, layout: Layout, path, id, required }) => {
+    if (!Component || !Layout) {
+      return null
+    }
 
-      const extraProps = {}
-      if (requiredRPCConfig) {
-        Object.assign(extraProps, { rpcConfig })
-      }
+    const extraProps = {}
+    if (required?.rpcConfig) {
+      Object.assign(extraProps, { rpcConfig })
+    }
 
-      if (requiredInfo) {
-        Object.assign(extraProps, { info })
-      }
+    if (required?.info) {
+      Object.assign(extraProps, { info })
+    }
 
-      return (
-        <Route
-          key={id}
-          path={path}
-          exact
-          render={props => (
-            <Layout>
-              <Component {...props} setUser={setUser} {...extraProps} />
-            </Layout>
-          )}
-        />
-      )
-    },
-  )
+    return (
+      <Route
+        key={id}
+        path={path}
+        exact
+        render={props => (
+          <Layout>
+            <Component {...props} setUser={setUser} {...extraProps} />
+          </Layout>
+        )}
+      />
+    )
+  })
 
 interface RoutesProps {
   setUser: React.Dispatch<React.SetStateAction<boolean>>

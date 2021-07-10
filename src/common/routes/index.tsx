@@ -89,8 +89,10 @@ const myProfile = {
   path: ROUTES.MY_PROFILE,
   component: MyProfile,
   layout: PageLayout,
-  requiredRPCConfig: true,
-  requiredInfo: true,
+  required: {
+    rpcConfig: true,
+    info: true,
+  },
 }
 
 const walletScreen = {
@@ -98,7 +100,9 @@ const walletScreen = {
   path: ROUTES.WALLET,
   component: WalletScreenPage,
   layout: PageLayout,
-  requiredInfo: true,
+  required: {
+    info: true,
+  },
 }
 
 const nft = {
