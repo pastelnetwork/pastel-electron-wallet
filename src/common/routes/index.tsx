@@ -12,6 +12,7 @@ import {
 } from '../../features/onboarding/index'
 import PortfolioPage from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
+import SearchPage from '../../features/searchResults'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -78,6 +79,13 @@ const Portfolio = {
   layout: PageLayout,
 }
 
+const searchResults = {
+  id: 'searchResults',
+  path: ROUTES.SEARCH_RESULT,
+  component: SearchPage,
+  layout: PageLayout,
+}
+
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -88,4 +96,5 @@ export const pageRoutes = [
   newPassword,
   Dashboard,
   Portfolio,
+  searchResults,
 ]

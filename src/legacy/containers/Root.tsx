@@ -1,4 +1,4 @@
-import './Root.css'
+// import './Root.css'
 
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
@@ -22,7 +22,7 @@ const Root = (): JSX.Element => {
    * Remove this CONST when new designs will be applied.
    * For now you can switch between old and new application by changing SHOW_ONBOARDING
    */
-  const SHOW_ONBOARDING = false
+  const SHOW_ONBOARDING = true
 
   return (
     <ThemeProvider theme={theme}>
