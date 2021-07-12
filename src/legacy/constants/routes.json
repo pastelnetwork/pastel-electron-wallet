@@ -25,6 +25,5 @@
   "CHAT": "/chat",
   "PORTFOLIO_DETAIL": "/portfolio_detail",
   "WELCOME_PAGE": "/welcome-page",
-  "LOGIN": "/login",
-  "SEARCH_RESULT": "/search_result"
+  "LOGIN": "/login"
 }

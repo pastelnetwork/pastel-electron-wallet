@@ -12,7 +12,6 @@ import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
 import WalletScreen from '../features/wallet'
-import SearchScreen from '../features/searchResults'
 import Header from '../common/components/Header'
 import {
   TotalBalance,
@@ -550,8 +549,8 @@ class RouteApp extends React.Component<any, any> {
             />
 
             <Route
-              path={routes.SEARCH_RESULT}
-              render={() => <SearchScreen />}
+              path={routes.WALLET}
+              render={() => <WalletScreen info={info} />}
             />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
