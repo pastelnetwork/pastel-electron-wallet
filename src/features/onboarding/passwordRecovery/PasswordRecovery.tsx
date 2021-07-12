@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import QRCode from 'qrcode.react'
 import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
+import CloseButton from '../common/closeButton'
 import Typography from '../../../common/components/Typography/Typography'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import Tooltip from '../../../common/components/Tooltip'
@@ -19,7 +20,8 @@ const PasswordRecovery: React.FC = () => {
     setTab(index)
   }
   return (
-    <div className='mt-2.5 w-[517px]'>
+    <div className='mx-60px my-11 w-517px'>
+      <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
       <Typography variant='h1' color='#2D3748' weight={800}>
         Password Recovery
       </Typography>

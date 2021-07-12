@@ -1,8 +1,8 @@
 import React from 'react'
+import SVG from 'react-inlinesvg'
 import Input, { TInput } from './Input'
 import EyeIcon from '../../assets/icons/ico-eye.svg'
 import EyeIconHidden from '../../assets/icons/ico-eye-hidden.svg'
-import Icon from '../Icon'
 
 const InputPassword: React.FC<TInput> = props => {
   const [type, setType] = React.useState<string>('password')
@@ -16,17 +16,15 @@ const InputPassword: React.FC<TInput> = props => {
       type={type}
       append={
         type !== 'text' ? (
-          <Icon
+          <SVG
             src={EyeIcon}
-            variant='center'
-            className='cursor-pointer'
+            className='cursor-pointer flex justify-center items-center'
             onClick={toggleType}
           />
         ) : (
-          <Icon
+          <SVG
             src={EyeIconHidden}
-            variant='center'
-            className='cursor-pointer'
+            className='cursor-pointer flex justify-center items-center'
             onClick={toggleType}
           />
         )

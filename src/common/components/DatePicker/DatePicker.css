@@ -3,6 +3,8 @@
 }
 
 .react-datepicker-popper {
+  position: fixed !important;
+  inset: unset;
   z-index: 3 !important;
 }
 

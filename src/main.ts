@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime'
 import 'electron-squirrel-startup'
 
 import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
+
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -11,12 +12,15 @@ import installExtension, {
 } from 'electron-devtools-installer'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
+import os from 'os'
+import path from 'path'
 
 import pkg from '../package.json'
 import {
   forceSingleInstanceApplication,
   redirectDeepLinkingUrl,
   registerCustomProtocol,
+  registerFileProtocol,
 } from './features/deepLinking'
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
@@ -171,7 +175,11 @@ const createWindow = async () => {
 app.on('window-all-closed', () => {
   app.quit()
 })
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  registerFileProtocol()
+})
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -211,7 +219,15 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
+  const locatePastelConfDir = getLocatePastelConfDir()
   initServeStatic(app.isPackaged)
+
+  if (mainWindow?.webContents) {
+    mainWindow.webContents.send('app-info', {
+      isPackaged: app.isPackaged,
+      locatePastelConfDir,
+    })
+  }
 })
 
 ipcMain.on('restart_app', () => {
@@ -236,3 +252,15 @@ autoUpdater.on(
 autoUpdater.on('error', err => {
   console.warn(`autoUpdater error: ${err.message}`, err)
 })
+
+const getLocatePastelConfDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), '.pastel')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel')
+}

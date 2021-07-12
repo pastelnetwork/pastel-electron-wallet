@@ -1,9 +1,9 @@
 import React from 'react'
+import SVG from 'react-inlinesvg'
 import Input, { TInput } from './Input'
 import EyeIcon from '../../assets/icons/ico-eye.svg'
 import EyeIconHidden from '../../assets/icons/ico-eye-hidden.svg'
 import PasteIcon from '../../assets/icons/ico-paste.svg'
-import Icon from '../Icon'
 
 export type TInputExportProps = TInput & {
   clickPasteHandler?: () => void
@@ -22,29 +22,22 @@ const InputExportKey: React.FC<TInputExportProps> = props => {
       append={
         <div className='flex items-center'>
           {type === 'password' ? (
-            <Icon
+            <SVG
               src={EyeIcon}
-              variant='center'
-              className='cursor-pointer mr-15px'
+              className='cursor-pointer mr-15px flex justify-center items-center'
               onClick={toggleType}
             />
           ) : (
-            <Icon
+            <SVG
               src={EyeIconHidden}
-              variant='center'
-              className='cursor-pointer'
+              className='cursor-pointer flex justify-center items-center'
               onClick={toggleType}
             />
           )}
-          <div
-            onClick={() => {
-              !!props.clickPasteHandler && props.clickPasteHandler()
-            }}
-          >
-            <Icon
+          <div>
+            <SVG
               src={PasteIcon}
-              variant='center'
-              className='cursor-pointer'
+              className='cursor-pointer flex justify-center items-center'
               onClick={toggleType}
             />
           </div>

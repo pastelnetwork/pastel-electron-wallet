@@ -1,0 +1,22 @@
+.airdrop input::placeholder {
+  font-style: italic;
+}
+
+.step:not(:last-of-type) {
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.step:not(:last-of-type):after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 32px;
+  bottom: -36px;
+  left: 55px;
+
+  background-image: linear-gradient(#a6b0c2 50%, transparent 0%);
+  background-position: right;
+  background-size: 1px 8px;
+  background-repeat: repeat-y;
+}

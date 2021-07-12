@@ -133,26 +133,18 @@ export default function Header(): JSX.Element | null {
             <img src={Logo} alt='logo' />
           </Link>
           <MenuItem
-            classes='ml-4 1200px:ml-8 xl:ml-10 lg:w-82px'
+            classes='ml-4 1200px:ml-8 xl:ml-9 lg:w-20'
             exact
             to={routes.DASHBOARD}
           >
             Dashboard
           </MenuItem>
           <MenuItem
-            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
-            to={routes.MARKET}
+            classes='ml-4 1200px:ml-7 xl:ml-9 xl:w-37px'
+            to={routes.NFTS}
           >
-            Market
+            NFTs
           </MenuItem>
-          {/* need to be removed once decide how to show this form page*/}
-          <MenuItem
-            classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-37px'
-            to={routes.FORUM}
-          >
-            Forum
-          </MenuItem>
-          {/* by this line */}
           <MenuItem
             classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
             to={routes.MEMBERS}
@@ -160,7 +152,7 @@ export default function Header(): JSX.Element | null {
             Members
           </MenuItem>
           <MenuItem
-            classes='ml-4 1200px:ml-7 xl:ml-7 xl:w-46px'
+            classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
             to={routes.WALLET}
           >
             Wallet

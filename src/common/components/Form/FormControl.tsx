@@ -7,7 +7,7 @@ export type TFormControlProps<TForm> = {
   name: Path<TForm>
   children: ReactNode
   className?: string
-  label?: string
+  label?: ReactNode
   labelClass?: string
   style?: CSSProperties
 }
@@ -18,7 +18,7 @@ export default function FormControl<TForm extends FieldValues>({
   children,
   className,
   label,
-  labelClass = 'font-medium text-gray-71 mb-2',
+  labelClass = 'font-medium text-gray-4a mb-2',
   style,
 }: TFormControlProps<TForm>): JSX.Element {
   return (

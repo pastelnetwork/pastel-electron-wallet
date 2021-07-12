@@ -28,8 +28,9 @@ const ClaimTicketModal: React.FC<TClaimTicketModal> = ({
       size='874px'
       title={'Authorship claim ticket'}
       infoIcon={true}
+      titleClassName='font-black text-2xl text-gray-2d'
     >
-      <div>
+      <div className='md:w-[794px]'>
         <div className='flex space-x-50px'>
           <Segment title='NFT' value={data.NFT} />
           <Segment title='Claimer' value={data.Claimer} />
@@ -37,13 +38,15 @@ const ClaimTicketModal: React.FC<TClaimTicketModal> = ({
           <Segment title='Date' value={data.Date} />
         </div>
         <div>
-          <div className='font-bold text-xl pb-3 pt-30px'>
+          <div className='font-extrabold text-xl pb-2 pt-30px text-gray-23'>
             Make a photo of Claim details
           </div>
-          <div className='text-lg text-gray-4a'>{data.detail}</div>
+          <div className='text-lg text-gray-4a leading-[26px]'>
+            {data.detail}
+          </div>
         </div>
         <div>
-          <div className='mt-30px text-gray-71 leading-tight'>
+          <div className='mt-[26px] text-gray-71 leading-tight'>
             Submit your reply
           </div>
           <div className='mt-10px h-180px border rounded border-gray-e7 flex items-center relative'>
@@ -67,8 +70,10 @@ type TSegment = {
 
 const Segment = ({ title, value }: TSegment) => (
   <div className='w-1/2'>
-    <div className='font-bold leading-tight'>{title}</div>
-    <div className='mt-10px text-gray-71'>{value}</div>
+    <div className='font-extrabold text-base text-gray-23 leading-6'>
+      {title}
+    </div>
+    <div className='mt-1 text-gray-71'>{value}</div>
   </div>
 )
 
