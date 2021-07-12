@@ -43,8 +43,7 @@ export default function RestoreModal({
         <div
           className={cn(
             'paper p-10',
-            selectedRestoreType && 'w-[690px]',
-            !selectedRestoreType && 'w-[791px]',
+            selectedRestoreType ? 'w-[690px]' : 'w-[791px]',
           )}
         >
           <div className='pt-5'>

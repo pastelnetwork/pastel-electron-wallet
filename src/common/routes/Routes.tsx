@@ -24,7 +24,7 @@ export type TWalletInfo = {
   version: number
 }
 
-type RouteType = {
+type TRouteType = {
   id: string
   path: string
   component:
@@ -43,7 +43,7 @@ type RouteType = {
 }
 
 const childRoutes = (
-  routes: Array<RouteType>,
+  routes: Array<TRouteType>,
   setUser: React.Dispatch<React.SetStateAction<boolean>>,
   rpcConfig?: TRPCConfig,
   info?: TWalletInfo,

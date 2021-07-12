@@ -136,7 +136,7 @@ const NFTCard = ({
           ></div>
         </div>
       ) : null}
-      <Link to={detailUrl} className='cursor-pointer'>
+      <Link to={detailUrl} className='cursor-pointer w-full'>
         <div
           className={cn(
             'relative',
@@ -168,7 +168,7 @@ const NFTCard = ({
         )}
       >
         <div className='flex justify-between'>
-          <Link to={detailUrl} className='cursor-pointer'>
+          <Link to={detailUrl} className='cursor-pointer w-full'>
             <div
               className={cn(
                 'text-gray-4a truncate',
