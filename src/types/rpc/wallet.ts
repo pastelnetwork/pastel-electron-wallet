@@ -48,7 +48,7 @@ type TTotalBalance = {
 }
 
 // z_listunspent
-type TZListUnspentResult = {
+type TZListUnspent = {
   txid: string
   jsindex: number
   jsoutindex: number
@@ -175,7 +175,7 @@ type TAddressDeltaResponse = TResponse<TAddressDelta[]>
 type TAddressBalanceResponse = TResponse<TAddressesBalance>
 type TAddressMempoolResponse = TResponse<TAddressMempool[]>
 type TValidateAddressesResponse = TResponse<TValidateAddress>
-type TZListUnspentResponse = TResponse<TZListUnspentResult[]>
+type TZListUnspentResponse = TResponse<TZListUnspent[]>
 type TZListReceivedByAddressResponse = TResponse<TZListReceivedByAddress[]>
 
 export type {
@@ -196,7 +196,7 @@ export type {
   TAddressesBalance,
   TShieldedSpendInfo,
   TWalletInfoResponse,
-  TZListUnspentResult,
+  TZListUnspent,
   TAddressTxIdResponse,
   TListUnspentResponse,
   TAddressTxosResponse,

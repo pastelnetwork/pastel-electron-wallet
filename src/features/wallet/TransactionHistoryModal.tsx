@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { TitleModal } from '../../common/components/Modal'
-import Table from '../../common/components/Table'
+import Table, { TRow } from '../../common/components/Table'
 import * as momentRange from 'moment-range'
 import { OnSelectCallbackParam } from 'react-daterange-picker'
 import DateRangeSelector from '../../common/components/DateRangeSelector/DateRangeSelector'
 import Radio from '../../common/components/Radio'
 import Select, { TOption } from '../../common/components/Select/Select'
-import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
-import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
 import checkGreenIcon from '../../common/assets/icons/ico-check-green.svg'
 import clockYellowIcon from '../../common/assets/icons/ico-clock-yellow.svg'
@@ -17,9 +15,16 @@ import user2Icon from '../../common/assets/icons/ico-user2.svg'
 import { useAppSelector } from 'redux/hooks'
 import { RootState } from 'redux/store'
 import { TransactionRPC } from 'api/pastel-rpc'
-import { TTransactionRow, TTransaction, TTransactionType } from 'types/rpc'
+import {
+  TTransactionRow,
+  TTransaction,
+  TTransactionType,
+  TAddressBook,
+} from 'types/rpc'
 import dayjs from 'dayjs'
 import Utils from '../../legacy/utils/utils'
+import { AddressForm } from './AddressForm'
+import { useAddressBook } from 'common/hooks'
 
 export type TransactionHistoryModalProps = {
   isOpen: boolean
@@ -55,6 +60,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
   const [dates, setDates] = useState<momentRange.DateRange>()
   const [sourceAddress, setSourceAddress] = useState<TOption | null>(null)
   const [recipientAddress, setRecipientAddress] = useState<TOption | null>(null)
+  const { addressBook, updateAddressBook } = useAddressBook()
 
   const onSelectDateRange = (dates: OnSelectCallbackParam) => {
     setDates(dates as momentRange.DateRange)
@@ -101,6 +107,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
         return {
           date: dayjs.unix(t.time).format('DD/MM/YY HH:mm'),
           address: t.address,
+          addressNick: '',
           type: (t.type as TTransactionType) || TTransactionType.ALL,
           status: '',
           id: t.txid,
@@ -141,6 +148,103 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
     setTransactions(filterTrans)
   }, [sourceAddress, recipientAddress])
 
+  const mapAddressWithTransaction = (
+    transactions: TTransactionRow[],
+    addressBook: TAddressBook[],
+  ) =>
+    transactions.map(t => {
+      const [book] = addressBook.filter(b => b.address === t.address) || []
+      return {
+        ...t,
+        addressNick: book ? book.label : '',
+      }
+    })
+  const mappedAddressTransactions = useMemo<TRow[]>(
+    () => mapAddressWithTransaction(transactions, addressBook),
+    [transactions, addressBook],
+  )
+
+  const Columns = [
+    {
+      name: 'Date',
+      key: 'date',
+      headerColClasses: 'ml-15px',
+      custom: (value: string | number) => (
+        <div className='ml-15px whitespace-nowrap mr-15px'>{value}</div>
+      ),
+    },
+    {
+      key: 'address',
+      name: 'Recipient address',
+      headerColClasses: 'mr-15px',
+      custom: (value: string | number | undefined, row: TRow | undefined) => (
+        <AddressForm
+          address={(value || '').toString()}
+          currentRow={row}
+          saveAddressLabel={(address, label) =>
+            updateAddressBook({ address, label })
+          }
+          copyable={false}
+          hidable
+        />
+      ),
+    },
+    {
+      key: 'type',
+      headerColClasses: 'whitespace-nowrap mr-15px ml-46px',
+      name: 'Source type',
+      custom: (value: string | number) => {
+        const str = value.toString()
+        return (
+          <div className='ml-46px'>
+            {str.charAt(0).toUpperCase() + str.slice(1)}
+          </div>
+        )
+      },
+    },
+    {
+      key: 'status',
+      name: 'Status',
+      headerColClasses: 'mr-15px',
+      custom: (value: string | number) => (
+        <img
+          src={
+            value == 'success'
+              ? checkGreenIcon
+              : value == 'pending'
+              ? clockYellowIcon
+              : value == 'failed'
+              ? crossIcon
+              : ''
+          }
+          className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
+        />
+      ),
+    },
+    {
+      key: 'id',
+      name: 'ID',
+    },
+    {
+      key: 'comments',
+      name: 'Private Notes',
+      headerColClasses: 'whitespace-nowrap mr-15px',
+      custom: () => <img src={commentIcon} className='ml-8 cursor-pointer' />,
+    },
+    {
+      key: 'fee',
+      name: 'Fee',
+      headerColClasses: 'mr-15px',
+      custom: (value: string | number) => (
+        <div className='whitespace-nowrap mr-15px'>{value}</div>
+      ),
+    },
+    {
+      key: 'amount',
+      name: 'Amount',
+    },
+  ]
+
   return (
     <TitleModal
       isOpen={isOpen}
@@ -151,14 +255,14 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
       <div className='bg-white z-50'>
         <div className='flex text-gray-71 text-sm'>
           <div className='w-2/3 flex'>
-            <div className='w-1/3 pr-10'>
+            <div className='w-1/3 pr-6'>
               <div>Time range</div>
               <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
             </div>
             <div className='w-1/3 pr-6'>
               <div className='mb-1'>Source address</div>
               <Select
-                label={<img src={addressbookIcon} className='ml-4 mr-2' />}
+                label={<img src={addressbookIcon} className='mr-2' />}
                 className='text-gray-2d w-112px'
                 selected={sourceAddress}
                 options={sourceAddresses}
@@ -168,7 +272,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
             <div className='w-1/3 pr-6'>
               <div className='mb-1'>Recipients</div>
               <Select
-                label={<img src={user2Icon} className='ml-4 mr-2' />}
+                label={<img src={user2Icon} className='mr-2' />}
                 className='text-gray-2d w-112px'
                 selected={recipientAddress}
                 options={recipients}
@@ -209,7 +313,7 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
         <div className='h-409px overflow-y-auto mt-3 pr-2'>
           <Table
             columns={Columns}
-            data={transactions}
+            data={mappedAddressTransactions}
             headerTrClasses='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'
             bodyTrClasses='h-67px border-b border-line text-sm md:text-base'
           />
@@ -218,80 +322,5 @@ const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
     </TitleModal>
   )
 }
-
-const Columns = [
-  {
-    name: 'Date',
-    key: 'date',
-    headerColClasses: 'ml-15px',
-    custom: (value: string | number) => (
-      <div className='ml-15px whitespace-nowrap mr-15px'>{value}</div>
-    ),
-  },
-  {
-    key: 'address',
-    name: 'Recipient address',
-    headerColClasses: 'mr-15px',
-    custom: (value: string | number) => (
-      <div className='flex mr-2 lg:mr-0'>
-        <span className='text-blue-3f cursor-pointer w-9/12 overflow-hidden overflow-ellipsis'>
-          {value}
-        </span>
-        <img className='ml-2 md:ml-6 cursor-pointer' src={pencilIcon} />
-        <img className='ml-2 md:ml-18px cursor-pointer' src={passEyeIcon} />
-      </div>
-    ),
-  },
-  {
-    key: 'type',
-    headerColClasses: 'whitespace-nowrap mr-15px',
-    name: 'Source type',
-    custom: (value: string | number) => {
-      const str = value.toString()
-      return <div>{str.charAt(0).toUpperCase() + str.slice(1)}</div>
-    },
-  },
-  {
-    key: 'status',
-    name: 'Status',
-    headerColClasses: 'mr-15px',
-    custom: (value: string | number) => (
-      <img
-        src={
-          value == 'success'
-            ? checkGreenIcon
-            : value == 'pending'
-            ? clockYellowIcon
-            : value == 'failed'
-            ? crossIcon
-            : ''
-        }
-        className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
-      />
-    ),
-  },
-  {
-    key: 'id',
-    name: 'ID',
-  },
-  {
-    key: 'comments',
-    name: 'Private Notes',
-    headerColClasses: 'whitespace-nowrap mr-15px',
-    custom: () => <img src={commentIcon} className='ml-8 cursor-pointer' />,
-  },
-  {
-    key: 'fee',
-    name: 'Fee',
-    headerColClasses: 'mr-15px',
-    custom: (value: string | number) => (
-      <div className='whitespace-nowrap mr-15px'>{value}</div>
-    ),
-  },
-  {
-    key: 'amount',
-    name: 'Amount',
-  },
-]
 
 export default TransactionHistoryModal

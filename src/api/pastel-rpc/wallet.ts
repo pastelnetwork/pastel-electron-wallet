@@ -9,7 +9,7 @@ import {
   TTotalBalanceResponse,
   TTotalBalance,
   TZListUnspentResponse,
-  TZListUnspentResult,
+  TZListUnspent,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc, TRPCConfig } from './rpc'
@@ -178,7 +178,7 @@ export class WalletRPC {
     ])
 
     const zResult: TAddressList[] = results[0].result.map(
-      (addr: TZListUnspentResult) => {
+      (addr: TZListUnspent) => {
         return {
           txid: addr.txid,
           address: addr.address,
@@ -189,7 +189,7 @@ export class WalletRPC {
     )
 
     const tResult: TAddressList[] = results[0].result.map(
-      (addr: TZListUnspentResult) => {
+      (addr: TZListUnspent) => {
         return {
           txid: addr.txid,
           address: addr.address,

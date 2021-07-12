@@ -5,7 +5,7 @@ import {
   TListUnspent,
   TInfoResult,
   TTotalBalance,
-  TZListUnspentResult,
+  TZListUnspent,
 } from '../../../types/rpc'
 
 export const METHODS = [
@@ -854,7 +854,7 @@ export type APIMethods = {
     maxconf?: number,
     includeWatchonly?: boolean,
     addresses?: string[],
-  ) => Promise<TZListUnspentResult[]>
+  ) => Promise<TZListUnspent[]>
   z_mergetoaddress: (
     fromaddresses: string[],
     toaddress: string,

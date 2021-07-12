@@ -3,6 +3,7 @@ import checkIcon from '../../common/assets/icons/ico-check-green.svg'
 import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
 import CrossIcon from '../../common/assets/icons/ico-cross-btn.svg'
 import SaveIcon from '../../common/assets/icons/ico-save.svg'
+import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
 import Tooltip from 'common/components/Tooltip'
 import { TRow } from 'features/nft/nftModals/table'
 import React, { useState } from 'react'
@@ -13,12 +14,16 @@ type TAddressFormProps = {
   address: string
   currentRow: TRow | undefined
   saveAddressLabel: (address: string, label: string) => void
+  copyable?: boolean
+  hidable?: boolean
 }
 
 export const AddressForm: React.FC<TAddressFormProps> = ({
-  address,
+  address = '',
   currentRow,
   saveAddressLabel,
+  copyable = true,
+  hidable = false,
 }): JSX.Element => {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
@@ -37,7 +42,7 @@ export const AddressForm: React.FC<TAddressFormProps> = ({
   }
 
   return (
-    <div className='flex ml-3 xl:ml-21px items-center mr-2 md:mr-0'>
+    <div className='flex xl:ml-21px items-center mr-2 md:mr-0'>
       {edit === address ? (
         <>
           <input
@@ -67,48 +72,56 @@ export const AddressForm: React.FC<TAddressFormProps> = ({
         </span>
       )}
       {edit === address ? (
-        <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-          <img
-            className='cursor-pointer'
-            onClick={() => {
-              setEdit(null)
-            }}
-            src={CrossIcon}
-          />
-        </div>
+        <>
+          <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
+            <img
+              className='cursor-pointer'
+              onClick={() => {
+                setEdit(null)
+              }}
+              src={CrossIcon}
+            />
+          </div>
+          <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
+            <img
+              className='cursor-pointer'
+              onClick={() => {
+                saveAddressLabel(edit, editName)
+                setEdit(null)
+              }}
+              src={SaveIcon}
+            />
+          </div>
+        </>
       ) : (
-        <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-          <img
-            className='cursor-pointer w-5 h-5'
-            onClick={e => copyAddress(address, e)}
-            src={pasteIcon}
-          />
-        </div>
-      )}
-      {edit === address ? (
-        <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-          <img
-            className='cursor-pointer'
-            onClick={() => {
-              saveAddressLabel(edit, editName)
-              setEdit(null)
-            }}
-            src={SaveIcon}
-          />
-        </div>
-      ) : (
-        <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-          <img
-            className='cursor-pointer'
-            onClick={() => {
-              if (currentRow) {
-                setEditName(currentRow.addressNick.toString())
-                setEdit(currentRow.address.toString())
-              }
-            }}
-            src={pencilIcon}
-          />
-        </div>
+        <>
+          {copyable && (
+            <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
+              <img
+                className='cursor-pointer w-5 h-5'
+                onClick={e => copyAddress(address, e)}
+                src={pasteIcon}
+              />
+            </div>
+          )}
+          <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
+            <img
+              className='cursor-pointer'
+              onClick={() => {
+                if (currentRow) {
+                  setEditName(currentRow.addressNick.toString())
+                  setEdit(currentRow.address.toString())
+                }
+              }}
+              src={pencilIcon}
+            />
+          </div>
+          {hidable && (
+            <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
+              <img className='cursor-pointer' src={passEyeIcon} />
+            </div>
+          )}
+        </>
       )}
     </div>
   )

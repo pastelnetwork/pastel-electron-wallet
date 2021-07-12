@@ -20,11 +20,11 @@ import ExportKeysModal from './ExportKeysModal'
 import Breadcrumbs from '../../common/components/Breadcrumbs'
 import { ControlRPC, WalletRPC } from 'api/pastel-rpc'
 import {
-  TAddressBook,
   TAddressRow,
   TBalanceCard,
   TInfo,
   TTotalBalance,
+  TAddressBalance,
 } from 'types/rpc'
 import QRCode from 'qrcode.react'
 import { useAppSelector } from 'redux/hooks'
@@ -34,12 +34,8 @@ import { AddressForm } from './AddressForm'
 import Alert from 'common/components/Alert'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
-import {
-  isSapling,
-  isTransparent,
-  readAddressBook,
-  writeAddressBook,
-} from 'api/helpers'
+import { isSapling } from 'api/helpers'
+import { useAddressBook } from 'common/hooks'
 
 const paymentSources = [
   {
@@ -196,7 +192,6 @@ const WalletScreen = (): JSX.Element => {
 
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
   const [currentAddress, setCurrentAddress] = useState('')
-
   const [active, setActive] = useState(1)
 
   const [info, setInfo] = useState<TInfo>({} as TInfo)
@@ -208,8 +203,11 @@ const WalletScreen = (): JSX.Element => {
   const [walletOriginAddresses, setWalletOriginAddresses] = useState<
     TAddressRow[]
   >([])
-  const [addressBook, setAddressBook] = useState<TAddressBook[]>([])
-
+  const {
+    addressBook,
+    updateAddressBook,
+    isAddressBookLoaded,
+  } = useAddressBook()
   /**
    * Fetch total balances
    */
@@ -254,40 +252,27 @@ const WalletScreen = (): JSX.Element => {
   const fetchWalletAddresses = async () => {
     // Get addresses with balance
     const balanceAddresses = await walletRPC.fetchTandZAddressesWithBalance()
-    const addressMap = balanceAddresses.reduce((map, a) => {
-      map[a.address] = a.balance
-      return map
-    }, {} as { [addr: string]: number })
-
-    const addressBook = await fetchAddressBook()
-
-    // Get addresses
-    const addressMapper = async (a: string) => {
-      const type = isSapling(a) ? 'shielded' : 'transparent'
-      const [book] = addressBook.filter(b => b.address === a) || []
-      return {
-        id: a,
-        address: a,
-        amount: addressMap[a],
-        psl: info.pslPrice || 0,
-        type: type,
-        time: '',
-        qrCode: '',
-        viewKey: '',
-        privateKey: '',
-        addressNick: book ? book.label : '',
-      } as TAddressRow
-    }
-
-    const addresses = await walletRPC.fetchAllAddresses()
-    const zaddrs: TAddressRow[] = await Promise.all(
-      addresses.filter(a => isSapling(a)).map(addressMapper),
+    const addresses: TAddressRow[] = balanceAddresses.map(
+      (a: TAddressBalance) => {
+        const address = a.address.toString()
+        const type = isSapling(address) ? 'shielded' : 'transparent'
+        const [book] = addressBook.filter(b => b.address === address) || []
+        return {
+          id: address,
+          address: address,
+          amount: a.balance,
+          psl: info.pslPrice || 0,
+          type: type,
+          time: '',
+          qrCode: '',
+          viewKey: '',
+          privateKey: '',
+          addressNick: book ? book.label : '',
+        } as TAddressRow
+      },
     )
-    const taddrs: TAddressRow[] = await Promise.all(
-      addresses.filter(a => isTransparent(a)).map(addressMapper),
-    )
-    setWalletAddresses(zaddrs.concat(taddrs))
-    setWalletOriginAddresses(zaddrs.concat(taddrs))
+    setWalletAddresses(addresses)
+    setWalletOriginAddresses(addresses)
   }
 
   /**
@@ -296,15 +281,6 @@ const WalletScreen = (): JSX.Element => {
   const fetchInfo = async () => {
     const inf = await controlRPC.fetchInfo()
     setInfo(inf)
-  }
-
-  /**
-   * Fetch address book from JSON file
-   */
-  const fetchAddressBook = async (): Promise<TAddressBook[]> => {
-    const addrBook: TAddressBook[] = await readAddressBook()
-    setAddressBook(addrBook)
-    return addrBook
   }
 
   const saveAddressLabel = (address: string, label: string): void => {
@@ -317,26 +293,7 @@ const WalletScreen = (): JSX.Element => {
     })
     setWalletAddresses(newWalletAddress)
 
-    // Update address book
-    const [book] = addressBook.filter(b => b.address === address) || []
-    let newAddressBook = addressBook
-    if (book) {
-      newAddressBook = addressBook.map(b => {
-        return {
-          ...b,
-          label: b.address === address ? label : b.label,
-        }
-      })
-    } else {
-      newAddressBook = addressBook.concat([
-        {
-          address,
-          label,
-        },
-      ])
-    }
-
-    writeAddressBook(newAddressBook)
+    updateAddressBook({ address, label })
   }
 
   useEffect(() => {
@@ -347,8 +304,10 @@ const WalletScreen = (): JSX.Element => {
         fetchWalletAddresses(),
       ])
     }
-    getTotalBalances()
-  }, [])
+    if (isAddressBookLoaded) {
+      getTotalBalances()
+    }
+  }, [isAddressBookLoaded])
 
   useEffect(() => {
     let tempSelectedAmount = 0
