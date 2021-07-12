@@ -1,7 +1,8 @@
 import LZUTF8 from 'lzutf8'
 import { toast } from 'react-toastify'
 
-import { rpc, TRPCConfig } from '../../../../api/pastel-rpc/rpc'
+import { rpc, TRPCConfig } from 'api/pastel-rpc/rpc'
+import AddressbookImpl from 'legacy/utils/AddressbookImpl'
 
 type TAddressesResponse = {
   error: string | null
@@ -30,10 +31,16 @@ type TPastelID = {
   pastelid: string
 }
 
+type TAddressBook = {
+  label: string
+  address: string
+}
+
 type TAllAddressesAndPastelID = {
   zPrivateKeys: string[]
   tPrivateKeys: string[]
   pastelIDs: TPastelID[]
+  addressBook: TAddressBook[]
   profile: {
     userName: string
   }
@@ -112,6 +119,12 @@ async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[] | null> {
   }
 }
 
+async function getAddressBook(): Promise<TAddressBook[] | null> {
+  const addresses = await AddressbookImpl.readAddressBook()
+
+  return addresses
+}
+
 export async function fetchPastelIDAndPrivateKeys(
   config: TRPCConfig,
 ): Promise<string | null> {
@@ -142,12 +155,19 @@ export async function fetchPastelIDAndPrivateKeys(
   }
 
   const pastelIDs = await getPastelIDs(config)
+  const addressBook = await getAddressBook()
 
-  if (pastelIDs?.length || zPrivateKeys.length || tPrivateKeys.length) {
+  if (
+    pastelIDs?.length ||
+    zPrivateKeys.length ||
+    tPrivateKeys.length ||
+    addressBook?.length
+  ) {
     const data = {
       zPrivateKeys,
       tPrivateKeys,
       pastelIDs,
+      addressBook,
     }
 
     return encodeURIComponent(
@@ -244,6 +264,24 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
   }
 }
 
+async function importAddressBook(addresses: TAddressBook[]) {
+  const addressBook = await getAddressBook()
+  const newAddressBook: TAddressBook[] = []
+
+  for (let i = 0; i < addresses.length; i++) {
+    const addressExists = addressBook?.some(
+      address =>
+        address.address === addresses[i].address &&
+        address.label === addresses[i].label,
+    )
+    if (!addressExists) {
+      newAddressBook.push(addresses[i])
+    }
+  }
+
+  AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+}
+
 export async function doImportPrivKeys(
   privateKeys: string,
   config: TRPCConfig,
@@ -263,6 +301,11 @@ export async function doImportPrivKeys(
         for (let i = 0; i < tPrivateKeys.length; i++) {
           importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1, config)
         }
+      }
+
+      const addressBook = keys.addressBook
+      if (addressBook.length) {
+        await importAddressBook(addressBook)
       }
 
       return true
