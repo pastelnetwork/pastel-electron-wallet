@@ -13,12 +13,6 @@ import { theme } from '../../common/theme'
 const Root = (): JSX.Element => {
   /**
    * TODO
-   * Make redux flow for the logged used and avoid passing props
-   */
-  const [user, setUser] = React.useState(false)
-
-  /**
-   * TODO
    * Remove this CONST when new designs will be applied.
    * For now you can switch between old and new application by changing SHOW_ONBOARDING
    */
@@ -27,15 +21,7 @@ const Root = (): JSX.Element => {
   return (
     <ThemeProvider theme={theme}>
       <MemoryRouter>
-        {SHOW_ONBOARDING ? (
-          user ? (
-            <Routes />
-          ) : (
-            <OnboardingRoutes setUser={setUser} />
-          )
-        ) : (
-          <Routes />
-        )}
+        {SHOW_ONBOARDING ? <OnboardingRoutes /> : <Routes />}
       </MemoryRouter>
       <PastelModal />
       <UpdateToast />

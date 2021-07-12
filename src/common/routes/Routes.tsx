@@ -44,7 +44,6 @@ type TRouteType = {
 
 const childRoutes = (
   routes: Array<TRouteType>,
-  setUser: React.Dispatch<React.SetStateAction<boolean>>,
   rpcConfig?: TRPCConfig,
   info?: TWalletInfo,
 ) =>
@@ -69,20 +68,16 @@ const childRoutes = (
         exact
         render={props => (
           <Layout>
-            <Component {...props} setUser={setUser} {...extraProps} />
+            <Component {...props} {...extraProps} />
           </Layout>
         )}
       />
     )
   })
 
-interface RoutesProps {
-  setUser: React.Dispatch<React.SetStateAction<boolean>>
-}
-
 const period = 1000 * 10
 
-const Routes: React.FC<RoutesProps> = ({ setUser }) => {
+const Routes: React.FC = () => {
   const location = useLocation()
   const history = useHistory()
   const dispatch = useAppDispatch()
@@ -123,7 +118,7 @@ const Routes: React.FC<RoutesProps> = ({ setUser }) => {
   return (
     <Styles.Container>
       <Switch location={location}>
-        {childRoutes(pageRoutes, setUser, rpcConfig, info)}
+        {childRoutes(pageRoutes, rpcConfig, info)}
         <Route
           path={ROUTES.LOADING}
           render={props => (
