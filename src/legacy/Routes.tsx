@@ -46,7 +46,6 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
-import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
@@ -349,7 +348,6 @@ class RouteApp extends React.Component<any, any> {
     this.setState({
       rpcConfig,
     })
-    console.log(rpcConfig)
     this.rpc.configure(rpcConfig)
   }
   setPslPrice = (price: any) => {
@@ -547,11 +545,7 @@ class RouteApp extends React.Component<any, any> {
                 />
               )}
             />
-
-            <Route
-              path={routes.WALLET}
-              render={() => <WalletScreen info={info} />}
-            />
+            <Route path={routes.WALLET} render={() => <WalletScreen />} />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
 

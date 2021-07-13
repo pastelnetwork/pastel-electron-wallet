@@ -220,6 +220,7 @@ ipcMain.on('app-ready', () => {
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
   const locatePastelConfDir = getLocatePastelConfDir()
+  const locateSentTxStore = getLocateSentTxStore()
   initServeStatic(app.isPackaged)
 
   if (mainWindow?.webContents) {
@@ -227,6 +228,7 @@ ipcMain.on('app-ready', () => {
       isPackaged: app.isPackaged,
       locatePastelConfDir,
       appPathDir: getAppPathDir(),
+      locateSentTxStore,
     })
   }
 })
@@ -264,6 +266,25 @@ const getLocatePastelConfDir = () => {
   }
 
   return path.join(app.getPath('appData'), 'Pastel')
+}
+
+const getLocateSentTxStore = (): string => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(
+      app.getPath('home'),
+      '.local',
+      'share',
+      'psl-qt-wallet-org',
+      'psl-qt-wallet',
+      'senttxstore.dat',
+    )
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
 }
 
 const getAppPathDir = () => {

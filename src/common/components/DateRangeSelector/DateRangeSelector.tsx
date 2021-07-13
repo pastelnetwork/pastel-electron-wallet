@@ -36,7 +36,7 @@ const DateRangeSelector = ({
     <div ref={calendarRef} className='relative'>
       <div
         onClick={() => setOpenCalendar(!isOpenCalendar)}
-        className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between cursor-pointer'
+        className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between cursor-pointer  border border-gray-200 border-solid rounded'
       >
         <div className='flex'>
           <img src={calendarIcon} className='ml-4 mr-2' />

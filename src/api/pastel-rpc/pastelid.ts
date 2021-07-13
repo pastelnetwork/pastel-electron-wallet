@@ -1,29 +1,22 @@
 import { TPastelID, TRegisterPastelID } from '../../features/pastelID'
+import {
+  TCreateNewPastelIdResponse,
+  TGetPastelIdsResponse,
+  TTicketsRegisterIdResponse,
+} from '../../types/rpc'
 import { rpc, TRPCConfig } from './rpc'
-
-type TCreateNewPastelIDResponse = {
-  result: {
-    pastelid: string
-  }
-}
-
-type TTicketsRegisterIDResponse = {
-  result: {
-    txid: string
-  }
-}
 
 export async function createNewPastelID(
   passphrase: string,
   address: string,
   config: TRPCConfig,
 ): Promise<TRegisterPastelID> {
-  const resp = await rpc<TCreateNewPastelIDResponse>(
+  const resp = await rpc<TCreateNewPastelIdResponse>(
     'pastelid',
     ['newkey', passphrase],
     config,
   )
-  const resRP = await rpc<TTicketsRegisterIDResponse>(
+  const resRP = await rpc<TTicketsRegisterIdResponse>(
     'tickets',
     ['register', 'id', resp.result.pastelid, passphrase, address],
     config,
@@ -35,17 +28,11 @@ export async function createNewPastelID(
   return res
 }
 
-type TGetPastelIDsResponse = {
-  result: Array<{
-    PastelID: string
-  }>
-}
-
 export async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[]> {
-  let resp: TGetPastelIDsResponse | null = null
+  let resp: TGetPastelIdsResponse | null = null
 
   try {
-    resp = await rpc<TGetPastelIDsResponse>('pastelid', ['list'], config)
+    resp = await rpc<TGetPastelIdsResponse>('pastelid', ['list'], config)
   } catch (error) {
     if (
       // this happens when there is no PastelIDs created yet, therefore this is a valid state.
