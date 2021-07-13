@@ -5,6 +5,7 @@ import { ArrowSlim, Info } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
 import UploadingCircle from './UploadingCircle'
 import UploadArea from './UploadArea'
+import { formatFileSize } from 'common/utils/format'
 
 type TUploadStepProps = {
   state: TAddNFTState
@@ -35,7 +36,7 @@ export default function UploadStep({
     <ModalLayout
       title='Upload Image'
       titleClass='mb-3'
-      subtitle='Description'
+      subtitle='The Image File for your NFT'
       step={2}
       fixedHeight
       contentClass='pt-2'
@@ -62,7 +63,7 @@ export default function UploadStep({
             </div>
             <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
               <div className='absolute inset-0 border border-gray-8e opacity-20 rounded font-medium shadow-4px' />
-              max 100 mb
+              {file ? formatFileSize(file.file.size) : 'max 100 mb'}
             </div>
             <div className='text-gray-71 mb-2'>
               Please take into account that image file size affects the
@@ -85,7 +86,7 @@ export default function UploadStep({
               onClick={submit}
               disabled={!isReady}
             >
-              Go to Optimization
+              Go to Image Optimization
             </Button>
           </div>
         </div>

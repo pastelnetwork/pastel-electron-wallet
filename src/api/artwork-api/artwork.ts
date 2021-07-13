@@ -57,11 +57,7 @@ export const artworkGetList = (): Promise<IArtworkCollectionItem[]> => {
   })
 }
 
-export const artworkUploadImage = (file: File): Promise<IArtworkImage> => {
-  const form = new FormData()
-  form.append('file', file)
-  form.append('filename', file.name)
-
+export const artworkUploadImage = (form: FormData): Promise<IArtworkImage> => {
   return makeRequest<IArtworkImage>(
     {
       method: 'post',

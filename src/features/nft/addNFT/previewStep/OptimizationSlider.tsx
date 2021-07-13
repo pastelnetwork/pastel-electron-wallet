@@ -1,19 +1,37 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Slider from 'common/components/Slider/Slider'
+import { formatPSL } from 'common/utils/format'
 
-export default function OptimizationSlider(): JSX.Element {
-  const [optimization, setOptimization] = useState(50)
-  const minOptimization = 10
-  const maxOptimization = 100
+export type TOptimizationSliderProps = {
+  recalcFee(val: number): number
+  fileSizeKb: number
+  optimizedSizeKb: number
+  setOptimizedSizeKb(val: number): void
+}
+
+export default function OptimizationSlider(
+  props: TOptimizationSliderProps,
+): JSX.Element {
+  const fileSizeMb = props.fileSizeKb / 1024
+  const maxOptimization = Math.ceil(10 * fileSizeMb) / 10
+
   const formatValue = (value: number) => `${value} Mb`
-  const formatTooltipValue = (value: number) => `${value} Mb - 5,000 PSL`
+  const formatTooltipValue = (value: number) => {
+    return `${value.toFixed(1)} Mb - ${formatPSL(
+      props.recalcFee(value * 1024),
+    )}`
+  }
+
+  const onUpdate = (val: number) => {
+    props.setOptimizedSizeKb(val * 1024)
+  }
 
   return (
     <Slider
-      min={minOptimization}
+      min={0}
       max={maxOptimization}
-      onChange={setOptimization}
-      value={optimization}
+      onChange={onUpdate}
+      value={props.optimizedSizeKb / 1024}
       formatValue={formatValue}
       formatTooltipValue={formatTooltipValue}
       minMaxClassName='top-6 text-gray-71 text-xs'

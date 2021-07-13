@@ -1,6 +1,7 @@
 import React from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
+import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
@@ -10,6 +11,7 @@ import Toggle from 'common/components/Toggle'
 import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
 import { TArtworkTicket } from 'api/artwork-api/interfaces'
 import { toast } from 'react-toastify'
+import { formatFileSize, formatPSL } from 'common/utils/format'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -25,11 +27,12 @@ type TSubmitStepProps = {
 }
 
 export default function SubmitStep({
-  state: { goBack, goToNextStep },
+  state: { goBack, goToNextStep, estimatedFee, optimizeImageToKb },
   image,
   nftData,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
+  const [croppedImage] = useImagePreview({ image })
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
@@ -45,7 +48,12 @@ export default function SubmitStep({
         spendableAddr = 'PtiqRXn2VQwBjp1K8QXR2uW2w2oZ3Ns7N6j',
         userName = 'John Doe'
 
-      const responseUpload = await artworkUploadImage(image.file)
+      // TODO: optimize image
+
+      const form = new FormData()
+      form.append('file', image.file)
+      form.append('filename', image.file.name)
+      const responseUpload = await artworkUploadImage(form)
 
       const regParams: TArtworkTicket = {
         artist_name: userName,
@@ -142,14 +150,34 @@ export default function SubmitStep({
             {nftData.description && (
               <div className='mt-4 text-blue-3f'>{nftData.description}</div>
             )}
+            <div className='mt-5'>
+              <div className='font-medium text-gray-71 mb-3'>
+                Thumbnail preview
+              </div>
+              <div className='w-48 h-48'>
+                {croppedImage && (
+                  <img
+                    src={croppedImage.src}
+                    className='rounded w-full h-full'
+                  />
+                )}
+              </div>
+              {croppedImage?.error && (
+                <div className='text-sm text-error font-medium mt-3'>
+                  Error text error text
+                </div>
+              )}
+            </div>
             <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
               <div className='flex text-gray-71'>
                 <div className='pl-5 w-36'>Image size</div>
                 <div>Estimated registration fee</div>
               </div>
               <div className='flex text-gray-4a font-extrabold mt-3'>
-                <div className='pl-5 w-36'>50 mb</div>
-                <div>5,000 PSL</div>
+                <div className='pl-5 w-36'>
+                  {formatFileSize(optimizeImageToKb)}
+                </div>
+                <div>{formatPSL(estimatedFee)}</div>
               </div>
             </div>
           </div>

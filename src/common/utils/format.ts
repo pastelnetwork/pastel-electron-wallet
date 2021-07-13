@@ -71,3 +71,27 @@ export const formatToTitleCase = (string: string): string =>
   )
 
 export const formatDate = (time: Dayjs): string => time.format('MM/DD/YY')
+
+export const formatFileSize = (size: number): string => {
+  let i = -1
+  const units = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB']
+  do {
+    size = size / 1024
+    i++
+  } while (size > 1024)
+
+  if (!i) {
+    return Math.round(size) + units[i]
+  }
+
+  return Math.max(size, 0.1).toFixed(1) + units[i]
+}
+
+const numFormatter = new Intl.NumberFormat('en-US', {
+  style: 'decimal',
+  maximumFractionDigits: 0,
+})
+
+export const formatPSL = (val: number): string => {
+  return numFormatter.format(val) + ' PSL'
+}
