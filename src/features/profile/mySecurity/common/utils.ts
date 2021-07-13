@@ -2,7 +2,7 @@ import LZUTF8 from 'lzutf8'
 import { toast } from 'react-toastify'
 
 import { rpc, TRPCConfig } from 'api/pastel-rpc/rpc'
-import AddressbookImpl from 'legacy/utils/AddressbookImpl'
+import AddressbookImpl from 'common/utils/AddressbookImpl'
 
 type TAddressesResponse = {
   error: string | null
@@ -28,7 +28,7 @@ type TAllAddresses = {
 }
 
 type TPastelID = {
-  pastelid: string
+  PastelID: string
 }
 
 type TAddressBook = {
@@ -50,6 +50,12 @@ type TQRCode = {
   qrCode: string
   total: number
   index: number
+}
+
+export type TDataForPdf = {
+  addressKeys: TPrivateKey[] | null
+  pastelIDs: TPastelID[] | null
+  addressBook: TAddressBook[] | null
 }
 
 export type TPrivateKey = {
@@ -180,13 +186,12 @@ export async function fetchPastelIDAndPrivateKeys(
   return null
 }
 
-export async function fetcAllPrivateKeys(
+export async function fetchAllKeysForPdf(
   config: TRPCConfig,
-): Promise<TPrivateKey[]> {
+): Promise<TDataForPdf> {
   const addresses = await fetchAllAddress(config)
   const zPrivateKeys: TPrivateKey[] = []
   const tPrivateKeys: TPrivateKey[] = []
-
   if (addresses) {
     const zAddresses = addresses.zAddresses
     for (let i = 0; i < zAddresses.length; i++) {
@@ -215,7 +220,13 @@ export async function fetcAllPrivateKeys(
     }
   }
 
-  return zPrivateKeys.concat(tPrivateKeys)
+  const pastelIDs = await getPastelIDs(config)
+  const addressBook = await getAddressBook()
+  return {
+    addressKeys: zPrivateKeys.concat(tPrivateKeys),
+    pastelIDs,
+    addressBook,
+  }
 }
 
 async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
@@ -279,7 +290,14 @@ async function importAddressBook(addresses: TAddressBook[]) {
     }
   }
 
-  AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+  let addressBooks = newAddressBook
+  if (addressBook?.length) {
+    addressBooks = newAddressBook?.concat(addressBook)
+  }
+
+  if (addressBooks?.length) {
+    AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+  }
 }
 
 export async function doImportPrivKeys(
@@ -288,6 +306,7 @@ export async function doImportPrivKeys(
 ): Promise<boolean> {
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
+
     if (keys) {
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
@@ -330,8 +349,13 @@ export const splitStringIntoChunks = (
 }
 
 export const addLineBreakForContent = (str: string): string => {
-  const breakChar = '\u00ad'
-  return str.replace(/(.{40})/g, `$1${breakChar}`)
+  const breakChar = '\n'
+  return str.replace(/(.{46})/g, `$1${breakChar}`)
+}
+
+export const addLineBreakFoFullrContent = (str: string): string => {
+  const breakChar = '\n'
+  return str.replace(/(.{74})/g, `$1${breakChar}`)
 }
 
 export const decompressPastelIDAndPrivateKeys = (

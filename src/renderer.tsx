@@ -75,22 +75,17 @@ ipcRenderer.on(
     {
       isPackaged,
       locatePastelConfDir,
-      locateSentTxStore,
-      addressBookFileName,
-    }: {
-      isPackaged: boolean
-      locatePastelConfDir: string
-      locateSentTxStore: string
-      addressBookFileName: string
-    },
+      appPathDir,
+    }: { isPackaged: boolean; locatePastelConfDir: string; appPathDir: string },
   ) => {
     createPastelKeysFolder(locatePastelConfDir)
-    store.dispatch(
-      setAppInfo({
+    store.dispatch(setAppInfo({ isPackaged, locatePastelConfDir }))
+
+    sessionStorage.setItem(
+      'appInfo',
+      JSON.stringify({
+        appPathDir,
         isPackaged,
-        locatePastelConfDir,
-        locateSentTxStore,
-        addressBookFileName,
       }),
     )
   },

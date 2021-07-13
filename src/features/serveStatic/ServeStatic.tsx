@@ -1,6 +1,7 @@
 import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
+import detect from 'detect-port'
 
 import { glitch, squoosh, ffmpegwasm } from '../../common/constants/ServeStatic'
 
@@ -31,20 +32,23 @@ export default function initServeStatic(isPackaged: boolean): void {
   setupServeStatic(ffmpegStaticPath, ffmpegwasm.staticPort)
 }
 
-function setupServeStatic(staticPath: string, port: number) {
+async function setupServeStatic(staticPath: string, port: number) {
   try {
-    const serve = serveStatic(staticPath, {
-      index: ['index.html'],
-    })
-    // Create server
-    const server = http.createServer(function onRequest(req, res) {
-      serve(req, res, () => {
-        console.log('Created server')
+    const _port = await detect(port)
+    if (port === _port) {
+      const serve = serveStatic(staticPath, {
+        index: ['index.html'],
       })
-    })
-    // Listen
-    server.listen(port)
-    servers.push(server)
+      // Create server
+      const server = http.createServer(function onRequest(req, res) {
+        serve(req, res, () => {
+          console.log('Created server')
+        })
+      })
+      // Listen
+      server.listen(port)
+      servers.push(server)
+    }
   } catch (error) {
     throw new Error(`serveStatic setupServeStatic error: ${error.message}`)
   }

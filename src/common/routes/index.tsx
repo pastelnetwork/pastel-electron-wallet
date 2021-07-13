@@ -12,6 +12,11 @@ import {
 } from '../../features/onboarding/index'
 import PortfolioPage from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
+import { MyProfile } from '../../features/profile'
+import NFTMarketFeedPage from '../../features/NFTMarketFeed'
+import WalletScreenPage from '../../features/wallet'
+import ChatPage from '../../features/chat'
+import { MembersDirectory } from '../../features/members'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -76,6 +81,49 @@ const Portfolio = {
   path: ROUTES.PORTFOLIO,
   component: PortfolioPage,
   layout: PageLayout,
+  requiredRPCConfig: true,
+}
+
+const myProfile = {
+  id: 'myProfile',
+  path: ROUTES.MY_PROFILE,
+  component: MyProfile,
+  layout: PageLayout,
+  required: {
+    rpcConfig: true,
+    info: true,
+  },
+}
+
+const walletScreen = {
+  id: 'walletScreen',
+  path: ROUTES.WALLET,
+  component: WalletScreenPage,
+  layout: PageLayout,
+  required: {
+    info: true,
+  },
+}
+
+const nft = {
+  id: 'nft',
+  path: ROUTES.MARKET,
+  component: NFTMarketFeedPage,
+  layout: PageLayout,
+}
+
+const chat = {
+  id: 'chat',
+  path: ROUTES.CHAT,
+  component: ChatPage,
+  layout: PageLayout,
+}
+
+const membersDirectory = {
+  id: 'membersDirectory',
+  path: ROUTES.MEMBERS,
+  component: MembersDirectory,
+  layout: PageLayout,
 }
 
 export const pageRoutes = [
@@ -88,4 +136,9 @@ export const pageRoutes = [
   newPassword,
   Dashboard,
   Portfolio,
+  myProfile,
+  walletScreen,
+  nft,
+  chat,
+  membersDirectory,
 ]
