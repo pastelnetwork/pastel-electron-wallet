@@ -1,3 +1,11 @@
 import { BrowserWindow } from './browser-window'
 
-export { BrowserWindow }
+const remote = {
+  app: {
+    getPath: jest.fn(),
+    getName: jest.fn(),
+    getVersion: jest.fn(),
+  },
+}
+
+export { BrowserWindow, remote }

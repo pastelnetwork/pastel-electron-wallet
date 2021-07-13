@@ -76,6 +76,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   const [isReady, setIsReady] = useState(isRendered)
   const [isInitiatedTerminal, setIsInitiatedTerminal] = useState(false)
   const inputRef = createRef<HTMLInputElement>()
+  const inputTerminal = document.getElementById('terminalInput')
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -271,6 +272,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
     await addOutputThenDisplay(textConsole)
     setExecutingCommand(false)
+    inputTerminal?.focus()
   }
 
   const addOutputThenDisplay = async (text: string) => {

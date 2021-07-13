@@ -50,6 +50,7 @@ if (!app.isPackaged) {
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info'
+    log.transports.console.level = false
   }
 }
 
@@ -87,10 +88,12 @@ const createWindow = async () => {
 
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
-  // Open the DevTools.
-  if (!app.isPackaged) {
-    w.webContents.openDevTools()
-  }
+  w.webContents.on('did-frame-finish-load', () => {
+    // Open the DevTools.
+    if (!app.isPackaged) {
+      w.webContents.openDevTools()
+    }
+  })
 
   // Protocol handler for win32
   if (process.platform == 'win32') {

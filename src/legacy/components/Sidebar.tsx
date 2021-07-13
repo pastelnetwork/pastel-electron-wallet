@@ -8,6 +8,8 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { ipcRenderer, remote } from 'electron'
 import TextareaAutosize from 'react-textarea-autosize'
+import querystring from 'querystring'
+import { Base64 } from 'js-base64'
 import PropTypes from 'prop-types'
 import styles from './Sidebar.module.css'
 import cstyles from './Common.module.css'
@@ -280,9 +282,12 @@ const PayURIModal = ({
 const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
   let isActive = false
 
+  let splitedCurrentRouteNames = currentRoute.split('/')
+  let splitedRouteNames = routeName.split('/')
   if (
     (currentRoute.endsWith('app.html') && routeName === (routes as any).HOME) ||
-    currentRoute === routeName
+    currentRoute === routeName ||
+    splitedRouteNames[1] === splitedCurrentRouteNames[1]
   ) {
     isActive = true
   }
@@ -332,6 +337,9 @@ class Sidebar extends PureComponent<any, any> {
       openUpdateToast,
       openSquooshToolModal,
       openGlitchImageModal,
+      setSendTo,
+      addresses,
+      createNewAddress,
     } = this.props
 
     ipcRenderer.on('payuri', (event, uri) => {
@@ -428,10 +436,6 @@ class Sidebar extends PureComponent<any, any> {
       history.push(routes.PASTELD)
     }) // Connect mobile app
 
-    ipcRenderer.on('connectmobile', () => {
-      history.push(routes.CONNECTMOBILE)
-    })
-
     ipcRenderer.on('pastelSpriteEditorTool', () => {
       openPastelSpriteEditorToolModal()
     })
@@ -458,9 +462,28 @@ class Sidebar extends PureComponent<any, any> {
     })
     ipcRenderer.on(
       'deepLink',
-      (event, { view, param }: { view: string; param: string }) => {
+      async (event, { view, param }: { view: string; param: string }) => {
         const allRoutes = Object.assign(routes)
         const page = allRoutes[view.toUpperCase()] ? view : routes.DASHBOARD
+        if (routes.SEND.includes(page) && param.includes('amount=')) {
+          const params = querystring.parse(param || '')
+          let uri = ''
+          if (params?.to) {
+            uri = params.to.toString()
+          } else {
+            uri = await createNewAddress(true)
+          }
+          uri = `${uri}?amount=${params.amount}`
+
+          if (params?.memo) {
+            uri = `${uri}&memo=${Base64.encode(params.memo.toString())}`
+          }
+          const parsedUri = parsePastelURI(`pastel:${uri}`)
+          if (typeof parsedUri !== 'string') {
+            setSendTo(parsedUri)
+          }
+        }
+
         history.replace({
           pathname: page,
           state: { param },
@@ -707,12 +730,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-fingerprint'
           />
-          {/* <SidebarMenuItem
+          <SidebarMenuItem
             name='Statistics'
             routeName={routes.STATISTICS}
             currentRoute={location.pathname}
             iconname='fa-chart-bar'
-          /> */}
+          />
           <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}
@@ -756,9 +779,8 @@ class Sidebar extends PureComponent<any, any> {
             >
               <div>
                 <i className={[cstyles.yellow, 'fas', 'fa-sync'].join(' ')} />
-                &nbsp; Syncing
+                &nbsp; Syncing {progress}%
               </div>
-              <div>{`${progress}%`}</div>
             </div>
           )}
           {state === 'DISCONNECTED' && (
