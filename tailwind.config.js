@@ -244,6 +244,7 @@ module.exports = {
           11: '#11142D',
           f5: '#F5F6F7',
           d1: '#D1D6E0',
+          main: '#D1D1D1',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -396,12 +397,14 @@ module.exports = {
         '1px': '0.0625rem',
         '3px': '0.1875rem',
         '5px': '0.3125rem',
+        '16px': '1rem',
       },
       lineHeight: {
         '11px': '0.6875rem',
         '15px': '0.938rem',
         '18px': '1.125rem',
         '19px': '1.1875',
+        '30px': '2rem',
       },
       minHeight: {
         '78px': '4.875rem',

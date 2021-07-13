@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { TitleModal } from '../../common/components/Modal'
-import Button from '../../common/components/Button/Button'
-import infoIcon from '../../common/assets/icons/ico-info.svg'
-import addIcon from '../../common/assets/icons/ico-add.svg'
-import checkIcon from '../../common/assets/icons/ico-check.svg'
-import Select from '../../common/components/Select/Select'
+import { TitleModal } from 'common/components/Modal'
+import { Button } from 'common/components/Buttons'
+import infoIcon from 'common/assets/icons/ico-info.svg'
+import addIcon from 'common/assets/icons/ico-add.svg'
+import checkIcon from 'common/assets/icons/ico-check.svg'
+import Select from 'common/components/Select/Select'
 import PaymentSource from './PaymentSource'
 
 type IDataType = {
@@ -106,12 +106,16 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </table>
       </div>
       <div className='flex justify-end mt-5'>
-        <Button variant='transparent' onClick={handleClose}>
-          <div className='flex items-center  px-5'>
+        <Button variant='secondary' onClick={handleClose}>
+          <div className='flex items-center px-5 font-medium'>
             <span className='text-sm '>Cancel</span>
           </div>
         </Button>
-        <Button className='ml-11px' onClick={handleClose}>
+        <Button
+          className='ml-11px px-0 font-medium'
+          childrenClassName='w-full'
+          onClick={handleClose}
+        >
           <div className='flex items-center px-5'>
             <img src={checkIcon} className='py-3.5' />
             <span className='text-sm ml-2'>

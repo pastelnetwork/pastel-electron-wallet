@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { TitleModal } from '../../common/components/Modal'
+import { TitleModal } from 'common/components/Modal'
 import { InputExportKey } from 'common/components/Inputs'
-import Button from '../../common/components/Button/Button'
-import DownloadWhite from '../../common/assets/icons/ico-download-white.svg'
+import { Button } from 'common/components/Buttons'
+import DownloadWhite from 'common/assets/icons/ico-download-white.svg'
 
 import {
   Document,
@@ -61,7 +61,7 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
           label='Private key'
           className='mb-10'
         />
-        <Button className='w-full flex justify-center items-center'>
+        <Button className='w-full px-1 py-6px h-12'>
           <div className='flex items-center ml-5 relative'>
             <PDFDownloadLink
               document={
