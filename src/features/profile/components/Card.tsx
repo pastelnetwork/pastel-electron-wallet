@@ -13,7 +13,7 @@ const Card = (props: TCard): JSX.Element => {
   const { title, description, content, footer } = props
 
   return (
-    <div className='relative flex flex-col max-w-427px h-full rounded-lg p-30px border border-solid border-gray-e7 rounded-lg bg-white shadow-44px'>
+    <div className='relative flex flex-col max-w-427px h-full p-30px border border-solid border-gray-e7 rounded-lg bg-white shadow-44px'>
       <Title>{title}</Title>
       <div className='min-h-78px mt-3'>
         <Description>{description}</Description>

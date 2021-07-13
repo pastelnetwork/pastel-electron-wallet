@@ -226,6 +226,7 @@ ipcMain.on('app-ready', () => {
     mainWindow.webContents.send('app-info', {
       isPackaged: app.isPackaged,
       locatePastelConfDir,
+      appPathDir: getAppPathDir(),
     })
   }
 })
@@ -263,4 +264,16 @@ const getLocatePastelConfDir = () => {
   }
 
   return path.join(app.getPath('appData'), 'Pastel')
+}
+
+const getAppPathDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'))
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'))
+  }
+
+  return path.join(app.getPath('appData'))
 }

@@ -14,20 +14,23 @@ import { QRCodeGEnerator } from '../../../pastelPaperWalletGenerator'
 import Card from '../../components/Card'
 import { TRPCConfig } from '../../Profile'
 import {
-  fetcAllPrivateKeys,
-  TPrivateKey,
+  fetchAllKeysForPdf,
+  TDataForPdf,
   addLineBreakForContent,
+  addLineBreakFoFullrContent,
 } from '../common/utils'
 
 type TCrypto = {
   currencyName?: string
   rpcConfig: TRPCConfig
+  qrcodeData: string
 }
 
 type TPDFDocumentProps = {
-  allPrivateKeys: TPrivateKey[]
+  allKeys: TDataForPdf
   currencyName?: string
   title: string
+  qrcodeData: string
 }
 
 const pdfStyles = StyleSheet.create({
@@ -36,12 +39,13 @@ const pdfStyles = StyleSheet.create({
     height: '100%',
   },
   page: {
-    flexDirection: 'row',
+    width: '100%',
+    paddingTop: '12px',
   },
   section: {
+    width: '100%',
     margin: 0,
     padding: 20,
-    flexGrow: 1,
   },
   contentTop: {
     display: 'flex',
@@ -68,12 +72,25 @@ const pdfStyles = StyleSheet.create({
     wordBreak: 'break-all',
     color: '#000',
   },
+  contentValuePrivateKey: {
+    marginTop: '0',
+    paddingRight: '10px',
+    fontSize: '12px',
+    fontWeight: 'normal',
+    wordBreak: 'break-all',
+    color: '#000',
+  },
   marginTop20: {
     marginTop: '20px',
   },
   mainContent: {
     display: 'flex',
     flexDirection: 'row',
+    width: '100%',
+    paddingBottom: '40px',
+    borderBottom: '2px solid #000',
+  },
+  mainContentFull: {
     width: '100%',
     paddingBottom: '40px',
     borderBottom: '2px solid #000',
@@ -103,33 +120,21 @@ const pdfStyles = StyleSheet.create({
 })
 
 const PDFDocument = ({
-  allPrivateKeys,
+  allKeys,
   currencyName,
   title,
+  qrcodeData,
 }: TPDFDocumentProps) => {
   return (
-    <Document title={title}>
-      {allPrivateKeys.map((privateKey, idx) => (
-        <Page size='A4' key={idx} style={pdfStyles.page}>
-          <View style={pdfStyles.section}>
-            <View style={pdfStyles.contentTop}>
-              <View style={pdfStyles.topMedia}>
-                <QRCodeGEnerator address={privateKey.address} />
-              </View>
-              <View style={pdfStyles.contentWrapper}>
-                <Text style={pdfStyles.contentTitle}>
-                  {currencyName} Address (Sapling)
-                </Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakForContent(privateKey.address)}
-                </Text>
-              </View>
-            </View>
+    <Document title={title} keywords={qrcodeData}>
+      <Page size='A4' style={pdfStyles.page}>
+        {allKeys.addressKeys?.map((privateKey, idx) => (
+          <View style={pdfStyles.section} key={idx}>
             <View style={pdfStyles.mainContent}>
               <View style={pdfStyles.mainContentWrapper}>
                 <View style={pdfStyles.contentItem}>
                   <Text style={pdfStyles.contentTitle}>Private Key</Text>
-                  <Text style={pdfStyles.contentValue}>
+                  <Text style={pdfStyles.contentValuePrivateKey}>
                     {addLineBreakForContent(privateKey.privateKey)}
                   </Text>
                 </View>
@@ -147,24 +152,54 @@ const PDFDocument = ({
               </View>
             </View>
           </View>
-        </Page>
-      ))}
+        ))}
+        {allKeys.pastelIDs?.map((pastelID, idx) => (
+          <View style={pdfStyles.section} key={idx}>
+            <View style={pdfStyles.mainContent}>
+              <View style={pdfStyles.contentItem}>
+                <Text style={pdfStyles.contentTitle}>PastelID</Text>
+                <Text style={pdfStyles.contentValue}>
+                  {addLineBreakFoFullrContent(pastelID.PastelID)}
+                </Text>
+              </View>
+            </View>
+          </View>
+        ))}
+        {allKeys.addressBook?.map((addressBook, idx) => (
+          <View style={pdfStyles.section} key={idx}>
+            <View style={pdfStyles.mainContentFull}>
+              <View style={pdfStyles.contentItem}>
+                <Text style={pdfStyles.contentTitle}>Label:</Text>
+                <Text style={pdfStyles.contentValue}>{addressBook.label}</Text>
+              </View>
+              <View style={pdfStyles.marginTop20}>
+                <Text style={pdfStyles.contentTitle}>Address:</Text>
+                <Text style={pdfStyles.contentValue}>
+                  {addLineBreakFoFullrContent(addressBook.address)}
+                </Text>
+              </View>
+            </View>
+          </View>
+        ))}
+      </Page>
     </Document>
   )
 }
 
 const CryptoKey = (props: TCrypto): JSX.Element => {
-  const { currencyName, rpcConfig } = props
-  const [allPrivateKeys, setAllPrivateKeys] = useState<TPrivateKey[]>([])
+  const { currencyName, rpcConfig, qrcodeData } = props
+  const [allKeys, setAllKeys] = useState<TDataForPdf>({
+    addressKeys: [],
+    pastelIDs: [],
+    addressBook: [],
+  })
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetcAllPrivateKeys(rpcConfig)
-      setAllPrivateKeys(result)
+      const result = await fetchAllKeysForPdf(rpcConfig)
+      setAllKeys(result)
     }
-    if (!allPrivateKeys.length) {
-      fetchData()
-    }
+    fetchData()
   }, [])
 
   const fileName = `${currencyName || 'LSP'}_Paper_Wallet__Private_Keys_${dayjs(
@@ -190,9 +225,10 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
     <PDFDownloadLink
       document={
         <PDFDocument
-          allPrivateKeys={allPrivateKeys}
+          allKeys={allKeys}
           currencyName={currencyName}
           title={fileName}
+          qrcodeData={qrcodeData}
         />
       }
       fileName={fileName}
