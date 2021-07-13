@@ -96,7 +96,7 @@ export default function RestoreByUpload({
   return (
     <div className='m-4'>
       <div className='text-gray-800 text-2xl font-extrabold mb-3'>
-        Upload QR Code Video
+        Select QR Code Video
       </div>
       <div className='font-medium text-sm text-gray-33 opacity-50'>
         Please select your video key
