@@ -1,5 +1,3 @@
-// import './Root.css'
-
 import React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components/macro'
