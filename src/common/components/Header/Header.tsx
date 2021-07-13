@@ -1,9 +1,10 @@
-import React, { KeyboardEvent } from 'react'
+import React from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
+import SearchBar from '../SearchBar'
+
 import routes from '../../../common/constants/routes.json'
 import Logo from '../../../common/assets/icons/ico-logo.svg'
 import addBtn from '../../../common/assets/icons/ico-add-btn.svg'
-import searchIcon from '../../../common/assets/icons/ico-search.svg'
 import QuestionTag from '../../../common/assets/icons/ico-question.svg'
 import BellIcon from '../../../common/assets/icons/ico-bell.svg'
 import MessageIcon from '../../../common/assets/icons/ico-msg.svg'
@@ -12,8 +13,6 @@ import UserIcon from '../../../common/assets/icons/ico-user.svg'
 import cn from 'classnames'
 import { useToggle } from 'react-use'
 import AddNFT from 'features/nft/addNFT'
-import SearchResults from 'features/searchResults'
-import { mockMembers, mockNFTs } from 'features/searchResults/mockData'
 
 const MenuItem = ({
   to,
@@ -42,43 +41,6 @@ const MenuItem = ({
         <div className='absolute -bottom-1.5px w-full h-3px bg-gray-33 rounded-full' />
       )}
     </NavLink>
-  )
-}
-
-const SearchBar = () => {
-  const [openSearchResults, toggleSearchResults] = useToggle(false)
-
-  const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (['Enter', 'NumpadEnter'].includes(e.code)) {
-      // run search for value e.currentTarget.value
-      toggleSearchResults()
-    }
-  }
-
-  return (
-    <div className='flex-center md:flex-grow md:max-w-sm xl:max-w-lg ml-6 1200px:ml-10 xl:ml-68px'>
-      <div className='relative'>
-        <img
-          src={searchIcon}
-          className='w-4 absolute top-3 left-5 hidden md:block'
-        />
-        <input
-          className='placeholder-gray-b0 h-41px bg-gray-f2 bg-opacity-50 rounded-full px-3 w-180px md:pl-46px md:pr-5 md:w-300px lg:w-300px xl:w-352px'
-          placeholder='Search creator or NFT'
-          onKeyPress={onKey}
-        />
-      </div>
-
-      <SearchResults
-        open={openSearchResults}
-        onClose={toggleSearchResults}
-        foundNFTs={mockNFTs}
-        foundMembers={mockMembers}
-        onChangeTimeRange={() => {
-          /**/
-        }}
-      />
-    </div>
   )
 }
 

@@ -200,6 +200,7 @@ module.exports = {
           '3f': '#3F9AF7',
           37: '#3754DB',
           '00': '#0054FE',
+          d9: '#D9EBFD',
         },
         gray: {
           fc: '#FCFCFD',
@@ -270,6 +271,7 @@ module.exports = {
           ff: '#FFBE3D',
           c3: '#FFCE14',
           e9: '#E9DB60',
+          ffd: '#FFD12C',
         },
         green: {
           '00': '#00D097',
@@ -388,6 +390,7 @@ module.exports = {
         '4px': '0.25rem',
         '7px': '0.4375rem',
         '8px': '0.5rem',
+        '10px': '0.625rem',
         '11px': '0.6875rem',
         '15px': '0.938rem',
         '65px': '4.063rem',
@@ -485,6 +488,9 @@ module.exports = {
         blue: {
           '3f': '#3F9AF7',
         },
+      },
+      zIndex: {
+        100: '100',
       },
     },
   },

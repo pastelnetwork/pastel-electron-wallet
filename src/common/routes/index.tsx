@@ -12,6 +12,7 @@ import {
 } from '../../features/onboarding/index'
 import PortfolioPage from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
+import SearchPage from '../../features/searchResults'
 import { MyProfile } from '../../features/profile'
 import NFTMarketFeedPage from '../../features/NFTMarketFeed'
 import WalletScreenPage from '../../features/wallet'
@@ -126,6 +127,13 @@ const membersDirectory = {
   layout: PageLayout,
 }
 
+const searchResults = {
+  id: 'searchResults',
+  path: ROUTES.SEARCH_RESULT,
+  component: SearchPage,
+  layout: PageLayout,
+}
+
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -136,6 +144,7 @@ export const pageRoutes = [
   newPassword,
   Dashboard,
   Portfolio,
+  searchResults,
   myProfile,
   walletScreen,
   nft,
