@@ -77,7 +77,6 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
     const datetime = dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]')
     return `[${currencyName}]_Paper_Wallet__Address_${key}_${datetime}.pdf`
   }
-
   return (
     <TitleModal
       isOpen={isOpen}
@@ -98,8 +97,8 @@ const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
           label='Private key'
           className='mb-10'
         />
-        <Button className='w-full flex justify-center items-center'>
-          <div className='flex items-center ml-5 relative'>
+        <Button className='w-full flex  items-center'>
+          <div className='flex items-center ml-5 relative w-full justify-center'>
             {havePDFLink && (
               <PDFDownloadLink
                 document={
