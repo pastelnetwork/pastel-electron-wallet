@@ -75,12 +75,19 @@ ipcRenderer.on(
     {
       isPackaged,
       locatePastelConfDir,
+      locateSentTxStore,
       appPathDir,
-    }: { isPackaged: boolean; locatePastelConfDir: string; appPathDir: string },
+    }: {
+      isPackaged: boolean
+      locatePastelConfDir: string
+      locateSentTxStore: string
+      appPathDir: string
+    },
   ) => {
     createPastelKeysFolder(locatePastelConfDir)
-    store.dispatch(setAppInfo({ isPackaged, locatePastelConfDir }))
-
+    store.dispatch(
+      setAppInfo({ isPackaged, locatePastelConfDir, locateSentTxStore }),
+    )
     sessionStorage.setItem(
       'appInfo',
       JSON.stringify({

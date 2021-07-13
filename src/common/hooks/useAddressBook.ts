@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { readAddressBook, writeAddressBook } from 'api/helpers'
+import AddressbookImpl from '../utils/AddressbookImpl'
 import { TAddressBook } from 'types/rpc'
 
 export const useAddressBook = (): {
@@ -13,14 +13,14 @@ export const useAddressBook = (): {
   useEffect(() => {
     const getAddressBook = async function () {
       setIsAddressBookLoaded(false)
-      const addrBook: TAddressBook[] = await readAddressBook()
+      const addrBook: TAddressBook[] = await AddressbookImpl.readAddressBook()
       setAddressBook(addrBook)
       setIsAddressBookLoaded(true)
     }
     getAddressBook()
   }, [])
 
-  const updateAddressBook = ({ address, label }: TAddressBook) => {
+  const updateAddressBook = async ({ address, label }: TAddressBook) => {
     const [book] = addressBook.filter(b => b.address === address) || []
     let newAddressBook = addressBook
     if (book) {
@@ -40,7 +40,7 @@ export const useAddressBook = (): {
     }
 
     setAddressBook(newAddressBook)
-    writeAddressBook(newAddressBook)
+    await AddressbookImpl.writeAddressBook(newAddressBook)
   }
 
   return { addressBook, updateAddressBook, isAddressBookLoaded }
