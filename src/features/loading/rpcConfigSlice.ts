@@ -2,11 +2,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RPCConfig } from 'legacy/components/AppState'
 
-export interface IRpcConfigState {
+export type TRpcConfigState = {
   config: RPCConfig
 }
 
-const initialState: IRpcConfigState = {
+const initialState: TRpcConfigState = {
   config: {
     username: '',
     password: '',
@@ -20,8 +20,8 @@ export const errorModalSlice = createSlice({
   initialState,
   reducers: {
     setRpcConfig(
-      state: IRpcConfigState,
-      action: PayloadAction<IRpcConfigState>,
+      state: TRpcConfigState,
+      action: PayloadAction<TRpcConfigState>,
     ) {
       state.config = action.payload.config
     },
