@@ -60,7 +60,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
   }
 
   return (
-    <div className='pt-12 flex flex-col h-full'>
+    <div className='pt-[105px] flex flex-col h-full'>
       <form className='flex-grow'>
         <Input
           className='w-full'
