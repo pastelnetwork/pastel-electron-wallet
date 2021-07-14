@@ -50,7 +50,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
       ? countInactiveClassName
       : 'bg-gray-a0'
 
-    return `ml-2.5 text-9px text-white pt-2.5px pb-1.5px px-3px leading-11px rounded-xl min-w-16px text-center ${
+    return `ml-2.5 text-9px text-white min-h-17px flex justify-center items-center rounded-xl min-w-16px text-center ${
       isActive ? activeClass : inactiveClass
     }`
   }
@@ -72,9 +72,9 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
               >
                 <span>{item.label}</span>
                 {item?.count && item.count > 0 && (
-                  <span className={getCountClassName(index === activeIndex)}>
+                  <div className={getCountClassName(index === activeIndex)}>
                     {item.count > 99 ? 99 : item.count}
-                  </span>
+                  </div>
                 )}
               </div>
             )

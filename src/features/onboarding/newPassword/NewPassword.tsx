@@ -57,7 +57,7 @@ const NewPassword: React.FC = () => {
         <InputPassword
           type='password'
           label='New Password'
-          labelClassName='text-base text-medium text-gray-71 pb-2.5'
+          labelClassName='text-lg font-medium text-gray-71 pb-1.5'
           value={newPassword.value}
           onChange={(event: React.FormEvent<HTMLInputElement>) =>
             setNewPassword({
@@ -76,7 +76,7 @@ const NewPassword: React.FC = () => {
         <Input
           type='password'
           label='Repeat New Password'
-          labelClassName='text-base text-medium text-gray-71 pb-2.5 mt-[25px]'
+          labelClassName='text-lg font-medium text-gray-71 pb-1.5 mt-[25px]'
           value={repeatPassword.value}
           onChange={(event: React.FormEvent<HTMLInputElement>) =>
             setRepeatPassword({
@@ -92,7 +92,7 @@ const NewPassword: React.FC = () => {
         <Link to={ROUTES.LOGIN}>
           <Button className='w-full mt-[30px] font-semibold'>Confirm</Button>
         </Link>
-        <div className='text-link text-center mt-[18px] font-medium text-base underline mb-66px'>
+        <div className='text-link text-center mt-[18px] font-medium text-base mb-66px'>
           Generate a Secure Password for Me (recommended!)
         </div>
       </form>

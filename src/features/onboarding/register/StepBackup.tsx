@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import cn from 'classnames'
 import QRCode from 'qrcode.react'
 
-import icoPdf from 'common/assets/icons/ico-pdf.svg'
-import icoDownload from 'common/assets/icons/ico-download-2.svg'
 import { PrevButton, NextButton } from './Buttons'
 import Tooltip from 'common/components/Tooltip'
+import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import { BackupMethods } from './Regiser.state'
+import { DownloadArrow, PDF } from 'common/components/Icons'
 
 export type TStepBackupMethodProps = {
   backupMethod: BackupMethods
@@ -20,76 +19,65 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
 
   const nextActive = true
   const methods = [
-    {
-      name: 'Download PDF',
-      method: BackupMethods.PDF,
-    },
-    {
-      name: 'QR-code',
-      method: BackupMethods.QR,
-    },
+    { label: 'Download PDF' },
+    { label: 'QR-code' },
+    { label: 'My Security', count: 12 },
   ]
 
   const onDownloadPdf = () => {
-    // prepare PDF
     setPdfPrepareProgress(65)
   }
 
   return (
     <div className='pt-16 flex flex-col h-full'>
       <div>
-        <div className='rounded-full border border-gray-eb p-1 inline-flex'>
-          {methods.map((item, i) => (
-            <div
-              key={i}
-              className={cn(
-                'font-extrabold text-sm rounded-full px-3 py-1.5 cursor-pointer transition-colors',
-                props.backupMethod === item.method
-                  ? 'bg-gray-35 text-white'
-                  : 'text-gray-71',
-              )}
-              onClick={() => props.setBackupMethod(item.method)}
-            >
-              {item.name}
-            </div>
-          ))}
-        </div>
+        <MultiToggleSwitch
+          data={methods}
+          activeIndex={props.backupMethod}
+          onToggle={props.setBackupMethod}
+          itemActiveClassName='bg-gray-4a rounded-full text-white'
+          countInactiveClassName='bg-warning-hover font-extrabold'
+        />
       </div>
 
       <div className='flex-grow'>
         {props.backupMethod === BackupMethods.PDF && (
           <div className='mt-14'>
-            <h1 className='text-gray-23 text-xl font-black'>
-              Crypt keys backup method
+            <h1 className='text-gray-4a text-h3 font-extrabold'>
+              Crypt Keys backup method
             </h1>
-            <h2 className='text-gray-77 text-sm font-normal'>
+            <h2 className='text-gray-71 text-sm font-normal'>
               Download PDF “paper wallet” file with keys for your PastelID
             </h2>
 
             <div className='mt-6 px-6 py-4 border border-gray-e1 flex items-center rounded-lg'>
-              <img src={icoPdf} className='w-14' />
+              <PDF width={55} height={55} className='text-red-fa' />
 
               <div className='ml-4 mr-4'>
-                <div className='text-base font-medium text-gray-1f'>
-                  Crypto keys
+                <div className='text-base font-medium text-gray-4a'>
+                  Crypto Keys
                 </div>
-                <div className='text-sm font-medium text-gray-8e'>0.5mb</div>
+                <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
               </div>
 
               {pdfPrepareProgress === 0 && (
                 <div className='flex-grow flex justify-end'>
                   <Tooltip
                     type='bottom'
-                    width={110}
+                    width={98}
                     content='Download PDF'
                     vPosPercent={120}
-                    classnames='font-extrabold'
+                    classnames='font-extrabold py-2'
                   >
                     <button
                       className='w-12 h-12 rounded-full bg-gray-ebf2 flex justify-center items-center cursor-pointer'
                       onClick={() => onDownloadPdf()}
                     >
-                      <img src={icoDownload} className='w-5 cursor-pointer' />
+                      <DownloadArrow
+                        width={24}
+                        height={24}
+                        className='text-blue-3f'
+                      />
                     </button>
                   </Tooltip>
                 </div>

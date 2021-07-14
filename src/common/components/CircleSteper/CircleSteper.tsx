@@ -59,8 +59,9 @@ const CircleSteper = ({
     for (let i = spaceAngle / 2; i < 360; i += oneStepAngle) {
       temp.push(i)
     }
+    console.log(temp)
     setStartPoints(temp)
-  }, [])
+  }, [totalStep])
   return (
     <div className='relative'>
       <div className='font-extrabold text-base text-gray-4a absolute top-22px left-5'>

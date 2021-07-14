@@ -2,17 +2,16 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import Tooltip from 'common/components/Tooltip'
-
-import icoExclamation from 'common/assets/icons/ico-exclamation.svg'
-import icoArrowRight from 'common/assets/icons/ico-arrow-right.svg'
-import infoIco from 'common/assets/icons/ico-info.svg'
-import closeIcon from 'common/assets/icons/ico-close.svg'
+import { CloseButton } from 'common/components/Buttons'
 
 import {
   Download,
   CreditCard,
   Refresh,
   CircleCheck,
+  Info,
+  TriangleElimination,
+  LongArrow,
 } from 'common/components/Icons'
 import CircleSteper from 'common/components/CircleSteper'
 
@@ -80,12 +79,12 @@ const RegisterContent = (): JSX.Element => {
 
   return (
     <>
-      <button
-        className='absolute flex justify-center items-center top-6 right-6 w-7 h-7 box-border rounded-lg bg-whte border border-gray'
-        onClick={() => setCloseRequested(true)}
-      >
-        <img src={closeIcon} alt='close icon' className='cursor-pointer' />
-      </button>
+      <CloseButton
+        className='absolute top-6 right-6 w-7 h-7'
+        onClick={() => {
+          setCloseRequested(true)
+        }}
+      />
       <div
         className={cn(
           'flex w-970px max-w-full max-h-full',
@@ -148,8 +147,10 @@ const RegisterContent = (): JSX.Element => {
                     className={cn(
                       'flex-grow flex items-center ml-8 text-lg',
                       state.step === id
-                        ? 'font-black text-gray-23'
-                        : 'font-medium text-gray-a0',
+                        ? 'font-extrabold text-gray-2d'
+                        : state.step < id
+                        ? 'font-medium text-gray-a0'
+                        : 'font-medium text-gray-4a',
                     )}
                   >
                     <span>{label}</span>
@@ -162,17 +163,17 @@ const RegisterContent = (): JSX.Element => {
                           width={tooltipWidth}
                           vPosPercent={100}
                         >
-                          <img className='w-5' src={infoIco} alt='info' />
+                          <Info size={17} />
                         </Tooltip>
                       </div>
                     )}
                   </div>
 
                   {state.step === id && (
-                    <img
-                      className='w-4'
-                      src={icoArrowRight}
-                      alt='active step'
+                    <LongArrow
+                      width={20}
+                      height={11}
+                      className='text-gray-88'
                     />
                   )}
                 </div>
@@ -194,7 +195,11 @@ const RegisterContent = (): JSX.Element => {
       {closeRequested && (
         <div className='p-11 w-494px'>
           <div className='text-center'>
-            <img src={icoExclamation} className='w-10 inline-block' />
+            <TriangleElimination
+              width={44}
+              height={44}
+              className='text-red-63 inline-block'
+            />
           </div>
           <div className='mt-7 text-center'>
             Are you sure you want to close the wizard

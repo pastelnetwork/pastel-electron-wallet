@@ -50,6 +50,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       top: `calc(${vPosPercent}% - 3px)`,
       left: '50%',
       marginLeft: '-5px',
+      transform: 'rotate(180deg)',
     },
     bottom: {
       width: '10px',

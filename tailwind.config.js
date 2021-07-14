@@ -201,6 +201,7 @@ module.exports = {
           37: '#3754DB',
           '00': '#0054FE',
           d9: '#D9EBFD',
+          '9b': '#9BC8F4',
         },
         gray: {
           ec: '#ECEFF3',
@@ -246,6 +247,7 @@ module.exports = {
           11: '#11142D',
           f5: '#F5F6F7',
           d1: '#D1D6E0',
+          88: '#8894AA',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -256,6 +258,8 @@ module.exports = {
           75: '#FF754C',
           63: '#FE634C',
           14: '#14B85F',
+          fa: '#FA4A30',
+          fd: '#FFD9D9',
         },
         pink: {
           46: '#EF466F',
