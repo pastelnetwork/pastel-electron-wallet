@@ -26,8 +26,6 @@ export default function OptimizationSlider(
     props.setOptimizedSizeKb(val * 1024)
   }
 
-  // console.log(`max=${maxOptimization}, val=${props.optimizedSizeKb / 1024}`)
-
   return (
     <Slider
       min={0}
