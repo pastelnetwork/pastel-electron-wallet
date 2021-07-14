@@ -12,6 +12,7 @@ import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
 import { TArtworkTicket } from 'api/artwork-api/interfaces'
 import { toast } from 'react-toastify'
 import { formatFileSize, formatPSL } from 'common/utils/format'
+import icoPreview from 'common/assets/icons/ico-preview.svg'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -47,8 +48,6 @@ export default function SubmitStep({
         pass = 'test',
         spendableAddr = 'PtiqRXn2VQwBjp1K8QXR2uW2w2oZ3Ns7N6j',
         userName = 'John Doe'
-
-      // TODO: optimize image
 
       const form = new FormData()
       form.append('file', image.file)
@@ -114,6 +113,15 @@ export default function SubmitStep({
               className='rounded max-h-[410px]'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
+            <button
+              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-46055 flex items-center'
+              onClick={toggleFullScreen}
+            >
+              <img src={icoPreview} className='inline-block mr-4' />
+              <span className='text-white font-extrabold inline-block whitespace-nowrap'>
+                Preview how it will look
+              </span>
+            </button>
           </div>
         </div>
       }
@@ -175,7 +183,7 @@ export default function SubmitStep({
               </div>
               <div className='flex text-gray-4a font-extrabold mt-3'>
                 <div className='pl-5 w-36'>
-                  {formatFileSize(optimizeImageToKb)}
+                  {formatFileSize(optimizeImageToKb * 1024)}
                 </div>
                 <div>{formatPSL(estimatedFee)}</div>
               </div>

@@ -44,8 +44,8 @@ export default function ApprovedStep({
             <FullScreenButton onClick={toggleFullScreen} />
             <img
               src={image.url}
-              className='rounded'
-              style={{ maxWidth: `${image.maxWidth}px`, maxHeight: '424px' }}
+              className='rounded max-h-424px'
+              style={{ maxWidth: `${image.maxWidth}px` }}
             />
           </div>
         </div>

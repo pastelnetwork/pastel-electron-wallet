@@ -26,12 +26,15 @@ export default function OptimizationSlider(
     props.setOptimizedSizeKb(val * 1024)
   }
 
+  // console.log(`max=${maxOptimization}, val=${props.optimizedSizeKb / 1024}`)
+
   return (
     <Slider
       min={0}
       max={maxOptimization}
       onChange={onUpdate}
       value={props.optimizedSizeKb / 1024}
+      step={0.01}
       formatValue={formatValue}
       formatTooltipValue={formatTooltipValue}
       minMaxClassName='top-6 text-gray-71 text-xs'

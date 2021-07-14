@@ -113,7 +113,10 @@ export default function PreviewStep({
   const submit = () => {
     if (croppedImage) {
       setCrop(croppedImage.crop)
+
       if (optimizeImageToKb) {
+        // TODO: optimize image to size
+
         setEstimatedFee(calcFee(optimizeImageToKb))
       }
 
