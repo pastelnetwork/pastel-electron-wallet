@@ -6,9 +6,11 @@ import CSS from 'csstype'
 export type TTooltipProps = {
   type: 'left' | 'right' | 'top' | 'bottom'
   classnames?: string
-  wrapperClassNames?: string
   content: ReactNode
-  width: number
+  width?: number
+  autoWidth?: boolean
+  padding?: number
+  wrapperClassNames?: string
   vPosPercent?: number
 }
 
@@ -17,8 +19,10 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   classnames,
   wrapperClassNames,
   content,
-  width,
+  width = 0,
+  autoWidth = false,
   children,
+  padding = 0,
   vPosPercent = 150,
 }) => {
   const styles = {
@@ -26,19 +30,23 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       width: `${width}px`,
       bottom: `${vPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
+      padding: `${padding}px`,
     },
     bottom: {
       width: `${width}px`,
       top: `${vPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
+      padding: `${padding}px`,
     },
     right: {
-      width: `${width}px`,
+      width: `${autoWidth ? 'auto' : width + 'px'}`,
       left: 'calc(100% + 10px)',
+      padding: `${padding}px`,
     },
     left: {
-      width: `${width}px`,
+      width: `${autoWidth ? 'auto' : width + 'px'}`,
       right: 'calc(100% + 10px)',
+      padding: `${padding}px`,
     },
   }
   const arrow_styles = {

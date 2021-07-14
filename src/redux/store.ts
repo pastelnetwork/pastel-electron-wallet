@@ -11,6 +11,7 @@ import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEdit
 import { squooshToolModalReducer } from '../features/squooshTool'
 import { updateToastReducer } from '../features/updateToast'
 import { glitchImageModalReducer } from '../features/glitchImage'
+import { rpcConfigReducer } from '../features/loading/rpcConfigSlice'
 import { appInfoReducer } from '../features/serveStatic'
 
 const store = configureStore({
@@ -19,6 +20,7 @@ const store = configureStore({
     pastelModal: pastelModalReducer,
     pastelConf: pastelConfReducer,
     pastelPrice: pastelPriceReducer,
+    rpcConfig: rpcConfigReducer,
     pastelPaperWalletModal: pastelPaperWalletModalReducer,
     pastelSpriteEditorToolModal: pastelSpriteEditorToolModalReducer,
     pastelPhotopeaModal: pastelPhotopeaModalReducer,

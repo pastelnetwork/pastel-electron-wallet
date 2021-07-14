@@ -16,6 +16,7 @@ export type TInput = {
   isValid?: boolean | undefined
   label?: string
   id?: string
+  value?: string
   hint?: string
   errorMessage?: string | null
   disabled?: boolean
@@ -39,6 +40,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       label,
       placeholder,
       id,
+      value,
       hint,
       errorMessage,
       disabled,
@@ -83,6 +85,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
             <input
               id={id}
               ref={ref}
+              value={value}
               className={inputClasses}
               onChange={onChange}
               type={type}
