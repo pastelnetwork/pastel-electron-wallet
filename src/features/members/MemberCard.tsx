@@ -10,6 +10,7 @@ export type TMemberCard = {
   role?: string
   isVerified: boolean
   followedByUser: boolean
+  searchText?: string
 }
 
 const MemberCard = ({
@@ -18,6 +19,7 @@ const MemberCard = ({
   followers,
   isVerified,
   followedByUser,
+  searchText,
 }: TMemberCard): JSX.Element => {
   return (
     <div className='px-5 py-7 bg-background-main rounded-2xl overflow-visible h-142px'>
@@ -30,7 +32,23 @@ const MemberCard = ({
           />
         )}
         <div className='flex flex-col justify-between w-111px'>
-          <h5 className='text-gray-1a font-semibold truncate'>{name}</h5>
+          <h5 className='text-gray-1a font-semibold truncate'>
+            {searchText ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: searchText
+                    ? name.replace(
+                        new RegExp(searchText, 'gi'),
+                        match =>
+                          `<mark class='bg-yellow-ff py-1'>${match}</mark>`,
+                      )
+                    : name,
+                }}
+              ></div>
+            ) : (
+              name
+            )}
+          </h5>
           <h6 className='text-gray-a0 text-12px pb-3'>{followers} followers</h6>
 
           <button

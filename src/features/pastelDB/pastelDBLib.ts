@@ -2,6 +2,23 @@ import { remote } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
+import {
+  TBlock,
+  TBlockChainInfo,
+  TBlockSubsidy,
+  TChainTips,
+  TListUnspent,
+  TMempoolInfo,
+  TNetTotal,
+  TNetworkInfo,
+  TRawMempool,
+  TRawTransaction,
+  TTotalBalance,
+  TTransaction,
+  TTransactionInfo,
+  TWalletInfo,
+} from 'types/rpc'
+import { TMiningInfo } from '../../types/rpc/mining'
 
 import {
   createBlock,
@@ -49,25 +66,7 @@ import {
   tableNames,
   whereTransactionIDMatchingQuery,
 } from './constants'
-import {
-  TBlockChainInfo,
-  TBlockInfo,
-  TBlockSubsidy,
-  TChainTips,
-  TListTransactions,
-  TListUnspent,
-  TMempoolInfo,
-  TMiningInfo,
-  TNetTotals,
-  TNetworkInfo,
-  TRawMempool,
-  TRawTransaction,
-  TTotalBalance,
-  TTransactionInfo,
-  TTxoutsetInfo,
-  TValidateFields,
-  TWalletInfo,
-} from './type'
+import { TTxoutsetInfo, TValidateFields } from './type'
 
 export const readSqliteDBFile = async (): Promise<Buffer> => {
   return await fs.promises.readFile(
@@ -300,7 +299,7 @@ export function insertNetworkInfoToDB(
 
 export function insertNetTotalsToDB(
   pastelDB: Database,
-  nettotals: TNetTotals,
+  nettotals: TNetTotal,
 ): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'nettotals')
@@ -395,7 +394,7 @@ export function insertMiningInfoToDB(
 
 export function insertBlockInfoToDB(
   pastelDB: Database,
-  blockInfo: TBlockInfo,
+  blockInfo: TBlock,
 ): void {
   if (
     validateDataFromDB(pastelDB, 'blockinfo', {
@@ -577,7 +576,7 @@ export function insertWalletinfo(
 
 export function insertListTransactions(
   pastelDB: Database,
-  listtransactions: TListTransactions,
+  listtransactions: TTransaction,
 ): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listtransactions')

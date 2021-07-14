@@ -106,7 +106,11 @@ const MySecurity = (props: TSecurity): JSX.Element => {
           handleDownloadVideo={handleDownloadVideo}
           currentStatus={currentStatus}
         />
-        <CryptoKey rpcConfig={rpcConfig} currencyName={info?.currencyName} />
+        <CryptoKey
+          rpcConfig={rpcConfig}
+          currencyName={info?.currencyName}
+          qrcodeData={qrcodeData.join('')}
+        />
       </div>
       <div className='hidden'>
         <iframe

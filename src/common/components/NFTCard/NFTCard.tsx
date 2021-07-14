@@ -29,6 +29,10 @@ export type TNFTCompactCard = {
   variant?: string
   isLastBid?: boolean
   followers?: number
+  authorClassName?: string
+  exauthorClassName?: string
+  avatarClassName?: string
+  searchText?: string
   detailUrl?: string
   copies?: string
   diamond?: string
@@ -54,6 +58,10 @@ const NFTCard = ({
   variant,
   isLastBid,
   followers,
+  authorClassName = 'text-h5 font-extrabold text-gray-1b ',
+  exauthorClassName = 'font-medium text-gray-4a text-sm md:text-h4',
+  avatarClassName = 'w-9',
+  searchText,
   copies = '1 of 1,000',
   diamond = '10%',
   bidPercentage = '+100%',
@@ -73,11 +81,6 @@ const NFTCard = ({
       ? 'pt-13px'
       : 'pt-2 md:pt-3'
     : 'pt-2.5 pb-0.5'
-  const authorClass = isNFTPortfolio
-    ? 'text-sm font-normal text-gray-4a pl-6px'
-    : isPortfolio
-    ? 'pl-2 text-h5 font-extrabold leading-6 text-gray-1b'
-    : 'pl-2 px-2 font-medium text-gray-4a text-sm md:text-h4'
 
   const getTooltip = (title: string, description: string) => (
     <div className='px-2 py-6px'>
@@ -99,13 +102,36 @@ const NFTCard = ({
       {fullCardProps && (
         <div className='w-full px-4 pb-2 md:pb-3 md:px-3 flex justify-between'>
           <div className='flex items-center overflow-hidden'>
-            <img
-              src={fullCardProps.avatarSrc}
-              className={`${isNFTPortfolio ? 'w-6 h-6' : 'w-9'}`}
-            />
-            <h4 className={cn('truncate', authorClass)}>
-              @{fullCardProps.author}
-            </h4>
+            <img src={fullCardProps.avatarSrc} className={avatarClassName} />
+            {variant === 'portfolio' ? (
+              <h4 className={cn('pl-2 leading-6 truncate', authorClassName)}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: searchText
+                      ? `@${fullCardProps.author}`.replace(
+                          new RegExp(searchText, 'gi'),
+                          match =>
+                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+                        )
+                      : `@${fullCardProps.author}`,
+                  }}
+                ></div>
+              </h4>
+            ) : (
+              <h4 className={cn('px-2 truncate', exauthorClassName)}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: searchText
+                      ? `@${fullCardProps.author}`.replace(
+                          new RegExp(searchText, 'gi'),
+                          match =>
+                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+                        )
+                      : `@${fullCardProps.author}`,
+                  }}
+                ></div>
+              </h4>
+            )}
           </div>
           <div className='flex items-center'>
             {fullCardProps.hideLikeButton ? (
@@ -136,7 +162,7 @@ const NFTCard = ({
           ></div>
         </div>
       ) : null}
-      <Link to={detailUrl} className='cursor-pointer'>
+      <Link to={detailUrl} className='cursor-pointer w-full'>
         <div
           className={cn(
             'relative',
@@ -168,7 +194,7 @@ const NFTCard = ({
         )}
       >
         <div className='flex justify-between'>
-          <Link to={detailUrl} className='cursor-pointer'>
+          <Link to={detailUrl} className='cursor-pointer w-full'>
             <div
               className={cn(
                 'text-gray-4a truncate',

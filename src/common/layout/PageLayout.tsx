@@ -1,10 +1,10 @@
 import React from 'react'
-import Navbar from '../components/Header'
+import Header from '../components/Header'
 
 const PageLayout: React.FC = ({ children }) => {
   return (
     <div className='w-screen h-screen'>
-      <Navbar />
+      <Header />
       <div className='routes-wrapper bg-background-main'>{children}</div>
     </div>
   )

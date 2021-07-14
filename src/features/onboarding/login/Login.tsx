@@ -8,14 +8,10 @@ import Typography from 'common/components/Typography/Typography'
 
 import * as ROUTES from 'common/utils/constants/routes'
 
-interface LoginFormInput {
+interface ILoginFormInput {
   value: string
   hasError: boolean
   isTouched: boolean
-}
-
-export interface LoginProps {
-  setUser: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const initialInputState = {
@@ -24,13 +20,13 @@ const initialInputState = {
   isTouched: false,
 }
 
-const Login: React.FC<LoginProps> = ({ setUser }) => {
+const Login: React.FC = () => {
   const history = useHistory()
 
-  const [username, setUsername] = React.useState<LoginFormInput>(
+  const [username, setUsername] = React.useState<ILoginFormInput>(
     initialInputState,
   )
-  const [password, setPassword] = React.useState<LoginFormInput>(
+  const [password, setPassword] = React.useState<ILoginFormInput>(
     initialInputState,
   )
 
@@ -86,7 +82,6 @@ const Login: React.FC<LoginProps> = ({ setUser }) => {
           className='w-full'
           type='submit'
           onClick={() => {
-            setUser(true)
             history.push(ROUTES.DASHBOARD)
           }}
         >
