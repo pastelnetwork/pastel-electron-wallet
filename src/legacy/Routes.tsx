@@ -30,7 +30,6 @@ import AddressbookImpl from './utils/AddressbookImpl'
 import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
-import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
 import { PastelDBThread } from '../features/pastelDB'
@@ -578,16 +577,6 @@ class RouteApp extends React.Component<any, any> {
                   createNewAddress={this.createNewAddress}
                   totalBalance={totalBalance}
                   info={info}
-                />
-              )}
-            />
-
-            <Route
-              path={routes.CONNECTMOBILE}
-              render={() => (
-                <WormholeConnection
-                  companionAppListener={this.companionAppListener}
-                  connectedCompanionApp={connectedCompanionApp}
                 />
               )}
             />
