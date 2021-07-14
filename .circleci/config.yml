@@ -101,7 +101,7 @@ jobs:
           path: ~/project/out/make
 
 workflows:
-  lint-test-package:
+  lint-and-test:
     jobs:
       - install-deps
       - lint-and-test:
