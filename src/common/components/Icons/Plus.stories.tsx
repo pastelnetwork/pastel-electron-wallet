@@ -4,7 +4,7 @@ import { Story, Meta } from '@storybook/react'
 import { Plus as Component, TPlusProps as Props } from './Plus'
 
 export default {
-  title: 'Icons/Plus',
+  title: 'Icons/Plus Icon',
   component: Component,
 } as Meta
 
