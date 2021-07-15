@@ -7,7 +7,7 @@ type TPrevButton = {
   color: string
 }
 
-const PrevButton: React.FC<TPrevButton> = ({ color }) => {
+const PrevButton = ({ color }: TPrevButton): JSX.Element => {
   return (
     <Link to={routes.STATISTICS} className={styles.backButtonLink}>
       <i

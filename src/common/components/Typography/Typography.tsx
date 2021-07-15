@@ -10,7 +10,7 @@ export enum TypographyVariant {
   body3,
 }
 
-interface ITypographyProps {
+type TTypographyProps = {
   children: string
   variant?: TypographyVariant
   customFontWeight?: string
@@ -19,14 +19,14 @@ interface ITypographyProps {
   className?: string
 }
 
-const Typography: React.FC<ITypographyProps> = ({
+const Typography = ({
   children,
   variant = TypographyVariant.body1,
   uppercase = false,
   className,
   customFontWeight,
   customColor,
-}) => (
+}: TTypographyProps): JSX.Element => (
   <div
     className={cn(
       'font-body',

@@ -7,14 +7,14 @@ import checkIcon from 'common/assets/icons/ico-check.svg'
 import Select from 'common/components/Select/Select'
 import PaymentSource from './PaymentSource'
 
-type IDataType = {
+type TDataType = {
   hash: string
 }
 
 export type PaymentModalProps = {
   isOpen: boolean
   handleClose: () => void
-  paymentSources: Array<IDataType>
+  paymentSources: Array<TDataType>
 }
 
 const PaymentModal: React.FC<PaymentModalProps> = ({
@@ -99,7 +99,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
         </div>
         <table className='w-full'>
           <tbody>
-            {paymentSources.map((data: IDataType, index: number) => (
+            {paymentSources.map((data: TDataType, index: number) => (
               <PaymentSource key={index} {...data} />
             ))}
           </tbody>

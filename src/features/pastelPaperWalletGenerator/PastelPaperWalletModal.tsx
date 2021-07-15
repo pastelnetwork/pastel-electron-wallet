@@ -22,7 +22,7 @@ type PastelPaperWalletModalProps = {
   currentName: string
 }
 
-interface PDFDocumentProps {
+type TPDFDocumentProps = {
   address: string
   privateKey: string
   currencyName: string
@@ -125,7 +125,7 @@ function PDFDocument({
   currencyName,
   privateKey,
   title,
-}: PDFDocumentProps) {
+}: TPDFDocumentProps) {
   return (
     <Document title={title}>
       <Page size='A4' style={pdfStyles.page}>
