@@ -11,7 +11,7 @@ import Toggle from 'common/components/Toggle'
 import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
 import { TArtworkTicket } from 'api/artwork-api/interfaces'
 import { toast } from 'react-toastify'
-import { formatFileSize, formatPSL } from 'common/utils/format'
+import { formatFileSize, formatNumber } from 'common/utils/format'
 import icoPreview from 'common/assets/icons/ico-preview.svg'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
@@ -34,6 +34,8 @@ export default function SubmitStep({
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
+
+  const currencyName = 'PSL'
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
@@ -185,7 +187,9 @@ export default function SubmitStep({
                 <div className='pl-5 w-36'>
                   {formatFileSize(optimizeImageToKb * 1024)}
                 </div>
-                <div>{formatPSL(estimatedFee)}</div>
+                <div>
+                  {formatNumber(estimatedFee)} {currencyName}
+                </div>
               </div>
             </div>
           </div>

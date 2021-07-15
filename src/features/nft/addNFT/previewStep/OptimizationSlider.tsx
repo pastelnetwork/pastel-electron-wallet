@@ -1,12 +1,13 @@
 import React from 'react'
 import Slider from 'common/components/Slider/Slider'
-import { formatPSL } from 'common/utils/format'
+import { formatNumber } from 'common/utils/format'
 
 export type TOptimizationSliderProps = {
   recalcFee(val: number): number
   fileSizeKb: number
   optimizedSizeKb: number
   setOptimizedSizeKb(val: number): void
+  currencyName: string
 }
 
 export default function OptimizationSlider(
@@ -17,9 +18,9 @@ export default function OptimizationSlider(
 
   const formatValue = (value: number) => `${value} Mb`
   const formatTooltipValue = (value: number) => {
-    return `${value.toFixed(1)} Mb - ${formatPSL(
+    return `${value.toFixed(1)} Mb - ${formatNumber(
       props.recalcFee(value * 1024),
-    )}`
+    )} ${props.currencyName}`
   }
 
   const onUpdate = (val: number) => {

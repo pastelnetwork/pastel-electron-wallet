@@ -15,7 +15,7 @@ import Magnification from './Magnification'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import style from './PreviewStep.module.css'
-import { formatFileSize, formatPSL } from 'common/utils/format'
+import { formatFileSize, formatNumber } from 'common/utils/format'
 import { getEstimateFee } from 'api/estimate-fee'
 import { useAppSelector } from '../../../../redux/hooks'
 import { toast } from 'react-toastify'
@@ -45,9 +45,9 @@ export default function PreviewStep({
     null,
   )
   const [feePerKb, setFeePerKb] = useState<number>(0)
-  // const [estimatedFee, setEstimatedFee] = useState<number>(0)
-
+  const currencyName = 'PSL'
   const fileSizeKb = Math.round(image.file.size / 1024)
+  const imageSizePercentOfAvg = 65
 
   const pastelConfig = useAppSelector(state => state.pastelConf)
 
@@ -68,6 +68,9 @@ export default function PreviewStep({
   }
 
   const calcFee = (sizeKb: number): number => {
+    if (!feePerKb) {
+      return 1
+    }
     return Math.round(sizeKb * feePerKb)
   }
 
@@ -170,11 +173,11 @@ export default function PreviewStep({
               <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
                 <div
                   className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
-                  style={{ width: '65%' }}
+                  style={{ width: imageSizePercentOfAvg + '%' }}
                 />
               </div>
               <div className='text-xs text-gray-71'>
-                65% of average Pastel NFT size
+                {imageSizePercentOfAvg}% of average Pastel NFT size
               </div>
             </div>
           </div>
@@ -183,7 +186,7 @@ export default function PreviewStep({
               Estimated registration fee
             </div>
             <div className='text-gray-2d text-sm font-extrabold'>
-              {formatPSL(estimatedFee)}
+              {formatNumber(estimatedFee)} {currencyName}
             </div>
           </div>
           <div className='font-medium text-gray-4a mb-5'>
@@ -210,6 +213,7 @@ export default function PreviewStep({
               fileSizeKb={fileSizeKb}
               optimizedSizeKb={optimizeImageToKb}
               setOptimizedSizeKb={onChangeOptimization}
+              currencyName={currencyName}
             />
           </div>
           <div>

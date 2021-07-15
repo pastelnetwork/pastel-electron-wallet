@@ -86,12 +86,3 @@ export const formatFileSize = (size: number): string => {
 
   return Math.max(size, 0.1).toFixed(1) + units[i]
 }
-
-const numFormatter = new Intl.NumberFormat('en-US', {
-  style: 'decimal',
-  maximumFractionDigits: 0,
-})
-
-export const formatPSL = (val: number): string => {
-  return numFormatter.format(val) + ' PSL'
-}
