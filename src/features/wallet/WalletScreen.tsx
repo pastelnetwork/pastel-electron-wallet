@@ -18,11 +18,10 @@ import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
 import Breadcrumbs from '../../common/components/Breadcrumbs'
-import { ControlRPC, WalletRPC } from 'api/pastel-rpc'
+import { WalletRPC } from 'api/pastel-rpc'
 import {
   TAddressRow,
   TBalanceCard,
-  TInfo,
   TTotalBalance,
   TAddressBalance,
 } from 'types/rpc'
@@ -47,6 +46,7 @@ const paymentSources = [
 ]
 
 const WalletScreen = (): JSX.Element => {
+  const { info } = useAppSelector(state => state.appInfo)
   const Columns = [
     {
       key: 'address',
@@ -181,7 +181,6 @@ const WalletScreen = (): JSX.Element => {
 
   const rpcConfig = { url, username, password }
   const walletRPC = new WalletRPC(rpcConfig)
-  const controlRPC = new ControlRPC(rpcConfig)
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
 
@@ -194,7 +193,6 @@ const WalletScreen = (): JSX.Element => {
   const [currentAddress, setCurrentAddress] = useState('')
   const [active, setActive] = useState(1)
 
-  const [info, setInfo] = useState<TInfo>({} as TInfo)
   const [selectedAmount, setSelectedAmount] = useState(0)
   const [selectedRows, setSelectedRows] = useState<Array<string>>([])
   const [balanceCards, setBalanceCards] = useState<TBalanceCard[]>(cardItems)
@@ -275,14 +273,6 @@ const WalletScreen = (): JSX.Element => {
     setWalletOriginAddresses(addresses)
   }
 
-  /**
-   * Fetch info
-   */
-  const fetchInfo = async () => {
-    const inf = await controlRPC.fetchInfo()
-    setInfo(inf)
-  }
-
   const saveAddressLabel = (address: string, label: string): void => {
     // Update address nick
     const newWalletAddress: TAddressRow[] = walletAddresses.map(a => {
@@ -298,11 +288,7 @@ const WalletScreen = (): JSX.Element => {
 
   useEffect(() => {
     const getTotalBalances = async () => {
-      await Promise.all([
-        fetchInfo(),
-        fetchTotalBalances(),
-        fetchWalletAddresses(),
-      ])
+      await Promise.all([fetchTotalBalances(), fetchWalletAddresses()])
     }
     if (isAddressBookLoaded) {
       getTotalBalances()

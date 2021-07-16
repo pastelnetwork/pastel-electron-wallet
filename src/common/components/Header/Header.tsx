@@ -2,14 +2,14 @@ import React from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
 import SearchBar from '../SearchBar'
 
-import routes from '../../../common/constants/routes.json'
-import Logo from '../../../common/assets/icons/ico-logo.svg'
-import addBtn from '../../../common/assets/icons/ico-add-btn.svg'
-import QuestionTag from '../../../common/assets/icons/ico-question.svg'
-import BellIcon from '../../../common/assets/icons/ico-bell.svg'
-import MessageIcon from '../../../common/assets/icons/ico-msg.svg'
-import SettingIcon from '../../../common/assets/icons/ico-setting.svg'
-import UserIcon from '../../../common/assets/icons/ico-user.svg'
+import * as ROUTES from 'common/utils/constants/routes'
+import Logo from 'common/assets/icons/ico-logo.svg'
+import addBtn from 'common/assets/icons/ico-add-btn.svg'
+import QuestionTag from 'common/assets/icons/ico-question.svg'
+import BellIcon from 'common/assets/icons/ico-bell.svg'
+import MessageIcon from 'common/assets/icons/ico-msg.svg'
+import SettingIcon from 'common/assets/icons/ico-setting.svg'
+import UserIcon from 'common/assets/icons/ico-user.svg'
 import cn from 'classnames'
 import { useToggle } from 'react-use'
 import AddNFT from 'features/nft/addNFT'
@@ -81,7 +81,7 @@ export default function Header(): JSX.Element | null {
   const [openAddNFT, toggleAddNFT] = useToggle(false)
 
   const location = useLocation()
-  if (location.pathname === routes.CHAT) {
+  if (location.pathname === ROUTES.CHAT) {
     return null
   }
 
@@ -91,37 +91,37 @@ export default function Header(): JSX.Element | null {
         <AddNFT open={openAddNFT} onClose={toggleAddNFT} />
         <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 border-b border-gray-ed text-gray-71'>
           <div className='flex items-center h-full'>
-            <Link to={routes.DASHBOARD} className='w-9 h-9'>
+            <Link to={ROUTES.DASHBOARD} className='w-9 h-9'>
               <img src={Logo} alt='logo' />
             </Link>
             <MenuItem
               classes='ml-4 1200px:ml-8 xl:ml-9 lg:w-20'
               exact
-              to={routes.DASHBOARD}
+              to={ROUTES.DASHBOARD}
             >
               Dashboard
             </MenuItem>
             <MenuItem
               classes='ml-4 1200px:ml-7 xl:ml-9 xl:w-37px'
-              to={routes.NFTS}
+              to={ROUTES.MARKET}
             >
               NFTs
             </MenuItem>
             <MenuItem
               classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-              to={routes.MEMBERS}
+              to={ROUTES.MEMBERS}
             >
               Members
             </MenuItem>
             <MenuItem
               classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-              to={routes.WALLET}
+              to={ROUTES.WALLET}
             >
               Wallet
             </MenuItem>
             <MenuItem
               classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
-              to={routes.PORTFOLIO}
+              to={ROUTES.PORTFOLIO}
             >
               Portfolio
             </MenuItem>
@@ -138,10 +138,10 @@ export default function Header(): JSX.Element | null {
           </div>
           <div className='flex items-center h-full'>
             <Icon src={QuestionTag} />
-            <Link to={routes.DASHBOARD}>
+            <Link to={ROUTES.DASHBOARD}>
               <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
             </Link>
-            <Link to={routes.CHAT}>
+            <Link to={ROUTES.CHAT}>
               <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
             </Link>
             <Icon classes='ml-6 lg:ml-27px w-18px' src={SettingIcon} />
@@ -149,7 +149,7 @@ export default function Header(): JSX.Element | null {
               classes='ml-6 lg:ml-22px'
               src={UserIcon}
               background
-              path={routes.MY_PROFILE}
+              path={ROUTES.MY_PROFILE}
             />
           </div>
         </div>

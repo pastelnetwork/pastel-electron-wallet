@@ -1,17 +1,17 @@
 import React, { useEffect, useState, useRef, KeyboardEvent } from 'react'
-// import { useHistory } from 'react-router'
 import cn from 'classnames'
-import routes from '../../common/constants/routes.json'
+
+import * as ROUTES from 'common/utils/constants/routes'
 import { useHistory } from 'react-router-dom'
 import { ChatItem, TChatItemProps } from './ChatItem'
 import { ChatMessage } from './ChatMessage'
 import { UserAvatar } from './components/UserAvatar'
-import editIcon from '../../common/assets/icons/ico-edit.svg'
-import chatMenuIcon from '../../common/assets/icons/ico-chat-menu.svg'
-import msgEmojiIcon from '../../common/assets/icons/ico-chatmsg-emoji.svg'
-import msgAttachIcon from '../../common/assets/icons/ico-chatmsg-link.svg'
-import msgSendIcon from '../../common/assets/icons/ico-chatmsg-send.svg'
-import chatCloseIcon from '../../common/assets/icons/ico-close2.svg'
+import editIcon from 'common/assets/icons/ico-edit.svg'
+import chatMenuIcon from 'common/assets/icons/ico-chat-menu.svg'
+import msgEmojiIcon from 'common/assets/icons/ico-chatmsg-emoji.svg'
+import msgAttachIcon from 'common/assets/icons/ico-chatmsg-link.svg'
+import msgSendIcon from 'common/assets/icons/ico-chatmsg-send.svg'
+import chatCloseIcon from 'common/assets/icons/ico-close2.svg'
 import styles from './Chat.module.css'
 import { mockChats, curUser } from './mock-data'
 import { TChatUser } from './common'
@@ -86,7 +86,7 @@ const Chat = (): JSX.Element => {
   const history = useHistory()
 
   const onCloseChat = () => {
-    history.push(routes.DASHBOARD)
+    history.push(ROUTES.DASHBOARD)
   }
 
   const TChatUser = (chat: TChatItemProps): TChatUser | undefined => {

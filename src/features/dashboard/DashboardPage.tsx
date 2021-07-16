@@ -6,6 +6,9 @@ import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
 import dayjs, { Dayjs } from 'dayjs'
+
+import * as ROUTES from 'common/utils/constants/routes'
+import { useAppSelector } from 'redux/hooks'
 import smallImage from '../../common/assets/images/mock/small-image.png'
 import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
@@ -18,60 +21,6 @@ import notificationData from './dashboardModals/notificationModal.data'
 const date = dayjs('2021-04-04')
 
 const walletBalance = 32000
-const currencyName = 'PSL'
-
-const transactions: TTransactionItemProps[] = [
-  { type: 'in', amount: 320000, date, currencyName },
-  { type: 'out', amount: 123000, date, currencyName },
-  { type: 'in', amount: 320000, date, currencyName },
-  { type: 'out', amount: 123000, date, currencyName },
-  { type: 'in', amount: 320000, date, currencyName },
-  { type: 'out', amount: 123000, date, currencyName },
-  { type: 'in', amount: 320000, date, currencyName },
-]
-
-const followers: Array<TPortfolioItemProps> = [
-  {
-    image: smallImage,
-    title: 'Cosmic Perspective',
-    author: '@zndrson',
-    price: 5000,
-    currencyName,
-    type: 'progress',
-  },
-  {
-    image: smallImage,
-    title: 'Cosmic Perspective',
-    author: '@zndrson',
-    price: 5000,
-    currencyName,
-    type: 'progress',
-  },
-  {
-    image: smallImage,
-    title: 'Cosmic Perspective',
-    author: '@zndrson',
-    price: 5000,
-    currencyName,
-    type: 'review',
-  },
-  {
-    image: smallImage,
-    title: 'Cosmic Perspective',
-    author: '@zndrson',
-    price: 5000,
-    currencyName,
-    type: 'sale',
-  },
-  {
-    image: smallImage,
-    title: 'Cosmic Perspective',
-    author: '@zndrson',
-    price: 5000,
-    currencyName,
-    type: 'sale',
-  },
-]
 
 enum Tabs {
   Creators,
@@ -109,6 +58,10 @@ let notifications: Array<TNotification> = [
 notifications = [...notifications, ...notifications, ...notifications]
 
 export default function DashboardPage(): JSX.Element {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
+
   const [cards, setCards] = useState<TNFTCard[]>([])
   const [tab, setTab] = useState<number>(0)
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
@@ -124,17 +77,71 @@ export default function DashboardPage(): JSX.Element {
         avatarSrc: avatar,
         onSale: true,
         price: '222K',
-        currencyName: 'PSL',
+        currencyName,
         percentage: 75,
         variant: 'portfolio',
         isLastBid: [true, false][Math.floor(Math.random() * 2)],
         hideLikeButton: true,
         hideFollow: true,
         hideUnFollow: index % 3 === 0 ? false : true,
+        detailUrl: ROUTES.PORTFOLIO_DETAIL,
       })
     })
     setCards(randomCards)
   }, [])
+
+  const followers: Array<TPortfolioItemProps> = [
+    {
+      image: smallImage,
+      title: 'Cosmic Perspective',
+      author: '@zndrson',
+      price: 5000,
+      currencyName,
+      type: 'progress',
+    },
+    {
+      image: smallImage,
+      title: 'Cosmic Perspective',
+      author: '@zndrson',
+      price: 5000,
+      currencyName,
+      type: 'progress',
+    },
+    {
+      image: smallImage,
+      title: 'Cosmic Perspective',
+      author: '@zndrson',
+      price: 5000,
+      currencyName,
+      type: 'review',
+    },
+    {
+      image: smallImage,
+      title: 'Cosmic Perspective',
+      author: '@zndrson',
+      price: 5000,
+      currencyName,
+      type: 'sale',
+    },
+    {
+      image: smallImage,
+      title: 'Cosmic Perspective',
+      author: '@zndrson',
+      price: 5000,
+      currencyName,
+      type: 'sale',
+    },
+  ]
+
+  const transactions: TTransactionItemProps[] = [
+    { type: 'in', amount: 320000, date, currencyName },
+    { type: 'out', amount: 123000, date, currencyName },
+    { type: 'in', amount: 320000, date, currencyName },
+    { type: 'out', amount: 123000, date, currencyName },
+    { type: 'in', amount: 320000, date, currencyName },
+    { type: 'out', amount: 123000, date, currencyName },
+    { type: 'in', amount: 320000, date, currencyName },
+  ]
 
   return (
     <div className='page-container py-5 w-full max-w-screen-xl mx-auto'>
@@ -148,7 +155,7 @@ export default function DashboardPage(): JSX.Element {
               {formatNumber(walletBalance)} {currencyName}
             </div>
           </div>
-          <div className='pl-[30px] pr-4 mr-14px h-0 overflow-auto h-[252px]'>
+          <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
             {transactions.map((transaction, i) => (
               <TransactionItem key={i} {...transaction} />
             ))}
@@ -158,7 +165,7 @@ export default function DashboardPage(): JSX.Element {
               </div>
             )}
           </div>
-          <LinkSection to='#' absolute gradient>
+          <LinkSection to={ROUTES.WALLET} absolute gradient>
             Wallet Details
           </LinkSection>
         </div>
@@ -203,13 +210,13 @@ export default function DashboardPage(): JSX.Element {
               </div>
             </div>
           )}
-          <LinkSection className='' to='#'>
+          <LinkSection className='' to={ROUTES.PORTFOLIO}>
             Show more
           </LinkSection>
         </div>
       </div>
       <div className='flex'>
-        <div className='paper pt-6 flex-grow lg:flex lg:flex-col relative w-0 mr-5 relative max-w-[850px]'>
+        <div className='paper pt-6 flex-grow lg:flex lg:flex-col w-0 mr-5 relative max-w-[850px]'>
           <div className='flex items-center h-6 mb-4 flex-shrink-0 px-30px justify-between'>
             <div className='flex'>
               <div className='font-extrabold text-gray-2d text-lg'>

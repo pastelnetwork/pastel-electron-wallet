@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
-import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
+import { useAppSelector } from 'redux/hooks'
 
+import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
 import avatar from '../../common/assets/images/avatar-placeholder.png'
 import image from '../../common/assets/images/nft-card-placeholder.png'
 import Select, { TOption } from '../../common/components/Select/Select'
@@ -9,25 +10,29 @@ import Slider from '../../common/components/Slider/Slider'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 
-const mockCardProps: TNFTCard = {
-  author: 'zndrson',
-  avatarSrc: avatar,
-  imageSrc: image,
-  likes: 23,
-  onSale: true,
-  price: '222K',
-  currencyName: 'PSL',
-  title: 'Cosmic Perspective longname test',
-  liked: true,
-  followers: 256,
-  isLastBid: false,
-}
 enum Tabs {
   feed,
   statistics,
 }
 
 const NFTMarketFeed: React.FC = () => {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
+  const mockCardProps: TNFTCard = {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: image,
+    likes: 23,
+    onSale: true,
+    price: '222K',
+    currencyName,
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    followers: 256,
+    isLastBid: false,
+  }
+
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)
 
   const mockCategories: TOption[] = [
