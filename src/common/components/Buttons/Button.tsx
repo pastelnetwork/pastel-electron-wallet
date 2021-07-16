@@ -13,6 +13,7 @@ export type TButton = {
   type?: 'button' | 'submit'
   width?: number
   secondary?: true
+  childrenClassName?: string
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
@@ -26,6 +27,7 @@ const Button = ({
   append,
   type,
   className,
+  childrenClassName,
   ...otherProps
 }: TButton): JSX.Element => {
   const Tag = href ? 'a' : 'button'
@@ -67,7 +69,7 @@ const Button = ({
           {...otherProps}
         >
           {prepend && <span className='pr-2'>{prepend}</span>}
-          <span>{children}</span>
+          <span className={cn(childrenClassName)}>{children}</span>
           {append && <span className='pl-2'>{append}</span>}
         </Tag>
       )}

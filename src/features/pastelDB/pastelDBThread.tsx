@@ -304,7 +304,7 @@ export async function fetchListTransactions(
       insertListTransactions(props.pastelDB, transactions[i])
     }
   } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchWalletInfo error: ${message}`)
+    throw new Error(`pastelDBThread fetchListTransactions error: ${message}`)
   }
 }
 
@@ -316,11 +316,11 @@ export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
       props.rpcConfig,
     )
     const unspentlist = result
-    for (let i = 0; i < unspentlist.length; i++) {
+    for (let i = 0; i < 1; i++) {
       insertListunspent(props.pastelDB, unspentlist[i])
     }
   } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchWalletInfo error: ${message}`)
+    throw new Error(`pastelDBThread fetchListunspent error: ${message}`)
   }
 }
 

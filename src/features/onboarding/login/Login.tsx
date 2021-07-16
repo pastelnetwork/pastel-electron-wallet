@@ -4,7 +4,9 @@ import { Link, useHistory } from 'react-router-dom'
 import { Input, InputPassword } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
 import CloseButton from '../common/closeButton'
-import Typography from 'common/components/Typography/Typography'
+import Typography, {
+  TypographyVariant,
+} from 'common/components/Typography/Typography'
 
 import * as ROUTES from 'common/utils/constants/routes'
 
@@ -33,7 +35,11 @@ const Login: React.FC = () => {
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <Typography variant='h1' color='#2D3748' weight={800}>
+      <Typography
+        variant={TypographyVariant.h1}
+        customColor='text-gray-2d'
+        customFontWeight='font-extrabold'
+      >
         Login
       </Typography>
       <form className='flex flex-col mt-30px'>

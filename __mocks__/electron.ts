@@ -11,4 +11,13 @@ class IPCRendererMock extends EventEmitter {
   }
 }
 const ipcRenderer = new IPCRendererMock()
-export { BrowserWindow, ipcRenderer }
+
+const remote = {
+  app: {
+    getPath: jest.fn(),
+    getName: jest.fn(),
+    getVersion: jest.fn(),
+  },
+}
+
+export { BrowserWindow, ipcRenderer, remote }

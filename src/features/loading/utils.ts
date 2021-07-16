@@ -47,14 +47,11 @@ export const checkHashAndDownloadParams = async ({
     const absPath = path.join(outputDir, p.name)
 
     const fileExists = await exists(absPath)
-
     if (fileExists) {
       const sha256 = sha256File(absPath)
-
       if (sha256 == p.sha256) {
         continue
       }
-
       try {
         await fs.promises.unlink(absPath)
       } catch (error) {
@@ -63,7 +60,6 @@ export const checkHashAndDownloadParams = async ({
         )
       }
     }
-
     const writer = fs.createWriteStream(absPath)
     onProgress(`Downloading ${p.name}...`)
 
@@ -84,21 +80,9 @@ export const checkHashAndDownloadParams = async ({
 
       resp.pipe(str).pipe(writer)
     })
-
     const promise = new Promise<void>((resolve, reject) => {
-      writer.on('finish', () => {
+      writer.on('finish', async () => {
         writer.close()
-
-        if (p?.originalName) {
-          fs.copyFile(absPath, path.join(outputDir, p.originalName), err => {
-            if (err) {
-              console.warn(
-                `utils checkHashAndDownloadParams rename error: ${err.message}`,
-                err,
-              )
-            }
-          })
-        }
         resolve()
       })
 

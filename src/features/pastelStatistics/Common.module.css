@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 16px;
+}
+
+.content {
+  height: calc(100vh);
+  padding: 20px 0px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.filterBar {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  padding-right: 50px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
