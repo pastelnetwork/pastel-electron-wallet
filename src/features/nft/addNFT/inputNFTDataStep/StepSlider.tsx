@@ -53,7 +53,6 @@ export default function StepSlider({
               onChange={(value: number) => onChange(roundValue(value))}
               formatValue={formatValue}
               formatTooltipValue={formatTooltipValue}
-              valuesClassName='mt-2'
             />
             {name === 'copies' && (
               <div ref={numpadRef} className='relative -top-3'>
