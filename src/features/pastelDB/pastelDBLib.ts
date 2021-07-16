@@ -1,7 +1,6 @@
 import { remote } from 'electron'
 import log from 'electron-log'
 import fs from 'fs'
-import { open } from 'fs/promises'
 import path from 'path'
 import initSqlJs, { Database, QueryExecResult, SqlJsStatic } from 'sql.js'
 import {
@@ -79,7 +78,7 @@ import { TTxoutsetInfo, TValidateFields } from './type'
 
 export const readSqliteDBFile = async (): Promise<Buffer | null> => {
   try {
-    const file = await open(
+    const file = await fs.promises.open(
       path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
       'r',
     )
@@ -779,10 +778,10 @@ export function insertRawtransaction(
     $hex: rawtransaction.hex,
     $txid: rawtransaction.txid,
     $overwintered: overwintered,
-    $version: rawtransaction.version,
-    $versiongroupid: rawtransaction.versiongroupid,
-    $locktime: rawtransaction.locktime,
-    $expiryheight: rawtransaction.expiryheight,
+    $version: rawtransaction?.version,
+    $versiongroupid: rawtransaction?.versiongroupid || '',
+    $locktime: rawtransaction?.locktime,
+    $expiryheight: rawtransaction?.expiryheight || 0,
     $vin: vin,
     $vout: vout,
     $vjoinsplit: vjoinsplit,
@@ -792,7 +791,6 @@ export function insertRawtransaction(
     $blocktime: rawtransaction.blocktime,
     $createTimestamp: createTimestamp,
   }
-
   pastelDB.exec(insertRawtransactionQuery, values)
 }
 
@@ -944,6 +942,7 @@ export function insertListunspent(
 ): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listunspent')
+
   const generated = listunspent.generated.toString()
   const values = {
     $newId: newId,
@@ -951,7 +950,7 @@ export function insertListunspent(
     $vout: listunspent.vout,
     $generated: generated,
     $address: listunspent.address,
-    $account: listunspent.account,
+    $account: listunspent?.account || '',
     $scriptPubKey: listunspent.scriptPubKey,
     $amount: listunspent.amount,
     $confirmations: listunspent.confirmations,
