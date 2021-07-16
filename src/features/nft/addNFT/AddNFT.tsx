@@ -1,5 +1,11 @@
 import React from 'react'
-import { TNFTData, Step, TUseAddNFTProps, useAddNFTState } from './AddNFT.state'
+import {
+  TNFTData,
+  Step,
+  TUseAddNFTProps,
+  useAddNFTState,
+  TImage,
+} from './AddNFT.state'
 import Modal from 'common/components/AnimatedModal'
 import UploadStep from './uploadStep/UploadStep'
 import AfterUploadStep from './afterUploadStep/AfterUploadStep'
@@ -31,7 +37,7 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
     return <UploadStep state={state} />
   }
 
-  const image = state.image as string
+  const image = state.image as TImage
   const nftData = state.nftData as TNFTData
 
   if (step === Step.afterUpload) {
@@ -43,7 +49,7 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
   if (step === Step.submit) {
     return <SubmitStep state={state} image={image} nftData={nftData} />
   } else if (step === Step.approved) {
-    return <ApprovedStep state={state} image={image} />
+    return <ApprovedStep state={state} image={image} nftData={nftData} />
   }
 
   return null

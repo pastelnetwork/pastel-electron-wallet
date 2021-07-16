@@ -3,6 +3,7 @@
 import axios from 'axios'
 import _ from 'underscore'
 import hex from 'hex-string'
+import log from 'electron-log'
 import {
   TotalBalance,
   AddressBalance,
@@ -91,8 +92,18 @@ export default class RPC {
           console.log(e)
 
           if (e.response && e.response.data) {
+            log.error(
+              `legacy/rpc response error. Response: ${JSON.stringify(
+                e.response?.data,
+              )}. Status code: ${JSON.stringify(e.response?.status)}`,
+            )
             reject(e.response.data.error.message)
           } else {
+            log.error(
+              `legacy/rpc no connection. Error: ${JSON.stringify(
+                e?.config?.data,
+              )}`,
+            )
             reject(NO_CONNECTION)
           }
         })

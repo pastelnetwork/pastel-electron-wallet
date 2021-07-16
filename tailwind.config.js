@@ -245,6 +245,7 @@ module.exports = {
           11: '#11142D',
           f5: '#F5F6F7',
           d1: '#D1D6E0',
+          main: '#D1D1D1',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -332,6 +333,9 @@ module.exports = {
             '02': 'rgba(255, 255, 255, 0.2)',
             '04': 'rgba(255, 255, 255, 0.4)',
           },
+          gray: {
+            46055: 'rgba(46, 46, 46, 0.55);',
+          },
         },
       },
       boxShadow: {
@@ -399,12 +403,14 @@ module.exports = {
         '1px': '0.0625rem',
         '3px': '0.1875rem',
         '5px': '0.3125rem',
+        '16px': '1rem',
       },
       lineHeight: {
         '11px': '0.6875rem',
         '15px': '0.938rem',
         '18px': '1.125rem',
         '19px': '1.1875',
+        '30px': '2rem',
       },
       minHeight: {
         '78px': '4.875rem',
@@ -437,6 +443,8 @@ module.exports = {
       maxHeight: {
         '205px': '12.813rem',
         '244px': '15.25rem',
+        '400px': '25rem',
+        '424px': '26.5rem',
         '700px': '43.75rem',
         '750px': '46.875rem',
         '1293px': '80.813rem',

@@ -1,21 +1,12 @@
 import React, { useState } from 'react'
 import cx from 'classnames'
-import styled from 'styled-components'
+import styles from './CommentModal.module.css'
 import infoIcon from '../../common/assets/icons/ico-info.svg'
 
 export interface CommentModalProps {
   isOpen: boolean
   onClose: () => void
 }
-
-const Triangle = styled.div`
-  width: 0;
-  height: 0;
-  border-left: 16px solid transparent;
-  border-right: 16px solid transparent;
-  border-top: 16px solid white;
-  filter: drop-shadow(1px 1px 1px #e5e7eb);
-`
 
 const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
   const [tab, setTab] = useState('Comments')
@@ -58,7 +49,12 @@ const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
         </div>
       </div>
       <div>
-        <Triangle className='absolute bottom-0 left-1/2 transform -translate-x-2/4 translate-y-full' />
+        <div
+          className={cx(
+            'absolute bottom-0 left-1/2 transform -translate-x-2/4 translate-y-full w-0 h-0',
+            styles.triangle,
+          )}
+        />
       </div>
     </div>
   )

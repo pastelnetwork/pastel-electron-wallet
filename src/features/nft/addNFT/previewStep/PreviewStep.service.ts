@@ -1,17 +1,17 @@
 import smartcrop from 'smartcrop'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
-import { Crop } from '../AddNFT.state'
+import { TCrop, TImage } from '../AddNFT.state'
 
 const previewSize = 320
 
-export type CroppedImage = {
+export type TCroppedImage = {
   src: string
-  crop: Crop
+  crop: TCrop
   ctx: CanvasRenderingContext2D
 }
 
-export type CroppedValidatedImage = CroppedImage & {
+export type CroppedValidatedImage = TCroppedImage & {
   error?: string
 }
 
@@ -25,8 +25,8 @@ export const loadImage = (src: string): Promise<HTMLImageElement> =>
 
 export const getCroppedImage = (
   img: HTMLImageElement,
-  crop: Crop,
-): CroppedImage => {
+  crop: TCrop,
+): TCroppedImage => {
   const canvas = document.createElement('canvas')
   canvas.width = Math.min(crop.width, previewSize)
   canvas.height = Math.min(crop.height, previewSize)
@@ -52,7 +52,7 @@ export const getCroppedImage = (
   }
 }
 
-const getSmartCroppedImage = async (src: string): Promise<CroppedImage> => {
+const getSmartCroppedImage = async (src: string): Promise<TCroppedImage> => {
   const img = await loadImage(src)
   const result = await smartcrop.crop(img, {
     width: previewSize,
@@ -83,14 +83,14 @@ const hasDifferentPixels = (ctx: CanvasRenderingContext2D) => {
 export const useImagePreview = ({
   image,
 }: {
-  image: string
+  image: TImage
 }): [
   CroppedValidatedImage | undefined,
   (image: CroppedValidatedImage) => void,
 ] => {
   const [croppedImage, setCroppedImage] = useState<CroppedValidatedImage>()
 
-  const updateCroppedImage = (croppedImage: CroppedImage) => {
+  const updateCroppedImage = (croppedImage: TCroppedImage) => {
     setCroppedImage({
       ...croppedImage,
       error: hasDifferentPixels(croppedImage.ctx)
@@ -100,30 +100,10 @@ export const useImagePreview = ({
   }
 
   useEffect(() => {
-    getSmartCroppedImage(image)
+    getSmartCroppedImage(image.url)
       .then(updateCroppedImage)
       .catch(error => toast(error.message, { type: 'error' }))
   }, [image])
 
   return [croppedImage, updateCroppedImage]
-}
-
-export const useChangeableImage = (
-  providedImage: string,
-): {
-  image: string
-  onImageChange(e: ChangeEvent<HTMLInputElement>): void
-} => {
-  const [image, setImage] = useState(providedImage)
-
-  const onImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target?.files
-    if (!files) {
-      return
-    }
-    const file = files[0]
-    setImage(URL.createObjectURL(file))
-  }
-
-  return { image, onImageChange }
 }

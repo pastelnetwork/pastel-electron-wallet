@@ -4,7 +4,6 @@ import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
 
 import { pageRoutes } from './index'
-import * as Styles from './Routes.styles'
 import * as ROUTES from '../utils/constants/routes'
 import { TRPCConfig } from 'api/pastel-rpc'
 import LoadingScreen from 'features/loading'
@@ -102,7 +101,7 @@ const Routes: React.FC = () => {
   }
 
   return (
-    <Styles.Container>
+    <div className='flex justify-center items-center min-h-screen bg-main'>
       <Switch location={location}>
         {childRoutes(pageRoutes, rpcConfig, info)}
         <Route
@@ -140,7 +139,7 @@ const Routes: React.FC = () => {
         />
       </Switch>
       <Utilities />
-    </Styles.Container>
+    </div>
   )
 }
 
