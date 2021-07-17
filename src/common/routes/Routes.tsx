@@ -101,7 +101,7 @@ const Routes: React.FC = () => {
   }
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-main'>
+    <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
       <Switch location={location}>
         {childRoutes(pageRoutes, rpcConfig, info)}
         <Route

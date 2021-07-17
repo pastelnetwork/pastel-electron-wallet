@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import QRCode from 'qrcode.react'
-import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
+
+import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import CloseButton from '../common/closeButton'
 import Typography, {
   TypographyVariant,
-} from '../../../common/components/Typography/Typography'
-import * as ROUTES from '../../../common/utils/constants/routes'
-import Tooltip from '../../../common/components/Tooltip'
-import { Button } from '../../../common/components/Buttons'
-import infoIco from '../../../common/assets/icons/ico-info.svg'
+} from 'common/components/Typography/Typography'
+import * as ROUTES from 'common/utils/constants/routes'
+import Tooltip from 'common/components/Tooltip'
+import { Button } from 'common/components/Buttons'
+import Link from 'common/components/Link'
+import infoIco from 'common/assets/icons/ico-info.svg'
 
 enum Tabs {
   qrCode,
@@ -119,7 +120,7 @@ const PasswordRecovery: React.FC = () => {
             </Link>
           </div>
           <div className='flex justify-center mt-[17px]'>
-            <Link to={ROUTES.PASSWORD_RECOVERY}>
+            <Link href={ROUTES.PASSWORD_RECOVERY}>
               <Typography
                 variant={TypographyVariant.body2}
                 customColor='text-link'

@@ -56,7 +56,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
       className={cn(
         'w-full flex pr-33px',
         className,
-        hasBorder && 'border-b-1px border-solid border-gray-d1',
+        hasBorder && 'border-b-1px border-solid border-gray-d6',
       )}
     >
       <div className='mr-20px w-68px'>

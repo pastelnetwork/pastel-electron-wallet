@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
 
-import playIco from '../../../common/assets/icons/ico-arrow.svg'
-import image from '../../../common/assets/images/video-placeholder.jpeg'
-import { Button } from '../../../common/components/Buttons'
-import * as ROUTES from '../../../common/utils/constants/routes'
+import playIco from 'common/assets/icons/ico-arrow.svg'
+import image from 'common/assets/images/video-placeholder.jpeg'
+import { Button } from 'common/components/Buttons'
+import Link from 'common/components/Link'
+import * as ROUTES from 'common/utils/constants/routes'
 
 const OnboardingWelcome = (): JSX.Element => {
   return (
@@ -31,7 +31,7 @@ const OnboardingWelcome = (): JSX.Element => {
         </div>
       </div>
       <div className='mt-10 flex flex-col items-center'>
-        <Link to={ROUTES.SIGN_UP}>
+        <Link href={ROUTES.SIGN_UP}>
           <Button className='w-96'>Register account</Button>
         </Link>
       </div>
@@ -46,9 +46,7 @@ const OnboardingWelcome = (): JSX.Element => {
 
       <div className='mt-4 text-center text-base text-gray-a0'>
         Already have an account?
-        <Link to={ROUTES.LOGIN} className='inline-block ml-3 text-link'>
-          Login
-        </Link>
+        <Link href={ROUTES.LOGIN}>Login</Link>
       </div>
     </div>
   )

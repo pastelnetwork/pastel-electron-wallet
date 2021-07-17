@@ -34,8 +34,8 @@ const Button = ({
 
   const classes = cn(
     {
-      'button flex items-center px-2 h-10 justify-center rounded-2xl transition duration-300 focus:outline-none active:shadow-none focus:shadow-btnOutline max-w-full leading-none': true,
-      'bg-button hover:bg-button-hover active:bg-blue-pressed text-white':
+      'button flex items-center px-2 h-10 justify-center rounded-2xl transition duration-300 focus:outline-none active:shadow-none focus:shadow-btnOutline max-w-full leading-none border': true,
+      'bg-button hover:bg-transparent active:bg-blue-pressed text-white hover:border-link hover:text-link':
         variant === 'default' && !disabled,
       'bg-button-background text-button-text cursor-not-allowed':
         variant === 'default' && disabled,
@@ -43,7 +43,7 @@ const Button = ({
         variant === 'secondary' && !disabled,
       'border border-gray-8e text-button-text cursor-not-allowed':
         variant === 'secondary' && disabled,
-      'bg-white hover:bg-button-hoverAlt hover:bg-button-pressedAlt text-button':
+      'bg-white hover:bg-link hover:text-white text-button':
         variant === 'transparent' && !disabled,
       'bg-white text-button-text cursor-not-allowed':
         variant === 'transparent' && disabled,

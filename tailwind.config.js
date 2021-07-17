@@ -165,7 +165,15 @@ module.exports = {
         '874px': '54.625rem',
       },
       colors: {
-        link: '#3F9AF7',
+        link: {
+          DEFAULT: '#3F9AF7',
+          hover: {
+            DEFAULT: '#45B26B',
+          },
+          active: {
+            DEFAULT: '#45B26B',
+          },
+        },
         white: '#FFFFFF',
         transparent: 'transparent',
         success: {
@@ -244,8 +252,8 @@ module.exports = {
           14: '#141416',
           11: '#11142D',
           f5: '#F5F6F7',
-          d1: '#D1D6E0',
-          main: '#D1D1D1',
+          d6: '#D1D6E0',
+          d1: '#D1D1D1',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -334,7 +342,7 @@ module.exports = {
             '04': 'rgba(255, 255, 255, 0.4)',
           },
           gray: {
-            46055: 'rgba(46, 46, 46, 0.55);',
+            '2e': 'rgba(46, 46, 46, 0.55);',
           },
         },
       },
@@ -410,7 +418,7 @@ module.exports = {
         '15px': '0.938rem',
         '18px': '1.125rem',
         '19px': '1.1875',
-        '30px': '2rem',
+        '30px': '1.875',
       },
       minHeight: {
         '78px': '4.875rem',
