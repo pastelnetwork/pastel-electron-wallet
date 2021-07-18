@@ -1,3 +1,50 @@
+import { TResonseError } from '../../types/rpc'
+
+export type TTxoutsetInfo = {
+  height: number
+  bestblock: string
+  transactions: number
+  txouts: number
+  bytes_serialized: number
+  hash_serialized: string
+  total_amount: number
+}
+
+export type TGetdifficulty = {
+  result: number
+  error: TResonseError
+  id: string
+}
+
+export type TGettxoutsetinfo = {
+  result: TTxoutsetInfo
+  error: TResonseError
+  id: string
+}
+
+export type TValidateFields = {
+  balance?: number
+  balanceTotal?: string
+  balanceTransparent?: string
+  bestBlockHash?: string
+  difficulty?: number
+  hash?: string
+  height?: number
+  keypoololdest?: number
+  masterNode?: number
+  miner?: number
+  miningBlocks?: number
+  mempoolSize?: number
+  mempoolByte?: number
+  mempoolUsage?: number
+  price?: number
+  seedfp?: string
+  solutions?: number
+  time?: number
+  transactionid?: string
+  walletversion?: number
+}
+
 export type TNetworks = {
   name: string
   limited: boolean
@@ -85,7 +132,7 @@ export type TBlockInfo = {
   version: number
   merkleroot: string
   finalsaplingroot: string
-  tx: string
+  tx: string[]
   time: number
   nonce: string
   solution: string
@@ -200,16 +247,6 @@ export type TRawTransaction = {
   time: number
   blocktime: number
   details: TDetails[]
-}
-
-export type TTxoutsetInfo = {
-  height: number
-  bestblock: string
-  transactions: number
-  txouts: number
-  bytes_serialized: number
-  hash_serialized: string
-  total_amount: number
 }
 
 export type TChainTips = {
@@ -346,12 +383,6 @@ export type TGetnetworkhashps = {
   id: string
 }
 
-export type TGetdifficulty = {
-  result: number
-  error: TError
-  id: string
-}
-
 export type TGetNetworkinfo = {
   result: TNetworkInfo
   error: TError
@@ -420,12 +451,6 @@ export type TGettransaction = {
 
 export type TGettxout = {
   result: TTxout
-  error: TError
-  id: string
-}
-
-export type TGettxoutsetinfo = {
-  result: TTxoutsetInfo
   error: TError
   id: string
 }
@@ -638,10 +663,18 @@ export type Tconsensus = {
   nextblock: string
 }
 
-export type TValidateFields = {
-  bestBlockHash?: string
-  hash?: string
-  price?: number
-  time?: number
-  transactionid?: string
+export type TLineChartData = {
+  dataX: string[]
+  dataY: number[]
+}
+
+export type TMultiLineChartData = {
+  dataX: string[]
+  dataY1: number[]
+  dataY2: number[]
+}
+
+export type TScatterChartData = {
+  data: number[][]
+  dataX: string[]
 }

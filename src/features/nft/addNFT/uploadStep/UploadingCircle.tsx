@@ -17,6 +17,7 @@ const circleRadius = 50
 const circleBorderWidth = 3
 
 export default function UploadingCircle({
+  file,
   setFile,
   isReady,
   setReady,
@@ -30,7 +31,6 @@ export default function UploadingCircle({
       return
     }
 
-    // const timeToUpload = 5000
     const timeToUpload = 50
     const uploadTime = Date.now() + timeToUpload
     const interval = setInterval(() => {
@@ -92,11 +92,11 @@ export default function UploadingCircle({
           ) : (
             <UploadFile size={22} className='mb-2' />
           )}
-          <div className='text-gray-4a text-lg font-medium mb-px'>
-            File name
+          <div className='text-gray-4a text-lg font-medium mb-px max-w-9/10 px-3 overflow-ellipsis whitespace-nowrap overflow-hidden'>
+            {file?.file.name}
           </div>
-          <div ref={displayPercentRef} className='text-sm'>
-            {initialPercent}%
+          <div className='text-sm'>
+            <span ref={displayPercentRef}>{initialPercent}%</span> ready
           </div>
         </div>
       </div>

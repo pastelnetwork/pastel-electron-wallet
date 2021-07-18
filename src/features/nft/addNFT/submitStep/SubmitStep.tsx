@@ -1,12 +1,18 @@
 import React from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
+import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
+import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
+import { TArtworkTicket } from 'api/artwork-api/interfaces'
+import { toast } from 'react-toastify'
+import { formatFileSize, formatNumber } from 'common/utils/format'
+import icoPreview from 'common/assets/icons/ico-preview.svg'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -22,14 +28,75 @@ type TSubmitStepProps = {
 }
 
 export default function SubmitStep({
-  state: { goBack, goToNextStep },
+  state: { goBack, goToNextStep, estimatedFee, optimizeImageToKb },
   image,
   nftData,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
+  const [croppedImage] = useImagePreview({ image })
+
+  const currencyName = 'PSL'
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
+  }
+
+  const onSubmit = async () => {
+    try {
+      // TODO: apply real data when user auth/register will be ready
+      // it's mock data for local API in debug mode
+      const pastelid =
+          'jXYJud3rmrR1Sk2scvR47N4E4J5Vv48uCC6se2nzHrBRdjaKj3ybPoi1Y2VVoRqi1GnQrYKjSxQAC7NBtvtEdS',
+        pass = 'test',
+        spendableAddr = 'PtiqRXn2VQwBjp1K8QXR2uW2w2oZ3Ns7N6j',
+        userName = 'John Doe'
+
+      const form = new FormData()
+      form.append('file', image.file)
+      form.append('filename', image.file.name)
+      const responseUpload = await artworkUploadImage(form)
+
+      const regParams: TArtworkTicket = {
+        artist_name: userName,
+        artist_pastelid: pastelid,
+        artist_pastelid_passphrase: pass,
+        image_id: responseUpload.image_id,
+        issued_copies: nftData.copies,
+        maximum_fee: 0.01, // not sure how to get/calc this value, so TODO:
+        name: nftData.title,
+        spendable_address: spendableAddr,
+      }
+
+      if (nftData.website) {
+        regParams.artist_website_url = nftData.website
+      }
+
+      if (nftData.description) {
+        regParams.description = nftData.description
+      }
+
+      if (nftData.hashtags) {
+        regParams.keywords = nftData.hashtags.join(', ')
+      }
+
+      if (nftData.series) {
+        regParams.series_name = nftData.series
+      }
+
+      if (nftData.video) {
+        regParams.youtube_url = nftData.video
+      }
+
+      /*const responseRegister = */ await artworkRegister(regParams)
+      // not clear if we need responseRegister.task_id here or on next step
+
+      toast('Successfully registered new NFT', { type: 'success' })
+
+      goToNextStep()
+    } catch (err) {
+      console.log('err on register new NFT', err)
+      toast('Register new NFT is failed', { type: 'error' })
+    }
   }
 
   return (
@@ -48,6 +115,15 @@ export default function SubmitStep({
               className='rounded max-h-[410px]'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
+            <button
+              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-46055 flex items-center'
+              onClick={toggleFullScreen}
+            >
+              <img src={icoPreview} className='inline-block mr-4' />
+              <span className='text-white font-extrabold inline-block whitespace-nowrap'>
+                Preview how it will look
+              </span>
+            </button>
           </div>
         </div>
       }
@@ -84,14 +160,36 @@ export default function SubmitStep({
             {nftData.description && (
               <div className='mt-4 text-blue-3f'>{nftData.description}</div>
             )}
+            <div className='mt-5'>
+              <div className='font-medium text-gray-71 mb-3'>
+                Thumbnail preview
+              </div>
+              <div className='w-48 h-48'>
+                {croppedImage && (
+                  <img
+                    src={croppedImage.src}
+                    className='rounded w-full h-full'
+                  />
+                )}
+              </div>
+              {croppedImage?.error && (
+                <div className='text-sm text-error font-medium mt-3'>
+                  Error text error text
+                </div>
+              )}
+            </div>
             <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
               <div className='flex text-gray-71'>
                 <div className='pl-5 w-36'>Image size</div>
                 <div>Estimated registration fee</div>
               </div>
               <div className='flex text-gray-4a font-extrabold mt-3'>
-                <div className='pl-5 w-36'>50 mb</div>
-                <div>5,000 PSL</div>
+                <div className='pl-5 w-36'>
+                  {formatFileSize(optimizeImageToKb * 1024)}
+                </div>
+                <div>
+                  {formatNumber(estimatedFee)} {currencyName}
+                </div>
               </div>
             </div>
           </div>
@@ -106,7 +204,7 @@ export default function SubmitStep({
             <Button
               type='button'
               className='font-extrabold px-3'
-              onClick={goToNextStep}
+              onClick={onSubmit}
             >
               Submit and proceed to fee payment
             </Button>

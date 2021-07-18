@@ -1,7 +1,8 @@
 import LZUTF8 from 'lzutf8'
 import { toast } from 'react-toastify'
 
-import { rpc, TRPCConfig } from '../../../../api/pastel-rpc/rpc'
+import { rpc, TRPCConfig } from 'api/pastel-rpc/rpc'
+import AddressbookImpl from 'common/utils/AddressbookImpl'
 
 type TAddressesResponse = {
   error: string | null
@@ -27,13 +28,19 @@ type TAllAddresses = {
 }
 
 type TPastelID = {
-  pastelid: string
+  PastelID: string
+}
+
+type TAddressBook = {
+  label: string
+  address: string
 }
 
 type TAllAddressesAndPastelID = {
   zPrivateKeys: string[]
   tPrivateKeys: string[]
   pastelIDs: TPastelID[]
+  addressBook: TAddressBook[]
   profile: {
     userName: string
   }
@@ -43,6 +50,12 @@ type TQRCode = {
   qrCode: string
   total: number
   index: number
+}
+
+export type TDataForPdf = {
+  addressKeys: TPrivateKey[] | null
+  pastelIDs: TPastelID[] | null
+  addressBook: TAddressBook[] | null
 }
 
 export type TPrivateKey = {
@@ -112,6 +125,12 @@ async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[] | null> {
   }
 }
 
+async function getAddressBook(): Promise<TAddressBook[] | null> {
+  const addresses = await AddressbookImpl.readAddressBook()
+
+  return addresses
+}
+
 export async function fetchPastelIDAndPrivateKeys(
   config: TRPCConfig,
 ): Promise<string | null> {
@@ -142,12 +161,19 @@ export async function fetchPastelIDAndPrivateKeys(
   }
 
   const pastelIDs = await getPastelIDs(config)
+  const addressBook = await getAddressBook()
 
-  if (pastelIDs?.length || zPrivateKeys.length || tPrivateKeys.length) {
+  if (
+    pastelIDs?.length ||
+    zPrivateKeys.length ||
+    tPrivateKeys.length ||
+    addressBook?.length
+  ) {
     const data = {
       zPrivateKeys,
       tPrivateKeys,
       pastelIDs,
+      addressBook,
     }
 
     return encodeURIComponent(
@@ -160,13 +186,12 @@ export async function fetchPastelIDAndPrivateKeys(
   return null
 }
 
-export async function fetcAllPrivateKeys(
+export async function fetchAllKeysForPdf(
   config: TRPCConfig,
-): Promise<TPrivateKey[]> {
+): Promise<TDataForPdf> {
   const addresses = await fetchAllAddress(config)
   const zPrivateKeys: TPrivateKey[] = []
   const tPrivateKeys: TPrivateKey[] = []
-
   if (addresses) {
     const zAddresses = addresses.zAddresses
     for (let i = 0; i < zAddresses.length; i++) {
@@ -195,7 +220,13 @@ export async function fetcAllPrivateKeys(
     }
   }
 
-  return zPrivateKeys.concat(tPrivateKeys)
+  const pastelIDs = await getPastelIDs(config)
+  const addressBook = await getAddressBook()
+  return {
+    addressKeys: zPrivateKeys.concat(tPrivateKeys),
+    pastelIDs,
+    addressBook,
+  }
 }
 
 async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
@@ -244,12 +275,38 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
   }
 }
 
+async function importAddressBook(addresses: TAddressBook[]) {
+  const addressBook = await getAddressBook()
+  const newAddressBook: TAddressBook[] = []
+
+  for (let i = 0; i < addresses.length; i++) {
+    const addressExists = addressBook?.some(
+      address =>
+        address.address === addresses[i].address &&
+        address.label === addresses[i].label,
+    )
+    if (!addressExists) {
+      newAddressBook.push(addresses[i])
+    }
+  }
+
+  let addressBooks = newAddressBook
+  if (addressBook?.length) {
+    addressBooks = newAddressBook?.concat(addressBook)
+  }
+
+  if (addressBooks?.length) {
+    AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+  }
+}
+
 export async function doImportPrivKeys(
   privateKeys: string,
   config: TRPCConfig,
 ): Promise<boolean> {
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
+
     if (keys) {
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
@@ -263,6 +320,11 @@ export async function doImportPrivKeys(
         for (let i = 0; i < tPrivateKeys.length; i++) {
           importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1, config)
         }
+      }
+
+      const addressBook = keys.addressBook
+      if (addressBook.length) {
+        await importAddressBook(addressBook)
       }
 
       return true
@@ -287,8 +349,13 @@ export const splitStringIntoChunks = (
 }
 
 export const addLineBreakForContent = (str: string): string => {
-  const breakChar = '\u00ad'
-  return str.replace(/(.{40})/g, `$1${breakChar}`)
+  const breakChar = '\n'
+  return str.replace(/(.{46})/g, `$1${breakChar}`)
+}
+
+export const addLineBreakFoFullrContent = (str: string): string => {
+  const breakChar = '\n'
+  return str.replace(/(.{74})/g, `$1${breakChar}`)
 }
 
 export const decompressPastelIDAndPrivateKeys = (

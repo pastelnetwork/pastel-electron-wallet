@@ -55,12 +55,8 @@ export default function UploadStep({
               <img
                 ref={imageRef}
                 src={image.url}
-                className='rounded'
+                className='rounded max-h-400px'
                 onWheel={onWheelImage}
-                style={{
-                  maxWidth: `${image.maxWidth}px`,
-                  maxHeight: '400px',
-                }}
               />
             </DraggableCore>
             <div

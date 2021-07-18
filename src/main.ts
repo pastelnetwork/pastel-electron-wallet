@@ -50,6 +50,7 @@ if (!app.isPackaged) {
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info'
+    log.transports.console.level = false
   }
 }
 
@@ -87,10 +88,12 @@ const createWindow = async () => {
 
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
-  // Open the DevTools.
-  if (!app.isPackaged) {
-    w.webContents.openDevTools()
-  }
+  w.webContents.on('did-frame-finish-load', () => {
+    // Open the DevTools.
+    if (!app.isPackaged) {
+      w.webContents.openDevTools()
+    }
+  })
 
   // Protocol handler for win32
   if (process.platform == 'win32') {
@@ -220,12 +223,15 @@ ipcMain.on('app-ready', () => {
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
   const locatePastelConfDir = getLocatePastelConfDir()
+  const locateSentTxStore = getLocateSentTxStore()
   initServeStatic(app.isPackaged)
 
   if (mainWindow?.webContents) {
     mainWindow.webContents.send('app-info', {
       isPackaged: app.isPackaged,
       locatePastelConfDir,
+      appPathDir: getAppPathDir(),
+      locateSentTxStore,
     })
   }
 })
@@ -263,4 +269,35 @@ const getLocatePastelConfDir = () => {
   }
 
   return path.join(app.getPath('appData'), 'Pastel')
+}
+
+const getLocateSentTxStore = (): string => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(
+      app.getPath('home'),
+      '.local',
+      'share',
+      'psl-qt-wallet-org',
+      'psl-qt-wallet',
+      'senttxstore.dat',
+    )
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+}
+
+const getAppPathDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'))
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'))
+  }
+
+  return path.join(app.getPath('appData'))
 }

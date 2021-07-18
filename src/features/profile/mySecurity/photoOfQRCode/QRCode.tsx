@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react'
+import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Autoplay, EffectFade } from 'swiper/core'
@@ -61,71 +61,69 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
   )
 }
 
-const QR = forwardRef(
-  ({
-    rpcConfig,
-    qrcodeData,
-    handleDownloadVideo,
-    currentStatus,
-  }: TQRProps): JSX.Element => {
-    const [modalIsOpen, setModalIsOpen] = useState(false)
+const QR = ({
+  rpcConfig,
+  qrcodeData,
+  handleDownloadVideo,
+  currentStatus,
+}: TQRProps): JSX.Element => {
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
-    const description = (
-      <div className='max-w-330px'>
-        As a more convenient way to backup your secrets, you can either click
-        the button below to download a QR Code video, or make a video of the
-        code on your smartphone camera. Then to restore, you can play the video
-        on your phone and hold the phone screen up to your webcam. You can test
-        that it worked by clicking{' '}
-        <Link
-          href='#'
-          className='underline'
-          variant='gray-77'
-          onClick={() => setModalIsOpen(true)}
-        >
-          here
-        </Link>
-        .
-      </div>
-    )
-
-    const content = (
-      <div className='flex justify-center h-270px rounded-lg py-33px px-42px bg-tab-hover'>
-        <div className='w-full h-205px rounded-md shadow-64px border border-solid border-gray-e6 relative'>
-          <QRCodeSlider qrcodeData={qrcodeData} />
-        </div>
-      </div>
-    )
-
-    const footer = (
-      <Button
-        variant='secondary'
-        className='w-full font-extrabold relative'
-        onClick={handleDownloadVideo}
-        disabled={currentStatus === 'downloading'}
+  const description = (
+    <div className='max-w-330px'>
+      As a more convenient way to backup your secrets, you can either click the
+      button below to download a QR Code video, or make a video of the code on
+      your smartphone camera. Then to restore, you can play the video on your
+      phone and hold the phone screen up to your webcam. You can test that it
+      worked by clicking{' '}
+      <Link
+        href='#'
+        className='underline'
+        variant='gray-77'
+        onClick={() => setModalIsOpen(true)}
       >
-        {currentStatus === 'downloading'
-          ? 'Creating QR Code Video'
-          : 'Download QR Code Video'}
-      </Button>
-    )
+        here
+      </Link>
+      .
+    </div>
+  )
 
-    return (
-      <>
-        <Card
-          title='Generate a QR Code Video'
-          description={description}
-          content={content}
-          footer={footer}
-        />
-        <RestoreModal
-          rpcConfig={rpcConfig}
-          modalIsOpen={modalIsOpen}
-          onCloseModal={setModalIsOpen}
-        />
-      </>
-    )
-  },
-)
+  const content = (
+    <div className='flex justify-center h-270px rounded-lg py-33px px-42px bg-tab-hover'>
+      <div className='w-full h-205px rounded-md shadow-64px border border-solid border-gray-e6 relative'>
+        <QRCodeSlider qrcodeData={qrcodeData} />
+      </div>
+    </div>
+  )
+
+  const footer = (
+    <Button
+      variant='secondary'
+      className='w-full font-extrabold relative'
+      onClick={handleDownloadVideo}
+      disabled={currentStatus === 'downloading'}
+    >
+      {currentStatus === 'downloading'
+        ? 'Creating QR Code Video'
+        : 'Download QR Code Video'}
+    </Button>
+  )
+
+  return (
+    <>
+      <Card
+        title='Generate a QR Code Video'
+        description={description}
+        content={content}
+        footer={footer}
+      />
+      <RestoreModal
+        rpcConfig={rpcConfig}
+        modalIsOpen={modalIsOpen}
+        onCloseModal={setModalIsOpen}
+      />
+    </>
+  )
+}
 
 export default QR

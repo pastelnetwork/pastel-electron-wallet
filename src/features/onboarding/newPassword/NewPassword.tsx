@@ -3,10 +3,13 @@ import { Link } from 'react-router-dom'
 
 import { InputPassword, Input } from '../../../common/components/Inputs'
 import { Button } from '../../../common/components/Buttons'
-import FormLoading from '../../../common/components/FormLoading/FormLoading'
-import Typography from '../../../common/components/Typography/Typography'
-import { colors } from '../../../common/theme/colors'
+import CloseButton from '../common/closeButton'
+import Typography, {
+  TypographyVariant,
+} from '../../../common/components/Typography/Typography'
+import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 import * as ROUTES from '../../../common/utils/constants/routes'
+import { calcPasswordStrength } from 'common/utils/passwords'
 
 interface NewPasswordFormInput {
   value: string
@@ -33,13 +36,20 @@ const NewPassword: React.FC = () => {
     event.preventDefault()
   }
 
+  const pwdStrength = calcPasswordStrength(newPassword.value)
+
   return (
-    <div className='mt-2.5'>
-      <Typography variant='h1' color='#2D3748' weight={800}>
+    <div className='my-9 mx-60px'>
+      <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
+      <Typography
+        variant={TypographyVariant.h1}
+        customColor='text-gray-2d'
+        customFontWeight='font-extrabold'
+      >
         Set New Password
       </Typography>
       <div className='mt-1'>
-        <Typography variant='body1' color={colors.text.secondary}>
+        <Typography customColor='text-text-77'>
           Make sure to save your password in a password manager!
         </Typography>
       </div>
@@ -67,12 +77,7 @@ const NewPassword: React.FC = () => {
           hintClassName='mt-3 text-sm font-medium'
           hint='at least 8 characters and at least 2 numbers'
         />
-        <div className='grid grid-cols-4 gap-6px mt-3'>
-          <FormLoading className='h-[6px] w-full bg-red-fe' />
-          <FormLoading className='h-[6px] w-full bg-gray-a6' />
-          <FormLoading className='h-[6px] w-full bg-gray-a6' />
-          <FormLoading className='h-[6px] w-full bg-gray-a6' />
-        </div>
+        <PasswordStrength strength={pwdStrength} />
         <Input
           type='password'
           label='Repeat New Password'

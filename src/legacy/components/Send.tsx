@@ -111,7 +111,7 @@ const ToAddrBox = ({
 
   return (
     <div>
-      <div className={[cstyles.well, cstyles.verticalflex].join(' ')}>
+      <div className={[cstyles.well, styles.verticalflex].join(' ')}>
         <div className={[cstyles.flexspacebetween].join(' ')}>
           <div className={cstyles.sublight}>To</div>
           <div className={cstyles.validationerror}>

@@ -1,11 +1,11 @@
 import React from 'react'
 import cn from 'classnames'
+import { Link } from 'react-router-dom'
 
 import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
 import {
   HeartFilled,
-  Heart,
   Clipboard,
   Diamond,
   DiamondInHexagon,
@@ -23,11 +23,20 @@ export type TNFTCompactCard = {
   liked: boolean
   className?: string
   hideFollow?: boolean
+  hideUnFollow?: boolean
   hideLikeButton?: boolean
   percentage?: number
   variant?: string
   isLastBid?: boolean
   followers?: number
+  authorClassName?: string
+  exauthorClassName?: string
+  avatarClassName?: string
+  searchText?: string
+  detailUrl?: string
+  copies?: string
+  diamond?: string
+  bidPercentage?: string
 }
 
 export type TNFTCard = Override<
@@ -49,17 +58,26 @@ const NFTCard = ({
   variant,
   isLastBid,
   followers,
+  authorClassName = 'text-h5 font-extrabold text-gray-1b ',
+  exauthorClassName = 'font-medium text-gray-4a text-sm md:text-h4',
+  avatarClassName = 'w-9',
+  searchText,
+  copies = '1 of 1,000',
+  diamond = '10%',
+  bidPercentage = '+100%',
+  detailUrl = '#',
   ...props
 }: TNFTCompactCard | TNFTCard): JSX.Element => {
   const fullCardProps = 'author' in props && (props as TNFTCard)
-
+  const isNFTPortfolio = variant === 'nft-portfolio'
+  const isPortfolio = variant === 'portfolio'
   const wrapperPaddingClass = 'pt-3 md:pt-4'
   const titleClass = fullCardProps
     ? 'font-extrabold text-h5 md:text-h4 leading-6'
     : 'font-medium'
   const imageHeightClass = fullCardProps ? 'h-230px' : 'h-220px'
   const footerClass = fullCardProps
-    ? variant === 'portfolio'
+    ? isPortfolio
       ? 'pt-13px'
       : 'pt-2 md:pt-3'
     : 'pt-2.5 pb-0.5'
@@ -75,7 +93,7 @@ const NFTCard = ({
     <div
       className={cn(
         'bg-white rounded-lg flex flex-col',
-        variant === 'portfolio' ? 'shadow-30px' : 'shadow-md',
+        isPortfolio ? 'shadow-30px' : 'shadow-md',
         wrapperPaddingClass,
         className,
       )}
@@ -84,28 +102,54 @@ const NFTCard = ({
       {fullCardProps && (
         <div className='w-full px-4 pb-2 md:pb-3 md:px-3 flex justify-between'>
           <div className='flex items-center overflow-hidden'>
-            <img src={fullCardProps.avatarSrc} className='w-9' />
+            <img src={fullCardProps.avatarSrc} className={avatarClassName} />
             {variant === 'portfolio' ? (
-              <h4 className='pl-2 text-h5 font-extrabold leading-6 text-gray-1b truncate'>
-                @{fullCardProps.author}
+              <h4 className={cn('pl-2 leading-6 truncate', authorClassName)}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: searchText
+                      ? `@${fullCardProps.author}`.replace(
+                          new RegExp(searchText, 'gi'),
+                          match =>
+                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+                        )
+                      : `@${fullCardProps.author}`,
+                  }}
+                ></div>
               </h4>
             ) : (
-              <h4 className='px-2 font-medium text-gray-4a text-sm md:text-h4 truncate'>
-                @{fullCardProps.author}
+              <h4 className={cn('px-2 truncate', exauthorClassName)}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: searchText
+                      ? `@${fullCardProps.author}`.replace(
+                          new RegExp(searchText, 'gi'),
+                          match =>
+                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+                        )
+                      : `@${fullCardProps.author}`,
+                  }}
+                ></div>
               </h4>
             )}
           </div>
           <div className='flex items-center'>
-            {followers ? (
+            {fullCardProps.hideLikeButton ? (
               <>
-                <HeartFilled size={14} className='text-pink-46' />
-                <span className='text-sm text-gray-4a ml-2 hidden md:block'>
-                  {followers}
-                </span>
+                {followers ? (
+                  <>
+                    <HeartFilled size={14} className='text-pink-46' />
+                    {!fullCardProps.hideFollow ? (
+                      <span className='text-sm text-gray-4a ml-2 hidden md:block'>
+                        {followers}
+                      </span>
+                    ) : null}
+                  </>
+                ) : (
+                  <HeartFilled size={14} className='text-pink-46' />
+                )}
               </>
-            ) : (
-              <Heart size={14} />
-            )}
+            ) : null}
           </div>
         </div>
       )}
@@ -118,33 +162,51 @@ const NFTCard = ({
           ></div>
         </div>
       ) : null}
-      <div
-        className={`${
-          variant === 'portfolio' ? 'h-220px' : imageHeightClass
-        } relative`}
-      >
-        <img src={imageSrc} className='object-cover h-full w-full' />
-        {fullCardProps && fullCardProps.onSale && variant === 'portfolio' ? (
-          <div
-            className={`absolute left-2.5 bottom-2.5 inline-block rounded-md overflow-hidden p-3px ${styles.statusBgColor}`}
-          >
-            <div className='rounded-md overflow-hidden py-3px px-11px text-h5 font-extrabold text-gray-2d leading-6 bg-white'>
-              Available
+      <Link to={detailUrl} className='cursor-pointer w-full'>
+        <div
+          className={cn(
+            'relative',
+            isPortfolio && 'h-220px',
+            !isPortfolio && imageHeightClass,
+          )}
+        >
+          <img
+            src={imageSrc}
+            className='object-cover h-full w-full cursor-pointer'
+          />
+          {fullCardProps && fullCardProps.onSale && isPortfolio ? (
+            <div
+              className={`absolute left-2.5 bottom-2.5 inline-block rounded-md overflow-hidden p-3px ${styles.statusBgColor}`}
+            >
+              <div className='rounded-md overflow-hidden py-3px px-11px text-h5 font-extrabold text-gray-2d leading-6 bg-white'>
+                On sale
+              </div>
             </div>
-          </div>
-        ) : null}
-      </div>
+          ) : null}
+        </div>
+      </Link>
       {/* Footer */}
-      <div className={cn('px-3 md:px-4', footerClass)}>
+      <div
+        className={cn(
+          !isNFTPortfolio && 'px-3 md:px-4',
+          footerClass,
+          isNFTPortfolio && 'px-3',
+        )}
+      >
         <div className='flex justify-between'>
-          <div
-            className={cn('text-gray-4a truncate', titleClass, {
-              'whitespace-nowrap overflow-ellipsis pr-2 text-h5 m-w-full overflow-hidden':
-                variant === 'portfolio',
-            })}
-          >
-            {title}
-          </div>
+          <Link to={detailUrl} className='cursor-pointer w-full'>
+            <div
+              className={cn(
+                'text-gray-4a truncate',
+                titleClass,
+                isPortfolio &&
+                  'whitespace-nowrap overflow-ellipsis pr-2 text-h5 m-w-full overflow-hidden',
+                isNFTPortfolio && 'text-base text-gray-1a',
+              )}
+            >
+              {title}
+            </div>
+          </Link>
         </div>
         <div className='flex text-gray-71 text-sm lg:text-base justify-between py-2 md:py-3 flex-wrap'>
           <div className='flex items-center'>
@@ -156,9 +218,20 @@ const NFTCard = ({
               )}
               width={210}
             >
-              <Clipboard size={12} className='cursor-pointer' />
+              <Clipboard
+                size={isNFTPortfolio ? 9 : 12}
+                className='cursor-pointer'
+              />
             </Tooltip>
-            <span className='ml-2 mr-3 lg:mr-6'>1 of 1,000</span>
+            <span
+              className={cn(
+                isNFTPortfolio
+                  ? 'ml-5px mr-9px'
+                  : 'text-sm ml-[5px] mr-[9px] lg:mr-2.5',
+              )}
+            >
+              {copies},
+            </span>
             <Tooltip
               type='top'
               content={getTooltip(
@@ -167,9 +240,12 @@ const NFTCard = ({
               )}
               width={230}
             >
-              <Diamond size={16} className='cursor-pointer' />
+              <Diamond
+                size={isNFTPortfolio ? 13 : 16}
+                className='cursor-pointer'
+              />
             </Tooltip>
-            10%
+            {diamond}
           </div>
           <div className='flex items-center'>
             <Tooltip
@@ -181,7 +257,7 @@ const NFTCard = ({
               width={110}
             >
               <FirTreeInHexagon
-                size={24}
+                size={variant === 'nft-portfolio' ? 20 : 24}
                 className='text-green-45 cursor-pointer'
               />
             </Tooltip>
@@ -194,7 +270,7 @@ const NFTCard = ({
               width={120}
             >
               <CrownInHexagon
-                size={24}
+                size={variant === 'nft-portfolio' ? 20 : 24}
                 className='text-orange-ff cursor-pointer'
               />
             </Tooltip>
@@ -207,7 +283,7 @@ const NFTCard = ({
               width={150}
             >
               <DiamondInHexagon
-                size={24}
+                size={variant === 'nft-portfolio' ? 20 : 24}
                 className='text-blue-79 cursor-pointer'
                 firstStopClassName='text-blue-79'
                 secondStopClassName='text-blue-68'
@@ -222,7 +298,7 @@ const NFTCard = ({
               width={140}
             >
               <ManInHexagon
-                size={24}
+                size={variant === 'nft-portfolio' ? 20 : 24}
                 className='text-green-16 cursor-pointer'
                 firstStopClassName='text-green-16'
                 secondStopClassName='text-green-23'
@@ -233,17 +309,23 @@ const NFTCard = ({
       </div>
       {fullCardProps && (
         <div
-          className={`px-3 md:px-4 pb-3 md:pb-4 bg-gray-ef bg-opacity-50 flex-grow ${
-            variant === 'portfolio' ? 'pt-2.5' : 'pt-2 md:pt-3'
-          }`}
+          className={cn(
+            'pb-3 md:pb-4 bg-gray-ef bg-opacity-50 flex-grow',
+            isPortfolio && 'pt-2.5 px-3 md:px-4',
+            !isNFTPortfolio && !isPortfolio && 'pt-2 md:pt-3 px-3 md:px-4',
+            isNFTPortfolio && 'px-3 pt-14px',
+          )}
         >
           <div className='flex items-center justify-between'>
             <span
-              className={`text-sm md:text-base font-medium ${
-                variant === 'portfolio'
-                  ? 'leading-6 text-h6 text-gray-77'
-                  : 'leading-none text-h5 text-gray-71'
-              }`}
+              className={cn(
+                isPortfolio &&
+                  'leading-6 text-h6 text-gray-77 text-sm md:text-base font-medium',
+                isNFTPortfolio && 'text-sm font-medium text-gray-4a',
+                !isPortfolio &&
+                  !isNFTPortfolio &&
+                  'text-sm md:text-base font-medium leading-none text-h5 text-gray-71',
+              )}
             >
               {!fullCardProps.onSale
                 ? 'Not for sale'
@@ -251,19 +333,38 @@ const NFTCard = ({
                 ? 'Last Auction Bid'
                 : 'Fixed Price'}
             </span>
-            {variant !== 'portfolio' ? (
-              <div className='flex  text-sm md:text-base lg:text-h5 font-extrabold text-gray-2d'>
+            {!isPortfolio ? (
+              <div
+                className={cn(
+                  'flex text-gray-2d',
+                  isNFTPortfolio && 'text-sm font-black items-start',
+                  !isNFTPortfolio &&
+                    'text-sm md:text-base lg:text-h5 font-extrabold',
+                )}
+              >
                 {fullCardProps.onSale ? '12,000 PSL' : ''}
                 {isLastBid && fullCardProps.onSale && (
-                  <span className='font-bold text-8px green-gradient'>
-                    +100%
+                  <span
+                    className={cn(
+                      'font-bold green-gradient',
+                      isNFTPortfolio && 'pl-2px text-6px',
+                      !isNFTPortfolio && 'text-8px',
+                    )}
+                  >
+                    {bidPercentage}
                   </span>
                 )}
               </div>
             ) : null}
           </div>
-          {variant !== 'portfolio' && (
-            <div className='flex items-center text-xs md:text-sm font-extrabold justify-between pt-2 md:pt-3'>
+          {!isPortfolio && (
+            <div
+              className={cn(
+                'flex items-center justify-between font-extrabold',
+                isNFTPortfolio && 'text-xs leading-18px pt-9px',
+                !isNFTPortfolio && 'text-xs md:text-sm pt-2 md:pt-3 ',
+              )}
+            >
               <div className='nft-text-gradient'>
                 {!fullCardProps.onSale
                   ? ''

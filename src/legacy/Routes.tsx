@@ -11,7 +11,6 @@ import PortfolioPage from '../features/nft/portfolio'
 import Portfolio from '../features/portfolio'
 import Send from './components/Send'
 import LoadingScreen from '../features/loading'
-import OnboardingWelcome from '../features/onboarding/welcome/Welcome'
 import WalletScreen from '../features/wallet'
 import Header from '../common/components/Header'
 import {
@@ -31,7 +30,6 @@ import AddressbookImpl from './utils/AddressbookImpl'
 import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
-import WormholeConnection from './components/WormholeConnection'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
 import { PastelDBThread } from '../features/pastelDB'
@@ -47,18 +45,18 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
-import PastelStatistics from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
 import NFTMarketFeed from '../features/NFTMarketFeed'
-import { app, ipcRenderer } from 'electron'
+import { app } from 'electron'
 import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
+import { RegisterPage } from '../features/onboarding'
 
 export type TWalletInfo = {
   connections: number
@@ -98,8 +96,6 @@ class RouteApp extends React.Component<any, any> {
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
 
     ReactModal.setAppElement('#root')
-
-    ipcRenderer.send('app-ready')
   }
 
   rpc: any
@@ -351,7 +347,6 @@ class RouteApp extends React.Component<any, any> {
     this.setState({
       rpcConfig,
     })
-    console.log(rpcConfig)
     this.rpc.configure(rpcConfig)
   }
   setPslPrice = (price: any) => {
@@ -532,17 +527,12 @@ class RouteApp extends React.Component<any, any> {
             />
             <Route path={routes.DASHBOARD} component={Dashboard} />
             <Route
-              path={routes.PORTFOLIO}
+              path={routes.PORTFOLIO_DETAIL}
               exact
               render={() => <PortfolioPage currencyName={info.currencyName} />}
             />
             <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
-            <Route
-              path={routes.PORTFOLIO_DETAIL}
-              exact
-              component={PortfolioPage}
-            />
             <Route
               path={routes.TRANSACTIONS}
               render={() => (
@@ -554,11 +544,7 @@ class RouteApp extends React.Component<any, any> {
                 />
               )}
             />
-
-            <Route
-              path={routes.WALLET}
-              render={() => <WalletScreen info={info} />}
-            />
+            <Route path={routes.WALLET} render={() => <WalletScreen />} />
 
             <Route path={routes.CREATOR} render={() => <Creator />} />
 
@@ -591,16 +577,6 @@ class RouteApp extends React.Component<any, any> {
                   createNewAddress={this.createNewAddress}
                   totalBalance={totalBalance}
                   info={info}
-                />
-              )}
-            />
-
-            <Route
-              path={routes.CONNECTMOBILE}
-              render={() => (
-                <WormholeConnection
-                  companionAppListener={this.companionAppListener}
-                  connectedCompanionApp={connectedCompanionApp}
                 />
               )}
             />

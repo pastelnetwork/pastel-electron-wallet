@@ -12,6 +12,9 @@ class PastelDB {
     }
     return PastelDB.database
   }
+  public static setValid(flag: boolean): void {
+    PastelDB.isValid = flag
+  }
   public static isValidDB(): boolean {
     return PastelDB.isValid
   }

@@ -28,6 +28,16 @@ export default function UploadArea({ setFile }: TProps): JSX.Element {
       return setError(`Selected file has unsupported format: ${file.type}`)
     }
 
+    const megabyte = 1048576
+
+    if (file.size > 100 * megabyte) {
+      return setError(
+        `Selected file exceeds 100 MB limit: ${(file.size / megabyte).toFixed(
+          1,
+        )} MB`,
+      )
+    }
+
     const image = new Image()
     const url = URL.createObjectURL(file)
     image.src = url
@@ -84,7 +94,7 @@ export default function UploadArea({ setFile }: TProps): JSX.Element {
   return (
     <label className='bg-gray-f4 rounded-md h-full flex-center flex-col text-gray-77 text-xs'>
       <UploadFile size={22} className='mb-3' />
-      <div className='mb-2'>{allowedTypeNames.join(', ')} Max 100Mb.</div>
+      <div className='mb-2'>{allowedTypeNames.join(', ')} Max 100 MB.</div>
       <div className='text-gray-a0'>Drag or choose your file to upload</div>
       {error && (
         <div className='text-error font-medium mt-2 text-md'>{error}</div>

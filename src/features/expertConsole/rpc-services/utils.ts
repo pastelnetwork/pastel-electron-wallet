@@ -1,5 +1,13 @@
 /* eslint-disable */
 
+import {
+  TBlockChainInfo,
+  TListUnspent,
+  TInfoResult,
+  TTotalBalance,
+  TZListUnspent,
+} from '../../../types/rpc'
+
 export const METHODS = [
   // Addressindex
   'getaddressbalance',
@@ -198,44 +206,7 @@ export type APIMethods = {
     previousblockhash: string
     nextblockhash: string
   }>
-  getblockchaininfo: () => Promise<{
-    chain: string
-    blocks: number
-    headers: number
-    bestblockhash: string
-    difficulty: number
-    verificationprogress: number
-    chainwork: string
-    pruned: boolean
-    commitments: number
-    valuePools: {
-      id: string
-      monitored: boolean
-      chainValue: number
-      chainValueZat: number
-    }[]
-    softforks: {
-      id: string
-      version: number
-      enforce: {
-        status: boolean
-        found: number
-        required: number
-        window: number
-      }
-      reject: {
-        status: boolean
-        found: number
-        required: number
-        window: number
-      }
-    }[]
-    upgrades: { [x: string]: any }
-    consensus: {
-      chaintip: string
-      nextblock: string
-    }
-  }>
+  getblockchaininfo: () => Promise<TBlockChainInfo>
   getblockcount: () => Promise<number>
   getblockhash: (idx: number) => Promise<string>
   getblockheader: (
@@ -305,23 +276,7 @@ export type APIMethods = {
   }>
   verifychain: (checklevel: number, numblocks: number) => Promise<boolean>
   verifytxoutproof: (proof: string) => Promise<string>
-  getinfo: () => Promise<{
-    version: number
-    protocolversion: number
-    walletversion: number
-    balance: number
-    blocks: number
-    timeoffset: number
-    connections: number
-    proxy: string
-    difficulty: number
-    testnet: boolean
-    keypoololdest: number
-    keypoolsize: number
-    paytxfee: number
-    relayfee: number
-    errors: string
-  }>
+  getinfo: () => Promise<TInfoResult>
   help: () => Promise<string>
   stop: () => Promise<void>
   z_getpaymentdisclosure: (
@@ -824,20 +779,7 @@ export type APIMethods = {
     minconf?: number,
     maxconf?: number,
     addresses?: string[],
-  ) => Promise<
-    {
-      txid: string
-      vout: number
-      generated: boolean
-      address: string
-      account: string
-      scriptPubKey: string
-      amount: number
-      confirmations: number
-      redeemScript: number
-      spendable: number
-    }[]
-  >
+  ) => Promise<TListUnspent[]>
   lockunspent: (
     unlock: boolean,
     transactions: { txid: string; vout: string }[],
@@ -884,11 +826,7 @@ export type APIMethods = {
   z_gettotalbalance: (
     minconf?: number,
     includeWatchonly?: boolean,
-  ) => Promise<{
-    transparent: number
-    private: number
-    total: number
-  }>
+  ) => Promise<TTotalBalance>
   z_importkey: (
     zkey: string,
     rescan?: 'yes' | 'no' | 'whenkeyisnew',
@@ -916,20 +854,7 @@ export type APIMethods = {
     maxconf?: number,
     includeWatchonly?: boolean,
     addresses?: string[],
-  ) => Promise<
-    {
-      txid: string
-      jsindex: number
-      jsoutindex: number
-      outindex: number
-      confirmations: number
-      spendable: boolean
-      address: string
-      amount: number
-      memo: number
-      change: boolean
-    }[]
-  >
+  ) => Promise<TZListUnspent[]>
   z_mergetoaddress: (
     fromaddresses: string[],
     toaddress: string,

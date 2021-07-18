@@ -49,7 +49,7 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
   if (step === Step.submit) {
     return <SubmitStep state={state} image={image} nftData={nftData} />
   } else if (step === Step.approved) {
-    return <ApprovedStep state={state} image={image} />
+    return <ApprovedStep state={state} image={image} nftData={nftData} />
   }
 
   return null

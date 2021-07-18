@@ -21,6 +21,7 @@ export type TSliderProps = {
   valuesClassName?: string
   minMaxClassName?: string
   minMaxAlignCenter?: boolean
+  step?: number | undefined
 } & (
   | {
       value: number
@@ -90,6 +91,7 @@ export default function Slider({
     <Range
       min={0}
       max={sliderMax}
+      step={props.step}
       values={values}
       onChange={values => setValues(values as [number, number])}
       renderTrack={({ props: trackProps, children }) => (

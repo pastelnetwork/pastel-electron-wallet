@@ -10,6 +10,7 @@ export type TMemberStripProps = {
   totalSold: number | string
   images: string[]
   currencyName: string
+  searchText?: string
 }
 
 const MemberStrip: React.FC<TMemberStripProps> = ({
@@ -19,6 +20,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   images,
   totalSold,
   currencyName,
+  searchText,
 }) => {
   const history = useHistory()
   const toMemberProfile = () => {
@@ -31,7 +33,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
         className='min-w-[244px] h-142px cursor-pointer'
         onClick={toMemberProfile}
       >
-        <MemberCard {...memberCard} />
+        <MemberCard {...memberCard} searchText={searchText} />
       </div>
       <div className='border-b border-navigation-background overflow-hidden'>
         <div className='flex space-x-4 h-full'>

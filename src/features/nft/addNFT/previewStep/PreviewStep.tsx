@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../ModalLayout'
 import { useImagePreview } from './PreviewStep.service'
@@ -15,6 +15,10 @@ import Magnification from './Magnification'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import style from './PreviewStep.module.css'
+import { formatFileSize, formatNumber } from 'common/utils/format'
+import { getEstimateFee } from 'api/estimate-fee'
+import { useAppSelector } from '../../../../redux/hooks'
+import { toast } from 'react-toastify'
 
 type TPreviewStepProps = {
   state: TAddNFTState
@@ -22,7 +26,15 @@ type TPreviewStepProps = {
 }
 
 export default function PreviewStep({
-  state: { goBack, setCrop, goToNextStep },
+  state: {
+    goBack,
+    setCrop,
+    goToNextStep,
+    optimizeImageToKb,
+    setOptimizeImageToKb,
+    estimatedFee,
+    setEstimatedFee,
+  },
   image,
 }: TPreviewStepProps): JSX.Element {
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
@@ -32,6 +44,45 @@ export default function PreviewStep({
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
     null,
   )
+  const [feePerKb, setFeePerKb] = useState<number>(0)
+  const currencyName = 'PSL'
+  const fileSizeKb = Math.round(image.file.size / 1024)
+  const imageSizePercentOfAvg = 65
+
+  const pastelConfig = useAppSelector(state => state.pastelConf)
+
+  const getFee = async () => {
+    const fee = await getEstimateFee(1, pastelConfig)
+
+    if (fee > 0) {
+      setFeePerKb(fee)
+    } else {
+      // -1.0 is returned if not enough transactions and blocks
+      // have been observed to make an estimate
+      setEstimatedFee(1)
+      toast('Not enough transactions to make an estimate', {
+        type: 'warning',
+        autoClose: false,
+      })
+    }
+  }
+
+  const calcFee = (sizeKb: number): number => {
+    if (!feePerKb) {
+      return 1
+    }
+    return Math.round(sizeKb * feePerKb)
+  }
+
+  useEffect(() => {
+    if (!feePerKb) {
+      getFee()
+    }
+  }, [])
+
+  useEffect(() => {
+    setEstimatedFee(calcFee(fileSizeKb))
+  }, [feePerKb])
 
   if (cropping && croppedImage) {
     return (
@@ -48,9 +99,30 @@ export default function PreviewStep({
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
+  const toggleLossless = (val: boolean) => {
+    setLossLess(val)
+
+    if (val) {
+      setOptimizeImageToKb(fileSizeKb)
+      setEstimatedFee(calcFee(fileSizeKb))
+    }
+  }
+
+  const onChangeOptimization = (val: number): void => {
+    setOptimizeImageToKb(val)
+    setEstimatedFee(calcFee(val))
+  }
+
   const submit = () => {
     if (croppedImage) {
       setCrop(croppedImage.crop)
+
+      if (optimizeImageToKb) {
+        // TODO: optimize image to size
+
+        setEstimatedFee(calcFee(optimizeImageToKb))
+      }
+
       goToNextStep()
     }
   }
@@ -95,17 +167,17 @@ export default function PreviewStep({
           <div className='flex items-start mb-8'>
             <div className='font-medium text-gray-4a mr-5'>Image size</div>
             <div className='text-gray-2d text-sm font-extrabold mr-3 relative top-[3px]'>
-              50 Mb
+              {formatFileSize(image.file.size)}
             </div>
             <div className='flex-grow'>
               <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
                 <div
                   className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
-                  style={{ width: '65%' }}
+                  style={{ width: imageSizePercentOfAvg + '%' }}
                 />
               </div>
               <div className='text-xs text-gray-71'>
-                65% of average Pastel NFT size
+                {imageSizePercentOfAvg}% of average Pastel NFT size
               </div>
             </div>
           </div>
@@ -113,7 +185,9 @@ export default function PreviewStep({
             <div className='font-medium text-gray-4a'>
               Estimated registration fee
             </div>
-            <div className='text-gray-2d text-sm font-extrabold'>5,000 PSL</div>
+            <div className='text-gray-2d text-sm font-extrabold'>
+              {formatNumber(estimatedFee)} {currencyName}
+            </div>
           </div>
           <div className='font-medium text-gray-4a mb-5'>
             Image size and fee optimization
@@ -124,7 +198,7 @@ export default function PreviewStep({
             </div>
             <Toggle
               selected={isLossLess}
-              toggleHandler={setLossLess}
+              toggleHandler={toggleLossless}
               selectedClass='bg-blue-3f'
             />
           </label>
@@ -134,7 +208,13 @@ export default function PreviewStep({
               isLossLess ? 'opacity-0' : 'opacity-100',
             )}
           >
-            <OptimizationSlider />
+            <OptimizationSlider
+              recalcFee={calcFee}
+              fileSizeKb={fileSizeKb}
+              optimizedSizeKb={optimizeImageToKb}
+              setOptimizedSizeKb={onChangeOptimization}
+              currencyName={currencyName}
+            />
           </div>
           <div>
             <div className='font-medium text-gray-71 mb-3'>

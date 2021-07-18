@@ -7,8 +7,10 @@
 .cardList {
   width: 100%;
   display: flex;
-  /* justify-content: space-around; */
   flex-flow: wrap;
+  justify-content: space-between;
+  overflow-y: auto;
+  height: calc(100vh - 150px);
 }
 
 .fullWidth {
@@ -21,7 +23,6 @@
   align-items: center;
   justify-content: center;
   width: 28%;
-  margin-bottom: 20px;
 }
 
 .marginTop20 {

@@ -17,4 +17,5 @@ export const pastelTableNames = {
   listunspent: 'listunspent',
   totalbalance: 'totalbalance',
   listaddresses: 'listaddresses',
+  pslprice: 'pslprice',
 }

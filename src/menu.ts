@@ -205,12 +205,6 @@ export default class MenuBuilder {
       label: 'View',
       submenu: [
         {
-          label: 'Connect Mobile App',
-          click: () => {
-            this.mainWindow.webContents.send('connectmobile')
-          },
-        },
-        {
           label: 'pasteld info',
           click: () => {
             this.mainWindow.webContents.send('pasteld')
@@ -231,12 +225,6 @@ export default class MenuBuilder {
     const subMenuViewProd = {
       label: 'View',
       submenu: [
-        {
-          label: 'Connect Mobile App',
-          click: () => {
-            this.mainWindow.webContents.send('connectmobile')
-          },
-        },
         {
           label: 'pasteld info',
           click: () => {
@@ -446,12 +434,6 @@ export default class MenuBuilder {
           //     this.mainWindow.toggleDevTools();
           //   }
           // },
-          {
-            label: 'Connect Mobile App',
-            click: () => {
-              this.mainWindow.webContents.send('connectmobile')
-            },
-          },
           {
             label: 'pasteld info',
             click: () => {

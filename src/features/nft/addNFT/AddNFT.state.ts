@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import tmpImage from 'common/assets/images/img-astronaut.png'
 
 export enum Step {
   inputData,
@@ -41,6 +40,7 @@ const maxWidthByOrientation: Record<TImageOrientation, number> = {
 }
 
 export type TImage = {
+  file: File
   url: string
   width: number
   height: number
@@ -53,12 +53,21 @@ export type TAddNFTState = {
   nftData?: TNFTData
   image?: TImage
   crop?: TCrop
+  optimizeImageToKb: number
+  estimatedFee: number
   setStep(step: Step): void
   setNftData(data: TNFTData): void
   setCrop(crop: TCrop): void
-  setImage(file: { url: string; width: number; height: number }): void
+  setImage(file: {
+    url: string
+    file: File
+    width: number
+    height: number
+  }): void
   goBack(): void
   goToNextStep(): void
+  setOptimizeImageToKb(val: number): void
+  setEstimatedFee(val: number): void
 }
 
 export type TUseAddNFTProps = {
@@ -69,12 +78,9 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [step, setStep] = useState<Step>(Step.preview)
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
-  const [image, setImage] = useState<TImage>({
-    url: tmpImage,
-    width: 770,
-    height: 770,
-    maxWidth: maxWidthByOrientation.portrait,
-  })
+  const [image, setImage] = useState<TImage>()
+  const [optimizeImageToKb, setOptimizeImageToKb] = useState<number>(0)
+  const [estimatedFee, setEstimatedFee] = useState<number>(1)
 
   return {
     step,
@@ -83,16 +89,26 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     setNftData,
     image,
     crop,
+    optimizeImageToKb,
+    estimatedFee,
     setStep,
     setCrop,
-    setImage({ url, width, height }) {
+    setImage(params: {
+      url: string
+      width: number
+      height: number
+      file: File
+    }) {
+      const { url, width, height, file } = params
       const orientation = width < height ? 'portrait' : 'landscape'
       setImage({
         url,
         width,
         height,
         maxWidth: maxWidthByOrientation[orientation],
+        file,
       })
+      setOptimizeImageToKb(Math.round(file.size / 1024))
     },
     goBack() {
       if (step > firstStep) {
@@ -108,5 +124,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
         onClose()
       }
     },
+    setOptimizeImageToKb,
+    setEstimatedFee,
   }
 }
