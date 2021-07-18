@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 
-import PercentCircle from 'common/components/PercentCircle'
+import StepsCircle from 'common/components/StepsCircle'
 import Tooltip from 'common/components/Tooltip'
 
 import icoExclamation from 'common/assets/icons/ico-exclamation.svg'
@@ -117,14 +117,11 @@ const RegisterContent = (): JSX.Element => {
               </div>
             </div>
             <div>
-              <PercentCircle
-                color='text-green-6d'
-                percent={Math.round(100 * (state.step / state.stepsCount))}
-              >
+              <StepsCircle color='text-green-6d' step={state.step}>
                 <div className='font-extrabold text-gray-11 text-lg mt-1'>
                   {state.step}/{state.stepsCount}
                 </div>
-              </PercentCircle>
+              </StepsCircle>
             </div>
           </div>
           <div className='mt-7'>

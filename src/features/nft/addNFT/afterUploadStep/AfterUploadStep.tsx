@@ -1,6 +1,6 @@
 import React from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
-import ModalLayout from '../ModalLayout'
+import ModalLayout from '../common/ModalLayout'
 import {
   ArrowSlim,
   MinusCircle,

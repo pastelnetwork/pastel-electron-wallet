@@ -1,6 +1,6 @@
 import React from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
-import ModalLayout from '../ModalLayout'
+import ModalLayout from '../common/ModalLayout'
 import { Button } from 'common/components/Buttons'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
 import { useToggle } from 'react-use'

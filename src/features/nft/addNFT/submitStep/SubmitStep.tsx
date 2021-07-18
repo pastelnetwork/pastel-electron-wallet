@@ -1,6 +1,6 @@
 import React from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
-import ModalLayout from '../ModalLayout'
+import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { Button } from 'common/components/Buttons'
@@ -166,12 +166,15 @@ export default function SubmitStep({
               <div className='font-medium text-gray-71 mb-3'>
                 Thumbnail preview
               </div>
-              <div className='w-48 h-48'>
+              <div className='w-48 h-48 relative'>
                 {croppedImage && (
-                  <img
-                    src={croppedImage.src}
-                    className='rounded w-full h-full'
-                  />
+                  <>
+                    <ImageShadow url={croppedImage.src} small />
+                    <img
+                      src={croppedImage.src}
+                      className='rounded w-full h-full relative'
+                    />
+                  </>
                 )}
               </div>
               {croppedImage?.error && (
@@ -180,7 +183,7 @@ export default function SubmitStep({
                 </div>
               )}
             </div>
-            <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
+            <div className='bg-gray-f8 rounded-lg py-4 mt-6'>
               <div className='flex text-gray-71'>
                 <div className='pl-5 w-36'>Image size</div>
                 <div>Estimated registration fee</div>
@@ -195,7 +198,7 @@ export default function SubmitStep({
               </div>
             </div>
           </div>
-          <div className='flex-between mt-3 flex-shrink-0'>
+          <div className='flex-between mt-5 flex-shrink-0'>
             <button
               type='button'
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'

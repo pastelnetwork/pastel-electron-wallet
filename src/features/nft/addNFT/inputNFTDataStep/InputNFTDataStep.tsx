@@ -1,6 +1,6 @@
 import React from 'react'
 import * as yup from 'yup'
-import PercentCircle from 'common/components/PercentCircle'
+import StepsCircle from 'common/components/StepsCircle'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common/components/Form/Input'
@@ -105,9 +105,9 @@ export default function InputNFTDataStep({
               The Metadata Fields for your NFT
             </div>
           </div>
-          <PercentCircle color='text-green-6d' percent={25}>
+          <StepsCircle color='text-green-6d' step={1}>
             <div className='font-extrabold text-gray-11 text-lg mt-1'>1/4</div>
-          </PercentCircle>
+          </StepsCircle>
         </div>
         <div className='mt-1 mb-22px space-y-6'>
           <div className='flex items-end space-x-5'>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
-import ModalLayout from '../ModalLayout'
+import ModalLayout from '../common/ModalLayout'
 import { ArrowSlim, Info } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
 import UploadingCircle from './UploadingCircle'

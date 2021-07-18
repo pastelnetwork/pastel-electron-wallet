@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
-import ModalLayout from '../ModalLayout'
+import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from './PreviewStep.service'
 import { Crop } from 'common/components/Icons'
 import Tooltip from '../tooltip'
@@ -54,7 +54,6 @@ export default function PreviewStep({
 
   const getFee = async () => {
     const fee = await getEstimateFee(1, pastelConfig)
-
     if (fee > 0) {
       setFeePerKb(fee)
     } else {
@@ -136,32 +135,34 @@ export default function PreviewStep({
       step={3}
       leftColumnWidth={image.maxWidth}
       leftColumnContent={
-        <div className='relative z-10'>
+        <div className='relative'>
           <ImageShadow url={image.url} />
-          {imageElement && (
-            <Magnification
-              image={image}
-              imageElement={imageElement}
-              isLossLess={isLossLess}
-            />
-          )}
-          <FullScreenButton onClick={toggleFullScreen} />
-          <Tooltip text='Crop thumbnail'>
-            {ref => (
-              <button
-                ref={ref}
-                className='absolute z-10 bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
-                onClick={toggleCropping}
-              >
-                <Crop size={18} />
-              </button>
+          <div className='relative z-10'>
+            {imageElement && (
+              <Magnification
+                image={image}
+                imageElement={imageElement}
+                isLossLess={isLossLess}
+              />
             )}
-          </Tooltip>
-          <img
-            ref={setImageElement}
-            src={image.url}
-            className={`rounded relative ${style.zoomInCursor}`}
-          />
+            <FullScreenButton onClick={toggleFullScreen} />
+            <Tooltip text='Crop thumbnail'>
+              {ref => (
+                <button
+                  ref={ref}
+                  className='absolute z-10 bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
+                  onClick={toggleCropping}
+                >
+                  <Crop size={18} />
+                </button>
+              )}
+            </Tooltip>
+            <img
+              ref={setImageElement}
+              src={image.url}
+              className={`rounded ${style.zoomInCursor}`}
+            />
+          </div>
         </div>
       }
       rightColumnContent={
@@ -195,7 +196,7 @@ export default function PreviewStep({
             Image size and fee optimization
           </div>
           <label className='flex items-center mb-10'>
-            <div className='font-medium text-gray-71 mr-2'>
+            <div className='font-medium text-gray-71 mr-3'>
               Lossless image quality
             </div>
             <Toggle
@@ -222,9 +223,15 @@ export default function PreviewStep({
             <div className='font-medium text-gray-71 mb-3'>
               Thumbnail preview
             </div>
-            <div className='w-48 h-48'>
+            <div className='w-48 h-48 relative'>
               {croppedImage && (
-                <img src={croppedImage.src} className='rounded w-full h-full' />
+                <>
+                  <ImageShadow url={croppedImage.src} />
+                  <img
+                    src={croppedImage.src}
+                    className='rounded w-full h-full'
+                  />
+                </>
               )}
             </div>
             {croppedImage?.error && (
