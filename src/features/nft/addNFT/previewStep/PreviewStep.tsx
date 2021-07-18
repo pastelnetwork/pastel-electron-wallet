@@ -17,8 +17,9 @@ import cn from 'classnames'
 import style from './PreviewStep.module.css'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import { getEstimateFee } from 'api/estimate-fee'
-import { useAppSelector } from '../../../../redux/hooks'
+import { useAppSelector } from 'redux/hooks'
 import { toast } from 'react-toastify'
+import ImageShadow from '../common/ImageShadow'
 
 type TPreviewStepProps = {
   state: TAddNFTState
@@ -136,6 +137,7 @@ export default function PreviewStep({
       leftColumnWidth={image.maxWidth}
       leftColumnContent={
         <div className='relative z-10'>
+          <ImageShadow url={image.url} />
           {imageElement && (
             <Magnification
               image={image}
@@ -158,7 +160,7 @@ export default function PreviewStep({
           <img
             ref={setImageElement}
             src={image.url}
-            className={`rounded ${style.zoomInCursor}`}
+            className={`rounded relative ${style.zoomInCursor}`}
           />
         </div>
       }

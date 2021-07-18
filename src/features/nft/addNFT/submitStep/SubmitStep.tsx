@@ -13,6 +13,7 @@ import { TArtworkTicket } from 'api/artwork-api/interfaces'
 import { toast } from 'react-toastify'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import icoPreview from 'common/assets/icons/ico-preview.svg'
+import ImageShadow from '../common/ImageShadow'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -110,9 +111,10 @@ export default function SubmitStep({
         <div className='flex-center'>
           <div className='relative flex-center'>
             <FullScreenButton onClick={toggleFullScreen} />
+            <ImageShadow url={image.url} />
             <img
               src={image.url}
-              className='rounded max-h-[410px]'
+              className='rounded max-h-[410px] relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
             <button

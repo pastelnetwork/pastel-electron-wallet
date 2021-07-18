@@ -5,6 +5,7 @@ import { Button } from 'common/components/Buttons'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
+import ImageShadow from '../common/ImageShadow'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -42,9 +43,10 @@ export default function ApprovedStep({
         <div className='flex-center'>
           <div className='relative flex-center'>
             <FullScreenButton onClick={toggleFullScreen} />
+            <ImageShadow url={image.url} />
             <img
               src={image.url}
-              className='rounded max-h-424px'
+              className='rounded max-h-424px relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
           </div>

@@ -75,7 +75,7 @@ export type TUseAddNFTProps = {
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
-  const [step, setStep] = useState<Step>(Step.preview)
+  const [step, setStep] = useState<Step>(Step.inputData)
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
   const [image, setImage] = useState<TImage>()
