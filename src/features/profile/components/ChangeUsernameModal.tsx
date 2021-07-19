@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import Modal from '../../nft/nftModals/modal'
 import Input from '../../../common/components/Inputs/Input'
 import NumberFormat from 'react-number-format'
-import { Button } from '../../../common/components/Buttons'
+import { Button } from 'common/components/Buttons'
 import { Fire } from 'common/components/Icons/Fire'
+import cn from 'classnames'
 
 export type TChangeUsernameModal = {
   isOpen: boolean
@@ -32,7 +33,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
       infoIcon={false}
     >
       <div className='w-[412px]'>
-        <div className='text-base text-gray-4a pr-[7px]'>
+        <div className='text-base font-normal text-gray-4a pr-[7px]'>
           Your PastelID Identifier will always stay the same, but you are
           allowed to change your Pastel username. The network charges a fee for
           this to prevent abuse.
@@ -43,7 +44,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
             type='text'
             disabled={true}
             label='Current Username'
-            labelClassName='inline-block text-gray-4a text-base font-medium pb-1.5'
+            labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
           />
         </div>
         <div className='mt-6'>
@@ -56,7 +57,10 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
               setInputed(true)
             }}
             placeholder='New Username'
-            hintClassName={`${!inputed ? 'italic font-normal' : 'font-medium'}`}
+            hintClassName={cn(
+              `${!inputed ? 'italic font-normal' : 'font-medium'}`,
+              'italic',
+            )}
             hint={
               !inputed
                 ? 'Only Latin Characters and Numbers Allowed'
@@ -66,7 +70,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
             }
             type='text'
             label='New Username'
-            labelClassName='inline-block text-gray-4a text-base font-medium pb-1.5'
+            labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
           />
         </div>
         <div className='pt-6'>
@@ -112,14 +116,13 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
           </div>
           <div className='mt-7 mb-2'>
             <Button
-              disabled={!validateUserName(username)}
               variant='default'
               type='submit'
               className={`w-full bg-blue-3f ${
                 !validateUserName(username) ? 'bg-opacity-50' : ''
               }`}
             >
-              <span className='text-white font-black text-sm'>
+              <span className='text-white font-medium text-sm'>
                 Submit Username Change Request
               </span>
             </Button>

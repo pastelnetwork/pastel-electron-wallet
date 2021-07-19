@@ -1,18 +1,31 @@
 import React from 'react'
 
+type TDir = 'top' | 'right' | 'bottom' | 'left'
+
 export type TLongArrowProps = {
   width?: number
   height?: number
   className?: string
+  to?: TDir
+}
+
+const rotate: Record<TDir, number> = {
+  top: -90,
+  right: 0,
+  bottom: 90,
+  left: 180,
 }
 
 export const LongArrow: React.FC<TLongArrowProps> = ({
   width = 20,
   height = 11,
   className = 'text-gray-88',
+  to = 'right',
 }) => {
+  const style = { transform: `rotate(${rotate[to]}deg)` }
   return (
     <svg
+      style={style}
       width={width}
       height={height}
       className={className}

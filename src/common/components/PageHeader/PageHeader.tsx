@@ -34,9 +34,7 @@ const PageHeader = ({
     <>
       <div className='bg-white text-gray-1a'>
         <div
-          className={`wrapper ${
-            variant === 'portfolio' ? 'py-18px' : 'py-30px'
-          }`}
+          className={`wrapper ${variant === 'portfolio' ? 'py-18px' : 'py-5'}`}
         >
           <div className='flex justify-between flex-wrap gap-2'>
             <div className='flex items-center'>
@@ -45,8 +43,8 @@ const PageHeader = ({
                   className={`${
                     variant === 'portfolio'
                       ? 'pr-18px md:pr-7 whitespace-nowrap'
-                      : 'pr-70px'
-                  } font-semibold text-gray-23`}
+                      : 'pr-8'
+                  } font-extrabold text-gray-23`}
                 >
                   {title}
                 </h1>

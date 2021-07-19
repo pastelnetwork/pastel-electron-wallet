@@ -1,15 +1,15 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { Plus as Component, TPlusProps as Props } from './Plus'
+import { Plus as Icon, TPlusProps as Props } from './Plus'
 
 export default {
   title: 'Icons/Plus Icon',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <Component {...args} className='text-black' />
+  return <Icon {...args} className='text-black' />
 }
 
 export const Plus = Template.bind({})

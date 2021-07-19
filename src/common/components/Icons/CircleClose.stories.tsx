@@ -1,9 +1,13 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import { CircleCheck as Icon, TCircleCheckProps as Props } from './CircleCheck'
+
+import {
+  CircleCloseIcon as Icon,
+  TCircleCloseProps as Props,
+} from './CircleClose'
 
 export default {
-  title: 'Icons/CircleCheck',
+  title: 'Icons/Circle Close Icon',
   component: Icon,
 } as Meta
 
@@ -11,9 +15,9 @@ const Template: Story<Props> = ({ ...args }) => {
   return <Icon {...args} />
 }
 
-export const CircleCheck = Template.bind({})
-CircleCheck.args = {
+export const CircleCloseIcon = Template.bind({})
+CircleCloseIcon.args = {
   width: 40,
   height: 40,
-  className: 'text-green-45',
+  className: 'text-gray-71',
 }

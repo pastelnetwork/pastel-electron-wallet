@@ -1,4 +1,5 @@
 import React from 'react'
+import cn from 'classnames'
 
 export type TMultiToggleDataItem = {
   label: string
@@ -23,7 +24,6 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
     containerClassName,
     itemInactiveClassName,
     itemActiveClassName,
-    countInactiveClassName,
     countActiveClassName,
     onToggle,
   } = props
@@ -32,7 +32,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
   const getItemClassName = (isActive: boolean) => {
     const activeClass = itemActiveClassName
       ? itemActiveClassName
-      : 'bg-tab-active rounded-full text-white'
+      : 'bg-gray-4a rounded-full text-white'
     const inactiveClass = itemInactiveClassName
       ? itemInactiveClassName
       : 'text-gray-71'
@@ -42,17 +42,12 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
     }`
   }
 
-  const getCountClassName = (isActive: boolean) => {
+  const getCountClassName = () => {
     const activeClass = countActiveClassName
       ? countActiveClassName
-      : 'bg-yellow-ff'
-    const inactiveClass = countInactiveClassName
-      ? countInactiveClassName
-      : 'bg-gray-a0'
+      : 'bg-warning-hover'
 
-    return `ml-2.5 text-9px text-white min-h-17px flex justify-center items-center rounded-xl min-w-16px text-center ${
-      isActive ? activeClass : inactiveClass
-    }`
+    return `ml-2.5 text-9px text-white min-h-17px flex justify-center items-center rounded-xl min-w-16px text-center ${activeClass}`
   }
 
   const handleClick = (index: number) => {
@@ -72,8 +67,13 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
               >
                 <span>{item.label}</span>
                 {item?.count && item.count > 0 && (
-                  <div className={getCountClassName(index === activeIndex)}>
-                    {item.count > 99 ? 99 : item.count}
+                  <div
+                    className={cn(
+                      getCountClassName(),
+                      item.count > 99 && 'w-7',
+                    )}
+                  >
+                    {item.count}
                   </div>
                 )}
               </div>

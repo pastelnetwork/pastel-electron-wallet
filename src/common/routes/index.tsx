@@ -18,6 +18,7 @@ import NFTMarketFeedPage from '../../features/NFTMarketFeed'
 import WalletScreenPage from '../../features/wallet'
 import ChatPage from '../../features/chat'
 import { MembersDirectory } from '../../features/members'
+import MemberProfile from '../../features/profile/memberProfile/MemberProfile'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -134,6 +135,13 @@ const searchResults = {
   layout: PageLayout,
 }
 
+const membersProfile = {
+  id: 'membersProfile',
+  path: ROUTES.MY_PROFILE,
+  component: MemberProfile,
+  layout: PageLayout,
+}
+
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -150,4 +158,5 @@ export const pageRoutes = [
   nft,
   chat,
   membersDirectory,
+  membersProfile,
 ]

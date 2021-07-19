@@ -46,7 +46,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
             {nft.likes} likes
           </OutlineButton>
           <OutlineButton className={grayButtonClass}>
-            <Eye size={20} className='mr-2 lg:mr-3 text-gray-8e' />
+            <Eye width={20} height={20} className='mr-2 lg:mr-3 text-gray-8e' />
             {nft.views} views
           </OutlineButton>
         </div>

@@ -56,15 +56,15 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
       className={cn(
         'w-full flex pr-33px',
         className,
-        hasBorder && 'border-b-1px border-solid border-gray-d1',
+        hasBorder && 'border-b-1px border-solid border-gray-ec',
       )}
     >
-      <div className='mr-20px w-68px'>
+      <div className='mr-20px'>
         <img src={avatar} alt={name} className='w-48px h-48px rounded-full' />
       </div>
       <div className='w-full'>
         <div className='flex justify-between'>
-          <p className='text-base font-extrabold text-gray-11'>{name}</p>
+          <p className='text-base font-extrabold text-gray-2d'>{name}</p>
           {!hideLike ? (
             <div className='text-sm leading-18px font-medium text-gray-71 flex items-center'>
               {liked ? liked : null}
@@ -88,7 +88,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
           <span className='text-gray-71 pl-1'>{dayjs(time).fromNow()}</span>
         </div>
         <div className='pr-82px'>
-          <div className='mt-4 text-base font-medium text-gray-4a mb-6'>
+          <div className='mt-4 text-base font-medium text-gray-4a mb-[17px]'>
             "{comment}"
           </div>
           {children}

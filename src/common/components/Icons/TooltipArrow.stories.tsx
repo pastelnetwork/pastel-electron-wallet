@@ -2,17 +2,17 @@ import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import {
-  TooltipArrow as Component,
+  TooltipArrow as Icon,
   TTooltipArrowProps as Props,
 } from './TooltipArrow'
 
 export default {
   title: 'Icons/TooltipArrow Icon',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <TooltipArrow {...args} className='text-gray-33' />
+  return <Icon {...args} className='text-gray-33' />
 }
 
 export const TooltipArrow = Template.bind({})

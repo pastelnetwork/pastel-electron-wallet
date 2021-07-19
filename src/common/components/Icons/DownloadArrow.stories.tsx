@@ -2,18 +2,17 @@ import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import {
-  DownloadArrow as Component,
-  DownloadArrow,
+  DownloadArrow as Icon,
   TDownloadArrowProps as Props,
 } from './DownloadArrow'
 
 export default {
   title: 'Icons/Download Arrow Icon',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <DownloadArrow {...args} className='text-blue-3f' />
+  return <Icon {...args} className='text-blue-3f' />
 }
 
 export const SimpleDownloadArrow = Template.bind({})

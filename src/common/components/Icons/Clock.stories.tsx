@@ -1,19 +1,20 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { Clock as Component, TClockProps as Props } from './Clock'
+import { Clock as Icon, TClockProps as Props } from './Clock'
 
 export default {
   title: 'Icons/Clock Icon',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <Clock {...args} className='text-71' />
+  return <Icon {...args} />
 }
 
 export const Clock = Template.bind({})
 Clock.args = {
   width: 14,
   height: 14,
+  className: 'text-gray-71',
 }

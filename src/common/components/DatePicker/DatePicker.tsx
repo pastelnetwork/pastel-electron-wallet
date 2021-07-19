@@ -1,11 +1,10 @@
 import React, { ReactNode, useState } from 'react'
 import ReactDatePicker from 'react-datepicker'
-import cn from 'classnames'
 // Components
 import { Input } from '../Inputs'
 // Assets
 import CalendarIcon from 'common/assets/icons/ico-calendar.svg'
-import ChevronIcon from 'common/assets/icons/ico-chevron.svg'
+import { Caret } from 'common/components/Icons'
 
 import './DatePicker.css'
 
@@ -67,8 +66,11 @@ const DatePicker = ({
     nextMonthButtonDisabled,
   }: TCustomHeader) => (
     <div className='flex justify-between px-4 pt-5 pb-1'>
-      <h5 className='font-heavy'>
-        {date.toLocaleString('default', { month: 'long' })}
+      <h5 className='font-extrabold text-base text-gray-4a'>
+        <span className='mr-1'>
+          {date.toLocaleString('default', { month: 'long' })}
+        </span>
+        {date.toLocaleString('default', { year: 'numeric' })}
       </h5>
       <div>
         <button
@@ -76,23 +78,26 @@ const DatePicker = ({
           disabled={prevMonthButtonDisabled}
           className='focus:outline-none p-1 mr-5'
         >
-          <img src={ChevronIcon} className='transform rotate-90' />
+          <Caret
+            to='left'
+            size={12}
+            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+          />
         </button>
         <button
           onClick={increaseMonth}
           disabled={nextMonthButtonDisabled}
           className='focus:outline-none p-1'
         >
-          <img src={ChevronIcon} className='transform -rotate-90' />
+          <Caret
+            to='right'
+            size={12}
+            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+          />
         </button>
       </div>
     </div>
   )
-
-  const inputChevronClasses = cn({
-    'transition transition-transform duration-300': true,
-    'transform rotate-180': isOpened,
-  })
 
   const customInput = (): JSX.Element | null => {
     if (variant === 'default') {
@@ -106,7 +111,13 @@ const DatePicker = ({
       return (
         <Input
           prepend={prepend}
-          append={<img src={ChevronIcon} className={inputChevronClasses} />}
+          append={
+            <Caret
+              to={isOpened ? 'top' : 'bottom'}
+              size={10}
+              className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400 transition transition-transform duration-300'
+            />
+          }
         />
       )
     } else if (variant === 'separated') {

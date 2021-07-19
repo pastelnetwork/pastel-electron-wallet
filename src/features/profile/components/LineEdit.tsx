@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import ico_close from 'common/assets/icons/ico-close-round.svg'
+import { CircleCloseIcon } from 'common/components/Icons'
 
 export type TLineEdit = {
   value: string
@@ -29,7 +29,7 @@ const LineEdit = ({
     >
       <input
         className={cn(
-          'border-none rounded bg-transparent outline-none h-full pl-4  flex-grow',
+          'border-none rounded bg-transparent outline-none text-base h-full pl-4  flex-grow',
           readOnly ? 'text-gray-a0' : 'text-gray-4a',
           inputClassName,
         )}
@@ -39,11 +39,10 @@ const LineEdit = ({
       />
       {!hideCloseIcon ? (
         <button className='mx-2'>
-          <img
-            className='w-18px cursor-pointer'
+          <CircleCloseIcon
+            width={22}
+            height={22}
             onClick={() => onChange('')}
-            src={ico_close}
-            hidden={!value.length}
           />
         </button>
       ) : null}

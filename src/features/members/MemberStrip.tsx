@@ -24,7 +24,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
 }) => {
   const history = useHistory()
   const toMemberProfile = () => {
-    history.replace(routes.MEMBERS_PROFILE)
+    history.replace(routes.MY_PROFILE)
   }
   return (
     <div className='flex space-x-30px'>

@@ -1,18 +1,15 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import {
-  CreditCard as Component,
-  TCreditCardProps as Props,
-} from './CreditCard'
+import { CreditCard as Icon, TCreditCardProps as Props } from './CreditCard'
 
 export default {
   title: 'Icons/CreditCard Icon',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <CreditCard {...args} className='text-gray-33' />
+  return <Icon {...args} className='text-gray-33' />
 }
 
 export const CreditCard = Template.bind({})

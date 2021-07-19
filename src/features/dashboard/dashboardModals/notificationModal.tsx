@@ -4,7 +4,7 @@ import cn from 'classnames'
 import { Modal } from '../../../common/components/Modal'
 import Notification from '../../../common/components/Notification'
 import Scrollbar from '../../../common/components/Scrollbar'
-import Radio from '../components/Radio'
+import Radio from 'common/components/Radio'
 import Select, { TOption } from '../../../common/components/Select/Select'
 import DatePicker from '../../../common/components/DatePicker'
 import { SelectButton } from '../../../common/components/Buttons'
@@ -36,8 +36,6 @@ const dateButtons = [
   { title: 'Yesterday' },
   { title: 'Last 7 days' },
   { title: 'Last 30 days' },
-  { title: 'Last 3 month' },
-  { title: 'Last 12 month' },
 ]
 
 const NotificationModal = ({
@@ -50,9 +48,6 @@ const NotificationModal = ({
   const [startDate, setStartDate] = useState<Date | null>(new Date())
   const [endDate, setEndDate] = useState<Date | null>(null)
   const [dateTitle, setDateTitle] = useState<string>('Today')
-
-  const handleFilter = (event: React.ChangeEvent<HTMLInputElement>): void =>
-    setFilter(event.target.value)
 
   const handleSelect = (option: TOption | null): void => setType(option)
 
@@ -115,24 +110,33 @@ const NotificationModal = ({
       className='max-w-4xl'
       overlayClassName='bg-background-modal bg-opacity-60'
     >
-      <h2 className='mb-6'>Notifications ({notifications.length})</h2>
+      <h2 className='mb-6'>Notifications</h2>
       <div className='relative py-4 mb-4'>
         <span className='absolute top-0 -left-12 w-screen max-w-4xl h-full bg-background-main'></span>
         <div className='grid grid-cols-3 gap-4 items-center'>
-          <div>
-            <Radio
-              checked={filter === 'all'}
-              value='all'
-              onChange={handleFilter}
-              label='All'
-              className='mr-6'
-            />
+          <div className='flex'>
+            <div className='mr-6'>
+              <Radio
+                checked={filter === 'all'}
+                onChange={() => setFilter('all')}
+                className='mr-3 z-10 w-5 h-5'
+                checkedCircleBackgroundColor='bg-blue-3f'
+                labelClassName='text-gray-4a z-10'
+                smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
+              >
+                All
+              </Radio>
+            </div>
             <Radio
               checked={filter === 'unread'}
-              value='unread'
-              onChange={handleFilter}
-              label='Unread'
-            />
+              onChange={() => setFilter('unread')}
+              className='mr-3 z-10 w-5 h-5'
+              checkedCircleBackgroundColor='bg-blue-3f'
+              labelClassName='text-gray-4a z-10'
+              smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
+            >
+              Unread
+            </Radio>
           </div>
           <div className='grid grid-cols-2 gap-4 col-span-2'>
             <Select

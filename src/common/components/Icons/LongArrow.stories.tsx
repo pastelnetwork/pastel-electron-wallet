@@ -20,4 +20,5 @@ export const SimpleLongArrow = Template.bind({})
 SimpleLongArrow.args = {
   width: 24,
   height: 24,
+  to: 'right',
 }

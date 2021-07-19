@@ -39,7 +39,7 @@ const Button = ({
         variant === 'default' && disabled,
       'border border-button hover:bg-button-hoverAlt hover:text-button-hover active:bg-button-pressedAlt active:text-button-pressed text-button':
         variant === 'secondary' && !disabled,
-      'border border-gray-8e text-button-text cursor-not-allowed':
+      'border border-blue-9b text-blue-9b cursor-not-allowed':
         variant === 'secondary' && disabled,
       'bg-white hover:bg-button-hoverAlt hover:bg-button-pressedAlt text-button':
         variant === 'transparent' && !disabled,

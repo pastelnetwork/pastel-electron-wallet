@@ -120,6 +120,7 @@ module.exports = {
         '196px': '12.25rem',
         '200px': '12.5rem',
         '205px': '12.813rem',
+        '216px': '13.5rem',
         '219px': '13.6875rem',
         '220px': '13.75rem',
         '223px': '13.9375rem',
@@ -202,6 +203,7 @@ module.exports = {
           '00': '#0054FE',
           d9: '#D9EBFD',
           '9b': '#9BC8F4',
+          e7: '#E7F2FE',
         },
         gray: {
           ec: '#ECEFF3',
@@ -248,6 +250,7 @@ module.exports = {
           f5: '#F5F6F7',
           d1: '#D1D6E0',
           88: '#8894AA',
+          b9: '#B9BFCB',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -428,6 +431,7 @@ module.exports = {
         '478px': '29.875rem',
         '594px': '37.125rem',
         '598px': '37.375rem',
+        '672px': '42rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
         '9/10': '90%',

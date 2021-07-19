@@ -12,8 +12,26 @@ const Template: Story<Props> = ({ ...args }) => {
   return <Icon {...args} />
 }
 
-export const Eye = Template.bind({})
-Eye.args = {
-  size: 30,
+export const EyeType1 = Template.bind({})
+EyeType1.args = {
+  width: 30,
+  height: 30,
+  variant: 'type1',
   className: 'text-black',
+}
+
+export const EyeType2 = Template.bind({})
+EyeType2.args = {
+  width: 19,
+  height: 12,
+  variant: 'type2',
+  className: 'text-gray-88',
+}
+
+export const HiddenIcon = Template.bind({})
+HiddenIcon.args = {
+  width: 19,
+  height: 12,
+  variant: 'hidden',
+  className: 'text-gray-88',
 }
