@@ -374,7 +374,7 @@ const NFTCard = ({
               </div>
               <Button
                 variant='transparent'
-                className='h-32px text-sm font-extrabold border-2 border-blue-3f'
+                className='h-32px text-sm font-medium border-2 border-blue-3f'
               >
                 {!fullCardProps.onSale
                   ? 'Make an Offer'

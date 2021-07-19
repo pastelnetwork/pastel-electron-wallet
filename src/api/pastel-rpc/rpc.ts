@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { TRpcParam } from 'types/rpc'
-import log from 'electron-log'
+// import log from 'electron-log'
 
 export type TRPCConfig = {
   url: string
@@ -31,25 +31,25 @@ export async function rpc<T>(
     })
   } catch ({ message, response, request }) {
     if (message) {
-      log.error(
-        `api/pastel-rpc server error. Response: ${JSON.stringify(
-          response?.data,
-        )}. Status code: ${JSON.stringify(response?.status)}`,
-      )
+      // log.error(
+      //   `api/pastel-rpc server error. Response: ${JSON.stringify(
+      //     response?.data,
+      //   )}. Status code: ${JSON.stringify(response?.status)}`,
+      // )
       throw new Error(`api/pastel-rpc server error: ${message}`)
     }
 
     if (request) {
       // The request was made but no response was received
-      log.error(
-        `api/pastel-rpc no response error. Request: ${JSON.stringify(
-          request,
-        )}.`,
-      )
+      // log.error(
+      //   `api/pastel-rpc no response error. Request: ${JSON.stringify(
+      //     request,
+      //   )}.`,
+      // )
       throw new Error(`api/pastel-rpc no response error: ${request}`)
     }
 
-    log.error('api/pastel-rpc error: Cannot connect to Pasteld.')
+    // log.error('api/pastel-rpc error: Cannot connect to Pasteld.')
     throw new Error('api/pastel-rpc error: Cannot connect to Pasteld')
   }
 

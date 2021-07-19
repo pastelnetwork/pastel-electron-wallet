@@ -10,7 +10,7 @@ import {
   RegistrationSuccessful,
   NewPassword,
 } from '../../features/onboarding/index'
-import PortfolioPage from '../../features/portfolio'
+import PortfolioMain from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
 import SearchPage from '../../features/searchResults'
 import { MyProfile } from '../../features/profile'
@@ -19,6 +19,7 @@ import WalletScreenPage from '../../features/wallet'
 import ChatPage from '../../features/chat'
 import { MembersDirectory } from '../../features/members'
 import MemberProfile from '../../features/profile/memberProfile/MemberProfile'
+import PortfolioPage from 'features/nft/portfolio/PortfolioPage'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -81,7 +82,7 @@ const Dashboard = {
 const Portfolio = {
   id: 'portfolio',
   path: ROUTES.PORTFOLIO,
-  component: PortfolioPage,
+  component: PortfolioMain,
   layout: PageLayout,
   requiredRPCConfig: true,
 }
@@ -142,6 +143,13 @@ const membersProfile = {
   layout: PageLayout,
 }
 
+const portfolioDetail = {
+  id: 'portofolioDetail',
+  path: ROUTES.PORTFOLIO_DETAIL,
+  component: PortfolioPage,
+  layout: PageLayout,
+}
+
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -159,4 +167,5 @@ export const pageRoutes = [
   chat,
   membersDirectory,
   membersProfile,
+  portfolioDetail,
 ]

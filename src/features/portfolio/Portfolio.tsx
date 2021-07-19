@@ -125,7 +125,7 @@ export default function Portfolio(): JSX.Element {
   const routes = {
     data: [
       {
-        label: 'Created by Me',
+        label: 'Creator',
         count: mockupPortfolio.length,
       },
       {
@@ -138,6 +138,7 @@ export default function Portfolio(): JSX.Element {
       },
       {
         label: 'Liked',
+        count: mockupPortfolioLiked.length,
       },
     ],
     activeIndex: selectedItem,
@@ -228,10 +229,13 @@ export default function Portfolio(): JSX.Element {
           </div>
         </div>
       ) : (
-        <div className='flex flex-grow flex-col items-center justify-center'>
-          <span className='text-h5 mb-1.5 text-gray-71'>You have no NFTs</span>
-          <p className='text-center text-gray-a0 text-sm'>
-            No one has subscribed to you yet <br /> but you can
+        <div className='flex flex-grow flex-col items-center justify-center mt-30vh'>
+          <span className='mb-1.5 text-gray-4a text-lg font-black'>
+            You have not created any NFTs
+          </span>
+          <p className='text-center text-gray-71 text-sm font-normal'>
+            To create a new NFT, click the "new NFT" <br /> button at the top of
+            the screen
           </p>
         </div>
       )}
@@ -322,20 +326,20 @@ const mockupPortfolioSold: TNFTCard[] = [
 ]
 
 const mockupPortfolioLiked: TNFTCard[] = []
-Array.from({ length: 32 }).map((_, index) => {
-  const randomPortfolioIndex = Math.floor(Math.random() * 4)
-  mockupPortfolioLiked.push({
-    author: 'zndrson',
-    avatarSrc: avatar,
-    imageSrc: portfolios[randomPortfolioIndex],
-    likes: 23,
-    price: '222K',
-    followers: 10,
-    currencyName: 'PSL',
-    title: 'Cosmic Perspective longname test',
-    liked: true,
-    onSale: index % 2 ? true : false,
-    isLastBid: index % 3 ? true : false,
-    detailUrl: routes.PORTFOLIO_DETAIL,
-  })
-})
+// Array.from({ length: 32 }).map((_, index) => {
+//   const randomPortfolioIndex = Math.floor(Math.random() * 4)
+//   mockupPortfolioLiked.push({
+//     author: 'zndrson',
+//     avatarSrc: avatar,
+//     imageSrc: portfolios[randomPortfolioIndex],
+//     likes: 23,
+//     price: '222K',
+//     followers: 10,
+//     currencyName: 'PSL',
+//     title: 'Cosmic Perspective longname test',
+//     liked: true,
+//     onSale: index % 2 ? true : false,
+//     isLastBid: index % 3 ? true : false,
+//     detailUrl: routes.PORTFOLIO_DETAIL,
+//   })
+// })
