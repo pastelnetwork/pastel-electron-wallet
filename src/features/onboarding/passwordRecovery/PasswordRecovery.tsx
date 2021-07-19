@@ -3,7 +3,9 @@ import { Link } from 'react-router-dom'
 import QRCode from 'qrcode.react'
 import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
 import CloseButton from '../common/closeButton'
-import Typography from '../../../common/components/Typography/Typography'
+import Typography, {
+  TypographyVariant,
+} from '../../../common/components/Typography/Typography'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import Tooltip from '../../../common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
@@ -22,10 +24,14 @@ const PasswordRecovery: React.FC = () => {
   return (
     <div className='mx-60px my-11 w-517px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <Typography variant='h1' color='#2D3748' weight={800}>
+      <Typography
+        variant={TypographyVariant.h1}
+        customColor='text-gray-2d'
+        customFontWeight='font-extrabold'
+      >
         Password Recovery
       </Typography>
-      <Typography variant='body2' color='#718096'>
+      <Typography variant={TypographyVariant.body2} customColor='text-gray-71'>
         Choose your recovery method
       </Typography>
       <div className='mt-[19px]'>
@@ -68,7 +74,10 @@ const PasswordRecovery: React.FC = () => {
           </div>
           <div>
             <div className='mt-6 w-full flex items-center'>
-              <Typography variant='body2' color='#718096'>
+              <Typography
+                variant={TypographyVariant.body2}
+                customColor='text-gray-71'
+              >
                 Public key
               </Typography>
               <div className='ml-1'>
@@ -82,14 +91,20 @@ const PasswordRecovery: React.FC = () => {
               </div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
-              <Typography variant='body2' color='#2D3748'>
+              <Typography
+                variant={TypographyVariant.body2}
+                customColor='text-gray-2d'
+              >
                 ps19jxlfdl8mhnsqlf7x0cwlhczn69x9tcev2rawnjp7e9n8ecjms9
               </Typography>
             </div>
           </div>
           <div>
             <div className='mt-6 w-full flex items-center'>
-              <Typography variant='body2' color='#718096'>
+              <Typography
+                variant={TypographyVariant.body2}
+                customColor='text-gray-71'
+              >
                 Secret key
               </Typography>
               <div className='ml-1'>
@@ -103,7 +118,10 @@ const PasswordRecovery: React.FC = () => {
               </div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
-              <Typography variant='body2' color='#2D3748'>
+              <Typography
+                variant={TypographyVariant.body2}
+                customColor='text-gray-2d'
+              >
                 ps19jxlfdl8mhnsqlf7x0cwlhczn69x9tcev2rawnjp7e9n8ecjms9
               </Typography>
             </div>
@@ -115,9 +133,6 @@ const PasswordRecovery: React.FC = () => {
           </div>
           <div className='mt-[17px]'>
             <Link to={ROUTES.PASSWORD_RECOVERY}>
-              {/* <Typography variant='body2' color='#3F9AF7' weight={500}>
-                Or try to login again
-              </Typography> */}
               <Button
                 style={{ width: '100%' }}
                 variant='transparent'

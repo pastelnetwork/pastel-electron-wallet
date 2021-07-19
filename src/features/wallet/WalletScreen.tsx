@@ -2,22 +2,22 @@ import React, { useState, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
 import cn from 'classnames'
 
-import placeholderIcon from '../../common/assets/icons/ico-placeholder.svg'
-import elminationIcon from '../../common/assets/icons/ico-elmination.svg'
-import clockIcon from '../../common/assets/icons/ico-clock.svg'
-import plusIcon from '../../common/assets/icons/ico-plus.svg'
-import electIcon from '../../common/assets/icons/ico-elect.svg'
-import Tooltip from '../../common/components/Tooltip'
-import Toggle from '../../common/components/Toggle'
-import Button from '../../common/components/Button/Button'
-import Select from '../../common/components/Select/Select'
+import placeholderIcon from 'common/assets/icons/ico-placeholder.svg'
+import elminationIcon from 'common/assets/icons/ico-elmination.svg'
+import clockIcon from 'common/assets/icons/ico-clock.svg'
+import plusIcon from 'common/assets/icons/ico-plus.svg'
+import electIcon from 'common/assets/icons/ico-elect.svg'
+import Tooltip from 'common/components/Tooltip'
+import Toggle from 'common/components/Toggle'
+import Select from 'common/components/Select/Select'
+import { Button } from 'common/components/Buttons'
 
-import PDFIcon from '../../common/assets/icons/ico-key-pdf.svg'
-import Table, { TRow } from '../../common/components/Table'
+import PDFIcon from 'common/assets/icons/ico-key-pdf.svg'
+import Table, { TRow } from 'common/components/Table'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
-import Breadcrumbs from '../../common/components/Breadcrumbs'
+import Breadcrumbs from 'common/components/Breadcrumbs'
 import { ControlRPC, WalletRPC } from 'api/pastel-rpc'
 import {
   TAddressRow,
@@ -527,8 +527,12 @@ const WalletScreen = (): JSX.Element => {
               <div className='text-gray-4a text-base text-center mb-3.5'>
                 You have no Addresses
               </div>
-              <Button variant='transparent' className='w-247px'>
-                <div className='flex items-center  ml-6'>
+              <Button
+                variant='secondary'
+                className='w-247px px-0'
+                childrenClassName='w-full'
+              >
+                <div className='flex items-center ml-6 font-medium'>
                   <img src={electIcon} className='py-3' />
                   <span className='text-sm ml-11px'>
                     Generate a new PSL Address
@@ -541,8 +545,12 @@ const WalletScreen = (): JSX.Element => {
 
         <div className='flex justify-end mt-5 mb-10'>
           {walletAddresses.length > 0 && (
-            <Button variant='transparent' className='w-247px'>
-              <div className='flex items-center  ml-6'>
+            <Button
+              variant='secondary'
+              className='w-247px px-0'
+              childrenClassName='w-full'
+            >
+              <div className='flex items-center ml-6 font-medium'>
                 <img src={electIcon} className='py-3' />
                 <span className='text-sm ml-11px'>
                   Generate a new PSL Address
@@ -552,9 +560,10 @@ const WalletScreen = (): JSX.Element => {
           )}
           <Button
             onClick={() => setPaymentModalOpen(true)}
-            className='ml-11px w-174px'
+            className='ml-11px w-174px px-0'
+            childrenClassName='w-full'
           >
-            <div className='flex items-center ml-5'>
+            <div className='flex items-center ml-5 font-medium'>
               <img src={plusIcon} className='py-3.5' />
               <span className='text-sm ml-2'>Create a payment</span>
             </div>

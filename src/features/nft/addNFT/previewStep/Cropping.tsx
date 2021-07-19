@@ -1,13 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
-import { CroppedImage, getCroppedImage, loadImage } from './PreviewStep.service'
+import {
+  TCroppedImage,
+  getCroppedImage,
+  loadImage,
+} from './PreviewStep.service'
 import { Button } from 'common/components/Buttons'
+import { TImage } from '../AddNFT.state'
 
-type CropperModalProps = {
-  image: string
-  croppedImage: CroppedImage
-  setCroppedImage(croppedImage: CroppedImage): void
+type TCropperModalProps = {
+  image: TImage
+  croppedImage: TCroppedImage
+  setCroppedImage(croppedImage: TCroppedImage): void
   onClose(): void
 }
 
@@ -21,7 +26,7 @@ export default function Cropping({
   croppedImage,
   setCroppedImage,
   onClose,
-}: CropperModalProps): JSX.Element {
+}: TCropperModalProps): JSX.Element {
   const imageRef = useRef<HTMLImageElement>(null)
   const cropperRef = useRef<Cropper>()
 
@@ -67,7 +72,7 @@ export default function Cropping({
       return
     }
 
-    const img = await loadImage(image)
+    const img = await loadImage(image.url)
     const crop = cropper.getData()
     setCroppedImage(getCroppedImage(img, crop))
     onClose()
@@ -77,13 +82,10 @@ export default function Cropping({
     <div className='bg-white rounded-md p-5 text-center'>
       <div className='flex-center'>
         <div>
-          <img ref={imageRef} src={image} />
+          <img ref={imageRef} src={image.url} />
         </div>
       </div>
-      <div
-        className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'
-        hidden
-      >
+      <div className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'>
         <Button secondary className='w-1/2' onClick={onClose}>
           Cancel
         </Button>

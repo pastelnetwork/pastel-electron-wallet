@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { TitleModal } from '../../common/components/Modal'
+import { TitleModal } from 'common/components/Modal'
 import { InputExportKey } from 'common/components/Inputs'
-import Button from '../../common/components/Button/Button'
-import DownloadWhite from '../../common/assets/icons/ico-download-white.svg'
+import { Button } from 'common/components/Buttons'
+import DownloadWhite from 'common/assets/icons/ico-download-white.svg'
 
 import {
   Document,

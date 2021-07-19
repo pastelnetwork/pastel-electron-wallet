@@ -1,37 +1,49 @@
 import * as React from 'react'
+import cn from 'classnames'
 
-import { typography } from '../../theme/typography'
-import { colors } from '../../theme/colors'
-
-import * as Styles from './Typography.styles'
-
-type TypographyVariant = 'h1' | 'h2' | 'h3' | 'body1' | 'body2' | 'body3'
-type TypographyWeight = 400 | 500 | 800
-
-export interface TypographyProps {
-  children: string
-  color?: string
-  variant?: TypographyVariant
-  weight?: TypographyWeight
-  uppercase?: boolean
+export enum TypographyVariant {
+  h1,
+  h2,
+  h3,
+  body1,
+  body2,
+  body3,
 }
 
-const Typography: React.FC<TypographyProps> = ({
+type TTypographyProps = {
+  children: string
+  variant?: TypographyVariant
+  customFontWeight?: string
+  customColor?: string
+  uppercase?: boolean
+  className?: string
+}
+
+const Typography = ({
   children,
-  color = colors.text.primary,
-  variant = 'body1',
-  weight = 400,
+  variant = TypographyVariant.body1,
   uppercase = false,
-}) => (
-  <Styles.Typography
-    size={typography[variant].size}
-    lineHeight={typography[variant].lineHeight}
-    weight={weight}
-    uppercase={uppercase}
-    color={color}
+  className,
+  customFontWeight,
+  customColor,
+}: TTypographyProps): JSX.Element => (
+  <div
+    className={cn(
+      'font-body',
+      className,
+      variant === TypographyVariant.h1 && 'text-32px leading-10',
+      variant === TypographyVariant.h2 && 'text-2xl',
+      variant === TypographyVariant.h3 && 'text-h3 leading-30px',
+      variant === TypographyVariant.body1 && 'text-lg leading-6',
+      variant === TypographyVariant.body2 && 'text-base',
+      variant === TypographyVariant.body3 && 'text-sm leading-6',
+      customFontWeight ? customFontWeight : 'font-normal',
+      uppercase && 'uppercase',
+      customColor ? customColor : 'text-gray-23',
+    )}
   >
     {children}
-  </Styles.Typography>
+  </div>
 )
 
 export default Typography
