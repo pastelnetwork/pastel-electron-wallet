@@ -38,9 +38,9 @@ export const AddNFTIcon = ({
           width='20'
           height='22'
           filterUnits='userSpaceOnUse'
-          color-interpolation-filters='sRGB'
+          colorInterpolationFilters='sRGB'
         >
-          <feFlood flood-opacity='0' result='BackgroundImageFix' />
+          <feFlood floodOpacity='0' result='BackgroundImageFix' />
           <feBlend
             mode='normal'
             in='SourceGraphic'
@@ -70,9 +70,9 @@ export const AddNFTIcon = ({
           gradientUnits='userSpaceOnUse'
           gradientTransform='translate(21.9667 -1.8) rotate(136.111) scale(34.0418)'
         >
-          <stop offset='0.0782458' stop-color='#FFCE12' />
-          <stop offset='0.507247' stop-color='#E02DFF' />
-          <stop offset='0.949356' stop-color='#17D9FF' />
+          <stop offset='0.0782458' stopColor='#FFCE12' />
+          <stop offset='0.507247' stopColor='#E02DFF' />
+          <stop offset='0.949356' stopColor='#17D9FF' />
         </radialGradient>
       </defs>
     </svg>

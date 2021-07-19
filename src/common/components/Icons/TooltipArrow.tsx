@@ -21,8 +21,8 @@ export const TooltipArrow: React.FC<TTooltipArrowProps> = ({
       xmlns='http://www.w3.org/2000/svg'
     >
       <path
-        fill-rule='evenodd'
-        clip-rule='evenodd'
+        fillRule='evenodd'
+        clipRule='evenodd'
         d='M8 0L4 4L2.67469e-07 -9.14377e-07L8 0Z'
         fill='currentColor'
       />

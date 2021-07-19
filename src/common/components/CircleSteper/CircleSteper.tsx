@@ -98,8 +98,8 @@ const CircleSteper = ({
             y2='65'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stop-color='#3F9AF7' />
-            <stop offset='1' stop-color='#6C5DD3' />
+            <stop stopColor='#3F9AF7' />
+            <stop offset='1' stopColor='#6C5DD3' />
           </linearGradient>
         </defs>
       </svg>
