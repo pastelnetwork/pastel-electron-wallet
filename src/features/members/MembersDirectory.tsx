@@ -159,9 +159,9 @@ const MembersDirectory: React.FC = () => {
       />
       <Scrollbar hasPageHeader={true}>
         <div
-          className={`${styles.content}wrapper content with-page-header pb-5 w-screen`}
+          className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
         >
-          <div className='bg-white p-5 rounded-lg'>
+          <div className='bg-white p-5 rounded-lg mr-[30px] overflow-y-auto'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>
                 <Select {...filterOptions} className='w-full' />
