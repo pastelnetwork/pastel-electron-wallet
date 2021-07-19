@@ -3,7 +3,7 @@ import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from './PreviewStep.service'
 import { Crop } from 'common/components/Icons'
-import Tooltip from '../tooltip'
+import Tooltip2 from '../../../../common/components/Tooltip2'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { useToggle } from 'react-use'
 import Cropping from './Cropping'
@@ -31,8 +31,9 @@ export default function PreviewStep({
     goBack,
     setCrop,
     goToNextStep,
-    optimizeImageToKb,
-    setOptimizeImageToKb,
+    qualityPercent,
+    setOptimizedSizeKb,
+    setQualityPercent,
     estimatedFee,
     setEstimatedFee,
   },
@@ -67,11 +68,11 @@ export default function PreviewStep({
     }
   }
 
-  const calcFee = (sizeKb: number): number => {
+  const calcFee = (quality: number): number => {
     if (!feePerKb) {
       return 1
     }
-    return Math.round(sizeKb * feePerKb)
+    return Math.round(quality * fileSizeKb * feePerKb)
   }
 
   useEffect(() => {
@@ -103,13 +104,13 @@ export default function PreviewStep({
     setLossLess(val)
 
     if (val) {
-      setOptimizeImageToKb(fileSizeKb)
+      setQualityPercent(100)
       setEstimatedFee(calcFee(fileSizeKb))
     }
   }
 
   const onChangeOptimization = (val: number): void => {
-    setOptimizeImageToKb(val)
+    setQualityPercent(val)
     setEstimatedFee(calcFee(val))
   }
 
@@ -117,12 +118,13 @@ export default function PreviewStep({
     if (croppedImage) {
       setCrop(croppedImage.crop)
 
-      if (optimizeImageToKb) {
+      if (qualityPercent < 100) {
         // TODO: optimize image to size
 
-        setEstimatedFee(calcFee(optimizeImageToKb))
+        setEstimatedFee(calcFee(qualityPercent))
       }
 
+      setOptimizedSizeKb(fileSizeKb * qualityPercent)
       goToNextStep()
     }
   }
@@ -146,7 +148,7 @@ export default function PreviewStep({
               />
             )}
             <FullScreenButton onClick={toggleFullScreen} />
-            <Tooltip text='Crop thumbnail'>
+            <Tooltip2 text='Crop thumbnail'>
               {ref => (
                 <button
                   ref={ref}
@@ -156,7 +158,7 @@ export default function PreviewStep({
                   <Crop size={18} />
                 </button>
               )}
-            </Tooltip>
+            </Tooltip2>
             <img
               ref={setImageElement}
               src={image.url}
@@ -212,10 +214,9 @@ export default function PreviewStep({
             )}
           >
             <OptimizationSlider
-              recalcFee={calcFee}
-              fileSizeKb={fileSizeKb}
-              optimizedSizeKb={optimizeImageToKb}
-              setOptimizedSizeKb={onChangeOptimization}
+              calcFee={calcFee}
+              quality={qualityPercent}
+              onChange={onChangeOptimization}
               currencyName={currencyName}
             />
           </div>

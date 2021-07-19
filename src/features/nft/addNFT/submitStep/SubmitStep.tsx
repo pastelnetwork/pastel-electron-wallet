@@ -24,12 +24,14 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 
 type TSubmitStepProps = {
   state: TAddNFTState
+  optimizedSizeKb: number
   image: TImage
   nftData: TNFTData
 }
 
 export default function SubmitStep({
-  state: { goBack, goToNextStep, estimatedFee, optimizeImageToKb },
+  state: { goBack, goToNextStep, estimatedFee },
+  optimizedSizeKb,
   image,
   nftData,
 }: TSubmitStepProps): JSX.Element {
@@ -190,7 +192,7 @@ export default function SubmitStep({
               </div>
               <div className='flex text-gray-4a font-extrabold mt-3'>
                 <div className='pl-5 w-36'>
-                  {formatFileSize(optimizeImageToKb * 1024)}
+                  {formatFileSize(optimizedSizeKb * 1024)}
                 </div>
                 <div>
                   {formatNumber(estimatedFee)} {currencyName}

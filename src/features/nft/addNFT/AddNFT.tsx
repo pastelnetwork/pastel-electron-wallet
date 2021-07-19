@@ -46,8 +46,17 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
     return <PreviewStep state={state} image={image} />
   }
 
+  const optimizedSizeKb = state.optimizedSizeKb as number
+
   if (step === Step.submit) {
-    return <SubmitStep state={state} image={image} nftData={nftData} />
+    return (
+      <SubmitStep
+        state={state}
+        image={image}
+        nftData={nftData}
+        optimizedSizeKb={optimizedSizeKb}
+      />
+    )
   } else if (step === Step.approved) {
     return <ApprovedStep state={state} image={image} nftData={nftData} />
   }

@@ -53,7 +53,8 @@ export type TAddNFTState = {
   nftData?: TNFTData
   image?: TImage
   crop?: TCrop
-  optimizeImageToKb: number
+  qualityPercent: number
+  optimizedSizeKb?: number
   estimatedFee: number
   setStep(step: Step): void
   setNftData(data: TNFTData): void
@@ -66,8 +67,9 @@ export type TAddNFTState = {
   }): void
   goBack(): void
   goToNextStep(): void
-  setOptimizeImageToKb(val: number): void
+  setQualityPercent(val: number): void
   setEstimatedFee(val: number): void
+  setOptimizedSizeKb(value?: number): void
 }
 
 export type TUseAddNFTProps = {
@@ -79,8 +81,9 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
   const [image, setImage] = useState<TImage>()
-  const [optimizeImageToKb, setOptimizeImageToKb] = useState<number>(0)
+  const [qualityPercent, setQualityPercent] = useState<number>(100)
   const [estimatedFee, setEstimatedFee] = useState<number>(1)
+  const [optimizedSizeKb, setOptimizedSizeKb] = useState<number | undefined>()
 
   return {
     step,
@@ -89,7 +92,8 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     setNftData,
     image,
     crop,
-    optimizeImageToKb,
+    qualityPercent,
+    optimizedSizeKb,
     estimatedFee,
     setStep,
     setCrop,
@@ -108,7 +112,6 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
         maxWidth: maxWidthByOrientation[orientation],
         file,
       })
-      setOptimizeImageToKb(Math.round(file.size / 1024))
     },
     goBack() {
       if (step > firstStep) {
@@ -124,7 +127,8 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
         onClose()
       }
     },
-    setOptimizeImageToKb,
+    setQualityPercent,
+    setOptimizedSizeKb,
     setEstimatedFee,
   }
 }
