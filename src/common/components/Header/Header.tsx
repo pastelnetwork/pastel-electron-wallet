@@ -1,7 +1,8 @@
 import React from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
-import SearchBar from '../SearchBar'
+import { useToggle } from 'react-use'
 
+import SearchBar from '../SearchBar'
 import * as ROUTES from 'common/utils/constants/routes'
 import Logo from 'common/assets/icons/ico-logo.svg'
 import addBtn from 'common/assets/icons/ico-add-btn.svg'
@@ -11,8 +12,8 @@ import MessageIcon from 'common/assets/icons/ico-msg.svg'
 import SettingIcon from 'common/assets/icons/ico-setting.svg'
 import UserIcon from 'common/assets/icons/ico-user.svg'
 import cn from 'classnames'
-import { useToggle } from 'react-use'
 import AddNFT from 'features/nft/addNFT'
+import Notifications from 'features/notifications'
 
 const MenuItem = ({
   to,
@@ -79,6 +80,7 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
 
 export default function Header(): JSX.Element | null {
   const [openAddNFT, toggleAddNFT] = useToggle(false)
+  const [showNotificationModal, setShowNotificationModal] = useToggle(false)
 
   const location = useLocation()
   if (location.pathname === ROUTES.CHAT) {
@@ -138,8 +140,13 @@ export default function Header(): JSX.Element | null {
           </div>
           <div className='flex items-center h-full'>
             <Icon src={QuestionTag} />
-            <Link to={ROUTES.DASHBOARD}>
+            <Link
+              to='#'
+              onClick={() => setShowNotificationModal(!showNotificationModal)}
+              className='relative'
+            >
               <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
+              <Notifications isOpen={showNotificationModal} />
             </Link>
             <Link to={ROUTES.CHAT}>
               <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />

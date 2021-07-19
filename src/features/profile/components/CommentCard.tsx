@@ -18,6 +18,8 @@ export type TComment = {
   time: number
   comment: string
   replyId?: number
+  profileUrl?: string
+  portfolioUrl?: string
 }
 
 type TCommentCardProps = TComment & {
@@ -46,6 +48,8 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
     hideReply,
     hideLike,
     onLikeClick,
+    profileUrl,
+    portfolioUrl,
   } = props
 
   const [reply, setReply] = useState('')
@@ -60,11 +64,18 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
       )}
     >
       <div className='mr-20px w-68px'>
-        <img src={avatar} alt={name} className='w-48px h-48px rounded-full' />
+        <Link href={profileUrl} className='cursor-pointer'>
+          <img src={avatar} alt={name} className='w-48px h-48px rounded-full' />
+        </Link>
       </div>
       <div className='w-full'>
         <div className='flex justify-between'>
-          <p className='text-base font-extrabold text-gray-11'>{name}</p>
+          <Link
+            href={profileUrl}
+            className='text-base font-extrabold text-gray-11 cursor-pointer'
+          >
+            {name}
+          </Link>
           {!hideLike ? (
             <div className='text-sm leading-18px font-medium text-gray-71 flex items-center'>
               {liked ? liked : null}
@@ -80,7 +91,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
           {author ? (
             <p className='text-gray-71'>
               Commented on{' '}
-              <Link href='#' className='pl-1'>
+              <Link href={portfolioUrl} className='pl-1'>
                 {author}.
               </Link>{' '}
             </p>

@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
 import { useAppSelector } from 'redux/hooks'
-
-import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
-import avatar from '../../common/assets/images/avatar-placeholder.png'
-import image from '../../common/assets/images/nft-card-placeholder.png'
-import Select, { TOption } from '../../common/components/Select/Select'
-import Slider from '../../common/components/Slider/Slider'
-import PageHeader from '../../common/components/PageHeader'
+import * as ROUTES from 'common/utils/constants/routes'
+import NFTCard, { TNFTCard } from 'common/components/NFTCard'
+import avatar from 'common/assets/images/avatar-placeholder.png'
+import image from 'common/assets/images/nft-card-placeholder.png'
+import Select, { TOption } from 'common/components/Select/Select'
+import Slider from 'common/components/Slider/Slider'
+import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 
 enum Tabs {
@@ -31,6 +31,7 @@ const NFTMarketFeed: React.FC = () => {
     liked: true,
     followers: 256,
     isLastBid: false,
+    detailUrl: ROUTES.PORTFOLIO_DETAIL,
   }
 
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)

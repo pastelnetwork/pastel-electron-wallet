@@ -3,6 +3,7 @@ import cn from 'classnames'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import { useHistory } from 'react-router-dom'
+import { CloseButton } from 'common/components/Buttons'
 import { ChatItem, TChatItemProps } from './ChatItem'
 import { ChatMessage } from './ChatMessage'
 import { UserAvatar } from './components/UserAvatar'
@@ -11,7 +12,6 @@ import chatMenuIcon from 'common/assets/icons/ico-chat-menu.svg'
 import msgEmojiIcon from 'common/assets/icons/ico-chatmsg-emoji.svg'
 import msgAttachIcon from 'common/assets/icons/ico-chatmsg-link.svg'
 import msgSendIcon from 'common/assets/icons/ico-chatmsg-send.svg'
-import chatCloseIcon from 'common/assets/icons/ico-close2.svg'
 import styles from './Chat.module.css'
 import { mockChats, curUser } from './mock-data'
 import { TChatUser } from './common'
@@ -168,11 +168,8 @@ const Chat = (): JSX.Element => {
               <img className='cursor-pointer' src={chatMenuIcon} />
             </div>
 
-            <div
-              className='cursor-pointer flex items-center ml-4 h-4'
-              onClick={onCloseChat}
-            >
-              <img className='cursor-pointer w-6 h-6' src={chatCloseIcon} />
+            <div className='flex items-center ml-4 h-4'>
+              <CloseButton onClick={onCloseChat} />
             </div>
           </div>
 

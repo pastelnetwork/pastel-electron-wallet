@@ -943,7 +943,7 @@ export function insertListunspent(
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listunspent')
 
-  const generated = listunspent.generated.toString()
+  const generated = listunspent?.generated?.toString()
   const values = {
     $newId: newId,
     $txid: listunspent.txid,

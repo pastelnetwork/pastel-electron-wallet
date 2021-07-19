@@ -34,16 +34,16 @@ const Button = ({
 
   const classes = cn(
     {
-      'button flex items-center px-2 h-10 justify-center rounded-2xl transition duration-300 focus:outline-none active:shadow-none focus:shadow-btnOutline max-w-full leading-none border': true,
-      'bg-button hover:bg-transparent active:bg-blue-pressed text-white hover:border-link hover:text-link':
+      'button flex items-center px-2 h-10 justify-center rounded-2xl transition duration-300 focus:outline-none active:shadow-none focus:shadow-btnOutline max-w-full leading-none': true,
+      'bg-button hover:bg-button-hover active:bg-button-pressed text-white':
         variant === 'default' && !disabled,
-      'bg-button-background text-button-text cursor-not-allowed':
+      'bg-blue-9b text-white cursor-not-allowed':
         variant === 'default' && disabled,
-      'border border-button hover:bg-button-hoverAlt hover:text-button-hover active:bg-button-pressedAlt active:text-button-pressed text-button':
+      'border border-button hover:bg-button-hover-secondary hover:text-button-hover active:bg-button-pressed-secondary active:text-button-pressed text-button text-button':
         variant === 'secondary' && !disabled,
-      'border border-gray-8e text-button-text cursor-not-allowed':
+      'border border-blue-9b cursor-not-allowed bg-button-hover-secondary text-blue-9b':
         variant === 'secondary' && disabled,
-      'bg-white hover:bg-link hover:text-white text-button':
+      'bg-white hover:bg-button-hover-secondary hover:text-button-hover active:bg-button-pressed-secondary active:text-button-pressed text-button':
         variant === 'transparent' && !disabled,
       'bg-white text-button-text cursor-not-allowed':
         variant === 'transparent' && disabled,

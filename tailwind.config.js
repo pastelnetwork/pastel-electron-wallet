@@ -120,6 +120,7 @@ module.exports = {
         '196px': '12.25rem',
         '200px': '12.5rem',
         '205px': '12.813rem',
+        '208px': '13rem',
         '219px': '13.6875rem',
         '220px': '13.75rem',
         '223px': '13.9375rem',
@@ -168,10 +169,10 @@ module.exports = {
         link: {
           DEFAULT: '#3F9AF7',
           hover: {
-            DEFAULT: '#45B26B',
+            DEFAULT: '#0E80F5',
           },
           active: {
-            DEFAULT: '#45B26B',
+            DEFAULT: '#0971DC',
           },
         },
         white: '#FFFFFF',
@@ -195,6 +196,7 @@ module.exports = {
           background: '#FAEFF5',
         },
         black: {
+          DEFAULT: '#000',
           12: '#121244',
           14: '#141416',
         },
@@ -209,6 +211,7 @@ module.exports = {
           37: '#3754DB',
           '00': '#0054FE',
           d9: '#D9EBFD',
+          '9b': '#9BC8F4',
         },
         gray: {
           fc: '#FCFCFD',
@@ -254,6 +257,11 @@ module.exports = {
           f5: '#F5F6F7',
           d6: '#D1D6E0',
           d1: '#D1D1D1',
+          55: '#556177',
+          88: '#8894AA',
+          ec: '#ECEFF3',
+          f6: '#F6F7F9',
+          b9: '#B9BFCB',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -297,8 +305,14 @@ module.exports = {
         },
         button: {
           DEFAULT: '#3F9AF7',
-          pressed: '#0E80F5',
-          hover: '#278DF6',
+          pressed: {
+            DEFAULT: '#0971DC',
+            secondary: '#E7F2FE',
+          },
+          hover: {
+            DEFAULT: '#0E80F5',
+            secondary: '#E7F2FE',
+          },
           background: '#F2F2F2',
           text: '#8E98A3',
           hoverAlt: '#F0F7FE',
@@ -374,6 +388,8 @@ module.exports = {
         4: '0px 50px 77px rgba(176, 183, 195, 0.22)',
         avatar: '0px 20px 30px rgba(212, 215, 224, 0.4)',
         modal: '0px 50px 77px rgba(176, 183, 195, 0.22)',
+        expand:
+          '0px 0px 4px rgba(38, 59, 143, 0.04), 0px 6px 10px rgba(38, 59, 143, 0.07)',
       },
       fontSize: {
         h1: '2rem',
@@ -409,6 +425,7 @@ module.exports = {
       },
       borderWidth: {
         '1px': '0.0625rem',
+        '1.3px': '0.081rem',
         '3px': '0.1875rem',
         '5px': '0.3125rem',
         '16px': '1rem',
@@ -500,6 +517,12 @@ module.exports = {
         0.01: '0.01em',
       },
       fill: {
+        white: '#fff',
+        blue: {
+          '3f': '#3F9AF7',
+        },
+      },
+      stroke: {
         white: '#fff',
         blue: {
           '3f': '#3F9AF7',
