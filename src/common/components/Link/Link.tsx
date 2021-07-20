@@ -7,6 +7,7 @@ export type TLink = {
   className?: string
   href?: string
   variant?: string
+  useATag?: boolean
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
@@ -15,6 +16,7 @@ const Link = ({
   className,
   children,
   variant,
+  useATag,
   ...otherProps
 }: TLink): JSX.Element => {
   const classes = cn(
@@ -27,6 +29,14 @@ const Link = ({
   )
 
   if (href) {
+    if (useATag) {
+      return (
+        <a href={href} className={classes} {...otherProps}>
+          {children}
+        </a>
+      )
+    }
+
     return (
       <RouterLink to={href} className={classes} {...otherProps}>
         {children}
