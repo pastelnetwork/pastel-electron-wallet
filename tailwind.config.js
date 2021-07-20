@@ -205,6 +205,8 @@ module.exports = {
           d9: '#D9EBFD',
           '9b': '#9BC8F4',
           e7: '#E7F2FE',
+          ac: '#006EAC',
+          f2: '#98CFF2',
         },
         gray: {
           ec: '#ECEFF3',
@@ -266,6 +268,7 @@ module.exports = {
           14: '#14B85F',
           fa: '#FA4A30',
           fd: '#FFD9D9',
+          f8: '#f8e6f0',
         },
         pink: {
           46: '#EF466F',

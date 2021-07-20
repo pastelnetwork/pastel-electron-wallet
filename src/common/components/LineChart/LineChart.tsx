@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import * as d3 from 'd3'
 import dayjs from 'dayjs'
+import cn from 'classnames'
 
 export type TLineChartRow = {
   date: Date
@@ -23,6 +24,8 @@ export type TChartProps = {
   data2Label?: string
   barChartWidth?: number
   type: 'week' | 'month' | 'year'
+  label1className?: string
+  label2className?: string
 }
 
 const filterData = (
@@ -37,6 +40,12 @@ const filterData = (
           .add(7 - dayjs().day(), 'day')
           .diff(dayjs(item.date)) > 0,
     )
+  } else if (type === 'month') {
+    return data.filter(
+      item =>
+        !(dayjs(item.date).diff(dayjs().startOf('year')) < 0) &&
+        !(dayjs().endOf('year').diff(dayjs(item.date)) < 0),
+    )
   } else {
     return []
   }
@@ -48,13 +57,15 @@ const LineChart = ({
   width = 600,
   data2,
   margin,
-  data1Label = 'View',
+  data1Label = 'Total Views',
   data2Label = 'Likes',
   barChartWidth = 33,
+  type = 'month',
+  label1className = 'bg-blue-37',
+  label2className = 'bg-red-ff',
 }: TChartProps): JSX.Element => {
-  console.log(dayjs().subtract(dayjs().day() + 1, 'day'))
   useEffect(() => {
-    const data: TLineChartRow[] = filterData(data1, 'week')
+    const data: TLineChartRow[] = filterData(data1, type)
     const svg = d3
       .select('#container')
       .attr('width', width + margin.left + margin.right)
@@ -62,26 +73,29 @@ const LineChart = ({
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     const extent = []
-
-    extent.push(
-      dayjs()
-        .subtract(dayjs().day() - 1, 'day')
-        .startOf('day'),
-    )
-    extent.push(
-      dayjs()
-        .add(7 - dayjs().day(), 'day')
-        .startOf('day'),
-    )
+    if (type === 'week') {
+      extent.push(
+        dayjs()
+          .subtract(dayjs().day() - 1, 'day')
+          .startOf('day'),
+      )
+      extent.push(
+        dayjs()
+          .add(7 - dayjs().day(), 'day')
+          .startOf('day'),
+      )
+    } else if (type === 'month') {
+      extent.push(dayjs().startOf('year'))
+      extent.push(dayjs().endOf('year'))
+    }
     if (extent[0]) {
       const x = d3.scaleTime().domain(extent).range([0, width])
-      const formatTime = d3.timeFormat('%A')
+      const formatTime = d3.timeFormat(`${type === 'week' ? '%A' : '%b'}`)
       const xAxis = d3
         .axisBottom(x)
-        .tickArguments([7])
+        .tickArguments(type === 'week' ? [7] : [12])
         .tickFormat(d => {
           const date = new Date(d.toString())
-          console.log(d)
           return formatTime(date)
         })
 
@@ -119,7 +133,7 @@ const LineChart = ({
             .attr('class', 'text-gray-71 text-13px')
         })
         if (data2) {
-          const secondData = filterData(data2, 'week')
+          const secondData = filterData(data2, type)
           const selection = svg.selectAll('rect').data(secondData)
           selection
             .enter()
@@ -128,7 +142,10 @@ const LineChart = ({
             .attr('y', 0)
             .attr('width', barChartWidth)
             .attr('height', 0)
-            .attr('fill', 'url(#paint0_linear)')
+            .attr(
+              'fill',
+              type === 'week' ? 'url(#gradient1)' : 'url(#gradient2)',
+            )
             .attr('rx', 4)
             .transition()
             .duration(300)
@@ -238,7 +255,7 @@ const LineChart = ({
         <svg id='container'>
           <defs>
             <linearGradient
-              id='paint0_linear'
+              id='gradient1'
               x1='16.5'
               y1='0'
               x2='16.5'
@@ -246,6 +263,17 @@ const LineChart = ({
               gradientUnits='userSpaceOnUse'
             >
               <stop offset='0.29913' stop-color='#D4B9FF' />
+              <stop offset='1' stop-color='#FF82AC' stop-opacity='0' />
+            </linearGradient>
+            <linearGradient
+              id='gradient2'
+              x1='16.5'
+              y1='0'
+              x2='16.5'
+              y2={height}
+              gradientUnits='userSpaceOnUse'
+            >
+              <stop offset='0.29913' stop-color='#9FDDFF' />
               <stop offset='1' stop-color='#FF82AC' stop-opacity='0' />
             </linearGradient>
           </defs>
@@ -256,12 +284,16 @@ const LineChart = ({
         style={{ width: width + margin.left + margin.right }}
       >
         <div className='text-gray-2d font-medium text-sm flex items-center mr-61px'>
-          <div className='w-2 h-2 rounded-full bg-blue-37 mr-1.5'></div>
+          <div
+            className={cn('w-2 h-2 rounded-full mr-1.5', label1className)}
+          ></div>
           {data1Label}
         </div>
         {!!data2 && (
           <div className='text-gray-2d font-medium text-sm flex items-center'>
-            <div className='w-2 h-2 rounded-full bg-red-ff mr-1.5'></div>
+            <div
+              className={cn('w-2 h-2 rounded-full mr-1.5', label2className)}
+            ></div>
             {data2Label}
           </div>
         )}
