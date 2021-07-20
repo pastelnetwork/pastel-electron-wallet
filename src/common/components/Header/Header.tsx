@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink, Link, useLocation, useHistory } from 'react-router-dom'
 import { useToggle } from 'react-use'
 
@@ -13,7 +13,8 @@ import SettingIcon from 'common/assets/icons/ico-setting.svg'
 import UserIcon from 'common/assets/icons/ico-user.svg'
 import cn from 'classnames'
 import AddNFT from 'features/nft/addNFT'
-import Notifications from 'features/notifications'
+import NotificationModal from 'features/dashboard/dashboardModals/notificationModal'
+import notificationData from 'features/dashboard/dashboardModals/notificationModal.data'
 
 const MenuItem = ({
   to,
@@ -79,8 +80,8 @@ const Icon = ({ src, background, notification, classes, path }: TIconProps) => {
 }
 
 export default function Header(): JSX.Element | null {
+  const [openNotificationModal, setOpenNotificationModal] = useState(false)
   const [openAddNFT, toggleAddNFT] = useToggle(false)
-  const [showNotificationModal, setShowNotificationModal] = useToggle(false)
 
   const location = useLocation()
   if (location.pathname === ROUTES.CHAT) {
@@ -142,11 +143,10 @@ export default function Header(): JSX.Element | null {
             <Icon src={QuestionTag} />
             <Link
               to='#'
-              onClick={() => setShowNotificationModal(!showNotificationModal)}
+              onClick={() => setOpenNotificationModal(true)}
               className='relative'
             >
               <Icon classes='ml-6 lg:ml-27px w-4' src={BellIcon} notification />
-              <Notifications isOpen={showNotificationModal} />
             </Link>
             <Link to={ROUTES.CHAT}>
               <Icon classes='ml-6 lg:ml-18px w-4' src={MessageIcon} />
@@ -161,6 +161,11 @@ export default function Header(): JSX.Element | null {
           </div>
         </div>
       </div>
+      <NotificationModal
+        isOpen={openNotificationModal}
+        notifications={notificationData}
+        handleClose={() => setOpenNotificationModal(false)}
+      />
     </div>
   )
 }
