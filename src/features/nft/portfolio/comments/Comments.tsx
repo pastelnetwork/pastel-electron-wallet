@@ -58,7 +58,7 @@ export default function Comments(): JSX.Element {
       <div className='flex-grow' />
       <div className='py-6 text-center'>
         <Link to='#' className='link font-extrabold text-xs leading-3'>
-          All comments
+          All Comments
         </Link>
       </div>
     </div>

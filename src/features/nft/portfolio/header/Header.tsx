@@ -59,7 +59,7 @@ export default function Header({ nft }: HeaderProps): JSX.Element {
       >
         {formatToTitleCase(nft.title)}
         <Tooltip
-          type='bottom'
+          type='top'
           content={getTooltip(
             'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
           )}

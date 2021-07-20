@@ -12,8 +12,16 @@ const Template: Story<Props> = ({ ...args }) => {
   return <Icon {...args} />
 }
 
-export const Flag = Template.bind({})
-Flag.args = {
+export const FilledFlag = Template.bind({})
+FilledFlag.args = {
   size: 30,
   className: 'text-black',
+  variant: 'fill',
+}
+
+export const StrokeFlag = Template.bind({})
+StrokeFlag.args = {
+  size: 30,
+  className: 'text-black',
+  variant: 'stroke',
 }

@@ -51,14 +51,14 @@ const TransferAuthorshipModal: React.FC<TTransferAuthorshipModal> = ({
             Transfer History
           </button>
         </div>
-        <div className='flex text-gray-77 text-lg leading-6 mt-3'>
+        <div className='flex text-gray-4a font-normal text-lg leading-6 mt-3'>
           {data.history}
         </div>
         <div>
-          <div className='mt-22px text-gray-71 leading-tight text-base'>
-            Pastel ID of recipient
+          <div className='mt-22px text-gray-71 leading-tight font-medium text-base'>
+            Pastel ID of Recipient
           </div>
-          <div className='mt-10px h-40px border rounded border-gray-e7 flex items-center'>
+          <div className='mt-1.5 h-40px border rounded border-gray-e7 flex items-center'>
             <input
               className='w-full border-none outline-none rounded text-gray-2d px-4'
               value={pastelID}
@@ -70,7 +70,7 @@ const TransferAuthorshipModal: React.FC<TTransferAuthorshipModal> = ({
               isChecked={isChecked}
               clickHandler={() => setChecked(!isChecked)}
             />
-            <span className='ml-1'>
+            <span className='ml-1 mt-px'>
               Yes, I confirm the transfer of royalty compensation rights
             </span>
           </div>
@@ -79,7 +79,7 @@ const TransferAuthorshipModal: React.FC<TTransferAuthorshipModal> = ({
           variant='default'
           className='flex items-center justify-center w-full mb-2'
         >
-          <span className='font-bold'>Submit</span>
+          <span className='font-medium'>Submit</span>
         </Button>
 
         <TransferHistoryModal

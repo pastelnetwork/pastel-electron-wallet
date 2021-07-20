@@ -110,6 +110,7 @@ const ViewsStatsModal: React.FC<TViewsStatsModal> = ({
             margin={margin}
             height={200}
             width={580}
+            type='week'
           />
         </div>
       </div>

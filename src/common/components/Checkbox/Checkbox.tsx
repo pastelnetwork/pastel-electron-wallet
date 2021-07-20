@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import cn from 'classnames'
-import IconCheckBlue from '../../assets/icons/ico-check-blue.svg'
+import { CheckIcon } from 'common/components/Icons'
 
 export type TCheckboxProps = {
   isChecked: boolean
   clickHandler?: (checked: boolean) => void
   children?: React.ReactNode
+  tickClassName?: string
+  selectedBackgroundClassName?: string
 }
 
 const Checkbox = ({
   children,
   isChecked,
   clickHandler,
+  tickClassName = 'text-gray-e7',
+  selectedBackgroundClassName = 'bg-blue-3f',
 }: TCheckboxProps): JSX.Element => {
   const [selected, setSelected] = useState(isChecked)
   return (
@@ -24,14 +28,16 @@ const Checkbox = ({
         className={cn(
           'transition-all w-5 h-5 rounded-md checkboxCheckmark flex-shrink-0',
           !selected && 'border-gray-dd border hover:border-gray-8e',
-          selected && 'bg-blue-e5 flex items-center justify-center',
+          selected &&
+            `${selectedBackgroundClassName} flex items-center justify-center`,
         )}
       >
-        <img
-          src={IconCheckBlue}
-          className={`${
-            !selected ? 'hidden transition-all' : 'transition-all'
-          }`}
+        <CheckIcon
+          size={8}
+          className={cn(
+            tickClassName,
+            !selected ? 'hidden transition-all' : 'transition-all',
+          )}
         />
       </div>
       <div

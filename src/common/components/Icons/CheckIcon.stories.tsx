@@ -1,6 +1,7 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
-import { CircleCheck as Icon, TCircleCheckProps as Props } from './CircleCheck'
+
+import { CheckIcon as Icon, TCheckIconProps as Props } from './CheckIcon'
 
 export default {
   title: 'Icons/CheckMark',
@@ -11,9 +12,9 @@ const Template: Story<Props> = ({ ...args }) => {
   return <Icon {...args} />
 }
 
-export const CircleCheck = Template.bind({})
-CircleCheck.args = {
-  width: 40,
-  height: 40,
-  className: 'text-green-45',
+export const SimpleCheck = Template.bind({})
+SimpleCheck.args = {
+  size: 30,
+  className: 'text-black',
+  strokeWidth: 2,
 }
