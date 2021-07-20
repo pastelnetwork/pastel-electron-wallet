@@ -15,7 +15,7 @@ enum Tabs {
   statistics,
 }
 
-const NFTMarketFeed: React.FC = () => {
+const NFTMarketFeed = (): JSX.Element => {
   const {
     info: { currencyName },
   } = useAppSelector(state => state.appInfo)
@@ -129,7 +129,6 @@ const NFTMarketFeed: React.FC = () => {
           <div className='flex'>
             <div className='flex h-full items-center justify-end'>
               <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
-
               <Slider
                 min={100}
                 max={999}
@@ -137,6 +136,7 @@ const NFTMarketFeed: React.FC = () => {
                 onChange={setRange}
                 formatValue={formatValue}
                 formatTooltipValue={formatValue}
+                step={1}
               />
             </div>
           </div>

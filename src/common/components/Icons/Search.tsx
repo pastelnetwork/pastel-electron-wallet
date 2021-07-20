@@ -6,11 +6,11 @@ export type TSearchProps = {
   className?: string
 }
 
-export const Search: React.FC<TSearchProps> = ({
+export const Search = ({
   width = 17,
   height = 16,
   className = 'text-gray-33',
-}) => {
+}: TSearchProps): JSX.Element => {
   return (
     <svg
       width={width}

@@ -7,13 +7,13 @@ export type TManInHexagonProps = TIconProps & {
   secondStopClassName?: string
 }
 
-export const ManInHexagon: React.FC<TManInHexagonProps> = ({
+export const ManInHexagon = ({
   size,
   className,
   fill = 'text-white',
   firstStopClassName,
   secondStopClassName,
-}) => {
+}: TManInHexagonProps): JSX.Element => {
   return (
     <svg
       width={size}

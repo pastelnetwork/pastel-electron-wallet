@@ -70,7 +70,7 @@ const childRoutes = (
 
 const period = 1000 * 10
 
-const Routes: React.FC = () => {
+const Routes = (): JSX.Element => {
   const location = useLocation()
   const history = useHistory()
   const dispatch = useAppDispatch()

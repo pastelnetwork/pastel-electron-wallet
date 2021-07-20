@@ -32,7 +32,7 @@ const mockBreadcrumbs: TBreadcrumb[] = [
   },
 ]
 
-const MembersDirectory: React.FC = () => {
+const MembersDirectory = (): JSX.Element => {
   const {
     info: { currencyName },
   } = useAppSelector(state => state.appInfo)
@@ -182,6 +182,7 @@ const MembersDirectory: React.FC = () => {
                     onChange={setRange}
                     formatValue={formatValue}
                     formatTooltipValue={formatValue}
+                    step={1}
                   />
                 </div>
               </div>

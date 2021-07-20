@@ -6,11 +6,11 @@ export type TClockProps = {
   className?: string
 }
 
-export const Clock: React.FC<TClockProps> = ({
+export const Clock = ({
   width = 18,
   height = 18,
   className = 'text-gray-71',
-}) => {
+}: TClockProps): JSX.Element => {
   return (
     <svg
       width={width}

@@ -17,7 +17,7 @@ enum Tabs {
   cryptoKeys,
 }
 
-const PasswordRecovery: React.FC = () => {
+const PasswordRecovery = (): JSX.Element => {
   const [tab, setTab] = useState(Tabs.qrCode)
   const onTabToggle = (index: number) => {
     setTab(index)

@@ -23,7 +23,7 @@ const initialInputState = {
   isTouched: false,
 }
 
-const Login: React.FC = () => {
+const Login = (): JSX.Element => {
   const history = useHistory()
 
   const [username, setUsername] = React.useState<ILoginFormInput>(

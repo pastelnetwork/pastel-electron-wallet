@@ -317,6 +317,7 @@ export default function Portfolio(): JSX.Element {
                   onChange={setRange}
                   formatValue={formatValue}
                   formatTooltipValue={formatValue}
+                  step={1}
                 />
               </div>
             </div>

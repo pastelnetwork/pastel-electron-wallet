@@ -14,7 +14,7 @@ export type TMemberStripProps = {
   searchText?: string
 }
 
-const MemberStrip: React.FC<TMemberStripProps> = ({
+const MemberStrip = ({
   id,
   memberCard,
   heighestSold,
@@ -22,7 +22,7 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   totalSold,
   currencyName,
   searchText,
-}) => {
+}: TMemberStripProps): JSX.Element => {
   const history = useHistory()
   const toMemberProfile = () => {
     history.replace(ROUTES.MEMBERS_PROFILE)

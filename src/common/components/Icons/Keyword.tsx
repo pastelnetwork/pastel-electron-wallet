@@ -6,11 +6,11 @@ export type TKeywordProps = {
   className?: string
 }
 
-export const Keyword: React.FC<TKeywordProps> = ({
+export const Keyword = ({
   width = 12,
   height = 12,
   className = 'text-gray-4a',
-}) => {
+}: TKeywordProps): JSX.Element => {
   return (
     <svg
       width={width}

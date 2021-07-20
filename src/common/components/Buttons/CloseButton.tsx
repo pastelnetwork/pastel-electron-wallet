@@ -7,11 +7,11 @@ export type TCloseButton = {
   disabled?: boolean
 }
 
-const CloseButton: React.FC<TCloseButton> = ({
+const CloseButton = ({
   onClick,
   className,
   disabled,
-}) => {
+}: TCloseButton): JSX.Element => {
   const classes = cn(
     {
       'border flex items-center justify-center w-7 h-7 rounded-lg focus:outline-none active:shadow-none transition duration-300 text-gray-8e': true,
