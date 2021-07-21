@@ -1,4 +1,6 @@
 const os = require('os')
+const path = require('path')
+const fs = require('fs')
 
 const package = require('./package.json')
 
@@ -40,6 +42,15 @@ function getIcon() {
   }
 }
 
+let certificateFile = ''
+if (process.env['WINDOWS_CODESIGN_FILE']) {
+  certificateFile = path.join(
+    __dirname,
+    'certificates',
+    process.env['WINDOWS_CODESIGN_FILE'],
+  )
+}
+
 module.exports = {
   packagerConfig: {
     name: package.productName,
@@ -60,6 +71,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         exe: `${package.name}.exe`,
+        authors: package.author.name,
         setupIcon: './static/icons/icon.ico',
         loadingGif: './static/icons/icon.gif',
         iconUrl:
@@ -67,6 +79,8 @@ module.exports = {
         title: package.productName,
         setupExe: `${package.productName} Setup - v${package.version}.exe`,
         skipUpdateIcon: true,
+        certificateFile,
+        certificatePassword: process.env['WINDOWS_CODESIGN_PASSWORD'],
       },
     },
     {
