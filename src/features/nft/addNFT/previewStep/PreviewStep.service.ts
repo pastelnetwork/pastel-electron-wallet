@@ -2,6 +2,10 @@ import smartcrop from 'smartcrop'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { TCrop, TImage } from '../AddNFT.state'
+import { getEstimateFee } from 'api/estimate-fee'
+import { useAppSelector } from 'redux/hooks'
+import { ipcRenderer } from 'electron'
+import { TImageOptimizationResult } from '../ImageOptimization.types'
 
 const previewSize = 320
 
@@ -106,4 +110,73 @@ export const useImagePreview = ({
   }, [image])
 
   return [croppedImage, updateCroppedImage]
+}
+
+export const useFeePerKb = (): number | undefined => {
+  const pastelConfig = useAppSelector(state => state.pastelConf)
+
+  const [feePerKb, setFeePerKb] = useState<number>()
+
+  const getFee = async () => {
+    const fee = await getEstimateFee(1, pastelConfig)
+    if (fee > 0) {
+      setFeePerKb(fee)
+    } else {
+      // -1.0 is returned if not enough transactions and blocks
+      // have been observed to make an estimate
+      toast('Not enough transactions to make an estimate', {
+        type: 'warning',
+        autoClose: false,
+      })
+    }
+  }
+
+  useEffect(() => {
+    getFee()
+  }, [])
+
+  return feePerKb
+}
+
+export const calculateFee = ({
+  feePerKb,
+  quality,
+  isLossLess,
+  fileSizeKb,
+}: {
+  feePerKb: number | undefined
+  quality: number
+  isLossLess: boolean
+  fileSizeKb: number
+}): number | undefined => {
+  if (feePerKb === undefined) {
+    return undefined
+  }
+  return Math.round((isLossLess ? 100 : quality) * fileSizeKb * feePerKb)
+}
+
+export const optimizeImage = async (
+  image: TImage,
+  quality: number,
+  setOptimizedImageURL: (url: string) => void,
+): Promise<void | TImageOptimizationResult> => {
+  if (quality === 100) {
+    setOptimizedImageURL(image.url)
+    return
+  }
+
+  const result = (await ipcRenderer.invoke(
+    'optimizeImage',
+    {
+      path: image.file.path,
+      type: image.file.type,
+    },
+    quality,
+  )) as TImageOptimizationResult
+
+  if (result.status !== 'cancelled') {
+    setOptimizedImageURL(result.fileUrl)
+  }
+
+  return result
 }

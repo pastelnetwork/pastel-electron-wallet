@@ -42,6 +42,8 @@ const maxWidthByOrientation: Record<TImageOrientation, number> = {
 export type TImage = {
   file: File
   url: string
+  optimizedUrl?: string
+  displayUrl: string
   width: number
   height: number
   maxWidth: number
@@ -54,8 +56,9 @@ export type TAddNFTState = {
   image?: TImage
   crop?: TCrop
   qualityPercent: number
+  isLossLess: boolean
   optimizedSizeKb?: number
-  estimatedFee: number
+  estimatedFee: number | undefined
   setStep(step: Step): void
   setNftData(data: TNFTData): void
   setCrop(crop: TCrop): void
@@ -65,10 +68,12 @@ export type TAddNFTState = {
     width: number
     height: number
   }): void
+  setOptimizedImageURL(url: string): void
   goBack(): void
   goToNextStep(): void
-  setQualityPercent(val: number): void
-  setEstimatedFee(val: number): void
+  setQualityPercent(value: number): void
+  setIsLossLess(value: boolean): void
+  setEstimatedFee(value: number | undefined): void
   setOptimizedSizeKb(value?: number): void
 }
 
@@ -81,9 +86,26 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
   const [image, setImage] = useState<TImage>()
-  const [qualityPercent, setQualityPercent] = useState<number>(100)
-  const [estimatedFee, setEstimatedFee] = useState<number>(1)
+  const [qualityPercent, setQualityPercent] = useState(100)
+  const [isLossLess, setIsLossLess] = useState(false)
+  const [estimatedFee, setEstimatedFee] = useState<number>()
   const [optimizedSizeKb, setOptimizedSizeKb] = useState<number | undefined>()
+
+  const updateDisplayUrl = (
+    quality: number,
+    isLossLess: boolean,
+    optimizedUrl?: string,
+  ) => {
+    const lossLess = quality === 100 || isLossLess
+
+    setImage(
+      image =>
+        image && {
+          ...image,
+          displayUrl: lossLess ? image.url : optimizedUrl || image.url,
+        },
+    )
+  }
 
   return {
     step,
@@ -93,10 +115,21 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     image,
     crop,
     qualityPercent,
+    isLossLess,
     optimizedSizeKb,
     estimatedFee,
     setStep,
     setCrop,
+    setOptimizedSizeKb,
+    setEstimatedFee,
+    setQualityPercent(qualityPercent) {
+      setQualityPercent(qualityPercent)
+      updateDisplayUrl(qualityPercent, isLossLess, image?.optimizedUrl)
+    },
+    setIsLossLess(isLossLess) {
+      setIsLossLess(isLossLess)
+      updateDisplayUrl(qualityPercent, isLossLess, image?.optimizedUrl)
+    },
     setImage(params: {
       url: string
       width: number
@@ -107,11 +140,16 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
       const orientation = width < height ? 'portrait' : 'landscape'
       setImage({
         url,
+        displayUrl: url,
         width,
         height,
         maxWidth: maxWidthByOrientation[orientation],
         file,
       })
+    },
+    setOptimizedImageURL(url: string | undefined) {
+      setImage(image => image && { ...image, optimizedUrl: url })
+      updateDisplayUrl(qualityPercent, isLossLess, url)
     },
     goBack() {
       if (step > firstStep) {
@@ -127,8 +165,5 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
         onClose()
       }
     },
-    setQualityPercent,
-    setOptimizedSizeKb,
-    setEstimatedFee,
   }
 }

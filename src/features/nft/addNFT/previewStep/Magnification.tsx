@@ -23,6 +23,7 @@ export default function Magnification({
   const afterRef = useRef<HTMLDivElement>(null)
   const zoomedImageWidth = imageElement.width * zoom
   const zoomedImageHeight = imageElement.height * zoom
+  const showBeforeAfter = !isLossLess && Boolean(image.optimizedUrl)
 
   useEffect(() => {
     if (!imageElement || !rectRef.current || !beforeRef.current) {
@@ -82,7 +83,7 @@ export default function Magnification({
       imageElement.removeEventListener('mouseenter', onMouseEnter)
       imageElement.removeEventListener('mouseleave', onMouseLeave)
     }
-  }, [imageElement, isLossLess])
+  }, [imageElement, showBeforeAfter])
 
   return (
     <div
@@ -90,8 +91,10 @@ export default function Magnification({
       hidden
       className='absolute rounded border-[3px] border-white w-[168px] h-[168px] flex pointer-events-none'
     >
-      <div className={cn('flex flex-col', isLossLess ? 'w-full' : 'w-1/2')}>
-        {!isLossLess && (
+      <div
+        className={cn('flex flex-col', showBeforeAfter ? 'w-1/2' : 'w-full')}
+      >
+        {showBeforeAfter && (
           <div className='bg-white text-gray-71 text-center z-10 text-sm flex-shrink-0'>
             Before
           </div>
@@ -105,7 +108,7 @@ export default function Magnification({
           }}
         />
       </div>
-      {!isLossLess && (
+      {showBeforeAfter && (
         <>
           <div className='w-[3px] bg-white h-full' />
           <div className='w-1/2 flex flex-col'>
@@ -116,7 +119,7 @@ export default function Magnification({
               ref={afterRef}
               className='bg-no-repeat flex-grow relative'
               style={{
-                backgroundImage: `url(${image.url})`,
+                backgroundImage: `url(${image.optimizedUrl})`,
                 backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
               }}
             >
