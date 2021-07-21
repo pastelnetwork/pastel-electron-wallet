@@ -90,7 +90,7 @@ const LineChart = ({
     }
     if (extent[0]) {
       const x = d3.scaleTime().domain(extent).range([0, width])
-      const formatTime = d3.timeFormat(`${type === 'week' ? '%A' : '%b'}`)
+      const formatTime = d3.timeFormat(`${type === 'week' ? '%a' : '%b'}`)
       const xAxis = d3
         .axisBottom(x)
         .tickArguments(type === 'week' ? [7] : [12])
@@ -116,7 +116,10 @@ const LineChart = ({
         return +d.value
       })
       if (maxValue) {
-        const y = d3.scaleLinear().domain([0, maxValue]).range([height, 0])
+        const y = d3
+          .scaleLinear()
+          .domain([0, maxValue + maxValue / 5])
+          .range([height, 0])
         const yAxis = d3.axisRight(y).tickSize(width).tickArguments([4])
         svg.append('g').call(g => {
           g.call(yAxis)
@@ -193,17 +196,16 @@ const LineChart = ({
         tooltipContainer.append('text').attr('x', 15).attr('dy', '.31em')
         tooltipContainer
           .append('rect')
-          .attr('fill', '#141416')
-          .attr('fill-opacity', 0.88)
+          .attr('fill', '#334D6E')
           .attr('width', 57)
-          .attr('height', 28)
+          .attr('height', 32)
           .attr('x', -28)
           .attr('y', -45)
           .attr('rx', 4)
           .attr('ry', 4)
         tooltipContainer
           .append('text')
-          .attr('class', 'tooltip-value')
+          .attr('class', 'tooltip-value font-medium text-xs')
           .attr('stroke', '#ffffff')
           .attr('x', -13)
           .attr('y', -25)
@@ -213,10 +215,9 @@ const LineChart = ({
             'd',
             'M0 0L2.58579 2.58579C3.36684 3.36684 4.63317 3.36683 5.41421 2.58579L8 0H0Z',
           )
-          .attr('fill', '#141416')
-          .attr('fill-opacity', 0.88)
+          .attr('fill', '#334D6E')
           .attr('y', '-10')
-          .attr('transform', 'translate(0,-17)')
+          .attr('transform', 'translate(-5,-14)')
 
         const bisectDate = d3.bisector(function (d: TLineChartRow) {
           return d.date
@@ -280,7 +281,7 @@ const LineChart = ({
         </svg>
       </div>
       <div
-        className='flex justify-center'
+        className='flex justify-center mt-6'
         style={{ width: width + margin.left + margin.right }}
       >
         <div className='text-gray-2d font-medium text-sm flex items-center mr-61px'>

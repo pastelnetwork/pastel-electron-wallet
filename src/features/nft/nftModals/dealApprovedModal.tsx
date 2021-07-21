@@ -1,6 +1,7 @@
+import { Congratulation } from 'common/components/Icons/Congratulation'
 import React from 'react'
 // Components
-import { Modal } from '../../../common/components/Modal'
+import { Modal } from 'common/components/Modal'
 
 export type TDealApprovedModal = {
   content?: string
@@ -15,8 +16,18 @@ const DealApprovedModal = ({
 }: TDealApprovedModal): JSX.Element => {
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-md'>
-      <h2 className='mb-6 text-gray-2d'>Congratulations. deal approved!</h2>
-      <p className='text-gray-a6'>{content}</p>
+      <div className='text-center'>
+        <div className='flex justify-center'>
+          <div className='w-[50px] h-[50px] bg-blue-e7 flex items-center justify-center rounded-full'>
+            <Congratulation size={24} className='text-gray-2d' />
+          </div>
+        </div>
+
+        <h2 className='mb-2 text-gray-2d'>
+          Congratulations! <br /> Your NFT Trade was Finalized!
+        </h2>
+        <p className='text-gray-71 text-lg'>{content}</p>
+      </div>
     </Modal>
   )
 }

@@ -209,6 +209,7 @@ module.exports = {
           f2: '#98CFF2',
         },
         gray: {
+          f6: '#F6F7F9',
           ec: '#ECEFF3',
           fc: '#FCFCFD',
           f9: '#F9FAFB',
@@ -396,6 +397,7 @@ module.exports = {
         '14px': '0.875rem',
         '15px': '0.938rem',
         '26px': '1.625rem',
+        '22px': '1.375rem',
         '32px': '2rem',
       },
       fontWeight: {

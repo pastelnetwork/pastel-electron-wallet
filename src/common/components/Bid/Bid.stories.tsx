@@ -5,12 +5,7 @@ import Avatar from '../../assets/images/avatar-placeholder.png'
 
 export const BidDefault: Story<TBid> = () => (
   <div className='w-80 max-w-full'>
-    <Bid
-      name='Ben Mingo'
-      bid='12.300 PSL'
-      date='21.04.2021, 06:04'
-      avatar={Avatar}
-    />
+    <Bid name='Ben Mingo' bid='12.300 PSL' date={new Date()} avatar={Avatar} />
   </div>
 )
 

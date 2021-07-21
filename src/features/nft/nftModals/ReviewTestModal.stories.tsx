@@ -1,28 +1,28 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
-import LikeListModal, { TLikeListModal } from './likeListModal'
+import ReviewTestModal, { TReviewTestModal } from './ReviewTestModal'
 
-const Template: Story<TLikeListModal> = ({ isOpen }) => {
+const Template: Story<TReviewTestModal> = ({ content, isOpen }) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Show modal</Button>
-      <LikeListModal
+      <ReviewTestModal
+        content={content}
         isOpen={showModal}
         handleClose={() => {
           setShowModal(false)
         }}
-      ></LikeListModal>
+      ></ReviewTestModal>
     </>
   )
 }
 
-export const LikeListSimpleModal = Template.bind({})
-LikeListSimpleModal.args = {}
+export const StatusInReviewTestModal = Template.bind({})
 
 export default {
-  component: LikeListModal,
-  title: 'BidModals/LikeListModal',
+  component: ReviewTestModal,
+  title: 'BidModals/ReviewTestModal',
 } as Meta
