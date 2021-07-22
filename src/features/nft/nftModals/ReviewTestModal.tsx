@@ -6,7 +6,7 @@ import Progressbar from 'common/components/Progressbar'
 export type TReviewTestModal = {
   content?: string
   isOpen: boolean
-  handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
+  handleClose?: () => void
 }
 
 const ReviewTestModal = ({

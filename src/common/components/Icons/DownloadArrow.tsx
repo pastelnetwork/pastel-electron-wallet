@@ -5,10 +5,10 @@ export type TDownloadArrowProps = {
   className?: string
 }
 
-export const DownloadArrow: React.FC<TDownloadArrowProps> = ({
+export const DownloadArrow = ({
   size = 24,
   className = 'text-blue-3f',
-}) => {
+}: TDownloadArrowProps): JSX.Element => {
   return (
     <svg
       width={size}
@@ -24,9 +24,9 @@ export const DownloadArrow: React.FC<TDownloadArrowProps> = ({
         y='3'
         width='17'
         height='18'
-        fill='black'
+        fill='#000000'
       >
-        <rect fill='white' x='3.36523' y='3' width='17' height='18' />
+        <rect fill='#FFFFFF' x='3.36523' y='3' width='17' height='18' />
         <path
           fillRule='evenodd'
           clipRule='evenodd'

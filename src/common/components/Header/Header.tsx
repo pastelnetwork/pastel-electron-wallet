@@ -122,12 +122,16 @@ const Header = (): JSX.Element | null => {
                 className='text-gray-33 ml-6 lg:ml-30px w-4'
               />
             </Link>
-            <SettingIcon size={18} className='ml-6 lg:ml-27px w-18px' />
-            <img
-              src={AvatarImage}
-              className='w-9 h-9 ml-6 lg:ml-22px'
-              alt='Profile Avatar'
-            />
+            <Link to={routes.SETTINGS}>
+              <SettingIcon size={18} className='ml-6 lg:ml-27px w-18px' />
+            </Link>
+            <Link to={routes.MY_PROFILE}>
+              <img
+                src={AvatarImage}
+                className='w-9 h-9 ml-6 lg:ml-22px'
+                alt='Profile Avatar'
+              />
+            </Link>
           </div>
         </div>
       </div>

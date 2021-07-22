@@ -107,7 +107,7 @@ const LineChart = ({
           g.select('.domain').remove()
           g.selectAll('.tick line')
             .attr('stroke', '#4F4F4F')
-            .attr('stroke-width', 1)
+            .attr('strokeWidth', 1)
           g.selectAll('.tick text')
             .attr('dy', 15)
             .attr('class', 'text-gray-71 text-13px')
@@ -128,8 +128,7 @@ const LineChart = ({
             .attr('x1', -30)
             .attr('x2', width + 30)
             .attr('stroke', '#DFE5EE')
-            // .attr('stroke', 'red')
-            .attr('stroke-dasharray', '5,5')
+            .attr('strokeDasharray', '5,5')
           g.selectAll('.tick text')
             .attr('x', -60)
             .attr('dy', 5)
@@ -263,8 +262,8 @@ const LineChart = ({
               y2={height}
               gradientUnits='userSpaceOnUse'
             >
-              <stop offset='0.29913' stop-color='#D4B9FF' />
-              <stop offset='1' stop-color='#FF82AC' stop-opacity='0' />
+              <stop offset='0.29913' stopColor='#D4B9FF' />
+              <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
             </linearGradient>
             <linearGradient
               id='gradient2'
@@ -274,8 +273,8 @@ const LineChart = ({
               y2={height}
               gradientUnits='userSpaceOnUse'
             >
-              <stop offset='0.29913' stop-color='#9FDDFF' />
-              <stop offset='1' stop-color='#FF82AC' stop-opacity='0' />
+              <stop offset='0.29913' stopColor='#9FDDFF' />
+              <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
             </linearGradient>
           </defs>
         </svg>

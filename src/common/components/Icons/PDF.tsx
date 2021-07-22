@@ -5,10 +5,10 @@ export type TPDFProps = {
   className?: string
 }
 
-export const PDF: React.FC<TPDFProps> = ({
+export const PDF = ({
   size = 24,
   className = 'text-red-fa',
-}) => {
+}: TPDFProps): JSX.Element => {
   return (
     <svg
       width={size}
@@ -19,7 +19,7 @@ export const PDF: React.FC<TPDFProps> = ({
     >
       <path
         d='M7.21875 51.9062V3.09375H32.8625L45.0312 15.2625V51.9062H7.21875Z'
-        fill='white'
+        fill='#FFFFFF'
       />
       <path
         d='M32.725 3.43945L44.6875 15.402V51.5645H7.5625V3.43945H32.725ZM33 2.75195H6.875V52.252H45.375V15.127L33 2.75195Z'

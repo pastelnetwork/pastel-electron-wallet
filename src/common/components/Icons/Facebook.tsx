@@ -1,5 +1,4 @@
 import React from 'react'
-import cn from 'classnames'
 
 export type TFacebookProps = {
   size?: number
@@ -13,7 +12,7 @@ export const FacebookIcon = ({
   return (
     <svg
       width={size}
-      className={cn(className, 'cursor-pointer')}
+      className={className}
       viewBox='0 0 20 20'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

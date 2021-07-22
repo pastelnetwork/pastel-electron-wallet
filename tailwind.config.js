@@ -267,9 +267,9 @@ module.exports = {
           75: '#FF754C',
           63: '#FE634C',
           14: '#14B85F',
-          fa: '#FA4A30',
-          fd: '#FFD9D9',
-          f8: '#f8e6f0',
+          '4a': '#FA4A30',
+          d9: '#FFD9D9',
+          e6: '#f8e6f0',
         },
         pink: {
           46: '#EF466F',

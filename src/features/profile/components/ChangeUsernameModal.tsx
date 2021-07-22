@@ -57,10 +57,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
               setInputed(true)
             }}
             placeholder='New Username'
-            hintClassName={cn(
-              `${!inputed ? 'italic font-normal' : 'font-medium'}`,
-              'italic',
-            )}
+            hintClassName={cn(`${!inputed ? 'font-normal' : 'font-medium'}`)}
             hint={
               !inputed
                 ? 'Only Latin Characters and Numbers Allowed'

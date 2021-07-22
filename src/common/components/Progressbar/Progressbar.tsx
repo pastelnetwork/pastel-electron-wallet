@@ -38,7 +38,6 @@ const Progressbar = ({
         />
         <mask
           id='mask0'
-          mask-type='alpha'
           maskUnits='userSpaceOnUse'
           x='0'
           y='0'
@@ -173,9 +172,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint3_linear'
@@ -185,9 +184,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint4_linear'
@@ -197,9 +196,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint5_linear'
@@ -209,9 +208,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint6_linear'
@@ -221,9 +220,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint7_linear'
@@ -233,9 +232,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint8_linear'
@@ -245,9 +244,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint9_linear'
@@ -257,9 +256,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint10_linear'
@@ -269,9 +268,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint11_linear'
@@ -281,9 +280,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint12_linear'
@@ -293,9 +292,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint13_linear'
@@ -305,9 +304,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint14_linear'
@@ -317,9 +316,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint15_linear'
@@ -329,9 +328,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint16_linear'
@@ -341,9 +340,9 @@ const Progressbar = ({
             y2='19'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
           <linearGradient
             id='paint17_linear'
@@ -353,9 +352,9 @@ const Progressbar = ({
             y2='1'
             gradientUnits='userSpaceOnUse'
           >
-            <stop stopColor='white' stopOpacity='0' />
-            <stop offset='0.473958' stopColor='white' />
-            <stop offset='1' stopColor='white' stopOpacity='0' />
+            <stop stopColor='#FFFFFF' stopOpacity='0' />
+            <stop offset='0.473958' stopColor='#FFFFFF' />
+            <stop offset='1' stopColor='#FFFFFF' stopOpacity='0' />
           </linearGradient>
         </defs>
       </svg>

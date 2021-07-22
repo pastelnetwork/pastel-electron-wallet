@@ -7,12 +7,12 @@ export type TCircleCloseProps = {
   onClick?: () => void
 }
 
-export const CircleCloseIcon: React.FC<TCircleCloseProps> = ({
+export const CircleCloseIcon = ({
   size = 22,
   className = 'text-gray-88',
   circleColor = '#F6F7F9',
   onClick,
-}) => {
+}: TCircleCloseProps): JSX.Element => {
   return (
     <svg
       onClick={() => {

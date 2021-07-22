@@ -133,7 +133,7 @@ const RegisterContent = (): JSX.Element => {
                       className={
                         state.step === id ? 'text-gray-33' : 'text-gray-ec'
                       }
-                      pathColor={state.step === id ? 'white' : '#8894AA'}
+                      pathColor={state.step === id ? '#FFFFFF' : '#8894AA'}
                     />
                   ) : (
                     <CircleCheck size={40} className='text-green-45 ml-1' />

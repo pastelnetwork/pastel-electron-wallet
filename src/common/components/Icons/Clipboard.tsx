@@ -5,11 +5,11 @@ export type TClipboardProps = TIconProps & {
   onClick?: () => void
 }
 
-export const Clipboard: React.FC<TClipboardProps> = ({
+export const Clipboard = ({
   size,
   className,
   onClick,
-}) => {
+}: TClipboardProps): JSX.Element => {
   return (
     <svg
       onClick={() => onClick && onClick()}

@@ -49,9 +49,9 @@ const ReviewOfferModal = ({
                   displayType='text'
                   thousandSeparator={true}
                 />
-                k {info?.currencyName} &nbsp;{' '}
+                k {info?.currencyName}{' '}
               </span>
-              <span className='text-gray-a0'>was offered by</span> &nbsp;{' '}
+              <span className='text-gray-a0'>was offered by</span>{' '}
               <span className='text-link'>{user}</span>
             </h4>
             <div className='flex'>

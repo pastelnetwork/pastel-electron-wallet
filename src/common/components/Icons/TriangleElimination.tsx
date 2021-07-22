@@ -5,10 +5,10 @@ export type TTriangleEliminationProps = {
   className?: string
 }
 
-export const TriangleElimination: React.FC<TTriangleEliminationProps> = ({
+export const TriangleElimination = ({
   size = 44,
   className = 'text-red-63',
-}) => {
+}: TTriangleEliminationProps): JSX.Element => {
   return (
     <svg
       width={size}

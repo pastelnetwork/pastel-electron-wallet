@@ -326,20 +326,3 @@ const mockupPortfolioSold: TNFTCard[] = [
 ]
 
 const mockupPortfolioLiked: TNFTCard[] = []
-// Array.from({ length: 32 }).map((_, index) => {
-//   const randomPortfolioIndex = Math.floor(Math.random() * 4)
-//   mockupPortfolioLiked.push({
-//     author: 'zndrson',
-//     avatarSrc: avatar,
-//     imageSrc: portfolios[randomPortfolioIndex],
-//     likes: 23,
-//     price: '222K',
-//     followers: 10,
-//     currencyName: 'PSL',
-//     title: 'Cosmic Perspective longname test',
-//     liked: true,
-//     onSale: index % 2 ? true : false,
-//     isLastBid: index % 3 ? true : false,
-//     detailUrl: routes.PORTFOLIO_DETAIL,
-//   })
-// })

@@ -6,11 +6,11 @@ export type TDownloadProps = {
   pathColor?: string
 }
 
-export const Download: React.FC<TDownloadProps> = ({
+export const Download = ({
   size = 44,
   className = 'text-gray-33',
-  pathColor = 'white',
-}) => {
+  pathColor = '#FFFFFF',
+}: TDownloadProps): JSX.Element => {
   return (
     <svg
       width={size}

@@ -7,6 +7,7 @@ import CalendarIcon from 'common/assets/icons/ico-calendar.svg'
 import { Caret } from 'common/components/Icons'
 
 import './DatePicker.css'
+import dayjs from 'common/utils/initDayjs'
 
 type TBaseProps = {
   positionFixed?: boolean
@@ -67,10 +68,8 @@ const DatePicker = ({
   }: TCustomHeader) => (
     <div className='flex justify-between px-4 pt-5 pb-1'>
       <h5 className='font-extrabold text-base text-gray-4a'>
-        <span className='mr-1'>
-          {date.toLocaleString('default', { month: 'long' })}
-        </span>
-        {date.toLocaleString('default', { year: 'numeric' })}
+        <span className='mr-1'>{dayjs(date).format('MMM')}</span>
+        {dayjs(date).year()}
       </h5>
       <div>
         <button

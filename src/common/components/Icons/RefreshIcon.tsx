@@ -6,11 +6,11 @@ export type TRefreshIconProps = {
   onClick?: () => void
 }
 
-export const RefreshIcon: React.FC<TRefreshIconProps> = ({
+export const RefreshIcon = ({
   size = 16,
   className = 'text-blue-3f',
   onClick,
-}) => {
+}: TRefreshIconProps): JSX.Element => {
   return (
     <svg
       width={size}

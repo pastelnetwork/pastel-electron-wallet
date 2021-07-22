@@ -1,11 +1,8 @@
 import React from 'react'
 import Modal from './modal'
 import Table from './table'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import dayjs from 'common/utils/initDayjs'
 import NumberFormat from 'react-number-format'
-
-dayjs.extend(relativeTime)
 
 export type TLikeListModal = {
   isOpen: boolean
@@ -16,7 +13,6 @@ const LikeListModal = ({
   isOpen,
   handleClose,
 }: TLikeListModal): JSX.Element => {
-  dayjs.extend(relativeTime)
   return (
     <Modal
       isOpen={isOpen}

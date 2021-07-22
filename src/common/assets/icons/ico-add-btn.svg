@@ -12,7 +12,7 @@
       <feBlend mode="normal" in2="shape" result="effect1_innerShadow"/>
     </filter>
     <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(33.5711 13.8714) rotate(134.407) scale(24.5464)">
-      <stop stoColor="#FFCF14"/>
+      <stop stop-color="#FFCF14"/>
       <stop offset="0.5586" stop-color="#EE8FFF"/>
       <stop offset="1" stop-color="#38DEFF"/>
     </radialGradient>

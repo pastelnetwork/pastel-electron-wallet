@@ -35,7 +35,6 @@ const BidAuctionModal = ({
       className='max-w-lg px-10 w-[430px]'
     >
       <h2 className={`${type === 'MakeOffer' ? 'mb-6' : 'mb-2.5'}`}>
-        {/* {type === 'MakeOffer' ? 'Make an offer' : 'Buy It Now'} */}
         {type === 'MakeOffer'
           ? 'Make an offer'
           : type === 'Buy'

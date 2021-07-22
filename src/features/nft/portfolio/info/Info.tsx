@@ -87,7 +87,6 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
                   <Checkmark size={14} className='text-green-6d' />
                 </Tooltip>
               </Row>
-              <div></div>
             </>
           ) : (
             <>

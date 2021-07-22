@@ -6,11 +6,11 @@ export type TCreditCardProps = {
   pathColor?: string
 }
 
-export const CreditCard: React.FC<TCreditCardProps> = ({
+export const CreditCard = ({
   size = 44,
   className = 'text-gray-33',
-  pathColor = 'white',
-}) => {
+  pathColor = '#FFFFFF',
+}: TCreditCardProps): JSX.Element => {
   return (
     <svg
       width={size}

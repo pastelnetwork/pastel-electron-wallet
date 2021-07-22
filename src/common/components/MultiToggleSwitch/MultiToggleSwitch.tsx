@@ -66,7 +66,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
                 onClick={() => handleClick(index)}
               >
                 <span>{item.label}</span>
-                {!!item.count && item.count > 0 && (
+                {item?.count && item.count > 0 && (
                   <div
                     className={cn(
                       getCountClassName(),
