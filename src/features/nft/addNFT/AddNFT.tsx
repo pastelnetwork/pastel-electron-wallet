@@ -32,7 +32,9 @@ export default function AddNFT({ open, ...props }: TAddNFTProps): JSX.Element {
   )
 }
 
-const AddNFTContent = (props: TUseAddNFTProps) => {
+const AddNFTContent = (
+  props: TUseAddNFTProps & { toggleCloseButton(): void },
+) => {
   const state = useAddNFTState(props)
   const { step } = state
 

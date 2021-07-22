@@ -79,7 +79,6 @@ export type TAddNFTState = {
 
 export type TUseAddNFTProps = {
   onClose(): void
-  toggleCloseButton(): void
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
