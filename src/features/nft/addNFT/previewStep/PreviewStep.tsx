@@ -14,7 +14,6 @@ import FullScreenButton from '../fullScreenButton/FullScreenButton'
 import Magnification from './Magnification'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
-import style from './PreviewStep.module.css'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import { getEstimateFee } from 'api/estimate-fee'
 import { useAppSelector } from 'redux/hooks'
@@ -159,11 +158,7 @@ export default function PreviewStep({
                 </button>
               )}
             </Tooltip2>
-            <img
-              ref={setImageElement}
-              src={image.url}
-              className={`rounded ${style.zoomInCursor}`}
-            />
+            <img ref={setImageElement} src={image.url} className='rounded' />
           </div>
         </div>
       }
