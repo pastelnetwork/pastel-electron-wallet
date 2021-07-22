@@ -129,9 +129,10 @@ export default function PreviewStep({
 
   return (
     <ModalLayout
-      title='Image preview'
-      titleClass='mb-3'
+      title='Image Preview'
+      titleClassName='text-gray-2d font-extrabold text-2xl mb-3'
       subtitle='Description'
+      subtitleClassName='text-gray-71 text-sm font-medium mb-3'
       step={3}
       leftColumnWidth={image.maxWidth}
       leftColumnContent={
@@ -176,16 +177,16 @@ export default function PreviewStep({
                   style={{ width: imageSizePercentOfAvg + '%' }}
                 />
               </div>
-              <div className='text-xs text-gray-71'>
+              <div className='text-xs text-gray-a0 font-normal'>
                 {imageSizePercentOfAvg}% of average Pastel NFT size
               </div>
             </div>
           </div>
-          <div className='flex-between mb-5'>
-            <div className='font-medium text-gray-4a'>
+          <div className='flex-between mb-5 text-base'>
+            <div className='font-medium text-gray-4a font-medium'>
               Estimated registration fee
             </div>
-            <div className='text-gray-2d text-sm font-extrabold'>
+            <div className='text-gray-2d font-extrabold'>
               {formatNumber(estimatedFee)} {currencyName}
             </div>
           </div>
@@ -193,7 +194,7 @@ export default function PreviewStep({
             Image size and fee optimization
           </div>
           <label className='flex items-center mb-10'>
-            <div className='font-medium text-gray-71 mr-2'>
+            <div className='font-medium text-gray-71 mr-3'>
               Lossless image quality
             </div>
             <Toggle
@@ -204,7 +205,7 @@ export default function PreviewStep({
           </label>
           <div
             className={cn(
-              'pb-5 mb-5 duration-200 transition',
+              'pb-5 mb-6 duration-200 transition',
               isLossLess ? 'opacity-0' : 'opacity-100',
             )}
           >

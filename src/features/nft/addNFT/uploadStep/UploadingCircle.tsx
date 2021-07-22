@@ -3,7 +3,6 @@ import Circle, {
   getStrokeDashOffsetForPercent,
 } from 'common/components/Svg/Circle'
 import { UploadFile, Checkmark } from 'common/components/Icons'
-import backgroundImage from 'common/assets/images/add-nft-upload-background.png'
 import { TImageFile } from './UploadStep'
 
 type TUploadingCircleProps = {
@@ -14,7 +13,7 @@ type TUploadingCircleProps = {
 }
 
 const circleRadius = 50
-const circleBorderWidth = 3
+const circleBorderWidth = 8
 
 export default function UploadingCircle({
   file,
@@ -69,10 +68,7 @@ export default function UploadingCircle({
   const initialPercent = isReady ? 100 : 0
 
   return (
-    <div
-      className='pt-16 flex flex-col items-center bg-center'
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-    >
+    <div className='pt-16 flex flex-col items-center bg-center border border-gray-ec rounded-xl'>
       <div className='rounded-full bg-white p-1 relative text-gray-77 mb-5'>
         <svg
           viewBox='0 0 100 100'
@@ -80,11 +76,23 @@ export default function UploadingCircle({
         >
           <Circle
             ref={circleRef}
-            className='text-blue-3f'
+            stroke='url(#paint0_radial)'
             radius={circleRadius}
             strokeWidth={circleBorderWidth}
             percent={initialPercent}
           />
+          <radialGradient
+            id='paint0_radial'
+            cx='0'
+            cy='0'
+            r='1'
+            gradientUnits='userSpaceOnUse'
+            gradientTransform='translate(268.266 -21.5271) rotate(136.111) scale(424.004)'
+          >
+            <stop offset='0.0782458' stop-color='#FFCE12' />
+            <stop offset='0.507247' stop-color='#E02DFF' />
+            <stop offset='0.949356' stop-color='#17D9FF' />
+          </radialGradient>
         </svg>
         <div className='absolute inset-0 flex-center flex-col'>
           {isReady ? (
@@ -100,10 +108,10 @@ export default function UploadingCircle({
           </div>
         </div>
       </div>
-      {!isReady && (
+      {isReady && (
         <button
           type='button'
-          className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0'
+          className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0 mb-[44px]'
           onClick={() => setFile(undefined)}
         >
           Cancel

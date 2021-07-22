@@ -41,13 +41,13 @@ export default function StepSlider({
         return (
           <div
             className={cn(
-              'pt-12 flex items-start space-x-7',
+              'pt-12 space-x-7 relative pr-[34px]',
               name === 'royalty' && 'pr-16',
             )}
           >
             <Slider
               variant='stickToBottom'
-              width={296}
+              width={311}
               steps={steps}
               value={value}
               onChange={(value: number) => onChange(roundValue(value))}
@@ -55,7 +55,7 @@ export default function StepSlider({
               formatTooltipValue={formatTooltipValue}
             />
             {name === 'copies' && (
-              <div ref={numpadRef} className='relative -top-3'>
+              <div className='absolute -right-1' ref={numpadRef}>
                 <button
                   type='button'
                   onClick={toggleNumpad}

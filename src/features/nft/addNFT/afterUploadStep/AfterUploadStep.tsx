@@ -94,9 +94,11 @@ export default function UploadStep({
       rightColumnClass='w-[355px]'
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
-          <div className='text-gray-71 font-medium pt-1'>
-            File downloaded successfully, you can continue to configure your
-            incredible NFT
+          <div className='text-gray-71 font-medium'>
+            <p className='text-lg text-gray-4a'>File uploaded sucessfully!</p>
+            <p className='text-base text-gray-71 mt-3'>
+              You can continue to configure your NFT.
+            </p>
           </div>
           <div className='flex-between'>
             <button
@@ -104,10 +106,10 @@ export default function UploadStep({
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
               onClick={goBack}
             >
-              <ArrowSlim to='left' size={14} />
+              <ArrowSlim to='left' size={18} />
             </button>
-            <Button className='font-extrabold px-6' onClick={goToNextStep}>
-              Go to Optimization
+            <Button className='font-medium px-6' onClick={goToNextStep}>
+              Go to Image Optimization
             </Button>
           </div>
         </div>

@@ -203,6 +203,7 @@ module.exports = {
           d9: '#D9EBFD',
         },
         gray: {
+          88: '#8894AA',
           fc: '#FCFCFD',
           f9: '#F9FAFB',
           f8: '#F8F9FA',

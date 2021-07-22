@@ -16,8 +16,8 @@ import icoPreview from 'common/assets/icons/ico-preview.svg'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
-    <div className='text-gray-71 w-36'>{title}</div>
-    <div className='text-gray-4a font-medium'>{value}</div>
+    <div className='text-gray-71 w-36 font-normal text-sm'>{title}</div>
+    <div className='text-gray-4a font-medium text-sm'>{value}</div>
   </div>
 )
 
@@ -179,15 +179,15 @@ export default function SubmitStep({
               )}
             </div>
             <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
-              <div className='flex text-gray-71'>
-                <div className='pl-5 w-36'>Image size</div>
-                <div>Estimated registration fee</div>
+              <div className='flex text-gray-71 font-medium text-base'>
+                <div className='pl-5 w-36 text-gray-71'>Image size</div>
+                <div className='text-gray-71'>Estimated registration fee</div>
               </div>
-              <div className='flex text-gray-4a font-extrabold mt-3'>
-                <div className='pl-5 w-36'>
+              <div className='flex text-gray-2d font-extrabold mt-3'>
+                <div className='pl-5 w-36 text-gray-4a'>
                   {formatFileSize(optimizeImageToKb * 1024)}
                 </div>
-                <div>
+                <div className='text-gray-4a font-extrabold'>
                   {formatNumber(estimatedFee)} {currencyName}
                 </div>
               </div>
