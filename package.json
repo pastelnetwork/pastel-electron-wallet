@@ -71,7 +71,6 @@
     "faker": "5.5.3",
     "ffmpegwasm-create-video": "pastelnetwork/ffmpegwasm-create-video#95a8a11",
     "file-saver": "2.0.5",
-    "fs": "^0.0.1-security",
     "generate-password": "1.6.0",
     "hex-string": "1.0.3",
     "history": "4.10.1",
