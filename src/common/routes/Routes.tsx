@@ -7,7 +7,6 @@ import { pageRoutes } from './index'
 import * as ROUTES from '../utils/constants/routes'
 import { TRPCConfig } from 'api/pastel-rpc'
 import LoadingScreen from 'features/loading'
-import Utilities from 'features/utilities'
 import { setPastelConf } from 'features/pastelConf'
 import { PastelDBThread } from 'features/pastelDB'
 import {
@@ -138,7 +137,6 @@ const Routes = (): JSX.Element => {
           )}
         />
       </Switch>
-      <Utilities />
     </div>
   )
 }

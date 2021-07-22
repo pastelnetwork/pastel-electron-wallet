@@ -45,8 +45,7 @@ const OnboardingWelcome = (): JSX.Element => {
       </div>
 
       <div className='mt-4 text-center text-base text-gray-a0'>
-        Already have an account?
-        <Link href={ROUTES.LOGIN}>Login</Link>
+        Already have an account? <Link href={ROUTES.LOGIN}>Login</Link>
       </div>
     </div>
   )
