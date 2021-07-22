@@ -7,22 +7,25 @@ import { imageTypes } from './AddNft.constants'
 import process from 'process'
 import os from 'os'
 
-const resourcesPath = app.isPackaged
-  ? process.resourcesPath
-  : path.join(app.getAppPath(), 'static', 'bin')
+const getBasePath = (name: string) =>
+  app.isPackaged
+    ? process.resourcesPath
+    : path.join(app.getAppPath(), 'static', 'bin', name)
 
 const platform: string = os.platform()
 
+const pngquantBasePath = getBasePath('pngquant')
 const pngquantBin = {
-  darwin: path.join(resourcesPath, 'pngquant-mac'),
-  linux: path.join(resourcesPath, 'pngquant-linux'),
-  win32: path.join(resourcesPath, 'pngquant-win.exe'),
+  darwin: path.join(pngquantBasePath, 'pngquant-mac'),
+  linux: path.join(pngquantBasePath, 'pngquant-linux'),
+  win32: path.join(pngquantBasePath, 'pngquant-win.exe'),
 }[platform]
 
+const guetzliBasePath = getBasePath('guetzli')
 const guetzliBin = {
-  darwin: path.join(resourcesPath, 'guetzli-mac'),
-  linux: path.join(resourcesPath, 'guetzli-linux'),
-  win32: path.join(resourcesPath, 'guetzli-win.exe'),
+  darwin: path.join(guetzliBasePath, 'guetzli-mac'),
+  linux: path.join(guetzliBasePath, 'guetzli-linux'),
+  win32: path.join(guetzliBasePath, 'guetzli-win.exe'),
 }[platform]
 
 if (!pngquantBin || !guetzliBin) {
