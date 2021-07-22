@@ -99,7 +99,7 @@ const Header = (): JSX.Element | null => {
               className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
               onClick={toggleAddNFT}
             >
-              <AddNFTIcon width={21} height={20} className='mr-2' />
+              <AddNFTIcon size={21} className='mr-2' />
               <span className='text-blue-3f whitespace-nowrap font-extrabold'>
                 new NFT
               </span>
@@ -107,28 +107,22 @@ const Header = (): JSX.Element | null => {
             <SearchBar />
           </div>
           <div className='flex items-center h-full'>
-            <CircleQuestion width={18} height={18} className='text-gray-33' />
+            <CircleQuestion size={18} className='text-gray-33' />
             <Link to={routes.DASHBOARD}>
               <BellIcon
-                width={16}
+                size={16}
                 hasNotification={true}
-                height={17}
                 className='text-gray-33 ml-6 lg:ml-27px w-4'
               />
             </Link>
             <Link to={routes.CHAT}>
               <MessageIcon
-                width={18}
-                height={18}
+                size={18}
                 hasNotification={true}
                 className='text-gray-33 ml-6 lg:ml-30px w-4'
               />
             </Link>
-            <SettingIcon
-              width={18}
-              height={16}
-              className='ml-6 lg:ml-27px w-18px'
-            />
+            <SettingIcon size={18} className='ml-6 lg:ml-27px w-18px' />
             <img
               src={AvatarImage}
               className='w-9 h-9 ml-6 lg:ml-22px'

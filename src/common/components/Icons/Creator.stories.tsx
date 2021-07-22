@@ -14,7 +14,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const Creator = Template.bind({})
 Creator.args = {
-  width: 14,
-  height: 14,
+  size: 14,
   className: 'text-black',
 }

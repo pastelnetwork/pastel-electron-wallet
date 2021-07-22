@@ -18,7 +18,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const SimpleLongArrow = Template.bind({})
 SimpleLongArrow.args = {
-  width: 24,
-  height: 24,
+  size: 24,
   to: 'right',
 }

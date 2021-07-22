@@ -14,6 +14,5 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const Forum = Template.bind({})
 Forum.args = {
-  width: 14,
-  height: 14,
+  size: 14,
 }

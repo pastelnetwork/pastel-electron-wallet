@@ -91,7 +91,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
     <div className={cn('relative tooltip', wrapperClassNames)}>
       {children}
       <div className='absolute tooltiparrow invisible' style={arrowStyle}>
-        <TooltipArrow width={8} height={4} className='text-gray-33' />
+        <TooltipArrow size={8} className='text-gray-33' />
       </div>
 
       <div

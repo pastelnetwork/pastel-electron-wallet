@@ -176,8 +176,7 @@ const Password = (props: TPassword): JSX.Element => {
         {newPassword && (
           <>
             <Eye
-              height={11}
-              width={19}
+              size={11}
               variant={newPasswordVisible ? 'hidden' : 'type1'}
               className={cn('text-gray-88', getIconClassnames(false))}
               onClick={() => handleNewVisibility()}
@@ -190,8 +189,7 @@ const Password = (props: TPassword): JSX.Element => {
                 classnames='text-xs leading-4 pt-5px pb-1'
               >
                 <RefreshIcon
-                  height={16}
-                  width={18}
+                  size={18}
                   onClick={() => handleGenerateRandomPassword()}
                   className='text-blue-3f'
                 />
@@ -212,8 +210,7 @@ const Password = (props: TPassword): JSX.Element => {
         />
         {confirmPassword && (
           <Eye
-            height={11}
-            width={19}
+            size={19}
             variant={confirmPasswordVisible ? 'hidden' : 'type1'}
             className={cn('text-gray-88', getIconClassnames(false))}
             onClick={() => handleConfirmVisibility()}

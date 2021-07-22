@@ -1,22 +1,19 @@
 import React from 'react'
 
 export type TRefreshIconProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   onClick?: () => void
 }
 
 export const RefreshIcon: React.FC<TRefreshIconProps> = ({
-  width = 16,
-  height = 18,
+  size = 16,
   className = 'text-blue-3f',
   onClick,
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 16 18'
       fill='none'

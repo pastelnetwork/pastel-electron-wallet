@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TTooltipArrowProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const TooltipArrow: React.FC<TTooltipArrowProps> = ({
-  width = 8,
-  height = 4,
+  size = 8,
   className = 'text-gray-33',
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       viewBox='0 0 8 4'
       fill='none'
       className={className}

@@ -17,6 +17,5 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const QuestionLogo = Template.bind({})
 QuestionLogo.args = {
-  width: 36,
-  height: 36,
+  size: 36,
 }

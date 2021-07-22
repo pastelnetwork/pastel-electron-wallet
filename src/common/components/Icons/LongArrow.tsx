@@ -3,8 +3,7 @@ import React from 'react'
 type TDir = 'top' | 'right' | 'bottom' | 'left'
 
 export type TLongArrowProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   to?: TDir
 }
@@ -17,8 +16,7 @@ const rotate: Record<TDir, number> = {
 }
 
 export const LongArrow: React.FC<TLongArrowProps> = ({
-  width = 20,
-  height = 11,
+  size = 20,
   className = 'text-gray-88',
   to = 'right',
 }) => {
@@ -26,8 +24,7 @@ export const LongArrow: React.FC<TLongArrowProps> = ({
   return (
     <svg
       style={style}
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 20 11'
       fill='none'

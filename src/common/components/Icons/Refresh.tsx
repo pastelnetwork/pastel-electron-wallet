@@ -1,22 +1,19 @@
 import React from 'react'
 
 export type TRefreshProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   pathColor?: string
 }
 
 export const Refresh: React.FC<TRefreshProps> = ({
-  width = 44,
-  height = 44,
+  size = 44,
   className = 'text-gray-33',
   pathColor = 'white',
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 44 44'
       fill='none'

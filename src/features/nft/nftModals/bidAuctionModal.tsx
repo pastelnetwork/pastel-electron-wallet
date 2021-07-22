@@ -123,7 +123,7 @@ const BidAuctionModal = ({
         <div className='flex justify-between mt-2.5'>
           <p className='font-normal text-gray-4a'>Transaction Fee(burned)</p>
           <p className='text-right font-extrabold text-h6 text-gray-2d flex items-center'>
-            <Fire width={18} height={18} />
+            <Fire size={18} />
             ~500 {info?.currencyName}
           </p>
         </div>

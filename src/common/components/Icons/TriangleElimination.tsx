@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TTriangleEliminationProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const TriangleElimination: React.FC<TTriangleEliminationProps> = ({
-  width = 44,
-  height = 44,
+  size = 44,
   className = 'text-red-63',
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 44 44'
       fill='none'

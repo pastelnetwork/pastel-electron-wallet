@@ -1,16 +1,14 @@
 import React from 'react'
 
 export type TCircleCloseProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   circleColor?: string
   onClick?: () => void
 }
 
 export const CircleCloseIcon: React.FC<TCircleCloseProps> = ({
-  width = 22,
-  height = 22,
+  size = 22,
   className = 'text-gray-88',
   circleColor = '#F6F7F9',
   onClick,
@@ -20,8 +18,7 @@ export const CircleCloseIcon: React.FC<TCircleCloseProps> = ({
       onClick={() => {
         onClick && onClick()
       }}
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 22 22'
       fill='none'

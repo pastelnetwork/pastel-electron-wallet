@@ -14,6 +14,5 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const AddNFTIcon = Template.bind({})
 AddNFTIcon.args = {
-  width: 21,
-  height: 20,
+  size: 21,
 }

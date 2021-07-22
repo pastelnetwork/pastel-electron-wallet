@@ -14,7 +14,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const SettingIcon = Template.bind({})
 SettingIcon.args = {
-  width: 18,
-  height: 18,
+  size: 18,
   hasNotification: false,
 }

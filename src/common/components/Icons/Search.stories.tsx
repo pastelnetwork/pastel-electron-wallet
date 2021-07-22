@@ -14,6 +14,5 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const Search = Template.bind({})
 Search.args = {
-  width: 17,
-  height: 16,
+  size: 17,
 }

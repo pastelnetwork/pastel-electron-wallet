@@ -2,20 +2,17 @@ import React from 'react'
 import { TIconProps } from './iconProps'
 
 export type TPencilProps = TIconProps & {
-  width: number
-  height: number
+  size: number
   className: string
 }
 
 export const Pencil: React.FC<TPencilProps> = ({
   className = 'text-black',
-  width = 11,
-  height = 11,
+  size = 11,
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 11 11'
       fill='none'

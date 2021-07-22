@@ -17,8 +17,7 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const CircleQuestion = Template.bind({})
 CircleQuestion.args = {
-  width: 18,
-  height: 18,
+  size: 18,
   className: 'text-gray-33',
   hasNotification: true,
 }

@@ -17,6 +17,5 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const TooltipArrow = Template.bind({})
 TooltipArrow.args = {
-  width: 8,
-  height: 4,
+  size: 8,
 }

@@ -14,7 +14,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const CreditCard = Template.bind({})
 CreditCard.args = {
-  width: 44,
-  height: 44,
+  size: 44,
   pathColor: 'white',
 }

@@ -14,7 +14,7 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const BellIcon = Template.bind({})
 BellIcon.args = {
-  width: 16,
-  height: 17,
+  size: 16,
   className: 'text-gray-33',
+  hasNotification: true,
 }

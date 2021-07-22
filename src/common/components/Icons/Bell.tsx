@@ -2,26 +2,23 @@ import React from 'react'
 import cn from 'classnames'
 
 export type TBellIconProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   hasNotification?: boolean
 }
 
 export const BellIcon = ({
-  width = 16,
-  height = 17,
+  size = 16,
   className = 'text-gray-33',
   hasNotification = false,
 }: TBellIconProps): JSX.Element => {
   return (
-    <div className={cn(className, 'relative')} style={{ width, height }}>
+    <div className={cn(className, 'relative')} style={{ width: size }}>
       {hasNotification && (
         <div className='absolute -top-px -right-px w-2 h-2 rounded-full bg-orange-63 border border-white' />
       )}
       <svg
-        width={width}
-        height={height}
+        width={size}
         viewBox='0 0 16 17'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'

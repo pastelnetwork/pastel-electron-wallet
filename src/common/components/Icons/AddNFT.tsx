@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TAddNFTProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const AddNFTIcon = ({
-  width = 21,
-  height = 20,
+  size = 21,
   className,
 }: TAddNFTProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 21 20'
       fill='none'

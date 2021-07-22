@@ -129,19 +129,14 @@ const RegisterContent = (): JSX.Element => {
                 >
                   {state.step <= id ? (
                     <Component
-                      width={44}
-                      height={44}
+                      size={44}
                       className={
                         state.step === id ? 'text-gray-33' : 'text-gray-ec'
                       }
                       pathColor={state.step === id ? 'white' : '#8894AA'}
                     />
                   ) : (
-                    <CircleCheck
-                      width={40}
-                      height={40}
-                      className='text-green-45 ml-1'
-                    />
+                    <CircleCheck size={40} className='text-green-45 ml-1' />
                   )}
                   <div
                     className={cn(
@@ -170,11 +165,7 @@ const RegisterContent = (): JSX.Element => {
                   </div>
 
                   {state.step === id && (
-                    <LongArrow
-                      width={20}
-                      height={11}
-                      className='text-gray-88'
-                    />
+                    <LongArrow size={20} className='text-gray-88' />
                   )}
                 </div>
               ),
@@ -196,8 +187,7 @@ const RegisterContent = (): JSX.Element => {
         <div className='p-11 w-494px'>
           <div className='text-center'>
             <TriangleElimination
-              width={44}
-              height={44}
+              size={44}
               className='text-red-63 inline-block'
             />
           </div>

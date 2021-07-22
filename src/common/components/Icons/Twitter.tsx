@@ -2,20 +2,17 @@ import React from 'react'
 import cn from 'classnames'
 
 export type TTwitterProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const TwitterIcon = ({
-  width = 20,
-  height = 20,
+  size = 20,
   className = 'text-gray-88',
 }: TTwitterProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={cn(className, 'cursor-pointer')}
       viewBox='0 0 20 20'
       fill='none'

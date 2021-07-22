@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TQuestionLogoProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const QuestionLogo = ({
-  width = 36,
-  height = 36,
+  size = 36,
   className = 'text-gray-2d',
 }: TQuestionLogoProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 36 36'
       fill='none'

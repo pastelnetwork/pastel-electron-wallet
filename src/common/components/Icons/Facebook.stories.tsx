@@ -14,7 +14,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const FacebookIcon = Template.bind({})
 FacebookIcon.args = {
-  width: 20,
-  height: 20,
+  size: 20,
   className: 'text-gray-88',
 }

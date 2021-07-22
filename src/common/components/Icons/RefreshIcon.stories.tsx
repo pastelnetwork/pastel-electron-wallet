@@ -14,7 +14,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const RefreshIconWithoutCircle = Template.bind({})
 RefreshIconWithoutCircle.args = {
-  width: 16,
-  height: 18,
+  size: 16,
   className: 'text-blue-3f',
 }

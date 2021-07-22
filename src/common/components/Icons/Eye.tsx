@@ -2,15 +2,13 @@ import React from 'react'
 
 export type TEyeProps = {
   variant?: 'type1' | 'type2' | 'hidden'
-  height?: number
-  width?: number
+  size?: number
   className?: string
   onClick?: () => void
 }
 
 export const Eye = ({
-  width,
-  height,
+  size,
   className,
   variant = 'type1',
   onClick,
@@ -23,8 +21,7 @@ export const Eye = ({
     >
       {variant === 'type1' && (
         <svg
-          width={width}
-          height={height}
+          width={size}
           className={className}
           viewBox='0 0 20 16'
           fill='none'
@@ -40,8 +37,7 @@ export const Eye = ({
       )}
       {variant === 'type2' && (
         <svg
-          width={width}
-          height={height}
+          width={size}
           className={className}
           viewBox='0 0 19 12'
           fill='none'
@@ -55,8 +51,7 @@ export const Eye = ({
       )}
       {variant === 'hidden' && (
         <svg
-          width={width}
-          height={height}
+          width={size}
           className={className}
           viewBox='0 0 19 17'
           fill='none'

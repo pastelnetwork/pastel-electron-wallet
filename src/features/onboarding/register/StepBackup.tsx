@@ -51,7 +51,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
             </h2>
 
             <div className='mt-6 px-6 py-4 border border-gray-e1 flex items-center rounded-lg'>
-              <PDF width={55} height={55} className='text-red-fa' />
+              <PDF size={55} className='text-red-fa' />
 
               <div className='ml-4 mr-4'>
                 <div className='text-base font-medium text-gray-4a'>
@@ -73,11 +73,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
                       className='w-12 h-12 rounded-full bg-gray-ebf2 flex justify-center items-center cursor-pointer'
                       onClick={() => onDownloadPdf()}
                     >
-                      <DownloadArrow
-                        width={24}
-                        height={24}
-                        className='text-blue-3f'
-                      />
+                      <DownloadArrow size={24} className='text-blue-3f' />
                     </button>
                   </Tooltip>
                 </div>

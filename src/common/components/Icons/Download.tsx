@@ -1,22 +1,19 @@
 import React from 'react'
 
 export type TDownloadProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   pathColor?: string
 }
 
 export const Download: React.FC<TDownloadProps> = ({
-  width = 44,
-  height = 44,
+  size = 44,
   className = 'text-gray-33',
   pathColor = 'white',
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 44 44'
       fill='none'

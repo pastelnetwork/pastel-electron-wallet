@@ -31,7 +31,7 @@ export default function TransactionItem({
           >
             <LongArrow
               className={type === 'in' ? 'text-green-00' : 'text-warning-hover'}
-              width={12}
+              size={12}
               to={type === 'in' ? 'right' : 'left'}
             />
           </div>

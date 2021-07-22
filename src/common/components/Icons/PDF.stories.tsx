@@ -14,6 +14,5 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const SimplePDFIcon = Template.bind({})
 SimplePDFIcon.args = {
-  width: 24,
-  height: 24,
+  size: 24,
 }

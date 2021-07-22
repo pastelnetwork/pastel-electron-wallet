@@ -1,21 +1,18 @@
 import React from 'react'
 
 export type TCircleCheckProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   pathColor?: string
 }
 
 export const CircleCheck: React.FC<TCircleCheckProps> = ({
-  width = 40,
-  height = 40,
+  size = 40,
   className = 'text-green-45',
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 40 40'
       fill='none'

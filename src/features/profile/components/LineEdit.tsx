@@ -39,11 +39,7 @@ const LineEdit = ({
       />
       {!hideCloseIcon ? (
         <button className='mx-2'>
-          <CircleCloseIcon
-            width={22}
-            height={22}
-            onClick={() => onChange('')}
-          />
+          <CircleCloseIcon size={22} onClick={() => onChange('')} />
         </button>
       ) : null}
     </div>

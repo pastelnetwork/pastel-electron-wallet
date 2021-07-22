@@ -17,7 +17,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const CircleCloseIcon = Template.bind({})
 CircleCloseIcon.args = {
-  width: 40,
-  height: 40,
+  size: 40,
   className: 'text-gray-71',
 }

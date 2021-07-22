@@ -14,24 +14,21 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const EyeType1 = Template.bind({})
 EyeType1.args = {
-  width: 30,
-  height: 30,
+  size: 30,
   variant: 'type1',
   className: 'text-black',
 }
 
 export const EyeType2 = Template.bind({})
 EyeType2.args = {
-  width: 19,
-  height: 12,
+  size: 19,
   variant: 'type2',
   className: 'text-gray-88',
 }
 
 export const HiddenIcon = Template.bind({})
 HiddenIcon.args = {
-  width: 19,
-  height: 12,
+  size: 19,
   variant: 'hidden',
   className: 'text-gray-88',
 }

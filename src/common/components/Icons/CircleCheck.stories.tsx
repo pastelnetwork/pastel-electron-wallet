@@ -13,7 +13,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const CircleCheck = Template.bind({})
 CircleCheck.args = {
-  width: 40,
-  height: 40,
+  size: 40,
   className: 'text-green-45',
 }

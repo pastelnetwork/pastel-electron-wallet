@@ -38,11 +38,7 @@ export const PrevButton = (props: TPrevBtnProps): JSX.Element => {
       className='w-10 h-10 flex items-center justify-center rounded-full border border-gray-88 cursor-pointer'
       onClick={() => props.onClick()}
     >
-      <LongArrow
-        width={18}
-        height={10}
-        className='transform rotate-180 text-gray-88'
-      />
+      <LongArrow size={18} className='transform rotate-180 text-gray-88' />
     </button>
   )
 }

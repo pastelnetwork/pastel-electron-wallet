@@ -14,7 +14,6 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const Refresh = Template.bind({})
 Refresh.args = {
-  width: 44,
-  height: 44,
+  size: 44,
   pathColor: 'white',
 }

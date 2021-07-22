@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TPDFProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const PDF: React.FC<TPDFProps> = ({
-  width = 24,
-  height = 24,
+  size = 24,
   className = 'text-red-fa',
 }) => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 55 55'
       fill='none'

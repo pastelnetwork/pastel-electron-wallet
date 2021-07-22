@@ -91,7 +91,7 @@ const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
             </div>
             <div className='text-gray-a0 text-sm font-extrabold flex items-center'>
               <div className='mr-[9px]'>
-                <Fire width={18} height={18} />
+                <Fire size={18} />
               </div>
               <NumberFormat
                 value={5000}

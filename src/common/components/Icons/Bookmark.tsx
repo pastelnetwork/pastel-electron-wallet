@@ -6,7 +6,7 @@ export type TBookmarkProps = TIconProps
 export const Bookmark: React.FC<TBookmarkProps> = ({ size, className }) => {
   return (
     <svg
-      height={size}
+      width={size}
       className={className}
       viewBox='0 0 16 20'
       fill='none'

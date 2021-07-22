@@ -17,6 +17,5 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const SimpleDownloadArrow = Template.bind({})
 SimpleDownloadArrow.args = {
-  width: 24,
-  height: 24,
+  size: 24,
 }

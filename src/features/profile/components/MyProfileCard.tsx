@@ -101,20 +101,12 @@ const ProfileCard = ({
               <div className='py-4 flex justify-center space-x-2'>
                 <button>
                   {facebook.length && (
-                    <FacebookIcon
-                      height={20}
-                      width={20}
-                      className='text-gray-88'
-                    />
+                    <FacebookIcon size={20} className='text-gray-88' />
                   )}
                 </button>
                 <button>
                   {twitter.length && (
-                    <TwitterIcon
-                      height={20}
-                      width={20}
-                      className='text-gray-88'
-                    />
+                    <TwitterIcon size={20} className='text-gray-88' />
                   )}
                 </button>
               </div>
