@@ -26,6 +26,7 @@ type TSubmitStepProps = {
   optimizedSizeKb: number
   image: TImage
   nftData: TNFTData
+  toggleCloseButton(): void
 }
 
 export default function SubmitStep({
@@ -33,15 +34,21 @@ export default function SubmitStep({
   optimizedSizeKb,
   image,
   nftData,
+  toggleCloseButton,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
+
+  const onFullScreenToggle = () => {
+    toggleCloseButton()
+    toggleFullScreen()
+  }
 
   if (fullScreen) {
     return (
       <FullScreenImage
         image={image.optimizedUrl || image.url}
-        onClose={toggleFullScreen}
+        onClose={onFullScreenToggle}
       />
     )
   }
@@ -58,7 +65,7 @@ export default function SubmitStep({
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative flex-center'>
-            <FullScreenButton onClick={toggleFullScreen} />
+            <FullScreenButton onClick={onFullScreenToggle} />
             <ImageShadow url={image.url} />
             <img
               src={image.optimizedUrl || image.url}
@@ -67,7 +74,7 @@ export default function SubmitStep({
             />
             <button
               className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-46055 flex items-center'
-              onClick={toggleFullScreen}
+              onClick={onFullScreenToggle}
             >
               <img src={icoPreview} className='inline-block mr-4' />
               <span className='text-white font-extrabold inline-block whitespace-nowrap'>

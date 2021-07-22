@@ -14,7 +14,6 @@ import {
   calculateFee,
   CroppedValidatedImage,
   optimizeImage,
-  useFeePerKb,
 } from './PreviewStep.service'
 import { useDebounce } from 'react-use'
 import { TAddNFTState, TImage } from '../AddNFT.state'
@@ -26,6 +25,7 @@ type TPreviewStepModalProps = {
   state: TAddNFTState
   image: TImage
   croppedImage: CroppedValidatedImage | undefined
+  feePerKb?: number
   toggleCropping(): void
   toggleFullScreen(): void
 }
@@ -48,6 +48,7 @@ export default function PreviewStepModal({
   },
   image,
   croppedImage,
+  feePerKb,
   toggleCropping,
   toggleFullScreen,
 }: TPreviewStepModalProps): JSX.Element {
@@ -56,7 +57,6 @@ export default function PreviewStepModal({
   )
   const fileSizeKb = Math.round(image.file.size / 1024)
   const imageSizePercentOfAvg = 65
-  const feePerKb = useFeePerKb()
   const fee = calculateFee({
     feePerKb,
     quality: qualityPercent,

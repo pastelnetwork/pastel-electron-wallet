@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import { TImage } from '../AddNFT.state'
 import cn from 'classnames'
 
-const zoom = 2
+// to make higher zoom for larger images, zoom is relative to image size
+const zoomRelativeToSize = 18
 const borderWidth = 3
 
 // offset from cursor
@@ -21,6 +22,9 @@ export default function Magnification({
   const rectRef = useRef<HTMLDivElement>(null)
   const beforeRef = useRef<HTMLDivElement>(null)
   const afterRef = useRef<HTMLDivElement>(null)
+
+  const zoom =
+    Math.max(imageElement.width, imageElement.height) / zoomRelativeToSize
   const zoomedImageWidth = imageElement.width * zoom
   const zoomedImageHeight = imageElement.height * zoom
   const showBeforeAfter = !isLossLess && Boolean(image.optimizedUrl)
@@ -89,13 +93,13 @@ export default function Magnification({
     <div
       ref={rectRef}
       hidden
-      className='absolute rounded border-[3px] border-white w-[168px] h-[168px] flex pointer-events-none'
+      className='absolute rounded-xl overflow-hidden border-[3px] border-white w-[168px] h-[168px] flex pointer-events-none'
     >
       <div
         className={cn('flex flex-col', showBeforeAfter ? 'w-1/2' : 'w-full')}
       >
         {showBeforeAfter && (
-          <div className='bg-white text-gray-71 text-center z-10 text-sm flex-shrink-0'>
+          <div className='h-6 flex-center bg-white text-gray-a0 text-center z-10 text-xs font-extrabold flex-shrink-0'>
             Before
           </div>
         )}
@@ -112,7 +116,7 @@ export default function Magnification({
         <>
           <div className='w-[3px] bg-white h-full' />
           <div className='w-1/2 flex flex-col'>
-            <div className='bg-white text-gray-71 text-center z-10 text-sm flex-shrink-0'>
+            <div className='h-6 flex-center bg-white text-gray-a0 text-center z-10 text-xs font-extrabold flex-shrink-0'>
               After
             </div>
             <div
