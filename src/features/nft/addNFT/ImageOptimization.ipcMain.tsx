@@ -4,9 +4,10 @@ import path from 'path'
 import fileUrl from 'file-url'
 import { TImageOptimizationResult } from './ImageOptimization.types'
 import { imageTypes } from './AddNft.constants'
-
-const pngquant = __non_webpack_require__('pngquant-bin')
-const guetzli = __non_webpack_require__('guetzli')
+import pngquant from 'pngquant-bin'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import guetzli from 'guetzli'
 
 const getRandomString = () => Math.random().toString(36).substring(2, 15)
 

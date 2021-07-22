@@ -3835,6 +3835,13 @@
   resolved "https://registry.yarnpkg.com/@types/pdfjs-dist/-/pdfjs-dist-2.7.3.tgz#37a2bb1e5046bb423f78df131e8e1ae18372de8e"
   integrity sha512-sMLbO3I8n7sOn/rFSxuUTQAwDkRLT4BUJGXSjcxrswSwsZ49LUlXXs7i8MRBs78XqhPci3on6I3cU/tnQczVOQ==
 
+"@types/pngquant-bin@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/pngquant-bin/-/pngquant-bin-4.0.0.tgz#203f4b740a84e0853edf6c5cfedf756c02eb3729"
+  integrity sha512-tCuGWs2eOJZxltxWci/NKGJUXVRR1tvweoE/TRNdsBy3WsscMbEFS4jCnS7axQAnWr+GFUeCmrHsGr2HhaWW1A==
+  dependencies:
+    "@types/node" "*"
+
 "@types/prettier@^2.0.0":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.3.2.tgz#fc8c2825e4ed2142473b4a81064e6e081463d1b3"
