@@ -42,7 +42,7 @@ export default function Utilities(): JSX.Element {
     ipcRenderer.on('update_downloaded', () => {
       dispatch(openUpdateToast())
     })
-    dispatch(openUpdateToast())
+
     ipcRenderer.on(
       'deepLink',
       (event, { view, param }: { view: string; param: string }) => {

@@ -96,7 +96,6 @@ const Routes: React.FC = () => {
   })
 
   React.useEffect(() => {
-    ipcRenderer.send('app-ready')
     ipcRenderer.on(
       'app-info',
       (event, { isPackaged }: { isPackaged: boolean }) => {
@@ -106,6 +105,12 @@ const Routes: React.FC = () => {
 
     history.push(ROUTES.LOADING)
   }, [])
+
+  React.useEffect(() => {
+    if (rpcConfig) {
+      ipcRenderer.send('app-ready')
+    }
+  }, [rpcConfig])
 
   const setInformation = (newInfo: TWalletInfo) => {
     if (!newInfo.pslPrice) {
@@ -153,7 +158,7 @@ const Routes: React.FC = () => {
           )}
         />
       </Switch>
-      {rpcConfig && <Utilities />}
+      <Utilities />
     </div>
   )
 }

@@ -69,18 +69,25 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {
-        exe: `${package.name}.exe`,
-        authors: package.author.name,
-        setupIcon: './static/icons/icon.ico',
-        loadingGif: './static/icons/icon.gif',
-        iconUrl:
-          'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
-        title: package.productName,
-        setupExe: `${package.productName} Setup - v${package.version}.exe`,
-        skipUpdateIcon: true,
-        certificateFile,
-        certificatePassword: process.env['WINDOWS_CODESIGN_PASSWORD'],
+      config: () => {
+        const configs = {
+          exe: `${package.name}.exe`,
+          authors: package.author.name,
+          setupIcon: './static/icons/icon.ico',
+          loadingGif: './static/icons/icon.gif',
+          iconUrl:
+            'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
+          title: package.productName,
+          setupExe: `${package.productName} Setup - v${package.version}.exe`,
+          skipUpdateIcon: true,
+        }
+
+        if (certificateFile && fs.existsSync(certificateFile)) {
+          configs.certificateFile = certificateFile
+          configs.certificatePassword = process.env['WINDOWS_CODESIGN_PASSWORD']
+        }
+
+        return configs
       },
     },
     {
