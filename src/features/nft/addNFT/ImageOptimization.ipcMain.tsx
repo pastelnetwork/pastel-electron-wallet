@@ -4,10 +4,32 @@ import path from 'path'
 import fileUrl from 'file-url'
 import { TImageOptimizationResult } from './ImageOptimization.types'
 import { imageTypes } from './AddNft.constants'
-import pngquant from 'pngquant-bin'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import guetzli from 'guetzli'
+import process from 'process'
+import os from 'os'
+
+const resourcesPath = app.isPackaged
+  ? process.resourcesPath
+  : path.join(app.getAppPath(), 'static', 'bin')
+
+const platform: string = os.platform()
+
+const pngquantBin = {
+  darwin: path.join(resourcesPath, 'pngquant-mac'),
+  linux: path.join(resourcesPath, 'pngquant-linux'),
+  win32: path.join(resourcesPath, 'pngquant-win.exe'),
+}[platform]
+
+const guetzliBin = {
+  darwin: path.join(resourcesPath, 'guetzli-mac'),
+  linux: path.join(resourcesPath, 'guetzli-linux'),
+  win32: path.join(resourcesPath, 'guetzli-win.exe'),
+}[platform]
+
+if (!pngquantBin || !guetzliBin) {
+  throw new Error(
+    `Image optimization doesn't not support current platform ${platform}`,
+  )
+}
 
 const getRandomString = () => Math.random().toString(36).substring(2, 15)
 
@@ -41,10 +63,10 @@ ipcMain.handle(
     let command
     let args: string[]
     if (file.type === imageTypes.PNG) {
-      command = pngquant
+      command = pngquantBin
       args = ['-fo', outputPath, `--quality=${quality}-100`, '--', file.path]
     } else if (file.type === imageTypes.JPG) {
-      command = guetzli
+      command = guetzliBin
       args = ['--quality', String(quality), file.path, outputPath]
     } else {
       throw new Error(`Wrong image type: ${file.type}`)
