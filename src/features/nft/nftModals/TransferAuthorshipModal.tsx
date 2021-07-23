@@ -11,10 +11,10 @@ export type TTransferAuthorshipModal = {
   handleClose: () => void
 }
 
-const TransferAuthorshipModal: React.FC<TTransferAuthorshipModal> = ({
+const TransferAuthorshipModal = ({
   isOpen,
   handleClose,
-}) => {
+}: TTransferAuthorshipModal): JSX.Element => {
   const data = {
     history:
       'Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',

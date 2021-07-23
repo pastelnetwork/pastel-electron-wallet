@@ -23,7 +23,7 @@ enum Tab {
   YEAR,
 }
 
-const ViewsStatsModal: React.FC<TViewsStatsModal> = ({
+const ViewsStatsModal = ({
   isOpen,
   handleClose,
   data1,
@@ -34,7 +34,7 @@ const ViewsStatsModal: React.FC<TViewsStatsModal> = ({
   type = 'week',
   label1className = 'bg-blue-37',
   label2className = 'bg-red-ff',
-}) => {
+}: TViewsStatsModal): JSX.Element => {
   const options = [
     { value: '2021-06', label: 'Jun 2021' },
     { value: '2021-07', label: 'Jul 2021' },

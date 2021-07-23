@@ -8,7 +8,7 @@ export type TForumProps = {
 export const Forum: React.FC<TForumProps> = ({
   size = 14,
   className = 'text-gray-4a',
-}) => {
+}: TForumProps): JSX.Element => {
   return (
     <svg
       width={size}

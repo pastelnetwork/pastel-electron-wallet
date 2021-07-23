@@ -10,7 +10,7 @@ export const Star: React.FC<TStarProps> = ({
   size = 18,
   className = 'text-yello-ffd',
   filled = false,
-}) => {
+}: TStarProps): JSX.Element => {
   return (
     <svg
       width={size}

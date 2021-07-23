@@ -162,7 +162,7 @@ const SearchBar = (): JSX.Element => {
               setInputFocused(false)
               setSelectedCategory(undefined)
             }}
-            className='absolute md:right-5 right-3 top-3 w-7 h-7 text-gray-dd '
+            className='absolute md:right-5 right-3 top-3 w-7 h-7'
           />
         )}
         {inputFocused && (

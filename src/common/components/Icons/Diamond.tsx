@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TDiamondProps = TIconProps
 
-export const Diamond: React.FC<TDiamondProps> = ({ size, className }) => {
+export const Diamond = ({ size, className }: TDiamondProps): JSX.Element => {
   return (
     <svg
       width={size}

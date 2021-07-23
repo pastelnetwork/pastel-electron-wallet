@@ -8,7 +8,7 @@ export type TClockProps = {
 export const Clock: React.FC<TClockProps> = ({
   size = 18,
   className = 'text-gray-71',
-}) => {
+}: TClockProps): JSX.Element => {
   return (
     <svg
       width={size}

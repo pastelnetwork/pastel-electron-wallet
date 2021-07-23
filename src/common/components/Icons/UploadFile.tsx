@@ -3,7 +3,10 @@ import { TIconProps } from './iconProps'
 
 export type TUploadFileProps = TIconProps
 
-export const UploadFile: React.FC<TUploadFileProps> = ({ size, className }) => {
+export const UploadFile = ({
+  size,
+  className,
+}: TUploadFileProps): JSX.Element => {
   return (
     <svg
       height={size}

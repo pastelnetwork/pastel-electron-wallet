@@ -10,7 +10,7 @@ export type TBidsModal = {
   handleClose: () => void
 }
 
-const BidsModal: React.FC<TBidsModal> = ({ isOpen, handleClose }) => {
+const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
   const comments = [
     {
       id: 1,

@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import QRCode from 'qrcode.react'
-import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
+
+import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import CloseButton from '../common/closeButton'
 import Typography, {
   TypographyVariant,
-} from '../../../common/components/Typography/Typography'
-import * as ROUTES from '../../../common/utils/constants/routes'
-import Tooltip from '../../../common/components/Tooltip'
+} from 'common/components/Typography/Typography'
+import * as ROUTES from 'common/utils/constants/routes'
+import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
-import infoIco from '../../../common/assets/icons/ico-info.svg'
+import Link from 'common/components/Link'
+import infoIco from 'common/assets/icons/ico-info.svg'
 
 enum Tabs {
   qrCode,
   cryptoKeys,
 }
 
-const PasswordRecovery: React.FC = () => {
+const PasswordRecovery = (): JSX.Element => {
   const [tab, setTab] = useState(Tabs.qrCode)
   const onTabToggle = (index: number) => {
     setTab(index)

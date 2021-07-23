@@ -12,7 +12,10 @@ export type TPricePlanModal = {
   handleClose: () => void
 }
 
-const PricePlanModal: React.FC<TPricePlanModal> = ({ isOpen, handleClose }) => {
+const PricePlanModal = ({
+  isOpen,
+  handleClose,
+}: TPricePlanModal): JSX.Element => {
   const [cellEdit, setCellEdit] = useState<{ row: number; col: number } | null>(
     null,
   )
@@ -144,6 +147,7 @@ function SliderComponent({ range, disabled }: TSliderComponent): JSX.Element {
         max={100}
         values={values}
         onChange={disabled ? () => ({}) : setValues}
+        step={1}
       />
     </div>
   )

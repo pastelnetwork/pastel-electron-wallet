@@ -3,7 +3,10 @@ import { TIconProps } from './iconProps'
 
 export type TArrowShareProps = TIconProps
 
-export const ArrowShare: React.FC<TArrowShareProps> = ({ size, className }) => {
+export const ArrowShare = ({
+  size,
+  className,
+}: TArrowShareProps): JSX.Element => {
   return (
     <svg
       width={size}

@@ -20,6 +20,8 @@ import ChatPage from '../../features/chat'
 import { MembersDirectory } from '../../features/members'
 import MemberProfile from '../../features/profile/memberProfile/MemberProfile'
 import PortfolioPage from 'features/nft/portfolio/PortfolioPage'
+import { Forum } from '../../features/forum'
+import Pasteld from 'legacy/components/Pasteld'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -84,7 +86,6 @@ const Portfolio = {
   path: ROUTES.PORTFOLIO,
   component: PortfolioMain,
   layout: PageLayout,
-  requiredRPCConfig: true,
 }
 
 const myProfile = {
@@ -94,7 +95,6 @@ const myProfile = {
   layout: PageLayout,
   required: {
     rpcConfig: true,
-    info: true,
   },
 }
 
@@ -144,10 +144,30 @@ const membersProfile = {
 }
 
 const portfolioDetail = {
-  id: 'portofolioDetail',
+  id: 'portfolioDetail',
   path: ROUTES.PORTFOLIO_DETAIL,
   component: PortfolioPage,
   layout: PageLayout,
+  required: {
+    currencyName: true,
+  },
+}
+
+const forum = {
+  id: 'forum',
+  path: ROUTES.FORUM,
+  component: Forum,
+  layout: PageLayout,
+}
+
+const pasteld = {
+  id: 'pasteld',
+  path: ROUTES.PASTELD,
+  component: Pasteld,
+  layout: OnboardingLayout,
+  required: {
+    info: true,
+  },
 }
 
 export const pageRoutes = [
@@ -168,4 +188,7 @@ export const pageRoutes = [
   membersDirectory,
   membersProfile,
   portfolioDetail,
+  portfolioDetail,
+  forum,
+  pasteld,
 ]

@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
 import { Button } from 'common/components/Buttons'
 
-import registerImage from '../../../common/assets/images/registration-fee-pending.png'
-import * as ROUTES from '../../../common/utils/constants/routes'
+import registerImage from 'common/assets/images/registration-fee-pending.png'
+import * as ROUTES from 'common/utils/constants/routes'
+import Link from 'common/components/Link'
 
 const RegistrationPending = (): JSX.Element => {
   return (

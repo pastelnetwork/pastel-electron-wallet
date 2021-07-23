@@ -35,7 +35,7 @@ ButtonDefault.args = {
   className,
 }
 
-export const ButtonIconDefault: React.FC = () => (
+export const ButtonIconDefault = (): JSX.Element => (
   <Button
     className='w-60'
     variant='default'

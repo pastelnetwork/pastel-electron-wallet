@@ -1,11 +1,13 @@
 import React, { ReactNode } from 'react'
 import cn from 'classnames'
+import { Link as RouterLink } from 'react-router-dom'
 
 export type TLink = {
   children?: string | ReactNode
   className?: string
   href?: string
   variant?: string
+  useATag?: boolean
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
@@ -14,23 +16,38 @@ const Link = ({
   className,
   children,
   variant,
+  useATag,
   ...otherProps
 }: TLink): JSX.Element => {
-  const Tag = href ? 'a' : 'button'
-
   const classes = cn(
     {
-      'link focus:outline-none hover:text-button-hover active:text-button-active transition duration-300': true,
+      'link focus:outline-none hover:text-link-hover active:text-link-active transition duration-300': true,
       'cursor-pointer': !href,
       [`text-${variant}`]: variant,
     },
     className,
   )
 
+  if (href) {
+    if (useATag) {
+      return (
+        <a href={href} className={classes} {...otherProps}>
+          {children}
+        </a>
+      )
+    }
+
+    return (
+      <RouterLink to={href} className={classes} {...otherProps}>
+        {children}
+      </RouterLink>
+    )
+  }
+
   return (
-    <Tag href={href} className={classes} {...otherProps}>
+    <button className={classes} {...otherProps}>
       {children}
-    </Tag>
+    </button>
   )
 }
 

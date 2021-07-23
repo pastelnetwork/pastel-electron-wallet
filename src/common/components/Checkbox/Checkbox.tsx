@@ -40,14 +40,7 @@ const Checkbox = ({
           )}
         />
       </div>
-      <div
-        className={cn(
-          'text-12px font-medium ml-2',
-          selected ? 'text-gray-11' : 'text-gray-80',
-        )}
-      >
-        {children}
-      </div>
+      <div className='text-sm font-normal text-gray-71 ml-2'>{children}</div>
     </div>
   )
 }

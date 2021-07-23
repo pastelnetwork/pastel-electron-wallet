@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type THeartProps = TIconProps
 
-export const Heart: React.FC<THeartProps> = ({ size, className }) => {
+export const Heart = ({ size, className }: THeartProps): JSX.Element => {
   return (
     <svg
       width={size}

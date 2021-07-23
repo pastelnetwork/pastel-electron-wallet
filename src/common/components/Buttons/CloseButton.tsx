@@ -7,11 +7,11 @@ export type TCloseButton = {
   disabled?: boolean
 }
 
-const CloseButton: React.FC<TCloseButton> = ({
+const CloseButton = ({
   onClick,
   className,
   disabled,
-}) => {
+}: TCloseButton): JSX.Element => {
   const classes = cn(
     {
       'border flex items-center justify-center w-7 h-7 rounded-lg focus:outline-none active:shadow-none transition duration-300': true,
@@ -24,7 +24,7 @@ const CloseButton: React.FC<TCloseButton> = ({
   return (
     <button onClick={onClick} className={classes}>
       <svg
-        className='fill-current text-gray-b0'
+        className='fill-current'
         width='8'
         height='9'
         viewBox='0 0 8 9'

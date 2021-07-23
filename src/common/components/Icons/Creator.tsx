@@ -8,7 +8,7 @@ export type TCreatorProps = {
 export const Creator: React.FC<TCreatorProps> = ({
   size = 9,
   className = 'text-gray-4a',
-}) => {
+}: TCreatorProps): JSX.Element => {
   return (
     <svg
       width={size}

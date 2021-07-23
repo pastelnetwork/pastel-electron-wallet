@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+
+import { useAppSelector } from 'redux/hooks'
 import ProfileGeneral from './myProfile/MyProfile'
 import MySecurity from './mySecurity/MySecurity'
 import {
@@ -16,9 +18,6 @@ export type TRPCConfig = {
 }
 
 type TProfileProps = {
-  info: {
-    currencyName: string
-  }
   rpcConfig: TRPCConfig
 }
 
@@ -29,7 +28,10 @@ enum Tabs {
 }
 
 const Profile = (props: TProfileProps): JSX.Element => {
-  const { info, rpcConfig } = props
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
+  const { rpcConfig } = props
   const [tab, setTab] = useState(Tabs.general)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
 
@@ -84,7 +86,11 @@ const Profile = (props: TProfileProps): JSX.Element => {
       {tab === Tabs.general && <ProfileGeneral />}
       {tab === Tabs.board && <MyComments />}
       {tab === Tabs.security && (
-        <MySecurity info={info} rpcConfig={rpcConfig} qrcodeData={qrcodeData} />
+        <MySecurity
+          currencyName={currencyName}
+          rpcConfig={rpcConfig}
+          qrcodeData={qrcodeData}
+        />
       )}
     </div>
   )

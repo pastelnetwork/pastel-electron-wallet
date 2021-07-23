@@ -23,9 +23,9 @@ const Toggle = ({
         <div className='relative'>
           <div
             className={cn(
-              'block flex items-center duration-200 transition',
+              'flex items-center duration-200 transition: hover:bg-gray-55',
               classNames,
-              checked ? selectedClass : 'bg-gray-dd',
+              checked ? selectedClass : 'bg-gray-a0',
             )}
             onClick={() => {
               !!toggleHandler && toggleHandler(!checked)
@@ -41,7 +41,7 @@ const Toggle = ({
           </div>
         </div>
         {children && (
-          <div className='text-sm text-gray-33 ml-3 text-opacity-50 flex items-center'>
+          <div className='text-sm font-normal text-gray-71 ml-3 flex items-center'>
             {children}
           </div>
         )}

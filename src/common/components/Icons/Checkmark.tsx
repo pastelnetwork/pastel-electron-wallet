@@ -3,7 +3,10 @@ import { TIconProps } from './iconProps'
 
 export type TCheckmarkProps = TIconProps
 
-export const Checkmark: React.FC<TCheckmarkProps> = ({ size, className }) => {
+export const Checkmark = ({
+  size,
+  className,
+}: TCheckmarkProps): JSX.Element => {
   return (
     <svg
       width={size}
@@ -15,9 +18,9 @@ export const Checkmark: React.FC<TCheckmarkProps> = ({ size, className }) => {
       <path
         d='M15 1L5.375 10.3333L1 6.09056'
         stroke='currentColor'
-        stroke-width='2'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
     </svg>
   )

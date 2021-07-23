@@ -23,7 +23,7 @@ const initialInputState = {
   isTouched: false,
 }
 
-const NewPassword: React.FC = () => {
+const NewPassword = (): JSX.Element => {
   const [newPassword, setNewPassword] = React.useState<NewPasswordFormInput>(
     initialInputState,
   )

@@ -10,14 +10,14 @@ export type TIconButton = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-export const IconButton: React.FC<TIconButton> = ({
+export const IconButton = ({
   children,
   className,
   type,
   hoverColor,
   activeColor,
   ...otherProps
-}) => {
+}: TIconButton): JSX.Element => {
   const classes = cn(
     {
       'flex items-center justify-center rounded-full transition text-button-text duration-300 focus:outline-none focus:shadow-btnOutline': true,
