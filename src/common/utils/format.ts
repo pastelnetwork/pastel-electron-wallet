@@ -7,6 +7,7 @@ export const formatNumber = (x: number, delimiter = ','): string =>
 
 export const parseFormattedNumber = (input: string, delimiter = ','): number =>
   parseFloat(input.replaceAll(delimiter, ''))
+
 // taken from https://stackoverflow.com/questions/9461621/format-a-number-as-2-5k-if-a-thousand-or-more-otherwise-900
 // Example input, output
 // case 1: formatAbbreviatedNumber(759878, 1) = 759.9k
@@ -72,7 +73,7 @@ export const formatToTitleCase = (string: string): string =>
 
 export const formatDate = (time: Dayjs): string => time.format('MM/DD/YY')
 
-export const formatFileSize = (size: number): string => {
+export const formatFileSize = (size: number, fractionDigits = 1): string => {
   let i = -1
   const units = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB']
   do {
@@ -84,5 +85,5 @@ export const formatFileSize = (size: number): string => {
     return Math.round(size) + units[i]
   }
 
-  return Math.max(size, 0.1).toFixed(1) + units[i]
+  return Math.max(size, 0.1).toFixed(fractionDigits) + units[i]
 }

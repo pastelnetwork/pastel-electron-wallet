@@ -15,6 +15,7 @@ import ImageShadow from '../common/ImageShadow'
 type TUploadStepProps = {
   state: TAddNFTState
   image: TImage
+  displayUrl: string
 }
 
 const backdropBlurClass = 'backdrop-filter backdrop-blur-[55px]'
@@ -22,6 +23,7 @@ const backdropBlurClass = 'backdrop-filter backdrop-blur-[55px]'
 export default function UploadStep({
   state: { goBack, goToNextStep },
   image,
+  displayUrl,
 }: TUploadStepProps): JSX.Element {
   const {
     onDragImage,
@@ -43,7 +45,7 @@ export default function UploadStep({
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative'>
-            <ImageShadow url={image.url} />
+            <ImageShadow url={displayUrl} />
             <div className='relative flex-center overflow-hidden'>
               <button
                 className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
@@ -57,7 +59,7 @@ export default function UploadStep({
               >
                 <img
                   ref={imageRef}
-                  src={image.url}
+                  src={displayUrl}
                   className='rounded max-h-400px'
                   onWheel={onWheelImage}
                 />

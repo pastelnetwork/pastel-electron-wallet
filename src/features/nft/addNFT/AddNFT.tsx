@@ -40,25 +40,36 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
   const image = state.image as TImage
   const nftData = state.nftData as TNFTData
 
-  if (step === Step.afterUpload) {
-    return <AfterUploadStep state={state} image={image} />
-  } else if (step === Step.preview && state.image) {
-    return <PreviewStep state={state} image={image} />
-  }
+  const { selectedFile } = state.optimizationState
+  const displayUrl =
+    state.isLossLess || !selectedFile ? image.url : selectedFile.fileUrl
 
-  const optimizedSizeKb = state.optimizedSizeKb as number
+  if (step === Step.afterUpload) {
+    return (
+      <AfterUploadStep state={state} image={image} displayUrl={displayUrl} />
+    )
+  } else if (step === Step.preview && state.image) {
+    return <PreviewStep state={state} image={image} displayUrl={displayUrl} />
+  }
 
   if (step === Step.submit) {
     return (
       <SubmitStep
         state={state}
         image={image}
+        displayUrl={displayUrl}
         nftData={nftData}
-        optimizedSizeKb={optimizedSizeKb}
       />
     )
   } else if (step === Step.approved) {
-    return <ApprovedStep state={state} image={image} nftData={nftData} />
+    return (
+      <ApprovedStep
+        state={state}
+        image={image}
+        displayUrl={displayUrl}
+        nftData={nftData}
+      />
+    )
   }
 
   return null

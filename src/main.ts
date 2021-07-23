@@ -24,7 +24,7 @@ import {
 } from './features/deepLinking'
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
-import './features/nft/addNFT/ImageOptimization.ipcMain'
+import './features/nft/addNFT/imageOptimization/ImageOptimization.ipcMain'
 
 // Deep linked url
 let deepLinkingUrl: string[] | string

@@ -23,27 +23,22 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 
 type TSubmitStepProps = {
   state: TAddNFTState
-  optimizedSizeKb: number
   image: TImage
+  displayUrl: string
   nftData: TNFTData
 }
 
 export default function SubmitStep({
   state,
-  optimizedSizeKb,
   image,
+  displayUrl,
   nftData,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
 
   if (fullScreen) {
-    return (
-      <FullScreenImage
-        image={image.optimizedUrl || image.url}
-        onClose={toggleFullScreen}
-      />
-    )
+    return <FullScreenImage image={displayUrl} onClose={toggleFullScreen} />
   }
 
   const onSubmit = () => submit({ state, image, nftData })
@@ -61,7 +56,7 @@ export default function SubmitStep({
             <FullScreenButton onClick={toggleFullScreen} />
             <ImageShadow url={image.url} />
             <img
-              src={image.optimizedUrl || image.url}
+              src={displayUrl}
               className='rounded max-h-[410px] relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
@@ -83,10 +78,12 @@ export default function SubmitStep({
           <div className='flex-grow w-full text-sm flex flex-col justify-between'>
             <div className='space-y-14px'>
               <InfoPair title='Title' value={nftData.title} />
-              <InfoPair
-                title='Keyword Hashtags'
-                value={nftData.hashtags.join(', ')}
-              />
+              {nftData.hashtags.length > 0 && (
+                <InfoPair
+                  title='Keyword Hashtags'
+                  value={nftData.hashtags.join(', ')}
+                />
+              )}
               {nftData.series && (
                 <InfoPair title='Series' value={nftData.series} />
               )}
@@ -138,7 +135,10 @@ export default function SubmitStep({
               </div>
               <div className='flex text-gray-4a font-extrabold mt-3'>
                 <div className='pl-5 w-36'>
-                  {formatFileSize(optimizedSizeKb * 1024)}
+                  {formatFileSize(
+                    state.optimizationState.selectedFile?.size ||
+                      image.file.size,
+                  )}
                 </div>
                 <div>
                   {state.estimatedFee === undefined

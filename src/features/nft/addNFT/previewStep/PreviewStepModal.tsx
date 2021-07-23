@@ -14,40 +14,24 @@ import React, { useEffect, useState } from 'react'
 import {
   calculateFee,
   CroppedValidatedImage,
-  optimizeImage,
   useFeePerKb,
 } from './PreviewStep.service'
-import { useDebounce } from 'react-use'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { currencyName } from '../AddNft.constants'
-import { toast } from 'react-toastify'
-import Spinner from 'common/components/Spinner'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
   image: TImage
+  displayUrl: string
   croppedImage: CroppedValidatedImage | undefined
   toggleCropping(): void
   toggleFullScreen(): void
 }
 
-const qualityDebounceMs = 300
-
 export default function PreviewStepModal({
-  state: {
-    goBack,
-    setCrop,
-    goToNextStep,
-    qualityPercent,
-    isLossLess,
-    setOptimizedSizeKb,
-    setQualityPercent,
-    setIsLossLess,
-    estimatedFee,
-    setEstimatedFee,
-    setOptimizedImageURL,
-  },
+  state,
   image,
+  displayUrl,
   croppedImage,
   toggleCropping,
   toggleFullScreen,
@@ -58,50 +42,25 @@ export default function PreviewStepModal({
   const fileSizeKb = Math.round(image.file.size / 1024)
   const imageSizePercentOfAvg = 65
   const feePerKb = useFeePerKb()
+
+  const quality = state.optimizationState.selectedFile?.quality || 100
+  const lossLess = quality === 100 || state.isLossLess
+
   const fee = calculateFee({
     feePerKb,
-    quality: qualityPercent,
-    isLossLess,
+    quality,
+    isLossLess: state.isLossLess,
     fileSizeKb,
   })
 
-  useEffect(() => setEstimatedFee(fee), [fee])
+  useEffect(() => state.setEstimatedFee(fee), [fee])
 
-  const [quality, setQuality] = useState(qualityPercent)
-  const [optimizingState, setOptimizingState] = useState<
-    'initial' | 'pending' | 'success' | 'fail'
-  >('initial')
-  useDebounce(
-    async () => {
-      setQualityPercent(quality)
-      setOptimizingState('pending')
-      try {
-        const result = await optimizeImage(image, quality, setOptimizedImageURL)
-
-        if (result?.status !== 'cancelled') {
-          setOptimizingState('success')
-        }
-      } catch (error) {
-        setOptimizingState('fail')
-        console.error(error)
-        toast.error('Error optimizing image')
-      }
-    },
-    qualityDebounceMs,
-    [quality],
-  )
-
-  const submittable =
-    croppedImage &&
-    !croppedImage.error &&
-    (isLossLess || qualityPercent === 100 || optimizingState === 'success')
+  const submittable = croppedImage && !croppedImage.error
 
   const submit = () => {
     if (croppedImage && submittable) {
-      setCrop(croppedImage.crop)
-
-      setOptimizedSizeKb(fileSizeKb * qualityPercent)
-      goToNextStep()
+      state.setCrop(croppedImage.crop)
+      state.goToNextStep()
     }
   }
 
@@ -119,8 +78,9 @@ export default function PreviewStepModal({
             {imageElement && (
               <Magnification
                 image={image}
+                optimizedImage={state.optimizationState.selectedFile}
                 imageElement={imageElement}
-                isLossLess={quality === 100 || isLossLess}
+                isLossLess={lossLess}
               />
             )}
             <FullScreenButton onClick={toggleFullScreen} />
@@ -137,7 +97,7 @@ export default function PreviewStepModal({
             </Tooltip2>
             <img
               ref={setImageElement}
-              src={image.displayUrl}
+              src={displayUrl}
               className={`rounded ${style.zoomInCursor}`}
             />
           </div>
@@ -148,7 +108,9 @@ export default function PreviewStepModal({
           <div className='flex items-start mb-8'>
             <div className='font-medium text-gray-4a mr-5'>Image size</div>
             <div className='text-gray-2d text-sm font-extrabold mr-3 relative top-[3px]'>
-              {formatFileSize(image.file.size)}
+              {formatFileSize(
+                state.optimizationState.selectedFile?.size || image.file.size,
+              )}
             </div>
             <div className='flex-grow'>
               <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
@@ -167,9 +129,9 @@ export default function PreviewStepModal({
               Estimated registration fee
             </div>
             <div className='text-gray-2d text-sm font-extrabold'>
-              {estimatedFee === undefined
+              {state.estimatedFee === undefined
                 ? 'unknown'
-                : `${formatNumber(estimatedFee)} ${currencyName}`}
+                : `${formatNumber(state.estimatedFee)} ${currencyName}`}
             </div>
           </div>
           <div className='font-medium text-gray-4a mb-5'>
@@ -180,22 +142,21 @@ export default function PreviewStepModal({
               Lossless image quality
             </div>
             <Toggle
-              selected={isLossLess}
-              toggleHandler={setIsLossLess}
+              selected={state.isLossLess}
+              toggleHandler={state.setIsLossLess}
               selectedClass='bg-blue-3f'
             />
           </label>
           <div
             className={cn(
               'pb-5 mb-5 duration-200 transition',
-              isLossLess ? 'opacity-0' : 'opacity-100',
+              state.isLossLess ? 'opacity-0' : 'opacity-100',
             )}
           >
             <OptimizationSlider
-              imageType={image.file.type}
+              state={state}
+              image={image}
               fee={fee}
-              quality={quality}
-              onChange={setQuality}
               currencyName={currencyName}
             />
           </div>
@@ -224,7 +185,7 @@ export default function PreviewStepModal({
             <button
               type='button'
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={goBack}
+              onClick={state.goBack}
             >
               <ArrowSlim to='left' size={14} />
             </button>
@@ -235,9 +196,6 @@ export default function PreviewStepModal({
               onClick={submit}
               disabled={!submittable}
             >
-              {optimizingState === 'pending' && (
-                <Spinner className='w-8 h-8 mr-2' />
-              )}
               Go to Overview
             </Button>
           </div>

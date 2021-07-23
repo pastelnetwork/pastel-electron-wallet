@@ -75,16 +75,14 @@ const getImageFile = (
   image: TImage,
 ): Promise<File | Blob> =>
   new Promise((resolve, reject) => {
-    if (
-      state.isLossLess ||
-      state.qualityPercent === 100 ||
-      !image.optimizedUrl
-    ) {
+    const optimizedFile = state.optimizationState.selectedFile
+
+    if (state.isLossLess || !optimizedFile) {
       return resolve(image.file)
     }
 
     const xhr = new XMLHttpRequest()
-    xhr.open('GET', image.optimizedUrl, true)
+    xhr.open('GET', optimizedFile.fileUrl, true)
     xhr.responseType = 'blob'
 
     xhr.onload = () => {

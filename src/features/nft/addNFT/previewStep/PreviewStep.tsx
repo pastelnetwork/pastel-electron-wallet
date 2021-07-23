@@ -9,11 +9,13 @@ import PreviewStepModal from './PreviewStepModal'
 type TPreviewStepProps = {
   state: TAddNFTState
   image: TImage
+  displayUrl: string
 }
 
 export default function PreviewStep({
   state,
   image,
+  displayUrl,
 }: TPreviewStepProps): JSX.Element {
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
@@ -31,15 +33,14 @@ export default function PreviewStep({
   }
 
   if (fullScreen) {
-    return (
-      <FullScreenImage image={image.displayUrl} onClose={toggleFullScreen} />
-    )
+    return <FullScreenImage image={displayUrl} onClose={toggleFullScreen} />
   }
 
   return (
     <PreviewStepModal
       state={state}
       image={image}
+      displayUrl={displayUrl}
       croppedImage={croppedImage}
       toggleCropping={toggleCropping}
       toggleFullScreen={toggleFullScreen}

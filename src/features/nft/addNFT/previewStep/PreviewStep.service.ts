@@ -4,8 +4,6 @@ import { toast } from 'react-toastify'
 import { TCrop, TImage } from '../AddNFT.state'
 import { getEstimateFee } from 'api/estimate-fee'
 import { useAppSelector } from 'redux/hooks'
-import { ipcRenderer } from 'electron'
-import { TImageOptimizationResult } from '../ImageOptimization.types'
 
 const previewSize = 320
 
@@ -153,30 +151,4 @@ export const calculateFee = ({
     return undefined
   }
   return Math.round((isLossLess ? 100 : quality) * fileSizeKb * feePerKb)
-}
-
-export const optimizeImage = async (
-  image: TImage,
-  quality: number,
-  setOptimizedImageURL: (url: string) => void,
-): Promise<void | TImageOptimizationResult> => {
-  if (quality === 100) {
-    setOptimizedImageURL(image.url)
-    return
-  }
-
-  const result = (await ipcRenderer.invoke(
-    'optimizeImage',
-    {
-      path: image.file.path,
-      type: image.file.type,
-    },
-    quality,
-  )) as TImageOptimizationResult
-
-  if (result.status !== 'cancelled') {
-    setOptimizedImageURL(result.fileUrl)
-  }
-
-  return result
 }

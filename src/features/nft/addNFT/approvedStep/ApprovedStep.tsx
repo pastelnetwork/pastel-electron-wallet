@@ -17,12 +17,14 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 type TApprovedStepProps = {
   state: TAddNFTState
   image: TImage
+  displayUrl: string
   nftData: TNFTData
 }
 
 export default function ApprovedStep({
   state: { goToNextStep },
   image,
+  displayUrl,
   nftData,
 }: TApprovedStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
@@ -43,9 +45,9 @@ export default function ApprovedStep({
         <div className='flex-center'>
           <div className='relative flex-center'>
             <FullScreenButton onClick={toggleFullScreen} />
-            <ImageShadow url={image.url} />
+            <ImageShadow url={displayUrl} />
             <img
-              src={image.url}
+              src={displayUrl}
               className='rounded max-h-424px relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
