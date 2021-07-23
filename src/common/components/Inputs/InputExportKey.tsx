@@ -9,7 +9,7 @@ export type TInputExportProps = TInput & {
   clickPasteHandler?: () => void
 }
 
-const InputExportKey: React.FC<TInputExportProps> = props => {
+const InputExportKey = (props: TInputExportProps): JSX.Element => {
   const [type, setType] = React.useState<string>('password')
 
   const toggleType = (): void =>

@@ -10,19 +10,12 @@ import LoadingScreen from 'features/loading'
 import Utilities from 'features/utilities'
 import { setPastelConf } from 'features/pastelConf'
 import { PastelDBThread } from 'features/pastelDB'
+import {
+  TWalletInfo,
+  setPastelInfo,
+  defaultPastelInfo,
+} from 'features/serveStatic'
 import { useAppDispatch } from 'redux/hooks'
-
-export type TWalletInfo = {
-  connections: number
-  currencyName: string
-  disconnected: boolean
-  latestBlock: number
-  pslPrice: number | undefined
-  solps: number
-  testnet: boolean
-  verificationProgress: number
-  version: number
-}
 
 type TRouteType = {
   id: string
@@ -77,23 +70,13 @@ const childRoutes = (
 
 const period = 1000 * 10
 
-const Routes: React.FC = () => {
+const Routes = (): JSX.Element => {
   const location = useLocation()
   const history = useHistory()
   const dispatch = useAppDispatch()
   const [isPackaged, setIsPackaged] = React.useState(false)
   const [rpcConfig, setRPCConfig] = React.useState<TRPCConfig>()
-  const [info, setInfo] = React.useState<TWalletInfo>({
-    connections: 0,
-    currencyName: '',
-    disconnected: false,
-    latestBlock: 0,
-    pslPrice: undefined,
-    solps: 0,
-    testnet: false,
-    verificationProgress: 0,
-    version: 0,
-  })
+  const [info, setInfo] = React.useState<TWalletInfo>(defaultPastelInfo)
 
   React.useEffect(() => {
     ipcRenderer.on(
@@ -118,10 +101,12 @@ const Routes: React.FC = () => {
     }
 
     setInfo(newInfo)
+
+    dispatch(setPastelInfo({ info: { ...newInfo } }))
   }
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-main'>
+    <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
       <Switch location={location}>
         {childRoutes(pageRoutes, rpcConfig, info)}
         <Route

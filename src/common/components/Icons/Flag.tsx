@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TFlagProps = TIconProps
 
-export const Flag: React.FC<TFlagProps> = ({ size, className }) => {
+export const Flag = ({ size, className }: TFlagProps): JSX.Element => {
   return (
     <svg
       width={size}

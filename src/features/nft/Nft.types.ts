@@ -12,7 +12,7 @@ export type TNFT = {
   type: string
   status: number
   price: number
-  currencyName: 'PSL'
+  currencyName: string
   time: Dayjs
   bids: number
   author: {

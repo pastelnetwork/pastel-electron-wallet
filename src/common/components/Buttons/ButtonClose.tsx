@@ -6,7 +6,10 @@ export type TButtonCloseProps = {
   className?: string
 }
 
-const ButtonClose: React.FC<TButtonCloseProps> = ({ onClick, className }) => {
+const ButtonClose = ({
+  onClick,
+  className,
+}: TButtonCloseProps): JSX.Element => {
   const classes = cn(
     'border flex items-center justify-center border-button-text w-7 h-7 rounded-lg focus:outline-none',
     className,

@@ -1,7 +1,12 @@
 import initServeStatic, { closeServeStatic } from './ServeStatic'
 
-export type { IAppInfoState } from './AppInfoSlice'
-export { setAppInfo, appInfoReducer } from './AppInfoSlice'
+export type { IAppInfoState, TWalletInfo } from './AppInfoSlice'
+export {
+  setAppInfo,
+  setPastelInfo,
+  appInfoReducer,
+  defaultPastelInfo,
+} from './AppInfoSlice'
 
 export { closeServeStatic }
 
