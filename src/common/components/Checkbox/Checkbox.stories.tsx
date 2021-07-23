@@ -15,13 +15,24 @@ const Template: Story<TCheckboxProps> = ({
   const [checked, setChecked] = useState(isChecked)
 
   return (
-    <Checkbox
-      {...args}
-      isChecked={checked}
-      clickHandler={param => {
-        setChecked(param)
-      }}
-    />
+    <div>
+      <Checkbox
+        {...args}
+        isChecked={checked}
+        clickHandler={param => {
+          setChecked(param)
+        }}
+      />
+      <br />
+      <Checkbox
+        {...args}
+        isChecked={checked}
+        clickHandler={param => {
+          setChecked(param)
+        }}
+        variant='secondary'
+      />
+    </div>
   )
 }
 

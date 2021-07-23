@@ -14,11 +14,11 @@ const rotate: Record<TDir, number> = {
   left: 180,
 }
 
-export const Arrow: React.FC<TArrowProps> = ({
+export const Arrow = ({
   size,
   to = 'right',
   className,
-}) => {
+}: TArrowProps): JSX.Element => {
   const style = { transform: `rotate(${rotate[to]}deg)` }
 
   return (

@@ -1,6 +1,7 @@
 import cn from 'classnames'
-import { Link } from 'react-router-dom'
 import React from 'react'
+
+import Link from 'common/components/Link'
 
 type TLinkSectionProps = {
   to: string
@@ -25,7 +26,7 @@ export default function LinkSection({
       })}
     >
       <Link
-        to={to}
+        href={to}
         className='text-blue-3f text-sm font-medium inline-block h-3'
       >
         {children}

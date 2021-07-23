@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TWarningProps = TIconProps
 
-export const Warning: React.FC<TWarningProps> = ({ size, className }) => {
+export const Warning = ({ size, className }: TWarningProps): JSX.Element => {
   return (
     <svg
       width={size}

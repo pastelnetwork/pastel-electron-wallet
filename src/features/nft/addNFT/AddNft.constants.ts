@@ -1,7 +1,5 @@
 import { TImageOrientation } from './AddNFT.state'
 
-export const currencyName = 'PSL'
-
 export const imageTypes = {
   PNG: 'image/png',
   JPG: 'image/jpeg',

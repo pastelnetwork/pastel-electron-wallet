@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TEyeProps = TIconProps
 
-export const Eye: React.FC<TEyeProps> = ({ size, className }) => {
+export const Eye = ({ size, className }: TEyeProps): JSX.Element => {
   return (
     <svg
       width={size}

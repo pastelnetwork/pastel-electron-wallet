@@ -6,11 +6,11 @@ export type TCreatorProps = {
   className?: string
 }
 
-export const Creator: React.FC<TCreatorProps> = ({
+export const Creator = ({
   width = 9,
   height = 12,
   className = 'text-gray-4a',
-}) => {
+}: TCreatorProps): JSX.Element => {
   return (
     <svg
       width={width}

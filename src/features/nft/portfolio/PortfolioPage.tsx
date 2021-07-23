@@ -2,6 +2,7 @@ import React from 'react'
 import { useToggle } from 'react-use'
 import dayjs from 'dayjs'
 
+import { useAppSelector } from 'redux/hooks'
 import { TNFT } from '../Nft.types'
 import Breadcrumbs from './Breadcrumbs'
 import Header from './header/Header'
@@ -19,49 +20,47 @@ import Modal6 from 'features/nft/nftModals/CopiesDetailsModal'
 import Modal7 from 'features/nft/nftModals/PricePlanModal'
 import Modal8 from 'features/nft/nftModals/OwnershipHistoryModal'
 
-export type TPortfolioPage = {
-  currencyName: string
-}
-
-const nft: TNFT = {
-  id: 230456346,
-  title: 'Super nfty floating head professional',
-  image: nftImage,
-  pastelRareness: 65,
-  internetRareness: 45,
-  likes: 721,
-  liked: true,
-  views: 231,
-  type: 'Live Auction',
-  status: 8,
-  price: 12000,
-  currencyName: 'PSL',
-  time: dayjs().add(1, 'day').add(11, 'hours').add(11, 'seconds'),
-  bids: 12900,
-  author: {
-    avatar: avatar1,
-    name: 'Banksy86',
-  },
-  copies: 1,
-  royalty: '10% Perpetual Royalty',
-  owner: 'Banksy86',
-  collection: 'Angel in the sky',
-  category: 'Illustration',
-  tags: ['Add your tag'],
-  description:
-    'There is something magical about space and astronauts. Who wouldn’t want to see the earth from space, or run around on the moon? Space is the final frontier for mankind and essentialy to the future of our species. This piece is an hommage to the brave men and women who represent mankind in this most ambitious of endeavors, who strive to push',
-}
-
 const breadcrumbs = [
   { title: 'My NFT Portfolio', link: '#' },
   { title: '“Super Nfty Floating Head”' },
 ]
 
-nft.description += nft.description // make it longer for "read more"
+export default function PortfolioPage(): JSX.Element {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
 
-export default function PortfolioPage({
-  currencyName,
-}: TPortfolioPage): JSX.Element {
+  const nft: TNFT = {
+    id: 230456346,
+    title: 'Super nfty floating head professional',
+    image: nftImage,
+    pastelRareness: 65,
+    internetRareness: 45,
+    likes: 721,
+    liked: true,
+    views: 231,
+    type: 'Live Auction',
+    status: 8,
+    price: 12000,
+    currencyName,
+    time: dayjs().add(1, 'day').add(11, 'hours').add(11, 'seconds'),
+    bids: 12900,
+    author: {
+      avatar: avatar1,
+      name: 'Banksy86',
+    },
+    copies: 1,
+    royalty: '10% Perpetual Royalty',
+    owner: 'Banksy86',
+    collection: 'Angel in the sky',
+    category: 'Illustration',
+    tags: ['Add your tag'],
+    description:
+      'There is something magical about space and astronauts. Who wouldn’t want to see the earth from space, or run around on the moon? Space is the final frontier for mankind and essentialy to the future of our species. This piece is an hommage to the brave men and women who represent mankind in this most ambitious of endeavors, who strive to push',
+  }
+
+  nft.description += nft.description // make it longer for "read more"
+
   const [isShowModal3, toggleShowModal3] = useToggle(false)
   const [isShowModal4, toggleShowModal4] = useToggle(false)
   const [isShowModal5, toggleShowModal5] = useToggle(false)

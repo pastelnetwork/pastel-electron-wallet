@@ -17,7 +17,7 @@ import {
   useFeePerKb,
 } from './PreviewStep.service'
 import { TAddNFTState, TImage } from '../AddNFT.state'
-import { currencyName } from '../AddNft.constants'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
@@ -42,6 +42,7 @@ export default function PreviewStepModal({
   const fileSizeKb = Math.round(image.file.size / 1024)
   const imageSizePercentOfAvg = 65
   const feePerKb = useFeePerKb()
+  const currencyName = useCurrencyName()
 
   const quality = state.optimizationState.selectedFile?.quality || 100
   const lossLess = quality === 100 || state.isLossLess
@@ -153,12 +154,7 @@ export default function PreviewStepModal({
               state.isLossLess ? 'opacity-0' : 'opacity-100',
             )}
           >
-            <OptimizationSlider
-              state={state}
-              image={image}
-              fee={fee}
-              currencyName={currencyName}
-            />
+            <OptimizationSlider state={state} image={image} fee={fee} />
           </div>
           <div>
             <div className='font-medium text-gray-71 mb-3'>

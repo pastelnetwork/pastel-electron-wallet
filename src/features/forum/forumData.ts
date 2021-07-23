@@ -22,15 +22,15 @@ const avatars = [
 const generateMembers = (number: number): TForumMember[] => {
   return Array.from(Array(number), () => ({
     name: faker.name.firstName(),
-    avatar: avatars[faker.random.number(6)],
+    avatar: avatars[faker.datatype.number(6)],
   }))
 }
 
 export const data = [
   {
     topic: 'Truck craches at the 11floor8 bridge and then hits a car',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
       value: 1000,
       oldValue: 1000,
@@ -44,115 +44,115 @@ export const data = [
   },
   {
     topic: 'Table saws are dangerous',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '2m',
   },
   {
     topic: 'Superb Owl 2019',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '3m',
   },
   {
     topic: 'How to flip a coin in your head',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '5m',
   },
   {
     topic:
       'Crypto CEO dies with password to unlock $200+ million of customers’ Bitcoin',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '12m',
   },
   {
     topic: 'How to get better at solving puzzies',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '51m',
   },
   {
     topic: 'A round up of Trumpian events',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '21m',
   },
   {
     topic:
       'Father of Parkland victim responds to Louis CK’s jokes with a “standup set”',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '20m',
   },
   {
     topic: 'How to get better at solving puzzies',
-    favorite: faker.random.number(1),
-    members: generateMembers(faker.random.number(12)),
+    favorite: faker.datatype.number(1),
+    members: generateMembers(faker.datatype.number(12)),
     replies: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     views: {
-      value: faker.random.number(10) * 100,
-      oldValue: faker.random.number(10) * 100,
+      value: faker.datatype.number(10) * 100,
+      oldValue: faker.datatype.number(10) * 100,
     },
     activity: '2m',
   },

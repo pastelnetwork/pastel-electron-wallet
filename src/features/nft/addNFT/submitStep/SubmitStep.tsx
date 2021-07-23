@@ -12,7 +12,7 @@ import { formatFileSize, formatNumber } from 'common/utils/format'
 import icoPreview from 'common/assets/icons/ico-preview.svg'
 import ImageShadow from '../common/ImageShadow'
 import { submit } from './SubmitStep.service'
-import { currencyName } from '../AddNft.constants'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -36,6 +36,7 @@ export default function SubmitStep({
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
+  const currencyName = useCurrencyName()
 
   if (fullScreen) {
     return <FullScreenImage image={displayUrl} onClose={toggleFullScreen} />
@@ -61,7 +62,7 @@ export default function SubmitStep({
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
             <button
-              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-46055 flex items-center'
+              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-2e flex items-center'
               onClick={toggleFullScreen}
             >
               <img src={icoPreview} className='inline-block mr-4' />

@@ -6,11 +6,11 @@ export type TDotsProps = TIconProps & {
   vertical?: boolean
 }
 
-export const Dots: React.FC<TDotsProps> = ({
+export const Dots = ({
   size,
   className,
   vertical = false,
-}) => {
+}: TDotsProps): JSX.Element => {
   return (
     <svg
       width={size}

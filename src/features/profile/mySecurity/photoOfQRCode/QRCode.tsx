@@ -32,10 +32,12 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
   const settings = {
     autoplay: {
       disableOnInteraction: false,
+      delay: 2000,
     },
     navigation: false,
     pagination: false,
-    speed: 500,
+    speed: 1,
+    mousewheel: false,
   }
 
   return (
@@ -90,7 +92,7 @@ const QR = ({
 
   const content = (
     <div className='flex justify-center h-270px rounded-lg py-33px px-42px bg-tab-hover'>
-      <div className='w-full h-205px rounded-md shadow-64px border border-solid border-gray-e6 relative'>
+      <div className='w-full h-205px rounded-md shadow-64px border border-solid border-gray-e6 relative cursor-not-allowed'>
         <QRCodeSlider qrcodeData={qrcodeData} />
       </div>
     </div>

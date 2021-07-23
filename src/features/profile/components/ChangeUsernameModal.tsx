@@ -10,10 +10,10 @@ export type TChangeUsernameModal = {
   handleClose: () => void
 }
 
-const ChangeUsernameModal: React.FC<TChangeUsernameModal> = ({
+const ChangeUsernameModal = ({
   isOpen,
   handleClose,
-}) => {
+}: TChangeUsernameModal): JSX.Element => {
   const [username, setUsername] = useState<string>('')
   const [inputed, setInputed] = useState<boolean>(false)
 

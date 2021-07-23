@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TCropProps = TIconProps
 
-export const Crop: React.FC<TCropProps> = ({ size, className }) => {
+export const Crop = ({ size, className }: TCropProps): JSX.Element => {
   return (
     <svg
       width={size}

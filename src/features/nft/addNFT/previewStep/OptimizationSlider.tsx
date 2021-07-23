@@ -3,12 +3,12 @@ import Slider from 'common/components/Slider/Slider'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import Spinner from 'common/components/Spinner'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TOptimizationSliderProps = {
   state: TAddNFTState
   image: TImage
   fee: number | undefined
-  currencyName: string
 }
 
 const createArrayOfIndices = (length: number) =>
@@ -18,8 +18,9 @@ export default function OptimizationSlider({
   state,
   image,
   fee,
-  currencyName,
 }: TOptimizationSliderProps): JSX.Element | null {
+  const currencyName = useCurrencyName()
+
   if (state.optimizationState.status === 'processing') {
     return (
       <div className='flex items-center text-gray-71'>

@@ -3,11 +3,11 @@ import { TIconProps } from './iconProps'
 
 export type TFirTreeInHexagonProps = TIconProps & { fill?: string }
 
-export const FirTreeInHexagon: React.FC<TFirTreeInHexagonProps> = ({
+export const FirTreeInHexagon = ({
   size,
   className,
   fill = 'text-white',
-}) => {
+}: TFirTreeInHexagonProps): JSX.Element => {
   return (
     <svg
       width={size}

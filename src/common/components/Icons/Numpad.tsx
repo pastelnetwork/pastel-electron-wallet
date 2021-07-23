@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TNumpadProps = TIconProps
 
-export const Numpad: React.FC<TNumpadProps> = ({ size, className }) => {
+export const Numpad = ({ size, className }: TNumpadProps): JSX.Element => {
   return (
     <svg
       width={size}
