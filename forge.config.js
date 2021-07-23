@@ -1,6 +1,4 @@
 const os = require('os')
-const path = require('path')
-const fs = require('fs')
 
 const package = require('./package.json')
 
