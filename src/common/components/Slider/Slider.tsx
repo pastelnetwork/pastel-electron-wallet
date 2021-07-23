@@ -93,7 +93,7 @@ export default function Slider({
       max={sliderMax}
       step={props.step}
       values={values}
-      onChange={values => setValues(values as [number, number])}
+      onChange={values => setValues(values)}
       renderTrack={({ props: trackProps, children }) => (
         <div
           className={cn('h-4 rounded relative group', className)}

@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TCrownProps = TIconProps
 
-export const Crown: React.FC<TCrownProps> = ({ size, className }) => {
+export const Crown = ({ size, className }: TCrownProps): JSX.Element => {
   return (
     <svg
       width={size}

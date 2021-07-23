@@ -8,6 +8,7 @@ import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
+import { useAppSelector } from 'redux/hooks'
 import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
 import { TArtworkTicket } from 'api/artwork-api/interfaces'
 import { toast } from 'react-toastify'
@@ -32,10 +33,11 @@ export default function SubmitStep({
   image,
   nftData,
 }: TSubmitStepProps): JSX.Element {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
-
-  const currencyName = 'PSL'
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
@@ -116,7 +118,7 @@ export default function SubmitStep({
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
             <button
-              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-46055 flex items-center'
+              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-2e flex items-center'
               onClick={toggleFullScreen}
             >
               <img src={icoPreview} className='inline-block mr-4' />

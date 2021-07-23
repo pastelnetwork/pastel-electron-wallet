@@ -7,10 +7,10 @@ export type TOwnershipHistoryModal = {
   handleClose: () => void
 }
 
-const OwnershipHistoryModal: React.FC<TOwnershipHistoryModal> = ({
+const OwnershipHistoryModal = ({
   isOpen,
   handleClose,
-}) => {
+}: TOwnershipHistoryModal): JSX.Element => {
   return (
     <Modal
       isOpen={isOpen}

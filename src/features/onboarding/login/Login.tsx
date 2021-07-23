@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import { Input, InputPassword } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
 import CloseButton from '../common/closeButton'
+import Link from 'common/components/Link'
 import Typography, {
   TypographyVariant,
 } from 'common/components/Typography/Typography'
@@ -22,7 +23,7 @@ const initialInputState = {
   isTouched: false,
 }
 
-const Login: React.FC = () => {
+const Login = (): JSX.Element => {
   const history = useHistory()
 
   const [username, setUsername] = React.useState<ILoginFormInput>(
@@ -79,7 +80,7 @@ const Login: React.FC = () => {
         />
         <div className='text-gray-71 text-h6 my-5'>
           Forgot your password?
-          <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
+          <Link className='text-link' href={ROUTES.PASSWORD_RECOVERY}>
             {' '}
             Restore access now
           </Link>
@@ -96,7 +97,7 @@ const Login: React.FC = () => {
       </form>
       <div className='flex justify-center text-gray-a0 font-medium text-h6 mt-30px'>
         <span className='mr-1'>Don't have an account?</span>
-        <Link className='text-link' to={ROUTES.SIGN_UP}>
+        <Link className='text-link' href={ROUTES.SIGN_UP}>
           Sign Up
         </Link>
       </div>

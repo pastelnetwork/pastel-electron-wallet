@@ -1,33 +1,39 @@
 import React, { useState } from 'react'
 
-import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
-
-import avatar from '../../common/assets/images/avatar-placeholder.png'
-import image from '../../common/assets/images/nft-card-placeholder.png'
-import Select, { TOption } from '../../common/components/Select/Select'
-import Slider from '../../common/components/Slider/Slider'
-import PageHeader from '../../common/components/PageHeader'
+import { useAppSelector } from 'redux/hooks'
+import * as ROUTES from 'common/utils/constants/routes'
+import NFTCard, { TNFTCard } from 'common/components/NFTCard'
+import avatar from 'common/assets/images/avatar-placeholder.png'
+import image from 'common/assets/images/nft-card-placeholder.png'
+import Select, { TOption } from 'common/components/Select/Select'
+import Slider from 'common/components/Slider/Slider'
+import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 
-const mockCardProps: TNFTCard = {
-  author: 'zndrson',
-  avatarSrc: avatar,
-  imageSrc: image,
-  likes: 23,
-  onSale: true,
-  price: '222K',
-  currencyName: 'PSL',
-  title: 'Cosmic Perspective longname test',
-  liked: true,
-  followers: 256,
-  isLastBid: false,
-}
 enum Tabs {
   feed,
   statistics,
 }
 
-const NFTMarketFeed: React.FC = () => {
+const NFTMarketFeed = (): JSX.Element => {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
+  const mockCardProps: TNFTCard = {
+    author: 'zndrson',
+    avatarSrc: avatar,
+    imageSrc: image,
+    likes: 23,
+    onSale: true,
+    price: '222K',
+    currencyName,
+    title: 'Cosmic Perspective longname test',
+    liked: true,
+    followers: 256,
+    isLastBid: false,
+    detailUrl: ROUTES.PORTFOLIO_DETAIL,
+  }
+
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)
 
   const mockCategories: TOption[] = [
@@ -123,7 +129,6 @@ const NFTMarketFeed: React.FC = () => {
           <div className='flex'>
             <div className='flex h-full items-center justify-end'>
               <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
-
               <Slider
                 min={100}
                 max={999}
@@ -131,6 +136,7 @@ const NFTMarketFeed: React.FC = () => {
                 onChange={setRange}
                 formatValue={formatValue}
                 formatTooltipValue={formatValue}
+                step={1}
               />
             </div>
           </div>

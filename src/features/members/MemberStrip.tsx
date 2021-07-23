@@ -1,7 +1,8 @@
 import React from 'react'
-import MemberCard, { TMemberCard } from './MemberCard'
 import { useHistory } from 'react-router-dom'
-import routes from '../../common/constants/routes.json'
+
+import * as ROUTES from 'common/utils/constants/routes'
+import MemberCard, { TMemberCard } from './MemberCard'
 
 export type TMemberStripProps = {
   id: string
@@ -13,7 +14,7 @@ export type TMemberStripProps = {
   searchText?: string
 }
 
-const MemberStrip: React.FC<TMemberStripProps> = ({
+const MemberStrip = ({
   id,
   memberCard,
   heighestSold,
@@ -21,10 +22,10 @@ const MemberStrip: React.FC<TMemberStripProps> = ({
   totalSold,
   currencyName,
   searchText,
-}) => {
+}: TMemberStripProps): JSX.Element => {
   const history = useHistory()
   const toMemberProfile = () => {
-    history.replace(routes.MEMBERS_PROFILE)
+    history.replace(ROUTES.MEMBERS_PROFILE)
   }
   return (
     <div className='flex space-x-30px'>

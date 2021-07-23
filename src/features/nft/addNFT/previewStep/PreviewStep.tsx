@@ -6,6 +6,7 @@ import { Crop } from 'common/components/Icons'
 import Tooltip from '../tooltip'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
 import { useToggle } from 'react-use'
+
 import Cropping from './Cropping'
 import OptimizationSlider from './OptimizationSlider'
 import { Button } from 'common/components/Buttons'
@@ -37,6 +38,9 @@ export default function PreviewStep({
   },
   image,
 }: TPreviewStepProps): JSX.Element {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
   const [fullScreen, toggleFullScreen] = useToggle(false)
@@ -45,7 +49,6 @@ export default function PreviewStep({
     null,
   )
   const [feePerKb, setFeePerKb] = useState<number>(0)
-  const currencyName = 'PSL'
   const fileSizeKb = Math.round(image.file.size / 1024)
   const imageSizePercentOfAvg = 65
 

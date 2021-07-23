@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TChatDotsProps = TIconProps
 
-export const ChatDots: React.FC<TChatDotsProps> = ({ size, className }) => {
+export const ChatDots = ({ size, className }: TChatDotsProps): JSX.Element => {
   return (
     <svg
       width={size}

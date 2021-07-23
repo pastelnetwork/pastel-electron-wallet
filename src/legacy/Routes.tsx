@@ -529,7 +529,7 @@ class RouteApp extends React.Component<any, any> {
             <Route
               path={routes.PORTFOLIO_DETAIL}
               exact
-              render={() => <PortfolioPage currencyName={info.currencyName} />}
+              render={() => <PortfolioPage />}
             />
             <Route path={routes.CHAT} exact component={Chat} />
             <Route path={routes.PORTFOLIO} exact component={Portfolio} />
@@ -556,7 +556,7 @@ class RouteApp extends React.Component<any, any> {
 
             <Route
               path={routes.MY_PROFILE}
-              render={() => <MyProfile info={info} rpcConfig={rpcConfig} />}
+              render={() => <MyProfile rpcConfig={rpcConfig} />}
             />
 
             <Route

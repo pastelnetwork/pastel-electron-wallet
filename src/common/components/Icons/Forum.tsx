@@ -6,11 +6,11 @@ export type TForumProps = {
   className?: string
 }
 
-export const Forum: React.FC<TForumProps> = ({
+export const Forum = ({
   width = 14,
   height = 14,
   className = 'text-gray-4a',
-}) => {
+}: TForumProps): JSX.Element => {
   return (
     <svg
       width={width}

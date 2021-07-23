@@ -17,11 +17,11 @@ export type PaymentModalProps = {
   paymentSources: Array<TDataType>
 }
 
-const PaymentModal: React.FC<PaymentModalProps> = ({
+const PaymentModal = ({
   isOpen,
   handleClose,
   paymentSources,
-}): JSX.Element => {
+}: PaymentModalProps): JSX.Element => {
   const [balance, setBalance] = useState<number>(12)
   const [psl, setPSL] = useState<number>(22000)
   return (

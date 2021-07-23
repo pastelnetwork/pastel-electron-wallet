@@ -18,6 +18,10 @@ import NFTMarketFeedPage from '../../features/NFTMarketFeed'
 import WalletScreenPage from '../../features/wallet'
 import ChatPage from '../../features/chat'
 import { MembersDirectory } from '../../features/members'
+import PortfolioDetailPage from '../../features/nft/portfolio'
+import MemberProfilePage from '../../features/profile/memberProfile/MemberProfile'
+import { Forum } from '../../features/forum'
+import Pasteld from 'legacy/components/Pasteld'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -82,7 +86,6 @@ const Portfolio = {
   path: ROUTES.PORTFOLIO,
   component: PortfolioPage,
   layout: PageLayout,
-  requiredRPCConfig: true,
 }
 
 const myProfile = {
@@ -92,7 +95,6 @@ const myProfile = {
   layout: PageLayout,
   required: {
     rpcConfig: true,
-    info: true,
   },
 }
 
@@ -134,6 +136,40 @@ const searchResults = {
   layout: PageLayout,
 }
 
+const portfolioDetail = {
+  id: 'portfolioDetail',
+  path: ROUTES.PORTFOLIO_DETAIL,
+  component: PortfolioDetailPage,
+  layout: PageLayout,
+  required: {
+    currencyName: true,
+  },
+}
+
+const memberProfile = {
+  id: 'memberProfile',
+  path: ROUTES.MEMBERS_PROFILE,
+  component: MemberProfilePage,
+  layout: PageLayout,
+}
+
+const forum = {
+  id: 'forum',
+  path: ROUTES.FORUM,
+  component: Forum,
+  layout: PageLayout,
+}
+
+const pasteld = {
+  id: 'pasteld',
+  path: ROUTES.PASTELD,
+  component: Pasteld,
+  layout: OnboardingLayout,
+  required: {
+    info: true,
+  },
+}
+
 export const pageRoutes = [
   onboardingRoute,
   registerRoute,
@@ -150,4 +186,8 @@ export const pageRoutes = [
   nft,
   chat,
   membersDirectory,
+  portfolioDetail,
+  memberProfile,
+  forum,
+  pasteld,
 ]
