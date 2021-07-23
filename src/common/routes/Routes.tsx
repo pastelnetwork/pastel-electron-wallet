@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
@@ -7,7 +7,6 @@ import { pageRoutes } from './index'
 import * as ROUTES from '../utils/constants/routes'
 import { TRPCConfig } from 'api/pastel-rpc'
 import LoadingScreen from 'features/loading'
-import Utilities from 'features/utilities'
 import { setPastelConf } from 'features/pastelConf'
 import { PastelDBThread } from 'features/pastelDB'
 import {
@@ -74,11 +73,11 @@ const Routes = (): JSX.Element => {
   const location = useLocation()
   const history = useHistory()
   const dispatch = useAppDispatch()
-  const [isPackaged, setIsPackaged] = React.useState(false)
-  const [rpcConfig, setRPCConfig] = React.useState<TRPCConfig>()
-  const [info, setInfo] = React.useState<TWalletInfo>(defaultPastelInfo)
+  const [isPackaged, setIsPackaged] = useState(false)
+  const [rpcConfig, setRPCConfig] = useState<TRPCConfig>()
+  const [info, setInfo] = useState<TWalletInfo>(defaultPastelInfo)
 
-  React.useEffect(() => {
+  useEffect(() => {
     ipcRenderer.on(
       'app-info',
       (event, { isPackaged }: { isPackaged: boolean }) => {
@@ -89,7 +88,7 @@ const Routes = (): JSX.Element => {
     history.push(ROUTES.LOADING)
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (rpcConfig) {
       ipcRenderer.send('app-ready')
     }
@@ -143,7 +142,6 @@ const Routes = (): JSX.Element => {
           )}
         />
       </Switch>
-      <Utilities />
     </div>
   )
 }

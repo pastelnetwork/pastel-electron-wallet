@@ -42,15 +42,6 @@ function getIcon() {
   }
 }
 
-let certificateFile = ''
-if (process.env['WINDOWS_CODESIGN_FILE']) {
-  certificateFile = path.join(
-    __dirname,
-    'certificates',
-    process.env['WINDOWS_CODESIGN_FILE'],
-  )
-}
-
 module.exports = {
   packagerConfig: {
     name: package.productName,
@@ -69,25 +60,16 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: () => {
-        const configs = {
-          exe: `${package.name}.exe`,
-          authors: package.author.name,
-          setupIcon: './static/icons/icon.ico',
-          loadingGif: './static/icons/icon.gif',
-          iconUrl:
-            'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
-          title: package.productName,
-          setupExe: `${package.productName} Setup - v${package.version}.exe`,
-          skipUpdateIcon: true,
-        }
-
-        if (certificateFile && fs.existsSync(certificateFile)) {
-          configs.certificateFile = certificateFile
-          configs.certificatePassword = process.env['WINDOWS_CODESIGN_PASSWORD']
-        }
-
-        return configs
+      config: {
+        exe: `${package.name}.exe`,
+        authors: package.author.name,
+        setupIcon: './static/icons/icon.ico',
+        loadingGif: './static/icons/icon.gif',
+        iconUrl:
+          'https://raw.githubusercontent.com/pastelnetwork/pastel-electron-wallet/master/static/icons/icon.ico',
+        title: package.productName,
+        setupExe: `${package.productName} Setup - v${package.version}.exe`,
+        skipUpdateIcon: true,
       },
     },
     {
