@@ -91,3 +91,6 @@ out/
 # Electron-builder
 dist
 release
+
+# Storybook build
+storybook-static
