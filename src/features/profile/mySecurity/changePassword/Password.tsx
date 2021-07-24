@@ -43,6 +43,7 @@ const ChangePassword = (): JSX.Element => {
           target='_blank'
           className='underline italic'
           variant='gray-a0'
+          useATag
         >
           LastPass
         </Link>
@@ -52,6 +53,7 @@ const ChangePassword = (): JSX.Element => {
           target='_blank'
           className='underline italic'
           variant='gray-a0'
+          useATag
         >
           1Password
         </Link>

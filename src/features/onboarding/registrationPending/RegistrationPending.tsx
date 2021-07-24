@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
 
-import registerImage from '../../../common/assets/images/registration-fee-pending.png'
-import * as ROUTES from '../../../common/utils/constants/routes'
+import registerImage from 'common/assets/images/registration-fee-pending.png'
+import * as ROUTES from 'common/utils/constants/routes'
+import Link from 'common/components/Link'
 
 const RegistrationPending = (): JSX.Element => {
   return (
@@ -22,7 +22,7 @@ const RegistrationPending = (): JSX.Element => {
           className='rounded-2xl overflow-hidden relative z-10'
         />
       </div>
-      <Link to={ROUTES.REGISTER_SUCCESSFUL} className='link'>
+      <Link href={ROUTES.REGISTER_SUCCESSFUL} className='link'>
         Check payment status manually
       </Link>
     </div>

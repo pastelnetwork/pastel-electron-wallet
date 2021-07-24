@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
+import { useAppSelector } from 'redux/hooks'
 import MemberStrip, { TMemberStripProps } from './MemberStrip'
 import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
@@ -14,64 +15,6 @@ import styles from './MembersDirectory.module.css'
 import Scrollbar from '../../common/components/Scrollbar'
 
 const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
-const mockMemberStrips: TMemberStripProps[] = [
-  {
-    id: uuidv4(),
-    memberCard: {
-      avatar: mockAvatar,
-      followers: 161,
-      name: 'Sally Fadel',
-      isVerified: false,
-      followedByUser: false,
-    },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
-    images: stripMockImages,
-    currencyName: 'PSL',
-  },
-  {
-    id: uuidv4(),
-    memberCard: {
-      avatar: mockAvatar,
-      followers: 326,
-      name: 'Anyia Harber',
-      isVerified: true,
-      followedByUser: true,
-    },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
-    images: stripMockImages,
-    currencyName: 'PSL',
-  },
-  {
-    id: uuidv4(),
-    memberCard: {
-      avatar: mockAvatar,
-      followers: 124,
-      name: 'Edwardo Bea',
-      isVerified: false,
-      followedByUser: false,
-    },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
-    images: stripMockImages,
-    currencyName: 'PSL',
-  },
-  {
-    id: uuidv4(),
-    memberCard: {
-      avatar: mockAvatar,
-      followers: 588,
-      name: 'Reymundo',
-      isVerified: true,
-      followedByUser: true,
-    },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
-    images: stripMockImages,
-    currencyName: 'PSL',
-  },
-]
 
 const mockOptions: TOption[] = [
   { value: 'All', label: 'All' },
@@ -89,7 +32,69 @@ const mockBreadcrumbs: TBreadcrumb[] = [
   },
 ]
 
-const MembersDirectory: React.FC = () => {
+const MembersDirectory = (): JSX.Element => {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
+  const mockMemberStrips: TMemberStripProps[] = [
+    {
+      id: uuidv4(),
+      memberCard: {
+        avatar: mockAvatar,
+        followers: 161,
+        name: 'Sally Fadel',
+        isVerified: false,
+        followedByUser: false,
+      },
+      heighestSold: '1,700,000K',
+      totalSold: '1,500K',
+      images: stripMockImages,
+      currencyName,
+    },
+    {
+      id: uuidv4(),
+      memberCard: {
+        avatar: mockAvatar,
+        followers: 326,
+        name: 'Anyia Harber',
+        isVerified: true,
+        followedByUser: true,
+      },
+      heighestSold: '1,700,000K',
+      totalSold: '1,500K',
+      images: stripMockImages,
+      currencyName,
+    },
+    {
+      id: uuidv4(),
+      memberCard: {
+        avatar: mockAvatar,
+        followers: 124,
+        name: 'Edwardo Bea',
+        isVerified: false,
+        followedByUser: false,
+      },
+      heighestSold: '1,700,000K',
+      totalSold: '1,500K',
+      images: stripMockImages,
+      currencyName,
+    },
+    {
+      id: uuidv4(),
+      memberCard: {
+        avatar: mockAvatar,
+        followers: 588,
+        name: 'Reymundo',
+        isVerified: true,
+        followedByUser: true,
+      },
+      heighestSold: '1,700,000K',
+      totalSold: '1,500K',
+      images: stripMockImages,
+      currencyName,
+    },
+  ]
+
   // Filters
   const [category, setCategory] = useState<TOption | null>(mockOptions[0])
   const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
@@ -177,6 +182,7 @@ const MembersDirectory: React.FC = () => {
                     onChange={setRange}
                     formatValue={formatValue}
                     formatTooltipValue={formatValue}
+                    step={1}
                   />
                 </div>
               </div>

@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+
+import { useAppSelector } from 'redux/hooks'
 import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
@@ -37,23 +39,6 @@ const general_data = {
     'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
 }
 
-const mockCardProps: TNFTCard = {
-  likes: 23,
-  onSale: true,
-  price: '222K',
-  currencyName: 'PSL',
-  liked: true,
-  percentage: 75,
-  variant: 'portfolio',
-  isLastBid: false,
-  hideLikeButton: true,
-  author: 'vanecha',
-  avatarSrc: avatar,
-  imageSrc: image,
-  title: 'Infinity I',
-  hideFollow: true,
-}
-
 const categoriesOptions: TOption[] = [
   { value: 'All', label: 'All' },
   { value: 'option_2', label: 'TOption 2' },
@@ -67,7 +52,28 @@ const filterData = [
   { label: 'Followers', value: 'Followers', checked: false },
 ]
 
-const Profile = (): JSX.Element => {
+const MemberProfile = (): JSX.Element => {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
+
+  const mockCardProps: TNFTCard = {
+    likes: 23,
+    onSale: true,
+    price: '222K',
+    currencyName,
+    liked: true,
+    percentage: 75,
+    variant: 'portfolio',
+    isLastBid: false,
+    hideLikeButton: true,
+    author: 'vanecha',
+    avatarSrc: avatar,
+    imageSrc: image,
+    title: 'Infinity I',
+    hideFollow: true,
+  }
+
   const [tab, setTab] = useState(2)
   const [category, setCategory] = useState<TOption | null>(categoriesOptions[0])
   const [type, setType] = useState<TOption | null>(categoriesOptions[0])
@@ -195,4 +201,4 @@ const Profile = (): JSX.Element => {
   )
 }
 
-export default Profile
+export default MemberProfile

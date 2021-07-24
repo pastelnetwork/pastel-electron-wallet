@@ -15,13 +15,13 @@ export type TModalProps = {
   title?: string
 }
 
-const TitleModal: React.FC<TModalProps> = ({
+const TitleModal = ({
   isOpen,
   handleClose,
   size,
   children,
   title,
-}) => {
+}: TModalProps): JSX.Element => {
   const modalClasses = cn({
     'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
     [`max-w-${size}`]: size,

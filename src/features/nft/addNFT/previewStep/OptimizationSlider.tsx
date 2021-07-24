@@ -2,13 +2,13 @@ import React from 'react'
 import Slider from 'common/components/Slider/Slider'
 import { formatNumber } from 'common/utils/format'
 import { minQualityByType } from '../AddNft.constants'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TOptimizationSliderProps = {
   imageType: string
   fee: number | undefined
   quality: number
   onChange(val: number): void
-  currencyName: string
 }
 
 export default function OptimizationSlider({
@@ -16,8 +16,9 @@ export default function OptimizationSlider({
   fee,
   quality,
   onChange,
-  currencyName,
 }: TOptimizationSliderProps): JSX.Element {
+  const currencyName = useCurrencyName()
+
   const formatValue = (value: number) => `${value}% quality`
   const formatTooltipValue = (value: number) => {
     const quality = `${Math.round(value)}% quality`

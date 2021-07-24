@@ -2,7 +2,7 @@ import React from 'react'
 import { Meta } from '@storybook/react'
 import IconButton from './IconButton'
 
-export const IconButtonBorder: React.FC = () => (
+export const IconButtonBorder = (): JSX.Element => (
   <IconButton
     type='border'
     hoverColor='error'
@@ -20,7 +20,7 @@ export const IconButtonBorder: React.FC = () => (
     </svg>
   </IconButton>
 )
-export const IconButtonShadow: React.FC = () => (
+export const IconButtonShadow = (): JSX.Element => (
   <IconButton
     type='shadow'
     hoverColor='error'

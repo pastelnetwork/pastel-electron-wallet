@@ -5,6 +5,7 @@ import { nativeCurrencyOptions } from '../myProfile/MyProfile'
 import { TOption } from '../components/Select/Select'
 import Checkbox from 'common/components/Checkbox'
 import { TComment } from '../components/CommentCard'
+import * as ROUTES from 'common/utils/constants/routes'
 
 import avatar1 from 'common/assets/images/avatars/oval-1.svg'
 import avatar2 from 'common/assets/images/avatars/oval-2.svg'
@@ -22,6 +23,8 @@ const commentsData: TComment[] = [
     comment:
       'Love this so much! What tools do you use to create your 3d illustrations?',
     replyId: 0,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 2,
@@ -33,6 +36,8 @@ const commentsData: TComment[] = [
     comment:
       'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1',
     replyId: 1,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 3,
@@ -43,6 +48,8 @@ const commentsData: TComment[] = [
     time: new Date('06/29/2021').getTime(),
     comment: 'Love this so much! 🍕',
     replyId: 1,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 4,
@@ -54,6 +61,8 @@ const commentsData: TComment[] = [
     comment:
       'Love this so much! What tools do you use to create your 3d illustrations?',
     replyId: 1,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 5,
@@ -64,6 +73,8 @@ const commentsData: TComment[] = [
     time: new Date('06/25/2021').getTime(),
     comment: 'Awesome! 😍',
     replyId: 4,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 6,
@@ -74,6 +85,8 @@ const commentsData: TComment[] = [
     time: new Date('06/25/2021').getTime(),
     comment: 'Mumblecore cronut kickstarter!',
     replyId: 4,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 7,
@@ -85,6 +98,8 @@ const commentsData: TComment[] = [
     comment:
       'Love this so much! What tools do you use to create your 3d illustrations?',
     replyId: 1,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 8,
@@ -95,6 +110,8 @@ const commentsData: TComment[] = [
     time: new Date('06/22/2021').getTime(),
     comment: 'Awesome! 😍',
     replyId: 7,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 9,
@@ -105,6 +122,8 @@ const commentsData: TComment[] = [
     time: new Date('06/22/2021').getTime(),
     comment: 'Mumblecore cronut kickstarter!',
     replyId: 7,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 10,
@@ -116,6 +135,8 @@ const commentsData: TComment[] = [
     comment:
       'Love this so much! What tools do you use to create your 3d illustrations?',
     replyId: 0,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
   {
     id: 11,
@@ -127,6 +148,8 @@ const commentsData: TComment[] = [
     comment:
       'Love this so much! What tools do you use to create your 3d illustrations?',
     replyId: 0,
+    profileUrl: ROUTES.MY_PROFILE,
+    portfolioUrl: ROUTES.PORTFOLIO_DETAIL,
   },
 ]
 

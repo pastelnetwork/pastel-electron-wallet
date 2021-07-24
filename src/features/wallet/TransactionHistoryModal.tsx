@@ -31,10 +31,10 @@ export type TransactionHistoryModalProps = {
   handleClose: () => void
 }
 
-const TransactionHistoryModal: React.FC<TransactionHistoryModalProps> = ({
+const TransactionHistoryModal = ({
   isOpen,
   handleClose,
-}) => {
+}: TransactionHistoryModalProps): JSX.Element => {
   const { url, username, password } = useAppSelector<RootState['pastelConf']>(
     ({ pastelConf }) => pastelConf,
   )

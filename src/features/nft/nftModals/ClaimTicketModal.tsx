@@ -6,10 +6,10 @@ export type TClaimTicketModal = {
   handleClose: () => void
 }
 
-const ClaimTicketModal: React.FC<TClaimTicketModal> = ({
+const ClaimTicketModal = ({
   isOpen,
   handleClose,
-}) => {
+}: TClaimTicketModal): JSX.Element => {
   const [text, setText] = useState('')
 
   const data = {

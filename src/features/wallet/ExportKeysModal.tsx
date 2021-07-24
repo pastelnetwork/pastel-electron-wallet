@@ -42,11 +42,11 @@ export type ExportKeysModalProps = {
   handleClose: () => void
 }
 
-const ExportKeysModal: React.FC<ExportKeysModalProps> = ({
+const ExportKeysModal = ({
   isOpen,
   address,
   handleClose,
-}) => {
+}: ExportKeysModalProps): JSX.Element => {
   const [currencyName, setCurrencyName] = useState('PSL')
   const [publicKey, setPublicKey] = useState('')
   const [privateKey, setPrivateKey] = useState('')

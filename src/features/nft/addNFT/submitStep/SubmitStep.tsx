@@ -12,7 +12,7 @@ import { formatFileSize, formatNumber } from 'common/utils/format'
 import icoPreview from 'common/assets/icons/ico-preview.svg'
 import ImageShadow from '../common/ImageShadow'
 import { submit } from './SubmitStep.service'
-import { currencyName } from '../AddNft.constants'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -36,6 +36,7 @@ export default function SubmitStep({
   nftData,
   toggleCloseButton,
 }: TSubmitStepProps): JSX.Element {
+  const currencyName = useCurrencyName()
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
 

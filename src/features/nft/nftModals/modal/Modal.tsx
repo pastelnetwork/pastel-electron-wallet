@@ -18,7 +18,7 @@ export type TModal = {
   bodyClassName?: string
 }
 
-const Modal: React.FC<TModal> = ({
+const Modal = ({
   isOpen,
   handleClose,
   size,
@@ -28,7 +28,7 @@ const Modal: React.FC<TModal> = ({
   titleClassName = 'text-h2 mt-2 font-bold',
   headerClassName = 'px-10 pb-6',
   bodyClassName = 'px-10',
-}) => {
+}: TModal): JSX.Element => {
   const modalClasses = cn({
     'relative bg-white rounded-2xl shadow-xSmall max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
     [`w-${size}`]: size,

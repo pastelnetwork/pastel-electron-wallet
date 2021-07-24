@@ -6,11 +6,11 @@ export type TNFTProps = {
   className?: string
 }
 
-export const NFT: React.FC<TNFTProps> = ({
+export const NFT = ({
   width = 14,
   height = 14,
   className = 'text-gray-4a',
-}) => {
+}: TNFTProps): JSX.Element => {
   return (
     <svg
       width={width}

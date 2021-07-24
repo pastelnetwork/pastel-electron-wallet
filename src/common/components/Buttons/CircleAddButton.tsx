@@ -6,10 +6,10 @@ export type TCircleAddButton = {
   className?: string
 }
 
-const CircleAddButton: React.FC<TCircleAddButton> = ({
+const CircleAddButton = ({
   onClick,
   className,
-}) => {
+}: TCircleAddButton): JSX.Element => {
   const classes = cn(className, {
     'button-add transition duration-300 border-2 flex items-center justify-center border-button w-7 h-7 rounded-full focus:outline-none hover:border-button-hover group': true,
   })

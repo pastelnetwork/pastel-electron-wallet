@@ -18,13 +18,13 @@ enum Tab {
   YEAR,
 }
 
-const ViewsStatsModal: React.FC<TViewsStatsModal> = ({
+const ViewsStatsModal = ({
   isOpen,
   handleClose,
   data1,
   data2,
   title,
-}) => {
+}: TViewsStatsModal): JSX.Element => {
   const [active, setActive] = useState<number>(Tab.WEEK)
   const [date, setDate] = useState<Date | null>(null)
 

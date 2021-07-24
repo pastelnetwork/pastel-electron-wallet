@@ -15,12 +15,12 @@ const rotate: Record<TDir, number> = {
   left: 90,
 }
 
-export const Caret: React.FC<TCaretProps> = ({
+export const Caret = ({
   size,
   to = 'right',
   className,
   variant,
-}) => {
+}: TCaretProps): JSX.Element => {
   const style = { transform: `rotate(${rotate[to]}deg)` }
 
   return (

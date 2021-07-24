@@ -7,11 +7,11 @@ export type TPencilProps = TIconProps & {
   className: string
 }
 
-export const Pencil: React.FC<TPencilProps> = ({
+export const Pencil = ({
   className = 'text-black',
   width = 11,
   height = 11,
-}) => {
+}: TPencilProps): JSX.Element => {
   return (
     <svg
       width={width}

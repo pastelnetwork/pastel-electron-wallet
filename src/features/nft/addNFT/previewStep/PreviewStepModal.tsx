@@ -17,9 +17,9 @@ import {
 } from './PreviewStep.service'
 import { useDebounce } from 'react-use'
 import { TAddNFTState, TImage } from '../AddNFT.state'
-import { currencyName } from '../AddNft.constants'
 import { toast } from 'react-toastify'
 import Spinner from 'common/components/Spinner'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
@@ -103,6 +103,8 @@ export default function PreviewStepModal({
       goToNextStep()
     }
   }
+
+  const currencyName = useCurrencyName()
 
   return (
     <ModalLayout
@@ -195,7 +197,6 @@ export default function PreviewStepModal({
               fee={fee}
               quality={quality}
               onChange={setQuality}
-              currencyName={currencyName}
             />
           </div>
           <div>

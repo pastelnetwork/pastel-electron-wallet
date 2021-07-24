@@ -85,7 +85,7 @@ const AnimatedModalInner = ({
           <div className={cn('relative', className)}>
             {closeButton && (
               <button
-                className='absolute top-6 right-6 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-b0 hover:text-gray-8e border border-gray-8e border-opacity-30 hover:border-opacity-40'
+                className='absolute top-6 right-6 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-55 bg-white border border-gray-ec hover:border-gray-8e hover:bg-gray-f6 active:bg-gray-f6 active:border-gray-55'
                 onClick={onClose}
               >
                 <X size={8} />

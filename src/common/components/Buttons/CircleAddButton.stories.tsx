@@ -2,7 +2,7 @@ import React from 'react'
 import { Meta } from '@storybook/react'
 import CircleAddButton from './CircleAddButton'
 
-export const CircleAddButtonDefault: React.FC = () => (
+export const CircleAddButtonDefault = (): JSX.Element => (
   <CircleAddButton className=''></CircleAddButton>
 )
 
