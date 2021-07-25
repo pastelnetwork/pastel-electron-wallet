@@ -1,20 +1,21 @@
 import React, { useState } from 'react'
 import cn from 'classnames'
-import SVG from 'react-inlinesvg'
-import IconCheck from '../../assets/icons/ico-check-transparent.svg'
+import { CheckIcon } from 'common/components/Icons'
 
 export type TCheckboxProps = {
   isChecked: boolean
   clickHandler?: (checked: boolean) => void
   children?: React.ReactNode
-  variant?: string
+  tickClassName?: string
+  selectedBackgroundClassName?: string
 }
 
 const Checkbox = ({
   children,
   isChecked,
   clickHandler,
-  variant,
+  tickClassName = 'text-gray-e7',
+  selectedBackgroundClassName = 'bg-blue-3f',
 }: TCheckboxProps): JSX.Element => {
   const [selected, setSelected] = useState(isChecked)
   return (
@@ -25,21 +26,17 @@ const Checkbox = ({
           clickHandler && clickHandler(!selected)
         }}
         className={cn(
-          'transition-all w-5 h-5 rounded-md flex-shrink-0',
-          !selected && 'border-gray-88 hover:border-gray-55 border-1.3px',
+          'transition-all w-5 h-5 rounded-md checkboxCheckmark flex-shrink-0',
+          !selected && 'border-gray-dd border hover:border-gray-8e',
           selected &&
-            (variant === 'secondary'
-              ? 'bg-button'
-              : 'bg-button-hover-secondary') +
-              ' flex items-center justify-center',
+            `${selectedBackgroundClassName} flex items-center justify-center`,
         )}
       >
-        <SVG
-          src={IconCheck}
+        <CheckIcon
+          size={8}
           className={cn(
-            !selected && 'hidden transition-all',
-            selected && 'transition-all',
-            variant === 'secondary' ? 'stroke-white' : 'stroke-blue-3f',
+            tickClassName,
+            !selected ? 'hidden transition-all' : 'transition-all',
           )}
         />
       </div>

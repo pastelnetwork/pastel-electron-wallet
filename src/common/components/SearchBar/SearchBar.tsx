@@ -196,11 +196,7 @@ const SearchBar = (): JSX.Element => {
             ) : (
               <div>
                 <div className='flex py-[9px] bg-gray-33 rounded px-6 items-center'>
-                  <Search
-                    className='text-white mr-2.5'
-                    width={16}
-                    height={16}
-                  />
+                  <Search className='text-white mr-2.5' size={16} />
                   <div className='text-base font-medium text-gray-f8'>
                     Bans — Search Creators
                   </div>

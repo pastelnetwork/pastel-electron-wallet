@@ -1,6 +1,9 @@
 import React from 'react'
 import Modal from './modal'
 import Table from './table'
+import { Quit } from 'common/components/Icons'
+import Tooltip from 'common/components/Tooltip'
+import SampleAvatar from 'common/assets/images/avatar-placeholder.png'
 
 export type TTransferHistoryModal = {
   isOpen: boolean
@@ -35,17 +38,69 @@ const TransferHistoryModal = ({
   )
 }
 
+const getTooltip = () => {
+  return (
+    <div className='p-2 text-xs'>
+      <div>Pastel Explorer</div>
+      <div className='text-gray-a0'>Link to the blockchain transaction</div>
+    </div>
+  )
+}
+
 const Columns = [
   {
     name: 'Date',
-    className: 'pl-4 w-234px',
+    key: 'Date',
+    className: 'pl-4 w-[180px]',
+    sortable: true,
   },
   {
     name: 'Sender',
-    className: 'pl-4 w-200px',
+    key: 'Sender',
+    className: 'pl-4 w-[200px]',
+    sortable: true,
+    custom: (value: string) => (
+      <div className='flex items-center'>
+        <img
+          className='mr-2'
+          src={SampleAvatar}
+          width={18}
+          height={18}
+          alt='sender avatar'
+        />
+        <div className='font-medium'>{value}</div>
+      </div>
+    ),
   },
   {
     name: 'Recipient',
+    key: 'Recipient',
+    sortable: true,
+    className: 'w-[140px]',
+    custom: (value: string) => (
+      <div className='flex items-center'>
+        <img
+          className='mr-2'
+          src={SampleAvatar}
+          width={18}
+          height={18}
+          alt='sender avatar'
+        />
+        <div className='font-medium'>{value}</div>
+      </div>
+    ),
+  },
+  {
+    name: 'Transaction ID',
+    key: 'Transaction ID',
+    align: 'center',
+    custom: () => (
+      <div className='flex justify-center'>
+        <Tooltip type='top' width={210} content={getTooltip()}>
+          <Quit size={16} className='text-blue-3f' />
+        </Tooltip>
+      </div>
+    ),
   },
 ]
 
@@ -53,7 +108,12 @@ const tableData = [
   {
     Date: '11/04/21 01:43',
     Sender: 'Banksy123',
-    Recipient: '2654843-5933',
+    Recipient: 'Reymundo',
+  },
+  {
+    Date: '11/04/21 01:43',
+    Sender: 'Gerald',
+    Recipient: 'Harber',
   },
 ]
 

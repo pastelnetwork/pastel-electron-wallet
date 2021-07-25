@@ -31,7 +31,9 @@ const ChangeStatusModal = ({
 
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
-      <h2 className='mb-6'>Change status of “{title}”</h2>
+      <h2 className='mb-6'>
+        Change status of <br />“{title}”
+      </h2>
       <div className='mb-6'>
         <Select
           placeholder='Select'
@@ -48,7 +50,11 @@ const ChangeStatusModal = ({
         />
         <Input
           type='text'
-          placeholder='Fixed minimum price'
+          placeholder={
+            status?.value === 'buy-it-now'
+              ? 'Fixed asking price'
+              : 'Minimum aution price'
+          }
           className='w-full mb-6'
         />
         {status?.value === 'buy-it-now' && (

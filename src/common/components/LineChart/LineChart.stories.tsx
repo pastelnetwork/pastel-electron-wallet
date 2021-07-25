@@ -2,6 +2,8 @@ import React from 'react'
 import { Story, Meta } from '@storybook/react'
 import LineChart, { TChartProps } from './LineChart'
 
+import dayjs from 'dayjs'
+
 export default {
   title: 'LineChart',
   component: LineChart,
@@ -9,78 +11,70 @@ export default {
 
 const Template: Story<TChartProps> = ({ ...args }) => <LineChart {...args} />
 
-export const SimpleLineChart = Template.bind({})
-SimpleLineChart.args = {
-  data1: [
-    {
-      value: 10,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 210,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 580,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 800,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 350,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 600,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 600,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 500,
-      date: new Date('2021-02-01'),
-    },
-  ],
-  data2: [
-    {
-      value: 8,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 180,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 500,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 780,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 300,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 560,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 560,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 460,
-      date: new Date('2021-02-01'),
-    },
-  ],
+const data1 = Array.from({ length: 100 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs()
+      .subtract(50 - index, 'day')
+      .startOf('day')
+      .toDate(),
+  }
+})
+
+const data2 = Array.from({ length: 100 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs()
+      .subtract(50 - index, 'day')
+      .startOf('day')
+      .toDate(),
+  }
+})
+
+export const WeeklyLineChart = Template.bind({})
+
+WeeklyLineChart.args = {
+  data1: data1,
+  data2: data2,
   height: 300,
   width: 600,
+  type: 'week',
+  data1Label: 'Total Views',
+  data2Label: 'Likes',
+  margin: {
+    left: 100,
+    right: 100,
+    top: 50,
+    bottom: 40,
+  },
+}
+
+export const MonthlyLineChart = Template.bind({})
+
+const demoMonthlyData = Array.from({ length: 20 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs().startOf('year').add(index, 'month').toDate(),
+  }
+})
+
+const demoMonthlyData2 = Array.from({ length: 20 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs().startOf('year').add(index, 'month').toDate(),
+  }
+})
+
+MonthlyLineChart.args = {
+  data1: demoMonthlyData,
+  data2: demoMonthlyData2,
+  data1Label: 'Average Sale Price per NFT Copy (PSL)',
+  data2Label: 'Total NFT Copies Sold',
+  height: 300,
+  width: 600,
+  type: 'month',
+  label1className: 'bg-blue-ac',
+  label2className: 'bg-gradient-to-t from-blue-9b to-red-f8',
   margin: {
     left: 100,
     right: 100,

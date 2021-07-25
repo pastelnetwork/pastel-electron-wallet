@@ -9,7 +9,7 @@ export type TRadioProps = {
   smallCircleClass?: string
   children: React.ReactNode
   labelClassName?: string
-  variant?: string
+  checkedCircleBackgroundColor?: string
 }
 
 const Radio = ({
@@ -19,7 +19,7 @@ const Radio = ({
   className = 'w-5 h-5',
   smallCircleClass = 'w-2 h-2',
   labelClassName = 'ml-2 mt-2.5px',
-  variant,
+  checkedCircleBackgroundColor = 'bg-blue-e5',
 }: TRadioProps): JSX.Element => {
   return (
     <div>
@@ -29,10 +29,8 @@ const Radio = ({
             'rounded-full flex justify-center items-center cursor-pointer',
             className,
             checked
-              ? variant === 'secondary'
-                ? 'bg-blue-3f'
-                : 'bg-button-pressed-secondary'
-              : 'border-2 border-gray-a0 bg-white hover:border-gray-55',
+              ? checkedCircleBackgroundColor
+              : 'border-2 border-gray-a0 bg-white hover:border-gray-8e',
           )}
         >
           <input
@@ -45,15 +43,17 @@ const Radio = ({
           />
           {checked && (
             <span
-              className={cn(
-                'rounded-full',
-                variant === 'secondary' ? 'bg-white' : 'bg-blue-3f',
-                smallCircleClass,
-              )}
+              className={cn(smallCircleClass, 'rounded-full bg-blue-3f')}
             ></span>
           )}
         </div>
-        <div className={cn('text-sm font-normal text-gray-71', labelClassName)}>
+        <div
+          className={cn(
+            'text-gray-71',
+            labelClassName,
+            checked ? 'font-medium' : 'font-medium',
+          )}
+        >
           {children}
         </div>
       </div>

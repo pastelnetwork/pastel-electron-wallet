@@ -1,8 +1,8 @@
 import React from 'react'
 // Components
-import { Modal } from '../../../../common/components/Modal'
-import { Button } from '../../../../common/components/Buttons'
-import { InputPassword } from '../../../../common/components/Inputs'
+import { Modal } from 'common/components/Modal'
+import { Button } from 'common/components/Buttons'
+import { InputPassword } from 'common/components/Inputs'
 
 export type TSecurityPasswordModal = {
   isOpen: boolean
@@ -22,10 +22,13 @@ const SecurityPasswordModal = ({
     >
       <h2 className='mb-2'>Re-enter your password</h2>
       <span className='text-gray-77 inline-block mb-4 text-h4'>
-        to get access to security settings
+        To get access to security settings
       </span>
-      <div className='mb-16'>
-        <InputPassword label='Your Password' />
+      <div className='mb-[26px]'>
+        <InputPassword
+          labelClassName='text-gray-71 font-medium text-lg mb-1.5'
+          label='Your Password'
+        />
       </div>
       <Button variant='default' onClick={handleClose} className='w-full'>
         Confirm

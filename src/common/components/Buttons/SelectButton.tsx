@@ -16,7 +16,7 @@ const SelectButtons = ({
     <button
       onClick={onClick}
       className={cn(
-        'text-h5 font-medium w-full px-4 py-2 text-left focus:outline-none hover:bg-gray-f7 transition duration-300',
+        'text-h5 font-normal text-gray-71 w-full px-4 py-2 text-left focus:outline-none hover:bg-gray-f7 transition duration-300',
         isActive && 'bg-gray-f7',
       )}
     >

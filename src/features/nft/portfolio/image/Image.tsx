@@ -2,7 +2,6 @@ import React from 'react'
 import style from './Image.module.css'
 import { Expand, Flag, Trash } from 'common/components/Icons'
 import { TNFT } from '../../Nft.types'
-import { formatDate } from 'common/utils/format'
 import { useToggle } from 'react-use'
 import PictureModal from 'features/nft/nftModals/PictureModal'
 
@@ -43,12 +42,11 @@ export default function Image({ nft }: TImageProps): JSX.Element {
             NFT ID {nft.id}
             <button
               type='button'
-              className='ml-18px text-gray-a6 relative top-3px opacity-50 duration-200 transition hover:opacity-100'
+              className='ml-3 text-gray-a6 relative top-3px opacity-50 duration-200 transition hover:opacity-100'
             >
-              <Flag size={16} />
+              <Flag variant='stroke' size={16} className='text-gray-71' />
             </button>
           </div>
-          <div>My NFT before {formatDate(nft.time)}</div>
         </div>
       </div>
 

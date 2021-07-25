@@ -75,7 +75,7 @@ export default function DashboardPage(): JSX.Element {
         liked: false,
         author: 'zndrson',
         avatarSrc: avatar,
-        onSale: true,
+        onSale: false,
         price: '222K',
         currencyName,
         percentage: 75,
@@ -148,10 +148,10 @@ export default function DashboardPage(): JSX.Element {
       <div className='flex mb-5'>
         <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
           <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
-            <div className='font-black text-gray-2d text-lg'>
+            <div className='font-extrabold text-gray-2d text-lg'>
               Wallet balance
             </div>
-            <div className='font-black text-gray-1d text-sm'>
+            <div className='font-extrabold text-gray-2d text-sm'>
               {formatNumber(walletBalance)} {currencyName}
             </div>
           </div>
@@ -160,8 +160,8 @@ export default function DashboardPage(): JSX.Element {
               <TransactionItem key={i} {...transaction} />
             ))}
             {transactions.length === 0 && (
-              <div className='flex justify-center mt-[91px]'>
-                <span className='text-base text-gray-71'>You have no PSL</span>
+              <div className='flex justify-center mt-[111px]'>
+                <span className='text-base text-gray-a0'>You have no PSL</span>
               </div>
             )}
           </div>
@@ -172,20 +172,20 @@ export default function DashboardPage(): JSX.Element {
         <div className='paper flex-grow w-0 ml-5 pt-6 relative md:flex md:flex-col'>
           <div className='md:flex-shrink-0 flex items-center h-6 px-[30px] mb-5'>
             <div className='font-extrabold text-lg text-gray-2d'>Portfolio</div>
-            <div className='font-extrabold text-gray-a0 text-sm ml-2 mt-px'>
+            <div className='font-medium text-gray-a0 text-sm ml-2 mt-px'>
               23 items
             </div>
           </div>
           {followers.length > 0 && (
             <div className='grid md:grid-cols-3 gap-[26px] md:flex px-[30px] h-[282px] overflow-auto'>
-              <PortfolioColumn title='Sales in Progress (2)'>
+              <PortfolioColumn title='Sales in progress (2)'>
                 {followers
                   .filter(item => item.type == 'progress')
                   .map((item, index) => (
                     <PortfolioItem key={index} {...item} />
                   ))}
               </PortfolioColumn>
-              <PortfolioColumn title='In Review (1)'>
+              <PortfolioColumn title='In review (1)'>
                 {followers
                   .filter(item => item.type == 'review')
                   .map((item, index) => (
@@ -203,8 +203,8 @@ export default function DashboardPage(): JSX.Element {
           )}
           {followers.length == 0 && (
             <div className='h-[282px]'>
-              <div className='flex justify-center mt-[91px]'>
-                <span className='text-base text-gray-71'>
+              <div className='flex justify-center mt-[111px]'>
+                <span className='text-base text-gray-a0'>
                   You have no Followers
                 </span>
               </div>
@@ -222,7 +222,7 @@ export default function DashboardPage(): JSX.Element {
               <div className='font-extrabold text-gray-2d text-lg'>
                 Trending NFTs
               </div>
-              <div className='font-medium text-gray-71 text-sm ml-2 mt-1'>
+              <div className='font-medium text-gray-a0 text-sm ml-2 mt-1'>
                 312,000 listed
               </div>
             </div>
@@ -265,19 +265,19 @@ export default function DashboardPage(): JSX.Element {
                 />
               ))}
               {cards.length === 0 && (
-                <div className='text-gray-71 text-base mt-[86px]'>
+                <div className='text-gray-a0 text-base mt-[146px]'>
                   You have no NFTs
                 </div>
               )}
             </div>
           </div>
         </div>
-        <div className='paper pt-6 w-419px flex-shrink-0 flex flex-col relative md:w-[451px]'>
+        <div className='paper pt-6 w-419px min-h-[458px] flex-shrink-0 flex flex-col relative md:w-[451px]'>
           <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
-            <div className='font-black text-lg text-gray-2d'>
+            <div className='font-extrabold text-lg text-gray-2d'>
               Latest Notifications
             </div>
-            <div className='font-extrabold text-gray-71 text-sm'>1 unread</div>
+            <div className='font-medium text-gray-a0 text-sm'>1 unread</div>
           </div>
           <div
             className={
@@ -290,7 +290,7 @@ export default function DashboardPage(): JSX.Element {
               <Notification key={i} {...notification} className='h-[52px]' />
             ))}
             {notifications.length === 0 && (
-              <div className='text-gray-71 text-base mt-[86px]'>
+              <div className='text-gray-a0 text-base mt-[146px]'>
                 You have no Notifications
               </div>
             )}

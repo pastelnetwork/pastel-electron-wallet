@@ -1,24 +1,24 @@
 import React from 'react'
 import cn from 'classnames'
 
-type TRarenessScoreProps = {
+export type TRarenessScoreProps = {
   color: string
   percent: number
   children: React.ReactNode
   className?: string
 }
 
-const strokeWidth = 8
+const strokeWidth = 6
 const radius = 50 - strokeWidth / 2
 const length = radius * 2 * Math.PI
 const dashArray = String(length)
 
-export default function PercentCircle({
+const PercentCircle = ({
   color,
   percent,
   children,
   className,
-}: TRarenessScoreProps): JSX.Element {
+}: TRarenessScoreProps): JSX.Element => {
   const dashOffset = (length * (100 - percent)) / 100
 
   return (
@@ -49,3 +49,5 @@ export default function PercentCircle({
     </div>
   )
 }
+
+export default PercentCircle

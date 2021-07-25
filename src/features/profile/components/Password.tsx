@@ -1,12 +1,10 @@
 import React, { useState, useEffect, createRef } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 import generatePassword from 'generate-password'
+import cn from 'classnames'
 
-import IconEye from '../../../common/assets/icons/ico-eye.svg'
-import IconEyeHidden from '../../../common/assets/icons/ico-eye-hidden.svg'
-import IconRefresh from '../../../common/assets/icons/ico-refresh-blue.svg'
-import { Description } from './Typography'
 import Tooltip from '../../../common/components/Tooltip'
+import { RefreshIcon, Eye } from 'common/components/Icons'
 
 type TPassword = {
   newPassword: string
@@ -150,13 +148,13 @@ const Password = (props: TPassword): JSX.Element => {
   }
 
   const getIconClassnames = (isRefresh: boolean) => {
-    return `absolute top-5 cursor-pointer w-5 h-5 object-none ${
+    return `absolute top-3.5 cursor-pointer w-5 h-5 object-none flex justify-center items-center ${
       isRefresh ? 'right-12' : 'right-3'
     }`
   }
 
   const getInputClassnames = (hasRefresh: boolean) => {
-    return `relative w-full h-10 mt-2.5 rounded border text-gray-2d
+    return `relative w-full h-10 mt-1 rounded border text-gray-2d
     border-solid ${
       isMatch ? 'border-input-border' : 'border-red-fe'
     }  outline-none focus:border-blue-3f box-border px-4 ${
@@ -166,8 +164,8 @@ const Password = (props: TPassword): JSX.Element => {
 
   return (
     <>
-      <Description>New password</Description>
-      <div className='relative mb-4'>
+      <div className='text-gray-71 font-medium text-lg'>New password</div>
+      <div className='relative mb-6'>
         <input
           type={newPasswordVisible ? 'text' : 'password'}
           onChange={checkPasswordStrength}
@@ -177,26 +175,32 @@ const Password = (props: TPassword): JSX.Element => {
         />
         {newPassword && (
           <>
-            <img
-              className={getIconClassnames(false)}
-              onClick={handleNewVisibility}
-              src={!newPasswordVisible ? IconEye : IconEyeHidden}
+            <Eye
+              size={11}
+              variant={newPasswordVisible ? 'hidden' : 'type1'}
+              className={cn('text-gray-88', getIconClassnames(false))}
+              onClick={() => handleNewVisibility()}
             />
             <div className={getIconClassnames(true)}>
               <Tooltip
-                width={250}
+                width={145}
                 type='top'
                 content='Generate a new secure 12-digit password'
                 classnames='text-xs leading-4 pt-5px pb-1'
               >
-                <img onClick={handleGenerateRandomPassword} src={IconRefresh} />
+                <RefreshIcon
+                  size={18}
+                  onClick={() => handleGenerateRandomPassword()}
+                  className='text-blue-3f'
+                />
               </Tooltip>
             </div>
           </>
         )}
       </div>
 
-      <Description>Confirm password</Description>
+      <div className='text-gray-71 font-medium text-lg'>Confirm password</div>
+
       <div className='relative'>
         <input
           value={confirmPassword}
@@ -205,10 +209,11 @@ const Password = (props: TPassword): JSX.Element => {
           className={getInputClassnames(false)}
         />
         {confirmPassword && (
-          <img
-            className={getIconClassnames(false)}
-            onClick={handleConfirmVisibility}
-            src={!confirmPasswordVisible ? IconEye : IconEyeHidden}
+          <Eye
+            size={19}
+            variant={confirmPasswordVisible ? 'hidden' : 'type1'}
+            className={cn('text-gray-88', getIconClassnames(false))}
+            onClick={() => handleConfirmVisibility()}
           />
         )}
       </div>

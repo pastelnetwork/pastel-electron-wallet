@@ -14,9 +14,9 @@ const CloseButton = ({
 }: TCloseButton): JSX.Element => {
   const classes = cn(
     {
-      'border flex items-center justify-center w-7 h-7 rounded-lg focus:outline-none active:shadow-none transition duration-300 text-gray-8e': true,
-      'border-icon border-gray-ec hover:border-gray-8e hover:bg-gray-f6 active:bg-gray-f6 active:border-gray-55 focus:shadow-btnOutline': !disabled,
-      'border border-gray-ec text-gray-b9 cursor-not-allowed bg-gray-f6': disabled,
+      'border flex items-center justify-center w-7 h-7 rounded-lg focus:outline-none active:shadow-none transition duration-300': true,
+      'border-gray-ec text-icon hover:text-gray-8e active:border-gray-650 active:text-tab-active focus:shadow-btnOutline': !disabled,
+      'border border-blue-3f-text text-icon cursor-not-allowed': disabled,
     },
     className,
   )

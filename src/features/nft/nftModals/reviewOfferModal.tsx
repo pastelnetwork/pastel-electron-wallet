@@ -1,10 +1,10 @@
 import React from 'react'
 import cn from 'classnames'
 // Components
-import { Modal } from '../../../common/components/Modal'
-import { Button } from '../../../common/components/Buttons'
-import Link from '../../../common/components/Link'
-import { formatNumber } from '../../../common/utils/format'
+import { Modal } from 'common/components/Modal'
+import { Button } from 'common/components/Buttons'
+import Link from 'common/components/Link'
+import NumberFormat from 'react-number-format'
 
 export type TOffer = {
   id: number | string
@@ -42,8 +42,16 @@ const ReviewOfferModal = ({
             )}
           >
             <h4 className='font-medium flex items-center'>
-              {formatNumber(price)} {info?.currencyName} &nbsp;{' '}
-              <span className='text-gray-a0'>was offered by</span> &nbsp;{' '}
+              <span className='text-gray-2d font-extabold'>
+                <NumberFormat
+                  value={price / 1000}
+                  decimalScale={2}
+                  displayType='text'
+                  thousandSeparator={true}
+                />
+                k {info?.currencyName}{' '}
+              </span>
+              <span className='text-gray-a0'>was offered by</span>{' '}
               <span className='text-link'>{user}</span>
             </h4>
             <div className='flex'>
@@ -58,7 +66,7 @@ const ReviewOfferModal = ({
         ))}
       </div>
       <div className='text-center'>
-        <Link size='h5' variant='gray-71' className='underline'>
+        <Link size='h5' variant='blue-3f'>
           Previous sales price comparison
         </Link>
       </div>
