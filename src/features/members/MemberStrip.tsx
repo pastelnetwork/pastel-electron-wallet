@@ -41,11 +41,13 @@ const MemberStrip = ({
           {/* Sale data */}
           <div className='flex flex-col justify-center h-full min-w-120px pr-21px'>
             <h6 className='text-gray-77 pb-1 text-12px'>Highest sold</h6>
-            <div className='w-max text-12px font-semibold border py-1 px-2 rounded border-success-pressed text-success-pressed'>
+            <div className='w-max text-12px font-semibold border pt-2 pb-1.5 px-2 rounded border-success-pressed text-green-45'>
               {heighestSold} {currencyName}
             </div>
             <div className='text-gray-1a font-semibold pt-3 text-12px whitespace-nowrap overflow-x-hidden'>
-              Total sold{' '}
+              <span className='text-tab-active font-extrabold'>
+                Total sold{' '}
+              </span>
               <div className='font-display'>
                 <span className='text-gradient'>{totalSold}</span>
                 <span className='text-gradient'> {currencyName}</span>

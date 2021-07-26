@@ -40,7 +40,7 @@ const SearchResults = (): JSX.Element => {
   const searchKey = 'Bans'
   const [tab, setTab] = useState<number>(Tabs.NFTS)
   return (
-    <div className='pt-[29px] px-[60px]'>
+    <div className='pt-[29px] px-[60px] min-h-98vh'>
       <div className='font-extrabold text-2xl'>Search result "{searchKey}"</div>
       <div className='mt-2.5'>
         <Tabbar

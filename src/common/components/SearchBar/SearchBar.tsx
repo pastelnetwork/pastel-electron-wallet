@@ -168,7 +168,7 @@ const SearchBar = (): JSX.Element => {
         {inputFocused && (
           <div className='z-50 bg-white border border-line rounded-b-10px shadow-xl'>
             {selectedCategory === undefined ? (
-              <div className='px-6 pt-4 pb-[46px]'>
+              <div className='px-6 pt-4 pb-7'>
                 <div className='text-base'>I'm looking for</div>
                 <div className='flex text-gray-4a text-medium mt-2'>
                   {categories.map((category, index) => (
