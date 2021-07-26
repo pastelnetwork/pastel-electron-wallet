@@ -4,7 +4,7 @@ import Circle, {
 } from 'common/components/Svg/Circle'
 import { UploadFile, Checkmark } from 'common/components/Icons'
 import backgroundImage from 'common/assets/images/add-nft-upload-background.png'
-import { TImageFile } from './UploadStep'
+import { TImageFile } from './SelectImageStep'
 
 type TUploadingCircleProps = {
   file?: TImageFile

@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { ArrowSlim, Info } from 'common/components/Icons'
-import { Button } from 'common/components/Buttons'
 import UploadingCircle from './UploadingCircle'
-import UploadArea from './UploadArea'
+import SelectImageArea from './SelectImageArea'
 import { formatFileSize } from 'common/utils/format'
-import { useSubmit } from './UploadStep.service'
+import { useSubmit } from './SelectImageStep.service'
 
-type TUploadStepProps = {
+type TSelectStepProps = {
   state: TAddNFTState
 }
 
@@ -19,7 +18,9 @@ export type TImageFile = {
   height: number
 }
 
-export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
+export default function SelectImageStep({
+  state,
+}: TSelectStepProps): JSX.Element {
   const [imageFile, setFile] = useState<TImageFile>()
   const [isReady, setReady] = useState(Boolean(state.image))
 
@@ -27,7 +28,7 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
 
   return (
     <ModalLayout
-      title='Upload Image'
+      title='Select Image'
       titleClass='mb-3'
       subtitle='The Image File for your NFT'
       step={2}
@@ -43,7 +44,7 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
             setReady={setReady}
           />
         ) : (
-          <UploadArea setFile={setFile} />
+          <SelectImageArea setFile={setFile} />
         )
       }
       rightColumnClass='w-[355]'
@@ -51,7 +52,7 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
         <div className='h-full flex justify-between flex-col'>
           <div className='text-sm'>
             <div className='flex items-center text-gray-71 font-medium mb-2'>
-              Upload Image File
+              Select Image File
               <Info size={18} className='ml-3' />
             </div>
             <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
@@ -74,13 +75,13 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
-              className='font-extrabold px-6'
+            <button
+              className='btn btn-primary px-[30px]'
               onClick={submit}
               disabled={!isReady}
             >
               Go to Image Optimization
-            </Button>
+            </button>
           </div>
         </div>
       }

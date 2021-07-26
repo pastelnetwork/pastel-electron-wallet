@@ -9,7 +9,6 @@ import { formatFileSize, formatNumber } from 'common/utils/format'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import OptimizationSlider from './OptimizationSlider'
-import { Button } from 'common/components/Buttons'
 import React, { useEffect, useState } from 'react'
 import {
   calculateFee,
@@ -185,15 +184,14 @@ export default function PreviewStepModal({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
+            <button
               type='button'
-              className='font-extrabold px-6'
-              childrenClassName='flex-center'
+              className='btn btn-primary px-[30px]'
               onClick={submit}
               disabled={!submittable}
             >
               Go to Overview
-            </Button>
+            </button>
           </div>
         </div>
       }

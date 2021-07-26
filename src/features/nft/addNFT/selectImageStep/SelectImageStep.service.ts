@@ -1,6 +1,6 @@
 import { maxWidthByOrientation } from '../AddNft.constants'
 import { TAddNFTState } from '../AddNFT.state'
-import { TImageFile } from './UploadStep'
+import { TImageFile } from './SelectImageStep'
 import { ipcRenderer } from 'electron'
 import { OptimizationStatus } from '../imageOptimization/imageOptimization.state'
 import { toast } from 'react-toastify'

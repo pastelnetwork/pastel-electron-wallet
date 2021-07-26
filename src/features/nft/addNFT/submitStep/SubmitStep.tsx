@@ -3,7 +3,6 @@ import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
-import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
@@ -73,7 +72,7 @@ export default function SubmitStep({
           </div>
         </div>
       }
-      rightColumnClass='w-[349px] flex flex-col'
+      rightColumnClass='w-[360px] flex flex-col'
       rightColumnContent={
         <>
           <div className='flex-grow w-full text-sm flex flex-col justify-between'>
@@ -157,13 +156,13 @@ export default function SubmitStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
+            <button
               type='button'
-              className='font-extrabold px-3'
+              className='btn btn-primary px-4'
               onClick={onSubmit}
             >
               Submit and proceed to fee payment
-            </Button>
+            </button>
           </div>
         </>
       }

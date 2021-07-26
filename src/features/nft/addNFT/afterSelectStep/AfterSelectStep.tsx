@@ -7,12 +7,11 @@ import {
   PlusCircle,
   Trash,
 } from 'common/components/Icons'
-import { Button } from 'common/components/Buttons'
 import { DraggableCore } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
 
-type TUploadStepProps = {
+type TAfterSelectStepProps = {
   state: TAddNFTState
   image: TImage
   displayUrl: string
@@ -24,7 +23,7 @@ export default function UploadStep({
   state: { goBack, goToNextStep },
   image,
   displayUrl,
-}: TUploadStepProps): JSX.Element {
+}: TAfterSelectStepProps): JSX.Element {
   const {
     onDragImage,
     imageRef,
@@ -36,7 +35,7 @@ export default function UploadStep({
 
   return (
     <ModalLayout
-      title='Upload Image'
+      title='Select Image'
       titleClass='mb-3'
       subtitle='Description'
       step={2}
@@ -100,7 +99,7 @@ export default function UploadStep({
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
           <div className='text-gray-71 font-medium pt-1'>
-            File downloaded successfully, you can continue to configure your
+            File selected successfully, you can continue to configure your
             incredible NFT
           </div>
           <div className='flex-between'>
@@ -111,9 +110,13 @@ export default function UploadStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button className='font-extrabold px-6' onClick={goToNextStep}>
+            <button
+              type='button'
+              className='btn btn-primary px-[30px]'
+              onClick={goToNextStep}
+            >
               Go to Optimization
-            </Button>
+            </button>
           </div>
         </div>
       }

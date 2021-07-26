@@ -97,6 +97,22 @@
   .input {
     @apply h-10 w-full rounded border border-gray-8e border-opacity-20 font-medium placeholder-gray-a0 text-gray-2d px-4 shadow-input;
   }
+
+  .btn {
+    @apply flex items-center justify-center px-2 h-10 rounded-2xl transition duration-300 font-extrabold;
+  }
+
+  .btn:disabled {
+    @apply cursor-not-allowed;
+  }
+
+  .btn-primary:not(:disabled) {
+    @apply bg-button hover:bg-button-hover active:bg-button-pressed text-white;
+  }
+
+  .btn-primary:disabled {
+    @apply bg-blue-9b text-white;
+  }
 }
 
 @tailwind utilities;
