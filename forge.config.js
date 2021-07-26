@@ -70,6 +70,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         exe: `${package.name}.exe`,
+        authors: package.author.name,
         setupIcon: './static/icons/icon.ico',
         loadingGif: './static/icons/icon.gif',
         iconUrl:

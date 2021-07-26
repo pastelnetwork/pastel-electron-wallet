@@ -1,19 +1,18 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { User as Component, TUserProps as Props } from './User'
+import { User as Icon, TUserProps as Props } from './User'
 
 export default {
   title: 'Icons/User Icon',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <User {...args} className='text-black' />
+  return <Icon {...args} className='text-black' />
 }
 
 export const User = Template.bind({})
 User.args = {
-  width: 14,
-  height: 14,
+  size: 14,
 }

@@ -10,7 +10,7 @@ import {
   RegistrationSuccessful,
   NewPassword,
 } from '../../features/onboarding/index'
-import PortfolioPage from '../../features/portfolio'
+import PortfolioMain from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
 import SearchPage from '../../features/searchResults'
 import { MyProfile } from '../../features/profile'
@@ -18,8 +18,8 @@ import NFTMarketFeedPage from '../../features/NFTMarketFeed'
 import WalletScreenPage from '../../features/wallet'
 import ChatPage from '../../features/chat'
 import { MembersDirectory } from '../../features/members'
-import PortfolioDetailPage from '../../features/nft/portfolio'
-import MemberProfilePage from '../../features/profile/memberProfile/MemberProfile'
+import MemberProfile from '../../features/profile/memberProfile/MemberProfile'
+import PortfolioPage from 'features/nft/portfolio/PortfolioPage'
 import { Forum } from '../../features/forum'
 import Pasteld from 'legacy/components/Pasteld'
 
@@ -84,7 +84,7 @@ const Dashboard = {
 const Portfolio = {
   id: 'portfolio',
   path: ROUTES.PORTFOLIO,
-  component: PortfolioPage,
+  component: PortfolioMain,
   layout: PageLayout,
 }
 
@@ -136,21 +136,21 @@ const searchResults = {
   layout: PageLayout,
 }
 
+const membersProfile = {
+  id: 'membersProfile',
+  path: ROUTES.MY_PROFILE,
+  component: MemberProfile,
+  layout: PageLayout,
+}
+
 const portfolioDetail = {
   id: 'portfolioDetail',
   path: ROUTES.PORTFOLIO_DETAIL,
-  component: PortfolioDetailPage,
+  component: PortfolioPage,
   layout: PageLayout,
   required: {
     currencyName: true,
   },
-}
-
-const memberProfile = {
-  id: 'memberProfile',
-  path: ROUTES.MEMBERS_PROFILE,
-  component: MemberProfilePage,
-  layout: PageLayout,
 }
 
 const forum = {
@@ -186,8 +186,9 @@ export const pageRoutes = [
   nft,
   chat,
   membersDirectory,
+  membersProfile,
   portfolioDetail,
-  memberProfile,
+  portfolioDetail,
   forum,
   pasteld,
 ]

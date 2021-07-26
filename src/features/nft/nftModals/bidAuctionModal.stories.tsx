@@ -27,14 +27,25 @@ const Template: Story<TBidAuctionModal> = ({
   )
 }
 
-export const BidAuctionModalDefault = Template.bind({})
-const username = 'Banksy86'
-const type = 'MakeOffer'
-const info = { currencyName: 'PSL' }
-BidAuctionModalDefault.args = {
-  username,
-  type,
-  info,
+export const BidAuctionMakeAnOfferModalDefault = Template.bind({})
+BidAuctionMakeAnOfferModalDefault.args = {
+  username: 'Banksy86',
+  type: 'MakeOffer',
+  info: { currencyName: 'PSL' },
+}
+
+export const BidAuctionBuyItNowModalDefault = Template.bind({})
+BidAuctionBuyItNowModalDefault.args = {
+  username: 'Banksy86',
+  type: 'Buy',
+  info: { currencyName: 'PSL' },
+}
+
+export const BidAuctionPlaceAutionBidModalDefault = Template.bind({})
+BidAuctionPlaceAutionBidModalDefault.args = {
+  username: 'Banksy86',
+  type: 'Bid',
+  info: { currencyName: 'PSL' },
 }
 
 export default {

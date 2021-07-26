@@ -6,7 +6,7 @@ export type TTrashProps = TIconProps
 export const Trash = ({ size, className }: TTrashProps): JSX.Element => {
   return (
     <svg
-      height={size}
+      width={size}
       className={className}
       viewBox='0 0 14 16'
       fill='none'

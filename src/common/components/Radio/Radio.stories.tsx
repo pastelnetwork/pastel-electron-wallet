@@ -25,7 +25,6 @@ const Template: Story<TRadioProps> = ({ ...args }: TRadioProps) => {
         {...args}
         checked={isChecked}
         onChange={param => setIsChecked(param)}
-        variant='secondary'
       >
         All
       </Radio>

@@ -42,20 +42,13 @@ export default function Notification({
         className,
       )}
     >
-      <div
-        className={cn(
-          'text-base text-gray-4a',
-          read ? 'font-medium' : 'font-extrabold',
-        )}
-      >
-        {message}
-      </div>
-      <div className={read ? 'text-gray-71' : 'text-gray-4a'}>
+      <div className='text-base text-gray-2d font-medium'>{message}</div>
+      <div className='text-gray-4a text-sm'>
         {day !== 0 && <span>{day}d</span>} {hour !== 0 && <span>{hour}h</span>}{' '}
         {minute !== 0 && <span>{minute}m</span>} <span>ago</span>
       </div>
       {!read && (
-        <div className='w-3px h-3px rounded-full bg-blue-3f absolute top-[7px] left-[7px]'></div>
+        <div className='w-5px h-5px rounded-full bg-blue-3f absolute top-[7px] left-[7px]'></div>
       )}
     </div>
   )

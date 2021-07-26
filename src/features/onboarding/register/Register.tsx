@@ -1,21 +1,19 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
-
-import StepsCircle from 'common/components/StepsCircle'
 import Tooltip from 'common/components/Tooltip'
+import { CloseButton } from 'common/components/Buttons'
 
-import icoExclamation from 'common/assets/icons/ico-exclamation.svg'
-import creditCardIco from 'common/assets/icons/ico-credit-card.svg'
-import creditCardIcoGray from 'common/assets/icons/ico-credit-card-gray.svg'
-import downloadIco from 'common/assets/icons/ico-download.svg'
-import downloadIcoGray from 'common/assets/icons/ico-download-gray.svg'
-import refreshIco from 'common/assets/icons/ico-refresh.svg'
-import refreshIcoGray from 'common/assets/icons/ico-refresh-gray.svg'
-import icoArrowRight from 'common/assets/icons/ico-arrow-right.svg'
-import completedIco from 'common/assets/icons/ico-completed.svg'
-import infoIco from 'common/assets/icons/ico-info.svg'
-import closeIcon from 'common/assets/icons/ico-close.svg'
+import {
+  Download,
+  CreditCard,
+  Refresh,
+  CircleCheck,
+  Info,
+  TriangleElimination,
+  LongArrow,
+} from 'common/components/Icons'
+import CircleSteper from 'common/components/CircleSteper'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import styles from './Register.module.css'
@@ -30,17 +28,15 @@ import StepFee from './StepFee'
 const STEPS = [
   {
     id: Steps.Login,
-    iconActive: downloadIco,
-    iconDefault: downloadIcoGray,
+    iconActive: Download,
     label: 'Primary login',
     stepIconLabel: 'primary login step',
-    tooltipText: 'Primary login tooltip',
-    tooltipWidth: 150,
+    tooltipText: 'Primary login',
+    tooltipWidth: 88,
   },
   {
     id: Steps.Backup,
-    iconActive: downloadIco,
-    iconDefault: downloadIcoGray,
+    iconActive: Download,
     label: 'Backup access method',
     stepIconLabel: 'Backup access method step',
     tooltipText: 'Backup access tooltip',
@@ -48,8 +44,7 @@ const STEPS = [
   },
   {
     id: Steps.Payment,
-    iconActive: creditCardIco,
-    iconDefault: creditCardIcoGray,
+    iconActive: CreditCard,
     label: 'Payment method',
     stepIconLabel: 'Payment method step',
     tooltipText: 'Payment method tooltip',
@@ -57,8 +52,7 @@ const STEPS = [
   },
   {
     id: Steps.Fee,
-    iconActive: refreshIco,
-    iconDefault: refreshIcoGray,
+    iconActive: Refresh,
     label: 'Registration fee',
     stepIconLabel: 'Registration fee step',
     tooltipText: 'Registration fee tooltip',
@@ -80,26 +74,17 @@ const RegisterContent = (): JSX.Element => {
   }
 
   const onLastStepPassed = () => {
-    /*
-      process user data
-      state.username,
-      state.password,
-      state.paymentMethod,
-      state.promoCode,
-      state.exchangeAddress,
-    */
-
     history.push(ROUTES.REGISTER_PENDING)
   }
 
   return (
     <>
-      <button
-        className='absolute flex justify-center items-center top-6 right-6 w-7 h-7 box-border rounded-lg bg-whte border border-gray'
-        onClick={() => setCloseRequested(true)}
-      >
-        <img src={closeIcon} alt='close icon' className='cursor-pointer' />
-      </button>
+      <CloseButton
+        className='absolute top-6 right-6 w-7 h-7'
+        onClick={() => {
+          setCloseRequested(true)
+        }}
+      />
       <div
         className={cn(
           'flex w-970px max-w-full max-h-full',
@@ -117,70 +102,74 @@ const RegisterContent = (): JSX.Element => {
               </div>
             </div>
             <div>
-              <StepsCircle color='text-green-6d' step={state.step}>
-                <div className='font-extrabold text-gray-11 text-lg mt-1'>
-                  {state.step}/{state.stepsCount}
-                </div>
-              </StepsCircle>
+              <CircleSteper
+                size={65}
+                totalStep={state.stepsCount}
+                spaceAngle={10}
+                currentStep={state.step}
+              />
             </div>
           </div>
           <div className='mt-7'>
-            {STEPS.map(item => (
-              <div
-                key={item.id}
-                className={cn(
-                  'rounded-lg flex items-center px-8 py-3 step',
-                  styles.step,
-                  state.step === item.id ? 'bg-gray-ed' : '',
-                )}
-              >
-                {state.step <= item.id ? (
-                  <img
-                    src={
-                      state.step === item.id
-                        ? item.iconActive
-                        : item.iconDefault
-                    }
-                    alt={item.stepIconLabel}
-                  />
-                ) : (
-                  <img
-                    src={completedIco}
-                    alt={`Step ${item.id} completed`}
-                    className='ml-1'
-                  />
-                )}
+            {STEPS.map(
+              ({
+                id,
+                iconActive: Component,
+                label,
+                tooltipText,
+                tooltipWidth,
+              }) => (
                 <div
+                  key={id}
                   className={cn(
-                    'flex-grow flex items-center ml-8 text-lg',
-                    state.step === item.id
-                      ? 'font-black text-gray-23'
-                      : 'font-medium text-gray-a0',
+                    'rounded-lg flex items-center px-8 py-3 step',
+                    styles.step,
+                    state.step === id ? 'bg-gray-ed' : '',
                   )}
                 >
-                  <span>{item.label}</span>
-                  {state.step === item.id &&
-                    item.tooltipText &&
-                    item.tooltipWidth && (
+                  {state.step <= id ? (
+                    <Component
+                      size={44}
+                      className={
+                        state.step === id ? 'text-gray-33' : 'text-gray-ec'
+                      }
+                      pathColor={state.step === id ? '#FFFFFF' : '#8894AA'}
+                    />
+                  ) : (
+                    <CircleCheck size={40} className='text-green-45 ml-1' />
+                  )}
+                  <div
+                    className={cn(
+                      'flex-grow flex items-center ml-8 text-lg',
+                      state.step === id
+                        ? 'font-extrabold text-gray-2d'
+                        : state.step < id
+                        ? 'font-medium text-gray-a0'
+                        : 'font-medium text-gray-4a',
+                    )}
+                  >
+                    <span>{label}</span>
+                    {state.step === id && tooltipText && tooltipWidth && (
                       <div className='inline-block mx-2'>
                         <Tooltip
-                          classnames='font-medium'
-                          content={item.tooltipText}
+                          classnames='font-medium py-2'
+                          content={tooltipText}
                           type='top'
-                          width={item.tooltipWidth}
-                          vPosPercent={140}
+                          width={tooltipWidth}
+                          vPosPercent={100}
                         >
-                          <img className='w-5' src={infoIco} alt='info' />
+                          <Info size={17} />
                         </Tooltip>
                       </div>
                     )}
-                </div>
+                  </div>
 
-                {state.step === item.id && (
-                  <img className='w-4' src={icoArrowRight} alt='active step' />
-                )}
-              </div>
-            ))}
+                  {state.step === id && (
+                    <LongArrow size={20} className='text-gray-88' />
+                  )}
+                </div>
+              ),
+            )}
           </div>
         </div>
 
@@ -197,7 +186,10 @@ const RegisterContent = (): JSX.Element => {
       {closeRequested && (
         <div className='p-11 w-494px'>
           <div className='text-center'>
-            <img src={icoExclamation} className='w-10 inline-block' />
+            <TriangleElimination
+              size={44}
+              className='text-red-63 inline-block'
+            />
           </div>
           <div className='mt-7 text-center'>
             Are you sure you want to close the wizard

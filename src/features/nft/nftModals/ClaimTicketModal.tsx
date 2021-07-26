@@ -26,7 +26,7 @@ const ClaimTicketModal = ({
       isOpen={isOpen}
       handleClose={() => handleClose()}
       size='874px'
-      title={'Authorship claim ticket'}
+      title={'Authorship Claim Ticket'}
       infoIcon={true}
       titleClassName='font-black text-2xl text-gray-2d'
     >
@@ -38,7 +38,7 @@ const ClaimTicketModal = ({
           <Segment title='Date' value={data.Date} />
         </div>
         <div>
-          <div className='font-extrabold text-xl pb-2 pt-30px text-gray-23'>
+          <div className='font-extrabold text-lg pb-2 pt-30px text-gray-4a'>
             Make a photo of Claim details
           </div>
           <div className='text-lg text-gray-4a leading-[26px]'>
@@ -70,7 +70,7 @@ type TSegment = {
 
 const Segment = ({ title, value }: TSegment) => (
   <div className='w-1/2'>
-    <div className='font-extrabold text-base text-gray-23 leading-6'>
+    <div className='font-extrabold text-base text-gray-4a leading-6'>
       {title}
     </div>
     <div className='mt-1 text-gray-71'>{value}</div>

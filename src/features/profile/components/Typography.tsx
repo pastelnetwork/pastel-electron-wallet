@@ -18,7 +18,7 @@ export const Description = (props: TTextProps): JSX.Element => {
   const { children } = props
 
   return (
-    <div className='font-body font-medium leading-relaxed text-h5 text-text-77'>
+    <div className='font-body font-medium leading-relaxed text-base text-gray-71'>
       {children}
     </div>
   )

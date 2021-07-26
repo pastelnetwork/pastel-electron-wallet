@@ -1,22 +1,19 @@
 import React from 'react'
 
 export type TStarProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
   filled?: boolean
 }
 
-export const Star = ({
-  width = 18,
-  height = 16,
+export const Star: React.FC<TStarProps> = ({
+  size = 18,
   className = 'text-yello-ffd',
   filled = false,
 }: TStarProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       viewBox='0 0 18 16'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

@@ -27,6 +27,7 @@ const PricePlanModal = ({
   const Columns = [
     {
       name: 'Copies',
+      key: 'Copies',
       custom: (value: Array<number>, row: TRow) => (
         <div className='flex leading-tight'>
           <img src={astronautIcon} />
@@ -42,9 +43,10 @@ const PricePlanModal = ({
     },
     {
       name: 'Auto-listing price',
+      key: 'Auto-listing price',
       custom: (value: number, row: TRow) => (
         <div className='flex leading-tight space-x-4'>
-          <div className='text-gray-a0'>{value.toLocaleString('en')}k PSL</div>
+          <div className='text-gray-71'>{value.toLocaleString('en')}k PSL</div>
           <button
             onClick={() => setCellEdit({ row: row.id as number, col: 1 })}
           >
@@ -58,6 +60,7 @@ const PricePlanModal = ({
   const Columns_edit = [
     {
       name: 'Copies',
+      key: 'Copies',
       custom: (value: Array<number>, row: TRow) => (
         <SliderComponent
           range={value as [number, number]}
@@ -68,6 +71,7 @@ const PricePlanModal = ({
     },
     {
       name: 'Auto-listing price',
+      key: 'Auto-listing price',
       custom: (value: number) => (
         <div className='text-gray-a0 flex justify-between rounded shadow-2px h-40px text-lg py-1 px-4 w-200px'>
           <input
@@ -89,7 +93,7 @@ const PricePlanModal = ({
       infoIcon={true}
       titleClassName='font-black text-2xl text-gray-2d'
       headerClassName='px-10'
-      bodyClassName='pl-10 pr-9'
+      bodyClassName='pl-10 pr-[35px]'
     >
       <div className='sm:w-[794px] mt-3'>
         <div className='text-lg text-gray-77 pb-3'>
@@ -106,6 +110,7 @@ const PricePlanModal = ({
               'border-b border-gray-f2',
               cellEdit ? 'h-104px' : 'h-82px',
             )}
+            className='h-401px pr-[33px]'
           />
         </div>
 

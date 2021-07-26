@@ -29,8 +29,10 @@ const Notification = ({ type, title, status }: TNotification): JSX.Element => {
       </span>
       <p
         className={cn(
-          'text-h5 text-gray-2d col-span-10',
-          status === 'unread' ? 'font-extrabold' : 'font-medium',
+          'text-h5 col-span-10',
+          status === 'unread'
+            ? 'font-extrabold text-gray-2d'
+            : 'font-medium text-gray-4a',
         )}
       >
         {title}
