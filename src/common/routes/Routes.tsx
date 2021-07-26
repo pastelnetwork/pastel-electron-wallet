@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
 import { ipcRenderer } from 'electron'
@@ -73,12 +73,11 @@ const Routes = (): JSX.Element => {
   const location = useLocation()
   const history = useHistory()
   const dispatch = useAppDispatch()
-  const [isPackaged, setIsPackaged] = React.useState(false)
-  const [rpcConfig, setRPCConfig] = React.useState<TRPCConfig>()
-  const [info, setInfo] = React.useState<TWalletInfo>(defaultPastelInfo)
+  const [isPackaged, setIsPackaged] = useState(false)
+  const [rpcConfig, setRPCConfig] = useState<TRPCConfig>()
+  const [info, setInfo] = useState<TWalletInfo>(defaultPastelInfo)
 
-  React.useEffect(() => {
-    ipcRenderer.send('app-ready')
+  useEffect(() => {
     ipcRenderer.on(
       'app-info',
       (event, { isPackaged }: { isPackaged: boolean }) => {
@@ -88,6 +87,12 @@ const Routes = (): JSX.Element => {
 
     history.push(ROUTES.LOADING)
   }, [])
+
+  useEffect(() => {
+    if (rpcConfig) {
+      ipcRenderer.send('app-ready')
+    }
+  }, [rpcConfig])
 
   const setInformation = (newInfo: TWalletInfo) => {
     if (!newInfo.pslPrice) {
