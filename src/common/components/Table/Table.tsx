@@ -4,6 +4,7 @@ import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
 import reactElementToJSXString from 'react-element-to-jsx-string'
+import parse from 'html-react-parser'
 
 export type TRow = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,16 +84,14 @@ const Table = ({
 
   const renderSearhKeyDiv = (param: string, text: JSX.Element | string) => {
     return (
-      <div
-        dangerouslySetInnerHTML={{
-          __html: text
-            ? reactElementToJSXString(text).replace(
-                new RegExp(param, 'gi'),
-                match => `<mark class='bg-blue-9b py-1'>${match}</mark>`,
-              )
-            : text,
-        }}
-      ></div>
+      <div>
+        {parse(
+          reactElementToJSXString(text).replace(
+            new RegExp(param, 'gi'),
+            match => `<mark class='bg-blue-9b py-1'>${match}</mark>`,
+          ),
+        )}
+      </div>
     )
   }
 
