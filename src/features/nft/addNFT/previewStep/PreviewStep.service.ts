@@ -124,7 +124,7 @@ export const useFeePerKb = (): number | undefined => {
       // have been observed to make an estimate
       toast('Not enough transactions to make an estimate', {
         type: 'warning',
-        autoClose: false,
+        autoClose: 3000,
       })
     }
   }
