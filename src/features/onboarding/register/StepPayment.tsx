@@ -69,8 +69,8 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
   return (
     <div className='flex flex-col h-full'>
       <div className='flex-grow flex flex-col justify-center'>
-        <h1 className='text-gray-23 text-xl font-black flex items-center'>
-          Choose payment method
+        <h1 className='text-gray-4a text-xl font-extrabold flex items-center text-h3'>
+          Choose Payment Method
           <Tooltip
             classnames='text-sm'
             wrapperClassNames='ml-2 text-base'
@@ -82,12 +82,12 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
             <img src={infoIco} className='w-4 inline-block flex-shrink-0' />
           </Tooltip>
         </h1>
-        <h2 className='text-gray-77 text-sm font-normal'>
+        <h2 className='text-gray-71 text-base font-normal'>
           1,000 PSL fee (worth ~$5.20 at current PSL price)
         </h2>
-        <div className='mt-7'>
+        <div className='mt-6'>
           {methods.map((method, i) => (
-            <div className='flex items-center mt-18px' key={i}>
+            <div className='flex items-center mt-4' key={i}>
               <Radio
                 checked={props.paymentMethod === method.method}
                 onChange={val => onChangePayMethod(method.method, val)}
@@ -95,8 +95,8 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
                 <span
                   className={cn(
                     props.paymentMethod === method.method
-                      ? 'text-gray-700'
-                      : 'text-gray-a0',
+                      ? 'text-gray-4a font-black text-base'
+                      : 'text-gray-4a text-opacity-50 text-base font-medium',
                   )}
                 >
                   {method.name}

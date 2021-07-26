@@ -3,6 +3,8 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import ViewsStatsModal, { TViewsStatsModal } from './ViewsStatsModal'
 
+import dayjs from 'dayjs'
+
 const Template: Story<TViewsStatsModal> = ({ isOpen, ...args }) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
@@ -20,246 +22,78 @@ const Template: Story<TViewsStatsModal> = ({ isOpen, ...args }) => {
   )
 }
 
-export const ViewsStatsModalDefault = Template.bind({})
-ViewsStatsModalDefault.args = {
-  data1: [
-    {
-      value: 10,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 210,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 580,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 800,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 350,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 600,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 600,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 500,
-      date: new Date('2021-02-01'),
-    },
-  ],
-  data2: [
-    {
-      value: 8,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 180,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 500,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 780,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 300,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 560,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 560,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 460,
-      date: new Date('2021-02-01'),
-    },
-  ],
-  title: '“Diamonds in the sky” View Stats',
+const data1 = Array.from({ length: 100 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs()
+      .subtract(50 - index, 'day')
+      .startOf('day')
+      .toDate(),
+  }
+})
+
+const data2 = Array.from({ length: 100 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs()
+      .subtract(50 - index, 'day')
+      .startOf('day')
+      .toDate(),
+  }
+})
+
+const demoMonthlyData = Array.from({ length: 20 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs().startOf('year').add(index, 'month').toDate(),
+  }
+})
+
+const demoMonthlyData2 = Array.from({ length: 20 }).map((_, index) => {
+  return {
+    value: Math.floor(Math.random() * (800 - 100) + 100),
+    date: dayjs().startOf('year').add(index, 'month').toDate(),
+  }
+})
+
+export const ViewsStatsNFTSocialModalDefault = Template.bind({})
+ViewsStatsNFTSocialModalDefault.args = {
+  data1: data1,
+  data2: data2,
+  title: 'NFT Cosmic Perspective Longname... Stats',
+}
+
+export const ViewsStatsNFTSaleMonthlyModal = Template.bind({})
+ViewsStatsNFTSaleMonthlyModal.args = {
+  data1: demoMonthlyData,
+  data2: demoMonthlyData2,
+  title: 'NFT Cosmic Perspective Longname... Stats',
+  type: 'month',
+  data1Label: 'Average Sale Price per NFT Copy (PSL)',
+  data2Label: 'Total Copies Sold',
+  label1className: 'bg-blue-ac',
+  label2className: 'bg-gradient-to-t from-blue-9b to-red-f8',
 }
 
 export const ViewStatsArtistModal = Template.bind({})
 ViewStatsArtistModal.args = {
-  data1: [
-    {
-      value: 180,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 220,
-      date: new Date('2020-07-10'),
-    },
-    {
-      value: 410,
-      date: new Date('2020-07-20'),
-    },
-    {
-      value: 400,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 380,
-      date: new Date('2020-08-10'),
-    },
-    {
-      value: 400,
-      date: new Date('2020-08-20'),
-    },
-    {
-      value: 580,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 560,
-      date: new Date('2020-09-10'),
-    },
-    {
-      value: 600,
-      date: new Date('2020-09-20'),
-    },
-    {
-      value: 800,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 600,
-      date: new Date('2020-10-10'),
-    },
-    {
-      value: 400,
-      date: new Date('2020-10-20'),
-    },
-    {
-      value: 350,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 430,
-      date: new Date('2020-11-10'),
-    },
-    {
-      value: 610,
-      date: new Date('2020-11-20'),
-    },
-    {
-      value: 590,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 390,
-      date: new Date('2020-12-10'),
-    },
-    {
-      value: 400,
-      date: new Date('2020-12-20'),
-    },
-    {
-      value: 600,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 500,
-      date: new Date('2021-02-01'),
-    },
-  ],
-  data2: [
-    {
-      value: 40,
-      date: new Date('2020-07-01'),
-    },
-    {
-      value: 80,
-      date: new Date('2020-07-10'),
-    },
-    {
-      value: 270,
-      date: new Date('2020-07-20'),
-    },
-    {
-      value: 260,
-      date: new Date('2020-08-01'),
-    },
-    {
-      value: 240,
-      date: new Date('2020-08-10'),
-    },
-    {
-      value: 260,
-      date: new Date('2020-08-20'),
-    },
-    {
-      value: 440,
-      date: new Date('2020-09-01'),
-    },
-    {
-      value: 420,
-      date: new Date('2020-09-10'),
-    },
-    {
-      value: 460,
-      date: new Date('2020-09-20'),
-    },
-    {
-      value: 660,
-      date: new Date('2020-10-01'),
-    },
-    {
-      value: 460,
-      date: new Date('2020-10-10'),
-    },
-    {
-      value: 260,
-      date: new Date('2020-10-20'),
-    },
-    {
-      value: 210,
-      date: new Date('2020-11-01'),
-    },
-    {
-      value: 290,
-      date: new Date('2020-11-10'),
-    },
-    {
-      value: 470,
-      date: new Date('2020-11-20'),
-    },
-    {
-      value: 450,
-      date: new Date('2020-12-01'),
-    },
-    {
-      value: 250,
-      date: new Date('2020-12-10'),
-    },
-    {
-      value: 260,
-      date: new Date('2020-12-20'),
-    },
-    {
-      value: 480,
-      date: new Date('2021-01-01'),
-    },
-    {
-      value: 380,
-      date: new Date('2021-02-01'),
-    },
-  ],
+  data1: data1,
+  data2: data2,
   title: 'User Banksy82 Stats',
+  data1Label: 'Total Views',
+  data2Label: 'Followers',
+}
+
+export const ViewStatsArtistMonthlyModal = Template.bind({})
+ViewStatsArtistMonthlyModal.args = {
+  data1: demoMonthlyData,
+  data2: demoMonthlyData2,
+  title: 'NFT Cosmic Perspective Longname... Stats',
+  type: 'month',
+  data1Label: 'Average Sale Price per NFT Copy (PSL)',
+  data2Label: 'Total Copies Sold',
+  label1className: 'bg-blue-ac',
+  label2className: 'bg-gradient-to-t from-blue-9b to-red-f8',
 }
 
 export default {

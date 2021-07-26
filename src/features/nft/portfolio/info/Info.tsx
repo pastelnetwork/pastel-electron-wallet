@@ -17,6 +17,7 @@ import OutlineButton from './Button'
 import Row from './Row'
 import { Button } from 'common/components/Buttons'
 import BidsModal from '../BidsModal'
+import Tooltip from 'common/components/Tooltip'
 
 type TInfoProps = {
   nft: TNFT
@@ -32,7 +33,15 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
   const [isBidsModal, toggleBidsModal] = useToggle(false)
 
   // user mock role
-  const isOwner = true
+  const isOwner = false
+
+  const getTooltip = (description: string) => (
+    <div className='p-2'>
+      <p className='text-xs text-left leading-4 text-white whitespace-normal font-medium'>
+        {description}
+      </p>
+    </div>
+  )
 
   return (
     <div className='flex-shrink-0 w-1/3 md:w-auto'>
@@ -57,7 +66,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
           {nft.type ? (
             <>
               <Row title='Status' link='#'>
-                <span className='text-black-12'>Currently Listed</span>{' '}
+                <span className='text-black-12 mr-1'>Currently Listed</span>
                 <span onClick={toggleBidsModal}>({nft.status} bids)</span>
               </Row>
               <Row title='Remaining'>
@@ -67,10 +76,16 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
                 {formatNumber(nft.price)} {currencyName ? currencyName : 'PSL'}
               </Row>
               <Row title='Last bid' link='#'>
-                <span className='flex gap-2 text-gradient'>
+                <span className='flex mr-3 text-gradient'>
                   {formatNumber(nft.bids)} {currencyName ? currencyName : 'PSL'}
-                  <Checkmark size={14} className='text-green-6d' />
                 </span>
+                <Tooltip
+                  type='top'
+                  content={getTooltip('Minimum Price Meet')}
+                  width={142}
+                >
+                  <Checkmark size={14} className='text-green-6d' />
+                </Tooltip>
               </Row>
             </>
           ) : (

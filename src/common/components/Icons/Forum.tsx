@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TForumProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
-export const Forum = ({
-  width = 14,
-  height = 14,
+export const Forum: React.FC<TForumProps> = ({
+  size = 14,
   className = 'text-gray-4a',
 }: TForumProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 14 14'
       fill='none'

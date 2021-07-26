@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ReactNode } from 'react'
-import ArrowToolTip from '../../assets/icons/ico-triangle.svg'
 import cn from 'classnames'
 import CSS from 'csstype'
+import { TooltipArrow } from '../Icons/TooltipArrow'
 
 export type TTooltipProps = {
   type: 'left' | 'right' | 'top' | 'bottom'
@@ -22,7 +22,6 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   width = 0,
   autoWidth = false,
   children,
-  padding = 0,
   vPosPercent = 150,
 }) => {
   const styles = {
@@ -30,38 +29,34 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       width: `${width}px`,
       bottom: `${vPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
-      padding: `${padding}px`,
     },
     bottom: {
       width: `${width}px`,
       top: `${vPosPercent}%`,
       left: `calc(50% - ${width / 2}px)`,
-      padding: `${padding}px`,
     },
     right: {
       width: `${autoWidth ? 'auto' : width + 'px'}`,
       left: 'calc(100% + 10px)',
-      padding: `${padding}px`,
     },
     left: {
       width: `${autoWidth ? 'auto' : width + 'px'}`,
       right: 'calc(100% + 10px)',
-      padding: `${padding}px`,
     },
   }
   const arrow_styles = {
     top: {
       width: '10px',
-      top: `calc(${vPosPercent}% - 8px)`,
-      left: '50%',
-      marginLeft: '-5px',
-    },
-    bottom: {
-      width: '10px',
-      bottom: `calc(${vPosPercent}% - 8px)`,
+      top: `calc(${vPosPercent}% - 3px)`,
       left: '50%',
       marginLeft: '-5px',
       transform: 'rotate(180deg)',
+    },
+    bottom: {
+      width: '10px',
+      bottom: `calc(${vPosPercent}% - 3px)`,
+      left: '50%',
+      marginLeft: '-5px',
     },
     left: {
       width: '10px',
@@ -95,15 +90,14 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   return (
     <div className={cn('relative tooltip', wrapperClassNames)}>
       {children}
-      <img
-        style={arrowStyle}
-        className='absolute tooltiparrow invisible'
-        src={ArrowToolTip}
-      />
+      <div className='absolute tooltiparrow invisible' style={arrowStyle}>
+        <TooltipArrow size={8} className='text-gray-33' />
+      </div>
+
       <div
         style={style}
         className={cn(
-          'absolute bg-gray-14 text-white text-center rounded-lg z-10 tooltiptext invisible text-xs py-1 px-1.5',
+          'absolute bg-gray-33 text-white text-center rounded-lg z-50 tooltiptext invisible text-xs px-1.5',
           classnames,
         )}
       >

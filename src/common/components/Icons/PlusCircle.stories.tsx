@@ -1,18 +1,15 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import {
-  PlusCircle as Component,
-  TPlusCircleProps as TProps,
-} from './PlusCircle'
+import { PlusCircle as Icon, TPlusCircleProps as TProps } from './PlusCircle'
 
 export default {
   title: 'Icons/Plus Circle',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<TProps> = ({ ...args }) => {
-  return <PlusCircle {...args} className='text-black' />
+  return <Icon {...args} className='text-black' />
 }
 
 export const PlusCircle = Template.bind({})

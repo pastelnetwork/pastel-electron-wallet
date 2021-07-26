@@ -21,10 +21,10 @@ export default function PortfolioItem({
       </div>
       <div className='flex-grow min-w-0 flex ml-[14px] justify-between items-center md:flex-col md:items-start 1200px:flex-row 1200px:items-center'>
         <div className='min-w-0 pr-2'>
-          <div className='text-gray-4a font-medium text-sm truncate'>
+          <div className='text-gray-4a font-extrabold text-sm truncate'>
             {title}
           </div>
-          <div className='text-gray-a0 font-medium text-sm truncate'>
+          <div className='text-gray-71 font-normal text-sm truncate'>
             {author}
           </div>
         </div>

@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TKeywordProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
-export const Keyword = ({
-  width = 12,
-  height = 12,
+export const Keyword: React.FC<TKeywordProps> = ({
+  size = 12,
   className = 'text-gray-4a',
 }: TKeywordProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       viewBox='0 0 12 12'
       fill='none'
       className={className}

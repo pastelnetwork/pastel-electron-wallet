@@ -9,11 +9,11 @@ import PastelUtils from 'common/utils/utils'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import { Button } from 'common/components/Buttons'
 import img_avatar from 'common/assets/images/avatar2-placeholder.png'
-import ico_copy from 'common/assets/icons/ico-copy2.svg'
-import ico_facebook from 'common/assets/icons/ico-facebook.svg'
-import ico_twitter from 'common/assets/icons/ico-twitter.svg'
 import ico_pencil from 'common/assets/icons/ico-pencil-transparent.svg'
 import ChangeUsernameModal from './ChangeUsernameModal'
+
+import { Clipboard, FacebookIcon, TwitterIcon } from 'common/components/Icons'
+import Toggle from 'common/components/Toggle'
 
 export type TProfileCard = {
   editMode: boolean
@@ -42,6 +42,7 @@ const ProfileCard = ({
   }
 
   const [name, setName] = useState<string>(data.name)
+  const [activeCurrency, setActiveCurrency] = useState<boolean>(false)
   const [facebook, setFacebook] = useState<string>(data.facebook)
   const [twitter, setTwitter] = useState<string>(data.twitter)
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(
@@ -72,7 +73,7 @@ const ProfileCard = ({
   ]
 
   return (
-    <div className='flex flex-col pb-4 rounded-md shadow-44px bg-white w-315px h-full justify-between max-h-750px'>
+    <div className='flex flex-col pb-30px rounded-md shadow-44px bg-white w-315px justify-between max-h-672px'>
       <div className='flex flex-col flex-grow'>
         <ProfileCardFrame isEmpty={isEmpty} editMode={isEmpty || editMode} />
         <div className='-mt-61px px-4 flex relative justify-center'>
@@ -88,29 +89,25 @@ const ProfileCard = ({
               <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
                 {data.username}
               </div>
-              <div className='font-bold text-26px leading-9 text-center'>
+              <div className='font-extrabold text-26px leading-9 text-center text-gray-2d'>
                 {name}
               </div>
-              <div className='pt-2px text-gray-71 flex flex-center justify-center'>
+              <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
                 {PastelUtils.truncateMiddle(data.walletId, 8, 4, '...')}
                 <button className='ml-10px'>
-                  <img src={ico_copy} className='cursor-pointer' />
+                  <Clipboard size={12} className='text-gray-88' />
                 </button>
               </div>
               <div className='py-4 flex justify-center space-x-2'>
                 <button>
-                  <img
-                    src={ico_facebook}
-                    hidden={!facebook.length}
-                    className='cursor-pointer w-20px h-20px'
-                  />
+                  {facebook.length && (
+                    <FacebookIcon size={20} className='text-gray-88' />
+                  )}
                 </button>
                 <button>
-                  <img
-                    src={ico_twitter}
-                    hidden={!twitter.length}
-                    className='cursor-pointer w-20px h-20px ml-2px'
-                  />
+                  {twitter.length && (
+                    <TwitterIcon size={20} className='text-gray-88' />
+                  )}
                 </button>
               </div>
               <Button
@@ -126,14 +123,22 @@ const ProfileCard = ({
                   <SVG
                     src={ico_pencil}
                     className={cn(
-                      'ml-6px w-13px',
+                      'ml-2.5 w-13px',
                       isEmpty ? 'fill-white' : 'fill-blue-3f',
                     )}
                   />
                 </span>
               </Button>
-              <div className='flex text-gray-71 text-sm mt-30px'>
+              <div className='flex text-gray-71 text-sm mt-30px justify-center'>
                 Native Currency: {nativeCurrency?.label}
+              </div>
+              <div className='flex justify-center mt-[184px]'>
+                <Toggle
+                  selected={activeCurrency}
+                  toggleHandler={param => setActiveCurrency(param)}
+                >
+                  Active display currency: PSL
+                </Toggle>
               </div>
             </div>
           </div>
@@ -154,31 +159,33 @@ const ProfileCard = ({
                   type='top'
                   width={114}
                   content={
-                    <p className='mb-0 px-2 py-6px text-xs text-white'>
+                    <p className='mb-0 px-2 py-6px text-xs text-white text-sm'>
                       PastelID Identifier
                     </p>
                   }
                 >
-                  <span className='cursor-pointer'>
+                  <span className='cursor-pointer text-gray-b9'>
                     {PastelUtils.truncateMiddle(data.walletId, 8, 4, '...')}
                   </span>
                 </Tooltip>
                 <button className='pl-10px'>
-                  <img src={ico_copy} className='cursor-pointer' />
+                  <Clipboard size={12} className='text-gray-88' />
                 </button>
               </div>
-              <div className='space-y-4'>
+              <div className='space-y-6'>
                 {edits.map((each, index) => (
                   <div key={index}>
-                    <div className='text-gray-71 mb-2'>{each.title}</div>
+                    <div className='text-gray-71 text-lg mb-2'>
+                      {each.title}
+                    </div>
                     <LineEdit value={each.value} onChange={each.onChange} />
                   </div>
                 ))}
               </div>
-              <div className='flex text-gray-71 text-sm mt-28px items-center'>
-                Native Currency:
+              <div className='flex text-gray-71 text-sm mt-9 items-center justify-between'>
+                <span className='text-lg text-gray-71'>Native Currency:</span>
                 <Select
-                  className='text-gray-4a flex-grow max-w-84px ml-5px'
+                  className='text-gray-4a flex-grow max-w-118px ml-5px'
                   selected={nativeCurrency}
                   options={nativeCurrencyOptions}
                   onChange={onNativeCurrencyChange}
@@ -186,7 +193,7 @@ const ProfileCard = ({
               </div>
             </div>
             <button
-              className='filter hover:contrast-125 w-full cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-2 h-10 text-gray-fc bg-blue-3f border-blue-3f'
+              className='filter hover:contrast-125 w-full cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-[71px] h-10 text-gray-fc bg-blue-3f border-blue-3f'
               onClick={() => {
                 setEditMode(false)
               }}

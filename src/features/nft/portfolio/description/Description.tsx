@@ -27,7 +27,7 @@ export default function Description({ nft }: TDescriptionProps): JSX.Element {
         className='block link text-sm font-medium'
         onClick={toggleFullText}
       >
-        {showFullText ? 'show less' : 'read more'}
+        {showFullText ? 'Show Less' : 'Read More'}
       </button>
     </div>
   )

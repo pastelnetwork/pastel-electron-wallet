@@ -1,19 +1,19 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import { Creator as Component, TCreatorProps as Props } from './Creator'
+import { Creator as Icon, TCreatorProps as Props } from './Creator'
 
 export default {
   title: 'Icons/Creator Icon',
-  component: Component,
+  component: Icon,
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <Creator {...args} className='text-black' />
+  return <Icon {...args} />
 }
 
 export const Creator = Template.bind({})
 Creator.args = {
-  width: 14,
-  height: 14,
+  size: 14,
+  className: 'text-black',
 }

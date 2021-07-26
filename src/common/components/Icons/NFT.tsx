@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TNFTProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
-export const NFT = ({
-  width = 14,
-  height = 14,
+export const NFT: React.FC<TNFTProps> = ({
+  size = 14,
   className = 'text-gray-4a',
 }: TNFTProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       viewBox='0 0 14 14'
       fill='none'
       className={className}

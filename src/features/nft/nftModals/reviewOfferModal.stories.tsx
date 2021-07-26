@@ -30,8 +30,9 @@ const Template: Story<TReviewOfferModal> = ({
 export const ReviewOfferModalDefault = Template.bind({})
 const title = 'Diamonds in the sky'
 const offers: Array<TOffer> = [
-  { id: 1, user: 'SuperDealer23', price: 1000000 },
-  { id: 2, user: 'Dealer23', price: 100000 },
+  { id: 1, user: 'SuperDealer23', price: 100000000 },
+  { id: 2, user: 'Dealer24', price: 140000000 },
+  { id: 3, user: 'SuperMax', price: 200000000 },
 ]
 const info = { currencyName: 'PSL' }
 ReviewOfferModalDefault.args = {
