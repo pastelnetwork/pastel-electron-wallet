@@ -20,6 +20,31 @@ executors:
       xcode: 11.7
     working_directory: ~/project
 
+commands:
+  upload-artifacts:
+    parameters:
+      circle-build-num:
+        type: string
+        default: latest
+    steps:
+      - aws-cli/setup:
+          aws-region: AWS_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: download artifacts
+          command: |
+            curl -H "Circle-Token $CIRCLE_TOKEN" \
+            https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/<< parameters.circle-build-num >>/artifacts \
+            | grep -o 'https://[^"]*' \
+            | wget --verbose --header "Circle-Token: $CIRCLE_TOKEN" --input-file -
+      - aws-s3/sync:
+          from: ~/project
+          to: s3://$BUCKET_NAME
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400" \
+
 jobs:
   install-deps:
     executor: linux-builder
@@ -58,6 +83,10 @@ jobs:
 
   build-ubuntu:
     executor: linux-builder
+    parameters:
+      circle-build-num:
+        type: string
+        default: $CIRCLE_BUILD_NUM
     steps:
       - attach_workspace:
           at: ~/project
@@ -71,9 +100,15 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
+      - upload-artifacts:
+          circle-build-num: << parameters.circle-build-num >>
 
   build-windows:
     executor: windows-builder
+    parameters:
+      circle-build-num:
+        type: string
+        default: $CIRCLE_BUILD_NUM
     steps:
       - attach_workspace:
           at: ~/project
@@ -85,9 +120,15 @@ jobs:
           command: yarn make --platform=win32
       - store_artifacts:
           path: ~/project/out/make/squirrel.windows/x64
+      - upload-artifacts:
+          circle-build-num: << parameters.circle-build-num >>
 
   build-macos:
     executor: macos-builder
+    parameters:
+      circle-build-num:
+        type: string
+        default: $CIRCLE_BUILD_NUM
     steps:
       - checkout
       - restore_cache:
@@ -105,28 +146,8 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
-
-  upload-artifacts:
-    executor: linux-builder
-    steps:
-      - aws-cli/setup:
-          aws-region: AWS_REGION
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      - run:
-          name: download artifacts
-          command: |
-            curl -H "Circle-Token $CIRCLE_TOKEN" \
-            https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/latest/artifacts \
-            | grep -o 'https://[^"]*' \
-            | wget --verbose --header "Circle-Token: $CIRCLE_TOKEN" --input-file -
-      - aws-s3/sync:
-          from: ~/project
-          to: s3://$BUCKET_NAME
-          arguments: |
-            --acl public-read \
-            --cache-control "max-age=86400" \
-            --delete
+      - upload-artifacts:
+          circle-build-num: << parameters.circle-build-num >>
 
 workflows:
   main:
@@ -142,6 +163,8 @@ workflows:
             <<: *filters-pr
 
       - build-ubuntu:
+          context:
+            - fullnodewallet
           filters: &filters-build
             <<: *filters-pr
             branches:
@@ -149,22 +172,16 @@ workflows:
           requires:
             - lint-and-test
       - build-windows:
-          filters:
-            <<: *filters-build
-          requires:
-            - lint-and-test
-      - build-macos:
-          filters:
-            <<: *filters-build
-          requires:
-            - lint-and-test
-
-      - upload-artifacts:
           context:
             - fullnodewallet
           filters:
             <<: *filters-build
           requires:
-            - build-ubuntu
-            - build-windows
-            - build-macos
+            - lint-and-test
+      - build-macos:
+          context:
+            - fullnodewallet
+          filters:
+            <<: *filters-build
+          requires:
+            - lint-and-test
