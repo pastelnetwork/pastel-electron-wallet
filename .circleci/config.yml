@@ -1,10 +1,22 @@
 version: 2.1
 
-jobs:
-  install-deps:
+orbs:
+  aws-cli: circleci/aws-cli@2.0.3
+  aws-s3: circleci/aws-s3@3.0.0
+
+executors:
+  electron-builder:
     docker:
       - image: electronuserland/builder:14
     working_directory: ~/project
+  macos-builder:
+    macos:
+      xcode: 11.7
+    working_directory: ~/project
+
+jobs:
+  install-deps:
+    executor: electron-builder
     steps:
       - checkout
       - restore_cache:
@@ -23,9 +35,7 @@ jobs:
             - .
 
   lint-and-test:
-    docker:
-      - image: electronuserland/builder:14
-    working_directory: ~/project
+    executor: electron-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -41,9 +51,7 @@ jobs:
             - .
 
   build-ubuntu:
-    docker:
-      - image: electronuserland/builder:14
-    working_directory: ~/project
+    executor: electron-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -57,15 +65,9 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
 
   build-windows:
-    docker:
-      - image: electronuserland/builder:wine-mono-05.21
-    working_directory: ~/project
+    executor: electron-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -79,9 +81,7 @@ jobs:
           path: ~/project/out/make/squirrel.windows/x64
 
   build-macos:
-    macos:
-      xcode: 11.7
-    working_directory: ~/project
+    executor: macos-builder
     steps:
       - checkout
       - restore_cache:
@@ -100,19 +100,46 @@ jobs:
       - store_artifacts:
           path: ~/project/out/make
 
+  upload-artifacts:
+    executor: electron-builder
+    steps:
+      - aws-cli/setup:
+          aws-region: AWS_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - run:
+          name: download artifacts
+          command: |
+            curl -H "Circle-Token $CIRCLE_TOKEN" \
+            https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/latest/artifacts \
+            | grep -o 'https://[^"]*' \
+            | wget --verbose --header "Circle-Token: $CIRCLE_TOKEN" --input-file -
+      - aws-s3/sync:
+          from: ~/project
+          to: s3://$BUCKET_NAME
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400" \
+            --delete
+
 workflows:
-  lint-test-package:
+  main:
     jobs:
-      - install-deps
+      - install-deps:
+          filters: &filters-pr
+          tags:
+            only: /^v[0-9]+(\.[0-9]+).*/
       - lint-and-test:
           requires:
             - install-deps
+          filters:
+            <<: *filters-pr
+
       - build-ubuntu:
           filters: &filters-build
+            <<: *filters-pr
             branches:
-              only: /release.*/
-            tags:
-              only: /^v[0-9]+(\.[0-9]+).*/
+              ignore: /.*/
           requires:
             - lint-and-test
       - build-windows:
@@ -125,3 +152,13 @@ workflows:
             <<: *filters-build
           requires:
             - lint-and-test
+
+      - upload-artifacts:
+          context:
+            - fullnodewallet
+          filters:
+            <<: *filters-build
+          requires:
+            - build-ubuntu
+            - build-windows
+            - build-macos
