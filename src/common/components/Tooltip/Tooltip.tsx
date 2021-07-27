@@ -97,7 +97,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       <div
         style={style}
         className={cn(
-          'absolute bg-gray-33 text-white text-center rounded-lg z-50 tooltiptext invisible text-xs px-1.5',
+          'absolute bg-gray-33 text-gray-a0 text-center rounded-lg z-50 tooltiptext invisible text-xs px-1.5',
           classnames,
         )}
       >

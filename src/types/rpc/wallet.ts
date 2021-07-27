@@ -18,7 +18,8 @@ type TBalanceCard = {
     info: boolean
   }
   psl: number
-  icon: string
+  activeIcon: JSX.Element
+  inactiveIcon: JSX.Element
   info: string
 }
 

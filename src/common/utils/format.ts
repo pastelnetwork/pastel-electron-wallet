@@ -86,3 +86,7 @@ export const formatFileSize = (size: number): string => {
 
   return Math.max(size, 0.1).toFixed(1) + units[i]
 }
+
+export const formatAddress = (address: string): string => {
+  return address.substr(0, 20) + '...' + address.substr(-6)
+}

@@ -1,9 +1,11 @@
 import React from 'react'
 import { TIconProps } from './iconProps'
 
-export type TXProps = TIconProps
+export type TXProps = TIconProps & {
+  onClick?: () => void
+}
 
-export const X = ({ size, className }: TXProps): JSX.Element => {
+export const X = ({ size, className, onClick }: TXProps): JSX.Element => {
   return (
     <svg
       width={size}
@@ -11,6 +13,9 @@ export const X = ({ size, className }: TXProps): JSX.Element => {
       viewBox='0 0 8 9'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
+      onClick={() => {
+        onClick && onClick()
+      }}
     >
       <path
         fillRule='evenodd'
