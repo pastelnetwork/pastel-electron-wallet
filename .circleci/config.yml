@@ -31,19 +31,13 @@ commands:
           aws-region: AWS_REGION
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-      - run:
-          name: download artifacts
-          command: |
-            curl -H "Circle-Token $CIRCLE_TOKEN" \
-            https://circleci.com/api/v1.1/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/<< parameters.circle-build-num >>/artifacts \
-            | grep -o 'https://[^"]*' \
-            | wget --verbose --header "Circle-Token: $CIRCLE_TOKEN" --input-file -
       - aws-s3/sync:
-          from: ~/project
+          from: ~/project/out/make
           to: s3://$BUCKET_NAME
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400" \
+            --delete
 
 jobs:
   install-deps:
@@ -146,9 +140,6 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
-      - run:
-          name: install wget
-          command: brew install wget
       - upload-artifacts:
           circle-build-num: << parameters.circle-build-num >>
 
