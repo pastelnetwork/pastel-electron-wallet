@@ -146,6 +146,9 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
+      - run:
+          name: install wget
+          command: brew install wget
       - upload-artifacts:
           circle-build-num: << parameters.circle-build-num >>
 
