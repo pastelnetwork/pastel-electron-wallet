@@ -40,7 +40,7 @@
 
     /* Module Resolution Options */
     "moduleResolution": "node",
-    // "baseUrl": "./",
+    "baseUrl": "src",
     // "paths": {},
     // "rootDirs": [],
     // "typeRoots": [],

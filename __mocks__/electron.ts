@@ -1,7 +1,9 @@
-import { BrowserWindow } from './browser-window'
-import log from 'electron-log'
+import { EventEmitter } from 'events'
 
-const remote = {
+export { BrowserWindow } from './browser-window'
+export { default as log } from 'electron-log'
+
+export const remote = {
   app: {
     getPath: jest.fn(),
     getName: jest.fn(),
@@ -9,6 +11,14 @@ const remote = {
   },
 }
 
-export { log }
-export { remote }
-export { BrowserWindow }
+class IPCRendererMock extends EventEmitter {
+  public send = jest.fn()
+  public invoke = jest.fn()
+  public on = jest.fn()
+
+  constructor() {
+    super()
+  }
+}
+
+export const ipcRenderer = new IPCRendererMock()

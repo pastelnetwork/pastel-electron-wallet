@@ -42,9 +42,9 @@ export interface IReceiveProps {
   transactions?: ITransactionsProps[]
 }
 
-const receiveTab = {
-  shielded: 0,
-  transparent: 1,
+enum receiveTab {
+  shielded,
+  transparent,
 }
 
 export const Receive = (props: IReceiveProps): JSX.Element => {

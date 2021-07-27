@@ -36,12 +36,18 @@ import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
 import log from 'electron-log'
 import { ipcRenderer } from 'electron'
+import { ToastContainer } from 'react-toastify'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
 import { createPastelKeysFolder } from './features/pastelID'
+import { setAppInfo } from './features/serveStatic'
+import { PastelModal } from './features/pastelModal'
+import UpdateToast from './features/updateToast'
+import Utilities from './features/utilities'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
+import 'common/utils/initDayjs'
 
 const oneHour = 1000 * 60 * 60
 /**
@@ -73,18 +79,39 @@ ipcRenderer.on(
     {
       isPackaged,
       locatePastelConfDir,
-    }: { isPackaged: string; locatePastelConfDir: string },
+      locateSentTxStore,
+      appPathDir,
+    }: {
+      isPackaged: boolean
+      locatePastelConfDir: string
+      locateSentTxStore: string
+      appPathDir: string
+    },
   ) => {
     if (isPackaged) {
       log.transports.console.level = false
     }
     createPastelKeysFolder(locatePastelConfDir)
+    store.dispatch(
+      setAppInfo({ isPackaged, locatePastelConfDir, locateSentTxStore }),
+    )
+    sessionStorage.setItem(
+      'appInfo',
+      JSON.stringify({
+        appPathDir,
+        isPackaged,
+      }),
+    )
   },
 )
 
 const application = (
   <Provider store={store}>
     <Root />
+    <ToastContainer hideProgressBar autoClose={5000} />
+    <Utilities />
+    <PastelModal />
+    <UpdateToast />
   </Provider>
 )
 

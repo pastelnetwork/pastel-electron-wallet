@@ -95,6 +95,7 @@ interface TLoadingProps {
   }
   setRPCConfig: (data: RPCConfig | null) => void
   setInfo: (data: TWalletInfo) => void
+  redirectTo?: string
 }
 
 class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
@@ -276,7 +277,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       if (this.pasteld) {
         const { history } = this.props
         const { rpcConfig } = this.state
-        history.push(routes.LOADING)
+        history.push(routes.WALLET)
         while (!PastelDB.isValidDB()) {
           // wait if database is reading or writing status
           new Promise(resolve => setTimeout(resolve, 100))
@@ -473,7 +474,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       )
     }
 
-    return <Redirect to={routes.DASHBOARD} />
+    return <Redirect to={this.props.redirectTo || routes.DASHBOARD} />
   }
 }
 

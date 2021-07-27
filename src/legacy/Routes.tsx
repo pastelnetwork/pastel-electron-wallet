@@ -4,15 +4,16 @@ import React from 'react'
 import ReactModal from 'react-modal'
 import { Switch, Route } from 'react-router'
 import { ErrorModal, ErrorModalData } from './components/ErrorModal'
-import cstyles from './components/Common.module.css'
 import routes from './constants/routes.json'
-import App from './containers/App'
-import Dashboard from './components/Dashboard'
+import MemberProfile from '../features/profile/memberProfile/MemberProfile'
+import Dashboard from '../features/dashboard/DashboardPage'
+import PortfolioPage from '../features/nft/portfolio'
+import Portfolio from '../features/portfolio'
 import Send from './components/Send'
-import { Receive } from '../features/receive'
 import LoadingScreen from '../features/loading'
+import WalletScreen from '../features/wallet'
+import Header from '../common/components/Header'
 import {
-  AddressBalance,
   TotalBalance,
   SendPageState,
   ToAddr,
@@ -26,7 +27,6 @@ import Utils from './utils/utils'
 import Pasteld from './components/Pasteld'
 import AddressBook from './components/Addressbook'
 import AddressbookImpl from './utils/AddressbookImpl'
-import Sidebar from './components/Sidebar'
 import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
@@ -45,23 +45,18 @@ import SquooshToolModal, { openSquooshToolModal } from '../features/squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
-import {
-  DifficultyOvertime,
-  PriceOvertime,
-  PastelStatistics,
-  HashrateOvertime,
-  NetworkTotalsOvertime,
-  MempoolSizeOvertime,
-  AverageBlockSizeOvertime,
-  TransactionFeeOvertime,
-  TransactionsPerSecondOvertime,
-  TransactionsInBlockOvertime,
-} from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import NFTMarketFeed from '../features/NFTMarketFeed'
+import { app } from 'electron'
+import { MembersDirectory } from '../features/members'
+import Chat from '../features/chat'
+import { MyProfile } from '../features/profile'
+import { Forum } from '../features/forum'
+import { RegisterPage } from '../features/onboarding'
 
 export type TWalletInfo = {
   connections: number
@@ -107,7 +102,6 @@ class RouteApp extends React.Component<any, any> {
   rpc: any
   companionAppListener: any
   rpcRefreshIntervalId = 0
-  pastelDBThreadIntervalID = 0
   exportSqliteDBIntervalID = 0
 
   async componentDidMount() {
@@ -123,11 +117,13 @@ class RouteApp extends React.Component<any, any> {
     this.rpc = rpc
 
     // Auto refresh every 10s
-    this.rpcRefreshIntervalId = window.setInterval(() => {
-      if (this.state.rpcConfig.username) {
-        rpc.refresh()
-      }
-    }, 10000)
+    if (!app?.isPackaged) {
+      this.rpcRefreshIntervalId = window.setInterval(() => {
+        if (this.state.rpcConfig.username) {
+          rpc.refresh()
+        }
+      }, 10000)
+    }
 
     const addressBook = await AddressbookImpl.readAddressBook()
     if (addressBook) {
@@ -144,7 +140,6 @@ class RouteApp extends React.Component<any, any> {
 
   componentWillUnmount() {
     window.clearInterval(this.rpcRefreshIntervalId)
-    window.clearInterval(this.pastelDBThreadIntervalID)
     window.clearInterval(this.exportSqliteDBIntervalID)
   }
 
@@ -176,6 +171,7 @@ class RouteApp extends React.Component<any, any> {
     this.setState({
       info: newInfo,
     })
+    this.openErrorModal('Disconnected', err)
   }
 
   // TODO duplicated with below, discovered by TypeScript
@@ -354,7 +350,6 @@ class RouteApp extends React.Component<any, any> {
     this.setState({
       rpcConfig,
     })
-    console.log(rpcConfig)
     this.rpc.configure(rpcConfig)
   }
   setPslPrice = (price: any) => {
@@ -483,6 +478,7 @@ class RouteApp extends React.Component<any, any> {
       errorModalData,
       connectedCompanionApp,
       pastelIDs,
+      rpcConfig,
     } = this.state
     const standardProps = {
       openErrorModal: this.openErrorModal,
@@ -492,7 +488,7 @@ class RouteApp extends React.Component<any, any> {
     }
 
     return (
-      <App>
+      <div className='flex flex-col h-full'>
         <ErrorModal
           title={errorModalData.title}
           body={errorModalData.body}
@@ -504,224 +500,140 @@ class RouteApp extends React.Component<any, any> {
         <AboutModal />
         <SquooshToolModal />
         <GlitchImageModal />
+        {info?.version && <Header />}
+        <div className='flex-grow overflow-auto'>
+          <Switch>
+            <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
+            <Route
+              path={routes.SEND}
+              render={() => (
+                <Send
+                  addressesWithBalance={addressesWithBalance}
+                  sendTransaction={this.sendTransaction}
+                  sendPageState={sendPageState}
+                  setSendPageState={this.setSendPageState}
+                  addressBook={addressBook}
+                  {...standardProps}
+                />
+              )}
+            />
+            <Route
+              path={routes.ADDRESSBOOK}
+              render={() => (
+                <AddressBook
+                  addressBook={addressBook}
+                  addAddressBookEntry={this.addAddressBookEntry}
+                  removeAddressBookEntry={this.removeAddressBookEntry}
+                  {...standardProps}
+                />
+              )}
+            />
+            <Route path={routes.DASHBOARD} component={Dashboard} />
+            <Route
+              path={routes.PORTFOLIO_DETAIL}
+              exact
+              render={() => <PortfolioPage />}
+            />
+            <Route path={routes.CHAT} exact component={Chat} />
+            <Route path={routes.PORTFOLIO} exact component={Portfolio} />
+            <Route
+              path={routes.TRANSACTIONS}
+              render={() => (
+                <Transactions
+                  transactions={transactions}
+                  info={info}
+                  addressBook={addressBook}
+                  setSendTo={this.setSendTo}
+                />
+              )}
+            />
+            <Route path={routes.WALLET} render={() => <WalletScreen />} />
 
-        <div
-          style={{
-            height: '100%',
-          }}
-        >
-          {info && info.version && (
-            <div className={cstyles.sidebarcontainer}>
-              <Sidebar
-                info={info}
-                setSendTo={this.setSendTo}
-                getPrivKeyAsString={this.getPrivKeyAsString}
-                importPrivKeys={this.importPrivKeys}
-                importANIPrivKeys={this.importANIPrivKeys}
-                addresses={addresses}
-                transactions={transactions}
-                openPastelSpriteEditorToolModal={
-                  this.props.openPastelSpriteEditorToolModal
-                }
-                {...(standardProps as any)}
-                openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
-                openAboutModal={this.props.openAboutModal}
-                openUpdateToast={this.props.openUpdateToast}
-                openSquooshToolModal={this.props.openSquooshToolModal}
-                openGlitchImageModal={this.props.openGlitchImageModal}
-                createNewAddress={this.createNewAddress}
-              />
-            </div>
-          )}
-          <div className={cstyles.contentcontainer}>
-            <Switch>
-              <Route
-                path={routes.SEND}
-                render={() => (
-                  <Send
-                    addressesWithBalance={addressesWithBalance}
-                    sendTransaction={this.sendTransaction}
-                    sendPageState={sendPageState}
-                    setSendPageState={this.setSendPageState}
-                    addressBook={addressBook}
-                    {...standardProps}
-                  />
-                )}
-              />
-              <Route
-                path={routes.RECEIVE}
-                render={() => (
-                  <Receive
-                    rerenderKey={receivePageState.rerenderKey}
-                    addresses={addresses}
-                    addressesWithBalance={addressesWithBalance}
-                    addressPrivateKeys={addressPrivateKeys}
-                    addressViewKeys={addressViewKeys}
-                    receivePageState={receivePageState}
-                    addressBook={addressBook}
-                    transactions={transactions}
-                    {...standardProps}
-                    fetchAndSetSinglePrivKey={this.fetchAndSetSinglePrivKey}
-                    hidePrivKey={this.hidePrivKey}
-                    fetchAndSetSingleViewKey={this.fetchAndSetSingleViewKey}
-                    createNewAddress={this.createNewAddress}
-                  />
-                )}
-              />
-              <Route
-                path={routes.ADDRESSBOOK}
-                render={() => (
-                  <AddressBook
-                    addressBook={addressBook}
-                    addAddressBookEntry={this.addAddressBookEntry}
-                    removeAddressBookEntry={this.removeAddressBookEntry}
-                    {...standardProps}
-                  />
-                )}
-              />
-              <Route
-                path={routes.DASHBOARD}
-                render={() => (
-                  <Dashboard
-                    totalBalance={totalBalance}
-                    info={info}
-                    addressesWithBalance={addressesWithBalance}
-                  />
-                )}
-              />
-              <Route
-                path={routes.TRANSACTIONS}
-                render={() => (
-                  <Transactions
-                    transactions={transactions}
-                    info={info}
-                    addressBook={addressBook}
-                    setSendTo={this.setSendTo}
-                  />
-                )}
-              />
+            <Route path={routes.CREATOR} render={() => <Creator />} />
 
-              <Route path={routes.CREATOR} render={() => <Creator />} />
+            <Route path={routes.COLLECTOR} render={() => <Collector />} />
 
-              <Route path={routes.COLLECTOR} render={() => <Collector />} />
+            <Route path={routes.NFT} render={() => <Nft />} />
+            <Route path={routes.FORUM} render={() => <Forum />} />
+            <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
 
-              <Route path={routes.NFT} render={() => <Nft />} />
+            <Route
+              path={routes.MY_PROFILE}
+              render={() => <MyProfile rpcConfig={rpcConfig} />}
+            />
 
-              <Route
-                path={routes.PASTELD}
-                render={() => <Pasteld info={info} refresh={this.doRefresh} />}
-              />
+            <Route
+              path={routes.MEMBERS_PROFILE}
+              render={() => <MemberProfile />}
+            />
 
-              <Route
-                path={routes.PASTEL_ID}
-                render={() => (
-                  <PastelID
-                    addressesWithBalance={addressesWithBalance}
-                    createNewAddress={this.createNewAddress}
-                    totalBalance={totalBalance}
-                    info={info}
-                  />
-                )}
-              />
+            <Route
+              path={routes.PASTELD}
+              render={() => <Pasteld info={info} refresh={this.doRefresh} />}
+            />
 
-              <Route
-                path={routes.EXPERT_CONSOLE}
-                render={() => (
-                  <ExpertConsole
-                    totalBalance={totalBalance}
-                    info={info}
-                    addressesWithBalance={addressesWithBalance}
-                    transactions={transactions}
-                    addressPrivateKeys={addressPrivateKeys}
-                    connectedCompanionApp={connectedCompanionApp}
-                    pastelIDs={pastelIDs}
-                  />
-                )}
-              />
+            <Route
+              path={routes.PASTEL_ID}
+              render={() => (
+                <PastelID
+                  addressesWithBalance={addressesWithBalance}
+                  createNewAddress={this.createNewAddress}
+                  totalBalance={totalBalance}
+                  info={info}
+                />
+              )}
+            />
 
-              <Route
-                path={routes.AVERAGEBLOCKSIZEOVERTIME}
-                render={() => <AverageBlockSizeOvertime info={info} />}
-              />
+            <Route
+              path={routes.EXPERT_CONSOLE}
+              render={() => (
+                <ExpertConsole
+                  totalBalance={totalBalance}
+                  info={info}
+                  addressesWithBalance={addressesWithBalance}
+                  transactions={transactions}
+                  addressPrivateKeys={addressPrivateKeys}
+                  connectedCompanionApp={connectedCompanionApp}
+                  pastelIDs={pastelIDs}
+                />
+              )}
+            />
 
-              <Route
-                path={routes.DIFFICULTYOVERTIME}
-                render={() => <DifficultyOvertime info={info} />}
-              />
+            <Route
+              path={routes.LOADING}
+              render={props => (
+                <LoadingScreen
+                  {...props}
+                  setRPCConfig={(rpcConfig: any) => {
+                    // To support Redux calls
+                    this.props.setPastelConf({
+                      url: rpcConfig.url,
+                      username: rpcConfig.username,
+                      password: rpcConfig.password,
+                    })
 
-              <Route
-                path={routes.PRICEOVERTIME}
-                render={() => <PriceOvertime info={info} />}
-              />
+                    // To support legacy calls
+                    // TODO Remove then fully moved over to Redux
+                    this.setRPCConfig(rpcConfig)
 
-              <Route
-                path={routes.HASHRATEOVERTIME}
-                render={() => <HashrateOvertime info={info} />}
-              />
-
-              <Route
-                path={routes.NETWORKTOTALSOVERTIME}
-                render={() => <NetworkTotalsOvertime info={info} />}
-              />
-
-              <Route
-                path={routes.MEMPOOLSIZEOVERTIME}
-                render={() => <MempoolSizeOvertime info={info} />}
-              />
-
-              <Route
-                path={routes.TRANSACTIONFEEOVERTIME}
-                render={() => <TransactionFeeOvertime info={info} />}
-              />
-
-              <Route
-                path={routes.TRANSACTIONSPERSECONDOVERTIME}
-                render={() => <TransactionsPerSecondOvertime info={info} />}
-              />
-
-              <Route
-                path={routes.TRANSACTIONSINBLOCKOVERTIME}
-                render={() => <TransactionsInBlockOvertime info={info} />}
-              />
-
-              <Route
-                path={routes.STATISTICS}
-                render={() => <PastelStatistics />}
-              />
-
-              <Route
-                path={routes.LOADING}
-                render={props => (
-                  <LoadingScreen
-                    {...props}
-                    setRPCConfig={(rpcConfig: any) => {
-                      // To support Redux calls
-                      this.props.setPastelConf({
-                        url: rpcConfig.url,
-                        username: rpcConfig.username,
-                        password: rpcConfig.password,
-                      })
-
-                      // To support legacy calls
-                      // TODO Remove then fully moved over to Redux
-                      this.setRPCConfig(rpcConfig)
-
-                      // set pastel DB thread update timer
-                      this.pastelDBThreadIntervalID = window.setInterval(() => {
+                    // set pastel DB thread update timer
+                    if (!app?.isPackaged) {
+                      setInterval(() => {
                         PastelDBThread(rpcConfig)
                       }, period)
-                      this.exportSqliteDBIntervalID = window.setInterval(() => {
-                        saveSqliteDB()
-                      }, exportPastelDBPeriod)
-                    }}
-                    setInfo={this.setInfo}
-                  />
-                )}
-              />
-            </Switch>
-          </div>
+                    }
+
+                    this.exportSqliteDBIntervalID = window.setInterval(() => {
+                      saveSqliteDB()
+                    }, exportPastelDBPeriod)
+                  }}
+                  setInfo={this.setInfo}
+                />
+              )}
+            />
+          </Switch>
         </div>
-      </App>
+      </div>
     )
   }
 }

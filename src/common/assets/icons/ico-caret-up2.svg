@@ -1,0 +1,9 @@
+<svg width="10" height="5" viewBox="0 0 10 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(0,5)">
+        <g transform="scale(1,-1)">
+            <path opacity="0.5" fill-rule="evenodd" clip-rule="evenodd"
+                d="M1.05208 0C0.684274 0 0.511432 0.454606 0.786334 0.698964L4.73425 4.20823C4.88581 4.34294 5.11419 4.34294 5.26575 4.20823L9.21367 0.698964C9.48857 0.454606 9.31573 0 8.94792 0H1.05208Z"
+                fill="#4A5568" />
+        </g>
+    </g>
+</svg>
