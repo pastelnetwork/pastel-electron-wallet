@@ -5,10 +5,16 @@ orbs:
   aws-s3: circleci/aws-s3@3.0.0
 
 executors:
-  electron-builder:
+  linux-builder:
     docker:
       - image: electronuserland/builder:14
     working_directory: ~/project
+
+  windows-builder:
+    docker:
+      - image: electronuserland/builder:wine-mono-05.21
+    working_directory: ~/project
+
   macos-builder:
     macos:
       xcode: 11.7
@@ -16,7 +22,7 @@ executors:
 
 jobs:
   install-deps:
-    executor: electron-builder
+    executor: linux-builder
     steps:
       - checkout
       - restore_cache:
@@ -35,7 +41,7 @@ jobs:
             - .
 
   lint-and-test:
-    executor: electron-builder
+    executor: linux-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -51,7 +57,7 @@ jobs:
             - .
 
   build-ubuntu:
-    executor: electron-builder
+    executor: linux-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -67,7 +73,7 @@ jobs:
           path: ~/project/out/make
 
   build-windows:
-    executor: electron-builder
+    executor: windows-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -101,7 +107,7 @@ jobs:
           path: ~/project/out/make
 
   upload-artifacts:
-    executor: electron-builder
+    executor: linux-builder
     steps:
       - aws-cli/setup:
           aws-region: AWS_REGION
@@ -127,8 +133,8 @@ workflows:
     jobs:
       - install-deps:
           filters: &filters-pr
-          tags:
-            only: /^v[0-9]+(\.[0-9]+).*/
+            tags:
+              only: /^v[0-9]+(\.[0-9]+).*/
       - lint-and-test:
           requires:
             - install-deps
