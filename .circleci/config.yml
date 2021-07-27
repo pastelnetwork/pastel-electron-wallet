@@ -25,10 +25,10 @@ commands:
     parameters:
       from-path:
         type: string
-        default: "~/project/out/make"
+        default: '~/project/out/make'
       folder-name:
         type: string
-        default: ""
+        default: ''
     steps:
       - aws-cli/setup:
           aws-region: AWS_REGION
@@ -98,7 +98,7 @@ jobs:
       - store_artifacts:
           path: ~/project/out/make
       - upload-artifacts:
-          folder-name: "linux-deb"
+          folder-name: 'linux-deb'
 
   build-windows:
     executor: windows-builder
@@ -118,8 +118,8 @@ jobs:
       - store_artifacts:
           path: ~/project/out/make/squirrel.windows/x64
       - upload-artifacts:
-          from-path: "~/project/out/make/squirrel.windows/x64"
-          folder-name: "windows"
+          from-path: '~/project/out/make/squirrel.windows/x64'
+          folder-name: 'windows'
 
   build-macos:
     executor: macos-builder
@@ -145,7 +145,7 @@ jobs:
       - store_artifacts:
           path: ~/project/out/make
       - upload-artifacts:
-          folder-name: "macos"
+          folder-name: 'macos'
 
 workflows:
   main:
