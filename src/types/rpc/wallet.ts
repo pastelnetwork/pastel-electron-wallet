@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { TResponse } from './response'
 
 type TAddressBalance = {
@@ -18,8 +19,8 @@ type TBalanceCard = {
     info: boolean
   }
   psl: number
-  activeIcon: JSX.Element
-  inactiveIcon: JSX.Element
+  activeIcon: ReactNode
+  inactiveIcon: ReactNode
   info: string
 }
 

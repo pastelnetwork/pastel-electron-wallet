@@ -3,19 +3,16 @@ import React from 'react'
 export type TFilePDF = {
   size?: number
   className?: string
-  onClick?: () => void
 }
 
 export const FilePDFIcon = ({
   size = 20,
   className = 'text-gray-88',
-  onClick,
 }: TFilePDF): JSX.Element => {
   return (
     <svg
       width={size}
       className={className}
-      onClick={() => onClick && onClick()}
       height='20'
       viewBox='0 0 20 20'
       fill='none'

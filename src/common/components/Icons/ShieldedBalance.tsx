@@ -276,7 +276,7 @@ export const ShieldedBalance = ({
           y2='41.8775'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='#3F9AF7' />
+          <stop stopColor='#3F9AF7' />
           <stop offset='1' stopColor='#6C5DD3' />
         </linearGradient>
         <linearGradient

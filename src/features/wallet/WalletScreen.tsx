@@ -98,14 +98,17 @@ const WalletScreen = (): JSX.Element => {
         return (
           <div className='flex items-center'>
             <span>private key</span>
-            <FilePDFIcon
-              size={20}
-              className='text-gray-88 ml-9px cursor-pointer'
+            <span
               onClick={() => {
                 setCurrentAddress(value.toString())
                 setExportKeysModalOpen(true)
               }}
-            />
+            >
+              <FilePDFIcon
+                size={20}
+                className='text-gray-88 ml-9px cursor-pointer'
+              />
+            </span>
           </div>
         )
       },
@@ -404,7 +407,6 @@ const WalletScreen = (): JSX.Element => {
                     width={108}
                     type='top'
                   >
-                    {/* <img src={elminationIcon} /> */}
                     <EliminationIcon size={20} className='text-gray-8e' />
                   </Tooltip>
                 ) : null}

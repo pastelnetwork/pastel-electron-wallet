@@ -3,13 +3,11 @@ import React from 'react'
 export type TSaveProps = {
   size?: number
   className?: string
-  onClick?: () => void
 }
 
 export const SaveIcon = ({
   size = 20,
   className = 'text-gray-3f',
-  onClick,
 }: TSaveProps): JSX.Element => {
   return (
     <svg
@@ -18,7 +16,6 @@ export const SaveIcon = ({
       viewBox='0 0 20 20'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
-      onClick={() => onClick && onClick()}
     >
       <path
         d='M3.6 6C3.6 4.67452 4.67452 3.6 6 3.6H11.5049C11.8762 3.6 12.2323 3.7475 12.4949 4.01005L15.99 7.50514C16.2525 7.7677 16.4 8.12379 16.4 8.49509V14C16.4 15.3255 15.3255 16.4 14 16.4H6C4.67452 16.4 3.6 15.3255 3.6 14V6Z'

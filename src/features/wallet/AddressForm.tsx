@@ -78,23 +78,23 @@ export const AddressForm = ({
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-            <X
-              className='cursor-pointer'
-              size={20}
+            <span
               onClick={() => {
                 setEdit(null)
               }}
-            />
+            >
+              <X className='cursor-pointer' size={20} />
+            </span>
           </div>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-            <SaveIcon
-              className='text-blue-3f'
+            <span
               onClick={() => {
                 saveAddressLabel(edit, editName)
                 setEdit(null)
               }}
-              size={20}
-            />
+            >
+              <SaveIcon className='text-blue-3f' size={20} />
+            </span>
           </div>
         </>
       ) : (
@@ -102,32 +102,27 @@ export const AddressForm = ({
           {copyable && (
             <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
               {copyStatus ? (
-                <CheckIcon
-                  className='text-green-45'
-                  size={20}
-                  onClick={() => copyAddress(address)}
-                />
+                <span onClick={() => copyAddress(address)}>
+                  <CheckIcon className='text-green-45' size={20} />
+                </span>
               ) : (
-                <Clipboard
-                  className='cursor-pointer'
-                  size={20}
-                  onClick={() => copyAddress(address)}
-                />
+                <span onClick={() => copyAddress(address)}>
+                  <Clipboard className='cursor-pointer' size={20} />
+                </span>
               )}
             </div>
           )}
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-            <Pencil
-              strokeWidth={0.2}
-              className='cursor-pointer'
-              size={20}
+            <span
               onClick={() => {
                 if (currentRow) {
                   setEditName(currentRow.addressNick.toString())
                   setEdit(currentRow.address.toString())
                 }
               }}
-            />
+            >
+              <Pencil strokeWidth={0.2} className='cursor-pointer' size={20} />
+            </span>
           </div>
           {hidable && (
             <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
