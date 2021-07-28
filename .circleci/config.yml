@@ -1,10 +1,50 @@
 version: 2.1
 
-jobs:
-  install-deps:
+orbs:
+  aws-cli: circleci/aws-cli@2.0.3
+  aws-s3: circleci/aws-s3@3.0.0
+
+executors:
+  linux-builder:
     docker:
       - image: electronuserland/builder:14
     working_directory: ~/project
+
+  windows-builder:
+    docker:
+      - image: electronuserland/builder:wine-mono-05.21
+    working_directory: ~/project
+
+  macos-builder:
+    macos:
+      xcode: 11.7
+    working_directory: ~/project
+
+commands:
+  upload-artifacts:
+    parameters:
+      from-path:
+        type: string
+        default: '~/project/out/make'
+      folder-name:
+        type: string
+        default: ''
+    steps:
+      - aws-cli/setup:
+          aws-region: AWS_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - aws-s3/sync:
+          from: << parameters.from-path >>
+          to: s3://$BUCKET_NAME/<< parameters.folder-name >>
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400" \
+            --delete
+
+jobs:
+  install-deps:
+    executor: linux-builder
     steps:
       - checkout
       - restore_cache:
@@ -23,9 +63,7 @@ jobs:
             - .
 
   lint-and-test:
-    docker:
-      - image: electronuserland/builder:14
-    working_directory: ~/project
+    executor: linux-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -41,9 +79,11 @@ jobs:
             - .
 
   build-ubuntu:
-    docker:
-      - image: electronuserland/builder:14
-    working_directory: ~/project
+    executor: linux-builder
+    parameters:
+      circle-build-num:
+        type: string
+        default: $CIRCLE_BUILD_NUM
     steps:
       - attach_workspace:
           at: ~/project
@@ -57,15 +97,16 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
+      - upload-artifacts:
+          from-path: '~/project/out/make/deb/x64'
+          folder-name: 'linux-deb'
 
   build-windows:
-    docker:
-      - image: electronuserland/builder:wine-mono-05.21
-    working_directory: ~/project
+    executor: windows-builder
+    parameters:
+      circle-build-num:
+        type: string
+        default: $CIRCLE_BUILD_NUM
     steps:
       - attach_workspace:
           at: ~/project
@@ -77,11 +118,16 @@ jobs:
           command: yarn make --platform=win32
       - store_artifacts:
           path: ~/project/out/make/squirrel.windows/x64
+      - upload-artifacts:
+          from-path: '~/project/out/make/squirrel.windows/x64'
+          folder-name: 'windows'
 
   build-macos:
-    macos:
-      xcode: 11.7
-    working_directory: ~/project
+    executor: macos-builder
+    parameters:
+      circle-build-num:
+        type: string
+        default: $CIRCLE_BUILD_NUM
     steps:
       - checkout
       - restore_cache:
@@ -99,28 +145,41 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
+      - upload-artifacts:
+          folder-name: 'macos'
 
 workflows:
-  lint-test-package:
+  main:
     jobs:
-      - install-deps
+      - install-deps:
+          filters: &filters-pr
+            tags:
+              only: /^v[0-9]+(\.[0-9]+).*/
       - lint-and-test:
           requires:
             - install-deps
+          filters:
+            <<: *filters-pr
+
       - build-ubuntu:
+          context:
+            - fullnodewallet
           filters: &filters-build
+            <<: *filters-pr
             branches:
-              only: /release.*/
-            tags:
-              only: /^v[0-9]+(\.[0-9]+).*/
+              ignore: /.*/
           requires:
             - lint-and-test
       - build-windows:
+          context:
+            - fullnodewallet
           filters:
             <<: *filters-build
           requires:
             - lint-and-test
       - build-macos:
+          context:
+            - fullnodewallet
           filters:
             <<: *filters-build
           requires:
