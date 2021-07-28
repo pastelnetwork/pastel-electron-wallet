@@ -1,7 +1,6 @@
 import { maxWidthByOrientation } from '../AddNft.constants'
 import { TAddNFTState } from '../AddNFT.state'
 import { TImageFile } from './SelectImageStep'
-import { processNSFW } from '../NSFW/NSFW.service'
 import { optimizeImage } from '../imageOptimization/ImageOptimization.service'
 
 export const useSubmit = (
@@ -21,7 +20,6 @@ export const useSubmit = (
       })
 
       optimizeImage(state.optimizationState, file)
-      processNSFW(state.nsfwState, url)
     }
 
     state.goToNextStep()

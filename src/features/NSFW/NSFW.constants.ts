@@ -8,3 +8,5 @@ const basePath = remote.app.isPackaged
   : path.join(remote.app.getAppPath(), 'static')
 
 export const MODEL_PATH = fileUrl(path.join(basePath, 'nsfwjs-model')) + '/'
+
+export const NSWFProbabilityThreshold = 0.85

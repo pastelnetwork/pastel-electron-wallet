@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { useAppSelector } from 'redux/hooks'
 import * as ROUTES from 'common/utils/constants/routes'
 import NFTCard, { TNFTCard } from 'common/components/NFTCard'
 import avatar from 'common/assets/images/avatar-placeholder.png'
@@ -9,6 +8,10 @@ import Select, { TOption } from 'common/components/Select/Select'
 import Slider from 'common/components/Slider/Slider'
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
+import { useCurrencyName } from 'common/hooks/appInfo'
+import hentai1 from 'common/assets/images/mock/hentai-1.jpg'
+import hentai2 from 'common/assets/images/mock/hentai-2.jpg'
+import porn1 from 'common/assets/images/mock/porn-1.jpg'
 
 enum Tabs {
   feed,
@@ -16,9 +19,7 @@ enum Tabs {
 }
 
 const NFTMarketFeed = (): JSX.Element => {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
+  const currencyName = useCurrencyName()
   const mockCardProps: TNFTCard = {
     author: 'zndrson',
     avatarSrc: avatar,
@@ -58,6 +59,32 @@ const NFTMarketFeed = (): JSX.Element => {
     { value: 'High', label: 'High' },
     { value: 'Medium', label: 'Medium' },
     { value: 'Low', label: 'Low' },
+  ]
+
+  const mockNFTs: TNFTCard[] = [
+    ...Array.from({ length: 6 }).map((_, i) => ({
+      ...mockCardProps,
+      onSale: Boolean(i % 2),
+      isLastBid: Boolean(i % 3),
+    })),
+    {
+      ...mockCardProps,
+      imageSrc: hentai1,
+      onSale: true,
+      isLastBid: true,
+    },
+    {
+      ...mockCardProps,
+      imageSrc: hentai2,
+      onSale: true,
+      isLastBid: true,
+    },
+    {
+      ...mockCardProps,
+      imageSrc: porn1,
+      onSale: true,
+      isLastBid: true,
+    },
   ]
 
   // Filters
@@ -142,13 +169,9 @@ const NFTMarketFeed = (): JSX.Element => {
           </div>
         </div>
         <div className='grid grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 text-gray-1a'>
-          {Array.from({ length: 6 }).map((_, i) => (
+          {mockNFTs.map((nft, i) => (
             <NFTCard
-              {...{
-                ...mockCardProps,
-                onSale: i % 2 ? true : false,
-                isLastBid: i % 3 ? true : false,
-              }}
+              {...nft}
               key={i}
               className='max-w-[318px] md:max-w-[250]px lg:max-w-[318px] xl:max-w-[364px]'
             />

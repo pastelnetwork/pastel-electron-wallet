@@ -5,16 +5,17 @@ import { Link } from 'react-router-dom'
 import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
 import {
-  HeartFilled,
   Clipboard,
+  CrownInHexagon,
   Diamond,
   DiamondInHexagon,
-  CrownInHexagon,
-  ManInHexagon,
   FirTreeInHexagon,
+  HeartFilled,
+  ManInHexagon,
 } from 'common/components/Icons'
 import { Override } from '../../../common/utils/types'
 import styles from './NFTCard.module.css'
+import { useIsImageNSWF } from 'features/NSFW/NSFW.service'
 
 export type TNFTCompactCard = {
   imageSrc: string
@@ -67,7 +68,13 @@ const NFTCard = ({
   bidPercentage = '+100%',
   detailUrl = '#',
   ...props
-}: TNFTCompactCard | TNFTCard): JSX.Element => {
+}: TNFTCompactCard | TNFTCard): JSX.Element | null => {
+  const [isNSWF] = useIsImageNSWF(imageSrc)
+
+  if (isNSWF) {
+    return null
+  }
+
   const fullCardProps = 'author' in props && (props as TNFTCard)
   const isNFTPortfolio = variant === 'nft-portfolio'
   const isPortfolio = variant === 'portfolio'
@@ -115,7 +122,7 @@ const NFTCard = ({
                         )
                       : `@${fullCardProps.author}`,
                   }}
-                ></div>
+                />
               </h4>
             ) : (
               <h4 className={cn('px-2 truncate', exauthorClassName)}>
@@ -129,7 +136,7 @@ const NFTCard = ({
                         )
                       : `@${fullCardProps.author}`,
                   }}
-                ></div>
+                />
               </h4>
             )}
           </div>
@@ -159,7 +166,7 @@ const NFTCard = ({
           <div
             className={`absolute h-1.5 inline-block rounded-r-lg ${styles.bgPercentage}`}
             style={{ width: `${percentage}%` }}
-          ></div>
+          />
         </div>
       ) : null}
       <Link to={detailUrl} className='cursor-pointer w-full'>

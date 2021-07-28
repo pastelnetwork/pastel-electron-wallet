@@ -500,7 +500,7 @@ class RouteApp extends React.Component<any, any> {
         {info?.version && <Header />}
         <div className='flex-grow overflow-auto'>
           <Switch>
-            <Route path={routes.MARKET} render={() => <NFTMarketFeed />} />
+            <Route path={routes.MARKET} component={NFTMarketFeed} />
             <Route
               path={routes.SEND}
               render={() => (

@@ -9,6 +9,8 @@ import Tooltip from 'common/components/Tooltip/Tooltip'
 import Select, { TOption } from './Select/Select'
 
 import NumberFormat from 'react-number-format'
+import Toggle from '../../../common/components/Toggle'
+import { useDisplayNSWF } from 'features/NSFW/NSFW.service'
 
 export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
 
@@ -51,6 +53,7 @@ const ProfileGeneral = ({
   const [location, setLocation] = useState<TOption | null>(locations[1])
   const [language, setLanguage] = useState<TOption | null>(languages[0])
   const [currentPSLPrice, setCurrentPSLPrice] = useState('0')
+  const [displayNSFW, toggleNSFW] = useDisplayNSWF()
 
   useEffect(() => {
     setLocation(locations[isEmpty ? 0 : 1])
@@ -207,7 +210,7 @@ const ProfileGeneral = ({
           )}
         </ProfileGeneralRow>
       </div>
-      <div className='w-full mt-20 mb-50px 1200px:mb-0'>
+      <div className='w-full mt-20 1200px:mb-0'>
         <div className='flex'>
           <div className='w-190px text-gray-71'>Bio</div>
         </div>
@@ -222,8 +225,19 @@ const ProfileGeneral = ({
                 />
               </div>
             ) : (
-              <div className='h-220px'>{bio}</div>
+              bio
             )}
+          </div>
+        </div>
+      </div>
+      <div className='w-full mt-20 mb-50px 1200px:mb-0'>
+        <div className='flex text-gray-71'>Settings</div>
+        <div className='flex pt-3'>
+          <div className='flex'>
+            <div className='text-gray-71 mr-4'>Hide Not Safe For Work NFTs</div>
+            <div className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap'>
+              <Toggle selected={!displayNSFW} toggleHandler={toggleNSFW} />
+            </div>
           </div>
         </div>
       </div>
