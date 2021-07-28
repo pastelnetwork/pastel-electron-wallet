@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import routes from '../../../../legacy/constants/routes.json'
+import routes from 'legacy/constants/routes.json'
 import styles from './PrevButton.module.css'
 
 type TPrevButton = {
