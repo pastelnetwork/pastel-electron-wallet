@@ -13,7 +13,7 @@ import {
   HeartFilled,
   ManInHexagon,
 } from 'common/components/Icons'
-import { Override } from '../../../common/utils/types'
+import { Override } from 'common/utils/types'
 import styles from './NFTCard.module.css'
 import { useIsImageNSWF } from 'features/NSFW/NSFW.service'
 
