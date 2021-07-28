@@ -201,11 +201,12 @@ const SearchBar = (): JSX.Element => {
                     Bans — Search Creators
                   </div>
                 </div>
-                <div className='px-6 pt-[13px] pb-[29px] h-[292px] overflow-y-auto'>
+                <div className='px-6 pt-[13px] pb-2 max-h-[292px] overflow-y-auto'>
                   {search_results
                     .filter(item => item.name.includes(inputText))
-                    .map(item => (
+                    .map((item, index) => (
                       <ResultSearchRow
+                        key={index}
                         name={item.name}
                         image={item.img}
                         followers={item.followers}
