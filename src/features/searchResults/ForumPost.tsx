@@ -161,6 +161,7 @@ const ForumPost = (): JSX.Element => {
           columns={columns}
           data={data}
           bodyTrClasses='border-b border-gray-f2 text-gray-2d h-[55px] font-medium text-base'
+          searchKey='Bans'
         />
       </div>
     </div>

@@ -15,6 +15,7 @@ import {
 } from 'common/components/Icons'
 import { Override } from '../../../common/utils/types'
 import styles from './NFTCard.module.css'
+import parse from 'html-react-parser'
 
 export type TNFTCompactCard = {
   imageSrc: string
@@ -111,7 +112,7 @@ const NFTCard = ({
                       ? `@${fullCardProps.author}`.replace(
                           new RegExp(searchText, 'gi'),
                           match =>
-                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+                            `<mark class='bg-blue-ff pt-1 pb-1'>${match}</mark>`,
                         )
                       : `@${fullCardProps.author}`,
                   }}
@@ -125,7 +126,7 @@ const NFTCard = ({
                       ? `@${fullCardProps.author}`.replace(
                           new RegExp(searchText, 'gi'),
                           match =>
-                            `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+                            `<mark class='bg-blue-9b pt-1 pb-1'>${match}</mark>`,
                         )
                       : `@${fullCardProps.author}`,
                   }}
@@ -204,7 +205,15 @@ const NFTCard = ({
                 isNFTPortfolio && 'text-base text-gray-1a',
               )}
             >
-              {title}
+              {searchText
+                ? parse(
+                    title.replace(
+                      new RegExp(searchText, 'gi'),
+                      match =>
+                        `<mark class='bg-blue-9b pt-1 pb-1'>${match}</mark>`,
+                    ),
+                  )
+                : title}
             </div>
           </Link>
         </div>
