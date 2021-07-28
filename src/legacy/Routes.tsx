@@ -32,7 +32,7 @@ import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
 import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
-import { PastelDBThread } from '../features/pastelDB'
+import { PastelDBThread, saveSqliteDB } from '../features/pastelDB'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
@@ -71,6 +71,7 @@ export type TWalletInfo = {
 }
 
 const period = 1000 * 10
+const exportPastelDBPeriod = 1000 * 60 * 1
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -101,6 +102,7 @@ class RouteApp extends React.Component<any, any> {
   rpc: any
   companionAppListener: any
   rpcRefreshIntervalId = 0
+  exportSqliteDBIntervalID = 0
 
   async componentDidMount() {
     const rpc = new RPC(
@@ -138,6 +140,7 @@ class RouteApp extends React.Component<any, any> {
 
   componentWillUnmount() {
     window.clearInterval(this.rpcRefreshIntervalId)
+    window.clearInterval(this.exportSqliteDBIntervalID)
   }
 
   getFullState = () => {
@@ -619,6 +622,10 @@ class RouteApp extends React.Component<any, any> {
                         PastelDBThread(rpcConfig)
                       }, period)
                     }
+
+                    this.exportSqliteDBIntervalID = window.setInterval(() => {
+                      saveSqliteDB()
+                    }, exportPastelDBPeriod)
                   }}
                   setInfo={this.setInfo}
                 />
