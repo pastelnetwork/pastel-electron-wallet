@@ -1,3 +1,50 @@
+import { TResonseError } from '../../types/rpc'
+
+export type TTxoutsetInfo = {
+  height: number
+  bestblock: string
+  transactions: number
+  txouts: number
+  bytes_serialized: number
+  hash_serialized: string
+  total_amount: number
+}
+
+export type TGetdifficulty = {
+  result: number
+  error: TResonseError
+  id: string
+}
+
+export type TGettxoutsetinfo = {
+  result: TTxoutsetInfo
+  error: TResonseError
+  id: string
+}
+
+export type TValidateFields = {
+  balance?: number
+  balanceTotal?: string
+  balanceTransparent?: string
+  bestBlockHash?: string
+  difficulty?: number
+  hash?: string
+  height?: number
+  keypoololdest?: number
+  masterNode?: number
+  miner?: number
+  miningBlocks?: number
+  mempoolSize?: number
+  mempoolByte?: number
+  mempoolUsage?: number
+  price?: number
+  seedfp?: string
+  solutions?: number
+  time?: number
+  transactionid?: string
+  walletversion?: number
+}
+
 export type TNetworks = {
   name: string
   limited: boolean
@@ -202,16 +249,6 @@ export type TRawTransaction = {
   details: TDetails[]
 }
 
-export type TTxoutsetInfo = {
-  height: number
-  bestblock: string
-  transactions: number
-  txouts: number
-  bytes_serialized: number
-  hash_serialized: string
-  total_amount: number
-}
-
 export type TChainTips = {
   height: number
   hash: string
@@ -346,12 +383,6 @@ export type TGetnetworkhashps = {
   id: string
 }
 
-export type TGetdifficulty = {
-  result: number
-  error: TError
-  id: string
-}
-
 export type TGetNetworkinfo = {
   result: TNetworkInfo
   error: TError
@@ -420,12 +451,6 @@ export type TGettransaction = {
 
 export type TGettxout = {
   result: TTxout
-  error: TError
-  id: string
-}
-
-export type TGettxoutsetinfo = {
-  result: TTxoutsetInfo
   error: TError
   id: string
 }
@@ -636,29 +661,6 @@ export type Tenforce = {
 export type Tconsensus = {
   chaintip: string
   nextblock: string
-}
-
-export type TValidateFields = {
-  balance?: number
-  balanceTotal?: string
-  balanceTransparent?: string
-  bestBlockHash?: string
-  difficulty?: number
-  hash?: string
-  height?: number
-  keypoololdest?: number
-  masterNode?: number
-  miner?: number
-  miningBlocks?: number
-  mempoolSize?: number
-  mempoolByte?: number
-  mempoolUsage?: number
-  price?: number
-  seedfp?: string
-  solutions?: number
-  time?: number
-  transactionid?: string
-  walletversion?: number
 }
 
 export type TLineChartData = {

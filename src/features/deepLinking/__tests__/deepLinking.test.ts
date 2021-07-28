@@ -1,6 +1,6 @@
 import { BrowserWindow } from 'electron'
 
-import { redirectDeepLinkingUrl } from '../DeepLinking'
+import { redirectDeepLinkingUrl } from '../DeepLinking.utils'
 
 describe('deepLinking/redirectDeepLinkingUrl', () => {
   let mockWindow: BrowserWindow

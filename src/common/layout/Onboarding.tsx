@@ -1,24 +1,10 @@
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
-
-import closeIcon from '../assets/icons/ico-close.svg'
-import * as ROUTES from '../utils/constants/routes'
-
-import * as Styles from './Onboarding.styles'
 
 const OnboardingLayout: React.FC = ({ children }) => {
-  const { location } = useHistory()
-  const isHomeRoute = location.pathname === ROUTES.WELCOME_PAGE
-
   return (
-    <Styles.Card>
-      {!isHomeRoute && (
-        <Styles.CloseButton to={ROUTES.WELCOME_PAGE}>
-          <img src={closeIcon} alt='close icon' />
-        </Styles.CloseButton>
-      )}
+    <div className='opacity-100 rounded-xl bg-white shadow-xl relative overflow-hidden max-w-9/10 max-h-9/10'>
       {children}
-    </Styles.Card>
+    </div>
   )
 }
 

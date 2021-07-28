@@ -1,7 +1,6 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-
-import { TListTransactions } from '../../pastelDB/type'
+import { TTransaction } from 'types/rpc'
 import { fetchTandZTransactions } from '../transactions'
 
 jest.mock('fs', () => ({
@@ -65,7 +64,7 @@ describe('api/pastel-rpc/transactions', () => {
     const data = { result: mockListTransactions }
     mock.onPost(config.url).reply(200, data)
 
-    function callback(alltxlist: TListTransactions[]): void {
+    function callback(alltxlist: TTransaction[]): void {
       expect(alltxlist).not.toBeNull()
     }
 
@@ -77,7 +76,7 @@ describe('api/pastel-rpc/transactions', () => {
   test('can’t get the transaction', async () => {
     expect.hasAssertions()
 
-    function callback(alltxlist: TListTransactions[]): void {
+    function callback(alltxlist: TTransaction[]): void {
       expect(alltxlist).toBeNaN()
     }
 
@@ -86,8 +85,8 @@ describe('api/pastel-rpc/transactions', () => {
 
     try {
       await fetchTandZTransactions(config, callback)
-    } catch (err) {
-      expect(err.message).toEqual(
+    } catch ({ message }) {
+      expect(message).toEqual(
         'api/pastel-rpc server error: Request failed with status code 500',
       )
     }

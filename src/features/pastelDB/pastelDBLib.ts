@@ -1,7 +1,6 @@
 import { remote } from 'electron'
 import log from 'electron-log'
 import fs from 'fs'
-import { open } from 'fs/promises'
 import path from 'path'
 import initSqlJs, { Database, QueryExecResult, SqlJsStatic } from 'sql.js'
 
@@ -64,11 +63,9 @@ import {
   TBlockInfo,
   TBlockSubsidy,
   TChainTips,
-  TListTransactions,
   TListUnspent,
   TMempoolInfo,
   TMiningInfo,
-  TNetTotals,
   TNetworkInfo,
   TRawMempool,
   TRawTransaction,
@@ -78,10 +75,11 @@ import {
   TValidateFields,
   TWalletInfo,
 } from './type'
+import { TNetTotal, TTransaction } from '../../types/rpc'
 
 export const readSqliteDBFile = async (): Promise<Buffer | null> => {
   try {
-    const file = await open(
+    const file = await fs.promises.open(
       path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
       'r',
     )
@@ -235,6 +233,28 @@ export async function createRawTransactionTables(db: Database): Promise<void> {
 }
 
 export function validateDuplicatedRawmempoolInfo(
+  pastelDB: Database,
+  tableName: string,
+  validateFields: TValidateFields,
+): boolean {
+  if (tableNames[tableName] !== true) {
+    throw new Error(
+      `pastelDB validateDuplicatedRawmempoolInfo error: ${tableName} is invalid table name`,
+    )
+  }
+
+  let values = {}
+
+  const sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
+  values = {
+    $tid: validateFields.transactionid,
+    $time: validateFields.time,
+  }
+  const sqlResult = pastelDB.exec(sqlText, values)
+  return sqlResult.length ? false : true
+}
+
+export function validateDataFromDB(
   pastelDB: Database,
   tableName: string,
   validateFields: TValidateFields,
@@ -586,7 +606,7 @@ export function insertNetworkInfoToDB(
 
 export function insertNetTotalsToDB(
   pastelDB: Database,
-  nettotals: TNetTotals,
+  nettotals: TNetTotal,
 ): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'nettotals')
@@ -752,10 +772,10 @@ export function insertRawtransaction(
     $hex: rawtransaction.hex,
     $txid: rawtransaction.txid,
     $overwintered: overwintered,
-    $version: rawtransaction.version,
-    $versiongroupid: rawtransaction.versiongroupid,
-    $locktime: rawtransaction.locktime,
-    $expiryheight: rawtransaction.expiryheight,
+    $version: rawtransaction?.version,
+    $versiongroupid: rawtransaction?.versiongroupid || '',
+    $locktime: rawtransaction?.locktime,
+    $expiryheight: rawtransaction?.expiryheight || 0,
     $vin: vin,
     $vout: vout,
     $vjoinsplit: vjoinsplit,
@@ -765,7 +785,6 @@ export function insertRawtransaction(
     $blocktime: rawtransaction.blocktime,
     $createTimestamp: createTimestamp,
   }
-
   pastelDB.exec(insertRawtransactionQuery, values)
 }
 
@@ -903,7 +922,7 @@ export function insertWalletinfo(
 
 export function insertListTransactions(
   pastelDB: Database,
-  listtransactions: TListTransactions,
+  listtransactions: TTransaction,
 ): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listtransactions')
@@ -940,14 +959,15 @@ export function insertListunspent(
 ): void {
   const createTimestamp = Date.now()
   const newId = getLastIdFromDB(pastelDB, 'listunspent')
-  const generated = listunspent.generated.toString()
+
+  const generated = listunspent?.generated?.toString()
   const values = {
     $newId: newId,
     $txid: listunspent.txid,
     $vout: listunspent.vout,
     $generated: generated,
     $address: listunspent.address,
-    $account: listunspent.account,
+    $account: listunspent?.account || '',
     $scriptPubKey: listunspent.scriptPubKey,
     $amount: listunspent.amount,
     $confirmations: listunspent.confirmations,

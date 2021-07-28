@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime'
 import 'electron-squirrel-startup'
 
 import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
+
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -11,14 +12,15 @@ import installExtension, {
 } from 'electron-devtools-installer'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
-import path from 'path'
 import os from 'os'
+import path from 'path'
 
 import pkg from '../package.json'
 import {
   forceSingleInstanceApplication,
   redirectDeepLinkingUrl,
   registerCustomProtocol,
+  registerFileProtocol,
 } from './features/deepLinking'
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
@@ -69,10 +71,10 @@ let proceedToClose = false
 const createWindow = async () => {
   const w = new BrowserWindow({
     show: false,
-    width: 1300,
+    width: 1440,
     height: 728,
     minHeight: 500,
-    minWidth: 1100,
+    minWidth: 900,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       // Allow node integration because we're only loading local content here.
@@ -107,7 +109,7 @@ const createWindow = async () => {
 
     w.webContents.send('app-info', {
       isPackaged: app.isPackaged,
-      locatePastelConfDir: locatePastelConfDir(),
+      locatePastelConfDir: getLocatePastelConfDir(),
     })
   })
   // @TODO: Use 'ready-to-show' event
@@ -181,7 +183,11 @@ const createWindow = async () => {
 app.on('window-all-closed', () => {
   app.quit()
 })
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  registerFileProtocol()
+})
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -221,7 +227,18 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
+  const locatePastelConfDir = getLocatePastelConfDir()
+  const locateSentTxStore = getLocateSentTxStore()
   initServeStatic(app.isPackaged)
+
+  if (mainWindow?.webContents) {
+    mainWindow.webContents.send('app-info', {
+      isPackaged: app.isPackaged,
+      locatePastelConfDir,
+      appPathDir: getAppPathDir(),
+      locateSentTxStore,
+    })
+  }
 })
 
 ipcMain.on('restart_app', () => {
@@ -247,7 +264,7 @@ autoUpdater.on('error', err => {
   console.warn(`autoUpdater error: ${err.message}`, err)
 })
 
-const locatePastelConfDir = () => {
+const getLocatePastelConfDir = () => {
   if (os.platform() === 'darwin') {
     return path.join(app.getPath('appData'), 'Pastel')
   }
@@ -257,4 +274,35 @@ const locatePastelConfDir = () => {
   }
 
   return path.join(app.getPath('appData'), 'Pastel')
+}
+
+const getLocateSentTxStore = (): string => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(
+      app.getPath('home'),
+      '.local',
+      'share',
+      'psl-qt-wallet-org',
+      'psl-qt-wallet',
+      'senttxstore.dat',
+    )
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+}
+
+const getAppPathDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'))
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'))
+  }
+
+  return path.join(app.getPath('appData'))
 }

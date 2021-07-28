@@ -1,6 +1,9 @@
 {
   "LOADING": "/",
+  "MEMBERS": "/members",
+  "FORUM": "/forum",
   "DASHBOARD": "/dashboard",
+  "PORTFOLIO": "/portfolio",
   "SEND": "/send",
   "RECEIVE": "/receive",
   "ADDRESSBOOK": "/addressbook",
@@ -21,5 +24,14 @@
   "TRANSACTIONSINBLOCKOVERTIME": "/statistics/transactionsinblockovertime",
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
-  "NFT": "/nft"
+  "NFT": "/nft",
+  "WALLET": "/wallet",
+  "PROFILE": "/profile",
+  "MEMBERS_PROFILE": "/member_profile",
+  "MY_PROFILE": "/my_profile",
+  "MARKET": "/market",
+  "CHAT": "/chat",
+  "PORTFOLIO_DETAIL": "/portfolio_detail",
+  "WELCOME_PAGE": "/welcome-page",
+  "LOGIN": "/login"
 }

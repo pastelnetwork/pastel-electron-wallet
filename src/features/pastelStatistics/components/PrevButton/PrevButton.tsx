@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import routes from '../../../../legacy/constants/routes.json'
+import routes from 'legacy/constants/routes.json'
 import styles from './PrevButton.module.css'
 
 type TPrevButton = {
   color: string
 }
 
-const PrevButton: React.FC<TPrevButton> = ({ color }) => {
+const PrevButton = ({ color }: TPrevButton): JSX.Element => {
   return (
     <Link to={routes.STATISTICS} className={styles.backButtonLink}>
       <i
