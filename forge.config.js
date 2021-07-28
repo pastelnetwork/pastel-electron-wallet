@@ -5,30 +5,43 @@ const package = require('./package.json')
 function getExtraResource() {
   const platform = process.argv[3] === 'win32' ? 'win32' : os.platform()
 
+  const paths = ['./static/nsfwjs-model']
+
   switch (platform) {
     case 'darwin':
-      return [
-        './static/bin/pasteld-mac',
-        './static/bin/pngquant/pngquant-mac',
-        './static/bin/mozjpeg/mozjpeg-mac',
-      ]
+      paths.push(
+        ...[
+          './static/bin/pasteld-mac',
+          './static/bin/pngquant/pngquant-mac',
+          './static/bin/mozjpeg/mozjpeg-mac',
+        ],
+      )
+      break
     case 'linux':
-      return [
-        './static/bin/pasteld-linux',
-        './static/bin/pngquant/pngquant-linux',
-        './static/bin/mozjpeg/mozjpeg-linux',
-      ]
+      paths.push(
+        ...[
+          './static/bin/pasteld-linux',
+          './static/bin/pngquant/pngquant-linux',
+          './static/bin/mozjpeg/mozjpeg-linux',
+        ],
+      )
+      break
     case 'win32':
-      return [
-        './static/bin/pasteld-win.exe',
-        './static/bin/pngquant/pngquant-win.exe',
-        './static/bin/mozjpeg/mozjpeg-win.exe',
-      ]
+      paths.push(
+        ...[
+          './static/bin/pasteld-win.exe',
+          './static/bin/pngquant/pngquant-win.exe',
+          './static/bin/mozjpeg/mozjpeg-win.exe',
+        ],
+      )
+      break
     default:
       throw new Error(
         'forge.config.js error: your OS is not supported. Supported OS are: darwin, linux, win32',
       )
   }
+
+  return paths
 }
 
 function getIcon() {

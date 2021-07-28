@@ -3,6 +3,7 @@ import {
   TImageOptimizationState,
   useImageOptimizationState,
 } from './imageOptimization/imageOptimization.state'
+import { TNSFWState, useNSFWState } from './NSFW/NSFW.state'
 
 export enum Step {
   inputData,
@@ -55,6 +56,7 @@ export type TAddNFTState = {
   isLossLess: boolean
   estimatedFee: number | undefined
   optimizationState: TImageOptimizationState
+  nsfwState: TNSFWState
   setStep(step: Step): void
   setNftData(data: TNFTData): void
   setCrop(crop: TCrop): void
@@ -77,6 +79,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [isLossLess, setIsLossLess] = useState(true)
   const [estimatedFee, setEstimatedFee] = useState<number>()
   const optimizationState = useImageOptimizationState()
+  const nsfwState = useNSFWState()
 
   return {
     step,
@@ -93,6 +96,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     setEstimatedFee,
     optimizationState,
     setIsLossLess,
+    nsfwState,
     goBack() {
       if (step > firstStep) {
         setStep(step - 1)
