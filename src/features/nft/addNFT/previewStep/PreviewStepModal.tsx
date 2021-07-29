@@ -4,7 +4,6 @@ import Magnification from './Magnification'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Tooltip2 from 'common/components/Tooltip2'
 import { ArrowSlim, Crop } from 'common/components/Icons'
-import style from './PreviewStep.module.css'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
@@ -95,11 +94,7 @@ export default function PreviewStepModal({
                 </button>
               )}
             </Tooltip2>
-            <img
-              ref={setImageElement}
-              src={displayUrl}
-              className={`rounded ${style.zoomInCursor}`}
-            />
+            <img ref={setImageElement} src={displayUrl} className='rounded' />
           </div>
         </div>
       }

@@ -13,21 +13,28 @@ import PreviewStep from './previewStep/PreviewStep'
 import SubmitStep from './submitStep/SubmitStep'
 import ApprovedStep from './approvedStep/ApprovedStep'
 import InputNFTDataStep from './inputNFTDataStep/InputNFTDataStep'
+import { useToggle } from 'react-use'
 
 export type TAddNFTProps = { open: boolean } & TUseAddNFTProps
 
 export default function AddNFT({ open, ...props }: TAddNFTProps): JSX.Element {
+  const [showCloseButton, toggleCloseButton] = useToggle(true)
+
   return (
     <Modal
       open={open}
       onClose={props.onClose}
-      closeButton
-      render={() => <AddNFTContent {...props} />}
+      closeButton={showCloseButton}
+      render={() => (
+        <AddNFTContent {...props} toggleCloseButton={toggleCloseButton} />
+      )}
     />
   )
 }
 
-const AddNFTContent = (props: TUseAddNFTProps) => {
+const AddNFTContent = (
+  props: TUseAddNFTProps & { toggleCloseButton(): void },
+) => {
   const state = useAddNFTState(props)
   const { step } = state
 
@@ -49,7 +56,14 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
       <AfterUploadStep state={state} image={image} displayUrl={displayUrl} />
     )
   } else if (step === Step.preview && state.image) {
-    return <PreviewStep state={state} image={image} displayUrl={displayUrl} />
+    return (
+      <PreviewStep
+        state={state}
+        image={image}
+        displayUrl={displayUrl}
+        toggleCloseButton={props.toggleCloseButton}
+      />
+    )
   }
 
   if (step === Step.submit) {
@@ -59,6 +73,7 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
         image={image}
         displayUrl={displayUrl}
         nftData={nftData}
+        toggleCloseButton={props.toggleCloseButton}
       />
     )
   } else if (step === Step.approved) {

@@ -178,7 +178,9 @@ module.exports = {
           },
         },
         white: '#FFFFFF',
-        transparent: 'transparent',
+        transparent: {
+          DEFAULT: 'transparent',
+        },
         success: {
           DEFAULT: '#00D097',
           pressed: '#00B282',
