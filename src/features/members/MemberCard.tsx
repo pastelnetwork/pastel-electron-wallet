@@ -1,7 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
 
-import verifiedIcon from '../../common/assets/images/verified-icon.svg'
+import { DiamondInHexagon } from 'common/components/Icons/DiamondInHexagon'
 
 export type TMemberCard = {
   avatar: string
@@ -22,16 +22,13 @@ const MemberCard = ({
   searchText,
 }: TMemberCard): JSX.Element => {
   return (
-    <div className='px-5 py-7 bg-background-main rounded-2xl overflow-visible h-142px'>
+    <div className='px-4 py-7 bg-background-main rounded-2xl overflow-visible h-142px'>
       <div className='flex space-x-4 relative'>
         <img src={avatar} className='w-88px h-88px' />
         {isVerified && (
-          <img
-            src={verifiedIcon}
-            className='w-6 h-6 absolute top-63px left-12'
-          />
+          <DiamondInHexagon className='w-6 h-6 absolute top-63px left-12 text-blue-3f' />
         )}
-        <div className='flex flex-col justify-between w-111px'>
+        <div className='flex flex-col justify-between w-115px'>
           <h5 className='text-gray-1a font-semibold truncate'>
             {searchText ? (
               <div
@@ -40,7 +37,7 @@ const MemberCard = ({
                     ? name.replace(
                         new RegExp(searchText, 'gi'),
                         match =>
-                          `<mark class='bg-yellow-ff py-1'>${match}</mark>`,
+                          `<mark class='bg-blue-9b py-1'>${match}</mark>`,
                       )
                     : name,
                 }}

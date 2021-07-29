@@ -37,9 +37,15 @@ const PasswordRecovery = (): JSX.Element => {
       </Typography>
       <div className='mt-[19px]'>
         <MultiToggleSwitch
-          data={[{ label: 'QR-Code' }, { label: 'Crypto Keys' }]}
+          data={[
+            { label: 'QR-Code' },
+            { label: 'Crypto Keys' },
+            { label: 'My Security', count: 12 },
+          ]}
           activeIndex={tab}
           onToggle={onTabToggle}
+          itemActiveClassName='bg-gray-4a rounded-full text-white'
+          countInactiveClassName='bg-warning-hover font-extrabold'
         />
       </div>
       {tab === Tabs.qrCode && (
@@ -50,7 +56,14 @@ const PasswordRecovery = (): JSX.Element => {
             </div>
           </div>
           <div className='flex justify-center mt-[27.5px] text-link text-base font-medium'>
-            <Link to={ROUTES.LOGIN}>Or try to login again</Link>
+            <Link to={ROUTES.LOGIN}>
+              <Button
+                variant='secondary'
+                className='w-[400px] font-medium text-base'
+              >
+                Or try to Login again
+              </Button>
+            </Link>
           </div>
         </div>
       )}
@@ -114,20 +127,20 @@ const PasswordRecovery = (): JSX.Element => {
               </Typography>
             </div>
           </div>
-          <div className='mt-5'>
+          <div className='mt-7'>
             <Link to={ROUTES.NEW_PASSWORD}>
               <Button style={{ width: '100%' }}>Submit</Button>
             </Link>
           </div>
-          <div className='flex justify-center mt-[17px]'>
-            <Link href={ROUTES.PASSWORD_RECOVERY}>
-              <Typography
-                variant={TypographyVariant.body2}
-                customColor='text-link'
-                customFontWeight='font-medium'
+          <div className='mt-[17px]'>
+            <Link to={ROUTES.PASSWORD_RECOVERY}>
+              <Button
+                style={{ width: '100%' }}
+                variant='transparent'
+                className='w-full bg-white border border-link text-link text-base font-medium'
               >
                 Or try to login again
-              </Typography>
+              </Button>
             </Link>
           </div>
         </div>

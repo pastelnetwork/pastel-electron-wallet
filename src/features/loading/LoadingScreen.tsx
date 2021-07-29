@@ -474,7 +474,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       )
     }
 
-    return <Redirect to={this.props.redirectTo || routes.WALLET} />
+    return <Redirect to={this.props.redirectTo || routes.DASHBOARD} />
   }
 }
 

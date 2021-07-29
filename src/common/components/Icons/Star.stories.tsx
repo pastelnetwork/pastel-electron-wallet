@@ -14,16 +14,14 @@ const Template: Story<Props> = ({ ...args }) => {
 
 export const FilledStar = Template.bind({})
 FilledStar.args = {
-  width: 18,
-  height: 16,
+  size: 18,
   className: 'text-gray-8e',
   filled: false,
 }
 export const SimpleStar = Template.bind({})
 
 SimpleStar.args = {
-  width: 18,
-  height: 16,
+  size: 18,
   className: 'text-yellow-ffd',
   filled: true,
 }

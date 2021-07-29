@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TSearchProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
-export const Search = ({
-  width = 17,
-  height = 16,
+export const Search: React.FC<TSearchProps> = ({
+  size = 17,
   className = 'text-gray-33',
 }: TSearchProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       viewBox='0 0 17 16'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

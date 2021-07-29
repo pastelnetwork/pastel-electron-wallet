@@ -60,7 +60,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     })
 
     const inputClasses = cn({
-      'input-field w-full py-2 text-base placeholder-gray500 text-text-gray800 text-h5 focus:outline-none placeholder-gray-a0 rounded': true,
+      'input-field w-full py-2 text-base placeholder-gray500 text-gray-800 text-h5 focus:outline-none placeholder-gray-a0 rounded': true,
       'pl-4': !prepend,
       'pl-2': prepend,
       'pr-4': !append,

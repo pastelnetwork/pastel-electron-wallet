@@ -99,7 +99,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
           <span className='text-gray-71 pl-1'>{dayjs(time).fromNow()}</span>
         </div>
         <div className='pr-82px'>
-          <div className='mt-4 text-base font-medium text-gray-4a mb-6'>
+          <div className='mt-4 text-base font-medium text-gray-4a mb-[17px]'>
             "{comment}"
           </div>
           {children}

@@ -36,10 +36,12 @@ const CopiesDetailsModal = ({
 const Columns = [
   {
     name: 'Copy ID',
+    key: 'Copy ID',
     className: 'pl-4 w-139px',
   },
   {
     name: 'Owner',
+    key: 'Owner',
   },
 ]
 

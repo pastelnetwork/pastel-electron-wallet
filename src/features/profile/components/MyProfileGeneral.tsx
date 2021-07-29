@@ -8,6 +8,8 @@ import ProfileGeneralRow from './ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import Select, { TOption } from './Select/Select'
 
+import NumberFormat from 'react-number-format'
+
 export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
 
 export type TProfileGeneral = {
@@ -24,10 +26,10 @@ const ProfileGeneral = ({
   const data = {
     location: 'New York, US',
     language: 'English',
-    categories: ['motion graphics', 'illustration', 'abstract'],
+    categories: ['Motion Graphics', 'Illustration', 'Abstract'],
     reputation: 4.89,
-    highestFeeRecieved: { value: '136,200,000', comment: 632 },
-    totalSalesAmount: { value: '560,600,00', comment: 211 },
+    highestFeeRecieved: { value: '136200', comment: 632 },
+    totalSalesAmount: { value: '560600', comment: 211 },
     totalItemsSold: '124 Copies across 5 NFTs',
     bio:
       'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
@@ -69,7 +71,7 @@ const ProfileGeneral = ({
   }, [nativeCurrency])
 
   return (
-    <div className='flex-grow w-full lg:w-3/5 pr-74px'>
+    <div className='flex-grow w-full lg:w-3/5 pr-60px'>
       <div className='w-full space-y-4'>
         <ProfileGeneralRow title='Location'>
           {editMode ? (
@@ -140,8 +142,13 @@ const ProfileGeneral = ({
                     </p>
                   }
                 >
-                  <span className='cursor-pointer text-gray-4a text-base leading-5'>
-                    {data.highestFeeRecieved.value}k PSL
+                  <span className='cursor-pointer font-medium text-gray-4a text-base leading-5'>
+                    <NumberFormat
+                      value={data.highestFeeRecieved.value}
+                      displayType='text'
+                      thousandSeparator={true}
+                    />{' '}
+                    PSL
                   </span>
                 </Tooltip>
                 {data.highestFeeRecieved.comment && (
@@ -175,7 +182,12 @@ const ProfileGeneral = ({
                   }
                 >
                   <span className='cursor-pointer text-gray-4a text-base leading-5'>
-                    {data.totalSalesAmount.value}k PSL
+                    <NumberFormat
+                      value={data.totalSalesAmount.value}
+                      displayType='text'
+                      thousandSeparator={true}
+                    />{' '}
+                    PSL
                   </span>
                 </Tooltip>
                 {data.totalSalesAmount.comment && (
@@ -195,16 +207,16 @@ const ProfileGeneral = ({
           )}
         </ProfileGeneralRow>
       </div>
-      <div className='w-full mt-96px mb-50px 1200px:mb-0'>
+      <div className='w-full mt-20 mb-50px 1200px:mb-0'>
         <div className='flex'>
           <div className='w-190px text-gray-71'>Bio</div>
         </div>
         <div className='flex pt-3'>
           <div className='flex-grow text-gray-4a font-medium text-base leading-5'>
             {editMode ? (
-              <div className='rounded bg-white p-4 pb-2 shadow-4px'>
+              <div className='rounded bg-white py-6 px-4 shadow-4px h-216px'>
                 <textarea
-                  className='w-full rounded outline-none h-220px resize-none'
+                  className='w-full rounded outline-none h-full resize-none text-base text-gray-4a font-normal leading-6'
                   value={bio}
                   onChange={e => setBio(e.target.value)}
                 />

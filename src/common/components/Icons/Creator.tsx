@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TCreatorProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
-export const Creator = ({
-  width = 9,
-  height = 12,
+export const Creator: React.FC<TCreatorProps> = ({
+  size = 9,
   className = 'text-gray-4a',
 }: TCreatorProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 9 12'
       fill='none'

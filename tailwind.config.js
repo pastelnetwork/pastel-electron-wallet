@@ -121,6 +121,7 @@ module.exports = {
         '200px': '12.5rem',
         '205px': '12.813rem',
         '208px': '13rem',
+        '216px': '13.5rem',
         '219px': '13.6875rem',
         '220px': '13.75rem',
         '223px': '13.9375rem',
@@ -164,6 +165,7 @@ module.exports = {
         '690px': '43.125rem',
         '791px': '49.4375rem',
         '874px': '54.625rem',
+        '30vh': '30vh',
       },
       colors: {
         link: {
@@ -214,8 +216,13 @@ module.exports = {
           '00': '#0054FE',
           d9: '#D9EBFD',
           '9b': '#9BC8F4',
+          e7: '#E7F2FE',
+          ac: '#006EAC',
+          f2: '#98CFF2',
         },
         gray: {
+          f6: '#F6F7F9',
+          ec: '#ECEFF3',
           fc: '#FCFCFD',
           f9: '#F9FAFB',
           f8: '#F8F9FA',
@@ -257,13 +264,14 @@ module.exports = {
           14: '#141416',
           11: '#11142D',
           f5: '#F5F6F7',
-          d6: '#D1D6E0',
-          d1: '#D1D1D1',
-          55: '#556177',
+          d1: '#D1D6E0',
           88: '#8894AA',
-          ec: '#ECEFF3',
-          f6: '#F6F7F9',
           b9: '#B9BFCB',
+          main: '#D1D1D1',
+          d7: '#D7DEFF',
+          d6: '#D1D6E0',
+          d1d: '#D1D1D1',
+          55: '#556177',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -274,6 +282,9 @@ module.exports = {
           75: '#FF754C',
           63: '#FE634C',
           14: '#14B85F',
+          '4a': '#FA4A30',
+          d9: '#FFD9D9',
+          e6: '#f8e6f0',
         },
         pink: {
           46: '#EF466F',
@@ -409,6 +420,7 @@ module.exports = {
         '14px': '0.875rem',
         '15px': '0.938rem',
         '26px': '1.625rem',
+        '22px': '1.375rem',
         '32px': '2rem',
       },
       fontWeight: {
@@ -442,6 +454,7 @@ module.exports = {
       minHeight: {
         '78px': '4.875rem',
         '672px': '42rem',
+        '98vh': '98vh',
       },
       maxWidth: {
         '32px': '2rem',
@@ -456,6 +469,7 @@ module.exports = {
         '478px': '29.875rem',
         '594px': '37.125rem',
         '598px': '37.375rem',
+        '672px': '42rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
         '9/10': '90%',

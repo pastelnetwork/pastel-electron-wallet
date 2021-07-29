@@ -22,8 +22,8 @@ const Modal = ({
   overlayClassName,
 }: TModal): JSX.Element => {
   const modalClasses = cn(
-    'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 px-12 overflow-auto mx-auto',
     className,
+    'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 px-12 overflow-auto mx-auto',
   )
 
   const modalOverlayClassName = cn(

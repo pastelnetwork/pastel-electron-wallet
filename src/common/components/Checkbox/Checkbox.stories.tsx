@@ -30,7 +30,6 @@ const Template: Story<TCheckboxProps> = ({
         clickHandler={param => {
           setChecked(param)
         }}
-        variant='secondary'
       />
     </div>
   )

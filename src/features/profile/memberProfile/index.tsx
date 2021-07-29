@@ -20,7 +20,7 @@ const profile_data = {
 const general_data = {
   location: 'New York, US',
   language: 'English',
-  categories: 'motion graphics, illustration, \nabstract',
+  categories: 'Motion Graphics, Illustration, Abstract',
   reputation: 3.89,
   buyerBans: 3,
   highestFeeRecieved: '136,200,000k PSL (#632)',

@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import { Arrow } from 'common/components/Icons'
+import { LongArrow } from 'common/components/Icons'
 import { Dayjs } from 'dayjs'
 import { formatNumber } from '../../common/utils/format'
 
@@ -29,7 +29,11 @@ export default function TransactionItem({
                 : 'bg-red-ef text-red-7a',
             )}
           >
-            <Arrow size={11} to={type === 'in' ? 'right' : 'left'} />
+            <LongArrow
+              className={type === 'in' ? 'text-green-00' : 'text-warning-hover'}
+              size={12}
+              to={type === 'in' ? 'right' : 'left'}
+            />
           </div>
           <div className='mt-0.5 w-full'>
             <div className='text-gray-4a text-sm font-medium mb-1'>
