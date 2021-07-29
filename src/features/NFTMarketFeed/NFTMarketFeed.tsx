@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 
-import { useAppSelector } from 'redux/hooks'
 import * as ROUTES from 'common/utils/constants/routes'
 import NFTCard, { TNFTCard } from 'common/components/NFTCard'
 import avatar from 'common/assets/images/avatar-placeholder.png'
@@ -9,6 +8,7 @@ import Select, { TOption } from 'common/components/Select/Select'
 import Slider from 'common/components/Slider/Slider'
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 enum Tabs {
   feed,
@@ -16,9 +16,7 @@ enum Tabs {
 }
 
 const NFTMarketFeed = (): JSX.Element => {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
+  const currencyName = useCurrencyName()
   const mockCardProps: TNFTCard = {
     author: 'zndrson',
     avatarSrc: avatar,
@@ -32,6 +30,7 @@ const NFTMarketFeed = (): JSX.Element => {
     followers: 256,
     isLastBid: false,
     detailUrl: ROUTES.PORTFOLIO_DETAIL,
+    nsfw: { porn: 0, hentai: 0 },
   }
 
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)
@@ -59,6 +58,17 @@ const NFTMarketFeed = (): JSX.Element => {
     { value: 'Medium', label: 'Medium' },
     { value: 'Low', label: 'Low' },
   ]
+
+  const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {
+    const nsfw = (i + 1) % 3 ? 0 : 100
+
+    return {
+      ...mockCardProps,
+      onSale: Boolean(i % 2),
+      isLastBid: Boolean(i % 3),
+      nsfw: { porn: nsfw, hentai: nsfw },
+    }
+  })
 
   // Filters
   const [category, setCategory] = useState<TOption | null>(mockCategories[0])
@@ -142,13 +152,9 @@ const NFTMarketFeed = (): JSX.Element => {
           </div>
         </div>
         <div className='grid grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 text-gray-1a'>
-          {Array.from({ length: 6 }).map((_, i) => (
+          {mockNFTs.map((nft, i) => (
             <NFTCard
-              {...{
-                ...mockCardProps,
-                onSale: i % 2 ? true : false,
-                isLastBid: i % 3 ? true : false,
-              }}
+              {...nft}
               key={i}
               className='max-w-[318px] md:max-w-[250]px lg:max-w-[318px] xl:max-w-[364px]'
             />

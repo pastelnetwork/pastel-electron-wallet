@@ -85,6 +85,7 @@ export default function Portfolio(): JSX.Element {
       onSale: index % 2 ? true : false,
       isLastBid: index % 3 ? true : false,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
+      nsfw: { porn: 0, hentai: 0 },
     })
   })
 
@@ -102,6 +103,7 @@ export default function Portfolio(): JSX.Element {
       isLastBid: false,
       onSale: true,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
+      nsfw: { porn: 0, hentai: 0 },
     },
     {
       author: 'zndrson',
@@ -116,6 +118,7 @@ export default function Portfolio(): JSX.Element {
       isLastBid: false,
       onSale: true,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
+      nsfw: { porn: 0, hentai: 0 },
     },
   ]
 
@@ -133,6 +136,7 @@ export default function Portfolio(): JSX.Element {
       isLastBid: false,
       onSale: true,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
+      nsfw: { porn: 0, hentai: 0 },
     },
     {
       author: 'zndrson',
@@ -147,6 +151,7 @@ export default function Portfolio(): JSX.Element {
       isLastBid: false,
       onSale: true,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
+      nsfw: { porn: 0, hentai: 0 },
     },
   ]
 
@@ -166,6 +171,7 @@ export default function Portfolio(): JSX.Element {
       onSale: index % 2 ? true : false,
       isLastBid: index % 3 ? true : false,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
+      nsfw: { porn: 0, hentai: 0 },
     })
   })
 

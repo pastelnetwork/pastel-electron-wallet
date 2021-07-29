@@ -85,6 +85,7 @@ export default function DashboardPage(): JSX.Element {
         hideFollow: true,
         hideUnFollow: index % 3 === 0 ? false : true,
         detailUrl: ROUTES.PORTFOLIO_DETAIL,
+        nsfw: { porn: 0, hentai: 0 },
       })
     })
     setCards(randomCards)
