@@ -3,17 +3,27 @@ const os = require('os')
 const package = require('./package.json')
 
 function getExtraResource() {
-  const p = os.platform()
-  switch (p) {
+  const platform = process.argv[3] === 'win32' ? 'win32' : os.platform()
+
+  switch (platform) {
     case 'darwin':
-      return ['./static/bin/pasteld-mac']
+      return [
+        './static/bin/pasteld-mac',
+        './static/bin/pngquant/pngquant-mac',
+        './static/bin/mozjpeg/mozjpeg-mac',
+      ]
     case 'linux':
-      if (process.argv[3] === 'win32') {
-        return ['./static/bin/pasteld-win.exe']
-      }
-      return ['./static/bin/pasteld-linux']
+      return [
+        './static/bin/pasteld-linux',
+        './static/bin/pngquant/pngquant-linux',
+        './static/bin/mozjpeg/mozjpeg-linux',
+      ]
     case 'win32':
-      return ['./static/bin/pasteld-win.exe']
+      return [
+        './static/bin/pasteld-win.exe',
+        './static/bin/pngquant/pngquant-win.exe',
+        './static/bin/mozjpeg/mozjpeg-win.exe',
+      ]
     default:
       throw new Error(
         'forge.config.js error: your OS is not supported. Supported OS are: darwin, linux, win32',

@@ -23,6 +23,9 @@ module.exports = {
     })
     config.resolve.modules.push(path.join(process.cwd(), 'node_modules'))
     config.resolve.modules.push(path.join(process.cwd(), 'src'))
+    config.resolve.alias['electron-log'] = require.resolve(
+      './mocks/electron-log',
+    )
     return config
   },
   typescript: {

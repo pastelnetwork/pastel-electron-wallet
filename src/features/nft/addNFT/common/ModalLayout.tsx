@@ -1,5 +1,5 @@
 import React from 'react'
-import PercentCircle from 'common/components/PercentCircle'
+import StepsCircle from 'common/components/StepsCircle'
 import cn from 'classnames'
 
 type TModalLayoutProps = {
@@ -48,15 +48,15 @@ export default function CroppingStep({
           </div>
         </div>
         {step && (
-          <PercentCircle
+          <StepsCircle
             color='text-green-6d'
-            percent={(step * 100) / stepsCount}
+            step={step}
             className='ml-2 md:ml-3 lg:ml-18px'
           >
             <div className='font-extrabold text-gray-11 text-lg mt-1'>
               {step}/{stepsCount}
             </div>
-          </PercentCircle>
+          </StepsCircle>
         )}
       </div>
       <div className={cn('flex space-x-7 flex-grow', contentClass)}>

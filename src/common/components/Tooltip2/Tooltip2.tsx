@@ -1,15 +1,20 @@
 import * as React from 'react'
 import { usePopperTooltip } from 'react-popper-tooltip'
 import 'react-popper-tooltip/dist/styles.css'
-import style from './Tooltip.module.css'
+import style from './Tooltip2.module.css'
+import cn from 'classnames'
 
 export type TTooltipProps = {
-  text: string
+  text: React.ReactNode
+  show?: boolean
+  className?: string
   children(ref: (el: HTMLElement | null) => void): React.ReactNode
 }
 
-export default function Tooltip({
+export default function Tooltip2({
   text,
+  show,
+  className,
   children,
 }: TTooltipProps): JSX.Element {
   const {
@@ -25,17 +30,19 @@ export default function Tooltip({
   return (
     <>
       {children(setTriggerRef)}
-      {visible && (
+      {(show || visible) && (
         <div
           ref={setTooltipRef}
           {...getTooltipProps({
-            className:
-              'flex-center bg-gray-14 border border-gray-e1 rounded-lg h-6 px-1.5 font-extrabold text-white text-xs',
+            className: cn(
+              'flex-center bg-gray-33 rounded-md h-8 px-2 font-extrabold text-white text-xs',
+              className,
+            ),
           })}
         >
           <div
             {...getArrowProps({
-              className: `${style.arrow} ${style.arrowDown}`,
+              className: `border-gray-33 absolute left-1/2 pointer-events-none border-solid h-0 w-0 ${style.arrowDown}`,
             })}
           />
           {text}

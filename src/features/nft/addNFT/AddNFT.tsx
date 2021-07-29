@@ -7,8 +7,8 @@ import {
   TImage,
 } from './AddNFT.state'
 import Modal from 'common/components/AnimatedModal'
-import UploadStep from './uploadStep/UploadStep'
-import AfterUploadStep from './afterUploadStep/AfterUploadStep'
+import SelectImageStep from './selectImageStep/SelectImageStep'
+import AfterUploadStep from './afterSelectStep/AfterSelectStep'
 import PreviewStep from './previewStep/PreviewStep'
 import SubmitStep from './submitStep/SubmitStep'
 import ApprovedStep from './approvedStep/ApprovedStep'
@@ -33,23 +33,43 @@ const AddNFTContent = (props: TUseAddNFTProps) => {
 
   if (step === Step.inputData) {
     return <InputNFTDataStep state={state} />
-  } else if (step === Step.upload) {
-    return <UploadStep state={state} />
+  } else if (step === Step.select) {
+    return <SelectImageStep state={state} />
   }
 
   const image = state.image as TImage
   const nftData = state.nftData as TNFTData
 
-  if (step === Step.afterUpload) {
-    return <AfterUploadStep state={state} image={image} />
+  const { selectedFile } = state.optimizationState
+  const displayUrl =
+    state.isLossLess || !selectedFile ? image.url : selectedFile.fileUrl
+
+  if (step === Step.afterSelect) {
+    return (
+      <AfterUploadStep state={state} image={image} displayUrl={displayUrl} />
+    )
   } else if (step === Step.preview && state.image) {
-    return <PreviewStep state={state} image={image} />
+    return <PreviewStep state={state} image={image} displayUrl={displayUrl} />
   }
 
   if (step === Step.submit) {
-    return <SubmitStep state={state} image={image} nftData={nftData} />
+    return (
+      <SubmitStep
+        state={state}
+        image={image}
+        displayUrl={displayUrl}
+        nftData={nftData}
+      />
+    )
   } else if (step === Step.approved) {
-    return <ApprovedStep state={state} image={image} nftData={nftData} />
+    return (
+      <ApprovedStep
+        state={state}
+        image={image}
+        displayUrl={displayUrl}
+        nftData={nftData}
+      />
+    )
   }
 
   return null
