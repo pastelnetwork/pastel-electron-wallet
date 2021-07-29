@@ -1,0 +1,8 @@
+.arrowDown {
+  bottom: 0;
+  margin-bottom: -4px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-width: 4px 4px 0 4px;
+}

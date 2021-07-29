@@ -1,11 +1,11 @@
 import React from 'react'
 import * as yup from 'yup'
-import PercentCircle from 'common/components/PercentCircle'
+import StepsCircle from 'common/components/StepsCircle'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common/components/Form/Input'
 import { Button } from 'common/components/Buttons'
-import { TNFTData, TAddNFTState } from '../AddNFT.state'
+import { TAddNFTState, TNFTData } from '../AddNFT.state'
 import { TOption } from 'common/components/Select/Select'
 import Toggle from 'common/components/Form/Toggle'
 import { Info } from 'common/components/Icons'
@@ -15,6 +15,13 @@ import Copies from './Copies'
 import Royalty from './Royalty'
 import WebsiteAndVideo from './WebsiteAndVideo'
 import TextArea from 'common/components/Form/TextArea'
+import {
+  copiesMax,
+  copiesMin,
+  royaltyMax,
+  royaltyMin,
+  titleMinLength,
+} from '../AddNft.constants'
 
 type TFormData = Omit<TNFTData, 'hashtags'> & {
   hashtags: TOption[]
@@ -30,14 +37,6 @@ export const hashtags = [
   '#spaceart',
   '#paintworks',
 ].map(value => ({ value, label: value }))
-
-const titleMinLength = 10
-
-export const copiesMin = 1
-export const copiesMax = 1000
-
-export const royaltyMin = 0.1
-export const royaltyMax = 20
 
 const schema = yup.object().shape({
   title: yup.string().label('Title').min(titleMinLength).required(),
@@ -105,9 +104,9 @@ export default function InputNFTDataStep({
               The Metadata Fields for your NFT
             </div>
           </div>
-          <PercentCircle color='text-green-6d' percent={25}>
+          <StepsCircle color='text-green-6d' step={1}>
             <div className='font-extrabold text-gray-11 text-lg mt-1'>1/4</div>
-          </PercentCircle>
+          </StepsCircle>
         </div>
         <div className='mt-1 mb-22px space-y-6'>
           <div className='flex items-end space-x-5'>

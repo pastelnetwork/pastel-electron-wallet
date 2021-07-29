@@ -1,8 +1,8 @@
 {
   "name": "pastelwallet",
   "productName": "Pastel Wallet Fullnode",
-  "version": "1.0.5",
-  "description": "Pastel Fullnode Wallet (Electron version)",
+  "version": "1.2.2",
+  "description": "Pastel Wallet Fullnode (Electron version)",
   "keywords": [
     "Pastel",
     "Wallet"
@@ -71,6 +71,7 @@
     "faker": "5.5.3",
     "ffmpegwasm-create-video": "pastelnetwork/ffmpegwasm-create-video#95a8a11",
     "file-saver": "2.0.5",
+    "file-url": "4.0.0",
     "generate-password": "1.6.0",
     "hex-string": "1.0.3",
     "history": "4.10.1",
@@ -129,7 +130,6 @@
     "smartcrop": "jwagner/smartcrop.js#9933f97",
     "sql.js": "pastelnetwork/sql.js#230351f",
     "squoosh": "pastelnetwork/squoosh#b9388e1",
-    "styled-components": "5.3.0",
     "swiper": "6.7.1",
     "tailwindcss": "2.1.2",
     "typeface-roboto": "0.0.75",
