@@ -1,10 +1,11 @@
 import React from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
-import ModalLayout from '../ModalLayout'
+import ModalLayout from '../common/ModalLayout'
 import { Button } from 'common/components/Buttons'
-import FullScreenButton from '../fullScreenButton/FullScreenButton'
+import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
+import ImageShadow from '../common/ImageShadow'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
@@ -17,16 +18,19 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 type TApprovedStepProps = {
   state: TAddNFTState
   image: TImage
+  displayUrl: string
   nftData: TNFTData
 }
 
 export default function ApprovedStep({
   state: { goToNextStep },
   image,
+  displayUrl,
   nftData,
 }: TApprovedStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
+
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
@@ -43,9 +47,10 @@ export default function ApprovedStep({
         <div className='flex-center'>
           <div className='relative flex-center'>
             <FullScreenButton onClick={toggleFullScreen} />
+            <ImageShadow url={displayUrl} />
             <img
-              src={image.url}
-              className='rounded max-h-424px'
+              src={displayUrl}
+              className='rounded max-h-424px relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
           </div>

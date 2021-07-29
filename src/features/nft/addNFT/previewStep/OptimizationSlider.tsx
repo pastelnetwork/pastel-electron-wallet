@@ -1,42 +1,78 @@
 import React from 'react'
 import Slider from 'common/components/Slider/Slider'
-import { formatNumber } from 'common/utils/format'
+import { formatFileSize, formatNumber } from 'common/utils/format'
+import { TAddNFTState, TImage } from '../AddNFT.state'
+import Spinner from 'common/components/Spinner'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TOptimizationSliderProps = {
-  recalcFee(val: number): number
-  fileSizeKb: number
-  optimizedSizeKb: number
-  setOptimizedSizeKb(val: number): void
-  currencyName: string
+  state: TAddNFTState
+  image: TImage
+  fee: number | undefined
 }
 
-export default function OptimizationSlider(
-  props: TOptimizationSliderProps,
-): JSX.Element {
-  const fileSizeMb = props.fileSizeKb / 1024
-  const maxOptimization = Math.ceil(10 * fileSizeMb) / 10
+const createArrayOfIndices = (length: number) =>
+  new Array(length).fill(0).map((_, i) => i)
 
-  const formatValue = (value: number) => `${value} Mb`
-  const formatTooltipValue = (value: number) => {
-    return `${value.toFixed(1)} Mb - ${formatNumber(
-      props.recalcFee(value * 1024),
-    )} ${props.currencyName}`
+export default function OptimizationSlider({
+  state,
+  image,
+  fee,
+}: TOptimizationSliderProps): JSX.Element | null {
+  const currencyName = useCurrencyName()
+
+  if (state.optimizationState.status === 'processing') {
+    return (
+      <div className='flex items-center text-gray-71'>
+        <div className='mr-3'>Loading optimized images</div>
+        <Spinner className='w-6 h-6' />
+      </div>
+    )
   }
 
-  const onUpdate = (val: number) => {
-    props.setOptimizedSizeKb(val * 1024)
+  const { files } = state.optimizationState
+  if (!files?.length) {
+    return null
+  }
+
+  const formatValue = (value: number) => {
+    const index = Math.round(value)
+    const file = files[index] || image.file
+    return formatFileSize(file.size, 2)
+  }
+
+  const formatTooltipValue = (value: number) => {
+    const size = formatValue(value)
+
+    if (fee === undefined) {
+      return size
+    } else {
+      return `${size} - ${formatNumber(fee)} ${currencyName}`
+    }
+  }
+
+  const selectedIndex =
+    state.optimizationState.selectedFile?.index ?? files.length
+
+  const onChange = (value: number) => {
+    const index = Math.round(value)
+    const file = files[index]
+    state.optimizationState.setSelectedFile(file && { ...file, index })
   }
 
   return (
     <Slider
+      className='relative z-10'
       min={0}
-      max={maxOptimization}
-      onChange={onUpdate}
-      value={props.optimizedSizeKb / 1024}
-      step={0.01}
+      max={files.length}
+      onChange={onChange}
+      value={selectedIndex}
+      step={1}
+      steps={createArrayOfIndices(files.length + 1)}
       formatValue={formatValue}
       formatTooltipValue={formatTooltipValue}
       minMaxClassName='top-6 text-gray-71 text-xs'
+      minMaxAlignCenter
       width={349}
     />
   )

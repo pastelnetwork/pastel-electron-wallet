@@ -4,8 +4,7 @@ import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
 import StepSlider from './StepSlider'
 import { useWatch } from 'react-hook-form'
-
-const copiesAmountToShowWarning = 100
+import { copiesAmountToShowWarning } from '../AddNft.constants'
 
 export default function Copies({ form }: { form: TForm }): JSX.Element {
   return (

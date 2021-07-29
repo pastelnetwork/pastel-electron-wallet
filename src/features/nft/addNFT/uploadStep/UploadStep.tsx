@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { TAddNFTState } from '../AddNFT.state'
-import ModalLayout from '../ModalLayout'
+import ModalLayout from '../common/ModalLayout'
 import { ArrowSlim, Info } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
 import UploadingCircle from './UploadingCircle'
 import UploadArea from './UploadArea'
+import { useSubmit } from './UploadStep.service'
 
 type TUploadStepProps = {
   state: TAddNFTState
@@ -17,19 +18,11 @@ export type TImageFile = {
   height: number
 }
 
-export default function UploadStep({
-  state: { goBack, goToNextStep, setImage, image },
-}: TUploadStepProps): JSX.Element {
-  const [file, setFile] = useState<TImageFile>()
-  const [isReady, setReady] = useState(Boolean(image))
+export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
+  const [imageFile, setFile] = useState<TImageFile>()
+  const [isReady, setReady] = useState(Boolean(state.image))
 
-  const submit = async () => {
-    if (file) {
-      setImage(file)
-    }
-
-    goToNextStep()
-  }
+  const submit = useSubmit(state, imageFile)
 
   return (
     <ModalLayout
@@ -43,9 +36,9 @@ export default function UploadStep({
       contentClass='pt-2'
       leftColumnWidth={320}
       leftColumnContent={
-        file || isReady ? (
+        imageFile || isReady ? (
           <UploadingCircle
-            file={file}
+            file={imageFile}
             setFile={setFile}
             isReady={isReady}
             setReady={setReady}
@@ -74,7 +67,7 @@ export default function UploadStep({
             <button
               type='button'
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={goBack}
+              onClick={state.goBack}
             >
               <ArrowSlim to='left' size={18} />
             </button>

@@ -1,17 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UploadFile } from 'common/components/Icons'
 import { TImageFile } from './UploadStep'
-
-const imageTypes = {
-  PNG: 'image/png',
-  JPG: 'image/jpeg',
-  GIF: 'image/gif',
-}
-
-const allowedTypeNames = Object.keys(imageTypes)
-const allowedMimeTypes = Object.values(imageTypes)
-const minImageWidth = 250
-const minImageHeight = 250
+import {
+  allowedTypeNames,
+  allowedMimeTypes,
+  minImageWidth,
+  minImageHeight,
+} from '../AddNft.constants'
 
 type TProps = {
   setFile(file: TImageFile): void

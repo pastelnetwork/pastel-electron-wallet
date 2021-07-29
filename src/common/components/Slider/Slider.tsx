@@ -8,6 +8,7 @@ import {
   sliderValueToPercent,
   valueToFraction,
 } from './slider.utils'
+import Tooltip2 from '../Tooltip2'
 
 type TVariant = 'default' | 'stickToBottom'
 
@@ -153,24 +154,15 @@ export default function Slider({
           )}
           {...thumbProps}
         >
-          <div className='w-4 h-4 bg-blue-3f rounded-full' />
-          <div className='absolute -top-8 -mt-0.5 flex flex-col items-center duration-200 transition opacity-0 group-hover:opacity-100'>
-            <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white font-extrabold'>
-              {formatTooltipValue(fractionToValue(props, value))}
-            </div>
-            <svg
-              width='12'
-              height='5'
-              viewBox='0 0 12 5'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M3.17157 3.17157L0 0H12L8.82843 3.17157C7.26633 4.73367 4.73367 4.73367 3.17157 3.17157Z'
-                fill='#141416'
-              />
-            </svg>
-          </div>
+          <Tooltip2
+            text={formatTooltipValue(fractionToValue(props, value))}
+            show
+            className='whitespace-nowrap duration-200 transition opacity-0 group-hover:opacity-100'
+          >
+            {ref => (
+              <div ref={ref} className='w-4 h-4 bg-blue-3f rounded-full' />
+            )}
+          </Tooltip2>
         </button>
       )}
     />
