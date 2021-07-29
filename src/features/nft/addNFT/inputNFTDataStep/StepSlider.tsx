@@ -39,12 +39,7 @@ export default function StepSlider({
       control={form.control}
       render={({ field: { value, onChange } }) => {
         return (
-          <div
-            className={cn(
-              'pt-12 space-x-7 relative pr-[34px]',
-              name === 'royalty' && 'pr-16',
-            )}
-          >
+          <div className='pt-12 space-x-7 relative pr-[34px]'>
             <Slider
               variant='stickToBottom'
               width={311}
@@ -55,7 +50,7 @@ export default function StepSlider({
               formatTooltipValue={formatTooltipValue}
             />
             {name === 'copies' && (
-              <div className='absolute -right-1' ref={numpadRef}>
+              <div className='absolute -right-2 -bottom-1.5' ref={numpadRef}>
                 <button
                   type='button'
                   onClick={toggleNumpad}

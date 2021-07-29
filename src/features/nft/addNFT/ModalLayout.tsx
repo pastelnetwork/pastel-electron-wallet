@@ -37,7 +37,7 @@ export default function CroppingStep({
     <div
       className={cn(
         'paper p-10 flex flex-col',
-        fixedHeight && 'min-h-[555px] min-w-[782px]',
+        fixedHeight && 'min-h-[555px] min-w-[700px]',
       )}
     >
       <div

@@ -18,13 +18,13 @@ type TAddressFormProps = {
   hidable?: boolean
 }
 
-export const AddressForm: React.FC<TAddressFormProps> = ({
+export const AddressForm = ({
   address = '',
   currentRow,
   saveAddressLabel,
   copyable = true,
   hidable = false,
-}): JSX.Element => {
+}: TAddressFormProps): JSX.Element => {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
 

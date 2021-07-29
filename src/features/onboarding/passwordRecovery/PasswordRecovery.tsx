@@ -1,22 +1,23 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import QRCode from 'qrcode.react'
-import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
+
+import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import CloseButton from '../common/closeButton'
 import Typography, {
   TypographyVariant,
-} from '../../../common/components/Typography/Typography'
-import * as ROUTES from '../../../common/utils/constants/routes'
-import Tooltip from '../../../common/components/Tooltip'
-import { Button } from '../../../common/components/Buttons'
-import infoIco from '../../../common/assets/icons/ico-info.svg'
+} from 'common/components/Typography/Typography'
+import * as ROUTES from 'common/utils/constants/routes'
+import Tooltip from 'common/components/Tooltip'
+import { Button } from 'common/components/Buttons'
+import Link from 'common/components/Link'
+import infoIco from 'common/assets/icons/ico-info.svg'
 
 enum Tabs {
   qrCode,
   cryptoKeys,
 }
 
-const PasswordRecovery: React.FC = () => {
+const PasswordRecovery = (): JSX.Element => {
   const [tab, setTab] = useState(Tabs.qrCode)
   const onTabToggle = (index: number) => {
     setTab(index)
@@ -36,9 +37,15 @@ const PasswordRecovery: React.FC = () => {
       </Typography>
       <div className='mt-[19px]'>
         <MultiToggleSwitch
-          data={[{ label: 'QR-Code' }, { label: 'Crypto Keys' }]}
+          data={[
+            { label: 'QR-Code' },
+            { label: 'Crypto Keys' },
+            { label: 'My Security', count: 12 },
+          ]}
           activeIndex={tab}
           onToggle={onTabToggle}
+          itemActiveClassName='bg-gray-4a rounded-full text-white'
+          countInactiveClassName='bg-warning-hover font-extrabold'
         />
       </div>
       {tab === Tabs.qrCode && (
@@ -49,7 +56,14 @@ const PasswordRecovery: React.FC = () => {
             </div>
           </div>
           <div className='flex justify-center mt-[27.5px] text-link text-base font-medium'>
-            <Link to={ROUTES.LOGIN}>Or try to login again</Link>
+            <Link to={ROUTES.LOGIN}>
+              <Button
+                variant='secondary'
+                className='w-[400px] font-medium text-base'
+              >
+                Or try to Login again
+              </Button>
+            </Link>
           </div>
         </div>
       )}
@@ -113,20 +127,20 @@ const PasswordRecovery: React.FC = () => {
               </Typography>
             </div>
           </div>
-          <div className='mt-5'>
+          <div className='mt-7'>
             <Link to={ROUTES.NEW_PASSWORD}>
               <Button style={{ width: '100%' }}>Submit</Button>
             </Link>
           </div>
-          <div className='flex justify-center mt-[17px]'>
+          <div className='mt-[17px]'>
             <Link to={ROUTES.PASSWORD_RECOVERY}>
-              <Typography
-                variant={TypographyVariant.body2}
-                customColor='text-link'
-                customFontWeight='font-medium'
+              <Button
+                style={{ width: '100%' }}
+                variant='transparent'
+                className='w-full bg-white border border-link text-link text-base font-medium'
               >
                 Or try to login again
-              </Typography>
+              </Button>
             </Link>
           </div>
         </div>

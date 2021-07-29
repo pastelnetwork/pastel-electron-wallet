@@ -5,11 +5,11 @@ export type TUploadFileProps = TIconProps & {
   variant?: 'type1' | 'type2'
 }
 
-export const UploadFile: React.FC<TUploadFileProps> = ({
+export const UploadFile = ({
   size,
   className,
   variant = 'type1',
-}) => {
+}: TUploadFileProps): JSX.Element => {
   return (
     <div>
       {variant === 'type1' ? (

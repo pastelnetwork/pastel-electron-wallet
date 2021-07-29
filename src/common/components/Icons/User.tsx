@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TUserProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const User: React.FC<TUserProps> = ({
-  width = 14,
-  height = 14,
+  size = 14,
   className = 'text-gray-4a',
-}) => {
+}: TUserProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 14 14'
       fill='none'

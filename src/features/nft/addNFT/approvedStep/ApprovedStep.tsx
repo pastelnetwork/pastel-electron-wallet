@@ -10,7 +10,7 @@ import { useImagePreview } from '../previewStep/PreviewStep.service'
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
     <div className='text-gray-71 w-48'>{title}</div>
-    <div className='text-green-45 font-extrabold'>{value}</div>
+    <div className='text-green-00 font-extrabold'>{value}</div>
   </div>
 )
 
@@ -76,7 +76,7 @@ export default function ApprovedStep({
               )}
             </div>
           </div>
-          <div className='w-full'>
+          <div className='w-full mt-3'>
             <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
               <div className='text-gray-71'>Final registration fee</div>
               <div className='text-gray-45 font-extrabold'>110,000 PSL</div>

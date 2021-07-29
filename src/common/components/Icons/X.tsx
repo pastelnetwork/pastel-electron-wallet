@@ -3,10 +3,10 @@ import { TIconProps } from './iconProps'
 
 export type TXProps = TIconProps
 
-export const X: React.FC<TXProps> = ({ size, className }) => {
+export const X = ({ size, className }: TXProps): JSX.Element => {
   return (
     <svg
-      height={size}
+      width={size}
       className={className}
       viewBox='0 0 8 9'
       fill='none'

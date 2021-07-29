@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+
+import { useAppSelector } from 'redux/hooks'
 import ProfileGeneral from './myProfile/MyProfile'
 import MySecurity from './mySecurity/MySecurity'
 import {
@@ -16,30 +18,30 @@ export type TRPCConfig = {
 }
 
 type TProfileProps = {
-  info: {
-    currencyName: string
-  }
   rpcConfig: TRPCConfig
 }
 
 enum Tabs {
-  info,
-  comments,
+  general,
+  board,
   security,
 }
 
 const Profile = (props: TProfileProps): JSX.Element => {
-  const { info, rpcConfig } = props
-  const [tab, setTab] = useState(Tabs.info)
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
+  const { rpcConfig } = props
+  const [tab, setTab] = useState(Tabs.general)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
 
   const tabs = [
-    { label: 'Info', count: 2 },
+    { label: 'General', count: 1122 },
     {
-      label: 'Comments',
-      count: 26,
+      label: 'Board',
+      count: 12,
     },
-    { label: 'Security' },
+    { label: 'My Security', count: 12 },
   ]
 
   const breadcrumbs: TBreadcrumb[] = [
@@ -81,10 +83,14 @@ const Profile = (props: TProfileProps): JSX.Element => {
           onToggle: onTabToggle,
         }}
       />
-      {tab === Tabs.info && <ProfileGeneral />}
-      {tab === Tabs.comments && <MyComments />}
+      {tab === Tabs.general && <ProfileGeneral />}
+      {tab === Tabs.board && <MyComments />}
       {tab === Tabs.security && (
-        <MySecurity info={info} rpcConfig={rpcConfig} qrcodeData={qrcodeData} />
+        <MySecurity
+          currencyName={currencyName}
+          rpcConfig={rpcConfig}
+          qrcodeData={qrcodeData}
+        />
       )}
     </div>
   )

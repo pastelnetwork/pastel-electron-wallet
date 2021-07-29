@@ -7,10 +7,10 @@ export type TAuthorshipClaimModal = {
   handleClose: () => void
 }
 
-const AuthorshipClaimModal: React.FC<TAuthorshipClaimModal> = ({
+const AuthorshipClaimModal = ({
   isOpen,
   handleClose,
-}) => {
+}: TAuthorshipClaimModal): JSX.Element => {
   const data = {
     nftName: 'i.e banksy168',
     pastelId: 'i.e banksy168',
@@ -41,7 +41,7 @@ const AuthorshipClaimModal: React.FC<TAuthorshipClaimModal> = ({
         </div>
         <div>
           <div className='mt-30px text-gray-71 leading-tight text-base font-medium'>
-            Claim details
+            Claim Details
           </div>
           <div className='mt-[9px] h-[173px] border rounded border-gray-e7 flex items-center relative'>
             <div className='absolute bottom-2 right-2 text-gray-a0 text-sm'>

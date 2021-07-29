@@ -21,7 +21,8 @@ const Template: Story<TDealApprovedModal> = ({ content, isOpen }) => {
 }
 
 export const DealApprovedModalDefault = Template.bind({})
-const content = 'SuperDealer23 has funded 1,000,000k PSL to your address'
+const content =
+  'SuperDealer23 has sent 5,500 PSL to your wallet to pay for "Diamonds in the sky"'
 DealApprovedModalDefault.args = {
   content,
 }

@@ -8,6 +8,7 @@ import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
+import { useAppSelector } from 'redux/hooks'
 import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
 import { TArtworkTicket } from 'api/artwork-api/interfaces'
 import { toast } from 'react-toastify'
@@ -32,10 +33,11 @@ export default function SubmitStep({
   image,
   nftData,
 }: TSubmitStepProps): JSX.Element {
+  const {
+    info: { currencyName },
+  } = useAppSelector(state => state.appInfo)
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
-
-  const currencyName = 'PSL'
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
@@ -94,6 +96,7 @@ export default function SubmitStep({
 
       goToNextStep()
     } catch (err) {
+      goToNextStep()
       console.log('err on register new NFT', err)
       toast('Register new NFT is failed', { type: 'error' })
     }
@@ -102,7 +105,7 @@ export default function SubmitStep({
   return (
     <ModalLayout
       title='Submit NFT'
-      titleClass='mb-3'
+      titleClass='mb-3 text-gray-71'
       subtitle='Description'
       step={4}
       leftColumnWidth={image.maxWidth}
@@ -116,11 +119,11 @@ export default function SubmitStep({
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
             <button
-              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-46055 flex items-center'
+              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-2e flex items-center'
               onClick={toggleFullScreen}
             >
               <img src={icoPreview} className='inline-block mr-4' />
-              <span className='text-white font-extrabold inline-block whitespace-nowrap'>
+              <span className='text-white font-medium inline-block whitespace-nowrap'>
                 Preview how it will look
               </span>
             </button>

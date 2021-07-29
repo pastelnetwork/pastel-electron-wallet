@@ -165,7 +165,7 @@ export default function InputNFTDataStep({
         </div>
         <Button
           disabled={!form.formState.isValid}
-          className='w-full font-medium'
+          className='w-full font-extrabold'
         >
           Go to Preview
         </Button>

@@ -4,9 +4,9 @@ import { PaymentMethods, TCentralizedExchangeEntity } from './Regiser.state'
 import { PrevButton, NextButton } from './Buttons'
 import Radio from 'common/components/Radio/Radio'
 import { Input } from 'common/components/Inputs'
-import icoClipboard from 'common/assets/icons/ico-clipboard2.svg'
 import Link from 'common/components/Link'
 import styles from './Register.module.css'
+import { Clipboard } from 'common/components/Icons'
 
 export type TStepFeeProps = {
   paymentMethod: PaymentMethods
@@ -75,13 +75,15 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
 
   return (
     <div className='flex flex-col h-full'>
-      <div className='flex-grow flex flex-col justify-center'>
+      <div className='flex-grow pt-28'>
         {props.paymentMethod !== PaymentMethods.AirdropPromoCode && (
           <>
-            <h1 className='text-gray-23 text-xl font-black'>
+            <h1 className='text-gray-4a text-h3 font-extrabold'>
               Choose Exchange to Purchase PSL
             </h1>
-            <h2 className='text-gray-77 text-sm font-normal'>Copy address</h2>
+            <h2 className='text-gray-71 text-base font-normal '>
+              Copy address
+            </h2>
 
             <div className='mt-7'>
               <div
@@ -93,10 +95,10 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                 <div className='mr-3 overflow-hidden overflow-ellipsis h-5'>
                   {props.exchangeAddress}
                 </div>
-                <img
-                  src={icoClipboard}
+                <Clipboard
+                  size={20}
                   className={cn(
-                    'w-4 cursor-pointer transition-transform duration-100 ease-in-out',
+                    'cursor-pointer transition-transform duration-100 ease-in-out text-gray-88',
                     copying ? 'transform scale-150' : '',
                   )}
                   onClick={() => toClipboard()}
@@ -108,13 +110,13 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             </div>
 
             {props.paymentMethod === PaymentMethods.CentralizedExchange && (
-              <div className='mt-3'>
-                <div className='text-sm text-gray-77'>
+              <div className='mt-5'>
+                <div className='text-base text-gray-a0'>
                   Choose platform and pay
                 </div>
 
                 {centralizedExs.map((item, i) => (
-                  <div className='mt-18px' key={i}>
+                  <div className='mt-3' key={i}>
                     <Radio
                       key={i}
                       checked={props.centralizedExchangeName === item.name}
@@ -123,8 +125,8 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                       <span
                         className={cn(
                           props.centralizedExchangeName === item.name
-                            ? 'text-gray-700'
-                            : 'text-gray-a0',
+                            ? 'text-gray-4a font-black text-base'
+                            : 'text-gray-4a text-opacity-50 text-base font-medium',
                         )}
                       >
                         {item.name}
@@ -144,7 +146,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             </h1>
             <h2 className='text-gray-77 text-sm font-normal'>
               To Request a code, please fill in the form{' '}
-              <Link to='#' className='text-gray-77 underline'>
+              <Link href='#' className='text-gray-77 underline'>
                 here
               </Link>
             </h2>

@@ -16,9 +16,10 @@ export type TModal = {
   titleClassName?: string
   headerClassName?: string
   bodyClassName?: string
+  append?: ReactNode
 }
 
-const Modal: React.FC<TModal> = ({
+const Modal = ({
   isOpen,
   handleClose,
   size,
@@ -28,7 +29,8 @@ const Modal: React.FC<TModal> = ({
   titleClassName = 'text-h2 mt-2 font-bold',
   headerClassName = 'px-10 pb-6',
   bodyClassName = 'px-10',
-}) => {
+  append,
+}: TModal): JSX.Element => {
   const modalClasses = cn({
     'relative bg-white rounded-2xl shadow-xSmall max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
     [`w-${size}`]: size,
@@ -51,6 +53,7 @@ const Modal: React.FC<TModal> = ({
         <div className={cn('leading-tight flex items-end', titleClassName)}>
           {title}
           {infoIcon ? <img src={iconInfo} className='ml-14px mb-6px' /> : ''}
+          {append}
         </div>
         <ButtonClose className='-mt-4 -mr-4' onClick={handleClose} />
       </div>

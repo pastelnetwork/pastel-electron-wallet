@@ -1,10 +1,11 @@
 import React, { useState, FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+
 import Input from 'common/components/Inputs/Input'
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 import { NextButton } from './Buttons'
 import { calcPasswordStrength } from 'common/utils/passwords'
+import Link from 'common/components/Link'
 import InputPassword from 'common/components/Inputs/InputPassword'
 
 export type TStepRegisterProps = {
@@ -60,7 +61,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
   }
 
   return (
-    <div className='pt-12 flex flex-col h-full'>
+    <div className='pt-[105px] flex flex-col h-full'>
       <form className='flex-grow'>
         <Input
           className='w-full'
@@ -98,7 +99,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           >
             <span className='text-14px text-gray-a0'>
               I certify that I’m 18 years of age or older, and agree to the{' '}
-              <Link to='#' className='link'>
+              <Link href='#' className='link'>
                 User Agreement and Privacy Policy
               </Link>
             </span>

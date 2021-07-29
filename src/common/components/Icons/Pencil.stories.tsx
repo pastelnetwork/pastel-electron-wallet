@@ -16,7 +16,6 @@ const className = 'text-blue-3f'
 
 export const PencilDefault = Template.bind({})
 PencilDefault.args = {
-  width: 40,
-  height: 40,
+  size: 40,
   className,
 }

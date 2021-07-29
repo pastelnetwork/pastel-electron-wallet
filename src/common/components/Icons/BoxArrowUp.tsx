@@ -3,7 +3,10 @@ import { TIconProps } from './iconProps'
 
 export type TBoxArrowUpProps = TIconProps
 
-export const BoxArrowUp: React.FC<TBoxArrowUpProps> = ({ size, className }) => {
+export const BoxArrowUp = ({
+  size,
+  className,
+}: TBoxArrowUpProps): JSX.Element => {
   return (
     <svg
       width={size}

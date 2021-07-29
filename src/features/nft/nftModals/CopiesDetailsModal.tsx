@@ -7,10 +7,10 @@ export type TCopiesDetailsModal = {
   handleClose: () => void
 }
 
-const CopiesDetailsModal: React.FC<TCopiesDetailsModal> = ({
+const CopiesDetailsModal = ({
   isOpen,
   handleClose,
-}) => {
+}: TCopiesDetailsModal): JSX.Element => {
   return (
     <Modal
       isOpen={isOpen}
@@ -36,10 +36,12 @@ const CopiesDetailsModal: React.FC<TCopiesDetailsModal> = ({
 const Columns = [
   {
     name: 'Copy ID',
+    key: 'Copy ID',
     className: 'pl-4 w-139px',
   },
   {
     name: 'Owner',
+    key: 'Owner',
   },
 ]
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
-import icoArrowLeft from 'common/assets/icons/ico-arrow-left.svg'
+import { LongArrow } from 'common/components/Icons'
 
 export type TNextBtnProps = {
   disabled?: boolean
@@ -21,7 +21,7 @@ export const NextButton = (props: TNextBtnProps): JSX.Element => {
       }}
       className={cn(
         'flex items-center justify-center font-medium text-base rounded-2xl h-10 px-3 cursor-pointer',
-        !props.disabled ? 'bg-blue-3f text-white' : 'bg-gray-f2 text-gray-8e',
+        !props.disabled ? 'bg-blue-3f text-white' : 'bg-blue-9b text-white',
         props.className ? props.className : '',
       )}
       disabled={props.disabled}
@@ -35,10 +35,10 @@ export const NextButton = (props: TNextBtnProps): JSX.Element => {
 export const PrevButton = (props: TPrevBtnProps): JSX.Element => {
   return (
     <button
-      className='w-10 h-10 flex items-center justify-center rounded-full border border-gray-e6 cursor-pointer'
+      className='w-10 h-10 flex items-center justify-center rounded-full border border-gray-88 cursor-pointer'
       onClick={() => props.onClick()}
     >
-      <img className='w-4 cursor-pointer' src={icoArrowLeft} />
+      <LongArrow size={18} className='transform rotate-180 text-gray-88' />
     </button>
   )
 }

@@ -120,6 +120,8 @@ module.exports = {
         '196px': '12.25rem',
         '200px': '12.5rem',
         '205px': '12.813rem',
+        '208px': '13rem',
+        '216px': '13.5rem',
         '219px': '13.6875rem',
         '220px': '13.75rem',
         '223px': '13.9375rem',
@@ -163,9 +165,18 @@ module.exports = {
         '690px': '43.125rem',
         '791px': '49.4375rem',
         '874px': '54.625rem',
+        '30vh': '30vh',
       },
       colors: {
-        link: '#3F9AF7',
+        link: {
+          DEFAULT: '#3F9AF7',
+          hover: {
+            DEFAULT: '#0E80F5',
+          },
+          active: {
+            DEFAULT: '#0971DC',
+          },
+        },
         white: '#FFFFFF',
         transparent: 'transparent',
         success: {
@@ -187,6 +198,7 @@ module.exports = {
           background: '#FAEFF5',
         },
         black: {
+          DEFAULT: '#000',
           12: '#121244',
           14: '#141416',
         },
@@ -201,9 +213,14 @@ module.exports = {
           37: '#3754DB',
           '00': '#0054FE',
           d9: '#D9EBFD',
+          '9b': '#9BC8F4',
+          e7: '#E7F2FE',
+          ac: '#006EAC',
+          f2: '#98CFF2',
         },
         gray: {
-          88: '#8894AA',
+          f6: '#F6F7F9',
+          ec: '#ECEFF3',
           fc: '#FCFCFD',
           f9: '#F9FAFB',
           f8: '#F8F9FA',
@@ -246,7 +263,13 @@ module.exports = {
           11: '#11142D',
           f5: '#F5F6F7',
           d1: '#D1D6E0',
+          88: '#8894AA',
+          b9: '#B9BFCB',
           main: '#D1D1D1',
+          d7: '#D7DEFF',
+          d6: '#D1D6E0',
+          d1d: '#D1D1D1',
+          55: '#556177',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
@@ -257,6 +280,9 @@ module.exports = {
           75: '#FF754C',
           63: '#FE634C',
           14: '#14B85F',
+          '4a': '#FA4A30',
+          d9: '#FFD9D9',
+          e6: '#f8e6f0',
         },
         pink: {
           46: '#EF466F',
@@ -290,8 +316,14 @@ module.exports = {
         },
         button: {
           DEFAULT: '#3F9AF7',
-          pressed: '#0E80F5',
-          hover: '#278DF6',
+          pressed: {
+            DEFAULT: '#0971DC',
+            secondary: '#E7F2FE',
+          },
+          hover: {
+            DEFAULT: '#0E80F5',
+            secondary: '#E7F2FE',
+          },
           background: '#F2F2F2',
           text: '#8E98A3',
           hoverAlt: '#F0F7FE',
@@ -335,7 +367,7 @@ module.exports = {
             '04': 'rgba(255, 255, 255, 0.4)',
           },
           gray: {
-            46055: 'rgba(46, 46, 46, 0.55);',
+            '2e': 'rgba(46, 46, 46, 0.55);',
           },
         },
       },
@@ -367,6 +399,8 @@ module.exports = {
         4: '0px 50px 77px rgba(176, 183, 195, 0.22)',
         avatar: '0px 20px 30px rgba(212, 215, 224, 0.4)',
         modal: '0px 50px 77px rgba(176, 183, 195, 0.22)',
+        expand:
+          '0px 0px 4px rgba(38, 59, 143, 0.04), 0px 6px 10px rgba(38, 59, 143, 0.07)',
       },
       fontSize: {
         h1: '2rem',
@@ -384,6 +418,7 @@ module.exports = {
         '14px': '0.875rem',
         '15px': '0.938rem',
         '26px': '1.625rem',
+        '22px': '1.375rem',
         '32px': '2rem',
       },
       fontWeight: {
@@ -402,6 +437,7 @@ module.exports = {
       },
       borderWidth: {
         '1px': '0.0625rem',
+        '1.3px': '0.081rem',
         '3px': '0.1875rem',
         '5px': '0.3125rem',
         '16px': '1rem',
@@ -410,8 +446,8 @@ module.exports = {
         '11px': '0.6875rem',
         '15px': '0.938rem',
         '18px': '1.125rem',
-        '19px': '1.1875',
-        '30px': '2rem',
+        '19px': '1.1875rem',
+        '30px': '1.875rem',
       },
       minHeight: {
         '78px': '4.875rem',
@@ -430,6 +466,7 @@ module.exports = {
         '478px': '29.875rem',
         '594px': '37.125rem',
         '598px': '37.375rem',
+        '672px': '42rem',
         '690px': '43.125rem',
         '700px': '43.75rem',
         '9/10': '90%',
@@ -493,6 +530,12 @@ module.exports = {
         0.01: '0.01em',
       },
       fill: {
+        white: '#fff',
+        blue: {
+          '3f': '#3F9AF7',
+        },
+      },
+      stroke: {
         white: '#fff',
         blue: {
           '3f': '#3F9AF7',

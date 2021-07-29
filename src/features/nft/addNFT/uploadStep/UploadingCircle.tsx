@@ -98,7 +98,7 @@ export default function UploadingCircle({
           {isReady ? (
             <Checkmark size={27} className='mb-2 text-green-6d' />
           ) : (
-            <UploadFile size={22} className='mb-2' />
+            <UploadFile variant='type2' size={22} className='mb-2' />
           )}
           <div className='text-gray-4a text-lg font-medium mb-px max-w-9/10 px-3 overflow-ellipsis whitespace-nowrap overflow-hidden'>
             {file?.file.name}

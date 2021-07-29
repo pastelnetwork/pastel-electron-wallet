@@ -5,8 +5,10 @@ interface FormLoadingProps {
   className: string
 }
 
-const FormLoading: React.FC<FormLoadingProps> = ({
+const FormLoading = ({
   className = 'mr-[6px] h-[6px] w-[92px]',
-}) => <div className={cn('rounded', className)} />
+}: FormLoadingProps): JSX.Element => (
+  <div className={cn('rounded', className)} />
+)
 
 export default FormLoading

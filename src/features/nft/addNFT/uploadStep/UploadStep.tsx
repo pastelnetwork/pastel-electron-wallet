@@ -54,20 +54,20 @@ export default function UploadStep({
           <UploadArea setFile={setFile} />
         )
       }
-      rightColumnClass='w-[355]'
+      rightColumnClass='w-[355px]'
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
           <div className='text-sm'>
-            <div className='flex items-center text-gray-71 font-medium mb-2 text-base'>
+            <div className='flex items-center text-gray-71 font-medium mb-3 text-base'>
               Upload Image File (max 100 mb)
               <Info size={18} className='ml-3' />
             </div>
-            <div className='text-gray-71 mb-2 leading-5 text-sm'>
+            <div className='text-gray-71 mb-3 leading-5 text-sm'>
               Please take into consideration that the image file size impacts
               the registeration fee.
             </div>
             <div className='text-gray-71 mb-2'>
-              For example, 0,5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
+              For example, 0.5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
             </div>
           </div>
           <div className='flex-between'>

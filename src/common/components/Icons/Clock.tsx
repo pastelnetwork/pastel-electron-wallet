@@ -1,20 +1,17 @@
 import React from 'react'
 
 export type TClockProps = {
-  width?: number
-  height?: number
+  size?: number
   className?: string
 }
 
 export const Clock: React.FC<TClockProps> = ({
-  width = 18,
-  height = 18,
+  size = 18,
   className = 'text-gray-71',
-}) => {
+}: TClockProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       className={className}
       viewBox='0 0 18 18'
       fill='none'

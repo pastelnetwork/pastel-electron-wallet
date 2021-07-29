@@ -2,20 +2,17 @@ import React from 'react'
 import { TIconProps } from './iconProps'
 
 export type TFireProps = TIconProps & {
-  width: number
-  height: number
+  size: number
   className?: string
 }
 
-export const Fire: React.FC<TFireProps> = ({
+export const Fire = ({
   className = 'text-black',
-  width = 11,
-  height = 11,
-}) => {
+  size = 11,
+}: TFireProps): JSX.Element => {
   return (
     <svg
-      width={width}
-      height={height}
+      width={size}
       viewBox='0 0 18 18'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

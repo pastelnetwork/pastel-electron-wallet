@@ -4,7 +4,7 @@ import Input, { TInput } from './Input'
 import EyeIcon from '../../assets/icons/ico-eye.svg'
 import EyeIconHidden from '../../assets/icons/ico-eye-hidden.svg'
 
-const InputPassword: React.FC<TInput> = props => {
+const InputPassword = (props: TInput): JSX.Element => {
   const [type, setType] = React.useState<string>('password')
 
   const toggleType = (): void =>

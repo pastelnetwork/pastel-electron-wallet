@@ -19,6 +19,15 @@ const Template: Story<TRadioProps> = ({ ...args }: TRadioProps) => {
       >
         All
       </Radio>
+      <br />
+      <br />
+      <Radio
+        {...args}
+        checked={isChecked}
+        onChange={param => setIsChecked(param)}
+      >
+        All
+      </Radio>
     </div>
   )
 }
