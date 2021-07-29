@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
 import { ipcRenderer } from 'electron'

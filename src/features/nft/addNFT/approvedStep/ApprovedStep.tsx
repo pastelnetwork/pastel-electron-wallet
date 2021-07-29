@@ -10,7 +10,7 @@ import { useImagePreview } from '../previewStep/PreviewStep.service'
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
     <div className='text-gray-71 w-48'>{title}</div>
-    <div className='text-green-00 font-extrabold'>{value}</div>
+    <div className='text-green-45 font-extrabold'>{value}</div>
   </div>
 )
 
