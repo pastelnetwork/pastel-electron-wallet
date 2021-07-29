@@ -1,6 +1,6 @@
 import React from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
-import { useFeePerKb, useImagePreview } from './PreviewStep.service'
+import { useImagePreview } from './PreviewStep.service'
 import { useToggle } from 'react-use'
 import Cropping from './Cropping'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
@@ -9,18 +9,19 @@ import PreviewStepModal from './PreviewStepModal'
 type TPreviewStepProps = {
   state: TAddNFTState
   image: TImage
+  displayUrl: string
   toggleCloseButton(): void
 }
 
 export default function PreviewStep({
   state,
   image,
+  displayUrl,
   toggleCloseButton,
 }: TPreviewStepProps): JSX.Element {
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
   const [fullScreen, toggleFullScreen] = useToggle(false)
-  const feePerKb = useFeePerKb()
 
   const onCroppingToggle = () => {
     toggleCloseButton()
@@ -44,16 +45,14 @@ export default function PreviewStep({
   }
 
   if (fullScreen) {
-    return (
-      <FullScreenImage image={image.displayUrl} onClose={onFullScreenToggle} />
-    )
+    return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
   }
 
   return (
     <PreviewStepModal
       state={state}
       image={image}
-      feePerKb={feePerKb}
+      displayUrl={displayUrl}
       croppedImage={croppedImage}
       toggleCropping={onCroppingToggle}
       toggleFullScreen={onFullScreenToggle}

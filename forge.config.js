@@ -10,19 +10,19 @@ function getExtraResource() {
       return [
         './static/bin/pasteld-mac',
         './static/bin/pngquant/pngquant-mac',
-        './static/bin/guetzli/guetzli-mac',
+        './static/bin/mozjpeg/mozjpeg-mac',
       ]
     case 'linux':
       return [
         './static/bin/pasteld-linux',
         './static/bin/pngquant/pngquant-linux',
-        './static/bin/guetzli/guetzli-linux',
+        './static/bin/mozjpeg/mozjpeg-linux',
       ]
     case 'win32':
       return [
         './static/bin/pasteld-win.exe',
         './static/bin/pngquant/pngquant-win.exe',
-        './static/bin/guetzli/guetzli-win.exe',
+        './static/bin/mozjpeg/mozjpeg-win.exe',
       ]
     default:
       throw new Error(

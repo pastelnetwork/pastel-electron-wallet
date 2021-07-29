@@ -3,7 +3,6 @@ import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
-import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
@@ -23,22 +22,22 @@ const InfoPair = ({ title, value }: { title: string; value: string }) => (
 
 type TSubmitStepProps = {
   state: TAddNFTState
-  optimizedSizeKb: number
   image: TImage
+  displayUrl: string
   nftData: TNFTData
   toggleCloseButton(): void
 }
 
 export default function SubmitStep({
   state,
-  optimizedSizeKb,
   image,
+  displayUrl,
   nftData,
   toggleCloseButton,
 }: TSubmitStepProps): JSX.Element {
-  const currencyName = useCurrencyName()
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
+  const currencyName = useCurrencyName()
 
   const onFullScreenToggle = () => {
     toggleCloseButton()
@@ -46,12 +45,7 @@ export default function SubmitStep({
   }
 
   if (fullScreen) {
-    return (
-      <FullScreenImage
-        image={image.optimizedUrl || image.url}
-        onClose={onFullScreenToggle}
-      />
-    )
+    return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
   }
 
   const onSubmit = () => submit({ state, image, nftData })
@@ -69,7 +63,7 @@ export default function SubmitStep({
             <FullScreenButton onClick={onFullScreenToggle} />
             <ImageShadow url={image.url} />
             <img
-              src={image.optimizedUrl || image.url}
+              src={displayUrl}
               className='rounded max-h-[410px] relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
@@ -85,16 +79,18 @@ export default function SubmitStep({
           </div>
         </div>
       }
-      rightColumnClass='w-[349px] flex flex-col'
+      rightColumnClass='w-[360px] flex flex-col'
       rightColumnContent={
         <>
           <div className='flex-grow w-full text-sm flex flex-col justify-between'>
             <div className='space-y-14px'>
               <InfoPair title='Title' value={nftData.title} />
-              <InfoPair
-                title='Keyword Hashtags'
-                value={nftData.hashtags.join(', ')}
-              />
+              {nftData.hashtags.length > 0 && (
+                <InfoPair
+                  title='Keyword Hashtags'
+                  value={nftData.hashtags.join(', ')}
+                />
+              )}
               {nftData.series && (
                 <InfoPair title='Series' value={nftData.series} />
               )}
@@ -146,7 +142,10 @@ export default function SubmitStep({
               </div>
               <div className='flex text-gray-4a font-extrabold mt-3'>
                 <div className='pl-5 w-36'>
-                  {formatFileSize(optimizedSizeKb * 1024)}
+                  {formatFileSize(
+                    state.optimizationState.selectedFile?.size ||
+                      image.file.size,
+                  )}
                 </div>
                 <div>
                   {state.estimatedFee === undefined
@@ -164,13 +163,13 @@ export default function SubmitStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
+            <button
               type='button'
-              className='font-extrabold px-3'
+              className='btn btn-primary px-4'
               onClick={onSubmit}
             >
               Submit and proceed to fee payment
-            </Button>
+            </button>
           </div>
         </>
       }

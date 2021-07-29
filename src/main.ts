@@ -3,7 +3,14 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 
-import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
+import {
+  app,
+  autoUpdater,
+  BrowserWindow,
+  ipcMain,
+  shell,
+  screen,
+} from 'electron'
 
 import electronDebug from 'electron-debug'
 import installExtension, {
@@ -24,7 +31,7 @@ import {
 } from './features/deepLinking'
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
-import './features/nft/addNFT/ImageOptimization.ipcMain'
+import './features/nft/addNFT/imageOptimization/ImageOptimization.ipcMain'
 
 // Deep linked url
 let deepLinkingUrl: string[] | string
@@ -70,10 +77,25 @@ let waitingForClose = false
 let proceedToClose = false
 
 const createWindow = async () => {
+  const {
+    width: screenWidth,
+    height: screenHeight,
+  } = screen.getPrimaryDisplay().workAreaSize
+
+  const aspectRatio = 4 / 3
+  let width, height
+  if (screenHeight * aspectRatio > screenWidth) {
+    width = screenWidth
+    height = Math.round(screenWidth / aspectRatio)
+  } else {
+    width = Math.round(screenHeight * aspectRatio)
+    height = screenHeight
+  }
+
   const w = new BrowserWindow({
     show: false,
-    width: 1440,
-    height: 728,
+    width,
+    height,
     minHeight: 500,
     minWidth: 900,
     webPreferences: {

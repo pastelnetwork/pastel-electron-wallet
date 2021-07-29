@@ -7,14 +7,14 @@ import {
   PlusCircle,
   Trash,
 } from 'common/components/Icons'
-import { Button } from 'common/components/Buttons'
 import { DraggableCore } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
 
-type TUploadStepProps = {
+type TAfterSelectStepProps = {
   state: TAddNFTState
   image: TImage
+  displayUrl: string
 }
 
 const backdropBlurClass = 'backdrop-filter backdrop-blur-[55px]'
@@ -22,7 +22,8 @@ const backdropBlurClass = 'backdrop-filter backdrop-blur-[55px]'
 export default function UploadStep({
   state: { goBack, goToNextStep },
   image,
-}: TUploadStepProps): JSX.Element {
+  displayUrl,
+}: TAfterSelectStepProps): JSX.Element {
   const {
     onDragImage,
     imageRef,
@@ -34,7 +35,7 @@ export default function UploadStep({
 
   return (
     <ModalLayout
-      title='Upload Image'
+      title='Select Image'
       titleClass='mb-3'
       subtitle='Description'
       step={2}
@@ -43,7 +44,7 @@ export default function UploadStep({
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative'>
-            <ImageShadow url={image.url} />
+            <ImageShadow url={displayUrl} />
             <div className='relative flex-center overflow-hidden'>
               <button
                 className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
@@ -57,7 +58,7 @@ export default function UploadStep({
               >
                 <img
                   ref={imageRef}
-                  src={image.url}
+                  src={displayUrl}
                   className='rounded max-h-400px'
                   onWheel={onWheelImage}
                 />
@@ -98,7 +99,7 @@ export default function UploadStep({
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
           <div className='text-gray-71 font-medium pt-1'>
-            File downloaded successfully, you can continue to configure your
+            File selected successfully, you can continue to configure your
             incredible NFT
           </div>
           <div className='flex-between'>
@@ -109,9 +110,13 @@ export default function UploadStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button className='font-extrabold px-6' onClick={goToNextStep}>
+            <button
+              type='button'
+              className='btn btn-primary px-[30px]'
+              onClick={goToNextStep}
+            >
               Go to Optimization
-            </Button>
+            </button>
           </div>
         </div>
       }

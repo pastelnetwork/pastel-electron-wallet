@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { UploadFile } from 'common/components/Icons'
-import { TImageFile } from './UploadStep'
+import { TImageFile } from './SelectImageStep'
 import {
   allowedTypeNames,
   allowedMimeTypes,
@@ -12,7 +12,7 @@ type TProps = {
   setFile(file: TImageFile): void
 }
 
-export default function UploadArea({ setFile }: TProps): JSX.Element {
+export default function SelectImageArea({ setFile }: TProps): JSX.Element {
   const [error, setError] = useState<string>()
 
   const selectFile = (file?: File) => {
@@ -91,7 +91,7 @@ export default function UploadArea({ setFile }: TProps): JSX.Element {
     <label className='bg-gray-f4 rounded-md h-full flex-center flex-col text-gray-77 text-xs'>
       <UploadFile size={22} className='mb-3' />
       <div className='mb-2'>{allowedTypeNames.join(', ')} Max 100 MB.</div>
-      <div className='text-gray-a0'>Drag or choose your file to upload</div>
+      <div className='text-gray-a0'>Drag or choose your file to select</div>
       {error && (
         <div className='text-error font-medium mt-2 text-md'>{error}</div>
       )}

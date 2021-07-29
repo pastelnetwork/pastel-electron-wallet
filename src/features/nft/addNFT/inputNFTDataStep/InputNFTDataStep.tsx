@@ -4,7 +4,6 @@ import StepsCircle from 'common/components/StepsCircle'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common/components/Form/Input'
-import { Button } from 'common/components/Buttons'
 import { TAddNFTState, TNFTData } from '../AddNFT.state'
 import { TOption } from 'common/components/Select/Select'
 import Toggle from 'common/components/Form/Toggle'
@@ -153,7 +152,7 @@ export default function InputNFTDataStep({
             placeholder='Description of the NFT or artist’s statement.'
           />
         </div>
-        <Button className='w-full font-extrabold'>Go to preview</Button>
+        <button className='btn btn-primary w-full'>Go to preview</button>
       </form>
     </>
   )

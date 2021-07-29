@@ -1,3 +1,5 @@
+import { TImageOrientation } from './AddNFT.state'
+
 export const imageTypes = {
   PNG: 'image/png',
   JPG: 'image/jpeg',
@@ -16,7 +18,11 @@ export const copiesMax = 1000
 export const royaltyMin = 0.1
 export const royaltyMax = 20
 
-export const minQualityByType: Record<string, number> = {
-  'image/png': 10,
-  'image/jpeg': 84, // minimum required by guetzli lib
+export const minQuality = 60
+export const maxQuality = 85
+export const qualityStep = 5
+
+export const maxWidthByOrientation: Record<TImageOrientation, number> = {
+  portrait: 320,
+  landscape: 463,
 }
