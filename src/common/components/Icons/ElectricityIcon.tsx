@@ -3,19 +3,16 @@ import React from 'react'
 export type TElectricityIcon = {
   size?: number
   className?: string
-  onClick?: () => void
 }
 
 export const ElectricityIcon = ({
   size = 20,
   className = 'text-gray-3f',
-  onClick,
 }: TElectricityIcon): JSX.Element => {
   return (
     <svg
       width={size}
       className={className}
-      onClick={() => onClick && onClick()}
       viewBox='0 0 11 20'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
