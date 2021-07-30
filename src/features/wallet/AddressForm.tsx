@@ -78,23 +78,25 @@ export const AddressForm = ({
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-            <span
+            <button
+              type='button'
               onClick={() => {
                 setEdit(null)
               }}
             >
               <X className='cursor-pointer' size={20} />
-            </span>
+            </button>
           </div>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-            <span
+            <button
+              type='button'
               onClick={() => {
                 saveAddressLabel(edit, editName)
                 setEdit(null)
               }}
             >
               <SaveIcon className='text-blue-3f' size={20} />
-            </span>
+            </button>
           </div>
         </>
       ) : (

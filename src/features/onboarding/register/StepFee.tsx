@@ -95,7 +95,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                 <div className='mr-3 overflow-hidden overflow-ellipsis h-5'>
                   {props.exchangeAddress}
                 </div>
-                <span onClick={() => toClipboard()}>
+                <button type='button' onClick={toClipboard}>
                   <Clipboard
                     size={20}
                     className={cn(
@@ -103,7 +103,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                       copying ? 'transform scale-150' : '',
                     )}
                   />
-                </span>
+                </button>
               </div>
               <div className='text-sm font-medium text-orange-63 h-4'>
                 {showWarn ? 'copy your address first' : ''}

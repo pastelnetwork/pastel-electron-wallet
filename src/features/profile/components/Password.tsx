@@ -175,13 +175,13 @@ const Password = (props: TPassword): JSX.Element => {
         />
         {newPassword && (
           <>
-            <span onClick={() => handleNewVisibility()}>
+            <button type='button' onClick={handleNewVisibility}>
               <Eye
                 size={11}
                 variant={newPasswordVisible ? 'hidden' : 'type1'}
                 className={cn('text-gray-88', getIconClassnames(false))}
               />
-            </span>
+            </button>
             <div className={getIconClassnames(true)}>
               <Tooltip
                 width={145}
@@ -189,9 +189,9 @@ const Password = (props: TPassword): JSX.Element => {
                 content='Generate a new secure 12-digit password'
                 classnames='text-xs leading-4 pt-5px pb-1'
               >
-                <span onClick={() => handleGenerateRandomPassword()}>
+                <button type='button' onClick={handleGenerateRandomPassword}>
                   <RefreshIcon size={18} className='text-blue-3f' />
-                </span>
+                </button>
               </Tooltip>
             </div>
           </>
@@ -208,13 +208,13 @@ const Password = (props: TPassword): JSX.Element => {
           className={getInputClassnames(false)}
         />
         {confirmPassword && (
-          <span onClick={() => handleConfirmVisibility()}>
+          <button type='button' onClick={handleConfirmVisibility}>
             <Eye
               size={19}
               variant={confirmPasswordVisible ? 'hidden' : 'type1'}
               className={cn('text-gray-88', getIconClassnames(false))}
             />
-          </span>
+          </button>
         )}
       </div>
       {passStrength && (
