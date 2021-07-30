@@ -74,11 +74,6 @@ export default function ApprovedStep({
                   />
                 )}
               </div>
-              {croppedImage?.error && (
-                <div className='text-sm text-error font-medium mt-3'>
-                  Error text error text
-                </div>
-              )}
             </div>
           </div>
           <div className='w-full mt-3'>

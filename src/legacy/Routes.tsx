@@ -622,6 +622,10 @@ class RouteApp extends React.Component<any, any> {
                         PastelDBThread(rpcConfig)
                       }, period)
                     }
+
+                    this.exportSqliteDBIntervalID = window.setInterval(() => {
+                      saveSqliteDB()
+                    }, exportPastelDBPeriod)
                   }}
                   setInfo={this.setInfo}
                 />
