@@ -100,7 +100,9 @@ const Table = ({
       {haveHeader && (
         <thead>
           <tr className={headerTrClasses}>
-            {showCheckbox ? <td className='sticky top-0 bg-white'></td> : null}
+            {showCheckbox ? (
+              <td className='sticky top-0 bg-white w-[51px]'></td>
+            ) : null}
             {columns.map((column, index) => (
               <td
                 key={index}

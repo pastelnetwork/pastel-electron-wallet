@@ -2,17 +2,11 @@ import React, { useState, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
 import cn from 'classnames'
 
-import placeholderIcon from 'common/assets/icons/ico-placeholder.svg'
-import elminationIcon from 'common/assets/icons/ico-elmination.svg'
-import clockIcon from 'common/assets/icons/ico-clock.svg'
-import plusIcon from 'common/assets/icons/ico-plus.svg'
-import electIcon from 'common/assets/icons/ico-elect.svg'
 import Tooltip from 'common/components/Tooltip'
 import Toggle from 'common/components/Toggle'
 import Select from 'common/components/Select/Select'
 import { Button } from 'common/components/Buttons'
-
-import PDFIcon from 'common/assets/icons/ico-key-pdf.svg'
+import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import Table, { TRow } from 'common/components/Table'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
@@ -36,6 +30,16 @@ import { ToastContainer } from 'react-toastify'
 import { isSapling } from 'api/helpers'
 import { useAddressBook } from 'common/hooks'
 
+import {
+  ShieldedBalance,
+  TotalBalance,
+  TransparencyBalance,
+  ElectricityIcon,
+  Clock,
+  EliminationIcon,
+  FilePDFIcon,
+} from 'common/components/Icons'
+
 const paymentSources = [
   {
     hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
@@ -44,6 +48,12 @@ const paymentSources = [
     hash: 'Michael Francis',
   },
 ]
+
+enum Tab {
+  GENERAL,
+  BOARD,
+  MYSECURITY,
+}
 
 const WalletScreen = (): JSX.Element => {
   const { info } = useAppSelector(state => state.appInfo)
@@ -87,17 +97,18 @@ const WalletScreen = (): JSX.Element => {
       custom: (value: string | number) => {
         return (
           <div className='flex items-center'>
-            <span>public key</span>
-            <img
-              className='ml-9px cursor-pointer'
+            <span>private key</span>
+            <span
               onClick={() => {
                 setCurrentAddress(value.toString())
                 setExportKeysModalOpen(true)
               }}
-              key={value}
-              src={PDFIcon}
-              alt='PDF Icon'
-            />
+            >
+              <FilePDFIcon
+                size={20}
+                className='text-gray-88 ml-9px cursor-pointer'
+              />
+            </span>
           </div>
         )
       },
@@ -107,7 +118,7 @@ const WalletScreen = (): JSX.Element => {
       name: 'Balance',
       colClasses: 'w-131px 1500px:w-244px',
       custom: (value: string | number) => (
-        <div className='text-gray-2d'>
+        <div className='text-gray-71 font-medium text-base'>
           {info?.currencyName}{' '}
           <NumberFormat
             value={value}
@@ -141,7 +152,6 @@ const WalletScreen = (): JSX.Element => {
       ),
     },
   ]
-
   const cardItems = [
     {
       style: {
@@ -149,7 +159,8 @@ const WalletScreen = (): JSX.Element => {
         info: false,
       },
       psl: 0,
-      icon: placeholderIcon,
+      activeIcon: <TotalBalance />,
+      inactiveIcon: <TotalBalance variant='inactive' />,
       info: 'Total Balance',
     },
     {
@@ -158,7 +169,8 @@ const WalletScreen = (): JSX.Element => {
         info: true,
       },
       psl: 0,
-      icon: placeholderIcon,
+      activeIcon: <TransparencyBalance />,
+      inactiveIcon: <TransparencyBalance variant='inactive' />,
       info: 'Transparent Information',
     },
     {
@@ -167,7 +179,8 @@ const WalletScreen = (): JSX.Element => {
         info: true,
       },
       psl: 0,
-      icon: placeholderIcon,
+      activeIcon: <ShieldedBalance />,
+      inactiveIcon: <ShieldedBalance variant='inactive' />,
       info: 'Shielded Information',
     },
   ]
@@ -192,6 +205,7 @@ const WalletScreen = (): JSX.Element => {
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
   const [currentAddress, setCurrentAddress] = useState('')
   const [active, setActive] = useState(1)
+  const [tabActive, setTabActive] = useState<number>(Tab.GENERAL)
 
   const [selectedAmount, setSelectedAmount] = useState(0)
   const [selectedRows, setSelectedRows] = useState<Array<string>>([])
@@ -220,7 +234,8 @@ const WalletScreen = (): JSX.Element => {
           info: false,
         },
         psl: balances.total,
-        icon: placeholderIcon,
+        activeIcon: <TotalBalance />,
+        inactiveIcon: <TotalBalance variant='inactive' />,
         info: 'Total Balance',
       },
       {
@@ -229,7 +244,8 @@ const WalletScreen = (): JSX.Element => {
           info: false,
         },
         psl: balances.transparent,
-        icon: placeholderIcon,
+        activeIcon: <TransparencyBalance />,
+        inactiveIcon: <TransparencyBalance variant='inactive' />,
         info: 'Transparent Information',
       },
       {
@@ -238,7 +254,8 @@ const WalletScreen = (): JSX.Element => {
           info: false,
         },
         psl: balances.private,
-        icon: placeholderIcon,
+        activeIcon: <ShieldedBalance />,
+        inactiveIcon: <ShieldedBalance variant='inactive' />,
         info: 'Shielded Information',
       },
     ])
@@ -331,6 +348,10 @@ const WalletScreen = (): JSX.Element => {
     }
   }
 
+  const onTabToggle = (index: number) => {
+    setTabActive(index)
+  }
+
   return (
     <div>
       <Breadcrumbs
@@ -345,12 +366,25 @@ const WalletScreen = (): JSX.Element => {
         ]}
       />
       <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
-        <div className='font-extrabold text-h1 text-gray-1a'>Wallet</div>
+        <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
+          <div className='mr-8'>{info?.currencyName} Wallet</div>
+          <MultiToggleSwitch
+            data={[
+              { label: 'Week', count: 1122 },
+              { label: 'Month', count: 12 },
+              { label: 'Year', count: 12 },
+            ]}
+            activeIndex={tabActive}
+            onToggle={onTabToggle}
+            itemActiveClassName='bg-gray-4a rounded-full text-white'
+            countInactiveClassName='bg-warning-hover font-extrabold'
+          />
+        </div>
         <div
           className='flex cursor-pointer'
           onClick={() => setTransactionHistoryModalOpen(true)}
         >
-          <img src={clockIcon} />
+          <Clock size={18} className='text-blue-3f' />
           <span className='text-blue-3f ml-3.5'>Transaction history</span>
         </div>
       </div>
@@ -373,7 +407,7 @@ const WalletScreen = (): JSX.Element => {
                     width={108}
                     type='top'
                   >
-                    <img src={elminationIcon} />
+                    <EliminationIcon size={20} className='text-gray-8e' />
                   </Tooltip>
                 ) : null}
               </div>
@@ -383,13 +417,10 @@ const WalletScreen = (): JSX.Element => {
                   active === index && 'bg-white',
                 )}
               >
-                <div className='pt-18px pl-4 md:pl-4 lg:pl-4 xl:pl-26px pb-19px'>
-                  <img
-                    className='w-92px h-87px cursor-pointer'
-                    src={card.icon}
-                  />
+                <div className='pl-4 md:pl-4 lg:pl-4 xl:pl-39px flex items-center'>
+                  {active === index ? card.activeIcon : card.inactiveIcon}
                 </div>
-                <div className='pt-36px pl-2 md:pl-3 lg:pl-35px'>
+                <div className='pt-36px pl-2 md:pl-3 lg:pl-[43px]'>
                   <div
                     className={cn(
                       'sm:text-xl md:text-2xl leading-6 pt-9',
@@ -404,15 +435,30 @@ const WalletScreen = (): JSX.Element => {
                     />
                   </div>
                   {card.style.type === 'total_balance' ? (
-                    <div className='text-gray-a0 text-sm uppercase'>
-                      total balance
+                    <div
+                      className={cn(
+                        'font-medium text-sm mt-2',
+                        active === index ? 'text-gray-71' : 'text-gray-a0',
+                      )}
+                    >
+                      Total balance
                     </div>
                   ) : card.style.type === 'transparent' ? (
-                    <div className='text-gray-93 text-sm uppercase'>
+                    <div
+                      className={cn(
+                        'font-medium text-sm mt-2',
+                        active === index ? 'text-gray-71' : 'text-gray-a0',
+                      )}
+                    >
                       Transparent
                     </div>
                   ) : (
-                    <div className='text-gray-93 text-sm uppercase'>
+                    <div
+                      className={cn(
+                        'font-medium text-sm mt-2',
+                        active === index ? 'text-gray-71' : 'text-gray-a0',
+                      )}
+                    >
                       Shielded
                     </div>
                   )}
@@ -435,7 +481,7 @@ const WalletScreen = (): JSX.Element => {
           </Alert>
         )}
         {walletAddresses.length > 0 && (
-          <div className='bg-white mt-3.5 pt-6 rounded-lg mt-27px min-w-594px'>
+          <div className='bg-white mt-3.5 pt-[30px] rounded-lg mt-[30px] min-w-594px'>
             <div className='h-526px overflow-y-auto mr-4 pr-4 overflow-x-hidden ml-9'>
               {active !== 0 && (
                 <Table
@@ -455,8 +501,8 @@ const WalletScreen = (): JSX.Element => {
               )}
               {active == 0 && (
                 <div>
-                  <div className='uppercase text-gray-2d text-h6 font-extrabold mb-1'>
-                    transparent
+                  <div className='text-gray-2d text-base font-medium mb-2.5 ml-[30px]'>
+                    Transparent
                   </div>
                   <Table
                     data={walletAddresses.filter(
@@ -468,7 +514,7 @@ const WalletScreen = (): JSX.Element => {
                     showCheckbox={true}
                     selectedRow={setSelectedRowsFunction}
                   />
-                  <div className='uppercase text-gray-2d text-h6 font-extrabold mb-1 mt-7'>
+                  <div className='text-gray-2d text-base font-medium mb-2.5 mt-7 ml-[30px]'>
                     Shielded
                   </div>
                   <Table
@@ -489,11 +535,13 @@ const WalletScreen = (): JSX.Element => {
               <div className='flex items-center'>
                 <Toggle toggleHandler={hideEmptyAddress}>
                   Hide empty addresses
-                  <img className='ml-2' src={elminationIcon} />
+                  <EliminationIcon className='ml-2 text-gray-8e' size={20} />
                 </Toggle>
               </div>
               <div className='flex items-center'>
-                <span className='text-gray-33 text-lg'>Selected total:</span>
+                <span className='text-gray-71 text-lg font-normal'>
+                  Selected total:
+                </span>
                 <span className='text-gray-2d font-extrabold text-h3 ml-3'>
                   <NumberFormat
                     value={selectedAmount}
@@ -508,9 +556,9 @@ const WalletScreen = (): JSX.Element => {
         )}
 
         {walletAddresses.length == 0 && (
-          <div className='bg-white rounded-lg mt-3.5 flex items-center min-h-594px justify-center'>
+          <div className='min-h-[594px] bg-white rounded-lg mt-3.5 flex items-center min-h-594px justify-center pb-10'>
             <div>
-              <div className='text-gray-4a text-base text-center mb-3.5'>
+              <div className='font-normal text-gray-4a text-base text-center mb-3.5'>
                 You have no Addresses
               </div>
               <Button
@@ -519,7 +567,7 @@ const WalletScreen = (): JSX.Element => {
                 childrenClassName='w-full'
               >
                 <div className='flex items-center ml-6 font-medium'>
-                  <img src={electIcon} className='py-3' />
+                  <ElectricityIcon size={11} className='text-blue-3f py-3' />
                   <span className='text-sm ml-11px'>
                     Generate a new PSL Address
                   </span>
@@ -529,7 +577,7 @@ const WalletScreen = (): JSX.Element => {
           </div>
         )}
 
-        <div className='flex justify-end mt-5 mb-10'>
+        <div className='flex justify-end mt-5 pb-[30px]'>
           {walletAddresses.length > 0 && (
             <Button
               variant='secondary'
@@ -537,7 +585,7 @@ const WalletScreen = (): JSX.Element => {
               childrenClassName='w-full'
             >
               <div className='flex items-center ml-6 font-medium'>
-                <img src={electIcon} className='py-3' />
+                <ElectricityIcon size={11} className='text-blue-3f py-3' />
                 <span className='text-sm ml-11px'>
                   Generate a new PSL Address
                 </span>
@@ -550,7 +598,7 @@ const WalletScreen = (): JSX.Element => {
             childrenClassName='w-full'
           >
             <div className='flex items-center ml-5 font-medium'>
-              <img src={plusIcon} className='py-3.5' />
+              <span className='text-lg'>+</span>{' '}
               <span className='text-sm ml-2'>Create a payment</span>
             </div>
           </Button>

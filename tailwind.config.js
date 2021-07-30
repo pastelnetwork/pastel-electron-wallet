@@ -453,6 +453,7 @@ module.exports = {
       },
       minHeight: {
         '78px': '4.875rem',
+        '594px': '37.125rem',
         '672px': '42rem',
         '98vh': '98vh',
       },

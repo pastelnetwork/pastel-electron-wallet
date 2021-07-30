@@ -90,3 +90,7 @@ export const formatFileSize = (size: number, fractionDigits = 1): string => {
 
   return Math.max(size, 0.1).toFixed(fractionDigits) + units[i]
 }
+
+export const formatAddress = (address: string): string => {
+  return address.substr(0, 20) + '...' + address.substr(-6)
+}

@@ -1,14 +1,17 @@
-import pasteIcon from '../../common/assets/icons/ico-paste.svg'
-import checkIcon from '../../common/assets/icons/ico-check-green.svg'
-import pencilIcon from '../../common/assets/icons/ico-pencil.svg'
-import CrossIcon from '../../common/assets/icons/ico-cross-btn.svg'
-import SaveIcon from '../../common/assets/icons/ico-save.svg'
-import passEyeIcon from '../../common/assets/icons/ico-pass-eye.svg'
+import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import Tooltip from 'common/components/Tooltip'
 import { TRow } from 'features/nft/nftModals/table'
 import React, { useState } from 'react'
 import { clipboard } from 'electron'
-import { TMouseEvent } from 'types/rpc'
+import { formatAddress } from 'common/utils/format'
+
+import {
+  Clipboard,
+  CheckIcon,
+  Pencil,
+  X,
+  SaveIcon,
+} from 'common/components/Icons'
 
 type TAddressFormProps = {
   address: string
@@ -27,17 +30,16 @@ export const AddressForm = ({
 }: TAddressFormProps): JSX.Element => {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
+  const [copyStatus, setCopyStatus] = useState<boolean>(false)
 
-  const copyAddress = (address: string, e: TMouseEvent) => {
-    const image = e.target as HTMLImageElement
-    if (image.src === checkIcon) {
+  const copyAddress = (address: string) => {
+    if (copyStatus) {
       return
     }
-
-    image.src = checkIcon
+    setCopyStatus(true)
     clipboard.writeText(address)
     setTimeout(() => {
-      image.src = pasteIcon
+      setCopyStatus(false)
     }, 2000)
   }
 
@@ -57,9 +59,11 @@ export const AddressForm = ({
         <div className='w-220px md:w-262px'>
           <Tooltip
             autoWidth={true}
-            type='right'
+            type='top'
+            width={211}
             padding={5}
-            content={currentRow.address.toString()}
+            content={formatAddress(currentRow.address.toString())}
+            classnames='py-2 text-gray-a0'
           >
             <span className='text-blue-3f cursor-pointer'>
               {currentRow.addressNick.toString()}
@@ -74,47 +78,53 @@ export const AddressForm = ({
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-            <img
-              className='cursor-pointer'
+            <button
+              type='button'
               onClick={() => {
                 setEdit(null)
               }}
-              src={CrossIcon}
-            />
+            >
+              <X className='cursor-pointer' size={20} />
+            </button>
           </div>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-            <img
-              className='cursor-pointer'
+            <button
+              type='button'
               onClick={() => {
                 saveAddressLabel(edit, editName)
                 setEdit(null)
               }}
-              src={SaveIcon}
-            />
+            >
+              <SaveIcon className='text-blue-3f' size={20} />
+            </button>
           </div>
         </>
       ) : (
         <>
           {copyable && (
             <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
-              <img
-                className='cursor-pointer w-5 h-5'
-                onClick={e => copyAddress(address, e)}
-                src={pasteIcon}
-              />
+              {copyStatus ? (
+                <span onClick={() => copyAddress(address)}>
+                  <CheckIcon className='text-green-45' size={20} />
+                </span>
+              ) : (
+                <span onClick={() => copyAddress(address)}>
+                  <Clipboard className='cursor-pointer' size={20} />
+                </span>
+              )}
             </div>
           )}
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-            <img
-              className='cursor-pointer'
+            <span
               onClick={() => {
                 if (currentRow) {
                   setEditName(currentRow.addressNick.toString())
                   setEdit(currentRow.address.toString())
                 }
               }}
-              src={pencilIcon}
-            />
+            >
+              <Pencil strokeWidth={0.2} className='cursor-pointer' size={20} />
+            </span>
           </div>
           {hidable && (
             <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
