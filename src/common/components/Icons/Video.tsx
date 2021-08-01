@@ -2,7 +2,6 @@ import React from 'react'
 
 export type TVideoProps = {
   size: number
-  clickHandler?: (event: React.MouseEvent<SVGSVGElement>) => void
   className?: string
 }
 

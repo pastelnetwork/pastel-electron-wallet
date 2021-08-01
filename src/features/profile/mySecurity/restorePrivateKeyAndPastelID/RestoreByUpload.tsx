@@ -96,7 +96,7 @@ export default function RestoreByUpload({
   return (
     <div>
       <div className='font-normal text-h5 leading-6 text-gray-71'>
-        Please select your video key
+        Please select your QR code video.
       </div>
       <div className='mt-3'>
         <div className='flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px'>
@@ -111,7 +111,9 @@ export default function RestoreByUpload({
             </div>
             <div className='flex flex-col justify-center max-w-278px'>
               <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-                {fileSelected ? fileSelected.name : 'Choose File'}
+                {fileSelected
+                  ? fileSelected.name
+                  : 'Select your QR code video.'}
               </p>
               {fileSelected ? (
                 <p className='mb-0 text-xs font-normal text-gray-a0'>
@@ -131,9 +133,11 @@ export default function RestoreByUpload({
             <Tooltip
               type='top'
               content={
-                <div className='p-2 text-xs font-medium'>Download MP4</div>
+                <div className='p-2 text-xs font-medium'>
+                  Select your QR code video.
+                </div>
               }
-              width={110}
+              width={180}
             >
               <span
                 onClick={handleRestoreByUpload}

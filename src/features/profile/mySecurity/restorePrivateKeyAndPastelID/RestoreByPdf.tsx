@@ -67,7 +67,7 @@ export default function RestoreByPdf({
   return (
     <div>
       <div className='font-normal text-h5 leading-6 text-gray-71'>
-        Please select your pdf file
+        Please select your crypto keys.
       </div>
       <div className='mt-3'>
         <div className='flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px'>
@@ -82,7 +82,7 @@ export default function RestoreByPdf({
             </div>
             <div className='flex flex-col justify-center max-w-278px'>
               <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-                {fileSelected ? fileSelected.name : 'Choose File'}
+                {fileSelected ? fileSelected.name : 'Select your crypto keys.'}
               </p>
               {fileSelected ? (
                 <p className='mb-0 text-xs font-normal text-gray-a0'>
@@ -102,9 +102,11 @@ export default function RestoreByPdf({
             <Tooltip
               type='top'
               content={
-                <div className='p-2 text-xs font-medium'>Download PDF</div>
+                <div className='p-2 text-xs font-medium'>
+                  Select your crypto keys.
+                </div>
               }
-              width={110}
+              width={160}
             >
               <span
                 onClick={handleRestoreByUpload}
@@ -112,7 +114,7 @@ export default function RestoreByPdf({
                   fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
                 )}
               >
-                <Upload size={55} />
+                <Upload size={44} />
               </span>
             </Tooltip>
           </div>
