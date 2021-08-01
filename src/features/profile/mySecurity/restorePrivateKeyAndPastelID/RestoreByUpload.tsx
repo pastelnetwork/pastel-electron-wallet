@@ -99,10 +99,15 @@ export default function RestoreByUpload({
         Please select your QR code video.
       </div>
       <div className='mt-3'>
-        <div className='flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px'>
+        <div
+          className={cn(
+            'flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px',
+            currentStatus === 'restoring' && 'cursor-not-allowed',
+          )}
+        >
           <label
             className={cn(
-              'w-3/4 relative overflow-hidden flex cursor-pointer',
+              'w-3/4 relative overflow-hidden flex',
               !fileSelected && 'cursor-pointer',
             )}
           >
