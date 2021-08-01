@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import path from 'path'
 import pdfjs from 'pdfjs-dist'
+import cn from 'classnames'
 
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
-import { Button } from '../../../../common/components/Buttons'
-import Link from '../../../../common/components/Link'
+import { Upload, PDF } from 'common/components/Icons'
+import { formatFileSize } from 'common/utils/format'
+import Tooltip from 'common/components/Tooltip'
 
 type TRestoreByPdfProps = {
   rpcConfig: TRPCConfig
-  onBack: () => void
 }
 
 export default function RestoreByPdf({
   rpcConfig,
-  onBack,
 }: TRestoreByPdfProps): JSX.Element {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [fileSelected, setFileSelected] = useState<File>()
@@ -65,40 +65,58 @@ export default function RestoreByPdf({
   }
 
   return (
-    <div className='m-4'>
-      <div className='text-gray-800 text-2xl font-extrabold mb-3'>
-        Select PDF Keys
-      </div>
-      <div className='font-medium text-sm text-gray-33 opacity-50'>
+    <div>
+      <div className='font-normal text-h5 leading-6 text-gray-71'>
         Please select your pdf file
       </div>
-      <div className='mt-4'>
-        <label className='bg-gray-71 w-full relative overflow-hidden px-2 h-10 flex items-center text-white font-medium'>
-          <span className='truncate max-w-full'>
-            {fileSelected ? fileSelected.name : 'Choose File'}
-          </span>
-          <input
-            type='file'
-            name='upload'
-            accept='application/pdf'
-            onChange={handlePdfChange}
-            className='hidden'
-          />
-        </label>
-      </div>
-      <div className='mt-4'>
-        <Button
-          className='w-full font-extrabold'
-          onClick={() => handleRestoreByUpload()}
-          disabled={currentStatus === 'restoring'}
-        >
-          {currentStatus === 'restoring' ? 'Restoring' : 'Restore'}
-        </Button>
-      </div>
-      <div className='mt-4 text-center'>
-        <Link href='#' onClick={() => onBack()}>
-          Or try another restore method
-        </Link>
+      <div className='mt-3'>
+        <div className='flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px'>
+          <label
+            className={cn(
+              'w-3/4 relative overflow-hidden flex cursor-pointer',
+              !fileSelected && 'cursor-pointer',
+            )}
+          >
+            <div className='w-55px'>
+              <PDF variant='secondary' size={55} />
+            </div>
+            <div className='flex flex-col justify-center max-w-278px'>
+              <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
+                {fileSelected ? fileSelected.name : 'Choose File'}
+              </p>
+              {fileSelected ? (
+                <p className='mb-0 text-xs font-normal text-gray-a0'>
+                  {formatFileSize(fileSelected.size)}
+                </p>
+              ) : null}
+            </div>
+            <input
+              type='file'
+              name='upload'
+              accept='application/pdf'
+              onChange={handlePdfChange}
+              className='hidden'
+            />
+          </label>
+          <div className='w-14'>
+            <Tooltip
+              type='top'
+              content={
+                <div className='p-2 text-xs font-medium'>Download PDF</div>
+              }
+              width={110}
+            >
+              <span
+                onClick={handleRestoreByUpload}
+                className={cn(
+                  fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
+                )}
+              >
+                <Upload size={55} />
+              </span>
+            </Tooltip>
+          </div>
+        </div>
       </div>
     </div>
   )

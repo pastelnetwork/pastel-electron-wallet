@@ -8,8 +8,10 @@ import {
   splitStringIntoChunks,
 } from './mySecurity/common/utils'
 import MyComments from './myComments/MyComments'
+import RestoreModal from './mySecurity/restorePrivateKeyAndPastelID/RestoreModal'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
+import { Button } from 'common/components/Buttons'
 
 export type TRPCConfig = {
   username: string
@@ -34,6 +36,7 @@ const Profile = (props: TProfileProps): JSX.Element => {
   const { rpcConfig } = props
   const [tab, setTab] = useState(Tabs.general)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
+  const [modalIsOpen, setModalIsOpen] = useState(false)
 
   const tabs = [
     { label: 'General', count: 1122 },
@@ -82,7 +85,27 @@ const Profile = (props: TProfileProps): JSX.Element => {
           activeIndex: tab,
           onToggle: onTabToggle,
         }}
-      />
+      >
+        {tab === Tabs.security ? (
+          <div className='flex items-center'>
+            <div className='mr-20px font-normal text-sm text-gray-4a text-right'>
+              <p className='mb-2px'>Already have a PastelID?</p>
+              <p className='mb-0'>
+                Restore your account and PSL addresses from a backup
+              </p>
+            </div>
+            <div className='w-120px'>
+              <Button
+                variant='default'
+                className='w-full'
+                onClick={() => setModalIsOpen(true)}
+              >
+                Restore
+              </Button>
+            </div>
+          </div>
+        ) : null}
+      </PageHeader>
       {tab === Tabs.general && <ProfileGeneral />}
       {tab === Tabs.board && <MyComments />}
       {tab === Tabs.security && (
@@ -92,6 +115,11 @@ const Profile = (props: TProfileProps): JSX.Element => {
           qrcodeData={qrcodeData}
         />
       )}
+      <RestoreModal
+        rpcConfig={rpcConfig}
+        modalIsOpen={modalIsOpen}
+        onCloseModal={setModalIsOpen}
+      />
     </div>
   )
 }
