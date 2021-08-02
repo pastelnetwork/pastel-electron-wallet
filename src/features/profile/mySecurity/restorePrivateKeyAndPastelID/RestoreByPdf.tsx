@@ -126,6 +126,7 @@ export default function RestoreByPdf({
                 <Refresh
                   size={44}
                   className={cn(
+                    'transition duration-300',
                     !fileSelected
                       ? 'text-blue-9b'
                       : 'text-blue-e7 hover:text-blue-fa',
