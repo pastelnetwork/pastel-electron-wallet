@@ -128,13 +128,19 @@ export default function RestoreByPdf({
                   className={cn(
                     !fileSelected
                       ? 'text-blue-9b'
-                      : 'text-blue-3f hover:bg-button-hover active:bg-button-pressed',
+                      : 'text-blue-e7 hover:text-blue-fa',
                   )}
+                  pathColor={fileSelected ? '#3F9AF7' : '#fff'}
                 />
               </span>
             </Tooltip>
           </div>
         </div>
+        {currentStatus === 'restoring' && (
+          <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
+            Restoring ...
+          </div>
+        )}
       </div>
     </div>
   )
