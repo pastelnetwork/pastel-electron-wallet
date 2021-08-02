@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import { TitleModal } from '../../common/components/Modal'
 import Table, { TRow } from '../../common/components/Table'
-import * as momentRange from 'moment-range'
-import { OnSelectCallbackParam } from 'react-daterange-picker'
-import DateRangeSelector from '../../common/components/DateRangeSelector/DateRangeSelector'
+import DateRangeSelector, {
+  TDateRangeProp,
+} from '../../common/components/DateRangeSelector/DateRangeSelector'
 import Radio from '../../common/components/Radio'
 import Select, { TOption } from '../../common/components/Select/Select'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
@@ -57,13 +57,13 @@ const TransactionHistoryModal = ({
       value: '',
     },
   ])
-  const [dates, setDates] = useState<momentRange.DateRange>()
+  const [dates, setDates] = useState<TDateRangeProp>()
   const [sourceAddress, setSourceAddress] = useState<TOption | null>(null)
   const [recipientAddress, setRecipientAddress] = useState<TOption | null>(null)
   const { addressBook, updateAddressBook } = useAddressBook()
 
-  const onSelectDateRange = (dates: OnSelectCallbackParam) => {
-    setDates(dates as momentRange.DateRange)
+  const onSelectDateRange = (dates: TDateRangeProp) => {
+    setDates(dates)
   }
 
   const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {

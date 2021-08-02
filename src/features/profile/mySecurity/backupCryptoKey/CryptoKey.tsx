@@ -6,6 +6,7 @@ import {
   Text,
   View,
   StyleSheet,
+  PDFViewer,
 } from '@react-pdf/renderer'
 import dayjs from 'dayjs'
 
@@ -241,12 +242,24 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
   )
 
   return (
-    <Card
-      title='Backup Your Crypto Keys'
-      description={description}
-      content=''
-      footer={footer}
-    />
+    <>
+      <Card
+        title='Backup Your Crypto Keys'
+        description={description}
+        content=''
+        footer={footer}
+      />
+      <div className='h-0 w-0 hidden'>
+        <PDFViewer>
+          <PDFDocument
+            allKeys={allKeys}
+            currencyName={currencyName}
+            title={fileName}
+            qrcodeData={qrcodeData}
+          />
+        </PDFViewer>
+      </div>
+    </>
   )
 }
 

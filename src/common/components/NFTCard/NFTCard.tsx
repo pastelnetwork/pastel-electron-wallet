@@ -168,11 +168,10 @@ const NFTCard = ({
       ) : null}
       <Link to={detailUrl} className='cursor-pointer w-full'>
         <div
-          className={cn(
-            'relative overflow-hidden',
-            isPortfolio && 'h-220px',
-            !isPortfolio && imageHeightClass,
-          )}
+          className={cn('relative overflow-hidden', {
+            'h-[220px]': isPortfolio,
+            [imageHeightClass]: !isPortfolio,
+          })}
         >
           <img
             src={imageSrc}
