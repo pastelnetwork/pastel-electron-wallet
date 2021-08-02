@@ -146,6 +146,7 @@ export default function RestoreByUpload({
                 </div>
               }
               width={130}
+              vPosPercent={110}
             >
               <span
                 onClick={handleRestoreByUpload}
@@ -153,7 +154,14 @@ export default function RestoreByUpload({
                   fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
                 )}
               >
-                <Refresh size={44} />
+                <Refresh
+                  size={44}
+                  className={cn(
+                    !fileSelected
+                      ? 'text-blue-9b'
+                      : 'text-blue-3f hover:bg-button-hover active:bg-button-pressed',
+                  )}
+                />
               </span>
             </Tooltip>
           </div>
