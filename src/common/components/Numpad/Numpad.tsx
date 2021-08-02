@@ -59,8 +59,8 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       )}
     >
       <div className='input h-8 px-2 mb-1 w-[112px] flex justify-between items-center text-gray-a0 font-medium'>
-        {value.split('').map(item => (
-          <span>{item}</span>
+        {value.split('').map((item, index) => (
+          <span key={index}>{item}</span>
         ))}
       </div>
       <input

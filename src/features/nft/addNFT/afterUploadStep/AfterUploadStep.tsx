@@ -3,6 +3,7 @@ import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import {
   ArrowSlim,
+  EditImage,
   MinusCircle,
   PlusCircle,
   Trash,
@@ -36,7 +37,7 @@ export default function UploadStep({
 
   return (
     <ModalLayout
-      title='Upload Image'
+      title='Select Image'
       titleClass='mb-3'
       subtitle='Description'
       step={2}
@@ -48,10 +49,13 @@ export default function UploadStep({
             <ImageShadow url={displayUrl} />
             <div className='relative flex-center overflow-hidden'>
               <button
-                className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
+                className='absolute z-10 top-3 right-3 w-[30px] h-[30px] rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
                 onClick={goBack}
               >
-                <Trash size={15} />
+                <Trash size={11} />
+              </button>
+              <button className='absolute z-10 top-3 left-3 w-[30px] h-[30px] hover:bg-opacity-50 text-white'>
+                <EditImage size={30} />
               </button>
               <DraggableCore
                 onDrag={onDragImage}
@@ -65,7 +69,7 @@ export default function UploadStep({
                 />
               </DraggableCore>
               <div
-                className={`absolute bottom-3 h-10 px-3 rounded-full flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
+                className={`absolute bottom-3 h-10 px-3 rounded-lg flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
               >
                 <button type='button'>
                   <MinusCircle size={13} />

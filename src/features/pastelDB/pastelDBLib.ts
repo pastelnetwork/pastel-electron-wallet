@@ -259,7 +259,9 @@ export function validateDataFromDB(
   validateFields: TValidateFields,
 ): boolean {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB validateDataFromDB error: table name is invalid')
+    throw new Error(
+      `pastelDB validateDuplicatedRawmempoolInfo error: ${tableName} is invalid table name`,
+    )
   }
 
   let sqlResult: QueryExecResult[]
@@ -294,7 +296,7 @@ export function validateDataFromDB(
             return false
           }
           break
-        case '':
+        default:
           break
       }
       return true

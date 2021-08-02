@@ -72,7 +72,7 @@ export default function UploadingCircle({
       <div className='rounded-full bg-white p-1 relative text-gray-77 mb-5'>
         <svg
           viewBox='0 0 100 100'
-          className='transform -rotate-90 w-[200px] h-[200px]'
+          className='transform -rotate-90 w-[249px] h-[249px]'
         >
           <Circle
             ref={circleRef}
@@ -89,16 +89,16 @@ export default function UploadingCircle({
             gradientUnits='userSpaceOnUse'
             gradientTransform='translate(268.266 -21.5271) rotate(136.111) scale(424.004)'
           >
-            <stop offset='0.0782458' stop-color='#FFCE12' />
-            <stop offset='0.507247' stop-color='#E02DFF' />
-            <stop offset='0.949356' stop-color='#17D9FF' />
+            <stop offset='0.0782458' stopColor='#FFCE12' />
+            <stop offset='0.507247' stopColor='#E02DFF' />
+            <stop offset='0.949356' stopColor='#17D9FF' />
           </radialGradient>
         </svg>
         <div className='absolute inset-0 flex-center flex-col'>
           {isReady ? (
-            <Checkmark size={27} className='mb-2 text-green-6d' />
+            <Checkmark size={35} className='mb-2 text-green-00' />
           ) : (
-            <UploadFile variant='type2' size={22} className='mb-2' />
+            <UploadFile variant='full' size={22} className='mb-2' />
           )}
           <div className='text-gray-4a text-lg font-medium mb-px max-w-9/10 px-3 overflow-ellipsis whitespace-nowrap overflow-hidden'>
             {file?.file.name}

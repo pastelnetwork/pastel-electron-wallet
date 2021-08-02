@@ -2,15 +2,15 @@ import React from 'react'
 import { TIconProps } from './iconProps'
 
 export type TUploadFileProps = TIconProps & {
-  variant?: 'type1' | 'type2'
+  variant?: 'simple' | 'full'
 }
 
 export const UploadFile = ({
   size,
   className,
-  variant = 'type1',
+  variant = 'simple',
 }: TUploadFileProps): JSX.Element => {
-  if (variant === 'type1') {
+  if (variant === 'simple') {
     return (
       <svg
         height={size}

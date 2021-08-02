@@ -9,10 +9,10 @@ import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
 import { formatFileSize, formatNumber } from 'common/utils/format'
-import icoPreview from 'common/assets/icons/ico-preview.svg'
 import ImageShadow from '../common/ImageShadow'
 import { submit } from './SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { PreviewIco } from 'common/components/Icons'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -62,11 +62,11 @@ export default function SubmitStep({
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
             <button
-              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-2e flex items-center'
+              className='absolute z-10 bottom-3 px-4 py-[10px] rounded-full bg-rgba-gray-2e flex items-center'
               onClick={toggleFullScreen}
             >
-              <img src={icoPreview} className='inline-block mr-4' />
-              <span className='text-white font-medium inline-block whitespace-nowrap'>
+              <PreviewIco size={20} className='inline-block mr-4 text-white' />
+              <span className='text-white text-xs font-medium inline-block whitespace-nowrap'>
                 Preview how it will look
               </span>
             </button>
@@ -143,7 +143,7 @@ export default function SubmitStep({
                 </div>
                 <div className='text-gray-4a font-extrabold'>
                   {state.estimatedFee === undefined
-                    ? 'unknown'
+                    ? '0'
                     : `${formatNumber(state.estimatedFee)} ${currencyName}`}
                 </div>
               </div>

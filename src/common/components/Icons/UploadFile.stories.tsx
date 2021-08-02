@@ -22,5 +22,5 @@ export const UploadFileType2 = Template.bind({})
 UploadFileType2.args = {
   size: 30,
   className: 'text-gray-88',
-  variant: 'type2',
+  variant: 'full',
 }

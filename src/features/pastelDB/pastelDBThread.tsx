@@ -369,7 +369,7 @@ export async function fetchPastelPrices(props: fetchFuncConfig): Promise<void> {
     insertPastelPrice(props.pastelDB, resp.data?.['pastel']?.['usd'])
   } catch ({ message }) {
     // TODO log errors to a central logger so we can address them later.
-    console.warn(message)
+    throw new Error(message)
   }
 }
 
