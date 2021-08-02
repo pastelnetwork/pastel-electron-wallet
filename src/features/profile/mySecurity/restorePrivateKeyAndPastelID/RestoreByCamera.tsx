@@ -15,11 +15,13 @@ type TQRReader = {
 type TRestoreByCameraProps = {
   rpcConfig: TRPCConfig
   turnOffCamera?: boolean
+  onHideHeader: (status: boolean) => void
 }
 
 export default function RestoreByCamera({
   rpcConfig,
   turnOffCamera,
+  onHideHeader,
 }: TRestoreByCameraProps): JSX.Element {
   const [results, setResults] = useState<TQRReader[]>([])
   const [showQrReader, setShowQrReader] = useState(true)
@@ -51,6 +53,7 @@ export default function RestoreByCamera({
           } catch (err) {
             setCurrentStatus('error')
           }
+          onHideHeader(true)
         }
       }
     }

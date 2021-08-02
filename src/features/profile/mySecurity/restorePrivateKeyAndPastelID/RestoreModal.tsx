@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import cn from 'classnames'
 
 import RestoreByUpload from './RestoreByUpload'
 import RestoreByCamera from './RestoreByCamera'
@@ -14,14 +15,14 @@ type TRestoreModalProps = {
 }
 
 enum Tabs {
-  scanQRCodeVideo,
   selectPDF,
+  scanQRCodeVideo,
   selectQRCodeVideo,
 }
 
 const tabs = [
-  { label: 'QR-Code' },
   { label: 'Crypto Keys' },
+  { label: 'QR-Code' },
   { label: 'QR Code Video' },
 ]
 
@@ -32,9 +33,12 @@ export default function RestoreModal({
 }: TRestoreModalProps): JSX.Element | null {
   const [turnOffCamera, setTurnOffCamera] = useState(false)
   const [tab, setTab] = useState(Tabs.selectPDF)
+  const [hideHeader, setHideHeader] = useState(false)
 
   useEffect(() => {
     if (modalIsOpen) {
+      setTab(Tabs.selectPDF)
+      setHideHeader(false)
       setTurnOffCamera(false)
     }
   }, [modalIsOpen])
@@ -62,29 +66,39 @@ export default function RestoreModal({
       render={() => (
         <div className='paper p-10 w-[556px]'>
           <div className='pt-5'>
-            <div>
-              <div className='text-gray-2d text-32px leading-10 font-extrabold mb-4'>
-                Restore your account
+            {!hideHeader && (
+              <div>
+                <div className='text-gray-2d text-32px leading-10 font-extrabold mb-4'>
+                  Restore your account
+                </div>
+                <div className='font-normal text-h5 leading-6 text-gray-71'>
+                  Choose your restore method
+                </div>
+                <div className='mt-20px'>
+                  <MultiToggleSwitch {...routes} />
+                </div>
               </div>
-              <div className='font-normal text-h5 leading-6 text-gray-71'>
-                Choose your restore method
-              </div>
-              <div className='mt-20px'>
-                <MultiToggleSwitch {...routes} />
-              </div>
-            </div>
-            <div className='mt-28px'>
+            )}
+
+            <div className={cn(!hideHeader ? 'mt-28px' : '')}>
               {tab === Tabs.selectQRCodeVideo ? (
-                <RestoreByUpload rpcConfig={rpcConfig} />
+                <RestoreByUpload
+                  rpcConfig={rpcConfig}
+                  onHideHeader={setHideHeader}
+                />
               ) : null}
               {tab === Tabs.scanQRCodeVideo ? (
                 <RestoreByCamera
                   rpcConfig={rpcConfig}
                   turnOffCamera={turnOffCamera}
+                  onHideHeader={setHideHeader}
                 />
               ) : null}
               {tab === Tabs.selectPDF ? (
-                <RestoreByPdf rpcConfig={rpcConfig} />
+                <RestoreByPdf
+                  rpcConfig={rpcConfig}
+                  onHideHeader={setHideHeader}
+                />
               ) : null}
             </div>
           </div>

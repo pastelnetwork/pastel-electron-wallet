@@ -7,16 +7,18 @@ import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
-import { Upload, PDF } from 'common/components/Icons'
+import { Refresh, PDF } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
 
 type TRestoreByPdfProps = {
   rpcConfig: TRPCConfig
+  onHideHeader: (status: boolean) => void
 }
 
 export default function RestoreByPdf({
   rpcConfig,
+  onHideHeader,
 }: TRestoreByPdfProps): JSX.Element {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [fileSelected, setFileSelected] = useState<File>()
@@ -28,6 +30,7 @@ export default function RestoreByPdf({
     } else {
       setCurrentStatus('error')
     }
+    onHideHeader(true)
   }
 
   const handleRestoreByUpload = async () => {
@@ -44,6 +47,7 @@ export default function RestoreByPdf({
         }
       } catch {
         setCurrentStatus('error')
+        onHideHeader(true)
       }
     }
   }
@@ -76,42 +80,41 @@ export default function RestoreByPdf({
             currentStatus === 'restoring' && 'cursor-not-allowed',
           )}
         >
-          <label
-            className={cn(
-              'w-3/4 relative overflow-hidden flex',
-              !fileSelected && 'cursor-pointer',
-            )}
-          >
-            <div className='w-55px'>
-              <PDF variant='secondary' size={55} />
-            </div>
-            <div className='flex flex-col justify-center max-w-278px'>
-              <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-                {fileSelected ? fileSelected.name : 'Select your crypto keys.'}
-              </p>
-              {fileSelected ? (
-                <p className='mb-0 text-xs font-normal text-gray-a0'>
-                  {formatFileSize(fileSelected.size)}
+          <div className='w-3/4'>
+            <label className='relative overflow-hidden flex'>
+              <div className='w-55px cursor-pointer'>
+                <PDF variant='secondary' size={55} />
+              </div>
+              <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
+                <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
+                  {fileSelected
+                    ? fileSelected.name
+                    : 'Select your crypto keys.'}
                 </p>
-              ) : null}
-            </div>
-            <input
-              type='file'
-              name='upload'
-              accept='application/pdf'
-              onChange={handlePdfChange}
-              className='hidden'
-            />
-          </label>
+                {fileSelected ? (
+                  <p className='mb-0 text-xs font-normal text-gray-a0'>
+                    {formatFileSize(fileSelected.size)}
+                  </p>
+                ) : null}
+              </div>
+              <input
+                type='file'
+                name='upload'
+                accept='application/pdf'
+                onChange={handlePdfChange}
+                className='hidden'
+              />
+            </label>
+          </div>
           <div className='w-14'>
             <Tooltip
               type='top'
               content={
                 <div className='p-2 text-xs font-medium'>
-                  Select your crypto keys.
+                  Restore your keys.
                 </div>
               }
-              width={160}
+              width={130}
             >
               <span
                 onClick={handleRestoreByUpload}
@@ -119,7 +122,7 @@ export default function RestoreByPdf({
                   fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
                 )}
               >
-                <Upload size={44} />
+                <Refresh size={44} />
               </span>
             </Tooltip>
           </div>

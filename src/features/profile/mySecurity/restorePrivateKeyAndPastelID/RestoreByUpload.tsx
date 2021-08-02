@@ -8,16 +8,18 @@ import RestoreError from './RestoreError'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
-import { Video, Upload } from 'common/components/Icons'
+import { Video, Refresh } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
 
 type TRestoreByUploadProps = {
   rpcConfig: TRPCConfig
+  onHideHeader: (status: boolean) => void
 }
 
 export default function RestoreByUpload({
   rpcConfig,
+  onHideHeader,
 }: TRestoreByUploadProps): JSX.Element {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
@@ -31,6 +33,7 @@ export default function RestoreByUpload({
       } else {
         setCurrentStatus('error')
       }
+      onHideHeader(true)
     }
     if (qrCodeData.length) {
       doImport()
@@ -66,13 +69,16 @@ export default function RestoreByUpload({
               setQRCodeData(qrCode)
             } else {
               setCurrentStatus('error')
+              onHideHeader(true)
             }
           })
           .catch(() => {
             setCurrentStatus('error')
+            onHideHeader(true)
           })
       } catch {
         setCurrentStatus('error')
+        onHideHeader(true)
       }
     }
   }
@@ -105,44 +111,41 @@ export default function RestoreByUpload({
             currentStatus === 'restoring' && 'cursor-not-allowed',
           )}
         >
-          <label
-            className={cn(
-              'w-3/4 relative overflow-hidden flex',
-              !fileSelected && 'cursor-pointer',
-            )}
-          >
-            <div className='w-55px'>
-              <Video size={55} />
-            </div>
-            <div className='flex flex-col justify-center max-w-278px'>
-              <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-                {fileSelected
-                  ? fileSelected.name
-                  : 'Select your QR code video.'}
-              </p>
-              {fileSelected ? (
-                <p className='mb-0 text-xs font-normal text-gray-a0'>
-                  {formatFileSize(fileSelected.size)}
+          <div className='w-3/4'>
+            <label className='relative overflow-hidden flex'>
+              <div className='w-55px cursor-pointer'>
+                <Video size={55} />
+              </div>
+              <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
+                <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
+                  {fileSelected
+                    ? fileSelected.name
+                    : 'Select your QR code video.'}
                 </p>
-              ) : null}
-            </div>
-            <input
-              type='file'
-              name='upload'
-              accept='video/mp4'
-              onChange={handleImageChange}
-              className='hidden'
-            />
-          </label>
+                {fileSelected ? (
+                  <p className='mb-0 text-xs font-normal text-gray-a0'>
+                    {formatFileSize(fileSelected.size)}
+                  </p>
+                ) : null}
+              </div>
+              <input
+                type='file'
+                name='upload'
+                accept='video/mp4'
+                onChange={handleImageChange}
+                className='hidden'
+              />
+            </label>
+          </div>
           <div className='w-14'>
             <Tooltip
               type='top'
               content={
                 <div className='p-2 text-xs font-medium'>
-                  Select your QR code video.
+                  Restore your keys.
                 </div>
               }
-              width={180}
+              width={130}
             >
               <span
                 onClick={handleRestoreByUpload}
@@ -150,7 +153,7 @@ export default function RestoreByUpload({
                   fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
                 )}
               >
-                <Upload size={44} />
+                <Refresh size={44} />
               </span>
             </Tooltip>
           </div>
