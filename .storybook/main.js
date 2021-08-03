@@ -6,6 +6,14 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     'storybook-css-modules-preset',
+    {
+      name: '@storybook/addon-postcss',
+      options: {
+        postcssLoaderOptions: {
+          implementation: require('postcss'),
+        },
+      },
+    },
   ],
   webpackFinal: config => {
     config.module.rules.push({
@@ -36,7 +44,8 @@ module.exports = {
     ...options,
 
     plugins: [
-      '@babel/plugin-proposal-class-properties',
+      ['@babel/plugin-proposal-class-properties', { loose: true }],
+      ['@babel/plugin-proposal-private-methods', { loose: true }],
       '@babel/plugin-proposal-optional-chaining',
     ],
   }),
