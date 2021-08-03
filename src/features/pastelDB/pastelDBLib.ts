@@ -483,7 +483,7 @@ export function validateDuplicatedWalletInfo(
 
 export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB getLastIdFromDB error: table name is invalid')
+    throw new Error(`pastelDB getLastIdFromDB error: ${tableName} is invalid`)
   }
 
   const sqlText = selectIDQuery + tableName + orderByIDQuery
@@ -516,7 +516,9 @@ export function getDatasFromDB(
   tableName: string,
 ): QueryExecResult[] {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB getDatasFromDB error: table name is invalid')
+    throw new Error(
+      `pastelDB getDatasFromDB error: ${tableName} is invalid table name`,
+    )
   }
 
   const sqlText = selectAllQuery + tableName
