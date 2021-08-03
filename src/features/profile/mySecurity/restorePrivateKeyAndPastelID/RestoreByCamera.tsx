@@ -78,8 +78,8 @@ export default function RestoreByCamera({
 
   return (
     <div className='w-full'>
-      <div className='w-476px h-350px mx-auto bg-gray-f8 rounded-lg py-29px'>
-        <div className='w-292px h-292px mx-auto bg-gray-71 rounded-md shadow-lg overflow-hidden'>
+      <div className='w-[476px] h-[350px] mx-auto bg-gray-f8 rounded-lg py-29px'>
+        <div className='w-[292px] h-[292px] mx-auto bg-gray-71 rounded-md shadow-lg overflow-hidden'>
           {showQrReader && !turnOffCamera ? (
             <QrReader
               style={previewStyle}

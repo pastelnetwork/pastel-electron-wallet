@@ -82,7 +82,7 @@ export default function RestoreByPdf({
         >
           <div className='w-3/4'>
             <label className='relative overflow-hidden flex'>
-              <div className='w-55px cursor-pointer'>
+              <div className='w-[55px] cursor-pointer'>
                 <PDF variant='secondary' size={55} />
               </div>
               <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
