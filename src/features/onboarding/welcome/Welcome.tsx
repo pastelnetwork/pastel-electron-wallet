@@ -24,7 +24,7 @@ const OnboardingWelcome = (): JSX.Element => {
           src={image}
           className='w-full rounded-2xl overflow-hidden z-10 relative'
         />
-        <div className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white w-114px h-[114px] flex items-center justify-center rounded-full transition duration-300 cursor-pointer z-50 shadow-0x4x44px bg-rgba-white-02 hover:bg-rgba-white-04 scale-100 hover:scale-110'>
+        <div className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white w-[114px] h-[114px] flex items-center justify-center rounded-full transition duration-300 cursor-pointer z-50 shadow-0x4x44px bg-rgba-white-02 hover:bg-rgba-white-04 scale-100 hover:scale-110'>
           <div className='flex items-center justify-center rounded-full bg-white w-14 h-14 cursor-pointer'>
             <img src={playIco} className='cursor-pointer' />
           </div>
