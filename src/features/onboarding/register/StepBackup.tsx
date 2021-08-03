@@ -177,7 +177,10 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
             >
               <PDF size={55} className='text-red-fa' variant='secondary' />
 
-              <div className='ml-4 mr-4'>
+              <div
+                className='ml-4 mr-4'
+                onClick={() => setPdfPrepareProgress(65)}
+              >
                 <div className='text-base font-medium text-gray-4a'>
                   Crypto Keys
                 </div>
@@ -217,10 +220,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
               )}
 
               {pdfPrepareProgress > 0 && (
-                <div
-                  className='flex-grow flex items-center justify-end'
-                  onClick={() => setPdfPrepareProgress(60)}
-                >
+                <div className='flex-grow flex items-center justify-end'>
                   <div className='h-5px w-[108px] rounded-full bg-green-e4 mr-3 overflow-hidden'>
                     <div
                       className='h-5px rounded-full bg-green-77'
