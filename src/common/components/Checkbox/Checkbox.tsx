@@ -19,12 +19,14 @@ const Checkbox = ({
 }: TCheckboxProps): JSX.Element => {
   const [selected, setSelected] = useState(isChecked)
   return (
-    <div className='cursor-pointer select-none flex items-center'>
+    <div
+      className='cursor-pointer select-none flex items-center'
+      onClick={() => {
+        setSelected(!selected)
+        clickHandler && clickHandler(!selected)
+      }}
+    >
       <div
-        onClick={() => {
-          setSelected(!selected)
-          clickHandler && clickHandler(!selected)
-        }}
         className={cn(
           'transition-all w-5 h-5 rounded-md checkboxCheckmark flex-shrink-0',
           !selected && 'border-gray-dd border hover:border-gray-8e',

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, createRef } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
-import generatePassword from 'generate-password'
 import cn from 'classnames'
 
 import Tooltip from '../../../common/components/Tooltip'
+import { randomPassword } from 'common/utils/passwords'
 import { RefreshIcon, Eye } from 'common/components/Icons'
 
 type TPassword = {
@@ -114,14 +114,7 @@ const Password = (props: TPassword): JSX.Element => {
   }
 
   const handleGenerateRandomPassword = () => {
-    const newPass = generatePassword.generate({
-      length: 12,
-      numbers: true,
-      symbols: true,
-      lowercase: true,
-      uppercase: true,
-      strict: true,
-    })
+    const newPass = randomPassword()
     setNewPassword(newPass)
 
     const setNativeValue = (element: HTMLInputElement, value: string) => {

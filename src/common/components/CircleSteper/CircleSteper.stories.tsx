@@ -20,4 +20,5 @@ SimpleCircleSteper.args = {
   totalStep: 4,
   spaceAngle: 10,
   currentStep: 2,
+  spacing: 10,
 }

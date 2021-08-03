@@ -96,7 +96,7 @@ export default function RestoreByPdf({
         </Button>
       </div>
       <div className='mt-4 text-center'>
-        <Link href='#' onClick={() => onBack()}>
+        <Link to='#' onClick={() => onBack()}>
           Or try another restore method
         </Link>
       </div>

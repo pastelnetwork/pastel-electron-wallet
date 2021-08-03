@@ -22,7 +22,9 @@ type TQRCodeSliderProps = {
   qrcodeData: string[]
 }
 
-function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
+export function QRCodeSlider({
+  qrcodeData,
+}: TQRCodeSliderProps): JSX.Element | null {
   if (!qrcodeData.length) {
     return null
   }
@@ -79,7 +81,7 @@ const QR = ({
       phone and hold the phone screen up to your webcam. You can test that it
       worked by clicking{' '}
       <Link
-        href='#'
+        to='#'
         className='underline'
         variant='gray-77'
         onClick={() => setModalIsOpen(true)}
