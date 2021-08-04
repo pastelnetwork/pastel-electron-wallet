@@ -92,17 +92,17 @@ export default function Magnification({
     <div
       ref={rectRef}
       hidden
-      className='absolute rounded border-[3px] border-white w-[168px] h-[168px] flex pointer-events-none'
+      className='absolute rounded-xl border-[3px] border-white w-[168px] h-[168px] flex pointer-events-none'
     >
       <div className={cn('flex flex-col', optimizedUrl ? 'w-1/2' : 'w-full')}>
         {optimizedUrl && (
-          <div className='bg-white text-gray-71 text-center z-10 text-sm flex-shrink-0'>
+          <div className='bg-white text-gray-a0 text-center font-extrabold z-10 text-sm flex-shrink-0'>
             Before
           </div>
         )}
         <div
           ref={beforeRef}
-          className='bg-no-repeat flex-grow'
+          className='bg-no-repeat flex-grow rounded-bl-xl'
           style={{
             backgroundImage: `url(${image.url})`,
             backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
@@ -113,18 +113,18 @@ export default function Magnification({
         <>
           <div className='w-[3px] bg-white h-full' />
           <div className='w-1/2 flex flex-col'>
-            <div className='bg-white text-gray-71 text-center z-10 text-sm flex-shrink-0'>
+            <div className='bg-white text-gray-a0 font-extrabold text-center z-10 text-sm flex-shrink-0'>
               After
             </div>
             <div
               ref={afterRef}
-              className='bg-no-repeat flex-grow relative'
+              className='bg-no-repeat flex-grow relative rounded-br-xl'
               style={{
                 backgroundImage: `url(${optimizedUrl})`,
                 backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
               }}
             >
-              <div className='absolute inset-0 backdrop-filter backdrop-blur-[2px]' />
+              <div className='absolute inset-0 backdrop-filter backdrop-blur-[2px] rounded-br-xl' />
             </div>
           </div>
         </>

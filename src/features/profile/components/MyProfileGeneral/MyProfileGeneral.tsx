@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Convert } from 'easy-currencies'
 import getSymbolFromCurrency from 'currency-symbol-map'
 
-import StarRate from './StarRate'
-import Categories from './Categories'
-import ProfileGeneralRow from './ProfileGeneralRow'
+import StarRate from '../StarRate'
+import Categories from '../Categories'
+import ProfileGeneralRow from '../ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
-import Select, { TOption } from './Select/Select'
+import Select, { TOption } from '../Select/Select'
 
 import NumberFormat from 'react-number-format'
+import NSFWControls from './NSFWControls'
 
 export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
 
@@ -207,7 +208,7 @@ const ProfileGeneral = ({
           )}
         </ProfileGeneralRow>
       </div>
-      <div className='w-full mt-20 mb-50px 1200px:mb-0'>
+      <div className='w-full mt-20 1200px:mb-0'>
         <div className='flex'>
           <div className='w-190px text-gray-71'>Bio</div>
         </div>
@@ -222,11 +223,12 @@ const ProfileGeneral = ({
                 />
               </div>
             ) : (
-              <div className='h-220px'>{bio}</div>
+              bio
             )}
           </div>
         </div>
       </div>
+      <NSFWControls />
     </div>
   )
 }

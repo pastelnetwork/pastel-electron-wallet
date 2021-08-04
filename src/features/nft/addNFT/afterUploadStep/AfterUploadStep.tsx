@@ -3,6 +3,7 @@ import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import {
   ArrowSlim,
+  EditImage,
   MinusCircle,
   PlusCircle,
   Trash,
@@ -36,7 +37,7 @@ export default function UploadStep({
 
   return (
     <ModalLayout
-      title='Upload Image'
+      title='Select Image'
       titleClass='mb-3'
       subtitle='Description'
       step={2}
@@ -48,10 +49,13 @@ export default function UploadStep({
             <ImageShadow url={displayUrl} />
             <div className='relative flex-center overflow-hidden'>
               <button
-                className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
+                className='absolute z-10 top-3 right-3 w-[30px] h-[30px] rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
                 onClick={goBack}
               >
-                <Trash size={15} />
+                <Trash size={11} />
+              </button>
+              <button className='absolute z-10 top-3 left-3 w-[30px] h-[30px] hover:bg-opacity-50 text-white'>
+                <EditImage size={30} />
               </button>
               <DraggableCore
                 onDrag={onDragImage}
@@ -65,7 +69,7 @@ export default function UploadStep({
                 />
               </DraggableCore>
               <div
-                className={`absolute bottom-3 h-10 px-3 rounded-full flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
+                className={`absolute bottom-3 h-10 px-3 rounded-lg flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
               >
                 <button type='button'>
                   <MinusCircle size={13} />
@@ -99,9 +103,11 @@ export default function UploadStep({
       rightColumnClass='w-[355px]'
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
-          <div className='text-gray-71 font-medium pt-1'>
-            File downloaded successfully, you can continue to configure your
-            incredible NFT
+          <div className='text-gray-71 font-medium'>
+            <p className='text-lg text-gray-4a'>File uploaded successfully!</p>
+            <p className='text-base text-gray-71 mt-3'>
+              You can continue to configure your NFT.
+            </p>
           </div>
           <div className='flex-between'>
             <button
@@ -109,10 +115,10 @@ export default function UploadStep({
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
               onClick={goBack}
             >
-              <ArrowSlim to='left' size={14} />
+              <ArrowSlim to='left' size={18} />
             </button>
-            <Button className='font-extrabold px-6' onClick={goToNextStep}>
-              Go to Optimization
+            <Button className='font-medium px-6' onClick={goToNextStep}>
+              Go to Image Optimization
             </Button>
           </div>
         </div>

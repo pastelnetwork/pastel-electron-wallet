@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import routes from 'legacy/constants/routes.json'
+import * as ROUTES from 'common/utils/constants/routes'
 import styles from './PrevButton.module.css'
 
 type TPrevButton = {
@@ -9,7 +9,7 @@ type TPrevButton = {
 
 const PrevButton = ({ color }: TPrevButton): JSX.Element => {
   return (
-    <Link to={routes.STATISTICS} className={styles.backButtonLink}>
+    <Link to={ROUTES.STATISTICS} className={styles.backButtonLink}>
       <i
         className={'fas fa-arrow-circle-left fa-2x'}
         style={{ color: `${color}` }}

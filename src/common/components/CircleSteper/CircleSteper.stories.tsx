@@ -20,4 +20,6 @@ SimpleCircleSteper.args = {
   totalStep: 4,
   spaceAngle: 10,
   currentStep: 2,
+  stopColor1: '#3F9AF7',
+  stopColor2: '#6C5DD3',
 }

@@ -78,21 +78,17 @@ const Routes = (): JSX.Element => {
   const [info, setInfo] = useState<TWalletInfo>(defaultPastelInfo)
 
   useEffect(() => {
-    ipcRenderer.on(
-      'app-info',
-      (event, { isPackaged }: { isPackaged: boolean }) => {
-        setIsPackaged(isPackaged)
-      },
-    )
-
-    history.push(ROUTES.LOADING)
-  }, [])
-
-  useEffect(() => {
     if (rpcConfig) {
       ipcRenderer.send('app-ready')
+      ipcRenderer.on(
+        'app-info',
+        (event, { isPackaged }: { isPackaged: boolean }) => {
+          setIsPackaged(isPackaged)
+        },
+      )
+      history.push(ROUTES.LOADING)
     }
-  }, [rpcConfig])
+  }, [])
 
   const setInformation = (newInfo: TWalletInfo) => {
     if (!newInfo.pslPrice) {
