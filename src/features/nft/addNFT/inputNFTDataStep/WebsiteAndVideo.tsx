@@ -56,7 +56,7 @@ const ToggleableInput = ({
       form={form}
       name={name}
       label={
-        <div className='flex items-center'>
+        <div className='flex items-center text-gray-71 font-medium text-base'>
           {label}
           <div className='ml-4'>
             <Toggle selected={showInput} toggleHandler={toggleInput} />

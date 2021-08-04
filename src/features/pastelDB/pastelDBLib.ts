@@ -3,6 +3,23 @@ import log from 'electron-log'
 import fs from 'fs'
 import path from 'path'
 import initSqlJs, { Database, QueryExecResult, SqlJsStatic } from 'sql.js'
+import {
+  TBlock,
+  TBlockChainInfo,
+  TBlockSubsidy,
+  TChainTips,
+  TListUnspent,
+  TMempoolInfo,
+  TNetTotal,
+  TNetworkInfo,
+  TRawMempool,
+  TRawTransaction,
+  TTotalBalance,
+  TTransaction,
+  TTransactionInfo,
+  TWalletInfo,
+} from 'types/rpc'
+import { TMiningInfo } from '../../types/rpc/mining'
 
 import {
   createBlock,
@@ -57,25 +74,7 @@ import {
   groupByMonthly,
   groupByYearly,
 } from './constants'
-
-import {
-  TBlockChainInfo,
-  TBlockInfo,
-  TBlockSubsidy,
-  TChainTips,
-  TListUnspent,
-  TMempoolInfo,
-  TMiningInfo,
-  TNetworkInfo,
-  TRawMempool,
-  TRawTransaction,
-  TTotalBalance,
-  TTransactionInfo,
-  TTxoutsetInfo,
-  TValidateFields,
-  TWalletInfo,
-} from './type'
-import { TNetTotal, TTransaction } from '../../types/rpc'
+import { TTxoutsetInfo, TValidateFields } from './type'
 
 export const readSqliteDBFile = async (): Promise<Buffer | null> => {
   try {
@@ -265,15 +264,45 @@ export function validateDataFromDB(
     )
   }
 
+  let sqlResult: QueryExecResult[]
+  let sqlText = ''
   let values = {}
 
-  const sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
-  values = {
-    $tid: validateFields.transactionid,
-    $time: validateFields.time,
+  if (tableName === 'rawmempoolinfo') {
+    sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
+    values = {
+      $tid: validateFields.transactionid,
+      $time: validateFields.time,
+    }
+    sqlResult = pastelDB.exec(sqlText, values)
+    return sqlResult.length ? false : true
+  } else {
+    sqlText = selectAllQuery + tableName + orderByIDQuery
+    sqlResult = pastelDB.exec(sqlText)
+    if (sqlResult.length && sqlResult[0].values[0]) {
+      switch (tableName) {
+        case 'blockchaininfo':
+          if (validateFields.bestBlockHash === sqlResult[0].values[0][1]) {
+            return false
+          }
+          break
+        case 'blockinfo':
+          if (validateFields.hash === sqlResult[0].values[0][1]) {
+            return false
+          }
+          break
+        case 'pslprice':
+          if (validateFields.price === sqlResult[0].values[0][1]) {
+            return false
+          }
+          break
+        default:
+          break
+      }
+      return true
+    }
   }
-  const sqlResult = pastelDB.exec(sqlText, values)
-  return sqlResult.length ? false : true
+  return true
 }
 
 export function getLastDataFromDB(
@@ -453,7 +482,12 @@ export function validateDuplicatedWalletInfo(
 }
 
 export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
-  const sqlResult = getLastDataFromDB(pastelDB, tableName)
+  if (tableNames[tableName] !== true) {
+    throw new Error(`pastelDB getLastIdFromDB error: ${tableName} is invalid`)
+  }
+
+  const sqlText = selectIDQuery + tableName + orderByIDQuery
+  const sqlResult = pastelDB.exec(sqlText)
   if (sqlResult.length && sqlResult[0].values[0][0]) {
     return parseInt(sqlResult[0].values[0][0].toString()) + 1
   } else {
@@ -463,25 +497,18 @@ export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
 
 export function insertStatisticDataToDB(
   pastelDB: Database,
-  solutions: number,
+  hashrate: number,
   difficulty: number,
 ): void {
-  if (
-    validateDuplicatedStatisticInfo(pastelDB, 'statisticinfo', {
-      solutions: solutions,
-      difficulty: difficulty,
-    })
-  ) {
-    const createTimestamp: number = +new Date()
-    const newId = getLastIdFromDB(pastelDB, 'statisticinfo')
-    const values = {
-      $newId: newId,
-      $solutions: solutions,
-      $difficulty: difficulty,
-      $createTimestamp: createTimestamp,
-    }
-    pastelDB.exec(insertStatisticinfoQuery, values)
+  const createTimestamp: number = +new Date()
+  const newId = getLastIdFromDB(pastelDB, 'statisticinfo')
+  const values = {
+    $newId: newId,
+    $hashrate: hashrate,
+    $difficulty: difficulty,
+    $createTimestamp: createTimestamp,
   }
+  pastelDB.exec(insertStatisticinfoQuery, values)
 }
 
 export function getDatasFromDB(
@@ -625,25 +652,17 @@ export function insertMempoolInfoToDB(
   pastelDB: Database,
   mempoolinfo: TMempoolInfo,
 ): void {
-  if (
-    validateDuplicatedMempoolInfo(pastelDB, 'mempoolinfo', {
-      mempoolSize: mempoolinfo.size,
-      mempoolByte: mempoolinfo.bytes,
-      mempoolUsage: mempoolinfo.usage,
-    })
-  ) {
-    const createTimestamp: number = +new Date()
-    const newId = getLastIdFromDB(pastelDB, 'mempoolinfo')
-    const values = {
-      $newId: newId,
-      $size: mempoolinfo.size,
-      $bytes: mempoolinfo.bytes,
-      $usage: mempoolinfo.usage,
-      $createTimestamp: createTimestamp,
-    }
-
-    pastelDB.exec(insertMempoolinfoQuery, values)
+  const createTimestamp: number = +new Date()
+  const newId = getLastIdFromDB(pastelDB, 'mempoolinfo')
+  const values = {
+    $newId: newId,
+    $size: mempoolinfo.size,
+    $bytes: mempoolinfo.bytes,
+    $usage: mempoolinfo.usage,
+    $createTimestamp: createTimestamp,
   }
+
+  pastelDB.exec(insertMempoolinfoQuery, values)
 }
 
 export function insertRawMempoolinfoToDB(
@@ -651,7 +670,7 @@ export function insertRawMempoolinfoToDB(
   mempoolinfo: TRawMempool,
 ): void {
   if (
-    !validateDuplicatedRawmempoolInfo(pastelDB, 'rawmempoolinfo', {
+    !validateDataFromDB(pastelDB, 'rawmempoolinfo', {
       transactionid: mempoolinfo.transactionid,
       time: mempoolinfo.time,
     })
@@ -683,75 +702,67 @@ export function insertMiningInfoToDB(
   pastelDB: Database,
   mininginfo: TMiningInfo,
 ): void {
-  if (
-    validateDuplicatedMiningInfo(pastelDB, 'mininginfo', {
-      miningBlocks: mininginfo.blocks,
-    })
-  ) {
-    const createTimestamp = Date.now()
-    const newId = getLastIdFromDB(pastelDB, 'mininginfo')
-    const generate = mininginfo.generate ? mininginfo.generate?.toString() : ''
-    const values = {
-      $newId: newId,
-      $blocks: mininginfo.blocks,
-      $currentblocksize: mininginfo.currentblocksize,
-      $currentblocktx: mininginfo.currentblocktx,
-      $difficulty: mininginfo.difficulty,
-      $errors: mininginfo.errors,
-      $genproclimit: mininginfo.genproclimit,
-      $localsolps: mininginfo.localsolps,
-      $networksolps: mininginfo.networksolps,
-      $networkhashps: mininginfo.networkhashps,
-      $pooledtx: mininginfo.pooledtx,
-      $testnet: mininginfo.testnet,
-      $chain: mininginfo.chain,
-      $generate: generate,
-      $createTimestamp: createTimestamp,
-    }
-
-    pastelDB.exec(insertMininginfoQuery, values)
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'mininginfo')
+  const generate = mininginfo.generate ? mininginfo.generate?.toString() : ''
+  const values = {
+    $newId: newId,
+    $blocks: mininginfo.blocks,
+    $currentblocksize: mininginfo.currentblocksize,
+    $currentblocktx: mininginfo.currentblocktx,
+    $difficulty: mininginfo.difficulty,
+    $errors: mininginfo.errors,
+    $genproclimit: mininginfo.genproclimit,
+    $localsolps: mininginfo.localsolps,
+    $networksolps: mininginfo.networksolps,
+    $networkhashps: mininginfo.networkhashps,
+    $pooledtx: mininginfo.pooledtx,
+    $testnet: mininginfo.testnet,
+    $chain: mininginfo.chain,
+    $generate: generate,
+    $createTimestamp: createTimestamp,
   }
+
+  pastelDB.exec(insertMininginfoQuery, values)
 }
 
 export function insertBlockInfoToDB(
   pastelDB: Database,
-  blockInfo: TBlockInfo,
-): boolean {
+  blockInfo: TBlock,
+): void {
   if (
-    validateDuplicatedBlockInfo(pastelDB, 'blockinfo', {
+    validateDataFromDB(pastelDB, 'blockinfo', {
       hash: blockInfo.hash,
     })
   ) {
     const createTimestamp = Date.now()
     const newId = getLastIdFromDB(pastelDB, 'blockinfo')
-    const valuePools = JSON.stringify(blockInfo.valuePools ?? '')
-    const txs = JSON.stringify(blockInfo.tx ?? '[]')
+    const valuePools = JSON.stringify(blockInfo.valuePools)
+    const txs = JSON.stringify(blockInfo.tx)
     const values = {
       $newId: newId,
-      $hash: blockInfo.hash ?? '',
-      $confirmations: blockInfo.confirmations ?? 0,
-      $size: blockInfo.size ?? 0,
-      $height: blockInfo.height ?? 0,
-      $version: blockInfo.version ?? 0,
-      $merkleroot: blockInfo.merkleroot ?? '',
-      $finalsaplingroot: blockInfo.finalsaplingroot ?? '',
+      $hash: blockInfo.hash,
+      $confirmations: blockInfo.confirmations,
+      $size: blockInfo.size,
+      $height: blockInfo.height,
+      $version: blockInfo.version,
+      $merkleroot: blockInfo.merkleroot,
+      $finalsaplingroot: blockInfo.finalsaplingroot,
       $tx: txs,
-      $time: blockInfo.time ?? 0,
-      $nonce: blockInfo.nonce ?? '',
-      $solution: blockInfo.solution ?? '',
-      $bits: blockInfo.bits ?? '',
-      $difficulty: blockInfo.difficulty ?? 0,
-      $chainwork: blockInfo.chainwork ?? '',
-      $anchor: blockInfo.anchor ?? '',
-      $valuePools: valuePools ?? '',
-      $previousblockhash: blockInfo.previousblockhash ?? '',
-      $nextblockhash: blockInfo.nextblockhash ?? '',
+      $time: blockInfo.time,
+      $nonce: blockInfo.nonce,
+      $solution: blockInfo.solution,
+      $bits: blockInfo.bits,
+      $difficulty: blockInfo.difficulty,
+      $chainwork: blockInfo.chainwork,
+      $anchor: blockInfo.anchor,
+      $valuePools: valuePools,
+      $previousblockhash: blockInfo.previousblockhash,
+      $nextblockhash: blockInfo.nextblockhash ? blockInfo.nextblockhash : '',
       $createTimestamp: createTimestamp,
     }
     pastelDB.exec(insertBlockinfoQuery, values)
-    return true
   }
-  return false
 }
 
 export function insertRawtransaction(
@@ -766,7 +777,6 @@ export function insertRawtransaction(
   const vin = JSON.stringify(rawtransaction.vin)
   const vout = JSON.stringify(rawtransaction.vout)
   const vjoinsplit = JSON.stringify(rawtransaction.vjoinsplit)
-
   const values = {
     $newId: newId,
     $hex: rawtransaction.hex,
@@ -822,28 +832,21 @@ export function insertTxoutsetinfo(
   pastelDB: Database,
   txoutsetinfo: TTxoutsetInfo,
 ): void {
-  if (
-    validateDuplicatedTxoutsetInfo(pastelDB, 'txoutsetinfo', {
-      height: txoutsetinfo.height,
-      bestBlockHash: txoutsetinfo.bestblock,
-    })
-  ) {
-    const createTimestamp = Date.now()
-    const newId = getLastIdFromDB(pastelDB, 'txoutsetinfo')
-    const values = {
-      $newId: newId,
-      $height: txoutsetinfo.height,
-      $bestblock: txoutsetinfo.bestblock,
-      $transactions: txoutsetinfo.transactions,
-      $txouts: txoutsetinfo.txouts,
-      $bytes_serialized: txoutsetinfo.bytes_serialized,
-      $hash_serialized: txoutsetinfo.hash_serialized,
-      $total_amount: txoutsetinfo.total_amount,
-      $createTimestamp: createTimestamp,
-    }
-
-    pastelDB.exec(insertTxoutsetinfoQuery, values)
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'txoutsetinfo')
+  const values = {
+    $newId: newId,
+    $height: txoutsetinfo.height,
+    $bestblock: txoutsetinfo.bestblock,
+    $transactions: txoutsetinfo.transactions,
+    $txouts: txoutsetinfo.txouts,
+    $bytes_serialized: txoutsetinfo.bytes_serialized,
+    $hash_serialized: txoutsetinfo.hash_serialized,
+    $total_amount: txoutsetinfo.total_amount,
+    $createTimestamp: createTimestamp,
   }
+
+  pastelDB.exec(insertTxoutsetinfoQuery, values)
 }
 
 export function insertChaintips(
@@ -868,56 +871,40 @@ export function insertBlocksubsidy(
   pastelDB: Database,
   blocksubsidy: TBlockSubsidy,
 ): void {
-  if (
-    validateDuplicatedBlocksubsidy(pastelDB, 'blocksubsidy', {
-      miner: blocksubsidy.miner,
-      masterNode: blocksubsidy.masternode,
-    })
-  ) {
-    const createTimestamp = Date.now()
-    const newId = getLastIdFromDB(pastelDB, 'blocksubsidy')
-    const values = {
-      $newId: newId,
-      $miner: blocksubsidy.miner,
-      $masternode: blocksubsidy.masternode,
-      $governance: blocksubsidy.governance,
-      $createTimestamp: createTimestamp,
-    }
-
-    pastelDB.exec(insertBlocksubsidyQuery, values)
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'blocksubsidy')
+  const values = {
+    $newId: newId,
+    $miner: blocksubsidy.miner,
+    $masternode: blocksubsidy.masternode,
+    $governance: blocksubsidy.governance,
+    $createTimestamp: createTimestamp,
   }
+
+  pastelDB.exec(insertBlocksubsidyQuery, values)
 }
 
 export function insertWalletinfo(
   pastelDB: Database,
   walletinfo: TWalletInfo,
 ): void {
-  if (
-    validateDuplicatedWalletInfo(pastelDB, 'walletinfo', {
-      walletversion: walletinfo.walletversion,
-      balance: walletinfo.balance,
-      keypoololdest: walletinfo.keypoololdest,
-      seedfp: walletinfo.seedfp,
-    })
-  ) {
-    const createTimestamp = Date.now()
-    const newId = getLastIdFromDB(pastelDB, 'walletinfo')
-    const values = {
-      $newId: newId,
-      $walletversion: walletinfo.walletversion,
-      $balance: walletinfo.balance,
-      $unconfirmed_balance: walletinfo.unconfirmed_balance,
-      $immature_balance: walletinfo.immature_balance,
-      $txcount: walletinfo.txcount,
-      $keypoololdest: walletinfo.keypoololdest,
-      $keypoolsize: walletinfo.keypoolsize,
-      $paytxfee: walletinfo.paytxfee,
-      $seedfp: walletinfo.seedfp,
-      $createTimestamp: createTimestamp,
-    }
-
-    pastelDB.exec(insertWalletinfoQuery, values)
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'walletinfo')
+  const values = {
+    $newId: newId,
+    $walletversion: walletinfo.walletversion,
+    $balance: walletinfo.balance,
+    $unconfirmed_balance: walletinfo.unconfirmed_balance,
+    $immature_balance: walletinfo.immature_balance,
+    $txcount: walletinfo.txcount,
+    $keypoololdest: walletinfo.keypoololdest,
+    $keypoolsize: walletinfo.keypoolsize,
+    $paytxfee: walletinfo.paytxfee,
+    $seedfp: walletinfo.seedfp,
+    $createTimestamp: createTimestamp,
   }
+
+  pastelDB.exec(insertWalletinfoQuery, values)
 }
 
 export function insertListTransactions(
@@ -981,23 +968,16 @@ export function insertTotalbalance(
   pastelDB: Database,
   totalBalance: TTotalBalance,
 ): void {
-  if (
-    validateDuplicatedTotalbalance(pastelDB, 'totalbalance', {
-      balanceTransparent: totalBalance.transparent,
-      balanceTotal: totalBalance.total,
-    })
-  ) {
-    const createTimestamp = Date.now()
-    const newId = getLastIdFromDB(pastelDB, 'totalbalance')
-    const values = {
-      $newId: newId,
-      $transparent: totalBalance.transparent,
-      $private: totalBalance.private,
-      $total: totalBalance.total,
-      $createTimestamp: createTimestamp,
-    }
-    pastelDB.exec(insertTotalbalanceQuery, values)
+  const createTimestamp = Date.now()
+  const newId = getLastIdFromDB(pastelDB, 'totalbalance')
+  const values = {
+    $newId: newId,
+    $transparent: totalBalance.transparent,
+    $private: totalBalance.private,
+    $total: totalBalance.total,
+    $createTimestamp: createTimestamp,
   }
+  pastelDB.exec(insertTotalbalanceQuery, values)
 }
 
 export function insertListaddresses(pastelDB: Database, address: string): void {
@@ -1013,7 +993,7 @@ export function insertListaddresses(pastelDB: Database, address: string): void {
 
 export function insertPastelPrice(pastelDB: Database, price: number): void {
   const createTimestamp = Date.now()
-  if (validateDuplicatedPriceInfo(pastelDB, 'pslprice', { price: price })) {
+  if (validateDataFromDB(pastelDB, 'pslprice', { price: price })) {
     const newId = getLastIdFromDB(pastelDB, 'pslprice')
     const values = {
       $newId: newId,
@@ -1030,7 +1010,7 @@ export function insertBlockChainInfo(
 ): void {
   const createTimestamp = Date.now()
   if (
-    validateDuplicatedBlockchainInfo(pastelDB, 'blockchaininfo', {
+    validateDataFromDB(pastelDB, 'blockchaininfo', {
       bestBlockHash: blockChainInfo.bestblockhash,
     })
   ) {

@@ -89,7 +89,7 @@ export default function UploadArea({ setFile }: TProps): JSX.Element {
 
   return (
     <label className='bg-gray-f4 rounded-md h-full flex-center flex-col text-gray-77 text-xs'>
-      <UploadFile size={22} className='mb-3' />
+      <UploadFile variant='full' size={27} className='mb-3' />
       <div className='mb-2'>{allowedTypeNames.join(', ')} Max 100 MB.</div>
       <div className='text-gray-a0'>Drag or choose your file to upload</div>
       {error && (

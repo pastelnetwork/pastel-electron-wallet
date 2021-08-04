@@ -12,8 +12,15 @@ const Template: Story<Props> = ({ ...args }) => {
   return <Icon {...args} />
 }
 
-export const UploadFile = Template.bind({})
-UploadFile.args = {
+export const UploadFileType1 = Template.bind({})
+UploadFileType1.args = {
   size: 30,
   className: 'text-black',
+}
+
+export const UploadFileType2 = Template.bind({})
+UploadFileType2.args = {
+  size: 30,
+  className: 'text-gray-88',
+  variant: 'full',
 }
