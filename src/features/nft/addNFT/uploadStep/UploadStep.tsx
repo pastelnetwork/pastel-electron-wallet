@@ -5,7 +5,6 @@ import { ArrowSlim, Info } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
 import UploadingCircle from './UploadingCircle'
 import UploadArea from './UploadArea'
-import { formatFileSize } from 'common/utils/format'
 import { useSubmit } from './UploadStep.service'
 
 type TUploadStepProps = {
@@ -27,9 +26,11 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
 
   return (
     <ModalLayout
-      title='Upload Image'
+      title='Select Image'
       titleClass='mb-3'
       subtitle='The Image File for your NFT'
+      subtitleClassName='font-medium text-gray-71 text-sm'
+      titleClassName='text-gray-800 text-2xl font-extrabold mb-[11px]'
       step={2}
       fixedHeight
       contentClass='pt-2'
@@ -46,24 +47,20 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
           <UploadArea setFile={setFile} />
         )
       }
-      rightColumnClass='w-[355]'
+      rightColumnClass='w-[355px]'
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
           <div className='text-sm'>
-            <div className='flex items-center text-gray-71 font-medium mb-2'>
-              Upload Image File
+            <div className='flex items-center text-gray-71 font-medium mb-3 text-base'>
+              Upload Image File (max 100 mb)
               <Info size={18} className='ml-3' />
             </div>
-            <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
-              <div className='absolute inset-0 border border-gray-8e opacity-20 rounded font-medium shadow-4px' />
-              {imageFile ? formatFileSize(imageFile.file.size) : 'max 100 mb'}
+            <div className='text-gray-71 mb-3 leading-5 text-sm'>
+              Please take into consideration that the image file size impacts
+              the registeration fee.
             </div>
             <div className='text-gray-71 mb-2'>
-              Please take into account that image file size affects the
-              registration fee.
-            </div>
-            <div className='text-gray-71 mb-2'>
-              For example, 0,5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
+              For example, 0.5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
             </div>
           </div>
           <div className='flex-between'>
@@ -72,10 +69,10 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
               onClick={state.goBack}
             >
-              <ArrowSlim to='left' size={14} />
+              <ArrowSlim to='left' size={18} />
             </button>
             <Button
-              className='font-extrabold px-6'
+              className='font-medium px-6'
               onClick={submit}
               disabled={!isReady}
             >

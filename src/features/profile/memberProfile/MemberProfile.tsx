@@ -72,6 +72,7 @@ const MemberProfile = (): JSX.Element => {
     imageSrc: image,
     title: 'Infinity I',
     hideFollow: true,
+    nsfw: { porn: 0, hentai: 0 },
   }
 
   const [tab, setTab] = useState(2)

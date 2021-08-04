@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { usePopperTooltip } from 'react-popper-tooltip'
 import 'react-popper-tooltip/dist/styles.css'
 import style from './Tooltip2.module.css'

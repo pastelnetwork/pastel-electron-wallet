@@ -79,11 +79,9 @@ jobs:
             - .
 
   build-ubuntu:
-    executor: linux-builder
-    parameters:
-      circle-build-num:
-        type: string
-        default: $CIRCLE_BUILD_NUM
+    docker:
+      - image: electronuserland/builder:14
+    working_directory: ~/project
     steps:
       - attach_workspace:
           at: ~/project
@@ -97,16 +95,15 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
-      - upload-artifacts:
-          from-path: '~/project/out/make/deb/x64'
-          folder-name: 'linux-deb'
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
 
   build-windows:
-    executor: windows-builder
-    parameters:
-      circle-build-num:
-        type: string
-        default: $CIRCLE_BUILD_NUM
+    docker:
+      - image: electronuserland/builder:wine-mono-05.21
+    working_directory: ~/project
     steps:
       - attach_workspace:
           at: ~/project
@@ -118,16 +115,11 @@ jobs:
           command: yarn make --platform=win32
       - store_artifacts:
           path: ~/project/out/make/squirrel.windows/x64
-      - upload-artifacts:
-          from-path: '~/project/out/make/squirrel.windows/x64'
-          folder-name: 'windows'
 
   build-macos:
-    executor: macos-builder
-    parameters:
-      circle-build-num:
-        type: string
-        default: $CIRCLE_BUILD_NUM
+    macos:
+      xcode: 11.7
+    working_directory: ~/project
     steps:
       - checkout
       - restore_cache:
@@ -145,8 +137,6 @@ jobs:
           command: yarn make
       - store_artifacts:
           path: ~/project/out/make
-      - upload-artifacts:
-          folder-name: 'macos'
 
 workflows:
   main:
@@ -158,28 +148,19 @@ workflows:
       - lint-and-test:
           requires:
             - install-deps
-          filters:
-            <<: *filters-pr
-
       - build-ubuntu:
-          context:
-            - fullnodewallet
           filters: &filters-build
-            <<: *filters-pr
             branches:
-              ignore: /.*/
+              only:
+                - /release.*/
           requires:
             - lint-and-test
       - build-windows:
-          context:
-            - fullnodewallet
           filters:
             <<: *filters-build
           requires:
             - lint-and-test
       - build-macos:
-          context:
-            - fullnodewallet
           filters:
             <<: *filters-build
           requires:
