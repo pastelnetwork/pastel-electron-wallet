@@ -54,7 +54,7 @@ export default function Slider({
   formatTooltipValue = formatValue,
   className,
   valuesClassName = 'mt-2',
-  minMaxClassName = 'top-5 text-gray-2d text-sm',
+  minMaxClassName = 'top-5 text-gray-2d font-medium text-sm',
   minMaxAlignCenter = false,
   alwaysShowTooltip,
   ...props

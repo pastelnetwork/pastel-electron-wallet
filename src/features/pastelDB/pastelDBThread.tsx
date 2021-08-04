@@ -54,7 +54,7 @@ type fetchFuncConfig = {
 }
 
 type TStatistic = {
-  hashrate: number
+  estimatedSolutions: number
   difficulty: number
 }
 
@@ -67,7 +67,7 @@ export async function getStatisticInfo(
       rpc<types.TGetdifficulty>('getdifficulty', [], config),
     ])
     return {
-      hashrate: networkhasps.result,
+      estimatedSolutions: networkhasps.result,
       difficulty: difficulty.result,
     }
   } catch ({ message }) {
@@ -84,7 +84,7 @@ export async function fetchStatisticInfo(
     const results = await getStatisticInfo(props.rpcConfig)
     insertStatisticDataToDB(
       props.pastelDB,
-      results.hashrate,
+      results.estimatedSolutions,
       results.difficulty,
     )
   } catch ({ message }) {
@@ -369,7 +369,7 @@ export async function fetchPastelPrices(props: fetchFuncConfig): Promise<void> {
     insertPastelPrice(props.pastelDB, resp.data?.['pastel']?.['usd'])
   } catch ({ message }) {
     // TODO log errors to a central logger so we can address them later.
-    console.warn(message)
+    throw new Error(`pastelDBThread fetchPastelPrice error: ${message}`)
   }
 }
 
@@ -389,6 +389,7 @@ export async function fetchBlockChainInfo(
 }
 
 export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
+  PastelDB.setValid(false)
   const pastelDB = await PastelDB.getDatabaseInstance()
   if (pastelDB && rpcConfig && rpcConfig.username !== '') {
     // fetch whole data from RPC and save to pastel DB.
@@ -398,26 +399,24 @@ export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
     }
     await Promise.all([
       fetchStatisticInfo(pastelConfig),
-      fetchNetworkInfo(pastelConfig),
       fetchNettotals(pastelConfig),
       fetchMempoolInfo(pastelConfig),
       fetchRawMempoolInfo(pastelConfig),
       fetchMiningInfo(pastelConfig),
       fetchBlock(pastelConfig),
-      fetchRawtransaction(pastelConfig),
-      fetchTransaction(pastelConfig),
       fetchTxoutsetInfo(pastelConfig),
-      fetchChaintips(pastelConfig),
       fetchBlocksubsidy(pastelConfig),
       fetchWalletInfo(pastelConfig),
-      fetchListTransactions(pastelConfig),
-      fetchListunspent(pastelConfig),
       fetchTotalbalance(pastelConfig),
-      fetchListaddresses(pastelConfig),
       fetchPastelPrices(pastelConfig),
       fetchBlockChainInfo(pastelConfig),
     ])
-    await exportSqliteDB(pastelDB)
+    PastelDB.setValid(true)
   }
   return
+}
+
+export async function saveSqliteDB(): Promise<void> {
+  const pastelDB = await PastelDB.getDatabaseInstance()
+  await exportSqliteDB(pastelDB)
 }

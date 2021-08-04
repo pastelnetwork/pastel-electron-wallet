@@ -259,7 +259,9 @@ export function validateDataFromDB(
   validateFields: TValidateFields,
 ): boolean {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB validateDataFromDB error: table name is invalid')
+    throw new Error(
+      `pastelDB validateDuplicatedRawmempoolInfo error: ${tableName} is invalid table name`,
+    )
   }
 
   let sqlResult: QueryExecResult[]
@@ -294,7 +296,7 @@ export function validateDataFromDB(
             return false
           }
           break
-        case '':
+        default:
           break
       }
       return true
@@ -481,7 +483,7 @@ export function validateDuplicatedWalletInfo(
 
 export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB getLastIdFromDB error: table name is invalid')
+    throw new Error(`pastelDB getLastIdFromDB error: ${tableName} is invalid`)
   }
 
   const sqlText = selectIDQuery + tableName + orderByIDQuery
@@ -514,7 +516,9 @@ export function getDatasFromDB(
   tableName: string,
 ): QueryExecResult[] {
   if (tableNames[tableName] !== true) {
-    throw new Error('pastelDB getDatasFromDB error: table name is invalid')
+    throw new Error(
+      `pastelDB getDatasFromDB error: ${tableName} is invalid table name`,
+    )
   }
 
   const sqlText = selectAllQuery + tableName

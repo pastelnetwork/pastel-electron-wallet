@@ -1,11 +1,13 @@
 import React from 'react'
-import StepsCircle from 'common/components/StepsCircle'
 import cn from 'classnames'
+import CircleSteper from 'common/components/CircleSteper'
 
 type TModalLayoutProps = {
   title: string
   titleClass?: string
+  titleClassName?: string
   subtitle?: string
+  subtitleClassName?: string
   step?: number
   fixedHeight?: boolean
   contentClass?: string
@@ -28,10 +30,15 @@ export default function CroppingStep({
   leftColumnWidth,
   leftColumnContent,
   rightColumnContent,
+  subtitleClassName = 'font-medium text-sm text-gray-33 opacity-50',
+  titleClassName = 'text-gray-800 text-2xl font-extrabold mb-3',
 }: TModalLayoutProps): JSX.Element {
   return (
     <div
-      className={cn('paper p-10 flex flex-col', fixedHeight && 'min-h-[555px]')}
+      className={cn(
+        'paper p-10 flex flex-col',
+        fixedHeight && 'min-h-[555px] min-w-[700px]',
+      )}
     >
       <div
         className={cn('flex-between', titleClass)}
@@ -40,28 +47,23 @@ export default function CroppingStep({
         }}
       >
         <div>
-          <div className='text-gray-800 text-2xl font-extrabold mb-3'>
-            {title}
-          </div>
-          <div className='font-medium text-sm text-gray-33 opacity-50'>
-            {subtitle}
-          </div>
+          <div className={titleClassName}>{title}</div>
+          <div className={subtitleClassName}>{subtitle}</div>{' '}
         </div>
         {step && (
-          <StepsCircle
-            color='text-green-6d'
-            step={step}
-            className='ml-2 md:ml-3 lg:ml-18px'
-          >
-            <div className='font-extrabold text-gray-11 text-lg mt-1'>
-              {step}/{stepsCount}
-            </div>
-          </StepsCircle>
+          <CircleSteper
+            size={65}
+            totalStep={stepsCount}
+            spaceAngle={10}
+            currentStep={step}
+            stopColor1='#6FCF97'
+            stopColor2='#6FCF97'
+          />
         )}
       </div>
       <div className={cn('flex space-x-7 flex-grow', contentClass)}>
         <div
-          className='relative min-w-[320px]'
+          className='relative min-w-[308px]'
           style={{ maxWidth: `${leftColumnWidth}px` }}
         >
           {leftColumnContent}

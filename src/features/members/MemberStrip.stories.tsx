@@ -13,8 +13,8 @@ const mockMemberStrips: TMemberStripProps = {
     isVerified: true,
     followedByUser: true,
   },
-  highestSold: 1700000,
-  totalSold: 1500,
+  highestSold: 1700000000,
+  totalSold: 1500000,
   images: [mockMemberImage, mockMemberImage, mockMemberImage, mockMemberImage],
 }
 export default {

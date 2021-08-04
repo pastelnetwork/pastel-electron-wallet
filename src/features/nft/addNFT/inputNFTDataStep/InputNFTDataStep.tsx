@@ -1,6 +1,5 @@
 import React from 'react'
 import * as yup from 'yup'
-import StepsCircle from 'common/components/StepsCircle'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common/components/Form/Input'
@@ -14,6 +13,7 @@ import Copies from './Copies'
 import Royalty from './Royalty'
 import WebsiteAndVideo from './WebsiteAndVideo'
 import TextArea from 'common/components/Form/TextArea'
+import CircleSteper from 'common/components/CircleSteper'
 import {
   copiesMax,
   copiesMin,
@@ -103,14 +103,20 @@ export default function InputNFTDataStep({
               The Metadata Fields for your NFT
             </div>
           </div>
-          <StepsCircle color='text-green-6d' step={1}>
-            <div className='font-extrabold text-gray-11 text-lg mt-1'>1/4</div>
-          </StepsCircle>
+          <CircleSteper
+            size={65}
+            totalStep={4}
+            spaceAngle={10}
+            currentStep={1}
+            stopColor1='#6FCF97'
+            stopColor2='#6FCF97'
+          />
         </div>
-        <div className='mt-1 mb-22px space-y-6'>
+        <div className='mt-2.5 mb-22px space-y-6'>
           <div className='flex items-end space-x-5'>
             <Input
               form={form}
+              labelClass='text-gray-71 font-medium text-base mb-1.5'
               name='title'
               label='Title'
               placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
@@ -128,6 +134,7 @@ export default function InputNFTDataStep({
             <SelectMultiple
               form={form}
               label='Keyword Hashtags'
+              labelClass='text-gray-71 font-medium text-base mb-1.5'
               name='hashtags'
               options={hashtags}
               className='w-1/2 text-sm'
@@ -136,6 +143,7 @@ export default function InputNFTDataStep({
             <Input
               form={form}
               name='series'
+              labelClass='text-gray-71 font-medium text-base mb-1.5'
               label='Series Name'
               placeholder='(if the NFT is part of a series)'
               className='w-1/2 text-sm'
@@ -148,6 +156,7 @@ export default function InputNFTDataStep({
             form={form}
             name='description'
             label='Description'
+            labelClass='text-gray-71 text-base font-medium mb-1.5'
             textAreaClassName='input text-sm resize-none py-2 overflow-hidden h-[60px]'
             placeholder='Description of the NFT or artist’s statement.'
           />

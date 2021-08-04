@@ -1,17 +1,57 @@
 version: 2.1
 
+orbs:
+  aws-cli: circleci/aws-cli@2.0.3
+  aws-s3: circleci/aws-s3@3.0.0
+
+executors:
+  linux-builder:
+    docker:
+      - image: electronuserland/builder:14
+    working_directory: ~/project
+
+  windows-builder:
+    docker:
+      - image: electronuserland/builder:wine-mono-05.21
+    working_directory: ~/project
+
+  macos-builder:
+    macos:
+      xcode: 11.7
+    working_directory: ~/project
+
+commands:
+  upload-artifacts:
+    parameters:
+      from-path:
+        type: string
+        default: '~/project/out/make'
+      folder-name:
+        type: string
+        default: ''
+    steps:
+      - aws-cli/setup:
+          aws-region: AWS_REGION
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      - aws-s3/sync:
+          from: << parameters.from-path >>
+          to: s3://$BUCKET_NAME/<< parameters.folder-name >>
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400" \
+            --delete
+
 jobs:
   install-deps:
-    docker:
-      - image: circleci/node:14.16.0
-    working_directory: ~/project
+    executor: linux-builder
     steps:
       - checkout
       - restore_cache:
           keys:
             - node_deps-{{ checksum "yarn.lock" }}
       - run:
-          # https://circleci.com/docs/2.0/caching/
+          name: install dependencies
           command: yarn --frozen-lockfile
       - save_cache:
           key: node_deps-{{ checksum "yarn.lock" }}
@@ -23,9 +63,7 @@ jobs:
             - .
 
   lint-and-test:
-    docker:
-      - image: circleci/node:14.16.0
-    working_directory: ~/project
+    executor: linux-builder
     steps:
       - attach_workspace:
           at: ~/project
@@ -101,9 +139,12 @@ jobs:
           path: ~/project/out/make
 
 workflows:
-  lint-and-test:
+  main:
     jobs:
-      - install-deps
+      - install-deps:
+          filters: &filters-pr
+            tags:
+              only: /^v[0-9]+(\.[0-9]+).*/
       - lint-and-test:
           requires:
             - install-deps

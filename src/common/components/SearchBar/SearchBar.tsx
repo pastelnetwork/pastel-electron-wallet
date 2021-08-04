@@ -168,7 +168,7 @@ const SearchBar = (): JSX.Element => {
         {inputFocused && (
           <div className='z-50 bg-white border border-line rounded-b-10px shadow-xl'>
             {selectedCategory === undefined ? (
-              <div className='px-6 pt-4 pb-7'>
+              <div className='px-6 pt-4 pb-[46px]'>
                 <div className='text-base'>I'm looking for</div>
                 <div className='flex text-gray-4a text-medium mt-2'>
                   {categories.map((category, index) => (
@@ -201,12 +201,11 @@ const SearchBar = (): JSX.Element => {
                     Bans — Search Creators
                   </div>
                 </div>
-                <div className='px-6 pt-[13px] pb-2 max-h-[292px] overflow-y-auto'>
+                <div className='px-6 pt-[13px] pb-[29px] h-[292px] overflow-y-auto'>
                   {search_results
                     .filter(item => item.name.includes(inputText))
-                    .map((item, index) => (
+                    .map(item => (
                       <ResultSearchRow
-                        key={index}
                         name={item.name}
                         image={item.img}
                         followers={item.followers}

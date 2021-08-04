@@ -106,7 +106,7 @@ export default function Magnification({
         )}
         <div
           ref={beforeRef}
-          className='bg-no-repeat flex-grow'
+          className='bg-no-repeat flex-grow rounded-bl-xl'
           style={{
             backgroundImage: `url(${image.url})`,
             backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
@@ -122,13 +122,13 @@ export default function Magnification({
             </div>
             <div
               ref={afterRef}
-              className='bg-no-repeat flex-grow relative'
+              className='bg-no-repeat flex-grow relative rounded-br-xl'
               style={{
                 backgroundImage: `url(${optimizedUrl})`,
                 backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
               }}
             >
-              <div className='absolute inset-0 backdrop-filter backdrop-blur-[2px]' />
+              <div className='absolute inset-0 backdrop-filter backdrop-blur-[2px] rounded-br-xl' />
             </div>
           </div>
         </>
