@@ -122,6 +122,7 @@ const mockCardProps: TNFTCard = {
   liked: true,
   followers: 0,
   isLastBid: false,
+  nsfw: { porn: 0, hentai: 0 },
 }
 
 export const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {
