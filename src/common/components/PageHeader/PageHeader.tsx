@@ -16,6 +16,7 @@ export type TPageHeaderProps = {
   variant?: string
   sortByText?: string
   sortByTextClassName?: string
+  children?: React.ReactNode
 }
 
 /**
@@ -29,6 +30,7 @@ const PageHeader = ({
   variant,
   sortByText,
   sortByTextClassName = '',
+  children,
 }: TPageHeaderProps): JSX.Element => {
   return (
     <>
@@ -36,7 +38,7 @@ const PageHeader = ({
         <div
           className={`wrapper ${variant === 'portfolio' ? 'py-18px' : 'py-5'}`}
         >
-          <div className='flex justify-between flex-wrap gap-2'>
+          <div className='flex justify-between flex-wrap'>
             <div className='flex items-center'>
               {title && (
                 <h1
@@ -70,6 +72,7 @@ const PageHeader = ({
                 </div>
               </div>
             )}
+            {children}
           </div>
         </div>
       </div>
