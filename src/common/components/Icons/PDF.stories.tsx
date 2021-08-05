@@ -16,3 +16,9 @@ export const SimplePDFIcon = Template.bind({})
 SimplePDFIcon.args = {
   size: 24,
 }
+
+export const SecondaryPDFIcon = Template.bind({})
+SecondaryPDFIcon.args = {
+  size: 55,
+  variant: 'secondary',
+}

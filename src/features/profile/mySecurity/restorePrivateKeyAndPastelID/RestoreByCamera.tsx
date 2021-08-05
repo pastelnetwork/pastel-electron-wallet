@@ -5,7 +5,6 @@ import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
-import Link from '../../../../common/components/Link'
 
 type TQRReader = {
   index: number
@@ -15,14 +14,14 @@ type TQRReader = {
 
 type TRestoreByCameraProps = {
   rpcConfig: TRPCConfig
-  onBack: () => void
   turnOffCamera?: boolean
+  onHideHeader: (status: boolean) => void
 }
 
 export default function RestoreByCamera({
   rpcConfig,
-  onBack,
   turnOffCamera,
+  onHideHeader,
 }: TRestoreByCameraProps): JSX.Element {
   const [results, setResults] = useState<TQRReader[]>([])
   const [showQrReader, setShowQrReader] = useState(true)
@@ -54,6 +53,7 @@ export default function RestoreByCamera({
           } catch (err) {
             setCurrentStatus('error')
           }
+          onHideHeader(true)
         }
       }
     }
@@ -72,25 +72,14 @@ export default function RestoreByCamera({
   }
 
   const previewStyle = {
-    height: 400,
-    width: 400,
+    height: 292,
+    width: 292,
   }
 
   return (
-    <div className='m-4'>
-      <div className='text-gray-800 text-2xl font-extrabold mb-3'>
-        Scan Your QR Code
-      </div>
-      <div className='font-medium text-sm text-gray-33 opacity-50'>
-        Move your QR code to the red square to restore your keys.{' '}
-        {results.length ? (
-          <span>
-            Restoring ... {results.length}/{results[0].total}
-          </span>
-        ) : null}
-      </div>
-      <div className='mt-4 mx-auto p-5 min-h-400px QrReader'>
-        <div className='w-400px h-400px mx-auto bg-gray-71'>
+    <div className='w-full'>
+      <div className='w-[476px] h-[350px] mx-auto bg-gray-f8 rounded-lg py-29px'>
+        <div className='w-[292px] h-[292px] mx-auto bg-gray-71 rounded-md shadow-lg overflow-hidden'>
           {showQrReader && !turnOffCamera ? (
             <QrReader
               style={previewStyle}
@@ -103,16 +92,13 @@ export default function RestoreByCamera({
           )}
         </div>
       </div>
-      <div className='mt-4 text-center'>
-        <Link
-          href='#'
-          onClick={() => {
-            setShowQrReader(false)
-            onBack()
-          }}
-        >
-          Or try another restore method
-        </Link>
+      <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
+        Holding your phone up to your computer's webcam.{' '}
+        {results.length ? (
+          <span>
+            Restoring ... {results.length}/{results[0].total}
+          </span>
+        ) : null}
       </div>
     </div>
   )

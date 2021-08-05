@@ -217,6 +217,7 @@ module.exports = {
           e7: '#E7F2FE',
           ac: '#006EAC',
           f2: '#98CFF2',
+          fa: '#FAFCFF',
         },
         gray: {
           f6: '#F6F7F9',

@@ -1,18 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import QRCode from 'qrcode.react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Autoplay, EffectFade } from 'swiper/core'
 
-import RestoreModal from '../restorePrivateKeyAndPastelID/RestoreModal'
-import Link from '../../../../common/components/Link'
 import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
-import { TRPCConfig } from '../../Profile'
 
 import 'swiper/swiper.min.css'
 
 type TQRProps = {
-  rpcConfig: TRPCConfig
   qrcodeData: string[]
   handleDownloadVideo: () => void
   currentStatus?: string
@@ -64,29 +60,17 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
 }
 
 const QR = ({
-  rpcConfig,
   qrcodeData,
   handleDownloadVideo,
   currentStatus,
 }: TQRProps): JSX.Element => {
-  const [modalIsOpen, setModalIsOpen] = useState(false)
-
   const description = (
     <div className='max-w-330px'>
       As a more convenient way to backup your secrets, you can either click the
       button below to download a QR Code video, or make a video of the code on
       your smartphone camera. Then to restore, you can play the video on your
       phone and hold the phone screen up to your webcam. You can test that it
-      worked by clicking{' '}
-      <Link
-        href='#'
-        className='underline'
-        variant='gray-77'
-        onClick={() => setModalIsOpen(true)}
-      >
-        here
-      </Link>
-      .
+      worked by clicking here.
     </div>
   )
 
@@ -112,19 +96,12 @@ const QR = ({
   )
 
   return (
-    <>
-      <Card
-        title='Generate a QR Code Video'
-        description={description}
-        content={content}
-        footer={footer}
-      />
-      <RestoreModal
-        rpcConfig={rpcConfig}
-        modalIsOpen={modalIsOpen}
-        onCloseModal={setModalIsOpen}
-      />
-    </>
+    <Card
+      title='Generate a QR Code Video'
+      description={description}
+      content={content}
+      footer={footer}
+    />
   )
 }
 
