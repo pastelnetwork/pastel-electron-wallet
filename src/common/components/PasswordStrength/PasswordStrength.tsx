@@ -20,7 +20,7 @@ const PasswordStrength = (props: TPasswordStrengthProps): JSX.Element => {
   // colors logic
   switch (props.strength) {
     case PasswordStrengths.Weak:
-      colorClass = 'bg-orange-63'
+      colorClass = 'bg-red-fe'
       break
 
     case PasswordStrengths.Moderate:

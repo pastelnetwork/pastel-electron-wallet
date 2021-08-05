@@ -175,7 +175,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
           <div className='flex-grow'>
             {props.backupMethod === BackupMethods.PDF && (
               <div className='mt-42px'>
-                <h1 className='text-gray-23 text-lg leading-6 font-black'>
+                <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
                   Crypto Keys Backup Method
                 </h1>
                 <h2 className='text-gray-71 text-sm font-normal'>
@@ -253,7 +253,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
 
             {props.backupMethod === BackupMethods.QR && (
               <div className='mt-42px'>
-                <h1 className='text-gray-23 text-lg leading-6 font-black'>
+                <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
                   QR-Code Backup Method
                 </h1>
                 <h2 className='text-gray-77 text-sm font-normal'>
@@ -265,18 +265,20 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
                 <div className='relative mt-4 p-5 border bg-gray-f8 flex rounded-md justify-center shadow-textbox'>
                   <QRCodeSlider qrcodeData={qrcodeData} />
 
-                  <div className='absolute bottom-3 right-3 z-50'>
-                    <button
-                      className={cn(
-                        'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
-                        currentStatus === 'downloading' &&
-                          'bg-blue-9b cursor-not-allowed',
-                      )}
-                      onClick={handleDownloadVideo}
-                    >
-                      <DownloadArrow size={24} className='text-blue-3f' />
-                    </button>
-                  </div>
+                  {qrcodeData.length ? (
+                    <div className='absolute bottom-3 right-3 z-50'>
+                      <button
+                        className={cn(
+                          'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
+                          currentStatus === 'downloading' &&
+                            'bg-blue-9b cursor-not-allowed',
+                        )}
+                        onClick={handleDownloadVideo}
+                      >
+                        <DownloadArrow size={24} className='text-blue-3f' />
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               </div>
             )}

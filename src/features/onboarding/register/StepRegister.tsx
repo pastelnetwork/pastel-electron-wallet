@@ -84,7 +84,6 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           className='w-full'
           type='text'
           label='User name'
-          placeholder='i.e banksy168'
           value={props.username}
           onChange={onUsernameChanged}
           ref={null}
@@ -114,6 +113,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           <Checkbox
             isChecked={props.termsAgreed}
             clickHandler={onAgreementClicked}
+            className='items-start'
           >
             <span className='text-14px text-gray-a0'>
               I certify that I’m 18 years of age or older, and agree to the{' '}
