@@ -8,8 +8,9 @@ import ProfileGeneralRow from '../ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import Select, { TOption } from '../Select/Select'
 
-import NumberFormat from 'react-number-format'
 import NSFWControls from './NSFWControls'
+import { formatPrice } from '../../../../common/utils/format'
+import { useCurrencyName } from '../../../../common/hooks/appInfo'
 
 export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
 
@@ -29,8 +30,8 @@ const ProfileGeneral = ({
     language: 'English',
     categories: ['Motion Graphics', 'Illustration', 'Abstract'],
     reputation: 4.89,
-    highestFeeRecieved: { value: '136200', comment: 632 },
-    totalSalesAmount: { value: '560600', comment: 211 },
+    highestFeeRecieved: { value: 136200, comment: 632 },
+    totalSalesAmount: { value: 560600, comment: 211 },
     totalItemsSold: '124 Copies across 5 NFTs',
     bio:
       'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
@@ -51,7 +52,8 @@ const ProfileGeneral = ({
   const [bio, setBio] = useState<string>(data.bio)
   const [location, setLocation] = useState<TOption | null>(locations[1])
   const [language, setLanguage] = useState<TOption | null>(languages[0])
-  const [currentPSLPrice, setCurrentPSLPrice] = useState('0')
+  const [currentPrice, setCurrentPrice] = useState(0)
+  const currencyName = useCurrencyName()
 
   useEffect(() => {
     setLocation(locations[isEmpty ? 0 : 1])
@@ -66,7 +68,7 @@ const ProfileGeneral = ({
       }
 
       const result = await Convert(price).from('USD').to(nativeCurrency)
-      setCurrentPSLPrice(result.toFixed(2))
+      setCurrentPrice(result)
     }
     getNativeCurrency()
   }, [nativeCurrency])
@@ -126,7 +128,7 @@ const ProfileGeneral = ({
           <div className='flex items-center'>
             {isEmpty ? (
               <span className='cursor-pointer text-gray-4a text-base leading-5'>
-                0 PSL
+                0 {currencyName}
               </span>
             ) : (
               <>
@@ -136,20 +138,15 @@ const ProfileGeneral = ({
                   content={
                     <p className='mb-0 px-2 py-1 text-xs leading-5 text-gray-fc'>
                       ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
-                      {currentPSLPrice}{' '}
+                      {currentPrice}{' '}
                       <span className='italic font-normal'>
-                        based on current PSL price
+                        based on current {currencyName} price
                       </span>
                     </p>
                   }
                 >
                   <span className='cursor-pointer font-medium text-gray-4a text-base leading-5'>
-                    <NumberFormat
-                      value={data.highestFeeRecieved.value}
-                      displayType='text'
-                      thousandSeparator={true}
-                    />{' '}
-                    PSL
+                    {formatPrice(data.highestFeeRecieved.value, currencyName)}
                   </span>
                 </Tooltip>
                 {data.highestFeeRecieved.comment && (
@@ -165,7 +162,7 @@ const ProfileGeneral = ({
           <div className='flex items-center'>
             {isEmpty ? (
               <span className='cursor-pointer text-gray-4a text-base leading-5'>
-                0 PSL
+                0 {currencyName}
               </span>
             ) : (
               <>
@@ -175,20 +172,15 @@ const ProfileGeneral = ({
                   content={
                     <p className='mb-0 px-2 py-1 text-xs leading-5 text-gray-fc'>
                       ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
-                      {currentPSLPrice}{' '}
+                      {currentPrice}{' '}
                       <span className='italic font-normal'>
-                        based on current PSL price
+                        based on current {currencyName} price
                       </span>
                     </p>
                   }
                 >
                   <span className='cursor-pointer text-gray-4a text-base leading-5'>
-                    <NumberFormat
-                      value={data.totalSalesAmount.value}
-                      displayType='text'
-                      thousandSeparator={true}
-                    />{' '}
-                    PSL
+                    {formatPrice(data.totalSalesAmount.value, currencyName)}
                   </span>
                 </Tooltip>
                 {data.totalSalesAmount.comment && (
