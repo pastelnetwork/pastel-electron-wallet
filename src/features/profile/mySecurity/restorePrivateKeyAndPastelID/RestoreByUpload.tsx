@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import path from 'path'
 import jsQR from 'jsqr'
+import cn from 'classnames'
 
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { TRPCConfig } from '../../Profile'
-import { Button } from '../../../../common/components/Buttons'
-import Link from '../../../../common/components/Link'
+import { Video, Refresh } from 'common/components/Icons'
+import { formatFileSize } from 'common/utils/format'
+import Tooltip from 'common/components/Tooltip'
 
 type TRestoreByUploadProps = {
   rpcConfig: TRPCConfig
-  onBack: () => void
+  onHideHeader: (status: boolean) => void
 }
 
 export default function RestoreByUpload({
   rpcConfig,
-  onBack,
+  onHideHeader,
 }: TRestoreByUploadProps): JSX.Element {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
@@ -31,6 +33,7 @@ export default function RestoreByUpload({
       } else {
         setCurrentStatus('error')
       }
+      onHideHeader(true)
     }
     if (qrCodeData.length) {
       doImport()
@@ -66,13 +69,16 @@ export default function RestoreByUpload({
               setQRCodeData(qrCode)
             } else {
               setCurrentStatus('error')
+              onHideHeader(true)
             }
           })
           .catch(() => {
             setCurrentStatus('error')
+            onHideHeader(true)
           })
       } catch {
         setCurrentStatus('error')
+        onHideHeader(true)
       }
     }
   }
@@ -94,38 +100,79 @@ export default function RestoreByUpload({
   }
 
   return (
-    <div className='m-4'>
-      <div className='text-gray-800 text-2xl font-extrabold mb-3'>
-        Select QR Code Video
+    <div>
+      <div className='font-normal text-h5 leading-6 text-gray-71'>
+        Please select your QR code video.
       </div>
-      <div className='font-medium text-sm text-gray-33 opacity-50'>
-        Please select your video key
-      </div>
-      <div className='mt-4'>
-        <label className='bg-gray-71 w-full relative overflow-hidden px-2 h-10 flex items-center text-white font-medium'>
-          <span className='truncate max-w-full'>
-            {fileSelected ? fileSelected.name : 'Choose File'}
-          </span>
-          <input
-            type='file'
-            name='upload'
-            accept='video/mp4'
-            onChange={handleImageChange}
-            className='hidden'
-          />
-        </label>
-      </div>
-      <div className='mt-4'>
-        <Button
-          className='w-full font-extrabold'
-          onClick={handleRestoreByUpload}
-          disabled={currentStatus === 'restoring'}
+      <div className='mt-3'>
+        <div
+          className={cn(
+            'flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px',
+            currentStatus === 'restoring' && 'cursor-not-allowed',
+          )}
         >
-          {currentStatus === 'restoring' ? 'Restoring' : 'Restore'}
-        </Button>
-      </div>
-      <div className='mt-4 text-center'>
-        <Link onClick={() => onBack()}>Or try another restore method</Link>
+          <div className='w-3/4'>
+            <label className='relative overflow-hidden flex'>
+              <div className='w-[55px] cursor-pointer'>
+                <Video size={55} />
+              </div>
+              <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
+                <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
+                  {fileSelected
+                    ? fileSelected.name
+                    : 'Select your QR code video.'}
+                </p>
+                {fileSelected ? (
+                  <p className='mb-0 text-xs font-normal text-gray-a0'>
+                    {formatFileSize(fileSelected.size)}
+                  </p>
+                ) : null}
+              </div>
+              <input
+                type='file'
+                name='upload'
+                accept='video/mp4'
+                onChange={handleImageChange}
+                className='hidden'
+              />
+            </label>
+          </div>
+          <div className='w-14'>
+            <Tooltip
+              type='top'
+              content={
+                <div className='p-2 text-xs font-medium'>
+                  Restore your keys.
+                </div>
+              }
+              width={130}
+              vPosPercent={110}
+            >
+              <span
+                onClick={handleRestoreByUpload}
+                className={cn(
+                  fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
+                )}
+              >
+                <Refresh
+                  size={44}
+                  className={cn(
+                    'transition duration-300',
+                    !fileSelected
+                      ? 'text-blue-9b'
+                      : 'text-blue-e7 hover:text-blue-fa',
+                  )}
+                  pathColor={fileSelected ? '#3F9AF7' : '#fff'}
+                />
+              </span>
+            </Tooltip>
+          </div>
+        </div>
+        {currentStatus === 'restoring' && (
+          <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
+            Restoring ...
+          </div>
+        )}
       </div>
     </div>
   )

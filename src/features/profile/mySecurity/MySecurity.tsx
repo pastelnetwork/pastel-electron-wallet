@@ -99,7 +99,6 @@ const MySecurity = (props: TSecurity): JSX.Element => {
       <div className='grid grid-cols-3 gap-5 min-h-672px'>
         <ChangePassword />
         <QRCode
-          rpcConfig={rpcConfig}
           qrcodeData={qrcodeData}
           handleDownloadVideo={handleDownloadVideo}
           currentStatus={currentStatus}
