@@ -146,7 +146,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             </h1>
             <h2 className='text-gray-77 text-sm font-normal'>
               To Request a code, please fill in the form{' '}
-              <Link href='#' className='text-gray-77 underline'>
+              <Link to='#' className='text-blue-3f'>
                 here
               </Link>
             </h2>

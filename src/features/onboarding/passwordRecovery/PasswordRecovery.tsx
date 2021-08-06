@@ -7,10 +7,8 @@ import Typography, {
   TypographyVariant,
 } from 'common/components/Typography/Typography'
 import * as ROUTES from 'common/utils/constants/routes'
-import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
 import Link from 'common/components/Link'
-import infoIco from 'common/assets/icons/ico-info.svg'
 
 enum Tabs {
   qrCode,
@@ -37,11 +35,7 @@ const PasswordRecovery = (): JSX.Element => {
       </Typography>
       <div className='mt-[19px]'>
         <MultiToggleSwitch
-          data={[
-            { label: 'QR-Code' },
-            { label: 'Crypto Keys' },
-            { label: 'My Security', count: 12 },
-          ]}
+          data={[{ label: 'QR-Code' }, { label: 'Crypto Keys' }]}
           activeIndex={tab}
           onToggle={onTabToggle}
           itemActiveClassName='bg-gray-4a rounded-full text-white'
@@ -81,15 +75,6 @@ const PasswordRecovery = (): JSX.Element => {
               >
                 Public key
               </Typography>
-              <div className='ml-1'>
-                <Tooltip
-                  type='top'
-                  width={400}
-                  content='Public-key cryptography, or asymmetric cryptography, is a cryptographic system which uses pairs of keys'
-                >
-                  <img src={infoIco} alt='info' />
-                </Tooltip>
-              </div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
               <Typography
@@ -108,15 +93,6 @@ const PasswordRecovery = (): JSX.Element => {
               >
                 Secret key
               </Typography>
-              <div className='ml-1'>
-                <Tooltip
-                  type='top'
-                  width={400}
-                  content='Secret-key cryptography, or asymmetric cryptography, is a cryptographic system which uses pairs of keys'
-                >
-                  <img src={infoIco} alt='info' />
-                </Tooltip>
-              </div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
               <Typography
@@ -128,14 +104,13 @@ const PasswordRecovery = (): JSX.Element => {
             </div>
           </div>
           <div className='mt-7'>
-            <Link to={ROUTES.NEW_PASSWORD}>
-              <Button style={{ width: '100%' }}>Submit</Button>
+            <Link to={ROUTES.NEW_PASSWORD} className='block w-full'>
+              <Button className='w-full'>Submit</Button>
             </Link>
           </div>
           <div className='mt-[17px]'>
-            <Link to={ROUTES.PASSWORD_RECOVERY}>
+            <Link to={ROUTES.PASSWORD_RECOVERY} className='block w-full'>
               <Button
-                style={{ width: '100%' }}
                 variant='transparent'
                 className='w-full bg-white border border-link text-link text-base font-medium'
               >

@@ -279,7 +279,6 @@ module.exports = {
           ef: '#FFEFEB',
           '7a': '#FF7A00',
           75: '#FF754C',
-          63: '#FE634C',
           14: '#14B85F',
           '4a': '#FA4A30',
           d9: '#FFD9D9',

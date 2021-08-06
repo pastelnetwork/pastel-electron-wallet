@@ -9,7 +9,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 const OnboardingWelcome = (): JSX.Element => {
   return (
     <div className='w-649px mx-14 my-11'>
-      <div className='text-gray-800 text-32px font-black text-center'>
+      <div className='text-gray-2d text-h1 font-extrabold leading-10 text-center'>
         Welcome to Pastel NFT
       </div>
       <div className='font-medium text-2xl text-gray-77 mt-2 text-center'>
@@ -24,28 +24,30 @@ const OnboardingWelcome = (): JSX.Element => {
           src={image}
           className='w-full rounded-2xl overflow-hidden z-10 relative'
         />
-        <div className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white w-36 h-36 flex items-center justify-center rounded-full transition cursor-pointer z-50 shadow-0x4x44px bg-rgba-white-02 hover:bg-rgba-white-04'>
+        <div className='absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 border border-white w-[114px] h-[114px] flex items-center justify-center rounded-full transition duration-300 cursor-pointer z-50 shadow-0x4x44px bg-rgba-white-02 hover:bg-rgba-white-04 scale-100 hover:scale-110'>
           <div className='flex items-center justify-center rounded-full bg-white w-14 h-14 cursor-pointer'>
             <img src={playIco} className='cursor-pointer' />
           </div>
         </div>
       </div>
       <div className='mt-10 flex flex-col items-center'>
-        <Link href={ROUTES.SIGN_UP}>
-          <Button className='w-96'>Register account</Button>
+        <Link to={ROUTES.SIGN_UP}>
+          <Button className='w-96 font-extrabold text-base'>
+            Register Account
+          </Button>
         </Link>
       </div>
       <div className='mt-4 flex flex-col items-center'>
         <Button
           variant='transparent'
-          className='w-96 bg-white border border-link text-link'
+          className='w-96 bg-white border border-link text-link font-medium text-base'
         >
-          Take a tour first
+          Take a Tour First
         </Button>
       </div>
-
-      <div className='mt-4 text-center text-base text-gray-a0'>
-        Already have an account? <Link href={ROUTES.LOGIN}>Login</Link>
+      <div className='mt-4 text-center text-base font-normal text-gray-a0'>
+        Already have an account?{' '}
+        <Link to={ROUTES.LOGIN}>Restore account from backup</Link>
       </div>
     </div>
   )

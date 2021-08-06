@@ -45,7 +45,7 @@ const Warning = ({ form }: { form: TForm }) => {
   }
 
   return (
-    <div className='text-red-63 text-xs font-italic font-medium w-[190px] mt-2'>
+    <div className='text-red-fe text-xs font-italic font-medium w-[190px] mt-2'>
       Warning: the higher the number of copies you create, the less valuable
       each copy is likely to be!
     </div>
