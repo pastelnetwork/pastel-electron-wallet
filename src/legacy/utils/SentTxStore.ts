@@ -1,38 +1,13 @@
 /* eslint-disable */
 
-import os from 'os'
-import path from 'path'
 import fs from 'fs'
-import { remote } from 'electron'
 import { Transaction, TxDetail } from '../components/AppState'
+import { sentTxStorePath } from '../../common/utils/app'
 export default class SentTxStore {
-  static locateSentTxStore() {
-    if (os.platform() === 'darwin') {
-      return path.join(
-        remote.app.getPath('appData'),
-        'Pastel',
-        'senttxstore.dat',
-      )
-    }
-
-    if (os.platform() === 'linux') {
-      return path.join(
-        remote.app.getPath('home'),
-        '.local',
-        'share',
-        'psl-qt-wallet-org',
-        'psl-qt-wallet',
-        'senttxstore.dat',
-      )
-    }
-
-    return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
-  }
-
   static async loadSentTxns() {
     try {
       const sentTx = JSON.parse(
-        (await fs.promises.readFile(SentTxStore.locateSentTxStore())) as any,
+        (await fs.promises.readFile(sentTxStorePath)) as any,
       )
       return sentTx.map((s: any) => {
         const transction: any = new Transaction()

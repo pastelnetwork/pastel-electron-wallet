@@ -12,8 +12,6 @@ import installExtension, {
 } from 'electron-devtools-installer'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
-import os from 'os'
-import path from 'path'
 
 import pkg from '../package.json'
 import {
@@ -25,15 +23,15 @@ import {
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
 import './features/nft/addNFT/imageOptimization/ImageOptimization.ipcMain'
+import { browserWindow, sendEventToBrowser } from './common/utils/app'
 
 // Deep linked url
 let deepLinkingUrl: string[] | string
-let mainWindow: BrowserWindow | null = null
 
 const gotTheLock = app.requestSingleInstanceLock()
 if (gotTheLock) {
   app.on('second-instance', (e, argv) => {
-    forceSingleInstanceApplication(mainWindow, deepLinkingUrl, argv)
+    forceSingleInstanceApplication(deepLinkingUrl, argv)
   })
 } else {
   app.quit()
@@ -85,7 +83,7 @@ const createWindow = async () => {
       webSecurity: false,
     },
   })
-  mainWindow = w
+  browserWindow.current = w
 
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
@@ -107,17 +105,12 @@ const createWindow = async () => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
-
-    w.webContents.send('app-info', {
-      isPackaged: app.isPackaged,
-      locatePastelConfDir: getLocatePastelConfDir(),
-    })
   })
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
   w.webContents.on('did-finish-load', () => {
-    if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined')
+    if (!browserWindow.current) {
+      throw new Error('No active window')
     }
 
     if (process.env.START_MINIMIZED) {
@@ -160,7 +153,7 @@ const createWindow = async () => {
     closeServeStatic()
 
     // $FlowFixMe
-    w.webContents.send('appquitting')
+    sendEventToBrowser('appquitting')
     // Failsafe, timeout after 10 seconds
     setTimeout(() => {
       waitingForClose = false
@@ -170,7 +163,7 @@ const createWindow = async () => {
     }, 10 * 1000)
   })
   w.on('closed', () => {
-    mainWindow = null
+    browserWindow.current = undefined
   })
   const menuBuilder = new MenuBuilder(w)
   menuBuilder.buildMenu()
@@ -192,7 +185,7 @@ app.on('ready', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
+  if (!browserWindow.current) {
     createWindow()
   }
 })
@@ -204,7 +197,7 @@ app.on('will-finish-launching', function () {
   app.on('open-url', function (event, url) {
     event.preventDefault()
     deepLinkingUrl = url
-    redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+    redirectDeepLinkingUrl(deepLinkingUrl)
   })
 })
 
@@ -226,20 +219,9 @@ ipcMain.on('app-ready', () => {
     }, fourHours)
   }
 
-  redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+  redirectDeepLinkingUrl(deepLinkingUrl)
 
-  const locatePastelConfDir = getLocatePastelConfDir()
-  const locateSentTxStore = getLocateSentTxStore()
-  initServeStatic(app.isPackaged)
-
-  if (mainWindow?.webContents) {
-    mainWindow.webContents.send('app-info', {
-      isPackaged: app.isPackaged,
-      locatePastelConfDir,
-      appPathDir: getAppPathDir(),
-      locateSentTxStore,
-    })
-  }
+  initServeStatic()
 })
 
 ipcMain.on('restart_app', () => {
@@ -249,9 +231,7 @@ ipcMain.on('restart_app', () => {
 autoUpdater.on(
   'update-downloaded',
   (event, releaseNotes, releaseName, updateURL) => {
-    if (mainWindow && mainWindow.webContents) {
-      mainWindow.webContents.send('update_downloaded')
-    }
+    sendEventToBrowser('update_downloaded')
     console.warn('update-downloaded', {
       event,
       releaseNotes,
@@ -264,46 +244,3 @@ autoUpdater.on(
 autoUpdater.on('error', err => {
   console.warn(`autoUpdater error: ${err.message}`, err)
 })
-
-const getLocatePastelConfDir = () => {
-  if (os.platform() === 'darwin') {
-    return path.join(app.getPath('appData'), 'Pastel')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(app.getPath('home'), '.pastel')
-  }
-
-  return path.join(app.getPath('appData'), 'Pastel')
-}
-
-const getLocateSentTxStore = (): string => {
-  if (os.platform() === 'darwin') {
-    return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(
-      app.getPath('home'),
-      '.local',
-      'share',
-      'psl-qt-wallet-org',
-      'psl-qt-wallet',
-      'senttxstore.dat',
-    )
-  }
-
-  return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
-}
-
-const getAppPathDir = () => {
-  if (os.platform() === 'darwin') {
-    return path.join(app.getPath('appData'))
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(app.getPath('home'))
-  }
-
-  return path.join(app.getPath('appData'))
-}

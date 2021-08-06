@@ -1,12 +1,11 @@
 import fs from 'fs'
 import { TSentTxStore, TTransaction } from 'types/rpc'
-import store from '../../redux/store'
+import { sentTxStorePath } from '../../common/utils/app'
 
 export const loadSentTxns = async (): Promise<TTransaction | []> => {
   try {
-    const { locateSentTxStore } = store.getState().appInfo
     const sentTx = JSON.parse(
-      (await fs.promises.readFile(locateSentTxStore)).toString(),
+      (await fs.promises.readFile(sentTxStorePath)).toString(),
     )
     return sentTx.map((s: TSentTxStore) => {
       const transction: TTransaction = {

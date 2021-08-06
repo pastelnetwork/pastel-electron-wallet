@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import fs from 'fs'
-import path from 'path'
 
 import {
   createNewPastelID,
@@ -9,6 +8,7 @@ import {
 } from '../../api/pastel-rpc'
 import type { AppThunk } from '../../redux/store'
 import { openPastelModal } from '../pastelModal'
+import { getPastelConfigPath } from '../../common/utils/app'
 
 export type TRegisterPastelID = {
   pastelid: string
@@ -141,15 +141,11 @@ export function createPastelID(
   }
 }
 
-export async function createPastelKeysFolder(
-  locatePastelConfDir: string,
-): Promise<void> {
-  if (locatePastelConfDir) {
-    const pastelKeysFolder = path.join(locatePastelConfDir, 'pastelkeys')
-    try {
-      await fs.promises.access(pastelKeysFolder)
-    } catch {
-      await fs.promises.mkdir(pastelKeysFolder)
-    }
+export async function createPastelKeysFolder(): Promise<void> {
+  const pastelKeysFolder = getPastelConfigPath('pastelkeys')
+  try {
+    await fs.promises.access(pastelKeysFolder)
+  } catch {
+    await fs.promises.mkdir(pastelKeysFolder)
   }
 }

@@ -63,18 +63,10 @@ const childRoutes = (
 const Routes = (): JSX.Element => {
   const location = useLocation()
   const history = useHistory()
-  const [, setIsPackaged] = useState(false)
   const [rpcConfig] = useState<TRPCConfig>()
   const [info] = useState<TWalletInfo>(defaultPastelInfo)
 
   useEffect(() => {
-    ipcRenderer.on(
-      'app-info',
-      (event, { isPackaged }: { isPackaged: boolean }) => {
-        setIsPackaged(isPackaged)
-      },
-    )
-
     history.push(ROUTES.LOADING)
   }, [])
 

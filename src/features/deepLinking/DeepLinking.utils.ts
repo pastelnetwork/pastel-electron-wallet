@@ -1,25 +1,25 @@
-import { app, BrowserWindow, protocol } from 'electron'
+import { app, protocol } from 'electron'
 
 import pkg from '../../../package.json'
+import { browserWindow } from 'common/utils/app'
 
-export const redirectDeepLinkingUrl = (
-  deepLink: string[] | string,
-  mainWindow: BrowserWindow | null,
-): void => {
+export const redirectDeepLinkingUrl = (deepLink: string[] | string): void => {
   if (deepLink && deepLink.toString().includes('://')) {
     const deepLinkingUrl = deepLink.toString()
     if (deepLinkingUrl.includes(`${pkg.protocolSchemes.native}://`)) {
       const url = deepLinkingUrl
         .split(`${pkg.protocolSchemes.native}://`)[1]
         .split('?')
-      if (mainWindow && mainWindow.webContents) {
+
+      const window = browserWindow.current
+      if (window && window.webContents) {
         if (process.platform == 'win32') {
-          mainWindow.webContents.send('deepLink', {
+          window.webContents.send('deepLink', {
             view: url[0].slice(0, -1),
             param: url[1],
           })
         } else {
-          mainWindow.webContents.send('deepLink', {
+          window.webContents.send('deepLink', {
             view: url[0],
             param: url[1],
           })
@@ -34,7 +34,6 @@ export const redirectDeepLinkingUrl = (
 }
 
 export const forceSingleInstanceApplication = (
-  mainWindow: BrowserWindow | null,
   deepLinkingUrl: string[] | string,
   argv: string[],
 ): void => {
@@ -46,12 +45,13 @@ export const forceSingleInstanceApplication = (
     deepLinkingUrl = argv.slice(1)
   }
 
-  if (mainWindow) {
-    if (mainWindow.isMinimized()) {
-      mainWindow.restore()
+  const window = browserWindow.current
+  if (window) {
+    if (window.isMinimized()) {
+      window.restore()
     }
-    mainWindow.focus()
-    redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+    window.focus()
+    redirectDeepLinkingUrl(deepLinkingUrl)
   }
 }
 

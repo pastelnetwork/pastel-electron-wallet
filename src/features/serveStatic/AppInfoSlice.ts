@@ -25,25 +25,13 @@ export type TWalletInfo = {
 }
 
 export interface IAppInfoState {
-  isPackaged: boolean
-  locatePastelConfDir: string
-  locateSentTxStore: string
   addressBookFileName: string
   info: TWalletInfo
 }
 
 const initialState: IAppInfoState = {
-  isPackaged: false,
-  locatePastelConfDir: '',
-  locateSentTxStore: '',
   addressBookFileName: '',
   info: defaultPastelInfo,
-}
-
-type TAppInfoAction = {
-  isPackaged: boolean
-  locatePastelConfDir: string
-  locateSentTxStore: string
 }
 
 type TInfoAction = {
@@ -54,11 +42,6 @@ export const appInfoSlice = createSlice({
   name: 'appInfo',
   initialState,
   reducers: {
-    setAppInfo(state: IAppInfoState, action: PayloadAction<TAppInfoAction>) {
-      state.isPackaged = action.payload.isPackaged
-      state.locatePastelConfDir = action.payload.locatePastelConfDir
-      state.locateSentTxStore = action.payload.locateSentTxStore
-    },
     setPastelInfo(state: IAppInfoState, action: PayloadAction<TInfoAction>) {
       state.info = action.payload.info
     },
@@ -67,4 +50,4 @@ export const appInfoSlice = createSlice({
 
 export const appInfoReducer = appInfoSlice.reducer
 
-export const { setAppInfo, setPastelInfo } = appInfoSlice.actions
+export const { setPastelInfo } = appInfoSlice.actions

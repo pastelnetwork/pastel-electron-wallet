@@ -35,19 +35,18 @@ import { render } from 'react-dom'
 import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
 import log from 'electron-log'
-import { ipcRenderer } from 'electron'
 import { ToastContainer } from 'react-toastify'
 
 import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
 import { createPastelKeysFolder } from './features/pastelID'
-import { setAppInfo } from './features/serveStatic'
 import { PastelModal } from './features/pastelModal'
 import UpdateToast from './features/updateToast'
 import Utilities from './features/utilities'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 import 'common/utils/initDayjs'
+import { isPackaged } from './common/utils/app'
 
 const oneHour = 1000 * 60 * 60
 /**
@@ -72,38 +71,11 @@ try {
   console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
 }
 
-ipcRenderer.on(
-  'app-info',
-  (
-    event,
-    {
-      isPackaged,
-      locatePastelConfDir,
-      locateSentTxStore,
-      appPathDir,
-    }: {
-      isPackaged: boolean
-      locatePastelConfDir: string
-      locateSentTxStore: string
-      appPathDir: string
-    },
-  ) => {
-    if (isPackaged) {
-      log.transports.console.level = false
-    }
-    createPastelKeysFolder(locatePastelConfDir)
-    store.dispatch(
-      setAppInfo({ isPackaged, locatePastelConfDir, locateSentTxStore }),
-    )
-    sessionStorage.setItem(
-      'appInfo',
-      JSON.stringify({
-        appPathDir,
-        isPackaged,
-      }),
-    )
-  },
-)
+if (isPackaged) {
+  log.transports.console.level = false
+}
+
+createPastelKeysFolder()
 
 const application = (
   <Provider store={store}>
