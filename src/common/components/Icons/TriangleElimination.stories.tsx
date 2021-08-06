@@ -19,5 +19,5 @@ const Template: Story<Props> = ({ ...args }) => {
 export const SimpleTriangleEliminationIcon = Template.bind({})
 SimpleTriangleEliminationIcon.args = {
   size: 44,
-  className: 'text-red-63',
+  className: 'text-red-fe',
 }

@@ -6,6 +6,7 @@ export type TCheckboxProps = {
   isChecked: boolean
   clickHandler?: (checked: boolean) => void
   children?: React.ReactNode
+  className?: string
   tickClassName?: string
   selectedBackgroundClassName?: string
 }
@@ -16,15 +17,18 @@ const Checkbox = ({
   clickHandler,
   tickClassName = 'text-gray-e7',
   selectedBackgroundClassName = 'bg-blue-3f',
+  className = 'items-center',
 }: TCheckboxProps): JSX.Element => {
   const [selected, setSelected] = useState(isChecked)
   return (
-    <div className='cursor-pointer select-none flex items-center'>
+    <div
+      className={cn('cursor-pointer select-none flex', className)}
+      onClick={() => {
+        setSelected(!selected)
+        clickHandler && clickHandler(!selected)
+      }}
+    >
       <div
-        onClick={() => {
-          setSelected(!selected)
-          clickHandler && clickHandler(!selected)
-        }}
         className={cn(
           'transition-all w-5 h-5 rounded-md checkboxCheckmark flex-shrink-0',
           !selected && 'border-gray-dd border hover:border-gray-8e',

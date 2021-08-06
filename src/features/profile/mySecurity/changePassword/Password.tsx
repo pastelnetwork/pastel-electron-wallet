@@ -39,7 +39,7 @@ const ChangePassword = (): JSX.Element => {
           such as{' '}
         </span>
         <Link
-          href='https://www.lastpass.com/'
+          to='https://www.lastpass.com/'
           target='_blank'
           className='underline italic'
           variant='gray-a0'
@@ -49,7 +49,7 @@ const ChangePassword = (): JSX.Element => {
         </Link>
         <span> or </span>
         <Link
-          href='https://1password.com/'
+          to='https://1password.com/'
           target='_blank'
           className='underline italic'
           variant='gray-a0'

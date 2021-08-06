@@ -7,6 +7,7 @@ export type TCircleSteperProps = {
   currentStep: number
   stopColor1?: string
   stopColor2?: string
+  spacing?: number
 }
 
 const polarToCartesian = (
@@ -51,10 +52,11 @@ const describeArc = (
 const CircleSteper = ({
   size = 65,
   totalStep = 4,
-  spaceAngle = 10,
+  spaceAngle = 20,
   currentStep = 4,
-  stopColor1 = '#3F9AF7',
-  stopColor2 = '#6C5DD3',
+  stopColor1 = '#6FCF97',
+  stopColor2 = '#6FCF97',
+  spacing = 10,
 }: TCircleSteperProps): JSX.Element => {
   const [startPoints, setStartPoints] = useState<Array<number>>([])
   useEffect(() => {
@@ -87,10 +89,11 @@ const CircleSteper = ({
               33,
               28,
               item,
-              item + 360 / totalStep - spaceAngle,
+              item + 360 / totalStep - spaceAngle - spacing,
             )}
             stroke='url(#paint0_linear)'
             strokeWidth={6}
+            strokeLinecap='round'
           />
         ))}
         <defs>

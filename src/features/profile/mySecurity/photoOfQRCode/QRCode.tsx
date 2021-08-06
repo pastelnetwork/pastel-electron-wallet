@@ -18,7 +18,9 @@ type TQRCodeSliderProps = {
   qrcodeData: string[]
 }
 
-function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
+export function QRCodeSlider({
+  qrcodeData,
+}: TQRCodeSliderProps): JSX.Element | null {
   if (!qrcodeData.length) {
     return null
   }
