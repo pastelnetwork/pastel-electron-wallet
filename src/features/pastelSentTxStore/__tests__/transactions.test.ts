@@ -2,7 +2,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { TTransaction } from 'types/rpc'
 import { fetchTandZTransactions } from '../transactions'
-import { setRpcConfig } from '../../../api/pastel-rpc'
+import { setRpcConfig } from '../../rpcConfig'
 
 jest.mock('fs', () => ({
   promises: {

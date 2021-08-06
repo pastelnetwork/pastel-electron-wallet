@@ -1,6 +1,7 @@
 import { Database } from 'sql.js'
 
-import { getRpcConfig, rpc } from '../../api/pastel-rpc/rpc'
+import { rpc } from '../../api/pastel-rpc/rpc'
+import { getRpcConfig } from '../rpcConfig'
 import PastelDB from '../../features/pastelDB/database'
 import coinGeckoClient from '../pastelPrice/coingecko'
 import {

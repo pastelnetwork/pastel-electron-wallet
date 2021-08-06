@@ -1,7 +1,7 @@
 import axios, { CancelTokenSource } from 'axios'
 
 import { METHODS } from './utils'
-import { requireRpcConfig } from 'api/pastel-rpc'
+import { requireRpcConfig } from '../../rpcConfig'
 
 const getMessage = (statusCode: number, isECONNREFUSED: boolean) => {
   if (isECONNREFUSED) {

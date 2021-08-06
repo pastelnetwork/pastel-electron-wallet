@@ -26,7 +26,7 @@ import {
 } from '../constants'
 import * as pastelDBLib from '../pastelDBLib'
 import * as pastelDBThread from '../pastelDBThread'
-import { setRpcConfig } from '../../../api/pastel-rpc/rpc'
+import { setRpcConfig } from '../../rpcConfig'
 
 type Databaseinstance = {
   db: Database

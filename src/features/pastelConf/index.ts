@@ -1,1 +1,0 @@
-export { updateDefaultPastelConfig } from './pastelConf'

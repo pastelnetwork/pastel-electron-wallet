@@ -1,29 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
 import { TRpcParam } from 'types/rpc'
 import log from 'electron-log'
+import { requireRpcConfig } from '../../features/rpcConfig'
 
 export type TRPCConfig = {
   url: string
   username: string
   password: string
-}
-
-let rpcConfig: TRPCConfig | undefined
-
-export const getRpcConfig = (): TRPCConfig | undefined => {
-  return rpcConfig
-}
-
-export const requireRpcConfig = (): TRPCConfig => {
-  if (!rpcConfig) {
-    throw new Error('Tried to invoke rpc before loading config')
-  }
-
-  return rpcConfig
-}
-
-export const setRpcConfig = (config: TRPCConfig): void => {
-  rpcConfig = config
 }
 
 export async function rpc<T>(method: string, params: TRpcParam[]): Promise<T> {

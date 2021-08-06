@@ -31,13 +31,15 @@ export const getBinPath = (fileNames?: {
   return binPath
 }
 
-const pastelConfigPath =
+const pastelConfigDirPath =
   platform === 'linux'
     ? path.join(anyApp.getPath('home'), '.pastel')
     : path.join(anyApp.getPath('appData'), 'Pastel')
 
 export const getPastelConfigPath = (filePath?: string): string => {
-  return filePath ? path.join(pastelConfigPath, filePath) : pastelConfigPath
+  return filePath
+    ? path.join(pastelConfigDirPath, filePath)
+    : pastelConfigDirPath
 }
 
 export const pastelConfigFilePath = getPastelConfigPath('pastel.conf')
