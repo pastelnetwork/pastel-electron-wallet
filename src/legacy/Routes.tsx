@@ -56,7 +56,6 @@ import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
-import { RegisterPage } from '../features/onboarding'
 
 export type TWalletInfo = {
   connections: number
@@ -599,38 +598,7 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
 
-            <Route
-              path={routes.LOADING}
-              render={props => (
-                <LoadingScreen
-                  {...props}
-                  setRPCConfig={(rpcConfig: any) => {
-                    // To support Redux calls
-                    this.props.setPastelConf({
-                      url: rpcConfig.url,
-                      username: rpcConfig.username,
-                      password: rpcConfig.password,
-                    })
-
-                    // To support legacy calls
-                    // TODO Remove then fully moved over to Redux
-                    this.setRPCConfig(rpcConfig)
-
-                    // set pastel DB thread update timer
-                    if (!app?.isPackaged) {
-                      setInterval(() => {
-                        PastelDBThread(rpcConfig)
-                      }, period)
-                    }
-
-                    this.exportSqliteDBIntervalID = window.setInterval(() => {
-                      saveSqliteDB()
-                    }, exportPastelDBPeriod)
-                  }}
-                  setInfo={this.setInfo}
-                />
-              )}
-            />
+            <Route path={routes.LOADING} component={LoadingScreen} />
           </Switch>
         </div>
       </div>

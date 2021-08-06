@@ -7,14 +7,7 @@ import { pageRoutes } from './index'
 import * as ROUTES from '../utils/constants/routes'
 import { TRPCConfig } from 'api/pastel-rpc'
 import LoadingScreen from 'features/loading'
-import { setPastelConf } from 'features/pastelConf'
-import { PastelDBThread } from 'features/pastelDB'
-import {
-  TWalletInfo,
-  setPastelInfo,
-  defaultPastelInfo,
-} from 'features/serveStatic'
-import { useAppDispatch } from 'redux/hooks'
+import { TWalletInfo, defaultPastelInfo } from 'features/serveStatic'
 
 type TRouteType = {
   id: string
@@ -67,15 +60,12 @@ const childRoutes = (
     )
   })
 
-const period = 1000 * 10
-
 const Routes = (): JSX.Element => {
   const location = useLocation()
   const history = useHistory()
-  const dispatch = useAppDispatch()
-  const [isPackaged, setIsPackaged] = useState(false)
-  const [rpcConfig, setRPCConfig] = useState<TRPCConfig>()
-  const [info, setInfo] = useState<TWalletInfo>(defaultPastelInfo)
+  const [, setIsPackaged] = useState(false)
+  const [rpcConfig] = useState<TRPCConfig>()
+  const [info] = useState<TWalletInfo>(defaultPastelInfo)
 
   useEffect(() => {
     ipcRenderer.on(
@@ -94,53 +84,11 @@ const Routes = (): JSX.Element => {
     }
   }, [rpcConfig])
 
-  const setInformation = (newInfo: TWalletInfo) => {
-    if (!newInfo.pslPrice) {
-      newInfo.pslPrice = info.pslPrice
-    }
-
-    setInfo(newInfo)
-
-    dispatch(setPastelInfo({ info: { ...newInfo } }))
-  }
-
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
       <Switch location={location}>
         {childRoutes(pageRoutes, rpcConfig, info)}
-        <Route
-          path={ROUTES.LOADING}
-          render={props => (
-            <LoadingScreen
-              {...props}
-              setRPCConfig={(rpcConfig: TRPCConfig | null) => {
-                // To support Redux calls
-                if (rpcConfig) {
-                  dispatch(
-                    setPastelConf({
-                      url: rpcConfig.url,
-                      username: rpcConfig.username,
-                      password: rpcConfig.password,
-                    }),
-                  )
-
-                  // To support legacy calls
-                  // TODO Remove then fully moved over to Redux
-                  setRPCConfig(rpcConfig)
-
-                  // set pastel DB thread update timer
-                  if (!isPackaged) {
-                    setInterval(() => {
-                      PastelDBThread(rpcConfig)
-                    }, period)
-                  }
-                }
-              }}
-              setInfo={setInformation}
-              redirectTo={ROUTES.WELCOME_PAGE}
-            />
-          )}
-        />
+        <Route path={ROUTES.LOADING} component={LoadingScreen} />
       </Switch>
     </div>
   )
