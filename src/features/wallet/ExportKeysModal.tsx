@@ -12,8 +12,6 @@ import {
   View,
 } from '@react-pdf/renderer'
 import { ControlRPC, WalletRPC } from '../../api/pastel-rpc'
-import { useAppSelector } from 'redux/hooks'
-import { RootState } from 'redux/store'
 import dayjs from 'dayjs'
 
 type TPDFDocumentProps = {
@@ -51,14 +49,10 @@ const ExportKeysModal = ({
   const [publicKey, setPublicKey] = useState('')
   const [privateKey, setPrivateKey] = useState('')
   const [havePDFLink, setHavePDFLink] = useState(false)
-  const { url, username, password } = useAppSelector<RootState['pastelConf']>(
-    ({ pastelConf }) => pastelConf,
-  )
 
   useEffect(() => {
-    const rpcConfig = { url, username, password }
-    const walletRPC = new WalletRPC(rpcConfig)
-    const controlRPC = new ControlRPC(rpcConfig)
+    const walletRPC = new WalletRPC()
+    const controlRPC = new ControlRPC()
     const getKeys = async () => {
       setHavePDFLink(false)
       const info = await controlRPC.fetchInfo()

@@ -7,12 +7,10 @@ import RestoreModal from '../restorePrivateKeyAndPastelID/RestoreModal'
 import Link from '../../../../common/components/Link'
 import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
-import { TRPCConfig } from '../../Profile'
 
 import 'swiper/swiper.min.css'
 
 type TQRProps = {
-  rpcConfig: TRPCConfig
   qrcodeData: string[]
   handleDownloadVideo: () => void
   currentStatus?: string
@@ -64,7 +62,6 @@ function QRCodeSlider({ qrcodeData }: TQRCodeSliderProps): JSX.Element | null {
 }
 
 const QR = ({
-  rpcConfig,
   qrcodeData,
   handleDownloadVideo,
   currentStatus,
@@ -119,11 +116,7 @@ const QR = ({
         content={content}
         footer={footer}
       />
-      <RestoreModal
-        rpcConfig={rpcConfig}
-        modalIsOpen={modalIsOpen}
-        onCloseModal={setModalIsOpen}
-      />
+      <RestoreModal modalIsOpen={modalIsOpen} onCloseModal={setModalIsOpen} />
     </>
   )
 }

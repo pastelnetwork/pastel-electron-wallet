@@ -1,7 +1,7 @@
 import { app, protocol } from 'electron'
 
 import pkg from '../../../package.json'
-import { browserWindow } from 'common/utils/app'
+import { browserWindow } from '../../common/utils/app'
 
 export const redirectDeepLinkingUrl = (deepLink: string[] | string): void => {
   if (deepLink && deepLink.toString().includes('://')) {

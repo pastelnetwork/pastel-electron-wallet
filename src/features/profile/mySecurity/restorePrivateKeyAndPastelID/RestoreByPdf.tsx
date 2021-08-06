@@ -5,24 +5,21 @@ import pdfjs from 'pdfjs-dist'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys } from '../common/utils'
-import { TRPCConfig } from '../../Profile'
 import { Button } from '../../../../common/components/Buttons'
 import Link from '../../../../common/components/Link'
 
 type TRestoreByPdfProps = {
-  rpcConfig: TRPCConfig
   onBack: () => void
 }
 
 export default function RestoreByPdf({
-  rpcConfig,
   onBack,
 }: TRestoreByPdfProps): JSX.Element {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [fileSelected, setFileSelected] = useState<File>()
 
   const doImport = async (value: string) => {
-    const result = await doImportPrivKeys(value, rpcConfig)
+    const result = await doImportPrivKeys(value)
     if (result) {
       setCurrentStatus('done')
     } else {

@@ -93,9 +93,6 @@ const myProfile = {
   path: ROUTES.MY_PROFILE,
   component: MyProfile,
   layout: PageLayout,
-  required: {
-    rpcConfig: true,
-  },
 }
 
 const walletScreen = {

@@ -1,7 +1,7 @@
 import LZUTF8 from 'lzutf8'
 import { toast } from 'react-toastify'
 
-import { rpc, TRPCConfig } from 'api/pastel-rpc/rpc'
+import { rpc } from 'api/pastel-rpc/rpc'
 import AddressbookImpl from 'common/utils/AddressbookImpl'
 
 type TAddressesResponse = {
@@ -63,16 +63,10 @@ export type TPrivateKey = {
   privateKey: string
 }
 
-async function fetchAllAddress(
-  config: TRPCConfig,
-): Promise<TAllAddresses | null> {
+async function fetchAllAddress(): Promise<TAllAddresses | null> {
   try {
-    const rpcTAddresses = rpc<TAddressesResponse>('z_listaddresses', [], config)
-    const rpcZAddresses = rpc<TAddressesResponse>(
-      'getaddressesbyaccount',
-      [''],
-      config,
-    )
+    const rpcTAddresses = rpc<TAddressesResponse>('z_listaddresses', [])
+    const rpcZAddresses = rpc<TAddressesResponse>('getaddressesbyaccount', [''])
 
     const [zAddresses, tAddresses] = await Promise.all([
       rpcTAddresses,
@@ -96,10 +90,9 @@ async function fetchAllAddress(
 async function getPrivKeyAsString(
   address: string,
   method: string,
-  config: TRPCConfig,
 ): Promise<string | null> {
   try {
-    const res = await rpc<TPrivKeyResponse>(method, [address], config)
+    const res = await rpc<TPrivKeyResponse>(method, [address])
     return res.result
   } catch (err) {
     toast(err.message, { type: 'error' })
@@ -111,9 +104,9 @@ async function getPrivKeyAsString(
   }
 }
 
-async function getPastelIDs(config: TRPCConfig): Promise<TPastelID[] | null> {
+async function getPastelIDs(): Promise<TPastelID[] | null> {
   try {
-    const res = await rpc<TPastelIDResponse>('pastelid', ['list'], config)
+    const res = await rpc<TPastelIDResponse>('pastelid', ['list'])
     return res.result
   } catch (err) {
     toast(err.message, { type: 'error' })
@@ -131,10 +124,8 @@ async function getAddressBook(): Promise<TAddressBook[] | null> {
   return addresses
 }
 
-export async function fetchPastelIDAndPrivateKeys(
-  config: TRPCConfig,
-): Promise<string | null> {
-  const addresses = await fetchAllAddress(config)
+export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
+  const addresses = await fetchAllAddress()
   const zPrivateKeys: string[] = []
   const tPrivateKeys: string[] = []
 
@@ -143,7 +134,7 @@ export async function fetchPastelIDAndPrivateKeys(
     for (let i = 0; i < zAddresses.length; i++) {
       const address = zAddresses[i]
 
-      const privKey = await getPrivKeyAsString(address, 'z_exportkey', config)
+      const privKey = await getPrivKeyAsString(address, 'z_exportkey')
       if (privKey) {
         zPrivateKeys.push(privKey)
       }
@@ -153,14 +144,14 @@ export async function fetchPastelIDAndPrivateKeys(
     for (let i = 0; i < tAddresses.length; i++) {
       const address = tAddresses[i]
 
-      const privKey = await getPrivKeyAsString(address, 'dumpprivkey', config)
+      const privKey = await getPrivKeyAsString(address, 'dumpprivkey')
       if (privKey) {
         tPrivateKeys.push(privKey)
       }
     }
   }
 
-  const pastelIDs = await getPastelIDs(config)
+  const pastelIDs = await getPastelIDs()
   const addressBook = await getAddressBook()
 
   if (
@@ -186,10 +177,8 @@ export async function fetchPastelIDAndPrivateKeys(
   return null
 }
 
-export async function fetchAllKeysForPdf(
-  config: TRPCConfig,
-): Promise<TDataForPdf> {
-  const addresses = await fetchAllAddress(config)
+export async function fetchAllKeysForPdf(): Promise<TDataForPdf> {
+  const addresses = await fetchAllAddress()
   const zPrivateKeys: TPrivateKey[] = []
   const tPrivateKeys: TPrivateKey[] = []
   if (addresses) {
@@ -197,7 +186,7 @@ export async function fetchAllKeysForPdf(
     for (let i = 0; i < zAddresses.length; i++) {
       const address = zAddresses[i]
 
-      const privKey = await getPrivKeyAsString(address, 'z_exportkey', config)
+      const privKey = await getPrivKeyAsString(address, 'z_exportkey')
       if (privKey) {
         zPrivateKeys.push({
           address,
@@ -210,7 +199,7 @@ export async function fetchAllKeysForPdf(
     for (let i = 0; i < tAddresses.length; i++) {
       const address = tAddresses[i]
 
-      const privKey = await getPrivKeyAsString(address, 'dumpprivkey', config)
+      const privKey = await getPrivKeyAsString(address, 'dumpprivkey')
       if (privKey) {
         tPrivateKeys.push({
           address,
@@ -220,7 +209,7 @@ export async function fetchAllKeysForPdf(
     }
   }
 
-  const pastelIDs = await getPastelIDs(config)
+  const pastelIDs = await getPastelIDs()
   const addressBook = await getAddressBook()
   return {
     addressKeys: zPrivateKeys.concat(tPrivateKeys),
@@ -229,14 +218,10 @@ export async function fetchAllKeysForPdf(
   }
 }
 
-async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
+async function importPrivKey(key: string, rescan: boolean) {
   if (key.startsWith('p-secret-extended-key')) {
     try {
-      await rpc<TPrivKeyResponse>(
-        'z_importkey',
-        [key, rescan ? 'yes' : 'no'],
-        config,
-      )
+      await rpc<TPrivKeyResponse>('z_importkey', [key, rescan ? 'yes' : 'no'])
     } catch (err) {
       console.log(
         `profile/mySecurity/common importPrivKey z_importkey error: ${err.message}`,
@@ -246,11 +231,10 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
     }
   } else if (key.startsWith('zxview')) {
     try {
-      await rpc<TPrivKeyResponse>(
-        'z_importviewingkey',
-        [key, rescan ? 'yes' : 'no'],
-        config,
-      )
+      await rpc<TPrivKeyResponse>('z_importviewingkey', [
+        key,
+        rescan ? 'yes' : 'no',
+      ])
     } catch (err) {
       console.log(
         `profile/mySecurity/common importPrivKey z_importviewingkey error: ${err.message}`,
@@ -260,11 +244,7 @@ async function importPrivKey(key: string, rescan: boolean, config: TRPCConfig) {
     }
   } else {
     try {
-      await rpc<TPrivKeyResponse>(
-        'importprivkey',
-        [key, 'imported', rescan],
-        config,
-      )
+      await rpc<TPrivKeyResponse>('importprivkey', [key, 'imported', rescan])
     } catch (err) {
       console.log(
         `profile/mySecurity/common importPrivKey importprivkey error: ${err.message}`,
@@ -300,10 +280,7 @@ async function importAddressBook(addresses: TAddressBook[]) {
   }
 }
 
-export async function doImportPrivKeys(
-  privateKeys: string,
-  config: TRPCConfig,
-): Promise<boolean> {
+export async function doImportPrivKeys(privateKeys: string): Promise<boolean> {
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
 
@@ -311,14 +288,14 @@ export async function doImportPrivKeys(
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {
-          importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1, config)
+          importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
         }
       }
 
       const tPrivateKeys = keys.tPrivateKeys
       if (tPrivateKeys?.length) {
         for (let i = 0; i < tPrivateKeys.length; i++) {
-          importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1, config)
+          importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
         }
       }
 

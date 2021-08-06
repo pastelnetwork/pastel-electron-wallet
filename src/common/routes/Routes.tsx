@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
-import { ipcRenderer } from 'electron'
 
 import { pageRoutes } from './index'
 import * as ROUTES from '../utils/constants/routes'
-import { TRPCConfig } from 'api/pastel-rpc'
 import LoadingScreen from 'features/loading'
 import { TWalletInfo, defaultPastelInfo } from 'features/serveStatic'
 
@@ -27,20 +25,13 @@ type TRouteType = {
   }
 }
 
-const childRoutes = (
-  routes: Array<TRouteType>,
-  rpcConfig?: TRPCConfig,
-  info?: TWalletInfo,
-) =>
+const childRoutes = (routes: Array<TRouteType>, info?: TWalletInfo) =>
   routes.map(({ component: Component, layout: Layout, path, id, required }) => {
     if (!Component || !Layout) {
       return null
     }
 
     const extraProps = {}
-    if (required?.rpcConfig) {
-      Object.assign(extraProps, { rpcConfig })
-    }
 
     if (required?.info) {
       Object.assign(extraProps, { info })
@@ -63,23 +54,16 @@ const childRoutes = (
 const Routes = (): JSX.Element => {
   const location = useLocation()
   const history = useHistory()
-  const [rpcConfig] = useState<TRPCConfig>()
   const [info] = useState<TWalletInfo>(defaultPastelInfo)
 
   useEffect(() => {
     history.push(ROUTES.LOADING)
   }, [])
 
-  useEffect(() => {
-    if (rpcConfig) {
-      ipcRenderer.send('app-ready')
-    }
-  }, [rpcConfig])
-
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
       <Switch location={location}>
-        {childRoutes(pageRoutes, rpcConfig, info)}
+        {childRoutes(pageRoutes, info)}
         <Route path={ROUTES.LOADING} component={LoadingScreen} />
       </Switch>
     </div>

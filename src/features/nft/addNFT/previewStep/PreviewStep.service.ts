@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { TCrop, TImage } from '../AddNFT.state'
 import { getEstimateFee } from 'api/estimate-fee'
-import { useAppSelector } from 'redux/hooks'
 
 const previewSize = 320
 
@@ -111,12 +110,10 @@ export const useImagePreview = ({
 }
 
 export const useFeePerKb = (): number | undefined => {
-  const pastelConfig = useAppSelector(state => state.pastelConf)
-
   const [feePerKb, setFeePerKb] = useState<number>()
 
   const getFee = async () => {
-    const fee = await getEstimateFee(1, pastelConfig)
+    const fee = await getEstimateFee(1)
     if (fee > 0) {
       setFeePerKb(fee)
     } else {

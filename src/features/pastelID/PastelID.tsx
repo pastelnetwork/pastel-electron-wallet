@@ -66,13 +66,12 @@ function PastelID(props: PastelIDProps): JSX.Element {
   })
 
   const { loading, pastelIDs } = useAppSelector(state => state.pastelID)
-  const pastelConfig = useAppSelector(state => state.pastelConf)
 
   const dispatch = useAppDispatch()
 
   // fetch pastel ids
   useEffect(() => {
-    dispatch(fetchPastelIDs(pastelConfig))
+    dispatch(fetchPastelIDs())
   }, [])
 
   function onPassphraseChange(e: React.ChangeEvent<HTMLInputElement>): void {
@@ -103,7 +102,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
         setSelectedAddress(newSelectedAddress)
       }
 
-      dispatch(createPastelID(passphrase, address, pastelConfig))
+      dispatch(createPastelID(passphrase, address))
     } catch (error) {
       dispatch(
         openPastelModal({

@@ -5,7 +5,7 @@ export { default as log } from 'electron-log'
 
 export const remote = {
   app: {
-    getPath: jest.fn(),
+    getPath: jest.fn(name => `app-path/${name}`),
     getName: jest.fn(),
     getVersion: jest.fn(),
   },

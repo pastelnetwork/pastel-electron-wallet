@@ -1,6 +1,6 @@
 import { Database } from 'sql.js'
 
-import { rpc, TRPCConfig } from '../../api/pastel-rpc/rpc'
+import { getRpcConfig, rpc } from '../../api/pastel-rpc/rpc'
 import PastelDB from '../../features/pastelDB/database'
 import coinGeckoClient from '../pastelPrice/coingecko'
 import {
@@ -29,7 +29,6 @@ import * as types from './type'
 
 type fetchFuncConfig = {
   pastelDB: Database
-  rpcConfig: TRPCConfig
 }
 
 type TStatistic = {
@@ -37,13 +36,11 @@ type TStatistic = {
   difficulty: number
 }
 
-export async function getStatisticInfo(
-  config: TRPCConfig,
-): Promise<TStatistic> {
+export async function getStatisticInfo(): Promise<TStatistic> {
   try {
     const [networkhasps, difficulty] = await Promise.all([
-      rpc<types.TGetnetworkhashps>('getnetworkhashps', [], config),
-      rpc<types.TGetdifficulty>('getdifficulty', [], config),
+      rpc<types.TGetnetworkhashps>('getnetworkhashps', []),
+      rpc<types.TGetdifficulty>('getdifficulty', []),
     ])
     return {
       estimatedSolutions: networkhasps.result,
@@ -60,7 +57,7 @@ export async function fetchStatisticInfo(
   props: fetchFuncConfig,
 ): Promise<void> {
   try {
-    const results = await getStatisticInfo(props.rpcConfig)
+    const results = await getStatisticInfo()
     insertStatisticDataToDB(
       props.pastelDB,
       results.estimatedSolutions,
@@ -73,11 +70,7 @@ export async function fetchStatisticInfo(
 
 export async function fetchNetworkInfo(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetNetworkinfo>(
-      'getnetworkinfo',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetNetworkinfo>('getnetworkinfo', [])
     insertNetworkInfoToDB(props.pastelDB, result)
   } catch (error) {
     throw new Error(`pastelDBThread fetchNetworkInfo error: ${error.message}`)
@@ -86,11 +79,7 @@ export async function fetchNetworkInfo(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchNettotals(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetNetTotals>(
-      'getnettotals',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetNetTotals>('getnettotals', [])
     insertNetTotalsToDB(props.pastelDB, result)
   } catch (error) {
     throw new Error(`pastelDBThread fetchNettotals error: ${error.message}`)
@@ -99,11 +88,7 @@ export async function fetchNettotals(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchMempoolInfo(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetmempoolinfo>(
-      'getmempoolinfo',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetmempoolinfo>('getmempoolinfo', [])
     insertMempoolInfoToDB(props.pastelDB, result)
   } catch (error) {
     throw new Error(`pastelDBThread fetchMempoolInfo error: ${error.message}`)
@@ -114,11 +99,7 @@ export async function fetchRawMempoolInfo(
   props: fetchFuncConfig,
 ): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetrawmempool>(
-      'getrawmempool',
-      [true],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetrawmempool>('getrawmempool', [true])
     const keys = Object.keys(result)
     if (keys.length) {
       const transactionid = keys[0]
@@ -144,11 +125,7 @@ export async function fetchRawMempoolInfo(
 
 export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetmininginfo>(
-      'getmininginfo',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetmininginfo>('getmininginfo', [])
     insertMiningInfoToDB(props.pastelDB, result)
   } catch (error) {
     throw new Error(`pastelDBThread fetchMiningInfo error: ${error.message}`)
@@ -157,16 +134,8 @@ export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchBlock(props: fetchFuncConfig): Promise<void> {
   try {
-    const hash = await rpc<types.TGetblockhash>(
-      'getbestblockhash',
-      [],
-      props.rpcConfig,
-    )
-    const blockInfo = await rpc<types.TGetblock>(
-      'getblock',
-      [hash.result],
-      props.rpcConfig,
-    )
+    const hash = await rpc<types.TGetblockhash>('getbestblockhash', [])
+    const blockInfo = await rpc<types.TGetblock>('getblock', [hash.result])
     if (insertBlockInfoToDB(props.pastelDB, blockInfo.result)) {
       await fetchRawtransaction(props, blockInfo.result.tx)
     }
@@ -185,7 +154,6 @@ export async function fetchRawtransaction(
         const { result } = await rpc<types.TGetrawtransaction>(
           'getrawtransaction',
           [txIds[i], 1],
-          props.rpcConfig,
         )
         insertRawtransaction(props.pastelDB, result)
       }
@@ -199,20 +167,14 @@ export async function fetchRawtransaction(
 
 export async function fetchTransaction(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TListsinceblock>(
-      'listsinceblock',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TListsinceblock>('listsinceblock', [])
     const listSinceBlock = result
     for (let i = 0; i < listSinceBlock.transactions.length; i++) {
       const transaction: types.TSinceblockTransaction =
         listSinceBlock.transactions[i]
-      const { result } = await rpc<types.TGettransaction>(
-        'gettransaction',
-        [transaction.txid],
-        props.rpcConfig,
-      )
+      const { result } = await rpc<types.TGettransaction>('gettransaction', [
+        transaction.txid,
+      ])
       insertTransaction(props.pastelDB, result)
     }
   } catch (error) {
@@ -222,11 +184,7 @@ export async function fetchTransaction(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchTxoutsetInfo(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGettxoutsetinfo>(
-      'gettxoutsetinfo',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGettxoutsetinfo>('gettxoutsetinfo', [])
     insertTxoutsetinfo(props.pastelDB, result)
   } catch (error) {
     throw new Error(`pastelDBThread fetchTxoutsetInfo error: ${error.message}`)
@@ -235,11 +193,7 @@ export async function fetchTxoutsetInfo(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchChaintips(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetchaintips>(
-      'getchaintips',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetchaintips>('getchaintips', [])
     const chaintips = result
     for (let i = 0; i < chaintips.length; i++) {
       insertChaintips(props.pastelDB, chaintips[i])
@@ -251,11 +205,7 @@ export async function fetchChaintips(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchBlocksubsidy(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetblocksubsidy>(
-      'getblocksubsidy',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetblocksubsidy>('getblocksubsidy', [])
     insertBlocksubsidy(props.pastelDB, result)
   } catch (error) {
     throw new Error(`pastelDBThread fetchBlocksubsidy error: ${error.message}`)
@@ -264,11 +214,7 @@ export async function fetchBlocksubsidy(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchWalletInfo(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.TGetwalletinfo>(
-      'getwalletinfo',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.TGetwalletinfo>('getwalletinfo', [])
     insertWalletinfo(props.pastelDB, result)
   } catch (error) {
     throw new Error(`pastelDBThread fetchWalletInfo error: ${error.message}`)
@@ -282,7 +228,6 @@ export async function fetchListTransactions(
     const { result } = await rpc<types.Tlisttransactions>(
       'listtransactions',
       [],
-      props.rpcConfig,
     )
     const transactions = result
     for (let i = 0; i < transactions.length; i++) {
@@ -295,11 +240,7 @@ export async function fetchListTransactions(
 
 export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<types.Tlistunspent>(
-      'listunspent',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.Tlistunspent>('listunspent', [])
     const unspentlist = result
     for (let i = 0; i < unspentlist.length; i++) {
       insertListunspent(props.pastelDB, unspentlist[i])
@@ -314,7 +255,6 @@ export async function fetchTotalbalance(props: fetchFuncConfig): Promise<void> {
     const { result } = await rpc<types.TGettotalbalance>(
       'z_gettotalbalance',
       [],
-      props.rpcConfig,
     )
     insertTotalbalance(props.pastelDB, result)
   } catch (error) {
@@ -326,11 +266,7 @@ export async function fetchListaddresses(
   props: fetchFuncConfig,
 ): Promise<void> {
   try {
-    const { result } = await rpc<types.Tlistaddresses>(
-      'z_listaddresses',
-      [],
-      props.rpcConfig,
-    )
+    const { result } = await rpc<types.Tlistaddresses>('z_listaddresses', [])
     const addresslist = result
     for (let i = 0; i < addresslist.length; i++) {
       insertListaddresses(props.pastelDB, addresslist[i])
@@ -365,7 +301,6 @@ export async function fetchBlockChainInfo(
     const { result } = await rpc<types.TGetBlockChainInfo>(
       'getblockchaininfo',
       [],
-      props.rpcConfig,
     )
     insertBlockChainInfo(props.pastelDB, result)
   } catch (error) {
@@ -373,14 +308,15 @@ export async function fetchBlockChainInfo(
   }
 }
 
-export async function PastelDBThread(rpcConfig: TRPCConfig): Promise<void> {
+export async function PastelDBThread(): Promise<void> {
   PastelDB.setValid(false)
   const pastelDB = await PastelDB.getDatabaseInstance()
+  const rpcConfig = getRpcConfig()
+  // TODO: check if this function is called before loading, in such case no rpc config and db will be invalid forever
   if (pastelDB && rpcConfig && rpcConfig.username !== '') {
     // fetch whole data from RPC and save to pastel DB.
     const pastelConfig: fetchFuncConfig = {
       pastelDB,
-      rpcConfig,
     }
     await Promise.all([
       fetchStatisticInfo(pastelConfig),

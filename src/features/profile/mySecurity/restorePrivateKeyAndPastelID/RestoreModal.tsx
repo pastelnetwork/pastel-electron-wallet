@@ -4,18 +4,15 @@ import cn from 'classnames'
 import RestoreByUpload from './RestoreByUpload'
 import RestoreByCamera from './RestoreByCamera'
 import RestoreByPdf from './RestoreByPdf'
-import { TRPCConfig } from '../../Profile'
 import Modal from '../../../../common/components/AnimatedModal'
 import { Button } from '../../../../common/components/Buttons'
 
 type TRestoreModalProps = {
-  rpcConfig: TRPCConfig
   modalIsOpen: boolean
   onCloseModal: (val: boolean) => void
 }
 
 export default function RestoreModal({
-  rpcConfig,
   modalIsOpen,
   onCloseModal,
 }: TRestoreModalProps): JSX.Element | null {
@@ -85,14 +82,10 @@ export default function RestoreModal({
             ) : (
               <>
                 {selectedRestoreType === 'upload' ? (
-                  <RestoreByUpload
-                    rpcConfig={rpcConfig}
-                    onBack={() => setSelectedRestoreType('')}
-                  />
+                  <RestoreByUpload onBack={() => setSelectedRestoreType('')} />
                 ) : null}
                 {selectedRestoreType === 'scan' ? (
                   <RestoreByCamera
-                    rpcConfig={rpcConfig}
                     turnOffCamera={turnOffCamera}
                     onBack={() => {
                       setSelectedRestoreType('')
@@ -101,7 +94,6 @@ export default function RestoreModal({
                 ) : null}
                 {selectedRestoreType === 'pdf' ? (
                   <RestoreByPdf
-                    rpcConfig={rpcConfig}
                     onBack={() => {
                       setSelectedRestoreType('')
                     }}

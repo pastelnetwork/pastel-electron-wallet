@@ -1,17 +1,14 @@
 import { TInfo, TInfoResponse } from '../../types/rpc'
 import { BlockchainRPC, MiningRPC } from '.'
-import { rpc, TRPCConfig } from './rpc'
+import { rpc } from './rpc'
 
 export class ControlRPC {
   private readonly blockchainRPC: BlockchainRPC
   private readonly miningRPC: MiningRPC
-  /**
-   *
-   * @param config RPC config
-   */
-  constructor(private readonly config: TRPCConfig) {
-    this.blockchainRPC = new BlockchainRPC(this.config)
-    this.miningRPC = new MiningRPC(this.config)
+
+  constructor() {
+    this.blockchainRPC = new BlockchainRPC()
+    this.miningRPC = new MiningRPC()
   }
 
   /**
@@ -20,7 +17,7 @@ export class ControlRPC {
    * @returns InfoResponse
    */
   async getInfo(): Promise<TInfoResponse> {
-    return rpc<TInfoResponse>('getinfo', [], this.config)
+    return rpc<TInfoResponse>('getinfo', [])
   }
 
   /**

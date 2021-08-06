@@ -14,14 +14,14 @@ import {
   TZListReceivedByAddress,
 } from '../../types/rpc'
 import { mapTxnsResult, parseMemo, sortTxnsResult } from '../helpers'
-import { rpc, TRPCConfig } from './rpc'
+import { rpc } from './rpc'
 import { WalletRPC } from './wallet'
 
 export class TransactionRPC {
   private readonly walletRPC: WalletRPC
 
-  constructor(private readonly config: TRPCConfig) {
-    this.walletRPC = new WalletRPC(this.config)
+  constructor() {
+    this.walletRPC = new WalletRPC()
   }
 
   /**
@@ -31,11 +31,7 @@ export class TransactionRPC {
    * @returns
    */
   async getRawTxn(txid: string): Promise<TRawTransactionResponse> {
-    return rpc<TRawTransactionResponse>(
-      'getrawtransaction',
-      [txid, 1],
-      this.config,
-    )
+    return rpc<TRawTransactionResponse>('getrawtransaction', [txid, 1])
   }
 
   /**
@@ -45,7 +41,7 @@ export class TransactionRPC {
    * @returns
    */
   async getTxn(txid: string): Promise<TTransactionInfoResponse> {
-    return rpc<TTransactionInfoResponse>('gettransaction', [txid], this.config)
+    return rpc<TTransactionInfoResponse>('gettransaction', [txid])
   }
 
   /**
@@ -84,7 +80,7 @@ export class TransactionRPC {
    * @returns ITTransactionResponse
    */
   async getTxns(): Promise<TTransactionResponse> {
-    return rpc<TTransactionResponse>('listtransactions', [], this.config)
+    return rpc<TTransactionResponse>('listtransactions', [])
   }
 
   /**
@@ -160,11 +156,10 @@ export class TransactionRPC {
   async fetchZListReceivedByAddress(
     zaddr: string,
   ): Promise<TZListReceivedByAddressResponse> {
-    return rpc<TZListReceivedByAddressResponse>(
-      'z_listreceivedbyaddress',
-      [zaddr, 0],
-      this.config,
-    )
+    return rpc<TZListReceivedByAddressResponse>('z_listreceivedbyaddress', [
+      zaddr,
+      0,
+    ])
   }
 
   /**
@@ -226,6 +221,6 @@ export class TransactionRPC {
    * @returns
    */
   async sendTransaction(data: TRpcParam[]): Promise<TResponse<string>> {
-    return rpc<TResponse<string>>('z_sendmany', data, this.config)
+    return rpc<TResponse<string>>('z_sendmany', data)
   }
 }

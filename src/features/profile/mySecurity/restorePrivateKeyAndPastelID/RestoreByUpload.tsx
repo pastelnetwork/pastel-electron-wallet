@@ -6,17 +6,14 @@ import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
-import { TRPCConfig } from '../../Profile'
 import { Button } from '../../../../common/components/Buttons'
 import Link from '../../../../common/components/Link'
 
 type TRestoreByUploadProps = {
-  rpcConfig: TRPCConfig
   onBack: () => void
 }
 
 export default function RestoreByUpload({
-  rpcConfig,
   onBack,
 }: TRestoreByUploadProps): JSX.Element {
   const [currentStatus, setCurrentStatus] = useState<string>('')
@@ -25,7 +22,7 @@ export default function RestoreByUpload({
 
   useEffect(() => {
     const doImport = async () => {
-      const result = await doImportPrivKeys(qrCodeData.join(''), rpcConfig)
+      const result = await doImportPrivKeys(qrCodeData.join(''))
       if (result) {
         setCurrentStatus('done')
       } else {

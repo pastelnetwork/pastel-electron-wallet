@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-import { useAppSelector } from 'redux/hooks'
 import ProfileGeneral from './myProfile/MyProfile'
 import MySecurity from './mySecurity/MySecurity'
 import {
@@ -10,16 +9,7 @@ import {
 import MyComments from './myComments/MyComments'
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
-
-export type TRPCConfig = {
-  username: string
-  password: string
-  url: string
-}
-
-type TProfileProps = {
-  rpcConfig: TRPCConfig
-}
+import { useCurrencyName } from '../../common/hooks/appInfo'
 
 enum Tabs {
   general,
@@ -27,11 +17,8 @@ enum Tabs {
   security,
 }
 
-const Profile = (props: TProfileProps): JSX.Element => {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
-  const { rpcConfig } = props
+const Profile = (): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [tab, setTab] = useState(Tabs.general)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
 
@@ -57,7 +44,7 @@ const Profile = (props: TProfileProps): JSX.Element => {
   useEffect(() => {
     const fetchData = async () => {
       const chunkQuantity = 500
-      const results = await fetchPastelIDAndPrivateKeys(rpcConfig)
+      const results = await fetchPastelIDAndPrivateKeys()
       if (results) {
         const chunks = splitStringIntoChunks(results, chunkQuantity)
         setQRcodeData(chunks)
@@ -86,11 +73,7 @@ const Profile = (props: TProfileProps): JSX.Element => {
       {tab === Tabs.general && <ProfileGeneral />}
       {tab === Tabs.board && <MyComments />}
       {tab === Tabs.security && (
-        <MySecurity
-          currencyName={currencyName}
-          rpcConfig={rpcConfig}
-          qrcodeData={qrcodeData}
-        />
+        <MySecurity currencyName={currencyName} qrcodeData={qrcodeData} />
       )}
     </div>
   )

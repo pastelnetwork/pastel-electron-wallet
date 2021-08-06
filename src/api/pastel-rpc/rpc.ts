@@ -8,12 +8,26 @@ export type TRPCConfig = {
   password: string
 }
 
-export async function rpc<T>(
-  method: string,
-  params: TRpcParam[],
-  rpcConfig: TRPCConfig,
-): Promise<T> {
-  const { url, username, password } = rpcConfig
+let rpcConfig: TRPCConfig | undefined
+
+export const getRpcConfig = (): TRPCConfig | undefined => {
+  return rpcConfig
+}
+
+export const requireRpcConfig = (): TRPCConfig => {
+  if (!rpcConfig) {
+    throw new Error('Tried to invoke rpc before loading config')
+  }
+
+  return rpcConfig
+}
+
+export const setRpcConfig = (config: TRPCConfig): void => {
+  rpcConfig = config
+}
+
+export async function rpc<T>(method: string, params: TRpcParam[]): Promise<T> {
+  const { url, username, password } = requireRpcConfig()
   let response: AxiosResponse
   try {
     response = await axios(url, {

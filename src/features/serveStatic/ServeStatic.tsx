@@ -4,7 +4,7 @@ import path from 'path'
 import detect from 'detect-port'
 
 import { glitch, squoosh, ffmpegwasm } from '../../common/constants/ServeStatic'
-import { isPackaged } from 'common/utils/app'
+import { isPackaged } from '../../common/utils/app'
 
 const servers: Server[] = []
 

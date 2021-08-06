@@ -31,8 +31,6 @@ import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
 import { connect } from 'react-redux'
-import { setPastelConf } from '../features/pastelConf'
-import { PastelDBThread, saveSqliteDB } from '../features/pastelDB'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
@@ -68,9 +66,6 @@ export type TWalletInfo = {
   verificationProgress: number
   version: number
 }
-
-const period = 1000 * 10
-const exportPastelDBPeriod = 1000 * 60 * 1
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -556,10 +551,7 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.FORUM} render={() => <Forum />} />
             <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
 
-            <Route
-              path={routes.MY_PROFILE}
-              render={() => <MyProfile rpcConfig={rpcConfig} />}
-            />
+            <Route path={routes.MY_PROFILE} render={MyProfile} />
 
             <Route
               path={routes.MEMBERS_PROFILE}
@@ -607,7 +599,6 @@ class RouteApp extends React.Component<any, any> {
 }
 
 export default connect(null, {
-  setPastelConf,
   openPastelPaperWalletModal,
   openPastelPhotopeaModal,
   openPastelSpriteEditorToolModal,

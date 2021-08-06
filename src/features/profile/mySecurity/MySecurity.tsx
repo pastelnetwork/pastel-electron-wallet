@@ -5,17 +5,15 @@ import ChangePassword from './changePassword/Password'
 import QRCode from './photoOfQRCode/QRCode'
 import CryptoKey from './backupCryptoKey/CryptoKey'
 
-import { TRPCConfig } from '../Profile'
 import { ffmpegwasm } from '../../../common/constants/ServeStatic'
 
 type TSecurity = {
   currencyName: string
-  rpcConfig: TRPCConfig
   qrcodeData: string[]
 }
 
 const MySecurity = (props: TSecurity): JSX.Element => {
-  const { currencyName, rpcConfig, qrcodeData } = props
+  const { currencyName, qrcodeData } = props
   const [videoUrl, setVideoUrl] = useState<string>('')
   const [imagesData, setImagesData] = useState<string[]>([])
   const [currentStatus, setCurrentStatus] = useState<string>('')
@@ -99,13 +97,11 @@ const MySecurity = (props: TSecurity): JSX.Element => {
       <div className='grid grid-cols-3 gap-5 min-h-672px'>
         <ChangePassword />
         <QRCode
-          rpcConfig={rpcConfig}
           qrcodeData={qrcodeData}
           handleDownloadVideo={handleDownloadVideo}
           currentStatus={currentStatus}
         />
         <CryptoKey
-          rpcConfig={rpcConfig}
           currencyName={currencyName}
           qrcodeData={qrcodeData.join('')}
         />
