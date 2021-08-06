@@ -3,7 +3,6 @@ import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
-import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
@@ -26,6 +25,7 @@ type TSubmitStepProps = {
   image: TImage
   displayUrl: string
   nftData: TNFTData
+  toggleCloseButton(): void
 }
 
 export default function SubmitStep({
@@ -33,13 +33,19 @@ export default function SubmitStep({
   image,
   displayUrl,
   nftData,
+  toggleCloseButton,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
   const currencyName = useCurrencyName()
 
+  const onFullScreenToggle = () => {
+    toggleCloseButton()
+    toggleFullScreen()
+  }
+
   if (fullScreen) {
-    return <FullScreenImage image={displayUrl} onClose={toggleFullScreen} />
+    return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
   }
 
   const onSubmit = () => submit({ state, image, nftData })
@@ -54,7 +60,7 @@ export default function SubmitStep({
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative flex-center'>
-            <FullScreenButton onClick={toggleFullScreen} />
+            <FullScreenButton onClick={onFullScreenToggle} />
             <ImageShadow url={image.url} />
             <img
               src={displayUrl}
@@ -63,7 +69,7 @@ export default function SubmitStep({
             />
             <button
               className='absolute z-10 bottom-3 px-4 py-[10px] rounded-full bg-rgba-gray-2e flex items-center'
-              onClick={toggleFullScreen}
+              onClick={onFullScreenToggle}
             >
               <PreviewIco size={20} className='inline-block mr-4 text-white' />
               <span className='text-white text-xs font-medium inline-block whitespace-nowrap'>
@@ -73,7 +79,7 @@ export default function SubmitStep({
           </div>
         </div>
       }
-      rightColumnClass='w-[349px] flex flex-col'
+      rightColumnClass='w-[360px] flex flex-col'
       rightColumnContent={
         <>
           <div className='flex-grow w-full text-sm flex flex-col justify-between'>
@@ -157,13 +163,13 @@ export default function SubmitStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
+            <button
               type='button'
-              className='font-extrabold px-3'
+              className='btn btn-primary px-3'
               onClick={onSubmit}
             >
               Submit and proceed to fee payment
-            </Button>
+            </button>
           </div>
         </>
       }

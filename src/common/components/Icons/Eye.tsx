@@ -4,21 +4,15 @@ export type TEyeProps = {
   variant?: 'type1' | 'type2' | 'hidden'
   size?: number
   className?: string
-  onClick?: () => void
 }
 
 export const Eye = ({
   size,
   className,
   variant = 'type1',
-  onClick,
 }: TEyeProps): JSX.Element => {
   return (
-    <div
-      onClick={() => {
-        onClick && onClick()
-      }}
-    >
+    <div>
       {variant === 'type1' && (
         <svg
           width={size}

@@ -2,15 +2,10 @@ import React from 'react'
 
 export type TVoteProps = {
   size: number
-  clickHandler?: (event: React.MouseEvent<SVGSVGElement>) => void
   className: string
 }
 
-export default function Arrow({
-  size,
-  clickHandler,
-  className,
-}: TVoteProps): JSX.Element {
+export default function Arrow({ size, className }: TVoteProps): JSX.Element {
   return (
     <svg
       width={size}
@@ -18,7 +13,6 @@ export default function Arrow({
       viewBox='0 0 32 32'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
-      onClick={clickHandler}
     >
       <circle
         cx='16'

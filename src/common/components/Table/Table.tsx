@@ -3,6 +3,8 @@ import cx from 'classnames'
 import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
+import reactElementToJSXString from 'react-element-to-jsx-string'
+import parse from 'html-react-parser'
 
 export type TRow = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,6 +32,7 @@ export type TTableProps = {
   bodyClasses?: string
   showCheckbox?: boolean
   selectedRow?: (row: TRow) => void
+  searchKey?: string
 }
 
 const Table = ({
@@ -43,6 +46,7 @@ const Table = ({
   bodyClasses = 'h-220px overflow-y-scroll',
   showCheckbox = false,
   selectedRow,
+  searchKey,
 }: TTableProps): JSX.Element => {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
@@ -78,12 +82,27 @@ const Table = ({
     }
   }
 
+  const renderSearhKeyDiv = (param: string, text: JSX.Element | string) => {
+    return (
+      <div>
+        {parse(
+          reactElementToJSXString(text).replace(
+            new RegExp(param, 'gi'),
+            match => `<mark class='bg-blue-9b py-1'>${match}</mark>`,
+          ),
+        )}
+      </div>
+    )
+  }
+
   return (
     <table className='w-full text-gray-71 relative table-auto'>
       {haveHeader && (
         <thead>
           <tr className={headerTrClasses}>
-            {showCheckbox ? <td className='sticky top-0 bg-white'></td> : null}
+            {showCheckbox ? (
+              <td className='sticky top-0 bg-white w-[51px]'></td>
+            ) : null}
             {columns.map((column, index) => (
               <td
                 key={index}
@@ -156,7 +175,14 @@ const Table = ({
             {columns.map((column, index) => (
               <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
                 {column.custom
-                  ? column.custom(row[column.key], row)
+                  ? searchKey
+                    ? renderSearhKeyDiv(
+                        searchKey,
+                        column.custom(row[column.key], row),
+                      )
+                    : column.custom(row[column.key], row)
+                  : searchKey
+                  ? renderSearhKeyDiv(searchKey, row[column.key])
                   : row[column.key]}
               </td>
             ))}

@@ -3,7 +3,6 @@ import * as yup from 'yup'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Input from 'common/components/Form/Input'
-import { Button } from 'common/components/Buttons'
 import { TAddNFTState, TNFTData } from '../AddNFT.state'
 import { TOption } from 'common/components/Select/Select'
 import Toggle from 'common/components/Form/Toggle'
@@ -100,7 +99,7 @@ export default function InputNFTDataStep({
             <div className='text-gray-800 text-2xl font-extrabold mb-0.5'>
               Input NFT Data
             </div>
-            <div className='font-medium text-sm text-gray-71 mt-2'>
+            <div className='font-medium text-sm text-gray-33 opacity-50'>
               The Metadata Fields for your NFT
             </div>
           </div>
@@ -162,12 +161,7 @@ export default function InputNFTDataStep({
             placeholder='Description of the NFT or artist’s statement.'
           />
         </div>
-        <Button
-          disabled={!form.formState.isValid}
-          className='w-full font-extrabold'
-        >
-          Go to Preview
-        </Button>
+        <button className='btn btn-primary w-full'>Go to preview</button>
       </form>
     </>
   )

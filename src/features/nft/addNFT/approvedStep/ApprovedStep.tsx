@@ -1,7 +1,6 @@
 import React from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
-import { Button } from 'common/components/Buttons'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
@@ -81,13 +80,13 @@ export default function ApprovedStep({
               <div className='text-gray-71'>Final registration fee</div>
               <div className='text-gray-45 font-extrabold'>110,000 PSL</div>
             </div>
-            <Button
+            <button
               type='button'
-              className='font-extrabold w-full mt-5'
+              className='btn btn-primary w-full mt-5'
               onClick={goToNextStep}
             >
               Proceed to final registration fee payment
-            </Button>
+            </button>
           </div>
         </div>
       }

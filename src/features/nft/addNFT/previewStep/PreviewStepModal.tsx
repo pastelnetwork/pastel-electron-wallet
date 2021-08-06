@@ -4,12 +4,10 @@ import Magnification from './Magnification'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Tooltip2 from 'common/components/Tooltip2'
 import { ArrowSlim, Crop } from 'common/components/Icons'
-import style from './PreviewStep.module.css'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import OptimizationSlider from './OptimizationSlider'
-import { Button } from 'common/components/Buttons'
 import React, { useEffect, useState } from 'react'
 import {
   calculateFee,
@@ -97,11 +95,7 @@ export default function PreviewStepModal({
                 </button>
               )}
             </Tooltip2>
-            <img
-              ref={setImageElement}
-              src={displayUrl}
-              className={`rounded ${style.zoomInCursor}`}
-            />
+            <img ref={setImageElement} src={displayUrl} className='rounded' />
           </div>
         </div>
       }
@@ -186,15 +180,14 @@ export default function PreviewStepModal({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
+            <button
               type='button'
-              className='font-extrabold px-6'
-              childrenClassName='flex-center'
+              className='btn btn-primary px-[30px]'
               onClick={submit}
               disabled={!submittable}
             >
               Go to Overview
-            </Button>
+            </button>
           </div>
         </div>
       }

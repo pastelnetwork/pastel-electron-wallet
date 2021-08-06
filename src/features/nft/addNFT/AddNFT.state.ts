@@ -6,8 +6,8 @@ import {
 
 export enum Step {
   inputData,
-  upload,
-  afterUpload,
+  select,
+  afterSelect,
   preview,
   submit,
   approved,

@@ -13,10 +13,9 @@ const mockMemberStrips: TMemberStripProps = {
     isVerified: true,
     followedByUser: true,
   },
-  heighestSold: '1.700,000k',
-  totalSold: '1.500K',
+  highestSold: 1700000000,
+  totalSold: 1500000,
   images: [mockMemberImage, mockMemberImage, mockMemberImage, mockMemberImage],
-  currencyName: 'PSL',
 }
 export default {
   title: 'MemberStrip',

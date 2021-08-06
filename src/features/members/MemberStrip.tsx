@@ -3,30 +3,32 @@ import { useHistory } from 'react-router-dom'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import MemberCard, { TMemberCard } from './MemberCard'
+import { useCurrencyName } from '../../common/hooks/appInfo'
+import { formatPrice } from '../../common/utils/format'
 
 export type TMemberStripProps = {
   id: string
   memberCard: TMemberCard
-  heighestSold: number | string
-  totalSold: number | string
+  highestSold: number
+  totalSold: number
   images: string[]
-  currencyName: string
   searchText?: string
 }
 
 const MemberStrip = ({
   id,
   memberCard,
-  heighestSold,
+  highestSold,
   images,
   totalSold,
-  currencyName,
   searchText,
 }: TMemberStripProps): JSX.Element => {
   const history = useHistory()
   const toMemberProfile = () => {
     history.replace(ROUTES.MEMBERS_PROFILE)
   }
+  const currency = useCurrencyName()
+
   return (
     <div className='flex space-x-30px'>
       {/* Member Card */}
@@ -41,14 +43,19 @@ const MemberStrip = ({
           {/* Sale data */}
           <div className='flex flex-col justify-center h-full min-w-120px pr-21px'>
             <h6 className='text-gray-77 pb-1 text-12px'>Highest sold</h6>
-            <div className='w-max text-12px font-semibold border py-1 px-2 rounded border-success-pressed text-success-pressed'>
-              {heighestSold} {currencyName}
+            <div className='w-max text-12px font-semibold border pt-2 pb-1.5 px-2 rounded border-success-pressed text-green-45'>
+              {formatPrice(highestSold, currency)}
             </div>
             <div className='text-gray-1a font-semibold pt-3 text-12px whitespace-nowrap overflow-x-hidden'>
-              Total sold{' '}
+              <span className='text-tab-active font-extrabold'>
+                Total sold{' '}
+              </span>
               <div className='font-display'>
                 <span className='text-gradient'>{totalSold}</span>
-                <span className='text-gradient'> {currencyName}</span>
+                <span className='text-gradient'>
+                  {' '}
+                  {formatPrice(highestSold, currency)}
+                </span>
               </div>
             </div>
           </div>

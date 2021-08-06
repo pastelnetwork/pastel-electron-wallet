@@ -2,22 +2,14 @@ import React from 'react'
 
 export type TQuitProps = {
   size: number
-  clickHandler?: () => void
   className: string
 }
 
-export const Quit = ({
-  size,
-  clickHandler,
-  className,
-}: TQuitProps): JSX.Element => {
+export const Quit = ({ size, className }: TQuitProps): JSX.Element => {
   return (
     <svg
       width={size}
       className={className}
-      onClick={() => {
-        clickHandler && clickHandler()
-      }}
       viewBox='0 0 16 16'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

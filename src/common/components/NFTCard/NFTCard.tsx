@@ -16,6 +16,7 @@ import {
 import { Override } from '../../../common/utils/types'
 import styles from './NFTCard.module.css'
 import { useIsNSFW } from 'features/NSFW/NSFW.service'
+import parse from 'html-react-parser'
 
 export type TNFTCompactCard = {
   imageSrc: string
@@ -210,7 +211,15 @@ const NFTCard = ({
                 isNFTPortfolio && 'text-base text-gray-1a',
               )}
             >
-              {title}
+              {searchText
+                ? parse(
+                    title.replace(
+                      new RegExp(searchText, 'gi'),
+                      match =>
+                        `<mark class='bg-blue-9b pt-1 pb-1'>${match}</mark>`,
+                    ),
+                  )
+                : title}
             </div>
           </Link>
         </div>

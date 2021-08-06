@@ -15,9 +15,9 @@ export const parseFormattedNumber = (input: string, delimiter = ','): number =>
 export const formatAbbreviatedNumber = (x: number, digits: number): string => {
   const lookup = [
     { value: 1, symbol: '' },
-    { value: 1e3, symbol: 'k' },
+    { value: 1e3, symbol: 'K' },
     { value: 1e6, symbol: 'M' },
-    { value: 1e9, symbol: 'G' },
+    { value: 1e9, symbol: 'B' },
     { value: 1e12, symbol: 'T' },
     { value: 1e15, symbol: 'P' },
     { value: 1e18, symbol: 'E' },
@@ -33,6 +33,9 @@ export const formatAbbreviatedNumber = (x: number, digits: number): string => {
     ? (x / item.value).toFixed(digits).replace(rx, '$1') + item.symbol
     : '0'
 }
+
+export const formatPrice = (price: number, currencyName: string): string =>
+  `${formatAbbreviatedNumber(price, 0)} ${currencyName}`
 
 export const formatTime = (val: Date): string => {
   return dateformat(val, 'hh:MM') // TODO: change if another format required
@@ -75,7 +78,7 @@ export const formatDate = (time: Dayjs): string => time.format('MM/DD/YY')
 
 export const formatFileSize = (size: number, fractionDigits = 1): string => {
   let i = -1
-  const units = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB']
+  const units = ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
   do {
     size = size / 1024
     i++
@@ -86,4 +89,8 @@ export const formatFileSize = (size: number, fractionDigits = 1): string => {
   }
 
   return Math.max(size, 0.1).toFixed(fractionDigits) + units[i]
+}
+
+export const formatAddress = (address: string): string => {
+  return address.substr(0, 20) + '...' + address.substr(-6)
 }

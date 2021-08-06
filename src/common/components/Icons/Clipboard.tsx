@@ -1,18 +1,14 @@
 import React from 'react'
 import { TIconProps } from './iconProps'
 
-export type TClipboardProps = TIconProps & {
-  onClick?: () => void
-}
+export type TClipboardProps = TIconProps
 
 export const Clipboard = ({
   size,
   className,
-  onClick,
 }: TClipboardProps): JSX.Element => {
   return (
     <svg
-      onClick={() => onClick && onClick()}
       width={size}
       className={className}
       viewBox='0 0 12 12'

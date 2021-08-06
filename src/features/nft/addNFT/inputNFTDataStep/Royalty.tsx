@@ -3,9 +3,9 @@ import { TForm } from './InputNFTDataStep'
 import Tooltip from 'common/components/Tooltip'
 import { CrownInHexagon, Info } from 'common/components/Icons'
 import StepSlider from './StepSlider'
-import ErrorMessage from '../../../../common/components/Form/ErrorMessage'
+import ErrorMessage from 'common/components/Form/ErrorMessage'
 
-export default function Copies({ form }: { form: TForm }): JSX.Element {
+export default function Royalty({ form }: { form: TForm }): JSX.Element {
   const roundValue = (value: number) => Math.round(value * 10) / 10
 
   return (

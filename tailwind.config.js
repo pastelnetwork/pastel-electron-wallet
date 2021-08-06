@@ -178,7 +178,9 @@ module.exports = {
           },
         },
         white: '#FFFFFF',
-        transparent: 'transparent',
+        transparent: {
+          DEFAULT: 'transparent',
+        },
         success: {
           DEFAULT: '#00D097',
           pressed: '#00B282',
@@ -451,7 +453,9 @@ module.exports = {
       },
       minHeight: {
         '78px': '4.875rem',
+        '594px': '37.125rem',
         '672px': '42rem',
+        '98vh': '98vh',
       },
       maxWidth: {
         '32px': '2rem',

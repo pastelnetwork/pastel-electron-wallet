@@ -44,7 +44,9 @@ const Checkbox = ({
           )}
         />
       </div>
-      <div className='text-sm font-normal text-gray-71 ml-2'>{children}</div>
+      {children && (
+        <div className='text-sm font-normal text-gray-71 ml-2'>{children}</div>
+      )}
     </div>
   )
 }

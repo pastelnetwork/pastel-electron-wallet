@@ -80,7 +80,7 @@ const CircleSteper = ({
         xmlns='http://www.w3.org/2000/svg'
       >
         <circle cx='33' cy='33' r='32' fill='#ECEFF3' />
-        <circle cx='33' cy='33' r='26' fill='white' />
+        <circle cx='33' cy='33' r='26' fill='#FFFFFF' />
         {startPoints.slice(0, currentStep).map((item, index) => (
           <path
             key={index}

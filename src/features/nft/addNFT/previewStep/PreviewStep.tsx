@@ -10,16 +10,28 @@ type TPreviewStepProps = {
   state: TAddNFTState
   image: TImage
   displayUrl: string
+  toggleCloseButton(): void
 }
 
 export default function PreviewStep({
   state,
   image,
   displayUrl,
+  toggleCloseButton,
 }: TPreviewStepProps): JSX.Element {
   const [croppedImage, setCroppedImage] = useImagePreview({ image })
   const [cropping, toggleCropping] = useToggle(false)
   const [fullScreen, toggleFullScreen] = useToggle(false)
+
+  const onCroppingToggle = () => {
+    toggleCloseButton()
+    toggleCropping()
+  }
+
+  const onFullScreenToggle = () => {
+    toggleCloseButton()
+    toggleFullScreen()
+  }
 
   if (cropping && croppedImage) {
     return (
@@ -33,7 +45,7 @@ export default function PreviewStep({
   }
 
   if (fullScreen) {
-    return <FullScreenImage image={displayUrl} onClose={toggleFullScreen} />
+    return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
   }
 
   return (
@@ -42,8 +54,8 @@ export default function PreviewStep({
       image={image}
       displayUrl={displayUrl}
       croppedImage={croppedImage}
-      toggleCropping={toggleCropping}
-      toggleFullScreen={toggleFullScreen}
+      toggleCropping={onCroppingToggle}
+      toggleFullScreen={onFullScreenToggle}
     />
   )
 }
