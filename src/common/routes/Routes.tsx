@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
+import { Route, Switch, useLocation } from 'react-router-dom'
 
 import { pageRoutes } from './index'
 import * as ROUTES from '../utils/constants/routes'
@@ -53,12 +53,7 @@ const childRoutes = (routes: Array<TRouteType>, info?: TWalletInfo) =>
 
 const Routes = (): JSX.Element => {
   const location = useLocation()
-  const history = useHistory()
   const [info] = useState<TWalletInfo>(defaultPastelInfo)
-
-  useEffect(() => {
-    history.push(ROUTES.LOADING)
-  }, [])
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>

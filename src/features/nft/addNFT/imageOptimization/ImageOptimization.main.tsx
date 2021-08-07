@@ -41,46 +41,48 @@ let currentTask: TTask
 
 const PngquantQualityRangeErrorCode = 99
 
-handleMainTask(
-  'optimizeImage',
-  async (file: TFile): Promise<TImageOptimizationResult> => {
-    const result: TImageOptimizationResult = { status: 'success', files: [] }
+export const setupOptimizeImageHandler = (): void => {
+  handleMainTask(
+    'optimizeImage',
+    async (file): Promise<TImageOptimizationResult> => {
+      const result: TImageOptimizationResult = { status: 'success', files: [] }
 
-    if (currentTask) {
-      currentTask.cancelled = true
-      currentTask.process?.kill()
-    }
+      if (currentTask) {
+        currentTask.cancelled = true
+        currentTask.process?.kill()
+      }
 
-    const task = { cancelled: false }
-    currentTask = task
+      const task = { cancelled: false }
+      currentTask = task
 
-    const [processor, command, getArgs] = getOptimizeArgs(file)
+      const [processor, command, getArgs] = getOptimizeArgs(file)
 
-    try {
-      for (
-        let quality = minQuality;
-        quality <= maxQuality;
-        quality += qualityStep
-      ) {
-        try {
-          const file = await optimize(task, command, getArgs, quality)
-          result.files.push(file)
-        } catch (error) {
-          if (isCriticalError(processor, error)) {
-            throw error
+      try {
+        for (
+          let quality = minQuality;
+          quality <= maxQuality;
+          quality += qualityStep
+        ) {
+          try {
+            const file = await optimize(task, command, getArgs, quality)
+            result.files.push(file)
+          } catch (error) {
+            if (isCriticalError(processor, error)) {
+              throw error
+            }
           }
         }
+      } catch (error) {
+        if (task.cancelled) {
+          return { status: 'cancelled' }
+        }
+        throw error
       }
-    } catch (error) {
-      if (task.cancelled) {
-        return { status: 'cancelled' }
-      }
-      throw error
-    }
 
-    return result
-  },
-)
+      return result
+    },
+  )
+}
 
 const getOptimizeArgs = (file: TFile): [ImageProcessor, string, TGetArgs] => {
   if (file.type === imageTypes.PNG) {

@@ -1,11 +1,12 @@
 import { browserWindow } from '../../common/utils/app'
 import { ipcMain, ipcRenderer } from 'electron'
 import { TImageOptimizationResult } from '../nft/addNFT/imageOptimization/ImageOptimization.types'
+import { TRPCConfig } from '../../api/pastel-rpc'
 
 // keys for channel names, values for payload type, null for no payload
 export type MainEvents = {
-  startWalletNode: null
-  rendererIsReady: null
+  retryInitializingApp: null
+  rendererStarted: null
   rendererIsReadyForQuit: null
   restartApp: null
 }
@@ -28,6 +29,7 @@ export type RendererEvents = {
   importani: null
   exportalltx: null
   exportall: null
+  setupIsReady: { rpcConfig: TRPCConfig }
 }
 
 // keys for channel names, value is a type of handler function
@@ -50,6 +52,14 @@ export const onMainEvent = <Channel extends keyof MainEvents>(
   callback: (payload: MainEvents[Channel]) => void,
 ): void => {
   ipcMain.on(channel, (event, payload) => callback(payload))
+}
+
+export const mainEventPromise = <Channel extends keyof MainEvents>(
+  channel: Channel,
+): Promise<MainEvents[Channel]> => {
+  return new Promise(resolve =>
+    ipcMain.once(channel, (event, payload) => resolve(payload)),
+  )
 }
 
 export const sendEventToRenderer = <Channel extends keyof RendererEvents>(

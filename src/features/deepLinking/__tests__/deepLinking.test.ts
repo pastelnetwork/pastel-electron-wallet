@@ -1,6 +1,6 @@
 import { BrowserWindow } from 'electron'
 
-import { redirectDeepLinkingUrl } from '../DeepLinking.utils'
+import { redirectDeepLinkingUrl, setDeepLinkingUrl } from '../DeepLinking.utils'
 import { browserWindow } from '../../../common/utils/app'
 
 describe('deepLinking/redirectDeepLinkingUrl', () => {
@@ -13,7 +13,8 @@ describe('deepLinking/redirectDeepLinkingUrl', () => {
   test("protocolSchema isn't existing on redirectDeepLinkingUrl", async () => {
     expect.hasAssertions()
     try {
-      redirectDeepLinkingUrl('protocolSchemes://creator?content=test')
+      setDeepLinkingUrl('protocolSchemes://creator?content=test')
+      redirectDeepLinkingUrl()
     } catch (err) {
       expect(err.message).toEqual(
         "deepLinking redirectDeepLinkingUrl error: protocolSchema isn't existing",
@@ -22,8 +23,8 @@ describe('deepLinking/redirectDeepLinkingUrl', () => {
   })
 
   test('App opening correct screen based on redirectDeepLinkingUrl', async () => {
-    const url = 'pastel://creator?content=test'
-    redirectDeepLinkingUrl(url)
+    setDeepLinkingUrl('pastel://creator?content=test')
+    redirectDeepLinkingUrl()
 
     expect(browserWindow.current?.webContents.send).toHaveBeenCalledTimes(1)
   })

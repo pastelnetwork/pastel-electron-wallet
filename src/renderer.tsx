@@ -30,7 +30,7 @@ import './index.css'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
@@ -47,6 +47,11 @@ import Root from './legacy/containers/Root'
 import store from './redux/store'
 import 'common/utils/initDayjs'
 import { isPackaged } from './common/utils/app'
+import { onRendererEvent, sendEventToMain } from './features/app/events'
+import history from './common/utils/history'
+import * as ROUTES from 'common/utils/constants/routes'
+import { setRpcConfig } from './features/rpcConfig'
+import { PastelDBThread } from './features/pastelDB'
 
 const oneHour = 1000 * 60 * 60
 /**
@@ -77,15 +82,36 @@ if (isPackaged) {
 
 createPastelKeysFolder()
 
-const application = (
-  <Provider store={store}>
-    <Root />
-    <ToastContainer hideProgressBar autoClose={5000} />
-    <Utilities />
-    <PastelModal />
-    <UpdateToast />
-  </Provider>
-)
+onRendererEvent('setupIsReady', ({ rpcConfig }) => {
+  setRpcConfig(rpcConfig)
+
+  // set pastel DB thread update timer
+  if (!isPackaged) {
+    const period = 1000 * 10
+    PastelDBThread()
+    setInterval(PastelDBThread, period)
+  }
+
+  history.replace(ROUTES.WELCOME_PAGE)
+})
+
+const App = () => {
+  useEffect(() => {
+    sendEventToMain('rendererStarted', null)
+  }, [])
+
+  return (
+    <Provider store={store}>
+      <Root />
+      <ToastContainer hideProgressBar autoClose={5000} />
+      <Utilities />
+      <PastelModal />
+      <UpdateToast />
+    </Provider>
+  )
+}
+
+const application = <App />
 
 render(application, document.getElementById('root'))
 

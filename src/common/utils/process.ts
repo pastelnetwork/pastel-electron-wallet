@@ -1,6 +1,5 @@
 import { spawn } from 'child_process'
 import readline from 'readline'
-import log from 'electron-log'
 
 export const spawnProcess = (
   binPath: string,
@@ -9,8 +8,6 @@ export const spawnProcess = (
 ): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
     const process = spawn(binPath, args)
-
-    process.stdout.on('data', log.info)
 
     if (onStdoutLine) {
       const lineReader = readline.createInterface({
