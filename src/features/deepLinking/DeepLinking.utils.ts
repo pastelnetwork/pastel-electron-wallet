@@ -2,6 +2,7 @@ import { app, protocol } from 'electron'
 
 import pkg from '../../../package.json'
 import { browserWindow } from '../../common/utils/app'
+import { sendEventToRenderer } from '../app/events'
 
 export const redirectDeepLinkingUrl = (deepLink: string[] | string): void => {
   if (deepLink && deepLink.toString().includes('://')) {
@@ -11,20 +12,11 @@ export const redirectDeepLinkingUrl = (deepLink: string[] | string): void => {
         .split(`${pkg.protocolSchemes.native}://`)[1]
         .split('?')
 
-      const window = browserWindow.current
-      if (window && window.webContents) {
-        if (process.platform == 'win32') {
-          window.webContents.send('deepLink', {
-            view: url[0].slice(0, -1),
-            param: url[1],
-          })
-        } else {
-          window.webContents.send('deepLink', {
-            view: url[0],
-            param: url[1],
-          })
-        }
-      }
+      const view = process.platform === 'win32' ? url[0].slice(0, -1) : url[0]
+      sendEventToRenderer('deepLink', {
+        view,
+        param: url[1],
+      })
     } else {
       throw new Error(
         "deepLinking redirectDeepLinkingUrl error: protocolSchema isn't existing",

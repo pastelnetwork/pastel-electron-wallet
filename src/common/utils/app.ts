@@ -1,4 +1,4 @@
-import { app, BrowserWindow, remote, WebContents } from 'electron'
+import { app, BrowserWindow, remote } from 'electron'
 import process from 'process'
 import path from 'path'
 import os from 'os'
@@ -66,7 +66,3 @@ export const getAppPath = (filePath?: string): string => {
 }
 
 export const browserWindow: { current?: BrowserWindow } = {}
-
-export const sendEventToBrowser: WebContents['send'] = (...args) => {
-  browserWindow.current?.webContents.send(...args)
-}

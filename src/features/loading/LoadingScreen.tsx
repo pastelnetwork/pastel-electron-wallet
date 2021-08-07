@@ -1,17 +1,14 @@
 import React from 'react'
 import styles from './LoadingScreen.module.css'
-import { pastelConfigFilePath, debugLogPath } from 'common/utils/app'
+import { debugLogPath } from 'common/utils/app'
 
 enum LoadingStep {
-  initial,
-  incompletePastelConf,
-  failedToCreatePastelConf,
-  waitingForWalletNode,
-  failedToStart,
+  waiting,
+  failed,
 }
 
 export default function LoadingScreen(): JSX.Element | null {
-  const step = LoadingStep.initial as LoadingStep
+  const step = LoadingStep.waiting as LoadingStep
   const showRetry = true as boolean
 
   return (
@@ -22,30 +19,8 @@ export default function LoadingScreen(): JSX.Element | null {
         </div>
       </div>
       <div className='pt-[120px] text-center'>
-        {step === LoadingStep.initial && 'Loading...'}
-        {step === LoadingStep.incompletePastelConf && (
-          <div>
-            <p>
-              Your pastel.conf is missing a &quot;rpcuser&quot; or
-              &quot;rpcpassword&quot;.
-            </p>
-            <p>
-              Please add a &quot;rpcuser=some_username&quot; and
-              &quot;rpcpassword=some_password&quot; to your pastel.conf to
-              enable RPC access
-            </p>
-            <p>Your pastel.conf is located at {pastelConfigFilePath}</p>
-          </div>
-        )}
-        {step === LoadingStep.failedToCreatePastelConf && (
-          <>
-            Could not create pastel.conf at {pastelConfigFilePath}.<br />
-            This is a bug, please file an issue with Pastel Wallet
-          </>
-        )}
-        {step === LoadingStep.waitingForWalletNode &&
-          'Waiting for pasteld to start...'}
-        {step === LoadingStep.failedToStart && (
+        {step === LoadingStep.waiting && 'Loading...'}
+        {step === LoadingStep.failed && (
           <span>
             Failed to start pasteld. Giving up! Please look at the debug.log
             file.

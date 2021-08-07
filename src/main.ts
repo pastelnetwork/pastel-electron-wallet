@@ -3,7 +3,7 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 
-import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
+import { app, autoUpdater, BrowserWindow, shell } from 'electron'
 
 import electronDebug from 'electron-debug'
 import installExtension, {
@@ -23,7 +23,8 @@ import {
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
 import './features/nft/addNFT/imageOptimization/ImageOptimization.ipcMain'
-import { browserWindow, sendEventToBrowser } from './common/utils/app'
+import { browserWindow } from './common/utils/app'
+import { onMainEvent, sendEventToRenderer } from './features/app/events'
 
 // Deep linked url
 let deepLinkingUrl: string[] | string
@@ -137,14 +138,7 @@ const createWindow = async () => {
     waitingForClose = true
     event.preventDefault()
 
-    // to load expert console terminal
-    ipcMain.on('terminaldone', () => {
-      waitingForClose = false
-      proceedToClose = true
-      app.quit()
-    })
-
-    ipcMain.on('appquitdone', () => {
+    onMainEvent('rendererIsReadyForQuit', () => {
       waitingForClose = false
       proceedToClose = true
       app.quit()
@@ -152,8 +146,7 @@ const createWindow = async () => {
 
     closeServeStatic()
 
-    // $FlowFixMe
-    sendEventToBrowser('appquitting')
+    sendEventToRenderer('prepareToQuit', null)
     // Failsafe, timeout after 10 seconds
     setTimeout(() => {
       waitingForClose = false
@@ -201,7 +194,8 @@ app.on('will-finish-launching', function () {
   })
 })
 
-ipcMain.on('app-ready', () => {
+// TODO: isn't called from anywhere atm
+onMainEvent('rendererIsReady', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
       process.arch
@@ -224,15 +218,15 @@ ipcMain.on('app-ready', () => {
   initServeStatic()
 })
 
-ipcMain.on('restart_app', () => {
+onMainEvent('restartApp', () => {
   autoUpdater.quitAndInstall()
 })
 
 autoUpdater.on(
   'update-downloaded',
   (event, releaseNotes, releaseName, updateURL) => {
-    sendEventToBrowser('update_downloaded')
-    console.warn('update-downloaded', {
+    sendEventToRenderer('updateDownloaded', null)
+    console.info('updateDownloaded', {
       event,
       releaseNotes,
       releaseName,

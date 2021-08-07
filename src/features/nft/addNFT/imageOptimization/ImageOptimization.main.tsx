@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron'
+import { app } from 'electron'
 import { execFile } from 'child_process'
 import path from 'path'
 import fileUrl from 'file-url'
@@ -16,6 +16,7 @@ import {
 import fs from 'fs'
 import os from 'os'
 import { getBinPath, getRandomFileName } from './ImageOptimization.utils'
+import { handleMainTask } from '../../../app/events'
 
 const platform: string = os.platform()
 const pngquantBin = getBinPath(platform, 'pngquant')
@@ -40,9 +41,9 @@ let currentTask: TTask
 
 const PngquantQualityRangeErrorCode = 99
 
-ipcMain.handle(
+handleMainTask(
   'optimizeImage',
-  async (e, file: TFile): Promise<TImageOptimizationResult> => {
+  async (file: TFile): Promise<TImageOptimizationResult> => {
     const result: TImageOptimizationResult = { status: 'success', files: [] }
 
     if (currentTask) {
