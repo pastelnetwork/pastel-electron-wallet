@@ -39,7 +39,7 @@ module.exports = {
         },
       },
     ],
-    // other rules we dont want to use
-    // ...
+    // to use requires in tests
+    '@typescript-eslint/no-var-requires': 'off',
   },
 }
