@@ -5,14 +5,14 @@ import { Link as RouterLink } from 'react-router-dom'
 export type TLink = {
   children?: string | ReactNode
   className?: string
-  href?: string
+  to?: string
   variant?: string
   useATag?: boolean
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
 const Link = ({
-  href,
+  to,
   className,
   children,
   variant,
@@ -22,23 +22,23 @@ const Link = ({
   const classes = cn(
     {
       'link focus:outline-none hover:text-link-hover active:text-link-active transition duration-300': true,
-      'cursor-pointer': !href,
+      'cursor-pointer': !to,
       [`text-${variant}`]: variant,
     },
     className,
   )
 
-  if (href) {
+  if (to) {
     if (useATag) {
       return (
-        <a href={href} className={classes} {...otherProps}>
+        <a href={to} className={classes} {...otherProps}>
           {children}
         </a>
       )
     }
 
     return (
-      <RouterLink to={href} className={classes} {...otherProps}>
+      <RouterLink to={to} className={classes} {...otherProps}>
         {children}
       </RouterLink>
     )

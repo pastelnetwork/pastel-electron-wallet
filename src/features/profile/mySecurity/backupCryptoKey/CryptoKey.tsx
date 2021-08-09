@@ -118,12 +118,12 @@ const pdfStyles = StyleSheet.create({
   },
 })
 
-const PDFDocument = ({
+export const PDFDocument = ({
   allKeys,
   currencyName,
   title,
   qrcodeData,
-}: TPDFDocumentProps) => {
+}: TPDFDocumentProps): JSX.Element => {
   return (
     <Document title={title} keywords={qrcodeData}>
       <Page size='A4' style={pdfStyles.page}>

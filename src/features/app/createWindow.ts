@@ -1,14 +1,29 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, screen } from 'electron'
 import { browserWindow } from '../../common/utils/app'
 import MenuBuilder from '../../menu'
 
 export const createWindow = async (
   onWindowClose: (event: Event) => void,
 ): Promise<void> => {
+  const {
+    width: screenWidth,
+    height: screenHeight,
+  } = screen.getPrimaryDisplay().workAreaSize
+
+  const aspectRatio = 4 / 3
+  let width, height
+  if (screenHeight * aspectRatio > screenWidth) {
+    width = screenWidth
+    height = Math.round(screenWidth / aspectRatio)
+  } else {
+    width = Math.round(screenHeight * aspectRatio)
+    height = screenHeight
+  }
+
   const w = new BrowserWindow({
     show: false,
-    width: 1440,
-    height: 728,
+    width,
+    height,
     minHeight: 500,
     minWidth: 900,
     webPreferences: {

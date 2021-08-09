@@ -1,6 +1,6 @@
 import React from 'react'
 import Slider from 'common/components/Slider/Slider'
-import { formatFileSize, formatNumber } from 'common/utils/format'
+import { formatFileSize, formatPrice } from 'common/utils/format'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import Spinner from 'common/components/Spinner'
 import { useCurrencyName } from 'common/hooks/appInfo'
@@ -47,7 +47,7 @@ export default function OptimizationSlider({
     if (fee === undefined) {
       return size
     } else {
-      return `${size} - ${formatNumber(fee)} ${currencyName}`
+      return `${size} - ${formatPrice(fee, currencyName)}`
     }
   }
 
@@ -74,6 +74,7 @@ export default function OptimizationSlider({
       minMaxClassName='top-6 text-gray-71 text-xs'
       minMaxAlignCenter
       width={349}
+      alwaysShowTooltip
     />
   )
 }

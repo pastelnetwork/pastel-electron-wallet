@@ -2,6 +2,7 @@ import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
 import { TArtworkTicket } from 'api/artwork-api/interfaces'
 import { toast } from 'react-toastify'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
+import log from 'electron-log'
 
 export const submit = async ({
   state,
@@ -58,14 +59,13 @@ export const submit = async ({
       regParams.youtube_url = nftData.video
     }
 
-    /*const responseRegister = */ await artworkRegister(regParams)
-    // not clear if we need responseRegister.task_id here or on next step
+    await artworkRegister(regParams)
 
     toast('Successfully registered new NFT', { type: 'success' })
 
     state.goToNextStep()
   } catch (err) {
-    console.log('err on register new NFT', err)
+    log.error('Error on register new NFT', err)
     toast('Register new NFT is failed', { type: 'error' })
   }
 }

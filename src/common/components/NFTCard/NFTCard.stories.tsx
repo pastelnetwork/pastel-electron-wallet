@@ -18,6 +18,7 @@ const mockCardProps: TNFTCard = {
   title: 'Cosmic Perspective',
   className: 'w-300px',
   followers: 0,
+  nsfw: { porn: 0, hentai: 0 },
 }
 
 export default {

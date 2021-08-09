@@ -3,19 +3,13 @@ import React from 'react'
 export type TChatProps = {
   className?: string
   size: number
-  clickHandler?: (event: React.MouseEvent<SVGSVGElement>) => void
 }
 
-export default function Arrow({
-  className,
-  size,
-  clickHandler,
-}: TChatProps): JSX.Element {
+export default function Arrow({ className, size }: TChatProps): JSX.Element {
   return (
     <svg
       width={size}
       className={className}
-      onClick={clickHandler}
       viewBox='0 0 32 32'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'

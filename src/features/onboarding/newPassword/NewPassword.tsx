@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState, FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 
 import { InputPassword, Input } from '../../../common/components/Inputs'
@@ -7,9 +7,11 @@ import CloseButton from '../common/closeButton'
 import Typography, {
   TypographyVariant,
 } from '../../../common/components/Typography/Typography'
-import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
+import PasswordStrength, {
+  PasswordStrengths,
+} from 'common/components/PasswordStrength/PasswordStrength'
 import * as ROUTES from '../../../common/utils/constants/routes'
-import { calcPasswordStrength } from 'common/utils/passwords'
+import { calcPasswordStrength, randomPassword } from 'common/utils/passwords'
 
 interface NewPasswordFormInput {
   value: string
@@ -24,19 +26,48 @@ const initialInputState = {
 }
 
 const NewPassword = (): JSX.Element => {
-  const [newPassword, setNewPassword] = React.useState<NewPasswordFormInput>(
+  const [newPassword, setNewPassword] = useState<NewPasswordFormInput>(
     initialInputState,
   )
-  const [
-    repeatPassword,
-    setRepeatPassword,
-  ] = React.useState<NewPasswordFormInput>(initialInputState)
+  const [repeatPassword, setRepeatPassword] = useState<NewPasswordFormInput>(
+    initialInputState,
+  )
+  const [showPassword, setShowPassword] = useState(false)
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
   }
 
   const pwdStrength = calcPasswordStrength(newPassword.value)
+
+  const getPasswordHint = (): string => {
+    if (!newPassword.value) {
+      return ''
+    }
+
+    if (
+      pwdStrength === PasswordStrengths.Good ||
+      pwdStrength === PasswordStrengths.Excellent
+    ) {
+      return 'Super secure password'
+    }
+
+    return 'At least 8 characters and at least 2 numbers'
+  }
+
+  const handleGeneratePassword = () => {
+    const password = randomPassword()
+    setNewPassword({
+      ...newPassword,
+      value: password,
+    })
+    setRepeatPassword({
+      ...repeatPassword,
+      value: password,
+    })
+
+    setShowPassword(true)
+  }
 
   return (
     <div className='my-9 mx-60px'>
@@ -55,7 +86,7 @@ const NewPassword = (): JSX.Element => {
       </div>
       <form
         className='mt-7'
-        onSubmit={(event: React.FormEvent<HTMLFormElement>) =>
+        onSubmit={(event: FormEvent<HTMLFormElement>) =>
           handleFormSubmit(event)
         }
       >
@@ -64,18 +95,20 @@ const NewPassword = (): JSX.Element => {
           label='New Password'
           labelClassName='text-lg font-medium text-gray-71 pb-1.5'
           value={newPassword.value}
-          onChange={(event: React.FormEvent<HTMLInputElement>) =>
+          onChange={(event: FormEvent<HTMLInputElement>) => {
+            setShowPassword(false)
             setNewPassword({
               ...newPassword,
               value: event.currentTarget.value,
             })
-          }
+          }}
+          showPassword={showPassword}
           ref={null}
           errorMessage={
             newPassword.hasError ? 'Please enter a valid password' : null
           }
           hintClassName='mt-3 text-sm font-medium'
-          hint='at least 8 characters and at least 2 numbers'
+          hint={getPasswordHint()}
         />
         <PasswordStrength strength={pwdStrength} />
         <Input
@@ -83,7 +116,7 @@ const NewPassword = (): JSX.Element => {
           label='Repeat New Password'
           labelClassName='text-lg font-medium text-gray-71 pb-1.5 mt-[25px]'
           value={repeatPassword.value}
-          onChange={(event: React.FormEvent<HTMLInputElement>) =>
+          onChange={(event: FormEvent<HTMLInputElement>) =>
             setRepeatPassword({
               ...repeatPassword,
               value: event.currentTarget.value,
@@ -97,8 +130,14 @@ const NewPassword = (): JSX.Element => {
         <Link to={ROUTES.LOGIN}>
           <Button className='w-full mt-[30px] font-semibold'>Confirm</Button>
         </Link>
-        <div className='text-link text-center mt-[18px] font-medium text-base mb-66px'>
-          Generate a Secure Password for Me (recommended!)
+        <div className='mt-[18px] mb-66px text-center'>
+          <button
+            type='button'
+            className='text-link font-medium text-base bg-transparent border-none'
+            onClick={handleGeneratePassword}
+          >
+            Generate a Secure Password for Me (recommended!)
+          </button>
         </div>
       </form>
     </div>

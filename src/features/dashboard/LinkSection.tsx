@@ -26,7 +26,7 @@ export default function LinkSection({
       })}
     >
       <Link
-        href={to}
+        to={to}
         className='text-blue-3f text-sm font-medium inline-block h-3'
       >
         {children}

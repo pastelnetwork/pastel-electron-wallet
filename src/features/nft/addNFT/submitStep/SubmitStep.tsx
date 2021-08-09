@@ -3,21 +3,20 @@ import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
-import { Button } from 'common/components/Buttons'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
 import { formatFileSize, formatNumber } from 'common/utils/format'
-import icoPreview from 'common/assets/icons/ico-preview.svg'
 import ImageShadow from '../common/ImageShadow'
 import { submit } from './SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { PreviewIco } from 'common/components/Icons'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
-    <div className='text-gray-71 w-36'>{title}</div>
-    <div className='text-gray-4a font-medium'>{value}</div>
+    <div className='text-gray-71 w-36 font-normal text-sm'>{title}</div>
+    <div className='text-gray-4a font-medium text-sm'>{value}</div>
   </div>
 )
 
@@ -26,6 +25,7 @@ type TSubmitStepProps = {
   image: TImage
   displayUrl: string
   nftData: TNFTData
+  toggleCloseButton(): void
 }
 
 export default function SubmitStep({
@@ -33,13 +33,19 @@ export default function SubmitStep({
   image,
   displayUrl,
   nftData,
+  toggleCloseButton,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
   const currencyName = useCurrencyName()
 
+  const onFullScreenToggle = () => {
+    toggleCloseButton()
+    toggleFullScreen()
+  }
+
   if (fullScreen) {
-    return <FullScreenImage image={displayUrl} onClose={toggleFullScreen} />
+    return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
   }
 
   const onSubmit = () => submit({ state, image, nftData })
@@ -47,14 +53,14 @@ export default function SubmitStep({
   return (
     <ModalLayout
       title='Submit NFT'
-      titleClass='mb-3'
+      titleClass='mb-3 text-gray-71'
       subtitle='Description'
       step={4}
       leftColumnWidth={image.maxWidth}
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative flex-center'>
-            <FullScreenButton onClick={toggleFullScreen} />
+            <FullScreenButton onClick={onFullScreenToggle} />
             <ImageShadow url={image.url} />
             <img
               src={displayUrl}
@@ -62,18 +68,18 @@ export default function SubmitStep({
               style={{ maxWidth: `${image.maxWidth}px` }}
             />
             <button
-              className='absolute z-10 bottom-3 px-4 py-3 rounded-full bg-rgba-gray-2e flex items-center'
-              onClick={toggleFullScreen}
+              className='absolute z-10 bottom-3 px-4 py-[10px] rounded-full bg-rgba-gray-2e flex items-center'
+              onClick={onFullScreenToggle}
             >
-              <img src={icoPreview} className='inline-block mr-4' />
-              <span className='text-white font-extrabold inline-block whitespace-nowrap'>
+              <PreviewIco size={20} className='inline-block mr-4 text-white' />
+              <span className='text-white text-xs font-medium inline-block whitespace-nowrap'>
                 Preview how it will look
               </span>
             </button>
           </div>
         </div>
       }
-      rightColumnClass='w-[349px] flex flex-col'
+      rightColumnClass='w-[360px] flex flex-col'
       rightColumnContent={
         <>
           <div className='flex-grow w-full text-sm flex flex-col justify-between'>
@@ -129,21 +135,21 @@ export default function SubmitStep({
                 </div>
               )}
             </div>
-            <div className='bg-gray-f8 rounded-lg py-4 mt-6'>
-              <div className='flex text-gray-71'>
-                <div className='pl-5 w-36'>Image size</div>
-                <div>Estimated registration fee</div>
+            <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
+              <div className='flex text-gray-71 font-medium text-base'>
+                <div className='pl-5 w-36 text-gray-71'>Image size</div>
+                <div className='text-gray-71'>Estimated registration fee</div>
               </div>
-              <div className='flex text-gray-4a font-extrabold mt-3'>
-                <div className='pl-5 w-36'>
+              <div className='flex text-gray-2d font-extrabold mt-3'>
+                <div className='pl-5 w-36 text-gray-4a'>
                   {formatFileSize(
                     state.optimizationState.selectedFile?.size ||
                       image.file.size,
                   )}
                 </div>
-                <div>
+                <div className='text-gray-4a font-extrabold'>
                   {state.estimatedFee === undefined
-                    ? 'unknown'
+                    ? '0'
                     : `${formatNumber(state.estimatedFee)} ${currencyName}`}
                 </div>
               </div>
@@ -157,13 +163,13 @@ export default function SubmitStep({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
+            <button
               type='button'
-              className='font-extrabold px-3'
+              className='btn btn-primary px-3'
               onClick={onSubmit}
             >
               Submit and proceed to fee payment
-            </Button>
+            </button>
           </div>
         </>
       }

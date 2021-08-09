@@ -2,7 +2,9 @@ import React, { useState, FormEvent } from 'react'
 
 import Input from 'common/components/Inputs/Input'
 import Checkbox from 'common/components/Checkbox/Checkbox'
-import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
+import PasswordStrength, {
+  PasswordStrengths,
+} from 'common/components/PasswordStrength/PasswordStrength'
 import { NextButton } from './Buttons'
 import { calcPasswordStrength } from 'common/utils/passwords'
 import Link from 'common/components/Link'
@@ -52,6 +54,21 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
     setPasswordStrength(calcPasswordStrength(val))
   }
 
+  const getPasswordHint = (): string => {
+    if (!props.password) {
+      return ''
+    }
+
+    if (
+      passwordStrength === PasswordStrengths.Good ||
+      passwordStrength === PasswordStrengths.Excellent
+    ) {
+      return 'Super secure password'
+    }
+
+    return 'At least 8 characters and at least 2 numbers'
+  }
+
   const nextActive =
     !usernameInvalid && passwordStrength >= 2 && props.termsAgreed
 
@@ -67,13 +84,14 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           className='w-full'
           type='text'
           label='User name'
-          placeholder='i.e banksy168'
           value={props.username}
           onChange={onUsernameChanged}
           ref={null}
           isValid={usernameIsValid}
           errorMessage={
-            usernameInvalid ? 'Please enter a valid username' : null
+            usernameInvalid && props.username
+              ? 'Please enter a valid username'
+              : null
           }
           hint='Only Latin Characters and Numbers Allowed'
           hintAsTooltip={true}
@@ -86,25 +104,36 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
             label='Password'
             value={props.password}
             onChange={onPasswordChanged}
-            hint='at least 8 characters and at least 2 numbers'
+            hint={getPasswordHint()}
           />
         </div>
-
-        <PasswordStrength strength={passwordStrength} />
+        {props.password && <PasswordStrength strength={passwordStrength} />}
 
         <div className='mt-6'>
           <Checkbox
             isChecked={props.termsAgreed}
             clickHandler={onAgreementClicked}
+            className='items-start'
           >
             <span className='text-14px text-gray-a0'>
               I certify that I’m 18 years of age or older, and agree to the{' '}
-              <Link href='#' className='link'>
+              <Link to='#' className='link'>
                 User Agreement and Privacy Policy
               </Link>
             </span>
           </Checkbox>
         </div>
+        {!props.username && (
+          <div className='mt-6'>
+            <p className='mb-0 text-sm font-normal text-gray-71'>
+              Note: Your Pastel username is a user-friendly way to identify you
+              to other users on Pastel Network, similar to a Twitter handle.
+            </p>
+            <p className='mb-0 mt-1 text-h6 leading-6 font-normal text-gray-71 italic'>
+              Example: Banksy82
+            </p>
+          </div>
+        )}
       </form>
 
       <div className='mt-7 flex justify-end'>

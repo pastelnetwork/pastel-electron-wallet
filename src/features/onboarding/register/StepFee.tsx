@@ -95,14 +95,15 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                 <div className='mr-3 overflow-hidden overflow-ellipsis h-5'>
                   {props.exchangeAddress}
                 </div>
-                <Clipboard
-                  size={20}
-                  className={cn(
-                    'cursor-pointer transition-transform duration-100 ease-in-out text-gray-88',
-                    copying ? 'transform scale-150' : '',
-                  )}
-                  onClick={() => toClipboard()}
-                />
+                <button type='button' onClick={toClipboard}>
+                  <Clipboard
+                    size={20}
+                    className={cn(
+                      'cursor-pointer transition-transform duration-100 ease-in-out text-gray-88',
+                      copying ? 'transform scale-150' : '',
+                    )}
+                  />
+                </button>
               </div>
               <div className='text-sm font-medium text-orange-63 h-4'>
                 {showWarn ? 'copy your address first' : ''}
@@ -146,7 +147,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             </h1>
             <h2 className='text-gray-77 text-sm font-normal'>
               To Request a code, please fill in the form{' '}
-              <Link href='#' className='text-gray-77 underline'>
+              <Link to='#' className='text-blue-3f'>
                 here
               </Link>
             </h2>

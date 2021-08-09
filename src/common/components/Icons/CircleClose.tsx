@@ -4,20 +4,15 @@ export type TCircleCloseProps = {
   size?: number
   className?: string
   circleColor?: string
-  onClick?: () => void
 }
 
 export const CircleCloseIcon = ({
   size = 22,
   className = 'text-gray-88',
   circleColor = '#F6F7F9',
-  onClick,
 }: TCircleCloseProps): JSX.Element => {
   return (
     <svg
-      onClick={() => {
-        onClick && onClick()
-      }}
       width={size}
       className={className}
       viewBox='0 0 22 22'

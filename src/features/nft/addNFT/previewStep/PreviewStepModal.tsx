@@ -4,12 +4,10 @@ import Magnification from './Magnification'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Tooltip2 from 'common/components/Tooltip2'
 import { ArrowSlim, Crop } from 'common/components/Icons'
-import style from './PreviewStep.module.css'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import OptimizationSlider from './OptimizationSlider'
-import { Button } from 'common/components/Buttons'
 import React, { useEffect, useState } from 'react'
 import {
   calculateFee,
@@ -67,9 +65,10 @@ export default function PreviewStepModal({
 
   return (
     <ModalLayout
-      title='Image preview'
-      titleClass='mb-3'
+      title='Image Preview'
+      titleClassName='text-gray-2d font-extrabold text-2xl mb-3'
       subtitle='Description'
+      subtitleClassName='text-gray-71 text-sm font-medium mb-3'
       step={3}
       leftColumnWidth={image.maxWidth}
       leftColumnContent={
@@ -96,11 +95,7 @@ export default function PreviewStepModal({
                 </button>
               )}
             </Tooltip2>
-            <img
-              ref={setImageElement}
-              src={displayUrl}
-              className={`rounded ${style.zoomInCursor}`}
-            />
+            <img ref={setImageElement} src={displayUrl} className='rounded' />
           </div>
         </div>
       }
@@ -120,27 +115,27 @@ export default function PreviewStepModal({
                   style={{ width: imageSizePercentOfAvg + '%' }}
                 />
               </div>
-              <div className='text-xs text-gray-71'>
+              <div className='text-xs text-gray-a0 font-normal'>
                 {imageSizePercentOfAvg}% of average Pastel NFT size
               </div>
             </div>
           </div>
-          <div className='flex-between mb-5'>
-            <div className='font-medium text-gray-4a'>
+          <div className='flex-between mb-5 text-base'>
+            <div className='font-medium text-gray-4a font-medium'>
               Estimated registration fee
             </div>
-            <div className='text-gray-2d text-sm font-extrabold'>
+            <div className='text-gray-2d font-extrabold'>
               {state.estimatedFee === undefined
                 ? 'unknown'
                 : `${formatNumber(state.estimatedFee)} ${currencyName}`}
             </div>
           </div>
           <div className='font-medium text-gray-4a mb-5'>
-            Image size and fee optimization
+            Image Size and Fee Optimization
           </div>
           <label className='flex items-center mb-10'>
             <div className='font-medium text-gray-71 mr-3'>
-              Lossless image quality
+              Lossless Image Quality
             </div>
             <Toggle
               selected={state.isLossLess}
@@ -150,7 +145,7 @@ export default function PreviewStepModal({
           </label>
           <div
             className={cn(
-              'pb-5 mb-5 duration-200 transition',
+              'pb-5 mb-6 duration-200 transition',
               state.isLossLess ? 'opacity-0' : 'opacity-100',
             )}
           >
@@ -185,15 +180,14 @@ export default function PreviewStepModal({
             >
               <ArrowSlim to='left' size={14} />
             </button>
-            <Button
+            <button
               type='button'
-              className='font-extrabold px-6'
-              childrenClassName='flex-center'
+              className='btn btn-primary px-[30px]'
               onClick={submit}
               disabled={!submittable}
             >
               Go to Overview
-            </Button>
+            </button>
           </div>
         </div>
       }

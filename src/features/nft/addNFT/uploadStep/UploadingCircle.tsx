@@ -3,7 +3,6 @@ import Circle, {
   getStrokeDashOffsetForPercent,
 } from 'common/components/Svg/Circle'
 import { UploadFile, Checkmark } from 'common/components/Icons'
-import backgroundImage from 'common/assets/images/add-nft-upload-background.png'
 import { TImageFile } from './UploadStep'
 
 type TUploadingCircleProps = {
@@ -14,7 +13,7 @@ type TUploadingCircleProps = {
 }
 
 const circleRadius = 50
-const circleBorderWidth = 3
+const circleBorderWidth = 8
 
 export default function UploadingCircle({
   file,
@@ -69,28 +68,37 @@ export default function UploadingCircle({
   const initialPercent = isReady ? 100 : 0
 
   return (
-    <div
-      className='pt-16 flex flex-col items-center bg-center'
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-    >
+    <div className='pt-16 flex flex-col items-center bg-center border border-gray-ec rounded-xl'>
       <div className='rounded-full bg-white p-1 relative text-gray-77 mb-5'>
         <svg
           viewBox='0 0 100 100'
-          className='transform -rotate-90 w-[200px] h-[200px]'
+          className='transform -rotate-90 w-[249px] h-[249px]'
         >
           <Circle
             ref={circleRef}
-            className='text-blue-3f'
+            stroke='url(#paint0_radial)'
             radius={circleRadius}
             strokeWidth={circleBorderWidth}
             percent={initialPercent}
           />
+          <radialGradient
+            id='paint0_radial'
+            cx='0'
+            cy='0'
+            r='1'
+            gradientUnits='userSpaceOnUse'
+            gradientTransform='translate(268.266 -21.5271) rotate(136.111) scale(424.004)'
+          >
+            <stop offset='0.0782458' stopColor='#FFCE12' />
+            <stop offset='0.507247' stopColor='#E02DFF' />
+            <stop offset='0.949356' stopColor='#17D9FF' />
+          </radialGradient>
         </svg>
         <div className='absolute inset-0 flex-center flex-col'>
           {isReady ? (
-            <Checkmark size={27} className='mb-2 text-green-6d' />
+            <Checkmark size={35} className='mb-2 text-green-00' />
           ) : (
-            <UploadFile size={22} className='mb-2' />
+            <UploadFile variant='full' size={22} className='mb-2' />
           )}
           <div className='text-gray-4a text-lg font-medium mb-px max-w-9/10 px-3 overflow-ellipsis whitespace-nowrap overflow-hidden'>
             {file?.file.name}
@@ -100,10 +108,10 @@ export default function UploadingCircle({
           </div>
         </div>
       </div>
-      {!isReady && (
+      {isReady && (
         <button
           type='button'
-          className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0'
+          className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0 mb-[44px]'
           onClick={() => setFile(undefined)}
         >
           Cancel

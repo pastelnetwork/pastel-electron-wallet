@@ -15,6 +15,8 @@ import {
 } from 'common/components/Icons'
 import { Override } from '../../../common/utils/types'
 import styles from './NFTCard.module.css'
+import { useIsNSFW } from 'features/NSFW/NSFW.service'
+import parse from 'html-react-parser'
 
 export type TNFTCompactCard = {
   imageSrc: string
@@ -37,6 +39,7 @@ export type TNFTCompactCard = {
   copies?: string
   diamond?: string
   bidPercentage?: string
+  nsfw: { porn: number; hentai: number }
 }
 
 export type TNFTCard = Override<
@@ -66,6 +69,7 @@ const NFTCard = ({
   diamond = '10%',
   bidPercentage = '+100%',
   detailUrl = '#',
+  nsfw,
   ...props
 }: TNFTCompactCard | TNFTCard): JSX.Element => {
   const fullCardProps = 'author' in props && (props as TNFTCard)
@@ -81,6 +85,7 @@ const NFTCard = ({
       ? 'pt-13px'
       : 'pt-2 md:pt-3'
     : 'pt-2.5 pb-0.5'
+  const isNSFW = useIsNSFW(nsfw)
 
   const getTooltip = (title: string, description: string) => (
     <div className='px-2 py-6px'>
@@ -115,7 +120,7 @@ const NFTCard = ({
                         )
                       : `@${fullCardProps.author}`,
                   }}
-                ></div>
+                />
               </h4>
             ) : (
               <h4 className={cn('px-2 truncate', exauthorClassName)}>
@@ -129,7 +134,7 @@ const NFTCard = ({
                         )
                       : `@${fullCardProps.author}`,
                   }}
-                ></div>
+                />
               </h4>
             )}
           </div>
@@ -159,20 +164,22 @@ const NFTCard = ({
           <div
             className={`absolute h-1.5 inline-block rounded-r-lg ${styles.bgPercentage}`}
             style={{ width: `${percentage}%` }}
-          ></div>
+          />
         </div>
       ) : null}
       <Link to={detailUrl} className='cursor-pointer w-full'>
         <div
-          className={cn(
-            'relative',
-            isPortfolio && 'h-220px',
-            !isPortfolio && imageHeightClass,
-          )}
+          className={cn('relative overflow-hidden', {
+            'h-[220px]': isPortfolio,
+            [imageHeightClass]: !isPortfolio,
+          })}
         >
           <img
             src={imageSrc}
-            className='object-cover h-full w-full cursor-pointer'
+            className={cn(
+              'object-cover h-full w-full cursor-pointer',
+              isNSFW && 'filter blur-[10px]',
+            )}
           />
           {fullCardProps && fullCardProps.onSale && isPortfolio ? (
             <div
@@ -204,7 +211,15 @@ const NFTCard = ({
                 isNFTPortfolio && 'text-base text-gray-1a',
               )}
             >
-              {title}
+              {searchText
+                ? parse(
+                    title.replace(
+                      new RegExp(searchText, 'gi'),
+                      match =>
+                        `<mark class='bg-blue-9b pt-1 pb-1'>${match}</mark>`,
+                    ),
+                  )
+                : title}
             </div>
           </Link>
         </div>

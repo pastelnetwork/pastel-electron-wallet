@@ -1,11 +1,11 @@
 import React from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
-import { Button } from 'common/components/Buttons'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import ImageShadow from '../common/ImageShadow'
+import { useImagePreview } from '../previewStep/PreviewStep.service'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -28,6 +28,7 @@ export default function ApprovedStep({
   nftData,
 }: TApprovedStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
+  const [croppedImage] = useImagePreview({ image })
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
@@ -60,19 +61,32 @@ export default function ApprovedStep({
             <InfoPair title='Patel rareness score' value='67%' />
             <InfoPair title='Internet rareness score' value='99%' />
             <InfoPair title='NSFW' value='100%' />
+            <div>
+              <div className='font-medium text-gray-71 mb-3'>
+                Thumbnail preview
+              </div>
+              <div className='w-48 h-48'>
+                {croppedImage && (
+                  <img
+                    src={croppedImage.src}
+                    className='rounded w-full h-full'
+                  />
+                )}
+              </div>
+            </div>
           </div>
-          <div className='w-full'>
+          <div className='w-full mt-3'>
             <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
               <div className='text-gray-71'>Final registration fee</div>
               <div className='text-gray-45 font-extrabold'>110,000 PSL</div>
             </div>
-            <Button
+            <button
               type='button'
-              className='font-extrabold w-full mt-5'
+              className='btn btn-primary w-full mt-5'
               onClick={goToNextStep}
             >
               Proceed to final registration fee payment
-            </Button>
+            </button>
           </div>
         </div>
       }

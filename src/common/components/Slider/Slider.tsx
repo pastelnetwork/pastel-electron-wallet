@@ -23,6 +23,7 @@ export type TSliderProps = {
   minMaxClassName?: string
   minMaxAlignCenter?: boolean
   step?: number | undefined
+  alwaysShowTooltip?: boolean
 } & (
   | {
       value: number
@@ -53,8 +54,9 @@ export default function Slider({
   formatTooltipValue = formatValue,
   className,
   valuesClassName = 'mt-2',
-  minMaxClassName = 'top-5 text-gray-2d text-sm',
+  minMaxClassName = 'top-5 text-gray-2d font-medium text-sm',
   minMaxAlignCenter = false,
+  alwaysShowTooltip,
   ...props
 }: TSliderProps): JSX.Element {
   const stickToBottom = variant === 'stickToBottom'
@@ -157,7 +159,10 @@ export default function Slider({
           <Tooltip2
             text={formatTooltipValue(fractionToValue(props, value))}
             show
-            className='whitespace-nowrap duration-200 transition opacity-0 group-hover:opacity-100'
+            className={cn(
+              'whitespace-nowrap duration-200 transition',
+              !alwaysShowTooltip && 'opacity-0 group-hover:opacity-100',
+            )}
           >
             {ref => (
               <div ref={ref} className='w-4 h-4 bg-blue-3f rounded-full' />

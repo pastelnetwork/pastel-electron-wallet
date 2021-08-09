@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import ProfileCard from '../components/MyProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
-import ProfileGeneral, { TCurrency } from '../components/MyProfileGeneral'
+import ProfileGeneral, {
+  TCurrency,
+} from '../components/MyProfileGeneral/MyProfileGeneral'
 import { TOption } from '../components/Select/Select'
 
 export const nativeCurrencyOptions: TOption[] = [

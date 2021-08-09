@@ -131,7 +131,7 @@ const Header = (): JSX.Element | null => {
             <Link to={ROUTES.MY_PROFILE}>
               <img
                 src={AvatarImage}
-                className='w-9 h-9 ml-6 lg:ml-22px cursor-pointer'
+                className='w-9 h-9 ml-6 lg:ml-22px'
                 alt='Profile Avatar'
               />
             </Link>

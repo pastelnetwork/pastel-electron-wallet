@@ -1,3 +1,5 @@
+import randomize from 'secure-random-password'
+
 /**
  * Calc parrword scrength score
  * @param pass
@@ -39,4 +41,17 @@ export function calcPasswordStrength(pass: string): number {
   }
 
   return res
+}
+
+export function randomPassword(length?: number): string {
+  const randomNumbers = Math.floor(Math.random() * 4) + 2
+
+  return randomize.randomPassword({
+    length: length || 12,
+    characters: [
+      { characters: randomize.digits, exactly: randomNumbers },
+      randomize.lower,
+      randomize.upper,
+    ],
+  })
 }

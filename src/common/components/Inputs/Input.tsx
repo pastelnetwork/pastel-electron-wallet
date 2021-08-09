@@ -97,7 +97,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
             {hint && hintAsTooltip && (
               <div
                 className={cn(
-                  'absolute bg-gray-35 text-white rounded-lg z-10 text-xs font-bold px-2 py-1 right-0 hintAsTooltip',
+                  'absolute bg-gray-33 text-white rounded-lg z-10 text-xs font-medium p-2 right-0 hintAsTooltip',
                   styles.hintAsTooltip,
                 )}
               >

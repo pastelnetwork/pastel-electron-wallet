@@ -188,16 +188,16 @@ const RegisterContent = (): JSX.Element => {
           <div className='text-center'>
             <TriangleElimination
               size={44}
-              className='text-red-63 inline-block'
+              className='text-red-fe inline-block'
             />
           </div>
-          <div className='mt-7 text-center'>
+          <div className='mt-27px text-center text-h5 leading-6 font-medium text-gray-4a'>
             Are you sure you want to close the wizard
             <br /> and return to the home screen?
           </div>
-          <div className='mt-5 text-center'>
+          <div className='mt-4 text-center'>
             <button
-              className='rounded-full text-sm font-medium text-white bg-orange-63 inline-block w-230px text-center py-3 cursor-pointer'
+              className='rounded-full text-sm font-medium text-white bg-red-fe inline-block w-[232px] text-center py-6px cursor-pointer'
               onClick={() => confirmClose(true)}
             >
               Close
@@ -205,7 +205,7 @@ const RegisterContent = (): JSX.Element => {
           </div>
           <div className='mt-4 text-center'>
             <button
-              className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-230px text-center py-3 cursor-pointer'
+              className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-[232px] text-center py-6px cursor-pointer'
               onClick={() => confirmClose(false)}
             >
               Back

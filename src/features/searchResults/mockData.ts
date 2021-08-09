@@ -122,6 +122,7 @@ const mockCardProps: TNFTCard = {
   liked: true,
   followers: 0,
   isLastBid: false,
+  nsfw: { porn: 0, hentai: 0 },
 }
 
 export const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {
@@ -158,10 +159,9 @@ export const mockMemberStrips: TMemberStripProps[] = [
       isVerified: false,
       followedByUser: false,
     },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
+    highestSold: 1700000,
+    totalSold: 1500,
     images: stripMockImages,
-    currencyName: 'PSL',
   },
   {
     id: uuidv4(),
@@ -172,10 +172,9 @@ export const mockMemberStrips: TMemberStripProps[] = [
       isVerified: true,
       followedByUser: true,
     },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
+    highestSold: 1700000,
+    totalSold: 1500,
     images: stripMockImages,
-    currencyName: 'PSL',
   },
   {
     id: uuidv4(),
@@ -186,10 +185,9 @@ export const mockMemberStrips: TMemberStripProps[] = [
       isVerified: false,
       followedByUser: false,
     },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
+    highestSold: 1700000,
+    totalSold: 1500,
     images: stripMockImages,
-    currencyName: 'PSL',
   },
   {
     id: uuidv4(),
@@ -200,9 +198,8 @@ export const mockMemberStrips: TMemberStripProps[] = [
       isVerified: true,
       followedByUser: true,
     },
-    heighestSold: '1,700,000K',
-    totalSold: '1,500K',
+    highestSold: 1700000,
+    totalSold: 1500,
     images: stripMockImages,
-    currencyName: 'PSL',
   },
 ]

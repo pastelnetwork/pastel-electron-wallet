@@ -178,7 +178,9 @@ module.exports = {
           },
         },
         white: '#FFFFFF',
-        transparent: 'transparent',
+        transparent: {
+          DEFAULT: 'transparent',
+        },
         success: {
           DEFAULT: '#00D097',
           pressed: '#00B282',
@@ -217,6 +219,7 @@ module.exports = {
           e7: '#E7F2FE',
           ac: '#006EAC',
           f2: '#98CFF2',
+          fa: '#FAFCFF',
         },
         gray: {
           f6: '#F6F7F9',
@@ -278,7 +281,6 @@ module.exports = {
           ef: '#FFEFEB',
           '7a': '#FF7A00',
           75: '#FF754C',
-          63: '#FE634C',
           14: '#14B85F',
           '4a': '#FA4A30',
           d9: '#FFD9D9',
@@ -451,7 +453,9 @@ module.exports = {
       },
       minHeight: {
         '78px': '4.875rem',
+        '594px': '37.125rem',
         '672px': '42rem',
+        '98vh': '98vh',
       },
       maxWidth: {
         '32px': '2rem',

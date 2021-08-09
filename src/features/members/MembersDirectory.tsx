@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
-import { useAppSelector } from 'redux/hooks'
 import MemberStrip, { TMemberStripProps } from './MemberStrip'
 import Select, { TOption } from '../../common/components/Select/Select'
 import Slider from '../../common/components/Slider/Slider'
@@ -33,9 +32,6 @@ const mockBreadcrumbs: TBreadcrumb[] = [
 ]
 
 const MembersDirectory = (): JSX.Element => {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
   const mockMemberStrips: TMemberStripProps[] = [
     {
       id: uuidv4(),
@@ -46,10 +42,9 @@ const MembersDirectory = (): JSX.Element => {
         isVerified: false,
         followedByUser: false,
       },
-      heighestSold: '1,700,000K',
-      totalSold: '1,500K',
+      highestSold: 1700000000,
+      totalSold: 1500000,
       images: stripMockImages,
-      currencyName,
     },
     {
       id: uuidv4(),
@@ -60,10 +55,9 @@ const MembersDirectory = (): JSX.Element => {
         isVerified: true,
         followedByUser: true,
       },
-      heighestSold: '1,700,000K',
-      totalSold: '1,500K',
+      highestSold: 1700000000,
+      totalSold: 1500000,
       images: stripMockImages,
-      currencyName,
     },
     {
       id: uuidv4(),
@@ -74,10 +68,9 @@ const MembersDirectory = (): JSX.Element => {
         isVerified: false,
         followedByUser: false,
       },
-      heighestSold: '1,700,000K',
-      totalSold: '1,500K',
+      highestSold: 1700000000,
+      totalSold: 1500000,
       images: stripMockImages,
-      currencyName,
     },
     {
       id: uuidv4(),
@@ -88,10 +81,9 @@ const MembersDirectory = (): JSX.Element => {
         isVerified: true,
         followedByUser: true,
       },
-      heighestSold: '1,700,000K',
-      totalSold: '1,500K',
+      highestSold: 1700000000,
+      totalSold: 1500000,
       images: stripMockImages,
-      currencyName,
     },
   ]
 

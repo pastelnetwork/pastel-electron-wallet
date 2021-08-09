@@ -64,14 +64,14 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
       )}
     >
       <div className='mr-20px w-68px'>
-        <Link href={profileUrl} className='cursor-pointer'>
+        <Link to={profileUrl} className='cursor-pointer'>
           <img src={avatar} alt={name} className='w-48px h-48px rounded-full' />
         </Link>
       </div>
       <div className='w-full'>
         <div className='flex justify-between'>
           <Link
-            href={profileUrl}
+            to={profileUrl}
             className='text-base font-extrabold text-gray-11 cursor-pointer'
           >
             {name}
@@ -91,7 +91,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
           {author ? (
             <p className='text-gray-71'>
               Commented on{' '}
-              <Link href={portfolioUrl} className='pl-1'>
+              <Link to={portfolioUrl} className='pl-1'>
                 {author}.
               </Link>{' '}
             </p>
