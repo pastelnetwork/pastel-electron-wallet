@@ -29,7 +29,6 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
   const {
     info: { currencyName },
   } = useAppSelector(state => state.appInfo)
-  const { username, password, url } = useAppSelector(state => state.pastelConf)
   const pdfFileName = `${
     currencyName || 'LSP'
   }_Paper_Wallet__Private_Keys_${dayjs(new Date()).format(
@@ -58,14 +57,9 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
     const fetchData = async () => {
       setLoading(true)
       const chunkQuantity = 500
-      const rpcConfig = {
-        username,
-        password,
-        url,
-      }
       const results = await Promise.all([
-        fetchPastelIDAndPrivateKeys(rpcConfig),
-        fetchAllKeysForPdf(rpcConfig),
+        fetchPastelIDAndPrivateKeys(),
+        fetchAllKeysForPdf(),
       ])
 
       if (results[0]) {
