@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { useAppSelector } from '../../redux/hooks'
 
 export const defaultPastelInfo = {
   connections: 0,
@@ -27,6 +28,7 @@ export type TWalletInfo = {
 export interface IAppInfoState {
   addressBookFileName: string
   info: TWalletInfo
+  getInfoError?: string
 }
 
 const initialState: IAppInfoState = {
@@ -38,6 +40,10 @@ type TInfoAction = {
   info: TWalletInfo
 }
 
+type TSetGetInfoError = {
+  message: string
+}
+
 export const appInfoSlice = createSlice({
   name: 'appInfo',
   initialState,
@@ -45,9 +51,19 @@ export const appInfoSlice = createSlice({
     setPastelInfo(state: IAppInfoState, action: PayloadAction<TInfoAction>) {
       state.info = action.payload.info
     },
+    setGetInfoError(
+      state: IAppInfoState,
+      action: PayloadAction<TSetGetInfoError>,
+    ) {
+      state.getInfoError = action.payload.message
+    },
   },
 })
 
 export const appInfoReducer = appInfoSlice.reducer
 
-export const { setPastelInfo } = appInfoSlice.actions
+export const { setPastelInfo, setGetInfoError } = appInfoSlice.actions
+
+export const useGetInfoError = (): string | undefined => {
+  return useAppSelector(state => state.appInfo.getInfoError)
+}

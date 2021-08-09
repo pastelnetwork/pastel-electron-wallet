@@ -1,3 +1,4 @@
+import { startWalletNode, stopWalletNode } from './walletNode'
 import { mainEventPromise, onMainEvent, sendEventToRenderer } from './events'
 import { app, shell } from 'electron'
 import installExtension, {
@@ -10,12 +11,13 @@ import electronDebug from 'electron-debug'
 import { redirectDeepLinkingUrl, setupDeepLinking } from '../deepLinking'
 import { createWindow } from './createWindow'
 import { browserWindow } from '../../common/utils/app'
-import initServeStatic from '../serveStatic'
+import initServeStatic, { closeServeStatic } from '../serveStatic'
 import { setupOptimizeImageHandler } from '../nft/addNFT/imageOptimization/ImageOptimization.main'
 import { setupAutoUpdater } from './autoUpdater'
 import { readRpcConfig } from '../rpcConfig'
+import { ignorePromiseError } from '../../common/utils/promises'
 
-export const appSetup = async (): Promise<void> => {
+export const mainSetup = async (): Promise<void> => {
   setupDeepLinking()
   enableDevTools()
   enableSourceMapSupport()
@@ -29,7 +31,7 @@ export const appSetup = async (): Promise<void> => {
 }
 
 const setupWindow = async () => {
-  createWindow()
+  createWindow(onWindowClose)
 
   await mainEventPromise('rendererStarted')
 
@@ -39,14 +41,12 @@ const setupWindow = async () => {
 
 const retriableAppSetup = async () => {
   try {
+    await startWalletNode()
     const rpcConfig = await readRpcConfig()
-    sendEventToRenderer('setupIsReady', { rpcConfig })
+    sendEventToRenderer('setRpcConfig', { rpcConfig })
     redirectDeepLinkingUrl()
   } catch (error) {
-    sendEventToRenderer('updateAppLoadingStatus', {
-      type: 'failed',
-      error: error.message,
-    })
+    sendEventToRenderer('appLoadingFailed', { error: error.message })
     log.error(error)
   }
 }
@@ -103,4 +103,44 @@ const setupEventListeners = () => {
       await shell.openExternal(navigationUrl)
     })
   })
+}
+
+let waitingForClose = false
+let proceedToClose = false
+
+const onWindowClose = async (event: Event) => {
+  // If we are clear to close, then return and allow everything to close
+  if (proceedToClose) {
+    console.warn('proceed to close, so closing')
+    return
+  }
+
+  // If we're already waiting for close, then don't allow another close event to actually close the window
+  if (waitingForClose) {
+    console.warn('Waiting for close... Timeout in 10s')
+    event.preventDefault()
+    return
+  }
+
+  waitingForClose = true
+  event.preventDefault()
+
+  closeServeStatic()
+
+  sendEventToRenderer('prepareToQuit', null)
+
+  // Failsafe, timeout after 10 seconds
+  setTimeout(() => {
+    waitingForClose = false
+    proceedToClose = true
+    console.warn('Timeout, quitting')
+    app.quit()
+  }, 10 * 1000)
+
+  await mainEventPromise('rendererIsReadyForQuit')
+  await ignorePromiseError(stopWalletNode())
+
+  waitingForClose = false
+  proceedToClose = true
+  app.quit()
 }

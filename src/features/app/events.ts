@@ -1,7 +1,8 @@
 import { browserWindow } from '../../common/utils/app'
-import { ipcMain, ipcRenderer } from 'electron'
+import { ipcMain, ipcRenderer, IpcRendererEvent } from 'electron'
 import { TImageOptimizationResult } from '../nft/addNFT/imageOptimization/ImageOptimization.types'
 import { TRPCConfig } from '../../api/pastel-rpc'
+import { useEffect } from 'react'
 
 // keys for channel names, values for payload type, null for no payload
 export type MainEvents = {
@@ -12,9 +13,8 @@ export type MainEvents = {
 }
 
 export type RendererEvents = {
-  updateAppLoadingStatus:
-    | { type: 'failed'; error: string }
-    | { type: 'logProgress'; message: string }
+  appLoadingFailed: { error: string }
+  appLoadingLogProgress: { message: string }
   prepareToQuit: null
   pastelPhotopea: null
   pastelSpriteEditorTool: null
@@ -29,7 +29,7 @@ export type RendererEvents = {
   importani: null
   exportalltx: null
   exportall: null
-  setupIsReady: { rpcConfig: TRPCConfig }
+  setRpcConfig: { rpcConfig: TRPCConfig }
 }
 
 // keys for channel names, value is a type of handler function
@@ -74,6 +74,23 @@ export const onRendererEvent = <Channel extends keyof RendererEvents>(
   callback: (payload: RendererEvents[Channel]) => void,
 ): void => {
   ipcRenderer.on(channel, (event, payload) => callback(payload))
+}
+
+export const useRendererEvent = <Channel extends keyof RendererEvents>(
+  channel: Channel,
+  callback: (payload: RendererEvents[Channel]) => void,
+): void => {
+  useEffect(() => {
+    const listener = (
+      event: IpcRendererEvent,
+      payload: RendererEvents[Channel],
+    ) => callback(payload)
+
+    ipcRenderer.on(channel, listener)
+    return () => {
+      ipcRenderer.removeListener(channel, listener)
+    }
+  }, [])
 }
 
 export const invokeMainTask = <Channel extends keyof MainTasks>(

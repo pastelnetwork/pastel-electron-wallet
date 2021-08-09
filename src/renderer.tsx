@@ -34,66 +34,18 @@ import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
-import log from 'electron-log'
 import { ToastContainer } from 'react-toastify'
 
-import PastelDB from './features/pastelDB/database'
-import { fetchPastelPrice } from './features/pastelPrice'
-import { createPastelKeysFolder } from './features/pastelID'
 import { PastelModal } from './features/pastelModal'
 import UpdateToast from './features/updateToast'
 import Utilities from './features/utilities'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 import 'common/utils/initDayjs'
-import { isPackaged } from './common/utils/app'
-import { onRendererEvent, sendEventToMain } from './features/app/events'
-import history from './common/utils/history'
-import * as ROUTES from 'common/utils/constants/routes'
-import { setRpcConfig } from './features/rpcConfig'
-import { PastelDBThread } from './features/pastelDB'
+import { sendEventToMain } from './features/app/events'
+import { rendererSetup } from './features/app/rendererSetup'
 
-const oneHour = 1000 * 60 * 60
-/**
- * TODO Max please remove <any> from fetchPastelPrice after investigation why
- * fetchPastelPrice fails after merging master into onboarding branch.
- * Any is also visible in fetchPastelPrice tests.
- */
-// get pastel price
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-store.dispatch<any>(fetchPastelPrice())
-
-// set up pastel price update timer
-setInterval(() => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  store.dispatch<any>(fetchPastelPrice())
-}, oneHour)
-
-try {
-  PastelDB.getDatabaseInstance()
-} catch (error) {
-  // TODO log errors to a central logger so we can address them later.
-  console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
-}
-
-if (isPackaged) {
-  log.transports.console.level = false
-}
-
-createPastelKeysFolder()
-
-onRendererEvent('setupIsReady', ({ rpcConfig }) => {
-  setRpcConfig(rpcConfig)
-
-  // set pastel DB thread update timer
-  if (!isPackaged) {
-    const period = 1000 * 10
-    PastelDBThread()
-    setInterval(PastelDBThread, period)
-  }
-
-  history.replace(ROUTES.WELCOME_PAGE)
-})
+rendererSetup()
 
 const App = () => {
   useEffect(() => {

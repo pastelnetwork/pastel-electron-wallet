@@ -1,13 +1,10 @@
 import { app, BrowserWindow } from 'electron'
 import { browserWindow } from '../../common/utils/app'
-import { onMainEvent, sendEventToRenderer } from './events'
-import { closeServeStatic } from '../serveStatic'
 import MenuBuilder from '../../menu'
 
-let waitingForClose = false
-let proceedToClose = false
-
-export const createWindow = async (): Promise<void> => {
+export const createWindow = async (
+  onWindowClose: (event: Event) => void,
+): Promise<void> => {
   const w = new BrowserWindow({
     show: false,
     width: 1440,
@@ -49,40 +46,7 @@ export const createWindow = async (): Promise<void> => {
     }
   })
 
-  w.on('close', (event: Event) => {
-    // If we are clear to close, then return and allow everything to close
-    if (proceedToClose) {
-      console.warn('proceed to close, so closing')
-      return
-    }
-
-    // If we're already waiting for close, then don't allow another close event to actually close the window
-    if (waitingForClose) {
-      console.warn('Waiting for close... Timeout in 10s')
-      event.preventDefault()
-      return
-    }
-
-    waitingForClose = true
-    event.preventDefault()
-
-    onMainEvent('rendererIsReadyForQuit', () => {
-      waitingForClose = false
-      proceedToClose = true
-      app.quit()
-    })
-
-    closeServeStatic()
-
-    sendEventToRenderer('prepareToQuit', null)
-    // Failsafe, timeout after 10 seconds
-    setTimeout(() => {
-      waitingForClose = false
-      proceedToClose = true
-      console.warn('Timeout, quitting')
-      app.quit()
-    }, 10 * 1000)
-  })
+  w.on('close', onWindowClose)
 
   w.on('closed', () => {
     browserWindow.current = undefined

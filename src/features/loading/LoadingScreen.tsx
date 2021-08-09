@@ -1,15 +1,14 @@
 import React from 'react'
 import styles from './LoadingScreen.module.css'
 import { debugLogPath } from 'common/utils/app'
-
-enum LoadingStep {
-  waiting,
-  failed,
-}
+import {
+  retryInitializingApp,
+  useLoadingErrorMessage,
+  useLoadingMessage,
+} from './LoadingScreen.service'
 
 export default function LoadingScreen(): JSX.Element | null {
-  const step = LoadingStep.waiting as LoadingStep
-  const showRetry = true as boolean
+  const error = useLoadingErrorMessage()
 
   return (
     <div className='w-full h-full'>
@@ -19,29 +18,36 @@ export default function LoadingScreen(): JSX.Element | null {
         </div>
       </div>
       <div className='pt-[120px] text-center'>
-        {step === LoadingStep.waiting && 'Loading...'}
-        {step === LoadingStep.failed && (
-          <span>
-            Failed to start pasteld. Giving up! Please look at the debug.log
-            file.
-            <br />
-            <span className='text-yellow-ff'>{debugLogPath}</span>
-            <br />
-            Please file an issue with Pastel Wallet
-          </span>
-        )}
-        {showRetry && (
-          <div className='flex-center'>
-            <button
-              type='button'
-              className='block underline mt-5'
-              // onClick={retry}
-            >
-              Retry
-            </button>
-          </div>
+        {!error && <LoadingMessage />}
+        {error && (
+          <>
+            <span>
+              Failed to start pasteld. Giving up! Please look at the debug.log
+              file.
+              <br />
+              <span className='text-yellow-ff'>{debugLogPath}</span>
+              <br />
+              Please file an issue with Pastel Wallet
+            </span>
+            <div className='mt-5'>Error: {error}</div>
+            <div className='flex-center'>
+              <button
+                type='button'
+                className='block underline mt-5'
+                onClick={retryInitializingApp}
+              >
+                Retry
+              </button>
+            </div>
+          </>
         )}
       </div>
     </div>
   )
+}
+
+const LoadingMessage = () => {
+  const message = useLoadingMessage()
+
+  return <span>{message}</span>
 }
