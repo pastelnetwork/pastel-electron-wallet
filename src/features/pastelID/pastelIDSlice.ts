@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import fs from 'fs'
 
 import { createNewPastelID, getPastelIDs } from '../../api/pastel-rpc'
 import type { AppThunk } from '../../redux/store'
 import { openPastelModal } from '../pastelModal'
-import { getPastelConfigPath } from '../../common/utils/app'
 
 export type TRegisterPastelID = {
   pastelid: string
@@ -130,14 +128,5 @@ export function createPastelID(passphrase: string, address: string): AppThunk {
       // TODO log errors to a central logger so we can address them later.
       console.warn(err)
     }
-  }
-}
-
-export async function createPastelKeysFolder(): Promise<void> {
-  const pastelKeysFolder = getPastelConfigPath('pastelkeys')
-  try {
-    await fs.promises.access(pastelKeysFolder)
-  } catch {
-    await fs.promises.mkdir(pastelKeysFolder)
   }
 }

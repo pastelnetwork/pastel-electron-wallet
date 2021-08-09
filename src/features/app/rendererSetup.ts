@@ -3,7 +3,6 @@ import { fetchPastelPrice } from '../pastelPrice'
 import PastelDB from '../pastelDB/database'
 import { isPackaged } from '../../common/utils/app'
 import log from 'electron-log'
-import { createPastelKeysFolder } from '../pastelID'
 import { onRendererEvent, sendEventToMain } from './events'
 import { getRpcConfig, setRpcConfig } from '../rpcConfig'
 import RPC from '../../legacy/rpc'
@@ -20,18 +19,11 @@ export const rendererSetup = (): void => {
   fetchPastelPrice()
   setInterval(fetchPastelPrice, oneHour)
 
-  try {
-    PastelDB.getDatabaseInstance()
-  } catch (error) {
-    // TODO log errors to a central logger so we can address them later.
-    console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
-  }
+  PastelDB.init()
 
   if (isPackaged) {
     log.transports.console.level = false
   }
-
-  createPastelKeysFolder()
 
   onRendererEvent('setRpcConfig', async ({ rpcConfig }) => {
     setRpcConfig(rpcConfig)
