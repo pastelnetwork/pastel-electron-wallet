@@ -40,13 +40,4 @@ module.exports = {
     // docgen is incompatible with TS 4.3.x: https://github.com/styleguidist/react-docgen-typescript/issues/356
     reactDocgen: 'none',
   },
-  babel: async options => ({
-    ...options,
-
-    plugins: [
-      ['@babel/plugin-proposal-class-properties', { loose: true }],
-      ['@babel/plugin-proposal-private-methods', { loose: true }],
-      '@babel/plugin-proposal-optional-chaining',
-    ],
-  }),
 }
