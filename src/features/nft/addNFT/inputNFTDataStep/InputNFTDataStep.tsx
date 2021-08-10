@@ -64,6 +64,13 @@ type TInputNFTDataStepProps = {
 export default function InputNFTDataStep({
   state: { nftData, setNftData, goToNextStep },
 }: TInputNFTDataStepProps): JSX.Element {
+  const getTooltip = (description: string) => (
+    <div className='px-2 py-6px'>
+      <p className='text-xs text-left leading-4 text-gray-a6 whitespace-normal'>
+        {description}
+      </p>
+    </div>
+  )
   const form = useForm<TFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -125,7 +132,13 @@ export default function InputNFTDataStep({
             <div className='flex-center h-10'>
               <Toggle form={form} name='green' />
               <div className='text-gray-71 font-medium mx-3'>GreenNFT</div>
-              <Tooltip type='top' content='info' width={50}>
+              <Tooltip
+                type='top'
+                content={getTooltip(
+                  'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
+                )}
+                width={285}
+              >
                 <Info size={18} />
               </Tooltip>
             </div>

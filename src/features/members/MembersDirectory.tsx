@@ -168,7 +168,7 @@ const MembersDirectory = (): JSX.Element => {
                   <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
 
                   <Slider
-                    min={100}
+                    min={0}
                     max={999}
                     values={range}
                     onChange={setRange}

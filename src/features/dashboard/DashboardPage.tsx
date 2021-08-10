@@ -24,7 +24,7 @@ const walletBalance = 32000
 
 enum Tabs {
   Creators,
-  Nfts,
+  NFTs,
 }
 
 type TNotification = {
@@ -240,13 +240,13 @@ export default function DashboardPage(): JSX.Element {
                 </Radio>
               </div>
               <Radio
-                checked={tab === Tabs.Nfts}
+                checked={tab === Tabs.NFTs}
                 onChange={param => {
                   param && setTab(1)
                 }}
                 labelClassName='text-sm ml-3'
               >
-                Nfts
+                NFTs
               </Radio>
             </div>
           </div>
