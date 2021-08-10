@@ -5,7 +5,7 @@ import pkg from '../../../package.json'
 import { CloseButton, Button } from '../../common/components/Buttons'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { closeUpdateToast } from './UpdateToastSlice'
-import { sendEventToMain } from '../app/events'
+import { sendEventToMain } from '../app/rendererEvents'
 
 export default function UpdateToast(): JSX.Element | null {
   const { opened } = useAppSelector(state => state.updateToast)

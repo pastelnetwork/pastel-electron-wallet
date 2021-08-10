@@ -1,6 +1,7 @@
 import { app, BrowserWindow, screen } from 'electron'
-import { browserWindow } from '../../common/utils/app'
 import MenuBuilder from '../../menu'
+
+export const browserWindow: { current?: BrowserWindow } = {}
 
 export const createWindow = async (
   onWindowClose: (event: Event) => void,
@@ -31,7 +32,6 @@ export const createWindow = async (
       // Allow node integration because we're only loading local content here.
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
       webSecurity: false,
     },
   })

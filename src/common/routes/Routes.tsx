@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Route, Switch, useLocation } from 'react-router-dom'
 
 import { pageRoutes } from './index'
 import * as ROUTES from '../utils/constants/routes'
 import LoadingScreen from 'features/loading'
-import { TWalletInfo, defaultPastelInfo } from 'features/serveStatic'
 
 type TRouteType = {
   id: string
@@ -25,17 +24,13 @@ type TRouteType = {
   }
 }
 
-const childRoutes = (routes: Array<TRouteType>, info?: TWalletInfo) =>
-  routes.map(({ component: Component, layout: Layout, path, id, required }) => {
+const childRoutes = (routes: Array<TRouteType>) =>
+  routes.map(({ component: Component, layout: Layout, path, id }) => {
     if (!Component || !Layout) {
       return null
     }
 
     const extraProps = {}
-
-    if (required?.info) {
-      Object.assign(extraProps, { info })
-    }
 
     return (
       <Route
@@ -53,12 +48,11 @@ const childRoutes = (routes: Array<TRouteType>, info?: TWalletInfo) =>
 
 const Routes = (): JSX.Element => {
   const location = useLocation()
-  const [info] = useState<TWalletInfo>(defaultPastelInfo)
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
       <Switch location={location}>
-        {childRoutes(pageRoutes, info)}
+        {childRoutes(pageRoutes)}
         <Route path={ROUTES.LOADING} component={LoadingScreen} />
       </Switch>
     </div>

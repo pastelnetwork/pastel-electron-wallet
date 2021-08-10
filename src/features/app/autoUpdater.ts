@@ -1,4 +1,4 @@
-import { onMainEvent, sendEventToRenderer } from './events'
+import { onMainEvent, sendEventToRenderer } from './mainEvents'
 import { app, autoUpdater } from 'electron'
 import pkg from '../../../package.json'
 

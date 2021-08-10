@@ -1,7 +1,7 @@
 import { BrowserWindow } from 'electron'
 
 import { redirectDeepLinkingUrl, setDeepLinkingUrl } from '../DeepLinking.utils'
-import { browserWindow } from '../../../common/utils/app'
+import { browserWindow } from '../../app/window'
 
 describe('deepLinking/redirectDeepLinkingUrl', () => {
   beforeEach(() => {

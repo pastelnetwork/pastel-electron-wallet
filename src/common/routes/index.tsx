@@ -21,7 +21,7 @@ import { MembersDirectory } from '../../features/members'
 import MemberProfile from '../../features/profile/memberProfile/MemberProfile'
 import PortfolioPage from 'features/nft/portfolio/PortfolioPage'
 import { Forum } from '../../features/forum'
-import Pasteld from 'legacy/components/Pasteld'
+import { PasteldFn } from 'legacy/components/Pasteld'
 
 import * as ROUTES from '../utils/constants/routes'
 
@@ -100,9 +100,6 @@ const walletScreen = {
   path: ROUTES.WALLET,
   component: WalletScreenPage,
   layout: PageLayout,
-  required: {
-    info: true,
-  },
 }
 
 const nft = {
@@ -145,9 +142,6 @@ const portfolioDetail = {
   path: ROUTES.PORTFOLIO_DETAIL,
   component: PortfolioPage,
   layout: PageLayout,
-  required: {
-    currencyName: true,
-  },
 }
 
 const forum = {
@@ -160,11 +154,8 @@ const forum = {
 const pasteld = {
   id: 'pasteld',
   path: ROUTES.PASTELD,
-  component: Pasteld,
+  component: PasteldFn,
   layout: OnboardingLayout,
-  required: {
-    info: true,
-  },
 }
 
 export const pageRoutes = [

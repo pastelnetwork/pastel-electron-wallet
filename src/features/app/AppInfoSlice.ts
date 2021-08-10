@@ -26,14 +26,30 @@ export type TWalletInfo = {
 }
 
 export interface IAppInfoState {
+  isPackaged: boolean
   addressBookFileName: string
   info: TWalletInfo
   getInfoError?: string
+  appVersion?: string
+  sentTxStorePath?: string
+  debugLogPath?: string
+  pastelWalletDirPath?: string
+  sqliteFilePath?: string
 }
 
 const initialState: IAppInfoState = {
+  isPackaged: false,
   addressBookFileName: '',
   info: defaultPastelInfo,
+}
+
+type TIsPackagedAndPathsAction = {
+  isPackaged: boolean
+  appVersion: string
+  sentTxStorePath: string
+  debugLogPath: string
+  pastelWalletDirPath: string
+  sqliteFilePath: string
 }
 
 type TInfoAction = {
@@ -48,6 +64,17 @@ export const appInfoSlice = createSlice({
   name: 'appInfo',
   initialState,
   reducers: {
+    setIsPackagedAndPaths(
+      state: IAppInfoState,
+      { payload }: PayloadAction<TIsPackagedAndPathsAction>,
+    ) {
+      state.isPackaged = payload.isPackaged
+      state.appVersion = payload.appVersion
+      state.sentTxStorePath = payload.sentTxStorePath
+      state.debugLogPath = payload.debugLogPath
+      state.pastelWalletDirPath = payload.pastelWalletDirPath
+      state.sqliteFilePath = payload.sqliteFilePath
+    },
     setPastelInfo(state: IAppInfoState, action: PayloadAction<TInfoAction>) {
       state.info = action.payload.info
     },
@@ -62,7 +89,11 @@ export const appInfoSlice = createSlice({
 
 export const appInfoReducer = appInfoSlice.reducer
 
-export const { setPastelInfo, setGetInfoError } = appInfoSlice.actions
+export const {
+  setIsPackagedAndPaths,
+  setPastelInfo,
+  setGetInfoError,
+} = appInfoSlice.actions
 
 export const useGetInfoError = (): string | undefined => {
   return useAppSelector(state => state.appInfo.getInfoError)

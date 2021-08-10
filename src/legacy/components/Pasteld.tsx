@@ -6,6 +6,7 @@ import cstyles from './Common.module.css'
 import styles from './Pasteld.module.css'
 import ScrollPane from './ScrollPane'
 import Heart from '../assets/img/pastel-logo.png'
+import { useAppSelector } from '../../redux/hooks'
 
 const DetailLine = ({ label, value }: any) => {
   return (
@@ -16,6 +17,20 @@ const DetailLine = ({ label, value }: any) => {
   )
 }
 
+// Used in new routes
+export const PasteldFn = () => {
+  const appInfo = useAppSelector(state => state.appInfo)
+  return (
+    <Pasteld
+      info={appInfo}
+      refresh={() => {
+        // implemented only in legacy RPC
+      }}
+    />
+  )
+}
+
+// Used in legacy routes
 export default class Pasteld extends Component<any> {
   render() {
     const { info, refresh } = this.props

@@ -1,6 +1,6 @@
+import { mockedStore } from '../../../common/utils/mockStore'
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
 import fs from 'fs'
-import { remote } from 'electron'
 import log from 'electron-log'
 
 import {
@@ -1409,31 +1409,36 @@ describe('managePastelDatabase', () => {
   test('RemoveSqliteDBFile should remove sqlite file correctly', async () => {
     // Arrange
     const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
-    const remoteSpy = jest
-      .spyOn(remote.app, 'getPath')
-      .mockImplementation(() => '')
+    const storeSpy = jest
+      .spyOn(mockedStore, 'getState')
+      .mockImplementation(() => ({
+        appInfo: { sqliteFilePath: 'path', isPackaged: false },
+      }))
 
     // Act
     await pastelDBLib.RemoveSqliteDBFile()
 
     // Assert
-    expect(remoteSpy).toBeCalledTimes(1)
+    expect(storeSpy).toBeCalledTimes(1)
     expect(unlinkSpy).toBeCalledTimes(1)
   })
 
   test('RemoveSqliteDBFile should log the error', async () => {
     // Arrange
     const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
-    const remoteSpy = jest
-      .spyOn(remote.app, 'getPath')
-      .mockImplementation(() => '')
+    const storeSpy = jest
+      .spyOn(mockedStore, 'getState')
+      .mockImplementation(() => ({
+        appInfo: { sqliteFilePath: 'path', isPackaged: false },
+      }))
+
     const logSpy = jest.spyOn(log, 'error')
 
     // Act
     await pastelDBLib.RemoveSqliteDBFile()
 
     // Assert
-    expect(remoteSpy).toBeCalledTimes(1)
+    expect(storeSpy).toBeCalledTimes(1)
     expect(unlinkSpy).toBeCalledTimes(1)
     expect(logSpy).toBeCalledTimes(1)
   })

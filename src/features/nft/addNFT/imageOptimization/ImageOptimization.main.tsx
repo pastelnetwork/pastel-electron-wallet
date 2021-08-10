@@ -14,19 +14,11 @@ import {
   qualityStep,
 } from '../AddNft.constants'
 import fs from 'fs'
-import os from 'os'
-import { getBinPath, getRandomFileName } from './ImageOptimization.utils'
-import { handleMainTask } from '../../../app/events'
+import { handleMainTask } from '../../../app/mainEvents'
+import { mozjpegBinPath, pngquantBinPath } from '../../../app/paths'
 
-const platform: string = os.platform()
-const pngquantBin = getBinPath(platform, 'pngquant')
-const mozjpegBin = getBinPath(platform, 'mozjpeg')
-
-if (!pngquantBin || !mozjpegBin) {
-  throw new Error(
-    `Image optimization doesn't not support current platform ${platform}`,
-  )
-}
+export const getRandomFileName = (): string =>
+  Math.random().toString(36).substring(2, 15)
 
 const tmpPath = app.getPath('temp')
 
@@ -88,7 +80,7 @@ const getOptimizeArgs = (file: TFile): [ImageProcessor, string, TGetArgs] => {
   if (file.type === imageTypes.PNG) {
     return [
       ImageProcessor.pngquant,
-      pngquantBin,
+      pngquantBinPath,
       (outputPath, quality) => [
         '-fo',
         outputPath,
@@ -100,7 +92,7 @@ const getOptimizeArgs = (file: TFile): [ImageProcessor, string, TGetArgs] => {
   } else if (file.type === imageTypes.JPG) {
     return [
       ImageProcessor.mozjpeg,
-      mozjpegBin,
+      mozjpegBinPath,
       (outputPath, quality) => [
         '-quality',
         String(quality),

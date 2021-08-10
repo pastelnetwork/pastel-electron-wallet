@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { getAppPath } from './app'
+import store from '../../redux/store'
 
 type TAddressBook = {
   label: string
@@ -9,7 +9,10 @@ type TAddressBook = {
 
 export default class AddressbookImpl {
   static async getFileName(): Promise<string | null> {
-    const dir = getAppPath('pastelwallet')
+    const dir = store.getState().appInfo.pastelWalletDirPath
+    if (!dir) {
+      throw new Error("Can't get path of address store")
+    }
 
     if (!fs.existsSync(dir)) {
       await fs.promises.mkdir(dir)

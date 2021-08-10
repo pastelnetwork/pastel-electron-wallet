@@ -1,7 +1,6 @@
 import fs from 'fs'
 import ini from 'ini'
 
-import { pastelConfigFilePath } from '../../common/utils/app'
 import { TRPCConfig } from '../../api/pastel-rpc'
 
 let rpcConfig: TRPCConfig | undefined
@@ -22,7 +21,9 @@ export const setRpcConfig = (config: TRPCConfig): void => {
   rpcConfig = config
 }
 
-export const readRpcConfig = async (): Promise<TRPCConfig> => {
+export const readRpcConfig = async (
+  pastelConfigFilePath: string,
+): Promise<TRPCConfig> => {
   const content = await fs.promises.readFile(pastelConfigFilePath, {
     encoding: 'utf-8',
   })

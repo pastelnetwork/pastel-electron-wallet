@@ -1,6 +1,11 @@
 import { startWalletNode, stopWalletNode } from './walletNode'
-import { mainEventPromise, onMainEvent, sendEventToRenderer } from './events'
-import { app, shell } from 'electron'
+import {
+  handleMainTask,
+  mainEventPromise,
+  onMainEvent,
+  sendEventToRenderer,
+} from './mainEvents'
+import { app, dialog, shell } from 'electron'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
@@ -9,8 +14,14 @@ import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
 import electronDebug from 'electron-debug'
 import { redirectDeepLinkingUrl, setupDeepLinking } from '../deepLinking'
-import { createWindow } from './createWindow'
-import { browserWindow } from '../../common/utils/app'
+import { browserWindow, createWindow } from './window'
+import {
+  debugLogPath,
+  pastelConfigFilePath,
+  pastelWalletDirPath,
+  sentTxStorePath,
+  sqliteFilePath,
+} from './paths'
 import initServeStatic, { closeServeStatic } from '../serveStatic'
 import { setupOptimizeImageHandler } from '../nft/addNFT/imageOptimization/ImageOptimization.main'
 import { setupAutoUpdater } from './autoUpdater'
@@ -35,6 +46,16 @@ const setupWindow = async () => {
 
   await mainEventPromise('rendererStarted')
 
+  // We have to pass isPackaged and app paths via IPC because electron `remote` api is deprecated
+  sendEventToRenderer('setAppInfo', {
+    isPackaged: app.isPackaged,
+    appVersion: app.getVersion(),
+    sentTxStorePath,
+    debugLogPath,
+    pastelWalletDirPath,
+    sqliteFilePath,
+  })
+
   initServeStatic()
   retriableAppSetup()
 }
@@ -42,8 +63,10 @@ const setupWindow = async () => {
 const retriableAppSetup = async () => {
   try {
     await startWalletNode()
-    const rpcConfig = await readRpcConfig()
-    sendEventToRenderer('setRpcConfig', { rpcConfig })
+    const rpcConfig = await readRpcConfig(pastelConfigFilePath)
+    sendEventToRenderer('setRpcConfig', {
+      rpcConfig,
+    })
     redirectDeepLinkingUrl()
   } catch (error) {
     sendEventToRenderer('appLoadingFailed', { error: error.message })
@@ -101,6 +124,20 @@ const setupEventListeners = () => {
     webContents.on('new-window', async (eventInner, navigationUrl) => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
+    })
+  })
+
+  handleMainTask('showSaveTransactionsAsCSVDialog', async () => {
+    return await dialog.showSaveDialog({
+      title: 'Save Transactions As CSV',
+      defaultPath: 'pastelwallet_transactions.csv',
+      filters: [
+        {
+          name: 'CSV File',
+          extensions: ['csv'],
+        },
+      ],
+      properties: ['showOverwriteConfirmation'],
     })
   })
 }

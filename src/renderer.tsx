@@ -42,7 +42,7 @@ import Utilities from './features/utilities'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 import 'common/utils/initDayjs'
-import { sendEventToMain } from './features/app/events'
+import { sendEventToMain } from './features/app/rendererEvents'
 import { rendererSetup } from './features/app/rendererSetup'
 
 rendererSetup()

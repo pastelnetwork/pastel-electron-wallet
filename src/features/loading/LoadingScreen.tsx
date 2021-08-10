@@ -1,14 +1,15 @@
 import React from 'react'
 import styles from './LoadingScreen.module.css'
-import { debugLogPath } from 'common/utils/app'
 import {
   retryInitializingApp,
   useLoadingErrorMessage,
   useLoadingMessage,
 } from './LoadingScreen.service'
+import { useAppSelector } from '../../redux/hooks'
 
 export default function LoadingScreen(): JSX.Element | null {
   const error = useLoadingErrorMessage()
+  const debugLogPath = useAppSelector(state => state.appInfo.debugLogPath)
 
   return (
     <div className='w-full h-full'>

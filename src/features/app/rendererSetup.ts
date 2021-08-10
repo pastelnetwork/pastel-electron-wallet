@@ -1,16 +1,18 @@
 import store from '../../redux/store'
 import { fetchPastelPrice } from '../pastelPrice'
 import PastelDB from '../pastelDB/database'
-import { isPackaged } from '../../common/utils/app'
 import log from 'electron-log'
-import { onRendererEvent, sendEventToMain } from './events'
+import { onRendererEvent, sendEventToMain } from './rendererEvents'
 import { getRpcConfig, setRpcConfig } from '../rpcConfig'
 import RPC from '../../legacy/rpc'
-import { setPastelInfo } from '../serveStatic'
+import {
+  setPastelInfo,
+  setGetInfoError,
+  setIsPackagedAndPaths,
+} from './AppInfoSlice'
 import { PastelDBThread } from '../pastelDB'
 import history from '../../common/utils/history'
 import * as ROUTES from '../../common/utils/constants/routes'
-import { setGetInfoError } from '../serveStatic/AppInfoSlice'
 import { ignorePromiseError, retryPromise } from '../../common/utils/promises'
 
 export const rendererSetup = (): void => {
@@ -19,19 +21,23 @@ export const rendererSetup = (): void => {
   fetchPastelPrice()
   setInterval(fetchPastelPrice, oneHour)
 
-  PastelDB.init()
-
-  if (isPackaged) {
-    log.transports.console.level = false
-  }
+  onRendererEvent('setAppInfo', info => {
+    store.dispatch(setIsPackagedAndPaths(info))
+    PastelDB.init()
+  })
 
   onRendererEvent('setRpcConfig', async ({ rpcConfig }) => {
     setRpcConfig(rpcConfig)
 
+    const { isPackaged } = store.getState().appInfo
+    if (isPackaged) {
+      log.transports.console.level = false
+    }
+
     await retryPromise(
       async () => {
         const info = await RPC.getInfoObject(rpcConfig)
-        store.dispatch(setPastelInfo({ ...info }))
+        store.dispatch(setPastelInfo({ info: { ...info } }))
       },
       {
         attempts: 10,

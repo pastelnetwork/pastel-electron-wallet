@@ -1,3 +1,4 @@
+import { mockedStore } from '../../../common/utils/mockStore'
 import fs from 'fs'
 import { loadSentTxns } from '../sentTxStore'
 
@@ -49,6 +50,10 @@ describe('api/pastel-rpc/sentTxStore', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     jest.clearAllMocks()
+
+    mockedStore.getState = jest.fn(() => ({
+      appInfo: { sentTxStorePath: 'path' },
+    }))
   })
 
   test('read senttxstore.dat file', async () => {

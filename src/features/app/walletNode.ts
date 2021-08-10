@@ -1,13 +1,7 @@
 import { spawnProcess } from '../../common/utils/process'
-import { getBinPath } from '../../common/utils/app'
-import { sendEventToRenderer } from './events'
+import { pastelUtilityBinPath } from './paths'
+import { sendEventToRenderer } from './mainEvents'
 import log from 'electron-log'
-
-const binPath = getBinPath({
-  linux: 'pastel-utility-linux-amd64',
-  darwin: 'pastel-utility-darwin-amd64',
-  windows: 'pastel-utility-windows-amd64.exe',
-})
 
 export const startWalletNode = async (): Promise<void> => {
   try {
@@ -19,21 +13,25 @@ export const startWalletNode = async (): Promise<void> => {
 }
 
 export const stopWalletNode = async (): Promise<void> => {
-  await spawnProcess(binPath, ['stop', 'walletnode'], {
+  await spawnProcess(pastelUtilityBinPath, ['stop', 'walletnode'], {
     onStdoutLine: handleProcessLogging,
   })
 }
 
 const startProcess = async () => {
-  await spawnProcess(binPath, ['start', 'walletnode', '--cf'], {
+  await spawnProcess(pastelUtilityBinPath, ['start', 'walletnode', '--cf'], {
     onStdoutLine: handleProcessLogging,
   })
 }
 
 const installProcess = async () => {
-  await spawnProcess(binPath, ['install', 'walletnode', '--force'], {
-    onStdoutLine: handleProcessLogging,
-  })
+  await spawnProcess(
+    pastelUtilityBinPath,
+    ['install', 'walletnode', '--force'],
+    {
+      onStdoutLine: handleProcessLogging,
+    },
+  )
 }
 
 const filterLogKeywords = [

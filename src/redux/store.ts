@@ -10,7 +10,7 @@ import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEdit
 import { squooshToolModalReducer } from '../features/squooshTool'
 import { updateToastReducer } from '../features/updateToast'
 import { glitchImageModalReducer } from '../features/glitchImage'
-import { appInfoReducer } from '../features/serveStatic'
+import { appInfoReducer } from '../features/app/AppInfoSlice'
 
 const store = configureStore({
   reducer: {

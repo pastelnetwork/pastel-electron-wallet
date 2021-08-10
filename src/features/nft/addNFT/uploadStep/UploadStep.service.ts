@@ -3,7 +3,7 @@ import { TAddNFTState } from '../AddNFT.state'
 import { TImageFile } from './UploadStep'
 import { OptimizationStatus } from '../imageOptimization/imageOptimization.state'
 import { toast } from 'react-toastify'
-import { invokeMainTask } from '../../../app/events'
+import { invokeMainTask } from '../../../app/rendererEvents'
 
 export const useSubmit = (
   state: TAddNFTState,

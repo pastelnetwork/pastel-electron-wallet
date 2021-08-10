@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { sendEventToMain, useRendererEvent } from '../app/events'
-import { useGetInfoError } from '../serveStatic/AppInfoSlice'
+import { sendEventToMain, useRendererEvent } from '../app/rendererEvents'
+import { useGetInfoError } from '../app/AppInfoSlice'
 
 export const useLoadingErrorMessage = (): string | undefined => {
   const [error, setError] = useState<string>()

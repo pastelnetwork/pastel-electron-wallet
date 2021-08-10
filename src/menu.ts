@@ -1,7 +1,7 @@
 /* eslint-disable */
 
-import { app, Menu, shell, BrowserWindow } from 'electron'
-import { sendEventToRenderer } from './features/app/events'
+import { app, Menu, shell } from 'electron'
+import { sendEventToRenderer } from './features/app/mainEvents'
 export default class MenuBuilder {
   constructor(public mainWindow: any) {}
 

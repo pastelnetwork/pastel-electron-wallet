@@ -1,8 +1,8 @@
 import { app, protocol } from 'electron'
 
 import pkg from '../../../package.json'
-import { browserWindow } from '../../common/utils/app'
-import { sendEventToRenderer } from '../app/events'
+import { browserWindow } from '../app/window'
+import { sendEventToRenderer } from '../app/mainEvents'
 
 // Deep linked url
 let deepLinkingUrl: string[] | string | undefined

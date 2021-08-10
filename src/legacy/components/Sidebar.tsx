@@ -6,7 +6,6 @@ import dateformat from 'dateformat'
 import Modal from 'react-modal'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { ipcRenderer, remote } from 'electron'
 import TextareaAutosize from 'react-textarea-autosize'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'
@@ -18,7 +17,7 @@ import Logo from '../assets/img/pastel-logo.png'
 import { Info, Transaction } from './AppState'
 import Utils from '../utils/utils'
 import { parsePastelURI, PastelURITarget } from '../utils/uris'
-import { onRendererEvent } from '../../features/app/events'
+import { invokeMainTask, onRendererEvent } from 'features/app/rendererEvents'
 
 const ExportPrivKeyModal = ({
   modalIsOpen,
@@ -356,17 +355,10 @@ class Sidebar extends PureComponent<any, any> {
     }) // Export All Transactions
 
     onRendererEvent('exportalltx', async () => {
-      const save = await remote.dialog.showSaveDialog({
-        title: 'Save Transactions As CSV',
-        defaultPath: 'pastelwallet_transactions.csv',
-        filters: [
-          {
-            name: 'CSV File',
-            extensions: ['csv'],
-          },
-        ],
-        properties: ['showOverwriteConfirmation'],
-      })
+      const save = await invokeMainTask(
+        'showSaveTransactionsAsCSVDialog',
+        undefined,
+      )
 
       if (save.filePath) {
         // Construct a CSV

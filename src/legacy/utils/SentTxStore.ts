@@ -2,12 +2,21 @@
 
 import fs from 'fs'
 import { Transaction, TxDetail } from '../components/AppState'
-import { sentTxStorePath } from '../../common/utils/app'
+import store from '../../redux/store'
+
 export default class SentTxStore {
+  static locateSentTxStore() {
+    const path = store.getState().appInfo.sentTxStorePath
+    if (!path) {
+      throw new Error(`Can't get file path of sent tx store`)
+    }
+    return path
+  }
+
   static async loadSentTxns() {
     try {
       const sentTx = JSON.parse(
-        (await fs.promises.readFile(sentTxStorePath)) as any,
+        (await fs.promises.readFile(SentTxStore.locateSentTxStore())) as any,
       )
       return sentTx.map((s: any) => {
         const transction: any = new Transaction()

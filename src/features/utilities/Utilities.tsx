@@ -12,7 +12,7 @@ import AboutModal, { openAboutModal } from '../about'
 import SquooshToolModal, { openSquooshToolModal } from '../squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../glitchImage'
 import { openUpdateToast } from '../updateToast'
-import { onRendererEvent } from '../app/events'
+import { onRendererEvent } from '../app/rendererEvents'
 
 export default function Utilities(): JSX.Element {
   const dispatch = useAppDispatch()
