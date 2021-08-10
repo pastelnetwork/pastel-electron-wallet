@@ -6,7 +6,7 @@ import log from 'electron-log'
 const binPath = getBinPath({
   linux: 'pastel-utility-linux-amd64',
   darwin: 'pastel-utility-darwin-amd64',
-  windows: 'pastel-utility-windows-amd64',
+  windows: 'pastel-utility-windows-amd64.exe',
 })
 
 export const startWalletNode = async (): Promise<void> => {

@@ -4,7 +4,10 @@ import path from 'path'
 import os from 'os'
 
 const anyApp = app || remote.app
-const platform = os.platform()
+let platform = os.platform() as string
+if (platform === 'win32') {
+  platform = 'windows'
+}
 
 export const isPackaged = anyApp.isPackaged
 
