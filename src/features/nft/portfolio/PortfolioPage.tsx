@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 
 import { useAppSelector } from 'redux/hooks'
 import { TNFT } from '../Nft.types'
-import Breadcrumbs from './Breadcrumbs'
+import Breadcrumbs from 'common/components/Breadcrumbs'
 import Header from './header/Header'
 import Image from './image/Image'
 import Info from './info/Info'
@@ -13,8 +13,8 @@ import nftImage from 'common/assets/images/mock/nft-big-image.png'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 
 const breadcrumbs = [
-  { title: 'My NFT Portfolio', link: '#' },
-  { title: '“Super Nfty Floating Head”' },
+  { label: 'My NFT Portfolio', route: '#' },
+  { label: '“Super Nfty Floating Head”' },
 ]
 
 export default function PortfolioPage(): JSX.Element {
@@ -39,11 +39,11 @@ export default function PortfolioPage(): JSX.Element {
     bids: 12900,
     author: {
       avatar: avatar1,
-      name: 'Banksy86',
+      name: 'banksy86',
     },
     copies: 1,
     royalty: '10% Perpetual Royalty',
-    owner: 'Banksy86',
+    owner: 'banksy86',
     collection: 'Angel in the sky',
     category: 'Illustration',
     tags: ['Add your tag'],
@@ -55,7 +55,7 @@ export default function PortfolioPage(): JSX.Element {
 
   return (
     <>
-      <Breadcrumbs items={breadcrumbs} />
+      <Breadcrumbs breadcrumbs={breadcrumbs} className='items-center' />
       <Header nft={nft} />
       <div className='page-container py-30px space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:gap-10'>
         <div>

@@ -22,7 +22,7 @@ import {
 
 const date = dayjs('2021-04-04')
 
-const walletBalance = 32000
+const walletBalance = 320000
 
 enum Tabs {
   Creators,
@@ -57,7 +57,21 @@ let notifications: Array<TNotification> = [
     read: true,
   },
 ]
-notifications = [...notifications, ...notifications, ...notifications]
+notifications = [
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+]
+
+const mockNFTImagesList = [
+  'https://lh3.googleusercontent.com/Y7jfdFlKEjQ2PfuGb9vFAgzvXqyynJjx2RbetMBfrHDiRg8cSPhWOf9JQOkkZzTkA86rkHpeNmfQoT5zLhqYlWj3izIfgxMWqOk3Oz4=w526',
+  'https://lh3.googleusercontent.com/7QfQI8BYm_8_VMyCsBQo8vl7m4YwcAS66IpsGVtzy-hLp0Zej0vYca4eospy7HDVUbxJS-Hh2e4K_Mi91fpTUqaPT1I5-UspbtDKEw=w526',
+  'https://lh3.googleusercontent.com/bXQB1peyRGOkWqjucQg_2Q-j90EoNv_aFq0raZRo-ooZ012dwrfa-J10XDKnVI57at1Py92LwRydAieb3PuIlvej3SDDHUox6v0y=w461',
+]
 
 export default function DashboardPage(): JSX.Element {
   const {
@@ -72,18 +86,15 @@ export default function DashboardPage(): JSX.Element {
     const randomCards: TNFTCard[] = []
     Array.from({ length: 3 }).map((_, index) => {
       randomCards.push({
-        imageSrc: mockDataImagesList[index].url,
+        imageSrc: mockNFTImagesList[index],
         likes: 23,
         title: mockDataImagesList[index].title,
         liked: false,
         author: mockNamesList[index],
         avatarSrc: mockAvatarImagesList[index],
-        onSale: false,
         price: '222K',
         currencyName,
         percentage: Math.floor(Math.random() * 100),
-        variant: 'portfolio',
-        isLastBid: [true, false][Math.floor(Math.random() * 2)],
         hideLikeButton: true,
         hideFollow: true,
         hideUnFollow: index % 3 === 0 ? false : true,
@@ -91,6 +102,13 @@ export default function DashboardPage(): JSX.Element {
         nsfw: { porn: 0, hentai: 0 },
         copies: `${index + 1} of 3`,
         diamond: `${Math.floor(Math.random() * 100)}%`,
+        hideGreenNF: index !== 0,
+        hidePerpetualRoyalty: index !== 0,
+        hideCertifiedRare: true,
+        hideDirectFromArtist: index !== 1,
+        onSalePrice: Math.floor(Math.random() * 2000),
+        onSale: index > 0,
+        isLastBid: index === 1,
       })
     })
     setCards(randomCards)
@@ -148,13 +166,13 @@ export default function DashboardPage(): JSX.Element {
   ]
 
   const transactions: TTransactionItemProps[] = [
-    { type: 'in', amount: 320000, date, currencyName },
-    { type: 'out', amount: 123000, date, currencyName },
-    { type: 'in', amount: 320000, date, currencyName },
-    { type: 'out', amount: 123000, date, currencyName },
-    { type: 'in', amount: 320000, date, currencyName },
-    { type: 'out', amount: 123000, date, currencyName },
-    { type: 'in', amount: 320000, date, currencyName },
+    { type: 'in', amount: 45000, date: dayjs('2021-08-10'), currencyName },
+    { type: 'out', amount: 12300, date: dayjs('2021-08-10'), currencyName },
+    { type: 'in', amount: 67000, date: dayjs('2021-08-08'), currencyName },
+    { type: 'out', amount: 23000, date: dayjs('2021-08-06'), currencyName },
+    { type: 'in', amount: 110000, date: dayjs('2021-08-05'), currencyName },
+    { type: 'out', amount: 46000, date: dayjs('2021-08-04'), currencyName },
+    { type: 'in', amount: 20000, date: dayjs('2021-08-04'), currencyName },
   ]
 
   return (
@@ -267,7 +285,7 @@ export default function DashboardPage(): JSX.Element {
             <div
               className={
                 cards.length > 0
-                  ? 'flex flex-col items-center space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3'
+                  ? 'flex flex-col items-center space-y-30px md:space-y-0 md:grid grid-cols-1 md:grid-cols-2 md:gap-5 xl:grid-cols-3'
                   : 'flex justify-center'
               }
             >
@@ -296,7 +314,7 @@ export default function DashboardPage(): JSX.Element {
           <div
             className={
               notifications.length > 0
-                ? 'pl-8 pr-3.5 mr-18px overflow-y-auto h-full md:h-[258px]'
+                ? 'pl-8 pr-3.5 mr-18px overflow-y-auto h-full max-h-[1360px] md:max-h-[970px] xl:max-h-[460px]'
                 : 'flex justify-center'
             }
           >

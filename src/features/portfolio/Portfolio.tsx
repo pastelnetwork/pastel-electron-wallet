@@ -323,7 +323,7 @@ export default function Portfolio(): JSX.Element {
               <div className='flex h-full items-center justify-end max-w-278px'>
                 <p className='text-h6 pr-3 text-gray-2d'>Price:</p>
                 <Slider
-                  min={100}
+                  min={0}
                   max={999}
                   hideLabel
                   values={range}
