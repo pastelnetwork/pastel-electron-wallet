@@ -129,11 +129,6 @@ const createWindow = async () => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
-
-    w.webContents.send('app-info', {
-      isPackaged: app.isPackaged,
-      locatePastelConfDir: getLocatePastelConfDir(),
-    })
   })
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
