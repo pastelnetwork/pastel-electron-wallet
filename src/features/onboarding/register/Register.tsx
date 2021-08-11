@@ -39,7 +39,7 @@ const STEPS = [
     iconActive: Download,
     label: 'Backup access method',
     stepIconLabel: 'Backup access method step',
-    tooltipText: 'Backup access tooltip',
+    tooltipText: 'Backup access method',
     tooltipWidth: 150,
   },
   {
@@ -47,7 +47,7 @@ const STEPS = [
     iconActive: CreditCard,
     label: 'Payment method',
     stepIconLabel: 'Payment method step',
-    tooltipText: 'Payment method tooltip',
+    tooltipText: 'Payment method',
     tooltipWidth: 150,
   },
   {
@@ -55,7 +55,7 @@ const STEPS = [
     iconActive: Refresh,
     label: 'Registration fee',
     stepIconLabel: 'Registration fee step',
-    tooltipText: 'Registration fee tooltip',
+    tooltipText: 'Registration fee',
     tooltipWidth: 150,
   },
 ]
