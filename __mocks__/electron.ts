@@ -1,21 +1,18 @@
 import { BrowserWindow } from './browser-window'
-import { EventEmitter } from 'events'
-
-class IPCRendererMock extends EventEmitter {
-  public send = jest.fn()
-  public invoke = jest.fn()
-  public on = jest.fn()
-
-  constructor() {
-    super()
-  }
-}
-const ipcRenderer = new IPCRendererMock()
+import {
+  whenReadyPromiseRef,
+  ipcRenderer,
+  ipcMain,
+} from '../src/common/utils/test-utils'
 
 const app = {
   getPath: jest.fn(name => `app-path/${name}`),
   getName: jest.fn(),
   getVersion: jest.fn(),
+  getAppPath: jest.fn(() => 'app-path'),
+  whenReady: jest.fn(() => whenReadyPromiseRef.current),
+  on: jest.fn(),
+  quit: jest.fn(),
 }
 
-export { BrowserWindow, ipcRenderer, app }
+export { BrowserWindow, ipcRenderer, ipcMain, app }
