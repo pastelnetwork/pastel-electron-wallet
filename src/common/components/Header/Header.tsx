@@ -41,9 +41,9 @@ const MenuItem = ({
       )}
     >
       {location.pathname === to ? (
-        <div className='font-extrabold text-gray-33 mx-auto'>{children}</div>
+        <div className='font-extrabold text-gray-33'>{children}</div>
       ) : (
-        <div className='font-medium text-gray-71 mx-auto'>{children}</div>
+        <div className='font-medium text-gray-71'>{children}</div>
       )}
     </NavLink>
   )
@@ -62,32 +62,42 @@ const Header = (): JSX.Element | null => {
     <div className='h-66px'>
       <div className='fixed w-full z-50'>
         <AddNFT open={openAddNFT} onClose={toggleAddNFT} />
-        <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-15 xl:text-h5 border-b border-gray-ed text-gray-71'>
+        <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-h5 border-b border-gray-ed text-gray-71'>
           <div className='flex items-center h-full'>
             <Link to={ROUTES.DASHBOARD} className='w-9 h-9'>
               <QuestionLogo />
             </Link>
-            <div className='ml-4 1200px:ml-8 xl:ml-9 flex justify-between w-[340px]'>
-              <MenuItem
-                classes='text-center w-[74px]'
-                exact
-                to={ROUTES.DASHBOARD}
-              >
-                Dashboard
-              </MenuItem>
-              <MenuItem classes='text-center w-[32px]' to={ROUTES.MARKET}>
-                NFTs
-              </MenuItem>
-              <MenuItem classes='text-center w-[62px]' to={ROUTES.MEMBERS}>
-                Members
-              </MenuItem>
-              <MenuItem classes='text-center w-[42px]' to={ROUTES.WALLET}>
-                Wallet
-              </MenuItem>
-              <MenuItem classes='text-center w-[58px]' to={ROUTES.PORTFOLIO}>
-                Portfolio
-              </MenuItem>
-            </div>
+            <MenuItem
+              classes='ml-4 1200px:ml-8 xl:ml-9 lg:w-[74px]'
+              exact
+              to={ROUTES.DASHBOARD}
+            >
+              Dashboard
+            </MenuItem>
+            <MenuItem
+              classes='ml-4 1200px:ml-7 xl:ml-9 xl:w-[32px]'
+              to={ROUTES.MARKET}
+            >
+              NFTs
+            </MenuItem>
+            <MenuItem
+              classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[62px]'
+              to={ROUTES.MEMBERS}
+            >
+              Members
+            </MenuItem>
+            <MenuItem
+              classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[42px]'
+              to={ROUTES.WALLET}
+            >
+              Wallet
+            </MenuItem>
+            <MenuItem
+              classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-[58px]'
+              to={ROUTES.PORTFOLIO}
+            >
+              Portfolio
+            </MenuItem>
             <button
               className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
               onClick={toggleAddNFT}
