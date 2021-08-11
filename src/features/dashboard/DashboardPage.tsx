@@ -57,7 +57,15 @@ let notifications: Array<TNotification> = [
     read: true,
   },
 ]
-notifications = [...notifications, ...notifications, ...notifications]
+notifications = [
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+  ...notifications,
+]
 
 const mockNFTImagesList = [
   'https://lh3.googleusercontent.com/Y7jfdFlKEjQ2PfuGb9vFAgzvXqyynJjx2RbetMBfrHDiRg8cSPhWOf9JQOkkZzTkA86rkHpeNmfQoT5zLhqYlWj3izIfgxMWqOk3Oz4=w526',
@@ -98,7 +106,7 @@ export default function DashboardPage(): JSX.Element {
         hidePerpetualRoyalty: index !== 0,
         hideCertifiedRare: true,
         hideDirectFromArtist: index !== 1,
-        onSalePrice: Math.floor(Math.random() * 20000),
+        onSalePrice: Math.floor(Math.random() * 2000),
         onSale: index > 0,
         isLastBid: index === 1,
       })
@@ -277,7 +285,7 @@ export default function DashboardPage(): JSX.Element {
             <div
               className={
                 cards.length > 0
-                  ? 'flex flex-col items-center space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3'
+                  ? 'flex flex-col items-center space-y-30px md:space-y-0 md:grid grid-cols-1 md:grid-cols-2 md:gap-5 xl:grid-cols-3'
                   : 'flex justify-center'
               }
             >
@@ -306,7 +314,7 @@ export default function DashboardPage(): JSX.Element {
           <div
             className={
               notifications.length > 0
-                ? 'pl-8 pr-3.5 mr-18px overflow-y-auto h-full md:h-[258px]'
+                ? 'pl-8 pr-3.5 mr-18px overflow-y-auto h-full max-h-[1360px] md:max-h-[970px] xl:max-h-[460px]'
                 : 'flex justify-center'
             }
           >
