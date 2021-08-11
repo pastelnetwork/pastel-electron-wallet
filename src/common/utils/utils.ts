@@ -1,3 +1,6 @@
+import { useLocation } from 'react-router-dom'
+import * as ROUTES from 'common/utils/constants/routes'
+
 export default class PastelUtils {
   static removeAllBreakChar(value: string): string {
     return value.replace(/\n/g, '').replace(/\s/g, '')
@@ -28,5 +31,11 @@ export default class PastelUtils {
       return str.slice(0, frontLen) + truncateStr
     }
     return str.slice(0, frontLen) + truncateStr + str.slice(strLen - backLen)
+  }
+
+  static noHeader(): boolean {
+    const location = useLocation()
+
+    return location.pathname === ROUTES.CHAT
   }
 }
