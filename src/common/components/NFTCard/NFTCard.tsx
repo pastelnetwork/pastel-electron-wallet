@@ -42,6 +42,10 @@ export type TNFTCompactCard = {
   diamond?: string
   bidPercentage?: string
   nsfw: { porn: number; hentai: number }
+  hideGreenNF?: boolean
+  hidePerpetualRoyalty?: boolean
+  hideCertifiedRare?: boolean
+  hideDirectFromArtist?: boolean
 }
 
 export type TNFTCard = Override<
@@ -73,6 +77,10 @@ const NFTCard = ({
   bidPercentage = '+100%',
   detailUrl = '#',
   nsfw,
+  hideGreenNF,
+  hidePerpetualRoyalty,
+  hideCertifiedRare,
+  hideDirectFromArtist,
   ...props
 }: TNFTCompactCard | TNFTCard): JSX.Element => {
   const fullCardProps = 'author' in props && (props as TNFTCard)
@@ -269,62 +277,70 @@ const NFTCard = ({
             {diamond}
           </div>
           <div className='flex items-center text-sm'>
-            <Tooltip
-              type='top'
-              content={getTooltip(
-                'GreenNF',
-                '2% of sale proceeds go to plant trees',
-              )}
-              width={110}
-            >
-              <FirTreeInHexagon
-                size={20}
-                className='text-green-45 cursor-pointer'
-              />
-            </Tooltip>
-            <Tooltip
-              type='top'
-              content={getTooltip(
-                'Perpetual Royalty',
-                'N% of all resale proceeds are paid to the creator forever',
-              )}
-              width={120}
-            >
-              <CrownInHexagon
-                size={20}
-                className='text-orange-ff cursor-pointer'
-              />
-            </Tooltip>
-            <Tooltip
-              type='top'
-              content={getTooltip(
-                'Certified Rare on Pastel',
-                'NFT is sufficiently different from all previously registered NFTs on Pastel at the time of registration',
-              )}
-              width={150}
-            >
-              <DiamondInHexagon
-                size={20}
-                className='text-blue-79 cursor-pointer'
-                firstStopClassName='text-blue-79'
-                secondStopClassName='text-blue-68'
-              />
-            </Tooltip>
-            <Tooltip
-              type='top'
-              content={getTooltip(
-                'Direct from Artist',
-                'the NFT copy is being sold by the creator, rather than another buyer of the NFT who is reselling it',
-              )}
-              width={140}
-            >
-              <ManInHexagon
-                size={20}
-                className='text-green-16 cursor-pointer'
-                firstStopClassName='text-green-16'
-                secondStopClassName='text-green-23'
-              />
-            </Tooltip>
+            {!hideGreenNF ? (
+              <Tooltip
+                type='top'
+                content={getTooltip(
+                  'GreenNF',
+                  '2% of sale proceeds go to plant trees',
+                )}
+                width={110}
+              >
+                <FirTreeInHexagon
+                  size={20}
+                  className='text-green-45 cursor-pointer'
+                />
+              </Tooltip>
+            ) : null}
+            {!hidePerpetualRoyalty ? (
+              <Tooltip
+                type='top'
+                content={getTooltip(
+                  'Perpetual Royalty',
+                  'N% of all resale proceeds are paid to the creator forever',
+                )}
+                width={120}
+              >
+                <CrownInHexagon
+                  size={20}
+                  className='text-orange-ff cursor-pointer'
+                />
+              </Tooltip>
+            ) : null}
+            {!hideCertifiedRare ? (
+              <Tooltip
+                type='top'
+                content={getTooltip(
+                  'Certified Rare on Pastel',
+                  'NFT is sufficiently different from all previously registered NFTs on Pastel at the time of registration',
+                )}
+                width={150}
+              >
+                <DiamondInHexagon
+                  size={20}
+                  className='text-blue-79 cursor-pointer'
+                  firstStopClassName='text-blue-79'
+                  secondStopClassName='text-blue-68'
+                />
+              </Tooltip>
+            ) : null}
+            {!hideDirectFromArtist ? (
+              <Tooltip
+                type='top'
+                content={getTooltip(
+                  'Direct from Artist',
+                  'the NFT copy is being sold by the creator, rather than another buyer of the NFT who is reselling it',
+                )}
+                width={140}
+              >
+                <ManInHexagon
+                  size={20}
+                  className='text-green-16 cursor-pointer'
+                  firstStopClassName='text-green-16'
+                  secondStopClassName='text-green-23'
+                />
+              </Tooltip>
+            ) : null}
           </div>
         </div>
       </div>
