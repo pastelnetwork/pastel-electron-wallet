@@ -9,14 +9,12 @@ import dayjs, { Dayjs } from 'dayjs'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import { useAppSelector } from 'redux/hooks'
-import smallImage from '../../common/assets/images/mock/small-image.png'
-import avatar from '../../common/assets/images/avatar-placeholder.png'
-import image from '../../common/assets/images/nft-card-placeholder.png'
 import { formatNumber } from '../../common/utils/format'
 import Radio from 'common/components/Radio'
 import NotificationModal from './dashboardModals/notificationModal'
 import Link from 'common/components/Link'
 import notificationData from './dashboardModals/notificationModal.data'
+import { mockDataImagesList, mockAvatarImagesList } from 'features/members/data'
 
 const date = dayjs('2021-04-04')
 
@@ -69,12 +67,12 @@ export default function DashboardPage(): JSX.Element {
     const randomCards: TNFTCard[] = []
     Array.from({ length: 3 }).map((_, index) => {
       randomCards.push({
-        imageSrc: image,
+        imageSrc: mockDataImagesList[index],
         likes: 23,
         title: 'Cosmic Perspective',
         liked: false,
         author: 'zndrson',
-        avatarSrc: avatar,
+        avatarSrc: mockAvatarImagesList[index],
         onSale: false,
         price: '222K',
         currencyName,
@@ -93,7 +91,7 @@ export default function DashboardPage(): JSX.Element {
 
   const followers: Array<TPortfolioItemProps> = [
     {
-      image: smallImage,
+      image: mockAvatarImagesList[0],
       title: 'Cosmic Perspective',
       author: '@zndrson',
       price: 5000,
@@ -101,7 +99,7 @@ export default function DashboardPage(): JSX.Element {
       type: 'progress',
     },
     {
-      image: smallImage,
+      image: mockAvatarImagesList[1],
       title: 'Cosmic Perspective',
       author: '@zndrson',
       price: 5000,
@@ -109,7 +107,7 @@ export default function DashboardPage(): JSX.Element {
       type: 'progress',
     },
     {
-      image: smallImage,
+      image: mockAvatarImagesList[2],
       title: 'Cosmic Perspective',
       author: '@zndrson',
       price: 5000,
@@ -117,7 +115,7 @@ export default function DashboardPage(): JSX.Element {
       type: 'review',
     },
     {
-      image: smallImage,
+      image: mockAvatarImagesList[3],
       title: 'Cosmic Perspective',
       author: '@zndrson',
       price: 5000,
@@ -125,7 +123,15 @@ export default function DashboardPage(): JSX.Element {
       type: 'sale',
     },
     {
-      image: smallImage,
+      image: mockAvatarImagesList[4],
+      title: 'Cosmic Perspective',
+      author: '@zndrson',
+      price: 5000,
+      currencyName,
+      type: 'sale',
+    },
+    {
+      image: mockAvatarImagesList[5],
       title: 'Cosmic Perspective',
       author: '@zndrson',
       price: 5000,

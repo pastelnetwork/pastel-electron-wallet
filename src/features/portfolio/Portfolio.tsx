@@ -17,6 +17,8 @@ import portfolio2 from 'common/assets/images/mock/portfolio-2.jpg'
 import portfolio3 from 'common/assets/images/mock/portfolio-3.jpg'
 import portfolio4 from 'common/assets/images/mock/portfolio-4.jpg'
 
+import { mockDataImagesList, mockAvatarImagesList } from 'features/members/data'
+
 const portfolios = [portfolio1, portfolio2, portfolio3, portfolio4]
 
 const mockOptions: TOption[] = [
@@ -70,12 +72,10 @@ export default function Portfolio(): JSX.Element {
 
   const mockupPortfolio: TNFTCard[] = []
   Array.from({ length: 26 }).map((_, index) => {
-    const randomPortfolioIndex = Math.floor(Math.random() * 4)
-
     mockupPortfolio.push({
       author: 'zndrson',
-      avatarSrc: avatar,
-      imageSrc: portfolios[randomPortfolioIndex],
+      avatarSrc: mockAvatarImagesList[index],
+      imageSrc: mockDataImagesList[index],
       likes: 23,
       price: '222K',
       followers: 10,

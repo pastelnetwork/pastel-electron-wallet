@@ -107,7 +107,10 @@ const NFTCard = ({
       {fullCardProps && (
         <div className='w-full px-14px pb-2 md:pb-3 md:px-3 flex justify-between'>
           <div className='flex items-center overflow-hidden'>
-            <img src={fullCardProps.avatarSrc} className={avatarClassName} />
+            <img
+              src={fullCardProps.avatarSrc}
+              className={cn(avatarClassName, 'rounded-full')}
+            />
             {variant === 'portfolio' ? (
               <h4 className={cn('pl-2 leading-6 truncate', authorClassName)}>
                 <div

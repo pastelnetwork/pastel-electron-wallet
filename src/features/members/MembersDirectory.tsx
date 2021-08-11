@@ -8,12 +8,9 @@ import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 import PageHeader from '../../common/components/PageHeader'
 import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
-import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
-import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
 import styles from './MembersDirectory.module.css'
 import Scrollbar from '../../common/components/Scrollbar'
-
-const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
+import { mockDataImagesList, mockAvatarImagesList } from './data'
 
 const mockOptions: TOption[] = [
   { value: 'All', label: 'All' },
@@ -36,7 +33,7 @@ const MembersDirectory = (): JSX.Element => {
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[0],
         followers: 161,
         name: 'Sally Fadel',
         isVerified: false,
@@ -44,12 +41,12 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(0, 10),
     },
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[1],
         followers: 326,
         name: 'Anyia Harber',
         isVerified: true,
@@ -57,12 +54,12 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(10, 20),
     },
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[2],
         followers: 124,
         name: 'Edwardo Bea',
         isVerified: false,
@@ -70,12 +67,12 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(20, 30),
     },
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[3],
         followers: 588,
         name: 'Reymundo',
         isVerified: true,
@@ -83,7 +80,7 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(30, 40),
     },
   ]
 
