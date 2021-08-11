@@ -17,24 +17,29 @@ import portfolio2 from 'common/assets/images/mock/portfolio-2.jpg'
 import portfolio3 from 'common/assets/images/mock/portfolio-3.jpg'
 import portfolio4 from 'common/assets/images/mock/portfolio-4.jpg'
 
+import {
+  mockDataImagesList,
+  mockAvatarImagesList,
+  mockNamesList,
+} from 'features/members/data'
+
 const portfolios = [portfolio1, portfolio2, portfolio3, portfolio4]
 
 const mockOptions: TOption[] = [
-  { value: 'option_1', label: 'Option 1' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
+  { value: 'Likes', label: 'Likes' },
+  { value: 'Categories', label: 'Categories' },
 ]
 
 const mockCategories: TOption[] = [
-  { value: 'AI', label: 'AI' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
+  { value: 'all', label: 'All' },
+  { value: 'illustration', label: 'Illustration' },
 ]
 
 const mockStatus: TOption[] = [
-  { value: 'Auctions', label: 'Auctions' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
+  { value: 'all', label: 'All' },
+  { value: 'auctions', label: 'Auctions' },
+  { value: 'makeAnOffers', label: 'Make an Offers' },
+  { value: 'fixedPrice', label: 'Fixed Price' },
 ]
 
 const mockTime: TOption[] = [
@@ -70,22 +75,23 @@ export default function Portfolio(): JSX.Element {
 
   const mockupPortfolio: TNFTCard[] = []
   Array.from({ length: 26 }).map((_, index) => {
-    const randomPortfolioIndex = Math.floor(Math.random() * 4)
-
     mockupPortfolio.push({
-      author: 'zndrson',
-      avatarSrc: avatar,
-      imageSrc: portfolios[randomPortfolioIndex],
+      author: mockNamesList[index],
+      avatarSrc: mockAvatarImagesList[index],
+      imageSrc: mockDataImagesList[index].url,
       likes: 23,
       price: '222K',
       followers: 10,
       currencyName,
-      title: 'Cosmic Perspective longname test',
+      title: mockDataImagesList[index].title,
       liked: true,
       onSale: index % 2 ? true : false,
       isLastBid: index % 3 ? true : false,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
+      copies: `${index + 1} of 26`,
+      diamond: `${Math.floor(Math.random() * 100)}%`,
+      onSalePrice: Math.floor(Math.random() * 20000),
     })
   })
 
@@ -278,7 +284,7 @@ export default function Portfolio(): JSX.Element {
   }, [selectedItem])
 
   const [range, setRange] = useState<[number, number]>([400, 700])
-  const formatValue = (value: number) => `${value}k`
+  const formatValue = (value: number) => `${value.toFixed(0)}k`
 
   return (
     <div className='flex flex-col w-full min-h-full'>

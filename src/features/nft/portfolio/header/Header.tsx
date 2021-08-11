@@ -19,7 +19,7 @@ type HeaderProps = {
 export default function Header({ nft }: HeaderProps): JSX.Element {
   const getTooltip = (description: string) => (
     <div className='px-2 py-6px'>
-      <p className='text-xs text-left leading-4 text-gray-a6 whitespace-normal'>
+      <p className='text-xs text-left font-normal leading-4 text-gray-a6 whitespace-normal'>
         {description}
       </p>
     </div>
@@ -57,17 +57,18 @@ export default function Header({ nft }: HeaderProps): JSX.Element {
         ref={titleRef}
         className={`py-2 text-gray-2d text-32px font-extrabold whitespace-nowrap flex items-center ${style.title}`}
       >
-        {formatToTitleCase(nft.title)}
+        <span className='mr-4 '>{formatToTitleCase(nft.title)}</span>
         <Tooltip
           type='top'
           content={getTooltip(
             'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
           )}
-          width={285}
+          width={295}
+          vPosPercent={110}
         >
           <FirTreeInHexagon
             size={30}
-            className='ml-4 flex-shrink-0 text-green-45 hover:cursor-pointer'
+            className='flex-shrink-0 text-green-45 hover:cursor-pointer'
           />
         </Tooltip>
       </div>

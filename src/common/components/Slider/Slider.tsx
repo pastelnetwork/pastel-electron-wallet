@@ -130,7 +130,9 @@ export default function Slider({
               className={cn('flex-between whitespace-nowrap', valuesClassName)}
             >
               <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
-                <div className={minMaxClassName}>{formatValue(min)}</div>
+                <div className={minMaxClassName}>
+                  {min === 0 ? min : formatValue(min)}
+                </div>
               </div>
               {'steps' in props &&
                 props.steps.slice(1, props.steps.length - 1).map(step => (

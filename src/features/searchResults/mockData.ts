@@ -5,7 +5,7 @@ import nftImage from '../../common/assets/images/nft-card-placeholder.png'
 import { TOption } from 'common/components/Select/Select'
 import { v4 as uuidv4 } from 'uuid'
 import { TMemberStripProps } from '../members/MemberStrip'
-import mockMemberImage from 'common/assets/images/member-image-placeholder.png'
+import { mockDataImagesList } from 'features/members/data'
 
 export const categoriesData = [
   { value: 'ALL', label: 'ALL' },
@@ -147,7 +147,9 @@ export const mockTimeRanges: TOption[] = [
   { value: 'range1', label: 'range1' },
 ]
 
-const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
+const stripMockImages = Array.from({ length: 10 }).map(
+  (_, i) => mockDataImagesList[i],
+)
 
 export const mockMemberStrips: TMemberStripProps[] = [
   {
