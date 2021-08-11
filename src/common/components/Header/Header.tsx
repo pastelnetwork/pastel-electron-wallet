@@ -41,9 +41,9 @@ const MenuItem = ({
       )}
     >
       {location.pathname === to ? (
-        <div className='font-extrabold text-gray-33'>{children}</div>
+        <div className='font-extrabold text-gray-33 mx-auto'>{children}</div>
       ) : (
-        <div className='font-medium text-gray-71'>{children}</div>
+        <div className='font-medium text-gray-71 mx-auto'>{children}</div>
       )}
     </NavLink>
   )
@@ -67,37 +67,27 @@ const Header = (): JSX.Element | null => {
             <Link to={ROUTES.DASHBOARD} className='w-9 h-9'>
               <QuestionLogo />
             </Link>
-            <MenuItem
-              classes='ml-4 1200px:ml-8 xl:ml-9 lg:w-20'
-              exact
-              to={ROUTES.DASHBOARD}
-            >
-              Dashboard
-            </MenuItem>
-            <MenuItem
-              classes='ml-4 1200px:ml-7 xl:ml-9 xl:w-37px'
-              to={ROUTES.MARKET}
-            >
-              NFTs
-            </MenuItem>
-            <MenuItem
-              classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-              to={ROUTES.MEMBERS}
-            >
-              Members
-            </MenuItem>
-            <MenuItem
-              classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-69px'
-              to={ROUTES.WALLET}
-            >
-              Wallet
-            </MenuItem>
-            <MenuItem
-              classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-63px'
-              to={ROUTES.PORTFOLIO}
-            >
-              Portfolio
-            </MenuItem>
+            <div className='ml-4 1200px:ml-8 xl:ml-9 flex justify-between w-[340px]'>
+              <MenuItem
+                classes='text-center w-[74px]'
+                exact
+                to={ROUTES.DASHBOARD}
+              >
+                Dashboard
+              </MenuItem>
+              <MenuItem classes='text-center w-[32px]' to={ROUTES.MARKET}>
+                NFTs
+              </MenuItem>
+              <MenuItem classes='text-center w-[62px]' to={ROUTES.MEMBERS}>
+                Members
+              </MenuItem>
+              <MenuItem classes='text-center w-[42px]' to={ROUTES.WALLET}>
+                Wallet
+              </MenuItem>
+              <MenuItem classes='text-center w-[58px]' to={ROUTES.PORTFOLIO}>
+                Portfolio
+              </MenuItem>
+            </div>
             <button
               className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
               onClick={toggleAddNFT}

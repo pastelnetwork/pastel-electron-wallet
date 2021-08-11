@@ -275,9 +275,8 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
       if (this.pasteld) {
-        const { history } = this.props
         const { rpcConfig } = this.state
-        history.push(routes.WALLET)
+
         while (!PastelDB.isValidDB()) {
           // wait if database is reading or writing status
           new Promise(resolve => setTimeout(resolve, 100))
