@@ -39,11 +39,11 @@ export default function PortfolioPage(): JSX.Element {
     bids: 12900,
     author: {
       avatar: avatar1,
-      name: 'Banksy86',
+      name: 'banksy86',
     },
     copies: 1,
     royalty: '10% Perpetual Royalty',
-    owner: 'Banksy86',
+    owner: 'banksy86',
     collection: 'Angel in the sky',
     category: 'Illustration',
     tags: ['Add your tag'],
