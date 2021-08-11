@@ -34,20 +34,21 @@ const NFTMarketFeed = (): JSX.Element => {
     isLastBid: false,
     detailUrl: ROUTES.PORTFOLIO_DETAIL,
     nsfw: { porn: 0, hentai: 0 },
+    onSalePrice: Math.floor(Math.random() * 20000),
   }
 
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)
 
   const mockCategories: TOption[] = [
-    { value: 'AI', label: 'AI' },
-    { value: 'option_2', label: 'Option 2' },
-    { value: 'option_3', label: 'Option 3' },
+    { value: 'all', label: 'All' },
+    { value: 'illustration', label: 'Illustration' },
   ]
 
   const mockStatus: TOption[] = [
-    { value: 'Auctions', label: 'Auctions' },
-    { value: 'option_2', label: 'Option 2' },
-    { value: 'option_3', label: 'Option 3' },
+    { value: 'all', label: 'All' },
+    { value: 'auctions', label: 'Auctions' },
+    { value: 'makeAnOffers', label: 'Make an Offers' },
+    { value: 'fixedPrice', label: 'Fixed Price' },
   ]
 
   const mockTime: TOption[] = [
@@ -113,7 +114,7 @@ const NFTMarketFeed = (): JSX.Element => {
   ]
 
   const [range, setRange] = useState<[number, number]>([500, 700])
-  const formatValue = (value: number) => `${value}k`
+  const formatValue = (value: number) => `${value.toFixed(0)}k`
 
   const data = [{ label: 'Feed' }, { label: 'Statistics' }]
 

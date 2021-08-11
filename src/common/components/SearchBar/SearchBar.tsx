@@ -204,8 +204,9 @@ const SearchBar = (): JSX.Element => {
                 <div className='px-6 pt-[13px] pb-[29px] h-[292px] overflow-y-auto'>
                   {search_results
                     .filter(item => item.name.includes(inputText))
-                    .map(item => (
+                    .map((item, index) => (
                       <ResultSearchRow
+                        key={index}
                         name={item.name}
                         image={item.img}
                         followers={item.followers}

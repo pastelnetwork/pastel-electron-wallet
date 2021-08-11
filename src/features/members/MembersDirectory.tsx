@@ -12,10 +12,24 @@ import styles from './MembersDirectory.module.css'
 import Scrollbar from '../../common/components/Scrollbar'
 import { mockDataImagesList, mockAvatarImagesList } from './data'
 
-const mockOptions: TOption[] = [
-  { value: 'All', label: 'All' },
-  { value: 'option_2', label: 'TOption 2' },
-  { value: 'option_3', label: 'TOption 3' },
+const mockSold: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'sold', label: 'Sold' },
+]
+
+const mockRanking: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'ranking', label: 'Ranking' },
+]
+
+const mockFollowers: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'followers', label: 'Followers' },
+]
+
+const mockCategories: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'illustration', label: 'Illustration' },
 ]
 
 const mockBreadcrumbs: TBreadcrumb[] = [
@@ -85,16 +99,16 @@ const MembersDirectory = (): JSX.Element => {
   ]
 
   // Filters
-  const [category, setCategory] = useState<TOption | null>(mockOptions[0])
+  const [category, setCategory] = useState<TOption | null>(mockCategories[0])
   const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
   const [range, setRange] = useState<[number, number]>([400, 700])
-  const formatValue = (value: number) => `${value}k`
+  const formatValue = (value: number) => `${value.toFixed(0)}k`
 
   const filterOptions = {
     label: 'Categories',
     selected: category,
     onChange: setCategory,
-    options: mockOptions,
+    options: mockCategories,
   }
 
   // Page Header
@@ -108,19 +122,19 @@ const MembersDirectory = (): JSX.Element => {
       placeholder: 'Ranking',
       selected: ranking,
       onOptionChange: setRanking,
-      options: mockOptions,
+      options: mockRanking,
     },
     {
       placeholder: 'Sold',
       selected: sold,
       onOptionChange: setSold,
-      options: mockOptions,
+      options: mockSold,
     },
     {
       placeholder: 'Followers',
       selected: followers,
       onOptionChange: setFollowers,
-      options: mockOptions,
+      options: mockFollowers,
     },
   ]
 
@@ -155,7 +169,7 @@ const MembersDirectory = (): JSX.Element => {
         <div
           className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
         >
-          <div className='bg-white p-5 rounded-lg mr-[30px] overflow-y-auto'>
+          <div className='bg-white p-5 rounded-lg mr-[30px]'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>
                 <Select {...filterOptions} className='w-full' />

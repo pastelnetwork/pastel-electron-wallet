@@ -26,21 +26,20 @@ import {
 const portfolios = [portfolio1, portfolio2, portfolio3, portfolio4]
 
 const mockOptions: TOption[] = [
-  { value: 'option_1', label: 'Option 1' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
+  { value: 'Likes', label: 'Likes' },
+  { value: 'Categories', label: 'Categories' },
 ]
 
 const mockCategories: TOption[] = [
-  { value: 'AI', label: 'AI' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
+  { value: 'all', label: 'All' },
+  { value: 'illustration', label: 'Illustration' },
 ]
 
 const mockStatus: TOption[] = [
-  { value: 'Auctions', label: 'Auctions' },
-  { value: 'option_2', label: 'Option 2' },
-  { value: 'option_3', label: 'Option 3' },
+  { value: 'all', label: 'All' },
+  { value: 'auctions', label: 'Auctions' },
+  { value: 'makeAnOffers', label: 'Make an Offers' },
+  { value: 'fixedPrice', label: 'Fixed Price' },
 ]
 
 const mockTime: TOption[] = [
@@ -285,7 +284,7 @@ export default function Portfolio(): JSX.Element {
   }, [selectedItem])
 
   const [range, setRange] = useState<[number, number]>([400, 700])
-  const formatValue = (value: number) => `${value}k`
+  const formatValue = (value: number) => `${value.toFixed(0)}k`
 
   return (
     <div className='flex flex-col w-full min-h-full'>
