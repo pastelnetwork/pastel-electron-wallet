@@ -8,7 +8,6 @@
   "RECEIVE": "/receive",
   "ADDRESSBOOK": "/addressbook",
   "TRANSACTIONS": "/transactions",
-  "SETTINGS": "/settings",
   "PASTELD": "/pasteld",
   "PASTEL_ID": "/pastel_id",
   "EXPERT_CONSOLE": "/expert_console",

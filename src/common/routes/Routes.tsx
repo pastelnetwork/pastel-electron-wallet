@@ -19,9 +19,6 @@ type TRouteType = {
     | React.FunctionComponent<unknown>
     | React.ComponentClass<unknown>
     | null
-  required?: {
-    [name: string]: boolean
-  }
 }
 
 const childRoutes = (routes: Array<TRouteType>) =>
@@ -53,7 +50,7 @@ const Routes = (): JSX.Element => {
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
       <Switch location={location}>
         {childRoutes(pageRoutes)}
-        <Route path={ROUTES.LOADING} component={LoadingScreen} />
+        <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
       </Switch>
     </div>
   )

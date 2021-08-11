@@ -1,7 +1,7 @@
 import React from 'react'
 
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
-import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
+import { mockDataImagesList } from './data'
 import MemberStripComponent, { TMemberStripProps } from './MemberStrip'
 
 const mockMemberStrips: TMemberStripProps = {
@@ -15,7 +15,7 @@ const mockMemberStrips: TMemberStripProps = {
   },
   highestSold: 1700000000,
   totalSold: 1500000,
-  images: [mockMemberImage, mockMemberImage, mockMemberImage, mockMemberImage],
+  images: mockDataImagesList.slice(0, 4),
 }
 export default {
   title: 'MemberStrip',

@@ -8,17 +8,28 @@ import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 import PageHeader from '../../common/components/PageHeader'
 import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
 
-import mockMemberImage from '../../common/assets/images/member-image-placeholder.png'
-import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
 import styles from './MembersDirectory.module.css'
 import Scrollbar from '../../common/components/Scrollbar'
+import { mockDataImagesList, mockAvatarImagesList } from './data'
 
-const stripMockImages = Array.from({ length: 10 }).map(() => mockMemberImage)
+const mockSold: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'sold', label: 'Sold' },
+]
 
-const mockOptions: TOption[] = [
-  { value: 'All', label: 'All' },
-  { value: 'option_2', label: 'TOption 2' },
-  { value: 'option_3', label: 'TOption 3' },
+const mockRanking: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'ranking', label: 'Ranking' },
+]
+
+const mockFollowers: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'followers', label: 'Followers' },
+]
+
+const mockCategories: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'illustration', label: 'Illustration' },
 ]
 
 const mockBreadcrumbs: TBreadcrumb[] = [
@@ -36,7 +47,7 @@ const MembersDirectory = (): JSX.Element => {
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[0],
         followers: 161,
         name: 'Sally Fadel',
         isVerified: false,
@@ -44,12 +55,12 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(0, 10),
     },
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[1],
         followers: 326,
         name: 'Anyia Harber',
         isVerified: true,
@@ -57,12 +68,12 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(10, 20),
     },
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[2],
         followers: 124,
         name: 'Edwardo Bea',
         isVerified: false,
@@ -70,12 +81,12 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(20, 30),
     },
     {
       id: uuidv4(),
       memberCard: {
-        avatar: mockAvatar,
+        avatar: mockAvatarImagesList[3],
         followers: 588,
         name: 'Reymundo',
         isVerified: true,
@@ -83,21 +94,21 @@ const MembersDirectory = (): JSX.Element => {
       },
       highestSold: 1700000000,
       totalSold: 1500000,
-      images: stripMockImages,
+      images: mockDataImagesList.slice(30, 40),
     },
   ]
 
   // Filters
-  const [category, setCategory] = useState<TOption | null>(mockOptions[0])
+  const [category, setCategory] = useState<TOption | null>(mockCategories[0])
   const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
   const [range, setRange] = useState<[number, number]>([400, 700])
-  const formatValue = (value: number) => `${value}k`
+  const formatValue = (value: number) => `${value.toFixed(0)}k`
 
   const filterOptions = {
     label: 'Categories',
     selected: category,
     onChange: setCategory,
-    options: mockOptions,
+    options: mockCategories,
   }
 
   // Page Header
@@ -111,19 +122,19 @@ const MembersDirectory = (): JSX.Element => {
       placeholder: 'Ranking',
       selected: ranking,
       onOptionChange: setRanking,
-      options: mockOptions,
+      options: mockRanking,
     },
     {
       placeholder: 'Sold',
       selected: sold,
       onOptionChange: setSold,
-      options: mockOptions,
+      options: mockSold,
     },
     {
       placeholder: 'Followers',
       selected: followers,
       onOptionChange: setFollowers,
-      options: mockOptions,
+      options: mockFollowers,
     },
   ]
 
@@ -158,7 +169,7 @@ const MembersDirectory = (): JSX.Element => {
         <div
           className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
         >
-          <div className='bg-white p-5 rounded-lg mr-[30px] overflow-y-auto'>
+          <div className='bg-white p-5 rounded-lg mr-[30px]'>
             <div className='flex justify-between pb-25px'>
               <div className='w-244px'>
                 <Select {...filterOptions} className='w-full' />
@@ -168,7 +179,7 @@ const MembersDirectory = (): JSX.Element => {
                   <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
 
                   <Slider
-                    min={100}
+                    min={0}
                     max={999}
                     values={range}
                     onChange={setRange}

@@ -19,7 +19,7 @@ const Breadcrumbs = (props: TBreadcrumbs): JSX.Element => {
   return (
     <div
       className={cn(
-        'wrapper py-0 flex font-normal text-14px leading-19px text-gray-71 mb-3 pt-3',
+        'wrapper py-0 flex font-normal text-14px leading-19px text-gray-71 mb-3 pt-3 min-h-[35px]',
         className,
       )}
     >

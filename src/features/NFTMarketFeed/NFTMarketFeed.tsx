@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import NFTCard, { TNFTCard } from 'common/components/NFTCard'
-import avatar from 'common/assets/images/avatar-placeholder.png'
-import image from 'common/assets/images/nft-card-placeholder.png'
 import Select, { TOption } from 'common/components/Select/Select'
 import Slider from 'common/components/Slider/Slider'
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import {
+  mockDataImagesList,
+  mockAvatarImagesList,
+  mockNamesList,
+} from 'features/members/data'
 
 enum Tabs {
   feed,
@@ -19,8 +22,8 @@ const NFTMarketFeed = (): JSX.Element => {
   const currencyName = useCurrencyName()
   const mockCardProps: TNFTCard = {
     author: 'zndrson',
-    avatarSrc: avatar,
-    imageSrc: image,
+    avatarSrc: mockAvatarImagesList[0],
+    imageSrc: mockDataImagesList[0].url,
     likes: 23,
     onSale: true,
     price: '222K',
@@ -31,20 +34,21 @@ const NFTMarketFeed = (): JSX.Element => {
     isLastBid: false,
     detailUrl: ROUTES.PORTFOLIO_DETAIL,
     nsfw: { porn: 0, hentai: 0 },
+    onSalePrice: Math.floor(Math.random() * 20000),
   }
 
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)
 
   const mockCategories: TOption[] = [
-    { value: 'AI', label: 'AI' },
-    { value: 'option_2', label: 'Option 2' },
-    { value: 'option_3', label: 'Option 3' },
+    { value: 'all', label: 'All' },
+    { value: 'illustration', label: 'Illustration' },
   ]
 
   const mockStatus: TOption[] = [
-    { value: 'Auctions', label: 'Auctions' },
-    { value: 'option_2', label: 'Option 2' },
-    { value: 'option_3', label: 'Option 3' },
+    { value: 'all', label: 'All' },
+    { value: 'auctions', label: 'Auctions' },
+    { value: 'makeAnOffers', label: 'Make an Offers' },
+    { value: 'fixedPrice', label: 'Fixed Price' },
   ]
 
   const mockTime: TOption[] = [
@@ -67,6 +71,12 @@ const NFTMarketFeed = (): JSX.Element => {
       onSale: Boolean(i % 2),
       isLastBid: Boolean(i % 3),
       nsfw: { porn: nsfw, hentai: nsfw },
+      imageSrc: mockDataImagesList[i].url,
+      avatarSrc: mockAvatarImagesList[i],
+      author: mockNamesList[i],
+      copies: `${i + 1} of 6`,
+      diamond: `${Math.floor(Math.random() * 100)}%`,
+      title: mockDataImagesList[i].title,
     }
   })
 
@@ -104,7 +114,7 @@ const NFTMarketFeed = (): JSX.Element => {
   ]
 
   const [range, setRange] = useState<[number, number]>([500, 700])
-  const formatValue = (value: number) => `${value}k`
+  const formatValue = (value: number) => `${value.toFixed(0)}k`
 
   const data = [{ label: 'Feed' }, { label: 'Statistics' }]
 
@@ -140,7 +150,7 @@ const NFTMarketFeed = (): JSX.Element => {
             <div className='flex h-full items-center justify-end'>
               <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
               <Slider
-                min={100}
+                min={0}
                 max={999}
                 values={range}
                 onChange={setRange}

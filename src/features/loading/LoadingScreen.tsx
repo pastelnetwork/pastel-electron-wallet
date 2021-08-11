@@ -13,10 +13,8 @@ export default function LoadingScreen(): JSX.Element | null {
 
   return (
     <div className='w-full h-full'>
-      <div className='relative'>
-        <div className='absolute inset-0 z-50'>
-          <div className={styles.loader} />
-        </div>
+      <div className='flex-center'>
+        <div className={styles.loader} />
       </div>
       <div className='pt-[120px] text-center'>
         {!error && <LoadingMessage />}
