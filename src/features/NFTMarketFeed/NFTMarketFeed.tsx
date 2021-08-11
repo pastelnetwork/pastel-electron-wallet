@@ -7,7 +7,11 @@ import Slider from 'common/components/Slider/Slider'
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { mockDataImagesList, mockAvatarImagesList } from 'features/members/data'
+import {
+  mockDataImagesList,
+  mockAvatarImagesList,
+  mockNamesList,
+} from 'features/members/data'
 
 enum Tabs {
   feed,
@@ -19,7 +23,7 @@ const NFTMarketFeed = (): JSX.Element => {
   const mockCardProps: TNFTCard = {
     author: 'zndrson',
     avatarSrc: mockAvatarImagesList[0],
-    imageSrc: mockDataImagesList[0],
+    imageSrc: mockDataImagesList[0].url,
     likes: 23,
     onSale: true,
     price: '222K',
@@ -66,8 +70,12 @@ const NFTMarketFeed = (): JSX.Element => {
       onSale: Boolean(i % 2),
       isLastBid: Boolean(i % 3),
       nsfw: { porn: nsfw, hentai: nsfw },
-      imageSrc: mockDataImagesList[i],
+      imageSrc: mockDataImagesList[i].url,
       avatarSrc: mockAvatarImagesList[i],
+      author: mockNamesList[i],
+      copies: `${i + 1} of 6`,
+      diamond: `${Math.floor(Math.random() * 100)}%`,
+      title: mockDataImagesList[i].title,
     }
   })
 

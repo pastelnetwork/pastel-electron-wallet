@@ -17,7 +17,11 @@ import portfolio2 from 'common/assets/images/mock/portfolio-2.jpg'
 import portfolio3 from 'common/assets/images/mock/portfolio-3.jpg'
 import portfolio4 from 'common/assets/images/mock/portfolio-4.jpg'
 
-import { mockDataImagesList, mockAvatarImagesList } from 'features/members/data'
+import {
+  mockDataImagesList,
+  mockAvatarImagesList,
+  mockNamesList,
+} from 'features/members/data'
 
 const portfolios = [portfolio1, portfolio2, portfolio3, portfolio4]
 
@@ -73,19 +77,22 @@ export default function Portfolio(): JSX.Element {
   const mockupPortfolio: TNFTCard[] = []
   Array.from({ length: 26 }).map((_, index) => {
     mockupPortfolio.push({
-      author: 'zndrson',
+      author: mockNamesList[index],
       avatarSrc: mockAvatarImagesList[index],
-      imageSrc: mockDataImagesList[index],
+      imageSrc: mockDataImagesList[index].url,
       likes: 23,
       price: '222K',
       followers: 10,
       currencyName,
-      title: 'Cosmic Perspective longname test',
+      title: mockDataImagesList[index].title,
       liked: true,
       onSale: index % 2 ? true : false,
       isLastBid: index % 3 ? true : false,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
+      copies: `${index + 1} of 26`,
+      diamond: `${Math.floor(Math.random() * 100)}%`,
+      onSalePrice: Math.floor(Math.random() * 20000),
     })
   })
 

@@ -14,7 +14,11 @@ import Radio from 'common/components/Radio'
 import NotificationModal from './dashboardModals/notificationModal'
 import Link from 'common/components/Link'
 import notificationData from './dashboardModals/notificationModal.data'
-import { mockDataImagesList, mockAvatarImagesList } from 'features/members/data'
+import {
+  mockDataImagesList,
+  mockAvatarImagesList,
+  mockNamesList,
+} from 'features/members/data'
 
 const date = dayjs('2021-04-04')
 
@@ -63,20 +67,21 @@ export default function DashboardPage(): JSX.Element {
   const [cards, setCards] = useState<TNFTCard[]>([])
   const [tab, setTab] = useState<number>(0)
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
+
   useEffect(() => {
     const randomCards: TNFTCard[] = []
     Array.from({ length: 3 }).map((_, index) => {
       randomCards.push({
-        imageSrc: mockDataImagesList[index],
+        imageSrc: mockDataImagesList[index].url,
         likes: 23,
-        title: 'Cosmic Perspective',
+        title: mockDataImagesList[index].title,
         liked: false,
-        author: 'zndrson',
+        author: mockNamesList[index],
         avatarSrc: mockAvatarImagesList[index],
         onSale: false,
         price: '222K',
         currencyName,
-        percentage: 75,
+        percentage: Math.floor(Math.random() * 100),
         variant: 'portfolio',
         isLastBid: [true, false][Math.floor(Math.random() * 2)],
         hideLikeButton: true,
@@ -84,6 +89,8 @@ export default function DashboardPage(): JSX.Element {
         hideUnFollow: index % 3 === 0 ? false : true,
         detailUrl: ROUTES.PORTFOLIO_DETAIL,
         nsfw: { porn: 0, hentai: 0 },
+        copies: `${index + 1} of 3`,
+        diamond: `${Math.floor(Math.random() * 100)}%`,
       })
     })
     setCards(randomCards)
@@ -92,49 +99,49 @@ export default function DashboardPage(): JSX.Element {
   const followers: Array<TPortfolioItemProps> = [
     {
       image: mockAvatarImagesList[0],
-      title: 'Cosmic Perspective',
-      author: '@zndrson',
-      price: 5000,
+      title: mockDataImagesList[0].title,
+      author: mockNamesList[0],
+      price: Math.floor(Math.random() * 10000),
       currencyName,
       type: 'progress',
     },
     {
       image: mockAvatarImagesList[1],
-      title: 'Cosmic Perspective',
-      author: '@zndrson',
-      price: 5000,
+      title: mockDataImagesList[1].title,
+      author: mockNamesList[1],
+      price: Math.floor(Math.random() * 1000),
       currencyName,
       type: 'progress',
     },
     {
       image: mockAvatarImagesList[2],
-      title: 'Cosmic Perspective',
-      author: '@zndrson',
-      price: 5000,
+      title: mockDataImagesList[2].title,
+      author: mockNamesList[2],
+      price: Math.floor(Math.random() * 1000),
       currencyName,
       type: 'review',
     },
     {
       image: mockAvatarImagesList[3],
-      title: 'Cosmic Perspective',
-      author: '@zndrson',
-      price: 5000,
+      title: mockDataImagesList[3].title,
+      author: mockNamesList[3],
+      price: Math.floor(Math.random() * 1000),
       currencyName,
       type: 'sale',
     },
     {
       image: mockAvatarImagesList[4],
-      title: 'Cosmic Perspective',
-      author: '@zndrson',
-      price: 5000,
+      title: mockDataImagesList[4].title,
+      author: mockNamesList[4],
+      price: Math.floor(Math.random() * 1000),
       currencyName,
       type: 'sale',
     },
     {
       image: mockAvatarImagesList[5],
-      title: 'Cosmic Perspective',
-      author: '@zndrson',
-      price: 5000,
+      title: mockDataImagesList[5].title,
+      author: mockNamesList[5],
+      price: Math.floor(Math.random() * 1000),
       currencyName,
       type: 'sale',
     },

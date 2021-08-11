@@ -6,12 +6,17 @@ import MemberCard, { TMemberCard } from './MemberCard'
 import { useCurrencyName } from '../../common/hooks/appInfo'
 import { formatPrice } from '../../common/utils/format'
 
+export type TImageProps = {
+  url: string
+  title: string
+}
+
 export type TMemberStripProps = {
   id: string
   memberCard: TMemberCard
   highestSold: number
   totalSold: number
-  images: string[]
+  images: TImageProps[]
   searchText?: string
 }
 
@@ -67,7 +72,7 @@ const MemberStrip = ({
                 key={`${id}${i}`}
               >
                 <div className='w-28 h-101px'>
-                  <img src={imgSrc} className='object-cover rounded-xl' />
+                  <img src={imgSrc.url} className='object-cover rounded-xl' />
                 </div>
               </div>
             ))}

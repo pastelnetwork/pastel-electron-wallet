@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 
 import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
+
+import { formatNumber } from 'common/utils/format'
 import {
   HeartFilled,
   Clipboard,
@@ -50,6 +52,7 @@ export type TNFTCard = Override<
     price: number | string
     currencyName: string
     onSale: boolean
+    onSalePrice?: number
   }
 >
 
@@ -360,7 +363,12 @@ const NFTCard = ({
                     'text-sm md:text-base lg:text-h5 font-extrabold',
                 )}
               >
-                {fullCardProps.onSale ? '12,000 PSL' : ''}
+                {fullCardProps.onSale
+                  ? `${
+                      fullCardProps.onSalePrice &&
+                      formatNumber(fullCardProps.onSalePrice)
+                    } PSL`
+                  : ''}
                 {isLastBid && fullCardProps.onSale && (
                   <span
                     className={cn(
