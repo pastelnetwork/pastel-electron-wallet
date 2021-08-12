@@ -1,5 +1,6 @@
 import React from 'react'
-import { MemoryRouter } from 'react-router-dom'
+import { Router } from 'react-router-dom'
+import history from 'common/utils/history'
 
 import Routes from '../Routes'
 import OnboardingRoutes from '../../common/routes/Routes'
@@ -14,9 +15,9 @@ const Root = (): JSX.Element => {
 
   return (
     <>
-      <MemoryRouter>
+      <Router history={history}>
         {SHOW_ONBOARDING ? <OnboardingRoutes /> : <Routes />}
-      </MemoryRouter>
+      </Router>
     </>
   )
 }

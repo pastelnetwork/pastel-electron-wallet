@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { AppThunk } from '../../redux/store'
+import store from '../../redux/store'
 import coinGeckoClient from './coingecko'
+import log from 'electron-log'
 
 export interface IPastelPriceState {
   price: number
@@ -31,28 +32,25 @@ export const pastelPriceReducer = pastelPriceSlice.reducer
 
 export const { setPastelPrice } = pastelPriceSlice.actions
 
-export function fetchPastelPrice(): AppThunk {
-  return async dispatch => {
-    try {
-      const resp = await coinGeckoClient.simple.price({
-        ids: ['pastel'],
-        vs_currencies: ['usd'],
-      })
+export const fetchPastelPrice = async (): Promise<void> => {
+  try {
+    const resp = await coinGeckoClient.simple.price({
+      ids: ['pastel'],
+      vs_currencies: ['usd'],
+    })
 
-      if (!resp.data?.['pastel']?.['usd']) {
-        throw new Error('pastelPrice fetchPastelPrice error: invalid response')
-      }
-
-      // set price
-      dispatch(
-        setPastelPrice({
-          price: resp.data['pastel']['usd'],
-          lastFetched: Date.now(),
-        }),
-      )
-    } catch (err) {
-      // TODO log errors to a central logger so we can address them later.
-      console.warn(err.message)
+    if (!resp.data?.['pastel']?.['usd']) {
+      throw new Error('pastelPrice fetchPastelPrice error: invalid response')
     }
+
+    // set price
+    store.dispatch(
+      setPastelPrice({
+        price: resp.data['pastel']['usd'],
+        lastFetched: Date.now(),
+      }),
+    )
+  } catch (err) {
+    log.error(err.message)
   }
 }

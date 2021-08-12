@@ -1,7 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 
 import { aboutModalReducer } from '../features/about'
-import { pastelConfReducer } from '../features/pastelConf'
 import { pastelIDReducer } from '../features/pastelID'
 import { pastelModalReducer } from '../features/pastelModal'
 import { pastelPaperWalletModalReducer } from '../features/pastelPaperWalletGenerator'
@@ -11,16 +10,13 @@ import { pastelSpriteEditorToolModalReducer } from '../features/pastelSpriteEdit
 import { squooshToolModalReducer } from '../features/squooshTool'
 import { updateToastReducer } from '../features/updateToast'
 import { glitchImageModalReducer } from '../features/glitchImage'
-import { rpcConfigReducer } from '../features/loading/rpcConfigSlice'
-import { appInfoReducer } from '../features/serveStatic'
+import { appInfoReducer } from '../features/app/AppInfoSlice'
 
 const store = configureStore({
   reducer: {
     pastelID: pastelIDReducer,
     pastelModal: pastelModalReducer,
-    pastelConf: pastelConfReducer,
     pastelPrice: pastelPriceReducer,
-    rpcConfig: rpcConfigReducer,
     pastelPaperWalletModal: pastelPaperWalletModalReducer,
     pastelSpriteEditorToolModal: pastelSpriteEditorToolModalReducer,
     pastelPhotopeaModal: pastelPhotopeaModalReducer,

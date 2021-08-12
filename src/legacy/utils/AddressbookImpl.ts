@@ -2,12 +2,15 @@
 
 import fs from 'fs'
 import path from 'path'
-import { remote } from 'electron'
-import { AddressBookEntry } from '../components/AppState' // Utility class to save / read the address book.
+import { AddressBookEntry } from '../components/AppState'
+import store from '../../redux/store' // Utility class to save / read the address book.
 
 export default class AddressbookImpl {
   static async getFileName() {
-    const dir = path.join(remote.app.getPath('appData'), 'pastelwallet')
+    const dir = store.getState().appInfo.pastelWalletDirPath
+    if (!dir) {
+      throw new Error("Can't get path of address book store")
+    }
 
     if (!fs.existsSync(dir)) {
       await fs.promises.mkdir(dir)

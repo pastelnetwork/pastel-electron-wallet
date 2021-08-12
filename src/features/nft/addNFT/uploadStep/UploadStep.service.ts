@@ -1,9 +1,9 @@
 import { maxWidthByOrientation } from '../AddNft.constants'
 import { TAddNFTState } from '../AddNFT.state'
 import { TImageFile } from './UploadStep'
-import { ipcRenderer } from 'electron'
 import { OptimizationStatus } from '../imageOptimization/imageOptimization.state'
 import { toast } from 'react-toastify'
+import { invokeMainTask } from '../../../app/rendererEvents'
 
 export const useSubmit = (
   state: TAddNFTState,
@@ -34,7 +34,7 @@ const optimizeImage = async (state: TAddNFTState, file: File) => {
   state.optimizationState.setSelectedFile()
 
   try {
-    const result = await ipcRenderer.invoke('optimizeImage', {
+    const result = await invokeMainTask('optimizeImage', {
       path: file.path,
       type: file.type,
     })

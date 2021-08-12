@@ -1,4 +1,3 @@
-import { remote } from 'electron'
 import log from 'electron-log'
 import fs from 'fs'
 import path from 'path'
@@ -75,18 +74,23 @@ import {
   groupByYearly,
 } from './constants'
 import { TTxoutsetInfo, TValidateFields } from './type'
+import store from '../../redux/store'
+
+const getSqliteFilePath = () => {
+  const path = store.getState().appInfo.sqliteFilePath
+  if (!path) {
+    throw new Error("Can't get SQLite file path")
+  }
+  return path
+}
 
 export const readSqliteDBFile = async (): Promise<Buffer | null> => {
+  const path = getSqliteFilePath()
   try {
-    const file = await fs.promises.open(
-      path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-      'r',
-    )
+    const file = await fs.promises.open(path, 'r')
     const stat = await file.stat()
     if (stat.birthtimeMs > +new Date('2021-06-10')) {
-      return await fs.promises.readFile(
-        path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-      )
+      return await fs.promises.readFile(path)
     }
   } catch (e) {
     log.error(`pastelDB readSqliteDBFile error: ${e}`)
@@ -96,24 +100,20 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
 
 export const RemoveSqliteDBFile = async (): Promise<void> => {
   try {
-    await fs.promises.unlink(
-      path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-    )
+    await fs.promises.unlink(getSqliteFilePath())
   } catch (e) {
     log.error('File not found')
   }
 }
 
 export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
-  await fs.promises.writeFile(
-    path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-    buffer,
-    { flag: 'w+' },
-  )
+  await fs.promises.writeFile(getSqliteFilePath(), buffer, { flag: 'w+' })
 }
 
 async function initSqlJS(): Promise<SqlJsStatic> {
-  if (remote.app.isPackaged) {
+  const { isPackaged } = store.getState().appInfo
+
+  if (isPackaged) {
     return await initSqlJs({
       locateFile: (file: string) => {
         return path.join(

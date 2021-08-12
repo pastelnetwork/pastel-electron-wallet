@@ -8,21 +8,21 @@ function getExtraResource() {
   switch (platform) {
     case 'darwin':
       return [
-        './static/bin/pasteld-mac',
-        './static/bin/pngquant/pngquant-mac',
-        './static/bin/mozjpeg/mozjpeg-mac',
+        './static/bin/pastel-utility-darwin-amd64',
+        './static/bin/pngquant-mac',
+        './static/bin/mozjpeg-mac',
       ]
     case 'linux':
       return [
-        './static/bin/pasteld-linux',
-        './static/bin/pngquant/pngquant-linux',
-        './static/bin/mozjpeg/mozjpeg-linux',
+        './static/bin/pastel-utility-linux-amd64',
+        './static/bin/pngquant-linux',
+        './static/bin/mozjpeg-linux',
       ]
     case 'win32':
       return [
-        './static/bin/pasteld-win.exe',
-        './static/bin/pngquant/pngquant-win.exe',
-        './static/bin/mozjpeg/mozjpeg-win.exe',
+        './static/bin/pastel-utility-windows-amd64.exe',
+        './static/bin/pngquant-win.exe',
+        './static/bin/mozjpeg-win.exe',
       ]
     default:
       throw new Error(

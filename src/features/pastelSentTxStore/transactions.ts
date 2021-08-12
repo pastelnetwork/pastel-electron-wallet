@@ -12,7 +12,7 @@ import {
   TBaseTransaction,
 } from 'types/rpc'
 
-import { rpc, TRPCConfig } from '../../api/pastel-rpc'
+import { rpc } from '../../api/pastel-rpc'
 import { loadSentTxns } from './sentTxStore'
 
 const parseMemo = (memoHex: string) => {
@@ -33,15 +33,10 @@ const parseMemo = (memoHex: string) => {
 }
 
 export async function fetchTandZTransactions(
-  config: TRPCConfig,
   cb: (alltxlist: TTransaction[]) => void,
 ): Promise<void> {
   const senttxstorePromise = await loadSentTxns()
-  const { result } = await rpc<TTransactionResponse>(
-    'listtransactions',
-    [],
-    config,
-  )
+  const { result } = await rpc<TTransactionResponse>('listtransactions', [])
 
   const existAddresses: string[] = []
   const ttxlistPromise = result
@@ -91,7 +86,6 @@ export async function fetchTandZTransactions(
           const { result } = await rpc<TRawTransactionResponse>(
             'getrawtransaction',
             [tx.txid, 1],
-            config,
           )
 
           const inputAddresses: string[] = []
@@ -100,7 +94,6 @@ export async function fetchTandZTransactions(
               const { result } = await rpc<TRawTransactionResponse>(
                 'gettransaction',
                 [v.txid],
-                config,
               )
 
               result.details.map((d: TTransactionDetail) => {
@@ -124,17 +117,12 @@ export async function fetchTandZTransactions(
 
   const ttxlist: TTransaction[] = (await Promise.all(ttxlistPromise)).flat()
 
-  const zaddresses = await rpc<TListAddressesResponse>(
-    'z_listaddresses',
-    [],
-    config,
-  )
+  const zaddresses = await rpc<TListAddressesResponse>('z_listaddresses', [])
   const alltxnsPromise = zaddresses.result.map(async (address: string) => {
     // For each zaddr, get the list of incoming transactions
     const incomingTxns = await rpc<TZListReceivedByAddressResponse>(
       'z_listreceivedbyaddress',
       [address, 0],
-      config,
     )
     const txns: TBaseTransaction[] = incomingTxns.result
       .filter((itx: TZListReceivedByAddress) => !itx.change)
@@ -148,11 +136,9 @@ export async function fetchTandZTransactions(
   const alltxns: TBaseTransaction[] = (await Promise.all(alltxnsPromise)).flat() // Now, for each tx in the array, call gettransaction
   const ztxlist = await Promise.all(
     alltxns.map(async tx => {
-      const txresponse = await rpc<TTransactionInfoResponse>(
-        'gettransaction',
-        [tx.txid],
-        config,
-      )
+      const txresponse = await rpc<TTransactionInfoResponse>('gettransaction', [
+        tx.txid,
+      ])
       const transaction: TTransaction = {
         account: '',
         address: '',

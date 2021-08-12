@@ -2,17 +2,18 @@ import http, { Server } from 'http'
 import serveStatic from 'serve-static'
 import path from 'path'
 import detect from 'detect-port'
+import { app } from 'electron'
 
 import { glitch, squoosh, ffmpegwasm } from '../../common/constants/ServeStatic'
 
 const servers: Server[] = []
 
-export default function initServeStatic(isPackaged: boolean): void {
+export default function initServeStatic(): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
   let ffmpegStaticPath = `${process.cwd()}/node_modules/ffmpegwasm-create-video/production`
 
-  if (isPackaged) {
+  if (app.isPackaged) {
     squooshStaticPath = path.join(
       process.resourcesPath,
       '/app.asar/.webpack/renderer/static/squoosh',

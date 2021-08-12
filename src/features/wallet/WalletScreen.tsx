@@ -188,12 +188,8 @@ const WalletScreen = (): JSX.Element => {
   const { lastFetched } = useAppSelector<RootState['pastelPrice']>(
     ({ pastelPrice }) => pastelPrice,
   )
-  const { url, username, password } = useAppSelector<RootState['pastelConf']>(
-    ({ pastelConf }) => pastelConf,
-  )
 
-  const rpcConfig = { url, username, password }
-  const walletRPC = new WalletRPC(rpcConfig)
+  const walletRPC = new WalletRPC()
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
 

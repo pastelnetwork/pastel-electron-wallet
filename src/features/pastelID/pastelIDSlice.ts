@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import fs from 'fs'
-import path from 'path'
 
-import {
-  createNewPastelID,
-  getPastelIDs,
-  TRPCConfig,
-} from '../../api/pastel-rpc'
+import { createNewPastelID, getPastelIDs } from '../../api/pastel-rpc'
 import type { AppThunk } from '../../redux/store'
 import { openPastelModal } from '../pastelModal'
 
@@ -80,11 +74,11 @@ const {
 
 export const pastelIDReducer = pastelIDSlice.reducer
 
-export function fetchPastelIDs(config: TRPCConfig): AppThunk {
+export function fetchPastelIDs(): AppThunk {
   return async dispatch => {
     try {
       dispatch(getPastelIDsStart())
-      const pastelids = await getPastelIDs(config)
+      const pastelids = await getPastelIDs()
       dispatch(getPastelIDsSuccess({ pastelids }))
     } catch (err) {
       dispatch(getPastelIDsFailure())
@@ -103,15 +97,11 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
   }
 }
 
-export function createPastelID(
-  passphrase: string,
-  address: string,
-  config: TRPCConfig,
-): AppThunk {
+export function createPastelID(passphrase: string, address: string): AppThunk {
   return async dispatch => {
     try {
       dispatch(createPastelIDStart())
-      const res = await createNewPastelID(passphrase, address, config)
+      const res = await createNewPastelID(passphrase, address)
       dispatch(
         createPastelIDSuccess({
           pastelid: res.pastelid,
@@ -137,19 +127,6 @@ export function createPastelID(
 
       // TODO log errors to a central logger so we can address them later.
       console.warn(err)
-    }
-  }
-}
-
-export async function createPastelKeysFolder(
-  locatePastelConfDir: string,
-): Promise<void> {
-  if (locatePastelConfDir) {
-    const pastelKeysFolder = path.join(locatePastelConfDir, 'pastelkeys')
-    try {
-      await fs.promises.access(pastelKeysFolder)
-    } catch {
-      await fs.promises.mkdir(pastelKeysFolder)
     }
   }
 }

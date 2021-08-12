@@ -1,14 +1,7 @@
 import axios, { CancelTokenSource } from 'axios'
 
-import store from '../../../redux/store'
 import { METHODS } from './utils'
-
-const getRPCConfig = () => {
-  const state = store.getState()
-  const { pastelConf } = state
-
-  return pastelConf || {}
-}
+import { requireRpcConfig } from '../../rpcConfig'
 
 const getMessage = (statusCode: number, isECONNREFUSED: boolean) => {
   if (isECONNREFUSED) {
@@ -36,7 +29,7 @@ METHODS.forEach((method: string) => {
   apiMethods = {
     ...apiMethods,
     [method]: <T>(params: string[]): Promise<T> => {
-      const { url, username, password } = getRPCConfig()
+      const { url, username, password } = requireRpcConfig()
       return new Promise((resolve, reject) => {
         const CancelToken = axios.CancelToken
         const source = CancelToken.source()

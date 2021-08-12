@@ -12,8 +12,6 @@ import clockYellowIcon from '../../common/assets/icons/ico-clock-yellow.svg'
 import crossIcon from '../../common/assets/icons/ico-cross.svg'
 import addressbookIcon from '../../common/assets/icons/ico-addressbook.svg'
 import user2Icon from '../../common/assets/icons/ico-user2.svg'
-import { useAppSelector } from 'redux/hooks'
-import { RootState } from 'redux/store'
 import { TransactionRPC } from 'api/pastel-rpc'
 import {
   TTransactionRow,
@@ -35,9 +33,6 @@ const TransactionHistoryModal = ({
   isOpen,
   handleClose,
 }: TransactionHistoryModalProps): JSX.Element => {
-  const { url, username, password } = useAppSelector<RootState['pastelConf']>(
-    ({ pastelConf }) => pastelConf,
-  )
   const [selectedOption, setSelectedOption] = useState<
     'all' | 'received' | 'sent'
   >('all')
@@ -101,7 +96,7 @@ const TransactionHistoryModal = ({
 
   useEffect(() => {
     const getTransactions = async () => {
-      const transactionRPC = new TransactionRPC({ url, username, password })
+      const transactionRPC = new TransactionRPC()
       const trans = await transactionRPC.fetchTandZTransactions()
       const filterTransactions = trans.map(t => {
         return {

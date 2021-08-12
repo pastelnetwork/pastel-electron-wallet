@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { TRpcParam } from 'types/rpc'
 import log from 'electron-log'
+import { requireRpcConfig } from '../../features/rpcConfig'
 
 export type TRPCConfig = {
   url: string
@@ -8,12 +9,8 @@ export type TRPCConfig = {
   password: string
 }
 
-export async function rpc<T>(
-  method: string,
-  params: TRpcParam[],
-  rpcConfig: TRPCConfig,
-): Promise<T> {
-  const { url, username, password } = rpcConfig
+export async function rpc<T>(method: string, params: TRpcParam[]): Promise<T> {
+  const { url, username, password } = requireRpcConfig()
   let response: AxiosResponse
   try {
     response = await axios(url, {

@@ -126,10 +126,7 @@ export default class RPC {
       try {
         const balP = this.fetchTotalBalance()
         const abP = this.fetchTandZAddressesWithBalances()
-        const txns = fetchTandZTransactions(
-          this.rpcConfig,
-          this.fnSetTransactionsList,
-        )
+        const txns = fetchTandZTransactions(this.fnSetTransactionsList)
         const addrs = this.fetchAllAddresses()
         await balP
         await abP

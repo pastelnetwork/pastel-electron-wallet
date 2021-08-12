@@ -4,7 +4,6 @@ import QrReader from 'react-qr-reader'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
-import { TRPCConfig } from '../../Profile'
 
 type TQRReader = {
   index: number
@@ -13,13 +12,11 @@ type TQRReader = {
 }
 
 type TRestoreByCameraProps = {
-  rpcConfig: TRPCConfig
   turnOffCamera?: boolean
   onHideHeader: (status: boolean) => void
 }
 
 export default function RestoreByCamera({
-  rpcConfig,
   turnOffCamera,
   onHideHeader,
 }: TRestoreByCameraProps): JSX.Element {
@@ -44,7 +41,7 @@ export default function RestoreByCamera({
           try {
             setShowQrReader(false)
             const finalData = data.map(q => q.qrCode).join('')
-            const result = await doImportPrivKeys(finalData, rpcConfig)
+            const result = await doImportPrivKeys(finalData)
             if (result) {
               setCurrentStatus('done')
             } else {

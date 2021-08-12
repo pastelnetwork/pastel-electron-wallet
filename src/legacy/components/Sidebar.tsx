@@ -6,7 +6,6 @@ import dateformat from 'dateformat'
 import Modal from 'react-modal'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { ipcRenderer, remote } from 'electron'
 import TextareaAutosize from 'react-textarea-autosize'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'
@@ -18,6 +17,7 @@ import Logo from '../assets/img/pastel-logo.png'
 import { Info, Transaction } from './AppState'
 import Utils from '../utils/utils'
 import { parsePastelURI, PastelURITarget } from '../utils/uris'
+import { invokeMainTask, onRendererEvent } from 'features/app/rendererEvents'
 
 const ExportPrivKeyModal = ({
   modalIsOpen,
@@ -342,30 +342,23 @@ class Sidebar extends PureComponent<any, any> {
       createNewAddress,
     } = this.props
 
-    ipcRenderer.on('payuri', (event, uri) => {
+    onRendererEvent('payuri', uri => {
       this.openURIModal(uri)
     }) // Import Private Keys
 
-    ipcRenderer.on('import', () => {
+    onRendererEvent('import', () => {
       this.openImportPrivKeyModal(null)
     }) // Import ANI Private Keys
 
-    ipcRenderer.on('importani', () => {
+    onRendererEvent('importani', () => {
       this.openImportANIPrivKeyModal(null)
     }) // Export All Transactions
 
-    ipcRenderer.on('exportalltx', async () => {
-      const save = await remote.dialog.showSaveDialog({
-        title: 'Save Transactions As CSV',
-        defaultPath: 'pastelwallet_transactions.csv',
-        filters: [
-          {
-            name: 'CSV File',
-            extensions: ['csv'],
-          },
-        ],
-        properties: ['showOverwriteConfirmation'],
-      })
+    onRendererEvent('exportalltx', async () => {
+      const save = await invokeMainTask(
+        'showSaveTransactionsAsCSVDialog',
+        undefined,
+      )
 
       if (save.filePath) {
         // Construct a CSV
@@ -401,7 +394,7 @@ class Sidebar extends PureComponent<any, any> {
       }
     }) // Export all private keys
 
-    ipcRenderer.on('exportall', async () => {
+    onRendererEvent('exportall', async () => {
       // There might be lots of keys, so we get them serially.
       // Get all the addresses and run export key on each of them.
       const { addresses, getPrivKeyAsString } = this.props // We'll do an array iteration rather than a async array.map, because there might
@@ -432,64 +425,61 @@ class Sidebar extends PureComponent<any, any> {
       })
     }) // View pasteld
 
-    ipcRenderer.on('pasteld', () => {
+    onRendererEvent('pasteld', () => {
       history.push(routes.PASTELD)
     }) // Connect mobile app
 
-    ipcRenderer.on('pastelSpriteEditorTool', () => {
+    onRendererEvent('pastelSpriteEditorTool', () => {
       openPastelSpriteEditorToolModal()
     })
 
-    ipcRenderer.on('pastelPhotopea', () => {
+    onRendererEvent('pastelPhotopea', () => {
       openPastelPhotopeaModal()
     })
 
-    ipcRenderer.on('about', () => {
+    onRendererEvent('about', () => {
       openAboutModal()
-    }) // About
+    })
 
-    ipcRenderer.on('squooshTool', () => {
+    onRendererEvent('squooshTool', () => {
       openSquooshToolModal()
     })
 
-    ipcRenderer.on('glitchImage', () => {
+    onRendererEvent('glitchImage', () => {
       openGlitchImageModal()
     })
 
-    ipcRenderer.send('app-ready')
-    ipcRenderer.on('update_downloaded', () => {
+    onRendererEvent('updateDownloaded', () => {
       openUpdateToast()
     })
-    ipcRenderer.on(
-      'deepLink',
-      async (event, { view, param }: { view: string; param: string }) => {
-        const allRoutes = Object.assign(routes)
-        const page = allRoutes[view.toUpperCase()] ? view : routes.DASHBOARD
-        if (routes.SEND.includes(page) && param.includes('amount=')) {
-          const params = querystring.parse(param || '')
-          let uri = ''
-          if (params?.to) {
-            uri = params.to.toString()
-          } else {
-            uri = await createNewAddress(true)
-          }
-          uri = `${uri}?amount=${params.amount}`
 
-          if (params?.memo) {
-            uri = `${uri}&memo=${Base64.encode(params.memo.toString())}`
-          }
-          const parsedUri = parsePastelURI(`pastel:${uri}`)
-          if (typeof parsedUri !== 'string') {
-            setSendTo(parsedUri)
-          }
+    onRendererEvent('deepLink', async ({ view, param }) => {
+      const allRoutes = Object.assign(routes)
+      const page = allRoutes[view.toUpperCase()] ? view : routes.DASHBOARD
+      if (routes.SEND.includes(page) && param.includes('amount=')) {
+        const params = querystring.parse(param || '')
+        let uri = ''
+        if (params?.to) {
+          uri = params.to.toString()
+        } else {
+          uri = await createNewAddress(true)
         }
+        uri = `${uri}?amount=${params.amount}`
 
-        history.replace({
-          pathname: page,
-          state: { param },
-        })
-      },
-    )
+        if (params?.memo) {
+          uri = `${uri}&memo=${Base64.encode(params.memo.toString())}`
+        }
+        const parsedUri = parsePastelURI(`pastel:${uri}`)
+        if (typeof parsedUri !== 'string') {
+          setSendTo(parsedUri)
+        }
+      }
+
+      history.replace({
+        pathname: page,
+        state: { param },
+      })
+    })
   }
   closeExportPrivKeysModal = () => {
     this.setState({

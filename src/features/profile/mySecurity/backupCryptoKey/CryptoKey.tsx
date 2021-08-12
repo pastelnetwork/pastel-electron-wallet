@@ -13,7 +13,6 @@ import dayjs from 'dayjs'
 import { Button } from '../../../../common/components/Buttons'
 import { QRCodeGEnerator } from '../../../pastelPaperWalletGenerator'
 import Card from '../../components/Card'
-import { TRPCConfig } from '../../Profile'
 import {
   fetchAllKeysForPdf,
   TDataForPdf,
@@ -23,7 +22,6 @@ import {
 
 type TCrypto = {
   currencyName?: string
-  rpcConfig: TRPCConfig
   qrcodeData: string
 }
 
@@ -188,7 +186,7 @@ export const PDFDocument = ({
 }
 
 const CryptoKey = (props: TCrypto): JSX.Element => {
-  const { currencyName, rpcConfig, qrcodeData } = props
+  const { currencyName, qrcodeData } = props
   const [allKeys, setAllKeys] = useState<TDataForPdf>({
     addressKeys: [],
     pastelIDs: [],
@@ -197,7 +195,7 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await fetchAllKeysForPdf(rpcConfig)
+      const result = await fetchAllKeysForPdf()
       setAllKeys(result)
     }
     fetchData()

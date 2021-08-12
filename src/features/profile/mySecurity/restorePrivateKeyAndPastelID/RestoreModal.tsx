@@ -4,12 +4,10 @@ import cn from 'classnames'
 import RestoreByUpload from './RestoreByUpload'
 import RestoreByCamera from './RestoreByCamera'
 import RestoreByPdf from './RestoreByPdf'
-import { TRPCConfig } from '../../Profile'
 import Modal from 'common/components/AnimatedModal'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 
 type TRestoreModalProps = {
-  rpcConfig: TRPCConfig
   modalIsOpen: boolean
   onCloseModal: (val: boolean) => void
 }
@@ -27,7 +25,6 @@ const tabs = [
 ]
 
 export default function RestoreModal({
-  rpcConfig,
   modalIsOpen,
   onCloseModal,
 }: TRestoreModalProps): JSX.Element | null {
@@ -82,23 +79,16 @@ export default function RestoreModal({
 
             <div className={cn(!hideHeader ? 'mt-28px' : '')}>
               {tab === Tabs.selectQRCodeVideo ? (
-                <RestoreByUpload
-                  rpcConfig={rpcConfig}
-                  onHideHeader={setHideHeader}
-                />
+                <RestoreByUpload onHideHeader={setHideHeader} />
               ) : null}
               {tab === Tabs.scanQRCodeVideo ? (
                 <RestoreByCamera
-                  rpcConfig={rpcConfig}
                   turnOffCamera={turnOffCamera}
                   onHideHeader={setHideHeader}
                 />
               ) : null}
               {tab === Tabs.selectPDF ? (
-                <RestoreByPdf
-                  rpcConfig={rpcConfig}
-                  onHideHeader={setHideHeader}
-                />
+                <RestoreByPdf onHideHeader={setHideHeader} />
               ) : null}
             </div>
           </div>

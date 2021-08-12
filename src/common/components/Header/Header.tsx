@@ -125,7 +125,7 @@ const Header = (): JSX.Element | null => {
                 className='text-gray-33 ml-6 lg:ml-30px w-4'
               />
             </Link>
-            <Link to={ROUTES.SETTINGS}>
+            <Link to={ROUTES.MY_PROFILE}>
               <SettingIcon size={18} className='ml-6 lg:ml-27px w-18px' />
             </Link>
             <Link to={ROUTES.MY_PROFILE}>

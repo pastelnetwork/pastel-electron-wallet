@@ -31,8 +31,6 @@ import Transactions from './components/Transactions'
 import CompanionAppListener from './companion'
 import { PastelID } from '../features/pastelID'
 import { connect } from 'react-redux'
-import { setPastelConf } from '../features/pastelConf'
-import { PastelDBThread, saveSqliteDB } from '../features/pastelDB'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
@@ -56,7 +54,6 @@ import { MembersDirectory } from '../features/members'
 import Chat from '../features/chat'
 import { MyProfile } from '../features/profile'
 import { Forum } from '../features/forum'
-import { RegisterPage } from '../features/onboarding'
 
 export type TWalletInfo = {
   connections: number
@@ -69,9 +66,6 @@ export type TWalletInfo = {
   verificationProgress: number
   version: number
 }
-
-const period = 1000 * 10
-const exportPastelDBPeriod = 1000 * 60 * 1
 
 class RouteApp extends React.Component<any, any> {
   constructor(props: any) {
@@ -557,10 +551,7 @@ class RouteApp extends React.Component<any, any> {
             <Route path={routes.FORUM} render={() => <Forum />} />
             <Route path={routes.MEMBERS} render={() => <MembersDirectory />} />
 
-            <Route
-              path={routes.MY_PROFILE}
-              render={() => <MyProfile rpcConfig={rpcConfig} />}
-            />
+            <Route path={routes.MY_PROFILE} render={MyProfile} />
 
             <Route
               path={routes.MEMBERS_PROFILE}
@@ -599,38 +590,7 @@ class RouteApp extends React.Component<any, any> {
               )}
             />
 
-            <Route
-              path={routes.LOADING}
-              render={props => (
-                <LoadingScreen
-                  {...props}
-                  setRPCConfig={(rpcConfig: any) => {
-                    // To support Redux calls
-                    this.props.setPastelConf({
-                      url: rpcConfig.url,
-                      username: rpcConfig.username,
-                      password: rpcConfig.password,
-                    })
-
-                    // To support legacy calls
-                    // TODO Remove then fully moved over to Redux
-                    this.setRPCConfig(rpcConfig)
-
-                    // set pastel DB thread update timer
-                    if (!app?.isPackaged) {
-                      setInterval(() => {
-                        PastelDBThread(rpcConfig)
-                      }, period)
-                    }
-
-                    this.exportSqliteDBIntervalID = window.setInterval(() => {
-                      saveSqliteDB()
-                    }, exportPastelDBPeriod)
-                  }}
-                  setInfo={this.setInfo}
-                />
-              )}
-            />
+            <Route path={routes.LOADING} component={LoadingScreen} />
           </Switch>
         </div>
       </div>
@@ -639,7 +599,6 @@ class RouteApp extends React.Component<any, any> {
 }
 
 export default connect(null, {
-  setPastelConf,
   openPastelPaperWalletModal,
   openPastelPhotopeaModal,
   openPastelSpriteEditorToolModal,

@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import store from '../../redux/store'
 
 type TAddressBook = {
   label: string
@@ -8,24 +9,21 @@ type TAddressBook = {
 
 export default class AddressbookImpl {
   static async getFileName(): Promise<string | null> {
-    const appInfo = sessionStorage.getItem('appInfo')
-    if (appInfo) {
-      const appData = JSON.parse(appInfo)
-      const dir = path.join(appData.appPathDir, 'pastelwallet')
-
-      if (!fs.existsSync(dir)) {
-        await fs.promises.mkdir(dir)
-      }
-
-      const fileName = path.join(dir, 'AddressBook.json')
-      if (!fs.existsSync(fileName)) {
-        fs.createWriteStream(fileName)
-      }
-
-      return fileName
+    const dir = store.getState().appInfo.pastelWalletDirPath
+    if (!dir) {
+      throw new Error("Can't get path of address store")
     }
 
-    return null
+    if (!fs.existsSync(dir)) {
+      await fs.promises.mkdir(dir)
+    }
+
+    const fileName = path.join(dir, 'AddressBook.json')
+    if (!fs.existsSync(fileName)) {
+      fs.createWriteStream(fileName)
+    }
+
+    return fileName
   }
 
   static async writeAddressBook(ab?: TAddressBook[]): Promise<void> {

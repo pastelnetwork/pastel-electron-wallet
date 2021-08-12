@@ -1,7 +1,7 @@
 {
   "name": "pastelwallet",
   "productName": "Pastel Wallet Fullnode",
-  "version": "1.2.2",
+  "version": "1.0.5",
   "description": "Pastel Wallet Fullnode (Electron version)",
   "keywords": [
     "Pastel",
@@ -220,6 +220,6 @@
       "eslint --max-warnings=0 --fix",
       "prettier --write"
     ],
-    "*.{js,html,css,scss,json,md}": "prettier --write"
+    "*.{js,html,css,scss,json,md,yml}": "prettier --write"
   }
 }

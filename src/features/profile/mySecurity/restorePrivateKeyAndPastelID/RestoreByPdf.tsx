@@ -6,25 +6,22 @@ import cn from 'classnames'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys } from '../common/utils'
-import { TRPCConfig } from '../../Profile'
 import { Refresh, PDF } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
 
 type TRestoreByPdfProps = {
-  rpcConfig: TRPCConfig
   onHideHeader: (status: boolean) => void
 }
 
 export default function RestoreByPdf({
-  rpcConfig,
   onHideHeader,
 }: TRestoreByPdfProps): JSX.Element {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [fileSelected, setFileSelected] = useState<File>()
 
   const doImport = async (value: string) => {
-    const result = await doImportPrivKeys(value, rpcConfig)
+    const result = await doImportPrivKeys(value)
     if (result) {
       setCurrentStatus('done')
     } else {

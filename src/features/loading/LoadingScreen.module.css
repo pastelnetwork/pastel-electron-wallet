@@ -1,50 +1,8 @@
-.loadingcontainer {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 101;
-}
-
-.clickable {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.textWrap {
-  padding-top: 120px;
-}
-
-.viewContent {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.viewInner {
-  position: relative;
-}
-
-.loaderWrapper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-}
-
 .loader {
   display: block;
   position: relative;
-  left: 54%;
-  top: 50%;
   width: 100px;
   height: 100px;
-  margin: -75px 0 0 -75px;
   border-radius: 50%;
   border: 3px solid transparent;
   border-top-color: #3498db;

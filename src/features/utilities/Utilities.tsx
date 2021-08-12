@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { ipcRenderer } from 'electron'
 import { useHistory } from 'react-router-dom'
 
 import { useAppDispatch } from 'redux/hooks'
@@ -13,49 +12,47 @@ import AboutModal, { openAboutModal } from '../about'
 import SquooshToolModal, { openSquooshToolModal } from '../squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../glitchImage'
 import { openUpdateToast } from '../updateToast'
+import { onRendererEvent } from '../app/rendererEvents'
 
 export default function Utilities(): JSX.Element {
   const dispatch = useAppDispatch()
   const history = useHistory()
 
   useEffect(() => {
-    ipcRenderer.on('pastelPhotopea', () => {
+    onRendererEvent('pastelPhotopea', () => {
       dispatch(openPastelPhotopeaModal())
     })
 
-    ipcRenderer.on('pastelSpriteEditorTool', () => {
+    onRendererEvent('pastelSpriteEditorTool', () => {
       dispatch(openPastelSpriteEditorToolModal())
     })
 
-    ipcRenderer.on('about', () => {
+    onRendererEvent('about', () => {
       dispatch(openAboutModal())
-    }) // About
+    })
 
-    ipcRenderer.on('squooshTool', () => {
+    onRendererEvent('squooshTool', () => {
       dispatch(openSquooshToolModal())
     })
 
-    ipcRenderer.on('glitchImage', () => {
+    onRendererEvent('glitchImage', () => {
       dispatch(openGlitchImageModal())
     })
 
-    ipcRenderer.on('update_downloaded', () => {
+    onRendererEvent('updateDownloaded', () => {
       dispatch(openUpdateToast())
     })
 
-    ipcRenderer.on(
-      'deepLink',
-      (event, { view, param }: { view: string; param: string }) => {
-        const allRoutes = Object.assign(ROUTES)
-        const page = allRoutes[view.toUpperCase()] ? view : ROUTES.DASHBOARD
-        history.replace({
-          pathname: page,
-          state: { param },
-        })
-      },
-    )
+    onRendererEvent('deepLink', ({ view, param }) => {
+      const allRoutes = Object.assign(ROUTES)
+      const page = allRoutes[view.toUpperCase()] ? view : ROUTES.DASHBOARD
+      history.replace({
+        pathname: page,
+        state: { param },
+      })
+    })
 
-    ipcRenderer.on('pasteld', () => {
+    onRendererEvent('pasteld', () => {
       history.push(ROUTES.PASTELD)
     })
   }, [])

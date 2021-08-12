@@ -1,10 +1,11 @@
-import { ipcRenderer, shell } from 'electron'
+import { shell } from 'electron'
 import React from 'react'
 
 import pkg from '../../../package.json'
 import { CloseButton, Button } from '../../common/components/Buttons'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { closeUpdateToast } from './UpdateToastSlice'
+import { sendEventToMain } from '../app/rendererEvents'
 
 export default function UpdateToast(): JSX.Element | null {
   const { opened } = useAppSelector(state => state.updateToast)
@@ -16,7 +17,7 @@ export default function UpdateToast(): JSX.Element | null {
 
   const handleUpdate = () => {
     dispatch(closeUpdateToast())
-    ipcRenderer.send('restart_app')
+    sendEventToMain('restartApp', null)
   }
 
   if (!opened) {

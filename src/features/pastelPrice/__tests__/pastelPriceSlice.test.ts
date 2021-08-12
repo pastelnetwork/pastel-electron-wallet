@@ -1,23 +1,17 @@
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
-import { AppDispatch, RootState } from '../../../redux/store'
 import coinGeckoClient from '../coingecko'
+import { mockedStore } from '../../../common/utils/mockStore'
 import {
   fetchPastelPrice,
   pastelPriceReducer,
   setPastelPrice,
 } from '../pastelPriceSlice'
+import log from 'electron-log'
 
 jest.mock('../coingecko', () => ({
   simple: {
     price: jest.fn(),
   },
 }))
-
-const middlewares = [thunk]
-const mockStore = configureMockStore<RootState, AppDispatch>(middlewares)
-const store = mockStore()
 
 describe('fetchPastelPrice', () => {
   beforeEach(() => {
@@ -35,19 +29,19 @@ describe('fetchPastelPrice', () => {
         data: {},
       })
 
-    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation()
+    const logSpy = jest.spyOn(log, 'error').mockImplementation()
 
     // Act
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await store.dispatch<any>(fetchPastelPrice())
+    await fetchPastelPrice()
 
     // Assert
     expect(coingeckoSpy).toBeCalledTimes(1)
-    expect(consoleSpy).toBeCalledTimes(1)
-    expect(consoleSpy).toBeCalledWith(
+    expect(logSpy).toBeCalledTimes(1)
+    expect(logSpy).toBeCalledWith(
       'pastelPrice fetchPastelPrice error: invalid response',
     )
-    expect(store.getActions()).toEqual([])
+    expect(mockedStore.getActions()).toEqual([])
   })
 
   test('correctly fetches price', async () => {
@@ -69,12 +63,12 @@ describe('fetchPastelPrice', () => {
 
     // Act
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    await store.dispatch<any>(fetchPastelPrice())
+    await fetchPastelPrice()
 
     // Assert
     expect(coingeckoSpy).toBeCalledTimes(1)
     expect(dateSpy).toBeCalledTimes(1)
-    expect(store.getActions()).toEqual([
+    expect(mockedStore.getActions()).toEqual([
       {
         payload: {
           lastFetched: 100,
