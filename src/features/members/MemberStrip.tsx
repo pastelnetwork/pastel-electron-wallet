@@ -30,7 +30,7 @@ const MemberStrip = ({
 }: TMemberStripProps): JSX.Element => {
   const history = useHistory()
   const toMemberProfile = () => {
-    history.replace(ROUTES.MEMBERS_PROFILE)
+    history.replace(ROUTES.MY_PROFILE)
   }
   const currency = useCurrencyName()
 

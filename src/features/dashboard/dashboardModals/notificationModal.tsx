@@ -25,10 +25,10 @@ export type TNotificationModal = {
 }
 
 const TTypesOptions = [
-  { value: 'psl', label: 'PSL' },
-  { value: 'psl 1', label: 'PSL 1' },
-  { value: 'psl 2', label: 'PSL 2' },
-  { value: 'psl 3', label: 'PSL 3' },
+  { value: 'all', label: 'All' },
+  { value: 'bidding', label: 'Bidding' },
+  { value: 'system', label: 'System' },
+  { value: 'wallet', label: 'Wallet' },
 ]
 
 const dateButtons = [

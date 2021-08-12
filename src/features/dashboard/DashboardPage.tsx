@@ -81,7 +81,7 @@ export default function DashboardPage(): JSX.Element {
   const [cards, setCards] = useState<TNFTCard[]>([])
   const [tab, setTab] = useState<number>(0)
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
-  const [walletBalance, seWwalletBalance] = useState(0)
+  const [walletBalance, setWalletBalance] = useState(0)
   const [transactions, seWTransactions] = useState<TTransactionItemProps[]>([])
 
   useEffect(() => {
@@ -96,7 +96,6 @@ export default function DashboardPage(): JSX.Element {
         avatarSrc: mockAvatarImagesList[index],
         price: '222K',
         currencyName,
-        percentage: Math.floor(Math.random() * 100),
         hideLikeButton: true,
         hideFollow: true,
         hideUnFollow: index % 3 === 0 ? false : true,
@@ -124,15 +123,13 @@ export default function DashboardPage(): JSX.Element {
       ])
       const balances: TTotalBalance = results[0]
       const trans = results[1]
-      seWwalletBalance(balances.total)
-
+      setWalletBalance(balances.total)
       const transactionsData: TTransactionItemProps[] = []
       trans.map(transaction => {
         transactionsData.push({
           type: (transaction.type as TTransactionType) || TTransactionType.ALL,
           amount: transaction.amount || 0,
-          date: dayjs(transaction.time),
-          currencyName,
+          date: dayjs.unix(transaction.time).format('DD/MM/YY'),
         })
         return
       })
@@ -269,12 +266,12 @@ export default function DashboardPage(): JSX.Element {
       </div>
       <div className='flex'>
         <div className='paper pt-6 flex-grow lg:flex lg:flex-col w-0 mr-5 relative'>
-          <div className='flex items-center h-6 mb-4 flex-shrink-0 px-30px justify-between'>
-            <div className='flex'>
-              <div className='font-extrabold text-gray-2d text-lg'>
+          <div className='flex items-center h-6 mb-30px flex-shrink-0 px-30px justify-between'>
+            <div className='flex items-center'>
+              <div className='font-extrabold text-gray-2d text-lg leading-6'>
                 Trending NFTs
               </div>
-              <div className='font-medium text-gray-a0 text-sm ml-2 mt-1'>
+              <div className='font-medium text-gray-a0 text-sm ml-2'>
                 312,000 listed
               </div>
             </div>
@@ -313,7 +310,12 @@ export default function DashboardPage(): JSX.Element {
                 <NFTCard
                   key={i}
                   {...item}
-                  className='max-w-sm md:max-w-full min-[250px] min-h-[372px]'
+                  className='max-w-sm md:max-w-full min-[250px] min-h-[372px] md:pt-3'
+                  authorWrapperClassName='pb-9px md:pb-9px'
+                  avatarClassName='w-6'
+                  exauthorClassName='text-sm font-normal text-gray-4a'
+                  onSaleTextClassName='text-base font-medium'
+                  priceClassName='text-sm leading-6 font-extrabold'
                 />
               ))}
               {cards.length === 0 && (

@@ -111,7 +111,7 @@ const Header = (): JSX.Element | null => {
           </div>
           <div className='flex items-center h-full'>
             <CircleQuestion size={18} className='text-gray-33' />
-            <Link to={ROUTES.DASHBOARD}>
+            <Link to='#' onClick={() => setOpenNotificationModal(true)}>
               <BellIcon
                 size={16}
                 hasNotification={true}

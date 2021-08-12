@@ -36,6 +36,9 @@ export type TNFTCompactCard = {
   authorClassName?: string
   exauthorClassName?: string
   avatarClassName?: string
+  authorWrapperClassName?: string
+  onSaleTextClassName?: string
+  priceClassName?: string
   searchText?: string
   detailUrl?: string
   copies?: string
@@ -70,6 +73,9 @@ const NFTCard = ({
   followers,
   authorClassName = 'text-sm font-normal text-gray-4a ',
   exauthorClassName = 'font-medium text-gray-4a text-sm md:text-h4',
+  authorWrapperClassName,
+  onSaleTextClassName,
+  priceClassName,
   avatarClassName = 'w-9',
   searchText,
   copies = '1 of 1,000',
@@ -116,7 +122,12 @@ const NFTCard = ({
     >
       {/* Header */}
       {fullCardProps && (
-        <div className='w-full px-14px pb-2 md:pb-3 md:px-3 flex justify-between'>
+        <div
+          className={cn(
+            'w-full px-14px pb-2 md:pb-3 md:px-3 flex justify-between',
+            authorWrapperClassName,
+          )}
+        >
           <div className='flex items-center overflow-hidden'>
             <img
               src={fullCardProps.avatarSrc}
@@ -361,7 +372,9 @@ const NFTCard = ({
                 isNFTPortfolio && 'text-sm font-medium text-gray-4a',
                 !isPortfolio &&
                   !isNFTPortfolio &&
+                  !onSaleTextClassName &&
                   'text-sm md:text-base font-medium leading-none text-h5 text-gray-71',
+                onSaleTextClassName,
               )}
             >
               {!fullCardProps.onSale
@@ -376,7 +389,9 @@ const NFTCard = ({
                   'flex text-gray-2d',
                   isNFTPortfolio && 'text-sm font-black items-start',
                   !isNFTPortfolio &&
+                    !priceClassName &&
                     'text-sm md:text-base lg:text-h5 font-extrabold',
+                  priceClassName,
                 )}
               >
                 {fullCardProps.onSale

@@ -1,23 +1,22 @@
 import React from 'react'
 import cn from 'classnames'
 import { LongArrow } from 'common/components/Icons'
-import { Dayjs } from 'dayjs'
 import { formatNumber } from '../../common/utils/format'
 import { TTransactionType } from 'types/rpc'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TTransactionItemProps = {
   type: TTransactionType
   amount: number
-  date: Dayjs
-  currencyName: string
+  date: string
 }
 
 export default function TransactionItem({
   type,
   amount,
   date,
-  currencyName,
 }: TTransactionItemProps): JSX.Element {
+  const currencyName = useCurrencyName()
   return (
     <div className='border border-gray-e7 rounded-lg mb-3 h-[76px]'>
       <div className='flex h-full items-center justify-between pl-3 pr-5 py-3'>
@@ -45,9 +44,7 @@ export default function TransactionItem({
               {type !== TTransactionType.SEND ? 'Last Received' : 'Last Sent'}
             </div>
             <div className='flex justify-between'>
-              <div className='text-gray-a0 text-sm'>
-                {date.format('MM/DD/YYYY')}
-              </div>
+              <div className='text-gray-a0 text-sm'>{date}</div>
               <div>
                 <div className='font-extrabold text-sm text-gray-4a'>
                   {formatNumber(amount)} {currencyName}

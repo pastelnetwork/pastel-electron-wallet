@@ -37,8 +37,8 @@ export default function Notification({
   return (
     <div
       className={cn(
-        'h-14 rounded-lg flex justify-between items-center pl-5 pr-5 mb-3 relative',
-        read ? 'bg-gray-f5' : 'bg-white border border-gray-e7',
+        'h-14 rounded-lg flex justify-between items-center pl-5 pr-5 mb-3 relative border border-gray-ec',
+        read ? 'bg-gray-f8' : 'bg-white',
         className,
       )}
     >
