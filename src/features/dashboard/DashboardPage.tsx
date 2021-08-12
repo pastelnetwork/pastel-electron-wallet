@@ -7,6 +7,8 @@ import Notification from './Notification'
 import LinkSection from './LinkSection'
 import dayjs, { Dayjs } from 'dayjs'
 
+import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
+import { TTotalBalance, TTransactionType } from 'types/rpc'
 import * as ROUTES from 'common/utils/constants/routes'
 import { useAppSelector } from 'redux/hooks'
 import { formatNumber } from '../../common/utils/format'
@@ -21,8 +23,6 @@ import {
 } from 'features/members/data'
 
 const date = dayjs('2021-04-04')
-
-const walletBalance = 320000
 
 enum Tabs {
   Creators,
@@ -81,6 +81,8 @@ export default function DashboardPage(): JSX.Element {
   const [cards, setCards] = useState<TNFTCard[]>([])
   const [tab, setTab] = useState<number>(0)
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
+  const [walletBalance, seWwalletBalance] = useState(0)
+  const [transactions, seWTransactions] = useState<TTransactionItemProps[]>([])
 
   useEffect(() => {
     const randomCards: TNFTCard[] = []
@@ -112,6 +114,33 @@ export default function DashboardPage(): JSX.Element {
       })
     })
     setCards(randomCards)
+
+    const featcData = async () => {
+      const walletRPC = new WalletRPC()
+      const transactionRPC = new TransactionRPC()
+      const results = await Promise.all([
+        await walletRPC.fetchTotalBalance(),
+        await transactionRPC.fetchTandZTransactions(),
+      ])
+      const balances: TTotalBalance = results[0]
+      const trans = results[1]
+      seWwalletBalance(balances.total)
+
+      const transactionsData: TTransactionItemProps[] = []
+      trans.map(transaction => {
+        transactionsData.push({
+          type: (transaction.type as TTransactionType) || TTransactionType.ALL,
+          amount: transaction.amount || 0,
+          date: dayjs(transaction.time),
+          currencyName,
+        })
+        return
+      })
+
+      seWTransactions(transactionsData)
+    }
+
+    featcData()
   }, [])
 
   const followers: Array<TPortfolioItemProps> = [
@@ -165,16 +194,6 @@ export default function DashboardPage(): JSX.Element {
     },
   ]
 
-  const transactions: TTransactionItemProps[] = [
-    { type: 'in', amount: 45000, date: dayjs('2021-08-10'), currencyName },
-    { type: 'out', amount: 12300, date: dayjs('2021-08-10'), currencyName },
-    { type: 'in', amount: 67000, date: dayjs('2021-08-08'), currencyName },
-    { type: 'out', amount: 23000, date: dayjs('2021-08-06'), currencyName },
-    { type: 'in', amount: 110000, date: dayjs('2021-08-05'), currencyName },
-    { type: 'out', amount: 46000, date: dayjs('2021-08-04'), currencyName },
-    { type: 'in', amount: 20000, date: dayjs('2021-08-04'), currencyName },
-  ]
-
   return (
     <div className='wrapper content with-page-header h-full w-screen py-5 max-w-screen-2xl'>
       <div className='flex mb-5'>
@@ -184,7 +203,8 @@ export default function DashboardPage(): JSX.Element {
               Wallet balance
             </div>
             <div className='font-extrabold text-gray-2d text-sm'>
-              {formatNumber(walletBalance)} {currencyName}
+              {walletBalance > 0 ? formatNumber(walletBalance) : 0}{' '}
+              {currencyName}
             </div>
           </div>
           <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>

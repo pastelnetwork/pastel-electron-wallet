@@ -62,8 +62,8 @@ const Header = (): JSX.Element | null => {
     <div className='h-66px'>
       <div className='fixed w-full z-50'>
         <AddNFT open={openAddNFT} onClose={toggleAddNFT} />
-        <div className='page-container flex items-center h-66px bg-white justify-between md:text-h6 lg:text-h5 border-b border-gray-ed text-gray-71'>
-          <div className='flex items-center h-full'>
+        <div className='page-container flex items-center h-66px bg-white justify-between text-h6 md:text-h5 border-b border-gray-ed text-gray-71'>
+          <div className='flex items-center h-full w-[80%]'>
             <Link to={ROUTES.DASHBOARD} className='w-9 h-9'>
               <QuestionLogo />
             </Link>
@@ -115,23 +115,26 @@ const Header = (): JSX.Element | null => {
               <BellIcon
                 size={16}
                 hasNotification={true}
-                className='text-gray-33 ml-6 lg:ml-27px w-4'
+                className='text-gray-33 ml-4 md:ml-6 lg:ml-27px w-4'
               />
             </Link>
             <Link to={ROUTES.CHAT}>
               <MessageIcon
                 size={18}
                 hasNotification={true}
-                className='text-gray-33 ml-6 lg:ml-30px w-4'
+                className='text-gray-33 ml-4 md:ml-6 lg:ml-30px w-4'
               />
             </Link>
             <Link to={ROUTES.MY_PROFILE}>
-              <SettingIcon size={18} className='ml-6 lg:ml-27px w-18px' />
+              <SettingIcon
+                size={18}
+                className='ml-4 md:ml-6 lg:ml-27px w-18px'
+              />
             </Link>
             <Link to={ROUTES.MY_PROFILE}>
               <img
                 src={AvatarImage}
-                className='w-9 h-9 ml-6 lg:ml-22px cursor-pointer'
+                className='w-9 h-9 ml-4 md:ml-6 lg:ml-22px cursor-pointer'
                 alt='Profile Avatar'
               />
             </Link>
