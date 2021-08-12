@@ -1,6 +1,7 @@
 import { promiseTimeout } from './promises'
 import { EventEmitter } from 'events'
 import { TMainEvents } from '../../features/app/mainEvents'
+import { TRendererEvents } from '../../features/app/rendererEvents'
 
 const createTestablePromise = () => {
   const resolveRef: { current?(): void } = {}
@@ -39,8 +40,14 @@ const ipcRendererEvents = new EventEmitter()
 const ipcMainEvents = new EventEmitter()
 
 export const ipcRenderer = {
-  on: jest.fn((channel: string, callback: () => void) =>
-    ipcRendererEvents.on(channel, callback),
+  removeAllListeners(channel: string): void {
+    ipcRendererEvents.removeAllListeners(channel)
+  },
+  on: jest.fn(
+    (channel: string, callback: (event: Event, payload: unknown) => void) =>
+      ipcRendererEvents.on(channel, payload => {
+        callback(new Event(channel), payload)
+      }),
   ),
   once: jest.fn((channel: string, callback: () => void) =>
     ipcRendererEvents.once(channel, callback),
@@ -54,8 +61,11 @@ export const ipcRenderer = {
 }
 
 export const ipcMain = {
-  on: jest.fn((channel: string, callback: () => void) =>
-    ipcMainEvents.on(channel, callback),
+  on: jest.fn(
+    (channel: string, callback: (event: Event, payload: unknown) => void) =>
+      ipcMainEvents.on(channel, payload =>
+        callback(new Event(channel), payload),
+      ),
   ),
   once: jest.fn((channel: string, callback: () => void) =>
     ipcMainEvents.once(channel, callback),
@@ -74,7 +84,15 @@ export const emitMainEvent = <Channel extends keyof TMainEvents>(
   payload: TMainEvents[Channel],
 ): Promise<void> => {
   ipcMainEvents.emit(channel, payload)
-  return promiseTimeout(0)
+  return nextTickPromise()
+}
+
+export const emitRendererEvent = <Channel extends keyof TRendererEvents>(
+  channel: Channel,
+  payload: TRendererEvents[Channel],
+): Promise<void> => {
+  ipcRendererEvents.emit(channel, payload)
+  return nextTickPromise()
 }
 
 // eslint-disable-next-line

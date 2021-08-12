@@ -1,5 +1,6 @@
-import store from '../../redux/store'
+import store, { RootState } from '../../redux/store'
 import { MockStoreEnhanced } from 'redux-mock-store'
+import { DeepPartial } from './types'
 
 jest.mock('../../redux/store', () => {
   const configureMockStore = require('redux-mock-store').default
@@ -7,4 +8,7 @@ jest.mock('../../redux/store', () => {
   return configureMockStore()()
 })
 
-export const mockedStore = store as MockStoreEnhanced<unknown, unknown>
+export const mockedStore = store as MockStoreEnhanced<
+  DeepPartial<RootState>,
+  unknown
+>
