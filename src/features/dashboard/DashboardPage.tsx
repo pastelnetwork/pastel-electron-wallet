@@ -115,7 +115,7 @@ export default function DashboardPage(): JSX.Element {
     })
     setCards(randomCards)
 
-    const featcData = async () => {
+    const fetchData = async () => {
       const walletRPC = new WalletRPC()
       const transactionRPC = new TransactionRPC()
       const results = await Promise.all([
@@ -140,7 +140,7 @@ export default function DashboardPage(): JSX.Element {
       seWTransactions(transactionsData)
     }
 
-    featcData()
+    fetchData()
   }, [])
 
   const followers: Array<TPortfolioItemProps> = [
