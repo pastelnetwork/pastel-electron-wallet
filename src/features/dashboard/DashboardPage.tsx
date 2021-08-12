@@ -176,7 +176,7 @@ export default function DashboardPage(): JSX.Element {
   ]
 
   return (
-    <div className='page-container py-5 w-full max-w-screen-xl mx-auto'>
+    <div className='wrapper content with-page-header h-full w-screen py-5 max-w-screen-2xl'>
       <div className='flex mb-5'>
         <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
           <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
@@ -248,7 +248,7 @@ export default function DashboardPage(): JSX.Element {
         </div>
       </div>
       <div className='flex'>
-        <div className='paper pt-6 flex-grow lg:flex lg:flex-col w-0 mr-5 relative max-w-[850px]'>
+        <div className='paper pt-6 flex-grow lg:flex lg:flex-col w-0 mr-5 relative'>
           <div className='flex items-center h-6 mb-4 flex-shrink-0 px-30px justify-between'>
             <div className='flex'>
               <div className='font-extrabold text-gray-2d text-lg'>
