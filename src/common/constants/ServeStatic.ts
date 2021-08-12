@@ -1,12 +1,12 @@
 export const glitch = {
-  staticPort: 68781,
+  staticPort: 35711,
 }
 
 export const squoosh = {
-  staticPort: 68782,
+  staticPort: 35712,
 }
 
 export const ffmpegwasm = {
-  staticPort: 68783,
-  videoHostURL: 'http://localhost:68783/',
+  staticPort: 35713,
+  videoHostURL: 'http://localhost:35713/',
 }
