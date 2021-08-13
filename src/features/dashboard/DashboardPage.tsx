@@ -82,7 +82,8 @@ export default function DashboardPage(): JSX.Element {
   const [tab, setTab] = useState<number>(0)
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
   const [walletBalance, setWalletBalance] = useState(0)
-  const [transactions, seWTransactions] = useState<TTransactionItemProps[]>([])
+  const [transactions, setTransactions] = useState<TTransactionItemProps[]>([])
+  const [walletLoading, setWalletLoading] = useState(false)
 
   useEffect(() => {
     const randomCards: TNFTCard[] = []
@@ -117,6 +118,7 @@ export default function DashboardPage(): JSX.Element {
     const fetchData = async () => {
       const walletRPC = new WalletRPC()
       const transactionRPC = new TransactionRPC()
+      setWalletLoading(true)
       const results = await Promise.all([
         await walletRPC.fetchTotalBalance(),
         await transactionRPC.fetchTandZTransactions(),
@@ -124,17 +126,15 @@ export default function DashboardPage(): JSX.Element {
       const balances: TTotalBalance = results[0]
       const trans = results[1]
       setWalletBalance(balances.total)
-      const transactionsData: TTransactionItemProps[] = []
-      trans.map(transaction => {
-        transactionsData.push({
+      const transactionsData: TTransactionItemProps[] = trans.map(
+        transaction => ({
           type: (transaction.type as TTransactionType) || TTransactionType.ALL,
           amount: transaction.amount || 0,
           date: dayjs.unix(transaction.time).format('DD/MM/YY'),
-        })
-        return
-      })
-
-      seWTransactions(transactionsData)
+        }),
+      )
+      setWalletLoading(false)
+      setTransactions(transactionsData)
     }
 
     fetchData()
@@ -205,13 +205,23 @@ export default function DashboardPage(): JSX.Element {
             </div>
           </div>
           <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
-            {transactions.map((transaction, i) => (
-              <TransactionItem key={i} {...transaction} />
-            ))}
-            {transactions.length === 0 && (
+            {walletLoading ? (
               <div className='flex justify-center mt-[111px]'>
-                <span className='text-base text-gray-a0'>You have no PSL</span>
+                <span className='text-base text-gray-a0'>Loading ...</span>
               </div>
+            ) : (
+              <>
+                {transactions.map((transaction, i) => (
+                  <TransactionItem key={i} {...transaction} />
+                ))}
+                {transactions.length === 0 && (
+                  <div className='flex justify-center mt-[111px]'>
+                    <span className='text-base text-gray-a0'>
+                      You have no PSL
+                    </span>
+                  </div>
+                )}
+              </>
             )}
           </div>
           <LinkSection to={ROUTES.WALLET} absolute gradient>

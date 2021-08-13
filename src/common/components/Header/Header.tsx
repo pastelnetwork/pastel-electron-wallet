@@ -3,6 +3,7 @@ import { NavLink, Link, useLocation } from 'react-router-dom'
 import { useToggle } from 'react-use'
 
 import SearchBar from '../SearchBar'
+import ButtonTag from '../Link'
 import * as ROUTES from 'common/utils/constants/routes'
 import AvatarImage from 'common/assets/images/profile-avatar.png'
 import cn from 'classnames'
@@ -111,13 +112,13 @@ const Header = (): JSX.Element | null => {
           </div>
           <div className='flex items-center h-full'>
             <CircleQuestion size={18} className='text-gray-33' />
-            <Link to='#' onClick={() => setOpenNotificationModal(true)}>
+            <ButtonTag onClick={() => setOpenNotificationModal(true)}>
               <BellIcon
                 size={16}
                 hasNotification={true}
                 className='text-gray-33 ml-4 md:ml-6 lg:ml-27px w-4'
               />
-            </Link>
+            </ButtonTag>
             <Link to={ROUTES.CHAT}>
               <MessageIcon
                 size={18}
