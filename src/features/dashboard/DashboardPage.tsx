@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
-import NFTCard, { TNFTCard } from '../../common/components/NFTCard'
+import NFTCard, {
+  TNFTCard,
+  NFTCardVariant,
+} from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
 import dayjs, { Dayjs } from 'dayjs'
 
+import { useCurrencyName } from 'common/hooks/appInfo'
 import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
 import { TTotalBalance, TTransactionType } from 'types/rpc'
 import * as ROUTES from 'common/utils/constants/routes'
-import { useAppSelector } from 'redux/hooks'
 import { formatNumber } from '../../common/utils/format'
 import Radio from 'common/components/Radio'
 import NotificationModal from './dashboardModals/notificationModal'
@@ -74,9 +77,7 @@ const mockNFTImagesList = [
 ]
 
 export default function DashboardPage(): JSX.Element {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
+  const currencyName = useCurrencyName()
 
   const [cards, setCards] = useState<TNFTCard[]>([])
   const [tab, setTab] = useState<number>(0)
@@ -92,14 +93,10 @@ export default function DashboardPage(): JSX.Element {
         imageSrc: mockNFTImagesList[index],
         likes: 23,
         title: mockDataImagesList[index].title,
-        liked: false,
         author: mockNamesList[index],
         avatarSrc: mockAvatarImagesList[index],
-        price: '222K',
+        price: 12000,
         currencyName,
-        hideLikeButton: true,
-        hideFollow: true,
-        hideUnFollow: index % 3 === 0 ? false : true,
         detailUrl: ROUTES.PORTFOLIO_DETAIL,
         nsfw: { porn: 0, hentai: 0 },
         copies: `${index + 1} of 3`,
@@ -108,9 +105,11 @@ export default function DashboardPage(): JSX.Element {
         hidePerpetualRoyalty: index !== 0,
         hideCertifiedRare: true,
         hideDirectFromArtist: index !== 1,
-        onSalePrice: Math.floor(Math.random() * 2000),
-        onSale: index > 0,
-        isLastBid: index === 1,
+        leftTime: '3h 30m 12s left',
+        copiesAvailable: 15,
+        isAuctionBid: index === 0,
+        isFixedPrice: index === 1,
+        isNotForSale: index === 2,
       })
     })
     setCards(randomCards)
@@ -217,7 +216,7 @@ export default function DashboardPage(): JSX.Element {
                 {transactions.length === 0 && (
                   <div className='flex justify-center mt-[111px]'>
                     <span className='text-base text-gray-a0'>
-                      You have no PSL
+                      You have no {currencyName}
                     </span>
                   </div>
                 )}
@@ -236,7 +235,7 @@ export default function DashboardPage(): JSX.Element {
             </div>
           </div>
           {followers.length > 0 && (
-            <div className='grid md:grid-cols-3 gap-[26px] md:flex px-[30px] h-[282px] overflow-auto'>
+            <div className='grid md:grid-cols-3 gap-[26px] md:flex px-[30px] h-[282px] overflow-auto mr-18px'>
               <PortfolioColumn title='Sales in progress (2)'>
                 {followers
                   .filter(item => item.type == 'progress')
@@ -317,16 +316,7 @@ export default function DashboardPage(): JSX.Element {
               }
             >
               {cards.map((item, i) => (
-                <NFTCard
-                  key={i}
-                  {...item}
-                  className='max-w-sm md:max-w-full min-[250px] min-h-[372px] md:pt-3'
-                  authorWrapperClassName='pb-9px md:pb-9px'
-                  avatarClassName='w-6'
-                  exauthorClassName='text-sm font-normal text-gray-4a'
-                  onSaleTextClassName='text-base font-medium'
-                  priceClassName='text-sm leading-6 font-extrabold'
-                />
+                <NFTCard key={i} {...item} variant={NFTCardVariant.M} />
               ))}
               {cards.length === 0 && (
                 <div className='text-gray-a0 text-base mt-[146px]'>

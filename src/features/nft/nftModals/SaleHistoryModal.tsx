@@ -3,6 +3,7 @@ import React from 'react'
 import Modal from './modal'
 import Table from './table'
 import NumberFormat from 'react-number-format'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TSaleHistoryModal = {
   isOpen: boolean
@@ -15,6 +16,63 @@ export const SaleHistoryModal = ({
   isOpen,
   handleClose,
 }: TSaleHistoryModal): JSX.Element => {
+  const currencyName = useCurrencyName()
+  const Columns = [
+    {
+      name: '# Copy',
+      key: 'copy',
+      sortable: true,
+      className: 'pl-10 w-[153px]',
+    },
+    {
+      name: 'Date',
+      key: 'date',
+      sortable: true,
+      className: 'w-[185px]',
+    },
+    {
+      name: 'Owner',
+      key: 'owner',
+      sortable: true,
+      className: 'w-[170px]',
+    },
+    {
+      name: 'Current Owner',
+      key: 'current_owner',
+      sortable: true,
+      className: 'w-[213px]',
+    },
+    {
+      name: 'Price paid',
+      key: 'price_paid',
+      sortable: true,
+      custom: (value: string) => (
+        <div className='flex items-center'>
+          <div className='text-base text-gray-4a font-medium min-w-[81px]'>
+            <NumberFormat
+              value={value}
+              displayType='text'
+              thousandSeparator={true}
+            />{' '}
+            {currencyName}
+          </div>
+          <div className='ml-7 text-gray-71 font-normal text-sm min-w-[67px]'>
+            <NumberFormat
+              value={parseInt(value) * rate}
+              displayType='text'
+              thousandSeparator={true}
+              decimalScale={2}
+            />{' '}
+            USD
+          </div>
+          <div className='ml-[50px]'>
+            <Link>price history</Link>
+          </div>
+        </div>
+      ),
+    },
+  ]
+
   return (
     <Modal
       isOpen={isOpen}
@@ -41,62 +99,6 @@ export const SaleHistoryModal = ({
     </Modal>
   )
 }
-
-const Columns = [
-  {
-    name: '# Copy',
-    key: 'copy',
-    sortable: true,
-    className: 'pl-10 w-[153px]',
-  },
-  {
-    name: 'Date',
-    key: 'date',
-    sortable: true,
-    className: 'w-[185px]',
-  },
-  {
-    name: 'Owner',
-    key: 'owner',
-    sortable: true,
-    className: 'w-[170px]',
-  },
-  {
-    name: 'Current Owner',
-    key: 'current_owner',
-    sortable: true,
-    className: 'w-[213px]',
-  },
-  {
-    name: 'Price paid',
-    key: 'price_paid',
-    sortable: true,
-    custom: (value: string) => (
-      <div className='flex items-center'>
-        <div className='text-base text-gray-4a font-medium min-w-[81px]'>
-          <NumberFormat
-            value={value}
-            displayType='text'
-            thousandSeparator={true}
-          />{' '}
-          PSL
-        </div>
-        <div className='ml-7 text-gray-71 font-normal text-sm min-w-[67px]'>
-          <NumberFormat
-            value={parseInt(value) * rate}
-            displayType='text'
-            thousandSeparator={true}
-            decimalScale={2}
-          />{' '}
-          USD
-        </div>
-        <div className='ml-[50px]'>
-          <Link>price history</Link>
-        </div>
-      </div>
-    ),
-  },
-]
 
 const tableData = [
   {

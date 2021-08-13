@@ -3,7 +3,7 @@ import cn from 'classnames'
 import dayjs from 'dayjs'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 
-import { useAppSelector } from 'redux/hooks'
+import { useCurrencyName } from 'common/hooks/appInfo'
 import { PrevButton, NextButton } from './Buttons'
 import Tooltip from 'common/components/Tooltip'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
@@ -26,9 +26,7 @@ export type TStepBackupMethodProps = {
 }
 
 const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
+  const currencyName = useCurrencyName()
   const pdfFileName = `${
     currencyName || 'LSP'
   }_Paper_Wallet__Private_Keys_${dayjs(new Date()).format(

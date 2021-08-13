@@ -61,9 +61,10 @@ const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
             hideFollow={true}
             hideLikeButton={true}
             {...item}
-            exauthorClassName='text-sm text-gray-4a'
-            avatarClassName='w-6 h-6'
             searchText={searchKey}
+            isAuctionBid={(i + 1) % 2 === 0}
+            isFixedPrice={(i + 1) % 3 === 0 && (i + 1) % 2 !== 0}
+            isNotForSale={(i + 1) % 2 !== 0 && (i + 1) % 3 !== 0}
           />
         ))}
       </div>

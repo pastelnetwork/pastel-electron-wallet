@@ -73,11 +73,11 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
                 {formatDatesDistance(dayjs(), nft.time)} left
               </Row>
               <Row title='Min. Price' link='#'>
-                {formatNumber(nft.price)} {currencyName ? currencyName : 'PSL'}
+                {formatNumber(nft.price)} {currencyName}
               </Row>
               <Row title='Last bid' link='#'>
                 <span className='flex mr-3 text-gradient'>
-                  {formatNumber(nft.bids)} {currencyName ? currencyName : 'PSL'}
+                  {formatNumber(nft.bids)} {currencyName}
                 </span>
                 <Tooltip
                   type='top'

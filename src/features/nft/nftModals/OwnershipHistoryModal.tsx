@@ -4,6 +4,7 @@ import Table from './table'
 
 import NumberFormat from 'react-number-format'
 import { Quit } from 'common/components/Icons'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 const rate = 0.004
 
@@ -16,6 +17,73 @@ const OwnershipHistoryModal = ({
   isOpen,
   handleClose,
 }: TOwnershipHistoryModal): JSX.Element => {
+  const currencyName = useCurrencyName()
+  const Columns = [
+    {
+      name: 'Deal',
+      key: 'Deal',
+      className: 'pl-8',
+      tdClassName: 'text-gray-71 font-medium w-[155px]',
+      sortable: true,
+    },
+    {
+      name: 'Date',
+      key: 'Date',
+      tdClassName: 'text-gray-a0 font-medium w-[190px]',
+      sortable: true,
+    },
+    {
+      name: 'Buyer',
+      key: 'buyer',
+      tdClassName: 'text-gray-4a text-base font-medium w-[166px]',
+      sortable: true,
+    },
+    {
+      name: 'Seller',
+      key: 'seller',
+      tdClassName: 'text-gray-4a font-medium',
+      sortable: true,
+    },
+    {
+      name: 'Fee paid',
+      key: 'fee_paid',
+      tdClassName: 'text-gray-4a font-medium',
+      custom: (value: string) => (
+        <div className='flex items-center'>
+          <div className='text-base text-gray-4a font-medium min-w-[81px]'>
+            <NumberFormat
+              value={value}
+              displayType='text'
+              thousandSeparator={true}
+            />{' '}
+            {currencyName}
+          </div>
+          <div className='ml-7 text-gray-71 font-normal text-sm min-w-[67px]'>
+            <NumberFormat
+              value={parseInt(value) * rate}
+              displayType='text'
+              thousandSeparator={true}
+              decimalScale={2}
+            />{' '}
+            USD
+          </div>
+        </div>
+      ),
+      sortable: true,
+    },
+    {
+      name: 'Transaction ID',
+      key: 'transaction_id',
+      tdClassName: 'text-gray-4a font-medium',
+      align: 'center',
+      custom: () => (
+        <div className='flex justify-center'>
+          <Quit size={16} className='text-blue-3f' />
+        </div>
+      ),
+    },
+  ]
+
   return (
     <Modal
       isOpen={isOpen}
@@ -38,72 +106,6 @@ const OwnershipHistoryModal = ({
     </Modal>
   )
 }
-
-const Columns = [
-  {
-    name: 'Deal',
-    key: 'Deal',
-    className: 'pl-8',
-    tdClassName: 'text-gray-71 font-medium w-[155px]',
-    sortable: true,
-  },
-  {
-    name: 'Date',
-    key: 'Date',
-    tdClassName: 'text-gray-a0 font-medium w-[190px]',
-    sortable: true,
-  },
-  {
-    name: 'Buyer',
-    key: 'buyer',
-    tdClassName: 'text-gray-4a text-base font-medium w-[166px]',
-    sortable: true,
-  },
-  {
-    name: 'Seller',
-    key: 'seller',
-    tdClassName: 'text-gray-4a font-medium',
-    sortable: true,
-  },
-  {
-    name: 'Fee paid',
-    key: 'fee_paid',
-    tdClassName: 'text-gray-4a font-medium',
-    custom: (value: string) => (
-      <div className='flex items-center'>
-        <div className='text-base text-gray-4a font-medium min-w-[81px]'>
-          <NumberFormat
-            value={value}
-            displayType='text'
-            thousandSeparator={true}
-          />{' '}
-          PSL
-        </div>
-        <div className='ml-7 text-gray-71 font-normal text-sm min-w-[67px]'>
-          <NumberFormat
-            value={parseInt(value) * rate}
-            displayType='text'
-            thousandSeparator={true}
-            decimalScale={2}
-          />{' '}
-          USD
-        </div>
-      </div>
-    ),
-    sortable: true,
-  },
-  {
-    name: 'Transaction ID',
-    key: 'transaction_id',
-    tdClassName: 'text-gray-4a font-medium',
-    align: 'center',
-    custom: () => (
-      <div className='flex justify-center'>
-        <Quit size={16} className='text-blue-3f' />
-      </div>
-    ),
-  },
-]
 
 const tableData = [
   {

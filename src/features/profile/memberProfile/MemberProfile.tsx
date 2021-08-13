@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { useAppSelector } from 'redux/hooks'
+import { useCurrencyName } from 'common/hooks/appInfo'
 import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
@@ -25,20 +25,6 @@ const profile_data = {
   },
 }
 
-const general_data = {
-  location: 'New York, US',
-  language: 'English',
-  categories: 'motion graphics, illustration, \nabstract',
-  reputation: 4.89,
-  buyerBans: 3,
-  highestFeeRecieved: '136,200 PSL',
-  totalSalesAmount: '560,600 PSL',
-  totalItemsSold: '124 Copies across 5 NFTs',
-  topCategoryPercentage: 'motion graphics 30%',
-  bio:
-    'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
-}
-
 const categoriesOptions: TOption[] = [
   { value: 'All', label: 'All' },
   { value: 'option_2', label: 'TOption 2' },
@@ -53,19 +39,27 @@ const filterData = [
 ]
 
 const MemberProfile = (): JSX.Element => {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
+  const currencyName = useCurrencyName()
+
+  const general_data = {
+    location: 'New York, US',
+    language: 'English',
+    categories: 'motion graphics, illustration, \nabstract',
+    reputation: 4.89,
+    buyerBans: 3,
+    highestFeeRecieved: `136,200 ${currencyName}`,
+    totalSalesAmount: `560,600 ${currencyName}`,
+    totalItemsSold: '124 Copies across 5 NFTs',
+    topCategoryPercentage: 'motion graphics 30%',
+    bio:
+      'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
+  }
 
   const mockCardProps: TNFTCard = {
     likes: 23,
-    onSale: true,
-    price: '222K',
+    price: 22000,
     currencyName,
-    liked: true,
     percentage: 75,
-    variant: 'portfolio',
-    isLastBid: false,
     hideLikeButton: true,
     author: 'vanecha',
     avatarSrc: avatar,
@@ -73,6 +67,8 @@ const MemberProfile = (): JSX.Element => {
     title: 'Infinity I',
     hideFollow: true,
     nsfw: { porn: 0, hentai: 0 },
+    leftTime: '3h 30m 12s left',
+    copiesAvailable: 15,
   }
 
   const [tab, setTab] = useState(2)
@@ -152,7 +148,13 @@ const MemberProfile = (): JSX.Element => {
                   </div>
                   <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3  gap-9 text-gray-1a overflow-y-auto pr-33px h-608px'>
                     {Array.from({ length: 10 }).map((_, i) => (
-                      <NFTCard {...mockCardProps} key={i} />
+                      <NFTCard
+                        {...mockCardProps}
+                        isAuctionBid={(i + 1) % 2 === 0}
+                        isFixedPrice={(i + 1) % 3 === 0 && (i + 1) % 2 !== 0}
+                        isNotForSale={(i + 1) % 2 !== 0 && (i + 1) % 3 !== 0}
+                        key={i}
+                      />
                     ))}
                   </div>
                 </div>

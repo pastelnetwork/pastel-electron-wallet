@@ -6,6 +6,7 @@ import addIcon from 'common/assets/icons/ico-add.svg'
 import checkIcon from 'common/assets/icons/ico-check.svg'
 import Select from 'common/components/Select/Select'
 import PaymentSource from './PaymentSource'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TDataType = {
   hash: string
@@ -22,6 +23,7 @@ const PaymentModal = ({
   handleClose,
   paymentSources,
 }: PaymentModalProps): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(12)
   const [psl, setPSL] = useState<number>(22000)
   return (
@@ -33,11 +35,8 @@ const PaymentModal = ({
     >
       <div className='flex'>
         <div className='w-1/3'>
-          {/* <div className='h-10 shadow-input pl-4 items-center flex mr-6'>
-            22,000 PSL
-          </div> */}
           <Select
-            label='PSL'
+            label={currencyName}
             className='text-gray-2d w-264px'
             autocomplete={true}
             min={10000}
@@ -77,7 +76,7 @@ const PaymentModal = ({
         </div>
         <div className='w-1/3 h-10 flex items-center text-gray-2d'>
           <span className='font-extrabold'>10</span> &nbsp;
-          <span className='text-gray-71'>PSL fee</span>
+          <span className='text-gray-71'>{currencyName} fee</span>
         </div>
       </div>
       <div>
@@ -119,7 +118,8 @@ const PaymentModal = ({
           <div className='flex items-center px-5'>
             <img src={checkIcon} className='py-3.5' />
             <span className='text-sm ml-2'>
-              Confirm <span className='font-bold'>PSL 32,000</span> payment
+              Confirm <span className='font-bold'>{currencyName} 32,000</span>{' '}
+              payment
             </span>
           </div>
         </Button>

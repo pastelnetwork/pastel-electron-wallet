@@ -6,6 +6,7 @@ import { Button } from 'common/components/Buttons'
 import UploadingCircle from './UploadingCircle'
 import UploadArea from './UploadArea'
 import { useSubmit } from './UploadStep.service'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TUploadStepProps = {
   state: TAddNFTState
@@ -19,6 +20,7 @@ export type TImageFile = {
 }
 
 export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
+  const currencyName = useCurrencyName()
   const [imageFile, setFile] = useState<TImageFile>()
   const [isReady, setReady] = useState(Boolean(state.image))
 
@@ -60,7 +62,8 @@ export default function UploadStep({ state }: TUploadStepProps): JSX.Element {
               the registeration fee.
             </div>
             <div className='text-gray-71 mb-2'>
-              For example, 0.5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
+              For example, 0.5 mb costs 1,000 {currencyName}, 5 mb - 10,000{' '}
+              {currencyName}
             </div>
           </div>
           <div className='flex-between'>

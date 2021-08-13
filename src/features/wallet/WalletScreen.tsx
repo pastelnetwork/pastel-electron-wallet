@@ -544,7 +544,7 @@ const WalletScreen = (): JSX.Element => {
                     displayType='text'
                     thousandSeparator={true}
                   />{' '}
-                  PSL
+                  {info.currencyName}
                 </span>
               </div>
             </div>
@@ -565,7 +565,7 @@ const WalletScreen = (): JSX.Element => {
                 <div className='flex items-center ml-6 font-medium'>
                   <ElectricityIcon size={11} className='text-blue-3f py-3' />
                   <span className='text-sm ml-11px'>
-                    Generate a new PSL Address
+                    Generate a new {info.currencyName} Address
                   </span>
                 </div>
               </Button>
@@ -583,7 +583,7 @@ const WalletScreen = (): JSX.Element => {
               <div className='flex items-center ml-6 font-medium'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
                 <span className='text-sm ml-11px'>
-                  Generate a new PSL Address
+                  Generate a new {info.currencyName} Address
                 </span>
               </div>
             </Button>

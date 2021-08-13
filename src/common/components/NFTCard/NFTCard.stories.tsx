@@ -11,12 +11,10 @@ const mockCardProps: TNFTCard = {
   avatarSrc: avatar,
   imageSrc: image,
   likes: 23,
-  liked: true,
-  onSale: true,
-  price: '222K',
+  price: 12000,
   currencyName: 'PSL',
-  title: 'Cosmic Perspective',
-  className: 'w-300px',
+  title: 'Cosmic Perspective Longname',
+  className: 'w-[364px]',
   followers: 0,
   nsfw: { porn: 0, hentai: 0 },
 }
@@ -36,5 +34,22 @@ const Template: Story<TNFTCard> = props => {
   )
 }
 
-export const NFTCard = Template.bind({})
-NFTCard.args = { ...mockCardProps }
+export const PlaceABid = Template.bind({})
+PlaceABid.args = {
+  ...mockCardProps,
+  isAuctionBid: true,
+  leftTime: '3h 30m 12s left',
+}
+
+export const BuyItNow = Template.bind({})
+BuyItNow.args = {
+  ...mockCardProps,
+  copiesAvailable: 15,
+  isFixedPrice: true,
+}
+
+export const MakeAnOffer = Template.bind({})
+MakeAnOffer.args = {
+  ...mockCardProps,
+  isNotForSale: true,
+}

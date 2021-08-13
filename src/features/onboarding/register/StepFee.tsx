@@ -7,6 +7,7 @@ import { Input } from 'common/components/Inputs'
 import Link from 'common/components/Link'
 import styles from './Register.module.css'
 import { Clipboard } from 'common/components/Icons'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TStepFeeProps = {
   paymentMethod: PaymentMethods
@@ -21,6 +22,7 @@ export type TStepFeeProps = {
 }
 
 const StepFee = (props: TStepFeeProps): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [copying, setCopying] = useState<boolean>(false)
   const [copied, setCopied] = useState<boolean>(false)
 
@@ -79,7 +81,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
         {props.paymentMethod !== PaymentMethods.AirdropPromoCode && (
           <>
             <h1 className='text-gray-4a text-h3 font-extrabold'>
-              Choose Exchange to Purchase PSL
+              Choose Exchange to Purchase {currencyName}
             </h1>
             <h2 className='text-gray-71 text-base font-normal '>
               Copy address
@@ -174,7 +176,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
           text={
             props.paymentMethod === PaymentMethods.AirdropPromoCode
               ? 'Apply'
-              : 'Proceed to 1,000 PSL Payment'
+              : `Proceed to 1,000 ${currencyName} Payment`
           }
           disabled={!nextActive}
         />

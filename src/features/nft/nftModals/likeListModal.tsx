@@ -3,6 +3,7 @@ import Modal from './modal'
 import Table from './table'
 import dayjs from 'common/utils/initDayjs'
 import NumberFormat from 'react-number-format'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TLikeListModal = {
   isOpen: boolean
@@ -13,6 +14,59 @@ const LikeListModal = ({
   isOpen,
   handleClose,
 }: TLikeListModal): JSX.Element => {
+  const currencyName = useCurrencyName()
+  const tableData = [
+    {
+      time: new Date().toString(),
+      member: 'UnkleBens',
+      Recipient: 'Reymundo',
+      sold: `12mm ${currencyName}`,
+      followers: 12000,
+    },
+    {
+      time: new Date().toString(),
+      member: 'UnkleBens',
+      Recipient: 'Harber',
+      sold: `12mm ${currencyName}`,
+      followers: 12000,
+    },
+    {
+      time: new Date().toString(),
+      member: 'UnkleBens',
+      Recipient: 'Harber',
+      sold: `12mm ${currencyName}`,
+      followers: 12000,
+    },
+    {
+      time: new Date().toString(),
+      member: 'UnkleBens',
+      Recipient: 'Harber',
+      sold: `12mm ${currencyName}`,
+      followers: 12000,
+    },
+    {
+      time: new Date().toString(),
+      member: 'UnkleBens',
+      Recipient: 'Harber',
+      sold: `12mm ${currencyName}`,
+      followers: 12000,
+    },
+    {
+      time: new Date().toString(),
+      member: 'UnkleBens',
+      Recipient: 'Harber',
+      sold: `12mm ${currencyName}`,
+      followers: 12000,
+    },
+    {
+      time: new Date().toString(),
+      member: 'UnkleBens',
+      Recipient: 'Harber',
+      sold: `12mm ${currencyName}`,
+      followers: 12000,
+    },
+  ]
+
   return (
     <Modal
       isOpen={isOpen}
@@ -73,58 +127,6 @@ const Columns = [
         k{' '}
       </div>
     ),
-  },
-]
-
-const tableData = [
-  {
-    time: new Date().toString(),
-    member: 'UnkleBens',
-    Recipient: 'Reymundo',
-    sold: '12mm PSL',
-    followers: 12000,
-  },
-  {
-    time: new Date().toString(),
-    member: 'UnkleBens',
-    Recipient: 'Harber',
-    sold: '12mm PSL',
-    followers: 12000,
-  },
-  {
-    time: new Date().toString(),
-    member: 'UnkleBens',
-    Recipient: 'Harber',
-    sold: '12mm PSL',
-    followers: 12000,
-  },
-  {
-    time: new Date().toString(),
-    member: 'UnkleBens',
-    Recipient: 'Harber',
-    sold: '12mm PSL',
-    followers: 12000,
-  },
-  {
-    time: new Date().toString(),
-    member: 'UnkleBens',
-    Recipient: 'Harber',
-    sold: '12mm PSL',
-    followers: 12000,
-  },
-  {
-    time: new Date().toString(),
-    member: 'UnkleBens',
-    Recipient: 'Harber',
-    sold: '12mm PSL',
-    followers: 12000,
-  },
-  {
-    time: new Date().toString(),
-    member: 'UnkleBens',
-    Recipient: 'Harber',
-    sold: '12mm PSL',
-    followers: 12000,
   },
 ]
 

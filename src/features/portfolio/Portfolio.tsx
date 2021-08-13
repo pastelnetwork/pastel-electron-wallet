@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { useAppSelector } from 'redux/hooks'
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 import { TPageHeaderSortByOptions } from 'common/components/PageHeader/PageHeader'
@@ -8,6 +7,7 @@ import Select, { TOption } from 'common/components/Select/Select'
 import NFTCard, { TNFTCard } from 'common/components/NFTCard'
 import Slider from 'common/components/Slider/Slider'
 import * as ROUTES from 'common/utils/constants/routes'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 import styles from './Portfolio.module.css'
 
@@ -69,9 +69,7 @@ const mockBreadcrumbs: TBreadcrumb[] = [
 ]
 
 export default function Portfolio(): JSX.Element {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
+  const currencyName = useCurrencyName()
 
   const mockupPortfolio: TNFTCard[] = []
   Array.from({ length: 26 }).map((_, index) => {
@@ -80,18 +78,19 @@ export default function Portfolio(): JSX.Element {
       avatarSrc: mockAvatarImagesList[index],
       imageSrc: mockDataImagesList[index].url,
       likes: 23,
-      price: '222K',
+      price: 12000,
       followers: 10,
       currencyName,
       title: mockDataImagesList[index].title,
-      liked: true,
-      onSale: index % 2 ? true : false,
-      isLastBid: index % 3 ? true : false,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
       copies: `${index + 1} of 26`,
       diamond: `${Math.floor(Math.random() * 100)}%`,
-      onSalePrice: Math.floor(Math.random() * 20000),
+      leftTime: '3h 30m 12s left',
+      copiesAvailable: 15,
+      isAuctionBid: (index + 1) % 2 === 0,
+      isFixedPrice: (index + 1) % 3 === 0 && (index + 1) % 2 !== 0,
+      isNotForSale: (index + 1) % 2 !== 0 && (index + 1) % 3 !== 0,
     })
   })
 
@@ -101,30 +100,32 @@ export default function Portfolio(): JSX.Element {
       avatarSrc: avatar,
       imageSrc: portfolio1,
       likes: 23,
-      price: '222K',
+      price: 12000,
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      liked: true,
-      isLastBid: false,
-      onSale: true,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
+      copies: '1 of 260',
+      leftTime: '3h 30m 12s left',
+      copiesAvailable: 15,
+      isAuctionBid: true,
     },
     {
       author: 'zndrson',
       avatarSrc: avatar,
       imageSrc: portfolio2,
       likes: 23,
-      price: '222K',
+      price: 12000,
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      liked: true,
-      isLastBid: false,
-      onSale: true,
+      copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
+      leftTime: '3h 30m 12s left',
+      copiesAvailable: 15,
+      isNotForSale: true,
     },
   ]
 
@@ -134,30 +135,32 @@ export default function Portfolio(): JSX.Element {
       avatarSrc: avatar,
       imageSrc: portfolio3,
       likes: 23,
-      price: '222K',
+      price: 12000,
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      liked: true,
-      isLastBid: false,
-      onSale: true,
+      copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
+      leftTime: '3h 30m 12s left',
+      copiesAvailable: 15,
+      isFixedPrice: true,
     },
     {
       author: 'zndrson',
       avatarSrc: avatar,
       imageSrc: portfolio4,
       likes: 23,
-      price: '222K',
+      price: 12000,
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      liked: true,
-      isLastBid: false,
-      onSale: true,
+      copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
+      leftTime: '3h 30m 12s left',
+      copiesAvailable: 15,
+      isNotForSale: true,
     },
   ]
 
@@ -169,15 +172,18 @@ export default function Portfolio(): JSX.Element {
       avatarSrc: avatar,
       imageSrc: portfolios[randomPortfolioIndex],
       likes: 23,
-      price: '222K',
+      price: 12000,
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      liked: true,
-      onSale: index % 2 ? true : false,
-      isLastBid: index % 3 ? true : false,
+      copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
+      leftTime: '3h 30m 12s left',
+      copiesAvailable: 15,
+      isAuctionBid: (index + 1) % 2 === 0,
+      isFixedPrice: (index + 1) % 3 === 0 && (index + 1) % 2 !== 0,
+      isNotForSale: (index + 1) % 2 !== 0 && (index + 1) % 3 !== 0,
     })
   })
 
@@ -341,7 +347,7 @@ export default function Portfolio(): JSX.Element {
             >
               <div className='grid grid-cols-3 1200px:grid-cols-4 xl:grid-cols-5 gap-4'>
                 {cards.map((nftItem, index) => (
-                  <NFTCard {...nftItem} key={index} variant='nft-portfolio' />
+                  <NFTCard {...nftItem} key={index} hideFollow />
                 ))}
               </div>
             </div>

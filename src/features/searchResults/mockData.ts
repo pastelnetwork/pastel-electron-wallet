@@ -115,14 +115,13 @@ const mockCardProps: TNFTCard = {
   avatarSrc: mockAvatar,
   imageSrc: nftImage,
   likes: 23,
-  onSale: true,
-  price: '222K',
+  price: 12000,
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
-  liked: true,
   followers: 0,
-  isLastBid: false,
   nsfw: { porn: 0, hentai: 0 },
+  leftTime: '3h 30m 12s left',
+  copiesAvailable: 15,
 }
 
 export const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {
