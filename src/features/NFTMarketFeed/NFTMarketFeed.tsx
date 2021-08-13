@@ -71,7 +71,7 @@ const NFTMarketFeed = (): JSX.Element => {
       copies: `${i + 1} of 6`,
       diamond: `${Math.floor(Math.random() * 100)}%`,
       title: mockDataImagesList[i].title,
-      leftTime: '3h 30m 12s left',
+      leftTime: '3h 30m 12s',
       copiesAvailable: 15,
       isAuctionBid: (i + 1) % 2 === 0,
       isFixedPrice: (i + 1) % 3 === 0 && (i + 1) % 2 !== 0,
@@ -137,9 +137,9 @@ const NFTMarketFeed = (): JSX.Element => {
     <div className=''>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader title='Market' routes={routes} />
-      <div className='wrapper content with-page-header h-full w-screen py-30px'>
+      <div className='wrapper content with-page-header h-full w-screen pb-30px'>
         {/* Filters */}
-        <div className='flex justify-between pb-50px'>
+        <div className='flex justify-between pb-26px'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
             {filterOptions.map(option => (
               <Select

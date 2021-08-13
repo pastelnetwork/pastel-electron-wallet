@@ -5,7 +5,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid'
 
-import { useCurrencyName } from 'common/hooks/appInfo'
+import { useCurrencyName } from '../../common/hooks/appInfo'
 import LoadingOverlay from '../../legacy/components/LoadingOverlay'
 import cstyles from '../../legacy/components/Common.module.css'
 import List from '../../legacy/components/List'

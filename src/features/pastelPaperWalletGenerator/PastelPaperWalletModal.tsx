@@ -10,7 +10,7 @@ import {
 import React from 'react'
 import Modal from 'react-modal'
 
-import { useCurrencyName } from 'common/hooks/appInfo'
+import { useCurrencyName } from '../../common/hooks/appInfo'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './PastelPaperWalletModal.module.css'
 import { closePastelPaperWalletModal } from './PastelPaperWalletModalSlice'

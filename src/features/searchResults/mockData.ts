@@ -120,7 +120,7 @@ const mockCardProps: TNFTCard = {
   title: 'Cosmic Perspective',
   followers: 0,
   nsfw: { porn: 0, hentai: 0 },
-  leftTime: '3h 30m 12s left',
+  leftTime: '3h 30m 12s',
   copiesAvailable: 15,
 }
 

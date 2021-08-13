@@ -4,7 +4,7 @@ import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
 import NFTCard, {
   TNFTCard,
-  NFTCardVariant,
+  NFTCardVariantSize,
 } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
@@ -105,7 +105,7 @@ export default function DashboardPage(): JSX.Element {
         hidePerpetualRoyalty: index !== 0,
         hideCertifiedRare: true,
         hideDirectFromArtist: index !== 1,
-        leftTime: '3h 30m 12s left',
+        leftTime: '3h 30m 12s',
         copiesAvailable: 15,
         isAuctionBid: index === 0,
         isFixedPrice: index === 1,
@@ -235,7 +235,7 @@ export default function DashboardPage(): JSX.Element {
             </div>
           </div>
           {followers.length > 0 && (
-            <div className='grid md:grid-cols-3 gap-[26px] md:flex px-[30px] h-[282px] overflow-auto mr-18px'>
+            <div className='grid md:grid-cols-3 gap-[26px] md:flex pl-[30px] pr-14px h-[282px] overflow-auto mr-18px'>
               <PortfolioColumn title='Sales in progress (2)'>
                 {followers
                   .filter(item => item.type == 'progress')
@@ -316,7 +316,7 @@ export default function DashboardPage(): JSX.Element {
               }
             >
               {cards.map((item, i) => (
-                <NFTCard key={i} {...item} variant={NFTCardVariant.M} />
+                <NFTCard key={i} {...item} variant={NFTCardVariantSize.M} />
               ))}
               {cards.length === 0 && (
                 <div className='text-gray-a0 text-base mt-[146px]'>

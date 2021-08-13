@@ -38,7 +38,7 @@ export const PlaceABid = Template.bind({})
 PlaceABid.args = {
   ...mockCardProps,
   isAuctionBid: true,
-  leftTime: '3h 30m 12s left',
+  leftTime: '3h 30m 12s',
 }
 
 export const BuyItNow = Template.bind({})

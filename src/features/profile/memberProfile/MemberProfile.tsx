@@ -67,7 +67,7 @@ const MemberProfile = (): JSX.Element => {
     title: 'Infinity I',
     hideFollow: true,
     nsfw: { porn: 0, hentai: 0 },
-    leftTime: '3h 30m 12s left',
+    leftTime: '3h 30m 12s',
     copiesAvailable: 15,
   }
 
