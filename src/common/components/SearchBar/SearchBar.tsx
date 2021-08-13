@@ -18,6 +18,7 @@ const SearchBar = (): JSX.Element => {
   >(undefined)
   const [inputText, setInputText] = useState<string>('')
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
+    console.log(1111111, e)
     if (['Enter', 'NumpadEnter'].includes(e.code)) {
       setSelectedCategory(undefined)
       setInputFocused(false)

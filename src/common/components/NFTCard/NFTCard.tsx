@@ -201,7 +201,7 @@ const NFTCard = ({
           />
         </div>
       ) : null}
-      <div className={normalSpacingClassName}>
+      <div className={cn(normalSpacingClassName, percentage && 'mt-0')}>
         <Link to={detailUrl} className='cursor-pointer w-full'>
           <div className={cn('relative overflow-hidden', imageHeightClass)}>
             <img

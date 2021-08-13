@@ -13,6 +13,8 @@ import {
   mockNamesList,
 } from 'features/members/data'
 
+import styles from './NFTMarketFeed.module.css'
+
 enum Tabs {
   feed,
   statistics,
@@ -137,9 +139,9 @@ const NFTMarketFeed = (): JSX.Element => {
     <div className=''>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader title='Market' routes={routes} />
-      <div className='wrapper content with-page-header h-full w-screen py-30px'>
+      <div className='wrapper px-33px py-30px'>
         {/* Filters */}
-        <div className='flex justify-between pb-26px'>
+        <div className='flex justify-between px-27px pb-26px'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
             {filterOptions.map(option => (
               <Select
@@ -167,10 +169,14 @@ const NFTMarketFeed = (): JSX.Element => {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 text-gray-1a'>
-          {mockNFTs.map((nft, i) => (
-            <NFTCard {...nft} key={i} />
-          ))}
+        <div className='w-full'>
+          <div
+            className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
+          >
+            {mockNFTs.map((nft, i) => (
+              <NFTCard {...nft} key={i} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

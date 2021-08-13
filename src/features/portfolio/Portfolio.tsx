@@ -4,10 +4,15 @@ import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
 import { TPageHeaderSortByOptions } from 'common/components/PageHeader/PageHeader'
 import Select, { TOption } from 'common/components/Select/Select'
-import NFTCard, { TNFTCard } from 'common/components/NFTCard'
+import NFTCard, {
+  TNFTCard,
+  NFTCardVariantSize,
+} from 'common/components/NFTCard'
 import Slider from 'common/components/Slider/Slider'
 import * as ROUTES from 'common/utils/constants/routes'
 import { useCurrencyName } from 'common/hooks/appInfo'
+
+import styles from './Portfolio.module.css'
 
 import avatar from 'common/assets/images/avatar-placeholder.png'
 import portfolio1 from 'common/assets/images/mock/portfolio-1.jpg'
@@ -340,10 +345,17 @@ export default function Portfolio(): JSX.Element {
             </div>
           </div>
           <div className='w-full'>
-            <div className='pl-27px pr-23px pb-30px mt-30px'>
-              <div className='grid grid-cols-3 1200px:grid-cols-4 xl:grid-cols-5 gap-4'>
+            <div
+              className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
+            >
+              <div className='grid grid-cols-3 1200px:grid-cols-4 xl:grid-cols-5 gap-y-[21px] gap-4'>
                 {cards.map((nftItem, index) => (
-                  <NFTCard {...nftItem} key={index} hideFollow />
+                  <NFTCard
+                    {...nftItem}
+                    key={index}
+                    hideFollow
+                    variant={NFTCardVariantSize.M}
+                  />
                 ))}
               </div>
             </div>

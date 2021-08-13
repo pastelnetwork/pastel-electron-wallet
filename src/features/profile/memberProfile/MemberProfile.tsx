@@ -26,9 +26,20 @@ const profile_data = {
 }
 
 const categoriesOptions: TOption[] = [
-  { value: 'All', label: 'All' },
-  { value: 'option_2', label: 'TOption 2' },
-  { value: 'option_3', label: 'TOption 3' },
+  { value: 'all', label: 'All' },
+  { value: 'illustration', label: 'Illustration' },
+]
+
+const typeOptions: TOption[] = [
+  { value: 'all', label: 'All' },
+  { value: 'auctions', label: 'Auctions' },
+  { value: 'makeAnOffers', label: 'Make an Offers' },
+  { value: 'fixedPrice', label: 'Fixed Price' },
+]
+
+const sortOptions: TOption[] = [
+  { value: 'Bid', label: 'Bid' },
+  { value: 'Likes', label: 'Likes' },
 ]
 
 const filterData = [
@@ -59,7 +70,6 @@ const MemberProfile = (): JSX.Element => {
     likes: 23,
     price: 22000,
     currencyName,
-    percentage: 75,
     hideLikeButton: true,
     author: 'vanecha',
     avatarSrc: avatar,
@@ -73,8 +83,8 @@ const MemberProfile = (): JSX.Element => {
 
   const [tab, setTab] = useState(2)
   const [category, setCategory] = useState<TOption | null>(categoriesOptions[0])
-  const [type, setType] = useState<TOption | null>(categoriesOptions[0])
-  const [sort, setSort] = useState<TOption | null>(categoriesOptions[0])
+  const [type, setType] = useState<TOption | null>(typeOptions[0])
+  const [sort, setSort] = useState<TOption | null>(sortOptions[0])
   const [activeIndex, setActiveIndex] = useState(0)
 
   const onTabToggle = (index: number) => {
@@ -123,7 +133,7 @@ const MemberProfile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={category}
                           onChange={setCategory}
-                          selectClassName='w-113px'
+                          selectClassName='w-113px bg-white'
                         />
                       </div>
                       <div className='flex items-center'>
@@ -132,7 +142,7 @@ const MemberProfile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={type}
                           onChange={setType}
-                          selectClassName='w-113px'
+                          selectClassName='w-113px bg-white'
                         />
                       </div>
                     </div>
@@ -142,11 +152,11 @@ const MemberProfile = (): JSX.Element => {
                         options={categoriesOptions}
                         selected={sort}
                         onChange={setSort}
-                        selectClassName='w-113px'
+                        selectClassName='w-113px bg-white'
                       />
                     </div>
                   </div>
-                  <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3  gap-9 text-gray-1a overflow-y-auto pr-33px h-608px'>
+                  <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3 gap-9 text-gray-1a overflow-y-auto pr-33px h-608px gap-y-[12px]'>
                     {Array.from({ length: 10 }).map((_, i) => (
                       <NFTCard
                         {...mockCardProps}
