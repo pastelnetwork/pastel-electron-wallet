@@ -70,15 +70,14 @@ const MemberProfile = (): JSX.Element => {
     likes: 23,
     price: 22000,
     currencyName,
-    hideLikeButton: true,
     author: 'vanecha',
     avatarSrc: avatar,
     imageSrc: image,
     title: 'Infinity I',
-    hideFollow: true,
     nsfw: { porn: 0, hentai: 0 },
     leftTime: '3h 30m 12s',
     copiesAvailable: 15,
+    followers: 256,
   }
 
   const [tab, setTab] = useState(2)
