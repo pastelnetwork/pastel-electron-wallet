@@ -301,7 +301,7 @@ const NFTCard = ({
             <Tooltip
               type='top'
               content={getTooltip(
-                'GreenNF',
+                'GreenNFT',
                 '2% of sale proceeds go to plant trees',
               )}
               width={140}
