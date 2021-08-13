@@ -24,6 +24,6 @@ const Template: Story<TTypographyProps> = ({
 
 export const SimpleAutocomplete = Template.bind({})
 SimpleAutocomplete.args = {
-  variant: TypographyVariant.h1_heavy,
+  variant: TypographyVariant.h1_32_40_heavy,
   uppercase: false,
 }

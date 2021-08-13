@@ -13,16 +13,9 @@ import {
   periods,
 } from '../../common/constants'
 
-type TMempoolSizeOvertimeProps = {
-  info: {
-    [key: string]: string | number
-  }
-}
-
 const redrawCycle = 6000
 
-const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
-  const { info } = props
+const MempoolSizeOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -81,7 +74,6 @@ const MempoolSizeOvertime = (props: TMempoolSizeOvertimeProps): JSX.Element => {
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
               title='Mempool Size(KByte)'
-              info={info}
               offset={0.5}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}

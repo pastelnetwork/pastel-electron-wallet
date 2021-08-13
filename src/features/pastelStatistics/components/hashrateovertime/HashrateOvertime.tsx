@@ -13,16 +13,9 @@ import { TPeriod, transformHashrateInfo } from '../../utils/PastelStatisticsLib'
 
 import styles from '../../Common.module.css'
 
-type THashrateOvertimeProps = {
-  info: {
-    [key: string]: string | number
-  }
-}
-
 const redrawCycle = 6000
 
-const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
-  const { info } = props
+const HashrateOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -81,7 +74,6 @@ const HashrateOvertime = (props: THashrateOvertimeProps): JSX.Element => {
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
               title='Hashrate(MH/s)'
-              info={info}
               offset={1}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}
