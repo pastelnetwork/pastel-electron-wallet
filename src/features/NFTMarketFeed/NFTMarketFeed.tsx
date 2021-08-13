@@ -137,7 +137,7 @@ const NFTMarketFeed = (): JSX.Element => {
     <div className=''>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader title='Market' routes={routes} />
-      <div className='wrapper content with-page-header h-full w-screen pb-30px'>
+      <div className='wrapper content with-page-header h-full w-screen py-30px'>
         {/* Filters */}
         <div className='flex justify-between pb-26px'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
