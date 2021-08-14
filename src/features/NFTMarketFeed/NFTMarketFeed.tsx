@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import dayjs from 'dayjs'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import NFTCard, { TNFTCard } from 'common/components/NFTCard'
@@ -73,7 +74,7 @@ const NFTMarketFeed = (): JSX.Element => {
       copies: `${i + 1} of 6`,
       diamond: `${Math.floor(Math.random() * 100)}%`,
       title: mockDataImagesList[i].title,
-      leftTime: '3h 30m 12s',
+      leftTime: dayjs().add(3, 'day').valueOf(),
       copiesAvailable: 15,
       isAuctionBid: (i + 1) % 2 === 0,
       isFixedPrice: (i + 1) % 3 === 0 && (i + 1) % 2 !== 0,

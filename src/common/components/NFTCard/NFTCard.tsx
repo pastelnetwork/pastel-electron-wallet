@@ -5,6 +5,7 @@ import parse from 'html-react-parser'
 
 import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
+import CountdownTimer from 'common/components/CountdownTimer'
 import Typography, { TypographyVariant } from 'common/components/Typography'
 
 import { formatNumber } from 'common/utils/format'
@@ -51,7 +52,7 @@ export type TNFTCompactCard = {
   hideCertifiedRare?: boolean
   hideDirectFromArtist?: boolean
   copiesAvailable?: number
-  leftTime?: string
+  leftTime?: number
 }
 
 export type TNFTCard = Override<
@@ -426,7 +427,7 @@ const NFTCard = ({
                   }
                   customColor='nft-text-gradient'
                 >
-                  {leftTime} left
+                  <CountdownTimer countDownDate={leftTime} /> left
                 </Typography>
                 <div>
                   <Button

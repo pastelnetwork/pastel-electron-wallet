@@ -18,8 +18,7 @@ const SearchBar = (): JSX.Element => {
   >(undefined)
   const [inputText, setInputText] = useState<string>('')
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
-    console.log(1111111, e)
-    if (['Enter', 'NumpadEnter'].includes(e.code)) {
+    if (['Enter', 'NumpadEnter'].includes(e.key)) {
       setSelectedCategory(undefined)
       setInputFocused(false)
       history.push(ROUTES.SEARCH_RESULT)
@@ -132,7 +131,7 @@ const SearchBar = (): JSX.Element => {
               ? 'w-[560px] lg:w-[701px] bg-white bg-opacity-100 z-100 border-gray-f2 border rounded-t-10px h-[50px]'
               : 'w-full md:w-300px lg:w-300px xl:w-352px bg-opacity-50 rounded-full bg-gray-f2',
           )}
-          onKeyPress={onKey}
+          onKeyDown={onKey}
           placeholder={
             inputFocused
               ? 'Search NFT, Creator, User, etc'

@@ -105,7 +105,7 @@ export default function DashboardPage(): JSX.Element {
         hidePerpetualRoyalty: index !== 0,
         hideCertifiedRare: true,
         hideDirectFromArtist: index !== 1,
-        leftTime: '3h 30m 12s',
+        leftTime: dayjs().add(3, 'day').valueOf(),
         copiesAvailable: 15,
         isAuctionBid: index === 0,
         isFixedPrice: index === 1,

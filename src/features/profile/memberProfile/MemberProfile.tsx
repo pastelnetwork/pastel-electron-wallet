@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import dayjs from 'dayjs'
 
 import { useCurrencyName } from 'common/hooks/appInfo'
 import ProfileCard from '../components/ProfileCard'
@@ -75,7 +76,7 @@ const MemberProfile = (): JSX.Element => {
     imageSrc: image,
     title: 'Infinity I',
     nsfw: { porn: 0, hentai: 0 },
-    leftTime: '3h 30m 12s',
+    leftTime: dayjs().add(2, 'day').valueOf(),
     copiesAvailable: 15,
     followers: 256,
   }
@@ -155,7 +156,7 @@ const MemberProfile = (): JSX.Element => {
                       />
                     </div>
                   </div>
-                  <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3 gap-9 text-gray-1a overflow-y-auto pr-33px h-608px gap-y-[12px]'>
+                  <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3 text-gray-1a overflow-y-auto pr-33px h-608px gap-y-[12px] gap-x-[15px]'>
                     {Array.from({ length: 10 }).map((_, i) => (
                       <NFTCard
                         {...mockCardProps}

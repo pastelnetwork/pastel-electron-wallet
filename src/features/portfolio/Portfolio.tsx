@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
 
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
@@ -89,7 +90,7 @@ export default function Portfolio(): JSX.Element {
       nsfw: { porn: 0, hentai: 0 },
       copies: `${index + 1} of 26`,
       diamond: `${Math.floor(Math.random() * 100)}%`,
-      leftTime: '3h 30m 12s',
+      leftTime: dayjs().add(3, 'day').valueOf(),
       copiesAvailable: 15,
       isAuctionBid: (index + 1) % 2 === 0,
       isFixedPrice: (index + 1) % 3 === 0 && (index + 1) % 2 !== 0,
@@ -110,7 +111,7 @@ export default function Portfolio(): JSX.Element {
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
       copies: '1 of 260',
-      leftTime: '3h 30m 12s',
+      leftTime: dayjs().add(3, 'day').valueOf(),
       copiesAvailable: 15,
       isAuctionBid: true,
     },
@@ -126,7 +127,7 @@ export default function Portfolio(): JSX.Element {
       copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
-      leftTime: '3h 30m 12s',
+      leftTime: dayjs().add(3, 'day').valueOf(),
       copiesAvailable: 15,
       isNotForSale: true,
     },
@@ -145,7 +146,7 @@ export default function Portfolio(): JSX.Element {
       copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
-      leftTime: '3h 30m 12s',
+      leftTime: dayjs().add(5, 'day').valueOf(),
       copiesAvailable: 15,
       isFixedPrice: true,
     },
@@ -161,7 +162,7 @@ export default function Portfolio(): JSX.Element {
       copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
-      leftTime: '3h 30m 12s',
+      leftTime: dayjs().add(1, 'day').valueOf(),
       copiesAvailable: 15,
       isNotForSale: true,
     },
@@ -182,7 +183,7 @@ export default function Portfolio(): JSX.Element {
       copies: '1 of 260',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
-      leftTime: '3h 30m 12s',
+      leftTime: dayjs().add(2, 'day').valueOf(),
       copiesAvailable: 15,
       isAuctionBid: (index + 1) % 2 === 0,
       isFixedPrice: (index + 1) % 3 === 0 && (index + 1) % 2 !== 0,

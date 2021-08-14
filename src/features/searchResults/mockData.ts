@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { TMemberCard } from 'features/members/MemberCard'
 import { TNFTCard } from '../../common/components/NFTCard'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
@@ -120,7 +121,7 @@ const mockCardProps: TNFTCard = {
   title: 'Cosmic Perspective',
   followers: 0,
   nsfw: { porn: 0, hentai: 0 },
-  leftTime: '3h 30m 12s',
+  leftTime: dayjs().add(1, 'day').valueOf(),
   copiesAvailable: 15,
 }
 
