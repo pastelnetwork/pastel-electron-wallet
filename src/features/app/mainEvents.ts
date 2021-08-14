@@ -25,6 +25,7 @@ export const onMainEvent = <Channel extends keyof TMainEvents>(
 ): void => {
   ipcMain.on(channel, (event, payload) => callback(payload))
 }
+
 export const mainEventPromise = <Channel extends keyof TMainEvents>(
   channel: Channel,
 ): Promise<TMainEvents[Channel]> => {

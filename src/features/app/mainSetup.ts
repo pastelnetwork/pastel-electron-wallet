@@ -60,7 +60,7 @@ const setupWindow = async () => {
   retriableAppSetup()
 }
 
-const retriableAppSetup = async () => {
+export const retriableAppSetup = async (): Promise<void> => {
   try {
     await startWalletNode()
     const rpcConfig = await readRpcConfig(pastelConfigFilePath)
@@ -145,7 +145,11 @@ const setupEventListeners = () => {
 let waitingForClose = false
 let proceedToClose = false
 
-const onWindowClose = async (event: Event) => {
+export const resetWindowCloseFlags = (): void => {
+  waitingForClose = proceedToClose = false
+}
+
+export const onWindowClose = async (event: Event): Promise<void> => {
   // If we are clear to close, then return and allow everything to close
   if (proceedToClose) {
     console.warn('proceed to close, so closing')
