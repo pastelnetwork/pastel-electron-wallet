@@ -31,4 +31,5 @@ SelectMultiple.args = {
   selectClassName: 'w-56',
   name: 'fruits',
   placeholder: 'Placeholder',
+  disabled: false,
 }

@@ -253,6 +253,8 @@ const NFTCard = ({
               'This is the number of "limited edition digital prints" that exist for this NFT.  No additional copies can ever be created of this NFT, even by the creator (and if the creator uses a similar image for a new NFT, the new NFT will have a lower Rareness Score"',
             )}
             width={208}
+            classnames='ml-8'
+            marginLeft='1.25rem'
           >
             <div className='flex items-center'>
               <Clipboard
