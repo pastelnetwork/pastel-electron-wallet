@@ -135,7 +135,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
         return (
           <div
             className={cn(
-              'input flex-center p-0 relative transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f',
+              'transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex-center p-0 relative',
               disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
               autoCompleteColor,
               selectClassName,

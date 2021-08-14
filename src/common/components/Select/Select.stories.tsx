@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Select, { TOptionsProps, TRangeProps } from './Select'
+import Select, { TOptionsProps, TRangeProps } from './index'
 
 export default {
   title: 'Select',
@@ -11,7 +11,11 @@ export default {
 const TemplateOptions: Story<TOptionsProps> = ({ selected, ...args }) => {
   const [selectedItem, setSelected] = useState(selected)
 
-  return <Select {...args} selected={selectedItem} onChange={setSelected} />
+  return (
+    <div>
+      <Select {...args} selected={selectedItem} onChange={setSelected} />
+    </div>
+  )
 }
 
 const options = [

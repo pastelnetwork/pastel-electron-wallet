@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Component, { TControlledProps as TProps } from './SelectMultiple'
+import Component, { TControlledProps as TProps } from './index'
 
 export default {
   title: 'SelectMultiple',
