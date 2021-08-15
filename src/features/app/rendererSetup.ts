@@ -22,6 +22,10 @@ export const rendererSetup = (): void => {
   setInterval(fetchPastelPrice, oneHour)
 
   onRendererEvent('setAppInfo', info => {
+    if (info.isPackaged) {
+      log.transports.console.level = false
+    }
+
     store.dispatch(setIsPackagedAndPaths(info))
     PastelDB.init()
   })
@@ -29,12 +33,7 @@ export const rendererSetup = (): void => {
   onRendererEvent('setRpcConfig', async ({ rpcConfig }) => {
     setRpcConfig(rpcConfig)
 
-    const { isPackaged } = store.getState().appInfo
-    if (isPackaged) {
-      log.transports.console.level = false
-    }
-
-    await retryPromise(
+    retryPromise(
       async () => {
         const info = await RPC.getInfoObject(rpcConfig)
         store.dispatch(setPastelInfo({ info: { ...info } }))
@@ -50,6 +49,7 @@ export const rendererSetup = (): void => {
     )
 
     // set pastel DB thread update timer
+    const { isPackaged } = store.getState().appInfo
     if (!isPackaged) {
       const period = 1000 * 10
       PastelDBThread()
