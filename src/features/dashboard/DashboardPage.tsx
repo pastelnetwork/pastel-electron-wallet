@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import ContentLoader from 'react-content-loader'
+import dayjs, { Dayjs } from 'dayjs'
+
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
@@ -8,8 +11,6 @@ import NFTCard, {
 } from '../../common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
-import dayjs, { Dayjs } from 'dayjs'
-
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
 import { TTotalBalance, TTransactionType } from 'types/rpc'
@@ -84,7 +85,7 @@ export default function DashboardPage(): JSX.Element {
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
   const [walletBalance, setWalletBalance] = useState(0)
   const [transactions, setTransactions] = useState<TTransactionItemProps[]>([])
-  const [walletLoading, setWalletLoading] = useState(false)
+  const [walletLoading, setWalletLoading] = useState(true)
 
   useEffect(() => {
     const randomCards: TNFTCard[] = []
@@ -117,7 +118,6 @@ export default function DashboardPage(): JSX.Element {
     const fetchData = async () => {
       const walletRPC = new WalletRPC()
       const transactionRPC = new TransactionRPC()
-      setWalletLoading(true)
       const results = await Promise.all([
         await walletRPC.fetchTotalBalance(),
         await transactionRPC.fetchTandZTransactions(),
@@ -195,18 +195,72 @@ export default function DashboardPage(): JSX.Element {
       <div className='flex mb-5'>
         <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
           <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
-            <div className='font-extrabold text-gray-2d text-lg'>
-              Wallet balance
-            </div>
-            <div className='font-extrabold text-gray-2d text-sm'>
-              {walletBalance > 0 ? formatNumber(walletBalance) : 0}{' '}
-              {currencyName}
-            </div>
+            {walletLoading ? (
+              <ContentLoader
+                speed={2}
+                width='100%'
+                height={24}
+                viewBox='0 0 400 24'
+              >
+                <rect x='8' y='6' rx='8' ry='8' width='200' height='12' />
+                <rect x='332' y='6' rx='8' ry='8' width='60' height='12' />
+              </ContentLoader>
+            ) : (
+              <>
+                <div className='font-extrabold text-gray-2d text-lg'>
+                  Wallet balance
+                </div>
+                <div className='font-extrabold text-gray-2d text-sm'>
+                  {walletBalance > 0 ? formatNumber(walletBalance) : 0}{' '}
+                  {currencyName}
+                </div>
+              </>
+            )}
           </div>
           <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
             {walletLoading ? (
-              <div className='flex justify-center mt-[111px]'>
-                <span className='text-base text-gray-a0'>Loading ...</span>
+              <div>
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className='border border-gray-e7 rounded-lg mb-3 h-[76px] w-full'
+                  >
+                    <div className='flex h-full items-center justify-between pl-3 pr-5 py-3'>
+                      <ContentLoader
+                        speed={2}
+                        width={400}
+                        height={76}
+                        viewBox='0 0 400 76'
+                      >
+                        <rect
+                          x='49'
+                          y='12'
+                          rx='3'
+                          ry='8'
+                          width='88'
+                          height='8'
+                        />
+                        <circle cx='26' cy='18' r='16' />
+                        <rect
+                          x='50'
+                          y='31'
+                          rx='3'
+                          ry='8'
+                          width='88'
+                          height='8'
+                        />
+                        <rect
+                          x='302'
+                          y='33'
+                          rx='3'
+                          ry='8'
+                          width='88'
+                          height='8'
+                        />
+                      </ContentLoader>
+                    </div>
+                  </div>
+                ))}
               </div>
             ) : (
               <>
