@@ -14,6 +14,7 @@ export type TBaseProps = {
   className?: string
   label?: string
   autocomplete?: boolean
+  inputValueChange?: (inputValue: string) => void
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -33,7 +34,13 @@ export type TRangeProps = TBaseProps & {
 export type TSelectProps = TOptionsProps | TRangeProps
 
 export default function Select(props: TSelectProps): JSX.Element {
-  const { placeholder, className, label, autocomplete = false } = props
+  const {
+    placeholder,
+    className,
+    label,
+    autocomplete = false,
+    inputValueChange,
+  } = props
 
   const { options, selected, onChange } = useSelectOptions(props)
   const [isFilter, setIsFilter] = useState(false)
@@ -45,7 +52,10 @@ export default function Select(props: TSelectProps): JSX.Element {
     autoCompleteColor = 'text-gray-35'
   }
 
-  const onInputValueChange = () => {
+  const onInputValueChange = (inputValue: string) => {
+    if (inputValueChange) {
+      inputValueChange(inputValue)
+    }
     setIsFilter(true)
   }
 
@@ -54,7 +64,9 @@ export default function Select(props: TSelectProps): JSX.Element {
       selectedItem={selected}
       onChange={onChange}
       itemToString={item => (item ? item.value : '')}
-      onInputValueChange={onInputValueChange}
+      onInputValueChange={(inputValue: string) => {
+        onInputValueChange(inputValue)
+      }}
     >
       {({
         getItemProps,

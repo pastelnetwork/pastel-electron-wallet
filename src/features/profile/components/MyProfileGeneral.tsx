@@ -8,6 +8,8 @@ import ProfileGeneralRow from './ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import Select, { TOption } from './Select/Select'
 
+import { useAppSelector } from '../../../redux/hooks'
+
 import NumberFormat from 'react-number-format'
 
 export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
@@ -23,6 +25,8 @@ const ProfileGeneral = ({
   isEmpty,
   nativeCurrency,
 }: TProfileGeneral): JSX.Element => {
+  const { locations } = useAppSelector(state => state.pastelProfile)
+
   const data = {
     location: 'New York, US',
     language: 'English',
@@ -231,20 +235,20 @@ const ProfileGeneral = ({
   )
 }
 
-const locations: Array<TOption> = [
-  {
-    label: 'None',
-    value: 'None',
-  },
-  {
-    label: 'New York, US',
-    value: 'New York, US',
-  },
-  {
-    label: 'California, US',
-    value: 'California, US',
-  },
-]
+// const locations: Array<TOption> = [
+//   {
+//     label: 'None',
+//     value: 'None',
+//   },
+//   {
+//     label: 'New York, US',
+//     value: 'New York, US',
+//   },
+//   {
+//     label: 'California, US',
+//     value: 'California, US',
+//   },
+// ]
 const languages: Array<TOption> = [
   {
     label: 'English',

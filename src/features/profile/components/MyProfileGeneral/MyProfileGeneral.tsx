@@ -12,6 +12,10 @@ import NSFWControls from './NSFWControls'
 import { formatPrice } from '../../../../common/utils/format'
 import { useCurrencyName } from '../../../../common/hooks/appInfo'
 
+import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
+
+import { fetchLocations } from 'features/profile/ProfileSlice'
+
 export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
 
 export type TProfileGeneral = {
@@ -25,6 +29,10 @@ const ProfileGeneral = ({
   isEmpty,
   nativeCurrency,
 }: TProfileGeneral): JSX.Element => {
+  const { locations } = useAppSelector(state => state.pastelProfile)
+
+  const dispatch = useAppDispatch()
+
   const data = {
     location: 'New York, US',
     language: 'English',
@@ -73,6 +81,10 @@ const ProfileGeneral = ({
     getNativeCurrency()
   }, [nativeCurrency])
 
+  const changeLocation = (value: string) => {
+    dispatch(fetchLocations(value))
+  }
+
   return (
     <div className='flex-grow w-full lg:w-3/5 pr-60px'>
       <div className='w-full space-y-4'>
@@ -83,6 +95,7 @@ const ProfileGeneral = ({
               selected={location}
               options={locations}
               onChange={setLocation}
+              inputValueChange={(value: string) => changeLocation(value)}
               autocomplete
             />
           ) : (
@@ -225,20 +238,20 @@ const ProfileGeneral = ({
   )
 }
 
-const locations: Array<TOption> = [
-  {
-    label: 'None',
-    value: 'None',
-  },
-  {
-    label: 'New York, US',
-    value: 'New York, US',
-  },
-  {
-    label: 'California, US',
-    value: 'California, US',
-  },
-]
+// const locations: Array<TOption> = [
+//   {
+//     label: 'None',
+//     value: 'None',
+//   },
+//   {
+//     label: 'New York, US',
+//     value: 'New York, US',
+//   },
+//   {
+//     label: 'California, US',
+//     value: 'California, US',
+//   },
+// ]
 const languages: Array<TOption> = [
   {
     label: 'English',
