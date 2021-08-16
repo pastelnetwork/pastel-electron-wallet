@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import Tooltip from 'common/components/Tooltip'
 import { TRow } from 'features/nft/nftModals/table'
@@ -9,8 +10,8 @@ import {
   Clipboard,
   CheckIcon,
   Pencil,
-  X,
   SaveIcon,
+  Close,
 } from 'common/components/Icons'
 
 type TAddressFormProps = {
@@ -19,6 +20,7 @@ type TAddressFormProps = {
   saveAddressLabel: (address: string, label: string) => void
   copyable?: boolean
   hidable?: boolean
+  className?: string
 }
 
 export const AddressForm = ({
@@ -27,6 +29,7 @@ export const AddressForm = ({
   saveAddressLabel,
   copyable = true,
   hidable = false,
+  className,
 }: TAddressFormProps): JSX.Element => {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
@@ -44,7 +47,7 @@ export const AddressForm = ({
   }
 
   return (
-    <div className='flex xl:ml-21px items-center mr-2 md:mr-0'>
+    <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
       {edit === address ? (
         <>
           <input
@@ -72,7 +75,7 @@ export const AddressForm = ({
         </div>
       ) : (
         <span className='w-220px md:w-262px text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden'>
-          {address}
+          {formatAddress(address)}
         </span>
       )}
       {edit === address ? (
@@ -84,7 +87,7 @@ export const AddressForm = ({
                 setEdit(null)
               }}
             >
-              <X className='cursor-pointer' size={20} />
+              <Close size={16} />
             </button>
           </div>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
@@ -105,11 +108,11 @@ export const AddressForm = ({
             <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
               {copyStatus ? (
                 <span onClick={() => copyAddress(address)}>
-                  <CheckIcon className='text-green-45' size={20} />
+                  <CheckIcon className='text-green-45' size={14} />
                 </span>
               ) : (
                 <span onClick={() => copyAddress(address)}>
-                  <Clipboard className='cursor-pointer' size={20} />
+                  <Clipboard className='cursor-pointer' size={14} />
                 </span>
               )}
             </div>
@@ -123,7 +126,7 @@ export const AddressForm = ({
                 }
               }}
             >
-              <Pencil strokeWidth={0.2} className='cursor-pointer' size={20} />
+              <Pencil strokeWidth={0.2} className='cursor-pointer' size={16} />
             </span>
           </div>
           {hidable && (

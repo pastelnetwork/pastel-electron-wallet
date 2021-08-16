@@ -13,6 +13,7 @@ export type TModalProps = {
   size?: string
   children?: ReactNode
   title?: string
+  classNames?: string
 }
 
 const TitleModal = ({
@@ -21,11 +22,15 @@ const TitleModal = ({
   size,
   children,
   title,
+  classNames,
 }: TModalProps): JSX.Element => {
-  const modalClasses = cn({
-    'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
-    [`max-w-${size}`]: size,
-  })
+  const modalClasses = cn(
+    {
+      'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
+      [`max-w-${size}`]: size,
+    },
+    classNames,
+  )
 
   return (
     <ReactModal

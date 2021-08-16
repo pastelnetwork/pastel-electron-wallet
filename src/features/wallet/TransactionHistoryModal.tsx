@@ -6,6 +6,8 @@ import DateRangeSelector, {
 } from '../../common/components/DateRangeSelector/DateRangeSelector'
 import Radio from '../../common/components/Radio'
 import Select, { TOption } from '../../common/components/Select/Select'
+import Typography, { TypographyVariant } from 'common/components/Typography'
+import Tooltip from 'common/components/Tooltip'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
 import checkGreenIcon from '../../common/assets/icons/ico-check-green.svg'
 import clockYellowIcon from '../../common/assets/icons/ico-clock-yellow.svg'
@@ -181,6 +183,7 @@ const TransactionHistoryModal = ({
           }
           copyable={false}
           hidable
+          className='xl:ml-0'
         />
       ),
     },
@@ -219,6 +222,18 @@ const TransactionHistoryModal = ({
     {
       key: 'id',
       name: 'ID',
+      custom: (value: string | number) => (
+        <Tooltip
+          classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+          content={value}
+          width={450}
+          type='top'
+        >
+          <div className='w-[103px] overflow-ellipsis overflow-hidden'>
+            {value}
+          </div>
+        </Tooltip>
+      ),
     },
     {
       key: 'comments',
@@ -250,25 +265,42 @@ const TransactionHistoryModal = ({
       <div className='bg-white z-50'>
         <div className='flex text-gray-71 text-sm'>
           <div className='w-2/3 flex'>
-            <div className='w-1/3 pr-6'>
-              <div>Time range</div>
+            <div className='w-[264px] pr-6'>
+              <Typography
+                variant={TypographyVariant.h6_14_20_medium}
+                customColor='text-gray-71'
+              >
+                Time range
+              </Typography>
               <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
             </div>
-            <div className='w-1/3 pr-6'>
-              <div className='mb-1'>Source address</div>
+            <div className='w-[264px] pr-6'>
+              <Typography
+                variant={TypographyVariant.h6_14_20_medium}
+                customColor='text-gray-71'
+                className='mb-1'
+              >
+                Source address
+              </Typography>
               <Select
                 label={<img src={addressbookIcon} className='mr-2' />}
-                className='text-gray-2d w-112px'
+                className='text-gray-2d w-full'
                 selected={sourceAddress}
                 options={sourceAddresses}
                 onChange={setSourceAddress}
               />
             </div>
-            <div className='w-1/3 pr-6'>
-              <div className='mb-1'>Recipients</div>
+            <div className='w-[264px] pr-6'>
+              <Typography
+                variant={TypographyVariant.h6_14_20_medium}
+                customColor='text-gray-71'
+                className='mb-1'
+              >
+                Recipients
+              </Typography>
               <Select
                 label={<img src={user2Icon} className='mr-2' />}
-                className='text-gray-2d w-112px'
+                className='text-gray-2d w-full'
                 selected={recipientAddress}
                 options={recipients}
                 onChange={setRecipientAddress}
@@ -283,7 +315,18 @@ const TransactionHistoryModal = ({
                 setSelectedOption('all')
               }}
             >
-              All
+              <Typography
+                variant={
+                  selectedOption === 'all'
+                    ? TypographyVariant.h5_16_24_heavy
+                    : TypographyVariant.h5_16_24_medium
+                }
+                customColor={
+                  selectedOption === 'all' ? 'text-gray-4a' : 'text-gray-71'
+                }
+              >
+                All
+              </Typography>
             </Radio>
             <Radio
               checked={selectedOption === 'received'}
@@ -292,7 +335,20 @@ const TransactionHistoryModal = ({
                 setSelectedOption('received')
               }}
             >
-              Received
+              <Typography
+                variant={
+                  selectedOption === 'received'
+                    ? TypographyVariant.h5_16_24_heavy
+                    : TypographyVariant.h5_16_24_medium
+                }
+                customColor={
+                  selectedOption === 'received'
+                    ? 'text-gray-4a'
+                    : 'text-gray-71'
+                }
+              >
+                Received
+              </Typography>
             </Radio>
             <Radio
               checked={selectedOption === 'sent'}
@@ -301,7 +357,18 @@ const TransactionHistoryModal = ({
                 setSelectedOption('sent')
               }}
             >
-              Sent
+              <Typography
+                variant={
+                  selectedOption === 'sent'
+                    ? TypographyVariant.h5_16_24_heavy
+                    : TypographyVariant.h5_16_24_medium
+                }
+                customColor={
+                  selectedOption === 'sent' ? 'text-gray-4a' : 'text-gray-71'
+                }
+              >
+                Sent
+              </Typography>
             </Radio>
           </div>
         </div>

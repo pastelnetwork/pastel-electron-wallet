@@ -26,6 +26,7 @@ export type TBaseProps = {
   icon?: string
   iconClasses?: string
   disabled?: boolean
+  inputClassName?: string
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -88,6 +89,8 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
     icon = '',
     iconClasses = '',
     disabled = false,
+    className,
+    inputClassName,
   } = props
 
   const {
@@ -139,6 +142,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
               disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
               autoCompleteColor,
               selectClassName,
+              className,
             )}
           >
             {icon && (
@@ -162,6 +166,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                     'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
                     icon ? 'pl-9 relative z-10' : 'pl-18px',
                     disabled && 'cursor-not-allowed',
+                    inputClassName,
                   )}
                   {...getToggleButtonProps()}
                   {...getInputProps()}

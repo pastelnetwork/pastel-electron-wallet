@@ -36,6 +36,8 @@ export enum TypographyVariant {
   text_14_16_bold,
   text_8_6_bold,
   text_6_6_bold,
+  text_16_22_roman,
+  text_18_28_heavy,
 }
 
 export type TTypographyProps = {
@@ -114,6 +116,10 @@ const Typography = ({
       variant === TypographyVariant.body1 && 'text-lg leading-6 font-normal',
       variant === TypographyVariant.body2 && 'text-base font-normal',
       variant === TypographyVariant.body3 && 'text-sm leading-6 font-normal',
+      variant === TypographyVariant.text_16_22_roman &&
+        'text-h5 leading-[22px] font-normal',
+      variant === TypographyVariant.text_18_28_heavy &&
+        'text-h4 leading-7 font-extrabold',
       uppercase && 'uppercase',
       customColor,
       className,

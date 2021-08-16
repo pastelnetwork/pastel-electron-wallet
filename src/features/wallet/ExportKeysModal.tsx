@@ -3,6 +3,7 @@ import { TitleModal } from 'common/components/Modal'
 import { InputExportKey } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import Typography, { TypographyVariant } from 'common/components/Typography'
 import DownloadWhite from 'common/assets/icons/ico-download-white.svg'
 
 import {
@@ -73,21 +74,25 @@ const ExportKeysModal = ({
     <TitleModal
       isOpen={isOpen}
       handleClose={() => handleClose()}
-      size='598px'
-      title='Export keys'
+      size='[598px]'
+      title='Generate Paper Wallet for Address'
+      classNames='w-[598px]'
     >
-      <div>
+      <div className='mt-[11px]'>
         <InputExportKey
           value={publicKey}
           onChange={e => setPublicKey(e.target.value)}
-          label='Public key'
-          className='mb-7'
+          label='Address'
+          className='mb-42px'
+          labelClassName='text-h4 leading-6 font-medium text-gray-71 mb-6px'
+          type='text'
         />
         <InputExportKey
           value={privateKey}
           onChange={e => setPrivateKey(e.target.value)}
-          label='Private key'
-          className='mb-10'
+          label='Private Key for Address'
+          className='mb-[27px]'
+          labelClassName='text-h4 leading-6 font-medium text-gray-71 mb-6px'
         />
         <Button className='w-full flex  items-center'>
           <div className='flex items-center ml-5 relative w-full justify-center'>
@@ -101,9 +106,13 @@ const ExportKeysModal = ({
               />
             )}
             <img src={DownloadWhite} className='py-3.5' />
-            <span className='text-sm font-extrabold ml-3'>
+            <Typography
+              variant={TypographyVariant.h5_16_24_heavy}
+              customColor='text-white'
+              className='ml-2'
+            >
               Download Paper Wallet (PDF)
-            </span>
+            </Typography>
           </div>
         </Button>
       </div>
