@@ -53,7 +53,7 @@ describe('mainSetup', () => {
 
     expect(createWindow).toHaveBeenCalled()
 
-    expect(mainEventPromise).toBeCalledWith('rendererStarted')
+    emitMainEvent('rendererStarted', null)
 
     expect(sendEventToRenderer).toHaveBeenCalledWith(
       'setAppInfo',
@@ -62,6 +62,7 @@ describe('mainSetup', () => {
     asMock(sendEventToRenderer).mockClear()
     expect(initServeStatic).toHaveBeenCalled()
     expect(startWalletNode).toHaveBeenCalled()
+    await nextTickPromise()
 
     expect(readRpcConfig).toHaveBeenCalled()
     resolveRpcConfig?.(rpcConfig)
