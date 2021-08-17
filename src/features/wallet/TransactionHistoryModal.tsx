@@ -239,7 +239,11 @@ const TransactionHistoryModal = ({
       key: 'comments',
       name: 'Private Notes',
       headerColClasses: 'whitespace-nowrap mr-15px',
-      custom: () => <img src={commentIcon} className='ml-8 cursor-pointer' />,
+      custom: () => (
+        <span className='ml-8 inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+          <img className='cursor-pointer' src={commentIcon} />
+        </span>
+      ),
     },
     {
       key: 'fee',

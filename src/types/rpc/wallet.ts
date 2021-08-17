@@ -32,7 +32,7 @@ type TAddressBook = {
 type TAddressRow = {
   id: string
   address: string
-  time?: string
+  time?: number
   qrCode?: string
   viewKey: string
   privateKey: string

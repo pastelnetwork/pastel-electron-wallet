@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { TitleModal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
-import infoIcon from 'common/assets/icons/ico-info.svg'
-import addIcon from 'common/assets/icons/ico-add.svg'
 import checkIcon from 'common/assets/icons/ico-check.svg'
 import Select from 'common/components/Select/Select'
 import PaymentSource from './PaymentSource'
@@ -10,7 +8,7 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import Typography, { TypographyVariant } from 'common/components/Typography'
 import Tooltip from 'common/components/Tooltip'
 
-import { EliminationIcon } from 'common/components/Icons'
+import { EliminationIcon, AddIcon } from 'common/components/Icons'
 
 type TDataType = {
   hash: string
@@ -41,9 +39,10 @@ const PaymentModal = ({
         <div className='w-1/3'>
           <Select
             label={currencyName}
-            className='text-gray-2d w-264px'
-            labelClasses='text-base font-normal text-gray-a0 mr-2 absolute right-[12px]'
-            inputClassName='text-base font-normal text-gray-4a'
+            className='text-gray-2d w-full'
+            labelClasses='text-base font-normal text-gray-a0 mr-2 absolute right-[25px]'
+            inputClassName='text-base font-normal text-gray-4a pl-0'
+            autoCompleteClassName='w-full pr-[45px]'
             autocomplete={true}
             min={10000}
             max={20000}
@@ -62,7 +61,8 @@ const PaymentModal = ({
             label='of your balance'
             labelClasses='text-base font-normal text-gray-4a mr-2 absolute left-16'
             className='text-gray-2d w-264px'
-            inputClassName='text-base font-normal text-gray-4a'
+            inputClassName='text-base font-normal text-gray-4a pl-0'
+            autoCompleteClassName='w-full'
             autocomplete={true}
             min={1}
             max={100}
@@ -75,8 +75,6 @@ const PaymentModal = ({
               }
             }}
           />
-          {/* 12%
-          <div className='pl-3 text-gray-71'>of your balance</div> */}
         </div>
         <div className='w-1/3 h-10 flex items-center text-gray-2d'>
           <Typography
@@ -114,7 +112,10 @@ const PaymentModal = ({
             width={150}
             type='top'
           >
-            <EliminationIcon size={13} className='text-gray-8e ml-9px' />
+            <EliminationIcon
+              size={13}
+              className='text-gray-8e ml-9px cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+            />
           </Tooltip>
         </Typography>
         <div className='mt-[19px] w-[390px]'>
@@ -131,8 +132,32 @@ const PaymentModal = ({
           className='flex border-b-[1px] border-gray-ec pb-[13px]'
         >
           Shielded payment source
-          <img className='ml-[7px] w-[13px]' src={infoIcon} />
-          <img className='ml-[8px] w-[20px]' src={addIcon} />
+          <span className='flex items-center'>
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content='Info'
+              width={110}
+              type='top'
+            >
+              <EliminationIcon
+                size={13}
+                className='text-gray-8e ml-9px cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+              />
+            </Tooltip>
+          </span>
+          <span className='flex items-center ml-[8px]'>
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content='Info'
+              width={110}
+              type='top'
+            >
+              <AddIcon
+                size={20}
+                className='text-blue-3f cursor-pointer hover:rounded-full hover:text-gray-88 active:text-gray-55 transition duration-300'
+              />
+            </Tooltip>
+          </span>
         </Typography>
         <table className='w-full'>
           <tbody>

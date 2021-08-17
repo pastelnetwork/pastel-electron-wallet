@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import NumberFormat from 'react-number-format'
 import cn from 'classnames'
 
+import dayjs from 'common/utils/initDayjs'
 import Tooltip from 'common/components/Tooltip'
 import Toggle from 'common/components/Toggle'
 import Select from 'common/components/Select/Select'
@@ -13,7 +14,8 @@ import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
 import Breadcrumbs from 'common/components/Breadcrumbs'
 import Typography, { TypographyVariant } from 'common/components/Typography'
-import { WalletRPC } from 'api/pastel-rpc'
+import TimeAgo from 'common/components/TimeAgo'
+import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
 import {
   TAddressRow,
   TBalanceCard,
@@ -21,8 +23,6 @@ import {
   TAddressBalance,
 } from 'types/rpc'
 import { useAppSelector } from 'redux/hooks'
-import { RootState } from '../../redux/store'
-import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
 import Alert from 'common/components/Alert'
 import 'react-toastify/dist/ReactToastify.css'
@@ -58,6 +58,13 @@ enum Tab {
   MYSECURITY,
 }
 
+type TSelectionPslProps = {
+  address: string
+  amount: number
+  valid: boolean
+  date: number
+}
+
 type TBalanceCarProps = TBalanceCard & { tooltipWidth: number }
 
 const WalletScreen = (): JSX.Element => {
@@ -80,13 +87,13 @@ const WalletScreen = (): JSX.Element => {
       key: 'time',
       name: 'Last Activity',
       colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
-      custom: () => (
+      custom: (time: number) => (
         <Typography
           variant={TypographyVariant.h5_16_24_medium}
           customColor='text-gray-71'
           className='mr-3 md:mr-0'
         >
-          {dayjs(lastFetched).fromNow(true)}
+          {time > 0 ? <TimeAgo date={dayjs.unix(time).valueOf()} /> : '--'}
         </Typography>
       ),
     },
@@ -96,8 +103,10 @@ const WalletScreen = (): JSX.Element => {
       colClasses:
         'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
       custom: () => (
-        <div className='flex pl-30px'>
-          <QRCode size={20} />
+        <div className='flex pl-6'>
+          <span className='rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+            <QRCode size={20} />
+          </span>
         </div>
       ),
     },
@@ -121,11 +130,9 @@ const WalletScreen = (): JSX.Element => {
                 setCurrentAddress(value.toString())
                 setExportKeysModalOpen(true)
               }}
+              className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
             >
-              <FilePDFIcon
-                size={20}
-                className='text-gray-88 ml-9px cursor-pointer'
-              />
+              <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
             </span>
           </div>
         )
@@ -153,20 +160,38 @@ const WalletScreen = (): JSX.Element => {
       key: 'psl',
       name: '',
       colClasses: 'min-w-[120px] w-[120px]',
-      custom: (value: number | string) => (
+      custom: (value: number | string, row?: TRow) => (
         <div className='z-0'>
           <Select
             className='text-gray-2d w-28 bg-white'
             autocomplete={true}
-            min={100}
-            max={totalBalances?.total || 20000}
-            step={100}
-            value={typeof value === 'string' ? parseInt(value) : value}
-            onChange={async () => {
-              // TODO: Implement later
-              // const amount = +(value || 0)
-              // const address = row?.address?.toString() || ''
-              // sendPsl(amount, address)
+            min={0}
+            max={value ? Math.floor(parseFloat(value.toString())) : 20000}
+            step={10}
+            value={0}
+            onChange={(selection: number | null) => {
+              if (selection && row) {
+                const tmpSelectionPsl = selectionPsl
+                const selectionPslIndex = tmpSelectionPsl.findIndex(
+                  psl => psl.address === row.address,
+                )
+                if (selectionPslIndex !== -1) {
+                  tmpSelectionPsl[selectionPslIndex].amount = selection
+                  tmpSelectionPsl[selectionPslIndex].valid = selection <= value
+                  tmpSelectionPsl[selectionPslIndex].date = dayjs().valueOf()
+                  setSelectionPsl([...tmpSelectionPsl])
+                } else {
+                  setSelectionPsl([
+                    ...tmpSelectionPsl,
+                    {
+                      address: row.address,
+                      amount: selection,
+                      valid: selection <= value,
+                      date: dayjs().valueOf(),
+                    },
+                  ])
+                }
+              }
             }}
           />
         </div>
@@ -209,13 +234,10 @@ const WalletScreen = (): JSX.Element => {
     },
   ]
 
-  const { lastFetched } = useAppSelector<RootState['pastelPrice']>(
-    ({ pastelPrice }) => pastelPrice,
-  )
-
   const walletRPC = new WalletRPC()
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [selectionPsl, setSelectionPsl] = useState<TSelectionPslProps[]>([])
 
   const [
     isTransactionHistoryModalOpen,
@@ -290,20 +312,31 @@ const WalletScreen = (): JSX.Element => {
    * Fetch wallet addresses
    */
   const fetchWalletAddresses = async () => {
+    const transactionRPC = new TransactionRPC()
     // Get addresses with balance
-    const balanceAddresses = await walletRPC.fetchTandZAddressesWithBalance()
+    const results = await Promise.all([
+      await transactionRPC.fetchTandZTransactions(),
+      await walletRPC.fetchAllAddresses(),
+      await walletRPC.fetchTandZAddressesWithBalance(),
+    ])
+    const trans = results[0]
+    const allAddresses = results[1]
+    const balanceAddresses = results[2]
+
     const addresses: TAddressRow[] = balanceAddresses.map(
       (a: TAddressBalance) => {
         const address = a.address.toString()
         const type = isSapling(address) ? 'shielded' : 'transparent'
         const [book] = addressBook.filter(b => b.address === address) || []
+        const lastActivity = trans.filter(tran => tran.address === address)[0]
+
         return {
           id: address,
           address: address,
           amount: a.balance,
-          psl: info.pslPrice || 0,
+          psl: info.pslPrice || a.balance,
           type: type,
-          time: '',
+          time: lastActivity?.time,
           qrCode: '',
           viewKey: '',
           privateKey: '',
@@ -311,6 +344,28 @@ const WalletScreen = (): JSX.Element => {
         } as TAddressRow
       },
     )
+
+    allAddresses.map(address => {
+      const existAddress = addresses.filter(add => add.address === address)
+      if (existAddress.length < 1) {
+        const type = isSapling(address) ? 'shielded' : 'transparent'
+        const [book] = addressBook.filter(b => b.address === address) || []
+
+        addresses.push({
+          id: address,
+          address: address,
+          amount: 0,
+          psl: 0,
+          type: type,
+          time: 0,
+          qrCode: '',
+          viewKey: '',
+          privateKey: '',
+          addressNick: book ? book.label : '',
+        })
+      }
+    })
+
     setWalletAddresses(addresses)
     setWalletOriginAddresses(addresses)
   }
@@ -342,14 +397,17 @@ const WalletScreen = (): JSX.Element => {
     walletAddresses.forEach(item => {
       for (let i = 0; i < selectedRows.length; i++) {
         if (selectedRows[i] === item.address) {
-          if (item.amount) {
-            tempSelectedAmount += item.amount
+          const psl = selectionPsl.filter(
+            psl => psl.address === item.address,
+          )[0]
+          if (psl?.amount && psl?.valid) {
+            tempSelectedAmount += psl.amount
           }
         }
       }
     })
     setSelectedAmount(tempSelectedAmount)
-  }, [selectedRows, walletAddresses])
+  }, [selectedRows, walletAddresses, selectionPsl])
 
   const setSelectedRowsFunction = (row: TRow) => {
     if (row) {
@@ -376,15 +434,6 @@ const WalletScreen = (): JSX.Element => {
   const onTabToggle = (index: number) => {
     setTabActive(index)
   }
-
-  const temp = [
-    ...walletAddresses,
-    ...walletAddresses,
-    ...walletAddresses,
-    ...walletAddresses,
-    ...walletAddresses,
-    ...walletAddresses,
-  ]
 
   return (
     <div>
@@ -456,7 +505,10 @@ const WalletScreen = (): JSX.Element => {
                     width={card.tooltipWidth}
                     type='top'
                   >
-                    <EliminationIcon size={20} className='text-gray-8e' />
+                    <EliminationIcon
+                      size={20}
+                      className='text-gray-8e hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+                    />
                   </Tooltip>
                 ) : null}
               </div>
@@ -552,7 +604,7 @@ const WalletScreen = (): JSX.Element => {
                   }
                   columns={Columns}
                   headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                  bodyTrClasses='h-76px border-b border-line'
+                  bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
                   bodyTdClasses='text-h5 leading-6 font-medium'
                   showCheckbox={true}
                   selectedRow={setSelectedRowsFunction}
@@ -561,10 +613,12 @@ const WalletScreen = (): JSX.Element => {
               {active == 0 && (
                 <div>
                   <Table
-                    data={temp.filter(item => item.type === 'shielded')}
+                    data={walletAddresses.filter(
+                      item => item.type === 'transparent',
+                    )}
                     columns={Columns}
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line'
+                    bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
                     bodyTdClasses='text-h5 leading-6 font-medium'
                     showCheckbox={true}
                     selectedRow={setSelectedRowsFunction}
@@ -581,10 +635,12 @@ const WalletScreen = (): JSX.Element => {
                     stickyTopClassName='top-[23px]'
                   />
                   <Table
-                    data={temp.filter(item => item.type === 'shielded')}
+                    data={walletAddresses.filter(
+                      item => item.type === 'shielded',
+                    )}
                     columns={Columns}
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line'
+                    bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
                     bodyTdClasses='text-h5 leading-6 font-medium'
                     showCheckbox={true}
                     selectedRow={setSelectedRowsFunction}

@@ -27,6 +27,7 @@ export type TBaseProps = {
   iconClasses?: string
   disabled?: boolean
   inputClassName?: string
+  autoCompleteClassName?: string
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -91,6 +92,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
     disabled = false,
     className,
     inputClassName,
+    autoCompleteClassName,
   } = props
 
   const {
@@ -159,6 +161,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 className={cn(
                   'relative',
                   disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
+                  autoCompleteClassName,
                 )}
               >
                 <input

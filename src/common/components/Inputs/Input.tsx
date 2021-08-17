@@ -25,6 +25,7 @@ export type TInput = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
   hintAsTooltip?: boolean
   appliedStyleValid?: boolean
+  inputClassName?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, TInput>(
@@ -49,6 +50,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       onClick,
       hintAsTooltip,
       appliedStyleValid = true,
+      inputClassName,
       ...otherProps
     },
     ref,
@@ -59,17 +61,20 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       'cursor-not-allowed': disabled,
     })
 
-    const inputClasses = cn({
-      'input-field w-full py-2 text-base placeholder-gray500 text-gray-800 text-h5 focus:outline-none placeholder-gray-a0 rounded': true,
-      'pl-4': !prepend,
-      'pl-2': prepend,
-      'pr-4': !append,
-      'pr-2': append,
-      'input-number': type === 'number',
-      'is-valid': isValid === true && appliedStyleValid,
-      'is-invalid': isValid === false,
-      'pointer-events-none z-10': disabled,
-    })
+    const inputClasses = cn(
+      {
+        'input-field w-full py-2 text-base placeholder-gray500 text-gray-800 text-h5 focus:outline-none placeholder-gray-a0 rounded': true,
+        'pl-4': !prepend,
+        'pl-2': prepend,
+        'pr-4': !append,
+        'pr-2': append,
+        'input-number': type === 'number',
+        'is-valid': isValid === true && appliedStyleValid,
+        'is-invalid': isValid === false,
+        'pointer-events-none z-10': disabled,
+      },
+      inputClassName,
+    )
 
     const fieldsetClasses = cn({
       'absolute top-0 right-0 bottom-0 left-0 shadow-2px rounded pointer-events-none': true,

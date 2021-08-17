@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import cx from 'classnames'
 
+import Tooltip from 'common/components/Tooltip'
+import { EliminationIcon } from 'common/components/Icons'
 import Typography, { TypographyVariant } from 'common/components/Typography'
 import styles from './CommentModal.module.css'
-import infoIcon from '../../common/assets/icons/ico-info.svg'
 
 export interface CommentModalProps {
   isOpen: boolean
@@ -11,7 +12,7 @@ export interface CommentModalProps {
 }
 
 const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
-  const [tab, setTab] = useState('Comments')
+  const [tab, setTab] = useState('Note')
   return (
     <div
       className={cx(
@@ -21,7 +22,7 @@ const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
     >
       <div className='px-4 flex text-gray-a0 border-b border-gray-f3 justify-between'>
         <div className='flex items-end pt-8px'>
-          {['Comments', 'Notes'].map((each, index) => (
+          {['Note', 'Private Note'].map((each, index) => (
             <div
               key={index}
               onClick={() => setTab(each)}
@@ -43,10 +44,18 @@ const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
             </div>
           ))}
         </div>
-        <img
-          src={infoIcon}
-          className='w-[13px] absolute right-[11px] top-[9px]'
-        />
+        <Tooltip
+          classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+          wrapperClassNames='absolute top-0 right-0'
+          content='Info'
+          width={110}
+          type='top'
+        >
+          <EliminationIcon
+            size={13}
+            className='text-gray-8e ml-9px cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300 absolute right-[11px] top-[9px]'
+          />
+        </Tooltip>
       </div>
       <div className='mt-2 px-2'>
         <textarea

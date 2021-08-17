@@ -47,12 +47,20 @@ export const useSelectOptions = (
     const { min, max, step } = props
 
     const options: TOptions['options'] = []
+    let maxValue = 0
     for (let i = min; i <= max; i += step) {
       const option = {
         label: formatNumber(i),
         value: i.toString(), // used for filtering
       }
+      maxValue = i
       options.push(option)
+    }
+    if (maxValue < max) {
+      options.push({
+        label: formatNumber(max),
+        value: max.toString(), // used for filtering
+      })
     }
     return options
   }, [optionsProps.options, rangeProps.min, rangeProps.max, rangeProps.step])

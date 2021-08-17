@@ -1,8 +1,7 @@
 import React from 'react'
 import SVG from 'react-inlinesvg'
+import { clipboard } from 'electron'
 import Input, { TInput } from './Input'
-import EyeIcon from '../../assets/icons/ico-eye.svg'
-import EyeIconHidden from '../../assets/icons/ico-eye-hidden.svg'
 import PasteIcon from '../../assets/icons/ico-paste.svg'
 
 export type TInputExportProps = TInput & {
@@ -10,37 +9,21 @@ export type TInputExportProps = TInput & {
 }
 
 const InputExportKey = (props: TInputExportProps): JSX.Element => {
-  const [type, setType] = React.useState<string>('password')
-
-  const toggleType = (): void =>
-    setType(type => (type === 'password' ? 'text' : 'password'))
+  const onCopy = () => {
+    if (props.value) {
+      clipboard.writeText(props.value)
+    }
+  }
 
   return (
     <Input
       {...props}
-      type={type}
+      inputClassName='pr-50px'
       append={
         <div className='flex items-center'>
-          {type === 'password' ? (
-            <SVG
-              src={EyeIcon}
-              className='cursor-pointer mr-15px flex justify-center items-center'
-              onClick={toggleType}
-            />
-          ) : (
-            <SVG
-              src={EyeIconHidden}
-              className='cursor-pointer flex justify-center items-center'
-              onClick={toggleType}
-            />
-          )}
-          <div>
-            <SVG
-              src={PasteIcon}
-              className='cursor-pointer flex justify-center items-center'
-              onClick={toggleType}
-            />
-          </div>
+          <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-2 transition duration-300'>
+            <SVG src={PasteIcon} onClick={onCopy} />
+          </span>
         </div>
       }
     />
