@@ -1,4 +1,7 @@
+import { mockedStore } from '../../../common/utils/mockStore'
 import initSqlJs, { Database, QueryExecResult } from 'sql.js'
+import fs from 'fs'
+import log from 'electron-log'
 
 import {
   createBlock,
@@ -1401,5 +1404,42 @@ describe('managePastelDatabase', () => {
         'pastelDB getTransactionsDataFromDBByPeriod error: rawtransactionError is invalid table name',
       )
     }
+  })
+
+  test('RemoveSqliteDBFile should remove sqlite file correctly', async () => {
+    // Arrange
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
+    const storeSpy = jest
+      .spyOn(mockedStore, 'getState')
+      .mockImplementation(() => ({
+        appInfo: { sqliteFilePath: 'path', isPackaged: false },
+      }))
+
+    // Act
+    await pastelDBLib.RemoveSqliteDBFile()
+
+    // Assert
+    expect(storeSpy).toBeCalledTimes(1)
+    expect(unlinkSpy).toBeCalledTimes(1)
+  })
+
+  test('RemoveSqliteDBFile should log the error', async () => {
+    // Arrange
+    const unlinkSpy = jest.spyOn(fs.promises, 'unlink')
+    const storeSpy = jest
+      .spyOn(mockedStore, 'getState')
+      .mockImplementation(() => ({
+        appInfo: { sqliteFilePath: 'path', isPackaged: false },
+      }))
+
+    const logSpy = jest.spyOn(log, 'error')
+
+    // Act
+    await pastelDBLib.RemoveSqliteDBFile()
+
+    // Assert
+    expect(storeSpy).toBeCalledTimes(1)
+    expect(unlinkSpy).toBeCalledTimes(1)
+    expect(logSpy).toBeCalledTimes(1)
   })
 })

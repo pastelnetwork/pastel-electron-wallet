@@ -1,6 +1,7 @@
 /* eslint-disable */
 
-import { app, Menu, shell, BrowserWindow } from 'electron'
+import { app, Menu, shell } from 'electron'
+import { sendEventToRenderer } from './features/app/mainEvents'
 export default class MenuBuilder {
   constructor(public mainWindow: any) {}
 
@@ -85,7 +86,7 @@ export default class MenuBuilder {
           label: 'About Pastelwallet Fullnode',
           selector: 'orderFrontStandardAboutPanel:',
           click: () => {
-            mainWindow.webContents.send('about')
+            sendEventToRenderer('about', null)
           },
         },
         {
@@ -131,25 +132,25 @@ export default class MenuBuilder {
           label: '&Pay URI',
           accelerator: 'Ctrl+P',
           click: () => {
-            mainWindow.webContents.send('payuri')
+            sendEventToRenderer('payuri', null)
           },
         },
         {
           label: '&Import Private Keys',
           click: () => {
-            mainWindow.webContents.send('import')
+            sendEventToRenderer('import', null)
           },
         },
         {
           label: '&Import ANI Private Keys',
           click: () => {
-            mainWindow.webContents.send('importani')
+            sendEventToRenderer('importani', null)
           },
         },
         {
           label: '&Export All Private Keys',
           click: () => {
-            mainWindow.webContents.send('exportall')
+            sendEventToRenderer('exportall', null)
           },
         },
         {
@@ -158,7 +159,7 @@ export default class MenuBuilder {
         {
           label: 'Export All &Transactions',
           click: () => {
-            mainWindow.webContents.send('exportalltx')
+            sendEventToRenderer('exportalltx', null)
           },
         },
       ],
@@ -207,7 +208,7 @@ export default class MenuBuilder {
         {
           label: 'pasteld info',
           click: () => {
-            this.mainWindow.webContents.send('pasteld')
+            sendEventToRenderer('pasteld', null)
           },
         },
         {
@@ -228,7 +229,7 @@ export default class MenuBuilder {
         {
           label: 'pasteld info',
           click: () => {
-            this.mainWindow.webContents.send('pasteld')
+            sendEventToRenderer('pasteld', null)
           },
         },
       ],
@@ -328,7 +329,7 @@ export default class MenuBuilder {
         {
           label: 'About Pastelwallet Fullnode',
           click: () => {
-            mainWindow.webContents.send('about')
+            sendEventToRenderer('about', null)
           },
         },
       ],
@@ -339,25 +340,25 @@ export default class MenuBuilder {
         {
           label: 'Spritemate',
           click: () => {
-            this.mainWindow.webContents.send('pastelSpriteEditorTool')
+            sendEventToRenderer('pastelSpriteEditorTool', null)
           },
         },
         {
           label: 'Photopea',
           click: () => {
-            this.mainWindow.webContents.send('pastelPhotopea')
+            sendEventToRenderer('pastelPhotopea', null)
           },
         },
         {
           label: 'Squoosh',
           click: () => {
-            this.mainWindow.webContents.send('squooshTool')
+            sendEventToRenderer('squooshTool', null)
           },
         },
         {
           label: 'Glitch Transform Image',
           click: () => {
-            this.mainWindow.webContents.send('glitchImage')
+            sendEventToRenderer('glitchImage', null)
           },
         },
       ],
@@ -376,7 +377,6 @@ export default class MenuBuilder {
   }
 
   buildDefaultTemplate() {
-    const { mainWindow } = this
     const templateDefault = [
       {
         label: '&File',
@@ -385,25 +385,25 @@ export default class MenuBuilder {
             label: '&Pay URI',
             accelerator: 'Ctrl+P',
             click: () => {
-              mainWindow.webContents.send('payuri')
+              sendEventToRenderer('payuri', null)
             },
           },
           {
             label: '&Import Private Keys...',
             click: () => {
-              mainWindow.webContents.send('import')
+              sendEventToRenderer('import', null)
             },
           },
           {
             label: '&Import ANI Private Keys...',
             click: () => {
-              mainWindow.webContents.send('importani')
+              sendEventToRenderer('importani', null)
             },
           },
           {
             label: '&Export All Private Keys',
             click: () => {
-              mainWindow.webContents.send('exportall')
+              sendEventToRenderer('exportall', null)
             },
           },
           {
@@ -412,7 +412,7 @@ export default class MenuBuilder {
           {
             label: 'Export All &Transactions',
             click: () => {
-              mainWindow.webContents.send('exportalltx')
+              sendEventToRenderer('exportalltx', null)
             },
           },
           {
@@ -437,7 +437,7 @@ export default class MenuBuilder {
           {
             label: 'pasteld info',
             click: () => {
-              this.mainWindow.webContents.send('pasteld')
+              sendEventToRenderer('pasteld', null)
             },
           },
         ],
@@ -448,25 +448,25 @@ export default class MenuBuilder {
           {
             label: 'Spritemate',
             click: () => {
-              this.mainWindow.webContents.send('pastelSpriteEditorTool')
+              sendEventToRenderer('pastelSpriteEditorTool', null)
             },
           },
           {
             label: 'Photopea',
             click: () => {
-              this.mainWindow.webContents.send('pastelPhotopea')
+              sendEventToRenderer('pastelPhotopea', null)
             },
           },
           {
             label: 'Squoosh',
             click: () => {
-              this.mainWindow.webContents.send('squooshTool')
+              sendEventToRenderer('squooshTool', null)
             },
           },
           {
             label: 'Glitch Transform Image',
             click: () => {
-              this.mainWindow.webContents.send('glitchImage')
+              sendEventToRenderer('glitchImage', null)
             },
           },
         ],
@@ -544,7 +544,7 @@ export default class MenuBuilder {
           {
             label: 'About Pastelwallet Fullnode',
             click: () => {
-              mainWindow.webContents.send('about')
+              sendEventToRenderer('about', null)
             },
           },
         ],

@@ -1,12 +1,11 @@
-import cx from 'classnames'
-import { ipcRenderer, shell } from 'electron'
+import { shell } from 'electron'
 import React from 'react'
 
 import pkg from '../../../package.json'
+import { CloseButton, Button } from '../../common/components/Buttons'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import cstyles from '../../common/utils/Styles.module.css'
-import styles from './UpdateToast.module.css'
 import { closeUpdateToast } from './UpdateToastSlice'
+import { sendEventToMain } from '../app/rendererEvents'
 
 export default function UpdateToast(): JSX.Element | null {
   const { opened } = useAppSelector(state => state.updateToast)
@@ -18,7 +17,7 @@ export default function UpdateToast(): JSX.Element | null {
 
   const handleUpdate = () => {
     dispatch(closeUpdateToast())
-    ipcRenderer.send('restart_app')
+    sendEventToMain('restartApp', null)
   }
 
   if (!opened) {
@@ -26,31 +25,24 @@ export default function UpdateToast(): JSX.Element | null {
   }
 
   return (
-    <div id='updateToast' className={styles.wrapper}>
-      <button
-        className={cx(cstyles.highlight, styles.close)}
+    <div
+      id='updateToast'
+      className='fixed bottom-3 right-3 z-100 paper pt-10 px-6 pb-6 w-96'
+    >
+      <CloseButton
+        className='absolute right-4 top-4'
         onClick={() => dispatch(closeUpdateToast())}
-      >
-        X
-      </button>
-      <p className={cx(styles.content, cstyles.large)}>
+      />
+      <div className='text-base font-medium text-gray-4a mb-25px mt-6'>
         Would you like to update to the new version of Wallet? Recommended!
-      </p>
-      <div className={cstyles.center}>
-        <button
-          type='button'
-          className={cx(styles.btn, cstyles.primaryButton)}
-          onClick={handleUpdate}
-        >
+      </div>
+      <div className='flex justify-center items-center'>
+        <Button onClick={handleUpdate} className='mr-4 w-2/5'>
           OK
-        </button>
-        <button
-          type='button'
-          className={cx(styles.btn, cstyles.primaryButton)}
-          onClick={openLearnMore}
-        >
+        </Button>
+        <Button onClick={openLearnMore} variant='secondary' className='w-2/5'>
           Learn more
-        </button>
+        </Button>
       </div>
     </div>
   )

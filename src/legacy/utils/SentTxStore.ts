@@ -1,32 +1,16 @@
 /* eslint-disable */
 
-import os from 'os'
-import path from 'path'
 import fs from 'fs'
-import { remote } from 'electron'
 import { Transaction, TxDetail } from '../components/AppState'
+import store from '../../redux/store'
+
 export default class SentTxStore {
   static locateSentTxStore() {
-    if (os.platform() === 'darwin') {
-      return path.join(
-        remote.app.getPath('appData'),
-        'Pastel',
-        'senttxstore.dat',
-      )
+    const path = store.getState().appInfo.sentTxStorePath
+    if (!path) {
+      throw new Error(`Can't get file path of sent tx store`)
     }
-
-    if (os.platform() === 'linux') {
-      return path.join(
-        remote.app.getPath('home'),
-        '.local',
-        'share',
-        'psl-qt-wallet-org',
-        'psl-qt-wallet',
-        'senttxstore.dat',
-      )
-    }
-
-    return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+    return path
   }
 
   static async loadSentTxns() {

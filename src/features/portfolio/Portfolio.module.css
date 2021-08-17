@@ -1,0 +1,9 @@
+.portfolioContent {
+  max-height: calc(100vh - 21.875rem); /*350px*/
+}
+
+@media screen and (min-width: 1440px) {
+  .portfolioContent {
+    max-height: calc(100vh - 17.5rem); /*280px*/
+  }
+}

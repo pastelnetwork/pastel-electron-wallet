@@ -1,3 +1,6 @@
+.idea
+pastel-utility.conf
+
 # Logs
 logs
 *.log
@@ -38,6 +41,9 @@ jspm_packages/
 
 # TypeScript v1 declaration files
 typings/
+
+# Storybook static
+storybook-static
 
 # TypeScript cache
 *.tsbuildinfo
@@ -91,3 +97,6 @@ out/
 # Electron-builder
 dist
 release
+
+# Storybook build
+storybook-static

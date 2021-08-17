@@ -1,24 +1,19 @@
-PastelWallet Fullnode is a z-Addr first, Sapling compatible wallet and full node for pasteld that runs on Linux, Windows and macOS.
+# Pastel Fullnode Wallet
 
-[Contributing Guidelines](./docs/CONTRIBUTING.md)
+[![CircleCI](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master.svg?style=svg)](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master)
 
-# Installation
+## Description
 
-### Getting started
+Pastel Fullnode Wallet is a z-Addr first, Sapling compatible wallet and full node for pasteld that runs on Linux, Windows and MacOS.  
+This wallet runs `pasteld`, pastel gonode(`walletnode`), `rqservice` managed by [pastel-utility](https://pastel.wiki/en/Architecture/pastel-utility).
+
+## Installation
 
 Download the release binary for your OS from the releases page, unzip it and double click on the exectable to start.
 
-## pasteld
+## Build from source
 
-PastelWallet needs a Pastel node running pasteld. If you already have a pasteld node running, PastelWallet will connect to it.
-
-If you don't have one, PastelWallet will start its embedded pasteld node.
-
-Additionally, if this is the first time you're running PastelWallet or a pasteld daemon, PastelWallet will download the Pastel params (~777 MB) and configure `pastel.conf` for you.
-
-## Compiling from source
-
-PastelWallet is written in Electron/Javascript and can be build from source.
+PastelWallet is written in Electron/React/Typescript and you can use below steps to build it from source.
 
 ```
 git clone https://github.com/pastelnetwork/pastel-electron-wallet.git
@@ -30,17 +25,17 @@ yarn make
 
 The resulting binaries would be located at `out` folder. Please note that `yarn make` will create installers only for the OS where it's executed.
 
-#### Prerequisites
+## Development
 
 You need to have the following software installed before you can build Pastelwallet Fullnode
 
-- Nodejs v12.16.1 or higher - https://nodejs.org
+- Nodejs v12.16.x or higher - https://nodejs.org
 - Yarn - https://yarnpkg.com
 
-To start in development mode, run
+To start in the development mode, run:
 
 ```
 yarn start
 ```
 
-To contribute to the source, please read [CONTRIBUTING.md](https://github.com/PastelNetwork/Pastel_Electron_Wallet/blob/master/docs/CONTRIBUTING.md).
+To contribute, please read [contribution guidelines for this project](docs/CONTRIBUTING.md).

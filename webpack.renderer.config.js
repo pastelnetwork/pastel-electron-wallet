@@ -1,3 +1,4 @@
+const path = require('path')
 const rules = require('./webpack.rules')
 const plugins = require('./webpack.plugins')
 
@@ -6,14 +7,14 @@ rules.push({
   use: [
     { loader: 'style-loader' },
     { loader: 'css-loader' },
-    // {
-    //   loader: 'postcss-loader',
-    //   options: {
-    //     postcssOptions: {
-    //       plugins: ['tailwindcss', 'autoprefixer'],
-    //     },
-    //   },
-    // },
+    {
+      loader: 'postcss-loader',
+      options: {
+        postcssOptions: {
+          plugins: ['tailwindcss', 'autoprefixer'],
+        },
+      },
+    },
   ],
 })
 
@@ -40,6 +41,14 @@ rules.push({
     },
   ],
 })
+rules.push({
+  test: /\.bin$/i,
+  use: [
+    {
+      loader: 'file-loader',
+    },
+  ],
+})
 
 module.exports = {
   module: {
@@ -51,5 +60,6 @@ module.exports = {
     alias: {
       'react-dom': '@hot-loader/react-dom',
     },
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
 }

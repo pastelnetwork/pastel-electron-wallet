@@ -1,4 +1,3 @@
-import { remote } from 'electron'
 import React from 'react'
 import Modal from 'react-modal'
 
@@ -8,6 +7,7 @@ import { closeAboutModal } from './AboutModalSlice'
 
 export default function AboutModal(): JSX.Element {
   const { modalIsOpen } = useAppSelector(state => state.aboutModal)
+  const appVersion = useAppSelector(state => state.appInfo.appVersion)
   const dispatch = useAppDispatch()
 
   const txYear = new Date().getFullYear()
@@ -44,7 +44,7 @@ export default function AboutModal(): JSX.Element {
         >
           <div className={styles.verticalflex}>
             <div className={styles.margintoplarge}>
-              Pastelwallet Fullnode v{remote.app.getVersion()}
+              Pastelwallet Fullnode v{appVersion}
             </div>
             <div className={styles.margintoplarge}>
               Built with Electron. Copyright (c) 2018-{txYear}.

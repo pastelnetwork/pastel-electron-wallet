@@ -26,6 +26,7 @@ import {
 } from '../constants'
 import * as pastelDBLib from '../pastelDBLib'
 import * as pastelDBThread from '../pastelDBThread'
+import { setRpcConfig } from '../../rpcConfig'
 
 type Databaseinstance = {
   db: Database
@@ -55,6 +56,8 @@ describe('PastelDBThread', () => {
   }
 
   beforeAll(async () => {
+    setRpcConfig(mockConfig)
+
     pastelDB.db = await loadDatabase()
     pastelDB.db.exec(createStatisticinfo)
     pastelDB.db.exec(createNetworkinfo)
@@ -289,12 +292,11 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchStatisticInfo({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getnetworkhashps', [], mockConfig)
-    expect(rpcSpy).toHaveBeenCalledWith('getdifficulty', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getnetworkhashps', [])
+    expect(rpcSpy).toHaveBeenCalledWith('getdifficulty', [])
     expect(insertStatisticDataToDBSpy).toHaveBeenCalledWith(
       pastelDB.db,
       { difficult: 12345.234, hashrate: 10000 },
@@ -314,11 +316,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchNetworkInfo({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getnetworkinfo', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getnetworkinfo', [])
     expect(insertNetworkInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
       connections: 0,
       create_timestamp: '',
@@ -344,11 +345,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchNettotals({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getnettotals', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getnettotals', [])
     expect(insertNetTotalsToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
       timemillis: 0,
       totalbytesrecv: 0,
@@ -368,11 +368,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchMempoolInfo({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getmempoolinfo', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getmempoolinfo', [])
     expect(insertMempoolInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
       bytes: 100,
       size: 0,
@@ -392,11 +391,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchMiningInfo({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getmininginfo', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getmininginfo', [])
     expect(insertMiningInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
       blocks: 0,
       chain: 'mininginfo-chain',
@@ -427,11 +425,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchBlock({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getbestblockhash', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getbestblockhash', [])
     expect(insertBlockInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
       anchor: '',
       bits: '',
@@ -466,11 +463,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchTxoutsetInfo({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('gettxoutsetinfo', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('gettxoutsetinfo', [])
     expect(insertTxoutsetinfoSpy).toHaveBeenCalledWith(pastelDB.db, {
       bestblock: 'best-block-123456',
       bytes_serialized: 0,
@@ -492,11 +488,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchChaintips({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getchaintips', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getchaintips', [])
     expect(insertChaintipsSpy).toHaveBeenCalledWith(pastelDB.db, {
       branchlen: 0,
       hash: 'chain-tips-hash-1234578',
@@ -517,11 +512,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchBlocksubsidy({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getblocksubsidy', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getblocksubsidy', [])
     expect(insertBlocksubsidySpy).toHaveBeenCalledWith(pastelDB.db, {
       governance: 0,
       masternode: 0,
@@ -541,11 +535,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchWalletInfo({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getwalletinfo', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getwalletinfo', [])
     expect(insertWalletinfoSpy).toHaveBeenCalledWith(pastelDB.db, {
       balance: 0,
       immature_balance: 0,
@@ -571,11 +564,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchTotalbalance({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('z_gettotalbalance', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('z_gettotalbalance', [])
     expect(insertTotalbalanceSpy).toHaveBeenCalledWith(pastelDB.db, {
       private: '',
       total: '',
@@ -595,11 +587,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchListaddresses({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('z_listaddresses', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('z_listaddresses', [])
     expect(insertListaddressesSpy).toHaveBeenCalledWith(pastelDB.db, 'address')
   })
 
@@ -615,11 +606,10 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchBlockChainInfo({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('getblockchaininfo', [], mockConfig)
+    expect(rpcSpy).toHaveBeenCalledWith('getblockchaininfo', [])
     expect(insertBlockChainInfoSpy).toHaveBeenCalledWith(pastelDB.db, {
       bestblockhash: '1023655ase41252455',
       blocks: 60524,
@@ -692,7 +682,6 @@ describe('PastelDBThread', () => {
     // Act
     await pastelDBThread.fetchPastelPrices({
       pastelDB: pastelDB.db,
-      rpcConfig: mockConfig,
     })
 
     // Assert
@@ -771,7 +760,7 @@ describe('PastelDBThread', () => {
 
     try {
       // Act
-      await pastelDBThread.PastelDBThread(mockConfig)
+      await pastelDBThread.PastelDBThread()
 
       // Assert
       expect(pastelDBSpy).toHaveBeenCalled()

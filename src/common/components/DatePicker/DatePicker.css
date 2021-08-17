@@ -1,0 +1,92 @@
+.date-picker {
+  @apply shadow-lg border-none rounded-md font-body flex flex-col;
+}
+
+.react-datepicker-popper {
+  position: fixed !important;
+  inset: unset;
+  z-index: 3 !important;
+}
+
+.react-datepicker__tab-loop {
+  position: absolute;
+}
+
+/* Header styles */
+.react-datepicker__header {
+  @apply bg-white border-none pt-0;
+}
+
+/* Day name styles */
+.react-datepicker__day-name {
+  @apply w-8 leading-8 m-1 text-button-text font-roman text-15px;
+}
+
+/* Week styles */
+.react-datepicker__week {
+  @apply relative overflow-hidden;
+  z-index: 1;
+}
+
+/* Day styles */
+.react-datepicker__day {
+  @apply relative text-gray-4a font-roman text-15px w-8 rounded-md leading-8 m-1 mb-0;
+}
+.react-datepicker__day:hover {
+  @apply bg-gray-a0;
+}
+
+/* Day outside month styles */
+.react-datepicker__day--outside-month {
+  @apply text-gray-a0;
+}
+
+/* Day in range styles */
+.react-datepicker__day--in-range,
+.react-datepicker__day--in-selecting-range {
+  @apply bg-gray-e6 !important;
+}
+.react-datepicker__day--in-range:before,
+.react-datepicker__day--in-range:after,
+.react-datepicker__day--in-selecting-range:before,
+.react-datepicker__day--in-selecting-range:after {
+  content: '';
+  @apply absolute top-0 bottom-0 bg-gray-e6 w-5;
+  z-index: -1;
+}
+.react-datepicker__day--in-range:before,
+.react-datepicker__day--in-selecting-range:before {
+  @apply -left-2/4;
+}
+.react-datepicker__day--in-range:after,
+.react-datepicker__day--in-selecting-range:after {
+  @apply -right-2/4;
+}
+.react-datepicker__day--in-selecting-range:hover:after {
+  content: none;
+}
+
+/* Selected day styles */
+.react-datepicker__day--selected,
+.react-datepicker__day--range-end,
+.react-datepicker__day--range-end:hover {
+  @apply bg-navigation-selected text-white !important;
+}
+
+.react-datepicker__day--selected:before,
+.react-datepicker__day--selected:after,
+.react-datepicker__day--range-end:after {
+  content: none !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background: none;
+}
+
+.react-datepicker__input-container {
+  @apply bg-white;
+}
+
+.select-none {
+  @apply flex;
+}

@@ -1,0 +1,111 @@
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-BlackOblique.woff2') format('woff2');
+  font-weight: 900;
+  font-style: oblique;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Heavy.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-HeavyOblique.woff2') format('woff2');
+  font-weight: 800;
+  font-style: oblique;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-LightOblique.woff2') format('woff2');
+  font-weight: 300;
+  font-style: oblique;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-MediumOblique.woff2') format('woff2');
+  font-weight: 500;
+  font-style: oblique;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Oblique.woff2') format('woff2');
+  font-weight: 400;
+  font-style: oblique;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Roman.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-SemiboldOblique.woff2') format('woff2');
+  font-weight: 600;
+  font-style: oblique;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Avenir';
+  src: url('Avenir-BoldOblique.woff2') format('woff2');
+  font-weight: 700;
+  font-style: oblique;
+  font-display: swap;
+}

@@ -1,22 +1,15 @@
 import * as React from 'react'
 
-import Typography from '../../../common/components/Typography/Typography'
-import { colors } from '../../../common/theme/colors'
+import successImage from 'common/assets/images/registration-successful.png'
+import CloseButton from '../common/closeButton'
+import * as ROUTES from 'common/utils/constants/routes'
 
-import successImage from '../../../common/assets/images/registration-successful.png'
-import * as Styles from './registrationSuccessful.styles'
-
-const RegistrationSuccessful: React.FC = () => {
+const RegistrationSuccessful = (): JSX.Element => {
   return (
-    <Styles.Container>
-      <Styles.Image src={successImage} />
-      <Styles.TitleContainer>
-        <Typography variant='h1'>Registration successful</Typography>
-        <Typography variant='body2' color={colors.text.secondary}>
-          Welcome to Pastel Network
-        </Typography>
-      </Styles.TitleContainer>
-    </Styles.Container>
+    <div className='flex items-center h-[452px] w-[769px]'>
+      <CloseButton gotoUrl={ROUTES.DASHBOARD} />
+      <img className='h-full -my-60px' src={successImage} />
+    </div>
   )
 }
 

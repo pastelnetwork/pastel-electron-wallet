@@ -1,8 +1,9 @@
+import { mockedStore } from '../../../common/utils/mockStore'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-
-import { TListTransactions } from '../../pastelDB/type'
+import { TTransaction } from 'types/rpc'
 import { fetchTandZTransactions } from '../transactions'
+import { setRpcConfig } from '../../rpcConfig'
 
 jest.mock('fs', () => ({
   promises: {
@@ -16,14 +17,6 @@ jest.mock('path', () => ({
 
 jest.mock('os', () => ({
   platform: jest.fn(),
-}))
-
-jest.mock('electron', () => ({
-  remote: {
-    app: {
-      getPath: jest.fn(),
-    },
-  },
 }))
 
 const config = {
@@ -58,6 +51,13 @@ describe('api/pastel-rpc/transactions', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     jest.clearAllMocks()
+    setRpcConfig(config)
+
+    mockedStore.getState = jest.fn(() => ({
+      appInfo: {
+        sentTxStorePath: 'path',
+      },
+    }))
   })
 
   test('can get the transaction', async () => {
@@ -65,11 +65,11 @@ describe('api/pastel-rpc/transactions', () => {
     const data = { result: mockListTransactions }
     mock.onPost(config.url).reply(200, data)
 
-    function callback(alltxlist: TListTransactions[]): void {
+    function callback(alltxlist: TTransaction[]): void {
       expect(alltxlist).not.toBeNull()
     }
 
-    await fetchTandZTransactions(config, callback)
+    await fetchTandZTransactions(callback)
 
     mock.reset()
   })
@@ -77,7 +77,7 @@ describe('api/pastel-rpc/transactions', () => {
   test('can’t get the transaction', async () => {
     expect.hasAssertions()
 
-    function callback(alltxlist: TListTransactions[]): void {
+    function callback(alltxlist: TTransaction[]): void {
       expect(alltxlist).toBeNaN()
     }
 
@@ -85,9 +85,9 @@ describe('api/pastel-rpc/transactions', () => {
     mock.onPost(config.url).reply(500)
 
     try {
-      await fetchTandZTransactions(config, callback)
-    } catch (err) {
-      expect(err.message).toEqual(
+      await fetchTandZTransactions(callback)
+    } catch ({ message }) {
+      expect(message).toEqual(
         'api/pastel-rpc server error: Request failed with status code 500',
       )
     }

@@ -1,10 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {
-  createNewPastelID,
-  getPastelIDs,
-  TRPCConfig,
-} from '../../api/pastel-rpc'
+import { createNewPastelID, getPastelIDs } from '../../api/pastel-rpc'
 import type { AppThunk } from '../../redux/store'
 import { openPastelModal } from '../pastelModal'
 
@@ -78,11 +74,11 @@ const {
 
 export const pastelIDReducer = pastelIDSlice.reducer
 
-export function fetchPastelIDs(config: TRPCConfig): AppThunk {
+export function fetchPastelIDs(): AppThunk {
   return async dispatch => {
     try {
       dispatch(getPastelIDsStart())
-      const pastelids = await getPastelIDs(config)
+      const pastelids = await getPastelIDs()
       dispatch(getPastelIDsSuccess({ pastelids }))
     } catch (err) {
       dispatch(getPastelIDsFailure())
@@ -101,15 +97,11 @@ export function fetchPastelIDs(config: TRPCConfig): AppThunk {
   }
 }
 
-export function createPastelID(
-  passphrase: string,
-  address: string,
-  config: TRPCConfig,
-): AppThunk {
+export function createPastelID(passphrase: string, address: string): AppThunk {
   return async dispatch => {
     try {
       dispatch(createPastelIDStart())
-      const res = await createNewPastelID(passphrase, address, config)
+      const res = await createNewPastelID(passphrase, address)
       dispatch(
         createPastelIDSuccess({
           pastelid: res.pastelid,

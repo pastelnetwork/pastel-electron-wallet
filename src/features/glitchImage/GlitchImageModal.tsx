@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './GlitchImageModal.module.css'
 import { closeGlitchImageModal } from './GlitchImageModalSlice'
 
-import { glitch } from '../constants/ServeStatic'
+import { glitch } from '../../common/constants/ServeStatic'
 
 export default function glitchImageModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.glitchImageModal)

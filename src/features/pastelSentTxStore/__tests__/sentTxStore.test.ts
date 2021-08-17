@@ -1,6 +1,6 @@
+import { mockedStore } from '../../../common/utils/mockStore'
 import fs from 'fs'
-
-import { loadSentTxns } from '../sent-tx-store'
+import { loadSentTxns } from '../sentTxStore'
 
 jest.mock('fs', () => ({
   promises: {
@@ -14,14 +14,6 @@ jest.mock('path', () => ({
 
 jest.mock('os', () => ({
   platform: jest.fn(),
-}))
-
-jest.mock('electron', () => ({
-  remote: {
-    app: {
-      getPath: jest.fn(),
-    },
-  },
 }))
 
 const mockTransactions = [
@@ -58,6 +50,10 @@ describe('api/pastel-rpc/sentTxStore', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     jest.clearAllMocks()
+
+    mockedStore.getState = jest.fn(() => ({
+      appInfo: { sentTxStorePath: 'path' },
+    }))
   })
 
   test('read senttxstore.dat file', async () => {

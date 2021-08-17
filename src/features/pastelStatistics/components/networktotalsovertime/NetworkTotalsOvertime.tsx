@@ -31,7 +31,11 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
   const [
     transformLineChartData,
     setTransformLineChartData,
-  ] = useState<TMultiLineChartData>()
+  ] = useState<TMultiLineChartData>({
+    dataX: [],
+    dataY1: [],
+    dataY2: [],
+  })
 
   useEffect(() => {
     const loadLineChartData = async () => {

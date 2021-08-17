@@ -3,14 +3,27 @@ const os = require('os')
 const package = require('./package.json')
 
 function getExtraResource() {
-  const p = os.platform()
-  switch (p) {
+  const platform = process.argv[3] === 'win32' ? 'win32' : os.platform()
+
+  switch (platform) {
     case 'darwin':
-      return ['./static/bin/pasteld-mac']
+      return [
+        './static/bin/pastel-utility-darwin-amd64',
+        './static/bin/pngquant-mac',
+        './static/bin/mozjpeg-mac',
+      ]
     case 'linux':
-      return ['./static/bin/pasteld-linux']
+      return [
+        './static/bin/pastel-utility-linux-amd64',
+        './static/bin/pngquant-linux',
+        './static/bin/mozjpeg-linux',
+      ]
     case 'win32':
-      return ['./static/bin/pasteld-win.exe']
+      return [
+        './static/bin/pastel-utility-windows-amd64.exe',
+        './static/bin/pngquant-win.exe',
+        './static/bin/mozjpeg-win.exe',
+      ]
     default:
       throw new Error(
         'forge.config.js error: your OS is not supported. Supported OS are: darwin, linux, win32',
@@ -24,6 +37,9 @@ function getIcon() {
     case 'darwin':
       return './static/icons/icon.icns'
     case 'linux':
+      if (process.argv[3] === 'win32') {
+        return './static/icons/icon.ico'
+      }
       return './static/icons/icon.png'
     case 'win32':
       return './static/icons/icon.ico'
@@ -54,6 +70,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         exe: `${package.name}.exe`,
+        authors: package.author.name,
         setupIcon: './static/icons/icon.ico',
         loadingGif: './static/icons/icon.gif',
         iconUrl:

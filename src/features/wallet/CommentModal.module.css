@@ -1,0 +1,6 @@
+.triangle {
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 16px solid white;
+  filter: drop-shadow(1px 1px 1px #e5e7eb);
+}

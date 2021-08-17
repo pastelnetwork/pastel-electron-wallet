@@ -1,13 +1,12 @@
-import * as React from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { Route, Switch, useLocation } from 'react-router-dom'
 
 import { pageRoutes } from './index'
-import * as Styles from './Routes.styles'
 import * as ROUTES from '../utils/constants/routes'
+import LoadingScreen from 'features/loading'
 
-type RouteType = {
+type TRouteType = {
   id: string
   path: string
   component:
@@ -22,14 +21,13 @@ type RouteType = {
     | null
 }
 
-const childRoutes = (
-  routes: Array<RouteType>,
-  setUser: React.Dispatch<React.SetStateAction<boolean>>,
-) =>
+const childRoutes = (routes: Array<TRouteType>) =>
   routes.map(({ component: Component, layout: Layout, path, id }) => {
     if (!Component || !Layout) {
       return null
     }
+
+    const extraProps = {}
 
     return (
       <Route
@@ -38,33 +36,23 @@ const childRoutes = (
         exact
         render={props => (
           <Layout>
-            <Component {...props} setUser={setUser} />
+            <Component {...props} {...extraProps} />
           </Layout>
         )}
       />
     )
   })
 
-interface RoutesProps {
-  setUser: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-const Routes: React.FC<RoutesProps> = ({ setUser }) => {
+const Routes = (): JSX.Element => {
   const location = useLocation()
-  const history = useHistory()
-
-  React.useEffect(() => history.push(ROUTES.WELCOME_PAGE), [])
 
   return (
-    <Styles.Container>
-      <TransitionGroup>
-        <CSSTransition key={location.key} classNames='fade' timeout={300}>
-          <Switch location={location}>
-            {childRoutes(pageRoutes, setUser)}
-          </Switch>
-        </CSSTransition>
-      </TransitionGroup>
-    </Styles.Container>
+    <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
+      <Switch location={location}>
+        {childRoutes(pageRoutes)}
+        <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
+      </Switch>
+    </div>
   )
 }
 

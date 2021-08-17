@@ -18,6 +18,7 @@ import {
   getThemeInitOption,
   getThemeUpdateOption,
 } from '../../utils/ChartOptions'
+import { PrevButton } from '../PrevButton'
 
 export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   const {
@@ -64,6 +65,9 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         setMaxY(Math.ceil(max))
       } else if (chartName === 'difficulty') {
         setMinY(Math.floor(min / offset) * offset)
+        setMaxY(Math.ceil(max / offset) * offset)
+      } else if (chartName === 'transactionfee') {
+        setMinY(Math.round(min) - offset)
         setMaxY(Math.ceil(max / offset) * offset)
       } else {
         setMinY(Math.round(min) - offset)
@@ -164,6 +168,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
+        <PrevButton color='#c3921f' />
         <div
           className={styles.lineChartTitle}
           style={{ color: currentTheme?.color }}

@@ -1,0 +1,13 @@
+.shadow {
+  mix-blend-mode: darken;
+  filter: blur(50px);
+  left: 5%;
+  right: 5%;
+  top: 18%;
+  z-index: -1;
+}
+
+.deleteButton {
+  background: rgba(46, 46, 46, 0.16);
+  backdrop-filter: blur(55px);
+}
