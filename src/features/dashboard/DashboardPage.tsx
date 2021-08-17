@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import ContentLoader from 'react-content-loader'
 import dayjs, { Dayjs } from 'dayjs'
 
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
@@ -17,6 +16,7 @@ import { TTotalBalance, TTransactionType } from 'types/rpc'
 import * as ROUTES from 'common/utils/constants/routes'
 import { formatNumber } from '../../common/utils/format'
 import Radio from 'common/components/Radio'
+import Typography, { TypographyVariant } from 'common/components/Typography'
 import NotificationModal from './dashboardModals/notificationModal'
 import Link from 'common/components/Link'
 import notificationData from './dashboardModals/notificationModal.data'
@@ -195,17 +195,7 @@ export default function DashboardPage(): JSX.Element {
       <div className='flex mb-5'>
         <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
           <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
-            {walletLoading ? (
-              <ContentLoader
-                speed={2}
-                width='100%'
-                height={24}
-                viewBox='0 0 400 24'
-              >
-                <rect x='8' y='6' rx='8' ry='8' width='200' height='12' />
-                <rect x='332' y='6' rx='8' ry='8' width='60' height='12' />
-              </ContentLoader>
-            ) : (
+            {!walletLoading ? (
               <>
                 <div className='font-extrabold text-gray-2d text-lg'>
                   Wallet balance
@@ -215,53 +205,16 @@ export default function DashboardPage(): JSX.Element {
                   {currencyName}
                 </div>
               </>
-            )}
+            ) : null}
           </div>
           <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
             {walletLoading ? (
-              <div>
-                {Array.from({ length: 3 }).map((_, index) => (
-                  <div
-                    key={index}
-                    className='border border-gray-e7 rounded-lg mb-3 h-[76px] w-full'
-                  >
-                    <div className='flex h-full items-center justify-between pl-3 pr-5 py-3'>
-                      <ContentLoader
-                        speed={2}
-                        width={400}
-                        height={76}
-                        viewBox='0 0 400 76'
-                      >
-                        <rect
-                          x='49'
-                          y='12'
-                          rx='3'
-                          ry='8'
-                          width='88'
-                          height='8'
-                        />
-                        <circle cx='26' cy='18' r='16' />
-                        <rect
-                          x='50'
-                          y='31'
-                          rx='3'
-                          ry='8'
-                          width='88'
-                          height='8'
-                        />
-                        <rect
-                          x='302'
-                          y='33'
-                          rx='3'
-                          ry='8'
-                          width='88'
-                          height='8'
-                        />
-                      </ContentLoader>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Typography
+                variant={TypographyVariant.h4_18_24_medium}
+                className='flex items-center justify-center h-full'
+              >
+                Loading ....
+              </Typography>
             ) : (
               <>
                 {transactions.map((transaction, i) => (
@@ -277,9 +230,11 @@ export default function DashboardPage(): JSX.Element {
               </>
             )}
           </div>
-          <LinkSection to={ROUTES.WALLET} absolute gradient>
-            Wallet Details
-          </LinkSection>
+          {!walletLoading ? (
+            <LinkSection to={ROUTES.WALLET} absolute gradient>
+              Wallet Details
+            </LinkSection>
+          ) : null}
         </div>
         <div className='paper flex-grow w-0 ml-5 pt-6 relative md:flex md:flex-col'>
           <div className='md:flex-shrink-0 flex items-center h-6 px-[30px] mb-5'>
