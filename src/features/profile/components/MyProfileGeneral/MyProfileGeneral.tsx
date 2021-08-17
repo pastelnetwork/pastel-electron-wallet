@@ -29,7 +29,7 @@ const ProfileGeneral = ({
   isEmpty,
   nativeCurrency,
 }: TProfileGeneral): JSX.Element => {
-  const { locations } = useAppSelector(state => state.pastelProfile)
+  const { locations, languages } = useAppSelector(state => state.pastelProfile)
 
   const dispatch = useAppDispatch()
 
@@ -58,14 +58,18 @@ const ProfileGeneral = ({
   const price = 15
   const [categories, setCategories] = useState<Array<string>>(data.categories)
   const [bio, setBio] = useState<string>(data.bio)
-  const [location, setLocation] = useState<TOption | null>(locations[1])
-  const [language, setLanguage] = useState<TOption | null>(languages[0])
+  const [location, setLocation] = useState<TOption | null>({
+    value: 'New York',
+    label: 'New York',
+  })
+  const [language, setLanguage] = useState<TOption | null>({
+    value: 'en',
+    label: 'English',
+  })
   const [currentPrice, setCurrentPrice] = useState(0)
   const currencyName = useCurrencyName()
 
   useEffect(() => {
-    setLocation(locations[isEmpty ? 0 : 1])
-    setLanguage(languages[0])
     setBio(isEmpty ? 'None' : data.bio)
   }, [isEmpty])
 
@@ -237,30 +241,5 @@ const ProfileGeneral = ({
     </div>
   )
 }
-
-// const locations: Array<TOption> = [
-//   {
-//     label: 'None',
-//     value: 'None',
-//   },
-//   {
-//     label: 'New York, US',
-//     value: 'New York, US',
-//   },
-//   {
-//     label: 'California, US',
-//     value: 'California, US',
-//   },
-// ]
-const languages: Array<TOption> = [
-  {
-    label: 'English',
-    value: '0',
-  },
-  {
-    label: 'Spanish',
-    value: '1',
-  },
-]
 
 export default ProfileGeneral
