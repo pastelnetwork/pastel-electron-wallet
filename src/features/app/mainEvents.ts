@@ -2,6 +2,7 @@ import { TImageOptimizationResult } from '../nft/addNFT/imageOptimization/ImageO
 import { ipcMain } from 'electron'
 import { TRendererEvents } from './rendererEvents'
 import { browserWindow } from './window'
+import { TImageType } from '../nft/addNFT/AddNft.constants'
 
 export type TMainEvents = {
   retryInitializingApp: null
@@ -12,8 +13,8 @@ export type TMainEvents = {
 
 export type TMainTasks = {
   optimizeImage(payload: {
-    path: string
-    type: File['type']
+    arrayBuffer: ArrayBuffer
+    type: TImageType
   }): Promise<TImageOptimizationResult>
 
   showSaveTransactionsAsCSVDialog(): Promise<{ filePath?: string }>

@@ -37,12 +37,12 @@ export default function PreviewStepModal({
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
     null,
   )
-  const fileSizeKb = Math.round(image.file.size / 1024)
+  const fileSizeKb = Math.round(image.size / 1024)
   const imageSizePercentOfAvg = 65
   const feePerKb = useFeePerKb()
   const currencyName = useCurrencyName()
 
-  const quality = state.optimizationState.selectedFile?.quality || 100
+  const quality = state.optimizationService.selectedFile?.quality || 100
   const lossLess = quality === 100 || state.isLossLess
 
   const fee = calculateFee({
@@ -78,7 +78,7 @@ export default function PreviewStepModal({
             {imageElement && (
               <Magnification
                 image={image}
-                optimizedImage={state.optimizationState.selectedFile}
+                optimizedImage={state.optimizationService.selectedFile}
                 imageElement={imageElement}
                 isLossLess={lossLess}
               />
@@ -105,7 +105,7 @@ export default function PreviewStepModal({
             <div className='font-medium text-gray-4a mr-5'>Image size</div>
             <div className='text-gray-2d text-sm font-extrabold mr-3 relative top-[3px]'>
               {formatFileSize(
-                state.optimizationState.selectedFile?.size || image.file.size,
+                state.optimizationService.selectedFile?.size || image.size,
               )}
             </div>
             <div className='flex-grow'>

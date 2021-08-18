@@ -1,30 +1,27 @@
-import React, { useState } from 'react'
-import { TAddNFTState } from '../AddNFT.state'
+import React from 'react'
+import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
-import { ArrowSlim, Info } from 'common/components/Icons'
-import UploadingCircle from './UploadingCircle'
+import { ArrowSlim, Info, UploadFile } from 'common/components/Icons'
 import SelectImageArea from './SelectImageArea'
 import { formatFileSize } from 'common/utils/format'
-import { useSubmit } from './SelectImageStep.service'
+import { useSelectImageService } from './SelectImageStep.service'
+import { allowedTypeNames } from '../AddNft.constants'
+import ImageShadow from '../common/ImageShadow'
+import Spinner from '../../../../common/components/Spinner'
 
-type TSelectStepProps = {
+export type TSelectStepProps = {
   state: TAddNFTState
 }
 
-export type TImageFile = {
-  file: File
-  url: string
-  width: number
-  height: number
+export type TImageFile = TImage & {
+  arrayBuffer: ArrayBuffer
 }
 
 export default function SelectImageStep({
   state,
 }: TSelectStepProps): JSX.Element {
-  const [imageFile, setFile] = useState<TImageFile>()
-  const [isReady, setReady] = useState(Boolean(state.image))
-
-  const submit = useSubmit(state, imageFile)
+  const service = useSelectImageService(state)
+  const { imageFile, error, isProcessing } = service
 
   return (
     <ModalLayout
@@ -34,18 +31,41 @@ export default function SelectImageStep({
       step={2}
       fixedHeight
       contentClass='pt-2'
-      leftColumnWidth={320}
+      leftColumnWidth={imageFile?.maxWidth || 320}
       leftColumnContent={
-        imageFile || isReady ? (
-          <UploadingCircle
-            file={imageFile}
-            setFile={setFile}
-            isReady={isReady}
-            setReady={setReady}
-          />
-        ) : (
-          <SelectImageArea setFile={setFile} />
-        )
+        <SelectImageArea service={service}>
+          {imageFile ? (
+            <div className='relative'>
+              <ImageShadow url={imageFile.url} />
+              <img
+                src={imageFile.url}
+                style={{ maxWidth: `${imageFile.maxWidth}px` }}
+                className='relative z-10 rounded'
+              />
+            </div>
+          ) : (
+            <div className='bg-gray-f4 rounded-md h-full flex-center flex-col text-gray-77 text-xs'>
+              {isProcessing ? (
+                <>
+                  <div className='mb-2'>
+                    <Spinner />
+                  </div>
+                  <div className='text-sm'>Processing file...</div>
+                </>
+              ) : (
+                <>
+                  <UploadFile size={22} className='mb-3' />
+                  <div className='mb-2'>
+                    {allowedTypeNames.join(', ')} Max 100 MB.
+                  </div>
+                  <div className='text-gray-a0'>
+                    Drag or choose your file to select
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </SelectImageArea>
       }
       rightColumnClass='w-[355]'
       rightColumnContent={
@@ -57,7 +77,7 @@ export default function SelectImageStep({
             </div>
             <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
               <div className='absolute inset-0 border border-gray-8e opacity-20 rounded font-medium shadow-4px' />
-              {imageFile ? formatFileSize(imageFile.file.size) : 'max 100 mb'}
+              {imageFile ? formatFileSize(imageFile.size) : 'max 100 mb'}
             </div>
             <div className='text-gray-71 mb-2'>
               Please take into account that image file size affects the
@@ -66,6 +86,11 @@ export default function SelectImageStep({
             <div className='text-gray-71 mb-2'>
               For example, 0,5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
             </div>
+            {error && (
+              <div className='text-red-fe font-medium mt-2 text-md'>
+                {error}
+              </div>
+            )}
           </div>
           <div className='flex-between'>
             <button
@@ -77,8 +102,8 @@ export default function SelectImageStep({
             </button>
             <button
               className='btn btn-primary px-[30px]'
-              onClick={submit}
-              disabled={!isReady}
+              onClick={service.submit}
+              disabled={!imageFile}
             >
               Go to Image Optimization
             </button>

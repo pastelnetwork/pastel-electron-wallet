@@ -5,6 +5,8 @@ export const imageTypes = {
   JPG: 'image/jpeg',
 }
 
+export type TImageType = 'image/png' | 'image/jpeg'
+
 export const allowedTypeNames = Object.keys(imageTypes)
 export const allowedMimeTypes = Object.values(imageTypes)
 export const minImageWidth = 250
