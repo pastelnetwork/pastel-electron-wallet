@@ -179,6 +179,7 @@ type TAddressMempoolResponse = TResponse<TAddressMempool[]>
 type TValidateAddressesResponse = TResponse<TValidateAddress>
 type TZListUnspentResponse = TResponse<TZListUnspent[]>
 type TZListReceivedByAddressResponse = TResponse<TZListReceivedByAddress[]>
+type TCreateAddressResponse = TResponse<string>
 
 export type {
   TUtxo,
@@ -211,4 +212,5 @@ export type {
   TAddressBalanceResponse,
   TValidateAddressesResponse,
   TZListReceivedByAddressResponse,
+  TCreateAddressResponse,
 }

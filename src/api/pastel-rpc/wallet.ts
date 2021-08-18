@@ -10,6 +10,7 @@ import {
   TTotalBalance,
   TZListUnspentResponse,
   TZListUnspent,
+  TCreateAddressResponse,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -236,4 +237,28 @@ export class WalletRPC {
 
     return zAddresses.concat(tAddresses)
   } // Fetch all T and Z addresses
+
+  async createNewAddress(zaddress: boolean): Promise<string | null> {
+    if (zaddress) {
+      try {
+        const res: TCreateAddressResponse = await rpc<TCreateAddressResponse>(
+          'z_getnewaddress',
+          [],
+        )
+        return res.result
+      } catch (err) {
+        return null
+      }
+    } else {
+      try {
+        const res: TCreateAddressResponse = await rpc<TCreateAddressResponse>(
+          'getnewaddress',
+          [''],
+        )
+        return res.result
+      } catch (err) {
+        return null
+      }
+    }
+  }
 }

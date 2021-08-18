@@ -29,6 +29,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { isSapling } from 'api/helpers'
 import { useAddressBook } from 'common/hooks'
+import PastelUtils from 'common/utils/utils'
 
 import styles from './WalletScreen.module.css'
 
@@ -42,15 +43,6 @@ import {
   FilePDFIcon,
   QRCode,
 } from 'common/components/Icons'
-
-const paymentSources = [
-  {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-  },
-  {
-    hash: 'Michael Francis',
-  },
-]
 
 enum Tab {
   GENERAL,
@@ -166,8 +158,8 @@ const WalletScreen = (): JSX.Element => {
             className='text-gray-2d w-28 bg-white'
             autocomplete={true}
             min={0}
-            max={value ? Math.floor(parseFloat(value.toString())) : 20000}
-            step={10}
+            max={Math.floor(parseFloat(value.toString()))}
+            step={PastelUtils.getStep(parseInt(value.toString()))}
             value={0}
             onChange={(selection: number | null) => {
               if (selection && row) {
@@ -370,6 +362,13 @@ const WalletScreen = (): JSX.Element => {
     setWalletOriginAddresses(addresses)
   }
 
+  const handleCreateNewAddress = async () => {
+    const result = await walletRPC.createNewAddress(active === 2)
+    if (result) {
+      await fetchWalletAddresses()
+    }
+  }
+
   const saveAddressLabel = (address: string, label: string): void => {
     // Update address nick
     const newWalletAddress: TAddressRow[] = walletAddresses.map(a => {
@@ -402,6 +401,8 @@ const WalletScreen = (): JSX.Element => {
           )[0]
           if (psl?.amount && psl?.valid) {
             tempSelectedAmount += psl.amount
+          } else if (item.amount) {
+            tempSelectedAmount += item.amount
           }
         }
       }
@@ -667,14 +668,16 @@ const WalletScreen = (): JSX.Element => {
               >
                 <Toggle toggleHandler={hideEmptyAddress}>
                   Hide empty addresses
-                  <Tooltip
-                    classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                    content='Hide empty addresses'
-                    width={150}
-                    type='top'
-                  >
-                    <EliminationIcon className='ml-2 text-gray-8e' size={20} />
-                  </Tooltip>
+                  <div className='ml-2'>
+                    <Tooltip
+                      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                      content='Hide empty addresses'
+                      width={150}
+                      type='top'
+                    >
+                      <EliminationIcon className='text-gray-8e' size={20} />
+                    </Tooltip>
+                  </div>
                 </Toggle>
               </Typography>
               <div className='flex items-center'>
@@ -720,6 +723,7 @@ const WalletScreen = (): JSX.Element => {
                 variant='secondary'
                 className='w-[264px] px-0 mt-3'
                 childrenClassName='w-full'
+                onClick={handleCreateNewAddress}
               >
                 <div className='flex items-center ml-[19px]'>
                   <ElectricityIcon size={11} className='text-blue-3f py-3' />
@@ -742,6 +746,7 @@ const WalletScreen = (): JSX.Element => {
               variant='secondary'
               className='w-[264px] px-0'
               childrenClassName='w-full'
+              onClick={handleCreateNewAddress}
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
@@ -779,11 +784,12 @@ const WalletScreen = (): JSX.Element => {
         </div>
       </div>
       <PaymentModal
-        paymentSources={paymentSources}
+        paymentSources={walletAddresses.filter(wallet => wallet.amount > 0)}
         isOpen={isPaymentModalOpen}
         handleClose={() => {
           setPaymentModalOpen(false)
         }}
+        totalBalances={totalBalances?.total || 0}
       ></PaymentModal>
       <TransactionHistoryModal
         isOpen={isTransactionHistoryModalOpen}

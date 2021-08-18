@@ -188,7 +188,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
             {!autocomplete && (
               <button
                 className={cn(
-                  'w-full h-full flex items-center whitespace-nowrap pr-7 focus-visible-border',
+                  'w-full h-full flex items-center pr-7 focus-visible-border',
                   icon ? 'pl-9 relative z-10' : 'pl-3.5',
                   disabled && 'cursor-not-allowed',
                 )}
@@ -196,7 +196,9 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}
-                {selectedItem ? selectedItem.label : placeholder}
+                <span className='truncate max-w-full'>
+                  {selectedItem ? selectedItem.label : placeholder}
+                </span>
               </button>
             )}
             <img
@@ -210,7 +212,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
             />
             <ul
               {...getMenuProps()}
-              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-20'
+              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium overflow-y-auto z-100 max-h-[200px]'
               onClick={e => e.stopPropagation()}
             >
               {filteredOptions?.map((item, index) => {
@@ -224,6 +226,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                       index,
                       item,
                     })}
+                    key={index}
                     className={cn(
                       'w-full h-10 flex items-center px-4 text-gray-71 cursor-pointer',
                       highlight && 'bg-gray-f7',

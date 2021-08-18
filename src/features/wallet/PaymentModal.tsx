@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import dayjs from 'common/utils/initDayjs'
 import { TitleModal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
 import checkIcon from 'common/assets/icons/ico-check.svg'
@@ -7,27 +8,96 @@ import PaymentSource from './PaymentSource'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import Typography, { TypographyVariant } from 'common/components/Typography'
 import Tooltip from 'common/components/Tooltip'
+import { TAddressRow } from 'types/rpc'
+import { formatPrice } from 'common/utils/format'
 
 import { EliminationIcon, AddIcon } from 'common/components/Icons'
 
-type TDataType = {
-  hash: string
+type TSelectionPslProps = {
+  address: string
+  amount: number
+  valid: boolean
+  date: number
 }
 
-export type PaymentModalProps = {
+export type TPaymentModalProps = {
   isOpen: boolean
   handleClose: () => void
-  paymentSources: Array<TDataType>
+  paymentSources: TAddressRow[]
+  totalBalances: number
 }
 
 const PaymentModal = ({
   isOpen,
   handleClose,
   paymentSources,
-}: PaymentModalProps): JSX.Element => {
+  totalBalances,
+}: TPaymentModalProps): JSX.Element => {
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(12)
-  const [psl, setPSL] = useState<number>(22000)
+  const [psl, setPSL] = useState<number>(12000)
+  const [selectedTotal, setSelectedTotal] = useState(0)
+  const [selectedRows, setSelectedRows] = useState<Array<string>>([])
+  const [selectionPsl, setSelectionPsl] = useState<TSelectionPslProps[]>([])
+
+  useEffect(() => {
+    let tempSelectedAmount = 0
+    paymentSources.forEach(item => {
+      for (let i = 0; i < selectedRows.length; i++) {
+        if (selectedRows[i] === item.address) {
+          const psl = selectionPsl.filter(
+            psl => psl.address === item.address,
+          )[0]
+          if (psl?.amount && psl?.valid) {
+            tempSelectedAmount += psl.amount
+          } else if (item.amount) {
+            tempSelectedAmount += item.amount
+          }
+        }
+      }
+    })
+    setSelectedTotal(tempSelectedAmount)
+  }, [selectedRows, selectionPsl])
+
+  const handleSelectedRows = (row: TAddressRow) => {
+    if (row) {
+      const temp = selectedRows
+      if (temp.includes(row.address.toString())) {
+        temp.forEach((item, index) => {
+          item == row.address.toString() && temp.splice(index, 1)
+        })
+      } else {
+        temp.push(row.address.toString())
+      }
+      setSelectedRows([...temp])
+    }
+  }
+
+  const handlAmountChange = (selection: number | null, row: TAddressRow) => {
+    if (selection && row) {
+      const tmpSelectionPsl = selectionPsl
+      const selectionPslIndex = tmpSelectionPsl.findIndex(
+        psl => psl.address === row.address,
+      )
+      if (selectionPslIndex !== -1) {
+        tmpSelectionPsl[selectionPslIndex].amount = selection
+        tmpSelectionPsl[selectionPslIndex].valid = selection <= row.amount
+        tmpSelectionPsl[selectionPslIndex].date = dayjs().valueOf()
+        setSelectionPsl([...tmpSelectionPsl])
+      } else {
+        setSelectionPsl([
+          ...tmpSelectionPsl,
+          {
+            address: row.address,
+            amount: selection,
+            valid: selection <= row.amount,
+            date: dayjs().valueOf(),
+          },
+        ])
+      }
+    }
+  }
+
   return (
     <TitleModal
       isOpen={isOpen}
@@ -97,7 +167,8 @@ const PaymentModal = ({
         customColor='text-gray-a0'
         className='pt-6px'
       >
-        220,000 {currencyName} balance remaining after payment
+        {formatPrice(totalBalances - selectedTotal, currencyName)} balance
+        remaining after payment
       </Typography>
       <div>
         <Typography
@@ -106,17 +177,19 @@ const PaymentModal = ({
           className='pt-[23px] flex items-center'
         >
           Address of Recipient
-          <Tooltip
-            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-            content='Address of Recipient'
-            width={150}
-            type='top'
-          >
-            <EliminationIcon
-              size={13}
-              className='text-gray-8e ml-9px cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
-            />
-          </Tooltip>
+          <div className='ml-9px'>
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content='Address of Recipient'
+              width={150}
+              type='top'
+            >
+              <EliminationIcon
+                size={13}
+                className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+              />
+            </Tooltip>
+          </div>
         </Typography>
         <div className='mt-[19px] w-[390px]'>
           <input
@@ -131,8 +204,8 @@ const PaymentModal = ({
           customColor='text-gray-4a'
           className='flex border-b-[1px] border-gray-ec pb-[13px]'
         >
-          Shielded payment source
-          <span className='flex items-center'>
+          Shielded Payment Source
+          <span className='flex items-center ml-9px'>
             <Tooltip
               classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
               content='Info'
@@ -141,7 +214,7 @@ const PaymentModal = ({
             >
               <EliminationIcon
                 size={13}
-                className='text-gray-8e ml-9px cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+                className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
               />
             </Tooltip>
           </span>
@@ -161,8 +234,13 @@ const PaymentModal = ({
         </Typography>
         <table className='w-full'>
           <tbody>
-            {paymentSources.map((data: TDataType, index: number) => (
-              <PaymentSource key={index} {...data} />
+            {paymentSources.map((data: TAddressRow, index: number) => (
+              <PaymentSource
+                key={index}
+                walletAddress={data}
+                onSelectedRows={handleSelectedRows}
+                onAmountChange={handlAmountChange}
+              />
             ))}
           </tbody>
         </table>
@@ -189,7 +267,7 @@ const PaymentModal = ({
           >
             <img src={checkIcon} className='py-3.5' />
             <span className='ml-[9px]'>
-              Confirm {currencyName} 32,000 payment
+              Confirm {currencyName} {formatPrice(selectedTotal, '')} payment
             </span>
           </Typography>
         </Button>

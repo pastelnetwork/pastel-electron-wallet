@@ -22,9 +22,9 @@ import {
   TAddressBook,
 } from 'types/rpc'
 import dayjs from 'dayjs'
-import Utils from '../../legacy/utils/utils'
 import { AddressForm } from './AddressForm'
 import { useAddressBook } from 'common/hooks'
+import PastelUtils from 'common/utils/utils'
 
 export type TransactionHistoryModalProps = {
   isOpen: boolean
@@ -55,8 +55,12 @@ const TransactionHistoryModal = ({
     },
   ])
   const [dates, setDates] = useState<TDateRangeProp>()
-  const [sourceAddress, setSourceAddress] = useState<TOption | null>(null)
-  const [recipientAddress, setRecipientAddress] = useState<TOption | null>(null)
+  const [sourceAddress, setSourceAddress] = useState<TOption | null>(
+    sourceAddresses[0],
+  )
+  const [recipientAddress, setRecipientAddress] = useState<TOption | null>(
+    recipients[0],
+  )
   const { addressBook, updateAddressBook } = useAddressBook()
 
   const onSelectDateRange = (dates: TDateRangeProp) => {
@@ -67,8 +71,8 @@ const TransactionHistoryModal = ({
     const filtered = trans
       .filter(t => {
         return isSource
-          ? Utils.isSapling(t.address)
-          : !Utils.isSapling(t.address)
+          ? PastelUtils.isSapling(t.address)
+          : !PastelUtils.isSapling(t.address)
       })
       .map(t => {
         return {
@@ -191,11 +195,12 @@ const TransactionHistoryModal = ({
       key: 'type',
       headerColClasses: 'whitespace-nowrap mr-15px ml-46px',
       name: 'Source type',
-      custom: (value: string | number) => {
-        const str = value.toString()
+      custom: (value: string | number, row?: TRow) => {
         return (
           <div className='ml-46px'>
-            {str.charAt(0).toUpperCase() + str.slice(1)}
+            {!PastelUtils.isTransparent(row?.address)
+              ? 'Shielded'
+              : 'Transparent'}
           </div>
         )
       },
@@ -204,20 +209,22 @@ const TransactionHistoryModal = ({
       key: 'status',
       name: 'Status',
       headerColClasses: 'mr-15px',
-      custom: (value: string | number) => (
-        <img
-          src={
-            value == 'success'
-              ? checkGreenIcon
-              : value == 'pending'
-              ? clockYellowIcon
-              : value == 'failed'
-              ? crossIcon
-              : ''
-          }
-          className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
-        />
-      ),
+      custom: (value: string | number) => {
+        return (
+          <img
+            src={
+              value == 'success'
+                ? checkGreenIcon
+                : value == 'pending'
+                ? clockYellowIcon
+                : value == 'failed'
+                ? crossIcon
+                : clockYellowIcon
+            }
+            className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
+          />
+        )
+      },
     },
     {
       key: 'id',
@@ -240,9 +247,18 @@ const TransactionHistoryModal = ({
       name: 'Private Notes',
       headerColClasses: 'whitespace-nowrap mr-15px',
       custom: () => (
-        <span className='ml-8 inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
-          <img className='cursor-pointer' src={commentIcon} />
-        </span>
+        <div className='ml-8 inline-block'>
+          <Tooltip
+            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+            content='Note content here.'
+            width={150}
+            type='top'
+          >
+            <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+              <img className='cursor-pointer' src={commentIcon} />
+            </span>
+          </Tooltip>
+        </div>
       ),
     },
     {
@@ -265,6 +281,7 @@ const TransactionHistoryModal = ({
       handleClose={() => handleClose()}
       size='7xl'
       title='Transaction history'
+      classNames='max-w-7xl'
     >
       <div className='bg-white z-50'>
         <div className='flex text-gray-71 text-sm'>

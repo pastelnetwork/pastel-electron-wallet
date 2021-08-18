@@ -44,18 +44,20 @@ const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
             </div>
           ))}
         </div>
-        <Tooltip
-          classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-          wrapperClassNames='absolute top-0 right-0'
-          content='Info'
-          width={110}
-          type='top'
-        >
-          <EliminationIcon
-            size={13}
-            className='text-gray-8e ml-9px cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300 absolute right-[11px] top-[9px]'
-          />
-        </Tooltip>
+        <div className='ml-9px absolute right-[11px] top-[9px]'>
+          <Tooltip
+            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+            wrapperClassNames='absolute top-0 right-0'
+            content='Info'
+            width={110}
+            type='top'
+          >
+            <EliminationIcon
+              size={13}
+              className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+            />
+          </Tooltip>
+        </div>
       </div>
       <div className='mt-2 px-2'>
         <textarea

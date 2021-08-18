@@ -59,7 +59,7 @@ export const AddressForm = ({
           />
         </>
       ) : !!currentRow && currentRow.addressNick.toString() ? (
-        <div className='w-220px'>
+        <div className='w-220px md:w-[281px]'>
           <Tooltip
             autoWidth={true}
             type='top'
@@ -139,7 +139,7 @@ export const AddressForm = ({
             </span>
           </div>
           {hidable && (
-            <div className='flex items-center ml-3 xl:ml-26px'>
+            <div className='flex items-center ml-13px'>
               <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
                 <img className='cursor-pointer' src={passEyeIcon} />
               </span>
