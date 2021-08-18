@@ -170,6 +170,8 @@ const checkImageSize = ({
 const processingErrorMessage =
   'Can not process selected file, it is possibly corrupted'
 
+// We need to load image using image-js to check if image file is corrupted
+// In case of corrupted image it will throw error, while standard image's onerror are not triggered
 const processImage = async ({
   name,
   type,
