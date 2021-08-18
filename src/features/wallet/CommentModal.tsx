@@ -17,7 +17,7 @@ const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
     <div
       className={cx(
         !isOpen && 'hidden',
-        'ml-2 w-371px absolute bottom-12 transform -translate-x-1/2 border border-gray-f3 rounded bg-white shadow-textbox',
+        'ml-4 w-371px absolute bottom-12 transform -translate-x-1/2 border border-gray-f3 rounded bg-white shadow-textbox',
       )}
     >
       <div className='px-4 flex text-gray-a0 border-b border-gray-f3 justify-between'>

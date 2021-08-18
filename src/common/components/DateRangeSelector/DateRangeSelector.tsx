@@ -51,7 +51,7 @@ const DateRangeSelectorContent = ({
       <div className='flex'>
         <img src={calendarIcon} className='ml-4 mr-2' />
         {dayjs(startDate).format('MM.DD.YY')}
-        {' ~ '}
+        {' - '}
       </div>
     )
   }
@@ -60,7 +60,7 @@ const DateRangeSelectorContent = ({
     <div className='flex'>
       <img src={calendarIcon} className='ml-4 mr-2' />
       {dayjs(startDate).format('MM.DD.YY') +
-        ' ~ ' +
+        ' - ' +
         dayjs(endDate).format('MM.DD.YY')}
     </div>
   )

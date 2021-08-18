@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import dayjs from 'common/utils/initDayjs'
+import React, { useState } from 'react'
+
 import { TitleModal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
 import checkIcon from 'common/assets/icons/ico-check.svg'
@@ -10,21 +10,23 @@ import Typography, { TypographyVariant } from 'common/components/Typography'
 import Tooltip from 'common/components/Tooltip'
 import { TAddressRow } from 'types/rpc'
 import { formatPrice } from 'common/utils/format'
+import { TRow } from 'common/components/Table'
 
 import { EliminationIcon, AddIcon } from 'common/components/Icons'
-
-type TSelectionPslProps = {
-  address: string
-  amount: number
-  valid: boolean
-  date: number
-}
 
 export type TPaymentModalProps = {
   isOpen: boolean
   handleClose: () => void
   paymentSources: TAddressRow[]
   totalBalances: number
+  onRemoveRow: (row: TRow) => void
+  onAmountChange: (
+    selection: number | null,
+    value: number | string,
+    row?: TRow,
+  ) => void
+  selectedTotal: number
+  onSelectedRows: (row: TAddressRow) => void
 }
 
 const PaymentModal = ({
@@ -32,71 +34,14 @@ const PaymentModal = ({
   handleClose,
   paymentSources,
   totalBalances,
+  onRemoveRow,
+  onAmountChange,
+  selectedTotal,
+  onSelectedRows,
 }: TPaymentModalProps): JSX.Element => {
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(12)
   const [psl, setPSL] = useState<number>(12000)
-  const [selectedTotal, setSelectedTotal] = useState(0)
-  const [selectedRows, setSelectedRows] = useState<Array<string>>([])
-  const [selectionPsl, setSelectionPsl] = useState<TSelectionPslProps[]>([])
-
-  useEffect(() => {
-    let tempSelectedAmount = 0
-    paymentSources.forEach(item => {
-      for (let i = 0; i < selectedRows.length; i++) {
-        if (selectedRows[i] === item.address) {
-          const psl = selectionPsl.filter(
-            psl => psl.address === item.address,
-          )[0]
-          if (psl?.amount && psl?.valid) {
-            tempSelectedAmount += psl.amount
-          } else if (item.amount) {
-            tempSelectedAmount += item.amount
-          }
-        }
-      }
-    })
-    setSelectedTotal(tempSelectedAmount)
-  }, [selectedRows, selectionPsl])
-
-  const handleSelectedRows = (row: TAddressRow) => {
-    if (row) {
-      const temp = selectedRows
-      if (temp.includes(row.address.toString())) {
-        temp.forEach((item, index) => {
-          item == row.address.toString() && temp.splice(index, 1)
-        })
-      } else {
-        temp.push(row.address.toString())
-      }
-      setSelectedRows([...temp])
-    }
-  }
-
-  const handlAmountChange = (selection: number | null, row: TAddressRow) => {
-    if (selection && row) {
-      const tmpSelectionPsl = selectionPsl
-      const selectionPslIndex = tmpSelectionPsl.findIndex(
-        psl => psl.address === row.address,
-      )
-      if (selectionPslIndex !== -1) {
-        tmpSelectionPsl[selectionPslIndex].amount = selection
-        tmpSelectionPsl[selectionPslIndex].valid = selection <= row.amount
-        tmpSelectionPsl[selectionPslIndex].date = dayjs().valueOf()
-        setSelectionPsl([...tmpSelectionPsl])
-      } else {
-        setSelectionPsl([
-          ...tmpSelectionPsl,
-          {
-            address: row.address,
-            amount: selection,
-            valid: selection <= row.amount,
-            date: dayjs().valueOf(),
-          },
-        ])
-      }
-    }
-  }
 
   return (
     <TitleModal
@@ -234,12 +179,13 @@ const PaymentModal = ({
         </Typography>
         <table className='w-full'>
           <tbody>
-            {paymentSources.map((data: TAddressRow, index: number) => (
+            {paymentSources.map((data: TAddressRow) => (
               <PaymentSource
-                key={index}
+                key={data.address}
                 walletAddress={data}
-                onSelectedRows={handleSelectedRows}
-                onAmountChange={handlAmountChange}
+                onSelectedRows={onSelectedRows}
+                onRemoveRow={onRemoveRow}
+                onAmountChange={onAmountChange}
               />
             ))}
           </tbody>

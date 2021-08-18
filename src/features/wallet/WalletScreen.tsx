@@ -162,28 +162,7 @@ const WalletScreen = (): JSX.Element => {
             step={PastelUtils.getStep(parseInt(value.toString()))}
             value={0}
             onChange={(selection: number | null) => {
-              if (selection && row) {
-                const tmpSelectionPsl = selectionPsl
-                const selectionPslIndex = tmpSelectionPsl.findIndex(
-                  psl => psl.address === row.address,
-                )
-                if (selectionPslIndex !== -1) {
-                  tmpSelectionPsl[selectionPslIndex].amount = selection
-                  tmpSelectionPsl[selectionPslIndex].valid = selection <= value
-                  tmpSelectionPsl[selectionPslIndex].date = dayjs().valueOf()
-                  setSelectionPsl([...tmpSelectionPsl])
-                } else {
-                  setSelectionPsl([
-                    ...tmpSelectionPsl,
-                    {
-                      address: row.address,
-                      amount: selection,
-                      valid: selection <= value,
-                      date: dayjs().valueOf(),
-                    },
-                  ])
-                }
-              }
+              handleAmountChange(selection, value, row)
             }}
           />
         </div>
@@ -434,6 +413,56 @@ const WalletScreen = (): JSX.Element => {
 
   const onTabToggle = (index: number) => {
     setTabActive(index)
+  }
+
+  const getPaymentSources = () => {
+    let tempWalletAddresses: TAddressRow[] = []
+    if (selectedRows.length > 0) {
+      tempWalletAddresses = walletAddresses.filter(wallet => {
+        if (selectedRows.indexOf(wallet.address) !== -1) {
+          const psl = selectionPsl.filter(
+            psl => psl?.address === wallet.address,
+          )[0]
+
+          const newWallet = Object.assign(wallet)
+          newWallet.psl = psl?.amount || wallet.amount
+          return newWallet
+        }
+
+        return null
+      })
+    }
+
+    return tempWalletAddresses
+  }
+
+  const handleAmountChange = (
+    selection: number | null,
+    value: number | string,
+    row?: TRow,
+  ) => {
+    if (selection && row) {
+      const tmpSelectionPsl = selectionPsl
+      const selectionPslIndex = tmpSelectionPsl.findIndex(
+        psl => psl.address === row.address,
+      )
+      if (selectionPslIndex !== -1) {
+        tmpSelectionPsl[selectionPslIndex].amount = selection
+        tmpSelectionPsl[selectionPslIndex].valid = selection <= value
+        tmpSelectionPsl[selectionPslIndex].date = dayjs().valueOf()
+        setSelectionPsl([...tmpSelectionPsl])
+      } else {
+        setSelectionPsl([
+          ...tmpSelectionPsl,
+          {
+            address: row.address,
+            amount: selection,
+            valid: selection <= value,
+            date: dayjs().valueOf(),
+          },
+        ])
+      }
+    }
   }
 
   return (
@@ -784,12 +813,16 @@ const WalletScreen = (): JSX.Element => {
         </div>
       </div>
       <PaymentModal
-        paymentSources={walletAddresses.filter(wallet => wallet.amount > 0)}
+        paymentSources={getPaymentSources()}
         isOpen={isPaymentModalOpen}
         handleClose={() => {
           setPaymentModalOpen(false)
         }}
         totalBalances={totalBalances?.total || 0}
+        onRemoveRow={setSelectedRowsFunction}
+        onAmountChange={handleAmountChange}
+        selectedTotal={selectedAmount}
+        onSelectedRows={setSelectedRowsFunction}
       ></PaymentModal>
       <TransactionHistoryModal
         isOpen={isTransactionHistoryModalOpen}

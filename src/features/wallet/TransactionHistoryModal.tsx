@@ -11,7 +11,6 @@ import Tooltip from 'common/components/Tooltip'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
 import checkGreenIcon from '../../common/assets/icons/ico-check-green.svg'
 import clockYellowIcon from '../../common/assets/icons/ico-clock-yellow.svg'
-import crossIcon from '../../common/assets/icons/ico-cross.svg'
 import addressbookIcon from '../../common/assets/icons/ico-addressbook.svg'
 import user2Icon from '../../common/assets/icons/ico-user2.svg'
 import { TransactionRPC } from 'api/pastel-rpc'
@@ -81,12 +80,12 @@ const TransactionHistoryModal = ({
         }
       })
 
-    return filtered.concat([
+    return [
       {
         label: 'All',
         value: '',
       },
-    ])
+    ].concat(filtered)
   }
 
   const filterTransactionByType = (
@@ -197,10 +196,25 @@ const TransactionHistoryModal = ({
       name: 'Source type',
       custom: (value: string | number, row?: TRow) => {
         return (
-          <div className='ml-46px'>
+          <div className='ml-46px flex items-center'>
             {!PastelUtils.isTransparent(row?.address)
               ? 'Shielded'
               : 'Transparent'}
+
+            {Math.floor(Math.random() * 10) % 2 ? (
+              <div className='inline-block'>
+                <Tooltip
+                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                  content='Note content here.'
+                  width={150}
+                  type='top'
+                >
+                  <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+                    <img className='cursor-pointer' src={commentIcon} />
+                  </span>
+                </Tooltip>
+              </div>
+            ) : null}
           </div>
         )
       },
@@ -209,16 +223,12 @@ const TransactionHistoryModal = ({
       key: 'status',
       name: 'Status',
       headerColClasses: 'mr-15px',
-      custom: (value: string | number) => {
+      custom: () => {
         return (
           <img
             src={
-              value == 'success'
+              Math.floor(Math.random() * 10) % 2
                 ? checkGreenIcon
-                : value == 'pending'
-                ? clockYellowIcon
-                : value == 'failed'
-                ? crossIcon
                 : clockYellowIcon
             }
             className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
@@ -293,7 +303,9 @@ const TransactionHistoryModal = ({
               >
                 Time range
               </Typography>
-              <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
+              <div className='w-[208px]'>
+                <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
+              </div>
             </div>
             <div className='w-[264px] pr-6'>
               <Typography
@@ -303,13 +315,15 @@ const TransactionHistoryModal = ({
               >
                 Source address
               </Typography>
-              <Select
-                label={<img src={addressbookIcon} className='mr-2' />}
-                className='text-gray-2d w-full'
-                selected={sourceAddress}
-                options={sourceAddresses}
-                onChange={setSourceAddress}
-              />
+              <div className='w-[208px]'>
+                <Select
+                  label={<img src={addressbookIcon} className='mr-2' />}
+                  className='text-gray-2d w-full'
+                  selected={sourceAddress}
+                  options={sourceAddresses}
+                  onChange={setSourceAddress}
+                />
+              </div>
             </div>
             <div className='w-[264px] pr-6'>
               <Typography
@@ -319,13 +333,15 @@ const TransactionHistoryModal = ({
               >
                 Recipients
               </Typography>
-              <Select
-                label={<img src={user2Icon} className='mr-2' />}
-                className='text-gray-2d w-full'
-                selected={recipientAddress}
-                options={recipients}
-                onChange={setRecipientAddress}
-              />
+              <div className='w-[208px]'>
+                <Select
+                  label={<img src={user2Icon} className='mr-2' />}
+                  className='text-gray-2d w-full'
+                  selected={recipientAddress}
+                  options={recipients}
+                  onChange={setRecipientAddress}
+                />
+              </div>
             </div>
           </div>
           <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>

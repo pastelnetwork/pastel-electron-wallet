@@ -196,7 +196,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}
-                <span className='truncate max-w-full'>
+                <span className='truncate max-w-[86%]'>
                   {selectedItem ? selectedItem.label : placeholder}
                 </span>
               </button>

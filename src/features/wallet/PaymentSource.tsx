@@ -6,19 +6,26 @@ import { formatAddress } from 'common/utils/format'
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import add2Icon from '../../common/assets/icons/ico-add-2.svg'
 import Select from '../../common/components/Select/Select'
+import { TRow } from 'common/components/Table'
 
 import { Trash, Eye, Pencil } from 'common/components/Icons'
 
 export type IDataType = {
   walletAddress: TAddressRow
   onSelectedRows: (row: TAddressRow) => void
-  onAmountChange: (value: number | null, row: TAddressRow) => void
+  onAmountChange: (
+    selection: number | null,
+    value: number | string,
+    row?: TRow,
+  ) => void
+  onRemoveRow: (row: TRow) => void
 }
 
 const PaymentSource = ({
   walletAddress,
   onSelectedRows,
   onAmountChange,
+  onRemoveRow,
 }: IDataType): JSX.Element => {
   const [isCommentOpen, setCommentOpen] = useState(false)
 
@@ -27,7 +34,7 @@ const PaymentSource = ({
       <td className='whitespace-nowrap'>
         <div className='flex items-center'>
           <Checkbox
-            isChecked={false}
+            isChecked={true}
             clickHandler={() => onSelectedRows(walletAddress)}
           ></Checkbox>
           <span className='text-blue-3f ml-5 truncate max-w-[240px]'>
@@ -39,7 +46,10 @@ const PaymentSource = ({
           <span className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
             <Eye size={19} className='text-gray-88' />
           </span>
-          <span className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+          <span
+            className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+            onClick={() => onRemoveRow(walletAddress)}
+          >
             <Trash size={14} className='text-gray-88' />
           </span>
         </div>
@@ -49,7 +59,7 @@ const PaymentSource = ({
           <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
             <img
               className='cursor-pointer'
-              onClick={() => setCommentOpen(true)}
+              onClick={() => setCommentOpen(!isCommentOpen)}
               src={add2Icon}
             />
           </span>
@@ -67,9 +77,9 @@ const PaymentSource = ({
             min={0}
             max={Math.floor(walletAddress.amount)}
             step={PastelUtils.getStep(walletAddress.amount)}
-            value={Math.floor(walletAddress.amount)}
+            value={walletAddress.psl}
             onChange={(value: number | null) =>
-              onAmountChange(value, walletAddress)
+              onAmountChange(value, walletAddress.amount, walletAddress)
             }
           />
         </div>
