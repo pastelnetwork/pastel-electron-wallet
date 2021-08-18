@@ -4,7 +4,7 @@ import avatar1 from 'common/assets/images/mock/avatar-1.png'
 import avatar2 from 'common/assets/images/mock/avatar-2.png'
 import avatar3 from 'common/assets/images/mock/avatar-3.png'
 import dayjs from 'dayjs'
-import { useCurrencyName } from 'common/hooks/appInfo'
+import { formatPrice } from 'common/utils/format'
 
 export type TBidsModal = {
   isOpen: boolean
@@ -12,8 +12,6 @@ export type TBidsModal = {
 }
 
 const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
-  const currencyName = useCurrencyName()
-
   const comments = [
     {
       id: 1,
@@ -22,7 +20,7 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
         name: 'Ben Mingo',
         username: '@zndrson',
       },
-      bidPrice: `12,000${currencyName}`,
+      bidPrice: formatPrice(12000),
       publishedAt: new Date(),
     },
     {
@@ -32,7 +30,7 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
         name: 'The Noc Design',
         username: '@zndrson',
       },
-      bidPrice: `12,000${currencyName}`,
+      bidPrice: formatPrice(12000),
       publishedAt: new Date(),
     },
     {
@@ -42,7 +40,7 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
         name: 'Michael Brewer',
         username: '@zndrson',
       },
-      bidPrice: `12,000${currencyName}`,
+      bidPrice: formatPrice(12000),
       publishedAt: new Date(),
     },
     {
@@ -52,7 +50,7 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
         name: 'The Noc Design',
         username: '@zndrson',
       },
-      bidPrice: `12,000${currencyName}`,
+      bidPrice: formatPrice(12000),
       publishedAt: new Date(),
     },
     {
@@ -62,7 +60,7 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
         name: 'Michael Brewer',
         username: '@zndrson',
       },
-      bidPrice: `12,000${currencyName}`,
+      bidPrice: formatPrice(12000),
       publishedAt: new Date(),
     },
   ]
