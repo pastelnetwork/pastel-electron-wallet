@@ -48,6 +48,9 @@ import {
 } from './pastelDBLib'
 import * as types from './type'
 import { getRpcConfig } from '../rpcConfig'
+import { setPastelPrice } from '../pastelPrice/pastelPriceSlice'
+import store from '../../redux/store'
+import { queryClient } from '../../common/utils/queryClient'
 
 type fetchFuncConfig = {
   pastelDB: Database
@@ -252,22 +255,26 @@ export async function fetchListTransactions(
 
 export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<TListUnspentResponse>('listunspent', [])
-    const unspentlist = result
+    const data = await rpc<TListUnspentResponse>('listunspent', [])
+    const unspentlist = data.result
     for (let i = 0; i < 1; i++) {
       insertListunspent(props.pastelDB, unspentlist[i])
     }
+    queryClient.setQueryData('listunspent', data)
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchListunspent error: ${message}`)
   }
 }
 
-export async function fetchTotalbalance(props: fetchFuncConfig): Promise<void> {
+export async function fetchTotalBalance(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TTotalBalanceResponse>('z_gettotalbalance', [])
+
     insertTotalbalance(props.pastelDB, result)
+
+    queryClient.setQueryData('z_gettotalbalance', result)
   } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchTotalbalance error: ${message}`)
+    throw new Error(`pastelDBThread fetchTotalBalance error: ${message}`)
   }
 }
 
@@ -281,7 +288,7 @@ export async function fetchListaddresses(
       insertListaddresses(props.pastelDB, addresslist[i])
     }
   } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchTotalbalance error: ${message}`)
+    throw new Error(`pastelDBThread fetchTotalBalance error: ${message}`)
   }
 }
 
@@ -296,7 +303,12 @@ export async function fetchPastelPrices(props: fetchFuncConfig): Promise<void> {
       throw new Error('pastelPrice fetchPastelPrice error: invalid response')
     }
 
-    insertPastelPrice(props.pastelDB, resp.data?.['pastel']?.['usd'])
+    const price = resp.data?.['pastel']?.['usd']
+    insertPastelPrice(props.pastelDB, price)
+
+    if (price) {
+      store.dispatch(setPastelPrice({ price, lastFetched: Date.now() }))
+    }
   } catch ({ message }) {
     // TODO log errors to a central logger so we can address them later.
     throw new Error(`pastelDBThread fetchPastelPrice error: ${message}`)
@@ -336,7 +348,7 @@ export async function PastelDBThread(): Promise<void> {
       fetchTxoutsetInfo(pastelConfig),
       fetchBlocksubsidy(pastelConfig),
       fetchWalletInfo(pastelConfig),
-      fetchTotalbalance(pastelConfig),
+      fetchTotalBalance(pastelConfig),
       fetchPastelPrices(pastelConfig),
       fetchBlockChainInfo(pastelConfig),
     ])
