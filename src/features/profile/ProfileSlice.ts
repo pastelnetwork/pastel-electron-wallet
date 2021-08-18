@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import type { AppThunk } from '../../redux/store'
+import log from 'electron-log'
 
 export type TSelect = {
   label: string
@@ -220,24 +221,31 @@ export const pastelProfileSlice = createSlice({
   name: 'pastelProfile',
   initialState,
   reducers: {
-    getLocations(state: TProfileState, action: PayloadAction<TSelect[]>) {
+    setLocations(state: TProfileState, action: PayloadAction<TSelect[]>) {
       state.locations = action.payload
-      state.loading = true
-    },
-    getLocationsFailure(state: TProfileState) {
       state.loading = false
+    },
+    locationFetchFailed(state: TProfileState) {
+      state.loading = false
+    },
+    startedFetchingLocation(state: TProfileState) {
+      state.loading = true
     },
   },
 })
 
-const { getLocations, getLocationsFailure } = pastelProfileSlice.actions
+const {
+  setLocations,
+  locationFetchFailed,
+  startedFetchingLocation,
+} = pastelProfileSlice.actions
 
 export const pastelProfileReducer = pastelProfileSlice.reducer
 
 export function fetchLocations(suggested: string): AppThunk {
   return async dispatch => {
     try {
-      console.log(suggested)
+      dispatch(startedFetchingLocation())
       const res = await axios.get(
         `https://nominatim.openstreetmap.org/search?q=${suggested}&format=json`,
       )
@@ -248,9 +256,11 @@ export function fetchLocations(suggested: string): AppThunk {
           value: location.display_name,
         })
       }
-      dispatch(getLocations(temp))
+      dispatch(setLocations(temp))
     } catch (err) {
-      dispatch(getLocationsFailure())
+      log.error('Failed to fetch locations', err.message)
+      throw new Error(`Failed to fetch locations: ${err.message}`)
+      dispatch(locationFetchFailed())
     }
   }
 }

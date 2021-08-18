@@ -25,7 +25,7 @@ const ProfileGeneral = ({
   isEmpty,
   nativeCurrency,
 }: TProfileGeneral): JSX.Element => {
-  const { locations } = useAppSelector(state => state.pastelProfile)
+  const locations = useAppSelector(state => state.pastelProfile.locations)
 
   const data = {
     location: 'New York, US',
