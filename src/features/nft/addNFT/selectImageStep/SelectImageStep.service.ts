@@ -4,18 +4,29 @@ import { useState } from 'react'
 import log from 'electron-log'
 import { Image as ImageJS } from 'image-js'
 import {
+  ConvertableImageType,
+  ImageType,
   maxWidthByOrientation,
   minImageHeight,
   minImageWidth,
+  TImageType,
 } from '../AddNft.constants'
+import { isGifAnimated, loadImageElement } from 'common/utils/image'
+import { Size } from 'common/utils/file'
 
 export type TSelectImageStepService = {
+  selectedFile?: File
   imageFile?: TImageFile
   error?: string
-  isProcessing?: boolean
+  isProcessing: boolean
+  isAnimated: boolean
+  imageToConvert?: TImageToConvert
   selectFile(file?: File): Promise<void>
+  convertImage(data: TImageToConvert, type: TImageType): Promise<void>
   submit(): void
 }
+
+type TImageToConvert = { name: string; image: HTMLImageElement }
 
 export const useSelectImageService = (
   state: TAddNFTState,
@@ -23,68 +34,96 @@ export const useSelectImageService = (
   const [imageFile, setFile] = useState<TImageFile>()
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string>()
+  const [imageToConvert, setImageToConvert] = useState<TImageToConvert>()
+  const [selectedFile, setSelectedFile] = useState<File>()
+  const [isAnimated, setIsAnimated] = useState(false)
+
+  const resetImageState = () => {
+    setFile(undefined)
+    setImageToConvert(undefined)
+    setIsAnimated(false)
+    setError(undefined)
+    setIsProcessing(false)
+  }
 
   return {
+    selectedFile,
     imageFile,
     error,
     isProcessing,
+    imageToConvert,
+    isAnimated,
     async selectFile(file) {
       if (!file) {
         return
       }
 
+      setSelectedFile(file)
+      resetImageState()
+
       const { type } = file
-      if (type !== 'image/png' && type !== 'image/jpeg') {
+      if (
+        type === ConvertableImageType.gif ||
+        type === ConvertableImageType.bmp
+      ) {
+        try {
+          const url = URL.createObjectURL(file)
+          const image = await loadImageElement(url)
+
+          checkImageSize(image)
+
+          if (type === ConvertableImageType.gif) {
+            setIsAnimated(await isGifAnimated(file))
+          }
+
+          setImageToConvert({ name: file.name, image })
+        } catch (error) {
+          setError(error.message)
+        }
+        return
+      }
+
+      if (type !== ImageType.PNG && type !== ImageType.JPG) {
         return setError(`Selected file has unsupported format: ${type}`)
       }
 
-      const megabyte = 1048576
+      try {
+        checkFileSize(file.size)
+        setIsProcessing(true)
 
-      if (file.size > 100 * megabyte) {
-        return setError(
-          `Selected file exceeds 100 MB limit: ${(file.size / megabyte).toFixed(
-            1,
-          )} MB`,
-        )
+        const url = URL.createObjectURL(file)
+        setFile(await processImage({ name: file.name, type, url }))
+      } catch (error) {
+        setError(error.message)
+      } finally {
+        setIsProcessing(false)
       }
-
-      setError(undefined)
+    },
+    async convertImage({ name, image }, type) {
+      resetImageState()
       setIsProcessing(true)
 
-      const url = URL.createObjectURL(file)
-
       try {
-        const image = await ImageJS.load(url)
-        const { width, height } = image
+        const canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        const context = canvas.getContext('2d') as CanvasRenderingContext2D
+        context.drawImage(image, 0, 0)
 
-        if (width < minImageWidth) {
-          return setError(
-            `Image width should not be less than ${minImageWidth}px, got ${width}px`,
+        const blob = await new Promise<Blob>((resolve, reject) => {
+          canvas.toBlob(
+            blob => {
+              blob ? resolve(blob) : reject(new Error('Can not convert image'))
+            },
+            type,
+            1,
           )
-        }
-        if (height < minImageHeight) {
-          return setError(
-            `Image height should not be less than ${minImageHeight}px, got ${height}px`,
-          )
-        }
-
-        const blob = await image.toBlob(type, 1)
-        const arrayBuffer = await blob.arrayBuffer()
-        const orientation = width < height ? 'portrait' : 'landscape'
-
-        setFile({
-          type,
-          name: file.name,
-          size: image.size,
-          url: URL.createObjectURL(blob),
-          arrayBuffer,
-          width,
-          height,
-          maxWidth: maxWidthByOrientation[orientation],
         })
+
+        const url = URL.createObjectURL(blob)
+        setFile(await processImage({ name, type, url }))
       } catch (error) {
-        log.error('Error while loading image', error.message)
-        setError('Can not process selected file, it is possibly corrupted')
+        setError(error.message)
       } finally {
         setIsProcessing(false)
       }
@@ -98,5 +137,79 @@ export const useSelectImageService = (
 
       state.goToNextStep()
     },
+  }
+}
+
+const checkFileSize = (size: number) => {
+  if (size > 100 * Size.MB) {
+    throw new Error(
+      `Selected file exceeds 100 MB limit: ${(size / Size.MB).toFixed(1)} MB`,
+    )
+  }
+}
+
+const checkImageSize = ({
+  width,
+  height,
+}: {
+  width: number
+  height: number
+}) => {
+  if (width < minImageWidth) {
+    throw new Error(
+      `Image width should not be less than ${minImageWidth}px, got ${width}px`,
+    )
+  }
+  if (height < minImageHeight) {
+    throw new Error(
+      `Image height should not be less than ${minImageHeight}px, got ${height}px`,
+    )
+  }
+}
+
+const processingErrorMessage =
+  'Can not process selected file, it is possibly corrupted'
+
+const processImage = async ({
+  name,
+  type,
+  url,
+}: {
+  name: string
+  type: TImageType
+  url: string
+}): Promise<TImageFile> => {
+  let image
+  try {
+    image = await ImageJS.load(url)
+  } catch (error) {
+    log.error('Image loading error', error.message)
+    throw new Error(processingErrorMessage)
+  }
+
+  checkImageSize(image)
+
+  let blob
+  let arrayBuffer
+  try {
+    blob = await image.toBlob(type, 1)
+    arrayBuffer = await blob.arrayBuffer()
+  } catch (error) {
+    log.error('Image converting to ArrayBuffer error', error.message)
+    throw new Error(processingErrorMessage)
+  }
+
+  const { width, height } = image
+  const orientation = width < height ? 'portrait' : 'landscape'
+
+  return {
+    type,
+    name,
+    size: image.size,
+    url: URL.createObjectURL(blob),
+    arrayBuffer,
+    width,
+    height,
+    maxWidth: maxWidthByOrientation[orientation],
   }
 }

@@ -1,13 +1,10 @@
 import React, { useEffect, useRef } from 'react'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
-import {
-  TCroppedImage,
-  getCroppedImage,
-  loadImage,
-} from './PreviewStep.service'
+import { TCroppedImage, getCroppedImage } from './PreviewStep.service'
 import { Button } from 'common/components/Buttons'
 import { TImage } from '../AddNFT.state'
+import { loadImageElement } from 'common/utils/image'
 
 type TCropperModalProps = {
   image: TImage
@@ -72,7 +69,7 @@ export default function Cropping({
       return
     }
 
-    const img = await loadImage(image.url)
+    const img = await loadImageElement(image.url)
     const crop = cropper.getData()
     setCroppedImage(getCroppedImage(img, crop))
     onClose()

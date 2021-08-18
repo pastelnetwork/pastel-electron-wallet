@@ -1,14 +1,19 @@
 import { TImageOrientation } from './AddNFT.state'
 
-export const imageTypes = {
-  PNG: 'image/png',
-  JPG: 'image/jpeg',
+export enum ImageType {
+  PNG = 'image/png',
+  JPG = 'image/jpeg',
 }
 
 export type TImageType = 'image/png' | 'image/jpeg'
 
-export const allowedTypeNames = Object.keys(imageTypes)
-export const allowedMimeTypes = Object.values(imageTypes)
+export enum ConvertableImageType {
+  gif = 'image/gif',
+  bmp = 'image/bmp',
+}
+
+export const allowedTypeNames = Object.keys(ImageType)
+export const allowedMimeTypes = Object.values(ImageType)
 export const minImageWidth = 250
 export const minImageHeight = 250
 

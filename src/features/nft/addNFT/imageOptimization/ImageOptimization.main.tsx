@@ -8,7 +8,7 @@ import {
   TOptimizedFile,
 } from './ImageOptimization.types'
 import {
-  imageTypes,
+  ImageType,
   maxQuality,
   minQuality,
   qualityStep,
@@ -94,7 +94,7 @@ const getOptimizeArgs = (
   type: TImageType,
   inputPath: string,
 ): [ImageProcessor, string, TGetArgs] => {
-  if (type === imageTypes.PNG) {
+  if (type === ImageType.PNG) {
     return [
       ImageProcessor.pngquant,
       pngquantBinPath,
