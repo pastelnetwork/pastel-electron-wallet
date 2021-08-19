@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import SVG from 'react-inlinesvg'
 import { clipboard } from 'electron'
 
 import Input, { TInput } from './Input'
-import PasteIcon from '../../assets/icons/ico-paste.svg'
-import CheckIcon from '../../assets/icons/ico-check-green.svg'
+
+import { Clipboard, CheckIcon } from 'common/components/Icons'
 
 export type TInputExportProps = TInput & {
   clickPasteHandler?: () => void
@@ -32,8 +31,15 @@ const InputExportKey = (props: TInputExportProps): JSX.Element => {
       append={
         <div className='flex items-center'>
           {!hideIcon ? (
-            <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-2 transition duration-300'>
-              <SVG src={copied ? CheckIcon : PasteIcon} onClick={onCopy} />
+            <span
+              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-2 transition duration-300'
+              onClick={onCopy}
+            >
+              {copied ? (
+                <CheckIcon className='text-green-45' size={14} />
+              ) : (
+                <Clipboard className='cursor-pointer text-gray-88' size={14} />
+              )}
             </span>
           ) : null}
         </div>

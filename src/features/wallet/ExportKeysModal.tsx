@@ -196,7 +196,6 @@ const ExportKeysModal = ({
           className='mb-42px'
           labelClassName='text-h4 leading-6 font-medium text-gray-71 mb-6px'
           type='text'
-          hideToggleType
           onChange={() => {
             //noop
           }}

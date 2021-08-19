@@ -6,12 +6,12 @@ import { EliminationIcon } from 'common/components/Icons'
 import Typography, { TypographyVariant } from 'common/components/Typography'
 import styles from './CommentModal.module.css'
 
-export interface CommentModalProps {
+export type TCommentModalProps = {
   isOpen: boolean
   onClose: () => void
 }
 
-const CommentModal = ({ isOpen, onClose }: CommentModalProps): JSX.Element => {
+const CommentModal = ({ isOpen, onClose }: TCommentModalProps): JSX.Element => {
   const [tab, setTab] = useState('Note')
   return (
     <div

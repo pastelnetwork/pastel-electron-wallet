@@ -25,7 +25,7 @@ import { AddressForm } from './AddressForm'
 import { useAddressBook } from 'common/hooks'
 import PastelUtils from 'common/utils/utils'
 
-export type TransactionHistoryModalProps = {
+export type TTransactionHistoryModalProps = {
   isOpen: boolean
   handleClose: () => void
 }
@@ -33,7 +33,7 @@ export type TransactionHistoryModalProps = {
 const TransactionHistoryModal = ({
   isOpen,
   handleClose,
-}: TransactionHistoryModalProps): JSX.Element => {
+}: TTransactionHistoryModalProps): JSX.Element => {
   const [selectedOption, setSelectedOption] = useState<
     'all' | 'received' | 'sent'
   >('all')

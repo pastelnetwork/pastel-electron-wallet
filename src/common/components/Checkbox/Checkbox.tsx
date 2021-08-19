@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
 import { CheckIcon } from 'common/components/Icons'
 
@@ -20,6 +20,11 @@ const Checkbox = ({
   className = 'items-center',
 }: TCheckboxProps): JSX.Element => {
   const [selected, setSelected] = useState(isChecked)
+
+  useEffect(() => {
+    setSelected(isChecked)
+  }, [isChecked])
+
   return (
     <div
       className={cn('cursor-pointer select-none flex', className)}

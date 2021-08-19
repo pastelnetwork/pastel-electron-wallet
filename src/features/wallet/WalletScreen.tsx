@@ -30,6 +30,7 @@ import { ToastContainer } from 'react-toastify'
 import { isSapling } from 'api/helpers'
 import { useAddressBook } from 'common/hooks'
 import PastelUtils from 'common/utils/utils'
+import Checkbox from 'common/components/Checkbox/Checkbox'
 
 import styles from './WalletScreen.module.css'
 
@@ -64,15 +65,21 @@ const WalletScreen = (): JSX.Element => {
   const Columns = [
     {
       key: 'address',
-      colClasses: 'w-1/3 text-h6 leading-5 font-normal',
+      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
       name: 'Address name',
-      headerColClasses: '-ml-5',
+      headerColClasses: 'mx-30px',
       custom: (value: string | number, row: TRow | undefined) => (
-        <AddressForm
-          address={value.toString()}
-          currentRow={row}
-          saveAddressLabel={saveAddressLabel}
-        />
+        <div className='flex items-center mx-30px'>
+          <Checkbox
+            isChecked={selectedRows.indexOf(row?.address) !== -1}
+            clickHandler={() => row && setSelectedRowsFunction(row)}
+          />
+          <AddressForm
+            address={value.toString()}
+            currentRow={row}
+            saveAddressLabel={saveAddressLabel}
+          />
+        </div>
       ),
     },
     {
@@ -636,7 +643,7 @@ const WalletScreen = (): JSX.Element => {
                   headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
                   bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
                   bodyTdClasses='text-h5 leading-6 font-medium'
-                  showCheckbox={true}
+                  showCheckbox={false}
                   selectedRow={setSelectedRowsFunction}
                 />
               )}
@@ -650,7 +657,7 @@ const WalletScreen = (): JSX.Element => {
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
                     bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
                     bodyTdClasses='text-h5 leading-6 font-medium'
-                    showCheckbox={true}
+                    showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
                     extendHeader={
                       <Typography
@@ -672,7 +679,7 @@ const WalletScreen = (): JSX.Element => {
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
                     bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
                     bodyTdClasses='text-h5 leading-6 font-medium'
-                    showCheckbox={true}
+                    showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
                     extendHeader={
                       <Typography
