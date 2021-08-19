@@ -13,6 +13,8 @@ import {
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
+import { useQuery, UseQueryResult } from 'react-query'
+import { useMemo } from 'react'
 
 export class WalletRPC {
   /**
@@ -90,6 +92,10 @@ export class WalletRPC {
     return result
   }
 
+  useTotalBalance(): UseQueryResult<TTotalBalance> {
+    return useQuery('z_gettotalbalance', () => this.fetchTotalBalance())
+  }
+
   /**
    * Get list of T addresses.
    *
@@ -144,6 +150,12 @@ export class WalletRPC {
     return rpc<TZListUnspentResponse>('z_listunspent', [0])
   }
 
+  useZListUnspent(options?: {
+    enabled?: boolean
+  }): UseQueryResult<TZListUnspentResponse> {
+    return useQuery('z_listunspent', () => this.fetchZListUnspent(), options)
+  }
+
   /**
    * Get List unspent.
    *
@@ -151,6 +163,12 @@ export class WalletRPC {
    */
   async fetchListUnspent(): Promise<TListUnspentResponse> {
     return rpc<TListUnspentResponse>('listunspent', [0])
+  }
+
+  useListUnspent(options?: {
+    enabled?: boolean
+  }): UseQueryResult<TListUnspentResponse> {
+    return useQuery('listunspent', () => this.fetchListUnspent(), options)
   }
 
   /**
@@ -190,50 +208,39 @@ export class WalletRPC {
     return zResult.concat(tResult)
   }
 
-  /**
-   * Fetch all T and Z addresses with balance.
-   * Please note it's not same the old version that include to call <fnSetAddressesWithBalance>.
-   *
-   * @returns IAddressBalance[]
-   */
-  async fetchTandZAddressesWithBalance(): Promise<TAddressBalance[]> {
-    const results = await Promise.all([
-      this.fetchZListUnspent(),
-      this.fetchListUnspent(),
-    ])
+  useZAddressesWithBalance(): UseQueryResult<TAddressBalance[]> {
+    return this.useAddressesWithBalance(() => this.useZListUnspent())
+  }
 
-    // response.result has all the unspent notes.
-    const { result: zResult } = results[0]
-    const zGroups = groupBy(zResult, 'address')
+  useTAddressesWithBalance(): UseQueryResult<TAddressBalance[]> {
+    return this.useAddressesWithBalance(() => this.useListUnspent())
+  }
 
-    // Map Z addresses balance
-    const zAddresses: TAddressBalance[] = Object.keys(zGroups).map(address => {
-      const balance = zGroups[address].reduce(
-        (prev, obj) => prev + obj.amount,
-        0,
-      )
-      return {
-        address,
-        balance: Number(balance.toFixed(5)),
+  private useAddressesWithBalance(
+    load: () => UseQueryResult<TZListUnspentResponse | TListUnspentResponse>,
+  ) {
+    const { data, ...rest } = load()
+
+    const mapped = useMemo<TAddressBalance[]>(() => {
+      const result = data?.result
+      if (!result) {
+        return []
       }
-    }) // Do the T addresses
 
-    // T addresses
-    const { result: tResult } = results[1]
+      const groups = groupBy(result, 'address')
 
-    const tGroups = groupBy(tResult, 'address')
+      return Object.keys(groups).map(address => {
+        const balance = groups[address].reduce(
+          (prev, obj) => prev + obj.amount,
+          0,
+        )
+        return {
+          address,
+          balance: Number(balance.toFixed(5)),
+        }
+      })
+    }, [data])
 
-    const tAddresses = Object.keys(tGroups).map(address => {
-      const balance = tGroups[address].reduce(
-        (prev, obj) => prev + obj.amount,
-        0,
-      )
-      return {
-        address,
-        balance: Number(balance.toFixed(5)),
-      }
-    })
-
-    return zAddresses.concat(tAddresses)
-  } // Fetch all T and Z addresses
+    return { data: mapped, ...rest } as UseQueryResult<TAddressBalance[]>
+  }
 }

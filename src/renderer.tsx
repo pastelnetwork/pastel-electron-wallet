@@ -30,7 +30,7 @@ import './index.css'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
-import React, { useEffect } from 'react'
+import React from 'react'
 import { render } from 'react-dom'
 import { hot } from 'react-hot-loader' // has to stay first
 import { Provider } from 'react-redux'
@@ -42,19 +42,19 @@ import Utilities from './features/utilities'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 import 'common/utils/initDayjs'
-import { sendEventToMain } from './features/app/rendererEvents'
-import { rendererSetup } from './features/app/rendererSetup'
+import { rendererSetup, RendererSetupHooks } from './features/app/rendererSetup'
+import { QueryClientProvider } from 'react-query'
+import { queryClient } from './common/utils/queryClient'
 
 rendererSetup()
 
 const App = () => {
-  useEffect(() => {
-    sendEventToMain('rendererStarted', null)
-  }, [])
-
   return (
     <Provider store={store}>
-      <Root />
+      <QueryClientProvider client={queryClient}>
+        <RendererSetupHooks />
+        <Root />
+      </QueryClientProvider>
       <ToastContainer hideProgressBar autoClose={5000} />
       <Utilities />
       <PastelModal />

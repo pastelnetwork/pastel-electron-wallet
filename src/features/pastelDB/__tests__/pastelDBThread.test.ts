@@ -552,7 +552,7 @@ describe('PastelDBThread', () => {
     })
   })
 
-  test('fetchTotalbalance works', async () => {
+  test('fetchTotalBalance works', async () => {
     // Arrange
     const rpcSpy = jest
       .spyOn(pastelRPC, 'rpc')
@@ -562,7 +562,7 @@ describe('PastelDBThread', () => {
       .mockImplementation()
 
     // Act
-    await pastelDBThread.fetchTotalbalance({
+    await pastelDBThread.fetchTotalBalance({
       pastelDB: pastelDB.db,
     })
 
@@ -743,7 +743,7 @@ describe('PastelDBThread', () => {
       .spyOn(pastelDBThread, 'fetchListunspent')
       .mockResolvedValue()
     const fetchTotalbalanceSpy = jest
-      .spyOn(pastelDBThread, 'fetchTotalbalance')
+      .spyOn(pastelDBThread, 'fetchTotalBalance')
       .mockResolvedValue()
     const fetchListaddressesSpy = jest
       .spyOn(pastelDBThread, 'fetchListaddresses')

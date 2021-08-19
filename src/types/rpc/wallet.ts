@@ -1,4 +1,3 @@
-import { ReactNode } from 'react'
 import { TResponse } from './response'
 
 type TAddressBalance = {
@@ -11,17 +10,6 @@ type TAddressList = {
   address: string
   amount: number
   type: 'shielded' | 'transparent' | 'balance'
-}
-
-type TBalanceCard = {
-  style: {
-    type: string
-    info: boolean
-  }
-  psl: number
-  activeIcon: ReactNode
-  inactiveIcon: ReactNode
-  info: string
 }
 
 type TAddressBook = {
@@ -186,7 +174,6 @@ export type {
   TAddressRow,
   TAddressUtxo,
   TAddressList,
-  TBalanceCard,
   TAddressBook,
   TListUnspent,
   TAddressDelta,

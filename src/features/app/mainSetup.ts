@@ -27,6 +27,7 @@ import { setupOptimizeImageHandler } from '../nft/addNFT/imageOptimization/Image
 import { setupAutoUpdater } from './autoUpdater'
 import { readRpcConfig } from '../rpcConfig'
 import { ignorePromiseError } from '../../common/utils/promises'
+import { TRPCConfig } from '../../api/pastel-rpc'
 
 export const mainSetup = async (): Promise<void> => {
   setupDeepLinking()
@@ -43,9 +44,11 @@ export const mainSetup = async (): Promise<void> => {
 
 const setupWindow = async () => {
   createWindow(onWindowClose)
+}
 
-  await mainEventPromise('rendererStarted')
+let rpcConfig: TRPCConfig | undefined
 
+onMainEvent('rendererStarted', () => {
   // We have to pass isPackaged and app paths via IPC because electron `remote` api is deprecated
   sendEventToRenderer('setAppInfo', {
     isPackaged: app.isPackaged,
@@ -56,14 +59,23 @@ const setupWindow = async () => {
     sqliteFilePath,
   })
 
+  // in case of page reload we already have rpcConfig and no need to launch wallet node again
+  if (rpcConfig) {
+    sendEventToRenderer('setRpcConfig', {
+      rpcConfig,
+    })
+    return
+  }
+
   initServeStatic()
   retriableAppSetup()
-}
+})
 
 export const retriableAppSetup = async (): Promise<void> => {
   try {
     await startWalletNode()
-    const rpcConfig = await readRpcConfig(pastelConfigFilePath)
+    rpcConfig = await readRpcConfig(pastelConfigFilePath)
+
     sendEventToRenderer('setRpcConfig', {
       rpcConfig,
     })
