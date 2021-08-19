@@ -100,3 +100,6 @@ release
 
 # Storybook build
 storybook-static
+
+#lock files
+yarn.lock
