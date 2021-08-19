@@ -162,7 +162,7 @@ export default function PreviewStepModal({
                   <ImageShadow url={croppedImage.src} />
                   <img
                     src={croppedImage.src}
-                    className='rounded w-full h-full'
+                    className='rounded w-full h-full relative z-10'
                   />
                 </>
               )}

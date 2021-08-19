@@ -8,6 +8,7 @@ import { useSelectImageService } from './SelectImageStep.service'
 import { allowedTypeNames, ImageType } from '../AddNft.constants'
 import ImageShadow from '../common/ImageShadow'
 import Spinner from 'common/components/Spinner'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TSelectStepProps = {
   state: TAddNFTState
@@ -31,6 +32,7 @@ export default function SelectImageStep({
   } = service
 
   const size = imageForPreview?.size || selectedFile?.size
+  const currencyName = useCurrencyName()
 
   return (
     <ModalLayout
@@ -93,7 +95,8 @@ export default function SelectImageStep({
               registration fee.
             </div>
             <div className='text-gray-71 mb-4'>
-              For example, 0,5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
+              For example, 0,5 mb costs 1,000 {currencyName}, 5 mb - 10,000{' '}
+              {currencyName}
             </div>
             {imageToConvert && (
               <>

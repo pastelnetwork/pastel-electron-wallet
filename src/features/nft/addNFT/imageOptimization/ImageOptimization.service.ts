@@ -12,13 +12,13 @@ export enum OptimizationStatus {
   failed = 'failed',
 }
 
-export type ToptimizedFileWithIndex = TOptimizedFile & { index: number }
+export type TOptimizedFileWithIndex = TOptimizedFile & { index: number }
 
 export type TImageOptimizationService = {
   status: OptimizationStatus
   files?: TOptimizedFile[]
-  selectedFile?: ToptimizedFileWithIndex
-  setSelectedFile(file?: ToptimizedFileWithIndex): void
+  selectedFile?: TOptimizedFileWithIndex
+  setSelectedFile(file?: TOptimizedFileWithIndex): void
   optimizeImage(type: TImageType, arrayBuffer: ArrayBuffer): Promise<void>
 }
 
@@ -27,7 +27,7 @@ export const useImageOptimizationService = (): TImageOptimizationService => {
     OptimizationStatus.initial,
   )
   const [files, setFiles] = useState<TOptimizedFile[]>()
-  const [selectedFile, setSelectedFile] = useState<ToptimizedFileWithIndex>()
+  const [selectedFile, setSelectedFile] = useState<TOptimizedFileWithIndex>()
 
   return {
     status,

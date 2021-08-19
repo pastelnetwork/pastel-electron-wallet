@@ -37,7 +37,7 @@ export default function OptimizationSlider({
 
   const formatValue = (value: number) => {
     const index = Math.round(value)
-    const file = files[index] || image.size
+    const file = files[index] || image
     return formatFileSize(file.size, 2)
   }
 
