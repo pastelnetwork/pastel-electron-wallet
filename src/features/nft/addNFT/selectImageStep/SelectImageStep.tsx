@@ -22,7 +22,7 @@ export default function SelectImageStep({
 }: TSelectStepProps): JSX.Element {
   const service = useSelectImageService(state)
   const {
-    imageFile,
+    imageForPreview,
     selectedFile,
     error,
     isProcessing,
@@ -30,7 +30,7 @@ export default function SelectImageStep({
     isAnimated,
   } = service
 
-  const size = imageFile?.size || selectedFile?.size
+  const size = imageForPreview?.size || selectedFile?.size
 
   return (
     <ModalLayout
@@ -40,15 +40,15 @@ export default function SelectImageStep({
       step={2}
       fixedHeight
       contentClass='pt-2'
-      leftColumnWidth={imageFile?.maxWidth || 320}
+      leftColumnWidth={imageForPreview?.maxWidth || 320}
       leftColumnContent={
         <SelectImageArea service={service}>
-          {imageFile ? (
+          {imageForPreview ? (
             <div className='relative'>
-              <ImageShadow url={imageFile.url} />
+              <ImageShadow url={imageForPreview.url} />
               <img
-                src={imageFile.url}
-                style={{ maxWidth: `${imageFile.maxWidth}px` }}
+                src={imageForPreview.url}
+                style={{ maxWidth: `${imageForPreview.maxWidth}px` }}
                 className='relative z-10 rounded'
               />
             </div>
@@ -146,7 +146,7 @@ export default function SelectImageStep({
             <button
               className='btn btn-primary px-[30px]'
               onClick={service.submit}
-              disabled={!imageFile}
+              disabled={!imageForPreview}
             >
               Go to Image Optimization
             </button>

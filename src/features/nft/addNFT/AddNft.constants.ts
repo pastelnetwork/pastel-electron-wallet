@@ -14,8 +14,8 @@ export enum ConvertableImageType {
 
 export const allowedTypeNames = Object.keys(ImageType)
 export const allowedMimeTypes = Object.values(ImageType)
-export const minImageWidth = 250
-export const minImageHeight = 250
+export const minImageWidth = 1
+export const minImageHeight = 1
 
 export const copiesAmountToShowWarning = 100
 

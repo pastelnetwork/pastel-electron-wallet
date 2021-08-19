@@ -21,6 +21,7 @@ export type TSelectImageStepService = {
   isProcessing: boolean
   isAnimated: boolean
   imageToConvert?: TImageToConvert
+  imageForPreview?: { url: string; maxWidth: number; size: number }
   selectFile(file?: File): Promise<void>
   convertImage(data: TImageToConvert, type: TImageType): Promise<void>
   submit(): void
@@ -47,6 +48,7 @@ export const useSelectImageService = (
   }
 
   return {
+    imageForPreview: imageFile || state.image,
     selectedFile,
     imageFile,
     error,
