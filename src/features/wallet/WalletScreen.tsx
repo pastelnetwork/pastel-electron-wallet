@@ -159,21 +159,25 @@ const WalletScreen = (): JSX.Element => {
       key: 'psl',
       name: '',
       colClasses: 'min-w-[120px] w-[120px]',
-      custom: (value: number | string, row?: TRow) => (
-        <div className='z-0'>
-          <Select
-            className='text-gray-2d w-28 bg-white'
-            autocomplete={true}
-            min={0}
-            max={Math.floor(parseFloat(value.toString()))}
-            step={PastelUtils.getStep(parseInt(value.toString()))}
-            value={0}
-            onChange={(selection: number | null) => {
-              handleAmountChange(selection, value, row)
-            }}
-          />
-        </div>
-      ),
+      custom: (value: number | string, row?: TRow) => {
+        const psl = selectionPsl.filter(psl => psl?.address === row?.address)[0]
+
+        return (
+          <div className='z-0'>
+            <Select
+              className='text-gray-2d w-28 bg-white'
+              autocomplete={true}
+              min={0}
+              max={Math.floor(parseFloat(value.toString()))}
+              step={PastelUtils.getStep(parseInt(value.toString()))}
+              value={psl?.amount || row?.amount}
+              onChange={(selection: number | null) => {
+                handleAmountChange(selection, value, row)
+              }}
+            />
+          </div>
+        )
+      },
     },
   ]
   const cardItems = [
@@ -455,7 +459,7 @@ const WalletScreen = (): JSX.Element => {
       )
       if (selectionPslIndex !== -1) {
         tmpSelectionPsl[selectionPslIndex].amount = selection
-        tmpSelectionPsl[selectionPslIndex].valid = selection <= value
+        tmpSelectionPsl[selectionPslIndex].valid = selection <= row?.amount
         tmpSelectionPsl[selectionPslIndex].date = dayjs().valueOf()
         setSelectionPsl([...tmpSelectionPsl])
       } else {
@@ -464,7 +468,7 @@ const WalletScreen = (): JSX.Element => {
           {
             address: row.address,
             amount: selection,
-            valid: selection <= value,
+            valid: selection <= row?.amount,
             date: dayjs().valueOf(),
           },
         ])
