@@ -6,7 +6,6 @@ import StarRate from '../StarRate'
 import Categories from '../Categories'
 import ProfileGeneralRow from '../ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
-// import Select, { TOption } from '../Select/Select'
 import Select, { TOption } from 'common/components/Select/Select'
 
 import NSFWControls from './NSFWControls'
