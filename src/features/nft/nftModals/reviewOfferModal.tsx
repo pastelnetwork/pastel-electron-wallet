@@ -1,10 +1,11 @@
 import React from 'react'
 import cn from 'classnames'
+import NumberFormat from 'react-number-format'
 // Components
 import { Modal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
 import Link from 'common/components/Link'
-import NumberFormat from 'react-number-format'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TOffer = {
   id: number | string
@@ -17,9 +18,6 @@ export type TReviewOfferModal = {
   offers?: Array<TOffer>
   isOpen: boolean
   handleClose: () => void
-  info: {
-    currencyName: string
-  }
 }
 
 const ReviewOfferModal = ({
@@ -27,8 +25,8 @@ const ReviewOfferModal = ({
   offers,
   isOpen,
   handleClose,
-  info,
 }: TReviewOfferModal): JSX.Element => {
+  const currencyName = useCurrencyName()
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-3xl'>
       <h2 className='mb-6'>Review an offer for “{title}”</h2>
@@ -49,7 +47,7 @@ const ReviewOfferModal = ({
                   displayType='text'
                   thousandSeparator={true}
                 />
-                k {info?.currencyName}{' '}
+                k {currencyName}{' '}
               </span>
               <span className='text-gray-a0'>was offered by</span>{' '}
               <span className='text-link'>{user}</span>

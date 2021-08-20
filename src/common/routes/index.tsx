@@ -132,7 +132,7 @@ const searchResults = {
 
 const membersProfile = {
   id: 'membersProfile',
-  path: ROUTES.MY_PROFILE,
+  path: ROUTES.MEMBERS_PROFILE,
   component: MemberProfile,
   layout: PageLayout,
 }

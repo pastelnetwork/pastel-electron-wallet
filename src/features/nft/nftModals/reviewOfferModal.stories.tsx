@@ -3,12 +3,7 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import ReviewOfferModal, { TReviewOfferModal, TOffer } from './reviewOfferModal'
 
-const Template: Story<TReviewOfferModal> = ({
-  title,
-  offers,
-  isOpen,
-  info,
-}) => {
+const Template: Story<TReviewOfferModal> = ({ title, offers, isOpen }) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (
@@ -21,7 +16,6 @@ const Template: Story<TReviewOfferModal> = ({
         handleClose={() => {
           setShowModal(false)
         }}
-        info={info}
       ></ReviewOfferModal>
     </>
   )
@@ -34,11 +28,9 @@ const offers: Array<TOffer> = [
   { id: 2, user: 'Dealer24', price: 140000000 },
   { id: 3, user: 'SuperMax', price: 200000000 },
 ]
-const info = { currencyName: 'PSL' }
 ReviewOfferModalDefault.args = {
   title,
   offers,
-  info,
 }
 
 export default {

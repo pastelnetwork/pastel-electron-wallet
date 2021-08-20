@@ -19,9 +19,6 @@ export type TLineChartProps = {
   dataY2?: number[]
   granularities?: TGranularity[]
   title?: string
-  info: {
-    [key: string]: string | number
-  }
   offset: number
   periods: TPeriod[]
   handleBgColorChange: (color: string) => void

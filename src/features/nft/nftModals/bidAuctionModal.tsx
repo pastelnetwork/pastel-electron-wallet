@@ -4,6 +4,7 @@ import { Modal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
 import { InputNumberFormat } from 'common/components/Inputs'
 import { Fire } from 'common/components/Icons'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TBidAutionType = 'MakeOffer' | 'Buy' | 'Bid'
 
@@ -12,9 +13,6 @@ export type TBidAuctionModal = {
   username?: string
   isOpen: boolean
   handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
-  info: {
-    currencyName: string
-  }
 }
 
 const BidAuctionModal = ({
@@ -22,8 +20,8 @@ const BidAuctionModal = ({
   username,
   isOpen,
   handleClose,
-  info,
 }: TBidAuctionModal): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [bid, setBid] = React.useState<string>('12950')
   const handleBid = (event: React.ChangeEvent<HTMLInputElement>) =>
     setBid(event.target.value)
@@ -94,42 +92,44 @@ const BidAuctionModal = ({
               'Enter Desired Quantity'
             ) : (
               <div className='text-base'>
-                Current bid 12,000 PSL. Enter 12,100 or more:
+                Current bid 12,000 {currencyName}. Enter 12,100 or more:
               </div>
             )
           }
           value={bid}
           labelClassName='pb-1 text-lg text-gray-71 font-medium'
           onChange={handleBid}
-          append={<span className='text-gray-a0'>{info?.currencyName}</span>}
+          append={<span className='text-gray-a0'>{currencyName}</span>}
         />
       </div>
       {type === 'Buy' && (
         <div className='mb-[18px]'>
           <p className='text-lg text-gray-71 font-medium'>Price</p>
           <p className='text-gray-2d font-extrabold text-h3 mt-1.5'>
-            12,000 {info?.currencyName}
+            12,000 {currencyName}
           </p>
         </div>
       )}
       <div className='text-sm mb-[26px]'>
         <div className='flex justify-between'>
-          <p className='font-normal text-gray-4a'>Your Current PSL Balance</p>
+          <p className='font-normal text-gray-4a'>
+            Your Current {currencyName} Balance
+          </p>
           <p className='text-right font-extrabold text-h6 text-gray-2d'>
-            21,000 {info?.currencyName}
+            21,000 {currencyName}
           </p>
         </div>
         <div className='flex justify-between mt-2.5'>
           <p className='font-normal text-gray-4a'>Transaction Fee(burned)</p>
           <p className='text-right font-extrabold text-h6 text-gray-2d flex items-center'>
             <Fire size={18} />
-            ~500 {info?.currencyName}
+            ~500 {currencyName}
           </p>
         </div>
         <div className='flex justify-between mt-2.5'>
           <p className='font-normal text-gray-4a'>Total NFT Offer with Fee</p>
           <p className='text-right font-extrabold text-h6 text-gray-2d'>
-            13,450 {info?.currencyName}
+            13,450 {currencyName}
           </p>
         </div>
         <div className='flex justify-between mt-2.5'>
@@ -137,7 +137,7 @@ const BidAuctionModal = ({
             Remaining Balance if Accepted
           </p>
           <p className='text-right font-extrabold text-h6 text-gray-2d'>
-            7,550 {info?.currencyName}
+            7,550 {currencyName}
           </p>
         </div>
       </div>

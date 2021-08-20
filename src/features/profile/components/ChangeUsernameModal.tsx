@@ -5,6 +5,7 @@ import NumberFormat from 'react-number-format'
 import { Button } from 'common/components/Buttons'
 import { Fire } from 'common/components/Icons/Fire'
 import cn from 'classnames'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TChangeUsernameModal = {
   isOpen: boolean
@@ -15,6 +16,7 @@ const ChangeUsernameModal = ({
   isOpen,
   handleClose,
 }: TChangeUsernameModal): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [username, setUsername] = useState<string>('')
   const [inputed, setInputed] = useState<boolean>(false)
 
@@ -72,14 +74,16 @@ const ChangeUsernameModal = ({
         </div>
         <div className='pt-6'>
           <div className='flex justify-between items-center'>
-            <div className='text-gray-a0 text-sm'>Your Current PSL Balance</div>
+            <div className='text-gray-a0 text-sm'>
+              Your Current {currencyName} Balance
+            </div>
             <div className='text-gray-a0 text-sm font-extrabold'>
               <NumberFormat
                 value={25000}
                 displayType='text'
                 thousandSeparator={true}
               />{' '}
-              PSL
+              {currencyName}
             </div>
           </div>
           <div className='flex justify-between items-center mt-2.5'>
@@ -95,7 +99,7 @@ const ChangeUsernameModal = ({
                 displayType='text'
                 thousandSeparator={true}
               />{' '}
-              PSL
+              {currencyName}
             </div>
           </div>
           <div className='flex justify-between items-center mt-2.5'>
@@ -108,7 +112,7 @@ const ChangeUsernameModal = ({
                 displayType='text'
                 thousandSeparator={true}
               />{' '}
-              PSL
+              {currencyName}
             </div>
           </div>
           <div className='mt-7 mb-2'>

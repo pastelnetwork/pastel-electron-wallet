@@ -5,6 +5,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid'
 
+import { useCurrencyName } from '../../common/hooks/appInfo'
 import LoadingOverlay from '../../legacy/components/LoadingOverlay'
 import cstyles from '../../legacy/components/Common.module.css'
 import List from '../../legacy/components/List'
@@ -34,15 +35,10 @@ type TotalBalanceProps = {
   total: string
 }
 
-type InfoProps = {
-  currencyName: string
-}
-
 export type PastelIDProps = {
   addressesWithBalance: Array<TAddressesWithBalanceProps>
   createNewAddress: (v: boolean) => Promise<string>
   totalBalance: TotalBalanceProps
-  info: InfoProps
 }
 
 type TSelectedAddress = {
@@ -53,7 +49,8 @@ type TSelectedAddress = {
 }
 
 function PastelID(props: PastelIDProps): JSX.Element {
-  const { addressesWithBalance, createNewAddress, totalBalance, info } = props
+  const currencyName = useCurrencyName()
+  const { addressesWithBalance, createNewAddress, totalBalance } = props
   const [passphraseValidation, setPassphraseValidation] = useState({
     id: 0,
     value: 'Too weak',
@@ -133,7 +130,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
       return ''
     }
 
-    return `[ ${info.currencyName} ${balance}] `
+    return `[ ${currencyName} ${balance}] `
   }
 
   function generatedAddressesWithBalanceOptions() {
@@ -222,8 +219,8 @@ function PastelID(props: PastelIDProps): JSX.Element {
                 Create
               </button>
               <p className={[cstyles.sublight, styles.note].join(' ')}>
-                Note: You will need 1,000 {info.currencyName} coins to write
-                this ticket to the blockchain.
+                Note: You will need 1,000 {currencyName} coins to write this
+                ticket to the blockchain.
               </p>
             </div>
           </div>

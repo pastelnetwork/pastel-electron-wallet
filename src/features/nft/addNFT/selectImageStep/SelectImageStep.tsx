@@ -6,6 +6,7 @@ import UploadingCircle from './UploadingCircle'
 import SelectImageArea from './SelectImageArea'
 import { formatFileSize } from 'common/utils/format'
 import { useSubmit } from './SelectImageStep.service'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TSelectStepProps = {
   state: TAddNFTState
@@ -21,6 +22,7 @@ export type TImageFile = {
 export default function SelectImageStep({
   state,
 }: TSelectStepProps): JSX.Element {
+  const currencyName = useCurrencyName()
   const [imageFile, setFile] = useState<TImageFile>()
   const [isReady, setReady] = useState(Boolean(state.image))
 
@@ -64,7 +66,8 @@ export default function SelectImageStep({
               registration fee.
             </div>
             <div className='text-gray-71 mb-2'>
-              For example, 0,5 mb costs 1,000 PSL, 5 mb - 10,000 PSL
+              For example, 0,5 mb costs 1,000 {currencyName}, 5 mb - 10,000{' '}
+              {currencyName}
             </div>
           </div>
           <div className='flex-between'>

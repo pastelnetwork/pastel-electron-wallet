@@ -16,16 +16,9 @@ import {
   periods,
 } from '../../common/constants'
 
-type TDifficultyOvertimeProps = {
-  info: {
-    [key: string]: string | number
-  }
-}
-
 const redrawCycle = 6000
 
-const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
-  const { info } = props
+const DifficultyOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -84,7 +77,6 @@ const DifficultyOvertime = (props: TDifficultyOvertimeProps): JSX.Element => {
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
               title='Network Difficulty'
-              info={info}
               offset={10000}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}

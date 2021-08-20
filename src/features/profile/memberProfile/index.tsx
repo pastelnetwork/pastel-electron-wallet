@@ -3,6 +3,7 @@ import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
 import MultiToggleSwitch from '../../../common/components/MultiToggleSwitch'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 const profile_data = {
   username: '@zndrson',
@@ -17,22 +18,23 @@ const profile_data = {
   },
 }
 
-const general_data = {
-  location: 'New York, US',
-  language: 'English',
-  categories: 'Motion Graphics, Illustration, Abstract',
-  reputation: 3.89,
-  buyerBans: 3,
-  highestFeeRecieved: '136,200,000k PSL (#632)',
-  totalSalesAmount: '560,600,00k PSL (#211)',
-  totalItemsSold: '124 Copies across 5 NFTs',
-  topCategoryPercentage: 'motion graphics 30%',
-  bio:
-    'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',
-}
-
 const Profile = (): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [tab, setTab] = useState(0)
+
+  const general_data = {
+    location: 'New York, US',
+    language: 'English',
+    categories: 'Motion Graphics, Illustration, Abstract',
+    reputation: 3.89,
+    buyerBans: 3,
+    highestFeeRecieved: `136,200,000k ${currencyName} (#632)`,
+    totalSalesAmount: `560,600,00k ${currencyName} (#211)`,
+    totalItemsSold: '124 Copies across 5 NFTs',
+    topCategoryPercentage: 'motion graphics 30%',
+    bio:
+      'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',
+  }
 
   const onTabToggle = (index: number) => {
     setTab(index)

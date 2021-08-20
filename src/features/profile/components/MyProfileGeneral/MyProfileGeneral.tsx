@@ -12,7 +12,15 @@ import NSFWControls from './NSFWControls'
 import { formatPrice } from '../../../../common/utils/format'
 import { useCurrencyName } from '../../../../common/hooks/appInfo'
 
-export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
+export type TCurrency =
+  | 'EUR'
+  | 'CNY'
+  | 'JPY'
+  | 'GBP'
+  | 'AUD'
+  | 'NGN'
+  | 'IDR'
+  | 'USD'
 
 export type TProfileGeneral = {
   editMode: boolean

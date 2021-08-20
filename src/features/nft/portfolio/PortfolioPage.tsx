@@ -1,7 +1,6 @@
 import React from 'react'
 import dayjs from 'dayjs'
 
-import { useAppSelector } from 'redux/hooks'
 import { TNFT } from '../Nft.types'
 import Breadcrumbs from 'common/components/Breadcrumbs'
 import Header from './header/Header'
@@ -9,6 +8,7 @@ import Image from './image/Image'
 import Info from './info/Info'
 import Description from './description/Description'
 import Comments from './comments/Comments'
+import { useCurrencyName } from 'common/hooks/appInfo'
 import nftImage from 'common/assets/images/mock/nft-big-image.png'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 
@@ -18,9 +18,7 @@ const breadcrumbs = [
 ]
 
 export default function PortfolioPage(): JSX.Element {
-  const {
-    info: { currencyName },
-  } = useAppSelector(state => state.appInfo)
+  const currencyName = useCurrencyName()
 
   const nft: TNFT = {
     id: 230456346,

@@ -10,15 +10,13 @@ import {
 import React from 'react'
 import Modal from 'react-modal'
 
+import { useCurrencyName } from '../../common/hooks/appInfo'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './PastelPaperWalletModal.module.css'
 import { closePastelPaperWalletModal } from './PastelPaperWalletModalSlice'
 import QRCodeGEnerator from './QRCodeGEnerator'
 
 type PastelPaperWalletModalProps = {
-  info: {
-    currencyName: string
-  }
   currentName: string
 }
 
@@ -171,9 +169,9 @@ function PDFDocument({
 }
 
 export default function PastelPaperWalletModal({
-  info,
   currentName,
 }: PastelPaperWalletModalProps): JSX.Element | null {
+  const currencyName = useCurrencyName()
   const { address, privateKey, modalIsOpen } = useAppSelector(
     state => state.pastelPaperWalletModal,
   )
@@ -185,7 +183,7 @@ export default function PastelPaperWalletModal({
 
   const generateFileName = () => {
     const firstPartOfTheAddress = splitStringIntoChunks(address, 6)[0]
-    const title = `PSL_Paper_Wallet__${
+    const title = `${currencyName}_Paper_Wallet__${
       currentName || 'Shielded'
     }_Address_${firstPartOfTheAddress}`
     const date = new Date()
@@ -200,7 +198,7 @@ export default function PastelPaperWalletModal({
       <PDFDownloadLink
         document={
           <PDFDocument
-            currencyName={info.currencyName}
+            currencyName={currencyName}
             address={address}
             privateKey={privateKey}
             title={generateFileName()}
@@ -228,7 +226,7 @@ export default function PastelPaperWalletModal({
         <DownloadButton />
         <PDFViewer style={pdfStyles.viewer}>
           <PDFDocument
-            currencyName={info.currencyName}
+            currencyName={currencyName}
             address={address}
             privateKey={privateKey}
             title={generateFileName()}

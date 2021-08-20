@@ -13,16 +13,9 @@ import {
   periods,
 } from '../../common/constants'
 
-type TNetTotalOvertimeProps = {
-  info: {
-    [key: string]: string | number
-  }
-}
-
 const redrawCycle = 6000
 
-const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
-  const { info } = props
+const NetworkTotalsOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -83,7 +76,6 @@ const NetworkTotalsOvertime = (props: TNetTotalOvertimeProps): JSX.Element => {
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}
               title='Network Total'
-              info={info}
               offset={0}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}

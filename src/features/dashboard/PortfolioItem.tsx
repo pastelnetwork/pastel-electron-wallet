@@ -25,7 +25,7 @@ export default function PortfolioItem({
             {title}
           </div>
           <div className='text-gray-71 font-normal text-sm truncate'>
-            {author}
+            @{author}
           </div>
         </div>
       </div>
