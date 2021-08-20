@@ -12,7 +12,6 @@ import { TitleModal } from 'common/components/Modal'
 import { InputExportKey } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import Typography, { TypographyVariant } from 'common/components/Typography'
 import { QRCodeGEnerator } from '../pastelPaperWalletGenerator'
 import DownloadWhite from 'common/assets/icons/ico-download-white.svg'
 
@@ -150,7 +149,7 @@ function PDFDocument({
   )
 }
 
-export type ExportKeysModalProps = {
+export type TExportKeysModalProps = {
   isOpen: boolean
   address: string
   handleClose: () => void
@@ -160,7 +159,7 @@ const ExportKeysModal = ({
   isOpen,
   address,
   handleClose,
-}: ExportKeysModalProps): JSX.Element => {
+}: TExportKeysModalProps): JSX.Element => {
   const currencyName = useCurrencyName()
   const [privateKey, setPrivateKey] = useState('')
   const [havePDFLink, setHavePDFLink] = useState(false)
@@ -227,13 +226,9 @@ const ExportKeysModal = ({
               />
             )}
             <img src={DownloadWhite} className='py-3.5' />
-            <Typography
-              variant={TypographyVariant.h5_16_24_heavy}
-              customColor='text-white'
-              className='ml-2'
-            >
+            <div className='ml-2 text-white h5_16_24_heavy'>
               Download Paper Wallet (PDF)
-            </Typography>
+            </div>
           </div>
         </Button>
       </div>

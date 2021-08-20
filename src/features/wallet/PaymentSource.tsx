@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { TAddressRow } from 'types/rpc'
 import CommentModal from './CommentModal'
 import PastelUtils from 'common/utils/utils'
-import { formatAddress } from 'common/utils/format'
+import { formatAddress, parseFormattedNumber } from 'common/utils/format'
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import add2Icon from '../../common/assets/icons/ico-add-2.svg'
-import Select from '../../common/components/Select/Select'
+import SelectAmount, { TOption } from '../../common/components/SelectAmount'
 import { TRow } from 'common/components/Table'
 
 import { Trash, Eye, Pencil } from 'common/components/Icons'
@@ -13,11 +13,7 @@ import { Trash, Eye, Pencil } from 'common/components/Icons'
 export type IDataType = {
   walletAddress: TAddressRow
   onSelectedRows: (row: TAddressRow) => void
-  onAmountChange: (
-    selection: number | null,
-    value: number | string,
-    row?: TRow,
-  ) => void
+  onAmountChange: (selection: number | null, row?: TRow) => void
   onRemoveRow: (row: TRow) => void
 }
 
@@ -71,16 +67,19 @@ const PaymentSource = ({
       </td>
       <td>
         <div className='flex justify-end pr-4'>
-          <Select
+          <SelectAmount
             className='text-gray-2d w-28'
-            autocomplete={true}
             min={0}
-            max={Math.floor(walletAddress.amount)}
+            max={walletAddress.amount}
             step={PastelUtils.getStep(walletAddress.amount)}
-            value={walletAddress.psl}
-            onChange={(value: number | null) =>
-              onAmountChange(value, walletAddress.amount, walletAddress)
-            }
+            defaultValue={{
+              label: walletAddress.psl.toString(),
+              value: walletAddress.psl.toString(),
+            }}
+            onChange={(selection: TOption) => {
+              const value = parseFormattedNumber(selection.value)
+              onAmountChange(value, walletAddress)
+            }}
           />
         </div>
       </td>

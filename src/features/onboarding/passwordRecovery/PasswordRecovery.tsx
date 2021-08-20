@@ -3,9 +3,6 @@ import QRCode from 'qrcode.react'
 
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import CloseButton from '../common/closeButton'
-import Typography, {
-  TypographyVariant,
-} from 'common/components/Typography/Typography'
 import * as ROUTES from 'common/utils/constants/routes'
 import { Button } from 'common/components/Buttons'
 import Link from 'common/components/Link'
@@ -23,16 +20,12 @@ const PasswordRecovery = (): JSX.Element => {
   return (
     <div className='mx-60px my-11 w-517px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <Typography
-        variant={TypographyVariant.h1}
-        customColor='text-gray-2d'
-        className='font-extrabold'
-      >
+      <div className='font-extrabold text-gray-2d h1_32_40_heavy'>
         Password Recovery
-      </Typography>
-      <Typography variant={TypographyVariant.body2} customColor='text-gray-71'>
+      </div>
+      <div className='text-gray-71 h5_16_24_roman'>
         Choose your recovery method
-      </Typography>
+      </div>
       <div className='mt-[19px]'>
         <MultiToggleSwitch
           data={[{ label: 'QR-Code' }, { label: 'Crypto Keys' }]}
@@ -69,38 +62,22 @@ const PasswordRecovery = (): JSX.Element => {
           </div>
           <div>
             <div className='mt-6 w-full flex items-center'>
-              <Typography
-                variant={TypographyVariant.body2}
-                customColor='text-gray-71'
-              >
-                Public key
-              </Typography>
+              <div className='text-gray-71 h5_16_24_roman'>Public key</div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
-              <Typography
-                variant={TypographyVariant.body2}
-                customColor='text-gray-2d'
-              >
+              <div className='text-gray-2d h5_16_24_roman'>
                 ps19jxlfdl8mhnsqlf7x0cwlhczn69x9tcev2rawnjp7e9n8ecjms9
-              </Typography>
+              </div>
             </div>
           </div>
           <div>
             <div className='mt-6 w-full flex items-center'>
-              <Typography
-                variant={TypographyVariant.body2}
-                customColor='text-gray-71'
-              >
-                Secret key
-              </Typography>
+              <div className='text-gray-71 h5_16_24_roman'>Secret key</div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
-              <Typography
-                variant={TypographyVariant.body2}
-                customColor='text-gray-2d'
-              >
+              <div className='text-gray-2d h5_16_24_roman'>
                 ps19jxlfdl8mhnsqlf7x0cwlhczn69x9tcev2rawnjp7e9n8ecjms9
-              </Typography>
+              </div>
             </div>
           </div>
           <div className='mt-7'>

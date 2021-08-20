@@ -5,7 +5,6 @@ import cn from 'classnames'
 import dayjs from 'common/utils/initDayjs'
 import Tooltip from 'common/components/Tooltip'
 import Toggle from 'common/components/Toggle'
-import Select from 'common/components/Select/Select'
 import { Button } from 'common/components/Buttons'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import Table, { TRow } from 'common/components/Table'
@@ -13,8 +12,9 @@ import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
 import Breadcrumbs from 'common/components/Breadcrumbs'
-import Typography, { TypographyVariant } from 'common/components/Typography'
 import TimeAgo from 'common/components/TimeAgo'
+import SelectAmount, { TOption } from 'common/components/SelectAmount'
+import { parseFormattedNumber } from 'common/utils/format'
 import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
 import {
   TAddressRow,
@@ -24,6 +24,7 @@ import {
 } from 'types/rpc'
 import { useAppSelector } from 'redux/hooks'
 import { AddressForm } from './AddressForm'
+import QRCodeModal from './QRCodeModal'
 import Alert from 'common/components/Alert'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
@@ -62,6 +63,7 @@ type TBalanceCarProps = TBalanceCard & { tooltipWidth: number }
 
 const WalletScreen = (): JSX.Element => {
   const { info } = useAppSelector(state => state.appInfo)
+  const [forceUpdateSelect, setForceUpdateSelect] = useState(false)
   const Columns = [
     {
       key: 'address',
@@ -87,13 +89,9 @@ const WalletScreen = (): JSX.Element => {
       name: 'Last Activity',
       colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (time: number) => (
-        <Typography
-          variant={TypographyVariant.h5_16_24_medium}
-          customColor='text-gray-71'
-          className='mr-3 md:mr-0'
-        >
+        <div className='mr-3 md:mr-0 text-gray-71 h5_16_24_medium'>
           {time > 0 ? <TimeAgo date={dayjs.unix(time).valueOf()} /> : '--'}
-        </Typography>
+        </div>
       ),
     },
     {
@@ -101,9 +99,15 @@ const WalletScreen = (): JSX.Element => {
       name: 'Address QR',
       colClasses:
         'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
-      custom: () => (
+      custom: (value: string | number, row: TRow | undefined) => (
         <div className='flex pl-6'>
-          <span className='rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+          <span
+            className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+            onClick={() => {
+              setCurrentAddress(row?.address)
+              setIsQRCodeModalOpen(true)
+            }}
+          >
             <QRCode size={20} />
           </span>
         </div>
@@ -118,12 +122,7 @@ const WalletScreen = (): JSX.Element => {
       custom: (value: string | number) => {
         return (
           <div className='flex items-center'>
-            <Typography
-              variant={TypographyVariant.h5_16_24_medium}
-              customColor='text-gray-71'
-            >
-              private key
-            </Typography>
+            <div className='text-gray-71 h5_16_24_medium'>private key</div>
             <span
               onClick={() => {
                 setCurrentAddress(value.toString())
@@ -142,17 +141,14 @@ const WalletScreen = (): JSX.Element => {
       name: 'Balance',
       colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (value: string | number) => (
-        <Typography
-          variant={TypographyVariant.h5_16_24_medium}
-          customColor='text-gray-71'
-        >
+        <div className='text-gray-71 h5_16_24_medium'>
           {info?.currencyName}{' '}
           <NumberFormat
             value={value}
             displayType='text'
             thousandSeparator={true}
           />
-        </Typography>
+        </div>
       ),
     },
     {
@@ -161,18 +157,21 @@ const WalletScreen = (): JSX.Element => {
       colClasses: 'min-w-[120px] w-[120px]',
       custom: (value: number | string, row?: TRow) => {
         const psl = selectionPsl.filter(psl => psl?.address === row?.address)[0]
-
         return (
           <div className='z-0'>
-            <Select
+            <SelectAmount
               className='text-gray-2d w-28 bg-white'
-              autocomplete={true}
               min={0}
-              max={Math.floor(parseFloat(value.toString()))}
+              max={parseFloat(value.toString())}
               step={PastelUtils.getStep(parseInt(value.toString()))}
-              value={psl?.amount || row?.amount}
-              onChange={(selection: number | null) => {
-                handleAmountChange(selection, value, row)
+              defaultValue={{
+                label: psl?.amount || row?.amount,
+                value: psl?.amount || row?.amount,
+              }}
+              forceUpdate={forceUpdateSelect}
+              onChange={(selection: TOption) => {
+                const selectedValue = parseFormattedNumber(selection.value)
+                handleAmountChange(selectedValue, row)
               }}
             />
           </div>
@@ -227,6 +226,7 @@ const WalletScreen = (): JSX.Element => {
   ] = useState(false)
 
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
+  const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
   const [currentAddress, setCurrentAddress] = useState('')
   const [active, setActive] = useState(0)
   const [tabActive, setTabActive] = useState<number>(Tab.GENERAL)
@@ -447,11 +447,7 @@ const WalletScreen = (): JSX.Element => {
     return tempWalletAddresses
   }
 
-  const handleAmountChange = (
-    selection: number | null,
-    value: number | string,
-    row?: TRow,
-  ) => {
+  const handleAmountChange = (selection: number | null, row?: TRow) => {
     if (selection && row) {
       const tmpSelectionPsl = selectionPsl
       const selectionPslIndex = tmpSelectionPsl.findIndex(
@@ -491,13 +487,9 @@ const WalletScreen = (): JSX.Element => {
       />
       <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
         <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
-          <Typography
-            variant={TypographyVariant.h1_32_40_heavy}
-            customColor='text-gray-1a'
-            className='mr-8'
-          >
+          <div className='mr-8 text-gray-1a h1_32_40_heavy'>
             {info?.currencyName} Wallet
-          </Typography>
+          </div>
           <MultiToggleSwitch
             data={[
               { label: 'Week', count: 1122 },
@@ -515,13 +507,9 @@ const WalletScreen = (): JSX.Element => {
           onClick={() => setTransactionHistoryModalOpen(true)}
         >
           <Clock size={18} className='text-blue-3f' />
-          <Typography
-            variant={TypographyVariant.text_16_22_roman}
-            customColor='text-blue-3f'
-            className='ml-3.5'
-          >
+          <div className='ml-3.5 text-blue-3f text_16_22_roman'>
             Transaction history
-          </Typography>
+          </div>
         </div>
       </div>
 
@@ -563,12 +551,11 @@ const WalletScreen = (): JSX.Element => {
                   {active === index ? card.activeIcon : card.inactiveIcon}
                 </div>
                 <div className='pl-42px'>
-                  <Typography
-                    variant={TypographyVariant.h2_24_32_heavy}
-                    className='pt-9'
-                    customColor={
-                      index === active ? 'text-gray-2d' : 'text-gray-71'
-                    }
+                  <div
+                    className={cn(
+                      'pt-9 h2_24_32_heavy',
+                      index === active ? 'text-gray-2d' : 'text-gray-71',
+                    )}
                   >
                     {info?.currencyName}{' '}
                     <NumberFormat
@@ -576,37 +563,34 @@ const WalletScreen = (): JSX.Element => {
                       displayType='text'
                       thousandSeparator={true}
                     />
-                  </Typography>
+                  </div>
                   {card.style.type === 'total_balance' ? (
-                    <Typography
-                      variant={TypographyVariant.h6_14_20_medium}
-                      className='mt-2'
-                      customColor={
-                        active === index ? 'text-gray-71' : 'text-gray-a0'
-                      }
+                    <div
+                      className={cn(
+                        'mt-2 h6_14_20_medium',
+                        active === index ? 'text-gray-71' : 'text-gray-a0',
+                      )}
                     >
                       Total balance
-                    </Typography>
+                    </div>
                   ) : card.style.type === 'transparent' ? (
-                    <Typography
-                      variant={TypographyVariant.h6_14_20_medium}
-                      className='mt-2'
-                      customColor={
-                        active === index ? 'text-gray-71' : 'text-gray-a0'
-                      }
+                    <div
+                      className={cn(
+                        'mt-2 h6_14_20_medium',
+                        active === index ? 'text-gray-71' : 'text-gray-a0',
+                      )}
                     >
                       Transparent
-                    </Typography>
+                    </div>
                   ) : (
-                    <Typography
-                      variant={TypographyVariant.h6_14_20_medium}
-                      className='mt-2'
-                      customColor={
-                        active === index ? 'text-gray-71' : 'text-gray-a0'
-                      }
+                    <div
+                      className={cn(
+                        'mt-2 h6_14_20_medium',
+                        active === index ? 'text-gray-71' : 'text-gray-a0',
+                      )}
                     >
                       Shielded
-                    </Typography>
+                    </div>
                   )}
                 </div>
               </div>
@@ -664,13 +648,9 @@ const WalletScreen = (): JSX.Element => {
                     showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
                     extendHeader={
-                      <Typography
-                        variant={TypographyVariant.h5_16_24_medium}
-                        customColor='text-gray-2d'
-                        className='mb-2.5 ml-[30px] sticky top-0'
-                      >
+                      <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d h5_16_24_medium'>
                         Transparent
-                      </Typography>
+                      </div>
                     }
                     extendHeaderClassName='h-6 top-[-1px]'
                     stickyTopClassName='top-[23px]'
@@ -686,13 +666,9 @@ const WalletScreen = (): JSX.Element => {
                     showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
                     extendHeader={
-                      <Typography
-                        variant={TypographyVariant.h5_16_24_medium}
-                        customColor='text-gray-2d'
-                        className='mb-2.5 mt-7 ml-[30px] sticky top-0'
-                      >
+                      <div className='mb-2.5 mt-7 ml-[30px] sticky top-0 text-gray-2d h5_16_24_medium'>
                         Shielded
-                      </Typography>
+                      </div>
                     }
                     extendHeaderClassName='h-6 top-[-30px]'
                     stickyTopClassName='top-[23px]'
@@ -702,10 +678,7 @@ const WalletScreen = (): JSX.Element => {
             </div>
 
             <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
-              <Typography
-                variant={TypographyVariant.h6_14_20_roman}
-                className='flex items-center'
-              >
+              <div className='flex items-center h6_14_20_roman'>
                 <Toggle toggleHandler={hideEmptyAddress}>
                   Hide empty addresses
                   <div className='ml-2'>
@@ -719,26 +692,19 @@ const WalletScreen = (): JSX.Element => {
                     </Tooltip>
                   </div>
                 </Toggle>
-              </Typography>
+              </div>
               <div className='flex items-center'>
-                <Typography
-                  variant={TypographyVariant.h4_18_24_roman}
-                  customColor='text-gray-71'
-                >
+                <div className='text-gray-71 h4_18_24_roman'>
                   Selected total:
-                </Typography>
-                <Typography
-                  variant={TypographyVariant.h3_22_30_heavy}
-                  customColor='text-gray-2d'
-                  className='ml-3'
-                >
+                </div>
+                <div className='ml-3 text-gray-2d h3_22_30_heavy'>
                   <NumberFormat
                     value={selectedAmount}
                     displayType='text'
                     thousandSeparator={true}
                   />{' '}
                   {info.currencyName}
-                </Typography>
+                </div>
               </div>
             </div>
           </div>
@@ -752,13 +718,9 @@ const WalletScreen = (): JSX.Element => {
             )}
           >
             <div className='text-center'>
-              <Typography
-                variant={TypographyVariant.h5_16_24_roman}
-                customColor='text-gray-4a'
-                className='mb-3'
-              >
+              <div className='mb-3 text-gray-4a h5_16_24_roman'>
                 You have no Addresses
-              </Typography>
+              </div>
               <Button
                 variant='secondary'
                 className='w-[264px] px-0 mt-3'
@@ -767,13 +729,9 @@ const WalletScreen = (): JSX.Element => {
               >
                 <div className='flex items-center ml-[19px]'>
                   <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                  <Typography
-                    variant={TypographyVariant.h5_16_24_medium}
-                    customColor='text-blue-3f'
-                    className='ml-11px'
-                  >
+                  <div className='ml-11px text-blue-3f h5_16_24_medium'>
                     Generate a new {info.currencyName} Address
-                  </Typography>
+                  </div>
                 </div>
               </Button>
             </div>
@@ -790,35 +748,25 @@ const WalletScreen = (): JSX.Element => {
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                <Typography
-                  variant={TypographyVariant.h5_16_24_medium}
-                  customColor='text-blue-3f'
-                  className='ml-11px'
-                >
+                <div className='ml-11px text-blue-3f h5_16_24_medium'>
                   Generate a new {info.currencyName} Address
-                </Typography>
+                </div>
               </div>
             </Button>
           )}
           <Button
-            onClick={() => setPaymentModalOpen(true)}
+            onClick={() => {
+              setPaymentModalOpen(true)
+              setForceUpdateSelect(false)
+            }}
             className='ml-30px w-[190px] px-0'
             childrenClassName='w-full'
           >
             <div className='flex items-center ml-5'>
-              <Typography
-                variant={TypographyVariant.text_18_28_heavy}
-                customColor='text-white'
-              >
-                +
-              </Typography>{' '}
-              <Typography
-                variant={TypographyVariant.h5_16_24_heavy}
-                customColor='text-white'
-                className='ml-2'
-              >
+              <div className='text-white text_18_28_heavy'>+</div>{' '}
+              <div className='ml-2 text-white h5_16_24_heavy'>
                 Create a payment
-              </Typography>
+              </div>
             </div>
           </Button>
         </div>
@@ -828,6 +776,7 @@ const WalletScreen = (): JSX.Element => {
         isOpen={isPaymentModalOpen}
         handleClose={() => {
           setPaymentModalOpen(false)
+          setForceUpdateSelect(true)
         }}
         totalBalances={totalBalances?.total || 0}
         onRemoveRow={setSelectedRowsFunction}
@@ -839,6 +788,11 @@ const WalletScreen = (): JSX.Element => {
         isOpen={isTransactionHistoryModalOpen}
         handleClose={() => setTransactionHistoryModalOpen(false)}
       ></TransactionHistoryModal>
+      <QRCodeModal
+        isOpen={isQRCodeModalOpen}
+        address={currentAddress}
+        handleClose={() => setIsQRCodeModalOpen(false)}
+      />
       <ExportKeysModal
         isOpen={isExportKeysModalOpen}
         address={currentAddress}

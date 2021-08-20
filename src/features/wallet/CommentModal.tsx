@@ -3,7 +3,6 @@ import cx from 'classnames'
 
 import Tooltip from 'common/components/Tooltip'
 import { EliminationIcon } from 'common/components/Icons'
-import Typography, { TypographyVariant } from 'common/components/Typography'
 import styles from './CommentModal.module.css'
 
 export type TCommentModalProps = {
@@ -31,16 +30,15 @@ const CommentModal = ({ isOpen, onClose }: TCommentModalProps): JSX.Element => {
                 each == tab && 'text-gray-71 border-b border-gray-71 pb-8px',
               )}
             >
-              <Typography
-                variant={
+              <div
+                className={cx(
                   tab === each
-                    ? TypographyVariant.h6_14_20_heavy
-                    : TypographyVariant.h6_14_20_medium
-                }
-                customColor={tab === each ? 'text-gray-33' : 'text-gray-71'}
+                    ? 'text-gray-33 h6_14_20_heavy'
+                    : 'text-gray-71 h6_14_20_medium',
+                )}
               >
                 {each}
-              </Typography>
+              </div>
             </div>
           ))}
         </div>
@@ -67,12 +65,9 @@ const CommentModal = ({ isOpen, onClose }: TCommentModalProps): JSX.Element => {
       </div>
       <div className='flex justify-end px-7'>
         <div onClick={() => onClose()} className='px-1 pb-4 cursor-pointer'>
-          <Typography
-            variant={TypographyVariant.h6_14_20_roman}
-            customColor='text-blue-3f hover:text-blue-600'
-          >
+          <div className='text-blue-3f hover:text-blue-600 h6_14_20_roman'>
             Save
-          </Typography>
+          </div>
         </div>
       </div>
       <div>

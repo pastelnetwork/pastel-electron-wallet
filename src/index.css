@@ -176,6 +176,126 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
+
+  .h1_32_40_heavy {
+    @apply text-32px leading-10 font-extrabold;
+  }
+
+  .h2_24_32_heavy {
+    @apply text-2xl font-extrabold;
+  }
+
+  .h2_24_32_medium {
+    @apply text-2xl font-medium;
+  }
+
+  .h3_22_30_heavy {
+    @apply text-h3 leading-30px font-extrabold;
+  }
+
+  .h4_18_24_heavy {
+    @apply text-h4 leading-6 font-extrabold;
+  }
+
+  .h4_18_24_medium {
+    @apply text-h4 leading-6 font-medium;
+  }
+
+  .h4_18_24_roman {
+    @apply text-h4 leading-6 font-normal;
+  }
+
+  .h5_16_24_heavy {
+    @apply text-h5 leading-6 font-extrabold;
+  }
+
+  .h5_16_24_medium {
+    @apply text-h5 leading-6 font-medium;
+  }
+
+  .h5_16_24_roman {
+    @apply text-h5 leading-6 font-normal;
+  }
+
+  .h6_14_24_heavy {
+    @apply text-h6 leading-6 font-extrabold;
+  }
+
+  .h6_14_24_medium {
+    @apply text-h6 leading-6 font-medium;
+  }
+
+  .h6_14_24_roman {
+    @apply text-h6 leading-6 font-normal;
+  }
+
+  .h6_14_24_roman_italic {
+    @apply text-h6 leading-6 font-normal italic;
+  }
+
+  .h6_14_20_roman {
+    @apply text-h6 leading-5 font-normal;
+  }
+
+  .h6_14_20_heavy {
+    @apply text-h6 leading-5 font-extrabold;
+  }
+
+  .h6_14_20_medium {
+    @apply text-h6 leading-5 font-medium;
+  }
+
+  .h6_14_20_black {
+    @apply text-h6 leading-5 font-black;
+  }
+
+  .mini_heavy {
+    @apply text-xs leading-[14px] font-extrabold;
+  }
+
+  .mini_medium {
+    @apply text-xs leading-[14px] font-medium;
+  }
+
+  .mini_roman {
+    @apply text-xs leading-[14px] font-normal;
+  }
+
+  .mini_roman_italic {
+    @apply text-xs leading-[14px] font-normal italic;
+  }
+
+  .text_12_16_roman {
+    @apply text-xs font-normal;
+  }
+
+  .text_12_16_medium {
+    @apply text-xs font-medium;
+  }
+
+  .text_12_16_bold {
+    @apply text-xs font-bold;
+  }
+
+  .text_14_16_bold {
+    @apply text-sm leading-4 font-bold;
+  }
+
+  .text_8_6_bold {
+    @apply text-[8px] leading-[6px] font-bold;
+  }
+
+  .text_6_6_bold {
+    @apply text-[6px] leading-[6px] font-bold;
+  }
+
+  .text_16_22_roman {
+    @apply text-h5 leading-[22px] font-normal;
+  }
+
+  .text_18_28_heavy {
+    @apply text-h4 leading-7 font-extrabold;
+  }
 }
 
 html {

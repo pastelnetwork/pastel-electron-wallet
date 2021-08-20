@@ -6,10 +6,9 @@ import checkIcon from 'common/assets/icons/ico-check.svg'
 import Select from 'common/components/Select/Select'
 import PaymentSource from './PaymentSource'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import Typography, { TypographyVariant } from 'common/components/Typography'
 import Tooltip from 'common/components/Tooltip'
 import { TAddressRow } from 'types/rpc'
-import { formatPrice } from 'common/utils/format'
+import { formatNumber } from 'common/utils/format'
 import { TRow } from 'common/components/Table'
 
 import { EliminationIcon, AddIcon } from 'common/components/Icons'
@@ -20,11 +19,7 @@ export type TPaymentModalProps = {
   paymentSources: TAddressRow[]
   totalBalances: number
   onRemoveRow: (row: TRow) => void
-  onAmountChange: (
-    selection: number | null,
-    value: number | string,
-    row?: TRow,
-  ) => void
+  onAmountChange: (selection: number | null, row?: TRow) => void
   selectedTotal: number
   onSelectedRows: (row: TAddressRow) => void
 }
@@ -92,35 +87,16 @@ const PaymentModal = ({
           />
         </div>
         <div className='w-1/3 h-10 flex items-center text-gray-2d'>
-          <Typography
-            variant={TypographyVariant.h5_16_24_heavy}
-            customColor='text-gray-4a'
-          >
-            10
-          </Typography>{' '}
-          &nbsp;
-          <Typography
-            variant={TypographyVariant.h5_16_24_medium}
-            customColor='text-gray-71'
-          >
-            {currencyName} fee
-          </Typography>
+          <div className='text-gray-4a h5_16_24_heavy'>10</div> &nbsp;
+          <div className='text-gray-71 h5_16_24_medium'>{currencyName} fee</div>
         </div>
       </div>
-      <Typography
-        variant={TypographyVariant.h6_14_20_roman}
-        customColor='text-gray-a0'
-        className='pt-6px'
-      >
-        {formatPrice(totalBalances - selectedTotal, currencyName)} balance
+      <div className='pt-6px text-gray-a0 h6_14_20_roman'>
+        {formatNumber(totalBalances - selectedTotal, currencyName)} balance
         remaining after payment
-      </Typography>
+      </div>
       <div>
-        <Typography
-          variant={TypographyVariant.h5_16_24_heavy}
-          customColor='text-gray-4a'
-          className='pt-[23px] flex items-center'
-        >
+        <div className='pt-[23px] flex items-center text-gray-4a h5_16_24_heavy'>
           Address of Recipient
           <div className='ml-9px'>
             <Tooltip
@@ -135,7 +111,7 @@ const PaymentModal = ({
               />
             </Tooltip>
           </div>
-        </Typography>
+        </div>
         <div className='mt-[19px] w-[390px]'>
           <input
             placeholder='input recipient address'
@@ -144,11 +120,7 @@ const PaymentModal = ({
         </div>
       </div>
       <div className='mt-9'>
-        <Typography
-          variant={TypographyVariant.h5_16_24_heavy}
-          customColor='text-gray-4a'
-          className='flex border-b-[1px] border-gray-ec pb-[13px]'
-        >
+        <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a h5_16_24_heavy'>
           Shielded Payment Source
           <span className='flex items-center ml-9px'>
             <Tooltip
@@ -176,7 +148,7 @@ const PaymentModal = ({
               />
             </Tooltip>
           </span>
-        </Typography>
+        </div>
         <table className='w-full'>
           <tbody>
             {paymentSources.map((data: TAddressRow) => (
@@ -193,29 +165,21 @@ const PaymentModal = ({
       </div>
       <div className='flex justify-end mt-[21px]'>
         <Button variant='secondary' onClick={handleClose} className='w-[146px]'>
-          <Typography
-            variant={TypographyVariant.h5_16_24_medium}
-            customColor='text-blue-3f'
-            className='flex items-center px-5'
-          >
+          <div className='flex items-center px-5 text-blue-3f h5_16_24_medium'>
             <span className='text-sm '>Cancel</span>
-          </Typography>
+          </div>
         </Button>
         <Button
           className='ml-[30px] px-0'
           childrenClassName='w-full'
           onClick={handleClose}
         >
-          <Typography
-            variant={TypographyVariant.h5_16_24_heavy}
-            customColor='text-white'
-            className='flex items-center px-5'
-          >
+          <div className='flex items-center px-5 text-white h5_16_24_heavy'>
             <img src={checkIcon} className='py-3.5' />
             <span className='ml-[9px]'>
-              Confirm {currencyName} {formatPrice(selectedTotal, '')} payment
+              Confirm {currencyName} {formatNumber(selectedTotal, '')} payment
             </span>
-          </Typography>
+          </div>
         </Button>
       </div>
     </TitleModal>
