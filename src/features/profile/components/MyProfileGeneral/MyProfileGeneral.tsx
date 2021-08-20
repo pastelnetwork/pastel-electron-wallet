@@ -17,7 +17,15 @@ import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
 
 import { fetchLocations } from 'features/profile/ProfileSlice'
 
-export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
+export type TCurrency =
+  | 'EUR'
+  | 'CNY'
+  | 'JPY'
+  | 'GBP'
+  | 'AUD'
+  | 'NGN'
+  | 'IDR'
+  | 'USD'
 
 export type TProfileGeneral = {
   editMode: boolean
