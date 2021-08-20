@@ -106,6 +106,12 @@ export class WalletRPC {
     return rpc<TListAddressesResponse>('z_listaddresses', [])
   }
 
+  useZListAddresses(options?: {
+    enabled?: boolean
+  }): UseQueryResult<TListAddressesResponse> {
+    return useQuery('z_listaddresses', () => this.fetchZAddresses(), options)
+  }
+
   /**
    * Get list of T addresses.
    *
@@ -122,6 +128,16 @@ export class WalletRPC {
    */
   async fetchAddressesByAccount(): Promise<TListAddressesResponse> {
     return rpc<TListAddressesResponse>('getaddressesbyaccount', [''])
+  }
+
+  useListAddressesByAccount(options?: {
+    enabled?: boolean
+  }): UseQueryResult<TListAddressesResponse> {
+    return useQuery(
+      'getaddressesbyaccount',
+      () => this.fetchAddressesByAccount(),
+      options,
+    )
   }
 
   /**
@@ -217,6 +233,14 @@ export class WalletRPC {
     return this.useAddressesWithBalance(() => this.useListUnspent())
   }
 
+  useZAddresses(): UseQueryResult<string[]> {
+    return this.useAddresses(() => this.useZListAddresses())
+  }
+
+  useAddressesByAccount(): UseQueryResult<string[]> {
+    return this.useAddresses(() => this.useListAddressesByAccount())
+  }
+
   private useAddressesWithBalance(
     load: () => UseQueryResult<TZListUnspentResponse | TListUnspentResponse>,
   ) {
@@ -243,6 +267,20 @@ export class WalletRPC {
     }, [data])
 
     return { data: mapped, ...rest } as UseQueryResult<TAddressBalance[]>
+  }
+
+  private useAddresses(load: () => UseQueryResult<TListAddressesResponse>) {
+    const { data, ...rest } = load()
+    const mapped = useMemo<string[]>(() => {
+      const result = data?.result
+      if (!result) {
+        return []
+      }
+
+      return result
+    }, [data])
+
+    return { data: mapped, ...rest } as UseQueryResult<string[]>
   }
 
   async createNewAddress(zaddress: boolean): Promise<string | null> {

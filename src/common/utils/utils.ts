@@ -65,7 +65,7 @@ export default class PastelUtils {
     return new RegExp('^[tP][a-zA-Z0-9]{34}$').test(addr)
   }
 
-  static getStep = (value: number): number => {
+  static generateStep = (value: number): number => {
     if (value >= 10000) {
       return 10000
     }

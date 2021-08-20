@@ -71,7 +71,7 @@ const PaymentSource = ({
             className='text-gray-2d w-28'
             min={0}
             max={walletAddress.amount}
-            step={PastelUtils.getStep(walletAddress.amount)}
+            step={PastelUtils.generateStep(walletAddress.amount)}
             defaultValue={{
               label: walletAddress.psl.toString(),
               value: walletAddress.psl.toString(),
