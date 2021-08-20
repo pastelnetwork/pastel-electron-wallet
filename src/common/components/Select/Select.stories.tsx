@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
-import Select, { TOptionsProps, TRangeProps } from './Select'
+import Select, { TOptionsProps, TRangeProps } from './index'
 
 export default {
   title: 'Select',
@@ -11,7 +11,11 @@ export default {
 const TemplateOptions: Story<TOptionsProps> = ({ selected, ...args }) => {
   const [selectedItem, setSelected] = useState(selected)
 
-  return <Select {...args} selected={selectedItem} onChange={setSelected} />
+  return (
+    <div>
+      <Select {...args} selected={selectedItem} onChange={setSelected} />
+    </div>
+  )
 }
 
 const options = [
@@ -25,6 +29,7 @@ SimpleSelect.args = {
   options,
   selected: options[0],
   selectClassName: 'w-220px',
+  disabled: false,
 }
 
 export const WithLabel = TemplateOptions.bind({})
@@ -33,6 +38,7 @@ WithLabel.args = {
   selected: options[0],
   label: 'Categories',
   selectClassName: 'w-220px',
+  disabled: false,
 }
 
 // not using ...args because this is causing wrong behaviour by passing options={undefined}
@@ -67,4 +73,5 @@ AutoCompleteNumber.args = {
   max: 20000,
   step: 100,
   value: 12345,
+  disabled: false,
 }

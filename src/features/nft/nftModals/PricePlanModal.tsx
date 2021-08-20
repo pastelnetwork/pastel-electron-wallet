@@ -5,6 +5,7 @@ import Slider from 'common/components/Slider/Slider'
 import pencilIcon from 'common/assets/icons/ico-pencil.svg'
 import astronautIcon from 'common/assets/icons/ico-astronaut.png'
 import Button from 'common/components/Buttons/Button'
+import { useCurrencyName } from 'common/hooks/appInfo'
 import cn from 'classnames'
 
 export type TPricePlanModal = {
@@ -16,6 +17,7 @@ const PricePlanModal = ({
   isOpen,
   handleClose,
 }: TPricePlanModal): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [cellEdit, setCellEdit] = useState<{ row: number; col: number } | null>(
     null,
   )
@@ -46,7 +48,9 @@ const PricePlanModal = ({
       key: 'Auto-listing price',
       custom: (value: number, row: TRow) => (
         <div className='flex leading-tight space-x-4'>
-          <div className='text-gray-71'>{value.toLocaleString('en')}k PSL</div>
+          <div className='text-gray-71'>
+            {value.toLocaleString('en')}k {currencyName}
+          </div>
           <button
             onClick={() => setCellEdit({ row: row.id as number, col: 1 })}
           >
@@ -78,7 +82,7 @@ const PricePlanModal = ({
             value={value + 'k'}
             className='outline-none border-none flex-grow min-w-0 text-gray-2d'
           />
-          <span>PSL</span>
+          <span>{currencyName}</span>
         </div>
       ),
     },

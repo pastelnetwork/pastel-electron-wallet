@@ -11,6 +11,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TLineChartData = {
   dataX: string[]
@@ -18,16 +19,10 @@ type TLineChartData = {
   dataY2: number[]
 }
 
-type TPriceOvertimeProps = {
-  info: {
-    [key: string]: string | number
-  }
-}
-
 const redrawCycle = 6000
 
-const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
-  const { info } = props
+const PriceOvertime = (): JSX.Element => {
+  const currencyName = useCurrencyName()
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -87,8 +82,7 @@ const PriceOvertime = (props: TPriceOvertimeProps): JSX.Element => {
               dataX={transformLineChartData?.dataX}
               dataY1={transformLineChartData?.dataY1}
               dataY2={transformLineChartData?.dataY2}
-              title={`${info.currencyName} Prices`}
-              info={info}
+              title={`${currencyName} Prices`}
               offset={0.0001}
               periods={periods[0]}
               handleBgColorChange={handleBgColorChange}

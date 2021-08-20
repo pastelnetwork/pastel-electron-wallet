@@ -6,13 +6,20 @@ import StarRate from './StarRate'
 import Categories from './Categories'
 import ProfileGeneralRow from './ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
+import { useCurrencyName } from 'common/hooks/appInfo'
 import Select, { TOption } from './Select/Select'
-
-import { useAppSelector } from '../../../redux/hooks'
 
 import NumberFormat from 'react-number-format'
 
-export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
+export type TCurrency =
+  | 'EUR'
+  | 'CNY'
+  | 'JPY'
+  | 'GBP'
+  | 'AUD'
+  | 'NGN'
+  | 'IDR'
+  | 'USD'
 
 export type TProfileGeneral = {
   editMode: boolean
@@ -25,8 +32,7 @@ const ProfileGeneral = ({
   isEmpty,
   nativeCurrency,
 }: TProfileGeneral): JSX.Element => {
-  const locations = useAppSelector(state => state.pastelProfile.locations)
-
+  const currencyName = useCurrencyName()
   const data = {
     location: 'New York, US',
     language: 'English',
@@ -129,7 +135,7 @@ const ProfileGeneral = ({
           <div className='flex items-center'>
             {isEmpty ? (
               <span className='cursor-pointer text-gray-4a text-base leading-5'>
-                0 PSL
+                0 {currencyName}
               </span>
             ) : (
               <>
@@ -141,7 +147,7 @@ const ProfileGeneral = ({
                       ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
                       {currentPSLPrice}{' '}
                       <span className='italic font-normal'>
-                        based on current PSL price
+                        based on current {currencyName} price
                       </span>
                     </p>
                   }
@@ -152,7 +158,7 @@ const ProfileGeneral = ({
                       displayType='text'
                       thousandSeparator={true}
                     />{' '}
-                    PSL
+                    {currencyName}
                   </span>
                 </Tooltip>
                 {data.highestFeeRecieved.comment && (
@@ -168,7 +174,7 @@ const ProfileGeneral = ({
           <div className='flex items-center'>
             {isEmpty ? (
               <span className='cursor-pointer text-gray-4a text-base leading-5'>
-                0 PSL
+                0 {currencyName}
               </span>
             ) : (
               <>
@@ -180,7 +186,7 @@ const ProfileGeneral = ({
                       ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
                       {currentPSLPrice}{' '}
                       <span className='italic font-normal'>
-                        based on current PSL price
+                        based on current {currencyName} price
                       </span>
                     </p>
                   }
@@ -191,7 +197,7 @@ const ProfileGeneral = ({
                       displayType='text'
                       thousandSeparator={true}
                     />{' '}
-                    PSL
+                    {currencyName}
                   </span>
                 </Tooltip>
                 {data.totalSalesAmount.comment && (
@@ -235,6 +241,20 @@ const ProfileGeneral = ({
   )
 }
 
+const locations: Array<TOption> = [
+  {
+    label: 'None',
+    value: 'None',
+  },
+  {
+    label: 'New York, US',
+    value: 'New York, US',
+  },
+  {
+    label: 'California, US',
+    value: 'California, US',
+  },
+]
 const languages: Array<TOption> = [
   {
     label: 'English',

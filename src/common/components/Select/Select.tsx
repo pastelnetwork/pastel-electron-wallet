@@ -29,6 +29,7 @@ export type TBaseProps = {
   autoCompleteInputClass?: string
   inputValueChange?: (param: string) => void
   fetched?: boolean
+  disabled?: boolean
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -91,9 +92,10 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
     icon = '',
     iconClasses = '',
     autoCompleteInputClass = 'relative',
-    autoCompleteContainerClass = 'h-full w-full rounded pr-7 text-gray-71 font-extrabold focus-visible-border',
+    autoCompleteContainerClass = 'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
     inputValueChange,
     fetched = false,
+    disabled = false,
   } = props
 
   const {
@@ -155,7 +157,8 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
         return (
           <div
             className={cn(
-              'input flex-center p-0 relative',
+              'transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex-center p-0 relative',
+              disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
               autoCompleteColor,
               selectClassName,
             )}
@@ -170,16 +173,23 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
               />
             )}
             {autocomplete && (
-              <div className={autoCompleteContainerClass}>
+              <div
+                className={cn(
+                  autoCompleteContainerClass,
+                  disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
+                )}
+              >
                 <input
                   className={cn(
                     autoCompleteInputClass,
                     icon ? 'pl-9 relative z-10' : 'pl-18px',
+                    disabled && 'cursor-not-allowed',
                   )}
                   {...getToggleButtonProps()}
                   {...getInputProps()}
                   type='text'
                   role='input'
+                  disabled={disabled}
                   value={
                     fetched
                       ? inputValue
@@ -196,7 +206,9 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 className={cn(
                   'w-full h-full flex items-center whitespace-nowrap pr-7 focus-visible-border',
                   icon ? 'pl-9 relative z-10' : 'pl-3.5',
+                  disabled && 'cursor-not-allowed',
                 )}
+                disabled={disabled}
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}
@@ -207,6 +219,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
               className={cn(
                 'text-gray-b0 ml-2 absolute right-3 transition duration-200 transform',
                 isOpen && 'rotate-180',
+                disabled && 'cursor-not-allowed',
               )}
               src={caretDownIcon}
               alt='toggle menu'

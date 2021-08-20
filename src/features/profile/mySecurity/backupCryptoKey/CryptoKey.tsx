@@ -209,14 +209,15 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
     <div className='max-w-330px'>
       Clicking the button below will generate a PDF “paper wallet,” which is a
       single file that contains all your Pastel secret information that gives
-      control over your PastelID (idenity on the Pastel Network) and your PSL
+      control over your PastelID (idenity on the Pastel Network) and your{' '}
+      {currencyName}
       coins stored in this wallet. This file can be used to restore your account
       information on a new computer.
       <br />
       <br />
       <i className='font-normal'>Note:</i> Make sure you keep this file safe,
       since anyone with access to this file will be able to control your Pastel
-      account and take your PSL coins.
+      account and take your {currencyName} coins.
     </div>
   )
 

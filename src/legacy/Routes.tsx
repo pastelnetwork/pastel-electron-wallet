@@ -570,7 +570,6 @@ class RouteApp extends React.Component<any, any> {
                   addressesWithBalance={addressesWithBalance}
                   createNewAddress={this.createNewAddress}
                   totalBalance={totalBalance}
-                  info={info}
                 />
               )}
             />

@@ -9,9 +9,8 @@ export type TNotification = {
 
 const Notification = ({ type, title, status }: TNotification): JSX.Element => {
   const classes = cn(
-    'relative flex align-center rounded-lg px-5 py-3 cursor-pointer grid grid-cols-12',
-    status === 'read' && 'bg-gray-f3',
-    status === 'unread' && 'border border-gray-cd',
+    'relative flex align-center rounded-lg px-5 py-3 cursor-pointer grid grid-cols-12 border border-gray-ec',
+    status === 'read' ? 'bg-gray-f6' : 'bg-white',
   )
 
   return (

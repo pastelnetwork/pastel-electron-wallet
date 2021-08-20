@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { mockNFTs, typesData, rarenessesData } from './mockData'
 import Select, { TOption } from 'common/components/Select/Select'
-import NFTCard from 'common/components/NFTCard'
+import NFTCard, { NFTCardVariantSize } from 'common/components/NFTCard'
 
 export type TKeywordResultProps = {
   searchKey: string
@@ -58,17 +58,18 @@ const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
           />
         </div>
       </div>
-      <div className='flex-grow overflow-y-auto overflow-x-hidden grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6 mt-10 pb-3'>
+      <div className='flex-grow overflow-y-auto overflow-x-hidden grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mt-10 pb-3 gap-y-[30px] gap-x-[18px]'>
         {mockNFTs.map((item, i) => (
           <NFTCard
-            className='w-[250px]'
             key={i}
             hideFollow={true}
             hideLikeButton={true}
             {...item}
-            exauthorClassName='text-sm text-gray-4a'
-            avatarClassName='w-6 h-6'
             searchText={searchKey}
+            isAuctionBid={(i + 1) % 2 === 0}
+            isFixedPrice={(i + 1) % 3 === 0 && (i + 1) % 2 !== 0}
+            isNotForSale={(i + 1) % 2 !== 0 && (i + 1) % 3 !== 0}
+            variant={NFTCardVariantSize.M}
           />
         ))}
       </div>

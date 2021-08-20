@@ -12,6 +12,7 @@ import {
   TThemeInitOption,
 } from '../../common/types'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 import styles from './LineChart.module.css'
 import {
@@ -28,7 +29,6 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     dataY1,
     dataY2,
     title,
-    info,
     offset,
     periods,
     granularities,
@@ -36,6 +36,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
     handleGranularityFilterChange,
     handleBgColorChange,
   } = props
+  const currencyName = useCurrencyName()
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(
@@ -115,10 +116,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
         .toBlob(eChartRef.ele)
         .then(function (blob: Blob | null) {
           if (blob) {
-            saveAs(
-              blob,
-              makeDownloadFileName(info.currencyName, chartName) + '.png',
-            )
+            saveAs(blob, makeDownloadFileName(currencyName, chartName) + '.png')
           }
         })
         .catch(function (error) {
@@ -257,9 +255,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
           </button>
           <CSVLink
             data={csvData}
-            filename={
-              makeDownloadFileName(info.currencyName, chartName) + '.csv'
-            }
+            filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
             headers={csvHeaders[chartName]}
             separator={';'}
             ref={downloadRef}

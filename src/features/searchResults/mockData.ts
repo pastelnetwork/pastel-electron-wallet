@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { TMemberCard } from 'features/members/MemberCard'
 import { TNFTCard } from '../../common/components/NFTCard'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
@@ -115,14 +116,13 @@ const mockCardProps: TNFTCard = {
   avatarSrc: mockAvatar,
   imageSrc: nftImage,
   likes: 23,
-  onSale: true,
-  price: '222K',
+  price: 12000,
   currencyName: 'PSL',
   title: 'Cosmic Perspective',
-  liked: true,
   followers: 0,
-  isLastBid: false,
   nsfw: { porn: 0, hentai: 0 },
+  leftTime: dayjs().add(1, 'day').valueOf(),
+  copiesAvailable: 15,
 }
 
 export const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {

@@ -22,6 +22,7 @@ export type TCurrency = 'EUR' | 'CNY' | 'JPY' | 'GBP' | 'AUD' | 'NGN' | 'IDR'
 export type TProfileGeneral = {
   editMode: boolean
   isEmpty: boolean
+
   nativeCurrency: TCurrency
 }
 

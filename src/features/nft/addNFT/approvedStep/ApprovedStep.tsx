@@ -6,6 +6,7 @@ import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import ImageShadow from '../common/ImageShadow'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 const InfoPair = ({ title, value }: { title: string; value: string }) => (
   <div className='flex'>
@@ -27,6 +28,7 @@ export default function ApprovedStep({
   displayUrl,
   nftData,
 }: TApprovedStepProps): JSX.Element {
+  const currencyName = useCurrencyName()
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
 
@@ -78,7 +80,9 @@ export default function ApprovedStep({
           <div className='w-full mt-3'>
             <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
               <div className='text-gray-71'>Final registration fee</div>
-              <div className='text-gray-45 font-extrabold'>110,000 PSL</div>
+              <div className='text-gray-45 font-extrabold'>
+                110,000 {currencyName}
+              </div>
             </div>
             <button
               type='button'

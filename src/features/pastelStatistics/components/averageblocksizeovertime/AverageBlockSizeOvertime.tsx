@@ -19,18 +19,9 @@ import {
   periods,
 } from '../../common/constants'
 
-type TDifficultyOvertimeProps = {
-  info: {
-    [key: string]: string | number
-  }
-}
-
 const redrawCycle = 60000
 
-const AverageBlockSizeOvertime = (
-  props: TDifficultyOvertimeProps,
-): JSX.Element => {
-  const { info } = props
+const AverageBlockSizeOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -99,7 +90,6 @@ const AverageBlockSizeOvertime = (
               dataX={transformLineChartData?.dataX}
               dataY={transformLineChartData?.dataY}
               title='Average Block Size(KB)'
-              info={info}
               offset={1}
               granularities={granularities[0]}
               periods={periods[1]}

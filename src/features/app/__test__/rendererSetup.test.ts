@@ -112,7 +112,7 @@ describe('rendererSetup', () => {
       expect(mockedStore.getActions()).toEqual([setPastelInfo({ info })])
     })
 
-    it('should setup pastel db thread if app is not packaged', async () => {
+    it('should setup pastel db thread', async () => {
       mockedStore.getState().appInfo = {
         isPackaged: false,
       }
@@ -124,16 +124,6 @@ describe('rendererSetup', () => {
         PastelDBThread,
         expect.any(Number),
       )
-
-      jest.clearAllMocks()
-      mockedStore.getState().appInfo = {
-        isPackaged: true,
-      }
-
-      await emitRendererEvent('setRpcConfig', { rpcConfig })
-
-      expect(PastelDBThread).not.toHaveBeenCalled()
-      expect(setInterval).not.toHaveBeenCalled()
     })
 
     it('should redirect to welcome page', async () => {

@@ -4,6 +4,7 @@ import Radio from 'common/components/Radio/Radio'
 import { Fire } from 'common/components/Icons/Fire'
 import { PaymentMethods } from './Regiser.state'
 import { PrevButton, NextButton } from './Buttons'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TStepPaymentMethodProps = {
   paymentMethod: PaymentMethods
@@ -15,6 +16,7 @@ export type TStepPaymentMethodProps = {
 }
 
 const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
+  const currencyName = useCurrencyName()
   const methods = [
     {
       name: 'Centralized Exchange (Gemini, Binance, etc.)',
@@ -25,7 +27,7 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
       method: PaymentMethods.DecentralizedExchange,
     },
     {
-      name: 'PSL Address Private Key Import',
+      name: `${currencyName} Address Private Key Import`,
       method: PaymentMethods.PslAddress,
     },
     {
@@ -64,9 +66,9 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
           Choose Payment Method
         </h1>
         <h2 className='text-gray-71 text-base font-normal'>
-          PSL coins are required to create a Pastel identity (these coins are
-          burned <Fire size={18} className='inline-block' />) and to register or
-          purchase NFTs on Pastel
+          {currencyName} coins are required to create a Pastel identity (these
+          coins are burned <Fire size={18} className='inline-block' />) and to
+          register or purchase NFTs on Pastel
         </h2>
         <div className='mt-6'>
           {methods.map((method, i) => (

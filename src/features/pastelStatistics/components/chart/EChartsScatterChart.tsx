@@ -6,6 +6,7 @@ import * as htmlToImage from 'html-to-image'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { csvHeaders, themes } from '../../common/constants'
+import { useCurrencyName } from 'common/hooks/appInfo'
 import { PrevButton } from '../PrevButton'
 import {
   TScatterChartProps,
@@ -25,12 +26,12 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
     data,
     dataX,
     title,
-    info,
     offset,
     periods,
     handlePeriodFilterChange,
     handleBgColorChange,
   } = props
+  const currencyName = useCurrencyName()
   const downloadRef = useRef(null)
   const [csvData, setCsvData] = useState<string | Data>('')
   const [selectedPeriodButton, setSelectedPeriodButton] = useState(
@@ -85,10 +86,7 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
         .toBlob(eChartRef.ele)
         .then(function (blob: Blob | null) {
           if (blob) {
-            saveAs(
-              blob,
-              makeDownloadFileName(info.currencyName, chartName) + '.png',
-            )
+            saveAs(blob, makeDownloadFileName(currencyName, chartName) + '.png')
           }
         })
         .catch(function (error) {
@@ -193,9 +191,7 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
           </button>
           <CSVLink
             data={csvData}
-            filename={
-              makeDownloadFileName(info.currencyName, chartName) + '.csv'
-            }
+            filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
             headers={csvHeaders[chartName]}
             separator={';'}
             ref={downloadRef}
