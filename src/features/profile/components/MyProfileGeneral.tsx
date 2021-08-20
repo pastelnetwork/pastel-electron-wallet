@@ -235,20 +235,6 @@ const ProfileGeneral = ({
   )
 }
 
-// const locations: Array<TOption> = [
-//   {
-//     label: 'None',
-//     value: 'None',
-//   },
-//   {
-//     label: 'New York, US',
-//     value: 'New York, US',
-//   },
-//   {
-//     label: 'California, US',
-//     value: 'California, US',
-//   },
-// ]
 const languages: Array<TOption> = [
   {
     label: 'English',

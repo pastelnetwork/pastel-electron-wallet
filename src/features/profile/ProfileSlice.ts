@@ -259,7 +259,6 @@ export function fetchLocations(suggested: string): AppThunk {
       dispatch(setLocations(temp))
     } catch (err) {
       log.error('Failed to fetch locations', err.message)
-      throw new Error(`Failed to fetch locations: ${err.message}`)
       dispatch(locationFetchFailed())
     }
   }

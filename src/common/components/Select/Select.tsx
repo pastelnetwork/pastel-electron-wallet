@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import Downshift from 'downshift'
+import Downshift, { ControllerStateAndHelpers } from 'downshift'
 import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
 import { parseFormattedNumber } from 'common/utils/format'
@@ -25,6 +25,10 @@ export type TBaseProps = {
   labelClasses?: string
   icon?: string
   iconClasses?: string
+  autoCompleteContainerClass?: string
+  autoCompleteInputClass?: string
+  inputValueChange?: (param: string) => void
+  fetched?: boolean
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -86,6 +90,10 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
     labelClasses = 'text-gray-71 mr-2 absolute right-2.5',
     icon = '',
     iconClasses = '',
+    autoCompleteInputClass = 'relative',
+    autoCompleteContainerClass = 'h-full w-full rounded pr-7 text-gray-71 font-extrabold focus-visible-border',
+    inputValueChange,
+    fetched = false,
   } = props
 
   const {
@@ -108,7 +116,13 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
       selectedItem={selected}
       onChange={onChange}
       itemToString={item => (item ? item.value : '')}
-      onInputValueChange={onInputValueChange}
+      onInputValueChange={(
+        value: string,
+        options: ControllerStateAndHelpers<TOption>,
+      ) => {
+        onInputValueChange && onInputValueChange(value, options)
+        inputValueChange && inputValueChange(value)
+      }}
     >
       {({
         getItemProps,
@@ -120,15 +134,23 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
         inputValue,
         getInputProps,
       }) => {
-        const value =
-          autocomplete &&
-          inputValue &&
-          parseFormattedNumber(inputValue).toString()
-        const filteredOptions = isOpen
+        const value = fetched
+          ? autocomplete && inputValue && inputValue.toString()
+          : autocomplete &&
+            inputValue &&
+            parseFormattedNumber(inputValue).toString()
+
+        let filteredOptions = isOpen
           ? value
             ? options.filter(option => option.value.startsWith(value))
             : options
           : undefined
+
+        if (fetched) {
+          filteredOptions = isOpen ? options : undefined
+        }
+
+        console.log(`filterOptions ${JSON.stringify(filteredOptions)}`)
 
         return (
           <div
@@ -148,10 +170,10 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
               />
             )}
             {autocomplete && (
-              <div className='relative'>
+              <div className={autoCompleteContainerClass}>
                 <input
                   className={cn(
-                    'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border',
+                    autoCompleteInputClass,
                     icon ? 'pl-9 relative z-10' : 'pl-18px',
                   )}
                   {...getToggleButtonProps()}
@@ -159,7 +181,9 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                   type='text'
                   role='input'
                   value={
-                    append
+                    fetched
+                      ? inputValue
+                      : append
                       ? `${inputValueRef.current}${append}`
                       : `${inputValueRef.current}`
                   }

@@ -6,7 +6,8 @@ import StarRate from '../StarRate'
 import Categories from '../Categories'
 import ProfileGeneralRow from '../ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
-import Select, { TOption } from '../Select/Select'
+// import Select, { TOption } from '../Select/Select'
+import Select, { TOption } from 'common/components/Select/Select'
 
 import NSFWControls from './NSFWControls'
 import { formatPrice } from '../../../../common/utils/format'
@@ -62,10 +63,7 @@ const ProfileGeneral = ({
     value: 'New York',
     label: 'New York',
   })
-  const [language, setLanguage] = useState<TOption | null>({
-    value: 'en',
-    label: 'English',
-  })
+  const [language, setLanguage] = useState<TOption | null>(languages[20])
   const [currentPrice, setCurrentPrice] = useState(0)
   const currencyName = useCurrencyName()
 
@@ -86,8 +84,15 @@ const ProfileGeneral = ({
   }, [nativeCurrency])
 
   const changeLocation = (value: string) => {
+    console.log(value)
     dispatch(fetchLocations(value))
   }
+
+  useEffect(() => {
+    if (location) {
+      dispatch(fetchLocations(location.value))
+    }
+  }, [])
 
   return (
     <div className='flex-grow w-full lg:w-3/5 pr-60px'>
@@ -100,7 +105,10 @@ const ProfileGeneral = ({
               options={locations}
               onChange={setLocation}
               inputValueChange={(value: string) => changeLocation(value)}
-              autocomplete
+              autoCompleteContainerClass='h-full w-full rounded pr-7 text-gray-35 font-normal focus-visible-border'
+              autoCompleteInputClass='relative h-full w-full'
+              autocomplete={true}
+              fetched={true}
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>{location?.label}</div>
