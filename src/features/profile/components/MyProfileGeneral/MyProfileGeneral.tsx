@@ -6,11 +6,11 @@ import StarRate from '../StarRate'
 import Categories from '../Categories'
 import ProfileGeneralRow from '../ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
-import Select, { TOption } from '../Select/Select'
 
 import NSFWControls from './NSFWControls'
-import { formatPrice } from '../../../../common/utils/format'
-import { useCurrencyName } from '../../../../common/hooks/appInfo'
+import { formatPrice } from 'common/utils/format'
+import { useCurrencyName } from 'common/hooks/appInfo'
+import Select, { TOption } from 'common/components/Select'
 
 export type TCurrency =
   | 'EUR'
@@ -92,6 +92,7 @@ const ProfileGeneral = ({
               options={locations}
               onChange={setLocation}
               autocomplete
+              highlight
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>{location?.label}</div>

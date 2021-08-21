@@ -7,9 +7,9 @@ import Categories from './Categories'
 import ProfileGeneralRow from './ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import Select, { TOption } from './Select/Select'
 
 import NumberFormat from 'react-number-format'
+import Select, { TOption } from 'common/components/Select'
 
 export type TCurrency =
   | 'EUR'
@@ -91,6 +91,7 @@ const ProfileGeneral = ({
               options={locations}
               onChange={setLocation}
               autocomplete
+              highlight
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>{location?.label}</div>

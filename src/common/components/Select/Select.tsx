@@ -1,9 +1,12 @@
-import React, { ReactNode } from 'react'
-import Downshift from 'downshift'
+import React, { ReactNode, useState } from 'react'
+import Downshift, { ControllerStateAndHelpers } from 'downshift'
 import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
-import { parseFormattedNumber } from 'common/utils/format'
-import { useSelectOptions } from './select.utils'
+import SelectRange from './SelectRange'
+import { TFormControlProps } from '../Form/FormControl'
+import { FieldValues } from 'react-hook-form'
+import FormSelect from './FormSelect'
+import SelectList from './components/SelectList'
 
 export type TOption = {
   label: string
@@ -13,24 +16,27 @@ export type TOption = {
 export type TBaseProps = {
   placeholder?: string
   className?: string
-  selectClassName?: string
+  customClassName?: string
   label?: ReactNode
   autocomplete?: boolean
   append?: ReactNode
-  prepend?: ReactNode
   labelClasses?: string
   icon?: string
   iconClasses?: string
   disabled?: boolean
+  disabledClassName?: string
+  filterOptions?: (options: TOption[], value: string) => TOption[]
+  highlight?: boolean
+  highlightClassName?: string
 }
 
-export type TOptionsProps = TBaseProps & {
+export type TSelectOptionsProps = TBaseProps & {
   options: TOption[]
   onChange: (option: TOption | null) => void
   selected?: TOption | null
 }
 
-export type TRangeProps = TBaseProps & {
+export type TSelectRangeProps = TBaseProps & {
   min: number
   max: number
   step: number
@@ -38,39 +44,68 @@ export type TRangeProps = TBaseProps & {
   value: number | null
 }
 
-export type TSelectProps = TOptionsProps | TRangeProps
+export type TControlledSelectProps = TSelectOptionsProps | TSelectRangeProps
 
-export default function Select(props: TSelectProps): JSX.Element {
+export type TFormSelectProps<TForm> = TBaseProps &
+  Omit<TFormControlProps<TForm>, 'children'> & {
+    options: TOption[]
+  }
+
+export type TSelectProps<TForm> =
+  | TControlledSelectProps
+  | TFormSelectProps<TForm>
+
+const defaultFilterOptions = (options: TOption[], value: string) => {
+  const lower = value.toLocaleLowerCase()
+  return options.filter(option =>
+    option.label.toLocaleLowerCase().startsWith(lower),
+  )
+}
+
+export default function Select<TForm extends FieldValues>(
+  props: TSelectProps<TForm>,
+): JSX.Element {
+  const [enableFiltering, setEnableFiltering] = useState(false)
+
+  if ('form' in props) {
+    return <FormSelect {...props} />
+  }
+
+  if ('step' in props) {
+    return <SelectRange {...props} />
+  }
+
   const {
+    className,
+    customClassName = 'transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex-center p-0 relative',
     placeholder,
-    selectClassName,
     label,
-    autocomplete = false,
     append,
     labelClasses = 'text-gray-71 mr-2 absolute right-2.5',
     icon = '',
     iconClasses = '',
     disabled = false,
+    disabledClassName,
+    options,
+    onChange,
+    selected,
+    autocomplete,
+    highlight,
+    highlightClassName = 'text-link',
+    filterOptions = defaultFilterOptions,
   } = props
 
-  const {
-    options,
-    selected,
-    onChange,
-    onInputValueChange,
-    inputValueRef,
-  } = useSelectOptions(props)
-
-  let autoCompleteColor: string
-  if ('options' in props) {
-    autoCompleteColor = props.label ? 'text-gray-2d' : 'text-gray-71'
-  } else {
-    autoCompleteColor = 'text-gray-35'
+  const onInputValueChange = (
+    value: string,
+    event: ControllerStateAndHelpers<TOption>,
+  ) => {
+    const { type } = (event as unknown) as { type: string }
+    setEnableFiltering(type === Downshift.stateChangeTypes.changeInput)
   }
 
   return (
     <Downshift
-      selectedItem={selected}
+      selectedItem={selected ?? null}
       onChange={onChange}
       itemToString={item => (item ? item.value : '')}
       onInputValueChange={onInputValueChange}
@@ -82,26 +117,22 @@ export default function Select(props: TSelectProps): JSX.Element {
         isOpen,
         highlightedIndex,
         selectedItem,
-        inputValue,
         getInputProps,
+        inputValue,
       }) => {
-        const value =
-          autocomplete &&
-          inputValue &&
-          parseFormattedNumber(inputValue).toString()
-        const filteredOptions = isOpen
-          ? value
-            ? options.filter(option => option.value.startsWith(value))
+        const filteredOptions =
+          enableFiltering && typeof inputValue === 'string'
+            ? filterOptions(options, inputValue)
             : options
-          : undefined
+
+        const inputProps = autocomplete && getInputProps()
 
         return (
           <div
             className={cn(
-              'transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex-center p-0 relative',
-              disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
-              autoCompleteColor,
-              selectClassName,
+              className,
+              customClassName,
+              disabled && disabledClassName,
             )}
           >
             {icon && (
@@ -113,7 +144,7 @@ export default function Select(props: TSelectProps): JSX.Element {
                 )}
               />
             )}
-            {autocomplete && (
+            {inputProps && (
               <div
                 className={cn(
                   'relative',
@@ -127,14 +158,12 @@ export default function Select(props: TSelectProps): JSX.Element {
                     disabled && 'cursor-not-allowed',
                   )}
                   {...getToggleButtonProps()}
-                  {...getInputProps()}
+                  {...inputProps}
                   type='text'
                   role='input'
                   disabled={disabled}
                   value={
-                    append
-                      ? `${inputValueRef.current}${append}`
-                      : `${inputValueRef.current}`
+                    append ? `${inputProps.value}${append}` : inputProps.value
                   }
                 />
                 {label && <span className={labelClasses}>{label}</span>}
@@ -163,33 +192,18 @@ export default function Select(props: TSelectProps): JSX.Element {
               src={caretDownIcon}
               alt='toggle menu'
             />
-            <ul
-              {...getMenuProps()}
-              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-20'
-              onClick={e => e.stopPropagation()}
-            >
-              {filteredOptions?.map((item, index) => {
-                const highlight =
-                  selectedItem === item || highlightedIndex === index
-
-                return (
-                  <li
-                    {...getItemProps({
-                      key: item.label,
-                      index,
-                      item,
-                    })}
-                    className={cn(
-                      'w-full h-10 flex items-center px-4 text-gray-71 cursor-pointer',
-                      highlight && 'bg-gray-f7',
-                    )}
-                  >
-                    {item.label}
-                    {append}
-                  </li>
-                )
-              })}
-            </ul>
+            <SelectList
+              getMenuProps={getMenuProps}
+              getItemProps={getItemProps}
+              isOpen={isOpen}
+              options={filteredOptions}
+              selectedItem={selectedItem}
+              highlightedIndex={highlightedIndex}
+              highlight={highlight}
+              highlightClassName={highlightClassName}
+              inputValue={inputValue}
+              append={append}
+            />
           </div>
         )
       }}

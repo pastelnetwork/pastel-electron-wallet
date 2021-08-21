@@ -1,12 +1,7 @@
 import React from 'react'
-import Select, { TBaseProps, TOption } from './Select'
-import FormControl, { TFormControlProps } from '../Form/FormControl'
+import Select, { TFormSelectProps, TOption } from './Select'
+import FormControl from '../Form/FormControl'
 import { Controller, FieldValues } from 'react-hook-form'
-
-export type TFormSelectProps<TForm> = TBaseProps &
-  Omit<TFormControlProps<TForm>, 'children'> & {
-    options: TOption[]
-  }
 
 export default function FormSelect<TForm extends FieldValues>(
   props: TFormSelectProps<TForm>,

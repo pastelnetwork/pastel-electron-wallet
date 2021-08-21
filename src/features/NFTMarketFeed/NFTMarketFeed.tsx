@@ -145,11 +145,7 @@ const NFTMarketFeed = (): JSX.Element => {
         <div className='flex justify-between px-27px pb-26px'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
             {filterOptions.map(option => (
-              <Select
-                {...option}
-                key={option.label}
-                selectClassName='bg-white'
-              />
+              <Select {...option} key={option.label} className='bg-white' />
             ))}
           </div>
           <div className='flex'>

@@ -66,7 +66,7 @@ const PageHeader = ({
                       selected={item.selected}
                       onChange={item.onOptionChange}
                       key={item.placeholder}
-                      selectClassName='min-w-118px'
+                      className='min-w-118px'
                     />
                   ))}
                 </div>

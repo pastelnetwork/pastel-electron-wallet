@@ -2,15 +2,14 @@ import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 import { useForm } from 'react-hook-form'
 
-import Select, { TOptionsProps, TRangeProps } from './index'
-import FormSelectComponent from './FormSelect'
+import Select, { TSelectOptionsProps } from './index'
 
 export default {
   title: 'Select',
   component: Select,
 } as Meta
 
-const TemplateOptions: Story<TOptionsProps> = ({ selected, ...args }) => {
+const TemplateOptions: Story<TSelectOptionsProps> = ({ selected, ...args }) => {
   const [selectedItem, setSelected] = useState(selected)
 
   return (
@@ -30,7 +29,7 @@ export const SimpleSelect = TemplateOptions.bind({})
 SimpleSelect.args = {
   options,
   selected: options[0],
-  selectClassName: 'w-220px',
+  className: 'w-220px',
   disabled: false,
 }
 
@@ -39,43 +38,62 @@ WithLabel.args = {
   options,
   selected: options[0],
   label: 'Categories',
-  selectClassName: 'w-220px',
+  className: 'w-220px',
   disabled: false,
 }
 
-// not using ...args because this is causing wrong behaviour by passing options={undefined}
-const TemplateRange: Story<TRangeProps> = ({
-  selectClassName,
-  autocomplete,
-  min,
-  max,
-  step,
-  value,
-}) => {
-  const [selectedValue, setSelectedValue] = useState(value)
+export const SelectWithAutocomplete = TemplateOptions.bind({})
+SelectWithAutocomplete.args = {
+  options,
+  selected: options[0],
+  className: 'w-220px',
+  autocomplete: true,
+}
+
+export const SelectWithAutocompleteHighlight = TemplateOptions.bind({})
+SelectWithAutocompleteHighlight.args = {
+  options,
+  selected: options[0],
+  className: 'w-220px',
+  autocomplete: true,
+  highlight: true,
+  filterOptions(options, value) {
+    const lower = value.toLocaleLowerCase()
+    return options.filter(option =>
+      option.label.toLocaleLowerCase().includes(lower),
+    )
+  },
+}
+
+export const SelectRange = (): JSX.Element => {
+  const [value, setValue] = useState<number | null>(10000)
 
   return (
     <Select
-      value={selectedValue}
-      onChange={setSelectedValue}
-      autocomplete={autocomplete}
-      selectClassName={selectClassName}
-      min={min}
-      max={max}
-      step={step}
+      className='text-gray-35 w-28'
+      min={10000}
+      max={20000}
+      step={100}
+      value={value}
+      onChange={setValue}
     />
   )
 }
 
-export const AutoCompleteNumber = TemplateRange.bind({})
-AutoCompleteNumber.args = {
-  selectClassName: 'w-28',
-  autocomplete: true,
-  min: 10000,
-  max: 20000,
-  step: 100,
-  value: 12345,
-  disabled: false,
+export const SelectRangeWithAutocomplete = (): JSX.Element => {
+  const [value, setValue] = useState<number | null>(10000)
+
+  return (
+    <Select
+      className='w-28'
+      min={10000}
+      max={20000}
+      step={100}
+      value={value}
+      onChange={setValue}
+      autocomplete
+    />
+  )
 }
 
 export const FormSelect = (): JSX.Element => {
@@ -91,11 +109,11 @@ export const FormSelect = (): JSX.Element => {
 
   return (
     <form onSubmit={form.handleSubmit(submit)}>
-      <FormSelectComponent
+      <Select
         form={form}
         name='select'
         options={options}
-        selectClassName='w-[220px]'
+        className='w-[220px]'
       />
       <button className='btn btn-primary mt-4 px-5'>Submit</button>
     </form>
