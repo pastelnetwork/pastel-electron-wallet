@@ -3,6 +3,8 @@ import { Story, Meta } from '@storybook/react'
 import { useForm } from 'react-hook-form'
 
 import Select, { TSelectOptionsProps } from './index'
+import { useSuggestLocations } from 'api/locations'
+import { TOption } from '../SelectMultiple/SelectMultiple'
 
 export default {
   title: 'Select',
@@ -63,6 +65,33 @@ SelectWithAutocompleteHighlight.args = {
       option.label.toLocaleLowerCase().includes(lower),
     )
   },
+}
+
+export const AutocompleteByQuery = (): JSX.Element => {
+  const [query, setQuery] = useState('')
+  const [selectedItem, setSelected] = useState<TOption | null>()
+
+  const { data: locations = [], isLoading } = useSuggestLocations(query, {
+    enabled: query.length > 0,
+  })
+
+  return (
+    <Select
+      debounce={200}
+      onInputChange={setQuery}
+      className='w-[300px]'
+      selected={selectedItem}
+      onChange={setSelected}
+      options={locations.map(location => ({
+        label: location,
+        value: location,
+      }))}
+      isLoading={isLoading}
+      noOptionsText={query.length > 0 && 'Locations not found'}
+      autocomplete
+      highlight
+    />
+  )
 }
 
 export const SelectRange = (): JSX.Element => {

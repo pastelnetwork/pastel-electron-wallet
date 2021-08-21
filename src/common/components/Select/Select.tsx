@@ -7,6 +7,8 @@ import { TFormControlProps } from '../Form/FormControl'
 import { FieldValues } from 'react-hook-form'
 import FormSelect from './FormSelect'
 import SelectList from './components/SelectList'
+import Spinner from '../Spinner'
+import { debounce } from '../../utils/function'
 
 export type TOption = {
   label: string
@@ -28,6 +30,13 @@ export type TBaseProps = {
   filterOptions?: (options: TOption[], value: string) => TOption[]
   highlight?: boolean
   highlightClassName?: string
+  isLoading?: boolean
+  noOptionsText?: ReactNode
+  debounce?: number
+  onInputChange?(
+    value: string,
+    options: ControllerStateAndHelpers<TOption>,
+  ): void
 }
 
 export type TSelectOptionsProps = TBaseProps & {
@@ -55,13 +64,6 @@ export type TSelectProps<TForm> =
   | TControlledSelectProps
   | TFormSelectProps<TForm>
 
-const defaultFilterOptions = (options: TOption[], value: string) => {
-  const lower = value.toLocaleLowerCase()
-  return options.filter(option =>
-    option.label.toLocaleLowerCase().startsWith(lower),
-  )
-}
-
 export default function Select<TForm extends FieldValues>(
   props: TSelectProps<TForm>,
 ): JSX.Element {
@@ -77,7 +79,7 @@ export default function Select<TForm extends FieldValues>(
 
   const {
     className,
-    customClassName = 'transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex-center p-0 relative',
+    customClassName = 'transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex items-center p-0 relative',
     placeholder,
     label,
     append,
@@ -86,14 +88,16 @@ export default function Select<TForm extends FieldValues>(
     iconClasses = '',
     disabled = false,
     disabledClassName,
-    options,
     onChange,
     selected,
     autocomplete,
-    highlight,
-    highlightClassName = 'text-link',
-    filterOptions = defaultFilterOptions,
+    isLoading,
   } = props
+
+  let { onInputChange } = props
+  if (props.debounce && props.onInputChange) {
+    onInputChange = debounce(props.onInputChange, props.debounce)
+  }
 
   const onInputValueChange = (
     value: string,
@@ -101,6 +105,7 @@ export default function Select<TForm extends FieldValues>(
   ) => {
     const { type } = (event as unknown) as { type: string }
     setEnableFiltering(type === Downshift.stateChangeTypes.changeInput)
+    onInputChange?.(value, event)
   }
 
   return (
@@ -120,11 +125,6 @@ export default function Select<TForm extends FieldValues>(
         getInputProps,
         inputValue,
       }) => {
-        const filteredOptions =
-          enableFiltering && typeof inputValue === 'string'
-            ? filterOptions(options, inputValue)
-            : options
-
         const inputProps = autocomplete && getInputProps()
 
         return (
@@ -183,6 +183,9 @@ export default function Select<TForm extends FieldValues>(
                 {selectedItem ? selectedItem.label : placeholder}
               </button>
             )}
+            {isLoading && (
+              <Spinner className='w-5 h-5 absolute right-8 opacity-50' />
+            )}
             <img
               className={cn(
                 'text-gray-b0 ml-2 absolute right-3 transition duration-200 transform',
@@ -193,16 +196,14 @@ export default function Select<TForm extends FieldValues>(
               alt='toggle menu'
             />
             <SelectList
+              {...props}
               getMenuProps={getMenuProps}
               getItemProps={getItemProps}
               isOpen={isOpen}
-              options={filteredOptions}
               selectedItem={selectedItem}
               highlightedIndex={highlightedIndex}
-              highlight={highlight}
-              highlightClassName={highlightClassName}
               inputValue={inputValue}
-              append={append}
+              enableFiltering={enableFiltering}
             />
           </div>
         )
