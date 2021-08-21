@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
+import { useForm } from 'react-hook-form'
 
 import Select, { TOptionsProps, TRangeProps } from './index'
+import FormSelectComponent from './FormSelect'
 
 export default {
   title: 'Select',
@@ -74,4 +76,28 @@ AutoCompleteNumber.args = {
   step: 100,
   value: 12345,
   disabled: false,
+}
+
+export const FormSelect = (): JSX.Element => {
+  const form = useForm({
+    defaultValues: {
+      select: options[0],
+    },
+  })
+
+  const submit = () => {
+    alert(`Submitted: ${JSON.stringify(form.getValues())}`)
+  }
+
+  return (
+    <form onSubmit={form.handleSubmit(submit)}>
+      <FormSelectComponent
+        form={form}
+        name='select'
+        options={options}
+        selectClassName='w-[220px]'
+      />
+      <button className='btn btn-primary mt-4 px-5'>Submit</button>
+    </form>
+  )
 }

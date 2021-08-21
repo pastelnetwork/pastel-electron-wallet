@@ -4,10 +4,6 @@ import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
 import { parseFormattedNumber } from 'common/utils/format'
 import { useSelectOptions } from './select.utils'
-import FormControl, {
-  TFormControlProps,
-} from 'common/components/Form/FormControl'
-import { Controller, FieldValues } from 'react-hook-form'
 
 export type TOption = {
   label: string
@@ -42,42 +38,9 @@ export type TRangeProps = TBaseProps & {
   value: number | null
 }
 
-export type TFormOptionsProps<TForm> = TBaseProps &
-  Omit<TFormControlProps<TForm>, 'children'> & {
-    options: TOption[]
-  }
+export type TSelectProps = TOptionsProps | TRangeProps
 
-export type TSelectProps<TForm> =
-  | TOptionsProps
-  | TFormOptionsProps<TForm>
-  | TRangeProps
-
-export default function Select<TForm extends FieldValues>(
-  props: TSelectProps<TForm>,
-): JSX.Element {
-  if ('form' in props) {
-    return (
-      <FormControl {...props}>
-        <Controller
-          name={props.name}
-          control={props.form.control}
-          render={({ field: { value, onChange } }) => (
-            <SelectInner
-              {...props}
-              label={undefined}
-              selected={value as TOption | null}
-              onChange={onChange}
-            />
-          )}
-        />
-      </FormControl>
-    )
-  }
-
-  return <SelectInner {...props} />
-}
-
-const SelectInner = (props: TOptionsProps | TRangeProps) => {
+export default function Select(props: TSelectProps): JSX.Element {
   const {
     placeholder,
     selectClassName,

@@ -5,7 +5,6 @@ export type {
   TBaseProps,
   TOptionsProps,
   TRangeProps,
-  TFormOptionsProps,
   TSelectProps,
 } from './Select'
 
