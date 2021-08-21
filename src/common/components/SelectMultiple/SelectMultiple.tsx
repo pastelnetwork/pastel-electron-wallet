@@ -15,6 +15,7 @@ type TBaseProps = {
   name: string
   selectClassName?: string
   placeholder?: string
+  disabled?: boolean
 }
 
 export type TControlledProps = TBaseProps & {
@@ -56,6 +57,7 @@ const SelectMultipleInner = ({
   onChange,
   selectClassName,
   placeholder,
+  disabled = false,
 }: TControlledProps) => {
   const [inputValue, setInputValue] = useState('')
 
@@ -132,7 +134,7 @@ const SelectMultipleInner = ({
   const id = `${name}SelectMultiple`
 
   const inputProps = getInputProps(
-    getDropdownProps({ preventKeyAction: isOpen }),
+    getDropdownProps({ preventKeyAction: isOpen, disabled }),
   )
 
   const { onKeyDown } = inputProps
@@ -152,7 +154,8 @@ const SelectMultipleInner = ({
     <label
       htmlFor={id}
       className={cn(
-        'input h-auto block flex items-start p-2 pt-7px pb-px pr-3 relative',
+        'input h-auto flex items-start p-2 pt-7px pb-px pr-3 relative transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f',
+        inputProps.disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
         selectClassName,
       )}
       {...getLabelProps()}
@@ -180,7 +183,7 @@ const SelectMultipleInner = ({
         >
           <input
             id={id}
-            className='absolute inset-0 w-full pl-2'
+            className='absolute inset-0 w-full pl-2 disabled:bg-gray-f6 disabled:cursor-not-allowed'
             placeholder={placeholder}
             {...inputProps}
           />
@@ -189,8 +192,12 @@ const SelectMultipleInner = ({
       <button
         type='button'
         {...getToggleButtonProps()}
-        className='mt-1.5 w-4 h-4 flex-center flex-shrink-0'
+        className={cn(
+          'mt-1.5 w-4 h-4 flex-center flex-shrink-0',
+          disabled && 'cursor-not-allowed',
+        )}
         aria-label='toggle menu'
+        disabled={disabled}
       >
         <Caret size={8} to='bottom' />
       </button>

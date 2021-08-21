@@ -79,7 +79,7 @@ const Profile = (): JSX.Element => {
             <div className='mr-20px font-normal text-sm text-gray-4a text-right'>
               <p className='mb-2px'>Already have a PastelID?</p>
               <p className='mb-0'>
-                Restore your account and PSL addresses from a backup
+                Restore your account and {currencyName} addresses from a backup
               </p>
             </div>
             <div className='w-120px'>

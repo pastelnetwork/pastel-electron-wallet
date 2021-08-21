@@ -1,0 +1,9 @@
+.nftContent {
+  max-height: calc(100vh - 21.875rem);
+}
+
+@media screen and (min-width: 1440px) {
+  .nftContent {
+    max-height: calc(100vh - 17.5rem);
+  }
+}

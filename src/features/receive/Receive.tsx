@@ -182,7 +182,6 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
         </TabPanel>
       </Tabs>
       <PastelPaperWalletModal
-        info={info}
         currentName={
           currentTab === receiveTab.shielded ? 'Shielded' : 'Transparent'
         }

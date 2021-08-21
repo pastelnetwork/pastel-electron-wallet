@@ -77,7 +77,7 @@ export default function Select(props: TSelectProps): JSX.Element {
         return (
           <div
             className={cn(
-              'bg-white text-gray-71 flex-center shadow-2px h-10 rounded relative',
+              'bg-white text-gray-71 flex-center shadow-2px h-10 rounded relative transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f',
               autoCompleteColor,
               className,
             )}

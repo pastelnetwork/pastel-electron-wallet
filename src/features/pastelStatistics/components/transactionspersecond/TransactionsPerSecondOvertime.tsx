@@ -16,18 +16,9 @@ import {
   periods,
 } from '../../common/constants'
 
-type TTransactionsInBlockOvertimeProps = {
-  info: {
-    [key: string]: string | number
-  }
-}
-
 const redrawCycle = 6000
 
-const TransactionsPerSecondOvertime = (
-  props: TTransactionsInBlockOvertimeProps,
-): JSX.Element => {
-  const { info } = props
+const TransactionsPerSecondOvertime = (): JSX.Element => {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -90,7 +81,6 @@ const TransactionsPerSecondOvertime = (
               dataY={transformLineChartData?.dataY}
               dataX={transformLineChartData?.dataX}
               title='Transactions Per Second'
-              info={info}
               offset={0.01}
               periods={periods[1]}
               handleBgColorChange={handleBgColorChange}

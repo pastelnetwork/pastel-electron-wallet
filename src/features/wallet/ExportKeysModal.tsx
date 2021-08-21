@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { TitleModal } from 'common/components/Modal'
 import { InputExportKey } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
+import { useCurrencyName } from 'common/hooks/appInfo'
 import DownloadWhite from 'common/assets/icons/ico-download-white.svg'
 
 import {
@@ -11,7 +12,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer'
-import { ControlRPC, WalletRPC } from '../../api/pastel-rpc'
+import { WalletRPC } from '../../api/pastel-rpc'
 import dayjs from 'dayjs'
 
 type TPDFDocumentProps = {
@@ -45,22 +46,19 @@ const ExportKeysModal = ({
   address,
   handleClose,
 }: ExportKeysModalProps): JSX.Element => {
-  const [currencyName, setCurrencyName] = useState('PSL')
+  const currencyName = useCurrencyName()
   const [publicKey, setPublicKey] = useState('')
   const [privateKey, setPrivateKey] = useState('')
   const [havePDFLink, setHavePDFLink] = useState(false)
 
   useEffect(() => {
     const walletRPC = new WalletRPC()
-    const controlRPC = new ControlRPC()
     const getKeys = async () => {
       setHavePDFLink(false)
-      const info = await controlRPC.fetchInfo()
       const pubKey = await walletRPC.getViewKeyAsString(address)
       const privKey = await walletRPC.getPrivKeyAsString(address)
       setPublicKey(pubKey)
       setPrivateKey(privKey)
-      setCurrencyName(info.currencyName)
       setHavePDFLink(true)
     }
     getKeys()

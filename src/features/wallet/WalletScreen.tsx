@@ -324,7 +324,7 @@ const WalletScreen = (): JSX.Element => {
           </Alert>
         )}
         {walletAddresses.length > 0 && (
-          <div className='bg-white mt-3.5 pt-[30px] rounded-lg mt-[30px] min-w-594px'>
+          <div className='bg-white pt-[30px] rounded-lg mt-[30px] min-w-594px'>
             <div className='h-526px overflow-y-auto mr-4 pr-4 overflow-x-hidden ml-9'>
               {active !== 0 && (
                 <Table
@@ -391,7 +391,7 @@ const WalletScreen = (): JSX.Element => {
                     displayType='text'
                     thousandSeparator={true}
                   />{' '}
-                  PSL
+                  {info.currencyName}
                 </span>
               </div>
             </div>
@@ -399,7 +399,7 @@ const WalletScreen = (): JSX.Element => {
         )}
 
         {walletAddresses.length == 0 && (
-          <div className='min-h-[594px] bg-white rounded-lg mt-3.5 flex items-center min-h-594px justify-center pb-10'>
+          <div className='min-h-[594px] bg-white rounded-lg mt-3.5 flex items-center justify-center pb-10'>
             <div>
               {isLoadingAddresses && (
                 <Spinner className='w-8 h-8 text-blue-3f' />
@@ -440,7 +440,7 @@ const WalletScreen = (): JSX.Element => {
               <div className='flex items-center ml-6 font-medium'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
                 <span className='text-sm ml-11px'>
-                  Generate a new PSL Address
+                  Generate a new {info.currencyName} Address
                 </span>
               </div>
             </Button>

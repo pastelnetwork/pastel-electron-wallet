@@ -11,6 +11,8 @@ export type TTooltipProps = {
   autoWidth?: boolean
   padding?: number
   wrapperClassNames?: string
+  marginLeft?: string
+  marginTop?: string
   vPosPercent?: number
 }
 
@@ -23,6 +25,8 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   autoWidth = false,
   children,
   vPosPercent = 150,
+  marginLeft = '-5px',
+  marginTop = '-5px',
 }) => {
   const styles = {
     top: {
@@ -49,28 +53,28 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       width: '10px',
       top: `calc(${vPosPercent}% - 3px)`,
       left: '50%',
-      marginLeft: '-5px',
+      marginLeft,
       transform: 'rotate(180deg)',
     },
     bottom: {
       width: '10px',
       bottom: `calc(${vPosPercent}% - 3px)`,
       left: '50%',
-      marginLeft: '-5px',
+      marginLeft,
     },
     left: {
       width: '10px',
       left: 'calc(100% + 3px)',
       top: '50%',
       transform: 'rotate(-90deg)',
-      marginTop: '-5px',
+      marginTop,
     },
     right: {
       width: '10px',
       right: 'calc(100% + 3px)',
       top: '50%',
       transform: 'rotate(90deg)',
-      marginTop: '-5px',
+      marginTop,
     },
   }
   let style: CSS.Properties, arrowStyle: CSS.Properties
@@ -90,7 +94,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   return (
     <div className={cn('relative tooltip', wrapperClassNames)}>
       {children}
-      <div className='absolute tooltiparrow invisible' style={arrowStyle}>
+      <div className={'absolute tooltiparrow invisible'} style={arrowStyle}>
         <TooltipArrow size={8} className='text-gray-33' />
       </div>
 

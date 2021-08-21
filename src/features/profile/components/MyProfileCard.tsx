@@ -14,6 +14,7 @@ import ChangeUsernameModal from './ChangeUsernameModal'
 
 import { Clipboard, FacebookIcon, TwitterIcon } from 'common/components/Icons'
 import Toggle from 'common/components/Toggle'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 export type TProfileCard = {
   editMode: boolean
@@ -32,13 +33,14 @@ const ProfileCard = ({
   nativeCurrency,
   onNativeCurrencyChange,
 }: TProfileCard): JSX.Element => {
+  const currencyName = useCurrencyName()
   const data = {
     name: 'Williams Scottish',
     facebook: 'www.facebook.com/dirk_jaison',
     twitter: 'www.twitter.com/@dirk_jaison',
     walletId: '0xc4c16a645a23ffb21a',
     username: '@zndrson',
-    nativeCurrency: editMode ? 'USD' : 'PSL',
+    nativeCurrency: editMode ? 'USD' : currencyName,
   }
 
   const [name, setName] = useState<string>(data.name)
@@ -137,7 +139,7 @@ const ProfileCard = ({
                   selected={activeCurrency}
                   toggleHandler={param => setActiveCurrency(param)}
                 >
-                  Active display currency: PSL
+                  Active display currency: {currencyName}
                 </Toggle>
               </div>
             </div>

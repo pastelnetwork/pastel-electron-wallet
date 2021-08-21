@@ -26,7 +26,7 @@ const PasswordRecovery = (): JSX.Element => {
       <Typography
         variant={TypographyVariant.h1}
         customColor='text-gray-2d'
-        customFontWeight='font-extrabold'
+        className='font-extrabold'
       >
         Password Recovery
       </Typography>

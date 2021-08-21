@@ -35,6 +35,10 @@ export const nativeCurrencyOptions: TOption[] = [
     label: 'IDR',
     value: 'IDR',
   },
+  {
+    label: 'USD',
+    value: 'USD',
+  },
 ]
 
 const Profile = (): JSX.Element => {

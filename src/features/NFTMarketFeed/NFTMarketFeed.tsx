@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import dayjs from 'dayjs'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import NFTCard, { TNFTCard } from 'common/components/NFTCard'
@@ -13,6 +14,8 @@ import {
   mockNamesList,
 } from 'features/members/data'
 
+import styles from './NFTMarketFeed.module.css'
+
 enum Tabs {
   feed,
   statistics,
@@ -25,16 +28,12 @@ const NFTMarketFeed = (): JSX.Element => {
     avatarSrc: mockAvatarImagesList[0],
     imageSrc: mockDataImagesList[0].url,
     likes: 23,
-    onSale: true,
-    price: '222K',
+    price: 12000,
     currencyName,
     title: 'Cosmic Perspective longname test',
-    liked: true,
     followers: 256,
-    isLastBid: false,
     detailUrl: ROUTES.PORTFOLIO_DETAIL,
     nsfw: { porn: 0, hentai: 0 },
-    onSalePrice: Math.floor(Math.random() * 20000),
   }
 
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)
@@ -68,8 +67,6 @@ const NFTMarketFeed = (): JSX.Element => {
 
     return {
       ...mockCardProps,
-      onSale: Boolean(i % 2),
-      isLastBid: Boolean(i % 3),
       nsfw: { porn: nsfw, hentai: nsfw },
       imageSrc: mockDataImagesList[i].url,
       avatarSrc: mockAvatarImagesList[i],
@@ -77,6 +74,11 @@ const NFTMarketFeed = (): JSX.Element => {
       copies: `${i + 1} of 6`,
       diamond: `${Math.floor(Math.random() * 100)}%`,
       title: mockDataImagesList[i].title,
+      leftTime: dayjs().add(3, 'day').valueOf(),
+      copiesAvailable: 15,
+      isAuctionBid: (i + 1) % 2 === 0,
+      isFixedPrice: (i + 1) % 3 === 0 && (i + 1) % 2 !== 0,
+      isNotForSale: (i + 1) % 2 !== 0 && (i + 1) % 3 !== 0,
     }
   })
 
@@ -138,17 +140,23 @@ const NFTMarketFeed = (): JSX.Element => {
     <div className=''>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader title='Market' routes={routes} />
-      <div className='wrapper content with-page-header h-full w-screen py-30px'>
+      <div className='wrapper px-33px py-30px'>
         {/* Filters */}
-        <div className='flex justify-between pb-50px'>
+        <div className='flex justify-between px-27px pb-26px'>
           <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
             {filterOptions.map(option => (
-              <Select {...option} key={option.label} />
+              <Select
+                {...option}
+                key={option.label}
+                selectClassName='bg-white'
+              />
             ))}
           </div>
           <div className='flex'>
             <div className='flex h-full items-center justify-end'>
-              <p className='text-h6 px-22px text-gray-2d'>Price range:</p>
+              <p className='text-base font-medium px-22px text-gray-4a'>
+                Price range:
+              </p>
               <Slider
                 min={0}
                 max={999}
@@ -157,18 +165,19 @@ const NFTMarketFeed = (): JSX.Element => {
                 formatValue={formatValue}
                 formatTooltipValue={formatValue}
                 step={1}
+                hideLabel
               />
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-10 text-gray-1a'>
-          {mockNFTs.map((nft, i) => (
-            <NFTCard
-              {...nft}
-              key={i}
-              className='max-w-[318px] md:max-w-[250]px lg:max-w-[318px] xl:max-w-[364px]'
-            />
-          ))}
+        <div className='w-full'>
+          <div
+            className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
+          >
+            {mockNFTs.map((nft, i) => (
+              <NFTCard {...nft} key={i} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

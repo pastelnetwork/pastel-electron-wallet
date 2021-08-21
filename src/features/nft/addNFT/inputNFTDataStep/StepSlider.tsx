@@ -50,15 +50,13 @@ export default function StepSlider({
               formatTooltipValue={formatTooltipValue}
             />
             {name === 'copies' && (
-              <div className='absolute -right-2 -bottom-1.5' ref={numpadRef}>
+              <div className='absolute -right-4 -bottom-1.5' ref={numpadRef}>
                 <button
                   type='button'
                   onClick={toggleNumpad}
                   className={cn(
                     'w-9 h-9 flex-center rounded-full transition duration-200',
-                    showNumpad
-                      ? 'bg-blue-eb text-blue-3f'
-                      : 'bg-gray-f4 text-gray-8e',
+                    showNumpad ? 'bg-blue-eb text-blue-3f' : 'text-gray-8e',
                   )}
                 >
                   <NumpadIcon size={22} className='relative top-0.5' />

@@ -4,19 +4,17 @@ import { MemoryRouter } from 'react-router-dom'
 
 import avatar from '../../../common/assets/images/avatar-placeholder.png'
 import image from '../../../common/assets/images/nft-card-placeholder.png'
-import NFTCardComponent, { TNFTCard } from './NFTCard'
+import NFTCardComponent, { TNFTCard, NFTCardVariantSize } from './NFTCard'
 
 const mockCardProps: TNFTCard = {
   author: 'zndrson',
   avatarSrc: avatar,
   imageSrc: image,
   likes: 23,
-  liked: true,
-  onSale: true,
-  price: '222K',
+  price: 12000,
   currencyName: 'PSL',
-  title: 'Cosmic Perspective',
-  className: 'w-300px',
+  title: 'Cosmic Perspective Longname',
+  className: 'w-[364px]',
   followers: 0,
   nsfw: { porn: 0, hentai: 0 },
 }
@@ -36,5 +34,25 @@ const Template: Story<TNFTCard> = props => {
   )
 }
 
-export const NFTCard = Template.bind({})
-NFTCard.args = { ...mockCardProps }
+export const PlaceABid = Template.bind({})
+PlaceABid.args = {
+  ...mockCardProps,
+  isAuctionBid: true,
+  leftTime: new Date('Jan 5, 2022 15:37:25').getTime(),
+  variant: NFTCardVariantSize.XL,
+}
+
+export const BuyItNow = Template.bind({})
+BuyItNow.args = {
+  ...mockCardProps,
+  copiesAvailable: 15,
+  isFixedPrice: true,
+  variant: NFTCardVariantSize.XL,
+}
+
+export const MakeAnOffer = Template.bind({})
+MakeAnOffer.args = {
+  ...mockCardProps,
+  isNotForSale: true,
+  variant: NFTCardVariantSize.XL,
+}
