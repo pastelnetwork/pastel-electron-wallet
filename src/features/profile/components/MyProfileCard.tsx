@@ -4,7 +4,6 @@ import cn from 'classnames'
 import LineEdit from './LineEdit'
 import ProfileCardFrame from './ProfileCardFrame'
 import ProfileCardAvatar from './ProfileCardAvatar'
-import Select, { TOption } from './Select/Select'
 import PastelUtils from 'common/utils/utils'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import { Button } from 'common/components/Buttons'
@@ -15,6 +14,7 @@ import ChangeUsernameModal from './ChangeUsernameModal'
 import { Clipboard, FacebookIcon, TwitterIcon } from 'common/components/Icons'
 import Toggle from 'common/components/Toggle'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import Select, { TOption } from 'common/components/Select'
 
 export type TProfileCard = {
   editMode: boolean

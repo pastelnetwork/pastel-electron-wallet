@@ -326,7 +326,7 @@ export default function Portfolio(): JSX.Element {
                     options={sortByOptions.options}
                     selected={sortByOptions.selected}
                     onChange={sortByOptions.onOptionChange}
-                    selectClassName='bg-white min-w-118px'
+                    className='bg-white min-w-118px'
                   />
                 </div>
               </div>

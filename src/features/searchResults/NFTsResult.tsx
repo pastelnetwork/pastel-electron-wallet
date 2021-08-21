@@ -28,28 +28,28 @@ const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
           options={categoriesData}
           selected={categories}
           label='Categories:'
-          selectClassName='bg-white w-[171px] mr-6'
+          className='bg-white w-[171px] mr-6'
           onChange={setCategories}
         />
         <Select
           options={typesData}
           selected={types}
           label='Type:'
-          selectClassName='bg-white w-[171px] mr-6'
+          className='bg-white w-[171px] mr-6'
           onChange={setTypes}
         />
         <Select
           options={timesData}
           selected={times}
           label='Time:'
-          selectClassName='bg-white w-[171px] mr-6'
+          className='bg-white w-[171px] mr-6'
           onChange={setTimes}
         />
         <Select
           options={rarenessesData}
           selected={rareness}
           label='Rareness:'
-          selectClassName='bg-white w-[171px] mr-6'
+          className='bg-white w-[171px] mr-6'
           onChange={setRareness}
         />
       </div>

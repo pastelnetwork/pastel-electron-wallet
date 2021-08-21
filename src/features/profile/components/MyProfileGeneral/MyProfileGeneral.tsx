@@ -6,15 +6,16 @@ import StarRate from '../StarRate'
 import Categories from '../Categories'
 import ProfileGeneralRow from '../ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
-import Select, { TOption } from 'common/components/Select/Select'
 
 import NSFWControls from './NSFWControls'
-import { formatPrice } from '../../../../common/utils/format'
-import { useCurrencyName } from '../../../../common/hooks/appInfo'
-
-import { useAppSelector, useAppDispatch } from '../../../../redux/hooks'
-
-import { fetchLocations } from 'features/profile/ProfileSlice'
+import { formatPrice } from 'common/utils/format'
+import { useCurrencyName } from 'common/hooks/appInfo'
+import Select, { TOption } from 'common/components/Select'
+import {
+  DEFAULT_LANGUAGE,
+  LANGUAGES,
+} from '../../../../common/constants/languages'
+import { useSuggestLocations } from '../../../../api/locations'
 
 export type TCurrency =
   | 'EUR'
@@ -29,7 +30,6 @@ export type TCurrency =
 export type TProfileGeneral = {
   editMode: boolean
   isEmpty: boolean
-
   nativeCurrency: TCurrency
 }
 
@@ -38,10 +38,6 @@ const ProfileGeneral = ({
   isEmpty,
   nativeCurrency,
 }: TProfileGeneral): JSX.Element => {
-  const { locations, languages } = useAppSelector(state => state.pastelProfile)
-
-  const dispatch = useAppDispatch()
-
   const data = {
     location: 'New York, US',
     language: 'English',
@@ -67,13 +63,18 @@ const ProfileGeneral = ({
   const price = 15
   const [categories, setCategories] = useState<Array<string>>(data.categories)
   const [bio, setBio] = useState<string>(data.bio)
-  const [location, setLocation] = useState<TOption | null>({
-    value: 'New York',
-    label: 'New York',
-  })
-  const [language, setLanguage] = useState<TOption | null>(languages[20])
+  const [location, setLocation] = useState<TOption | null>(null)
+  const [language, setLanguage] = useState<TOption | null>(DEFAULT_LANGUAGE)
   const [currentPrice, setCurrentPrice] = useState(0)
   const currencyName = useCurrencyName()
+
+  const [locationsQuery, setLocationsQuery] = useState('')
+  const {
+    data: locations = [],
+    isLoading: isLoadingLocations,
+  } = useSuggestLocations(locationsQuery, {
+    enabled: locationsQuery.length > 0,
+  })
 
   useEffect(() => {
     setBio(isEmpty ? 'None' : data.bio)
@@ -91,17 +92,6 @@ const ProfileGeneral = ({
     getNativeCurrency()
   }, [nativeCurrency])
 
-  const changeLocation = (value: string) => {
-    console.log(value)
-    dispatch(fetchLocations(value))
-  }
-
-  useEffect(() => {
-    if (location) {
-      dispatch(fetchLocations(location.value))
-    }
-  }, [])
-
   return (
     <div className='flex-grow w-full lg:w-3/5 pr-60px'>
       <div className='w-full space-y-4'>
@@ -109,14 +99,18 @@ const ProfileGeneral = ({
           {editMode ? (
             <Select
               className='text-gray-4a flex-grow shadow-4px'
+              onInputChange={setLocationsQuery}
+              debounce={200}
+              noOptionsText='No locations found'
               selected={location}
-              options={locations}
+              options={locations.map(location => ({
+                value: location,
+                label: location,
+              }))}
               onChange={setLocation}
-              inputValueChange={(value: string) => changeLocation(value)}
-              autoCompleteContainerClass='h-full w-full rounded pr-7 text-gray-35 font-normal focus-visible-border'
-              autoCompleteInputClass='relative h-full w-full'
-              autocomplete={true}
-              fetched={true}
+              autocomplete
+              highlight
+              isLoading={isLoadingLocations}
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>{location?.label}</div>
@@ -127,8 +121,10 @@ const ProfileGeneral = ({
             <Select
               className='text-gray-4a flex-grow shadow-4px'
               selected={language}
-              options={languages}
+              options={LANGUAGES}
               onChange={setLanguage}
+              autocomplete
+              highlight
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>English</div>
