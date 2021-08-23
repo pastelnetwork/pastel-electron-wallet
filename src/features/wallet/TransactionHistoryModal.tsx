@@ -289,7 +289,6 @@ const TransactionHistoryModal = ({
     <TitleModal
       isOpen={isOpen}
       handleClose={() => handleClose()}
-      size='7xl'
       title='Transaction history'
       classNames='max-w-7xl'
     >
@@ -297,13 +296,15 @@ const TransactionHistoryModal = ({
         <div className='flex text-gray-71 text-sm'>
           <div className='w-2/3 flex'>
             <div className='w-[264px] pr-6'>
-              <div className='text-gray-71 h6_14_20_medium'>Time range</div>
+              <div className='text-gray-71 text_h6_leading_20_medium'>
+                Time range
+              </div>
               <div className='w-[208px]'>
                 <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
               </div>
             </div>
             <div className='w-[264px] pr-6'>
-              <div className='mb-1 text-gray-71 h6_14_20_medium'>
+              <div className='mb-1 text-gray-71 text_h6_leading_20_medium'>
                 Source address
               </div>
               <div className='w-[208px]'>
@@ -317,7 +318,7 @@ const TransactionHistoryModal = ({
               </div>
             </div>
             <div className='w-[264px] pr-6'>
-              <div className='mb-1 text-gray-71 h6_14_20_medium'>
+              <div className='mb-1 text-gray-71 text_h6_leading_20_medium'>
                 Recipients
               </div>
               <div className='w-[208px]'>
@@ -342,8 +343,8 @@ const TransactionHistoryModal = ({
               <div
                 className={cn(
                   selectedOption === 'all'
-                    ? 'text-gray-4a h5_16_24_heavy'
-                    : 'text-gray-71 h5_16_24_medium',
+                    ? 'text-gray-4a text_h5_heavy'
+                    : 'text-gray-71 text_h5_medium',
                 )}
               >
                 All
@@ -359,8 +360,8 @@ const TransactionHistoryModal = ({
               <div
                 className={cn(
                   selectedOption === 'received'
-                    ? 'text-gray-4a h5_16_24_heavy'
-                    : 'text-gray-71 h5_16_24_medium',
+                    ? 'text-gray-4a text_h5_heavy'
+                    : 'text-gray-71 text_h5_medium',
                 )}
               >
                 Received
@@ -376,8 +377,8 @@ const TransactionHistoryModal = ({
               <div
                 className={
                   selectedOption === 'sent'
-                    ? 'text-gray-4a h5_16_24_heavy'
-                    : 'text-gray-71 h5_16_24_medium'
+                    ? 'text-gray-4a text_h5_heavy'
+                    : 'text-gray-71 text_h5_medium'
                 }
               >
                 Sent

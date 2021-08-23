@@ -33,8 +33,8 @@ const CommentModal = ({ isOpen, onClose }: TCommentModalProps): JSX.Element => {
               <div
                 className={cx(
                   tab === each
-                    ? 'text-gray-33 h6_14_20_heavy'
-                    : 'text-gray-71 h6_14_20_medium',
+                    ? 'text-gray-33 text_h6_leading_20_heavy'
+                    : 'text-gray-71 text_h6_leading_20_medium',
                 )}
               >
                 {each}
@@ -65,7 +65,7 @@ const CommentModal = ({ isOpen, onClose }: TCommentModalProps): JSX.Element => {
       </div>
       <div className='flex justify-end px-7'>
         <div onClick={() => onClose()} className='px-1 pb-4 cursor-pointer'>
-          <div className='text-blue-3f hover:text-blue-600 h6_14_20_roman'>
+          <div className='text-blue-3f hover:text-blue-600 text_h6_leading_20'>
             Save
           </div>
         </div>

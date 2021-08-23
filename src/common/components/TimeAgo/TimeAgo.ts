@@ -1,15 +1,4 @@
-import React from 'react'
-import cn from 'classnames'
-
-export type TTimeAgoProps = {
-  date: number
-  className?: string
-}
-
-export default function TimeAgo({
-  date,
-  className,
-}: TTimeAgoProps): JSX.Element {
+export default function timeAgo(date: number): string {
   const now = new Date().getTime()
   const distance = now - date
   const years = Math.floor(distance / (1000 * 60 * 60 * 24 * 30 * 365))
@@ -21,16 +10,12 @@ export default function TimeAgo({
   const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
 
   if (months > 12) {
-    return <div className={cn(className)}>{years}year(s) ago</div>
+    return `${years}year(s) ago`
   }
 
   if (days > 30) {
-    return <div className={cn(className)}>{months}month(s) ago</div>
+    return `${months}month(s) ago`
   }
 
-  return (
-    <div className={cn(className)}>
-      {days}d {hours}h {minutes}m ago
-    </div>
-  )
+  return `${days}d ${hours}h ${minutes}m ago`
 }

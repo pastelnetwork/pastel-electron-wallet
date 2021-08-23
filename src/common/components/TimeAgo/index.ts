@@ -1,5 +1,3 @@
-import TimeAgo from './TimeAgo'
+import timeAgo from './TimeAgo'
 
-export type { TTimeAgoProps } from './TimeAgo'
-
-export default TimeAgo
+export default timeAgo

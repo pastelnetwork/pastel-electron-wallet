@@ -42,8 +42,8 @@ const PaymentModal = ({
     <TitleModal
       isOpen={isOpen}
       handleClose={handleClose}
-      size='4xl'
       title='Payment'
+      classNames='max-w-4xl'
     >
       <div className='flex'>
         <div className='w-1/3'>
@@ -87,16 +87,16 @@ const PaymentModal = ({
           />
         </div>
         <div className='w-1/3 h-10 flex items-center text-gray-2d'>
-          <div className='text-gray-4a h5_16_24_heavy'>10</div> &nbsp;
-          <div className='text-gray-71 h5_16_24_medium'>{currencyName} fee</div>
+          <div className='text-gray-4a text_h5_heavy'>10</div> &nbsp;
+          <div className='text-gray-71 text_h5_medium'>{currencyName} fee</div>
         </div>
       </div>
-      <div className='pt-6px text-gray-a0 h6_14_20_roman'>
+      <div className='pt-6px text-gray-a0 text_h6_leading_20'>
         {formatNumber(totalBalances - selectedTotal, currencyName)} balance
         remaining after payment
       </div>
       <div>
-        <div className='pt-[23px] flex items-center text-gray-4a h5_16_24_heavy'>
+        <div className='pt-[23px] flex items-center text-gray-4a text_h5_heavy'>
           Address of Recipient
           <div className='ml-9px'>
             <Tooltip
@@ -120,7 +120,7 @@ const PaymentModal = ({
         </div>
       </div>
       <div className='mt-9'>
-        <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a h5_16_24_heavy'>
+        <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a text_h5_heavy'>
           Shielded Payment Source
           <span className='flex items-center ml-9px'>
             <Tooltip
@@ -165,7 +165,7 @@ const PaymentModal = ({
       </div>
       <div className='flex justify-end mt-[21px]'>
         <Button variant='secondary' onClick={handleClose} className='w-[146px]'>
-          <div className='flex items-center px-5 text-blue-3f h5_16_24_medium'>
+          <div className='flex items-center px-5 text-blue-3f text_h5_medium'>
             <span className='text-sm '>Cancel</span>
           </div>
         </Button>
@@ -174,7 +174,7 @@ const PaymentModal = ({
           childrenClassName='w-full'
           onClick={handleClose}
         >
-          <div className='flex items-center px-5 text-white h5_16_24_heavy'>
+          <div className='flex items-center px-5 text-white text_h5_heavy'>
             <img src={checkIcon} className='py-3.5' />
             <span className='ml-[9px]'>
               Confirm {currencyName} {formatNumber(selectedTotal, '')} payment

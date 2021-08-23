@@ -69,9 +69,9 @@ const NewPassword = (): JSX.Element => {
   return (
     <div className='my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <div className='h1_32_40_heavy text-gray-2d'>Set New Password</div>
+      <div className='text_h1_heavy text-gray-2d'>Set New Password</div>
       <div className='mt-1'>
-        <div className='text-text-77 h4_18_24_roman'>
+        <div className='text-text-77 text_h4'>
           Make sure to save your password in a password manager!
         </div>
       </div>

@@ -10,7 +10,6 @@ ReactModal.setAppElement('#root')
 export type TModalProps = {
   isOpen: boolean
   handleClose?: () => void
-  size?: string
   children?: ReactNode
   title?: string
   classNames?: string
@@ -19,16 +18,12 @@ export type TModalProps = {
 const TitleModal = ({
   isOpen,
   handleClose,
-  size,
   children,
   title,
   classNames,
 }: TModalProps): JSX.Element => {
   const modalClasses = cn(
-    {
-      'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full pt-10 pb-30px overflow-auto mx-auto focus:outline-none': true,
-      [`max-w-${size}`]: size,
-    },
+    'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full pt-10 pb-30px overflow-auto mx-auto focus:outline-none',
     classNames,
   )
 
