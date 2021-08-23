@@ -47,7 +47,7 @@ const AddNFTContent = (
   const image = state.image as TImage
   const nftData = state.nftData as TNFTData
 
-  const { selectedFile } = state.optimizationState
+  const { selectedFile } = state.optimizationService
   const displayUrl =
     state.isLossLess || !selectedFile ? image.url : selectedFile.fileUrl
 

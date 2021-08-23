@@ -16,6 +16,7 @@ type TUploadingCircleProps = {
 const circleRadius = 50
 const circleBorderWidth = 3
 
+// Now this is not used
 export default function UploadingCircle({
   file,
   setFile,
@@ -93,7 +94,7 @@ export default function UploadingCircle({
             <UploadFile size={22} className='mb-2' />
           )}
           <div className='text-gray-4a text-lg font-medium mb-px max-w-9/10 px-3 overflow-ellipsis whitespace-nowrap overflow-hidden'>
-            {file?.file.name}
+            {file?.name}
           </div>
           <div className='text-sm'>
             <span ref={displayPercentRef}>{initialPercent}%</span> ready
