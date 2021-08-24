@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import {
-  TImageOptimizationState,
-  useImageOptimizationState,
-} from './imageOptimization/imageOptimization.state'
+  TImageOptimizationService,
+  useImageOptimizationService,
+} from './imageOptimization/ImageOptimization.service'
+import { TImageType } from './AddNft.constants'
 
 export enum Step {
   inputData,
@@ -39,7 +40,9 @@ export type TCrop = {
 export type TImageOrientation = 'portrait' | 'landscape'
 
 export type TImage = {
-  file: File
+  type: TImageType
+  name: string
+  size: number
   url: string
   width: number
   height: number
@@ -54,7 +57,7 @@ export type TAddNFTState = {
   crop?: TCrop
   isLossLess: boolean
   estimatedFee: number | undefined
-  optimizationState: TImageOptimizationState
+  optimizationService: TImageOptimizationService
   setStep(step: Step): void
   setNftData(data: TNFTData): void
   setCrop(crop: TCrop): void
@@ -76,7 +79,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [image, setImage] = useState<TImage>()
   const [isLossLess, setIsLossLess] = useState(true)
   const [estimatedFee, setEstimatedFee] = useState<number>()
-  const optimizationState = useImageOptimizationState()
+  const optimizationService = useImageOptimizationService()
 
   return {
     step,
@@ -91,7 +94,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     setStep,
     setCrop,
     setEstimatedFee,
-    optimizationState,
+    optimizationService,
     setIsLossLess,
     goBack() {
       if (step > firstStep) {

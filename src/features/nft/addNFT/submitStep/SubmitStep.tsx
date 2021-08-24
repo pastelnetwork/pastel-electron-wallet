@@ -143,8 +143,7 @@ export default function SubmitStep({
               <div className='flex text-gray-2d font-extrabold mt-3'>
                 <div className='pl-5 w-36 text-gray-4a'>
                   {formatFileSize(
-                    state.optimizationState.selectedFile?.size ||
-                      image.file.size,
+                    state.optimizationService.selectedFile?.size || image.size,
                   )}
                 </div>
                 <div className='text-gray-4a font-extrabold'>

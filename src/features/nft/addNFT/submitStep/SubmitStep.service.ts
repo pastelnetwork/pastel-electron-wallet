@@ -25,7 +25,7 @@ export const submit = async ({
     const form = new FormData()
     const file = await getImageFile(state, image)
     form.append('file', file)
-    form.append('filename', image.file.name)
+    form.append('filename', image.name)
     const responseUpload = await artworkUploadImage(form)
 
     const regParams: TArtworkTicket = {
@@ -75,14 +75,13 @@ const getImageFile = (
   image: TImage,
 ): Promise<File | Blob> =>
   new Promise((resolve, reject) => {
-    const optimizedFile = state.optimizationState.selectedFile
+    const optimizedFile = state.optimizationService.selectedFile
 
-    if (state.isLossLess || !optimizedFile) {
-      return resolve(image.file)
-    }
+    const url =
+      state.isLossLess || !optimizedFile ? image.url : optimizedFile.fileUrl
 
     const xhr = new XMLHttpRequest()
-    xhr.open('GET', optimizedFile.fileUrl, true)
+    xhr.open('GET', url, true)
     xhr.responseType = 'blob'
 
     xhr.onload = () => {

@@ -1,32 +1,38 @@
-import React, { useState } from 'react'
-import { TAddNFTState } from '../AddNFT.state'
+import React from 'react'
+import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
-import { ArrowSlim, Info } from 'common/components/Icons'
-import UploadingCircle from './UploadingCircle'
+import { ArrowSlim, Info, UploadFile } from 'common/components/Icons'
 import SelectImageArea from './SelectImageArea'
 import { formatFileSize } from 'common/utils/format'
-import { useSubmit } from './SelectImageStep.service'
+import { useSelectImageService } from './SelectImageStep.service'
+import { allowedTypeNames, ImageType } from '../AddNft.constants'
+import ImageShadow from '../common/ImageShadow'
+import Spinner from 'common/components/Spinner'
 import { useCurrencyName } from 'common/hooks/appInfo'
 
-type TSelectStepProps = {
+export type TSelectStepProps = {
   state: TAddNFTState
 }
 
-export type TImageFile = {
-  file: File
-  url: string
-  width: number
-  height: number
+export type TImageFile = TImage & {
+  arrayBuffer: ArrayBuffer
 }
 
 export default function SelectImageStep({
   state,
 }: TSelectStepProps): JSX.Element {
-  const currencyName = useCurrencyName()
-  const [imageFile, setFile] = useState<TImageFile>()
-  const [isReady, setReady] = useState(Boolean(state.image))
+  const service = useSelectImageService(state)
+  const {
+    imageForPreview,
+    selectedFile,
+    error,
+    isProcessing,
+    imageToConvert,
+    isAnimated,
+  } = service
 
-  const submit = useSubmit(state, imageFile)
+  const size = imageForPreview?.size || selectedFile?.size
+  const currencyName = useCurrencyName()
 
   return (
     <ModalLayout
@@ -36,18 +42,41 @@ export default function SelectImageStep({
       step={2}
       fixedHeight
       contentClass='pt-2'
-      leftColumnWidth={320}
+      leftColumnWidth={imageForPreview?.maxWidth || 320}
       leftColumnContent={
-        imageFile || isReady ? (
-          <UploadingCircle
-            file={imageFile}
-            setFile={setFile}
-            isReady={isReady}
-            setReady={setReady}
-          />
-        ) : (
-          <SelectImageArea setFile={setFile} />
-        )
+        <SelectImageArea service={service}>
+          {imageForPreview ? (
+            <div className='relative'>
+              <ImageShadow url={imageForPreview.url} />
+              <img
+                src={imageForPreview.url}
+                style={{ maxWidth: `${imageForPreview.maxWidth}px` }}
+                className='relative z-10 rounded'
+              />
+            </div>
+          ) : (
+            <div className='bg-gray-f4 rounded-md h-full flex-center flex-col text-gray-77 text-xs'>
+              {isProcessing ? (
+                <>
+                  <div className='mb-2'>
+                    <Spinner />
+                  </div>
+                  <div className='text-sm'>Processing file...</div>
+                </>
+              ) : (
+                <>
+                  <UploadFile size={22} className='mb-3' />
+                  <div className='mb-2'>
+                    {allowedTypeNames.join(', ')} Max 100 MB.
+                  </div>
+                  <div className='text-gray-a0'>
+                    Drag or choose your file to select
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+        </SelectImageArea>
       }
       rightColumnClass='w-[355]'
       rightColumnContent={
@@ -59,16 +88,55 @@ export default function SelectImageStep({
             </div>
             <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
               <div className='absolute inset-0 border border-gray-8e opacity-20 rounded font-medium shadow-4px' />
-              {imageFile ? formatFileSize(imageFile.file.size) : 'max 100 mb'}
+              {size ? formatFileSize(size) : 'max 100 mb'}
             </div>
             <div className='text-gray-71 mb-2'>
               Please take into account that image file size affects the
               registration fee.
             </div>
-            <div className='text-gray-71 mb-2'>
+            <div className='text-gray-71 mb-4'>
               For example, 0,5 mb costs 1,000 {currencyName}, 5 mb - 10,000{' '}
               {currencyName}
             </div>
+            {imageToConvert && (
+              <>
+                <div className='mb-3 text-gray-4a space-y-2'>
+                  <div>Sorry! Only jpg or png image files are supported.</div>
+                  {isAnimated && (
+                    <div>
+                      Animations are currently not supported, but image can be
+                      converted to static image.
+                    </div>
+                  )}
+                  <div>Would you like to convert your image?</div>
+                </div>
+                <div className='flex'>
+                  <button
+                    type='button'
+                    className='btn btn-primary px-4 mr-2'
+                    onClick={() =>
+                      service.convertImage(imageToConvert, ImageType.PNG)
+                    }
+                  >
+                    Convert to PNG
+                  </button>
+                  <button
+                    type='button'
+                    className='btn btn-primary px-4'
+                    onClick={() =>
+                      service.convertImage(imageToConvert, ImageType.JPG)
+                    }
+                  >
+                    Convert to JPG
+                  </button>
+                </div>
+              </>
+            )}
+            {error && (
+              <div className='text-red-fe font-medium mt-2 text-md'>
+                {error}
+              </div>
+            )}
           </div>
           <div className='flex-between'>
             <button
@@ -80,8 +148,8 @@ export default function SelectImageStep({
             </button>
             <button
               className='btn btn-primary px-[30px]'
-              onClick={submit}
-              disabled={!isReady}
+              onClick={service.submit}
+              disabled={!imageForPreview}
             >
               Go to Image Optimization
             </button>
