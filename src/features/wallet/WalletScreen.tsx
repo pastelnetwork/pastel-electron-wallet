@@ -8,7 +8,7 @@ import { TAddressRow } from 'types/rpc'
 import { useAppSelector } from 'redux/hooks'
 import { isSapling } from 'api/helpers'
 import { useAddressBook } from 'common/hooks'
-import { parseFormattedNumber } from 'common/utils/format'
+import { parseFormattedNumber, timeAgo } from 'common/utils/format'
 import PastelUtils from 'common/utils/utils'
 import Tooltip from 'common/components/Tooltip'
 import Alert from 'common/components/Alert'
@@ -17,7 +17,6 @@ import { Button } from 'common/components/Buttons'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import Table, { TRow } from 'common/components/Table'
 import Breadcrumbs from 'common/components/Breadcrumbs'
-import timeAgo from 'common/components/TimeAgo'
 import SelectAmount, { TOption } from 'common/components/SelectAmount'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
@@ -80,7 +79,7 @@ const WalletScreen = (): JSX.Element => {
       name: 'Last Activity',
       colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (time: number) => (
-        <div className='mr-3 md:mr-0 text-gray-71 text_h5_medium'>
+        <div className='mr-3 md:mr-0 text-gray-71 text-h5-medium'>
           {time > 0 ? timeAgo(dayjs.unix(time).valueOf()) : '--'}
         </div>
       ),
@@ -113,7 +112,7 @@ const WalletScreen = (): JSX.Element => {
       custom: (value: string | number) => {
         return (
           <div className='flex items-center'>
-            <div className='text-gray-71 text_h5_medium'>private key</div>
+            <div className='text-gray-71 text-h5-medium'>private key</div>
             <span
               onClick={() => {
                 setCurrentAddress(value.toString())
@@ -132,7 +131,7 @@ const WalletScreen = (): JSX.Element => {
       name: 'Balance',
       colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (value: string | number) => (
-        <div className='text-gray-71 text_h5_medium'>
+        <div className='text-gray-71 text-h5-medium'>
           {info?.currencyName}{' '}
           <NumberFormat
             value={value}
@@ -414,7 +413,7 @@ const WalletScreen = (): JSX.Element => {
       />
       <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
         <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
-          <div className='mr-8 text-gray-1a text_h1_heavy'>
+          <div className='mr-8 text-gray-1a text-h1-heavy'>
             {info?.currencyName} Wallet
           </div>
           <MultiToggleSwitch
@@ -434,7 +433,7 @@ const WalletScreen = (): JSX.Element => {
           onClick={() => setTransactionHistoryModalOpen(true)}
         >
           <Clock size={18} className='text-blue-3f' />
-          <div className='ml-3.5 text-blue-3f text_h4_leading_22'>
+          <div className='ml-3.5 text-blue-3f text-h4-leading-22'>
             Transaction history
           </div>
         </div>
@@ -498,7 +497,7 @@ const WalletScreen = (): JSX.Element => {
                     showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
                     extendHeader={
-                      <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text_h5_medium'>
+                      <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
                         Transparent
                       </div>
                     }
@@ -516,7 +515,7 @@ const WalletScreen = (): JSX.Element => {
                     showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
                     extendHeader={
-                      <div className='mb-2.5 mt-7 ml-[30px] sticky top-0 text-gray-2d text_h5_medium'>
+                      <div className='mb-2.5 mt-7 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
                         Shielded
                       </div>
                     }
@@ -528,7 +527,7 @@ const WalletScreen = (): JSX.Element => {
             </div>
 
             <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
-              <div className='flex items-center text_h6_leading_20'>
+              <div className='flex items-center text-h6-leading-20'>
                 <Toggle toggleHandler={hideEmptyAddress}>
                   Hide empty addresses
                   <div className='ml-2'>
@@ -544,8 +543,8 @@ const WalletScreen = (): JSX.Element => {
                 </Toggle>
               </div>
               <div className='flex items-center'>
-                <div className='text-gray-71 text_h4'>Selected total:</div>
-                <div className='ml-3 text-gray-2d text_h3_heavy'>
+                <div className='text-gray-71 text-h4'>Selected total:</div>
+                <div className='ml-3 text-gray-2d text-h3-heavy'>
                   <NumberFormat
                     value={selectedAmount}
                     displayType='text'
@@ -568,7 +567,7 @@ const WalletScreen = (): JSX.Element => {
             {isLoadingAddresses && <Spinner className='w-8 h-8 text-blue-3f' />}
             {!isLoadingAddresses && (
               <div className='text-center'>
-                <div className='mb-3 text-gray-4a text_h5'>
+                <div className='mb-3 text-gray-4a text-h5'>
                   You have no Addresses
                 </div>
                 <Button
@@ -579,7 +578,7 @@ const WalletScreen = (): JSX.Element => {
                 >
                   <div className='flex items-center ml-[19px]'>
                     <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                    <div className='ml-11px text-blue-3f text_h5_medium'>
+                    <div className='ml-11px text-blue-3f text-h5-medium'>
                       Generate a new {info.currencyName} Address
                     </div>
                   </div>
@@ -599,7 +598,7 @@ const WalletScreen = (): JSX.Element => {
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                <div className='ml-11px text-blue-3f text_h5_medium'>
+                <div className='ml-11px text-blue-3f text-h5-medium'>
                   Generate a new {info.currencyName} Address
                 </div>
               </div>
@@ -614,8 +613,8 @@ const WalletScreen = (): JSX.Element => {
             childrenClassName='w-full'
           >
             <div className='flex items-center ml-5'>
-              <div className='text-white text_h4_leading_28_heavy'>+</div>{' '}
-              <div className='ml-2 text-white text_h5_heavy'>
+              <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
+              <div className='ml-2 text-white text-h5-heavy'>
                 Create a payment
               </div>
             </div>

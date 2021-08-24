@@ -296,7 +296,7 @@ const TransactionHistoryModal = ({
         <div className='flex text-gray-71 text-sm'>
           <div className='w-2/3 flex'>
             <div className='w-[264px] pr-6'>
-              <div className='text-gray-71 text_h6_leading_20_medium'>
+              <div className='text-gray-71 text-h6-leading-20-medium'>
                 Time range
               </div>
               <div className='w-[208px]'>
@@ -304,7 +304,7 @@ const TransactionHistoryModal = ({
               </div>
             </div>
             <div className='w-[264px] pr-6'>
-              <div className='mb-1 text-gray-71 text_h6_leading_20_medium'>
+              <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
                 Source address
               </div>
               <div className='w-[208px]'>
@@ -318,7 +318,7 @@ const TransactionHistoryModal = ({
               </div>
             </div>
             <div className='w-[264px] pr-6'>
-              <div className='mb-1 text-gray-71 text_h6_leading_20_medium'>
+              <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
                 Recipients
               </div>
               <div className='w-[208px]'>
@@ -343,8 +343,8 @@ const TransactionHistoryModal = ({
               <div
                 className={cn(
                   selectedOption === 'all'
-                    ? 'text-gray-4a text_h5_heavy'
-                    : 'text-gray-71 text_h5_medium',
+                    ? 'text-gray-4a text-h5-heavy'
+                    : 'text-gray-71 text-h5-medium',
                 )}
               >
                 All
@@ -360,8 +360,8 @@ const TransactionHistoryModal = ({
               <div
                 className={cn(
                   selectedOption === 'received'
-                    ? 'text-gray-4a text_h5_heavy'
-                    : 'text-gray-71 text_h5_medium',
+                    ? 'text-gray-4a text-h5-heavy'
+                    : 'text-gray-71 text-h5-medium',
                 )}
               >
                 Received
@@ -377,8 +377,8 @@ const TransactionHistoryModal = ({
               <div
                 className={
                   selectedOption === 'sent'
-                    ? 'text-gray-4a text_h5_heavy'
-                    : 'text-gray-71 text_h5_medium'
+                    ? 'text-gray-4a text-h5-heavy'
+                    : 'text-gray-71 text-h5-medium'
                 }
               >
                 Sent

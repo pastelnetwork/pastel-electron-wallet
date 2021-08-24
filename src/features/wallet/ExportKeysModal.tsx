@@ -225,7 +225,7 @@ const ExportKeysModal = ({
               />
             )}
             <img src={DownloadWhite} className='py-3.5' />
-            <div className='ml-2 text-white text_h5_heavy'>
+            <div className='ml-2 text-white text-h5-heavy'>
               Download Paper Wallet (PDF)
             </div>
           </div>

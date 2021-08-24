@@ -10,7 +10,7 @@ import { TRow } from 'common/components/Table'
 
 import { Trash, Eye, Pencil } from 'common/components/Icons'
 
-export type IDataType = {
+export type TDataType = {
   walletAddress: TAddressRow
   onSelectedRows: (row: TAddressRow) => void
   onAmountChange: (selection: number | null, row?: TRow) => void
@@ -22,7 +22,7 @@ const PaymentSource = ({
   onSelectedRows,
   onAmountChange,
   onRemoveRow,
-}: IDataType): JSX.Element => {
+}: TDataType): JSX.Element => {
   const [isCommentOpen, setCommentOpen] = useState(false)
 
   return (

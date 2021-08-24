@@ -20,10 +20,10 @@ const PasswordRecovery = (): JSX.Element => {
   return (
     <div className='mx-60px my-11 w-517px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <div className='font-extrabold text-gray-2d text_h1_heavy'>
+      <div className='font-extrabold text-gray-2d text-h1-heavy'>
         Password Recovery
       </div>
-      <div className='text-gray-71 text_h5'>Choose your recovery method</div>
+      <div className='text-gray-71 text-h5'>Choose your recovery method</div>
       <div className='mt-[19px]'>
         <MultiToggleSwitch
           data={[{ label: 'QR-Code' }, { label: 'Crypto Keys' }]}
@@ -60,20 +60,20 @@ const PasswordRecovery = (): JSX.Element => {
           </div>
           <div>
             <div className='mt-6 w-full flex items-center'>
-              <div className='text-gray-71 text_h5'>Public key</div>
+              <div className='text-gray-71 text-h5'>Public key</div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
-              <div className='text-gray-2d text_h5'>
+              <div className='text-gray-2d text-h5'>
                 ps19jxlfdl8mhnsqlf7x0cwlhczn69x9tcev2rawnjp7e9n8ecjms9
               </div>
             </div>
           </div>
           <div>
             <div className='mt-6 w-full flex items-center'>
-              <div className='text-gray-71 text_h5'>Secret key</div>
+              <div className='text-gray-71 text-h5'>Secret key</div>
             </div>
             <div className='flex shadow-2px rounded px-[14px] py-[9px] mt-2.5'>
-              <div className='text-gray-2d text_h5'>
+              <div className='text-gray-2d text-h5'>
                 ps19jxlfdl8mhnsqlf7x0cwlhczn69x9tcev2rawnjp7e9n8ecjms9
               </div>
             </div>

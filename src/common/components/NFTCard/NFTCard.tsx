@@ -119,8 +119,8 @@ const NFTCard = ({
 
   const getTooltip = (title: string, description: string) => (
     <div className='px-2 py-6px text-left'>
-      <div className='text-white text_mini_leading_16_medium'>{title}</div>
-      <div className='mt-1 text-gray-a0 text_mini_leading_16'>
+      <div className='text-white text-mini-leading-16-medium'>{title}</div>
+      <div className='mt-1 text-gray-a0 text-mini-leading-16'>
         {description}
       </div>
     </div>
@@ -147,7 +147,7 @@ const NFTCard = ({
               className={cn(
                 'text-gray-4a',
                 variant === NFTCardVariantSize.M
-                  ? 'text_h6_leading_20'
+                  ? 'text-h6-leading-20'
                   : 'h4_18_24_medium',
               )}
             >
@@ -168,7 +168,7 @@ const NFTCard = ({
             <div className='flex items-center'>
               <HeartFilled size={18} className='text-pink-46' />
               {!fullCardProps.hideFollow && variant !== NFTCardVariantSize.M ? (
-                <div className='text-gray-4a pl-6px text_h6_leading_20'>
+                <div className='text-gray-4a pl-6px text-h6-leading-20'>
                   {followers}
                 </div>
               ) : null}
@@ -209,8 +209,8 @@ const NFTCard = ({
             className={cn(
               'text-gray-1a',
               variant === NFTCardVariantSize.M
-                ? 'text_h5_heavy'
-                : 'text_h4_heavy',
+                ? 'text-h5-heavy'
+                : 'text-h4-heavy',
             )}
           >
             {searchText
@@ -252,8 +252,8 @@ const NFTCard = ({
                 className={cn(
                   'text-gray-71',
                   variant === NFTCardVariantSize.M
-                    ? 'text_h6_leading_20'
-                    : 'text_h5',
+                    ? 'text-h6-leading-20'
+                    : 'text-h5',
                 )}
               >
                 {copies}
@@ -277,8 +277,8 @@ const NFTCard = ({
                 className={cn(
                   'text-gray-71',
                   variant === NFTCardVariantSize.M
-                    ? 'text_h6_leading_20'
-                    : 'text_h5',
+                    ? 'text-h6-leading-20'
+                    : 'text-h5',
                 )}
               >
                 {diamond}
@@ -369,8 +369,8 @@ const NFTCard = ({
                     className={cn(
                       'text-gray-4a',
                       variant === NFTCardVariantSize.M
-                        ? 'text_h6_leading_20_medium'
-                        : 'text_h5_medium',
+                        ? 'text-h6-leading-20-medium'
+                        : 'text-h5-medium',
                     )}
                   >
                     Last Auction Bid
@@ -381,8 +381,8 @@ const NFTCard = ({
                     className={cn(
                       'text-gray-2d',
                       variant === NFTCardVariantSize.M
-                        ? 'text_h6_leading_20_black'
-                        : 'text_h5_heavy',
+                        ? 'text-h6-leading-20-black'
+                        : 'text-h5-heavy',
                     )}
                   >
                     {formatNumber(fullCardProps.price)}{' '}
@@ -412,8 +412,8 @@ const NFTCard = ({
                   className={cn(
                     'nft-text-gradient',
                     variant === NFTCardVariantSize.M
-                      ? 'text_h6_leading_20_heavy'
-                      : 'text_h5_heavy',
+                      ? 'text-h6-leading-20-heavy'
+                      : 'text-h5-heavy',
                   )}
                 >
                   <CountdownTimer countDownDate={leftTime} /> left
@@ -440,8 +440,8 @@ const NFTCard = ({
                     className={cn(
                       'text-gray-4a',
                       variant === NFTCardVariantSize.M
-                        ? 'text_h6_leading_20_medium'
-                        : 'text_h5_medium',
+                        ? 'text-h6-leading-20-medium'
+                        : 'text-h5-medium',
                     )}
                   >
                     Not for sale
@@ -471,8 +471,8 @@ const NFTCard = ({
                   className={cn(
                     'text-gray-4a',
                     variant === NFTCardVariantSize.M
-                      ? 'text_h6_leading_20_medium'
-                      : 'text_h5_medium',
+                      ? 'text-h6-leading-20-medium'
+                      : 'text-h5-medium',
                   )}
                 >
                   Fixed price
@@ -482,8 +482,8 @@ const NFTCard = ({
                     className={cn(
                       'text-gray-2d',
                       variant === NFTCardVariantSize.M
-                        ? 'text_h6_leading_20_black'
-                        : 'text_h5_heavy',
+                        ? 'text-h6-leading-20-black'
+                        : 'text-h5-heavy',
                     )}
                   >
                     {formatNumber(fullCardProps.price)}{' '}
@@ -501,8 +501,8 @@ const NFTCard = ({
                   className={cn(
                     'nft-text-gradient',
                     variant === NFTCardVariantSize.M
-                      ? 'text_h6_leading_20_heavy'
-                      : 'text_h5_heavy',
+                      ? 'text-h6-leading-20-heavy'
+                      : 'text-h5-heavy',
                   )}
                 >
                   {copiesAvailable} Copies Available
