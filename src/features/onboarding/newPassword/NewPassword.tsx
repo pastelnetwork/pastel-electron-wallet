@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom'
 import { InputPassword, Input } from '../../../common/components/Inputs'
 import { Button } from '../../../common/components/Buttons'
 import CloseButton from '../common/closeButton'
-import Typography, {
-  TypographyVariant,
-} from '../../../common/components/Typography/Typography'
 import PasswordStrength, {
   PasswordStrengths,
 } from 'common/components/PasswordStrength/PasswordStrength'
@@ -72,17 +69,11 @@ const NewPassword = (): JSX.Element => {
   return (
     <div className='my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <Typography
-        variant={TypographyVariant.h1}
-        customColor='text-gray-2d'
-        className='font-extrabold'
-      >
-        Set New Password
-      </Typography>
+      <div className='text-h1-heavy text-gray-2d'>Set New Password</div>
       <div className='mt-1'>
-        <Typography customColor='text-text-77'>
+        <div className='text-text-77 text-h4'>
           Make sure to save your password in a password manager!
-        </Typography>
+        </div>
       </div>
       <form
         className='mt-7'

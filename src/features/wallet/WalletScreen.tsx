@@ -1,43 +1,41 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import NumberFormat from 'react-number-format'
+import cn from 'classnames'
+import { ToastContainer } from 'react-toastify'
+
+import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
+import { TAddressRow } from 'types/rpc'
+import { useAppSelector } from 'redux/hooks'
+import { isSapling } from 'api/helpers'
+import { useAddressBook } from 'common/hooks'
+import { parseFormattedNumber, timeAgo } from 'common/utils/format'
+import PastelUtils from 'common/utils/utils'
+import Tooltip from 'common/components/Tooltip'
+import Alert from 'common/components/Alert'
 import Toggle from 'common/components/Toggle'
-import Select from 'common/components/Select/Select'
 import { Button } from 'common/components/Buttons'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import Table, { TRow } from 'common/components/Table'
+import Breadcrumbs from 'common/components/Breadcrumbs'
+import SelectAmount, { TOption } from 'common/components/SelectAmount'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
-import Breadcrumbs from 'common/components/Breadcrumbs'
-import { WalletRPC } from 'api/pastel-rpc'
-import { TAddressRow } from 'types/rpc'
-import QRCode from 'qrcode.react'
-import { useAppSelector } from 'redux/hooks'
-import { RootState } from '../../redux/store'
 import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
-import Alert from 'common/components/Alert'
-import 'react-toastify/dist/ReactToastify.css'
-import { ToastContainer } from 'react-toastify'
-import { isSapling } from 'api/helpers'
-import { useAddressBook } from 'common/hooks'
+import QRCodeModal from './QRCodeModal'
 import BalanceCards from './BalanceCards'
 import {
   ElectricityIcon,
   Clock,
   EliminationIcon,
   FilePDFIcon,
+  QRCode,
 } from 'common/components/Icons'
 import Spinner from '../../common/components/Spinner'
 
-const paymentSources = [
-  {
-    hash: 'ps19jxlfdl8mhnsqlf7x0cwlh...eq0v33',
-  },
-  {
-    hash: 'Michael Francis',
-  },
-]
+import Checkbox from 'common/components/Checkbox/Checkbox'
+import styles from './WalletScreen.module.css'
 
 enum Tab {
   GENERAL,
@@ -45,37 +43,63 @@ enum Tab {
   MYSECURITY,
 }
 
+type TSelectionPslProps = {
+  address: string
+  amount: number
+  valid: boolean
+  date: number
+}
+
 const WalletScreen = (): JSX.Element => {
   const { info } = useAppSelector(state => state.appInfo)
+  const [forceUpdateSelect, setForceUpdateSelect] = useState(false)
+
   const Columns = [
     {
       key: 'address',
-      colClasses: 'lg:w-380px xl:w-428px 1500px:w-478px',
+      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
       name: 'Address name',
-      headerColClasses: '-ml-5',
+      headerColClasses: 'mx-30px',
       custom: (value: string | number, row: TRow | undefined) => (
-        <AddressForm
-          address={value.toString()}
-          currentRow={row}
-          saveAddressLabel={saveAddressLabel}
-        />
+        <div className='flex items-center mx-30px'>
+          <Checkbox
+            isChecked={selectedRows.indexOf(row?.address) !== -1}
+            clickHandler={() => row && setSelectedRowsFunction(row)}
+          />
+          <AddressForm
+            address={value.toString()}
+            currentRow={row}
+            saveAddressLabel={saveAddressLabel}
+          />
+        </div>
       ),
     },
     {
       key: 'time',
       name: 'Last Activity',
-      colClasses: 'w-190px 1500px:w-244px',
-      custom: () => (
-        <div className='mr-3 md:mr-0'>{dayjs(lastFetched).fromNow(true)}</div>
+      colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
+      custom: (time: number) => (
+        <div className='mr-3 md:mr-0 text-gray-71 text-h5-medium'>
+          {time > 0 ? timeAgo(dayjs.unix(time).valueOf()) : '--'}
+        </div>
       ),
     },
     {
       key: 'qrCode',
       name: 'Address QR',
-      colClasses: 'min-w-80px w-132px 1500px:w-244px',
-      custom: (value: string | number) => (
-        <div className='flex'>
-          <QRCode size={50} value={value.toString()} />
+      colClasses:
+        'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
+      custom: (value: string | number, row: TRow | undefined) => (
+        <div className='flex pl-6'>
+          <span
+            className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+            onClick={() => {
+              setCurrentAddress(row?.address)
+              setIsQRCodeModalOpen(true)
+            }}
+          >
+            <QRCode size={20} />
+          </span>
         </div>
       ),
     },
@@ -83,21 +107,20 @@ const WalletScreen = (): JSX.Element => {
     {
       key: 'address',
       name: 'Keys',
-      colClasses: 'min-w-130px w-176px 1500px:w-244px flex-grow-0',
+      colClasses:
+        'min-w-130px w-176px 1500px:w-244px flex-grow-0 text-h6 leading-5 font-normal',
       custom: (value: string | number) => {
         return (
           <div className='flex items-center'>
-            <span>private key</span>
+            <div className='text-gray-71 text-h5-medium'>private key</div>
             <span
               onClick={() => {
                 setCurrentAddress(value.toString())
                 setExportKeysModalOpen(true)
               }}
+              className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
             >
-              <FilePDFIcon
-                size={20}
-                className='text-gray-88 ml-9px cursor-pointer'
-              />
+              <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
             </span>
           </div>
         )
@@ -106,9 +129,9 @@ const WalletScreen = (): JSX.Element => {
     {
       key: 'amount',
       name: 'Balance',
-      colClasses: 'w-131px 1500px:w-244px',
+      colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (value: string | number) => (
-        <div className='text-gray-71 font-medium text-base'>
+        <div className='text-gray-71 text-h5-medium'>
           {info?.currencyName}{' '}
           <NumberFormat
             value={value}
@@ -120,36 +143,38 @@ const WalletScreen = (): JSX.Element => {
     },
     {
       key: 'psl',
-      name: 'Selected Amount',
-      colClasses: 'min-w-130px w-141px 1500px:w-244px',
-      custom: (value: number | string) => (
-        <div className='z-0'>
-          <Select
-            className='text-gray-2d w-28'
-            autocomplete={true}
-            min={100}
-            max={totalBalances?.total || 20000}
-            step={100}
-            value={typeof value === 'string' ? parseInt(value) : value}
-            onChange={async () => {
-              // TODO: Implement later
-              // const amount = +(value || 0)
-              // const address = row?.address?.toString() || ''
-              // sendPsl(amount, address)
-            }}
-          />
-        </div>
-      ),
+      name: '',
+      colClasses: 'min-w-[120px] w-[120px]',
+      custom: (value: number | string, row?: TRow) => {
+        const psl = selectionPsl.filter(psl => psl?.address === row?.address)[0]
+        return (
+          <div className='z-0'>
+            <SelectAmount
+              className='text-gray-2d w-28 bg-white'
+              min={0}
+              max={parseFloat(value.toString())}
+              step={PastelUtils.generateStep(parseInt(value.toString()))}
+              defaultValue={{
+                label: psl?.amount || row?.amount,
+                value: psl?.amount || row?.amount,
+              }}
+              forceUpdate={forceUpdateSelect}
+              onChange={(selection: TOption) => {
+                const selectedValue = parseFormattedNumber(selection.value)
+                handleAmountChange(selectedValue, row)
+              }}
+            />
+          </div>
+        )
+      },
     },
   ]
 
-  const { lastFetched } = useAppSelector<RootState['pastelPrice']>(
-    ({ pastelPrice }) => pastelPrice,
-  )
-
   const walletRPC = new WalletRPC()
+  const transactionRPC = new TransactionRPC()
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [selectionPsl, setSelectionPsl] = useState<TSelectionPslProps[]>([])
 
   const [
     isTransactionHistoryModalOpen,
@@ -157,8 +182,9 @@ const WalletScreen = (): JSX.Element => {
   ] = useState(false)
 
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
+  const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
   const [currentAddress, setCurrentAddress] = useState('')
-  const [active, setActive] = useState(1)
+  const [active, setActive] = useState(0)
   const [tabActive, setTabActive] = useState<number>(Tab.GENERAL)
 
   const [selectedAmount, setSelectedAmount] = useState(0)
@@ -183,8 +209,26 @@ const WalletScreen = (): JSX.Element => {
     zAddresses,
   ])
 
+  const {
+    data: zListAddresses = [],
+    isLoading: isAddressesLoading,
+  } = walletRPC.useZAddresses()
+
+  const {
+    data: addressesByAccount = [],
+    isLoading: isAddressesByAccountLoading,
+  } = walletRPC.useAddressesByAccount()
+
+  const allAddresses = useMemo(
+    () => [...addressesByAccount, ...zListAddresses],
+    [zListAddresses, addressesByAccount],
+  )
+
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(
-    isTAddressesLoading || isZAddressesLoading,
+    isTAddressesLoading ||
+      isZAddressesLoading ||
+      isAddressesLoading ||
+      isAddressesByAccountLoading,
   )
 
   const [walletOriginAddresses, setWalletOriginAddresses] = useState<
@@ -197,17 +241,26 @@ const WalletScreen = (): JSX.Element => {
       return
     }
 
+    fetchWalletAddresses()
+  }, [addresses, allAddresses])
+
+  const fetchWalletAddresses = async () => {
+    const transactions = await transactionRPC.fetchTandZTransactions()
     const addressRows = addresses.map(a => {
       const address = a.address.toString()
       const type = isSapling(address) ? 'shielded' : 'transparent'
       const [book] = addressBook.filter(b => b.address === address) || []
+      const lastActivity = transactions.filter(
+        transaction => transaction.address === address,
+      )[0]
+
       return {
         id: address,
         address: address,
         amount: a.balance,
-        psl: info.pslPrice || 0,
+        psl: info.pslPrice || a.balance,
         type: type,
-        time: '',
+        time: lastActivity?.time,
         qrCode: '',
         viewKey: '',
         privateKey: '',
@@ -215,10 +268,30 @@ const WalletScreen = (): JSX.Element => {
       } as TAddressRow
     })
 
+    allAddresses.map(address => {
+      const existAddress = addresses.filter(add => add.address === address)
+      if (existAddress.length < 1) {
+        const type = isSapling(address) ? 'shielded' : 'transparent'
+        const [book] = addressBook.filter(b => b.address === address) || []
+        addressRows.push({
+          id: address,
+          address: address,
+          amount: 0,
+          psl: 0,
+          type: type,
+          time: 0,
+          qrCode: '',
+          viewKey: '',
+          privateKey: '',
+          addressNick: book ? book.label : '',
+        })
+      }
+    })
+
     setWalletOriginAddresses(addressRows)
     setWalletAddresses(addressRows)
     setIsLoadingAddresses(false)
-  }, [addresses])
+  }
 
   const saveAddressLabel = (address: string, label: string): void => {
     // Update address nick
@@ -236,14 +309,19 @@ const WalletScreen = (): JSX.Element => {
     walletAddresses.forEach(item => {
       for (let i = 0; i < selectedRows.length; i++) {
         if (selectedRows[i] === item.address) {
-          if (item.amount) {
+          const psl = selectionPsl.filter(
+            psl => psl.address === item.address,
+          )[0]
+          if (psl?.amount && psl?.valid) {
+            tempSelectedAmount += psl.amount
+          } else if (item.amount) {
             tempSelectedAmount += item.amount
           }
         }
       }
     })
     setSelectedAmount(tempSelectedAmount)
-  }, [selectedRows, walletAddresses])
+  }, [selectedRows, walletAddresses, selectionPsl])
 
   const setSelectedRowsFunction = (row: TRow) => {
     if (row) {
@@ -267,6 +345,59 @@ const WalletScreen = (): JSX.Element => {
     }
   }
 
+  const getPaymentSources = () => {
+    let tempWalletAddresses: TAddressRow[] = []
+    if (selectedRows.length > 0) {
+      tempWalletAddresses = walletAddresses.filter(wallet => {
+        if (selectedRows.indexOf(wallet.address) !== -1) {
+          const psl = selectionPsl.filter(
+            psl => psl?.address === wallet.address,
+          )[0]
+
+          const newWallet = Object.assign(wallet)
+          newWallet.psl = psl?.amount || wallet.amount
+          return newWallet
+        }
+
+        return null
+      })
+    }
+
+    return tempWalletAddresses
+  }
+
+  const handleAmountChange = (selection: number | null, row?: TRow) => {
+    if (selection && row) {
+      const tmpSelectionPsl = selectionPsl
+      const selectionPslIndex = tmpSelectionPsl.findIndex(
+        psl => psl.address === row.address,
+      )
+      if (selectionPslIndex !== -1) {
+        tmpSelectionPsl[selectionPslIndex].amount = selection
+        tmpSelectionPsl[selectionPslIndex].valid = selection <= row?.amount
+        tmpSelectionPsl[selectionPslIndex].date = dayjs().valueOf()
+        setSelectionPsl([...tmpSelectionPsl])
+      } else {
+        setSelectionPsl([
+          ...tmpSelectionPsl,
+          {
+            address: row.address,
+            amount: selection,
+            valid: selection <= row?.amount,
+            date: dayjs().valueOf(),
+          },
+        ])
+      }
+    }
+  }
+
+  const handleCreateNewAddress = async () => {
+    const result = await walletRPC.createNewAddress(active === 2)
+    if (result) {
+      await fetchWalletAddresses()
+    }
+  }
+
   return (
     <div>
       <Breadcrumbs
@@ -282,7 +413,9 @@ const WalletScreen = (): JSX.Element => {
       />
       <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
         <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
-          <div className='mr-8'>{info?.currencyName} Wallet</div>
+          <div className='mr-8 text-gray-1a text-h1-heavy'>
+            {info?.currencyName} Wallet
+          </div>
           <MultiToggleSwitch
             data={[
               { label: 'Week', count: 1122 },
@@ -300,11 +433,13 @@ const WalletScreen = (): JSX.Element => {
           onClick={() => setTransactionHistoryModalOpen(true)}
         >
           <Clock size={18} className='text-blue-3f' />
-          <span className='text-blue-3f ml-3.5'>Transaction history</span>
+          <div className='ml-3.5 text-blue-3f text-h4-leading-22'>
+            Transaction history
+          </div>
         </div>
       </div>
 
-      <div className='bg-gray-f8 pt-5 sm:px-10 md:px-60px'>
+      <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
         <BalanceCards
           totalBalances={totalBalances}
           activeTab={active}
@@ -323,9 +458,15 @@ const WalletScreen = (): JSX.Element => {
             </span>
           </Alert>
         )}
+
         {walletAddresses.length > 0 && (
           <div className='bg-white pt-[30px] rounded-lg mt-[30px] min-w-594px'>
-            <div className='h-526px overflow-y-auto mr-4 pr-4 overflow-x-hidden ml-9'>
+            <div
+              className={cn(
+                'overflow-y-auto mr-4 pr-4 overflow-x-hidden ml-9',
+                styles.walletContent,
+              )}
+            >
               {active !== 0 && (
                 <Table
                   data={
@@ -337,96 +478,113 @@ const WalletScreen = (): JSX.Element => {
                   }
                   columns={Columns}
                   headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                  bodyTrClasses='h-76px border-b border-line text-sm 1200px:text-base'
-                  showCheckbox={true}
+                  bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
+                  bodyTdClasses='text-h5 leading-6 font-medium'
+                  showCheckbox={false}
                   selectedRow={setSelectedRowsFunction}
                 />
               )}
               {active == 0 && (
                 <div>
-                  <div className='text-gray-2d text-base font-medium mb-2.5 ml-[30px]'>
-                    Transparent
-                  </div>
                   <Table
                     data={walletAddresses.filter(
                       item => item.type === 'transparent',
                     )}
                     columns={Columns}
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line text-sm 1200px:text-base'
-                    showCheckbox={true}
+                    bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
+                    bodyTdClasses='text-h5 leading-6 font-medium'
+                    showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
+                    extendHeader={
+                      <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
+                        Transparent
+                      </div>
+                    }
+                    extendHeaderClassName='h-6 top-[-1px]'
+                    stickyTopClassName='top-[23px]'
                   />
-                  <div className='text-gray-2d text-base font-medium mb-2.5 mt-7 ml-[30px]'>
-                    Shielded
-                  </div>
                   <Table
                     data={walletAddresses.filter(
                       item => item.type === 'shielded',
                     )}
                     columns={Columns}
                     headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line text-sm 1200px:text-base'
-                    showCheckbox={true}
+                    bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
+                    bodyTdClasses='text-h5 leading-6 font-medium'
+                    showCheckbox={false}
                     selectedRow={setSelectedRowsFunction}
+                    extendHeader={
+                      <div className='mb-2.5 mt-7 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
+                        Shielded
+                      </div>
+                    }
+                    extendHeaderClassName='h-6 top-[-30px]'
+                    stickyTopClassName='top-[23px]'
                   />
                 </div>
               )}
             </div>
 
             <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
-              <div className='flex items-center'>
+              <div className='flex items-center text-h6-leading-20'>
                 <Toggle toggleHandler={hideEmptyAddress}>
                   Hide empty addresses
-                  <EliminationIcon className='ml-2 text-gray-8e' size={20} />
+                  <div className='ml-2'>
+                    <Tooltip
+                      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                      content='Hide empty addresses'
+                      width={150}
+                      type='top'
+                    >
+                      <EliminationIcon className='text-gray-8e' size={20} />
+                    </Tooltip>
+                  </div>
                 </Toggle>
               </div>
               <div className='flex items-center'>
-                <span className='text-gray-71 text-lg font-normal'>
-                  Selected total:
-                </span>
-                <span className='text-gray-2d font-extrabold text-h3 ml-3'>
+                <div className='text-gray-71 text-h4'>Selected total:</div>
+                <div className='ml-3 text-gray-2d text-h3-heavy'>
                   <NumberFormat
                     value={selectedAmount}
                     displayType='text'
                     thousandSeparator={true}
                   />{' '}
                   {info.currencyName}
-                </span>
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {walletAddresses.length == 0 && (
-          <div className='min-h-[594px] bg-white rounded-lg mt-3.5 flex items-center justify-center pb-10'>
-            <div>
-              {isLoadingAddresses && (
-                <Spinner className='w-8 h-8 text-blue-3f' />
-              )}
-              {!isLoadingAddresses && (
-                <>
-                  <div className='font-normal text-gray-4a text-base text-center mb-3.5'>
-                    You have no Addresses
-                  </div>
-                  <Button
-                    variant='secondary'
-                    className='w-247px px-0'
-                    childrenClassName='w-full'
-                  >
-                    <div className='flex items-center ml-6 font-medium'>
-                      <ElectricityIcon
-                        size={11}
-                        className='text-blue-3f py-3'
-                      />
-                      <span className='text-sm ml-11px'>
-                        Generate a new PSL Address
-                      </span>
+          <div
+            className={cn(
+              'bg-white rounded-lg mt-3.5 flex items-center justify-center pb-10',
+              styles.walletEmptyContent,
+            )}
+          >
+            {isLoadingAddresses && <Spinner className='w-8 h-8 text-blue-3f' />}
+            {!isLoadingAddresses && (
+              <div className='text-center'>
+                <div className='mb-3 text-gray-4a text-h5'>
+                  You have no Addresses
+                </div>
+                <Button
+                  variant='secondary'
+                  className='w-[264px] px-0 mt-3'
+                  childrenClassName='w-full'
+                  onClick={handleCreateNewAddress}
+                >
+                  <div className='flex items-center ml-[19px]'>
+                    <ElectricityIcon size={11} className='text-blue-3f py-3' />
+                    <div className='ml-11px text-blue-3f text-h5-medium'>
+                      Generate a new {info.currencyName} Address
                     </div>
-                  </Button>
-                </>
-              )}
-            </div>
+                  </div>
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
@@ -434,35 +592,48 @@ const WalletScreen = (): JSX.Element => {
           {walletAddresses.length > 0 && (
             <Button
               variant='secondary'
-              className='w-247px px-0'
+              className='w-[264px] px-0'
               childrenClassName='w-full'
+              onClick={handleCreateNewAddress}
             >
-              <div className='flex items-center ml-6 font-medium'>
+              <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                <span className='text-sm ml-11px'>
+                <div className='ml-11px text-blue-3f text-h5-medium'>
                   Generate a new {info.currencyName} Address
-                </span>
+                </div>
               </div>
             </Button>
           )}
           <Button
-            onClick={() => setPaymentModalOpen(true)}
-            className='ml-11px w-174px px-0'
+            onClick={() => {
+              setPaymentModalOpen(true)
+              setForceUpdateSelect(false)
+            }}
+            className='ml-30px w-[190px] px-0'
             childrenClassName='w-full'
           >
-            <div className='flex items-center ml-5 font-medium'>
-              <span className='text-lg'>+</span>{' '}
-              <span className='text-sm ml-2'>Create a payment</span>
+            <div className='flex items-center ml-5'>
+              <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
+              <div className='ml-2 text-white text-h5-heavy'>
+                Create a payment
+              </div>
             </div>
           </Button>
         </div>
       </div>
+
       <PaymentModal
-        paymentSources={paymentSources}
+        paymentSources={getPaymentSources()}
         isOpen={isPaymentModalOpen}
         handleClose={() => {
           setPaymentModalOpen(false)
+          setForceUpdateSelect(true)
         }}
+        totalBalances={totalBalances?.total || 0}
+        onRemoveRow={setSelectedRowsFunction}
+        onAmountChange={handleAmountChange}
+        selectedTotal={selectedAmount}
+        onSelectedRows={setSelectedRowsFunction}
       />
       <TransactionHistoryModal
         isOpen={isTransactionHistoryModalOpen}
@@ -477,6 +648,11 @@ const WalletScreen = (): JSX.Element => {
         className='flex flex-grow w-auto'
         hideProgressBar={true}
         autoClose={false}
+      />
+      <QRCodeModal
+        isOpen={isQRCodeModalOpen}
+        address={currentAddress}
+        handleClose={() => setIsQRCodeModalOpen(false)}
       />
     </div>
   )

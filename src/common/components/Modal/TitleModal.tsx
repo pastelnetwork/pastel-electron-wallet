@@ -3,29 +3,29 @@ import ReactModal from 'react-modal'
 import cn from 'classnames'
 import './Modal.css'
 // Components
-import { ButtonClose } from '../../../common/components/Buttons'
+import { CloseButton } from '../../../common/components/Buttons'
 
 ReactModal.setAppElement('#root')
 
 export type TModalProps = {
   isOpen: boolean
   handleClose?: () => void
-  size?: string
   children?: ReactNode
   title?: string
+  classNames?: string
 }
 
 const TitleModal = ({
   isOpen,
   handleClose,
-  size,
   children,
   title,
+  classNames,
 }: TModalProps): JSX.Element => {
-  const modalClasses = cn({
-    'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
-    [`max-w-${size}`]: size,
-  })
+  const modalClasses = cn(
+    'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full pt-10 pb-30px overflow-auto mx-auto focus:outline-none',
+    classNames,
+  )
 
   return (
     <ReactModal
@@ -37,7 +37,10 @@ const TitleModal = ({
     >
       <div className='flex justify-between items-center px-10 pb-6'>
         <div className='text-h2 leading-none font-bold'>{title}</div>
-        <ButtonClose onClick={handleClose} />
+        <CloseButton
+          onClick={handleClose}
+          className='absolute top-6 right-[26px]'
+        />
       </div>
       <div className='pl-10 pr-18px'>{children}</div>
     </ReactModal>

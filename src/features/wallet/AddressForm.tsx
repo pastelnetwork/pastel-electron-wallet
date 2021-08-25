@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import Tooltip from 'common/components/Tooltip'
 import { TRow } from 'features/nft/nftModals/table'
@@ -9,8 +10,8 @@ import {
   Clipboard,
   CheckIcon,
   Pencil,
-  X,
   SaveIcon,
+  Close,
 } from 'common/components/Icons'
 
 type TAddressFormProps = {
@@ -19,6 +20,7 @@ type TAddressFormProps = {
   saveAddressLabel: (address: string, label: string) => void
   copyable?: boolean
   hidable?: boolean
+  className?: string
 }
 
 export const AddressForm = ({
@@ -27,6 +29,7 @@ export const AddressForm = ({
   saveAddressLabel,
   copyable = true,
   hidable = false,
+  className,
 }: TAddressFormProps): JSX.Element => {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
@@ -44,7 +47,7 @@ export const AddressForm = ({
   }
 
   return (
-    <div className='flex xl:ml-21px items-center mr-2 md:mr-0'>
+    <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
       {edit === address ? (
         <>
           <input
@@ -52,17 +55,17 @@ export const AddressForm = ({
             onChange={e => {
               setEditName(e.target.value)
             }}
-            className='w-220px md:w-262px h-10 border border-link text-sm font-medium rounded px-4'
+            className='w-220px md:w-[312px] h-10 border border-link text-sm font-medium rounded px-4'
           />
         </>
       ) : !!currentRow && currentRow.addressNick.toString() ? (
-        <div className='w-220px md:w-262px'>
+        <div className='w-220px md:w-[312px]'>
           <Tooltip
             autoWidth={true}
             type='top'
             width={211}
             padding={5}
-            content={formatAddress(currentRow.address.toString())}
+            content={formatAddress(currentRow.address.toString(), 24)}
             classnames='py-2 text-gray-a0'
           >
             <span className='text-blue-3f cursor-pointer'>
@@ -71,25 +74,27 @@ export const AddressForm = ({
           </Tooltip>
         </div>
       ) : (
-        <span className='w-220px md:w-262px text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden'>
-          {address}
+        <span className='w-220px md:w-[312px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden'>
+          {formatAddress(address, 24)}
         </span>
       )}
       {edit === address ? (
         <>
-          <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
+          <div className='w-5 h-5 flex items-center ml-3 xl:ml-25px'>
             <button
               type='button'
+              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
               onClick={() => {
                 setEdit(null)
               }}
             >
-              <X className='cursor-pointer' size={20} />
+              <Close size={16} />
             </button>
           </div>
-          <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
+          <div className='w-5 h-5 flex items-center ml-3 xl:ml-22px'>
             <button
               type='button'
+              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
               onClick={() => {
                 saveAddressLabel(edit, editName)
                 setEdit(null)
@@ -104,12 +109,18 @@ export const AddressForm = ({
           {copyable && (
             <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
               {copyStatus ? (
-                <span onClick={() => copyAddress(address)}>
-                  <CheckIcon className='text-green-45' size={20} />
+                <span
+                  onClick={() => copyAddress(address)}
+                  className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                >
+                  <CheckIcon className='text-green-45' size={14} />
                 </span>
               ) : (
-                <span onClick={() => copyAddress(address)}>
-                  <Clipboard className='cursor-pointer' size={20} />
+                <span
+                  onClick={() => copyAddress(address)}
+                  className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                >
+                  <Clipboard className='cursor-pointer' size={14} />
                 </span>
               )}
             </div>
@@ -122,13 +133,16 @@ export const AddressForm = ({
                   setEdit(currentRow.address.toString())
                 }
               }}
+              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
             >
-              <Pencil strokeWidth={0.2} className='cursor-pointer' size={20} />
+              <Pencil strokeWidth={0.2} className='cursor-pointer' size={16} />
             </span>
           </div>
           {hidable && (
-            <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-              <img className='cursor-pointer' src={passEyeIcon} />
+            <div className='flex items-center ml-13px'>
+              <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+                <img className='cursor-pointer' src={passEyeIcon} />
+              </span>
             </div>
           )}
         </>

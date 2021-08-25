@@ -78,8 +78,13 @@ export default function BalanceCards({
         return (
           <div
             key={index}
-            onClick={() => setActiveTab(index)}
-            className='relative cursor-pointer'
+            onClick={() => {
+              setActiveTab(index)
+            }}
+            className={cn(
+              'relative cursor-pointer w-1/3',
+              index < balanceCards.length - 1 && 'mr-17px',
+            )}
           >
             <div className='absolute top-15px right-15px'>
               {card.style.info ? (
@@ -89,23 +94,26 @@ export default function BalanceCards({
                   width={108}
                   type='top'
                 >
-                  <EliminationIcon size={20} className='text-gray-8e' />
+                  <EliminationIcon
+                    size={20}
+                    className='text-gray-8e hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+                  />
                 </Tooltip>
               ) : null}
             </div>
             <div
               className={cn(
-                'font-extrabold flex sm:w-64 md:w-72 lg:w-335px xl:w-427px h-124px border-gray-e7 border rounded-lg',
+                'font-extrabold flex h-124px border-gray-e7 border rounded-lg',
                 isActive && 'bg-white',
               )}
             >
               <div className='pl-4 md:pl-4 lg:pl-4 xl:pl-39px flex items-center'>
                 {isActive ? card.activeIcon : card.inactiveIcon}
               </div>
-              <div className='pt-36px pl-2 md:pl-3 lg:pl-[43px]'>
+              <div className='pl-42px'>
                 <div
                   className={cn(
-                    'sm:text-xl md:text-2xl leading-6 pt-9',
+                    'pt-9 text-h2-heavy',
                     index === activeTab ? 'text-gray-2d' : 'text-gray-71',
                   )}
                 >
@@ -118,7 +126,7 @@ export default function BalanceCards({
                 {card.style.type === 'total_balance' ? (
                   <div
                     className={cn(
-                      'font-medium text-sm mt-2',
+                      'mt-2 text-h6-leading-20-medium',
                       isActive ? 'text-gray-71' : 'text-gray-a0',
                     )}
                   >
@@ -127,7 +135,7 @@ export default function BalanceCards({
                 ) : card.style.type === 'transparent' ? (
                   <div
                     className={cn(
-                      'font-medium text-sm mt-2',
+                      'mt-2 text-h6-leading-20-medium',
                       isActive ? 'text-gray-71' : 'text-gray-a0',
                     )}
                   >
@@ -136,7 +144,7 @@ export default function BalanceCards({
                 ) : (
                   <div
                     className={cn(
-                      'font-medium text-sm mt-2',
+                      'mt-2 text-h6-leading-20-medium',
                       isActive ? 'text-gray-71' : 'text-gray-a0',
                     )}
                   >

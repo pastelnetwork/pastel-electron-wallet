@@ -26,6 +26,8 @@ export type TBaseProps = {
   icon?: string
   iconClasses?: string
   disabled?: boolean
+  inputClassName?: string
+  autoCompleteClassName?: string
 }
 
 export type TOptionsProps = TBaseProps & {
@@ -88,6 +90,9 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
     icon = '',
     iconClasses = '',
     disabled = false,
+    className,
+    inputClassName,
+    autoCompleteClassName,
   } = props
 
   const {
@@ -139,6 +144,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
               disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
               autoCompleteColor,
               selectClassName,
+              className,
             )}
           >
             {icon && (
@@ -155,6 +161,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 className={cn(
                   'relative',
                   disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
+                  autoCompleteClassName,
                 )}
               >
                 <input
@@ -162,6 +169,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                     'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
                     icon ? 'pl-9 relative z-10' : 'pl-18px',
                     disabled && 'cursor-not-allowed',
+                    inputClassName,
                   )}
                   {...getToggleButtonProps()}
                   {...getInputProps()}
@@ -180,7 +188,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
             {!autocomplete && (
               <button
                 className={cn(
-                  'w-full h-full flex items-center whitespace-nowrap pr-7 focus-visible-border',
+                  'w-full h-full flex items-center pr-7 focus-visible-border',
                   icon ? 'pl-9 relative z-10' : 'pl-3.5',
                   disabled && 'cursor-not-allowed',
                 )}
@@ -188,7 +196,9 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}
-                {selectedItem ? selectedItem.label : placeholder}
+                <span className='truncate max-w-[86%]'>
+                  {selectedItem ? selectedItem.label : placeholder}
+                </span>
               </button>
             )}
             <img
@@ -202,7 +212,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
             />
             <ul
               {...getMenuProps()}
-              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-20'
+              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium overflow-y-auto z-100 max-h-[200px]'
               onClick={e => e.stopPropagation()}
             >
               {filteredOptions?.map((item, index) => {
@@ -216,6 +226,7 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                       index,
                       item,
                     })}
+                    key={index}
                     className={cn(
                       'w-full h-10 flex items-center px-4 text-gray-71 cursor-pointer',
                       highlight && 'bg-gray-f7',

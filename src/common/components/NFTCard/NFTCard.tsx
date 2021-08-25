@@ -6,7 +6,6 @@ import parse from 'html-react-parser'
 import Tooltip from 'common/components/Tooltip'
 import { Button } from 'common/components/Buttons'
 import CountdownTimer from 'common/components/CountdownTimer'
-import Typography, { TypographyVariant } from 'common/components/Typography'
 
 import { formatNumber } from 'common/utils/format'
 import {
@@ -120,19 +119,10 @@ const NFTCard = ({
 
   const getTooltip = (title: string, description: string) => (
     <div className='px-2 py-6px text-left'>
-      <Typography
-        variant={TypographyVariant.text_12_16_medium}
-        customColor='text-white'
-      >
-        {title}
-      </Typography>
-      <Typography
-        variant={TypographyVariant.text_12_16_roman}
-        customColor='text-gray-a0'
-        className='mt-1'
-      >
+      <div className='text-white text-mini-leading-16-medium'>{title}</div>
+      <div className='mt-1 text-gray-a0 text-mini-leading-16'>
         {description}
-      </Typography>
+      </div>
     </div>
   )
 
@@ -153,13 +143,13 @@ const NFTCard = ({
               src={fullCardProps.avatarSrc}
               className={cn('rounded-full', imageClassName, avatarClassName)}
             />
-            <Typography
-              variant={
+            <div
+              className={cn(
+                'text-gray-4a',
                 variant === NFTCardVariantSize.M
-                  ? TypographyVariant.h6_14_20_roman
-                  : TypographyVariant.h4_18_24_medium
-              }
-              customColor='text-gray-4a'
+                  ? 'text-h6-leading-20'
+                  : 'h4_18_24_medium',
+              )}
             >
               <div
                 dangerouslySetInnerHTML={{
@@ -172,18 +162,15 @@ const NFTCard = ({
                     : `@${fullCardProps.author}`,
                 }}
               />
-            </Typography>
+            </div>
           </div>
           {!fullCardProps.hideLikeButton ? (
             <div className='flex items-center'>
               <HeartFilled size={18} className='text-pink-46' />
               {!fullCardProps.hideFollow && variant !== NFTCardVariantSize.M ? (
-                <Typography
-                  variant={TypographyVariant.h6_14_20_roman}
-                  customColor='text-gray-4a pl-6px'
-                >
+                <div className='text-gray-4a pl-6px text-h6-leading-20'>
                   {followers}
-                </Typography>
+                </div>
               ) : null}
             </div>
           ) : null}
@@ -218,13 +205,13 @@ const NFTCard = ({
       </div>
       <div className={cn(contentSpacing, normalSpacingClassName)}>
         <Link to={detailUrl} className='cursor-pointer w-full'>
-          <Typography
-            variant={
+          <div
+            className={cn(
+              'text-gray-1a',
               variant === NFTCardVariantSize.M
-                ? TypographyVariant.h5_16_24_heavy
-                : TypographyVariant.h4_18_24_heavy
-            }
-            customColor='text-gray-1a'
+                ? 'text-h5-heavy'
+                : 'text-h4-heavy',
+            )}
           >
             {searchText
               ? parse(
@@ -235,7 +222,7 @@ const NFTCard = ({
                   ),
                 )
               : title}
-          </Typography>
+          </div>
         </Link>
       </div>
       <div
@@ -261,16 +248,16 @@ const NFTCard = ({
                 size={variant === NFTCardVariantSize.M ? 12 : 14}
                 className='cursor-pointer mr-1 text-gray-71'
               />
-              <Typography
-                variant={
+              <div
+                className={cn(
+                  'text-gray-71',
                   variant === NFTCardVariantSize.M
-                    ? TypographyVariant.h6_14_20_roman
-                    : TypographyVariant.h5_16_24_roman
-                }
-                customColor='text-gray-71'
+                    ? 'text-h6-leading-20'
+                    : 'text-h5',
+                )}
               >
                 {copies}
-              </Typography>
+              </div>
             </div>
           </Tooltip>
           <Tooltip
@@ -286,16 +273,16 @@ const NFTCard = ({
                 size={variant === NFTCardVariantSize.M ? 12 : 14}
                 className='cursor-pointer mr-1 text-gray-71'
               />
-              <Typography
-                variant={
+              <div
+                className={cn(
+                  'text-gray-71',
                   variant === NFTCardVariantSize.M
-                    ? TypographyVariant.h6_14_20_roman
-                    : TypographyVariant.h5_16_24_roman
-                }
-                customColor='text-gray-71'
+                    ? 'text-h6-leading-20'
+                    : 'text-h5',
+                )}
               >
                 {diamond}
-              </Typography>
+              </div>
             </div>
           </Tooltip>
         </div>
@@ -378,40 +365,40 @@ const NFTCard = ({
             <>
               <div className='flex justify-between'>
                 <div>
-                  <Typography
-                    variant={
+                  <div
+                    className={cn(
+                      'text-gray-4a',
                       variant === NFTCardVariantSize.M
-                        ? TypographyVariant.h6_14_20_medium
-                        : TypographyVariant.h5_16_24_medium
-                    }
-                    customColor='text-gray-4a'
+                        ? 'text-h6-leading-20-medium'
+                        : 'text-h5-medium',
+                    )}
                   >
                     Last Auction Bid
-                  </Typography>
+                  </div>
                 </div>
                 <div className='flex items-center'>
-                  <Typography
-                    variant={
+                  <div
+                    className={cn(
+                      'text-gray-2d',
                       variant === NFTCardVariantSize.M
-                        ? TypographyVariant.h6_14_20_black
-                        : TypographyVariant.h5_16_24_heavy
-                    }
-                    customColor='text-gray-2d'
+                        ? 'text-h6-leading-20-black'
+                        : 'text-h5-heavy',
+                    )}
                   >
                     {formatNumber(fullCardProps.price)}{' '}
                     {fullCardProps.currencyName}
-                  </Typography>
+                  </div>
                   {bidPercentage && (
-                    <Typography
-                      variant={
+                    <div
+                      className={cn(
+                        'text-green-00',
                         variant === NFTCardVariantSize.M
-                          ? TypographyVariant.text_6_6_bold
-                          : TypographyVariant.text_8_6_bold
-                      }
-                      customColor='text-green-00'
+                          ? 'text-[6px] leading-[6px] font-bold'
+                          : 'text-[8px] leading-[6px] font-bold',
+                      )}
                     >
                       {bidPercentage}
-                    </Typography>
+                    </div>
                   )}
                 </div>
               </div>
@@ -421,16 +408,16 @@ const NFTCard = ({
                   buttonFooterWrapper,
                 )}
               >
-                <Typography
-                  variant={
+                <div
+                  className={cn(
+                    'nft-text-gradient',
                     variant === NFTCardVariantSize.M
-                      ? TypographyVariant.h6_14_20_heavy
-                      : TypographyVariant.h5_16_24_heavy
-                  }
-                  customColor='nft-text-gradient'
+                      ? 'text-h6-leading-20-heavy'
+                      : 'text-h5-heavy',
+                  )}
                 >
                   <CountdownTimer countDownDate={leftTime} /> left
-                </Typography>
+                </div>
                 <div>
                   <Button
                     variant='transparent'
@@ -449,16 +436,16 @@ const NFTCard = ({
             <>
               <div className='flex justify-between'>
                 <div>
-                  <Typography
-                    variant={
+                  <div
+                    className={cn(
+                      'text-gray-4a',
                       variant === NFTCardVariantSize.M
-                        ? TypographyVariant.h6_14_20_medium
-                        : TypographyVariant.h5_16_24_medium
-                    }
-                    customColor='text-gray-4a'
+                        ? 'text-h6-leading-20-medium'
+                        : 'text-h5-medium',
+                    )}
                   >
                     Not for sale
-                  </Typography>
+                  </div>
                 </div>
               </div>
               <div className={cn('flex justify-between', buttonFooterWrapper)}>
@@ -480,28 +467,28 @@ const NFTCard = ({
           {fullCardProps.isFixedPrice ? (
             <>
               <div className='flex justify-between'>
-                <Typography
-                  variant={
+                <div
+                  className={cn(
+                    'text-gray-4a',
                     variant === NFTCardVariantSize.M
-                      ? TypographyVariant.h6_14_20_medium
-                      : TypographyVariant.h5_16_24_medium
-                  }
-                  customColor='text-gray-4a'
+                      ? 'text-h6-leading-20-medium'
+                      : 'text-h5-medium',
+                  )}
                 >
                   Fixed price
-                </Typography>
+                </div>
                 <div>
-                  <Typography
-                    variant={
+                  <div
+                    className={cn(
+                      'text-gray-2d',
                       variant === NFTCardVariantSize.M
-                        ? TypographyVariant.h6_14_20_black
-                        : TypographyVariant.h5_16_24_heavy
-                    }
-                    customColor='text-gray-2d'
+                        ? 'text-h6-leading-20-black'
+                        : 'text-h5-heavy',
+                    )}
                   >
                     {formatNumber(fullCardProps.price)}{' '}
                     {fullCardProps.currencyName}
-                  </Typography>
+                  </div>
                 </div>
               </div>
               <div
@@ -510,16 +497,16 @@ const NFTCard = ({
                   buttonFooterWrapper,
                 )}
               >
-                <Typography
-                  variant={
+                <div
+                  className={cn(
+                    'nft-text-gradient',
                     variant === NFTCardVariantSize.M
-                      ? TypographyVariant.h6_14_20_heavy
-                      : TypographyVariant.h5_16_24_heavy
-                  }
-                  customColor='nft-text-gradient'
+                      ? 'text-h6-leading-20-heavy'
+                      : 'text-h5-heavy',
+                  )}
                 >
                   {copiesAvailable} Copies Available
-                </Typography>
+                </div>
                 <div>
                   <Button
                     variant='transparent'
