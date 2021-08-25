@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import Tooltip from 'common/components/Tooltip'
 import { CloseButton } from 'common/components/Buttons'
-
+import PastelPromoCode from 'common/utils/PastelPromoCode'
 import {
   Download,
   CreditCard,
@@ -73,7 +73,10 @@ const RegisterContent = (): JSX.Element => {
     }
   }
 
-  const onLastStepPassed = () => {
+  const onLastStepPassed = async () => {
+    if (state.pastelPromoCode) {
+      PastelPromoCode.importPastelPromoCode(state.pastelPromoCode)
+    }
     history.push(ROUTES.REGISTER_PENDING)
   }
 

@@ -34,6 +34,10 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
       name: 'Airdrop “Promo Code”',
       method: PaymentMethods.AirdropPromoCode,
     },
+    {
+      name: 'Pastel “Promo Code”',
+      method: PaymentMethods.PastelPromoCode,
+    },
   ]
 
   const onChangePayMethod = (method: PaymentMethods, state: boolean) => {

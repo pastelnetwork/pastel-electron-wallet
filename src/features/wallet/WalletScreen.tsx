@@ -33,6 +33,7 @@ import {
   QRCode,
 } from 'common/components/Icons'
 import Spinner from '../../common/components/Spinner'
+import PastelPromoCode from 'common/utils/PastelPromoCode'
 
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import styles from './WalletScreen.module.css'
@@ -170,6 +171,98 @@ const WalletScreen = (): JSX.Element => {
     },
   ]
 
+  const PromoCodeColumns = [
+    {
+      key: 'address',
+      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
+      name: 'Address name',
+      headerColClasses: 'mx-30px',
+      custom: (value: string | number, row: TRow | undefined) => (
+        <div className='flex items-center mx-30px'>
+          <AddressForm
+            address={value.toString()}
+            currentRow={row}
+            saveAddressLabel={saveAddressLabel}
+            hideEditButton
+          />
+        </div>
+      ),
+    },
+    {
+      key: 'time',
+      name: 'Last Activity',
+      colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
+      custom: (time: number) => (
+        <div className='mr-3 md:mr-0 text-gray-71 text-h5-medium'>
+          {time > 0 ? timeAgo(dayjs.unix(time).valueOf()) : '--'}
+        </div>
+      ),
+    },
+    {
+      key: 'qrCode',
+      name: 'Address QR',
+      colClasses:
+        'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
+      custom: (value: string | number, row: TRow | undefined) => (
+        <div className='flex pl-6'>
+          <span
+            className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+            onClick={() => {
+              setCurrentAddress(row?.address)
+              setIsQRCodeModalOpen(true)
+            }}
+          >
+            <QRCode size={20} />
+          </span>
+        </div>
+      ),
+    },
+
+    {
+      key: 'address',
+      name: 'Keys',
+      colClasses:
+        'min-w-130px w-176px 1500px:w-244px flex-grow-0 text-h6 leading-5 font-normal',
+      custom: (value: string | number) => {
+        return (
+          <div className='flex items-center'>
+            <div className='text-gray-71 text-h5-medium'>private key</div>
+            <span
+              onClick={() => {
+                setCurrentAddress(value.toString())
+                setExportKeysModalOpen(true)
+              }}
+              className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+            >
+              <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
+            </span>
+          </div>
+        )
+      },
+    },
+    {
+      key: 'amount',
+      name: 'Balance',
+      colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
+      custom: (value: string | number) => (
+        <div className='text-gray-71 text-h5-medium'>
+          {info?.currencyName}{' '}
+          <NumberFormat
+            value={value}
+            displayType='text'
+            thousandSeparator={true}
+          />
+        </div>
+      ),
+    },
+    {
+      key: 'psl',
+      name: '',
+      colClasses: 'min-w-[120px] w-[120px]',
+      custom: () => <div className='z-0'></div>,
+    },
+  ]
+
   const walletRPC = new WalletRPC()
   const transactionRPC = new TransactionRPC()
 
@@ -181,6 +274,7 @@ const WalletScreen = (): JSX.Element => {
     setTransactionHistoryModalOpen,
   ] = useState(false)
 
+  const [pastelPromoCode, setPastelPromoCode] = useState<TAddressRow[]>([])
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
   const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
   const [currentAddress, setCurrentAddress] = useState('')
@@ -237,6 +331,30 @@ const WalletScreen = (): JSX.Element => {
   const [walletAddresses, setWalletAddresses] = useState<TAddressRow[]>([])
 
   useEffect(() => {
+    const getPastelPromoCode = async () => {
+      const promoCodeList = await PastelPromoCode.readPastelPromoCode()
+      const tmp: TAddressRow[] = []
+      promoCodeList.map(promoCode => {
+        tmp.push({
+          address: promoCode.address,
+          addressNick: promoCode.label,
+          amount: 0,
+          id: promoCode.address,
+          privateKey: promoCode.privateKey,
+          psl: 0,
+          qrCode: '',
+          time: undefined,
+          type: 'promoCode',
+          viewKey: '',
+        })
+      })
+      setPastelPromoCode(tmp)
+    }
+
+    getPastelPromoCode()
+  }, [])
+
+  useEffect(() => {
     if (!addresses) {
       return
     }
@@ -245,6 +363,7 @@ const WalletScreen = (): JSX.Element => {
   }, [addresses, allAddresses])
 
   const fetchWalletAddresses = async () => {
+    const promoCodeList = await PastelPromoCode.readPastelPromoCode()
     const transactions = await transactionRPC.fetchTandZTransactions()
     const addressRows = addresses.map(a => {
       const address = a.address.toString()
@@ -288,8 +407,26 @@ const WalletScreen = (): JSX.Element => {
       }
     })
 
-    setWalletOriginAddresses(addressRows)
-    setWalletAddresses(addressRows)
+    const tmpAddressRows: TAddressRow[] = []
+    const tmpPastelPromoCode: TAddressRow[] = []
+    addressRows.map(row => {
+      const existAddress = promoCodeList.filter(
+        add => add.address === row.address,
+      )
+      if (existAddress.length < 1) {
+        tmpAddressRows.push(row)
+      } else {
+        tmpPastelPromoCode.push({
+          ...row,
+          addressNick: existAddress[0].label,
+          type: 'promoCode',
+        })
+      }
+    })
+
+    setPastelPromoCode(tmpPastelPromoCode)
+    setWalletOriginAddresses(tmpAddressRows)
+    setWalletAddresses(tmpAddressRows)
     setIsLoadingAddresses(false)
   }
 
@@ -486,6 +623,23 @@ const WalletScreen = (): JSX.Element => {
               )}
               {active == 0 && (
                 <div>
+                  {pastelPromoCode.length > 0 ? (
+                    <Table
+                      data={pastelPromoCode}
+                      columns={PromoCodeColumns}
+                      headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
+                      bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
+                      bodyTdClasses='text-h5 leading-6 font-medium'
+                      showCheckbox={false}
+                      extendHeader={
+                        <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
+                          Pastel Promo Code
+                        </div>
+                      }
+                      extendHeaderClassName='h-6 top-[-1px]'
+                      stickyTopClassName='top-[23px]'
+                    />
+                  ) : null}
                   <Table
                     data={walletAddresses.filter(
                       item => item.type === 'transparent',

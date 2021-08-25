@@ -11,6 +11,8 @@ import {
   TZListUnspentResponse,
   TZListUnspent,
   TCreateAddressResponse,
+  TPrivKeyResponse,
+  TZPrivKeyResponse,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -303,6 +305,41 @@ export class WalletRPC {
         return res.result
       } catch (err) {
         return null
+      }
+    }
+  }
+
+  async importPrivKey(key: string, rescan: boolean): Promise<string> {
+    if (key.startsWith('p-secret-extended-key')) {
+      try {
+        const { result } = await rpc<TZPrivKeyResponse>('z_importkey', [
+          key,
+          rescan ? 'yes' : 'no',
+        ])
+        return result.address
+      } catch (err) {
+        return ''
+      }
+    } else if (key.startsWith('zxview')) {
+      try {
+        const { result } = await rpc<TZPrivKeyResponse>('z_importviewingkey', [
+          key,
+          rescan ? 'yes' : 'no',
+        ])
+        return result.address
+      } catch (err) {
+        return ''
+      }
+    } else {
+      try {
+        const { result } = await rpc<TPrivKeyResponse>('importprivkey', [
+          key,
+          'imported',
+          rescan,
+        ])
+        return result
+      } catch (err) {
+        return ''
       }
     }
   }
