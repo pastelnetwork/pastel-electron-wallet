@@ -65,6 +65,21 @@ export default class PastelUtils {
     return new RegExp('^[tP][a-zA-Z0-9]{34}$').test(addr)
   }
 
+  static isValidSaplingPrivateKey(key: string): boolean {
+    return (
+      new RegExp('^p-secret-extended-key-test[0-9a-z]{278}$').test(key) ||
+      new RegExp('^p-secret-extended-key-main[0-9a-z]{278}$').test(key)
+    )
+  }
+
+  static isValidPrivateKey(key: string): boolean {
+    if (key.startsWith('p-secret-extended-key')) {
+      return this.isValidSaplingPrivateKey(key)
+    }
+
+    return key.length === 52
+  }
+
   static generateStep = (value: number): number => {
     if (value >= 10000) {
       return 10000

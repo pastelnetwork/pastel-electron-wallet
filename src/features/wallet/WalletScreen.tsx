@@ -25,6 +25,7 @@ import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
 import QRCodeModal from './QRCodeModal'
 import BalanceCards from './BalanceCards'
+import AddPastelPromoCodeModal from './AddPastelPromoCodeModal'
 import {
   ElectricityIcon,
   Clock,
@@ -267,6 +268,10 @@ const WalletScreen = (): JSX.Element => {
   const transactionRPC = new TransactionRPC()
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [
+    isAddPastelPromoCodeModalOpen,
+    setAddPastelPromoCodeModalOpen,
+  ] = useState(false)
   const [selectionPsl, setSelectionPsl] = useState<TSelectionPslProps[]>([])
 
   const [
@@ -743,10 +748,22 @@ const WalletScreen = (): JSX.Element => {
         )}
 
         <div className='flex justify-end mt-5 pb-[30px]'>
+          <Button
+            onClick={() => setAddPastelPromoCodeModalOpen(true)}
+            className='w-[264px] px-0'
+            childrenClassName='w-full'
+          >
+            <div className='flex items-center ml-5'>
+              <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
+              <div className='ml-2 text-white text-h5-heavy'>
+                Add Pastel Promo Code
+              </div>
+            </div>
+          </Button>
           {walletAddresses.length > 0 && (
             <Button
               variant='secondary'
-              className='w-[264px] px-0'
+              className='ml-30px w-[264px] px-0'
               childrenClassName='w-full'
               onClick={handleCreateNewAddress}
             >
@@ -807,6 +824,10 @@ const WalletScreen = (): JSX.Element => {
         isOpen={isQRCodeModalOpen}
         address={currentAddress}
         handleClose={() => setIsQRCodeModalOpen(false)}
+      />
+      <AddPastelPromoCodeModal
+        isOpen={isAddPastelPromoCodeModalOpen}
+        handleClose={() => setAddPastelPromoCodeModalOpen(false)}
       />
     </div>
   )

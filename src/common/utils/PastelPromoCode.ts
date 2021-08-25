@@ -82,8 +82,9 @@ export default class PastelPromoCode {
           })
           PastelPromoCode.writePastelPromoCode(newPromoCode)
         }
+        return true
       }
-      return true
+      return false
     } catch {
       return false
     }

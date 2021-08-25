@@ -8,6 +8,8 @@ import Link from 'common/components/Link'
 import styles from './Register.module.css'
 import { Clipboard } from 'common/components/Icons'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import PastelUtils from 'common/utils/utils'
+import PastelPromoCode from 'common/utils/PastelPromoCode'
 
 export type TStepFeeProps = {
   paymentMethod: PaymentMethods
@@ -27,6 +29,12 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
   const currencyName = useCurrencyName()
   const [copying, setCopying] = useState<boolean>(false)
   const [copied, setCopied] = useState<boolean>(false)
+  const [
+    showPromoCodeCongratulations,
+    setShowPromoCodeCongratulations,
+  ] = useState<boolean>(false)
+  const [isValidPrivateKey, setValidPrivateKey] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
 
   // maybe it would be better to load this list from somewhere
   const centralizedExs: TCentralizedExchangeEntity[] = [
@@ -58,6 +66,34 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
 
     navigator.clipboard.writeText(props.exchangeAddress)
     setCopied(true)
+  }
+
+  const handleNextClick = async (type: string) => {
+    setMessage('')
+    if (type === 'apply') {
+      if (PastelUtils.isValidPrivateKey(props.pastelPromoCode)) {
+        setValidPrivateKey(true)
+        setMessage('')
+        const result = await PastelPromoCode.importPastelPromoCode(
+          props.pastelPromoCode,
+        )
+        if (result) {
+          setShowPromoCodeCongratulations(true)
+        }
+      } else {
+        setMessage('PrivateKey is invalid')
+      }
+    } else {
+      if (
+        isValidPrivateKey &&
+        PastelUtils.isValidPrivateKey(props.pastelPromoCode)
+      ) {
+        props.finish()
+      } else {
+        setValidPrivateKey(false)
+        setMessage('PrivateKey is invalid')
+      }
+    }
   }
 
   const showWarn =
@@ -168,6 +204,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                   props.setPromoCode(e.currentTarget.value)
                 }
               />
+              <div></div>
             </div>
           </>
         )}
@@ -177,7 +214,6 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             <h1 className='text-gray-23 text-xl font-black'>
               Pastel Promo Code
             </h1>
-
             <div className={cn('mt-4 airdrop', styles.airdrop)}>
               <Input
                 className='w-full'
@@ -187,7 +223,16 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                   props.setPastelPromoCode(e.currentTarget.value.trim())
                 }
               />
+              {!isValidPrivateKey && message ? (
+                <p className='text-red-fe text-xs leading-5 pt-1'>{message}</p>
+              ) : null}
             </div>
+            {showPromoCodeCongratulations ? (
+              <div className='mt-6 text-gray-71 text-base font-normal'>
+                Congratulations, your personalized promotional code has been
+                accepted! You now have 2,500 PSL in your wallet
+              </div>
+            ) : null}
           </>
         )}
       </div>
@@ -196,10 +241,11 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
         <PrevButton onClick={() => props.goBack()} />
         <NextButton
           className='min-w-160px'
-          onClick={() => props.finish()}
+          onClick={() => handleNextClick(!isValidPrivateKey ? 'apply' : 'next')}
           text={
             props.paymentMethod === PaymentMethods.AirdropPromoCode ||
-            props.paymentMethod === PaymentMethods.PastelPromoCode
+            (props.paymentMethod === PaymentMethods.PastelPromoCode &&
+              !isValidPrivateKey)
               ? 'Apply'
               : `Proceed to 1,000 ${currencyName} Payment`
           }
