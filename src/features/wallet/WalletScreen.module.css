@@ -1,0 +1,7 @@
+.walletContent {
+  height: calc(100vh - 34.688rem); /*555px*/
+}
+
+.walletEmptyContent {
+  height: calc(100vh - 27.813rem); /*445px*/
+}

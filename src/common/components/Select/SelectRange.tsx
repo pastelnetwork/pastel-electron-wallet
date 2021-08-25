@@ -20,11 +20,17 @@ export default function SelectRange({
     const options: TOption[] = []
 
     for (let i = min; i <= max; i += step) {
-      const option = {
+      options.push({
         label: formatNumber(i),
         value: i.toString(), // used for filtering
-      }
-      options.push(option)
+      })
+    }
+
+    if (max % step !== 0) {
+      options.push({
+        label: formatNumber(max),
+        value: max.toString(),
+      })
     }
 
     return options

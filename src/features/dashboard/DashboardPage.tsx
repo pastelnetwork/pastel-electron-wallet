@@ -16,7 +16,6 @@ import { TTotalBalance, TTransactionType } from 'types/rpc'
 import * as ROUTES from 'common/utils/constants/routes'
 import { formatNumber } from '../../common/utils/format'
 import Radio from 'common/components/Radio'
-import Typography, { TypographyVariant } from 'common/components/Typography'
 import NotificationModal from './dashboardModals/notificationModal'
 import Link from 'common/components/Link'
 import notificationData from './dashboardModals/notificationModal.data'
@@ -209,12 +208,9 @@ export default function DashboardPage(): JSX.Element {
           </div>
           <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
             {walletLoading ? (
-              <Typography
-                variant={TypographyVariant.h4_18_24_medium}
-                className='flex items-center justify-center h-full'
-              >
+              <div className='flex items-center justify-center h-full h4_18_24_medium'>
                 Loading ....
-              </Typography>
+              </div>
             ) : (
               <>
                 {transactions.map((transaction, i) => (

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
+import cn from 'classnames'
 import { TitleModal } from '../../common/components/Modal'
 import Table, { TRow } from '../../common/components/Table'
 import DateRangeSelector, {
@@ -6,10 +7,10 @@ import DateRangeSelector, {
 } from '../../common/components/DateRangeSelector/DateRangeSelector'
 import Radio from '../../common/components/Radio'
 import Select, { TOption } from '../../common/components/Select/Select'
+import Tooltip from 'common/components/Tooltip'
 import commentIcon from '../../common/assets/icons/ico-comment.svg'
 import checkGreenIcon from '../../common/assets/icons/ico-check-green.svg'
 import clockYellowIcon from '../../common/assets/icons/ico-clock-yellow.svg'
-import crossIcon from '../../common/assets/icons/ico-cross.svg'
 import addressbookIcon from '../../common/assets/icons/ico-addressbook.svg'
 import user2Icon from '../../common/assets/icons/ico-user2.svg'
 import { TransactionRPC } from 'api/pastel-rpc'
@@ -20,11 +21,11 @@ import {
   TAddressBook,
 } from 'types/rpc'
 import dayjs from 'dayjs'
-import Utils from '../../legacy/utils/utils'
 import { AddressForm } from './AddressForm'
 import { useAddressBook } from 'common/hooks'
+import PastelUtils from 'common/utils/utils'
 
-export type TransactionHistoryModalProps = {
+export type TTransactionHistoryModalProps = {
   isOpen: boolean
   handleClose: () => void
 }
@@ -32,7 +33,7 @@ export type TransactionHistoryModalProps = {
 const TransactionHistoryModal = ({
   isOpen,
   handleClose,
-}: TransactionHistoryModalProps): JSX.Element => {
+}: TTransactionHistoryModalProps): JSX.Element => {
   const [selectedOption, setSelectedOption] = useState<
     'all' | 'received' | 'sent'
   >('all')
@@ -53,8 +54,12 @@ const TransactionHistoryModal = ({
     },
   ])
   const [dates, setDates] = useState<TDateRangeProp>()
-  const [sourceAddress, setSourceAddress] = useState<TOption | null>(null)
-  const [recipientAddress, setRecipientAddress] = useState<TOption | null>(null)
+  const [sourceAddress, setSourceAddress] = useState<TOption | null>(
+    sourceAddresses[0],
+  )
+  const [recipientAddress, setRecipientAddress] = useState<TOption | null>(
+    recipients[0],
+  )
   const { addressBook, updateAddressBook } = useAddressBook()
 
   const onSelectDateRange = (dates: TDateRangeProp) => {
@@ -65,8 +70,8 @@ const TransactionHistoryModal = ({
     const filtered = trans
       .filter(t => {
         return isSource
-          ? Utils.isSapling(t.address)
-          : !Utils.isSapling(t.address)
+          ? PastelUtils.isSapling(t.address)
+          : !PastelUtils.isSapling(t.address)
       })
       .map(t => {
         return {
@@ -75,12 +80,12 @@ const TransactionHistoryModal = ({
         }
       })
 
-    return filtered.concat([
+    return [
       {
         label: 'All',
         value: '',
       },
-    ])
+    ].concat(filtered)
   }
 
   const filterTransactionByType = (
@@ -181,6 +186,7 @@ const TransactionHistoryModal = ({
           }
           copyable={false}
           hidable
+          className='xl:ml-0'
         />
       ),
     },
@@ -188,11 +194,27 @@ const TransactionHistoryModal = ({
       key: 'type',
       headerColClasses: 'whitespace-nowrap mr-15px ml-46px',
       name: 'Source type',
-      custom: (value: string | number) => {
-        const str = value.toString()
+      custom: (value: string | number, row?: TRow) => {
         return (
-          <div className='ml-46px'>
-            {str.charAt(0).toUpperCase() + str.slice(1)}
+          <div className='ml-46px flex items-center'>
+            {!PastelUtils.isTransparent(row?.address)
+              ? 'Shielded'
+              : 'Transparent'}
+
+            {Math.floor(Math.random() * 10) % 2 ? (
+              <div className='inline-block'>
+                <Tooltip
+                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                  content='Note content here.'
+                  width={150}
+                  type='top'
+                >
+                  <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+                    <img className='cursor-pointer' src={commentIcon} />
+                  </span>
+                </Tooltip>
+              </div>
+            ) : null}
           </div>
         )
       },
@@ -201,30 +223,53 @@ const TransactionHistoryModal = ({
       key: 'status',
       name: 'Status',
       headerColClasses: 'mr-15px',
-      custom: (value: string | number) => (
-        <img
-          src={
-            value == 'success'
-              ? checkGreenIcon
-              : value == 'pending'
-              ? clockYellowIcon
-              : value == 'failed'
-              ? crossIcon
-              : ''
-          }
-          className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
-        />
-      ),
+      custom: () => {
+        return (
+          <img
+            src={
+              Math.floor(Math.random() * 10) % 2
+                ? checkGreenIcon
+                : clockYellowIcon
+            }
+            className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
+          />
+        )
+      },
     },
     {
       key: 'id',
       name: 'ID',
+      custom: (value: string | number) => (
+        <Tooltip
+          classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+          content={value}
+          width={450}
+          type='top'
+        >
+          <div className='w-[103px] overflow-ellipsis overflow-hidden'>
+            {value}
+          </div>
+        </Tooltip>
+      ),
     },
     {
       key: 'comments',
       name: 'Private Notes',
       headerColClasses: 'whitespace-nowrap mr-15px',
-      custom: () => <img src={commentIcon} className='ml-8 cursor-pointer' />,
+      custom: () => (
+        <div className='ml-8 inline-block'>
+          <Tooltip
+            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+            content='Note content here.'
+            width={150}
+            type='top'
+          >
+            <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+              <img className='cursor-pointer' src={commentIcon} />
+            </span>
+          </Tooltip>
+        </div>
+      ),
     },
     {
       key: 'fee',
@@ -244,35 +289,47 @@ const TransactionHistoryModal = ({
     <TitleModal
       isOpen={isOpen}
       handleClose={() => handleClose()}
-      size='7xl'
       title='Transaction history'
+      classNames='max-w-7xl'
     >
       <div className='bg-white z-50'>
         <div className='flex text-gray-71 text-sm'>
           <div className='w-2/3 flex'>
-            <div className='w-1/3 pr-6'>
-              <div>Time range</div>
-              <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
+            <div className='w-[264px] pr-6'>
+              <div className='text-gray-71 text-h6-leading-20-medium'>
+                Time range
+              </div>
+              <div className='w-[208px]'>
+                <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
+              </div>
             </div>
-            <div className='w-1/3 pr-6'>
-              <div className='mb-1'>Source address</div>
-              <Select
-                label={<img src={addressbookIcon} className='mr-2' />}
-                className='text-gray-2d w-112px'
-                selected={sourceAddress}
-                options={sourceAddresses}
-                onChange={setSourceAddress}
-              />
+            <div className='w-[264px] pr-6'>
+              <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
+                Source address
+              </div>
+              <div className='w-[208px]'>
+                <Select
+                  label={<img src={addressbookIcon} className='mr-2' />}
+                  className='text-gray-2d w-full'
+                  selected={sourceAddress}
+                  options={sourceAddresses}
+                  onChange={setSourceAddress}
+                />
+              </div>
             </div>
-            <div className='w-1/3 pr-6'>
-              <div className='mb-1'>Recipients</div>
-              <Select
-                label={<img src={user2Icon} className='mr-2' />}
-                className='text-gray-2d w-112px'
-                selected={recipientAddress}
-                options={recipients}
-                onChange={setRecipientAddress}
-              />
+            <div className='w-[264px] pr-6'>
+              <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
+                Recipients
+              </div>
+              <div className='w-[208px]'>
+                <Select
+                  label={<img src={user2Icon} className='mr-2' />}
+                  className='text-gray-2d w-full'
+                  selected={recipientAddress}
+                  options={recipients}
+                  onChange={setRecipientAddress}
+                />
+              </div>
             </div>
           </div>
           <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
@@ -283,7 +340,15 @@ const TransactionHistoryModal = ({
                 setSelectedOption('all')
               }}
             >
-              All
+              <div
+                className={cn(
+                  selectedOption === 'all'
+                    ? 'text-gray-4a text-h5-heavy'
+                    : 'text-gray-71 text-h5-medium',
+                )}
+              >
+                All
+              </div>
             </Radio>
             <Radio
               checked={selectedOption === 'received'}
@@ -292,7 +357,15 @@ const TransactionHistoryModal = ({
                 setSelectedOption('received')
               }}
             >
-              Received
+              <div
+                className={cn(
+                  selectedOption === 'received'
+                    ? 'text-gray-4a text-h5-heavy'
+                    : 'text-gray-71 text-h5-medium',
+                )}
+              >
+                Received
+              </div>
             </Radio>
             <Radio
               checked={selectedOption === 'sent'}
@@ -301,7 +374,15 @@ const TransactionHistoryModal = ({
                 setSelectedOption('sent')
               }}
             >
-              Sent
+              <div
+                className={
+                  selectedOption === 'sent'
+                    ? 'text-gray-4a text-h5-heavy'
+                    : 'text-gray-71 text-h5-medium'
+                }
+              >
+                Sent
+              </div>
             </Radio>
           </div>
         </div>

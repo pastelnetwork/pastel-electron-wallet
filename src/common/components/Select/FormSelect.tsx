@@ -3,14 +3,15 @@ import Select, { TFormSelectProps, TOption } from './Select'
 import FormControl from '../Form/FormControl'
 import { Controller, FieldValues } from 'react-hook-form'
 
-export default function FormSelect<TForm extends FieldValues>(
-  props: TFormSelectProps<TForm>,
-): JSX.Element {
+export default function FormSelect<TForm extends FieldValues>({
+  form,
+  ...props
+}: TFormSelectProps<TForm>): JSX.Element {
   return (
-    <FormControl {...props}>
+    <FormControl form={form} {...props}>
       <Controller
         name={props.name}
-        control={props.form.control}
+        control={form.control}
         render={({ field: { value, onChange } }) => (
           <Select
             {...props}

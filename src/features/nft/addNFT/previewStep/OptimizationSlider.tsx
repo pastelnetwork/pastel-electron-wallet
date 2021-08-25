@@ -21,7 +21,7 @@ export default function OptimizationSlider({
 }: TOptimizationSliderProps): JSX.Element | null {
   const currencyName = useCurrencyName()
 
-  if (state.optimizationState.status === 'processing') {
+  if (state.optimizationService.status === 'processing') {
     return (
       <div className='flex items-center text-gray-71'>
         <div className='mr-3'>Loading optimized images</div>
@@ -30,14 +30,14 @@ export default function OptimizationSlider({
     )
   }
 
-  const { files } = state.optimizationState
+  const { files } = state.optimizationService
   if (!files?.length) {
     return null
   }
 
   const formatValue = (value: number) => {
     const index = Math.round(value)
-    const file = files[index] || image.file
+    const file = files[index] || image
     return formatFileSize(file.size, 2)
   }
 
@@ -52,12 +52,12 @@ export default function OptimizationSlider({
   }
 
   const selectedIndex =
-    state.optimizationState.selectedFile?.index ?? files.length
+    state.optimizationService.selectedFile?.index ?? files.length
 
   const onChange = (value: number) => {
     const index = Math.round(value)
     const file = files[index]
-    state.optimizationState.setSelectedFile(file && { ...file, index })
+    state.optimizationService.setSelectedFile(file && { ...file, index })
   }
 
   return (

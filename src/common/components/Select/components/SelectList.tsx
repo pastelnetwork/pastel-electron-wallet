@@ -25,6 +25,7 @@ type TProps = {
   isLoading?: boolean
   enableFiltering: boolean
   filterOptions?: TBaseProps['filterOptions']
+  customListClassName?: string
   listClassName?: string
 }
 
@@ -43,6 +44,7 @@ export default function SelectList({
   isLoading,
   enableFiltering,
   filterOptions = defaultFilterOptions,
+  customListClassName = 'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-20 whitespace-normal',
   listClassName,
 }: TProps): JSX.Element | null {
   const filteredOptions =
@@ -59,10 +61,7 @@ export default function SelectList({
   return (
     <ul
       {...getMenuProps()}
-      className={cn(
-        'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-20 whitespace-normal',
-        listClassName,
-      )}
+      className={cn(customListClassName, listClassName)}
       onClick={e => e.stopPropagation()}
     >
       {filteredOptions.map((item, index) => {
@@ -98,7 +97,7 @@ export default function SelectList({
         return (
           <li
             {...getItemProps({
-              key: item.label,
+              key: index,
               index,
               item,
             })}

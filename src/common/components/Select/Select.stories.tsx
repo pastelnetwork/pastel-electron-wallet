@@ -101,7 +101,7 @@ export const SelectRange = (): JSX.Element => {
     <Select
       className='text-gray-35 w-28'
       min={10000}
-      max={20000}
+      max={20050}
       step={100}
       value={value}
       onChange={setValue}

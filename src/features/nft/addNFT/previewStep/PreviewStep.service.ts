@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { TCrop, TImage } from '../AddNFT.state'
 import { getEstimateFee } from 'api/estimate-fee'
+import { loadImageElement } from 'common/utils/image'
 
 const previewSize = 320
 
@@ -15,14 +16,6 @@ export type TCroppedImage = {
 export type CroppedValidatedImage = TCroppedImage & {
   error?: string
 }
-
-export const loadImage = (src: string): Promise<HTMLImageElement> =>
-  new Promise((resolve, reject) => {
-    const img = new Image()
-    img.src = src
-    img.onerror = reject
-    img.onload = () => resolve(img)
-  })
 
 export const getCroppedImage = (
   img: HTMLImageElement,
@@ -54,7 +47,7 @@ export const getCroppedImage = (
 }
 
 const getSmartCroppedImage = async (src: string): Promise<TCroppedImage> => {
-  const img = await loadImage(src)
+  const img = await loadImageElement(src)
   const result = await smartcrop.crop(img, {
     width: previewSize,
     height: previewSize,

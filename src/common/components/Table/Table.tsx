@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, ReactNode } from 'react'
 import cx from 'classnames'
 import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
@@ -33,6 +33,9 @@ export type TTableProps = {
   showCheckbox?: boolean
   selectedRow?: (row: TRow) => void
   searchKey?: string
+  extendHeader?: ReactNode
+  stickyTopClassName?: string
+  extendHeaderClassName?: string
 }
 
 const Table = ({
@@ -47,6 +50,9 @@ const Table = ({
   showCheckbox = false,
   selectedRow,
   searchKey,
+  extendHeader,
+  stickyTopClassName = 'top-0',
+  extendHeaderClassName,
 }: TTableProps): JSX.Element => {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
@@ -99,19 +105,34 @@ const Table = ({
     <table className='w-full text-gray-71 relative table-auto'>
       {haveHeader && (
         <thead>
+          {extendHeader ? (
+            <tr>
+              <td
+                className={cx('sticky bg-white z-50', extendHeaderClassName)}
+                colSpan={showCheckbox ? columns.length + 1 : columns.length}
+              >
+                {extendHeader}
+              </td>
+            </tr>
+          ) : null}
           <tr className={headerTrClasses}>
             {showCheckbox ? (
-              <td className='sticky top-0 bg-white w-[51px]'></td>
+              <td
+                className={cx(
+                  'sticky bg-white min-w-[51px] w-[51px]',
+                  stickyTopClassName,
+                )}
+              ></td>
             ) : null}
             {columns.map((column, index) => (
               <td
                 key={index}
                 className={cx(
                   column.align ? 'text-' + column.align : 'text-left',
-                  'sticky top-0 bg-white',
+                  'sticky bg-white z-50',
                   column.colClasses,
-                  'sticky top-0 bg-white',
                   headerTdClasses,
+                  stickyTopClassName,
                 )}
               >
                 <div
@@ -150,7 +171,7 @@ const Table = ({
             key={index}
             className={cx(
               bodyTrClasses,
-              selectedRows.includes(index) && 'bg-blue-00 bg-opacity-2.61',
+              selectedRows.includes(index) && 'bg-blue-fa',
             )}
           >
             {showCheckbox ? (

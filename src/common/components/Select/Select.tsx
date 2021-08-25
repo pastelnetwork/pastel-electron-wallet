@@ -33,7 +33,14 @@ export type TBaseProps = {
   isLoading?: boolean
   noOptionsText?: ReactNode
   debounce?: number
+  customListClassName?: string
   listClassName?: string
+  customInputWrapperClassName?: string
+  disabledInputWrapperClassName?: string
+  inputWrapperClassName?: string
+  customInputClassName?: string
+  disabledInputClassName?: string
+  inputClassName?: string
   onInputChange?(
     value: string,
     options: ControllerStateAndHelpers<TOption>,
@@ -93,6 +100,14 @@ export default function Select<TForm extends FieldValues>(
     selected,
     autocomplete,
     isLoading,
+    customInputWrapperClassName = 'relative w-full',
+    disabledInputWrapperClassName = 'bg-gray-f6 border-gray-ec cursor-not-allowed',
+    inputWrapperClassName,
+    customInputClassName = `h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6 ${
+      icon ? 'pl-9 relative z-10' : 'pl-18px'
+    }`,
+    disabledInputClassName = 'cursor-not-allowed',
+    inputClassName,
   } = props
 
   let { onInputChange } = props
@@ -152,15 +167,16 @@ export default function Select<TForm extends FieldValues>(
             {inputProps && (
               <div
                 className={cn(
-                  'relative w-full',
-                  disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
+                  customInputWrapperClassName,
+                  disabled && disabledInputWrapperClassName,
+                  inputWrapperClassName,
                 )}
               >
                 <input
                   className={cn(
-                    'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
-                    icon ? 'pl-9 relative z-10' : 'pl-18px',
-                    disabled && 'cursor-not-allowed',
+                    customInputClassName,
+                    disabled && disabledInputClassName,
+                    inputClassName,
                   )}
                   {...getToggleButtonProps()}
                   {...inputProps}
@@ -177,7 +193,7 @@ export default function Select<TForm extends FieldValues>(
             {!autocomplete && (
               <button
                 className={cn(
-                  'w-full h-full flex items-center whitespace-nowrap pr-7 focus-visible-border',
+                  'w-full h-full flex items-center pr-7 focus-visible-border',
                   icon ? 'pl-9 relative z-10' : 'pl-3.5',
                   disabled && 'cursor-not-allowed',
                 )}

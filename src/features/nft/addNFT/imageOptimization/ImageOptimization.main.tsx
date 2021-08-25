@@ -8,10 +8,11 @@ import {
   TOptimizedFile,
 } from './ImageOptimization.types'
 import {
-  imageTypes,
+  ImageType,
   maxQuality,
   minQuality,
   qualityStep,
+  TImageType,
 } from '../AddNft.constants'
 import fs from 'fs'
 import { handleMainTask } from '../../../app/mainEvents'
@@ -22,7 +23,6 @@ export const getRandomFileName = (): string =>
 
 const tmpPath = app.getPath('temp')
 
-type TFile = { path: string; type: File['type'] }
 type TGetArgs = (outputPath: string, quality: number) => string[]
 type TTask = {
   process?: ReturnType<typeof execFile> | undefined
@@ -47,9 +47,17 @@ export const setupOptimizeImageHandler = (): void => {
       const task = { cancelled: false }
       currentTask = task
 
-      const [processor, command, getArgs] = getOptimizeArgs(file)
-
       try {
+        const inputPath = await writeArrayBufferToTempFile(file.arrayBuffer)
+        if (task.cancelled) {
+          throw new Error('Cancelled')
+        }
+
+        const [processor, command, getArgs] = getOptimizeArgs(
+          file.type,
+          inputPath,
+        )
+
         for (
           let quality = minQuality;
           quality <= maxQuality;
@@ -76,8 +84,17 @@ export const setupOptimizeImageHandler = (): void => {
   )
 }
 
-const getOptimizeArgs = (file: TFile): [ImageProcessor, string, TGetArgs] => {
-  if (file.type === imageTypes.PNG) {
+const writeArrayBufferToTempFile = async (arrayBuffer: ArrayBuffer) => {
+  const filePath = path.join(tmpPath, getRandomFileName())
+  await fs.promises.writeFile(filePath, Buffer.from(arrayBuffer))
+  return filePath
+}
+
+const getOptimizeArgs = (
+  type: TImageType,
+  inputPath: string,
+): [ImageProcessor, string, TGetArgs] => {
+  if (type === ImageType.PNG) {
     return [
       ImageProcessor.pngquant,
       pngquantBinPath,
@@ -86,10 +103,10 @@ const getOptimizeArgs = (file: TFile): [ImageProcessor, string, TGetArgs] => {
         outputPath,
         `--quality=${quality}-${quality + qualityStep}`,
         '--',
-        file.path,
+        inputPath,
       ],
     ]
-  } else if (file.type === imageTypes.JPG) {
+  } else {
     return [
       ImageProcessor.mozjpeg,
       mozjpegBinPath,
@@ -98,12 +115,10 @@ const getOptimizeArgs = (file: TFile): [ImageProcessor, string, TGetArgs] => {
         String(quality),
         '-outfile',
         outputPath,
-        file.path,
+        inputPath,
       ],
     ]
   }
-
-  throw new Error(`Wrong image type: ${file.type}`)
 }
 
 const isCriticalError = (

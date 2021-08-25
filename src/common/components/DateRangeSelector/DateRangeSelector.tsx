@@ -51,7 +51,7 @@ const DateRangeSelectorContent = ({
       <div className='flex'>
         <img src={calendarIcon} className='ml-4 mr-2' />
         {dayjs(startDate).format('MM.DD.YY')}
-        {' ~ '}
+        {' - '}
       </div>
     )
   }
@@ -60,7 +60,7 @@ const DateRangeSelectorContent = ({
     <div className='flex'>
       <img src={calendarIcon} className='ml-4 mr-2' />
       {dayjs(startDate).format('MM.DD.YY') +
-        ' ~ ' +
+        ' - ' +
         dayjs(endDate).format('MM.DD.YY')}
     </div>
   )
@@ -136,7 +136,7 @@ const DateRangeSelector = ({
     <div className='relative'>
       <div
         onClick={() => setOpenCalendar(!isOpenCalendar)}
-        className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between cursor-pointer border border-gray-200 border-solid rounded'
+        className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between cursor-pointer border border-gray-200 border-solid rounded hover:border-blue-3f active:border-blue-3f'
       >
         <DateRangeSelectorContent
           value={value}
