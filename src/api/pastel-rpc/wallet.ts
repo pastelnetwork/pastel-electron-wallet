@@ -4,6 +4,7 @@ import {
   TAddressBalance,
   TAddressList,
   TListAddressesResponse,
+  TListUnspent,
   TListUnspentResponse,
   TResponse,
   TTotalBalanceResponse,
@@ -213,8 +214,8 @@ export class WalletRPC {
       },
     )
 
-    const tResult: TAddressList[] = results[0].result.map(
-      (addr: TZListUnspent) => {
+    const tResult: TAddressList[] = results[1].result.map(
+      (addr: TListUnspent) => {
         return {
           txid: addr.txid,
           address: addr.address,
