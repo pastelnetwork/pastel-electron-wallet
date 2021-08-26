@@ -2,6 +2,7 @@ import { spawnProcess } from '../../common/utils/process'
 import { pastelUtilityBinPath } from './paths'
 import { sendEventToRenderer } from './mainEvents'
 import log from 'electron-log'
+import { app } from 'electron'
 
 export const startWalletNode = async (): Promise<void> => {
   try {
@@ -21,7 +22,12 @@ export const stopWalletNode = async (): Promise<void> => {
 }
 
 const startProcess = async () => {
-  await spawnProcess(pastelUtilityBinPath, ['start', 'walletnode'], {
+  const args = ['start', 'walletnode']
+  if (!app.isPackaged) {
+    args.push('--development-mode')
+  }
+
+  await spawnProcess(pastelUtilityBinPath, args, {
     onStdoutLine: handleProcessLogging,
   })
 }
