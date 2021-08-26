@@ -111,10 +111,10 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
           seSelectedAddress(result)
         } else {
           setStatus('error')
-          setMessage('Promo Code is invalid or already used.')
+          setMessage('Promo Code is invalid.')
         }
       } else {
-        setMessage('Promo Code is invalid')
+        setMessage('Promo Code is invalid.')
       }
     }
   }
@@ -253,7 +253,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                 isValid={promoCodeIsValid}
                 errorMessage={
                   !promoCodeIsValid && message
-                    ? message || 'Promo Code is invalid'
+                    ? message || 'Promo Code is invalid.'
                     : null
                 }
                 hint

@@ -76,9 +76,8 @@ export default class PastelPromoCode {
             address,
           })
           PastelPromoCode.writePastelPromoCode(newPromoCode)
-
-          return address
         }
+        return address
       }
       return ''
     } catch {

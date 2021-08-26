@@ -55,12 +55,12 @@ export default function AddPastelPromoCodeModal({
         fetchData()
       } else {
         setValidPrivateKey(false)
-        setMessage('Promo Code is invalid or already used.')
+        setMessage('Promo Code is invalid.')
       }
       setLoading(false)
     } else {
       setValidPrivateKey(false)
-      setMessage('Promo Code is invalid')
+      setMessage('Promo Code is invalid.')
     }
   }
 
@@ -106,7 +106,7 @@ export default function AddPastelPromoCodeModal({
                 isValid={promoCodeIsValid}
                 errorMessage={
                   !promoCodeIsValid && message
-                    ? message || 'Promo Code is invalid'
+                    ? message || 'Promo Code is invalid.'
                     : null
                 }
                 hint
