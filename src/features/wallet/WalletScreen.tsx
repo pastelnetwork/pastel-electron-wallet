@@ -727,7 +727,7 @@ const WalletScreen = (): JSX.Element => {
           <Button
             onClick={() => setAddPastelPromoCodeModalOpen(true)}
             variant='secondary'
-            className='w-[264px] px-0'
+            className='w-[240px] px-0'
             childrenClassName='w-full'
           >
             <div className='flex items-center ml-5'>

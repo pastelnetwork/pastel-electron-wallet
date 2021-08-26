@@ -115,7 +115,7 @@ export default function AddPastelPromoCodeModal({
             <div className='mt-6'>
               <Button
                 className='w-full flex items-center'
-                disabled={!pastelPromoCode}
+                disabled={!pastelPromoCode || isLoading}
                 onClick={handleAddPromoCode}
               >
                 {isLoading ? 'Applying' : 'Apply'}

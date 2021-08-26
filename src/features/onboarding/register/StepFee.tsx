@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react'
 import cn from 'classnames'
+import { toast } from 'react-toastify'
 import { PaymentMethods, TCentralizedExchangeEntity } from './Regiser.state'
 import { PrevButton, NextButton } from './Buttons'
 import Radio from 'common/components/Radio/Radio'
@@ -12,7 +13,7 @@ import PastelUtils from 'common/utils/utils'
 import PastelPromoCode from 'common/utils/PastelPromoCode'
 import { WalletRPC } from 'api/pastel-rpc'
 import { formatNumber } from 'common/utils/format'
-// import { createNewPastelID } from 'api/pastel-rpc/pastelid'
+import { createNewPastelID } from 'api/pastel-rpc/pastelid'
 
 export type TStepFeeProps = {
   paymentMethod: PaymentMethods
@@ -76,44 +77,45 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
   }
 
   const handleNextClick = async (type?: string) => {
-    if (props.paymentMethod === PaymentMethods.PastelPromoCode) {
-      if (type === 'next') {
+    if (type === 'next') {
+      setStatus('loading')
+      try {
+        await createNewPastelID(props.password, selectedAddress)
         props.finish()
-        // const res = await createNewPastelID(props.password, selectedAddress)
-        console.log(selectedAddress)
-      } else {
-        setMessage('')
-        setValidPrivateKey(false)
-        if (PastelUtils.isValidPrivateKey(props.pastelPromoCode)) {
-          setStatus('loading')
-          const result = await PastelPromoCode.importPastelPromoCode(
-            props.pastelPromoCode,
-          )
-          if (result) {
-            const [addresses, totalBalances] = await Promise.all([
-              walletRPC.fetchTandZAddresses(),
-              walletRPC.fetchTotalBalance(),
-            ])
-            const promoCodeBalance = addresses.filter(
-              address => address.address === result,
-            )
-            setPromoBalance(
-              parseFloat(promoCodeBalance[0]?.amount.toString()) || 0,
-            )
-            setWalletBalance(totalBalances.total)
-            setStatus('done')
-            setValidPrivateKey(true)
-            seSelectedAddress(result)
-          } else {
-            setStatus('error')
-            setMessage('Promo Code is invalid or already used.')
-          }
-        } else {
-          setMessage('Promo Code is invalid')
-        }
+      } catch (error) {
+        toast.error(error.message)
+        setStatus('error')
       }
     } else {
-      props.finish()
+      setMessage('')
+      setValidPrivateKey(false)
+      if (PastelUtils.isValidPrivateKey(props.pastelPromoCode)) {
+        setStatus('loading')
+        const result = await PastelPromoCode.importPastelPromoCode(
+          props.pastelPromoCode,
+        )
+        if (result) {
+          const [addresses, totalBalances] = await Promise.all([
+            walletRPC.fetchTandZAddresses(),
+            walletRPC.fetchTotalBalance(),
+          ])
+          const promoCodeBalance = addresses.filter(
+            address => address.address === result,
+          )
+          setPromoBalance(
+            parseFloat(promoCodeBalance[0]?.amount.toString()) || 0,
+          )
+          setWalletBalance(totalBalances.total)
+          setStatus('done')
+          setValidPrivateKey(true)
+          seSelectedAddress(result)
+        } else {
+          setStatus('error')
+          setMessage('Promo Code is invalid or already used.')
+        }
+      } else {
+        setMessage('Promo Code is invalid')
+      }
     }
   }
 
@@ -284,27 +286,43 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
 
       <div className='mt-7 flex justify-between'>
         <PrevButton onClick={() => props.goBack()} />
-        <NextButton
-          className='min-w-160px'
-          onClick={() =>
-            handleNextClick(
-              status === 'done' && walletBalance >= targetBalance
-                ? 'next'
-                : 'apply',
-            )
-          }
-          text={
-            props.paymentMethod === PaymentMethods.AirdropPromoCode ||
-            (props.paymentMethod === PaymentMethods.PastelPromoCode &&
-              (walletBalance < targetBalance || !status))
-              ? props.paymentMethod === PaymentMethods.PastelPromoCode &&
-                status === 'loading'
-                ? 'Applying'
-                : 'Apply'
-              : `Proceed to 1,000 ${currencyName} Payment`
-          }
-          disabled={!nextActive}
-        />
+        {props.paymentMethod === PaymentMethods.PastelPromoCode ? (
+          <NextButton
+            className='min-w-160px'
+            onClick={() =>
+              handleNextClick(
+                status === 'done' && walletBalance >= targetBalance
+                  ? 'next'
+                  : 'apply',
+              )
+            }
+            text={
+              props.paymentMethod === PaymentMethods.PastelPromoCode &&
+              (walletBalance < targetBalance || !status) &&
+              status !== 'done'
+                ? props.paymentMethod === PaymentMethods.PastelPromoCode &&
+                  status === 'loading'
+                  ? 'Applying'
+                  : 'Apply'
+                : `Proceed to 1,000 ${currencyName} Payment`
+            }
+            disabled={
+              !nextActive ||
+              (status === 'done' && walletBalance < targetBalance)
+            }
+          />
+        ) : (
+          <NextButton
+            className='min-w-160px'
+            onClick={() => props.finish()}
+            text={
+              props.paymentMethod === PaymentMethods.AirdropPromoCode
+                ? 'Apply'
+                : `Proceed to 1,000 ${currencyName} Payment`
+            }
+            disabled={!nextActive}
+          />
+        )}
       </div>
     </div>
   )
