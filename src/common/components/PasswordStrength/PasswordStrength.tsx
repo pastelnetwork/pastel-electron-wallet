@@ -23,11 +23,11 @@ const PasswordStrength = (props: TPasswordStrengthProps): JSX.Element => {
       colorClass = 'bg-red-fe'
       break
 
+    case PasswordStrengths.Good:
     case PasswordStrengths.Moderate:
       colorClass = 'bg-yellow-ff'
       break
 
-    case PasswordStrengths.Good:
     case PasswordStrengths.Excellent:
       colorClass = 'bg-green-00'
       break

@@ -32,6 +32,7 @@ export default function AddPastelPromoCodeModal({
     if (isOpen) {
       setValidPrivateKey(false)
       setMessage('')
+      setLoading(false)
     }
   }, [isOpen])
 

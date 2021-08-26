@@ -59,14 +59,12 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
       return ''
     }
 
-    if (
-      passwordStrength === PasswordStrengths.Good ||
-      passwordStrength === PasswordStrengths.Excellent
-    ) {
+    if (passwordStrength === PasswordStrengths.Excellent) {
       return 'Super secure password'
     }
 
     if (
+      passwordStrength === PasswordStrengths.Good ||
       passwordStrength === PasswordStrengths.Moderate ||
       passwordStrength === PasswordStrengths.Weak
     ) {
