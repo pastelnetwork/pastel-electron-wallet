@@ -66,6 +66,13 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
       return 'Super secure password'
     }
 
+    if (
+      passwordStrength === PasswordStrengths.Moderate ||
+      passwordStrength === PasswordStrengths.Weak
+    ) {
+      return 'Not strong enough'
+    }
+
     return 'At least 8 characters and at least 2 numbers'
   }
 

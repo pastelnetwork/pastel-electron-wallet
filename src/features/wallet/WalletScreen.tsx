@@ -750,12 +750,13 @@ const WalletScreen = (): JSX.Element => {
         <div className='flex justify-end mt-5 pb-[30px]'>
           <Button
             onClick={() => setAddPastelPromoCodeModalOpen(true)}
+            variant='secondary'
             className='w-[264px] px-0'
             childrenClassName='w-full'
           >
             <div className='flex items-center ml-5'>
-              <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
-              <div className='ml-2 text-white text-h5-heavy'>
+              <div className='text-blue-3f text-h5-medium'>+</div>{' '}
+              <div className='ml-2 text-blue-3f text-h5-medium'>
                 Add Pastel Promo Code
               </div>
             </div>
@@ -828,6 +829,7 @@ const WalletScreen = (): JSX.Element => {
       <AddPastelPromoCodeModal
         isOpen={isAddPastelPromoCodeModalOpen}
         handleClose={() => setAddPastelPromoCodeModalOpen(false)}
+        fetchData={fetchWalletAddresses}
       />
     </div>
   )

@@ -5,16 +5,20 @@ import { TitleModal } from 'common/components/Modal'
 import { Input } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
 import PastelUtils from 'common/utils/utils'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TAddPastelPromoCodeModalProps = {
   isOpen: boolean
   handleClose: () => void
+  fetchData: () => void
 }
 
 export default function AddPastelPromoCodeModal({
   isOpen,
   handleClose,
+  fetchData,
 }: TAddPastelPromoCodeModalProps): JSX.Element {
+  const currencyName = useCurrencyName()
   const [isValidPrivateKey, setValidPrivateKey] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
   const [pastelPromoCode, setPastelPromoCode] = useState<string>('')
@@ -32,18 +36,25 @@ export default function AddPastelPromoCodeModal({
       const result = await PastelPromoCode.importPastelPromoCode(
         pastelPromoCode,
       )
-      setValidPrivateKey(true)
       if (result) {
+        setValidPrivateKey(true)
         setMessage(
-          'Congratulations, your personalized promotional code has been accepted! You now have 2,500 PSL in your wallet',
+          `Congratulations, your personalized promotional code has been accepted! You now have 2,500 ${currencyName} in your wallet`,
         )
+        fetchData()
       } else {
-        setMessage('Error saving. Please try again')
+        setValidPrivateKey(false)
+        setMessage('Promo Code is invalid or already used.')
       }
     } else {
       setValidPrivateKey(false)
-      setMessage('PrivateKey is invalid')
+      setMessage('Promo Code is invalid')
     }
+  }
+
+  let promoCodeIsValid = null
+  if (!isValidPrivateKey && message) {
+    promoCodeIsValid = false
   }
 
   return (
@@ -68,10 +79,15 @@ export default function AddPastelPromoCodeModal({
                 onChange={(e: FormEvent<HTMLInputElement>) =>
                   setPastelPromoCode(e.currentTarget.value.trim())
                 }
+                isValid={promoCodeIsValid}
+                errorMessage={
+                  !promoCodeIsValid && message
+                    ? message || 'Promo Code is invalid'
+                    : null
+                }
+                hint
+                hintAsTooltip={false}
               />
-              {!isValidPrivateKey && message ? (
-                <p className='text-red-fe text-xs leading-5 pt-1'>{message}</p>
-              ) : null}
             </div>
             <div className='mt-6'>
               <Button
@@ -79,7 +95,7 @@ export default function AddPastelPromoCodeModal({
                 disabled={!pastelPromoCode}
                 onClick={handleAddPromoCode}
               >
-                Save
+                Apply
               </Button>
             </div>
           </>
