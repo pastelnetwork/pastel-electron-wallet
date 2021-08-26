@@ -80,7 +80,7 @@ export const AddressForm = ({
           {formatAddress(address, 24)}
         </span>
       )}
-      {hideEditButton ? <div className='w-5'></div> : null}
+      {hideEditButton ? <div className='w-5 h5 xl:ml-21px'>&nbsp;</div> : null}
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-25px'>

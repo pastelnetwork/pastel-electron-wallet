@@ -34,7 +34,7 @@ import {
   QRCode,
 } from 'common/components/Icons'
 import Spinner from '../../common/components/Spinner'
-import PastelPromoCode from 'common/utils/PastelPromoCode'
+import PastelPromoCode, { TPastelPromoCode } from 'common/utils/PastelPromoCode'
 
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import styles from './WalletScreen.module.css'
@@ -55,6 +55,22 @@ type TSelectionPslProps = {
 const WalletScreen = (): JSX.Element => {
   const { info } = useAppSelector(state => state.appInfo)
   const [forceUpdateSelect, setForceUpdateSelect] = useState(false)
+  const [pastelPromoCode, setPastelPromoCode] = useState<TPastelPromoCode[]>([])
+
+  useEffect(() => {
+    const getPastelPromoCode = async () => {
+      const promoCodeList = await PastelPromoCode.readPastelPromoCode()
+      setPastelPromoCode(promoCodeList)
+    }
+    getPastelPromoCode()
+  }, [])
+
+  const isPastelPromoCode = (address: string): boolean => {
+    return (
+      pastelPromoCode.filter(promoCode => promoCode.address === address)
+        .length > 0
+    )
+  }
 
   const Columns = [
     {
@@ -62,19 +78,26 @@ const WalletScreen = (): JSX.Element => {
       colClasses: 'w-[40%] text-h6 leading-5 font-normal',
       name: 'Address name',
       headerColClasses: 'mx-30px',
-      custom: (value: string | number, row: TRow | undefined) => (
-        <div className='flex items-center mx-30px'>
-          <Checkbox
-            isChecked={selectedRows.indexOf(row?.address) !== -1}
-            clickHandler={() => row && setSelectedRowsFunction(row)}
-          />
-          <AddressForm
-            address={value.toString()}
-            currentRow={row}
-            saveAddressLabel={saveAddressLabel}
-          />
-        </div>
-      ),
+      custom: (value: string | number, row: TRow | undefined) => {
+        const isPromoCode = isPastelPromoCode(value.toString())
+        return (
+          <div className='flex items-center mx-30px'>
+            {!isPromoCode ? (
+              <Checkbox
+                isChecked={selectedRows.indexOf(row?.address) !== -1}
+                clickHandler={() => row && setSelectedRowsFunction(row)}
+              />
+            ) : null}
+            <AddressForm
+              address={value.toString()}
+              currentRow={row}
+              saveAddressLabel={saveAddressLabel}
+              hideEditButton={isPromoCode}
+              className={cn(isPromoCode && 'ml-0 xl:ml-0')}
+            />
+          </div>
+        )
+      },
     },
     {
       key: 'time',
@@ -149,118 +172,29 @@ const WalletScreen = (): JSX.Element => {
       colClasses: 'min-w-[120px] w-[120px]',
       custom: (value: number | string, row?: TRow) => {
         const psl = selectionPsl.filter(psl => psl?.address === row?.address)[0]
+        const isPromoCode = isPastelPromoCode(row?.address.toString())
         return (
           <div className='z-0'>
-            <SelectAmount
-              className='text-gray-2d w-28 bg-white'
-              min={0}
-              max={parseFloat(value.toString())}
-              step={PastelUtils.generateStep(parseInt(value.toString()))}
-              defaultValue={{
-                label: psl?.amount || row?.amount,
-                value: psl?.amount || row?.amount,
-              }}
-              forceUpdate={forceUpdateSelect}
-              onChange={(selection: TOption) => {
-                const selectedValue = parseFormattedNumber(selection.value)
-                handleAmountChange(selectedValue, row)
-              }}
-            />
+            {!isPromoCode ? (
+              <SelectAmount
+                className='text-gray-2d w-28 bg-white'
+                min={0}
+                max={parseFloat(value.toString())}
+                step={PastelUtils.generateStep(parseInt(value.toString()))}
+                defaultValue={{
+                  label: psl?.amount || row?.amount,
+                  value: psl?.amount || row?.amount,
+                }}
+                forceUpdate={forceUpdateSelect}
+                onChange={(selection: TOption) => {
+                  const selectedValue = parseFormattedNumber(selection.value)
+                  handleAmountChange(selectedValue, row)
+                }}
+              />
+            ) : null}
           </div>
         )
       },
-    },
-  ]
-
-  const PromoCodeColumns = [
-    {
-      key: 'address',
-      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
-      name: 'Address name',
-      headerColClasses: 'mx-30px',
-      custom: (value: string | number, row: TRow | undefined) => (
-        <div className='flex items-center mx-30px'>
-          <AddressForm
-            address={value.toString()}
-            currentRow={row}
-            saveAddressLabel={saveAddressLabel}
-            hideEditButton
-          />
-        </div>
-      ),
-    },
-    {
-      key: 'time',
-      name: 'Last Activity',
-      colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
-      custom: (time: number) => (
-        <div className='mr-3 md:mr-0 text-gray-71 text-h5-medium'>
-          {time > 0 ? timeAgo(dayjs.unix(time).valueOf()) : '--'}
-        </div>
-      ),
-    },
-    {
-      key: 'qrCode',
-      name: 'Address QR',
-      colClasses:
-        'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
-      custom: (value: string | number, row: TRow | undefined) => (
-        <div className='flex pl-6'>
-          <span
-            className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            onClick={() => {
-              setCurrentAddress(row?.address)
-              setIsQRCodeModalOpen(true)
-            }}
-          >
-            <QRCode size={20} />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      key: 'address',
-      name: 'Keys',
-      colClasses:
-        'min-w-130px w-176px 1500px:w-244px flex-grow-0 text-h6 leading-5 font-normal',
-      custom: (value: string | number) => {
-        return (
-          <div className='flex items-center'>
-            <div className='text-gray-71 text-h5-medium'>private key</div>
-            <span
-              onClick={() => {
-                setCurrentAddress(value.toString())
-                setExportKeysModalOpen(true)
-              }}
-              className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            >
-              <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
-            </span>
-          </div>
-        )
-      },
-    },
-    {
-      key: 'amount',
-      name: 'Balance',
-      colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
-      custom: (value: string | number) => (
-        <div className='text-gray-71 text-h5-medium'>
-          {info?.currencyName}{' '}
-          <NumberFormat
-            value={value}
-            displayType='text'
-            thousandSeparator={true}
-          />
-        </div>
-      ),
-    },
-    {
-      key: 'psl',
-      name: '',
-      colClasses: 'min-w-[120px] w-[120px]',
-      custom: () => <div className='z-0'></div>,
     },
   ]
 
@@ -279,7 +213,6 @@ const WalletScreen = (): JSX.Element => {
     setTransactionHistoryModalOpen,
   ] = useState(false)
 
-  const [pastelPromoCode, setPastelPromoCode] = useState<TAddressRow[]>([])
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
   const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
   const [currentAddress, setCurrentAddress] = useState('')
@@ -344,7 +277,6 @@ const WalletScreen = (): JSX.Element => {
   }, [addresses, allAddresses])
 
   const fetchWalletAddresses = async () => {
-    const promoCodeList = await PastelPromoCode.readPastelPromoCode()
     const transactions = await transactionRPC.fetchTandZTransactions()
     const addressRows = addresses.map(a => {
       const address = a.address.toString()
@@ -388,24 +320,22 @@ const WalletScreen = (): JSX.Element => {
       }
     })
 
+    const promoCodeList = await PastelPromoCode.readPastelPromoCode()
     const tmpAddressRows: TAddressRow[] = []
-    const tmpPastelPromoCode: TAddressRow[] = []
-    addressRows.map(row => {
-      const existAddress = promoCodeList.filter(
-        add => add.address === row.address,
+    addressRows.map(address => {
+      const promoCode = promoCodeList.filter(
+        promoCode => promoCode.address === address.address,
       )
-
-      if (existAddress.length < 1) {
-        tmpAddressRows.push(row)
-      } else {
-        tmpPastelPromoCode.push({
-          ...row,
-          addressNick: existAddress[0].label,
-          type: 'promoCode',
+      if (promoCode.length > 0) {
+        tmpAddressRows.push({
+          ...address,
+          addressNick: promoCode[0].label,
         })
+      } else {
+        tmpAddressRows.push(address)
       }
     })
-    setPastelPromoCode(tmpPastelPromoCode)
+
     setWalletOriginAddresses(tmpAddressRows)
     setWalletAddresses(tmpAddressRows)
     setIsLoadingAddresses(false)
@@ -604,23 +534,6 @@ const WalletScreen = (): JSX.Element => {
               )}
               {active == 0 && (
                 <div>
-                  {pastelPromoCode.length > 0 ? (
-                    <Table
-                      data={pastelPromoCode}
-                      columns={PromoCodeColumns}
-                      headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                      bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
-                      bodyTdClasses='text-h5 leading-6 font-medium'
-                      showCheckbox={false}
-                      extendHeader={
-                        <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
-                          Pastel Promo Code
-                        </div>
-                      }
-                      extendHeaderClassName='h-6 top-[-1px]'
-                      stickyTopClassName='top-[23px]'
-                    />
-                  ) : null}
                   <Table
                     data={walletAddresses.filter(
                       item => item.type === 'transparent',

@@ -120,7 +120,7 @@ export default function BalanceCards({
                   {card.psl === undefined ? (
                     <Spinner className='w-6 h-6 mb-3' />
                   ) : (
-                    formatPrice(card.psl, currencyName)
+                    formatPrice(card.psl, currencyName, 4)
                   )}
                 </div>
                 {card.style.type === 'total_balance' ? (

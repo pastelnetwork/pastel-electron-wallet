@@ -308,7 +308,8 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             }
             disabled={
               !nextActive ||
-              (status === 'done' && walletBalance < targetBalance)
+              (status === 'done' && walletBalance < targetBalance) ||
+              status === 'loading'
             }
           />
         ) : (
