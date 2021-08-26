@@ -58,8 +58,6 @@ export type TRegisterState = {
   setPromoCode(val: string): void
   pastelPromoCode: string
   setPastelPromoCode(val: string): void
-  addedPastelPromoCode: boolean
-  setAddedPastelPromoCode(val: boolean): void
   exchangeAddress: string
   setExchangeAddress(val: string): void
   goBack(): void
@@ -83,9 +81,6 @@ export const useRegisterState = (): TRegisterState => {
   >(null)
   const [promoCode, setPromoCode] = useState<string>('')
   const [pastelPromoCode, setPastelPromoCode] = useState<string>('')
-  const [addedPastelPromoCode, setAddedPastelPromoCode] = useState<boolean>(
-    false,
-  )
   const [exchangeAddress, setExchangeAddress] = useState<string>('')
 
   return {
@@ -110,8 +105,6 @@ export const useRegisterState = (): TRegisterState => {
     setPromoCode,
     pastelPromoCode,
     setPastelPromoCode,
-    addedPastelPromoCode,
-    setAddedPastelPromoCode,
     exchangeAddress,
     setExchangeAddress,
 

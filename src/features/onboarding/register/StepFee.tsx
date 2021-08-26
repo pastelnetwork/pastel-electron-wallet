@@ -10,7 +10,9 @@ import { Clipboard } from 'common/components/Icons'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import PastelUtils from 'common/utils/utils'
 import PastelPromoCode from 'common/utils/PastelPromoCode'
-import { Button } from 'common/components/Buttons'
+import { WalletRPC } from 'api/pastel-rpc'
+import { formatNumber } from 'common/utils/format'
+// import { createNewPastelID } from 'api/pastel-rpc/pastelid'
 
 export type TStepFeeProps = {
   paymentMethod: PaymentMethods
@@ -20,25 +22,26 @@ export type TStepFeeProps = {
   setPromoCode(val: string): void
   pastelPromoCode: string
   setPastelPromoCode(val: string): void
-  addedPastelPromoCode: boolean
-  setAddedPastelPromoCode(val: boolean): void
   exchangeAddress: string
+  password: string
   setExchangeAddress(val: string): void
   finish(): void
   goBack(): void
 }
 
+const targetBalance = 1000
+
 const StepFee = (props: TStepFeeProps): JSX.Element => {
+  const walletRPC = new WalletRPC()
   const currencyName = useCurrencyName()
   const [copying, setCopying] = useState<boolean>(false)
   const [copied, setCopied] = useState<boolean>(false)
   const [isValidPrivateKey, setValidPrivateKey] = useState<boolean>(false)
-  const [addMorePromoCode, setAddMorePromoCode] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
-  const [promoCode, setPromoCode] = useState<string>('')
-  const [addedPastelPromoCode, setAddedPastelPromoCode] = useState<boolean>(
-    false,
-  )
+  const [status, setStatus] = useState<string>('')
+  const [walletBalance, setWalletBalance] = useState(0)
+  const [promoBalance, setPromoBalance] = useState(0)
+  const [selectedAddress, seSelectedAddress] = useState<string>('')
 
   // maybe it would be better to load this list from somewhere
   const centralizedExs: TCentralizedExchangeEntity[] = [
@@ -72,47 +75,41 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
     setCopied(true)
   }
 
-  const doImportPromoCode = async (pastelPromoCode: string, type?: string) => {
-    if (PastelUtils.isValidPrivateKey(pastelPromoCode)) {
-      setValidPrivateKey(true)
-      setMessage('')
-      const result = await PastelPromoCode.importPastelPromoCode(
-        pastelPromoCode,
-      )
-      if (result) {
-        if (type === 'more') {
-          setAddedPastelPromoCode(true)
-        } else {
-          props.setAddedPastelPromoCode(true)
-        }
-      } else {
-        setValidPrivateKey(false)
-        setMessage('Promo Code is invalid or already used.')
-      }
-    } else {
-      setValidPrivateKey(false)
-      setMessage('Promo Code is invalid')
-    }
-  }
-
-  const handleNextClick = async (type: string) => {
+  const handleNextClick = async (type?: string) => {
     if (props.paymentMethod === PaymentMethods.PastelPromoCode) {
-      setMessage('')
-      if (props.addedPastelPromoCode) {
+      if (type === 'next') {
         props.finish()
+        // const res = await createNewPastelID(props.password, selectedAddress)
+        console.log(selectedAddress)
       } else {
-        if (type === 'apply') {
-          doImportPromoCode(props.pastelPromoCode)
-        } else {
-          if (
-            isValidPrivateKey &&
-            PastelUtils.isValidPrivateKey(props.pastelPromoCode)
-          ) {
-            props.finish()
+        setMessage('')
+        setValidPrivateKey(false)
+        if (PastelUtils.isValidPrivateKey(props.pastelPromoCode)) {
+          setStatus('loading')
+          const result = await PastelPromoCode.importPastelPromoCode(
+            props.pastelPromoCode,
+          )
+          if (result) {
+            const [addresses, totalBalances] = await Promise.all([
+              walletRPC.fetchTandZAddresses(),
+              walletRPC.fetchTotalBalance(),
+            ])
+            const promoCodeBalance = addresses.filter(
+              address => address.address === result,
+            )
+            setPromoBalance(
+              parseFloat(promoCodeBalance[0]?.amount.toString()) || 0,
+            )
+            setWalletBalance(totalBalances.total)
+            setStatus('done')
+            setValidPrivateKey(true)
+            seSelectedAddress(result)
           } else {
-            setValidPrivateKey(false)
-            setMessage('Promo Code is invalid')
+            setStatus('error')
+            setMessage('Promo Code is invalid or already used.')
           }
+        } else {
+          setMessage('Promo Code is invalid')
         }
       }
     } else {
@@ -138,6 +135,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
     props.paymentMethod === PaymentMethods.PslAddress ||
     (props.paymentMethod === PaymentMethods.PastelPromoCode &&
       props.pastelPromoCode.length > 0)
+
   let promoCodeIsValid = null
   if (!isValidPrivateKey && message) {
     promoCodeIsValid = false
@@ -242,98 +240,44 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
             <h1 className='text-gray-23 text-xl font-black'>
               Pastel Promo Code
             </h1>
-            {!addMorePromoCode ? (
-              <>
-                <div className={cn('mt-4 airdrop', styles.airdrop)}>
-                  <Input
-                    className='w-full'
-                    type='text'
-                    placeholder='Paste your promo code here'
-                    onChange={(e: FormEvent<HTMLInputElement>) =>
-                      props.setPastelPromoCode(e.currentTarget.value.trim())
-                    }
-                    isValid={promoCodeIsValid}
-                    errorMessage={
-                      !promoCodeIsValid && message
-                        ? message || 'Promo Code is invalid'
-                        : null
-                    }
-                    hint
-                    hintAsTooltip={false}
-                    value={props.pastelPromoCode}
-                    readOnly={props.addedPastelPromoCode}
-                  />
-                </div>
-                {props.addedPastelPromoCode ? (
-                  <div className='mt-6 text-gray-71 text-base font-normal'>
-                    Congratulations, your personalized promotional code has been
-                    accepted! You now have 2,500 {currencyName} in your wallet.{' '}
-                    <button
-                      type='button'
-                      className='link'
-                      onClick={() => setAddMorePromoCode(true)}
-                    >
-                      Add new pastel promo code.
-                    </button>
-                  </div>
-                ) : null}
-              </>
-            ) : (
-              <>
-                <div className={cn('mt-4 airdrop', styles.airdrop)}>
-                  <Input
-                    className='w-full'
-                    type='text'
-                    placeholder='Paste your promo code here'
-                    onChange={(e: FormEvent<HTMLInputElement>) =>
-                      setPromoCode(e.currentTarget.value.trim())
-                    }
-                    isValid={promoCodeIsValid}
-                    errorMessage={
-                      !promoCodeIsValid && message
-                        ? message || 'Promo Code is invalid'
-                        : null
-                    }
-                    hint
-                    hintAsTooltip={false}
-                    value={promoCode}
-                  />
-                </div>
-                {addedPastelPromoCode ? (
-                  <div className='mt-6 text-gray-71 text-base font-normal'>
-                    Congratulations, your personalized promotional code has been
-                    accepted! You now have 2,500 {currencyName} in your wallet.
-                  </div>
-                ) : null}
-                <div className='mt-6 flex items-center justify-end'>
-                  <Button
-                    variant='secondary'
-                    className='w-[110px] px-0'
-                    childrenClassName='w-full'
-                    onClick={() => setAddMorePromoCode(false)}
-                  >
-                    <div className='flex items-center justify-center text-blue-3f text-h5-heavy'>
-                      Cancel
-                    </div>
-                  </Button>
-                  <Button
-                    className='ml-15px w-[110px] px-0'
-                    childrenClassName='w-full'
-                    onClick={() => {
-                      setMessage('')
-                      doImportPromoCode(promoCode, 'more')
-                    }}
-                  >
-                    <div className='flex items-center ml-5'>
-                      <div className='text-white text-h4-leading-28-heavy'>
-                        +
-                      </div>{' '}
-                      <div className='ml-2 text-white text-h5-heavy'>Apply</div>
-                    </div>
-                  </Button>
-                </div>
-              </>
-            )}
+            <div className={cn('mt-4 airdrop', styles.airdrop)}>
+              <Input
+                className='w-full'
+                type='text'
+                placeholder='Paste your promo code here'
+                onChange={(e: FormEvent<HTMLInputElement>) =>
+                  props.setPastelPromoCode(e.currentTarget.value.trim())
+                }
+                isValid={promoCodeIsValid}
+                errorMessage={
+                  !promoCodeIsValid && message
+                    ? message || 'Promo Code is invalid'
+                    : null
+                }
+                hint
+                hintAsTooltip={false}
+                value={props.pastelPromoCode}
+              />
+            </div>
+            {status === 'done' ? (
+              <div className='mt-6 text-gray-71 text-base font-normal'>
+                Congratulations, your personalized promotional code has been
+                accepted! You now have {formatNumber(promoBalance)}{' '}
+                {currencyName} in your wallet.{' '}
+                <button
+                  type='button'
+                  className='link'
+                  onClick={() => {
+                    props.setPastelPromoCode('')
+                    setStatus('')
+                    setMessage('')
+                    setValidPrivateKey(false)
+                  }}
+                >
+                  Add new pastel promo code.
+                </button>
+              </div>
+            ) : null}
           </>
         )}
       </div>
@@ -343,14 +287,20 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
         <NextButton
           className='min-w-160px'
           onClick={() =>
-            handleNextClick(!props.addedPastelPromoCode ? 'apply' : 'next')
+            handleNextClick(
+              status === 'done' && walletBalance >= targetBalance
+                ? 'next'
+                : 'apply',
+            )
           }
           text={
             props.paymentMethod === PaymentMethods.AirdropPromoCode ||
             (props.paymentMethod === PaymentMethods.PastelPromoCode &&
-              !isValidPrivateKey &&
-              !props.addedPastelPromoCode)
-              ? 'Apply'
+              (walletBalance < targetBalance || !status))
+              ? props.paymentMethod === PaymentMethods.PastelPromoCode &&
+                status === 'loading'
+                ? 'Applying'
+                : 'Apply'
               : `Proceed to 1,000 ${currencyName} Payment`
           }
           disabled={!nextActive}

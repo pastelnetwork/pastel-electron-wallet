@@ -7,7 +7,6 @@ import store from '../../redux/store'
 export type TPastelPromoCode = {
   label: string
   address: string
-  privateKey: string
 }
 
 export default class PastelPromoCode {
@@ -63,30 +62,27 @@ export default class PastelPromoCode {
     }
   }
 
-  static async importPastelPromoCode(
-    pastelPromoCode: string,
-  ): Promise<boolean> {
+  static async importPastelPromoCode(pastelPromoCode: string): Promise<string> {
     try {
       const walletRPC = new WalletRPC()
-      const currentPromoCode = await PastelPromoCode.readPastelPromoCode()
-      const promoCode = currentPromoCode.filter(
-        pc => pc.privateKey === pastelPromoCode,
-      )
-      if (promoCode.length < 1) {
-        const address = await walletRPC.importPrivKey(pastelPromoCode, true)
-        if (address) {
+      const address = await walletRPC.importPrivKey(pastelPromoCode, true)
+      if (address) {
+        const currentPromoCode = await PastelPromoCode.readPastelPromoCode()
+        const promoCode = currentPromoCode.filter(pc => pc.address === address)
+
+        if (promoCode.length < 1) {
           const newPromoCode = currentPromoCode.concat({
             label: `Pastel Promo Code ${dayjs().format('MM/DD/YYYY-HH:mm')}`,
             address,
-            privateKey: pastelPromoCode,
           })
           PastelPromoCode.writePastelPromoCode(newPromoCode)
-          return true
+
+          return address
         }
       }
-      return false
+      return ''
     } catch {
-      return false
+      return ''
     }
   }
 }

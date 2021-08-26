@@ -336,30 +336,6 @@ const WalletScreen = (): JSX.Element => {
   const [walletAddresses, setWalletAddresses] = useState<TAddressRow[]>([])
 
   useEffect(() => {
-    const getPastelPromoCode = async () => {
-      const promoCodeList = await PastelPromoCode.readPastelPromoCode()
-      const tmp: TAddressRow[] = []
-      promoCodeList.map(promoCode => {
-        tmp.push({
-          address: promoCode.address,
-          addressNick: promoCode.label,
-          amount: 0,
-          id: promoCode.address,
-          privateKey: promoCode.privateKey,
-          psl: 0,
-          qrCode: '',
-          time: undefined,
-          type: 'promoCode',
-          viewKey: '',
-        })
-      })
-      setPastelPromoCode(tmp)
-    }
-
-    getPastelPromoCode()
-  }, [])
-
-  useEffect(() => {
     if (!addresses) {
       return
     }
@@ -418,6 +394,7 @@ const WalletScreen = (): JSX.Element => {
       const existAddress = promoCodeList.filter(
         add => add.address === row.address,
       )
+
       if (existAddress.length < 1) {
         tmpAddressRows.push(row)
       } else {
@@ -428,7 +405,6 @@ const WalletScreen = (): JSX.Element => {
         })
       }
     })
-
     setPastelPromoCode(tmpPastelPromoCode)
     setWalletOriginAddresses(tmpAddressRows)
     setWalletAddresses(tmpAddressRows)
