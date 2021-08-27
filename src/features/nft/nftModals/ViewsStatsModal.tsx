@@ -78,7 +78,7 @@ const ViewsStatsModal = ({
                 options={options}
                 selected={date}
                 onChange={setDate}
-                selectClassName='border-0 w-[120px]'
+                className='border-0 w-[120px]'
               />
             </div>
             <div className='mr-[23px]'>

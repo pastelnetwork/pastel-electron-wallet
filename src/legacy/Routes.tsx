@@ -90,7 +90,7 @@ class RouteApp extends React.Component<any, any> {
 
     this.state.sendPageState.toaddrs = [new ToAddr(Utils.getNextToAddrID())] // Set the Modal's app element
 
-    ReactModal.setAppElement('#root')
+    if (process.env.NODE_ENV !== 'test') ReactModal.setAppElement('#root')
   }
 
   rpc: any

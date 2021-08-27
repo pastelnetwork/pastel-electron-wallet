@@ -5,7 +5,9 @@ import './Modal.css'
 // Components
 import { CloseButton } from '../../../common/components/Buttons'
 
-ReactModal.setAppElement('#root')
+if (process.env.NODE_ENV !== 'test') {
+  ReactModal.setAppElement('#root')
+}
 
 export type TModalProps = {
   isOpen: boolean

@@ -21,21 +21,21 @@ const CreatorsResult = ({ searchKey }: TCreatorResultProps): JSX.Element => {
       <div className='bg-white flex py-[17px] px-[18px]'>
         <Select
           options={rankingData}
-          selectClassName='bg-white w-[118px] mr-6'
+          className='bg-white w-[118px] mr-6'
           selected={ranking}
           onChange={setRanking}
           placeholder='Ranking'
         />
         <Select
           options={soldData}
-          selectClassName='bg-white w-[118px] mr-6'
+          className='bg-white w-[118px] mr-6'
           onChange={setSold}
           selected={sold}
           placeholder='Sold'
         />
         <Select
           options={followersData}
-          selectClassName='bg-white w-[118px]'
+          className='bg-white w-[118px]'
           onChange={setFollowers}
           selected={followers}
           placeholder='Followers'
