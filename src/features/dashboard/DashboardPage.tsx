@@ -119,7 +119,7 @@ export default function DashboardPage(): JSX.Element {
       const transactionRPC = new TransactionRPC()
       const results = await Promise.all([
         await walletRPC.fetchTotalBalance(),
-        await transactionRPC.fetchTandZTransactions(),
+        await transactionRPC.fetchTAndZTransactions(),
       ])
       const balances: TTotalBalance = results[0]
       const trans = results[1]

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from 'react'
+import React, { useState, ReactNode, useMemo } from 'react'
 import cx from 'classnames'
 import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
@@ -18,7 +18,7 @@ export type TColumn = {
   key: string
   align?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  custom?: (value: any, row?: TRow | undefined) => JSX.Element
+  custom?: (value: any, row?: TRow | undefined) => ReactNode
 }
 
 export type TTableProps = {
@@ -56,28 +56,20 @@ const Table = ({
 }: TTableProps): JSX.Element => {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
-  const [tableData, setTableData] = useState(Array<TRow>())
   const [selectedRows, setSelectedRows] = useState<Array<number>>([])
-
-  useEffect(() => {
-    setTableData(data)
-  }, [data])
-
-  useEffect(() => {
-    console.log(sortIndex, sortOrder)
-    if (sortOrder == 0) {
-      return
+  const tableData = useMemo<TRow[]>(() => {
+    if (sortOrder === 0) {
+      return data
     }
-    setTableData(
-      data
-        .map(each => each)
-        .sort(
-          (a, b) =>
-            sortOrder *
-            (a[columns[sortIndex].key] < b[columns[sortIndex].key] ? 1 : -1),
-        ),
-    )
-  }, [sortIndex, sortOrder])
+
+    return data
+      .map(each => each)
+      .sort(
+        (a, b) =>
+          sortOrder *
+          (a[columns[sortIndex].key] < b[columns[sortIndex].key] ? 1 : -1),
+      )
+  }, [data, sortIndex, sortOrder])
 
   const setSort = (index: number) => {
     if (index === sortIndex) {
@@ -88,7 +80,7 @@ const Table = ({
     }
   }
 
-  const renderSearhKeyDiv = (param: string, text: JSX.Element | string) => {
+  const renderSearchKeyDiv = (param: string, text: ReactNode | string) => {
     return (
       <div>
         {parse(
@@ -122,7 +114,7 @@ const Table = ({
                   'sticky bg-white min-w-[51px] w-[51px]',
                   stickyTopClassName,
                 )}
-              ></td>
+              />
             ) : null}
             {columns.map((column, index) => (
               <td
@@ -190,20 +182,20 @@ const Table = ({
                     setSelectedRows([...temp])
                     selectedRow && selectedRow(row)
                   }}
-                ></Checkbox>
+                />
               </td>
             ) : null}
             {columns.map((column, index) => (
               <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
                 {column.custom
                   ? searchKey
-                    ? renderSearhKeyDiv(
+                    ? renderSearchKeyDiv(
                         searchKey,
                         column.custom(row[column.key], row),
                       )
                     : column.custom(row[column.key], row)
                   : searchKey
-                  ? renderSearhKeyDiv(searchKey, row[column.key])
+                  ? renderSearchKeyDiv(searchKey, row[column.key])
                   : row[column.key]}
               </td>
             ))}
