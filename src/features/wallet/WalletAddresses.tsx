@@ -11,7 +11,7 @@ import { TRow } from 'common/components/Table'
 import { TSelectionPslProps } from './WalletScreen'
 import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import ContentLoader from 'react-content-loader'
+import RectangleLoader from 'common/components/Loader'
 
 export default function WalletAddresses({
   walletAddresses,
@@ -50,11 +50,7 @@ export default function WalletAddresses({
 
   let loadingData: TRow[] | undefined
   if (isLoadingAddresses) {
-    const loaderItem = (
-      <ContentLoader className='h-2.5 mr-3' viewBox='0 0 100 10'>
-        <rect x='0' y='0' rx='4' ry='4' width='100' height='10' />
-      </ContentLoader>
-    )
+    const loaderItem = <RectangleLoader className='h-2.5 mr-3' />
 
     loadingData = new Array(2).fill({
       address: loaderItem,

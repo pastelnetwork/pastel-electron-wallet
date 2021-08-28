@@ -4,13 +4,13 @@ import {
   ShieldedBalance,
   TotalBalance,
   TransparencyBalance,
-} from '../../common/components/Icons'
-import { TTotalBalance } from '../../types/rpc'
-import Tooltip from '../../common/components/Tooltip'
+} from 'common/components/Icons'
+import { TTotalBalance } from 'types/rpc'
+import Tooltip from 'common/components/Tooltip'
 import cn from 'classnames'
-import { useCurrencyName } from '../../common/hooks/appInfo'
-import { formatPrice } from '../../common/utils/format'
-import ContentLoader from 'react-content-loader'
+import { useCurrencyName } from 'common/hooks/appInfo'
+import { formatPrice } from 'common/utils/format'
+import RectangleLoader from 'common/components/Loader'
 
 type TBalanceCard = {
   style: {
@@ -38,13 +38,12 @@ export default function BalanceCards({
 
   const loaderItem = isLoading && (
     <div className='h-8 flex items-center'>
-      <ContentLoader
-        className='h-3 mr-3 text-gray-dd'
-        backgroundColor='currentColor'
-        viewBox='0 0 80 12'
-      >
-        <rect x='0' y='0' rx='4' ry='4' width='80' height='12' />
-      </ContentLoader>
+      <RectangleLoader
+        className='h-3'
+        width={80}
+        height={12}
+        colorClass='text-gray-dd'
+      />
     </div>
   )
 
