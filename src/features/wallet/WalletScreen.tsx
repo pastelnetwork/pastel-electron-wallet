@@ -9,7 +9,6 @@ import { useAppSelector } from 'redux/hooks'
 import { isSapling } from 'api/helpers'
 import { useAddressBook } from 'common/hooks'
 import { parseFormattedNumber, timeAgo } from 'common/utils/format'
-import PastelUtils from 'common/utils/utils'
 import Tooltip from 'common/components/Tooltip'
 import Alert from 'common/components/Alert'
 import Toggle from 'common/components/Toggle'
@@ -17,7 +16,10 @@ import { Button } from 'common/components/Buttons'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
 import Table, { TRow } from 'common/components/Table'
 import Breadcrumbs from 'common/components/Breadcrumbs'
-import SelectAmount, { TOption } from 'common/components/SelectAmount'
+import SelectAmount, {
+  TOption,
+  generateStep,
+} from 'common/components/SelectAmount'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
@@ -34,7 +36,10 @@ import {
   QRCode,
 } from 'common/components/Icons'
 import Spinner from '../../common/components/Spinner'
-import PastelPromoCode, { TPastelPromoCode } from 'common/utils/PastelPromoCode'
+import {
+  TPastelPromoCode,
+  readPastelPromoCode,
+} from 'common/utils/PastelPromoCode'
 
 import Checkbox from 'common/components/Checkbox/Checkbox'
 import styles from './WalletScreen.module.css'
@@ -59,7 +64,7 @@ const WalletScreen = (): JSX.Element => {
 
   useEffect(() => {
     const getPastelPromoCode = async () => {
-      const promoCodeList = await PastelPromoCode.readPastelPromoCode()
+      const promoCodeList = await readPastelPromoCode()
       setPastelPromoCode(promoCodeList)
     }
     getPastelPromoCode()
@@ -180,7 +185,7 @@ const WalletScreen = (): JSX.Element => {
                 className='text-gray-2d w-28 bg-white'
                 min={0}
                 max={parseFloat(value.toString())}
-                step={PastelUtils.generateStep(parseInt(value.toString()))}
+                step={generateStep(parseInt(value.toString()))}
                 defaultValue={{
                   label: psl?.amount || row?.amount,
                   value: psl?.amount || row?.amount,
@@ -300,7 +305,7 @@ const WalletScreen = (): JSX.Element => {
       } as TAddressRow
     })
 
-    allAddresses.map(address => {
+    allAddresses.forEach(address => {
       const existAddress = addresses.filter(add => add.address === address)
       if (existAddress.length < 1) {
         const type = isSapling(address) ? 'shielded' : 'transparent'
@@ -320,19 +325,18 @@ const WalletScreen = (): JSX.Element => {
       }
     })
 
-    const promoCodeList = await PastelPromoCode.readPastelPromoCode()
-    const tmpAddressRows: TAddressRow[] = []
-    addressRows.map(address => {
-      const promoCode = promoCodeList.filter(
+    const promoCodeList = await readPastelPromoCode()
+    const tmpAddressRows: TAddressRow[] = addressRows.map(address => {
+      const promoCode = promoCodeList.find(
         promoCode => promoCode.address === address.address,
       )
-      if (promoCode.length > 0) {
-        tmpAddressRows.push({
+      if (promoCode) {
+        return {
           ...address,
-          addressNick: promoCode[0].label,
-        })
+          addressNick: promoCode.label,
+        }
       } else {
-        tmpAddressRows.push(address)
+        return address
       }
     })
 

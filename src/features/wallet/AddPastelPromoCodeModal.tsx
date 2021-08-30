@@ -1,10 +1,10 @@
 import React, { FormEvent, useState, useEffect } from 'react'
 
-import PastelPromoCode from 'common/utils/PastelPromoCode'
+import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { TitleModal } from 'common/components/Modal'
 import { Input } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
-import PastelUtils from 'common/utils/utils'
+import { isValidPrivateKey } from 'common/utils/wallet'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { WalletRPC } from 'api/pastel-rpc'
 import { formatNumber } from 'common/utils/format'
@@ -23,14 +23,14 @@ export default function AddPastelPromoCodeModal({
 }: TAddPastelPromoCodeModalProps): JSX.Element {
   const walletRPC = new WalletRPC()
   const currencyName = useCurrencyName()
-  const [isValidPrivateKey, setValidPrivateKey] = useState<boolean>(false)
+  const [isValidPromoCode, setValidPromoCode] = useState<boolean>(false)
   const [isLoading, setLoading] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
   const [pastelPromoCode, setPastelPromoCode] = useState<string>('')
 
   useEffect(() => {
     if (isOpen) {
-      setValidPrivateKey(false)
+      setValidPromoCode(false)
       setMessage('')
       setLoading(false)
     }
@@ -38,34 +38,32 @@ export default function AddPastelPromoCodeModal({
 
   const handleAddPromoCode = async () => {
     setMessage('')
-    if (PastelUtils.isValidPrivateKey(pastelPromoCode)) {
+    if (isValidPrivateKey(pastelPromoCode)) {
       setLoading(true)
-      const result = await PastelPromoCode.importPastelPromoCode(
-        pastelPromoCode,
-      )
+      const result = await importPastelPromoCode(pastelPromoCode)
       if (result) {
         const addresses = await walletRPC.fetchTandZAddresses()
         const promoCodeBalance = addresses.filter(
           address => address.address === result,
         )
-        setValidPrivateKey(true)
+        setValidPromoCode(true)
         setMessage(
           formatNumber(parseFloat(promoCodeBalance[0]?.amount.toString()) || 0),
         )
         fetchData()
       } else {
-        setValidPrivateKey(false)
+        setValidPromoCode(false)
         setMessage('Promo Code is invalid.')
       }
       setLoading(false)
     } else {
-      setValidPrivateKey(false)
+      setValidPromoCode(false)
       setMessage('Promo Code is invalid.')
     }
   }
 
   let promoCodeIsValid = null
-  if (!isValidPrivateKey && message) {
+  if (!isValidPromoCode && message) {
     promoCodeIsValid = false
   }
 
@@ -73,11 +71,11 @@ export default function AddPastelPromoCodeModal({
     <TitleModal
       isOpen={isOpen}
       handleClose={() => handleClose()}
-      title={isValidPrivateKey && message ? '' : 'Add Pastel Promo Code'}
+      title={isValidPromoCode && message ? '' : 'Add Pastel Promo Code'}
       classNames='w-[598px]'
     >
       <div className='mt-[11px] pr-22px'>
-        {isValidPrivateKey && message ? (
+        {isValidPromoCode && message ? (
           <div className='text-center'>
             <div>
               <img

@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { TAddressRow } from 'types/rpc'
 import CommentModal from './CommentModal'
-import PastelUtils from 'common/utils/utils'
 import { formatAddress, parseFormattedNumber } from 'common/utils/format'
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import add2Icon from '../../common/assets/icons/ico-add-2.svg'
-import SelectAmount, { TOption } from '../../common/components/SelectAmount'
+import SelectAmount, {
+  TOption,
+  generateStep,
+} from '../../common/components/SelectAmount'
 import { TRow } from 'common/components/Table'
 
 import { Trash, Eye, Pencil } from 'common/components/Icons'
@@ -71,7 +73,7 @@ const PaymentSource = ({
             className='text-gray-2d w-28'
             min={0}
             max={walletAddress.amount}
-            step={PastelUtils.generateStep(walletAddress.amount)}
+            step={generateStep(walletAddress.amount)}
             defaultValue={{
               label: walletAddress.psl.toString(),
               value: walletAddress.psl.toString(),

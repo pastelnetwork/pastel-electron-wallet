@@ -44,7 +44,7 @@ import GlitchImageModal, { openGlitchImageModal } from '../features/glitchImage'
 // @ts-ignore
 import ExpertConsole from '../features/expertConsole'
 import { openUpdateToast } from '../features/updateToast'
-import PastelUtils from '../common/utils/utils'
+import { removeAllBreakChar } from '../common/utils/string'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
@@ -248,7 +248,7 @@ class RouteApp extends React.Component<any, any> {
       }
 
       const result = await this.rpc.doImportPrivKey(
-        PastelUtils.removeAllBreakChar(keys[i]),
+        removeAllBreakChar(keys[i]),
         i === keys.length - 1,
       )
 
