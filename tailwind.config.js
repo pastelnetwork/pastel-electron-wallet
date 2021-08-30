@@ -165,7 +165,7 @@ module.exports = {
         '690px': '43.125rem',
         '791px': '49.4375rem',
         '874px': '54.625rem',
-        '30vh': '30vh',
+        '37vh': '37vh',
       },
       colors: {
         link: {

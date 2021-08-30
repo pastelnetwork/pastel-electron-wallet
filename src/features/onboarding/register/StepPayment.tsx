@@ -31,7 +31,7 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
       method: PaymentMethods.PslAddress,
     },
     {
-      name: 'Airdrop “Promo Code”',
+      name: 'Pastel Promocode',
       method: PaymentMethods.AirdropPromoCode,
     },
   ]
