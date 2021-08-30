@@ -175,10 +175,11 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
           onClick={() => props.finish()}
           text={
             props.paymentMethod === PaymentMethods.AirdropPromoCode
-              ? 'Apply'
+              ? 'Create my PastelID using a Pastel Promocode'
               : `Proceed to 1,000 ${currencyName} Payment`
           }
           disabled={!nextActive}
+          showIcon={false}
         />
       </div>
     </div>

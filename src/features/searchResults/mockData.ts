@@ -14,7 +14,7 @@ export const categoriesData = [
 ]
 export const typesData = [
   { value: 'ALL', label: 'ALL' },
-  { value: 'Auctions', label: 'Auctions' },
+  { value: 'Auctions', label: 'Auction' },
 ]
 export const timesData = [
   { value: 'ALL', label: 'ALL' },
