@@ -4,7 +4,9 @@ import cn from 'classnames'
 import ButtonClose from 'common/components/Buttons/CloseButton'
 import iconInfo from 'common/assets/icons/ico-info.svg'
 
-ReactModal.setAppElement('#root')
+if (process.env.NODE_ENV !== 'test') {
+  ReactModal.setAppElement('#root')
+}
 
 export type TModal = {
   isOpen: boolean

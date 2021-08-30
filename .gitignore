@@ -1,5 +1,5 @@
+# IDE config
 .idea
-pastel-utility.conf
 
 # Logs
 logs
@@ -69,24 +69,6 @@ storybook-static
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
-
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
-
-# vuepress build output
-.vuepress/dist
-
-# Serverless directories
-.serverless/
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
 
 # Webpack
 .webpack/

@@ -6,10 +6,14 @@ import React from 'react'
 import { addDecorator } from '@storybook/react'
 import { MemoryRouter } from 'react-router'
 import { ToastContainer } from 'react-toastify'
+import { queryClient } from '../src/common/utils/queryClient'
+import { QueryClientProvider } from 'react-query'
 
-addDecorator(story => (
+addDecorator(Story => (
   <MemoryRouter initialEntries={['/']}>
-    {story()}
+    <QueryClientProvider client={queryClient}>
+      <Story />
+    </QueryClientProvider>
     <ToastContainer hideProgressBar autoClose={3000} />
   </MemoryRouter>
 ))

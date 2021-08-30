@@ -150,7 +150,7 @@ const ForumPost = (): JSX.Element => {
         <Select
           options={rankingData}
           selected={ranking}
-          selectClassName='bg-white w-[160px] mr-6'
+          className='bg-white w-[160px] mr-6'
           onChange={setRanking}
           placeholder='All categories'
         />

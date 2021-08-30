@@ -144,7 +144,7 @@ const NotificationModal = ({
               onChange={handleSelect}
               options={TTypesOptions}
               label='Types'
-              selectClassName='bg-white'
+              className='bg-white'
             />
             <DatePicker
               selected={startDate}

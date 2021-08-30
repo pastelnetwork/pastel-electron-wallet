@@ -133,7 +133,7 @@ const MemberProfile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={category}
                           onChange={setCategory}
-                          selectClassName='w-113px bg-white'
+                          className='w-113px bg-white'
                         />
                       </div>
                       <div className='flex items-center'>
@@ -142,7 +142,7 @@ const MemberProfile = (): JSX.Element => {
                           options={categoriesOptions}
                           selected={type}
                           onChange={setType}
-                          selectClassName='w-113px bg-white'
+                          className='w-113px bg-white'
                         />
                       </div>
                     </div>
@@ -152,7 +152,7 @@ const MemberProfile = (): JSX.Element => {
                         options={categoriesOptions}
                         selected={sort}
                         onChange={setSort}
-                        selectClassName='w-113px bg-white'
+                        className='w-113px bg-white'
                       />
                     </div>
                   </div>

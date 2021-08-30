@@ -24,6 +24,9 @@ export type TPaymentModalProps = {
   onSelectedRows: (row: TAddressRow) => void
 }
 
+const selectListClassName =
+  'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-[200px] overflow-y-auto z-100 whitespace-normal'
+
 const PaymentModal = ({
   isOpen,
   handleClose,
@@ -52,7 +55,8 @@ const PaymentModal = ({
             className='text-gray-2d w-full'
             labelClasses='text-base font-normal text-gray-a0 mr-2 absolute right-[25px]'
             inputClassName='text-base font-normal text-gray-4a pl-0'
-            autoCompleteClassName='w-full pr-[45px]'
+            inputWrapperClassName='w-full pr-[45px]'
+            customListClassName={selectListClassName}
             autocomplete={true}
             min={10000}
             max={20000}
@@ -72,14 +76,14 @@ const PaymentModal = ({
             labelClasses='text-base font-normal text-gray-4a mr-2 absolute left-16'
             className='text-gray-2d w-264px'
             inputClassName='text-base font-normal text-gray-4a pl-0'
-            autoCompleteClassName='w-full'
+            inputWrapperClassName='w-full'
+            customListClassName={selectListClassName}
             autocomplete={true}
             min={1}
             max={100}
             step={1}
             value={balance}
             onChange={(value: number | null) => {
-              console.log(value)
               if (value) {
                 setBalance(balance)
               }
