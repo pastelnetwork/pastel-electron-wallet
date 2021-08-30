@@ -3,9 +3,10 @@ import Select from './Select'
 export type {
   TOption,
   TBaseProps,
-  TOptionsProps,
-  TRangeProps,
-  TFormOptionsProps,
+  TSelectOptionsProps,
+  TSelectRangeProps,
+  TFormSelectProps,
+  TControlledSelectProps,
   TSelectProps,
 } from './Select'
 

@@ -46,14 +46,14 @@ const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
             options={typesData}
             selected={types}
             label='Type:'
-            selectClassName='bg-white w-[171px] mr-4'
+            className='bg-white w-[171px] mr-4'
             onChange={setTypes}
           />
           <Select
             options={rarenessesData}
             selected={rareness}
             label='Rareness:'
-            selectClassName='bg-white w-[171px] mr-[19px]'
+            className='bg-white w-[171px] mr-[19px]'
             onChange={setRareness}
           />
         </div>

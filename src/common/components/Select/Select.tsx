@@ -1,13 +1,14 @@
-import React, { ReactNode } from 'react'
-import Downshift from 'downshift'
+import React, { ReactNode, useState } from 'react'
+import Downshift, { ControllerStateAndHelpers } from 'downshift'
 import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
-import { parseFormattedNumber } from 'common/utils/format'
-import { useSelectOptions } from './select.utils'
-import FormControl, {
-  TFormControlProps,
-} from 'common/components/Form/FormControl'
-import { Controller, FieldValues } from 'react-hook-form'
+import SelectRange from './SelectRange'
+import { TFormControlProps } from '../Form/FormControl'
+import { FieldValues } from 'react-hook-form'
+import FormSelect from './FormSelect'
+import SelectList from './components/SelectList'
+import Spinner from '../Spinner'
+import { debounce } from '../../utils/function'
 
 export type TOption = {
   label: string
@@ -17,26 +18,42 @@ export type TOption = {
 export type TBaseProps = {
   placeholder?: string
   className?: string
-  selectClassName?: string
+  customClassName?: string
   label?: ReactNode
   autocomplete?: boolean
   append?: ReactNode
-  prepend?: ReactNode
   labelClasses?: string
   icon?: string
   iconClasses?: string
   disabled?: boolean
+  disabledClassName?: string
+  filterOptions?: (options: TOption[], value: string) => TOption[]
+  highlight?: boolean
+  highlightClassName?: string
+  isLoading?: boolean
+  noOptionsText?: ReactNode
+  debounce?: number
+  customListClassName?: string
+  listClassName?: string
+  customInputWrapperClassName?: string
+  disabledInputWrapperClassName?: string
+  inputWrapperClassName?: string
+  customInputClassName?: string
+  disabledInputClassName?: string
   inputClassName?: string
-  autoCompleteClassName?: string
+  onInputChange?(
+    value: string,
+    options: ControllerStateAndHelpers<TOption>,
+  ): void
 }
 
-export type TOptionsProps = TBaseProps & {
+export type TSelectOptionsProps = TBaseProps & {
   options: TOption[]
   onChange: (option: TOption | null) => void
   selected?: TOption | null
 }
 
-export type TRangeProps = TBaseProps & {
+export type TSelectRangeProps = TBaseProps & {
   min: number
   max: number
   step: number
@@ -44,75 +61,76 @@ export type TRangeProps = TBaseProps & {
   value: number | null
 }
 
-export type TFormOptionsProps<TForm> = TBaseProps &
+export type TControlledSelectProps = TSelectOptionsProps | TSelectRangeProps
+
+export type TFormSelectProps<TForm> = TBaseProps &
   Omit<TFormControlProps<TForm>, 'children'> & {
     options: TOption[]
   }
 
 export type TSelectProps<TForm> =
-  | TOptionsProps
-  | TFormOptionsProps<TForm>
-  | TRangeProps
+  | TControlledSelectProps
+  | TFormSelectProps<TForm>
 
 export default function Select<TForm extends FieldValues>(
   props: TSelectProps<TForm>,
 ): JSX.Element {
+  const [enableFiltering, setEnableFiltering] = useState(false)
+
   if ('form' in props) {
-    return (
-      <FormControl {...props}>
-        <Controller
-          name={props.name}
-          control={props.form.control}
-          render={({ field: { value, onChange } }) => (
-            <SelectInner
-              {...props}
-              label={undefined}
-              selected={value as TOption | null}
-              onChange={onChange}
-            />
-          )}
-        />
-      </FormControl>
-    )
+    return <FormSelect {...props} />
   }
 
-  return <SelectInner {...props} />
-}
+  if ('step' in props) {
+    return <SelectRange {...props} />
+  }
 
-const SelectInner = (props: TOptionsProps | TRangeProps) => {
   const {
+    className,
+    customClassName = 'bg-white transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex items-center p-0 relative',
     placeholder,
-    selectClassName,
     label,
-    autocomplete = false,
     append,
     labelClasses = 'text-gray-71 mr-2 absolute right-2.5',
     icon = '',
     iconClasses = '',
     disabled = false,
-    className,
+    disabledClassName,
+    onChange,
+    selected,
+    autocomplete,
+    isLoading,
+    customInputWrapperClassName = 'relative w-full',
+    disabledInputWrapperClassName = 'bg-gray-f6 border-gray-ec cursor-not-allowed',
+    inputWrapperClassName,
+    customInputClassName = `h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6 ${
+      icon ? 'pl-9 relative z-10' : 'pl-18px'
+    }`,
+    disabledInputClassName = 'cursor-not-allowed',
     inputClassName,
-    autoCompleteClassName,
   } = props
 
-  const {
-    options,
-    selected,
-    onChange,
-    onInputValueChange,
-    inputValueRef,
-  } = useSelectOptions(props)
+  let { onInputChange } = props
+  if (props.debounce && props.onInputChange) {
+    onInputChange = debounce(props.onInputChange, props.debounce)
+  }
 
-  let autoCompleteColor: string
-  if ('options' in props) {
-    autoCompleteColor = props.label ? 'text-gray-2d' : 'text-gray-71'
-  } else {
-    autoCompleteColor = 'text-gray-35'
+  const onInputValueChange = (
+    value: string,
+    event: ControllerStateAndHelpers<TOption>,
+  ) => {
+    const { type } = (event as unknown) as { type: string }
+    if (type === Downshift.stateChangeTypes.changeInput) {
+      setEnableFiltering(true)
+      onInputChange?.(value, event)
+    } else {
+      setEnableFiltering(false)
+    }
   }
 
   return (
     <Downshift
-      selectedItem={selected}
+      selectedItem={selected ?? null}
       onChange={onChange}
       itemToString={item => (item ? item.value : '')}
       onInputValueChange={onInputValueChange}
@@ -124,27 +142,17 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
         isOpen,
         highlightedIndex,
         selectedItem,
-        inputValue,
         getInputProps,
+        inputValue,
       }) => {
-        const value =
-          autocomplete &&
-          inputValue &&
-          parseFormattedNumber(inputValue).toString()
-        const filteredOptions = isOpen
-          ? value
-            ? options.filter(option => option.value.startsWith(value))
-            : options
-          : undefined
+        const inputProps = autocomplete && getInputProps()
 
         return (
           <div
             className={cn(
-              'transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f input flex-center p-0 relative',
-              disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
-              autoCompleteColor,
-              selectClassName,
               className,
+              customClassName,
+              disabled && disabledClassName,
             )}
           >
             {icon && (
@@ -156,30 +164,27 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 )}
               />
             )}
-            {autocomplete && (
+            {inputProps && (
               <div
                 className={cn(
-                  'relative',
-                  disabled && 'bg-gray-f6 border-gray-ec cursor-not-allowed',
-                  autoCompleteClassName,
+                  customInputWrapperClassName,
+                  disabled && disabledInputWrapperClassName,
+                  inputWrapperClassName,
                 )}
               >
                 <input
                   className={cn(
-                    'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
-                    icon ? 'pl-9 relative z-10' : 'pl-18px',
-                    disabled && 'cursor-not-allowed',
+                    customInputClassName,
+                    disabled && disabledInputClassName,
                     inputClassName,
                   )}
                   {...getToggleButtonProps()}
-                  {...getInputProps()}
+                  {...inputProps}
                   type='text'
                   role='input'
                   disabled={disabled}
                   value={
-                    append
-                      ? `${inputValueRef.current}${append}`
-                      : `${inputValueRef.current}`
+                    append ? `${inputProps.value}${append}` : inputProps.value
                   }
                 />
                 {label && <span className={labelClasses}>{label}</span>}
@@ -196,10 +201,11 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}
-                <span className='truncate max-w-[86%]'>
-                  {selectedItem ? selectedItem.label : placeholder}
-                </span>
+                {selectedItem ? selectedItem.label : placeholder}
               </button>
+            )}
+            {isLoading && (
+              <Spinner className='w-5 h-5 absolute right-8 opacity-50' />
             )}
             <img
               className={cn(
@@ -210,34 +216,16 @@ const SelectInner = (props: TOptionsProps | TRangeProps) => {
               src={caretDownIcon}
               alt='toggle menu'
             />
-            <ul
-              {...getMenuProps()}
-              className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium overflow-y-auto z-100 max-h-[200px]'
-              onClick={e => e.stopPropagation()}
-            >
-              {filteredOptions?.map((item, index) => {
-                const highlight =
-                  selectedItem === item || highlightedIndex === index
-
-                return (
-                  <li
-                    {...getItemProps({
-                      key: item.label,
-                      index,
-                      item,
-                    })}
-                    key={index}
-                    className={cn(
-                      'w-full h-10 flex items-center px-4 text-gray-71 cursor-pointer',
-                      highlight && 'bg-gray-f7',
-                    )}
-                  >
-                    {item.label}
-                    {append}
-                  </li>
-                )
-              })}
-            </ul>
+            <SelectList
+              {...props}
+              getMenuProps={getMenuProps}
+              getItemProps={getItemProps}
+              isOpen={isOpen}
+              selectedItem={selectedItem}
+              highlightedIndex={highlightedIndex}
+              inputValue={inputValue}
+              enableFiltering={enableFiltering}
+            />
           </div>
         )
       }}

@@ -6,11 +6,16 @@ import StarRate from '../StarRate'
 import Categories from '../Categories'
 import ProfileGeneralRow from '../ProfileGeneralRow'
 import Tooltip from 'common/components/Tooltip/Tooltip'
-import Select, { TOption } from '../Select/Select'
 
 import NSFWControls from './NSFWControls'
-import { formatPrice } from '../../../../common/utils/format'
-import { useCurrencyName } from '../../../../common/hooks/appInfo'
+import { formatPrice } from 'common/utils/format'
+import { useCurrencyName } from 'common/hooks/appInfo'
+import Select, { TOption } from 'common/components/Select'
+import {
+  DEFAULT_LANGUAGE,
+  LANGUAGES,
+} from '../../../../common/constants/languages'
+import { useSuggestLocations } from '../../../../api/locations'
 
 export type TCurrency =
   | 'EUR'
@@ -58,14 +63,20 @@ const ProfileGeneral = ({
   const price = 15
   const [categories, setCategories] = useState<Array<string>>(data.categories)
   const [bio, setBio] = useState<string>(data.bio)
-  const [location, setLocation] = useState<TOption | null>(locations[1])
-  const [language, setLanguage] = useState<TOption | null>(languages[0])
+  const [location, setLocation] = useState<TOption | null>(null)
+  const [language, setLanguage] = useState<TOption | null>(DEFAULT_LANGUAGE)
   const [currentPrice, setCurrentPrice] = useState(0)
   const currencyName = useCurrencyName()
 
+  const [locationsQuery, setLocationsQuery] = useState('')
+  const {
+    data: locations = [],
+    isLoading: isLoadingLocations,
+  } = useSuggestLocations(locationsQuery, {
+    enabled: locationsQuery.length > 0,
+  })
+
   useEffect(() => {
-    setLocation(locations[isEmpty ? 0 : 1])
-    setLanguage(languages[0])
     setBio(isEmpty ? 'None' : data.bio)
   }, [isEmpty])
 
@@ -88,10 +99,18 @@ const ProfileGeneral = ({
           {editMode ? (
             <Select
               className='text-gray-4a flex-grow shadow-4px'
+              onInputChange={setLocationsQuery}
+              debounce={200}
+              noOptionsText='No locations found'
               selected={location}
-              options={locations}
+              options={locations.map(location => ({
+                value: location,
+                label: location,
+              }))}
               onChange={setLocation}
               autocomplete
+              highlight
+              isLoading={isLoadingLocations}
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>{location?.label}</div>
@@ -102,8 +121,10 @@ const ProfileGeneral = ({
             <Select
               className='text-gray-4a flex-grow shadow-4px'
               selected={language}
-              options={languages}
+              options={LANGUAGES}
               onChange={setLanguage}
+              autocomplete
+              highlight
             />
           ) : (
             <div className='flex flex-grow text-gray-4a'>English</div>
@@ -232,30 +253,5 @@ const ProfileGeneral = ({
     </div>
   )
 }
-
-const locations: Array<TOption> = [
-  {
-    label: 'None',
-    value: 'None',
-  },
-  {
-    label: 'New York, US',
-    value: 'New York, US',
-  },
-  {
-    label: 'California, US',
-    value: 'California, US',
-  },
-]
-const languages: Array<TOption> = [
-  {
-    label: 'English',
-    value: '0',
-  },
-  {
-    label: 'Spanish',
-    value: '1',
-  },
-]
 
 export default ProfileGeneral

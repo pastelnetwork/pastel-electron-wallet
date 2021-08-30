@@ -40,13 +40,13 @@ const ChangeStatusModal = ({
           onChange={setListed}
           selected={listed}
           options={listedOptions}
-          selectClassName='flex-1 mb-6'
+          className='flex-1 mb-6'
         />
         <Select
           onChange={setStatus}
           selected={status}
           options={statusOptions}
-          selectClassName='flex-1 mb-6'
+          className='flex-1 mb-6'
         />
         <Input
           type='text'

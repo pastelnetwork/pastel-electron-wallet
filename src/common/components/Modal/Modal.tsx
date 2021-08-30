@@ -4,7 +4,9 @@ import cn from 'classnames'
 // Components
 import { CloseButton } from '../Buttons'
 
-ReactModal.setAppElement('#root')
+if (process.env.NODE_ENV !== 'test') {
+  ReactModal.setAppElement('#root')
+}
 
 export type TModal = {
   isOpen: boolean

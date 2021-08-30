@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import ProfileCard from '../components/MyProfileCard'
 import ProfileComments from '../components/ProfileComments'
 import { nativeCurrencyOptions } from '../myProfile/MyProfile'
-import { TOption } from '../components/Select/Select'
 import Checkbox from 'common/components/Checkbox'
 import { TComment } from '../components/CommentCard'
 import * as ROUTES from 'common/utils/constants/routes'
@@ -11,6 +10,7 @@ import avatar1 from 'common/assets/images/avatars/oval-1.svg'
 import avatar2 from 'common/assets/images/avatars/oval-2.svg'
 import avatar3 from 'common/assets/images/avatars/oval-3.svg'
 import avatar4 from 'common/assets/images/avatars/oval-4.svg'
+import { TOption } from '../../../common/components/Select'
 
 const commentsData: TComment[] = [
   {

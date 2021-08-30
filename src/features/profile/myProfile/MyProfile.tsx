@@ -4,7 +4,7 @@ import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral, {
   TCurrency,
 } from '../components/MyProfileGeneral/MyProfileGeneral'
-import { TOption } from '../components/Select/Select'
+import { TOption } from '../../../common/components/Select'
 
 export const nativeCurrencyOptions: TOption[] = [
   {
