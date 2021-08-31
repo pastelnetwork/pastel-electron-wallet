@@ -4,13 +4,13 @@ import {
   ShieldedBalance,
   TotalBalance,
   TransparencyBalance,
-} from '../../common/components/Icons'
-import { TTotalBalance } from '../../types/rpc'
-import Tooltip from '../../common/components/Tooltip'
+} from 'common/components/Icons'
+import { TTotalBalance } from 'types/rpc'
+import Tooltip from 'common/components/Tooltip'
 import cn from 'classnames'
-import { useCurrencyName } from '../../common/hooks/appInfo'
-import { formatPrice } from '../../common/utils/format'
-import Spinner from '../../common/components/Spinner'
+import { useCurrencyName } from 'common/hooks/appInfo'
+import { formatPrice } from 'common/utils/format'
+import RectangleLoader from 'common/components/Loader'
 
 type TBalanceCard = {
   style: {
@@ -25,14 +25,27 @@ type TBalanceCard = {
 
 export default function BalanceCards({
   totalBalances,
+  isLoading,
   activeTab,
   setActiveTab,
 }: {
   totalBalances?: TTotalBalance
+  isLoading: boolean
   activeTab: number
   setActiveTab(tab: number): void
 }): JSX.Element {
   const currencyName = useCurrencyName()
+
+  const loaderItem = isLoading && (
+    <div className='h-8 flex items-center'>
+      <RectangleLoader
+        className='h-3'
+        width={80}
+        height={12}
+        colorClass='text-gray-dd'
+      />
+    </div>
+  )
 
   const balanceCards = useMemo<TBalanceCard[]>(
     () => [
@@ -117,11 +130,9 @@ export default function BalanceCards({
                     index === activeTab ? 'text-gray-2d' : 'text-gray-71',
                   )}
                 >
-                  {card.psl === undefined ? (
-                    <Spinner className='w-6 h-6 mb-3' />
-                  ) : (
-                    formatPrice(card.psl, currencyName)
-                  )}
+                  {card.psl === undefined
+                    ? loaderItem
+                    : formatPrice(card.psl, currencyName)}
                 </div>
                 {card.style.type === 'total_balance' ? (
                   <div

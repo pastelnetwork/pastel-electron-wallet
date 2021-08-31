@@ -1,41 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import NumberFormat from 'react-number-format'
-import cn from 'classnames'
 import { ToastContainer } from 'react-toastify'
 
-import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
+import { walletRPC, transactionRPC } from 'api/pastel-rpc'
 import { TAddressRow } from 'types/rpc'
 import { useAppSelector } from 'redux/hooks'
 import { isSapling } from 'api/helpers'
 import { useAddressBook } from 'common/hooks'
-import { parseFormattedNumber, timeAgo } from 'common/utils/format'
-import PastelUtils from 'common/utils/utils'
-import Tooltip from 'common/components/Tooltip'
 import Alert from 'common/components/Alert'
-import Toggle from 'common/components/Toggle'
 import { Button } from 'common/components/Buttons'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
-import Table, { TRow } from 'common/components/Table'
+import { TRow } from 'common/components/Table'
 import Breadcrumbs from 'common/components/Breadcrumbs'
-import SelectAmount, { TOption } from 'common/components/SelectAmount'
 import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
 import dayjs from 'dayjs'
-import { AddressForm } from './AddressForm'
 import QRCodeModal from './QRCodeModal'
 import BalanceCards from './BalanceCards'
-import {
-  ElectricityIcon,
-  Clock,
-  EliminationIcon,
-  FilePDFIcon,
-  QRCode,
-} from 'common/components/Icons'
-import Spinner from '../../common/components/Spinner'
-
-import Checkbox from 'common/components/Checkbox/Checkbox'
-import styles from './WalletScreen.module.css'
+import { ElectricityIcon, Clock } from 'common/components/Icons'
+import WalletAddresses from './WalletAddresses'
+import { useToggle } from 'react-use'
 
 enum Tab {
   GENERAL,
@@ -43,7 +27,7 @@ enum Tab {
   MYSECURITY,
 }
 
-type TSelectionPslProps = {
+export type TSelectionPslProps = {
   address: string
   amount: number
   valid: boolean
@@ -53,125 +37,6 @@ type TSelectionPslProps = {
 const WalletScreen = (): JSX.Element => {
   const { info } = useAppSelector(state => state.appInfo)
   const [forceUpdateSelect, setForceUpdateSelect] = useState(false)
-
-  const Columns = [
-    {
-      key: 'address',
-      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
-      name: 'Address name',
-      headerColClasses: 'mx-30px',
-      custom: (value: string | number, row: TRow | undefined) => (
-        <div className='flex items-center mx-30px'>
-          <Checkbox
-            isChecked={selectedRows.indexOf(row?.address) !== -1}
-            clickHandler={() => row && setSelectedRowsFunction(row)}
-          />
-          <AddressForm
-            address={value.toString()}
-            currentRow={row}
-            saveAddressLabel={saveAddressLabel}
-          />
-        </div>
-      ),
-    },
-    {
-      key: 'time',
-      name: 'Last Activity',
-      colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
-      custom: (time: number) => (
-        <div className='mr-3 md:mr-0 text-gray-71 text-h5-medium'>
-          {time > 0 ? timeAgo(dayjs.unix(time).valueOf()) : '--'}
-        </div>
-      ),
-    },
-    {
-      key: 'qrCode',
-      name: 'Address QR',
-      colClasses:
-        'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
-      custom: (value: string | number, row: TRow | undefined) => (
-        <div className='flex pl-6'>
-          <span
-            className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            onClick={() => {
-              setCurrentAddress(row?.address)
-              setIsQRCodeModalOpen(true)
-            }}
-          >
-            <QRCode size={20} />
-          </span>
-        </div>
-      ),
-    },
-
-    {
-      key: 'address',
-      name: 'Keys',
-      colClasses:
-        'min-w-130px w-176px 1500px:w-244px flex-grow-0 text-h6 leading-5 font-normal',
-      custom: (value: string | number) => {
-        return (
-          <div className='flex items-center'>
-            <div className='text-gray-71 text-h5-medium'>private key</div>
-            <span
-              onClick={() => {
-                setCurrentAddress(value.toString())
-                setExportKeysModalOpen(true)
-              }}
-              className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            >
-              <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
-            </span>
-          </div>
-        )
-      },
-    },
-    {
-      key: 'amount',
-      name: 'Balance',
-      colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
-      custom: (value: string | number) => (
-        <div className='text-gray-71 text-h5-medium'>
-          {info?.currencyName}{' '}
-          <NumberFormat
-            value={value}
-            displayType='text'
-            thousandSeparator={true}
-          />
-        </div>
-      ),
-    },
-    {
-      key: 'psl',
-      name: '',
-      colClasses: 'min-w-[120px] w-[120px]',
-      custom: (value: number | string, row?: TRow) => {
-        const psl = selectionPsl.filter(psl => psl?.address === row?.address)[0]
-        return (
-          <div className='z-0'>
-            <SelectAmount
-              className='text-gray-2d w-28 bg-white'
-              min={0}
-              max={parseFloat(value.toString())}
-              step={PastelUtils.generateStep(parseInt(value.toString()))}
-              defaultValue={{
-                label: psl?.amount || row?.amount,
-                value: psl?.amount || row?.amount,
-              }}
-              forceUpdate={forceUpdateSelect}
-              onChange={(selection: TOption) => {
-                const selectedValue = parseFormattedNumber(selection.value)
-                handleAmountChange(selectedValue, row)
-              }}
-            />
-          </div>
-        )
-      },
-    },
-  ]
-
-  const walletRPC = new WalletRPC()
-  const transactionRPC = new TransactionRPC()
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
   const [selectionPsl, setSelectionPsl] = useState<TSelectionPslProps[]>([])
@@ -192,7 +57,10 @@ const WalletScreen = (): JSX.Element => {
 
   const { addressBook, updateAddressBook } = useAddressBook()
 
-  const { data: totalBalances } = walletRPC.useTotalBalance()
+  const {
+    data: totalBalances,
+    isLoading: isLoadingBalances,
+  } = walletRPC.useTotalBalance()
 
   const {
     data: tAddresses = [],
@@ -204,55 +72,51 @@ const WalletScreen = (): JSX.Element => {
     isLoading: isZAddressesLoading,
   } = walletRPC.useZAddressesWithBalance()
 
-  const addresses = useMemo(() => [...zAddresses, ...tAddresses], [
-    tAddresses,
-    zAddresses,
-  ])
-
   const {
     data: zListAddresses = [],
     isLoading: isAddressesLoading,
+    refetch: refetchZListAddresses,
   } = walletRPC.useZAddresses()
 
   const {
     data: addressesByAccount = [],
     isLoading: isAddressesByAccountLoading,
+    refetch: refetchAddressesByAccount,
   } = walletRPC.useAddressesByAccount()
+
+  const {
+    data: transactions = [],
+    isLoading: isLoadingTransactions,
+    refetch: refetchTransactions,
+  } = transactionRPC.useTAndZTransactions()
+
+  const addresses = useMemo(() => [...zAddresses, ...tAddresses], [
+    tAddresses,
+    zAddresses,
+  ])
 
   const allAddresses = useMemo(
     () => [...addressesByAccount, ...zListAddresses],
     [zListAddresses, addressesByAccount],
   )
 
-  const [isLoadingAddresses, setIsLoadingAddresses] = useState(
+  const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(false)
+
+  const isLoadingAddresses =
     isTAddressesLoading ||
-      isZAddressesLoading ||
-      isAddressesLoading ||
-      isAddressesByAccountLoading,
-  )
+    isZAddressesLoading ||
+    isAddressesLoading ||
+    isAddressesByAccountLoading ||
+    isLoadingTransactions
 
-  const [walletOriginAddresses, setWalletOriginAddresses] = useState<
-    TAddressRow[]
-  >([])
-  const [walletAddresses, setWalletAddresses] = useState<TAddressRow[]>([])
-
-  useEffect(() => {
-    if (!addresses) {
-      return
-    }
-
-    fetchWalletAddresses()
-  }, [addresses, allAddresses])
-
-  const fetchWalletAddresses = async () => {
-    const transactions = await transactionRPC.fetchTandZTransactions()
-    const addressRows = addresses.map(a => {
+  const walletAddresses: TAddressRow[] = useMemo(() => {
+    let addressRows = addresses.map(a => {
       const address = a.address.toString()
       const type = isSapling(address) ? 'shielded' : 'transparent'
       const [book] = addressBook.filter(b => b.address === address) || []
-      const lastActivity = transactions.filter(
+      const lastActivity = transactions.find(
         transaction => transaction.address === address,
-      )[0]
+      )
 
       return {
         id: address,
@@ -268,11 +132,11 @@ const WalletScreen = (): JSX.Element => {
       } as TAddressRow
     })
 
-    allAddresses.map(address => {
+    allAddresses.forEach(address => {
       const existAddress = addresses.filter(add => add.address === address)
       if (existAddress.length < 1) {
         const type = isSapling(address) ? 'shielded' : 'transparent'
-        const [book] = addressBook.filter(b => b.address === address) || []
+        const book = addressBook.find(b => b.address === address)
         addressRows.push({
           id: address,
           address: address,
@@ -283,24 +147,19 @@ const WalletScreen = (): JSX.Element => {
           qrCode: '',
           viewKey: '',
           privateKey: '',
-          addressNick: book ? book.label : '',
+          addressNick: book?.label || '',
         })
       }
     })
 
-    setWalletOriginAddresses(addressRows)
-    setWalletAddresses(addressRows)
-    setIsLoadingAddresses(false)
-  }
+    if (hideEmptyAddresses) {
+      addressRows = addressRows.filter(row => row.amount > 0)
+    }
+
+    return addressRows
+  }, [addresses, allAddresses, addressBook, hideEmptyAddresses])
 
   const saveAddressLabel = (address: string, label: string): void => {
-    // Update address nick
-    const newWalletAddress: TAddressRow[] = walletAddresses.map(a => ({
-      ...a,
-      addressNick: a.address === address ? label : a.addressNick || '',
-    }))
-    setWalletAddresses(newWalletAddress)
-
     updateAddressBook({ address, label })
   }
 
@@ -334,14 +193,6 @@ const WalletScreen = (): JSX.Element => {
         temp.push(row.address.toString())
       }
       setSelectedRows([...temp])
-    }
-  }
-
-  const hideEmptyAddress = (check: boolean) => {
-    if (check) {
-      setWalletAddresses(walletOriginAddresses.filter(a => a.amount > 0))
-    } else {
-      setWalletAddresses(walletOriginAddresses)
     }
   }
 
@@ -392,9 +243,15 @@ const WalletScreen = (): JSX.Element => {
   }
 
   const handleCreateNewAddress = async () => {
-    const result = await walletRPC.createNewAddress(active === 2)
+    const isZAddress = active === 2
+    const result = await walletRPC.createNewAddress(isZAddress)
     if (result) {
-      await fetchWalletAddresses()
+      refetchTransactions()
+      if (isZAddress) {
+        refetchZListAddresses()
+      } else {
+        refetchAddressesByAccount()
+      }
     }
   }
 
@@ -442,6 +299,7 @@ const WalletScreen = (): JSX.Element => {
       <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
         <BalanceCards
           totalBalances={totalBalances}
+          isLoading={isLoadingBalances}
           activeTab={active}
           setActiveTab={setActive}
         />
@@ -459,134 +317,23 @@ const WalletScreen = (): JSX.Element => {
           </Alert>
         )}
 
-        {walletAddresses.length > 0 && (
-          <div className='bg-white pt-[30px] rounded-lg mt-[30px] min-w-594px'>
-            <div
-              className={cn(
-                'overflow-y-auto mr-4 pr-4 overflow-x-hidden ml-9',
-                styles.walletContent,
-              )}
-            >
-              {active !== 0 && (
-                <Table
-                  data={
-                    active === 1
-                      ? walletAddresses.filter(
-                          item => item.type === 'transparent',
-                        )
-                      : walletAddresses.filter(item => item.type === 'shielded')
-                  }
-                  columns={Columns}
-                  headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                  bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
-                  bodyTdClasses='text-h5 leading-6 font-medium'
-                  showCheckbox={false}
-                  selectedRow={setSelectedRowsFunction}
-                />
-              )}
-              {active == 0 && (
-                <div>
-                  <Table
-                    data={walletAddresses.filter(
-                      item => item.type === 'transparent',
-                    )}
-                    columns={Columns}
-                    headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
-                    bodyTdClasses='text-h5 leading-6 font-medium'
-                    showCheckbox={false}
-                    selectedRow={setSelectedRowsFunction}
-                    extendHeader={
-                      <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
-                        Transparent
-                      </div>
-                    }
-                    extendHeaderClassName='h-6 top-[-1px]'
-                    stickyTopClassName='top-[23px]'
-                  />
-                  <Table
-                    data={walletAddresses.filter(
-                      item => item.type === 'shielded',
-                    )}
-                    columns={Columns}
-                    headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
-                    bodyTdClasses='text-h5 leading-6 font-medium'
-                    showCheckbox={false}
-                    selectedRow={setSelectedRowsFunction}
-                    extendHeader={
-                      <div className='mb-2.5 mt-7 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
-                        Shielded
-                      </div>
-                    }
-                    extendHeaderClassName='h-6 top-[-30px]'
-                    stickyTopClassName='top-[23px]'
-                  />
-                </div>
-              )}
-            </div>
-
-            <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
-              <div className='flex items-center text-h6-leading-20'>
-                <Toggle toggleHandler={hideEmptyAddress}>
-                  Hide empty addresses
-                  <div className='ml-2'>
-                    <Tooltip
-                      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                      content='Hide empty addresses'
-                      width={150}
-                      type='top'
-                    >
-                      <EliminationIcon className='text-gray-8e' size={20} />
-                    </Tooltip>
-                  </div>
-                </Toggle>
-              </div>
-              <div className='flex items-center'>
-                <div className='text-gray-71 text-h4'>Selected total:</div>
-                <div className='ml-3 text-gray-2d text-h3-heavy'>
-                  <NumberFormat
-                    value={selectedAmount}
-                    displayType='text'
-                    thousandSeparator={true}
-                  />{' '}
-                  {info.currencyName}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {walletAddresses.length == 0 && (
-          <div
-            className={cn(
-              'bg-white rounded-lg mt-3.5 flex items-center justify-center pb-10',
-              styles.walletEmptyContent,
-            )}
-          >
-            {isLoadingAddresses && <Spinner className='w-8 h-8 text-blue-3f' />}
-            {!isLoadingAddresses && (
-              <div className='text-center'>
-                <div className='mb-3 text-gray-4a text-h5'>
-                  You have no Addresses
-                </div>
-                <Button
-                  variant='secondary'
-                  className='w-[264px] px-0 mt-3'
-                  childrenClassName='w-full'
-                  onClick={handleCreateNewAddress}
-                >
-                  <div className='flex items-center ml-[19px]'>
-                    <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                    <div className='ml-11px text-blue-3f text-h5-medium'>
-                      Generate a new {info.currencyName} Address
-                    </div>
-                  </div>
-                </Button>
-              </div>
-            )}
-          </div>
-        )}
+        <WalletAddresses
+          walletAddresses={walletAddresses}
+          activeTab={active}
+          hideEmptyAddress={toggleHideEmptyAddresses}
+          selectedAmount={selectedAmount}
+          isLoadingAddresses={isLoadingAddresses}
+          handleCreateNewAddress={handleCreateNewAddress}
+          selectedRows={selectedRows}
+          setSelectedRowsFunction={setSelectedRowsFunction}
+          saveAddressLabel={saveAddressLabel}
+          setCurrentAddress={setCurrentAddress}
+          setIsQRCodeModalOpen={setIsQRCodeModalOpen}
+          setExportKeysModalOpen={setExportKeysModalOpen}
+          selectionPsl={selectionPsl}
+          forceUpdateSelect={forceUpdateSelect}
+          handleAmountChange={handleAmountChange}
+        />
 
         <div className='flex justify-end mt-5 pb-[30px]'>
           {walletAddresses.length > 0 && (

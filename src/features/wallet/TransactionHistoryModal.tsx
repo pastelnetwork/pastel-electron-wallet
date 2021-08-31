@@ -102,7 +102,7 @@ const TransactionHistoryModal = ({
   useEffect(() => {
     const getTransactions = async () => {
       const transactionRPC = new TransactionRPC()
-      const trans = await transactionRPC.fetchTandZTransactions()
+      const trans = await transactionRPC.fetchTAndZTransactions()
       const filterTransactions = trans.map(t => {
         return {
           date: dayjs.unix(t.time).format('DD/MM/YY HH:mm'),
