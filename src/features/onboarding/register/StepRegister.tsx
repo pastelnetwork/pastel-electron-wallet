@@ -154,7 +154,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
       <div className='mt-7 flex justify-end'>
         <NextButton
           onClick={() => props.goToNextStep()}
-          text='Next step 2'
+          text='Next step'
           disabled={!nextActive}
         />
       </div>

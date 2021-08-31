@@ -17,8 +17,8 @@ export type TStepFeeProps = {
   setPromoCode(val: string): void
   exchangeAddress: string
   setExchangeAddress(val: string): void
-  finish(): void
   goBack(): void
+  goToNextStep(): void
 }
 
 const StepFee = (props: TStepFeeProps): JSX.Element => {
@@ -172,7 +172,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
         <PrevButton onClick={() => props.goBack()} />
         <NextButton
           className='min-w-160px'
-          onClick={() => props.finish()}
+          onClick={() => props.goToNextStep()}
           text={
             props.paymentMethod === PaymentMethods.AirdropPromoCode
               ? 'Create my PastelID using a Pastel Promocode'

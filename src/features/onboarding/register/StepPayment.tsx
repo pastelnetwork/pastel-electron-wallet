@@ -19,7 +19,7 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
   const currencyName = useCurrencyName()
   const methods = [
     {
-      name: 'Pastel Promocode',
+      name: 'Airdrop “Promo Code”',
       method: PaymentMethods.AirdropPromoCode,
     },
     {
