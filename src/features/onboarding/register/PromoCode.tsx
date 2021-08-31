@@ -53,12 +53,14 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
             walletRPC.fetchTandZAddresses(),
             walletRPC.fetchTotalBalance(),
           ])
-          const promoCodeBalance = addresses.filter(
+          const promoCodeBalance = addresses.find(
             address => address.address === result,
           )
-          setPromoBalance(
-            parseFloat(promoCodeBalance[0]?.amount.toString()) || 0,
-          )
+          if (promoCodeBalance) {
+            setPromoBalance(parseFloat(promoCodeBalance.amount.toString()))
+          } else {
+            setPromoBalance(0)
+          }
           setWalletBalance(totalBalances.total)
           setStatus('done')
           setValidPromoCode(true)

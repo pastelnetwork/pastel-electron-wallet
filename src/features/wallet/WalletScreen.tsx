@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import NumberFormat from 'react-number-format'
 import cn from 'classnames'
-import { ToastContainer } from 'react-toastify'
 
 import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
 import { TAddressRow } from 'types/rpc'
@@ -708,11 +707,6 @@ const WalletScreen = (): JSX.Element => {
         isOpen={isExportKeysModalOpen}
         address={currentAddress}
         handleClose={() => setExportKeysModalOpen(false)}
-      />
-      <ToastContainer
-        className='flex flex-grow w-auto'
-        hideProgressBar={true}
-        autoClose={false}
       />
       <QRCodeModal
         isOpen={isQRCodeModalOpen}

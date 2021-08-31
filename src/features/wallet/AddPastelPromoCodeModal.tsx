@@ -43,13 +43,17 @@ export default function AddPastelPromoCodeModal({
       const result = await importPastelPromoCode(pastelPromoCode)
       if (result) {
         const addresses = await walletRPC.fetchTandZAddresses()
-        const promoCodeBalance = addresses.filter(
+        const promoCodeBalance = addresses.find(
           address => address.address === result,
         )
         setValidPromoCode(true)
-        setMessage(
-          formatNumber(parseFloat(promoCodeBalance[0]?.amount.toString()) || 0),
-        )
+        if (promoCodeBalance) {
+          setMessage(
+            formatNumber(parseFloat(promoCodeBalance?.amount.toString())),
+          )
+        } else {
+          setMessage('0')
+        }
         fetchData()
       } else {
         setValidPromoCode(false)

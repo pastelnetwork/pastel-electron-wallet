@@ -72,7 +72,7 @@ const RegisterContent = (): JSX.Element => {
     }
   }
 
-  const onLastStepPassed = async () => {
+  const onLastStepPassed = () => {
     history.push(ROUTES.REGISTER_PENDING)
   }
 

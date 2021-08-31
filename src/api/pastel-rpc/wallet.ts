@@ -1,5 +1,4 @@
 import { groupBy } from 'underscore'
-import { toast } from 'react-toastify'
 import log from 'electron-log'
 
 import {
@@ -297,11 +296,6 @@ export class WalletRPC {
         )
         return res.result
       } catch (err) {
-        toast(err.message, { type: 'error' })
-        log.error(
-          `api/pastel-rpc/wallet createNewAddress error: ${err.message}`,
-          err,
-        )
         return null
       }
     } else {
@@ -312,11 +306,6 @@ export class WalletRPC {
         )
         return res.result
       } catch (err) {
-        toast(err.message, { type: 'error' })
-        log.error(
-          `api/pastel-rpc/wallet createNewAddress error: ${err.message}`,
-          err,
-        )
         return null
       }
     }
@@ -331,12 +320,11 @@ export class WalletRPC {
         ])
         return result.address
       } catch (err) {
-        toast(err.message, { type: 'error' })
         log.error(
           `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
           err,
         )
-        return ''
+        throw err
       }
     } else if (key.startsWith('zxview')) {
       try {
@@ -346,12 +334,11 @@ export class WalletRPC {
         ])
         return result.address
       } catch (err) {
-        toast(err.message, { type: 'error' })
         log.error(
           `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
           err,
         )
-        return ''
+        throw err
       }
     } else {
       try {
@@ -362,12 +349,11 @@ export class WalletRPC {
         ])
         return result
       } catch (err) {
-        toast(err.message, { type: 'error' })
         log.error(
           `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
           err,
         )
-        return ''
+        throw err
       }
     }
   }
