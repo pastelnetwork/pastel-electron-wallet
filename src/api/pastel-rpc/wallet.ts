@@ -1,9 +1,11 @@
 import { groupBy } from 'underscore'
+import log from 'electron-log'
 
 import {
   TAddressBalance,
   TAddressList,
   TListAddressesResponse,
+  TListUnspent,
   TListUnspentResponse,
   TResponse,
   TTotalBalanceResponse,
@@ -11,6 +13,8 @@ import {
   TZListUnspentResponse,
   TZListUnspent,
   TCreateAddressResponse,
+  TPrivKeyResponse,
+  TZPrivKeyResponse,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -211,8 +215,8 @@ export class WalletRPC {
       },
     )
 
-    const tResult: TAddressList[] = results[0].result.map(
-      (addr: TZListUnspent) => {
+    const tResult: TAddressList[] = results[1].result.map(
+      (addr: TListUnspent) => {
         return {
           txid: addr.txid,
           address: addr.address,
@@ -303,6 +307,53 @@ export class WalletRPC {
         return res.result
       } catch (err) {
         return null
+      }
+    }
+  }
+
+  async importPrivKey(key: string, rescan: boolean): Promise<string> {
+    if (key.startsWith('p-secret-extended-key')) {
+      try {
+        const { result } = await rpc<TZPrivKeyResponse>('z_importkey', [
+          key,
+          rescan ? 'yes' : 'no',
+        ])
+        return result.address
+      } catch (err) {
+        log.error(
+          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
+          err,
+        )
+        throw err
+      }
+    } else if (key.startsWith('zxview')) {
+      try {
+        const { result } = await rpc<TZPrivKeyResponse>('z_importviewingkey', [
+          key,
+          rescan ? 'yes' : 'no',
+        ])
+        return result.address
+      } catch (err) {
+        log.error(
+          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
+          err,
+        )
+        throw err
+      }
+    } else {
+      try {
+        const { result } = await rpc<TPrivKeyResponse>('importprivkey', [
+          key,
+          'imported',
+          rescan,
+        ])
+        return result
+      } catch (err) {
+        log.error(
+          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
+          err,
+        )
+        throw err
       }
     }
   }

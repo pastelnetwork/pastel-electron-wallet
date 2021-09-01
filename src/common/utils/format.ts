@@ -34,8 +34,11 @@ export const formatAbbreviatedNumber = (x: number, digits: number): string => {
     : '0'
 }
 
-export const formatPrice = (price: number, currencyName: string): string =>
-  `${formatAbbreviatedNumber(price, 0)} ${currencyName}`
+export const formatPrice = (
+  price: number,
+  currencyName: string,
+  digits = 0,
+): string => `${formatAbbreviatedNumber(price, digits)} ${currencyName}`
 
 export const formatTime = (val: Date): string => {
   return dateformat(val, 'hh:MM') // TODO: change if another format required

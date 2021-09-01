@@ -26,7 +26,7 @@ type TAddressRow = {
   privateKey: string
   amount: number
   psl: number
-  type: 'shielded' | 'transparent' | 'balance'
+  type: 'shielded' | 'transparent' | 'balance' | 'promoCode'
   addressNick?: string
 }
 
@@ -155,6 +155,11 @@ type TAddressMempool = {
   prevout: string
 }
 
+type TImportKey = {
+  type: string
+  address: string
+}
+
 type TAddressTxIdResponse = TResponse<string[]>
 type TWalletInfoResponse = TResponse<TWalletInfo>
 type TListAddressesResponse = TResponse<string[]>
@@ -168,6 +173,8 @@ type TValidateAddressesResponse = TResponse<TValidateAddress>
 type TZListUnspentResponse = TResponse<TZListUnspent[]>
 type TZListReceivedByAddressResponse = TResponse<TZListReceivedByAddress[]>
 type TCreateAddressResponse = TResponse<string>
+type TPrivKeyResponse = TResponse<string>
+type TZPrivKeyResponse = TResponse<TImportKey>
 
 export type {
   TUtxo,
@@ -200,4 +207,6 @@ export type {
   TValidateAddressesResponse,
   TZListReceivedByAddressResponse,
   TCreateAddressResponse,
+  TPrivKeyResponse,
+  TZPrivKeyResponse,
 }

@@ -5,8 +5,10 @@ import { AddressForm } from './AddressForm'
 import { formatPrice, parseFormattedNumber, timeAgo } from 'common/utils/format'
 import dayjs from 'dayjs'
 import { FilePDFIcon, QRCode } from 'common/components/Icons'
-import SelectAmount, { TOption } from 'common/components/SelectAmount'
-import PastelUtils from 'common/utils/utils'
+import SelectAmount, {
+  TOption,
+  generateStep,
+} from 'common/components/SelectAmount'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { TSelectionPslProps } from './WalletScreen'
 
@@ -156,7 +158,7 @@ export default function AddressesTable({
               className='text-gray-2d w-28 bg-white'
               min={0}
               max={parseFloat(value.toString())}
-              step={PastelUtils.generateStep(parseInt(value.toString()))}
+              step={generateStep(parseInt(value.toString()))}
               defaultValue={{
                 label: psl?.amount || row?.amount,
                 value: psl?.amount || row?.amount,

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import { ToastContainer } from 'react-toastify'
 
 import { walletRPC, transactionRPC } from 'api/pastel-rpc'
 import { TAddressRow } from 'types/rpc'
@@ -20,6 +19,11 @@ import BalanceCards from './BalanceCards'
 import { ElectricityIcon, Clock } from 'common/components/Icons'
 import WalletAddresses from './WalletAddresses'
 import { useToggle } from 'react-use'
+import AddPastelPromoCodeModal from './AddPastelPromoCodeModal'
+import {
+  readPastelPromoCode,
+  TPastelPromoCode,
+} from 'common/utils/PastelPromoCode'
 
 enum Tab {
   GENERAL,
@@ -40,6 +44,21 @@ const WalletScreen = (): JSX.Element => {
 
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
   const [selectionPsl, setSelectionPsl] = useState<TSelectionPslProps[]>([])
+  const [pastelPromoCode, setPastelPromoCode] = useState<TPastelPromoCode[]>([])
+
+  useEffect(() => {
+    getPastelPromoCode()
+  }, [])
+
+  const getPastelPromoCode = async () => {
+    const promoCodeList = await readPastelPromoCode()
+    setPastelPromoCode(promoCodeList)
+  }
+
+  const [
+    isAddPastelPromoCodeModalOpen,
+    setAddPastelPromoCodeModalOpen,
+  ] = useState(false)
 
   const [
     isTransactionHistoryModalOpen,
@@ -156,8 +175,27 @@ const WalletScreen = (): JSX.Element => {
       addressRows = addressRows.filter(row => row.amount > 0)
     }
 
-    return addressRows
-  }, [addresses, allAddresses, addressBook, hideEmptyAddresses])
+    const tmpAddressRows: TAddressRow[] = addressRows.map(address => {
+      const promoCode = pastelPromoCode.find(
+        promoCode => promoCode.address === address.address,
+      )
+      if (promoCode) {
+        return {
+          ...address,
+          addressNick: promoCode.label,
+        }
+      } else {
+        return address
+      }
+    })
+    return tmpAddressRows
+  }, [
+    addresses,
+    allAddresses,
+    addressBook,
+    hideEmptyAddresses,
+    pastelPromoCode,
+  ])
 
   const saveAddressLabel = (address: string, label: string): void => {
     updateAddressBook({ address, label })
@@ -336,10 +374,23 @@ const WalletScreen = (): JSX.Element => {
         />
 
         <div className='flex justify-end mt-5 pb-[30px]'>
+          <Button
+            onClick={() => setAddPastelPromoCodeModalOpen(true)}
+            variant='secondary'
+            className='w-[240px] px-0'
+            childrenClassName='w-full'
+          >
+            <div className='flex items-center ml-5'>
+              <div className='text-blue-3f text-h5-medium'>+</div>{' '}
+              <div className='ml-2 text-blue-3f text-h5-medium'>
+                Add Pastel Promo Code
+              </div>
+            </div>
+          </Button>
           {walletAddresses.length > 0 && (
             <Button
               variant='secondary'
-              className='w-[264px] px-0'
+              className='w-[264px] ml-30px px-0'
               childrenClassName='w-full'
               onClick={handleCreateNewAddress}
             >
@@ -391,15 +442,20 @@ const WalletScreen = (): JSX.Element => {
         address={currentAddress}
         handleClose={() => setExportKeysModalOpen(false)}
       />
-      <ToastContainer
-        className='flex flex-grow w-auto'
-        hideProgressBar={true}
-        autoClose={false}
-      />
       <QRCodeModal
         isOpen={isQRCodeModalOpen}
         address={currentAddress}
         handleClose={() => setIsQRCodeModalOpen(false)}
+      />
+      <AddPastelPromoCodeModal
+        isOpen={isAddPastelPromoCodeModalOpen}
+        handleClose={() => setAddPastelPromoCodeModalOpen(false)}
+        fetchData={() => {
+          refetchTransactions()
+          refetchZListAddresses()
+          refetchAddressesByAccount()
+          getPastelPromoCode()
+        }}
       />
     </div>
   )
