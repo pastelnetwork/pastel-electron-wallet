@@ -92,6 +92,7 @@
     "react": "16.14.0",
     "react-accessible-accordion": "3.3.4",
     "react-circular-progressbar": "2.0.4",
+    "react-content-loader": "6.0.3",
     "react-csv": "2.0.3",
     "react-datepicker": "4.1.1",
     "react-dom": "16.14.0",

@@ -22,7 +22,9 @@ export const getFileName = async (): Promise<string | null> => {
   }
 
   const fileName = path.join(dir, 'PastelPromoCode.json')
-  fs.createWriteStream(fileName)
+  if (!fs.existsSync(fileName)) {
+    fs.createWriteStream(fileName)
+  }
 
   return fileName
 }

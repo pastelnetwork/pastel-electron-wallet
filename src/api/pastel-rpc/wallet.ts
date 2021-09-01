@@ -358,3 +358,5 @@ export class WalletRPC {
     }
   }
 }
+
+export const walletRPC = new WalletRPC()
