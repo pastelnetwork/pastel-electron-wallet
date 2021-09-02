@@ -75,13 +75,16 @@ export class TransactionRPC {
     }
   }
 
-  /**
-   * Get list of transactions
-   *
-   * @returns ITTransactionResponse
-   */
-  async getTxns(): Promise<TTransactionResponse> {
-    return rpc<TTransactionResponse>('listtransactions', [], { throw: true })
+  async listTransactions({
+    count,
+    from,
+  }: {
+    count: number
+    from: number
+  }): Promise<TTransactionResponse> {
+    return rpc<TTransactionResponse>('listtransactions', ['', count, from], {
+      throw: true,
+    })
   }
 
   /**
@@ -171,7 +174,7 @@ export class TransactionRPC {
    */
   async fetchTAndZTransactions(): Promise<TTransaction[]> {
     const senttxstore = await loadSentTxns()
-    const txtListResult = await this.getTxns()
+    const txtListResult = await this.listTransactions({ count: 10, from: 0 })
 
     // Flat list of transactions
     const ttxlist: TTransaction[] = await this.flatTxns(txtListResult)

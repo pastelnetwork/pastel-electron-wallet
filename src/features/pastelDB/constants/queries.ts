@@ -197,27 +197,6 @@ export const createListreceivedbyaddress = `CREATE TABLE listreceivedbyaddress (
   createdAt int
 )`
 
-export const createListtransactions = `CREATE TABLE listtransactions (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  account VARCHAR(255),
-  address VARCHAR(255),
-  category VARCHAR(255),
-  amount int,
-  vout int,
-  confirmations int,
-  blockhash int,
-  blockindex int,
-  blocktime int,
-  expiryheight int,
-  txid VARCHAR(255),
-  walletconflicts text,
-  time int,
-  timereceived int,
-  vjoinsplit text,
-  size int,
-  createdAt int
-)`
-
 export const createListunspent = `CREATE TABLE listunspent (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   txid VARCHAR(255),
@@ -579,44 +558,6 @@ export const insertWalletinfoQuery = `INSERT INTO walletinfo(
   $keypoolsize,
   $paytxfee,
   $seedfp,
-  $createdAt
-)`
-
-export const insertListtransactionsQuery = `INSERT INTO listtransactions(
-  account,
-  address,
-  category,
-  amount,
-  vout,
-  confirmations,
-  blockhash,
-  blockindex,
-  blocktime,
-  expiryheight,
-  txid,
-  walletconflicts,
-  time,
-  timereceived,
-  vjoinsplit,
-  size,
-  createdAt
-) VALUES (
-  $account,
-  $address,
-  $category,
-  $amount,
-  $vout,
-  $confirmations,
-  $blockhash,
-  $blockindex,
-  $blocktime,
-  $expiryheight,
-  $txid,
-  $walletconflicts,
-  $time,
-  $timereceived,
-  $vjoinsplit,
-  $size,
   $createdAt
 )`
 

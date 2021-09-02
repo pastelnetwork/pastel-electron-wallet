@@ -14,7 +14,6 @@ import {
   TRawMempool,
   TRawTransaction,
   TTotalBalance,
-  TTransaction,
   TTransactionInfo,
   TWalletInfo,
 } from 'types/rpc'
@@ -27,7 +26,6 @@ import {
   createChaintips,
   createListaddresses,
   createListreceivedbyaddress,
-  createListtransactions,
   createListunspent,
   createMempoolinfo,
   createMininginfo,
@@ -46,7 +44,6 @@ import {
   insertBlocksubsidyQuery,
   insertChaintipsQuery,
   insertListaddressesQuery,
-  insertListtransactionsQuery,
   insertListunspentQuery,
   insertMempoolinfoQuery,
   insertMininginfoQuery,
@@ -75,6 +72,7 @@ import {
 } from './constants'
 import { TTxoutsetInfo, TValidateFields } from './type'
 import store from '../../redux/store'
+import { createListTransactions } from './wallet/transactions.repo'
 
 const getSqliteFilePath = () => {
   const path = store.getState().appInfo.sqliteFilePath
@@ -208,7 +206,7 @@ export async function createWalletTables(db: Database): Promise<void> {
   // create Wallet data tables
   db.exec(createWalletinfo)
   db.exec(createListunspent)
-  db.exec(createListtransactions)
+  createListTransactions(db)
   db.exec(createTotalbalance)
 }
 
@@ -874,37 +872,6 @@ export function insertWalletinfo(
   }
 
   pastelDB.exec(insertWalletinfoQuery, values)
-}
-
-export function insertListTransactions(
-  pastelDB: Database,
-  listtransactions: TTransaction,
-): void {
-  const createdAt = Date.now()
-  const walletconflicts = JSON.stringify(listtransactions.walletconflicts)
-  const vjoinsplit = JSON.stringify(listtransactions.vjoinsplit)
-  const values = {
-    $account: listtransactions.account,
-    $address: listtransactions.address || null,
-    $category: listtransactions.category,
-    $amount: listtransactions.amount,
-    $vout: listtransactions.vout,
-    $confirmations: listtransactions.confirmations,
-    $blockhash: listtransactions.blockhash,
-    $blockindex: listtransactions.blockindex,
-    $blocktime: listtransactions.blocktime,
-    $expiryheight: listtransactions.expiryheight,
-    $txid: listtransactions.txid,
-    $walletconflicts: walletconflicts,
-    $time: listtransactions.time,
-    $timereceived: listtransactions.timereceived,
-    $vjoinsplit: vjoinsplit,
-    $size: listtransactions.size,
-    $lastblock: listtransactions.lastblock || null,
-    $createdAt: createdAt,
-  }
-
-  pastelDB.exec(insertListtransactionsQuery, values)
 }
 
 export function insertListunspent(

@@ -10,7 +10,6 @@ import {
   createChaintips,
   createListaddresses,
   createListreceivedbyaddress,
-  createListtransactions,
   createListunspent,
   createMempoolinfo,
   createMininginfo,
@@ -28,7 +27,6 @@ import {
   insertBlocksubsidyQuery,
   insertChaintipsQuery,
   insertListaddressesQuery,
-  insertListtransactionsQuery,
   insertListunspentQuery,
   insertMempoolinfoQuery,
   insertMininginfoQuery,
@@ -45,6 +43,11 @@ import {
 } from '../constants'
 
 import * as pastelDBLib from '../pastelDBLib'
+
+import {
+  createListTransactions,
+  insertListTransaction,
+} from '../wallet/transactions.repo'
 
 type Databaseinstance = {
   db: Database
@@ -82,7 +85,7 @@ describe('managePastelDatabase', () => {
     pastelDB.db.exec(createBlocksubsidy)
     pastelDB.db.exec(createWalletinfo)
     pastelDB.db.exec(createListreceivedbyaddress)
-    pastelDB.db.exec(createListtransactions)
+    createListTransactions(pastelDB.db)
     pastelDB.db.exec(createListunspent)
     pastelDB.db.exec(createTotalbalance)
     pastelDB.db.exec(createListaddresses)
@@ -405,30 +408,48 @@ describe('managePastelDatabase', () => {
 
   test('the data should be added correctly to listtransactions table', async () => {
     const values = {
-      $newId: 1,
-      $account: '',
-      $address: '',
-      $category: '',
-      $amount: 0,
-      $vout: '',
-      $confirmations: '',
-      $blockhash: '',
-      $blockindex: 0,
-      $blocktime: 0,
-      $expiryheight: 0,
-      $txid: '',
-      $walletconflicts: '',
-      $time: 0,
-      $timereceived: '',
-      $vjoinsplit: '',
-      $size: 0,
-      $createdAt: 0,
+      account: '',
+      address: '',
+      category: '',
+      amount: 0,
+      vout: 0,
+      confirmations: 0,
+      blockhash: 0,
+      blockindex: 0,
+      blocktime: 0,
+      expiryheight: 0,
+      txid: '',
+      walletconflicts: [],
+      time: 0,
+      timereceived: 0,
+      vjoinsplit: [],
+      size: 0,
+      lastblock: '',
     }
 
-    pastelDB.db.exec(insertListtransactionsQuery, values)
+    insertListTransaction(pastelDB.db, values)
     const result: QueryExecResult[] = getDatafromDB('listtransactions')
-    expect(result[0].values).toStrictEqual([
-      [1, '', '', '', 0, '', '', '', 0, 0, 0, '', '', 0, '', '', 0, 0],
+    expect(result[0].values).toEqual([
+      [
+        1,
+        '',
+        null,
+        '',
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        '',
+        '[]',
+        0,
+        0,
+        '[]',
+        0,
+        expect.any(Number),
+      ],
     ])
   })
 

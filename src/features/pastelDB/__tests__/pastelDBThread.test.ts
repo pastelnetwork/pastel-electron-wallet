@@ -9,7 +9,6 @@ import {
   createChaintips,
   createListaddresses,
   createListreceivedbyaddress,
-  createListtransactions,
   createListunspent,
   createMempoolinfo,
   createMininginfo,
@@ -27,6 +26,7 @@ import {
 import * as pastelDBLib from '../pastelDBLib'
 import * as pastelDBThread from '../pastelDBThread'
 import { setRpcConfig } from '../../rpcConfig'
+import { createListTransactions } from '../wallet/transactions.repo'
 
 type Databaseinstance = {
   db: Database
@@ -73,7 +73,7 @@ describe('PastelDBThread', () => {
     pastelDB.db.exec(createBlocksubsidy)
     pastelDB.db.exec(createWalletinfo)
     pastelDB.db.exec(createListreceivedbyaddress)
-    pastelDB.db.exec(createListtransactions)
+    createListTransactions(pastelDB.db)
     pastelDB.db.exec(createListunspent)
     pastelDB.db.exec(createTotalbalance)
     pastelDB.db.exec(createListaddresses)
