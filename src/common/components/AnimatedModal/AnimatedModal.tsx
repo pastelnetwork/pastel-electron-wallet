@@ -77,7 +77,7 @@ const AnimatedModalInner = ({
   return (
     <div
       ref={setModalRef}
-      className='fixed inset-0 z-50 bg-gray-1a bg-opacity-60 transition duration-200 opacity-0'
+      className='fixed inset-0 z-[110] bg-gray-1a bg-opacity-60 transition duration-200 opacity-0'
       onClick={onClickBackground}
     >
       <div className='overflow-auto relative h-full w-full z-10'>

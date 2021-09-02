@@ -60,8 +60,8 @@ const Header = (): JSX.Element | null => {
   }
 
   return (
-    <div className='h-66px'>
-      <div className='fixed w-full z-50'>
+    <div className='h-66px z-100'>
+      <div className='fixed w-full z-100'>
         <AddNFT open={openAddNFT} onClose={toggleAddNFT} />
         <div className='page-container flex items-center h-66px bg-white justify-between text-h6 md:text-h5 border-b border-gray-ed text-gray-71'>
           <div className='flex items-center h-full w-[80%]'>

@@ -19,10 +19,6 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
   const currencyName = useCurrencyName()
   const methods = [
     {
-      name: 'Airdrop “Promo Code”',
-      method: PaymentMethods.AirdropPromoCode,
-    },
-    {
       name: 'Centralized Exchange (Gemini, Binance, etc.)',
       method: PaymentMethods.CentralizedExchange,
     },
@@ -33,6 +29,14 @@ const StepPaymentMethod = (props: TStepPaymentMethodProps): JSX.Element => {
     {
       name: `${currencyName} Address Private Key Import`,
       method: PaymentMethods.PslAddress,
+    },
+    {
+      name: 'Airdrop “Promo Code”',
+      method: PaymentMethods.AirdropPromoCode,
+    },
+    {
+      name: 'Pastel “Promo Code”',
+      method: PaymentMethods.PastelPromoCode,
     },
   ]
 

@@ -5,7 +5,6 @@ export type TPortfolioItemProps = {
   title: string
   author: string
   price: number
-  currencyName: string
   type?: string
 }
 

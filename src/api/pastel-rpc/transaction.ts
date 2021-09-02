@@ -16,6 +16,7 @@ import {
 import { mapTxnsResult, parseMemo, sortTxnsResult } from '../helpers'
 import { rpc } from './rpc'
 import { WalletRPC } from './wallet'
+import { useQuery, UseQueryResult } from 'react-query'
 
 export class TransactionRPC {
   private readonly walletRPC: WalletRPC
@@ -168,7 +169,7 @@ export class TransactionRPC {
    *
    * @returns ITTransaction[]
    */
-  async fetchTandZTransactions(): Promise<TTransaction[]> {
+  async fetchTAndZTransactions(): Promise<TTransaction[]> {
     const senttxstore = await loadSentTxns()
     const { result: txtListResult } = await this.getTxns()
 
@@ -213,6 +214,10 @@ export class TransactionRPC {
     return sortTxnsResult(transactions)
   }
 
+  useTAndZTransactions(): UseQueryResult<TTransaction[]> {
+    return useQuery('TAndZTransactions', () => this.fetchTAndZTransactions())
+  }
+
   /**
    * Send to make a transaction.
    * Please note it's not same the old version that include to call <fnOpenSendErrorModal>.
@@ -224,3 +229,5 @@ export class TransactionRPC {
     return rpc<TResponse<string>>('z_sendmany', data)
   }
 }
+
+export const transactionRPC = new TransactionRPC()

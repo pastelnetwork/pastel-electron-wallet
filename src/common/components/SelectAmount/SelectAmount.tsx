@@ -127,7 +127,7 @@ export default function SelectAmount({
                 value={formatDisplayNumber(selected?.label)}
                 onKeyUp={handleOnKeyUp}
                 className={cn(
-                  'h-full w-full rounded pr-7 text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6 pl-18px',
+                  'h-full w-full rounded px-10px text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
                   disabled && 'cursor-not-allowed',
                   !isValid && invalidInputClassName,
                 )}

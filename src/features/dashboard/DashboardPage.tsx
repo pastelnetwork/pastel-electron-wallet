@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 
-import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import PortfolioColumn from './PortfolioColumn'
 import PortfolioItem, { TPortfolioItemProps } from './PortfolioItem'
 import NFTCard, {
   TNFTCard,
   NFTCardVariantSize,
-} from '../../common/components/NFTCard'
+} from 'common/components/NFTCard'
 import Notification from './Notification'
 import LinkSection from './LinkSection'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { WalletRPC, TransactionRPC } from 'api/pastel-rpc'
-import { TTotalBalance, TTransactionType } from 'types/rpc'
 import * as ROUTES from 'common/utils/constants/routes'
-import { formatNumber } from '../../common/utils/format'
 import Radio from 'common/components/Radio'
 import NotificationModal from './dashboardModals/notificationModal'
 import Link from 'common/components/Link'
@@ -24,6 +20,7 @@ import {
   mockAvatarImagesList,
   mockNamesList,
 } from 'features/members/data'
+import Wallet from './Wallet'
 
 const date = dayjs('2021-04-04')
 
@@ -79,17 +76,12 @@ const mockNFTImagesList = [
 export default function DashboardPage(): JSX.Element {
   const currencyName = useCurrencyName()
 
-  const [cards, setCards] = useState<TNFTCard[]>([])
   const [tab, setTab] = useState<number>(0)
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
-  const [walletBalance, setWalletBalance] = useState(0)
-  const [transactions, setTransactions] = useState<TTransactionItemProps[]>([])
-  const [walletLoading, setWalletLoading] = useState(true)
 
-  useEffect(() => {
-    const randomCards: TNFTCard[] = []
-    Array.from({ length: 3 }).map((_, index) => {
-      randomCards.push({
+  const cards: TNFTCard[] = useMemo(
+    () =>
+      Array.from({ length: 3 }).map((_, index) => ({
         imageSrc: mockNFTImagesList[index],
         likes: 23,
         title: mockDataImagesList[index].title,
@@ -110,33 +102,9 @@ export default function DashboardPage(): JSX.Element {
         isAuctionBid: index === 0,
         isFixedPrice: index === 1,
         isNotForSale: index === 2,
-      })
-    })
-    setCards(randomCards)
-
-    const fetchData = async () => {
-      const walletRPC = new WalletRPC()
-      const transactionRPC = new TransactionRPC()
-      const results = await Promise.all([
-        await walletRPC.fetchTotalBalance(),
-        await transactionRPC.fetchTandZTransactions(),
-      ])
-      const balances: TTotalBalance = results[0]
-      const trans = results[1]
-      setWalletBalance(balances.total)
-      const transactionsData: TTransactionItemProps[] = trans.map(
-        transaction => ({
-          type: (transaction.type as TTransactionType) || TTransactionType.ALL,
-          amount: transaction.amount || 0,
-          date: dayjs.unix(transaction.time).format('DD/MM/YY'),
-        }),
-      )
-      setWalletLoading(false)
-      setTransactions(transactionsData)
-    }
-
-    fetchData()
-  }, [])
+      })),
+    [],
+  )
 
   const followers: Array<TPortfolioItemProps> = [
     {
@@ -144,7 +112,6 @@ export default function DashboardPage(): JSX.Element {
       title: mockDataImagesList[0].title,
       author: mockNamesList[0],
       price: Math.floor(Math.random() * 10000),
-      currencyName,
       type: 'progress',
     },
     {
@@ -152,7 +119,6 @@ export default function DashboardPage(): JSX.Element {
       title: mockDataImagesList[1].title,
       author: mockNamesList[1],
       price: Math.floor(Math.random() * 1000),
-      currencyName,
       type: 'progress',
     },
     {
@@ -160,7 +126,6 @@ export default function DashboardPage(): JSX.Element {
       title: mockDataImagesList[2].title,
       author: mockNamesList[2],
       price: Math.floor(Math.random() * 1000),
-      currencyName,
       type: 'review',
     },
     {
@@ -168,7 +133,6 @@ export default function DashboardPage(): JSX.Element {
       title: mockDataImagesList[3].title,
       author: mockNamesList[3],
       price: Math.floor(Math.random() * 1000),
-      currencyName,
       type: 'sale',
     },
     {
@@ -176,7 +140,6 @@ export default function DashboardPage(): JSX.Element {
       title: mockDataImagesList[4].title,
       author: mockNamesList[4],
       price: Math.floor(Math.random() * 1000),
-      currencyName,
       type: 'sale',
     },
     {
@@ -184,7 +147,6 @@ export default function DashboardPage(): JSX.Element {
       title: mockDataImagesList[5].title,
       author: mockNamesList[5],
       price: Math.floor(Math.random() * 1000),
-      currencyName,
       type: 'sale',
     },
   ]
@@ -192,46 +154,7 @@ export default function DashboardPage(): JSX.Element {
   return (
     <div className='wrapper content with-page-header h-full w-screen py-5 max-w-screen-2xl'>
       <div className='flex mb-5'>
-        <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
-          <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
-            {!walletLoading ? (
-              <>
-                <div className='font-extrabold text-gray-2d text-lg'>
-                  Wallet balance
-                </div>
-                <div className='font-extrabold text-gray-2d text-sm'>
-                  {walletBalance > 0 ? formatNumber(walletBalance) : 0}{' '}
-                  {currencyName}
-                </div>
-              </>
-            ) : null}
-          </div>
-          <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
-            {walletLoading ? (
-              <div className='flex items-center justify-center h-full h4_18_24_medium'>
-                Loading ....
-              </div>
-            ) : (
-              <>
-                {transactions.map((transaction, i) => (
-                  <TransactionItem key={i} {...transaction} />
-                ))}
-                {transactions.length === 0 && (
-                  <div className='flex justify-center mt-[111px]'>
-                    <span className='text-base text-gray-a0'>
-                      You have no {currencyName}
-                    </span>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-          {!walletLoading ? (
-            <LinkSection to={ROUTES.WALLET} absolute gradient>
-              Wallet Details
-            </LinkSection>
-          ) : null}
-        </div>
+        <Wallet />
         <div className='paper flex-grow w-0 ml-5 pt-6 relative md:flex md:flex-col'>
           <div className='md:flex-shrink-0 flex items-center h-6 px-[30px] mb-5'>
             <div className='font-extrabold text-lg text-gray-2d'>Portfolio</div>

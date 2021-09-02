@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import Tooltip from 'common/components/Tooltip'
 import { CloseButton } from 'common/components/Buttons'
-
 import {
   Download,
   CreditCard,
@@ -179,7 +178,9 @@ const RegisterContent = (): JSX.Element => {
             <StepBackup {...state} finish={onLastStepPassed} />
           )}
           {state.step === Steps.Payment && <StepPayment {...state} />}
-          {state.step === Steps.Fee && <StepFee {...state} />}
+          {state.step === Steps.Fee && (
+            <StepFee finish={onLastStepPassed} {...state} />
+          )}
         </div>
       </div>
 

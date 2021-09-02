@@ -13,8 +13,6 @@ type TRouteType = {
     | React.FunctionComponent<RouteComponentProps>
     | React.ComponentClass<RouteComponentProps>
     | null
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    | any // TODO remove this any and eslint disable after user login is taken by redux
   layout:
     | React.FunctionComponent<unknown>
     | React.ComponentClass<unknown>
@@ -27,8 +25,6 @@ const childRoutes = (routes: Array<TRouteType>) =>
       return null
     }
 
-    const extraProps = {}
-
     return (
       <Route
         key={id}
@@ -36,7 +32,7 @@ const childRoutes = (routes: Array<TRouteType>) =>
         exact
         render={props => (
           <Layout>
-            <Component {...props} {...extraProps} />
+            <Component {...props} />
           </Layout>
         )}
       />

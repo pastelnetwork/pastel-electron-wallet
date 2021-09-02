@@ -364,7 +364,7 @@ export default function Portfolio(): JSX.Element {
           </div>
         </div>
       ) : (
-        <div className='flex flex-grow flex-col items-center justify-center mt-30vh'>
+        <div className='flex flex-grow flex-col items-center justify-center my-40vh'>
           <span className='mb-1.5 text-gray-4a text-lg font-black'>
             You have not created any NFTs
           </span>
