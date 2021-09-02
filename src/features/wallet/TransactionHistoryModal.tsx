@@ -22,7 +22,7 @@ import {
 } from 'types/rpc'
 import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
-import PastelUtils from 'common/utils/utils'
+import { isSapling, isTransparent } from 'common/utils/wallet'
 import { useWalletScreenContext } from './walletScreen.context'
 
 const TransactionHistoryModal = (): JSX.Element => {
@@ -67,9 +67,7 @@ const TransactionHistoryModal = (): JSX.Element => {
   const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {
     const filtered = trans
       .filter(t => {
-        return isSource
-          ? PastelUtils.isSapling(t.address)
-          : !PastelUtils.isSapling(t.address)
+        return isSource ? isSapling(t.address) : !isSapling(t.address)
       })
       .map(t => {
         return {
@@ -193,9 +191,7 @@ const TransactionHistoryModal = (): JSX.Element => {
       custom: (value: string | number, row?: TRow) => {
         return (
           <div className='ml-46px flex items-center'>
-            {!PastelUtils.isTransparent(row?.address)
-              ? 'Shielded'
-              : 'Transparent'}
+            {!isTransparent(row?.address) ? 'Shielded' : 'Transparent'}
 
             {Math.floor(Math.random() * 10) % 2 ? (
               <div className='inline-block'>

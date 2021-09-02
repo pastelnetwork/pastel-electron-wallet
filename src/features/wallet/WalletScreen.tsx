@@ -31,6 +31,7 @@ import {
 } from '../../common/utils/query'
 import { ROUTES } from '../../common/constants/routes'
 import Modals from './Modals'
+import { useReadPastelPromoCode } from 'common/utils/PastelPromoCode'
 
 export type TSelectionPslProps = {
   address: string
@@ -59,6 +60,10 @@ export default function WalletScreen(): JSX.Element {
   ] = useState(false)
   const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
   const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
+  const [
+    isAddPastelPromoCodeModalOpen,
+    setAddPastelPromoCodeModalOpen,
+  ] = useState(false)
   const [currentAddress, setCurrentAddress] = useState<string>()
 
   const tAddresses = useFilterAddresses(
@@ -84,6 +89,8 @@ export default function WalletScreen(): JSX.Element {
     selectedAddresses,
     paymentSources,
   })
+
+  const pastelPromoCode = useReadPastelPromoCode()
 
   const values: TWalletScreenContextValues = {
     tAddresses,
@@ -113,9 +120,12 @@ export default function WalletScreen(): JSX.Element {
     setExportKeysModalOpen,
     isQRCodeModalOpen,
     setIsQRCodeModalOpen,
+    isAddPastelPromoCodeModalOpen,
+    setAddPastelPromoCodeModalOpen,
     currentAddress,
     setCurrentAddress,
     selectedAmount,
+    pastelPromoCode,
   }
 
   return (
@@ -134,6 +144,7 @@ const WalletScreenContent = (): JSX.Element => {
     totalBalances,
     allAddresses,
     setPaymentModalOpen,
+    setAddPastelPromoCodeModalOpen,
   } = useWalletScreenContext()
 
   const createNewAddress = useCreateNewAddress()
@@ -199,10 +210,24 @@ const WalletScreenContent = (): JSX.Element => {
         <WalletAddresses />
 
         <div className='flex justify-end mt-5 pb-[30px]'>
+          <Button
+            onClick={() => setAddPastelPromoCodeModalOpen(true)}
+            variant='secondary'
+            className='w-[240px] px-0'
+            childrenClassName='w-full'
+          >
+            <div className='flex items-center ml-5'>
+              <div className='text-blue-3f text-h5-medium'>+</div>{' '}
+              <div className='ml-2 text-blue-3f text-h5-medium'>
+                Add Pastel Promo Code
+              </div>
+            </div>
+          </Button>
+
           {allAddresses.data?.length && (
             <Button
               variant='secondary'
-              className='w-[264px] px-0'
+              className='w-[264px] ml-30px px-0'
               childrenClassName='w-full'
               onClick={createNewAddress}
             >

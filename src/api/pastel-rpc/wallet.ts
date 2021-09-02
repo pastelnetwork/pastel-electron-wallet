@@ -1,3 +1,5 @@
+import log from 'electron-log'
+
 import {
   TListAddressesResponse,
   TListUnspentResponse,
@@ -6,7 +8,11 @@ import {
   TTotalBalance,
   TZListUnspentResponse,
   TCreateAddressResponse,
+  TPrivKeyResponse,
+  TZPrivKeyResponse,
   TAddressBalancesResponse,
+  TAddressList,
+  TZListUnspent,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -208,6 +214,39 @@ export class WalletRPC {
     return useQuery('listunspent', () => this.fetchTListUnspent(), options)
   }
 
+  /**
+   * Fetch all T and Z addresses with balance.
+   * Please note it's not same the old version that include to call <fnSetAddressesWithBalance>.
+   *
+   * @returns IAddressBalance[]
+   */
+  async fetchTandZAddresses(): Promise<TAddressList[]> {
+    const results = await Promise.all([
+      this.fetchZListUnspent(),
+      this.fetchTListUnspent(),
+    ])
+
+    const zResult: TAddressList[] = results[0].map((addr: TZListUnspent) => {
+      return {
+        txid: addr.txid,
+        address: addr.address,
+        amount: addr.amount,
+        type: 'shielded',
+      }
+    })
+
+    const tResult: TAddressList[] = results[0].map((addr: TZListUnspent) => {
+      return {
+        txid: addr.txid,
+        address: addr.address,
+        amount: addr.amount,
+        type: 'transparent',
+      }
+    })
+
+    return zResult.concat(tResult)
+  }
+
   useTAddressBalances(): UseQueryResult<TAddressBalancesResponse> {
     const query = this.useTListUnspent()
     const data = this.useMapListUnspentToAddressAmounts(query.data)
@@ -235,6 +274,53 @@ export class WalletRPC {
         return res.result
       } catch (err) {
         return null
+      }
+    }
+  }
+
+  async importPrivKey(key: string, rescan: boolean): Promise<string> {
+    if (key.startsWith('p-secret-extended-key')) {
+      try {
+        const { result } = await rpc<TZPrivKeyResponse>('z_importkey', [
+          key,
+          rescan ? 'yes' : 'no',
+        ])
+        return result.address
+      } catch (err) {
+        log.error(
+          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
+          err,
+        )
+        throw err
+      }
+    } else if (key.startsWith('zxview')) {
+      try {
+        const { result } = await rpc<TZPrivKeyResponse>('z_importviewingkey', [
+          key,
+          rescan ? 'yes' : 'no',
+        ])
+        return result.address
+      } catch (err) {
+        log.error(
+          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
+          err,
+        )
+        throw err
+      }
+    } else {
+      try {
+        const { result } = await rpc<TPrivKeyResponse>('importprivkey', [
+          key,
+          'imported',
+          rescan,
+        ])
+        return result
+      } catch (err) {
+        log.error(
+          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
+          err,
+        )
+        throw err
       }
     }
   }

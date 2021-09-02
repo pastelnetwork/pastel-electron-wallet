@@ -32,9 +32,8 @@ export const AddressForm = ({
   const [copyStatus, setCopyStatus] = useState<boolean>(false)
   const {
     addressBook: { addressBookMap, updateAddressBook },
+    pastelPromoCode,
   } = useWalletScreenContext()
-
-  const addressLabel = addressBookMap[address]
 
   const copyAddress = (address: string) => {
     if (copyStatus) {
@@ -46,6 +45,10 @@ export const AddressForm = ({
       setCopyStatus(false)
     }, 2000)
   }
+
+  const promoCode = pastelPromoCode.data?.find(code => code.address === address)
+
+  const addressLabel = promoCode ? promoCode.label : addressBookMap[address]
 
   return (
     <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
@@ -77,6 +80,7 @@ export const AddressForm = ({
           {formatAddress(address, 24)}
         </span>
       )}
+      {promoCode && <div className='w-5 h5 xl:ml-21px'>&nbsp;</div>}
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-25px'>
@@ -111,32 +115,52 @@ export const AddressForm = ({
           {copyable && (
             <div className='w-5 h-5 flex items-center ml-3 xl:ml-7'>
               {copyStatus ? (
-                <span
-                  onClick={() => copyAddress(address)}
-                  className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                <Tooltip
+                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                  content='Copied'
+                  width={70}
+                  type='top'
                 >
-                  <CheckIcon className='text-green-45' size={14} />
-                </span>
+                  <span
+                    onClick={() => copyAddress(address)}
+                    className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                  >
+                    <CheckIcon className='text-green-45' size={14} />
+                  </span>
+                </Tooltip>
               ) : (
-                <span
-                  onClick={() => copyAddress(address)}
-                  className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                <Tooltip
+                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                  content='Copy address to clipboard'
+                  width={120}
+                  type='top'
                 >
-                  <Clipboard className='cursor-pointer' size={14} />
-                </span>
+                  <span
+                    onClick={() => copyAddress(address)}
+                    className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                  >
+                    <Clipboard className='cursor-pointer' size={14} />
+                  </span>
+                </Tooltip>
               )}
             </div>
           )}
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
-            <span
-              onClick={() => {
-                setEditName(addressLabel || '')
-                setEdit(address)
-              }}
-              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            >
-              <Pencil strokeWidth={0.2} className='cursor-pointer' size={16} />
-            </span>
+            {!promoCode && (
+              <span
+                onClick={() => {
+                  setEditName(addressLabel || '')
+                  setEdit(address)
+                }}
+                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+              >
+                <Pencil
+                  strokeWidth={0.2}
+                  className='cursor-pointer'
+                  size={16}
+                />
+              </span>
+            )}
           </div>
           {hidable && (
             <div className='flex items-center ml-13px'>

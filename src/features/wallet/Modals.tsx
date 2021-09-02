@@ -4,6 +4,7 @@ import PaymentModal from './PaymentModal'
 import TransactionHistoryModal from './TransactionHistoryModal'
 import ExportKeysModal from './ExportKeysModal'
 import QRCodeModal from './QRCodeModal'
+import AddPastelPromoCodeModal from './AddPastelPromoCodeModal'
 
 export default function Modals(): JSX.Element | null {
   const {
@@ -11,6 +12,7 @@ export default function Modals(): JSX.Element | null {
     isTransactionHistoryModalOpen,
     isExportKeysModalOpen,
     isQRCodeModalOpen,
+    isAddPastelPromoCodeModalOpen,
   } = useWalletScreenContext()
 
   if (isPaymentModalOpen) {
@@ -21,7 +23,9 @@ export default function Modals(): JSX.Element | null {
     return <ExportKeysModal />
   } else if (isQRCodeModalOpen) {
     return <QRCodeModal />
-  } else {
-    return null
+  } else if (isAddPastelPromoCodeModalOpen) {
+    return <AddPastelPromoCodeModal />
   }
+
+  return null
 }

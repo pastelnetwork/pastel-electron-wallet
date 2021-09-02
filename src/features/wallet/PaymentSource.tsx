@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import CommentModal from './CommentModal'
 import { formatAddress } from 'common/utils/format'
+
 import Checkbox from '../../common/components/Checkbox/Checkbox'
 import add2Icon from '../../common/assets/icons/ico-add-2.svg'
 
@@ -18,7 +19,10 @@ const PaymentSource = ({ address }: TDataType): JSX.Element => {
   const toggleSelect = useToggleSelectAddress()
   const {
     addressBook: { addressBookMap },
+    pastelPromoCode,
   } = useWalletScreenContext()
+
+  const promoCode = pastelPromoCode.data?.find(code => code.address === address)
 
   return (
     <tr className='h-67px border-b border-line-DEFAULT mr-4 justify-between'>
@@ -29,7 +33,9 @@ const PaymentSource = ({ address }: TDataType): JSX.Element => {
             clickHandler={() => toggleSelect(address)}
           />
           <span className='text-blue-3f ml-5 truncate max-w-[240px]'>
-            {addressBookMap[address] || formatAddress(address)}
+            {promoCode
+              ? promoCode.label
+              : addressBookMap[address] || formatAddress(address)}
           </span>
           <span className='ml-17px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
             <Pencil size={16} className='text-gray-88' />

@@ -3,6 +3,7 @@ import { UseQueryResult } from 'react-query'
 import { TAddress, TBalance, TTotalBalance } from '../../types/rpc'
 import { TUseAddressBookResult } from '../../common/hooks/useAddressBook'
 import { TPaymentSources } from './walletScreen.types'
+import { TPastelPromoCode } from '../../common/utils/PastelPromoCode'
 
 export type TWalletScreenContextValues = {
   tAddresses: UseQueryResult<TAddress[]>
@@ -32,9 +33,12 @@ export type TWalletScreenContextValues = {
   setExportKeysModalOpen: Dispatch<SetStateAction<boolean>>
   isQRCodeModalOpen: boolean
   setIsQRCodeModalOpen: Dispatch<SetStateAction<boolean>>
+  isAddPastelPromoCodeModalOpen: boolean
+  setAddPastelPromoCodeModalOpen: Dispatch<SetStateAction<boolean>>
   currentAddress?: string
   setCurrentAddress(address?: string): void
   selectedAmount: number
+  pastelPromoCode: UseQueryResult<TPastelPromoCode[]>
 }
 
 export const WalletScreenContext = createContext(

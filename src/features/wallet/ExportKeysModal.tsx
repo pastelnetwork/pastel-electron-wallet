@@ -183,7 +183,7 @@ const ExportKeysModal = (): JSX.Element => {
       isOpen
       handleClose={() => handleClose()}
       title='Generate Paper Wallet for Address'
-      classNames='max-w-[598px]'
+      classNames='w-[598px]'
     >
       <div className='mt-[11px] pr-22px'>
         <InputExportKey
