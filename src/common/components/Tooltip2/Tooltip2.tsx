@@ -35,7 +35,7 @@ export default function Tooltip2({
           ref={setTooltipRef}
           {...getTooltipProps({
             className: cn(
-              'flex-center bg-gray-33 rounded-md h-8 px-2 font-extrabold text-white text-xs',
+              'flex-center bg-gray-33 rounded-md h-8 px-2 font-extrabold text-white text-xs z-50',
               className,
             ),
           })}

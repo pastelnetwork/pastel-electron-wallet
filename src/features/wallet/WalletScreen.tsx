@@ -8,9 +8,14 @@ import { TAddressRow } from 'types/rpc'
 import { useAppSelector } from 'redux/hooks'
 import { isSapling } from 'api/helpers'
 import { useAddressBook } from 'common/hooks'
-import { parseFormattedNumber, timeAgo } from 'common/utils/format'
+import {
+  parseFormattedNumber,
+  timeAgo,
+  formatAbbreviatedNumber,
+} from 'common/utils/format'
 import PastelUtils from 'common/utils/utils'
 import Tooltip from 'common/components/Tooltip'
+import Tooltip2 from 'common/components/Tooltip2'
 import Alert from 'common/components/Alert'
 import Toggle from 'common/components/Toggle'
 import { Button } from 'common/components/Buttons'
@@ -25,6 +30,7 @@ import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
 import QRCodeModal from './QRCodeModal'
 import BalanceCards from './BalanceCards'
+
 import {
   ElectricityIcon,
   Clock,
@@ -57,7 +63,7 @@ const WalletScreen = (): JSX.Element => {
   const Columns = [
     {
       key: 'address',
-      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
+      colClasses: 'w-[35%] text-h6 leading-5 font-normal',
       name: 'Address name',
       headerColClasses: 'mx-30px',
       custom: (value: string | number, row: TRow | undefined) => (
@@ -133,37 +139,41 @@ const WalletScreen = (): JSX.Element => {
       custom: (value: string | number) => (
         <div className='text-gray-71 text-h5-medium'>
           {info?.currencyName}{' '}
-          <NumberFormat
-            value={value}
-            displayType='text'
-            thousandSeparator={true}
-          />
+          {formatAbbreviatedNumber(parseFloat(value.toString()), 2)}
         </div>
       ),
     },
     {
       key: 'psl',
       name: '',
-      colClasses: 'min-w-[120px] w-[120px]',
+      colClasses: 'min-w-[160px]',
       custom: (value: number | string, row?: TRow) => {
         const psl = selectionPsl.filter(psl => psl?.address === row?.address)[0]
         return (
           <div className='z-0'>
-            <SelectAmount
-              className='text-gray-2d w-28 bg-white'
-              min={0}
-              max={parseFloat(value.toString())}
-              step={PastelUtils.generateStep(parseInt(value.toString()))}
-              defaultValue={{
-                label: psl?.amount || row?.amount,
-                value: psl?.amount || row?.amount,
-              }}
-              forceUpdate={forceUpdateSelect}
-              onChange={(selection: TOption) => {
-                const selectedValue = parseFormattedNumber(selection.value)
-                handleAmountChange(selectedValue, row)
-              }}
-            />
+            <Tooltip2 text='Select the amount to send from this address'>
+              {ref => (
+                <div ref={ref}>
+                  <SelectAmount
+                    className='text-gray-2d bg-white'
+                    min={0}
+                    max={parseFloat(value.toString())}
+                    step={PastelUtils.generateStep(parseInt(value.toString()))}
+                    defaultValue={{
+                      label: psl?.amount || row?.amount,
+                      value: psl?.amount || row?.amount,
+                    }}
+                    forceUpdate={forceUpdateSelect}
+                    onChange={(selection: TOption) => {
+                      const selectedValue = parseFormattedNumber(
+                        selection.value,
+                      )
+                      handleAmountChange(selectedValue, row)
+                    }}
+                  />
+                </div>
+              )}
+            </Tooltip2>
           </div>
         )
       },
@@ -528,7 +538,14 @@ const WalletScreen = (): JSX.Element => {
 
             <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
               <div className='flex items-center text-h6-leading-20'>
-                <Toggle toggleHandler={hideEmptyAddress}>
+                <Toggle
+                  toggleHandler={hideEmptyAddress}
+                  selected={
+                    totalBalances?.total && totalBalances?.total > 0
+                      ? true
+                      : false
+                  }
+                >
                   Hide empty addresses
                   <div className='ml-2'>
                     <Tooltip
