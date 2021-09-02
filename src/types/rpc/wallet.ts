@@ -1,5 +1,8 @@
 import { TResponse } from './response'
 
+export type TAddress = string
+export type TBalance = number
+
 type TAddressBalance = {
   address: string | number
   balance: number
@@ -157,17 +160,18 @@ type TAddressMempool = {
 
 type TAddressTxIdResponse = TResponse<string[]>
 type TWalletInfoResponse = TResponse<TWalletInfo>
-type TListAddressesResponse = TResponse<string[]>
+type TListAddressesResponse = TAddress[]
 type TAddressTxosResponse = TResponse<TAddressUtxo>
-type TListUnspentResponse = TResponse<TListUnspent[]>
+type TListUnspentResponse = TListUnspent[]
 type TTotalBalanceResponse = TResponse<TTotalBalance>
 type TAddressDeltaResponse = TResponse<TAddressDelta[]>
 type TAddressBalanceResponse = TResponse<TAddressesBalance>
 type TAddressMempoolResponse = TResponse<TAddressMempool[]>
 type TValidateAddressesResponse = TResponse<TValidateAddress>
-type TZListUnspentResponse = TResponse<TZListUnspent[]>
+type TZListUnspentResponse = TZListUnspent[]
 type TZListReceivedByAddressResponse = TResponse<TZListReceivedByAddress[]>
 type TCreateAddressResponse = TResponse<string>
+export type TAddressAmountsResponse = Record<TAddress, TBalance>
 
 export type {
   TUtxo,

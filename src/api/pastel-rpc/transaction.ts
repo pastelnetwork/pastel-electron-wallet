@@ -81,7 +81,7 @@ export class TransactionRPC {
    * @returns ITTransactionResponse
    */
   async getTxns(): Promise<TTransactionResponse> {
-    return rpc<TTransactionResponse>('listtransactions', [])
+    return rpc<TTransactionResponse>('listtransactions', [], { throw: true })
   }
 
   /**
@@ -171,12 +171,12 @@ export class TransactionRPC {
    */
   async fetchTAndZTransactions(): Promise<TTransaction[]> {
     const senttxstore = await loadSentTxns()
-    const { result: txtListResult } = await this.getTxns()
+    const txtListResult = await this.getTxns()
 
     // Flat list of transactions
     const ttxlist: TTransaction[] = await this.flatTxns(txtListResult)
 
-    const { result: zaddressesResult } = await this.walletRPC.fetchZAddresses()
+    const zaddressesResult = await this.walletRPC.fetchZAddresses()
     const alltxnsPromise = zaddressesResult.map(async (address: string) => {
       // For each zaddr, get the list of incoming transactions.
       const {

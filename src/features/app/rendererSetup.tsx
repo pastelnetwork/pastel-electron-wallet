@@ -75,7 +75,7 @@ export const rendererSetup = (): void => {
   })
 
   onRendererEvent('prepareToQuit', async () => {
-    await Promise.all([PastelDB.waitTillValid(), stopRpc()])
+    await Promise.all([PastelDB.prepareToQuit(), stopRpc()])
 
     sendEventToMain('rendererIsReadyForQuit', null)
   })
@@ -95,7 +95,7 @@ export const RendererSetupHooks = (): null => {
   // Wallet balances, pastel prices are fetched by PastelDBThread
   const walletRPC = new WalletRPC()
   walletRPC.useZListUnspent({ enabled: hasRpcConfig })
-  walletRPC.useListUnspent({ enabled: hasRpcConfig })
+  walletRPC.useTListUnspent({ enabled: hasRpcConfig })
 
   useEffect(() => {
     sendEventToMain('rendererStarted', null)

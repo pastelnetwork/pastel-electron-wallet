@@ -150,8 +150,8 @@ export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TMiningInfoResponse>('getmininginfo', [])
     insertMiningInfoToDB(props.pastelDB, result)
-  } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchMiningInfo error: ${message}`)
+  } catch (error) {
+    throw new Error(`pastelDBThread fetchMiningInfo error: ${error.message}`)
   }
 }
 
@@ -243,22 +243,30 @@ export async function fetchListTransactions(
   props: fetchFuncConfig,
 ): Promise<void> {
   try {
-    const { result } = await rpc<TTransactionResponse>('listtransactions', [])
-    const transactions = result
+    const transactions = await rpc<TTransactionResponse>(
+      'listtransactions',
+      [],
+      {
+        throw: true,
+      },
+    )
     for (let i = 0; i < transactions.length; i++) {
       insertListTransactions(props.pastelDB, transactions[i])
     }
-  } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchListTransactions error: ${message}`)
+  } catch (error) {
+    throw new Error(
+      `pastelDBThread fetchListTransactions error: ${error.message}`,
+    )
   }
 }
 
 export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
   try {
-    const data = await rpc<TListUnspentResponse>('listunspent', [])
-    const unspentlist = data.result
+    const data = await rpc<TListUnspentResponse>('listunspent', [], {
+      throw: true,
+    })
     for (let i = 0; i < 1; i++) {
-      insertListunspent(props.pastelDB, unspentlist[i])
+      insertListunspent(props.pastelDB, data[i])
     }
     queryClient.setQueryData('listunspent', data)
   } catch ({ message }) {
@@ -282,10 +290,11 @@ export async function fetchListaddresses(
   props: fetchFuncConfig,
 ): Promise<void> {
   try {
-    const { result } = await rpc<TListAddressesResponse>('z_listaddresses', [])
-    const addresslist = result
-    for (let i = 0; i < addresslist.length; i++) {
-      insertListaddresses(props.pastelDB, addresslist[i])
+    const result = await rpc<TListAddressesResponse>('z_listaddresses', [], {
+      throw: true,
+    })
+    for (let i = 0; i < result.length; i++) {
+      insertListaddresses(props.pastelDB, result[i])
     }
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchTotalBalance error: ${message}`)
@@ -351,6 +360,7 @@ export async function PastelDBThread(): Promise<void> {
       fetchTotalBalance(pastelConfig),
       fetchPastelPrices(pastelConfig),
       fetchBlockChainInfo(pastelConfig),
+      fetchListTransactions(pastelConfig),
     ])
     PastelDB.setValid(true)
   }

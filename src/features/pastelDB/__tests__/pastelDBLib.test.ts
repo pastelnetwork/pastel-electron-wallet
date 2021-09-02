@@ -98,14 +98,14 @@ describe('managePastelDatabase', () => {
       $newId: 1,
       $solutions: 1,
       $difficulty: 1.2345678,
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertStatisticinfoQuery, values)
     const result: QueryExecResult[] = getDatafromDB('statisticinfo')
     expect(result).toStrictEqual([
       {
-        columns: ['id', 'solutions', 'difficulty', 'create_timestamp'],
+        columns: ['id', 'solutions', 'difficulty', 'createdAt'],
         values: [[1, 1, 1.2345678, 0]],
       },
     ])
@@ -124,7 +124,7 @@ describe('managePastelDatabase', () => {
       $relayfee: 0,
       $localaddresses: 'localaddresses',
       $warnings: 'warnings',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertNetworkinfoQuery, values)
@@ -140,7 +140,7 @@ describe('managePastelDatabase', () => {
       $totalbytesrecv: 0,
       $totalbytessent: 0,
       $timemillis: 0,
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertNettotalsQuery, values)
@@ -154,7 +154,7 @@ describe('managePastelDatabase', () => {
       $size: 10,
       $bytes: 100,
       $usage: 10,
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertMempoolinfoQuery, values)
@@ -173,7 +173,7 @@ describe('managePastelDatabase', () => {
       $startingpriority: 1,
       $currentpriority: 1,
       $depends: '',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertRawmempoolinfoQuery, values)
@@ -198,7 +198,7 @@ describe('managePastelDatabase', () => {
       $pooledtx: 0,
       $testnet: 0,
       $chain: '',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertMininginfoQuery, values)
@@ -229,7 +229,7 @@ describe('managePastelDatabase', () => {
       $valuePools: '',
       $previousblockhash: '',
       $nextblockhash: '',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertBlockinfoQuery, values)
@@ -279,7 +279,7 @@ describe('managePastelDatabase', () => {
       $version: 0,
       $versiongroupid: 0,
       $vjoinsplit: '',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertRawtransactionQuery, values)
@@ -326,7 +326,7 @@ describe('managePastelDatabase', () => {
       $txid: 'txid',
       $vjoinsplit: '',
       $walletconflicts: '',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertTransactionTableQuery, values)
@@ -346,7 +346,7 @@ describe('managePastelDatabase', () => {
       $bytes_serialized: 0,
       $hash_serialized: '',
       $total_amount: 10,
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertTxoutsetinfoQuery, values)
@@ -361,7 +361,7 @@ describe('managePastelDatabase', () => {
       $hash: '',
       $branchlen: 1,
       $status: '',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertChaintipsQuery, values)
@@ -375,7 +375,7 @@ describe('managePastelDatabase', () => {
       $miner: 0,
       $masternode: 0,
       $governance: 0,
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertBlocksubsidyQuery, values)
@@ -395,7 +395,7 @@ describe('managePastelDatabase', () => {
       $keypoolsize: 0,
       $paytxfee: 0,
       $seedfp: '',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertWalletinfoQuery, values)
@@ -422,7 +422,7 @@ describe('managePastelDatabase', () => {
       $timereceived: '',
       $vjoinsplit: '',
       $size: 0,
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertListtransactionsQuery, values)
@@ -444,7 +444,7 @@ describe('managePastelDatabase', () => {
       $amount: 0,
       $confirmations: 0,
       $spendable: 0,
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertListunspentQuery, values)
@@ -460,7 +460,7 @@ describe('managePastelDatabase', () => {
       $transparent: 'transparent',
       $private: 'private',
       $total: 'total',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertTotalbalanceQuery, values)
@@ -474,7 +474,7 @@ describe('managePastelDatabase', () => {
     const values = {
       $newId: 1,
       $address: 'address',
-      $createTimestamp: 0,
+      $createdAt: 0,
     }
 
     pastelDB.db.exec(insertListaddressesQuery, values)
@@ -807,7 +807,7 @@ describe('managePastelDatabase', () => {
         .spyOn(pastelDB.db, 'exec')
         .mockImplementation(() => [
           {
-            columns: ['id', 'price_usd', 'create_timestamp'],
+            columns: ['id', 'price_usd', 'createdAt'],
             values: [[1, 12345, 0]],
           },
         ])
@@ -978,7 +978,7 @@ describe('managePastelDatabase', () => {
         .spyOn(pastelDB.db, 'exec')
         .mockImplementation(() => [
           {
-            columns: ['id', 'solutions', 'difficulty', 'create_timestamp'],
+            columns: ['id', 'solutions', 'difficulty', 'createdAt'],
             values: [[1, 1, 99.265, 0]],
           },
         ])
@@ -1035,13 +1035,7 @@ describe('managePastelDatabase', () => {
         .spyOn(pastelDB.db, 'exec')
         .mockImplementation(() => [
           {
-            columns: [
-              'id',
-              'transparent',
-              'private',
-              'total',
-              'create_timestamp',
-            ],
+            columns: ['id', 'transparent', 'private', 'total', 'createdAt'],
             values: [[1, 'transparent', '', 'total', 0]],
           },
         ])
@@ -1106,7 +1100,7 @@ describe('managePastelDatabase', () => {
               'bytes_serialized',
               'hash_serialized',
               'total_amount',
-              'create_timestamp',
+              'createdAt',
             ],
             values: [[1, 496, 'bestblock', 0, 0, 0, '', 1.0, 0]],
           },
@@ -1175,7 +1169,7 @@ describe('managePastelDatabase', () => {
               'keypoolsize',
               'paytxfee',
               'seedfp',
-              'create_timestamp',
+              'createdAt',
             ],
             values: [[1, 123, 456, 0, 0, 0, 789, 0, 0, 'seedfp', 0]],
           },
@@ -1254,7 +1248,7 @@ describe('managePastelDatabase', () => {
             'valuePools',
             'previousblockhash',
             'nextblockhash',
-            'create_timestamp',
+            'createdAt',
           ],
           values: [
             [
@@ -1315,7 +1309,7 @@ describe('managePastelDatabase', () => {
             'valuePools',
             'previousblockhash',
             'nextblockhash',
-            'create_timestamp',
+            'createdAt',
           ],
           values: [
             [

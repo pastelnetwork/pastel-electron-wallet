@@ -10,7 +10,7 @@ export type TMiningInfo = {
   localsolps: number
   networksolps: number
   networkhashps: number
-  pooledtx: number
+  pooledtx?: number
   testnet: number
   chain: string
   generate: boolean

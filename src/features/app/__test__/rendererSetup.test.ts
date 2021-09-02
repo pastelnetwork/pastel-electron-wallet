@@ -134,12 +134,12 @@ describe('rendererSetup', () => {
   })
 
   describe('on prepareToQuit event', () => {
-    it('should wait till pastel db become valid, stop rpc and send rendererIsReadyForQuit event', async () => {
+    it('should wait till pastel db prepare to quit, stop rpc and send rendererIsReadyForQuit event', async () => {
       asMock(getRpcConfig).mockReturnValue(rpcConfig)
 
       rendererSetup()
 
-      asMock(PastelDB.waitTillValid).mockRejectedValueOnce(new Error())
+      asMock(PastelDB.prepareToQuit).mockRejectedValueOnce(new Error())
       await emitRendererEvent('prepareToQuit', null)
 
       expect(RPC.doRPC).toBeCalledWith('stop', [], rpcConfig)

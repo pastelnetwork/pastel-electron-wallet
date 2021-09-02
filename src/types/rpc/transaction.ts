@@ -25,6 +25,8 @@ type TTransferPayload = {
 type TRpcParam = string | number | boolean | TxDetail[]
 
 type TBaseTransaction = {
+  // TODO: fix type, address may be undefined https://rpc-doc.pastel.network/listtransactions.html
+  // but changing this field to be optional requires changes in other code and may break something
   address: string
   txid: string
   memo?: string
@@ -53,7 +55,7 @@ type TTransaction = TBaseTransaction &
     timereceived: number
     vjoinsplit: TVJoinsplit[]
     size: number
-    lastblock: string
+    lastblock: string | null
     fee?: number
     type?: string
     detailedTxns?: TDetailedTxns[]
@@ -194,7 +196,7 @@ type TSinceBlockTransaction = {
 }
 
 type TTxoutResponse = TResponse<TTxout>
-type TTransactionResponse = TResponse<TTransaction[]>
+type TTransactionResponse = TTransaction[]
 type TRawTransactionResponse = TResponse<TRawTransaction>
 type TTransactionInfoResponse = TResponse<TTransactionInfo>
 

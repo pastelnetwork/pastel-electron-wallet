@@ -9,7 +9,11 @@ export type TRPCConfig = {
   password: string
 }
 
-export async function rpc<T>(method: string, params: TRpcParam[]): Promise<T> {
+export async function rpc<T>(
+  method: string,
+  params: TRpcParam[],
+  options?: { throw?: boolean },
+): Promise<T> {
   const { url, username, password } = requireRpcConfig()
   let response: AxiosResponse
   try {
@@ -26,12 +30,26 @@ export async function rpc<T>(method: string, params: TRpcParam[]): Promise<T> {
         password,
       },
     })
+
+    if (options?.throw) {
+      if (response.data.error) {
+        throw new Error(response.data.error)
+      }
+
+      return response.data.result
+    }
+
+    return response.data
   } catch ({ message, response, request }) {
     if (message) {
       log.error(
         `api/pastel-rpc server error. Response: ${JSON.stringify(
           response?.data,
-        )}. Status code: ${JSON.stringify(response?.status)}`,
+        )}${
+          response?.status
+            ? `. Status code: ${JSON.stringify(response?.status)}`
+            : ''
+        }`,
       )
       throw new Error(`api/pastel-rpc server error: ${message}`)
     }
@@ -49,6 +67,4 @@ export async function rpc<T>(method: string, params: TRpcParam[]): Promise<T> {
     log.error('api/pastel-rpc error: Cannot connect to Pasteld.')
     throw new Error('api/pastel-rpc error: Cannot connect to Pasteld')
   }
-
-  return response.data as T
 }

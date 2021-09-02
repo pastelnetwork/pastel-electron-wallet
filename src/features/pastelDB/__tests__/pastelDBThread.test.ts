@@ -109,7 +109,7 @@ describe('PastelDBThread', () => {
         },
       ],
       warnings: 'warnings',
-      create_timestamp: '',
+      createdAt: '',
     },
   }
 
@@ -224,9 +224,7 @@ describe('PastelDBThread', () => {
     },
   }
 
-  const mockListAddresses = {
-    result: ['address'],
-  }
+  const mockListAddresses = ['address']
 
   const mockBlockChainInfo = {
     result: {
@@ -322,7 +320,7 @@ describe('PastelDBThread', () => {
     expect(rpcSpy).toHaveBeenCalledWith('getnetworkinfo', [])
     expect(insertNetworkInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
       connections: 0,
-      create_timestamp: '',
+      createdAt: '',
       localaddresses: [{ address: '', port: 0, score: 0 }],
       localservices: '',
       networks: [{ limited: true, name: '', proxy: '', reachable: true }],
@@ -590,7 +588,7 @@ describe('PastelDBThread', () => {
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('z_listaddresses', [])
+    expect(rpcSpy).toHaveBeenCalledWith('z_listaddresses', [], { throw: true })
     expect(insertListaddressesSpy).toHaveBeenCalledWith(pastelDB.db, 'address')
   })
 
