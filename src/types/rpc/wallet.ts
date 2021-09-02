@@ -171,7 +171,7 @@ type TValidateAddressesResponse = TResponse<TValidateAddress>
 type TZListUnspentResponse = TZListUnspent[]
 type TZListReceivedByAddressResponse = TResponse<TZListReceivedByAddress[]>
 type TCreateAddressResponse = TResponse<string>
-export type TAddressAmountsResponse = Record<TAddress, TBalance>
+export type TAddressBalancesResponse = Record<TAddress, TBalance>
 
 export type {
   TUtxo,

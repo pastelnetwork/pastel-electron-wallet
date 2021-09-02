@@ -1,10 +1,13 @@
-import React from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Route, Switch, useLocation } from 'react-router-dom'
-
-import { pageRoutes } from './index'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps, Router } from 'react-router'
+import { Route, Switch } from 'react-router-dom'
 import * as ROUTES from '../utils/constants/routes'
 import LoadingScreen from 'features/loading'
+import history from '../utils/history'
+import { Database } from 'sql.js'
+import PastelDB from '../../features/pastelDB/database'
+import { AppContext } from '../../features/app/AppContext'
+import { pageRoutes } from './index'
 
 type TRouteType = {
   id: string
@@ -12,19 +15,11 @@ type TRouteType = {
   component:
     | React.FunctionComponent<RouteComponentProps>
     | React.ComponentClass<RouteComponentProps>
-    | null
-  layout:
-    | React.FunctionComponent<unknown>
-    | React.ComponentClass<unknown>
-    | null
+  layout: React.FunctionComponent<unknown> | React.ComponentClass<unknown>
 }
 
 const childRoutes = (routes: Array<TRouteType>) =>
   routes.map(({ component: Component, layout: Layout, path, id }) => {
-    if (!Component || !Layout) {
-      return null
-    }
-
     return (
       <Route
         key={id}
@@ -40,14 +35,24 @@ const childRoutes = (routes: Array<TRouteType>) =>
   })
 
 const Routes = (): JSX.Element => {
-  const location = useLocation()
+  const [db, setDb] = useState<Database>()
+
+  useEffect(() => {
+    PastelDB.getDatabaseInstance().then(setDb)
+  }, [])
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
-      <Switch location={location}>
-        {childRoutes(pageRoutes)}
-        <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
-      </Switch>
+      <Router history={history}>
+        {db && (
+          <AppContext.Provider value={{ db }}>
+            <Switch>{childRoutes(pageRoutes)}</Switch>
+          </AppContext.Provider>
+        )}
+        <Switch>
+          <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
+        </Switch>
+      </Router>
     </div>
   )
 }

@@ -18,7 +18,7 @@ export type TColumn = {
   key: string
   align?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  custom?: (value: any, row?: TRow | undefined) => ReactNode
+  custom?: (value: any, row: TRow) => ReactNode
 }
 
 export type TTableProps = {
@@ -100,7 +100,7 @@ const Table = ({
           {extendHeader ? (
             <tr>
               <td
-                className={cx('sticky bg-white z-50', extendHeaderClassName)}
+                className={cx('sticky bg-white z-30', extendHeaderClassName)}
                 colSpan={showCheckbox ? columns.length + 1 : columns.length}
               >
                 {extendHeader}
@@ -121,7 +121,7 @@ const Table = ({
                 key={index}
                 className={cx(
                   column.align ? 'text-' + column.align : 'text-left',
-                  'sticky bg-white z-50',
+                  'sticky bg-white z-30',
                   column.colClasses,
                   headerTdClasses,
                   stickyTopClassName,

@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import Tooltip from 'common/components/Tooltip'
-import { TRow } from 'features/nft/nftModals/table'
 import React, { useState } from 'react'
 import { clipboard } from 'electron'
 import { formatAddress } from 'common/utils/format'
@@ -13,20 +12,17 @@ import {
   SaveIcon,
   Close,
 } from 'common/components/Icons'
+import { useWalletScreenContext } from './walletScreen.context'
 
 type TAddressFormProps = {
   address: string
-  currentRow: TRow | undefined
-  saveAddressLabel: (address: string, label: string) => void
   copyable?: boolean
   hidable?: boolean
   className?: string
 }
 
 export const AddressForm = ({
-  address = '',
-  currentRow,
-  saveAddressLabel,
+  address,
   copyable = true,
   hidable = false,
   className,
@@ -34,6 +30,11 @@ export const AddressForm = ({
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
   const [copyStatus, setCopyStatus] = useState<boolean>(false)
+  const {
+    addressBook: { addressBookMap, updateAddressBook },
+  } = useWalletScreenContext()
+
+  const addressLabel = addressBookMap[address]
 
   const copyAddress = (address: string) => {
     if (copyStatus) {
@@ -58,19 +59,17 @@ export const AddressForm = ({
             className='w-220px md:w-[312px] h-10 border border-link text-sm font-medium rounded px-4'
           />
         </>
-      ) : !!currentRow && currentRow.addressNick.toString() ? (
+      ) : addressLabel ? (
         <div className='w-220px md:w-[312px]'>
           <Tooltip
             autoWidth={true}
             type='top'
             width={211}
             padding={5}
-            content={formatAddress(currentRow.address.toString(), 24)}
+            content={formatAddress(address, 24)}
             classnames='py-2 text-gray-a0'
           >
-            <span className='text-blue-3f cursor-pointer'>
-              {currentRow.addressNick.toString()}
-            </span>
+            <span className='text-blue-3f cursor-pointer'>{addressLabel}</span>
           </Tooltip>
         </div>
       ) : (
@@ -96,7 +95,10 @@ export const AddressForm = ({
               type='button'
               className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
               onClick={() => {
-                saveAddressLabel(edit, editName)
+                updateAddressBook({
+                  address: edit,
+                  label: editName,
+                })
                 setEdit(null)
               }}
             >
@@ -128,10 +130,8 @@ export const AddressForm = ({
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
             <span
               onClick={() => {
-                if (currentRow) {
-                  setEditName(currentRow.addressNick.toString())
-                  setEdit(currentRow.address.toString())
-                }
+                setEditName(addressLabel || '')
+                setEdit(address)
               }}
               className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
             >

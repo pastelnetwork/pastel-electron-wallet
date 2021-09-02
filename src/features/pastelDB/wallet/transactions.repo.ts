@@ -1,5 +1,7 @@
 import { Database } from 'sql.js'
-import { TTransactionResponse } from '../../../types/rpc'
+import { TAddress, TTransactionResponse } from '../../../types/rpc'
+import { useQuery, UseQueryResult } from 'react-query'
+import { useDb } from '../../app/AppContext'
 
 export const createListTransactions = (db: Database): void => {
   db.exec(`CREATE TABLE listtransactions (
@@ -107,4 +109,24 @@ const countQuery = 'SELECT count(*) FROM listtransactions'
 export const getListTransactionsCount = (db: Database): number => {
   const result = db.exec(countQuery)
   return (result[0].values[0]?.[0] || 0) as number
+}
+
+type TAddressesLastActivityTime = Record<TAddress, number>
+
+export const getAddressesLastActivityTime = (
+  db: Database,
+): TAddressesLastActivityTime => {
+  const result = db.exec(`
+    SELECT address, max(time) FROM listtransactions
+    WHERE address IS NOT NULL
+    GROUP BY address
+  `)
+  return Object.fromEntries(result[0].values)
+}
+
+export const useAddressesLastActivityTime = (): UseQueryResult<TAddressesLastActivityTime> => {
+  const db = useDb()
+  return useQuery('transactions/addressesLastActivityTime', () =>
+    getAddressesLastActivityTime(db),
+  )
 }
