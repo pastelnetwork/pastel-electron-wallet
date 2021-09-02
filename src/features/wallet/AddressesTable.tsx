@@ -2,14 +2,17 @@ import React, { ReactNode } from 'react'
 import Table, { TRow } from 'common/components/Table'
 import Checkbox from 'common/components/Checkbox'
 import { AddressForm } from './AddressForm'
-import { formatPrice, parseFormattedNumber, timeAgo } from 'common/utils/format'
+import {
+  formatAbbreviatedNumber,
+  parseFormattedNumber,
+  timeAgo,
+} from 'common/utils/format'
 import dayjs from 'dayjs'
 import { FilePDFIcon, QRCode } from 'common/components/Icons'
 import SelectAmount, {
   TOption,
   generateStep,
 } from 'common/components/SelectAmount'
-import { useCurrencyName } from 'common/hooks/appInfo'
 import { TSelectionPslProps } from './WalletScreen'
 
 export default function AddressesTable({
@@ -43,12 +46,10 @@ export default function AddressesTable({
   extendHeaderClassName?: string
   stickyTopClassName?: string
 }): JSX.Element {
-  const currencyName = useCurrencyName()
-
   const Columns = [
     {
       key: 'address',
-      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
+      colClasses: 'w-[35%] text-h6 leading-5 font-normal',
       name: 'Address name',
       headerColClasses: 'mx-30px',
       custom: (value: string | number, row: TRow | undefined) => (
@@ -138,14 +139,14 @@ export default function AddressesTable({
           value
         ) : (
           <div className='text-gray-71 text-h5-medium'>
-            {formatPrice(value, currencyName)}
+            {formatAbbreviatedNumber(parseFloat(value.toString()), 2)}
           </div>
         ),
     },
     {
       key: 'psl',
       name: '',
-      colClasses: 'min-w-[120px] w-[120px]',
+      colClasses: 'min-w-[120px] w-[150px]',
       custom: (value: number | string, row?: TRow) => {
         if (isLoading) {
           return value
@@ -155,7 +156,7 @@ export default function AddressesTable({
         return (
           <div className='z-0'>
             <SelectAmount
-              className='text-gray-2d w-28 bg-white'
+              className='text-gray-2d w-full bg-white'
               min={0}
               max={parseFloat(value.toString())}
               step={generateStep(parseInt(value.toString()))}

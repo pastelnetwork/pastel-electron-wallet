@@ -57,7 +57,7 @@ export const AddressForm = ({
             onChange={e => {
               setEditName(e.target.value)
             }}
-            className='w-220px md:w-[312px] h-10 border border-link text-sm font-medium rounded px-4'
+            className='w-220px md:w-[270px] h-10 border border-link text-sm font-medium rounded px-4'
           />
         </>
       ) : !!currentRow && currentRow.addressNick.toString() ? (
@@ -76,7 +76,7 @@ export const AddressForm = ({
           </Tooltip>
         </div>
       ) : (
-        <span className='w-220px md:w-[312px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden'>
+        <span className='w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]'>
           {formatAddress(address, 24)}
         </span>
       )}

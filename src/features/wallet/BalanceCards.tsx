@@ -132,7 +132,7 @@ export default function BalanceCards({
                 >
                   {card.psl === undefined
                     ? loaderItem
-                    : formatPrice(card.psl, currencyName)}
+                    : formatPrice(card.psl, currencyName, 2)}
                 </div>
                 {card.style.type === 'total_balance' ? (
                   <div

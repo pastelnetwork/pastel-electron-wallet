@@ -12,6 +12,7 @@ import { TSelectionPslProps } from './WalletScreen'
 import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import RectangleLoader from 'common/components/Loader'
+import { walletRPC } from 'api/pastel-rpc'
 
 export default function WalletAddresses({
   walletAddresses,
@@ -47,7 +48,7 @@ export default function WalletAddresses({
   handleAmountChange(selection: number | null, row?: TRow): void
 }): JSX.Element {
   const currencyName = useCurrencyName()
-
+  const { data: totalBalances } = walletRPC.useTotalBalance()
   let loadingData: TRow[] | undefined
   if (isLoadingAddresses) {
     const loaderItem = <RectangleLoader className='h-2.5 mr-3' />
@@ -147,7 +148,14 @@ export default function WalletAddresses({
 
           <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
             <div className='flex items-center text-h6-leading-20'>
-              <Toggle toggleHandler={hideEmptyAddress}>
+              <Toggle
+                toggleHandler={hideEmptyAddress}
+                selected={
+                  totalBalances?.total && totalBalances?.total > 0
+                    ? true
+                    : false
+                }
+              >
                 Hide empty addresses
                 <div className='ml-2'>
                   <Tooltip

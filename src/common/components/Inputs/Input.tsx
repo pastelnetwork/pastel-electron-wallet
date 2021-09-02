@@ -14,7 +14,7 @@ export type TInput = {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
   onClick?: () => void
   isValid?: boolean | undefined
-  label?: string
+  label?: string | ReactNode
   id?: string
   value?: string
   hint?: string
