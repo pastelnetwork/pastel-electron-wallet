@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import Tooltip from 'common/components/Tooltip'
 import { CloseButton } from 'common/components/Buttons'
-
 import {
   Download,
   CreditCard,

@@ -4,7 +4,7 @@ import cn from 'classnames'
 import LineEdit from './LineEdit'
 import ProfileCardFrame from './ProfileCardFrame'
 import ProfileCardAvatar from './ProfileCardAvatar'
-import PastelUtils from 'common/utils/utils'
+import { truncateMiddle } from 'common/utils/string'
 import Tooltip from 'common/components/Tooltip/Tooltip'
 import { Button } from 'common/components/Buttons'
 import img_avatar from 'common/assets/images/avatar2-placeholder.png'
@@ -95,7 +95,7 @@ const ProfileCard = ({
                 {name}
               </div>
               <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
-                {PastelUtils.truncateMiddle(data.walletId, 8, 4, '...')}
+                {truncateMiddle(data.walletId, 8, 4, '...')}
                 <button className='ml-10px'>
                   <Clipboard size={12} className='text-gray-88' />
                 </button>
@@ -167,7 +167,7 @@ const ProfileCard = ({
                   }
                 >
                   <span className='cursor-pointer text-gray-b9'>
-                    {PastelUtils.truncateMiddle(data.walletId, 8, 4, '...')}
+                    {truncateMiddle(data.walletId, 8, 4, '...')}
                   </span>
                 </Tooltip>
                 <button className='pl-10px'>
