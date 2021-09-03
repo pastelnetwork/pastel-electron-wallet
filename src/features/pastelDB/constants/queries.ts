@@ -1,12 +1,12 @@
 export const createStatisticinfo = `CREATE TABLE statisticinfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   solutions int,
   difficulty float,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createNetworkinfo = `CREATE TABLE networkinfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   version int,
   subversion VARCHAR(255),
   protocolversion int,
@@ -17,27 +17,27 @@ export const createNetworkinfo = `CREATE TABLE networkinfo (
   relayfee float,
   localaddresses text,
   warnings VARCHAR(255),
-  create_timestamp int
+  createdAt int
 )`
 
 export const createNettotals = `CREATE TABLE nettotals (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   totalbytesrecv int,
   totalbytessent int,
   timemillis int,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createMempoolinfo = `CREATE TABLE mempoolinfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   size int,
   bytes int,
   usage int,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createRawmempoolinfo = `CREATE TABLE rawmempoolinfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   transactionid int NOT NULL,
   size int,
   fee int,
@@ -46,11 +46,11 @@ export const createRawmempoolinfo = `CREATE TABLE rawmempoolinfo (
   startingpriority int,
   currentpriority int,
   depends text,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createMininginfo = `CREATE TABLE mininginfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   blocks int,
   currentblocksize int,
   currentblocktx int,
@@ -63,11 +63,11 @@ export const createMininginfo = `CREATE TABLE mininginfo (
   pooledtx int,
   testnet int,
   chain text,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createBlockChainInfo = `CREATE TABLE blockchaininfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   bestblockhash VARCHAR(255),
   blocks int,
   chain VARCHAR(255),
@@ -81,11 +81,11 @@ export const createBlockChainInfo = `CREATE TABLE blockchaininfo (
   upgrades text,
   valuePools text,
   verificationprogress int,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createBlock = `CREATE TABLE blockinfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   hash VARCHAR(255),
   confirmations int,
   size int,
@@ -104,11 +104,11 @@ export const createBlock = `CREATE TABLE blockinfo (
   valuePools text,
   previousblockhash VARCHAR(255),
   nextblockhash VARCHAR(255),
-  create_timestamp int
+  createdAt int
 )`
 
 export const createRawtransaction = `CREATE TABLE rawtransaction (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   hex VARCHAR(255),
   txid VARCHAR(255),
   overwintered boolean,
@@ -123,11 +123,11 @@ export const createRawtransaction = `CREATE TABLE rawtransaction (
   confirmations int,
   time int,
   blocktime int,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createTransaction = `CREATE TABLE transaction_tbl (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   amount int,
   blockhash VARCHAR(255),
   blockindex int,
@@ -141,11 +141,11 @@ export const createTransaction = `CREATE TABLE transaction_tbl (
   txid VARCHAR(255),
   vjoinsplit text,
   walletconflicts text,
-  create_timestamp int    
+  createdAt int
 )`
 
 export const createTxoutsetinfo = `CREATE TABLE txoutsetinfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   height int,
   bestblock VARCHAR(255),
   transactions int,
@@ -153,28 +153,28 @@ export const createTxoutsetinfo = `CREATE TABLE txoutsetinfo (
   bytes_serialized int,
   hash_serialized VARCHAR(255),
   total_amount float,
-  create_timestamp int  
+  createdAt int
 )`
 
 export const createChaintips = `CREATE TABLE chaintips (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   height int,
   hash VARCHAR(255),
   branchlen int,
   status VARCHAR(255),
-  create_timestamp int
+  createdAt int
 )`
 
 export const createBlocksubsidy = `CREATE TABLE blocksubsidy (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   miner int,
   masternode int,
   governance int,
-  create_timestamp int  
+  createdAt int
 )`
 
 export const createWalletinfo = `CREATE TABLE walletinfo (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   walletversion int,
   balance int,
   unconfirmed_balance int,
@@ -184,42 +184,21 @@ export const createWalletinfo = `CREATE TABLE walletinfo (
   keypoolsize int,
   paytxfee int,
   seedfp VARCHAR(255),
-  create_timestamp int
+  createdAt int
 )`
 
 export const createListreceivedbyaddress = `CREATE TABLE listreceivedbyaddress (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   address VARCHAR(255),
   account VARCHAR(255),
   amount int,
   confirmations int,
   txids text,
-  create_timestamp int
-)`
-
-export const createListtransactions = `CREATE TABLE listtransactions (
-  id int NOT NULL,
-  account VARCHAR(255),
-  address VARCHAR(255),
-  category VARCHAR(255),
-  amount int,
-  vout int,
-  confirmations int,
-  blockhash int,
-  blockindex int,
-  blocktime int,
-  expiryheight int,
-  txid VARCHAR(255),
-  walletconflicts text,
-  time int,
-  timereceived int,
-  vjoinsplit text,
-  size int,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createListunspent = `CREATE TABLE listunspent (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   txid VARCHAR(255),
   vout int,
   generated boolean,
@@ -229,44 +208,60 @@ export const createListunspent = `CREATE TABLE listunspent (
   amount int,
   confirmations int,
   spendable int,
-  create_timestamp int
+  createdAt int
 )`
 
 export const createTotalbalance = `CREATE TABLE totalbalance (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   transparent VARCHAR(255),
   private VARCHAR(255),
   total VARCHAR(255),
-  create_timestamp int
+  createdAt int
 )`
 
 export const createListaddresses = `CREATE TABLE listaddresses (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   address VARCHAR(255),
-  create_timestamp int
+  createdAt int
 )`
 
 export const createPastelPriceTable = `CREATE TABLE pslprice (
-  id int NOT NULL,
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   price_usd number,
-  create_timestamp int
+  createdAt int
 )`
 
-export const insertPastelPriceInfoQuery = `INSERT INTO pslprice VALUES (
-  $newId,
+export const insertPastelPriceInfoQuery = `INSERT INTO pslprice(
+  price_usd,
+  createdAt
+) VALUES (
   $priceUsd,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertStatisticinfoQuery = `INSERT INTO statisticinfo VALUES (
-  $newId,
+export const insertStatisticinfoQuery = `INSERT INTO statisticinfo(
+  solutions,
+  difficulty,
+  createdAt
+) VALUES (
   $solutions,
   $difficulty,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertNetworkinfoQuery = `INSERT INTO networkinfo VALUES (
-  $newId,
+export const insertNetworkinfoQuery = `INSERT INTO networkinfo(
+  version,
+  subversion,
+  protocolversion,
+  localservices,
+  timeoffset,
+  connections,
+  networks,
+  relayfee,
+  localaddresses,
+  warnings,
+  createdAt
+) VALUES (
   $version,
   $subversion,
   $protocolversion,
@@ -277,27 +272,44 @@ export const insertNetworkinfoQuery = `INSERT INTO networkinfo VALUES (
   $relayfee,
   $localaddresses,
   $warnings,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertNettotalsQuery = `INSERT INTO nettotals VALUES (
-  $newId,
+export const insertNettotalsQuery = `INSERT INTO nettotals(
+  totalbytesrecv,
+  totalbytessent,
+  timemillis,
+  createdAt
+) VALUES (
   $totalbytesrecv,
   $totalbytessent,
   $timemillis,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertMempoolinfoQuery = `INSERT INTO mempoolinfo VALUES (
-  $newId,
+export const insertMempoolinfoQuery = `INSERT INTO mempoolinfo(
+  size,
+  bytes,
+  usage,
+  createdAt
+) VALUES (
   $size,
   $bytes,
   $usage,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertRawmempoolinfoQuery = `INSERT INTO rawmempoolinfo VALUES (
-  $newId,
+export const insertRawmempoolinfoQuery = `INSERT INTO rawmempoolinfo(
+  transactionid,
+  size,
+  fee,
+  time,
+  height,
+  startingpriority,
+  currentpriority,
+  depends,
+  createdAt
+) VALUES (
   $transactionid,
   $size,
   $fee,
@@ -306,11 +318,24 @@ export const insertRawmempoolinfoQuery = `INSERT INTO rawmempoolinfo VALUES (
   $startingpriority,
   $currentpriority,
   $depends,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertMininginfoQuery = `INSERT INTO mininginfo VALUES (
-  $newId,
+export const insertMininginfoQuery = `INSERT INTO mininginfo(
+  blocks,
+  currentblocksize,
+  currentblocktx,
+  difficulty,
+  errors,
+  genproclimit,
+  localsolps,
+  networksolps,
+  networkhashps,
+  pooledtx,
+  testnet,
+  chain,
+  createdAt
+) VALUES (
   $blocks,
   $currentblocksize,
   $currentblocktx,
@@ -323,11 +348,25 @@ export const insertMininginfoQuery = `INSERT INTO mininginfo VALUES (
   $pooledtx,
   $testnet,
   $chain,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertBlockChainInfoQuery = `INSERT INTO blockchaininfo VALUES (
-  $newId,
+export const insertBlockChainInfoQuery = `INSERT INTO blockchaininfo(
+  bestblockhash,
+  blocks,
+  chain,
+  chainwork,
+  commitments,
+  consensus,
+  difficulty,
+  headers,
+  pruned,
+  softforks,
+  upgrades,
+  valuePools,
+  verificationprogress,
+  createdAt
+) VALUES (
   $bestblockhash,
   $blocks,
   $chain,
@@ -341,11 +380,30 @@ export const insertBlockChainInfoQuery = `INSERT INTO blockchaininfo VALUES (
   $upgrades,
   $valuePools,
   $verificationprogress,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertBlockinfoQuery = `INSERT INTO blockinfo VALUES (
-  $newId,
+export const insertBlockinfoQuery = `INSERT INTO blockinfo(
+  hash,
+  confirmations,
+  size,
+  height,
+  version,
+  merkleroot,
+  finalsaplingroot,
+  tx,
+  time,
+  nonce,
+  solution,
+  bits,
+  difficulty,
+  chainwork,
+  anchor,
+  valuePools,
+  previousblockhash,
+  nextblockhash,
+  createdAt
+) VALUES (
   $hash,
   $confirmations,
   $size,
@@ -364,11 +422,26 @@ export const insertBlockinfoQuery = `INSERT INTO blockinfo VALUES (
   $valuePools,
   $previousblockhash,
   $nextblockhash,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertRawtransactionQuery = `INSERT INTO rawtransaction VALUES (
-  $newId,
+export const insertRawtransactionQuery = `INSERT INTO rawtransaction(
+  hex,
+  txid,
+  overwintered,
+  version,
+  versiongroupid,
+  locktime,
+  expiryheight,
+  vin,
+  vout,
+  vjoinsplit,
+  blockhash,
+  confirmations,
+  time,
+  blocktime,
+  createdAt
+) VALUES (
   $hex,
   $txid,
   $overwintered,
@@ -383,11 +456,25 @@ export const insertRawtransactionQuery = `INSERT INTO rawtransaction VALUES (
   $confirmations,
   $time,
   $blocktime,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertTransactionTableQuery = `INSERT INTO transaction_tbl VALUES (
-  $newId,
+export const insertTransactionTableQuery = `INSERT INTO transaction_tbl(
+  amount,
+  blockhash,
+  blockindex,
+  blocktime,
+  confirmations,
+  details,
+  expiryheight,
+  hex,
+  time,
+  timereceived,
+  txid,
+  vjoinsplit,
+  walletconflicts,
+  createdAt
+) VALUES (
   $amount,
   $blockhash,
   $blockindex,
@@ -401,11 +488,19 @@ export const insertTransactionTableQuery = `INSERT INTO transaction_tbl VALUES (
   $txid,
   $vjoinsplit,
   $walletconflicts,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertTxoutsetinfoQuery = `INSERT INTO txoutsetinfo VALUES (
-  $newId,
+export const insertTxoutsetinfoQuery = `INSERT INTO txoutsetinfo(
+  height,
+  bestblock,
+  transactions,
+  txouts,
+  bytes_serialized,
+  hash_serialized,
+  total_amount,
+  createdAt
+) VALUES (
   $height,
   $bestblock,
   $transactions,
@@ -413,28 +508,47 @@ export const insertTxoutsetinfoQuery = `INSERT INTO txoutsetinfo VALUES (
   $bytes_serialized,
   $hash_serialized,
   $total_amount,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertChaintipsQuery = `INSERT INTO chaintips VALUES (
-  $newId,
+export const insertChaintipsQuery = `INSERT INTO chaintips(
+  height,
+  hash,
+  branchlen,
+  status,
+  createdAt
+) VALUES (
   $height,
   $hash,
   $branchlen,
   $status,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertBlocksubsidyQuery = `INSERT INTO blocksubsidy VALUES (
-  $newId,
+export const insertBlocksubsidyQuery = `INSERT INTO blocksubsidy(
+  miner,
+  masternode,
+  governance,
+  createdAt
+) VALUES (
   $miner,
   $masternode,
   $governance,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertWalletinfoQuery = `INSERT INTO walletinfo VALUES (
-  $newId,
+export const insertWalletinfoQuery = `INSERT INTO walletinfo(
+  walletversion,
+  balance,
+  unconfirmed_balance,
+  immature_balance,
+  txcount,
+  keypoololdest,
+  keypoolsize,
+  paytxfee,
+  seedfp,
+  createdAt
+) VALUES (
   $walletversion,
   $balance,
   $unconfirmed_balance,
@@ -444,32 +558,21 @@ export const insertWalletinfoQuery = `INSERT INTO walletinfo VALUES (
   $keypoolsize,
   $paytxfee,
   $seedfp,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertListtransactionsQuery = `INSERT INTO listtransactions VALUES (
-  $newId,
-  $account,
-  $address,
-  $category,
-  $amount,
-  $vout,
-  $confirmations,
-  $blockhash,
-  $blockindex,
-  $blocktime,
-  $expiryheight,
-  $txid,
-  $walletconflicts,
-  $time,
-  $timereceived,
-  $vjoinsplit,
-  $size,
-  $createTimestamp
-)`
-
-export const insertListunspentQuery = `INSERT INTO listunspent VALUES (
-  $newId,
+export const insertListunspentQuery = `INSERT INTO listunspent(
+  txid,
+  vout,
+  generated,
+  address,
+  account,
+  scriptPubKey,
+  amount,
+  confirmations,
+  spendable,
+  createdAt
+) VALUES (
   $txid,
   $vout,
   $generated,
@@ -479,21 +582,27 @@ export const insertListunspentQuery = `INSERT INTO listunspent VALUES (
   $amount,
   $confirmations,
   $spendable,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertTotalbalanceQuery = `INSERT INTO totalbalance VALUES (
-  $newId,
+export const insertTotalbalanceQuery = `INSERT INTO totalbalance(
+  transparent,
+  private,
+  total,
+  createdAt
+) VALUES (
   $transparent,
   $private,
   $total,
-  $createTimestamp
+  $createdAt
 )`
 
-export const insertListaddressesQuery = `INSERT INTO listaddresses VALUES (
-  $newId,
+export const insertListaddressesQuery = `INSERT INTO listaddresses(
+  address,
+  createdAt
+) VALUES (
   $address,
-  $createTimestamp
+  $createdAt
 )`
 
 export const selectAllQuery = 'SELECT * FROM '
@@ -505,25 +614,25 @@ export const whereTransactionIDMatchingQuery =
 
 export const orderByIDQuery = ' ORDER BY id DESC LIMIT 1'
 
-export const averageFilterByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+export const averageFilterByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(createdAt / 1000, 'unixepoch')),
   AVG(size) FROM blockinfo`
 
-export const averageFilterByMonthlyPeriodQuery = `SELECT strftime('%m/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+export const averageFilterByMonthlyPeriodQuery = `SELECT strftime('%m/%Y', datetime(createdAt / 1000, 'unixepoch')),
   AVG(size) FROM blockinfo`
 
-export const averageFilterByYearlyPeriodQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+export const averageFilterByYearlyPeriodQuery = `SELECT strftime('%Y', datetime(createdAt / 1000, 'unixepoch')),
   AVG(size) FROM blockinfo`
 
 export const groupbyDaily =
-  "GROUP BY strftime('%Y-%m-%d', datetime(create_timestamp / 1000, 'unixepoch'))"
+  "GROUP BY strftime('%Y-%m-%d', datetime(createdAt / 1000, 'unixepoch'))"
 
 export const groupByMonthly =
-  "GROUP BY strftime('%Y-%m', datetime(create_timestamp / 1000, 'unixepoch'))"
+  "GROUP BY strftime('%Y-%m', datetime(createdAt / 1000, 'unixepoch'))"
 
 export const groupByYearly =
-  "GROUP BY strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch'))"
+  "GROUP BY strftime('%Y', datetime(createdAt / 1000, 'unixepoch'))"
 
-export const transactionFeeDailyQuery = `SELECT strftime('%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+export const transactionFeeDailyQuery = `SELECT strftime('%Y', datetime(createdAt / 1000, 'unixepoch')),
   SUM(fee) FROM `
-export const countIdByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(create_timestamp / 1000, 'unixepoch')), 
+export const countIdByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(createdAt / 1000, 'unixepoch')),
 COUNT(id) from `

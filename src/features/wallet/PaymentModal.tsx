@@ -7,44 +7,32 @@ import Select from 'common/components/Select/Select'
 import PaymentSource from './PaymentSource'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import Tooltip from 'common/components/Tooltip'
-import { TAddressRow } from 'types/rpc'
 import { formatNumber } from 'common/utils/format'
-import { TRow } from 'common/components/Table'
 
 import { EliminationIcon, AddIcon } from 'common/components/Icons'
-
-export type TPaymentModalProps = {
-  isOpen: boolean
-  handleClose: () => void
-  paymentSources: TAddressRow[]
-  totalBalances: number
-  onRemoveRow: (row: TRow) => void
-  onAmountChange: (selection: number | null, row?: TRow) => void
-  selectedTotal: number
-  onSelectedRows: (row: TAddressRow) => void
-}
+import { useWalletScreenContext } from './walletScreen.context'
 
 const selectListClassName =
   'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-[200px] overflow-y-auto z-100 whitespace-normal'
 
-const PaymentModal = ({
-  isOpen,
-  handleClose,
-  paymentSources,
-  totalBalances,
-  onRemoveRow,
-  onAmountChange,
-  selectedTotal,
-  onSelectedRows,
-}: TPaymentModalProps): JSX.Element => {
+const PaymentModal = (): JSX.Element => {
+  const {
+    setPaymentModalOpen: setIsOpen,
+    paymentSources,
+    totalBalances,
+    selectedAmount,
+  } = useWalletScreenContext()
+
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(12)
   const [psl, setPSL] = useState<number>(12000)
 
+  const close = () => setIsOpen(false)
+
   return (
     <TitleModal
-      isOpen={isOpen}
-      handleClose={handleClose}
+      isOpen
+      handleClose={close}
       title='Payment'
       classNames='max-w-4xl'
     >
@@ -96,8 +84,11 @@ const PaymentModal = ({
         </div>
       </div>
       <div className='pt-6px text-gray-a0 text-h6-leading-20'>
-        {formatNumber(totalBalances - selectedTotal, currencyName)} balance
-        remaining after payment
+        {formatNumber(
+          (totalBalances.data?.total || 0) - selectedAmount,
+          currencyName,
+        )}{' '}
+        balance remaining after payment
       </div>
       <div>
         <div className='pt-[23px] flex items-center text-gray-4a text-h5-heavy'>
@@ -155,20 +146,14 @@ const PaymentModal = ({
         </div>
         <table className='w-full'>
           <tbody>
-            {paymentSources.map((data: TAddressRow) => (
-              <PaymentSource
-                key={data.address}
-                walletAddress={data}
-                onSelectedRows={onSelectedRows}
-                onRemoveRow={onRemoveRow}
-                onAmountChange={onAmountChange}
-              />
+            {Object.keys(paymentSources).map((address: string) => (
+              <PaymentSource key={address} address={address} />
             ))}
           </tbody>
         </table>
       </div>
       <div className='flex justify-end mt-[21px]'>
-        <Button variant='secondary' onClick={handleClose} className='w-[146px]'>
+        <Button variant='secondary' onClick={close} className='w-[146px]'>
           <div className='flex items-center px-5 text-blue-3f text-h5-medium'>
             <span className='text-sm '>Cancel</span>
           </div>
@@ -176,12 +161,12 @@ const PaymentModal = ({
         <Button
           className='ml-[30px] px-0'
           childrenClassName='w-full'
-          onClick={handleClose}
+          onClick={close}
         >
           <div className='flex items-center px-5 text-white text-h5-heavy'>
             <img src={checkIcon} className='py-3.5' />
             <span className='ml-[9px]'>
-              Confirm {currencyName} {formatNumber(selectedTotal, '')} payment
+              Confirm {currencyName} {formatNumber(selectedAmount, '')} payment
             </span>
           </div>
         </Button>

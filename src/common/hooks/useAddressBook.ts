@@ -1,13 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import AddressbookImpl from '../utils/AddressbookImpl'
 import { TAddressBook } from 'types/rpc'
 
-export const useAddressBook = (): {
+export type TUseAddressBookResult = {
   addressBook: TAddressBook[]
+  addressBookMap: Record<string, string>
   updateAddressBook: ({ address, label }: TAddressBook) => void
   isAddressBookLoaded: boolean
-} => {
+}
+
+export const useAddressBook = (): TUseAddressBookResult => {
   const [addressBook, setAddressBook] = useState<TAddressBook[]>([])
+  const addressBookMap = useMemo(
+    () =>
+      Object.fromEntries(addressBook.map(item => [item.address, item.label])),
+    [addressBook],
+  )
   const [isAddressBookLoaded, setIsAddressBookLoaded] = useState<boolean>(false)
 
   useEffect(() => {
@@ -43,5 +51,5 @@ export const useAddressBook = (): {
     await AddressbookImpl.writeAddressBook(newAddressBook)
   }
 
-  return { addressBook, updateAddressBook, isAddressBookLoaded }
+  return { addressBook, addressBookMap, updateAddressBook, isAddressBookLoaded }
 }

@@ -1,4 +1,4 @@
-import { TransactionRPC, rpc } from '../../api/pastel-rpc'
+import { TransactionRPC, rpc, transactionRPC } from '../../api/pastel-rpc'
 import { Database } from 'sql.js'
 import {
   TBlockChainInfoResponse,
@@ -18,7 +18,6 @@ import {
   TRawMempoolResponse,
   TSinceBlockTransaction,
   TTotalBalanceResponse,
-  TTransactionResponse,
   TWalletInfoResponse,
 } from 'types/rpc'
 
@@ -31,7 +30,6 @@ import {
   insertBlocksubsidy,
   insertChaintips,
   insertListaddresses,
-  insertListTransactions,
   insertListunspent,
   insertMempoolInfoToDB,
   insertMiningInfoToDB,
@@ -51,6 +49,10 @@ import { getRpcConfig } from '../rpcConfig'
 import { setPastelPrice } from '../pastelPrice/pastelPriceSlice'
 import store from '../../redux/store'
 import { queryClient } from '../../common/utils/queryClient'
+import {
+  getListTransactionsCount,
+  insertListTransactions,
+} from './wallet/transactions.repo'
 
 type fetchFuncConfig = {
   pastelDB: Database
@@ -150,8 +152,8 @@ export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TMiningInfoResponse>('getmininginfo', [])
     insertMiningInfoToDB(props.pastelDB, result)
-  } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchMiningInfo error: ${message}`)
+  } catch (error) {
+    throw new Error(`pastelDBThread fetchMiningInfo error: ${error.message}`)
   }
 }
 
@@ -239,26 +241,31 @@ export async function fetchWalletInfo(props: fetchFuncConfig): Promise<void> {
   }
 }
 
-export async function fetchListTransactions(
-  props: fetchFuncConfig,
-): Promise<void> {
+const LIST_TRANSACTIONS_BATCH_SIZE = 100000 // will take around 65 MB by rough est.
+export async function fetchListTransactions(db: Database): Promise<void> {
   try {
-    const { result } = await rpc<TTransactionResponse>('listtransactions', [])
-    const transactions = result
-    for (let i = 0; i < transactions.length; i++) {
-      insertListTransactions(props.pastelDB, transactions[i])
-    }
-  } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchListTransactions error: ${message}`)
+    const count = await getListTransactionsCount(db)
+
+    const transactions = await transactionRPC.listTransactions({
+      count: LIST_TRANSACTIONS_BATCH_SIZE,
+      from: count,
+    })
+
+    insertListTransactions(db, transactions)
+  } catch (error) {
+    throw new Error(
+      `pastelDBThread fetchListTransactions error: ${error.message}`,
+    )
   }
 }
 
 export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
   try {
-    const data = await rpc<TListUnspentResponse>('listunspent', [])
-    const unspentlist = data.result
+    const data = await rpc<TListUnspentResponse>('listunspent', [], {
+      throw: true,
+    })
     for (let i = 0; i < 1; i++) {
-      insertListunspent(props.pastelDB, unspentlist[i])
+      insertListunspent(props.pastelDB, data[i])
     }
     queryClient.setQueryData('listunspent', data)
   } catch ({ message }) {
@@ -282,10 +289,11 @@ export async function fetchListaddresses(
   props: fetchFuncConfig,
 ): Promise<void> {
   try {
-    const { result } = await rpc<TListAddressesResponse>('z_listaddresses', [])
-    const addresslist = result
-    for (let i = 0; i < addresslist.length; i++) {
-      insertListaddresses(props.pastelDB, addresslist[i])
+    const result = await rpc<TListAddressesResponse>('z_listaddresses', [], {
+      throw: true,
+    })
+    for (let i = 0; i < result.length; i++) {
+      insertListaddresses(props.pastelDB, result[i])
     }
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchTotalBalance error: ${message}`)
@@ -331,12 +339,12 @@ export async function fetchBlockChainInfo(
 
 export async function PastelDBThread(): Promise<void> {
   PastelDB.setValid(false)
-  const pastelDB = await PastelDB.getDatabaseInstance()
+  const db = await PastelDB.getDatabaseInstance()
   const rpcConfig = getRpcConfig()
-  if (pastelDB && rpcConfig && rpcConfig.username !== '') {
+  if (db && rpcConfig && rpcConfig.username !== '') {
     // fetch whole data from RPC and save to pastel DB.
     const pastelConfig: fetchFuncConfig = {
-      pastelDB,
+      pastelDB: db,
     }
     await Promise.all([
       fetchStatisticInfo(pastelConfig),
@@ -351,6 +359,7 @@ export async function PastelDBThread(): Promise<void> {
       fetchTotalBalance(pastelConfig),
       fetchPastelPrices(pastelConfig),
       fetchBlockChainInfo(pastelConfig),
+      fetchListTransactions(db),
     ])
     PastelDB.setValid(true)
   }

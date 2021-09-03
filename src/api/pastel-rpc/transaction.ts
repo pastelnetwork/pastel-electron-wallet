@@ -16,6 +16,7 @@ import {
 import { mapTxnsResult, parseMemo, sortTxnsResult } from '../helpers'
 import { rpc } from './rpc'
 import { WalletRPC } from './wallet'
+import { useQuery, UseQueryResult } from 'react-query'
 
 export class TransactionRPC {
   private readonly walletRPC: WalletRPC
@@ -74,13 +75,16 @@ export class TransactionRPC {
     }
   }
 
-  /**
-   * Get list of transactions
-   *
-   * @returns ITTransactionResponse
-   */
-  async getTxns(): Promise<TTransactionResponse> {
-    return rpc<TTransactionResponse>('listtransactions', [])
+  async listTransactions({
+    count,
+    from,
+  }: {
+    count: number
+    from: number
+  }): Promise<TTransactionResponse> {
+    return rpc<TTransactionResponse>('listtransactions', ['', count, from], {
+      throw: true,
+    })
   }
 
   /**
@@ -168,14 +172,14 @@ export class TransactionRPC {
    *
    * @returns ITTransaction[]
    */
-  async fetchTandZTransactions(): Promise<TTransaction[]> {
+  async fetchTAndZTransactions(): Promise<TTransaction[]> {
     const senttxstore = await loadSentTxns()
-    const { result: txtListResult } = await this.getTxns()
+    const txtListResult = await this.listTransactions({ count: 10, from: 0 })
 
     // Flat list of transactions
     const ttxlist: TTransaction[] = await this.flatTxns(txtListResult)
 
-    const { result: zaddressesResult } = await this.walletRPC.fetchZAddresses()
+    const zaddressesResult = await this.walletRPC.fetchZAddresses()
     const alltxnsPromise = zaddressesResult.map(async (address: string) => {
       // For each zaddr, get the list of incoming transactions.
       const {
@@ -213,6 +217,10 @@ export class TransactionRPC {
     return sortTxnsResult(transactions)
   }
 
+  useTAndZTransactions(): UseQueryResult<TTransaction[]> {
+    return useQuery('TAndZTransactions', () => this.fetchTAndZTransactions())
+  }
+
   /**
    * Send to make a transaction.
    * Please note it's not same the old version that include to call <fnOpenSendErrorModal>.
@@ -224,3 +232,5 @@ export class TransactionRPC {
     return rpc<TResponse<string>>('z_sendmany', data)
   }
 }
+
+export const transactionRPC = new TransactionRPC()

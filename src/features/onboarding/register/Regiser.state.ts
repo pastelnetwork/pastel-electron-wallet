@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 export enum Steps {
   Login = 1,
-  Backup,
   Payment,
   Fee,
+  Backup,
 }
 
 export enum BackupMethods {
@@ -17,6 +17,7 @@ export enum PaymentMethods {
   DecentralizedExchange,
   PslAddress,
   AirdropPromoCode,
+  PastelPromoCode,
 }
 
 export type TCentralizedExchangeEntity = {
@@ -24,8 +25,8 @@ export type TCentralizedExchangeEntity = {
 }
 
 const firstStep = Steps.Login
-const lastStep = Steps.Fee
-const stepsCount = Steps.Fee
+const lastStep = Steps.Backup
+const stepsCount = Steps.Backup
 
 export type TRegisterData = {
   username: string
@@ -55,6 +56,8 @@ export type TRegisterState = {
   setCentralizedExchangeName(val: string | null): void
   promoCode: string
   setPromoCode(val: string): void
+  pastelPromoCode: string
+  setPastelPromoCode(val: string): void
   exchangeAddress: string
   setExchangeAddress(val: string): void
   goBack(): void
@@ -77,6 +80,7 @@ export const useRegisterState = (): TRegisterState => {
     string | null
   >(null)
   const [promoCode, setPromoCode] = useState<string>('')
+  const [pastelPromoCode, setPastelPromoCode] = useState<string>('')
   const [exchangeAddress, setExchangeAddress] = useState<string>('')
 
   return {
@@ -99,6 +103,8 @@ export const useRegisterState = (): TRegisterState => {
     setCentralizedExchangeName,
     promoCode,
     setPromoCode,
+    pastelPromoCode,
+    setPastelPromoCode,
     exchangeAddress,
     setExchangeAddress,
 

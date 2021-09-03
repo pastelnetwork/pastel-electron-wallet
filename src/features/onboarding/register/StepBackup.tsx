@@ -23,6 +23,7 @@ export type TStepBackupMethodProps = {
   setBackupMethod(val: BackupMethods): void
   goToNextStep(): void
   goBack(): void
+  finish(): void
 }
 
 const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
@@ -36,7 +37,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
     'MM_DD_YYYY__HH_mm',
   )}.mp4`
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [pdfPrepareProgress, setPdfPrepareProgress] = useState<number>(0)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
   const [videoUrl, setVideoUrl] = useState<string>('')
@@ -53,7 +54,6 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
       const chunkQuantity = 500
       const results = await Promise.all([
         fetchPastelIDAndPrivateKeys(),
@@ -72,6 +72,8 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
     }
     if (!qrcodeData.length) {
       fetchData()
+    } else {
+      setLoading(false)
     }
   }, [])
 
@@ -280,26 +282,28 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
       <div className='mt-7 flex justify-between'>
         <PrevButton onClick={() => props.goBack()} />
         <NextButton
-          onClick={() => props.goToNextStep()}
-          text='Next step 3'
+          onClick={() => props.finish()}
+          text='Finish'
           disabled={!nextActive}
         />
       </div>
-      <div className='hidden'>
-        <iframe
-          id='createVideoIframe'
-          src={ffmpegwasm.videoHostURL}
-          className='h-1.5px w-1.5px'
-        />
-        <PDFViewer>
-          <PDFDocument
-            allKeys={allKeys}
-            currencyName={currencyName}
-            title={pdfFileName}
-            qrcodeData={qrcodeData.join('')}
+      {allKeys ? (
+        <div className='hidden'>
+          <iframe
+            id='createVideoIframe'
+            src={ffmpegwasm.videoHostURL}
+            className='h-1.5px w-1.5px'
           />
-        </PDFViewer>
-      </div>
+          <PDFViewer>
+            <PDFDocument
+              allKeys={allKeys}
+              currencyName={currencyName}
+              title={pdfFileName}
+              qrcodeData={qrcodeData.join('')}
+            />
+          </PDFViewer>
+        </div>
+      ) : null}
     </div>
   )
 }

@@ -17,7 +17,11 @@ export const useLoadingMessage = (): string => {
   const [message, setMessage] = useState('Loading...')
 
   useRendererEvent('appLoadingLogProgress', ({ message }) => {
-    setMessage(message)
+    setMessage(
+      message.includes('Waiting the pasteld to be started')
+        ? 'Please wait while Pastel Wallet starts up...'
+        : message,
+    )
   })
 
   return message

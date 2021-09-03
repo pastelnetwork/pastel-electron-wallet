@@ -22,18 +22,17 @@ import {
 } from 'types/rpc'
 import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
-import { useAddressBook } from 'common/hooks'
-import PastelUtils from 'common/utils/utils'
+import { isSapling, isTransparent } from 'common/utils/wallet'
+import { useWalletScreenContext } from './walletScreen.context'
 
-export type TTransactionHistoryModalProps = {
-  isOpen: boolean
-  handleClose: () => void
-}
+const TransactionHistoryModal = (): JSX.Element => {
+  const {
+    setTransactionHistoryModalOpen: setIsOpen,
+    addressBook: { addressBook },
+  } = useWalletScreenContext()
 
-const TransactionHistoryModal = ({
-  isOpen,
-  handleClose,
-}: TTransactionHistoryModalProps): JSX.Element => {
+  const handleClose = () => setIsOpen(false)
+
   const [selectedOption, setSelectedOption] = useState<
     'all' | 'received' | 'sent'
   >('all')
@@ -60,7 +59,6 @@ const TransactionHistoryModal = ({
   const [recipientAddress, setRecipientAddress] = useState<TOption | null>(
     recipients[0],
   )
-  const { addressBook, updateAddressBook } = useAddressBook()
 
   const onSelectDateRange = (dates: TDateRangeProp) => {
     setDates(dates)
@@ -69,9 +67,7 @@ const TransactionHistoryModal = ({
   const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {
     const filtered = trans
       .filter(t => {
-        return isSource
-          ? PastelUtils.isSapling(t.address)
-          : !PastelUtils.isSapling(t.address)
+        return isSource ? isSapling(t.address) : !isSapling(t.address)
       })
       .map(t => {
         return {
@@ -102,7 +98,7 @@ const TransactionHistoryModal = ({
   useEffect(() => {
     const getTransactions = async () => {
       const transactionRPC = new TransactionRPC()
-      const trans = await transactionRPC.fetchTandZTransactions()
+      const trans = await transactionRPC.fetchTAndZTransactions()
       const filterTransactions = trans.map(t => {
         return {
           date: dayjs.unix(t.time).format('DD/MM/YY HH:mm'),
@@ -151,14 +147,16 @@ const TransactionHistoryModal = ({
   const mapAddressWithTransaction = (
     transactions: TTransactionRow[],
     addressBook: TAddressBook[],
-  ) =>
-    transactions.map(t => {
+  ) => {
+    return transactions.map(t => {
       const [book] = addressBook.filter(b => b.address === t.address) || []
       return {
         ...t,
         addressNick: book ? book.label : '',
       }
     })
+  }
+
   const mappedAddressTransactions = useMemo<TRow[]>(
     () => mapAddressWithTransaction(transactions, addressBook),
     [transactions, addressBook],
@@ -177,13 +175,9 @@ const TransactionHistoryModal = ({
       key: 'address',
       name: 'Recipient address',
       headerColClasses: 'mr-15px',
-      custom: (value: string | number | undefined, row: TRow | undefined) => (
+      custom: (value: string) => (
         <AddressForm
-          address={(value || '').toString()}
-          currentRow={row}
-          saveAddressLabel={(address, label) =>
-            updateAddressBook({ address, label })
-          }
+          address={value}
           copyable={false}
           hidable
           className='xl:ml-0'
@@ -197,9 +191,7 @@ const TransactionHistoryModal = ({
       custom: (value: string | number, row?: TRow) => {
         return (
           <div className='ml-46px flex items-center'>
-            {!PastelUtils.isTransparent(row?.address)
-              ? 'Shielded'
-              : 'Transparent'}
+            {!isTransparent(row?.address) ? 'Shielded' : 'Transparent'}
 
             {Math.floor(Math.random() * 10) % 2 ? (
               <div className='inline-block'>
@@ -287,8 +279,8 @@ const TransactionHistoryModal = ({
 
   return (
     <TitleModal
-      isOpen={isOpen}
-      handleClose={() => handleClose()}
+      isOpen
+      handleClose={handleClose}
       title='Transaction history'
       classNames='max-w-7xl'
     >

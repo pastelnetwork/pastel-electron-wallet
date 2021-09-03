@@ -11,7 +11,6 @@ export type TInputExportProps = TInput & {
 
 const InputExportKey = (props: TInputExportProps): JSX.Element => {
   const [copied, setCopied] = useState(false)
-  const [hideIcon, setHideIcon] = useState(false)
 
   const onCopy = () => {
     if (props.value) {
@@ -19,7 +18,7 @@ const InputExportKey = (props: TInputExportProps): JSX.Element => {
       setCopied(true)
 
       setTimeout(() => {
-        setHideIcon(true)
+        setCopied(false)
       }, 2000)
     }
   }
@@ -30,35 +29,30 @@ const InputExportKey = (props: TInputExportProps): JSX.Element => {
       inputClassName='pr-50px'
       append={
         <div className='flex items-center'>
-          {!hideIcon ? (
-            <span
-              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-2 transition duration-300'
-              onClick={onCopy}
-            >
-              {copied ? (
-                <Tooltip
-                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content='Copied'
-                  width={70}
-                  type='top'
-                >
-                  <CheckIcon className='text-green-45' size={14} />
-                </Tooltip>
-              ) : (
-                <Tooltip
-                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content='Copy address to clipboard'
-                  width={120}
-                  type='top'
-                >
-                  <Clipboard
-                    className='cursor-pointer text-gray-88'
-                    size={14}
-                  />
-                </Tooltip>
-              )}
-            </span>
-          ) : null}
+          <span
+            className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-2 transition duration-300'
+            onClick={onCopy}
+          >
+            {copied ? (
+              <Tooltip
+                classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                content='Copied'
+                width={70}
+                type='top'
+              >
+                <CheckIcon className='text-green-45' size={14} />
+              </Tooltip>
+            ) : (
+              <Tooltip
+                classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                content='Copy address to clipboard'
+                width={120}
+                type='top'
+              >
+                <Clipboard className='cursor-pointer text-gray-88' size={14} />
+              </Tooltip>
+            )}
+          </span>
         </div>
       }
     />

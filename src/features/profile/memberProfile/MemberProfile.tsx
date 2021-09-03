@@ -33,9 +33,9 @@ const categoriesOptions: TOption[] = [
 
 const typeOptions: TOption[] = [
   { value: 'all', label: 'All' },
-  { value: 'auctions', label: 'Auctions' },
-  { value: 'makeAnOffers', label: 'Make an Offers' },
-  { value: 'fixedPrice', label: 'Fixed Price' },
+  { value: 'auctions', label: 'Auction' },
+  { value: 'makeAnOffers', label: 'Make-an-Offers' },
+  { value: 'fixedPrice', label: 'Fixed-Price' },
 ]
 
 const sortOptions: TOption[] = [

@@ -36,7 +36,9 @@ export async function fetchTandZTransactions(
   cb: (alltxlist: TTransaction[]) => void,
 ): Promise<void> {
   const senttxstorePromise = await loadSentTxns()
-  const { result } = await rpc<TTransactionResponse>('listtransactions', [])
+  const result = await rpc<TTransactionResponse>('listtransactions', [], {
+    throw: true,
+  })
 
   const existAddresses: string[] = []
   const ttxlistPromise = result
@@ -117,8 +119,10 @@ export async function fetchTandZTransactions(
 
   const ttxlist: TTransaction[] = (await Promise.all(ttxlistPromise)).flat()
 
-  const zaddresses = await rpc<TListAddressesResponse>('z_listaddresses', [])
-  const alltxnsPromise = zaddresses.result.map(async (address: string) => {
+  const zaddresses = await rpc<TListAddressesResponse>('z_listaddresses', [], {
+    throw: true,
+  })
+  const alltxnsPromise = zaddresses.map(async (address: string) => {
     // For each zaddr, get the list of incoming transactions
     const incomingTxns = await rpc<TZListReceivedByAddressResponse>(
       'z_listreceivedbyaddress',

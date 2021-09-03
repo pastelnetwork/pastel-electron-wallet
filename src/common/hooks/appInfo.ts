@@ -7,3 +7,11 @@ export const useCurrencyName = (): string => {
 
   return currencyName
 }
+
+export const useCurrencyPrice = (): number | undefined => {
+  const {
+    info: { pslPrice },
+  } = useAppSelector(state => state.appInfo)
+
+  return pslPrice
+}
