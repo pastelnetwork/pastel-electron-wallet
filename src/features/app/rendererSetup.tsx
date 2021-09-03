@@ -75,7 +75,7 @@ export const rendererSetup = (): void => {
   })
 
   onRendererEvent('prepareToQuit', async () => {
-    await Promise.all([PastelDB.prepareToQuit(), stopRpc()])
+    await Promise.all([PastelDB.waitTillValid(), stopRpc()])
 
     sendEventToMain('rendererIsReadyForQuit', null)
   })

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames } from '../../../pastelDB/constants'
+import { pastelTableNames, TDbStatisticInfo } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
 import {
@@ -35,9 +35,12 @@ const DifficultyOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.statisticinfo)
+      const result = getDatasFromDB<TDbStatisticInfo>(
+        pasteldb,
+        pastelTableNames.statisticinfo,
+      )
       if (result.length) {
-        const transforms = transformDifficultyInfo(result[0].values, period)
+        const transforms = transformDifficultyInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

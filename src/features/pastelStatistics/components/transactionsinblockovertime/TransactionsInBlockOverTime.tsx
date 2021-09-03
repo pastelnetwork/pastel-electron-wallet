@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames } from '../../../pastelDB/constants'
+import { pastelTableNames, TDbBlockInfo } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TScatterChartData } from '../../../pastelDB/type'
 import {
@@ -44,9 +44,12 @@ const TransactionsInBlockOvertime = (
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.blockinfo)
+      const result = getDatasFromDB<TDbBlockInfo>(
+        pasteldb,
+        pastelTableNames.blockinfo,
+      )
       if (result.length) {
-        const transforms = transformTransactionInBlock(result[0].values, period)
+        const transforms = transformTransactionInBlock(result, period)
         setTransformLineChartData(transforms)
       }
     }

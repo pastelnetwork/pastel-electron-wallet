@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PastelDB from '../../../pastelDB/database'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames } from '../../../pastelDB/constants'
+import { pastelTableNames, TDbMiningInfo } from '../../../pastelDB/constants'
 import {
   periods,
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -32,9 +32,12 @@ const HashrateOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.mininginfo)
+      const result = getDatasFromDB<TDbMiningInfo>(
+        pasteldb,
+        pastelTableNames.mininginfo,
+      )
       if (result.length) {
-        const transforms = transformHashrateInfo(result[0].values, period)
+        const transforms = transformHashrateInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

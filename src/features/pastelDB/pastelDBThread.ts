@@ -1,5 +1,5 @@
 import { TransactionRPC, rpc, transactionRPC } from '../../api/pastel-rpc'
-import { Database } from 'sql.js'
+import { Database } from 'better-sqlite3'
 import {
   TBlockChainInfoResponse,
   TBlockHashResponse,
@@ -24,7 +24,6 @@ import {
 import PastelDB from '../../features/pastelDB/database'
 import coinGeckoClient from '../pastelPrice/coingecko'
 import {
-  exportSqliteDB,
   insertBlockChainInfo,
   insertBlockInfoToDB,
   insertBlocksubsidy,
@@ -52,7 +51,7 @@ import { queryClient } from '../../common/utils/queryClient'
 import {
   getListTransactionsCount,
   insertListTransactions,
-} from './wallet/transactions.repo'
+} from './wallet/listTransaction.repo'
 
 type fetchFuncConfig = {
   pastelDB: Database
@@ -241,7 +240,7 @@ export async function fetchWalletInfo(props: fetchFuncConfig): Promise<void> {
   }
 }
 
-const LIST_TRANSACTIONS_BATCH_SIZE = 100000 // will take around 65 MB by rough est.
+const LIST_TRANSACTIONS_BATCH_SIZE = 5000 // batch size should be small enough to not block interface
 export async function fetchListTransactions(db: Database): Promise<void> {
   try {
     const count = await getListTransactionsCount(db)
@@ -332,8 +331,10 @@ export async function fetchBlockChainInfo(
       [],
     )
     insertBlockChainInfo(props.pastelDB, result)
-  } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchBlockChainInfo error: ${message}`)
+  } catch (error) {
+    throw new Error(
+      `pastelDBThread fetchBlockChainInfo error: ${error.message}`,
+    )
   }
 }
 
@@ -341,7 +342,7 @@ export async function PastelDBThread(): Promise<void> {
   PastelDB.setValid(false)
   const db = await PastelDB.getDatabaseInstance()
   const rpcConfig = getRpcConfig()
-  if (db && rpcConfig && rpcConfig.username !== '') {
+  if (db && rpcConfig?.username) {
     // fetch whole data from RPC and save to pastel DB.
     const pastelConfig: fetchFuncConfig = {
       pastelDB: db,
@@ -364,9 +365,4 @@ export async function PastelDBThread(): Promise<void> {
     PastelDB.setValid(true)
   }
   return
-}
-
-export async function saveSqliteDB(): Promise<void> {
-  const pastelDB = await PastelDB.getDatabaseInstance()
-  await exportSqliteDB(pastelDB)
 }

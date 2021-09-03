@@ -77,7 +77,7 @@ const mapTxnsResult = (
     amount,
     vout: 0,
     confirmations,
-    blockhash: 0,
+    blockhash: '',
     blockindex: 0,
     blocktime: 0,
     expiryheight: 0,

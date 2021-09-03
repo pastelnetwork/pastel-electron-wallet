@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames } from '../../../pastelDB/constants'
+import { pastelTableNames, TDbNetTotals } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TMultiLineChartData } from '../../../pastelDB/type'
 import { TPeriod, transformNetTotals } from '../../utils/PastelStatisticsLib'
@@ -33,9 +33,12 @@ const NetworkTotalsOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.nettotals)
+      const result = getDatasFromDB<TDbNetTotals>(
+        pasteldb,
+        pastelTableNames.nettotals,
+      )
       if (result.length) {
-        const transforms = transformNetTotals(result[0].values, period)
+        const transforms = transformNetTotals(result, period)
         setTransformLineChartData(transforms)
       }
     }

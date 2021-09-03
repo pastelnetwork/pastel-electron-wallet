@@ -1,11 +1,33 @@
-export const createStatisticinfo = `CREATE TABLE statisticinfo (
+export type TDbStatisticInfo = {
+  id: number
+  solutions: number
+  difficulty: number
+  createdAt: number
+}
+
+export const createStatisticinfo = `CREATE TABLE IF NOT EXISTS statisticinfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   solutions int,
   difficulty float,
   createdAt int
 )`
 
-export const createNetworkinfo = `CREATE TABLE networkinfo (
+export type TDbNetworkInfo = {
+  id: number
+  version: number
+  subversion: string
+  protocolversion: number
+  localservices: string
+  timeoffset: number
+  connections: number
+  networks: string
+  relayfee: number
+  localaddresses: string
+  warnings: string
+  createdAt: number
+}
+
+export const createNetworkinfo = `CREATE TABLE IF NOT EXISTS networkinfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   version int,
   subversion VARCHAR(255),
@@ -20,7 +42,15 @@ export const createNetworkinfo = `CREATE TABLE networkinfo (
   createdAt int
 )`
 
-export const createNettotals = `CREATE TABLE nettotals (
+export type TDbNetTotals = {
+  id: number
+  totalbytesrecv: number
+  totalbytessent: number
+  timemillis: number
+  createdAt: number
+}
+
+export const createNettotals = `CREATE TABLE IF NOT EXISTS nettotals (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   totalbytesrecv int,
   totalbytessent int,
@@ -28,7 +58,15 @@ export const createNettotals = `CREATE TABLE nettotals (
   createdAt int
 )`
 
-export const createMempoolinfo = `CREATE TABLE mempoolinfo (
+export type TDbMemPoolInfo = {
+  id: number
+  size: number
+  bytes: number
+  usage: number
+  createdAt: number
+}
+
+export const createMempoolinfo = `CREATE TABLE IF NOT EXISTS mempoolinfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   size int,
   bytes int,
@@ -36,7 +74,20 @@ export const createMempoolinfo = `CREATE TABLE mempoolinfo (
   createdAt int
 )`
 
-export const createRawmempoolinfo = `CREATE TABLE rawmempoolinfo (
+export type TDbRawMemPoolInfo = {
+  id: number
+  transactionid: string
+  size: number
+  fee: number
+  time: number
+  height: number
+  startingpriority: number
+  currentpriority: number
+  depends: string
+  createdAt: number
+}
+
+export const createRawmempoolinfo = `CREATE TABLE IF NOT EXISTS rawmempoolinfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   transactionid int NOT NULL,
   size int,
@@ -49,7 +100,24 @@ export const createRawmempoolinfo = `CREATE TABLE rawmempoolinfo (
   createdAt int
 )`
 
-export const createMininginfo = `CREATE TABLE mininginfo (
+export type TDbMiningInfo = {
+  id: number
+  blocks: number
+  currentblocksize: number
+  currentblocktx: number
+  difficulty: number
+  errors: string
+  genproclimit: number
+  localsolps: number
+  networksolps: number
+  networkhashps: number
+  pooledtx: number
+  testnet: number
+  chain: string
+  createdAt: number
+}
+
+export const createMininginfo = `CREATE TABLE IF NOT EXISTS mininginfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   blocks int,
   currentblocksize int,
@@ -66,7 +134,25 @@ export const createMininginfo = `CREATE TABLE mininginfo (
   createdAt int
 )`
 
-export const createBlockChainInfo = `CREATE TABLE blockchaininfo (
+export type TDbBlockChainInfo = {
+  id: number
+  bestblockhash: string
+  blocks: number
+  chain: string
+  chainwork: string
+  commitments: number
+  consensus: string
+  difficulty: number
+  headers: number
+  pruned: 0 | 1
+  softforks: string
+  upgrades: string
+  valuePools: string
+  verificationprogress: number
+  createdAt: number
+}
+
+export const createBlockChainInfo = `CREATE TABLE IF NOT EXISTS blockchaininfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   bestblockhash VARCHAR(255),
   blocks int,
@@ -84,7 +170,30 @@ export const createBlockChainInfo = `CREATE TABLE blockchaininfo (
   createdAt int
 )`
 
-export const createBlock = `CREATE TABLE blockinfo (
+export type TDbBlockInfo = {
+  id: number
+  hash: string
+  confirmations: number
+  size: number
+  height: number
+  version: number
+  merkleroot: string
+  finalsaplingroot: string
+  tx: string
+  time: number
+  nonce: string
+  solution: string
+  bits: string
+  difficulty: number
+  chainwork: string
+  anchor: string
+  valuePools: string
+  previousblockhash: string
+  nextblockhash: string
+  createdAt: number
+}
+
+export const createBlock = `CREATE TABLE IF NOT EXISTS blockinfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   hash VARCHAR(255),
   confirmations int,
@@ -107,7 +216,26 @@ export const createBlock = `CREATE TABLE blockinfo (
   createdAt int
 )`
 
-export const createRawtransaction = `CREATE TABLE rawtransaction (
+export type TDbRawTransaction = {
+  id: number
+  hex: string
+  txid: string
+  overwintered: 0 | 1
+  version: number
+  versiongroupid: string
+  locktime: number
+  expiryheight: number
+  vin: string
+  vout: string
+  vjoinsplit: string
+  blockhash: string
+  confirmations: number
+  time: number
+  blocktime: number
+  createdAt: number
+}
+
+export const createRawtransaction = `CREATE TABLE IF NOT EXISTS rawtransaction (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   hex VARCHAR(255),
   txid VARCHAR(255),
@@ -126,7 +254,25 @@ export const createRawtransaction = `CREATE TABLE rawtransaction (
   createdAt int
 )`
 
-export const createTransaction = `CREATE TABLE transaction_tbl (
+export type TDbTransactionTbl = {
+  id: number
+  amount: number
+  blockhash: string
+  blockindex: number
+  blocktime: number
+  confirmations: number
+  details: string
+  expiryheight: number
+  hex: string
+  time: number
+  timereceived: number
+  txid: string
+  vjoinsplit: string
+  walletconflicts: string
+  createdAt: number
+}
+
+export const createTransaction = `CREATE TABLE IF NOT EXISTS transaction_tbl (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   amount int,
   blockhash VARCHAR(255),
@@ -144,7 +290,19 @@ export const createTransaction = `CREATE TABLE transaction_tbl (
   createdAt int
 )`
 
-export const createTxoutsetinfo = `CREATE TABLE txoutsetinfo (
+export type TDbTxOutSetInfo = {
+  id: number
+  height: number
+  bestblock: string
+  transactions: number
+  txouts: number
+  bytes_serialized: number
+  hash_serialized: string
+  total_amount: number
+  createdAt: number
+}
+
+export const createTxoutsetinfo = `CREATE TABLE IF NOT EXISTS txoutsetinfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   height int,
   bestblock VARCHAR(255),
@@ -156,7 +314,16 @@ export const createTxoutsetinfo = `CREATE TABLE txoutsetinfo (
   createdAt int
 )`
 
-export const createChaintips = `CREATE TABLE chaintips (
+export type TDbChainTips = {
+  id: number
+  height: number
+  hash: string
+  branchlen: number
+  status: string
+  createdAt: number
+}
+
+export const createChaintips = `CREATE TABLE IF NOT EXISTS chaintips (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   height int,
   hash VARCHAR(255),
@@ -165,7 +332,15 @@ export const createChaintips = `CREATE TABLE chaintips (
   createdAt int
 )`
 
-export const createBlocksubsidy = `CREATE TABLE blocksubsidy (
+export type TDbBlockSubsidy = {
+  id: number
+  miner: number
+  masternode: number
+  governance: number
+  createdAt: number
+}
+
+export const createBlocksubsidy = `CREATE TABLE IF NOT EXISTS blocksubsidy (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   miner int,
   masternode int,
@@ -173,7 +348,21 @@ export const createBlocksubsidy = `CREATE TABLE blocksubsidy (
   createdAt int
 )`
 
-export const createWalletinfo = `CREATE TABLE walletinfo (
+export type TDbWalletInfo = {
+  id: number
+  walletversion: number
+  balance: number
+  unconfirmed_balance: number
+  immature_balance: number
+  txcount: number
+  keypoololdest: number
+  keypoolsize: number
+  paytxfee: number
+  seedfp: string
+  createdAt: number
+}
+
+export const createWalletinfo = `CREATE TABLE IF NOT EXISTS walletinfo (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   walletversion int,
   balance int,
@@ -187,7 +376,17 @@ export const createWalletinfo = `CREATE TABLE walletinfo (
   createdAt int
 )`
 
-export const createListreceivedbyaddress = `CREATE TABLE listreceivedbyaddress (
+export type TDbListReceivedByAddress = {
+  id: number
+  address: string
+  account: string
+  amount: number
+  confirmations: number
+  txids: string
+  createdAt: number
+}
+
+export const createListreceivedbyaddress = `CREATE TABLE IF NOT EXISTS listreceivedbyaddress (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   address VARCHAR(255),
   account VARCHAR(255),
@@ -197,7 +396,21 @@ export const createListreceivedbyaddress = `CREATE TABLE listreceivedbyaddress (
   createdAt int
 )`
 
-export const createListunspent = `CREATE TABLE listunspent (
+export type TDbListUnspent = {
+  id: number
+  txid: string
+  vout: number
+  generated: 0 | 1
+  address: string
+  account: string
+  scriptPubKey: string
+  amount: number
+  confirmations: number
+  spendable: number
+  createdAt: number
+}
+
+export const createListunspent = `CREATE TABLE IF NOT EXISTS listunspent (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   txid VARCHAR(255),
   vout int,
@@ -211,7 +424,15 @@ export const createListunspent = `CREATE TABLE listunspent (
   createdAt int
 )`
 
-export const createTotalbalance = `CREATE TABLE totalbalance (
+export type TDbTotalBalance = {
+  id: number
+  transparent: string
+  private: string
+  total: string
+  createdAt: number
+}
+
+export const createTotalbalance = `CREATE TABLE IF NOT EXISTS totalbalance (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   transparent VARCHAR(255),
   private VARCHAR(255),
@@ -219,20 +440,32 @@ export const createTotalbalance = `CREATE TABLE totalbalance (
   createdAt int
 )`
 
-export const createListaddresses = `CREATE TABLE listaddresses (
+export type TDbListAddress = {
+  id: number
+  address: string
+  createdAt: number
+}
+
+export const createListaddresses = `CREATE TABLE IF NOT EXISTS listaddresses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   address VARCHAR(255),
   createdAt int
 )`
 
-export const createPastelPriceTable = `CREATE TABLE pslprice (
+export type TDbPriceInfo = {
+  id: number
+  priceUsd: number
+  createdAt: number
+}
+
+export const createPastelPriceTable = `CREATE TABLE IF NOT EXISTS pslprice (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  price_usd number,
+  priceUsd number,
   createdAt int
 )`
 
 export const insertPastelPriceInfoQuery = `INSERT INTO pslprice(
-  price_usd,
+  priceUsd,
   createdAt
 ) VALUES (
   $priceUsd,
@@ -614,14 +847,14 @@ export const whereTransactionIDMatchingQuery =
 
 export const orderByIDQuery = ' ORDER BY id DESC LIMIT 1'
 
-export const averageFilterByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(createdAt / 1000, 'unixepoch')),
-  AVG(size) FROM blockinfo`
+export const averageFilterByDailyPeriodQuery =
+  "SELECT strftime('%m/%d/%Y', datetime(createdAt / 1000, 'unixepoch')) AS date, AVG(size) AS averageSize FROM blockinfo"
 
-export const averageFilterByMonthlyPeriodQuery = `SELECT strftime('%m/%Y', datetime(createdAt / 1000, 'unixepoch')),
-  AVG(size) FROM blockinfo`
+export const averageFilterByMonthlyPeriodQuery =
+  "SELECT strftime('%m/%Y', datetime(createdAt / 1000, 'unixepoch')) AS date, AVG(size) AS averageSize FROM blockinfo"
 
-export const averageFilterByYearlyPeriodQuery = `SELECT strftime('%Y', datetime(createdAt / 1000, 'unixepoch')),
-  AVG(size) FROM blockinfo`
+export const averageFilterByYearlyPeriodQuery =
+  "SELECT strftime('%Y', datetime(createdAt / 1000, 'unixepoch')) AS date, AVG(size) AS averageSize FROM blockinfo"
 
 export const groupbyDaily =
   "GROUP BY strftime('%Y-%m-%d', datetime(createdAt / 1000, 'unixepoch'))"
@@ -632,7 +865,8 @@ export const groupByMonthly =
 export const groupByYearly =
   "GROUP BY strftime('%Y', datetime(createdAt / 1000, 'unixepoch'))"
 
-export const transactionFeeDailyQuery = `SELECT strftime('%Y', datetime(createdAt / 1000, 'unixepoch')),
-  SUM(fee) FROM `
-export const countIdByDailyPeriodQuery = `SELECT strftime('%m/%d/%Y', datetime(createdAt / 1000, 'unixepoch')),
-COUNT(id) from `
+export const transactionFeeDailyQuery =
+  "SELECT strftime('%Y', datetime(createdAt / 1000, 'unixepoch')) AS year, SUM(fee) AS sumFee FROM "
+
+export const countIdByDailyPeriodQuery =
+  "SELECT strftime('%m/%d/%Y', datetime(createdAt / 1000, 'unixepoch')) AS date, COUNT(id) AS count from "

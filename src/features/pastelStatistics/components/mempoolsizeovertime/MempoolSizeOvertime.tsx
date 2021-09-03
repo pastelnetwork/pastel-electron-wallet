@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames } from '../../../pastelDB/constants'
+import { pastelTableNames, TDbMemPoolInfo } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
 import { TPeriod, transformMempoolInfo } from '../../utils/PastelStatisticsLib'
@@ -32,9 +32,12 @@ const MempoolSizeOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.mempoolinfo)
+      const result = getDatasFromDB<TDbMemPoolInfo>(
+        pasteldb,
+        pastelTableNames.mempoolinfo,
+      )
       if (result.length) {
-        const transforms = transformMempoolInfo(result[0].values, period)
+        const transforms = transformMempoolInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

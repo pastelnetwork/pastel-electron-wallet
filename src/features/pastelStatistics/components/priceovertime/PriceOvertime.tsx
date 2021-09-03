@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import PastelDB from '../../../pastelDB/database'
 import { EChartsMultiLineChart } from '../chart/EChartsMultiLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames } from '../../../pastelDB/constants'
+import { pastelTableNames, TDbPriceInfo } from '../../../pastelDB/constants'
 import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
 import styles from '../../Common.module.css'
 import {
@@ -40,9 +40,12 @@ const PriceOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.pslprice)
+      const result = getDatasFromDB<TDbPriceInfo>(
+        pasteldb,
+        pastelTableNames.pslprice,
+      )
       if (result.length) {
-        const transforms = transformPriceInfo(result[0].values, period)
+        const transforms = transformPriceInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

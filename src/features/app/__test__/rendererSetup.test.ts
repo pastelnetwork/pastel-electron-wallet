@@ -139,7 +139,7 @@ describe('rendererSetup', () => {
 
       rendererSetup()
 
-      asMock(PastelDB.prepareToQuit).mockRejectedValueOnce(new Error())
+      asMock(PastelDB.waitTillValid).mockRejectedValueOnce(new Error())
       await emitRendererEvent('prepareToQuit', null)
 
       expect(RPC.doRPC).toBeCalledWith('stop', [], rpcConfig)

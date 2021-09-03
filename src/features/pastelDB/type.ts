@@ -24,25 +24,26 @@ export type TGettxoutsetinfo = {
 
 export type TValidateFields = {
   balance?: number
-  balanceTotal?: string
-  balanceTransparent?: string
-  bestBlockHash?: string
+  total?: string
+  transparent?: string
+  bestblock?: string
   difficulty?: number
   hash?: string
   height?: number
   keypoololdest?: number
-  masterNode?: number
+  masternode?: number
   miner?: number
-  miningBlocks?: number
-  mempoolSize?: number
-  mempoolByte?: number
-  mempoolUsage?: number
-  price?: number
+  blocks?: number
+  size?: number
+  bytes?: number
+  usage?: number
+  priceUsd?: number
   seedfp?: string
   solutions?: number
   time?: number
   transactionid?: string
   walletversion?: number
+  bestblockhash?: string
 }
 
 export type TNetworks = {

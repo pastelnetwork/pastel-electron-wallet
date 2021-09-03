@@ -33,6 +33,7 @@ export const createWindow = async (
       nodeIntegration: true,
       contextIsolation: false,
       webSecurity: false,
+      enableRemoteModule: true,
     },
   })
   browserWindow.current = w

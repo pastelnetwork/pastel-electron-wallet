@@ -2,12 +2,12 @@
   "compilerOptions": {
     /* Basic Options */
     "target": "esnext",
-    "module": "esnext",
+    "module": "commonjs",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": false,
     "checkJs": false,
     "resolveJsonModule": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "declaration": true,
     "declarationMap": false,
     "sourceMap": false,

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames } from '../../../pastelDB/constants'
+import {
+  pastelTableNames,
+  TDbRawMemPoolInfo,
+} from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
 import {
@@ -35,9 +38,12 @@ const TransactionFeeOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.rawmempoolinfo)
+      const result = getDatasFromDB<TDbRawMemPoolInfo>(
+        pasteldb,
+        pastelTableNames.rawmempoolinfo,
+      )
       if (result.length) {
-        const transforms = transformTransactionFee(result[0].values, period)
+        const transforms = transformTransactionFee(result, period)
         setTransformLineChartData(transforms)
       }
     }
