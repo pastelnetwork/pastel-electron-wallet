@@ -2,15 +2,14 @@ import React, { ReactNode } from 'react'
 import Table, { TRow } from 'common/components/Table'
 import Checkbox from 'common/components/Checkbox'
 import { AddressForm } from './AddressForm'
-import { formatPrice, timeAgo } from 'common/utils/format'
 import dayjs from 'dayjs'
 import { FilePDFIcon, QRCode } from 'common/components/Icons'
-import { useCurrencyName } from 'common/hooks/appInfo'
 import RectangleLoader from '../../common/components/Loader'
 import { UseQueryResult } from 'react-query'
 import { TAddress } from '../../types/rpc'
 import { useWalletScreenContext } from './walletScreen.context'
 import SelectPaymentSourceAmount from './SelectPaymentSourceAmount'
+import { formatAbbreviatedNumber, timeAgo } from 'common/utils/format'
 
 const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
 
@@ -27,7 +26,6 @@ export default function AddressesTable({
   extendHeaderClassName?: string
   stickyTopClassName?: string
 }): JSX.Element {
-  const currencyName = useCurrencyName()
   const {
     selectedAddresses,
     setSelectedAddresses,
@@ -43,7 +41,7 @@ export default function AddressesTable({
   const Columns = [
     {
       key: 'address',
-      colClasses: 'w-[40%] text-h6 leading-5 font-normal',
+      colClasses: 'w-[35%] text-h6 leading-5 font-normal',
       name: 'Address name',
       headerColClasses: 'mx-30px',
       custom: (address: string) => (
@@ -129,14 +127,14 @@ export default function AddressesTable({
           loadingCell
         ) : (
           <div className='text-gray-71 text-h5-medium'>
-            {formatPrice(amount, currencyName)}
+            {formatAbbreviatedNumber(parseFloat(amount.toString()), 2)}
           </div>
         ),
     },
     {
       key: 'address',
       name: '',
-      colClasses: 'min-w-[120px] w-[120px]',
+      colClasses: 'min-w-[120px] w-[150px]',
       custom: (address: string) =>
         isLoadingAddresses ? (
           loadingCell

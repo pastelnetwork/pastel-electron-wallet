@@ -34,14 +34,6 @@ const STEPS = [
     tooltipWidth: 88,
   },
   {
-    id: Steps.Backup,
-    iconActive: Download,
-    label: 'Backup access method',
-    stepIconLabel: 'Backup access method step',
-    tooltipText: 'Backup access method',
-    tooltipWidth: 150,
-  },
-  {
     id: Steps.Payment,
     iconActive: CreditCard,
     label: 'Payment method',
@@ -55,6 +47,14 @@ const STEPS = [
     label: 'Registration fee',
     stepIconLabel: 'Registration fee step',
     tooltipText: 'Registration fee',
+    tooltipWidth: 150,
+  },
+  {
+    id: Steps.Backup,
+    iconActive: Download,
+    label: 'Backup access method',
+    stepIconLabel: 'Backup access method step',
+    tooltipText: 'Backup access method',
     tooltipWidth: 150,
   },
 ]
@@ -174,10 +174,12 @@ const RegisterContent = (): JSX.Element => {
 
         <div className='w-1/2 flex-shrink-0 pb-10 pl-10 pr-7 mt-7'>
           {state.step === Steps.Login && <StepLogin {...state} />}
-          {state.step === Steps.Backup && <StepBackup {...state} />}
+          {state.step === Steps.Backup && (
+            <StepBackup {...state} finish={onLastStepPassed} />
+          )}
           {state.step === Steps.Payment && <StepPayment {...state} />}
           {state.step === Steps.Fee && (
-            <StepFee {...state} finish={onLastStepPassed} />
+            <StepFee finish={onLastStepPassed} {...state} />
           )}
         </div>
       </div>

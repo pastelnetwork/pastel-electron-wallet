@@ -3,9 +3,9 @@ import { useLocalStorage } from 'react-use'
 const defaultDisplay = false
 const defaultProbability = 85
 
-export const useDisplayNSWF = (): [boolean, () => void] => {
+export const useDisplayAdvancedFeatures = (): [boolean, () => void] => {
   const [value = defaultDisplay, set, remove] = useLocalStorage<boolean>(
-    'displayNSWF',
+    'displayAdvancedFeatures',
   )
 
   const toggle = () => {
@@ -43,7 +43,7 @@ export const useIsNSFW = ({
   hentai: number
   porn: number
 }): boolean => {
-  const [displayNSFW] = useDisplayNSWF()
+  const [displayNSFW] = useDisplayAdvancedFeatures()
   const [hentaiProbability] = useNSFWHentaiProbability()
   const [pornProbability] = useNSFWPornProbability()
 
