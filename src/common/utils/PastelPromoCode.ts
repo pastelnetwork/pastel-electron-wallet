@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import log from 'electron-log'
 import { WalletRPC } from 'api/pastel-rpc'
 import store from '../../redux/store'
+import { useQuery, UseQueryResult } from 'react-query'
 
 export type TPastelPromoCode = {
   label: string
@@ -61,6 +62,12 @@ export const readPastelPromoCode = async (): Promise<TPastelPromoCode[]> => {
     )
     return []
   }
+}
+
+export const useReadPastelPromoCode = (): UseQueryResult<
+  TPastelPromoCode[]
+> => {
+  return useQuery('pastelPromoCode', () => readPastelPromoCode())
 }
 
 export const importPastelPromoCode = async (

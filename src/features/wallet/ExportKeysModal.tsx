@@ -17,6 +17,7 @@ import DownloadWhite from 'common/assets/icons/ico-download-white.svg'
 
 import { WalletRPC } from '../../api/pastel-rpc'
 import dayjs from 'dayjs'
+import { useWalletScreenContext } from './walletScreen.context'
 
 type TPDFDocumentProps = {
   address: string
@@ -149,17 +150,14 @@ function PDFDocument({
   )
 }
 
-export type TExportKeysModalProps = {
-  isOpen: boolean
-  address: string
-  handleClose: () => void
-}
+const ExportKeysModal = (): JSX.Element => {
+  const {
+    currentAddress: address = '',
+    setExportKeysModalOpen: setIsOpen,
+  } = useWalletScreenContext()
 
-const ExportKeysModal = ({
-  isOpen,
-  address,
-  handleClose,
-}: TExportKeysModalProps): JSX.Element => {
+  const handleClose = () => setIsOpen(false)
+
   const currencyName = useCurrencyName()
   const [privateKey, setPrivateKey] = useState('')
   const [havePDFLink, setHavePDFLink] = useState(false)
@@ -182,7 +180,7 @@ const ExportKeysModal = ({
   }
   return (
     <TitleModal
-      isOpen={isOpen}
+      isOpen
       handleClose={() => handleClose()}
       title='Generate Paper Wallet for Address'
       classNames='w-[598px]'

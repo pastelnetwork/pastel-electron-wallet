@@ -4,18 +4,16 @@ import QRCode from 'qrcode.react'
 import { WalletRPC } from 'api/pastel-rpc'
 import { TitleModal } from 'common/components/Modal'
 import Spinner from 'common/components/Spinner'
+import { useWalletScreenContext } from './walletScreen.context'
 
-type TQRCodeModalProps = {
-  isOpen: boolean
-  address: string
-  handleClose: () => void
-}
+export default function QRCodeModal(): JSX.Element {
+  const {
+    currentAddress: address = '',
+    setIsQRCodeModalOpen: setIsOpen,
+  } = useWalletScreenContext()
 
-export default function QRCodeModal({
-  isOpen,
-  address,
-  handleClose,
-}: TQRCodeModalProps): JSX.Element {
+  const handleClose = () => setIsOpen(false)
+
   const [privateKey, setPrivateKey] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -32,7 +30,7 @@ export default function QRCodeModal({
 
   return (
     <TitleModal
-      isOpen={isOpen}
+      isOpen
       handleClose={() => handleClose()}
       title='Address QR'
       classNames='w-[598px]'

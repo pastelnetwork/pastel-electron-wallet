@@ -2,71 +2,59 @@ import React, { ReactNode } from 'react'
 import Table, { TRow } from 'common/components/Table'
 import Checkbox from 'common/components/Checkbox'
 import { AddressForm } from './AddressForm'
-import {
-  formatAbbreviatedNumber,
-  parseFormattedNumber,
-  timeAgo,
-} from 'common/utils/format'
 import dayjs from 'dayjs'
 import { FilePDFIcon, QRCode } from 'common/components/Icons'
-import SelectAmount, {
-  TOption,
-  generateStep,
-} from 'common/components/SelectAmount'
-import { TSelectionPslProps } from './WalletScreen'
+import RectangleLoader from '../../common/components/Loader'
+import { UseQueryResult } from 'react-query'
+import { TAddress } from '../../types/rpc'
+import { useWalletScreenContext } from './walletScreen.context'
+import SelectPaymentSourceAmount from './SelectPaymentSourceAmount'
+import { formatAbbreviatedNumber, timeAgo } from 'common/utils/format'
+
+const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
 
 export default function AddressesTable({
-  isLoading,
-  selectedRows,
-  setSelectedRowsFunction,
-  saveAddressLabel,
-  setCurrentAddress,
-  setIsQRCodeModalOpen,
-  setExportKeysModalOpen,
-  selectionPsl,
-  forceUpdateSelect,
-  handleAmountChange,
-  data,
+  addresses: { data: addresses, isLoading: isLoadingAddresses },
+  amounts: { data: amounts, isLoading: isLoadingAmounts },
   extendHeader,
   extendHeaderClassName,
   stickyTopClassName,
 }: {
-  isLoading: boolean
-  selectedRows: string[]
-  setSelectedRowsFunction(row: TRow): void
-  saveAddressLabel(address: string, label: string): void
-  setCurrentAddress(address: string): void
-  setIsQRCodeModalOpen(open: boolean): void
-  setExportKeysModalOpen(open: boolean): void
-  selectionPsl: TSelectionPslProps[]
-  forceUpdateSelect: boolean
-  handleAmountChange(selection: number | null, row?: TRow): void
-  data: TRow[]
+  addresses: UseQueryResult<TAddress[]>
+  amounts: UseQueryResult<Record<string, number>>
   extendHeader?: ReactNode
   extendHeaderClassName?: string
   stickyTopClassName?: string
 }): JSX.Element {
+  const {
+    selectedAddresses,
+    setSelectedAddresses,
+    lastActivityTimes,
+    setCurrentAddress,
+    setIsQRCodeModalOpen,
+    setExportKeysModalOpen,
+  } = useWalletScreenContext()
+
+  const selectAddress = (address: string) =>
+    setSelectedAddresses(addresses => [...addresses, address])
+
   const Columns = [
     {
       key: 'address',
       colClasses: 'w-[35%] text-h6 leading-5 font-normal',
       name: 'Address name',
       headerColClasses: 'mx-30px',
-      custom: (value: string | number, row: TRow | undefined) => (
+      custom: (address: string) => (
         <div className='flex items-center mx-30px'>
-          {isLoading ? (
-            value
+          {isLoadingAddresses ? (
+            loadingCell
           ) : (
             <>
               <Checkbox
-                isChecked={selectedRows.indexOf(row?.address) !== -1}
-                clickHandler={() => row && setSelectedRowsFunction(row)}
+                isChecked={Boolean(selectedAddresses.includes(address))}
+                clickHandler={() => selectAddress(address)}
               />
-              <AddressForm
-                address={value.toString()}
-                currentRow={row}
-                saveAddressLabel={saveAddressLabel}
-              />
+              <AddressForm address={address} />
             </>
           )}
         </div>
@@ -77,8 +65,8 @@ export default function AddressesTable({
       name: 'Last Activity',
       colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (time: number) =>
-        isLoading ? (
-          time
+        isLoadingAddresses || lastActivityTimes.isLoading ? (
+          loadingCell
         ) : (
           <div className='mr-3 md:mr-0 text-gray-71 text-h5-medium'>
             {time > 0 ? timeAgo(dayjs.unix(time).valueOf()) : '--'}
@@ -86,19 +74,19 @@ export default function AddressesTable({
         ),
     },
     {
-      key: 'qrCode',
+      key: 'address',
       name: 'Address QR',
       colClasses:
         'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
-      custom: (value: string | number, row: TRow | undefined) =>
-        isLoading ? (
-          value
+      custom: (_: void, row: TRow) =>
+        isLoadingAddresses ? (
+          loadingCell
         ) : (
           <div className='flex pl-6'>
             <span
               className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
               onClick={() => {
-                setCurrentAddress(row?.address)
+                setCurrentAddress(row.address)
                 setIsQRCodeModalOpen(true)
               }}
             >
@@ -112,15 +100,15 @@ export default function AddressesTable({
       name: 'Keys',
       colClasses:
         'min-w-130px w-176px 1500px:w-244px flex-grow-0 text-h6 leading-5 font-normal',
-      custom: (value: string | number) =>
-        isLoading ? (
-          value
+      custom: (value: string) =>
+        isLoadingAddresses ? (
+          loadingCell
         ) : (
           <div className='flex items-center'>
             <div className='text-gray-71 text-h5-medium'>private key</div>
             <span
               onClick={() => {
-                setCurrentAddress(value.toString())
+                setCurrentAddress(value)
                 setExportKeysModalOpen(true)
               }}
               className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
@@ -134,57 +122,42 @@ export default function AddressesTable({
       key: 'amount',
       name: 'Balance',
       colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
-      custom: (value: number) =>
-        isLoading ? (
-          value
+      custom: (amount: number) =>
+        isLoadingAddresses || isLoadingAmounts ? (
+          loadingCell
         ) : (
           <div className='text-gray-71 text-h5-medium'>
-            {formatAbbreviatedNumber(parseFloat(value.toString()), 2)}
+            {formatAbbreviatedNumber(parseFloat(amount.toString()), 2)}
           </div>
         ),
     },
     {
-      key: 'psl',
+      key: 'address',
       name: '',
       colClasses: 'min-w-[120px] w-[150px]',
-      custom: (value: number | string, row?: TRow) => {
-        if (isLoading) {
-          return value
-        }
-
-        const psl = selectionPsl.filter(psl => psl?.address === row?.address)[0]
-        return (
-          <div className='z-0'>
-            <SelectAmount
-              className='text-gray-2d w-full bg-white'
-              min={0}
-              max={parseFloat(value.toString())}
-              step={generateStep(parseInt(value.toString()))}
-              defaultValue={{
-                label: psl?.amount || row?.amount,
-                value: psl?.amount || row?.amount,
-              }}
-              forceUpdate={forceUpdateSelect}
-              onChange={(selection: TOption) => {
-                const selectedValue = parseFormattedNumber(selection.value)
-                handleAmountChange(selectedValue, row)
-              }}
-            />
-          </div>
-        )
-      },
+      custom: (address: string) =>
+        isLoadingAddresses ? (
+          loadingCell
+        ) : (
+          <SelectPaymentSourceAmount address={address} />
+        ),
     },
   ]
 
   return (
     <Table
-      data={data}
+      data={
+        addresses?.map(address => ({
+          address,
+          time: lastActivityTimes.data?.[address],
+          amount: amounts?.[address],
+        })) || [{}, {}]
+      }
       columns={Columns}
       headerTrClasses='text-gray-71 text-sm h-10 bg-white border-b border-line'
       bodyTrClasses='h-76px border-b border-line hover:bg-blue-fa'
       bodyTdClasses='text-h5 leading-6 font-medium'
       showCheckbox={false}
-      selectedRow={isLoading ? undefined : setSelectedRowsFunction}
       extendHeader={extendHeader}
       extendHeaderClassName={extendHeaderClassName}
       stickyTopClassName={stickyTopClassName}

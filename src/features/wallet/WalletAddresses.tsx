@@ -6,65 +6,30 @@ import Toggle from 'common/components/Toggle'
 import Tooltip from 'common/components/Tooltip'
 import { ElectricityIcon, EliminationIcon } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
-import { TAddressRow } from 'types/rpc'
-import { TRow } from 'common/components/Table'
-import { TSelectionPslProps } from './WalletScreen'
 import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import RectangleLoader from 'common/components/Loader'
-import { walletRPC } from 'api/pastel-rpc'
+import { useWalletScreenContext } from './walletScreen.context'
+import { useCreateNewAddress } from './walletScreen.hooks'
 
-export default function WalletAddresses({
-  walletAddresses,
-  activeTab,
-  hideEmptyAddress,
-  selectedAmount,
-  isLoadingAddresses,
-  handleCreateNewAddress,
-  selectedRows,
-  setSelectedRowsFunction,
-  saveAddressLabel,
-  setCurrentAddress,
-  setIsQRCodeModalOpen,
-  setExportKeysModalOpen,
-  selectionPsl,
-  forceUpdateSelect,
-  handleAmountChange,
-}: {
-  walletAddresses: TAddressRow[]
-  activeTab: number
-  hideEmptyAddress(hide: boolean): void
-  selectedAmount: number
-  handleCreateNewAddress(): void
-  isLoadingAddresses: boolean
-  selectedRows: string[]
-  setSelectedRowsFunction(row: TRow): void
-  saveAddressLabel(address: string, label: string): void
-  setCurrentAddress(address: string): void
-  setIsQRCodeModalOpen(open: boolean): void
-  setExportKeysModalOpen(open: boolean): void
-  selectionPsl: TSelectionPslProps[]
-  forceUpdateSelect: boolean
-  handleAmountChange(selection: number | null, row?: TRow): void
-}): JSX.Element {
+export default function WalletAddresses(): JSX.Element {
   const currencyName = useCurrencyName()
-  const { data: totalBalances } = walletRPC.useTotalBalance()
-  let loadingData: TRow[] | undefined
-  if (isLoadingAddresses) {
-    const loaderItem = <RectangleLoader className='h-2.5 mr-3' />
+  const {
+    tAddresses,
+    zAddresses,
+    tAddressAmounts,
+    zAddressAmounts,
+    allAddresses,
+    activeTab,
+    totalBalances,
+    toggleHideEmptyAddresses,
+    selectedAmount,
+  } = useWalletScreenContext()
 
-    loadingData = new Array(2).fill({
-      address: loaderItem,
-      time: loaderItem,
-      qrCode: loaderItem,
-      amount: loaderItem,
-      psl: loaderItem,
-    })
-  }
+  const createNewAddress = useCreateNewAddress()
 
   return (
     <>
-      {(isLoadingAddresses || walletAddresses.length > 0) && (
+      {(allAddresses.isLoading || allAddresses.data?.length) && (
         <div className='bg-white pt-[30px] rounded-lg mt-[30px] min-w-594px'>
           <div
             className={cn(
@@ -74,43 +39,15 @@ export default function WalletAddresses({
           >
             {activeTab !== 0 && (
               <AddressesTable
-                isLoading={isLoadingAddresses}
-                selectedRows={selectedRows}
-                setSelectedRowsFunction={setSelectedRowsFunction}
-                saveAddressLabel={saveAddressLabel}
-                setCurrentAddress={setCurrentAddress}
-                setIsQRCodeModalOpen={setIsQRCodeModalOpen}
-                setExportKeysModalOpen={setExportKeysModalOpen}
-                selectionPsl={selectionPsl}
-                forceUpdateSelect={forceUpdateSelect}
-                handleAmountChange={handleAmountChange}
-                data={
-                  loadingData ||
-                  (activeTab === 1
-                    ? walletAddresses.filter(
-                        item => item.type === 'transparent',
-                      )
-                    : walletAddresses.filter(item => item.type === 'shielded'))
-                }
+                addresses={activeTab === 1 ? tAddresses : zAddresses}
+                amounts={activeTab === 1 ? tAddressAmounts : zAddressAmounts}
               />
             )}
             {activeTab == 0 && (
               <div>
                 <AddressesTable
-                  isLoading={isLoadingAddresses}
-                  selectedRows={selectedRows}
-                  setSelectedRowsFunction={setSelectedRowsFunction}
-                  saveAddressLabel={saveAddressLabel}
-                  setCurrentAddress={setCurrentAddress}
-                  setIsQRCodeModalOpen={setIsQRCodeModalOpen}
-                  setExportKeysModalOpen={setExportKeysModalOpen}
-                  selectionPsl={selectionPsl}
-                  forceUpdateSelect={forceUpdateSelect}
-                  handleAmountChange={handleAmountChange}
-                  data={
-                    loadingData ||
-                    walletAddresses.filter(item => item.type === 'transparent')
-                  }
+                  addresses={tAddresses}
+                  amounts={tAddressAmounts}
                   extendHeader={
                     <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
                       Transparent
@@ -120,20 +57,8 @@ export default function WalletAddresses({
                   stickyTopClassName='top-[23px]'
                 />
                 <AddressesTable
-                  isLoading={isLoadingAddresses}
-                  selectedRows={selectedRows}
-                  setSelectedRowsFunction={setSelectedRowsFunction}
-                  saveAddressLabel={saveAddressLabel}
-                  setCurrentAddress={setCurrentAddress}
-                  setIsQRCodeModalOpen={setIsQRCodeModalOpen}
-                  setExportKeysModalOpen={setExportKeysModalOpen}
-                  selectionPsl={selectionPsl}
-                  forceUpdateSelect={forceUpdateSelect}
-                  handleAmountChange={handleAmountChange}
-                  data={
-                    loadingData ||
-                    walletAddresses.filter(item => item.type === 'shielded')
-                  }
+                  addresses={zAddresses}
+                  amounts={zAddressAmounts}
                   extendHeader={
                     <div className='mb-2.5 mt-7 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
                       Shielded
@@ -149,9 +74,9 @@ export default function WalletAddresses({
           <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
             <div className='flex items-center text-h6-leading-20'>
               <Toggle
-                toggleHandler={hideEmptyAddress}
+                toggleHandler={toggleHideEmptyAddresses}
                 selected={
-                  totalBalances?.total && totalBalances?.total > 0
+                  totalBalances.data && totalBalances.data.total > 0
                     ? true
                     : false
                 }
@@ -179,7 +104,7 @@ export default function WalletAddresses({
         </div>
       )}
 
-      {!isLoadingAddresses && walletAddresses.length === 0 && (
+      {allAddresses.data?.length === 0 && (
         <div
           className={cn(
             'bg-white rounded-lg mt-3.5 flex items-center justify-center pb-10',
@@ -194,7 +119,7 @@ export default function WalletAddresses({
               variant='secondary'
               className='w-[264px] px-0 mt-3'
               childrenClassName='w-full'
-              onClick={handleCreateNewAddress}
+              onClick={createNewAddress}
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />

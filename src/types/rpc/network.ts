@@ -24,7 +24,7 @@ type TNetworkInfo = {
   relayfee: number
   localaddresses: TLocalAddress[]
   warnings: string
-  create_timestamp: string
+  createdAt: string
 }
 
 type TNetTotal = {

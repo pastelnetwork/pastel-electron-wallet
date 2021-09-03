@@ -69,7 +69,7 @@ export type TNetworkInfo = {
   relayfee: number
   localaddresses: TLocaladdresses[]
   warnings: string
-  create_timestamp: string
+  createdAt: string
 }
 
 export type TNetTotals = {

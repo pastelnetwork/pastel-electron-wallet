@@ -1,20 +1,18 @@
-import { groupBy } from 'underscore'
 import log from 'electron-log'
 
 import {
-  TAddressBalance,
-  TAddressList,
   TListAddressesResponse,
-  TListUnspent,
   TListUnspentResponse,
   TResponse,
   TTotalBalanceResponse,
   TTotalBalance,
   TZListUnspentResponse,
-  TZListUnspent,
   TCreateAddressResponse,
   TPrivKeyResponse,
   TZPrivKeyResponse,
+  TAddressBalancesResponse,
+  TAddressList,
+  TZListUnspent,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -101,28 +99,53 @@ export class WalletRPC {
     return useQuery('z_gettotalbalance', () => this.fetchTotalBalance())
   }
 
+  async fetchTGetAddressesByAccount(): Promise<TListAddressesResponse> {
+    return await rpc('getaddressesbyaccount', [''], { throw: true })
+  }
+
+  useTGetAddressesByAccount(): UseQueryResult<TListAddressesResponse> {
+    return useQuery('getaddressesbyaccount', () =>
+      this.fetchTGetAddressesByAccount(),
+    )
+  }
+
+  useTAddresses(): UseQueryResult<TListAddressesResponse> {
+    const addressesQuery = this.useTGetAddressesByAccount()
+    const addressesBalancesQuery = this.useTAddressBalances() // balances may have additional addresses
+
+    return useMemo(() => {
+      const data = addressesQuery.data ? [...addressesQuery.data] : []
+      const addressesBalances = addressesBalancesQuery.data
+      const isLoading =
+        addressesQuery.isLoading || addressesBalancesQuery.isLoading
+
+      if (addressesBalances) {
+        for (const address in addressesBalances) {
+          if (!data.includes(address)) {
+            data.push(address)
+          }
+        }
+      }
+
+      return {
+        ...addressesQuery,
+        isLoading,
+        data: isLoading ? undefined : data,
+      } as UseQueryResult<TListAddressesResponse>
+    }, [addressesQuery, addressesBalancesQuery])
+  }
+
   /**
    * Get list of T addresses.
    *
    * @returns IListAddressesResponse
    */
   async fetchZAddresses(): Promise<TListAddressesResponse> {
-    return rpc<TListAddressesResponse>('z_listaddresses', [])
+    return rpc<TListAddressesResponse>('z_listaddresses', [], { throw: true })
   }
 
-  useZListAddresses(options?: {
-    enabled?: boolean
-  }): UseQueryResult<TListAddressesResponse> {
-    return useQuery('z_listaddresses', () => this.fetchZAddresses(), options)
-  }
-
-  /**
-   * Get list of T addresses.
-   *
-   * @returns IListAddressesResponse
-   */
-  async fetchTAddresses(): Promise<TListAddressesResponse> {
-    return rpc<TListAddressesResponse>('listaddresses', [])
+  useZAddresses(): UseQueryResult<TListAddressesResponse> {
+    return useQuery('z_listaddresses', () => this.fetchZAddresses())
   }
 
   /**
@@ -131,7 +154,9 @@ export class WalletRPC {
    * @returns IListAddressesResponse
    */
   async fetchAddressesByAccount(): Promise<TListAddressesResponse> {
-    return rpc<TListAddressesResponse>('getaddressesbyaccount', [''])
+    return rpc<TListAddressesResponse>('getaddressesbyaccount', [''], {
+      throw: true,
+    })
   }
 
   useListAddressesByAccount(options?: {
@@ -156,19 +181,14 @@ export class WalletRPC {
       this.fetchAddressesByAccount(),
     ])
 
-    const { result: z } = results[0]
-    const { result: t } = results[1]
+    const z = results[0]
+    const t = results[1]
 
     return z.concat(t)
   }
 
-  /**
-   * Get Z List unspent.
-   *
-   * @returns IZListUnspentResponse
-   */
   async fetchZListUnspent(): Promise<TZListUnspentResponse> {
-    return rpc<TZListUnspentResponse>('z_listunspent', [0])
+    return rpc<TZListUnspentResponse>('z_listunspent', [0], { throw: true })
   }
 
   useZListUnspent(options?: {
@@ -177,19 +197,21 @@ export class WalletRPC {
     return useQuery('z_listunspent', () => this.fetchZListUnspent(), options)
   }
 
-  /**
-   * Get List unspent.
-   *
-   * @returns IListUnspentResponse
-   */
-  async fetchListUnspent(): Promise<TListUnspentResponse> {
-    return rpc<TListUnspentResponse>('listunspent', [0])
+  useZAddressBalances(): UseQueryResult<TAddressBalancesResponse> {
+    const query = this.useZListUnspent()
+    const data = this.useMapListUnspentToAddressAmounts(query.data)
+
+    return { ...query, data } as UseQueryResult<TAddressBalancesResponse>
   }
 
-  useListUnspent(options?: {
+  async fetchTListUnspent(): Promise<TListUnspentResponse> {
+    return rpc<TListUnspentResponse>('listunspent', [0], { throw: true })
+  }
+
+  useTListUnspent(options?: {
     enabled?: boolean
   }): UseQueryResult<TListUnspentResponse> {
-    return useQuery('listunspent', () => this.fetchListUnspent(), options)
+    return useQuery('listunspent', () => this.fetchTListUnspent(), options)
   }
 
   /**
@@ -201,90 +223,35 @@ export class WalletRPC {
   async fetchTandZAddresses(): Promise<TAddressList[]> {
     const results = await Promise.all([
       this.fetchZListUnspent(),
-      this.fetchListUnspent(),
+      this.fetchTListUnspent(),
     ])
 
-    const zResult: TAddressList[] = results[0].result.map(
-      (addr: TZListUnspent) => {
-        return {
-          txid: addr.txid,
-          address: addr.address,
-          amount: addr.amount,
-          type: 'shielded',
-        }
-      },
-    )
+    const zResult: TAddressList[] = results[0].map((addr: TZListUnspent) => {
+      return {
+        txid: addr.txid,
+        address: addr.address,
+        amount: addr.amount,
+        type: 'shielded',
+      }
+    })
 
-    const tResult: TAddressList[] = results[1].result.map(
-      (addr: TListUnspent) => {
-        return {
-          txid: addr.txid,
-          address: addr.address,
-          amount: addr.amount,
-          type: 'transparent',
-        }
-      },
-    )
+    const tResult: TAddressList[] = results[0].map((addr: TZListUnspent) => {
+      return {
+        txid: addr.txid,
+        address: addr.address,
+        amount: addr.amount,
+        type: 'transparent',
+      }
+    })
 
     return zResult.concat(tResult)
   }
 
-  useZAddressesWithBalance(): UseQueryResult<TAddressBalance[]> {
-    return this.useAddressesWithBalance(() => this.useZListUnspent())
-  }
+  useTAddressBalances(): UseQueryResult<TAddressBalancesResponse> {
+    const query = this.useTListUnspent()
+    const data = this.useMapListUnspentToAddressAmounts(query.data)
 
-  useTAddressesWithBalance(): UseQueryResult<TAddressBalance[]> {
-    return this.useAddressesWithBalance(() => this.useListUnspent())
-  }
-
-  useZAddresses(): UseQueryResult<string[]> {
-    return this.useAddresses(() => this.useZListAddresses())
-  }
-
-  useAddressesByAccount(): UseQueryResult<string[]> {
-    return this.useAddresses(() => this.useListAddressesByAccount())
-  }
-
-  private useAddressesWithBalance(
-    load: () => UseQueryResult<TZListUnspentResponse | TListUnspentResponse>,
-  ) {
-    const { data, ...rest } = load()
-
-    const mapped = useMemo<TAddressBalance[]>(() => {
-      const result = data?.result
-      if (!result) {
-        return []
-      }
-
-      const groups = groupBy(result, 'address')
-
-      return Object.keys(groups).map(address => {
-        const balance = groups[address].reduce(
-          (prev, obj) => prev + obj.amount,
-          0,
-        )
-        return {
-          address,
-          balance: Number(balance.toFixed(5)),
-        }
-      })
-    }, [data])
-
-    return { data: mapped, ...rest } as UseQueryResult<TAddressBalance[]>
-  }
-
-  private useAddresses(load: () => UseQueryResult<TListAddressesResponse>) {
-    const { data, ...rest } = load()
-    const mapped = useMemo<string[]>(() => {
-      const result = data?.result
-      if (!result) {
-        return []
-      }
-
-      return result
-    }, [data])
-
-    return { data: mapped, ...rest } as UseQueryResult<string[]>
+    return { ...query, data } as UseQueryResult<TAddressBalancesResponse>
   }
 
   async createNewAddress(zaddress: boolean): Promise<string | null> {
@@ -356,6 +323,22 @@ export class WalletRPC {
         throw err
       }
     }
+  }
+
+  private useMapListUnspentToAddressAmounts(
+    data?: { address: string; amount: number }[],
+  ) {
+    return useMemo(() => {
+      if (!data) {
+        return
+      }
+
+      const balances: TAddressBalancesResponse = {}
+      data.forEach(item => {
+        balances[item.address] = (balances[item.address] || 0) + item.amount
+      })
+      return balances
+    }, [data])
   }
 }
 

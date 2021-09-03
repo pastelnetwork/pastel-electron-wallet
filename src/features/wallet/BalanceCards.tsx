@@ -5,12 +5,13 @@ import {
   TotalBalance,
   TransparencyBalance,
 } from 'common/components/Icons'
-import { TTotalBalance } from 'types/rpc'
 import Tooltip from 'common/components/Tooltip'
 import cn from 'classnames'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatPrice } from 'common/utils/format'
 import RectangleLoader from 'common/components/Loader'
+import { walletRPC } from '../../api/pastel-rpc'
+import { useWalletScreenContext } from './walletScreen.context'
 
 type TBalanceCard = {
   style: {
@@ -23,17 +24,9 @@ type TBalanceCard = {
   info: string
 }
 
-export default function BalanceCards({
-  totalBalances,
-  isLoading,
-  activeTab,
-  setActiveTab,
-}: {
-  totalBalances?: TTotalBalance
-  isLoading: boolean
-  activeTab: number
-  setActiveTab(tab: number): void
-}): JSX.Element {
+export default function BalanceCards(): JSX.Element {
+  const { data: totalBalances, isLoading } = walletRPC.useTotalBalance()
+  const { activeTab, setActiveTab } = useWalletScreenContext()
   const currencyName = useCurrencyName()
 
   const loaderItem = isLoading && (

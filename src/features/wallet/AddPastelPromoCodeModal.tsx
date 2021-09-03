@@ -6,22 +6,21 @@ import { Input } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
 import { isValidPrivateKey } from 'common/utils/wallet'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { WalletRPC } from 'api/pastel-rpc'
 import { formatNumber } from 'common/utils/format'
 import congratulations from 'common/assets/icons/ico-congratulations.svg'
+import { useWalletScreenContext } from './walletScreen.context'
+import { walletRPC } from '../../api/pastel-rpc'
 
-type TAddPastelPromoCodeModalProps = {
-  isOpen: boolean
-  handleClose: () => void
-  fetchData: () => void
-}
+export default function AddPastelPromoCodeModal(): JSX.Element {
+  const {
+    setAddPastelPromoCodeModalOpen: setIsOpen,
+    lastActivityTimes,
+    tAddressAmounts,
+    zAddressAmounts,
+    pastelPromoCode: pastelPromoCodeQuery,
+  } = useWalletScreenContext()
+  const handleClose = () => setIsOpen(false)
 
-export default function AddPastelPromoCodeModal({
-  isOpen,
-  handleClose,
-  fetchData,
-}: TAddPastelPromoCodeModalProps): JSX.Element {
-  const walletRPC = new WalletRPC()
   const currencyName = useCurrencyName()
   const [isValidPromoCode, setValidPromoCode] = useState<boolean>(false)
   const [isLoading, setLoading] = useState<boolean>(false)
@@ -29,12 +28,10 @@ export default function AddPastelPromoCodeModal({
   const [pastelPromoCode, setPastelPromoCode] = useState<string>('')
 
   useEffect(() => {
-    if (isOpen) {
-      setValidPromoCode(false)
-      setMessage('')
-      setLoading(false)
-    }
-  }, [isOpen])
+    setValidPromoCode(false)
+    setMessage('')
+    setLoading(false)
+  }, [])
 
   const handleAddPromoCode = async () => {
     setMessage('')
@@ -49,12 +46,15 @@ export default function AddPastelPromoCodeModal({
         setValidPromoCode(true)
         if (promoCodeBalance) {
           setMessage(
-            formatNumber(parseFloat(promoCodeBalance?.amount.toString())),
+            formatNumber(parseFloat(promoCodeBalance.amount.toString())),
           )
         } else {
           setMessage('0')
         }
-        fetchData()
+        lastActivityTimes.refetch()
+        tAddressAmounts.refetch()
+        zAddressAmounts.refetch()
+        pastelPromoCodeQuery.refetch()
       } else {
         setValidPromoCode(false)
         setMessage('Promo Code is invalid.')
@@ -73,7 +73,7 @@ export default function AddPastelPromoCodeModal({
 
   return (
     <TitleModal
-      isOpen={isOpen}
+      isOpen
       handleClose={() => handleClose()}
       title={isValidPromoCode && message ? '' : 'Add Pastel Promo Code'}
       classNames='w-[598px]'
