@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron'
+import { BrowserWindow, screen } from 'electron'
 import MenuBuilder from '../../menu'
 
 export const browserWindow: { current?: BrowserWindow } = {}
@@ -33,6 +33,7 @@ export const createWindow = async (
       nodeIntegration: true,
       contextIsolation: false,
       webSecurity: false,
+      // enable remote module is needed for better-sqlite3 package
       enableRemoteModule: true,
     },
   })
@@ -42,9 +43,9 @@ export const createWindow = async (
 
   w.webContents.on('did-frame-finish-load', () => {
     // Open the DevTools.
-    if (!app.isPackaged) {
-      w.webContents.openDevTools()
-    }
+    // if (!app.isPackaged) {
+    w.webContents.openDevTools()
+    // }
   })
 
   // @TODO: Use 'ready-to-show' event

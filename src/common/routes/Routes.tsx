@@ -40,7 +40,9 @@ const Routes = (): JSX.Element => {
   const sqliteFilePath = useAppSelector(state => state.appInfo.sqliteFilePath)
 
   useEffect(() => {
-    PastelDB.getDatabaseInstance().then(setDb)
+    if (sqliteFilePath) {
+      PastelDB.getDatabaseInstance().then(setDb)
+    }
   }, [sqliteFilePath])
 
   return (
