@@ -1,4 +1,4 @@
-import { BrowserWindow, screen } from 'electron'
+import { app, BrowserWindow, screen } from 'electron'
 import MenuBuilder from '../../menu'
 
 export const browserWindow: { current?: BrowserWindow } = {}
@@ -43,9 +43,9 @@ export const createWindow = async (
 
   w.webContents.on('did-frame-finish-load', () => {
     // Open the DevTools.
-    // if (!app.isPackaged) {
-    w.webContents.openDevTools()
-    // }
+    if (!app.isPackaged || process.env.DEBUG_PROD === 'true') {
+      w.webContents.openDevTools()
+    }
   })
 
   // @TODO: Use 'ready-to-show' event
