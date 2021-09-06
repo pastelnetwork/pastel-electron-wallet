@@ -9,12 +9,19 @@ const sqlitePath = require.resolve(
   'better-sqlite3/build/Release/better_sqlite3.node',
 )
 
-fs.copyFile(
-  sqlitePath,
-  path.join(path.dirname(sqlitePath), 'better_sqlite3.for-jest.node'),
-  err => {
-    if (err) {
-      console.error(err)
-    }
-  },
+const forJestPath = path.join(
+  path.dirname(sqlitePath),
+  'better_sqlite3.for-jest.node',
 )
+
+if (!fs.existsSync(forJestPath)) {
+  fs.copyFile(
+    sqlitePath,
+    path.join(path.dirname(sqlitePath), 'better_sqlite3.for-jest.node'),
+    err => {
+      if (err) {
+        console.error(err)
+      }
+    },
+  )
+}
