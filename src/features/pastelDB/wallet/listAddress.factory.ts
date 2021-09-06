@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertListaddressesQuery, TDbListAddress } from '../constants'
 import PastelDB from '../database'
+import { insertListAddress, TDbListAddress } from './listAddress.repo'
 
 export const listAddressFactory = Factory.define<TDbListAddress>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertListaddressesQuery).run(params)
+      insertListAddress(db, params)
       return params
     })
 

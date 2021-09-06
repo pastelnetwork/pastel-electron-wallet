@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertTxoutsetinfoQuery, TDbTxOutSetInfo } from '../constants'
 import PastelDB from '../database'
+import { insertTxOutSentInfo, TDbTxOutSetInfo } from './txOutSetInfo.repo'
 
 export const txOutSetInfoFactory = Factory.define<TDbTxOutSetInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertTxoutsetinfoQuery).run(params)
+      insertTxOutSentInfo(db, params)
       return params
     })
 

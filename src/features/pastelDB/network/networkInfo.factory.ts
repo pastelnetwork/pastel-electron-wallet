@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertNetworkinfoQuery, TDbNetworkInfo } from '../constants'
 import PastelDB from '../database'
+import { insertNetworkInfo, TDbNetworkInfo } from './networkInfo.repo'
 
 export const networkInfoFactory = Factory.define<TDbNetworkInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertNetworkinfoQuery).run(params)
+      insertNetworkInfo(db, params)
       return params
     })
 

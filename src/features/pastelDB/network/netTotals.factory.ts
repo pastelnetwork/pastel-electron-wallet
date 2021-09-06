@@ -1,13 +1,12 @@
 import { Factory } from 'fishery'
-import { insertNettotalsQuery, TDbNetTotals } from '../constants'
 import PastelDB from '../database'
+import { insertNetTotals, TDbNetTotals } from './netTotals.repo'
 
 export const netTotalsFactory = Factory.define<TDbNetTotals>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertNettotalsQuery).run(params)
-
+      insertNetTotals(db, params)
       return params
     })
 

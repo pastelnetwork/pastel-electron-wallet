@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import PastelDB from '../../../pastelDB/database'
 import { EChartsMultiLineChart } from '../chart/EChartsMultiLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames, TDbPriceInfo } from '../../../pastelDB/constants'
+import { pastelTableNames } from '../../../pastelDB/constants'
 import { TPeriod, transformPriceInfo } from '../../utils/PastelStatisticsLib'
 import styles from '../../Common.module.css'
 import {
@@ -12,6 +12,7 @@ import {
   periods,
 } from '../../common/constants'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { TDbPriceInfo } from '../../../pastelDB/price/priceInfo.repo'
 
 type TLineChartData = {
   dataX: string[]

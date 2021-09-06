@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertPastelPriceInfoQuery, TDbPriceInfo } from '../constants'
 import PastelDB from '../database'
+import { insertPriceInfo, TDbPriceInfo } from './priceInfo.repo'
 
 export const priceInfoFactory = Factory.define<TDbPriceInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertPastelPriceInfoQuery).run(params)
+      insertPriceInfo(db, params)
       return params
     })
 

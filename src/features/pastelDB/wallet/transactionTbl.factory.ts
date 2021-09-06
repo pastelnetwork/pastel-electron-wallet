@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertTransactionTableQuery, TDbTransactionTbl } from '../constants'
 import PastelDB from '../database'
+import { insertTransactionTbl, TDbTransactionTbl } from './transactionTbl.repo'
 
-export const transactionTableFactory = Factory.define<TDbTransactionTbl>(
+export const transactionTblFactory = Factory.define<TDbTransactionTbl>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertTransactionTableQuery).run(params)
+      insertTransactionTbl(db, params)
       return params
     })
 

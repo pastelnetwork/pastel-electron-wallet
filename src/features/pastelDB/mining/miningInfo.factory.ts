@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertMininginfoQuery, TDbMiningInfo } from '../constants'
 import PastelDB from '../database'
+import { insertMiningInfo, TDbMiningInfo } from './miningInfo.repo'
 
 export const miningInfoFactory = Factory.define<TDbMiningInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertMininginfoQuery).run(params)
+      insertMiningInfo(db, params)
       return params
     })
 
@@ -24,6 +24,7 @@ export const miningInfoFactory = Factory.define<TDbMiningInfo>(
       pooledtx: 0,
       testnet: 0,
       chain: '',
+      generate: 0,
       createdAt: Date.now() + sequence,
     }
   },

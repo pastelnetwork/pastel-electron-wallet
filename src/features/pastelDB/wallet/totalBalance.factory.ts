@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertTotalbalanceQuery, TDbTotalBalance } from '../constants'
 import PastelDB from '../database'
+import { insertTotalBalance, TDbTotalBalance } from './totalBalance.repo'
 
 export const totalBalanceFactory = Factory.define<TDbTotalBalance>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertTotalbalanceQuery).run(params)
+      insertTotalBalance(db, params)
       return params
     })
 

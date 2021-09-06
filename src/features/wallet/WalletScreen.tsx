@@ -18,7 +18,7 @@ import {
   useWalletScreenContext,
   WalletScreenContext,
 } from './walletScreen.context'
-import { useAddressesLastActivityTime } from '../pastelDB/wallet/transactions.repo'
+import { useAddressesLastActivityTime } from '../pastelDB/wallet/listTransaction.repo'
 import {
   useCreateNewAddress,
   useFilterAddresses,

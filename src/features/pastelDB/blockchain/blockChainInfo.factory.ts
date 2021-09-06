@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertBlockChainInfoQuery, TDbBlockChainInfo } from '../constants'
 import PastelDB from '../database'
+import { insertBlockChainInfo, TDbBlockChainInfo } from './blockChainInfo.repo'
 
 export const blockChainInfoFactory = Factory.define<TDbBlockChainInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertBlockChainInfoQuery).run(params)
+      insertBlockChainInfo(db, params)
       return params
     })
 

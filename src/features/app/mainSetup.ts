@@ -17,6 +17,7 @@ import { redirectDeepLinkingUrl, setupDeepLinking } from '../deepLinking'
 import { browserWindow, createWindow } from './window'
 import {
   debugLogPath,
+  migrationsPath,
   pastelConfigFilePath,
   pastelWalletDirPath,
   sentTxStorePath,
@@ -57,6 +58,7 @@ onMainEvent('rendererStarted', () => {
     debugLogPath,
     pastelWalletDirPath,
     sqliteFilePath,
+    migrationsPath,
   })
 
   // in case of page reload we already have rpcConfig and no need to launch wallet node again

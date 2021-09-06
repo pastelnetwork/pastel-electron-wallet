@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertTxoutsetinfoQuery, TDbChainTips } from '../constants'
 import PastelDB from '../database'
+import { insertChainTips, TDbChainTips } from './chainTips.repo'
 
 export const chainTipsFactory = Factory.define<TDbChainTips>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertTxoutsetinfoQuery).run(params)
+      insertChainTips(db, params)
       return params
     })
 

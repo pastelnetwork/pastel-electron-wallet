@@ -1,59 +1,17 @@
 import SQLite, { Database } from 'better-sqlite3'
+import path from 'path'
 import {
   TBlock,
   TBlockChainInfo,
-  TBlockSubsidy,
-  TChainTips,
   TListUnspent,
-  TMempoolInfo,
-  TNetTotal,
-  TNetworkInfo,
   TRawMempool,
   TRawTransaction,
   TTotalBalance,
   TTransactionInfo,
-  TWalletInfo,
 } from 'types/rpc'
 import { TMiningInfo } from '../../types/rpc'
 
 import {
-  createBlock,
-  createBlockChainInfo,
-  createBlocksubsidy,
-  createChaintips,
-  createListaddresses,
-  createListreceivedbyaddress,
-  createListunspent,
-  createMempoolinfo,
-  createMininginfo,
-  createNettotals,
-  createNetworkinfo,
-  createPastelPriceTable,
-  createRawmempoolinfo,
-  createRawtransaction,
-  createStatisticinfo,
-  createTotalbalance,
-  createTransaction,
-  createTxoutsetinfo,
-  createWalletinfo,
-  insertBlockChainInfoQuery,
-  insertBlockinfoQuery,
-  insertBlocksubsidyQuery,
-  insertChaintipsQuery,
-  insertListaddressesQuery,
-  insertListunspentQuery,
-  insertMempoolinfoQuery,
-  insertMininginfoQuery,
-  insertNettotalsQuery,
-  insertNetworkinfoQuery,
-  insertPastelPriceInfoQuery,
-  insertRawmempoolinfoQuery,
-  insertRawtransactionQuery,
-  insertStatisticinfoQuery,
-  insertTotalbalanceQuery,
-  insertTransactionTableQuery,
-  insertTxoutsetinfoQuery,
-  insertWalletinfoQuery,
   orderByIDQuery,
   selectAllQuery,
   selectIDQuery,
@@ -66,13 +24,23 @@ import {
   groupbyDaily,
   groupByMonthly,
   groupByYearly,
-  TDbBlockChainInfo,
-  TDbBlockInfo,
-  TDbPriceInfo,
 } from './constants'
-import { TTxoutsetInfo, TValidateFields } from './type'
+import { TValidateFields } from './type'
 import store from '../../redux/store'
-import { createListTransactions } from './wallet/listTransaction.repo'
+import fs from 'fs'
+import log from 'electron-log'
+import {
+  insertBlockChainInfo,
+  TDbBlockChainInfo,
+} from './blockchain/blockChainInfo.repo'
+import { insertBlockInfo, TDbBlockInfo } from './blockchain/blockInfo.repo'
+import { insertPriceInfo, TDbPriceInfo } from './price/priceInfo.repo'
+import { insertRawMemPoolInfo } from './blockchain/rawMemPoolInfo.repo'
+import { insertMiningInfo } from './mining/miningInfo.repo'
+import { insertRawTransaction } from './rawTransaction/rawTransaction.repo'
+import { insertTransactionTbl } from './wallet/transactionTbl.repo'
+import { insertListUnspent } from './wallet/listUnspent.repo'
+import { insertTotalBalance } from './wallet/totalBalance.repo'
 
 const getSqliteFilePath = () => {
   const path = store.getState().appInfo.sqliteFilePath
@@ -82,83 +50,68 @@ const getSqliteFilePath = () => {
   return path
 }
 
+const getMigrationsPath = () => {
+  const path = store.getState().appInfo.migrationsPath
+  if (!path) {
+    throw new Error("Can't get SQLite file path")
+  }
+  return path
+}
+
 // todo: db should be moved to node process to not block interface
-export const createDatabase = async (): Promise<Database> => {
-  const db = new SQLite(getSqliteFilePath())
-  await createTables(db)
+export const createDatabase = async (
+  dbPath = getSqliteFilePath(),
+  migrationsPath = getMigrationsPath(),
+): Promise<Database> => {
+  let db = new SQLite(dbPath)
+  const migrationsTableExists = db
+    .prepare(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='migrations'",
+    )
+    .get()
+
+  if (!migrationsTableExists) {
+    try {
+      const dbFileExists = await fs.promises.stat(dbPath)
+      if (dbFileExists) {
+        await fs.promises.unlink(dbPath)
+      }
+    } catch (_) {
+      // no file
+    }
+    db.close()
+    db = new SQLite(dbPath)
+    db.prepare('CREATE TABLE migrations ( version int )').run()
+  }
+
+  const migratedVersions = db
+    .prepare('SELECT version FROM migrations')
+    .all()
+    .map(row => row.version)
+
+  const migrationFiles = await fs.promises.readdir(migrationsPath)
+  for (const file of migrationFiles) {
+    const version = parseInt(file.split('-')[0])
+    if (isNaN(version)) {
+      throw new Error(`Incorrect migration file name: ${file}`)
+    }
+
+    if (migratedVersions.includes(version)) {
+      continue
+    }
+
+    const migrationContent = await fs.promises.readFile(
+      path.join(migrationsPath, file),
+      'utf-8',
+    )
+    db.prepare(migrationContent).run()
+    db.prepare('INSERT INTO migrations (version) VALUES ($version)').run({
+      version,
+    })
+    log.info(`Migration ${file} was applied`)
+  }
+
   return db
-}
-
-export async function createTables(db: Database): Promise<void> {
-  // create whole tables
-  await Promise.all([
-    createAddressTables(db),
-    createBlockChainTables(db),
-    createMiningTables(db),
-    createNetworkTables(db),
-    createPSLPriceTable(db),
-    createRawTransactionTables(db),
-    createStatisticTable(db),
-    createWalletTables(db),
-  ])
-  return
-}
-
-export async function createAddressTables(db: Database): Promise<void> {
-  // create tables that keep Address related informations
-  db.exec(createListreceivedbyaddress)
-  db.exec(createListaddresses)
-  return
-}
-
-export async function createStatisticTable(db: Database): Promise<void> {
-  // create statisticinfo table
-  db.exec(createStatisticinfo)
-}
-
-export async function createPSLPriceTable(db: Database): Promise<void> {
-  // create Pastel Price table
-  db.exec(createPastelPriceTable)
-}
-
-export async function createBlockChainTables(db: Database): Promise<void> {
-  // Create the tables that keep various info regarding block chain processing.
-  db.exec(createMempoolinfo)
-  db.exec(createRawmempoolinfo)
-  db.exec(createBlock)
-  db.exec(createBlockChainInfo)
-  db.exec(createChaintips)
-  db.exec(createTxoutsetinfo)
-  return
-}
-
-export async function createNetworkTables(db: Database): Promise<void> {
-  // create Network data tables
-  db.exec(createNetworkinfo)
-  db.exec(createNettotals)
-  return
-}
-
-export async function createWalletTables(db: Database): Promise<void> {
-  // create Wallet data tables
-  db.exec(createWalletinfo)
-  db.exec(createListunspent)
-  createListTransactions(db)
-  db.exec(createTotalbalance)
-}
-
-export async function createMiningTables(db: Database): Promise<void> {
-  // create Mining data tables
-  db.exec(createMininginfo)
-  db.exec(createBlocksubsidy)
-  return
-}
-
-export async function createRawTransactionTables(db: Database): Promise<void> {
-  // create RawTransaction Data tables
-  db.exec(createRawtransaction)
-  db.exec(createTransaction)
-  return
 }
 
 export function validateDuplicatedRawmempoolInfo(
@@ -166,7 +119,7 @@ export function validateDuplicatedRawmempoolInfo(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB validateDuplicatedRawmempoolInfo error: ${tableName} is invalid table name`,
     )
@@ -188,13 +141,13 @@ export function validateDataFromDB(
   tableName: string,
   validateFields: TValidateFields,
 ): boolean {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB validateDuplicatedRawmempoolInfo error: ${tableName} is invalid table name`,
     )
   }
 
-  if (tableName === 'rawmempoolinfo') {
+  if (tableName === 'rawMemPoolInfo') {
     const sqlText = selectIDQuery + tableName + whereTransactionIDMatchingQuery
     const values = {
       tid: validateFields.transactionid,
@@ -207,7 +160,7 @@ export function validateDataFromDB(
     const sqlResult = pastelDB.prepare(sqlText).get()
     if (sqlResult) {
       switch (tableName) {
-        case 'blockchaininfo':
+        case 'blockChainInfo':
           if (
             validateFields.bestblockhash ===
             (sqlResult as TDbBlockChainInfo).bestblockhash
@@ -215,12 +168,12 @@ export function validateDataFromDB(
             return false
           }
           break
-        case 'blockinfo':
+        case 'blockInfo':
           if (validateFields.hash === (sqlResult as TDbBlockInfo).hash) {
             return false
           }
           break
-        case 'pslprice':
+        case 'priceInfo':
           if (
             validateFields.priceUsd === (sqlResult as TDbPriceInfo).priceUsd
           ) {
@@ -240,7 +193,7 @@ export function getLastDataFromDB(
   pastelDB: Database,
   tableName: string,
 ): unknown[] {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB getLastDataFromDB error: ${tableName} is invalid table name`,
     )
@@ -253,7 +206,7 @@ export function getLastRowFromDB<T = unknown>(
   pastelDB: Database,
   tableName: string,
 ): T {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB getLastDataFromDB error: ${tableName} is invalid table name`,
     )
@@ -407,7 +360,7 @@ export function validateDuplicatedWalletInfo(
 }
 
 export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(`pastelDB getLastIdFromDB error: ${tableName} is invalid`)
   }
 
@@ -416,25 +369,11 @@ export function getLastIdFromDB(pastelDB: Database, tableName: string): number {
   return (sqlResult?.id || 0) + 1
 }
 
-export function insertStatisticDataToDB(
-  pastelDB: Database,
-  solutions: number,
-  difficulty: number,
-): void {
-  const createdAt: number = +new Date()
-  const values = {
-    solutions: solutions,
-    difficulty: difficulty,
-    createdAt: createdAt,
-  }
-  pastelDB.prepare(insertStatisticinfoQuery).run(values)
-}
-
 export function getDatasFromDB<T extends unknown>(
   pastelDB: Database,
   tableName: string,
 ): T[] {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB getDatasFromDB error: ${tableName} is invalid table name`,
     )
@@ -450,7 +389,7 @@ export function getFilteredDataFromDBByPeriod(
   granularity: string,
   period: string,
 ): { date: string; averageSize: number }[] {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB getFilteredDataFromDBByPeriod error: ${tableName} is invalid table name`,
     )
@@ -495,7 +434,7 @@ export function getTransactionsDataFromDBByPeriod(
   tableName: string,
   period: string,
 ): { date: string; count: number }[] {
-  if (tableNames[tableName] !== true) {
+  if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB getTransactionsDataFromDBByPeriod error: ${tableName} is invalid table name`,
     )
@@ -521,66 +460,12 @@ export function getTransactionsDataFromDBByPeriod(
   return pastelDB.prepare(sqlText).all()
 }
 
-export function insertNetworkInfoToDB(
-  pastelDB: Database,
-  networkinfo: TNetworkInfo,
-): void {
-  const createdAt = Date.now()
-  const networks = JSON.stringify(networkinfo.networks)
-  const localaddresses = JSON.stringify(networkinfo.localaddresses)
-  const values = {
-    version: networkinfo.version,
-    subversion: networkinfo.subversion,
-    protocolversion: networkinfo.protocolversion,
-    localservices: networkinfo.localservices,
-    timeoffset: networkinfo.timeoffset,
-    connections: networkinfo.connections,
-    networks: networks,
-    relayfee: networkinfo.relayfee,
-    localaddresses: localaddresses,
-    warnings: networkinfo.warnings,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertNetworkinfoQuery).run(values)
-}
-
-export function insertNetTotalsToDB(
-  pastelDB: Database,
-  nettotals: TNetTotal,
-): void {
-  const createdAt = Date.now()
-  const values = {
-    totalbytesrecv: nettotals.totalbytesrecv,
-    totalbytessent: nettotals.totalbytessent,
-    timemillis: nettotals.timemillis,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertNettotalsQuery).run(values)
-}
-
-export function insertMempoolInfoToDB(
-  pastelDB: Database,
-  mempoolinfo: TMempoolInfo,
-): void {
-  const createdAt: number = +new Date()
-  const values = {
-    size: mempoolinfo.size,
-    bytes: mempoolinfo.bytes,
-    usage: mempoolinfo.usage,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertMempoolinfoQuery).run(values)
-}
-
 export function insertRawMempoolinfoToDB(
   pastelDB: Database,
   mempoolinfo: TRawMempool,
 ): void {
   if (
-    !validateDataFromDB(pastelDB, 'rawmempoolinfo', {
+    !validateDataFromDB(pastelDB, 'rawMemPoolInfo', {
       transactionid: mempoolinfo.transactionid,
       time: mempoolinfo.time,
     })
@@ -589,47 +474,22 @@ export function insertRawMempoolinfoToDB(
     return
   }
 
-  const createdAt: number = +new Date()
-  const depends = JSON.stringify(mempoolinfo.depends)
-  const values = {
-    transactionid: mempoolinfo.transactionid,
-    size: mempoolinfo.size,
-    fee: mempoolinfo.fee,
-    time: mempoolinfo.time,
-    height: mempoolinfo.height,
-    startingpriority: mempoolinfo.startingpriority,
-    currentpriority: mempoolinfo.currentpriority,
-    depends: depends,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertRawmempoolinfoQuery).run(values)
+  insertRawMemPoolInfo(pastelDB, {
+    ...mempoolinfo,
+    depends: JSON.stringify(mempoolinfo.depends),
+  })
 }
 
 export function insertMiningInfoToDB(
   pastelDB: Database,
   mininginfo: TMiningInfo,
 ): void {
-  const createdAt = Date.now()
-  const generate = mininginfo.generate ? mininginfo.generate?.toString() : ''
-  const values = {
-    blocks: mininginfo.blocks,
-    currentblocksize: mininginfo.currentblocksize,
-    currentblocktx: mininginfo.currentblocktx,
-    difficulty: mininginfo.difficulty,
-    errors: mininginfo.errors,
-    genproclimit: mininginfo.genproclimit,
-    localsolps: mininginfo.localsolps,
-    networksolps: mininginfo.networksolps,
-    networkhashps: mininginfo.networkhashps,
-    pooledtx: mininginfo.pooledtx || null,
+  insertMiningInfo(pastelDB, {
+    ...mininginfo,
     testnet: mininginfo.testnet ? 1 : 0,
     chain: mininginfo.chain,
-    generate: generate,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertMininginfoQuery).run(values)
+    generate: mininginfo.generate ? 1 : 0,
+  })
 }
 
 export function insertBlockInfoToDB(
@@ -637,35 +497,16 @@ export function insertBlockInfoToDB(
   blockInfo: TBlock,
 ): void {
   if (
-    validateDataFromDB(pastelDB, 'blockinfo', {
+    validateDataFromDB(pastelDB, 'blockInfo', {
       hash: blockInfo.hash,
     })
   ) {
-    const createdAt = Date.now()
-    const valuePools = JSON.stringify(blockInfo.valuePools)
-    const txs = JSON.stringify(blockInfo.tx)
-    const values = {
-      hash: blockInfo.hash,
-      confirmations: blockInfo.confirmations,
-      size: blockInfo.size,
-      height: blockInfo.height,
-      version: blockInfo.version,
-      merkleroot: blockInfo.merkleroot,
-      finalsaplingroot: blockInfo.finalsaplingroot,
-      tx: txs,
-      time: blockInfo.time,
-      nonce: blockInfo.nonce,
-      solution: blockInfo.solution,
-      bits: blockInfo.bits,
-      difficulty: blockInfo.difficulty,
-      chainwork: blockInfo.chainwork,
-      anchor: blockInfo.anchor,
-      valuePools: valuePools,
-      previousblockhash: blockInfo.previousblockhash,
+    insertBlockInfo(pastelDB, {
+      ...blockInfo,
+      tx: JSON.stringify(blockInfo.tx),
+      valuePools: JSON.stringify(blockInfo.valuePools),
       nextblockhash: blockInfo.nextblockhash ? blockInfo.nextblockhash : '',
-      createdAt: createdAt,
-    }
-    pastelDB.prepare(insertBlockinfoQuery).run(values)
+    })
   }
 }
 
@@ -673,219 +514,73 @@ export function insertRawtransaction(
   pastelDB: Database,
   rawtransaction: TRawTransaction,
 ): void {
-  const createdAt = Date.now()
-  const overwintered = rawtransaction.overwintered
-    ? rawtransaction.overwintered.toString()
-    : ''
-  const vin = JSON.stringify(rawtransaction.vin)
-  const vout = JSON.stringify(rawtransaction.vout)
-  const vjoinsplit = JSON.stringify(rawtransaction.vjoinsplit)
-  const values = {
-    hex: rawtransaction.hex,
-    txid: rawtransaction.txid,
-    overwintered: overwintered,
-    version: rawtransaction?.version,
+  insertRawTransaction(pastelDB, {
+    ...rawtransaction,
+    overwintered: rawtransaction.overwintered ? 1 : 0,
     versiongroupid: rawtransaction?.versiongroupid || '',
-    locktime: rawtransaction?.locktime,
-    expiryheight: rawtransaction?.expiryheight || 0,
-    vin: vin,
-    vout: vout,
-    vjoinsplit: vjoinsplit,
-    blockhash: rawtransaction.blockhash,
-    confirmations: rawtransaction.confirmations,
-    time: rawtransaction.time,
-    blocktime: rawtransaction.blocktime,
-    createdAt: createdAt,
-  }
-  pastelDB.prepare(insertRawtransactionQuery).run(values)
+    expiryheight: rawtransaction.expiryheight || 0,
+    vin: JSON.stringify(rawtransaction.vin),
+    vout: JSON.stringify(rawtransaction.vout),
+    vjoinsplit: JSON.stringify(rawtransaction.vjoinsplit),
+  })
 }
 
 export const insertTransaction = (
   pastelDB: Database,
   transactionInfo: TTransactionInfo,
 ): void => {
-  const createdAt: string = new Date().toLocaleTimeString()
-  const details = JSON.stringify(transactionInfo.details)
-  const vjoinsplit = JSON.stringify(transactionInfo.vjoinsplit)
-  const walletconflicts = JSON.stringify(transactionInfo.walletconflicts)
-  const values = {
-    amount: transactionInfo.amount,
-    blockhash: transactionInfo.blockhash,
-    blockindex: transactionInfo.blockindex,
-    blocktime: transactionInfo.blocktime,
-    confirmations: transactionInfo.confirmations,
-    details: details,
-    expiryheight: transactionInfo.expiryheight,
-    hex: transactionInfo.hex,
-    time: transactionInfo.time,
-    timereceived: transactionInfo.timereceived,
-    txid: transactionInfo.txid,
-    vjoinsplit: vjoinsplit,
-    walletconflicts: walletconflicts,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertTransactionTableQuery).run(values)
-}
-
-export function insertTxoutsetinfo(
-  pastelDB: Database,
-  txoutsetinfo: TTxoutsetInfo,
-): void {
-  const createdAt = Date.now()
-  const values = {
-    height: txoutsetinfo.height,
-    bestblock: txoutsetinfo.bestblock,
-    transactions: txoutsetinfo.transactions,
-    txouts: txoutsetinfo.txouts,
-    bytes_serialized: txoutsetinfo.bytes_serialized,
-    hash_serialized: txoutsetinfo.hash_serialized,
-    total_amount: txoutsetinfo.total_amount,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertTxoutsetinfoQuery).run(values)
-}
-
-export function insertChaintips(
-  pastelDB: Database,
-  chaintips: TChainTips,
-): void {
-  const createdAt = Date.now()
-  const values = {
-    height: chaintips.height,
-    hash: chaintips.hash,
-    branchlen: chaintips.branchlen,
-    status: chaintips.status,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertChaintipsQuery).run(values)
-}
-
-export function insertBlocksubsidy(
-  pastelDB: Database,
-  blocksubsidy: TBlockSubsidy,
-): void {
-  const createdAt = Date.now()
-  const values = {
-    miner: blocksubsidy.miner,
-    masternode: blocksubsidy.masternode,
-    governance: blocksubsidy.governance,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertBlocksubsidyQuery).run(values)
-}
-
-export function insertWalletinfo(
-  pastelDB: Database,
-  walletinfo: TWalletInfo,
-): void {
-  const createdAt = Date.now()
-  const values = {
-    walletversion: walletinfo.walletversion,
-    balance: walletinfo.balance,
-    unconfirmed_balance: walletinfo.unconfirmed_balance,
-    immature_balance: walletinfo.immature_balance,
-    txcount: walletinfo.txcount,
-    keypoololdest: walletinfo.keypoololdest,
-    keypoolsize: walletinfo.keypoolsize,
-    paytxfee: walletinfo.paytxfee,
-    seedfp: walletinfo.seedfp,
-    createdAt: createdAt,
-  }
-
-  pastelDB.prepare(insertWalletinfoQuery).run(values)
+  insertTransactionTbl(pastelDB, {
+    ...transactionInfo,
+    details: JSON.stringify(transactionInfo.details),
+    vjoinsplit: JSON.stringify(transactionInfo.vjoinsplit),
+    walletconflicts: JSON.stringify(transactionInfo.walletconflicts),
+  })
 }
 
 export function insertListunspent(
   pastelDB: Database,
   listunspent: TListUnspent,
 ): void {
-  const createdAt = Date.now()
-
-  const generated = listunspent?.generated?.toString()
-  const values = {
-    txid: listunspent.txid,
-    vout: listunspent.vout,
-    generated: generated,
-    address: listunspent.address,
-    account: listunspent?.account || '',
-    scriptPubKey: listunspent.scriptPubKey,
-    amount: listunspent.amount,
-    confirmations: listunspent.confirmations,
-    spendable: listunspent.spendable,
-    createdAt: createdAt,
-  }
-  pastelDB.prepare(insertListunspentQuery).run(values)
+  insertListUnspent(pastelDB, {
+    ...listunspent,
+    account: listunspent.account || '',
+    generated: listunspent.generated ? 1 : 0,
+  })
 }
 
 export function insertTotalbalance(
   pastelDB: Database,
   totalBalance: TTotalBalance,
 ): void {
-  const createdAt = Date.now()
-  const values = {
-    transparent: totalBalance.transparent,
-    private: totalBalance.private,
-    total: totalBalance.total,
-    createdAt: createdAt,
-  }
-  pastelDB.prepare(insertTotalbalanceQuery).run(values)
-}
-
-export function insertListaddresses(pastelDB: Database, address: string): void {
-  const createdAt = Date.now()
-  const values = {
-    address: address,
-    createdAt: createdAt,
-  }
-  pastelDB.prepare(insertListaddressesQuery).run(values)
+  insertTotalBalance(pastelDB, {
+    transparent: String(totalBalance.transparent),
+    private: String(totalBalance.private),
+    total: String(totalBalance.total),
+  })
 }
 
 export function insertPastelPrice(pastelDB: Database, priceUsd: number): void {
-  const createdAt = Date.now()
-  if (validateDataFromDB(pastelDB, 'pslprice', { priceUsd })) {
-    const values = {
-      priceUsd,
-      createdAt: createdAt,
-    }
-    pastelDB.prepare(insertPastelPriceInfoQuery).run(values)
+  if (validateDataFromDB(pastelDB, 'priceInfo', { priceUsd })) {
+    insertPriceInfo(pastelDB, { priceUsd })
   }
 }
 
-export function insertBlockChainInfo(
+export function insertBlockChainInfoToDb(
   pastelDB: Database,
   blockChainInfo: TBlockChainInfo,
 ): void {
-  const createdAt = Date.now()
   if (
-    validateDataFromDB(pastelDB, 'blockchaininfo', {
+    validateDataFromDB(pastelDB, 'blockChainInfo', {
       bestblockhash: blockChainInfo.bestblockhash,
     })
   ) {
-    const consensus = JSON.stringify(blockChainInfo.consensus)
-    const softforks = JSON.stringify(blockChainInfo.softforks)
-    const upgrades = JSON.stringify(blockChainInfo.upgrades)
-    const valuePools = JSON.stringify(blockChainInfo.valuePools)
-    const pruned = JSON.stringify(blockChainInfo.pruned)
-    const values = {
-      bestblockhash: blockChainInfo.bestblockhash,
-      blocks: blockChainInfo.blocks,
-      chain: blockChainInfo.chain,
-      chainwork: blockChainInfo.chainwork,
-      commitments: blockChainInfo.commitments,
-      consensus: consensus,
-      difficulty: blockChainInfo.difficulty,
-      headers: blockChainInfo.headers,
-      pruned: pruned,
-      softforks: softforks,
-      upgrades: upgrades,
-      valuePools: valuePools,
-      verificationprogress: blockChainInfo.verificationprogress,
-      createdAt: createdAt,
-    }
-    pastelDB.prepare(insertBlockChainInfoQuery).run(values)
+    insertBlockChainInfo(pastelDB, {
+      ...blockChainInfo,
+      consensus: JSON.stringify(blockChainInfo.consensus),
+      softforks: JSON.stringify(blockChainInfo.softforks),
+      upgrades: JSON.stringify(blockChainInfo.upgrades),
+      valuePools: JSON.stringify(blockChainInfo.valuePools),
+      pruned: blockChainInfo.pruned ? 1 : 0,
+    })
   }
 }

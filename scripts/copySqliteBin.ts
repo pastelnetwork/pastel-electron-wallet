@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
 
 // to run in electron better_sqlite3.node is recompiled with electron-rebuild
 // bot to run in tests we still need a version compiled for current node

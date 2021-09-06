@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertStatisticinfoQuery, TDbStatisticInfo } from '../constants'
 import PastelDB from '../database'
+import { insertStatisticInfo, TDbStatisticInfo } from './statisticInfo.repo'
 
 export const statisticInfoFactory = Factory.define<TDbStatisticInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertStatisticinfoQuery).run(params)
+      insertStatisticInfo(db, params)
       return params
     })
 

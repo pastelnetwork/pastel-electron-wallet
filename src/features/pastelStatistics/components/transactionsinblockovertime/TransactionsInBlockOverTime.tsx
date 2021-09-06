@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames, TDbBlockInfo } from '../../../pastelDB/constants'
+import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TScatterChartData } from '../../../pastelDB/type'
 import {
@@ -15,6 +15,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { TDbBlockInfo } from '../../../pastelDB/blockchain/blockInfo.repo'
 
 type TTransactionsInBlockOvertimeProps = {
   info: {

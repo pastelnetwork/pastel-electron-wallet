@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertRawmempoolinfoQuery, TDbRawMemPoolInfo } from '../constants'
 import PastelDB from '../database'
+import { insertRawMemPoolInfo, TDbRawMemPoolInfo } from './rawMemPoolInfo.repo'
 
 export const rawMemPoolFactory = Factory.define<TDbRawMemPoolInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertRawmempoolinfoQuery).run(params)
+      insertRawMemPoolInfo(db, params)
       return params
     })
 

@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertTransactionTableQuery, TDbListUnspent } from '../constants'
 import PastelDB from '../database'
+import { insertListUnspent, TDbListUnspent } from './listUnspent.repo'
 
 export const listUnspentFactory = Factory.define<TDbListUnspent>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertTransactionTableQuery).run(params)
+      insertListUnspent(db, params)
       return params
     })
 

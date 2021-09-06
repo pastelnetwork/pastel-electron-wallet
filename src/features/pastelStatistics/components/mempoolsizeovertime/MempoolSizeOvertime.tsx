@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames, TDbMemPoolInfo } from '../../../pastelDB/constants'
+import { pastelTableNames } from '../../../pastelDB/constants'
 import PastelDB from '../../../pastelDB/database'
 import { TLineChartData } from '../../../pastelDB/type'
 import { TPeriod, transformMempoolInfo } from '../../utils/PastelStatisticsLib'
@@ -12,6 +12,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { TDbMemPoolInfo } from '../../../pastelDB/blockchain/memPoolInfo.repo'
 
 const redrawCycle = 6000
 

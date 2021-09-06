@@ -7,6 +7,7 @@ function getExtraResource() {
 
   const resources = [
     './node_modules/better-sqlite3/build/Release/better_sqlite3.node',
+    './src/features/pastelDB/migrations',
   ]
 
   switch (platform) {

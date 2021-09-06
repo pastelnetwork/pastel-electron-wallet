@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertBlocksubsidyQuery, TDbBlockSubsidy } from '../constants'
 import PastelDB from '../database'
+import { insertBlockSubsidy, TDbBlockSubsidy } from './blockSubsidy.repo'
 
 export const blockSubsidyFactory = Factory.define<TDbBlockSubsidy>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertBlocksubsidyQuery).run(params)
+      insertBlockSubsidy(db, params)
       return params
     })
 

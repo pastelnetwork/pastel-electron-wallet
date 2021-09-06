@@ -39,3 +39,15 @@ yarn start
 ```
 
 To contribute, please read [contribution guidelines for this project](docs/CONTRIBUTING.md).
+
+## Migrations
+
+App includes sqlite database, to make a change to database structure run:
+
+```
+yarn db:generate createTableName
+```
+
+This will create empty sql file prefixed with timestamp in src/features/pastelDB/migrations
+
+Migration files are applied automatically during the app start up process

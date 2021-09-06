@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertWalletinfoQuery, TDbWalletInfo } from '../constants'
 import PastelDB from '../database'
+import { insertWalletInfo, TDbWalletInfo } from './walletInfo.repo'
 
 export const walletInfoFactory = Factory.define<TDbWalletInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertWalletinfoQuery).run(params)
+      insertWalletInfo(db, params)
       return params
     })
 

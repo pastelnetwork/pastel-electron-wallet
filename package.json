@@ -29,9 +29,10 @@
     "check-typescript": "tsc",
     "check-type-coverage": "type-coverage --strict --ignoreCatch --atLeast=100",
     "check-all": "yarn check-prettier && yarn check-eslint && yarn check-typescript",
-    "postinstall": "husky install && node scripts/copy-sqlite-bin && electron-rebuild -o -w better-sqlite3",
+    "postinstall": "husky install && ts-node scripts/copySqliteBin && electron-rebuild -o -w better-sqlite3",
     "start-storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "db:generate": "ts-node scripts/generateDbMigration.ts"
   },
   "dependencies": {
     "@babel/plugin-proposal-private-methods": "7.14.5",
@@ -218,6 +219,7 @@
     "storybook-css-modules-preset": "1.1.1",
     "style-loader": "1.2.1",
     "timezone-mock": "1.1.4",
+    "ts-node": "10.2.1",
     "type-coverage": "2.17.0",
     "typescript": "4.3.4",
     "url-loader": "4.1.1",

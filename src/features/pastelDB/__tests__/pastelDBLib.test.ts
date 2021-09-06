@@ -1,24 +1,6 @@
 import { Database } from 'better-sqlite3'
 
-import {
-  insertBlockinfoQuery,
-  insertBlocksubsidyQuery,
-  insertChaintipsQuery,
-  insertListaddressesQuery,
-  insertListunspentQuery,
-  insertMempoolinfoQuery,
-  insertMininginfoQuery,
-  insertNettotalsQuery,
-  insertNetworkinfoQuery,
-  insertRawmempoolinfoQuery,
-  insertRawtransactionQuery,
-  insertStatisticinfoQuery,
-  insertTotalbalanceQuery,
-  insertTransactionTableQuery,
-  insertTxoutsetinfoQuery,
-  insertWalletinfoQuery,
-  selectAllQuery,
-} from '../constants'
+import { selectAllQuery } from '../constants'
 
 import * as pastelDBLib from '../pastelDBLib'
 
@@ -33,8 +15,7 @@ import { rawMemPoolFactory } from '../blockchain/rawMemPool.factory'
 import { miningInfoFactory } from '../mining/miningInfo.factory'
 import { blockChainInfoFactory } from '../blockchain/blockChainInfo.factory'
 import { blockInfoFactory } from '../blockchain/blockInfo.factory'
-import { rawTransactionsFactory } from '../rawTransactions/rawTransactions.factory'
-import { transactionTableFactory } from '../wallet/transactionTable.factory'
+import { transactionTblFactory } from '../wallet/transactionTbl.factory'
 import { txOutSetInfoFactory } from '../blockchain/txOutSetInfo.factory'
 import { chainTipsFactory } from '../blockchain/chainTips.factory'
 import { blockSubsidyFactory } from '../mining/blockSubsidy.factory'
@@ -44,6 +25,23 @@ import { listUnspentFactory } from '../wallet/listUnspent.factory'
 import { totalBalanceFactory } from '../wallet/totalBalance.factory'
 import { listAddressFactory } from '../wallet/listAddress.factory'
 import { priceInfoFactory } from '../price/priceInfo.factory'
+import { insertStatisticInfo } from '../statistic/statisticInfo.repo'
+import { insertNetworkInfo } from '../network/networkInfo.repo'
+import { insertNetTotals } from '../network/netTotals.repo'
+import { insertMemPoolInfo } from '../blockchain/memPoolInfo.repo'
+import { insertRawMemPoolInfo } from '../blockchain/rawMemPoolInfo.repo'
+import { insertMiningInfo } from '../mining/miningInfo.repo'
+import { insertBlockInfo } from '../blockchain/blockInfo.repo'
+import { rawTransactionFactory } from '../rawTransaction/rawTransaction.factory'
+import { insertRawTransaction } from '../rawTransaction/rawTransaction.repo'
+import { insertTransactionTbl } from '../wallet/transactionTbl.repo'
+import { insertTxOutSentInfo } from '../blockchain/txOutSetInfo.repo'
+import { insertChainTips } from '../blockchain/chainTips.repo'
+import { insertWalletInfo } from '../wallet/walletInfo.repo'
+import { insertBlockSubsidy } from '../mining/blockSubsidy.repo'
+import { insertListUnspent } from '../wallet/listUnspent.repo'
+import { insertTotalBalance } from '../wallet/totalBalance.repo'
+import { insertListAddress } from '../wallet/listAddress.repo'
 
 describe('managePastelDatabase', () => {
   let db: Database
@@ -59,117 +57,117 @@ describe('managePastelDatabase', () => {
 
   test('the data should be added correctly to staticinfo table', async () => {
     const values = statisticInfoFactory.build()
-    db.prepare(insertStatisticinfoQuery).run(values)
+    insertStatisticInfo(db, values)
 
-    const result = getDataFromDB('statisticinfo')
+    const result = getDataFromDB('statisticInfo')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to networkinfo table', async () => {
     const values = networkInfoFactory.build()
-    db.prepare(insertNetworkinfoQuery).run(values)
+    insertNetworkInfo(db, values)
 
-    const result = getDataFromDB('networkinfo')
+    const result = getDataFromDB('networkInfo')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to nettotals table', async () => {
     const values = netTotalsFactory.build()
-    db.prepare(insertNettotalsQuery).run(values)
+    insertNetTotals(db, values)
 
-    const result = getDataFromDB('nettotals')
+    const result = getDataFromDB('netTotals')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to mempoolinfo table', async () => {
     const values = memPoolInfoFactory.build()
-    db.prepare(insertMempoolinfoQuery).run(values)
+    insertMemPoolInfo(db, values)
 
-    const result = getDataFromDB('mempoolinfo')
+    const result = getDataFromDB('memPoolInfo')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to rawmempoolinfo table', async () => {
     const values = rawMemPoolFactory.build()
-    db.prepare(insertRawmempoolinfoQuery).run(values)
+    insertRawMemPoolInfo(db, values)
 
-    const result = getDataFromDB('rawmempoolinfo')
+    const result = getDataFromDB('rawMempoolInfo')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to mininginfo table', async () => {
     const values = miningInfoFactory.build()
-    db.prepare(insertMininginfoQuery).run(values)
+    insertMiningInfo(db, values)
 
-    const result = getDataFromDB('mininginfo')
+    const result = getDataFromDB('miningInfo')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to blockinfo table', async () => {
     const values = blockInfoFactory.build()
-    db.prepare(insertBlockinfoQuery).run(values)
+    insertBlockInfo(db, values)
 
-    const result = getDataFromDB('blockinfo')
+    const result = getDataFromDB('blockInfo')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to rawtransaction table', async () => {
-    const values = rawTransactionsFactory.build()
-    db.prepare(insertRawtransactionQuery).run(values)
+    const values = rawTransactionFactory.build()
+    insertRawTransaction(db, values)
 
-    const result = getDataFromDB('rawtransaction')
+    const result = getDataFromDB('rawTransaction')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to transaction table', async () => {
-    const values = transactionTableFactory.build()
-    db.prepare(insertTransactionTableQuery).run(values)
+    const values = transactionTblFactory.build()
+    insertTransactionTbl(db, values)
 
-    const result = getDataFromDB('transaction_tbl')
+    const result = getDataFromDB('transactionTbl')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to txoutsetinfo table', async () => {
     const values = txOutSetInfoFactory.build()
-    db.prepare(insertTxoutsetinfoQuery).run(values)
+    insertTxOutSentInfo(db, values)
 
-    const result = getDataFromDB('txoutsetinfo')
+    const result = getDataFromDB('txOutSetInfo')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to chaintips table', async () => {
     const values = chainTipsFactory.build()
-    db.prepare(insertChaintipsQuery).run(values)
+    insertChainTips(db, values)
 
-    const result = getDataFromDB('chaintips')
+    const result = getDataFromDB('chainTips')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to blocksubsidy table', async () => {
     const values = blockSubsidyFactory.build()
-    db.prepare(insertBlocksubsidyQuery).run(values)
+    insertBlockSubsidy(db, values)
 
-    const result = getDataFromDB('blocksubsidy')
+    const result = getDataFromDB('blockSubsidy')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to walletinfo table', async () => {
     const values = walletInfoFactory.build()
-    db.prepare(insertWalletinfoQuery).run(values)
+    insertWalletInfo(db, values)
 
-    const result = getDataFromDB('walletinfo')
+    const result = getDataFromDB('walletInfo')
 
     expect(result).toEqual([{ ...values }])
   })
@@ -182,7 +180,7 @@ describe('managePastelDatabase', () => {
       vjoinsplit: [],
     })
 
-    const result = getDataFromDB('listtransactions')
+    const result = getDataFromDB('listTransactions')
 
     expect(result).toEqual([
       {
@@ -197,27 +195,27 @@ describe('managePastelDatabase', () => {
 
   test('the data should be added correctly to listunspent table', async () => {
     const values = listUnspentFactory.build()
-    db.prepare(insertListunspentQuery).run(values)
+    insertListUnspent(db, values)
 
-    const result = getDataFromDB('listunspent')
+    const result = getDataFromDB('listUnspent')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to totalbalance table', async () => {
     const values = totalBalanceFactory.build()
-    db.prepare(insertTotalbalanceQuery).run(values)
+    insertTotalBalance(db, values)
 
-    const result = getDataFromDB('totalbalance')
+    const result = getDataFromDB('totalBalance')
 
     expect(result).toEqual([{ ...values }])
   })
 
   test('the data should be added correctly to listaddresses table', async () => {
     const values = listAddressFactory.build()
-    db.prepare(insertListaddressesQuery).run(values)
+    insertListAddress(db, values)
 
-    const result = getDataFromDB('listaddresses')
+    const result = getDataFromDB('listAddresses')
 
     expect(result).toEqual([{ ...values }])
   })
@@ -232,7 +230,7 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedRawmempoolInfo(
       db,
-      'rawmempoolinfo',
+      'rawMempoolInfo',
       existing,
     )
 
@@ -240,7 +238,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedRawmempoolInfo(
       db,
-      'rawmempoolinfo',
+      'rawMempoolInfo',
       {
         transactionid: '12345',
         time: 0,
@@ -269,14 +267,14 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedBlockchainInfo(
       db,
-      'blockchaininfo',
+      'blockChainInfo',
       existing,
     )
     expect(result).toEqual(false)
 
     const result1 = pastelDBLib.validateDuplicatedBlockchainInfo(
       db,
-      'blockchaininfo',
+      'blockChainInfo',
       {
         bestblockhash: 'best',
       },
@@ -301,13 +299,13 @@ describe('managePastelDatabase', () => {
 
     await blockInfoFactory.create(existing)
 
-    const result = pastelDBLib.validateDuplicatedBlockInfo(db, 'blockinfo', {
+    const result = pastelDBLib.validateDuplicatedBlockInfo(db, 'blockInfo', {
       hash: 'new',
     })
 
     expect(result).toEqual(true)
 
-    const result1 = pastelDBLib.validateDuplicatedBlockInfo(db, 'blockinfo', {
+    const result1 = pastelDBLib.validateDuplicatedBlockInfo(db, 'blockInfo', {
       hash: 'abcd12345',
     })
 
@@ -334,7 +332,7 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedBlocksubsidy(
       db,
-      'blocksubsidy',
+      'blockSubsidy',
       existing,
     )
 
@@ -342,7 +340,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedBlocksubsidy(
       db,
-      'blocksubsidy',
+      'blockSubsidy',
       {
         miner: 42,
         masternode: 42,
@@ -370,13 +368,13 @@ describe('managePastelDatabase', () => {
 
     await priceInfoFactory.create(existing)
 
-    const result = pastelDBLib.validateDuplicatedPriceInfo(db, 'pslprice', {
+    const result = pastelDBLib.validateDuplicatedPriceInfo(db, 'priceInfo', {
       priceUsd: 12345,
     })
 
     expect(result).toEqual(true)
 
-    const result1 = pastelDBLib.validateDuplicatedPriceInfo(db, 'pslprice', {
+    const result1 = pastelDBLib.validateDuplicatedPriceInfo(db, 'priceInfo', {
       priceUsd: 42,
     })
 
@@ -404,7 +402,7 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedMempoolInfo(
       db,
-      'mempoolinfo',
+      'memPoolInfo',
       {
         size: 42,
         bytes: 456,
@@ -416,7 +414,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedMempoolInfo(
       db,
-      'mempoolinfo',
+      'memPoolInfo',
       existing,
     )
 
@@ -442,7 +440,7 @@ describe('managePastelDatabase', () => {
 
     await miningInfoFactory.create(existing)
 
-    const result = pastelDBLib.validateDuplicatedMiningInfo(db, 'mininginfo', {
+    const result = pastelDBLib.validateDuplicatedMiningInfo(db, 'miningInfo', {
       blocks: 42,
     })
 
@@ -450,7 +448,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedMiningInfo(
       db,
-      'mininginfo',
+      'miningInfo',
       existing,
     )
 
@@ -475,7 +473,7 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedStatisticInfo(
       db,
-      'statisticinfo',
+      'statisticInfo',
       existing,
     )
 
@@ -483,7 +481,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedStatisticInfo(
       db,
-      'statisticinfo',
+      'statisticInfo',
       {
         solutions: 1,
         difficulty: 99,
@@ -514,7 +512,7 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedTotalbalance(
       db,
-      'totalbalance',
+      'totalBalance',
       existing,
     )
 
@@ -522,7 +520,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedTotalbalance(
       db,
-      'totalbalance',
+      'totalBalance',
       {
         transparent: 'trans',
         total: 'to',
@@ -553,7 +551,7 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedTxoutsetInfo(
       db,
-      'txoutsetinfo',
+      'txOutSetInfo',
       existing,
     )
 
@@ -561,7 +559,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedTxoutsetInfo(
       db,
-      'txoutsetinfo',
+      'txOutSetInfo',
       {
         height: 497,
         bestblock: 'best',
@@ -594,13 +592,13 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedWalletInfo(
       db,
-      'walletinfo',
+      'walletInfo',
       existing,
     )
 
     expect(result).toEqual(false)
 
-    const result1 = pastelDBLib.validateDuplicatedWalletInfo(db, 'walletinfo', {
+    const result1 = pastelDBLib.validateDuplicatedWalletInfo(db, 'walletInfo', {
       walletversion: 12,
       balance: 34,
       keypoololdest: 56,
@@ -623,12 +621,12 @@ describe('managePastelDatabase', () => {
     }
   })
 
-  test('getFilteredDataFromDBByPeriod should works correctly', async () => {
+  test('getFilteredDataFromDBByPeriod should work correctly', async () => {
     const blockInfo = await blockInfoFactory.create()
 
     const result = pastelDBLib.getFilteredDataFromDBByPeriod(
       db,
-      'blockinfo',
+      'blockInfo',
       '1d',
       'all',
     )
@@ -658,15 +656,15 @@ describe('managePastelDatabase', () => {
     const date = new Date()
     const now = date.getTime()
 
-    db.exec('DELETE FROM rawtransaction')
+    db.exec('DELETE FROM rawTransaction')
 
-    await rawTransactionsFactory.createList(2, {
+    await rawTransactionFactory.createList(2, {
       createdAt: now,
     })
 
     const result = pastelDBLib.getTransactionsDataFromDBByPeriod(
       db,
-      'rawtransaction',
+      'rawTransaction',
       'all',
     )
 

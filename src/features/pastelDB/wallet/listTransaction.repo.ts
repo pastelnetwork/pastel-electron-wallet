@@ -24,29 +24,6 @@ export type TDbListTransaction = {
   createdAt: number
 }
 
-export const createListTransactions = (db: Database): void => {
-  db.exec(`CREATE TABLE IF NOT EXISTS listtransactions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    account VARCHAR(255),
-    address VARCHAR(255),
-    category VARCHAR(255),
-    amount int,
-    vout int,
-    confirmations int,
-    blockhash VARCHAR(255),
-    blockindex int,
-    blocktime int,
-    expiryheight int,
-    txid VARCHAR(255),
-    walletconflicts text,
-    time int,
-    timereceived int,
-    vjoinsplit text,
-    size int,
-    createdAt int
-  )`)
-}
-
 export function insertListTransactions(
   db: Database,
   transactions: TTransaction[],
@@ -60,7 +37,7 @@ export function insertListTransactions(
   transaction()
 }
 
-const insertQuery = `INSERT INTO listtransactions(
+const insertQuery = `INSERT INTO listTransactions(
   account,
   address,
   category,
@@ -101,7 +78,7 @@ const insertQuery = `INSERT INTO listtransactions(
 export function insertListTransaction(
   db: Database,
   transaction: TTransaction,
-  stmt?: Statement,
+  stmt: Statement = db.prepare(insertQuery),
 ): void {
   const walletconflicts = JSON.stringify(transaction.walletconflicts)
   const vjoinsplit = JSON.stringify(transaction.vjoinsplit)
@@ -125,10 +102,10 @@ export function insertListTransaction(
     createdAt: Date.now(),
   }
 
-  ;(stmt || db.prepare(insertQuery)).run(values)
+  stmt.run(values)
 }
 
-const countQuery = 'SELECT count(*) FROM listtransactions'
+const countQuery = 'SELECT count(*) FROM listTransactions'
 
 export const getListTransactionsCount = (db: Database): number => {
   const result = db.prepare(countQuery).get()
@@ -143,7 +120,7 @@ export const getAddressesLastActivityTime = (
   const result = db
     .prepare(
       `
-      SELECT address, max(time) AS time FROM listtransactions
+      SELECT address, max(time) AS time FROM listTransactions
       WHERE address IS NOT NULL
       GROUP BY address
     `,

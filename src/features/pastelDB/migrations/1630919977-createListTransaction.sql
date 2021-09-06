@@ -1,0 +1,20 @@
+CREATE TABLE listTransactions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  account VARCHAR(255),
+  address VARCHAR(255),
+  category VARCHAR(255),
+  amount int,
+  vout int,
+  confirmations int,
+  blockhash int,
+  blockindex int,
+  blocktime int,
+  expiryheight int,
+  txid VARCHAR(255),
+  walletconflicts text,
+  time int,
+  timereceived int,
+  vjoinsplit text,
+  size int,
+  createdAt int
+)

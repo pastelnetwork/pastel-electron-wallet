@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PastelDB from '../../../pastelDB/database'
 import { EChartsLineChart } from '../chart/EChartsLineChart'
 import { getDatasFromDB } from '../../../pastelDB'
-import { pastelTableNames, TDbMiningInfo } from '../../../pastelDB/constants'
+import { pastelTableNames } from '../../../pastelDB/constants'
 import {
   periods,
   CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -12,6 +12,7 @@ import { TLineChartData } from '../../../pastelDB/type'
 import { TPeriod, transformHashrateInfo } from '../../utils/PastelStatisticsLib'
 
 import styles from '../../Common.module.css'
+import { TDbMiningInfo } from '../../../pastelDB/mining/miningInfo.repo'
 
 const redrawCycle = 6000
 

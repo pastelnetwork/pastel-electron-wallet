@@ -2,30 +2,10 @@ import { promiseTimeout } from './promises'
 import { EventEmitter } from 'events'
 import { TMainEvents } from '../../features/app/mainEvents'
 import { TRendererEvents } from '../../features/app/rendererEvents'
-import SQLite, { Database } from 'better-sqlite3'
-import {
-  createBlock,
-  createBlockChainInfo,
-  createBlocksubsidy,
-  createChaintips,
-  createListaddresses,
-  createListreceivedbyaddress,
-  createListunspent,
-  createMempoolinfo,
-  createMininginfo,
-  createNettotals,
-  createNetworkinfo,
-  createPastelPriceTable,
-  createRawmempoolinfo,
-  createRawtransaction,
-  createStatisticinfo,
-  createTotalbalance,
-  createTransaction,
-  createTxoutsetinfo,
-  createWalletinfo,
-} from '../../features/pastelDB/constants'
-import { createListTransactions } from '../../features/pastelDB/wallet/listTransaction.repo'
+import { Database } from 'better-sqlite3'
 import PastelDB from '../../features/pastelDB/database'
+import { createDatabase } from '../../features/pastelDB'
+import path from 'path'
 
 const createTestablePromise = () => {
   const resolveRef: { current?(): void } = {}
@@ -127,30 +107,14 @@ export const nextTickPromise = (): Promise<void> =>
 
 export const useTestDb = (callback: (db: Database) => void): void => {
   let db: Database
-  beforeAll(() => {
-    db = SQLite(':memory:')
-    PastelDB.getDatabaseInstance = () => Promise.resolve(db)
+  beforeAll(async () => {
+    const dbPromise = createDatabase(
+      ':memory:',
+      path.join(__dirname, '..', '..', 'features', 'pastelDB', 'migrations'),
+    )
+    PastelDB.getDatabaseInstance = () => dbPromise
 
-    db.exec(createStatisticinfo)
-    db.exec(createNetworkinfo)
-    db.exec(createNettotals)
-    db.exec(createMempoolinfo)
-    db.exec(createRawmempoolinfo)
-    db.exec(createMininginfo)
-    db.exec(createBlock)
-    db.exec(createBlockChainInfo)
-    db.exec(createRawtransaction)
-    db.exec(createTransaction)
-    db.exec(createTxoutsetinfo)
-    db.exec(createChaintips)
-    db.exec(createBlocksubsidy)
-    db.exec(createWalletinfo)
-    db.exec(createListreceivedbyaddress)
-    createListTransactions(db)
-    db.exec(createListunspent)
-    db.exec(createTotalbalance)
-    db.exec(createListaddresses)
-    db.exec(createPastelPriceTable)
+    const db = await dbPromise
     callback(db)
   })
 

@@ -3,15 +3,13 @@ import {
   TMultiLineChartData,
   TScatterChartData,
 } from '../../pastelDB/type'
-import {
-  TDbBlockInfo,
-  TDbMemPoolInfo,
-  TDbMiningInfo,
-  TDbNetTotals,
-  TDbPriceInfo,
-  TDbRawMemPoolInfo,
-  TDbStatisticInfo,
-} from '../../pastelDB/constants'
+import { TDbStatisticInfo } from '../../pastelDB/statistic/statisticInfo.repo'
+import { TDbPriceInfo } from '../../pastelDB/price/priceInfo.repo'
+import { TDbMiningInfo } from '../../pastelDB/mining/miningInfo.repo'
+import { TDbNetTotals } from '../../pastelDB/network/netTotals.repo'
+import { TDbMemPoolInfo } from '../../pastelDB/blockchain/memPoolInfo.repo'
+import { TDbRawMemPoolInfo } from '../../pastelDB/blockchain/rawMemPoolInfo.repo'
+import { TDbBlockInfo } from '../../pastelDB/blockchain/blockInfo.repo'
 
 export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
 

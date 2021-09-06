@@ -1,12 +1,12 @@
 import { Factory } from 'fishery'
-import { insertBlockinfoQuery, TDbBlockInfo } from '../constants'
 import PastelDB from '../database'
+import { insertBlockInfo, TDbBlockInfo } from './blockInfo.repo'
 
 export const blockInfoFactory = Factory.define<TDbBlockInfo>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      db.prepare(insertBlockinfoQuery).run(params)
+      insertBlockInfo(db, params)
       return params
     })
 
