@@ -11,7 +11,9 @@ module.exports = opts => {
     return bindings(opts)
   }
 
-  if (remote.app.isPackaged) {
+  if (process.env.JEST_WORKER_ID) {
+    return require('better-sqlite3/build/Release/better_sqlite3.for-jest.node')
+  } else if (remote.app.isPackaged) {
     // eslint-disable-next-line no-undef
     return __non_webpack_require__(
       path.join(process.resourcesPath, 'better_sqlite3.node'),

@@ -304,7 +304,7 @@ body,
 
 /* VERTICAL SCROLLBAR */
 .custom-scroll {
-  margin: 1.25rem auto;
+  margin: 1.25rem auto 0 auto;
 }
 .custom-scroll .simplebar-vertical {
   margin-top: 0;

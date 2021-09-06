@@ -20,6 +20,7 @@ export default function WalletAddresses(): JSX.Element {
     zAddressAmounts,
     allAddresses,
     activeTab,
+    totalBalances,
     toggleHideEmptyAddresses,
     selectedAmount,
   } = useWalletScreenContext()
@@ -72,7 +73,14 @@ export default function WalletAddresses(): JSX.Element {
 
           <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
             <div className='flex items-center text-h6-leading-20'>
-              <Toggle toggleHandler={toggleHideEmptyAddresses}>
+              <Toggle
+                toggleHandler={toggleHideEmptyAddresses}
+                selected={
+                  totalBalances.data && totalBalances.data.total > 0
+                    ? true
+                    : false
+                }
+              >
                 Hide empty addresses
                 <div className='ml-2'>
                   <Tooltip

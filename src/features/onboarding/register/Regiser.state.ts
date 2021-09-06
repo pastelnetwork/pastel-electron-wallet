@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 export enum Steps {
   Login = 1,
-  Backup,
   Payment,
   Fee,
+  Backup,
 }
 
 export enum BackupMethods {
@@ -25,8 +25,8 @@ export type TCentralizedExchangeEntity = {
 }
 
 const firstStep = Steps.Login
-const lastStep = Steps.Fee
-const stepsCount = Steps.Fee
+const lastStep = Steps.Backup
+const stepsCount = Steps.Backup
 
 export type TRegisterData = {
   username: string

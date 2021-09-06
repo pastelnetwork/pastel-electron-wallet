@@ -41,21 +41,15 @@ const mockCategories: TOption[] = [
 
 const mockStatus: TOption[] = [
   { value: 'all', label: 'All' },
-  { value: 'auctions', label: 'Auctions' },
-  { value: 'makeAnOffers', label: 'Make an Offers' },
-  { value: 'fixedPrice', label: 'Fixed Price' },
+  { value: 'auctions', label: 'Auction' },
+  { value: 'makeAnOffers', label: 'Make-an-Offer' },
+  { value: 'fixedPrice', label: 'Fixed-Price' },
 ]
 
 const mockTime: TOption[] = [
   { value: 'Future', label: 'Future' },
   { value: 'Present', label: 'Present' },
   { value: 'Past', label: 'Past' },
-]
-
-const mockRareness: TOption[] = [
-  { value: 'High', label: 'High' },
-  { value: 'Medium', label: 'Medium' },
-  { value: 'Low', label: 'Low' },
 ]
 
 const mockBreadcrumbs: TBreadcrumb[] = [
@@ -217,7 +211,6 @@ export default function Portfolio(): JSX.Element {
   const [category, setCategory] = useState<TOption | null>(mockCategories[0])
   const [type, settType] = useState<TOption | null>(mockStatus[0])
   const [time, setTime] = useState<TOption | null>(mockTime[0])
-  const [rareness, setRareness] = useState<TOption | null>(mockRareness[0])
 
   const filterOptions = [
     {
@@ -239,13 +232,6 @@ export default function Portfolio(): JSX.Element {
       selected: time,
       onChange: setTime,
       options: mockTime,
-      selectClassName: 'bg-white min-w-171px',
-    },
-    {
-      label: 'Rareness',
-      selected: rareness,
-      onChange: setRareness,
-      options: mockRareness,
       selectClassName: 'bg-white min-w-171px',
     },
   ]
@@ -294,7 +280,9 @@ export default function Portfolio(): JSX.Element {
   }, [selectedItem])
 
   const [range, setRange] = useState<[number, number]>([400, 700])
+  const [rarenessRange, setRarenessRange] = useState<[number, number]>([0, 1])
   const formatValue = (value: number) => `${value.toFixed(0)}k`
+  const formatRarenessValue = (value: number) => `${value.toFixed(1)}`
 
   return (
     <div className='flex flex-col w-full min-h-full'>
@@ -318,6 +306,19 @@ export default function Portfolio(): JSX.Element {
               ))}
             </div>
             <div className='flex items-center xl:justify-between mt-30px xl:mt-0 w-full xl:w-auto'>
+              <div className='flex h-full items-center justify-end max-w-278px mr-6'>
+                <p className='text-h6 pr-3 text-gray-2d'>Rareness</p>
+                <Slider
+                  min={0}
+                  max={1}
+                  hideLabel
+                  values={rarenessRange}
+                  onChange={setRarenessRange}
+                  formatValue={formatRarenessValue}
+                  formatTooltipValue={formatRarenessValue}
+                  step={0.1}
+                />
+              </div>
               <div className='flex items-center mr-6'>
                 <p className='pr-4 text-h5'>Sort by</p>
                 <div className='flex space-x-6'>
@@ -363,7 +364,7 @@ export default function Portfolio(): JSX.Element {
           </div>
         </div>
       ) : (
-        <div className='flex flex-grow flex-col items-center justify-center mt-30vh'>
+        <div className='flex flex-grow flex-col items-center justify-center my-40vh'>
           <span className='mb-1.5 text-gray-4a text-lg font-black'>
             You have not created any NFTs
           </span>

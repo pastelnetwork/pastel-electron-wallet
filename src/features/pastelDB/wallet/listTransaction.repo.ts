@@ -101,7 +101,7 @@ const insertQuery = `INSERT INTO listtransactions(
 export function insertListTransaction(
   db: Database,
   transaction: TTransaction,
-  stmt: Statement,
+  stmt?: Statement,
 ): void {
   const walletconflicts = JSON.stringify(transaction.walletconflicts)
   const vjoinsplit = JSON.stringify(transaction.vjoinsplit)

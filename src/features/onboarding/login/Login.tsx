@@ -89,7 +89,7 @@ const Login = (): JSX.Element => {
       <div className='flex justify-center text-gray-a0 font-medium text-h6 mt-30px'>
         <span className='mr-1'>Don't have an account?</span>
         <Link className='text-link' to={ROUTES.SIGN_UP}>
-          Sign Up
+          Register on Pastel
         </Link>
       </div>
     </div>

@@ -9,6 +9,8 @@ import { NextButton } from './Buttons'
 import { calcPasswordStrength } from 'common/utils/passwords'
 import Link from 'common/components/Link'
 import InputPassword from 'common/components/Inputs/InputPassword'
+import Tooltip from 'common/components/Tooltip'
+import { Info } from 'common/components/Icons'
 
 export type TStepRegisterProps = {
   username: string
@@ -88,7 +90,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
         <Input
           className='w-full'
           type='text'
-          label='User name'
+          label='Choose your username to use on the Pastel Network'
           value={props.username}
           onChange={onUsernameChanged}
           ref={null}
@@ -106,7 +108,20 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           <InputPassword
             className='w-full'
             type={props.showPassword ? 'text' : 'password'}
-            label='Password'
+            label={
+              <div className='flex items-center'>
+                <span className='mr-2'>Set your wallet password</span>
+                <Tooltip
+                  classnames='font-medium py-2'
+                  content='This password is to the secure container that stores your PSL coins and NFTs on your own machine and is never sent over the network. Please keep this password secure and be sure to backup your secret data in the next step.'
+                  type='top'
+                  width={260}
+                  vPosPercent={100}
+                >
+                  <Info size={17} />
+                </Tooltip>
+              </div>
+            }
             value={props.password}
             onChange={onPasswordChanged}
             hint={getPasswordHint()}
@@ -144,7 +159,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
       <div className='mt-7 flex justify-end'>
         <NextButton
           onClick={() => props.goToNextStep()}
-          text='Next step 2'
+          text='Next step'
           disabled={!nextActive}
         />
       </div>

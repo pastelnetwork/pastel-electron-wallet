@@ -23,6 +23,7 @@ export type TStepBackupMethodProps = {
   setBackupMethod(val: BackupMethods): void
   goToNextStep(): void
   goBack(): void
+  finish(): void
 }
 
 const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
@@ -281,8 +282,8 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
       <div className='mt-7 flex justify-between'>
         <PrevButton onClick={() => props.goBack()} />
         <NextButton
-          onClick={() => props.goToNextStep()}
-          text='Next step 3'
+          onClick={() => props.finish()}
+          text='Finish'
           disabled={!nextActive}
         />
       </div>

@@ -29,7 +29,7 @@ const Profile = (): JSX.Element => {
   const tabs = [
     { label: 'General', count: 1122 },
     {
-      label: 'Board',
+      label: 'Message Board',
       count: 12,
     },
     { label: 'My Security', count: 12 },
@@ -37,7 +37,7 @@ const Profile = (): JSX.Element => {
 
   const breadcrumbs: TBreadcrumb[] = [
     {
-      label: 'My account',
+      label: 'My Account',
       route: '#',
     },
     {

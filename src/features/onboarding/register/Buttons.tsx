@@ -7,29 +7,38 @@ export type TNextBtnProps = {
   onClick(): void
   text: string
   className?: string
+  showIcon?: boolean
 }
 
 export type TPrevBtnProps = {
   onClick(): void
 }
 
-export const NextButton = (props: TNextBtnProps): JSX.Element => {
+export const NextButton = ({
+  disabled,
+  onClick,
+  text,
+  className,
+  showIcon = true,
+}: TNextBtnProps): JSX.Element => {
   return (
     <button
       onClick={() => {
-        props.onClick()
+        onClick()
       }}
       className={cn(
         'flex items-center justify-center font-medium text-base rounded-2xl h-10 px-3 cursor-pointer',
-        !props.disabled
+        !disabled
           ? 'bg-blue-3f text-white hover:bg-button-hover active:bg-button-pressed'
           : 'bg-blue-9b text-white',
-        props.className ? props.className : '',
+        className ? className : '',
       )}
-      disabled={props.disabled}
+      disabled={disabled}
     >
-      {props.text}
-      <i className='text-sm inline-block ml-3 fas fa-chevron-right'></i>
+      {text}
+      {showIcon && (
+        <i className='text-sm inline-block ml-3 fas fa-chevron-right'></i>
+      )}
     </button>
   )
 }
