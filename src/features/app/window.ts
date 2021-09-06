@@ -33,6 +33,8 @@ export const createWindow = async (
       nodeIntegration: true,
       contextIsolation: false,
       webSecurity: false,
+      // enable remote module is needed for better-sqlite3 package
+      enableRemoteModule: true,
     },
   })
   browserWindow.current = w
@@ -41,7 +43,7 @@ export const createWindow = async (
 
   w.webContents.on('did-frame-finish-load', () => {
     // Open the DevTools.
-    if (!app.isPackaged) {
+    if (!app.isPackaged || process.env.DEBUG_PROD === 'true') {
       w.webContents.openDevTools()
     }
   })

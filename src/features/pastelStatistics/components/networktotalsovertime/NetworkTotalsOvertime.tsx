@@ -12,6 +12,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { TDbNetTotals } from '../../../pastelDB/network/netTotals.repo'
 
 const redrawCycle = 6000
 
@@ -33,9 +34,12 @@ const NetworkTotalsOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.nettotals)
+      const result = getDatasFromDB<TDbNetTotals>(
+        pasteldb,
+        pastelTableNames.nettotals,
+      )
       if (result.length) {
-        const transforms = transformNetTotals(result[0].values, period)
+        const transforms = transformNetTotals(result, period)
         setTransformLineChartData(transforms)
       }
     }

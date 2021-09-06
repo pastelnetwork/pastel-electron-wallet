@@ -45,7 +45,7 @@ const AverageBlockSizeOvertime = (): JSX.Element => {
         period,
       )
       if (result.length) {
-        const transforms = transformBlockSizeInfo(result[0].values)
+        const transforms = transformBlockSizeInfo(result)
         setTransformLineChartData(transforms)
       }
     }

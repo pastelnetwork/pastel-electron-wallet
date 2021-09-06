@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { Database } from 'sql.js'
+import { Database } from 'better-sqlite3'
 
 export type TAppContextValues = {
   db: Database

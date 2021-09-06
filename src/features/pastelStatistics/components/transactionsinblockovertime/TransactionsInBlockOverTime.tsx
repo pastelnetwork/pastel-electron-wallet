@@ -15,6 +15,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { TDbBlockInfo } from '../../../pastelDB/blockchain/blockInfo.repo'
 
 type TTransactionsInBlockOvertimeProps = {
   info: {
@@ -44,9 +45,12 @@ const TransactionsInBlockOvertime = (
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.blockinfo)
+      const result = getDatasFromDB<TDbBlockInfo>(
+        pasteldb,
+        pastelTableNames.blockinfo,
+      )
       if (result.length) {
-        const transforms = transformTransactionInBlock(result[0].values, period)
+        const transforms = transformTransactionInBlock(result, period)
         setTransformLineChartData(transforms)
       }
     }

@@ -12,6 +12,7 @@ import {
   periods,
 } from '../../common/constants'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { TDbPriceInfo } from '../../../pastelDB/price/priceInfo.repo'
 
 type TLineChartData = {
   dataX: string[]
@@ -40,9 +41,12 @@ const PriceOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.pslprice)
+      const result = getDatasFromDB<TDbPriceInfo>(
+        pasteldb,
+        pastelTableNames.pslprice,
+      )
       if (result.length) {
-        const transforms = transformPriceInfo(result[0].values, period)
+        const transforms = transformPriceInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

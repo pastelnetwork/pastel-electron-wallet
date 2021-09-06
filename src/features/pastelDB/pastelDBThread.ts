@@ -1,5 +1,5 @@
 import { TransactionRPC, rpc, transactionRPC } from '../../api/pastel-rpc'
-import { Database } from 'sql.js'
+import { Database } from 'better-sqlite3'
 import {
   TBlockChainInfoResponse,
   TBlockHashResponse,
@@ -24,25 +24,15 @@ import {
 import PastelDB from '../../features/pastelDB/database'
 import coinGeckoClient from '../pastelPrice/coingecko'
 import {
-  exportSqliteDB,
-  insertBlockChainInfo,
+  insertBlockChainInfoToDb,
   insertBlockInfoToDB,
-  insertBlocksubsidy,
-  insertChaintips,
-  insertListaddresses,
   insertListunspent,
-  insertMempoolInfoToDB,
   insertMiningInfoToDB,
-  insertNetTotalsToDB,
-  insertNetworkInfoToDB,
   insertPastelPrice,
   insertRawMempoolinfoToDB,
   insertRawtransaction,
-  insertStatisticDataToDB,
   insertTotalbalance,
   insertTransaction,
-  insertTxoutsetinfo,
-  insertWalletinfo,
 } from './pastelDBLib'
 import * as types from './type'
 import { getRpcConfig } from '../rpcConfig'
@@ -52,7 +42,16 @@ import { queryClient } from '../../common/utils/queryClient'
 import {
   getListTransactionsCount,
   insertListTransactions,
-} from './wallet/transactions.repo'
+} from './wallet/listTransaction.repo'
+import { insertStatisticInfo } from './statistic/statisticInfo.repo'
+import { insertNetworkInfo } from './network/networkInfo.repo'
+import { insertNetTotals } from './network/netTotals.repo'
+import { insertMemPoolInfo } from './blockchain/memPoolInfo.repo'
+import { insertTxOutSentInfo } from './blockchain/txOutSetInfo.repo'
+import { insertChainTips } from './blockchain/chainTips.repo'
+import { insertBlockSubsidy } from './mining/blockSubsidy.repo'
+import { insertWalletInfo } from './wallet/walletInfo.repo'
+import { insertListAddress } from './wallet/listAddress.repo'
 
 type fetchFuncConfig = {
   pastelDB: Database
@@ -85,11 +84,10 @@ export async function fetchStatisticInfo(
 ): Promise<void> {
   try {
     const results = await getStatisticInfo()
-    insertStatisticDataToDB(
-      props.pastelDB,
-      results.estimatedSolutions,
-      results.difficulty,
-    )
+    insertStatisticInfo(props.pastelDB, {
+      solutions: results.estimatedSolutions,
+      difficulty: results.difficulty,
+    })
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchStatisticInfo error: ${message}`)
   }
@@ -98,7 +96,7 @@ export async function fetchStatisticInfo(
 export async function fetchNetworkInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TNetworkInfoResponse>('getnetworkinfo', [])
-    insertNetworkInfoToDB(props.pastelDB, result)
+    insertNetworkInfo(props.pastelDB, result)
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchNetworkInfo error: ${message}`)
   }
@@ -107,7 +105,7 @@ export async function fetchNetworkInfo(props: fetchFuncConfig): Promise<void> {
 export async function fetchNettotals(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TNetTotalResponse>('getnettotals', [])
-    insertNetTotalsToDB(props.pastelDB, result)
+    insertNetTotals(props.pastelDB, result)
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchNettotals error: ${message}`)
   }
@@ -116,7 +114,7 @@ export async function fetchNettotals(props: fetchFuncConfig): Promise<void> {
 export async function fetchMempoolInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TMempoolinfoResponse>('getmempoolinfo', [])
-    insertMempoolInfoToDB(props.pastelDB, result)
+    insertMemPoolInfo(props.pastelDB, result)
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchMempoolInfo error: ${message}`)
   }
@@ -205,7 +203,7 @@ export async function fetchTransaction(props: fetchFuncConfig): Promise<void> {
 export async function fetchTxoutsetInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<types.TGettxoutsetinfo>('gettxoutsetinfo', [])
-    insertTxoutsetinfo(props.pastelDB, result)
+    insertTxOutSentInfo(props.pastelDB, result)
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchTxoutsetInfo error: ${message}`)
   }
@@ -216,7 +214,7 @@ export async function fetchChaintips(props: fetchFuncConfig): Promise<void> {
     const { result } = await rpc<TChainTipsResponse>('getchaintips', [])
     const chaintips = result
     for (let i = 0; i < chaintips.length; i++) {
-      insertChaintips(props.pastelDB, chaintips[i])
+      insertChainTips(props.pastelDB, chaintips[i])
     }
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchChaintips error: ${message}`)
@@ -226,7 +224,7 @@ export async function fetchChaintips(props: fetchFuncConfig): Promise<void> {
 export async function fetchBlocksubsidy(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TBlockSubsidyResponse>('getblocksubsidy', [])
-    insertBlocksubsidy(props.pastelDB, result)
+    insertBlockSubsidy(props.pastelDB, result)
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchBlocksubsidy error: ${message}`)
   }
@@ -235,13 +233,13 @@ export async function fetchBlocksubsidy(props: fetchFuncConfig): Promise<void> {
 export async function fetchWalletInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TWalletInfoResponse>('getwalletinfo', [])
-    insertWalletinfo(props.pastelDB, result)
+    insertWalletInfo(props.pastelDB, result)
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchWalletInfo error: ${message}`)
   }
 }
 
-const LIST_TRANSACTIONS_BATCH_SIZE = 100000 // will take around 65 MB by rough est.
+const LIST_TRANSACTIONS_BATCH_SIZE = 5000 // batch size should be small enough to not block interface
 export async function fetchListTransactions(db: Database): Promise<void> {
   try {
     const count = await getListTransactionsCount(db)
@@ -293,7 +291,7 @@ export async function fetchListaddresses(
       throw: true,
     })
     for (let i = 0; i < result.length; i++) {
-      insertListaddresses(props.pastelDB, result[i])
+      insertListAddress(props.pastelDB, { address: result[i] })
     }
   } catch ({ message }) {
     throw new Error(`pastelDBThread fetchTotalBalance error: ${message}`)
@@ -331,9 +329,11 @@ export async function fetchBlockChainInfo(
       'getblockchaininfo',
       [],
     )
-    insertBlockChainInfo(props.pastelDB, result)
-  } catch ({ message }) {
-    throw new Error(`pastelDBThread fetchBlockChainInfo error: ${message}`)
+    insertBlockChainInfoToDb(props.pastelDB, result)
+  } catch (error) {
+    throw new Error(
+      `pastelDBThread fetchBlockChainInfo error: ${error.message}`,
+    )
   }
 }
 
@@ -341,7 +341,7 @@ export async function PastelDBThread(): Promise<void> {
   PastelDB.setValid(false)
   const db = await PastelDB.getDatabaseInstance()
   const rpcConfig = getRpcConfig()
-  if (db && rpcConfig && rpcConfig.username !== '') {
+  if (db && rpcConfig?.username) {
     // fetch whole data from RPC and save to pastel DB.
     const pastelConfig: fetchFuncConfig = {
       pastelDB: db,
@@ -364,9 +364,4 @@ export async function PastelDBThread(): Promise<void> {
     PastelDB.setValid(true)
   }
   return
-}
-
-export async function saveSqliteDB(): Promise<void> {
-  const pastelDB = await PastelDB.getDatabaseInstance()
-  await exportSqliteDB(pastelDB)
 }

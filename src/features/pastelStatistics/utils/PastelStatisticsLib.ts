@@ -1,10 +1,15 @@
-import { SqlValue } from 'sql.js'
-
 import {
   TLineChartData,
   TMultiLineChartData,
   TScatterChartData,
 } from '../../pastelDB/type'
+import { TDbStatisticInfo } from '../../pastelDB/statistic/statisticInfo.repo'
+import { TDbPriceInfo } from '../../pastelDB/price/priceInfo.repo'
+import { TDbMiningInfo } from '../../pastelDB/mining/miningInfo.repo'
+import { TDbNetTotals } from '../../pastelDB/network/netTotals.repo'
+import { TDbMemPoolInfo } from '../../pastelDB/blockchain/memPoolInfo.repo'
+import { TDbRawMemPoolInfo } from '../../pastelDB/blockchain/rawMemPoolInfo.repo'
+import { TDbBlockInfo } from '../../pastelDB/blockchain/blockInfo.repo'
 
 export type TPeriod = '2h' | '2d' | '4d' | '30d' | '60d' | '180d' | '1y' | 'all'
 
@@ -41,7 +46,7 @@ export function getStartPoint(period: TPeriod): number {
 }
 
 export function transformDifficultyInfo(
-  difficulties: SqlValue[][],
+  difficulties: TDbStatisticInfo[],
   period: TPeriod,
 ): TLineChartData {
   const dataX: string[] = []
@@ -50,10 +55,10 @@ export function transformDifficultyInfo(
   const startDate = getStartPoint(period)
 
   for (let i = 0; i < difficulties.length; i++) {
-    if (difficulties[i][3] !== null) {
-      const createTime = Number(difficulties[i][3])
+    if (difficulties[i].createdAt !== null) {
+      const createTime = Number(difficulties[i].createdAt)
       if (createTime > startDate) {
-        dataY.push(Number(difficulties[i][2]))
+        dataY.push(Number(difficulties[i].difficulty))
         dataX.push(new Date(createTime).toLocaleString())
       }
     }
@@ -63,7 +68,7 @@ export function transformDifficultyInfo(
 }
 
 export function transformPriceInfo(
-  prices: SqlValue[][],
+  prices: TDbPriceInfo[],
   period: TPeriod,
 ): TMultiLineChartData {
   const dataX: string[] = []
@@ -73,9 +78,9 @@ export function transformPriceInfo(
   const startDate = getStartPoint(period)
 
   for (let i = 0; i < prices.length; i++) {
-    const createTime = Number(prices[i][2])
+    const createTime = Number(prices[i].createdAt)
     if (createTime > startDate) {
-      const usd = Number(prices[i][1])
+      const usd = Number(prices[i].priceUsd)
       const btc = (usd * 167.98) / 8336807
       dataY1.push(usd)
       dataY2.push(btc)
@@ -115,7 +120,7 @@ export const makeDownloadFileName = (
 }
 
 export function transformHashrateInfo(
-  hashrateInfo: SqlValue[][],
+  hashrateInfo: TDbMiningInfo[],
   period: TPeriod,
 ): TLineChartData {
   const dataX: string[] = []
@@ -124,10 +129,10 @@ export function transformHashrateInfo(
   const startDate = getStartPoint(period)
 
   for (let i = 0; i < hashrateInfo.length; i++) {
-    if (hashrateInfo[i][13] !== null) {
-      const createTime = Number(hashrateInfo[i][13])
+    if (hashrateInfo[i].createdAt !== null) {
+      const createTime = Number(hashrateInfo[i].createdAt)
       if (createTime > startDate) {
-        dataY.push(Number(hashrateInfo[i][8]) / 1000000)
+        dataY.push(Number(hashrateInfo[i].networkhashps) / 1000000)
         dataX.push(new Date(createTime).toLocaleString())
       }
     }
@@ -137,7 +142,7 @@ export function transformHashrateInfo(
 }
 
 export function transformNetTotals(
-  nettotals: SqlValue[][],
+  nettotals: TDbNetTotals[],
   period: TPeriod,
 ): TMultiLineChartData {
   const dataX: string[] = []
@@ -147,11 +152,11 @@ export function transformNetTotals(
   const startDate = getStartPoint(period)
 
   for (let i = 0; i < nettotals.length; i++) {
-    if (nettotals[i][3] !== null) {
-      const createTime = Number(nettotals[i][3])
+    if (nettotals[i].timemillis !== null) {
+      const createTime = Number(nettotals[i].timemillis)
       if (createTime > startDate) {
-        const recv = Number(nettotals[i][1])
-        const sent = Number(nettotals[i][2])
+        const recv = Number(nettotals[i].totalbytesrecv)
+        const sent = Number(nettotals[i].totalbytessent)
         dataY1.push(recv)
         dataY2.push(sent)
         dataX.push(new Date(createTime).toLocaleString())
@@ -163,7 +168,7 @@ export function transformNetTotals(
 }
 
 export function transformMempoolInfo(
-  mempoolInfo: SqlValue[][],
+  mempoolInfo: TDbMemPoolInfo[],
   period: TPeriod,
 ): TLineChartData {
   const dataX: string[] = []
@@ -172,10 +177,10 @@ export function transformMempoolInfo(
   const startDate = getStartPoint(period)
 
   for (let i = 0; i < mempoolInfo.length; i++) {
-    if (mempoolInfo[i][4] !== null && mempoolInfo[i][3] !== 0) {
-      const createTime = Number(mempoolInfo[i][4])
+    if (mempoolInfo[i].createdAt !== null && mempoolInfo[i].usage !== 0) {
+      const createTime = Number(mempoolInfo[i].createdAt)
       if (createTime > startDate) {
-        const bytes = Number(mempoolInfo[i][3]) / 1000
+        const bytes = Number(mempoolInfo[i].usage) / 1000
         dataY.push(bytes)
         dataX.push(new Date(createTime).toLocaleString())
       }
@@ -186,21 +191,21 @@ export function transformMempoolInfo(
 }
 
 export function transformBlockSizeInfo(
-  blocksizes: SqlValue[][],
+  blocksizes: { date: string; averageSize: number }[],
 ): TLineChartData {
   const dataX: string[] = []
   const dataY: number[] = []
 
   for (let i = 0; i < blocksizes.length; i++) {
-    dataY.push(Number(blocksizes[i][1]) / 1000)
-    dataX.push(String(blocksizes[i][0]))
+    dataY.push(Number(blocksizes[i].averageSize) / 1000)
+    dataX.push(String(blocksizes[i].date))
   }
 
   return { dataX, dataY }
 }
 
 export function transformTransactionFee(
-  transactionFees: SqlValue[][],
+  transactionFees: TDbRawMemPoolInfo[],
   period: TPeriod,
 ): TLineChartData {
   const dataX: string[] = []
@@ -209,10 +214,10 @@ export function transformTransactionFee(
   const startDate = getStartPoint(period)
 
   for (let i = 0; i < transactionFees.length; i++) {
-    if (transactionFees[i][9] !== null && transactionFees[i][3] !== 0) {
-      const createTime = Number(transactionFees[i][9])
+    if (transactionFees[i].createdAt !== null && transactionFees[i].fee !== 0) {
+      const createTime = Number(transactionFees[i].createdAt)
       if (createTime > startDate) {
-        dataY.push(Number(transactionFees[i][3]))
+        dataY.push(Number(transactionFees[i].fee))
         dataX.push(new Date(createTime).toLocaleString())
       }
     }
@@ -221,22 +226,22 @@ export function transformTransactionFee(
 }
 
 export function transformTransactionPerSecond(
-  blockinfos: SqlValue[][],
+  blockinfos: { date: string; count: number }[],
 ): TLineChartData {
   const dataY: number[] = []
   const dataX: string[] = []
 
   for (let i = 0; i < blockinfos.length; i++) {
-    if (blockinfos[i][1]) {
-      dataY.push(Number(blockinfos[i][1]) / (24 * 3600))
-      dataX.push(String(blockinfos[i][0]))
+    if (blockinfos[i].count) {
+      dataY.push(Number(blockinfos[i].count) / (24 * 3600))
+      dataX.push(String(blockinfos[i].date))
     }
   }
   return { dataY, dataX }
 }
 
 export function transformTransactionInBlock(
-  blockinfos: SqlValue[][],
+  blockinfos: TDbBlockInfo[],
   period: TPeriod,
 ): TScatterChartData {
   const data: number[][] = []
@@ -245,11 +250,11 @@ export function transformTransactionInBlock(
   const startDate = getStartPoint(period)
 
   for (let i = 0; i < blockinfos.length; i++) {
-    if (blockinfos[i][8]) {
-      const createTime = Number(blockinfos[i][19])
+    if (blockinfos[i].tx) {
+      const createTime = Number(blockinfos[i].createdAt)
       if (createTime > startDate) {
-        const txs = JSON.parse(String(blockinfos[i][8]))
-        const xAxisValue = Number(blockinfos[i][4])
+        const txs = JSON.parse(String(blockinfos[i].tx))
+        const xAxisValue = Number(blockinfos[i].height)
         const yAxisValue = txs.length
         data.push([xAxisValue, yAxisValue])
         dataX.push(new Date(createTime).toLocaleString())

@@ -1,36 +1,20 @@
-import initSqlJs, { Database } from 'sql.js'
+import { Database } from 'better-sqlite3'
 
 import * as pastelRPC from '../../../api/pastel-rpc/rpc'
-import PastelDB from '../../../features/pastelDB/database'
 import coinGeckoClient from '../../pastelPrice/coingecko'
-import {
-  createBlock,
-  createBlocksubsidy,
-  createChaintips,
-  createListaddresses,
-  createListreceivedbyaddress,
-  createListunspent,
-  createMempoolinfo,
-  createMininginfo,
-  createNettotals,
-  createNetworkinfo,
-  createPastelPriceTable,
-  createRawmempoolinfo,
-  createRawtransaction,
-  createStatisticinfo,
-  createTotalbalance,
-  createTransaction,
-  createTxoutsetinfo,
-  createWalletinfo,
-} from '../constants'
 import * as pastelDBLib from '../pastelDBLib'
 import * as pastelDBThread from '../pastelDBThread'
 import { setRpcConfig } from '../../rpcConfig'
-import { createListTransactions } from '../wallet/transactions.repo'
-
-type Databaseinstance = {
-  db: Database
-}
+import { useTestDb } from '../../../common/utils/test-utils'
+import * as statisticInfoRepo from '../statistic/statisticInfo.repo'
+import * as networkInfoRepo from '../network/networkInfo.repo'
+import * as netTotalsRepo from '../network/netTotals.repo'
+import * as memPoolInfoRepo from '../blockchain/memPoolInfo.repo'
+import * as txOutSentInfoRepo from '../blockchain/txOutSetInfo.repo'
+import * as chainTipsRepo from '../blockchain/chainTips.repo'
+import * as blockSubsidyRepo from '../mining/blockSubsidy.repo'
+import * as walletInfoRepo from '../wallet/walletInfo.repo'
+import * as listAddressRepo from '../wallet/listAddress.repo'
 
 jest.mock('../../pastelPrice/coingecko', () => ({
   simple: {
@@ -39,45 +23,17 @@ jest.mock('../../pastelPrice/coingecko', () => ({
 }))
 
 describe('PastelDBThread', () => {
-  const loadDatabase = jest.fn(async () => {
-    const SQL = await initSqlJs()
-    const db: Database = new SQL.Database()
-    return db
-  })
-
-  const pastelDB: Databaseinstance = {
-    db: {} as Database,
-  }
-
   const mockConfig = {
     username: 'pastelwallet',
     password: 'kizvmu1tmvf',
     url: 'http://127.0.0.1:9932',
   }
 
+  let db: Database
+  useTestDb(value => (db = value))
+
   beforeAll(async () => {
     setRpcConfig(mockConfig)
-
-    pastelDB.db = await loadDatabase()
-    pastelDB.db.exec(createStatisticinfo)
-    pastelDB.db.exec(createNetworkinfo)
-    pastelDB.db.exec(createNettotals)
-    pastelDB.db.exec(createMempoolinfo)
-    pastelDB.db.exec(createRawmempoolinfo)
-    pastelDB.db.exec(createMininginfo)
-    pastelDB.db.exec(createBlock)
-    pastelDB.db.exec(createRawtransaction)
-    pastelDB.db.exec(createTransaction)
-    pastelDB.db.exec(createTxoutsetinfo)
-    pastelDB.db.exec(createChaintips)
-    pastelDB.db.exec(createBlocksubsidy)
-    pastelDB.db.exec(createWalletinfo)
-    pastelDB.db.exec(createListreceivedbyaddress)
-    createListTransactions(pastelDB.db)
-    pastelDB.db.exec(createListunspent)
-    pastelDB.db.exec(createTotalbalance)
-    pastelDB.db.exec(createListaddresses)
-    pastelDB.db.exec(createPastelPriceTable)
   })
 
   beforeEach(() => {
@@ -280,26 +236,27 @@ describe('PastelDBThread', () => {
 
   test('fetchStatisticInfo works', async () => {
     // Arrange
-    const rpcSpy = jest.spyOn(pastelRPC, 'rpc').mockResolvedValue({
-      result: { hashrate: 10000, difficult: 12345.234 },
-    })
+    const rpcSpy = jest.spyOn(pastelRPC, 'rpc').mockImplementation(method =>
+      Promise.resolve({
+        result: method === 'getnetworkhashps' ? 10000 : 12345.234,
+      }),
+    )
     const insertStatisticDataToDBSpy = jest
-      .spyOn(pastelDBLib, 'insertStatisticDataToDB')
+      .spyOn(statisticInfoRepo, 'insertStatisticInfo')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchStatisticInfo({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getnetworkhashps', [])
     expect(rpcSpy).toHaveBeenCalledWith('getdifficulty', [])
-    expect(insertStatisticDataToDBSpy).toHaveBeenCalledWith(
-      pastelDB.db,
-      { difficult: 12345.234, hashrate: 10000 },
-      { difficult: 12345.234, hashrate: 10000 },
-    )
+    expect(insertStatisticDataToDBSpy).toHaveBeenCalledWith(db, {
+      difficulty: 12345.234,
+      solutions: 10000,
+    })
   })
 
   test('fetchNetworkInfo works', async () => {
@@ -308,17 +265,17 @@ describe('PastelDBThread', () => {
       .spyOn(pastelRPC, 'rpc')
       .mockResolvedValue(mockNetworkInfo)
     const insertNetworkInfoToDBSpy = jest
-      .spyOn(pastelDBLib, 'insertNetworkInfoToDB')
+      .spyOn(networkInfoRepo, 'insertNetworkInfo')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchNetworkInfo({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getnetworkinfo', [])
-    expect(insertNetworkInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertNetworkInfoToDBSpy).toHaveBeenCalledWith(db, {
       connections: 0,
       createdAt: '',
       localaddresses: [{ address: '', port: 0, score: 0 }],
@@ -337,17 +294,17 @@ describe('PastelDBThread', () => {
     // Arrange
     const rpcSpy = jest.spyOn(pastelRPC, 'rpc').mockResolvedValue(mockNetTotals)
     const insertNetTotalsToDBSpy = jest
-      .spyOn(pastelDBLib, 'insertNetTotalsToDB')
+      .spyOn(netTotalsRepo, 'insertNetTotals')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchNettotals({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getnettotals', [])
-    expect(insertNetTotalsToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertNetTotalsToDBSpy).toHaveBeenCalledWith(db, {
       timemillis: 0,
       totalbytesrecv: 0,
       totalbytessent: 0,
@@ -360,17 +317,17 @@ describe('PastelDBThread', () => {
       .spyOn(pastelRPC, 'rpc')
       .mockResolvedValue(mockMempoolInfo)
     const insertMempoolInfoToDBSpy = jest
-      .spyOn(pastelDBLib, 'insertMempoolInfoToDB')
+      .spyOn(memPoolInfoRepo, 'insertMemPoolInfo')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchMempoolInfo({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getmempoolinfo', [])
-    expect(insertMempoolInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertMempoolInfoToDBSpy).toHaveBeenCalledWith(db, {
       bytes: 100,
       size: 0,
       usage: 10,
@@ -388,12 +345,12 @@ describe('PastelDBThread', () => {
 
     // Act
     await pastelDBThread.fetchMiningInfo({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getmininginfo', [])
-    expect(insertMiningInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertMiningInfoToDBSpy).toHaveBeenCalledWith(db, {
       blocks: 0,
       chain: 'mininginfo-chain',
       currentblocksize: 0,
@@ -422,12 +379,12 @@ describe('PastelDBThread', () => {
 
     // Act
     await pastelDBThread.fetchBlock({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getbestblockhash', [])
-    expect(insertBlockInfoToDBSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertBlockInfoToDBSpy).toHaveBeenCalledWith(db, {
       anchor: '',
       bits: '',
       chainwork: '',
@@ -455,17 +412,17 @@ describe('PastelDBThread', () => {
       .spyOn(pastelRPC, 'rpc')
       .mockResolvedValue(mockTxoutsetinfo)
     const insertTxoutsetinfoSpy = jest
-      .spyOn(pastelDBLib, 'insertTxoutsetinfo')
+      .spyOn(txOutSentInfoRepo, 'insertTxOutSentInfo')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchTxoutsetInfo({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('gettxoutsetinfo', [])
-    expect(insertTxoutsetinfoSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertTxoutsetinfoSpy).toHaveBeenCalledWith(db, {
       bestblock: 'best-block-123456',
       bytes_serialized: 0,
       hash_serialized: '',
@@ -480,17 +437,17 @@ describe('PastelDBThread', () => {
     // Arrange
     const rpcSpy = jest.spyOn(pastelRPC, 'rpc').mockResolvedValue(mockChaintips)
     const insertChaintipsSpy = jest
-      .spyOn(pastelDBLib, 'insertChaintips')
+      .spyOn(chainTipsRepo, 'insertChainTips')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchChaintips({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getchaintips', [])
-    expect(insertChaintipsSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertChaintipsSpy).toHaveBeenCalledWith(db, {
       branchlen: 0,
       hash: 'chain-tips-hash-1234578',
       height: 0,
@@ -504,17 +461,17 @@ describe('PastelDBThread', () => {
       .spyOn(pastelRPC, 'rpc')
       .mockResolvedValue(mockBlockSubSidy)
     const insertBlocksubsidySpy = jest
-      .spyOn(pastelDBLib, 'insertBlocksubsidy')
+      .spyOn(blockSubsidyRepo, 'insertBlockSubsidy')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchBlocksubsidy({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getblocksubsidy', [])
-    expect(insertBlocksubsidySpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertBlocksubsidySpy).toHaveBeenCalledWith(db, {
       governance: 0,
       masternode: 0,
       miner: 456789,
@@ -527,17 +484,17 @@ describe('PastelDBThread', () => {
       .spyOn(pastelRPC, 'rpc')
       .mockResolvedValue(mockWalletInfo)
     const insertWalletinfoSpy = jest
-      .spyOn(pastelDBLib, 'insertWalletinfo')
+      .spyOn(walletInfoRepo, 'insertWalletInfo')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchWalletInfo({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getwalletinfo', [])
-    expect(insertWalletinfoSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertWalletinfoSpy).toHaveBeenCalledWith(db, {
       balance: 0,
       immature_balance: 0,
       keypoololdest: 0,
@@ -561,12 +518,12 @@ describe('PastelDBThread', () => {
 
     // Act
     await pastelDBThread.fetchTotalBalance({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('z_gettotalbalance', [])
-    expect(insertTotalbalanceSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertTotalbalanceSpy).toHaveBeenCalledWith(db, {
       private: '',
       total: '',
       transparent: 'totalbalance-transparent',
@@ -579,17 +536,19 @@ describe('PastelDBThread', () => {
       .spyOn(pastelRPC, 'rpc')
       .mockResolvedValue(mockListAddresses)
     const insertListaddressesSpy = jest
-      .spyOn(pastelDBLib, 'insertListaddresses')
+      .spyOn(listAddressRepo, 'insertListAddress')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchListaddresses({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('z_listaddresses', [], { throw: true })
-    expect(insertListaddressesSpy).toHaveBeenCalledWith(pastelDB.db, 'address')
+    expect(insertListaddressesSpy).toHaveBeenCalledWith(db, {
+      address: 'address',
+    })
   })
 
   test('fetchBlockChainInfo works', async () => {
@@ -598,17 +557,17 @@ describe('PastelDBThread', () => {
       .spyOn(pastelRPC, 'rpc')
       .mockResolvedValue(mockBlockChainInfo)
     const insertBlockChainInfoSpy = jest
-      .spyOn(pastelDBLib, 'insertBlockChainInfo')
+      .spyOn(pastelDBLib, 'insertBlockChainInfoToDb')
       .mockImplementation()
 
     // Act
     await pastelDBThread.fetchBlockChainInfo({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
     expect(rpcSpy).toHaveBeenCalledWith('getblockchaininfo', [])
-    expect(insertBlockChainInfoSpy).toHaveBeenCalledWith(pastelDB.db, {
+    expect(insertBlockChainInfoSpy).toHaveBeenCalledWith(db, {
       bestblockhash: '1023655ase41252455',
       blocks: 60524,
       chain: '',
@@ -679,7 +638,7 @@ describe('PastelDBThread', () => {
 
     // Act
     await pastelDBThread.fetchPastelPrices({
-      pastelDB: pastelDB.db,
+      pastelDB: db,
     })
 
     // Assert
@@ -688,104 +647,5 @@ describe('PastelDBThread', () => {
       vs_currencies: ['usd'],
     })
     expect(insertPastelPriceSpy).toBeCalledTimes(1)
-  })
-
-  test('patelDBThread works', async () => {
-    // Arrange
-    const pastelDBSpy = jest
-      .spyOn(PastelDB, 'getDatabaseInstance')
-      .mockResolvedValue(pastelDB.db)
-    const fetchStatisticInfoSpy = jest
-      .spyOn(pastelDBThread, 'fetchStatisticInfo')
-      .mockResolvedValue()
-    const fetchNetworkInfo = jest
-      .spyOn(pastelDBThread, 'fetchNetworkInfo')
-      .mockResolvedValue()
-    const fetchNettotalsSpy = jest
-      .spyOn(pastelDBThread, 'fetchNettotals')
-      .mockResolvedValue()
-    const fetchMempoolInfoSpy = jest
-      .spyOn(pastelDBThread, 'fetchMempoolInfo')
-      .mockResolvedValue()
-    const fetchRawMempoolInfoSpy = jest
-      .spyOn(pastelDBThread, 'fetchRawMempoolInfo')
-      .mockResolvedValue()
-    const fetchMiningInfoSpy = jest
-      .spyOn(pastelDBThread, 'fetchMiningInfo')
-      .mockResolvedValue()
-    const fetchBlockSpy = jest
-      .spyOn(pastelDBThread, 'fetchBlock')
-      .mockResolvedValue()
-    const fetchRawtransactionSpy = jest
-      .spyOn(pastelDBThread, 'fetchRawtransaction')
-      .mockResolvedValue()
-    const fetchTransactionSpy = jest
-      .spyOn(pastelDBThread, 'fetchTransaction')
-      .mockResolvedValue()
-    const fetchTxoutsetInfoSpy = jest
-      .spyOn(pastelDBThread, 'fetchTxoutsetInfo')
-      .mockResolvedValue()
-    const fetchChaintipsSpy = jest
-      .spyOn(pastelDBThread, 'fetchChaintips')
-      .mockResolvedValue()
-    const fetchBlocksubsidySpy = jest
-      .spyOn(pastelDBThread, 'fetchBlocksubsidy')
-      .mockResolvedValue()
-    const fetchWalletInfoSpy = jest
-      .spyOn(pastelDBThread, 'fetchWalletInfo')
-      .mockResolvedValue()
-    const fetchListTransactionsSpy = jest
-      .spyOn(pastelDBThread, 'fetchListTransactions')
-      .mockResolvedValue()
-    const fetchListunspentSpy = jest
-      .spyOn(pastelDBThread, 'fetchListunspent')
-      .mockResolvedValue()
-    const fetchTotalbalanceSpy = jest
-      .spyOn(pastelDBThread, 'fetchTotalBalance')
-      .mockResolvedValue()
-    const fetchListaddressesSpy = jest
-      .spyOn(pastelDBThread, 'fetchListaddresses')
-      .mockResolvedValue()
-    const fetchBlockChainInfoSpy = jest
-      .spyOn(pastelDBThread, 'fetchBlockChainInfo')
-      .mockResolvedValue()
-    const fetchPastelPricesSpy = jest
-      .spyOn(pastelDBThread, 'fetchPastelPrices')
-      .mockResolvedValue()
-    const exportSqliteDBSpy = jest
-      .spyOn(pastelDBLib, 'exportSqliteDB')
-      .mockResolvedValue()
-
-    try {
-      // Act
-      await pastelDBThread.PastelDBThread()
-
-      // Assert
-      expect(pastelDBSpy).toHaveBeenCalled()
-      expect(fetchStatisticInfoSpy).toHaveBeenCalled()
-      expect(fetchNetworkInfo).toHaveBeenCalled()
-      expect(fetchNettotalsSpy).toHaveBeenCalled()
-      expect(fetchMempoolInfoSpy).toHaveBeenCalled()
-      expect(fetchRawMempoolInfoSpy).toHaveBeenCalled()
-      expect(fetchMiningInfoSpy).toHaveBeenCalled()
-      expect(fetchBlockSpy).toHaveBeenCalled()
-      expect(fetchRawtransactionSpy).toHaveBeenCalled()
-      expect(fetchTransactionSpy).toHaveBeenCalled()
-      expect(fetchTxoutsetInfoSpy).toHaveBeenCalled()
-      expect(fetchChaintipsSpy).toHaveBeenCalled()
-      expect(fetchBlocksubsidySpy).toHaveBeenCalled()
-      expect(fetchWalletInfoSpy).toHaveBeenCalled()
-      expect(fetchListTransactionsSpy).toHaveBeenCalled()
-      expect(fetchListunspentSpy).toHaveBeenCalled()
-      expect(fetchTotalbalanceSpy).toHaveBeenCalled()
-      expect(fetchListaddressesSpy).toHaveBeenCalled()
-      expect(fetchBlockChainInfoSpy).toHaveBeenCalled()
-      expect(fetchPastelPricesSpy).toHaveBeenCalled()
-      expect(exportSqliteDBSpy).toHaveBeenCalled()
-    } catch (e) {
-      expect(e.message).toEqual(
-        'pastelDBThread fetchRawMempoolInfo error: undefined',
-      )
-    }
   })
 })

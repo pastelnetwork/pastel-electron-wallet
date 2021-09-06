@@ -15,6 +15,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { TDbRawMemPoolInfo } from '../../../pastelDB/blockchain/rawMemPoolInfo.repo'
 
 const redrawCycle = 6000
 
@@ -35,9 +36,12 @@ const TransactionFeeOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.rawmempoolinfo)
+      const result = getDatasFromDB<TDbRawMemPoolInfo>(
+        pasteldb,
+        pastelTableNames.rawmempoolinfo,
+      )
       if (result.length) {
-        const transforms = transformTransactionFee(result[0].values, period)
+        const transforms = transformTransactionFee(result, period)
         setTransformLineChartData(transforms)
       }
     }

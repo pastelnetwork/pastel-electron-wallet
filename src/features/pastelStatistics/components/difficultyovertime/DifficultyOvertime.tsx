@@ -15,6 +15,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { TDbStatisticInfo } from '../../../pastelDB/statistic/statisticInfo.repo'
 
 const redrawCycle = 6000
 
@@ -35,9 +36,12 @@ const DifficultyOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.statisticinfo)
+      const result = getDatasFromDB<TDbStatisticInfo>(
+        pasteldb,
+        pastelTableNames.statisticinfo,
+      )
       if (result.length) {
-        const transforms = transformDifficultyInfo(result[0].values, period)
+        const transforms = transformDifficultyInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

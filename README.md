@@ -39,3 +39,17 @@ yarn start
 ```
 
 To contribute, please read [contribution guidelines for this project](docs/CONTRIBUTING.md).
+
+## Database
+
+App includes sqlite database, to make a change to database structure run:
+
+```
+yarn db:generate createTableName
+```
+
+This will create empty sql file prefixed with timestamp in src/features/pastelDB/migrations
+
+Migration files are applied automatically during the app start up process
+
+When you need to insert multiple records at once use transaction as [explained here](https://github.com/JoshuaWise/better-sqlite3/blob/master/docs/api.md#transactionfunction---function) because it's performed many times faster when using transaction

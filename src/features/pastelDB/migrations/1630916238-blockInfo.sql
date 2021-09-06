@@ -1,0 +1,22 @@
+CREATE TABLE IF NOT EXISTS blockInfo (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  hash VARCHAR(255),
+  confirmations int,
+  size int,
+  height int,
+  version int,
+  merkleroot VARCHAR(255),
+  finalsaplingroot VARCHAR(255),
+  tx text,
+  time int,
+  nonce VARCHAR(255),
+  solution VARCHAR(255),
+  bits VARCHAR(255),
+  difficulty float,
+  chainwork VARCHAR(255),
+  anchor VARCHAR(255),
+  valuePools text,
+  previousblockhash VARCHAR(255),
+  nextblockhash VARCHAR(255),
+  createdAt int
+)

@@ -5,30 +5,40 @@ const package = require('./package.json')
 function getExtraResource() {
   const platform = process.argv[3] === 'win32' ? 'win32' : os.platform()
 
+  const resources = [
+    './node_modules/better-sqlite3/build/Release/better_sqlite3.node',
+    './src/features/pastelDB/migrations',
+  ]
+
   switch (platform) {
     case 'darwin':
-      return [
+      resources.push(
         './static/bin/pastel-utility-darwin-amd64',
         './static/bin/pngquant-mac',
         './static/bin/mozjpeg-mac',
-      ]
+      )
+      break
     case 'linux':
-      return [
+      resources.push(
         './static/bin/pastel-utility-linux-amd64',
         './static/bin/pngquant-linux',
         './static/bin/mozjpeg-linux',
-      ]
+      )
+      break
     case 'win32':
-      return [
+      resources.push(
         './static/bin/pastel-utility-windows-amd64.exe',
         './static/bin/pngquant-win.exe',
         './static/bin/mozjpeg-win.exe',
-      ]
+      )
+      break
     default:
       throw new Error(
         'forge.config.js error: your OS is not supported. Supported OS are: darwin, linux, win32',
       )
   }
+
+  return resources
 }
 
 function getIcon() {

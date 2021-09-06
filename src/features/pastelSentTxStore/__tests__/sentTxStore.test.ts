@@ -24,7 +24,7 @@ const mockTransactions = [
     amount: 0,
     vout: 0,
     confirmations: 0,
-    blockhash: 0,
+    blockhash: '',
     blockindex: 0,
     blocktime: 0,
     expiryheight: 0,

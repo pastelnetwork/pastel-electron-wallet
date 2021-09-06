@@ -41,7 +41,7 @@ const TransactionsPerSecondOvertime = (): JSX.Element => {
         period,
       )
       if (result.length) {
-        const transforms = transformTransactionPerSecond(result[0].values)
+        const transforms = transformTransactionPerSecond(result)
         setTransformLineChartData(transforms)
       }
     }

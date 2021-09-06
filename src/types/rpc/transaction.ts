@@ -45,7 +45,7 @@ type TTransaction = TBaseTransaction &
     category: string
     vout: number
     confirmations: number
-    blockhash: number
+    blockhash: string
     blockindex: number
     blocktime: number
     expiryheight: number
@@ -55,7 +55,7 @@ type TTransaction = TBaseTransaction &
     timereceived: number
     vjoinsplit: TVJoinsplit[]
     size: number
-    lastblock: string | null
+    lastblock?: string | null
     fee?: number
     type?: string
     detailedTxns?: TDetailedTxns[]

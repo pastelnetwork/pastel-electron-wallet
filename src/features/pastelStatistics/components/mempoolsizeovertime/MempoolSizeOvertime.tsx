@@ -12,6 +12,7 @@ import {
   CHART_DEFAULT_PERIOD,
   periods,
 } from '../../common/constants'
+import { TDbMemPoolInfo } from '../../../pastelDB/blockchain/memPoolInfo.repo'
 
 const redrawCycle = 6000
 
@@ -32,9 +33,12 @@ const MempoolSizeOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.mempoolinfo)
+      const result = getDatasFromDB<TDbMemPoolInfo>(
+        pasteldb,
+        pastelTableNames.mempoolinfo,
+      )
       if (result.length) {
-        const transforms = transformMempoolInfo(result[0].values, period)
+        const transforms = transformMempoolInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

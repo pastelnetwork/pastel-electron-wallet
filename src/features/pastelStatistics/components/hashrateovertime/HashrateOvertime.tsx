@@ -12,6 +12,7 @@ import { TLineChartData } from '../../../pastelDB/type'
 import { TPeriod, transformHashrateInfo } from '../../utils/PastelStatisticsLib'
 
 import styles from '../../Common.module.css'
+import { TDbMiningInfo } from '../../../pastelDB/mining/miningInfo.repo'
 
 const redrawCycle = 6000
 
@@ -32,9 +33,12 @@ const HashrateOvertime = (): JSX.Element => {
   useEffect(() => {
     const loadLineChartData = async () => {
       const pasteldb = await PastelDB.getDatabaseInstance()
-      const result = getDatasFromDB(pasteldb, pastelTableNames.mininginfo)
+      const result = getDatasFromDB<TDbMiningInfo>(
+        pasteldb,
+        pastelTableNames.mininginfo,
+      )
       if (result.length) {
-        const transforms = transformHashrateInfo(result[0].values, period)
+        const transforms = transformHashrateInfo(result, period)
         setTransformLineChartData(transforms)
       }
     }

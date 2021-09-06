@@ -4,10 +4,11 @@ import { Route, Switch } from 'react-router-dom'
 import * as ROUTES from '../utils/constants/routes'
 import LoadingScreen from 'features/loading'
 import history from '../utils/history'
-import { Database } from 'sql.js'
+import { Database } from 'better-sqlite3'
 import PastelDB from '../../features/pastelDB/database'
 import { AppContext } from '../../features/app/AppContext'
 import { pageRoutes } from './index'
+import { useAppSelector } from '../../redux/hooks'
 
 type TRouteType = {
   id: string
@@ -36,10 +37,13 @@ const childRoutes = (routes: Array<TRouteType>) =>
 
 const Routes = (): JSX.Element => {
   const [db, setDb] = useState<Database>()
+  const sqliteFilePath = useAppSelector(state => state.appInfo.sqliteFilePath)
 
   useEffect(() => {
-    PastelDB.getDatabaseInstance().then(setDb)
-  }, [])
+    if (sqliteFilePath) {
+      PastelDB.getDatabaseInstance().then(setDb)
+    }
+  }, [sqliteFilePath])
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>

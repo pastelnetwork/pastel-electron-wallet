@@ -71,6 +71,7 @@ describe('rendererSetup', () => {
       debugLogPath: 'path',
       pastelWalletDirPath: 'path',
       sqliteFilePath: 'path',
+      migrationsPath: 'path',
     }
     await emitRendererEvent('setAppInfo', info)
 
@@ -139,7 +140,7 @@ describe('rendererSetup', () => {
 
       rendererSetup()
 
-      asMock(PastelDB.prepareToQuit).mockRejectedValueOnce(new Error())
+      asMock(PastelDB.waitTillValid).mockRejectedValueOnce(new Error())
       await emitRendererEvent('prepareToQuit', null)
 
       expect(RPC.doRPC).toBeCalledWith('stop', [], rpcConfig)

@@ -1,109 +1,96 @@
 import * as pastelStatisticsLib from '../utils/PastelStatisticsLib'
 import timezone_mock from 'timezone-mock'
+import { statisticInfoFactory } from '../../pastelDB/statistic/statisticInfo.factory'
+import { priceInfoFactory } from '../../pastelDB/price/priceInfo.factory'
+import { miningInfoFactory } from '../../pastelDB/mining/miningInfo.factory'
+import { netTotalsFactory } from '../../pastelDB/network/netTotals.factory'
+import { memPoolInfoFactory } from '../../pastelDB/blockchain/memPoolInfo.factory'
+import { blockInfoFactory } from '../../pastelDB/blockchain/blockInfo.factory'
+import { rawMemPoolFactory } from '../../pastelDB/blockchain/rawMemPool.factory'
 
 describe('managePastelDatabase', () => {
   const mockTime = 1621525333257
+
   const mockDifficulties = [
-    [1, 3556559, 67782.8577019893, 1621518133277],
-    [2, 3556559, 67782.8577019893, 1621518133357],
+    statisticInfoFactory.build({
+      difficulty: 67782.8577019893,
+      createdAt: 1621518133277,
+    }),
+    statisticInfoFactory.build({
+      difficulty: 67782.8577019893,
+      createdAt: 1621518133357,
+    }),
   ]
+
   const mockPslPrices = [
-    [1, 0.00539335, 1621518133277],
-    [2, 0.00539707, 1621518133357],
+    priceInfoFactory.build({
+      priceUsd: 0.00539335,
+      createdAt: 1621518133277,
+    }),
+    priceInfoFactory.build({
+      priceUsd: 0.00539707,
+      createdAt: 1621518133357,
+    }),
   ]
+
   const mockHashrates = [
-    [
-      1,
-      67001,
-      0,
-      0,
-      1.0,
-      '',
-      -1,
-      0,
-      2696909,
-      2696909,
-      0,
-      0,
-      'main',
-      1621518133277,
-    ],
-    [
-      2,
-      67002,
-      0,
-      0,
-      1.0,
-      '',
-      -1,
-      0,
-      2696909,
-      2696909,
-      0,
-      0,
-      'main',
-      1621518133357,
-    ],
+    miningInfoFactory.build({
+      networkhashps: 2696909,
+      createdAt: 1621518133277,
+    }),
+    miningInfoFactory.build({
+      networkhashps: 2696909,
+      createdAt: 1621518133357,
+    }),
   ]
+
   const mockNetTotals = [
-    [1, 123434, 21296, 1621518133277],
-    [2, 147102, 27015, 1621518133357],
+    netTotalsFactory.build({
+      totalbytesrecv: 123434,
+      totalbytessent: 21296,
+      timemillis: 1621518133277,
+    }),
+    netTotalsFactory.build({
+      totalbytesrecv: 147102,
+      totalbytessent: 27015,
+      timemillis: 1621518133357,
+    }),
   ]
+
   const mockMempoolInfos = [
-    [1, 1, 492, 1344, 1621518133277],
-    [2, 3, 816, 1560, 1621518133357],
+    memPoolInfoFactory.build({
+      usage: 1344,
+      createdAt: 1621518133277,
+    }),
+    memPoolInfoFactory.build({
+      usage: 1560,
+      createdAt: 1621518133357,
+    }),
   ]
 
   const mockBlockSizes = [
-    [1, 1621518133277],
-    [2, 1621518133357],
+    { date: '1', averageSize: 1621518133277 },
+    { date: '2', averageSize: 1621518133357 },
   ]
 
   const mockTransactionFees = [
-    [1, 'txid1', 1, 0.0539, 0, 0, 0, 0, '', 1621518133277],
-    [2, 'txid2', 2, 0.0705, 0, 0, 0, 0, '', 1621518133357],
+    rawMemPoolFactory.build({
+      fee: 0.0539,
+      createdAt: 1621518133277,
+    }),
+    rawMemPoolFactory.build({
+      fee: 0.0705,
+      createdAt: 1621518133357,
+    }),
   ]
+
   const mockTransactionsInBlock = [
-    [
-      1,
-      '1',
-      0,
-      0,
-      1.0,
-      '',
-      '["tx1", "tx2"]',
-      1621518133277,
-      '',
-      '',
-      '',
-      1.0,
-      '',
-      '',
-      '',
-      '',
-      '',
-      1621518133277,
-    ],
-    [
-      2,
-      '2',
-      0,
-      0,
-      1.0,
-      '',
-      '["tx1", "tx2"]',
-      1621518133357,
-      '',
-      '',
-      '',
-      1.0,
-      '',
-      '',
-      '',
-      '',
-      '',
-      1621518133357,
-    ],
+    blockInfoFactory.build({
+      createdAt: mockTime,
+    }),
+    blockInfoFactory.build({
+      createdAt: mockTime,
+    }),
   ]
 
   test('getStartPoint function works correctly', async () => {
@@ -225,15 +212,8 @@ describe('managePastelDatabase', () => {
   })
 
   test('transformBlockSizeInfo function works correctly', async () => {
-    // Arrange
-    timezone_mock.register('US/Pacific')
-    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
-
-    // Act
     const result = pastelStatisticsLib.transformBlockSizeInfo(mockBlockSizes)
 
-    //Assert
-    expect(dateSpy).toHaveBeenCalled()
     expect(result).toEqual({
       dataX: ['1', '2'],
       dataY: [1621518133.277, 1621518133.357],
@@ -243,7 +223,6 @@ describe('managePastelDatabase', () => {
   test('transformTransactionInBlock function works correctly', async () => {
     // Arrange
     timezone_mock.register('US/Pacific')
-    const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
 
     // Act
     const result = pastelStatisticsLib.transformTransactionInBlock(
@@ -252,10 +231,15 @@ describe('managePastelDatabase', () => {
     )
 
     //Assert
-    expect(dateSpy).toHaveBeenCalled()
     expect(result).toEqual({
-      data: [],
-      dataX: [],
+      data: [
+        [1, 0],
+        [1, 0],
+      ],
+      dataX: [
+        '2021-05-20T15:42:13.257Z UTC (MockDate: GMT-0700)',
+        '2021-05-20T15:42:13.257Z UTC (MockDate: GMT-0700)',
+      ],
     })
   })
 

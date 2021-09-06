@@ -1,6 +1,6 @@
-import { Database } from 'sql.js'
+import { Database } from 'better-sqlite3'
 
-import { createDatabase, exportSqliteDB } from './pastelDBLib'
+import { createDatabase } from './pastelDBLib'
 
 class PastelDB {
   private static database: Database | null
@@ -28,12 +28,6 @@ class PastelDB {
     }
 
     return new Promise(resolve => this.onValidCallbacks.push(resolve))
-  }
-  static async prepareToQuit(): Promise<void> {
-    if (this.database) {
-      await this.waitTillValid()
-      await exportSqliteDB(this.database)
-    }
   }
   private static async setDatabase() {
     if (!this.database) {

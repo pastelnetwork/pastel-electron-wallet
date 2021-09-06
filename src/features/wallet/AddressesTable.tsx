@@ -122,12 +122,12 @@ export default function AddressesTable({
       key: 'amount',
       name: 'Balance',
       colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
-      custom: (amount: number) =>
+      custom: (amount?: number) =>
         isLoadingAddresses || isLoadingAmounts ? (
           loadingCell
         ) : (
           <div className='text-gray-71 text-h5-medium'>
-            {formatAbbreviatedNumber(parseFloat(amount.toString()), 2)}
+            {formatAbbreviatedNumber(amount || 0, 2)}
           </div>
         ),
     },

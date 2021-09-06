@@ -59,6 +59,10 @@ export const pastelWalletDirPath = getConfigPath('pastelwallet')
 
 export const sqliteFilePath = getConfigPath('pasteldb.sqlite')
 
+export const migrationsPath = app.isPackaged
+  ? path.join(process.resourcesPath, 'migrations')
+  : path.join(app.getAppPath(), 'src', 'features', 'pastelDB', 'migrations')
+
 export const pngquantBinPath = getBinPath({
   darwin: 'pngquant-mac',
   linux: 'pngquant-linux',
