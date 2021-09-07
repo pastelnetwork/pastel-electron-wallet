@@ -104,7 +104,7 @@ export const createDatabase = async (
       path.join(migrationsPath, file),
       'utf-8',
     )
-    db.prepare(migrationContent).run()
+    db.exec(migrationContent)
     db.prepare('INSERT INTO migrations (version) VALUES ($version)').run({
       version,
     })

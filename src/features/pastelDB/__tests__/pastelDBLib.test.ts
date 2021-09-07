@@ -4,7 +4,7 @@ import { selectAllQuery } from '../constants'
 
 import * as pastelDBLib from '../pastelDBLib'
 
-import { insertListTransaction } from '../wallet/listTransaction.repo'
+import { insertTransaction } from '../wallet/transactions.repo'
 import dayjs from 'dayjs'
 import { statisticInfoFactory } from '../statistic/statisticInfo.factory'
 import { useTestDb } from '../../../common/utils/test-utils'
@@ -20,7 +20,7 @@ import { txOutSetInfoFactory } from '../blockchain/txOutSetInfo.factory'
 import { chainTipsFactory } from '../blockchain/chainTips.factory'
 import { blockSubsidyFactory } from '../mining/blockSubsidy.factory'
 import { walletInfoFactory } from '../wallet/walletInfo.factory'
-import { listTransactionFactory } from '../wallet/listTransaction.factory'
+import { transactionsFactory } from '../wallet/transactions.factory'
 import { listUnspentFactory } from '../wallet/listUnspent.factory'
 import { totalBalanceFactory } from '../wallet/totalBalance.factory'
 import { listAddressFactory } from '../wallet/listAddress.factory'
@@ -173,8 +173,8 @@ describe('managePastelDatabase', () => {
   })
 
   test('the data should be added correctly to listtransactions table', async () => {
-    const values = listTransactionFactory.build()
-    insertListTransaction(db, {
+    const values = transactionsFactory.build()
+    insertTransaction(db, {
       ...values,
       walletconflicts: [],
       vjoinsplit: [],

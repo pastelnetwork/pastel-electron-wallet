@@ -1,15 +1,12 @@
 import { Factory } from 'fishery'
 import PastelDB from '../database'
-import {
-  insertListTransaction,
-  TDbListTransaction,
-} from './listTransaction.repo'
+import { insertTransaction, TDbTransaction } from './transactions.repo'
 
-export const listTransactionFactory = Factory.define<TDbListTransaction>(
+export const transactionsFactory = Factory.define<TDbTransaction>(
   ({ sequence, onCreate }) => {
     onCreate(async params => {
       const db = await PastelDB.getDatabaseInstance()
-      insertListTransaction(db, {
+      insertTransaction(db, {
         ...params,
         walletconflicts: params.walletconflicts
           ? JSON.parse(params.walletconflicts)
@@ -26,6 +23,7 @@ export const listTransactionFactory = Factory.define<TDbListTransaction>(
       category: '',
       amount: 0,
       vout: 0,
+      fee: 0,
       confirmations: 0,
       blockhash: '',
       blockindex: 0,

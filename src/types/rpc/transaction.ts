@@ -179,20 +179,22 @@ type TSinceBlockTransaction = {
   account: string
   address: string
   category: string
-  status: string
   amount: number
-  amountZat: number
   vout: number
   fee: number
   confirmations: number
-  blockhash: number
+  blockhash: string
   blockindex: number
   blocktime: number
+  expiryheight: number
   txid: string
+  walletconflicts: string[]
   time: number
   timereceived: number
-  comment: string
-  to: string
+  vjoinsplit: TVJoinsplit[]
+  size: number
+  comment?: string
+  to?: string
 }
 
 type TTxoutResponse = TResponse<TTxout>

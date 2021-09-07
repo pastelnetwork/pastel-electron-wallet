@@ -12,6 +12,7 @@ import {
   TVin,
   TZListReceivedByAddressResponse,
   TZListReceivedByAddress,
+  TListSinceBlockResponse,
 } from '../../types/rpc'
 import { mapTxnsResult, parseMemo, sortTxnsResult } from '../helpers'
 import { rpc } from './rpc'
@@ -77,12 +78,18 @@ export class TransactionRPC {
 
   async listTransactions({
     count,
-    from,
   }: {
     count: number
-    from: number
   }): Promise<TTransactionResponse> {
-    return rpc<TTransactionResponse>('listtransactions', ['', count, from], {
+    return rpc<TTransactionResponse>('listtransactions', ['', count], {
+      throw: true,
+    })
+  }
+
+  async listSinceBlock(
+    blockHash: string,
+  ): Promise<TListSinceBlockResponse['result']> {
+    return rpc('listsinceblock', [blockHash], {
       throw: true,
     })
   }
@@ -174,7 +181,7 @@ export class TransactionRPC {
    */
   async fetchTAndZTransactions(): Promise<TTransaction[]> {
     const senttxstore = await loadSentTxns()
-    const txtListResult = await this.listTransactions({ count: 10, from: 0 })
+    const txtListResult = await this.listTransactions({ count: 10 })
 
     // Flat list of transactions
     const ttxlist: TTransaction[] = await this.flatTxns(txtListResult)

@@ -7,7 +7,7 @@ export const tableNames: TTableNamesValidate = {
   networkInfo: true,
   netTotals: true,
   memPoolInfo: true,
-  rawMempoolInfo: true,
+  rawMemPoolInfo: true,
   miningInfo: true,
   blockInfo: true,
   blockChainInfo: true,
