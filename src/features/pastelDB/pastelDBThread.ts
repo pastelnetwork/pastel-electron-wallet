@@ -39,10 +39,7 @@ import { getRpcConfig } from '../rpcConfig'
 import { setPastelPrice } from '../pastelPrice/pastelPriceSlice'
 import store from '../../redux/store'
 import { queryClient } from '../../common/utils/queryClient'
-import {
-  getListTransactionsCount,
-  insertListTransactions,
-} from './wallet/listTransaction.repo'
+import { insertTransactions } from './wallet/transactions.repo'
 import { insertStatisticInfo } from './statistic/statisticInfo.repo'
 import { insertNetworkInfo } from './network/networkInfo.repo'
 import { insertNetTotals } from './network/netTotals.repo'
@@ -52,6 +49,7 @@ import { insertChainTips } from './blockchain/chainTips.repo'
 import { insertBlockSubsidy } from './mining/blockSubsidy.repo'
 import { insertWalletInfo } from './wallet/walletInfo.repo'
 import { insertListAddress } from './wallet/listAddress.repo'
+import { getLastBlock, updateLastBlock } from './wallet/lastBlock.repo'
 
 type fetchFuncConfig = {
   pastelDB: Database
@@ -174,7 +172,6 @@ export async function fetchRawtransaction(
     for (let i = 0; i < listSinceBlock.transactions.length; i++) {
       const transaction: TSinceBlockTransaction = listSinceBlock.transactions[i]
       if (transaction.txid) {
-        const transactionRPC = new TransactionRPC()
         const { result } = await transactionRPC.getRawTxn(transaction.txid)
         insertRawtransaction(props.pastelDB, result)
       }
@@ -239,21 +236,34 @@ export async function fetchWalletInfo(props: fetchFuncConfig): Promise<void> {
   }
 }
 
-const LIST_TRANSACTIONS_BATCH_SIZE = 5000 // batch size should be small enough to not block interface
-export async function fetchListTransactions(db: Database): Promise<void> {
+// 5k should work fast, load 5k on initial load and then load all remaining using listsinceblock
+const FIRST_TRANSACTIONS_BATCH_SIZE = 5000
+export async function fetchTransactions(db: Database): Promise<void> {
   try {
-    const count = await getListTransactionsCount(db)
+    const lastBlock = await getLastBlock(db)
 
-    const transactions = await transactionRPC.listTransactions({
-      count: LIST_TRANSACTIONS_BATCH_SIZE,
-      from: count,
-    })
-
-    insertListTransactions(db, transactions)
+    if (!lastBlock) {
+      const transactions = await transactionRPC.listTransactions({
+        count: FIRST_TRANSACTIONS_BATCH_SIZE,
+      })
+      if (transactions.length) {
+        db.transaction(() => {
+          insertTransactions(db, transactions)
+          updateLastBlock(db, transactions[0].blockhash)
+        })()
+      }
+    } else {
+      const result = await transactionRPC.listSinceBlock(lastBlock)
+      const transactions = result.transactions
+      if (transactions.length) {
+        db.transaction(() => {
+          insertTransactions(db, transactions)
+          updateLastBlock(db, result.lastblock)
+        })()
+      }
+    }
   } catch (error) {
-    throw new Error(
-      `pastelDBThread fetchListTransactions error: ${error.message}`,
-    )
+    throw new Error(`pastelDBThread fetchTransactions error: ${error.message}`)
   }
 }
 
@@ -359,7 +369,7 @@ export async function PastelDBThread(): Promise<void> {
       fetchTotalBalance(pastelConfig),
       fetchPastelPrices(pastelConfig),
       fetchBlockChainInfo(pastelConfig),
-      fetchListTransactions(db),
+      fetchTransactions(db),
     ])
     PastelDB.setValid(true)
   }

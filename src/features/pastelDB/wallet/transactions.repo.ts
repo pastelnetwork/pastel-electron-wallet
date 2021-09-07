@@ -1,15 +1,20 @@
 import { Database, Statement } from 'better-sqlite3'
-import { TAddress, TTransaction } from '../../../types/rpc'
+import {
+  TAddress,
+  TSinceBlockTransaction,
+  TTransaction,
+} from '../../../types/rpc'
 import { useQuery, UseQueryResult } from 'react-query'
 import { useDb } from '../../app/AppContext'
 
-export type TDbListTransaction = {
+export type TDbTransaction = {
   id: number
   account: string
-  address: string
+  address?: string
   category: string
   amount: number
   vout: number
+  fee: number
   confirmations: number
   blockhash: string
   blockindex: number
@@ -24,25 +29,29 @@ export type TDbListTransaction = {
   createdAt: number
 }
 
-export function insertListTransactions(
+type TRpcTransaction = Omit<
+  TTransaction | TSinceBlockTransaction,
+  'address'
+> & { address?: string }
+
+export function insertTransactions(
   db: Database,
-  transactions: TTransaction[],
+  transactions: TRpcTransaction[],
 ): void {
   const stmt = db.prepare(insertQuery)
-  const transaction = db.transaction(() => {
-    for (let i = 0; i < transactions.length; i++) {
-      insertListTransaction(db, transactions[i], stmt)
-    }
-  })
-  transaction()
+  for (let i = 0; i < transactions.length; i++) {
+    insertTransaction(db, transactions[i], stmt)
+  }
 }
 
-const insertQuery = `INSERT INTO listTransactions(
+// ignoring duplicates for txid and vout
+const insertQuery = `INSERT OR IGNORE INTO transactions(
   account,
   address,
   category,
   amount,
   vout,
+  fee,
   confirmations,
   blockhash,
   blockindex,
@@ -61,6 +70,7 @@ const insertQuery = `INSERT INTO listTransactions(
   $category,
   $amount,
   $vout,
+  $fee,
   $confirmations,
   $blockhash,
   $blockindex,
@@ -75,41 +85,18 @@ const insertQuery = `INSERT INTO listTransactions(
   $createdAt
 )`
 
-export function insertListTransaction(
+export function insertTransaction(
   db: Database,
-  transaction: TTransaction,
+  transaction: TRpcTransaction,
   stmt: Statement = db.prepare(insertQuery),
 ): void {
-  const walletconflicts = JSON.stringify(transaction.walletconflicts)
-  const vjoinsplit = JSON.stringify(transaction.vjoinsplit)
-  const values = {
-    account: transaction.account,
+  stmt.run({
+    ...transaction,
     address: transaction.address ?? null,
-    category: transaction.category,
-    amount: transaction.amount,
-    vout: transaction.vout,
-    confirmations: transaction.confirmations,
-    blockhash: transaction.blockhash,
-    blockindex: transaction.blockindex,
-    blocktime: transaction.blocktime,
-    expiryheight: transaction.expiryheight,
-    txid: transaction.txid,
-    walletconflicts: walletconflicts,
-    time: transaction.time,
-    timereceived: transaction.timereceived,
-    vjoinsplit: vjoinsplit,
-    size: transaction.size,
+    walletconflicts: JSON.stringify(transaction.walletconflicts),
+    vjoinsplit: JSON.stringify(transaction.vjoinsplit),
     createdAt: Date.now(),
-  }
-
-  stmt.run(values)
-}
-
-const countQuery = 'SELECT count(*) FROM listTransactions'
-
-export const getListTransactionsCount = (db: Database): number => {
-  const result = db.prepare(countQuery).get()
-  return (result?.count || 0) as number
+  })
 }
 
 type TAddressesLastActivityTime = Record<TAddress, number>
@@ -120,7 +107,7 @@ export const getAddressesLastActivityTime = (
   const result = db
     .prepare(
       `
-      SELECT address, max(time) AS time FROM listTransactions
+      SELECT address, max(time) AS time FROM transactions
       WHERE address IS NOT NULL
       GROUP BY address
     `,
