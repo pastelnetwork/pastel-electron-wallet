@@ -189,7 +189,7 @@ export async function fetchTransaction(props: fetchFuncConfig): Promise<void> {
       const transaction: TSinceBlockTransaction = listSinceBlock.transactions[i]
 
       const transactionRPC = new TransactionRPC()
-      const { result } = await transactionRPC.getTxn(transaction.txid)
+      const result = await transactionRPC.getTransaction(transaction.txid)
       insertTransaction(props.pastelDB, result)
     }
   } catch ({ message }) {

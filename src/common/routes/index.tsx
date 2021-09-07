@@ -6,7 +6,6 @@ import {
   RegisterPage,
   LoginPage,
   PasswordRecoveryPage,
-  RegistrationPending,
   RegistrationSuccessful,
   NewPassword,
 } from '../../features/onboarding/index'
@@ -50,13 +49,6 @@ const passwordRecoveryRoute = {
   id: 'passwordRecovery',
   path: ROUTES.PASSWORD_RECOVERY,
   component: PasswordRecoveryPage,
-  layout: OnboardingLayout,
-}
-
-const registrationPending = {
-  id: 'registrationPending',
-  path: ROUTES.REGISTER_PENDING,
-  component: RegistrationPending,
   layout: OnboardingLayout,
 }
 
@@ -163,7 +155,6 @@ export const pageRoutes = [
   registerRoute,
   loginRoute,
   passwordRecoveryRoute,
-  registrationPending,
   registrationSuccessful,
   newPassword,
   Dashboard,

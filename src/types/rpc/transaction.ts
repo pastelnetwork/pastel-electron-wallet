@@ -200,7 +200,7 @@ type TSinceBlockTransaction = {
 type TTxoutResponse = TResponse<TTxout>
 type TTransactionResponse = TTransaction[]
 type TRawTransactionResponse = TResponse<TRawTransaction>
-type TTransactionInfoResponse = TResponse<TTransactionInfo>
+type TTransactionInfoResponse = TTransactionInfo
 
 export { TTransactionType }
 

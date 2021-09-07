@@ -92,6 +92,7 @@ export function insertTransaction(
 ): void {
   stmt.run({
     ...transaction,
+    fee: transaction.fee ?? null,
     address: transaction.address ?? null,
     walletconflicts: JSON.stringify(transaction.walletconflicts),
     vjoinsplit: JSON.stringify(transaction.vjoinsplit),

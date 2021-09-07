@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import Tooltip from 'common/components/Tooltip'
@@ -23,6 +23,7 @@ import StepLogin from './StepRegister'
 import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
+import RegistrationPending from './RegistrationPending'
 
 const STEPS = [
   {
@@ -64,6 +65,16 @@ const RegisterContent = (): JSX.Element => {
   const [closeRequested, setCloseRequested] = useState(false)
   const state = useRegisterState()
 
+  if (state.step === Steps.ProcessingFee) {
+    return <RegistrationPending />
+  }
+
+  useEffect(() => {
+    if (state.isPastelIdConfirmed) {
+      history.push(ROUTES.DASHBOARD)
+    }
+  }, [state.isPastelIdConfirmed])
+
   const confirmClose = (val: boolean) => {
     if (val) {
       history.push(ROUTES.WELCOME_PAGE)
@@ -73,7 +84,7 @@ const RegisterContent = (): JSX.Element => {
   }
 
   const onLastStepPassed = () => {
-    history.push(ROUTES.REGISTER_PENDING)
+    state.setStep(Steps.ProcessingFee)
   }
 
   return (

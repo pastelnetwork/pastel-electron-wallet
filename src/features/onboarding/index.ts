@@ -2,7 +2,6 @@ import WelcomePage from './welcome/Welcome'
 import RegisterPage from './register/Register'
 import LoginPage from './login/Login'
 import PasswordRecoveryPage from './passwordRecovery/PasswordRecovery'
-import RegistrationPending from './registrationPending/RegistrationPending'
 import RegistrationSuccessful from './registrationSuccessful/RegistrationSuccessful'
 import NewPassword from './newPassword/NewPassword'
 
@@ -11,7 +10,6 @@ export {
   RegisterPage,
   LoginPage,
   PasswordRecoveryPage,
-  RegistrationPending,
   RegistrationSuccessful,
   NewPassword,
 }

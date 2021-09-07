@@ -1,21 +1,20 @@
 import React, { useState, FormEvent } from 'react'
-import { toast } from 'react-toastify'
 
 import { Input } from 'common/components/Inputs'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatNumber } from 'common/utils/format'
-import { createNewPastelID } from 'api/pastel-rpc/pastelid'
 import { PrevButton, NextButton } from './Buttons'
 import { isValidPrivateKey } from 'common/utils/wallet'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { WalletRPC } from 'api/pastel-rpc'
-import { PaymentMethods } from './Regiser.state'
+import { PaymentMethods, TRegisterState } from './Regiser.state'
 
 type TPromoCodeProps = {
   paymentMethod: PaymentMethods
   pastelPromoCode: string
   setPastelPromoCode(val: string): void
   password: string
+  createPastelIdQuery: TRegisterState['createPastelIdQuery']
   finish(): void
   goBack(): void
 }
@@ -30,18 +29,14 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
   const [promoBalance, setPromoBalance] = useState(0)
   const [status, setStatus] = useState<string>('')
   const [walletBalance, setWalletBalance] = useState(0)
-  const [selectedAddress, seSelectedAddress] = useState<string>('')
+  const [selectedAddress, setSelectedAddress] = useState<string>('')
 
   const handleNextClick = async (type?: string) => {
     if (type === 'next') {
-      setStatus('loading')
-      try {
-        await createNewPastelID(props.password, selectedAddress)
-        props.finish()
-      } catch (error) {
-        toast.error(error.message)
-        setStatus('error')
-      }
+      props.createPastelIdQuery.mutate({
+        password: props.password,
+        address: selectedAddress,
+      })
     } else {
       setMessage('')
       setValidPromoCode(false)
@@ -64,7 +59,7 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
           setWalletBalance(totalBalances.total)
           setStatus('done')
           setValidPromoCode(true)
-          seSelectedAddress(result)
+          setSelectedAddress(result)
         } else {
           setStatus('error')
           setMessage('Promo Code is invalid.')
@@ -84,6 +79,9 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
     promoCodeIsValid = false
   }
 
+  const isLoading = status === 'loading' || props.createPastelIdQuery.isLoading
+  const errorMessage = message || props.createPastelIdQuery.error?.message
+
   return (
     <>
       <div className='flex-grow pt-28'>
@@ -97,11 +95,7 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
               props.setPastelPromoCode(e.currentTarget.value.trim())
             }
             isValid={promoCodeIsValid}
-            errorMessage={
-              !promoCodeIsValid && message
-                ? message || 'Promo Code is invalid.'
-                : null
-            }
+            errorMessage={errorMessage}
             hint
             hintAsTooltip={false}
             value={props.pastelPromoCode}
@@ -139,19 +133,16 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
             )
           }
           text={
-            props.paymentMethod === PaymentMethods.PastelPromoCode &&
-            (walletBalance < targetBalance || !status) &&
-            status !== 'done'
-              ? props.paymentMethod === PaymentMethods.PastelPromoCode &&
-                status === 'loading'
-                ? 'Applying'
-                : 'Apply'
+            isLoading
+              ? 'Applying'
+              : (walletBalance < targetBalance || !status) && status !== 'done'
+              ? 'Apply'
               : `Proceed to 1,000 ${currencyName} Payment`
           }
           disabled={
             !nextActive ||
             (status === 'done' && walletBalance < targetBalance) ||
-            status === 'loading'
+            isLoading
           }
         />
       </div>
