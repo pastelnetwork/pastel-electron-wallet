@@ -51,6 +51,7 @@ const insertQuery = `INSERT OR IGNORE INTO transactions(
   category,
   amount,
   vout,
+  fee,
   confirmations,
   blockhash,
   blockindex,
@@ -69,6 +70,7 @@ const insertQuery = `INSERT OR IGNORE INTO transactions(
   $category,
   $amount,
   $vout,
+  $fee,
   $confirmations,
   $blockhash,
   $blockindex,
@@ -88,29 +90,13 @@ export function insertTransaction(
   transaction: TRpcTransaction,
   stmt: Statement = db.prepare(insertQuery),
 ): void {
-  const walletconflicts = JSON.stringify(transaction.walletconflicts)
-  const vjoinsplit = JSON.stringify(transaction.vjoinsplit)
-  const values = {
-    account: transaction.account,
+  stmt.run({
+    ...transaction,
     address: transaction.address ?? null,
-    category: transaction.category,
-    amount: transaction.amount,
-    vout: transaction.vout,
-    confirmations: transaction.confirmations,
-    blockhash: transaction.blockhash,
-    blockindex: transaction.blockindex,
-    blocktime: transaction.blocktime,
-    expiryheight: transaction.expiryheight,
-    txid: transaction.txid,
-    walletconflicts: walletconflicts,
-    time: transaction.time,
-    timereceived: transaction.timereceived,
-    vjoinsplit: vjoinsplit,
-    size: transaction.size,
+    walletconflicts: JSON.stringify(transaction.walletconflicts),
+    vjoinsplit: JSON.stringify(transaction.vjoinsplit),
     createdAt: Date.now(),
-  }
-
-  stmt.run(values)
+  })
 }
 
 type TAddressesLastActivityTime = Record<TAddress, number>

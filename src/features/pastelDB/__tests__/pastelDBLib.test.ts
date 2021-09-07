@@ -95,7 +95,7 @@ describe('managePastelDatabase', () => {
     const values = rawMemPoolFactory.build()
     insertRawMemPoolInfo(db, values)
 
-    const result = getDataFromDB('rawMempoolInfo')
+    const result = getDataFromDB('rawMemPoolInfo')
 
     expect(result).toEqual([{ ...values }])
   })
@@ -180,7 +180,7 @@ describe('managePastelDatabase', () => {
       vjoinsplit: [],
     })
 
-    const result = getDataFromDB('listTransactions')
+    const result = getDataFromDB('transactions')
 
     expect(result).toEqual([
       {
@@ -230,7 +230,7 @@ describe('managePastelDatabase', () => {
 
     const result = pastelDBLib.validateDuplicatedRawmempoolInfo(
       db,
-      'rawMempoolInfo',
+      'rawMemPoolInfo',
       existing,
     )
 
@@ -238,7 +238,7 @@ describe('managePastelDatabase', () => {
 
     const result1 = pastelDBLib.validateDuplicatedRawmempoolInfo(
       db,
-      'rawMempoolInfo',
+      'rawMemPoolInfo',
       {
         transactionid: '12345',
         time: 0,
