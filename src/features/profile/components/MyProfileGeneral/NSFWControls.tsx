@@ -11,7 +11,7 @@ import Slider from 'common/components/Slider'
 
 export default function NSFWControls(): JSX.Element {
   const [displayAdvanced, toggleAdvanced] = useDisplayAdvancedFeatures()
-  const [displayNSFW, toggleNSFW] = useState<boolean>(false)
+  const [displayNSFW, toggleNSFW] = useState<boolean>(true)
   const [
     NSFWHentaiProbability,
     setNSFWHentaiProbability,
@@ -23,7 +23,7 @@ export default function NSFWControls(): JSX.Element {
   return (
     <div className='w-full mt-20 mb-50px'>
       <div className='flex pt-3'>
-        <div className='text-gray-71 mr-4'>Hide Not Sale For Work NFTs</div>
+        <div className='text-gray-71 mr-4'>Hide Not Safe For Work NFTs</div>
         <div className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap'>
           <Toggle selected={!displayNSFW} toggleHandler={toggleNSFW} />
         </div>
