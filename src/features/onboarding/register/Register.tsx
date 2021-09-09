@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import Tooltip from 'common/components/Tooltip'
@@ -23,7 +23,6 @@ import StepLogin from './StepRegister'
 import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
-import { TRegisterPastelID } from '../../pastelID'
 
 const STEPS = [
   {
@@ -68,7 +67,7 @@ const RegisterContent = (): JSX.Element => {
 
   const confirmClose = (val: boolean) => {
     if (val) {
-      history.push(ROUTES.ONBOARDING)
+      history.push(ROUTES.WELCOME_PAGE)
     } else {
       setCloseRequested(false)
     }

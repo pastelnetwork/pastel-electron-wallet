@@ -9,6 +9,7 @@ import PastelDB from '../../features/pastelDB/database'
 import { AppContext } from '../../features/app/AppContext'
 import { pageRoutes } from './index'
 import { useAppSelector } from '../../redux/hooks'
+import { OnboardingRouter } from '../../features/onboarding'
 
 type TRouteType = {
   path: string
@@ -51,7 +52,10 @@ const Routes = (): JSX.Element => {
       <Router history={history}>
         {db && (
           <AppContext.Provider value={{ db }}>
-            <Switch>{childRoutes(pageRoutes)}</Switch>
+            <Switch>
+              <Route path={ROUTES.ONBOARDING} component={OnboardingRouter} />
+              {childRoutes(pageRoutes)}
+            </Switch>
           </AppContext.Provider>
         )}
         <Switch>

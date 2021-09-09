@@ -16,7 +16,7 @@ import { useMutation, UseMutationResult } from 'react-query'
 
 const CHECK_PASTELID_CONFIRMATIONS_INTERVAL = 1000
 
-export const useInitializeOnboarding = (): void => {
+export const useInitializeOnboarding = (): { isLoadingPastelId: boolean } => {
   const setPastelId = useOnboardingStore(store => store.setPastelId)
   const setPastelIdLoadingError = useOnboardingStore(
     store => store.setPastelIdLoadingError,
@@ -25,7 +25,7 @@ export const useInitializeOnboarding = (): void => {
     store => store.setIsPastelIdConfirmed,
   )
 
-  useFirstIdPastelWithTxIdConfirmed({
+  const { isLoading: isLoadingPastelId } = useFirstIdPastelWithTxIdConfirmed({
     onSuccess(pastelId) {
       setPastelId(pastelId)
       history.push(pastelId?.isConfirmed ? ROUTES.LOGIN : ROUTES.WELCOME_PAGE)
@@ -48,6 +48,8 @@ export const useInitializeOnboarding = (): void => {
   useOnPastelIdConfirmedChange(() => {
     history.push(ROUTES.DASHBOARD)
   })
+
+  return { isLoadingPastelId }
 }
 
 type TCreatePastelIdQuery = UseMutationResult<

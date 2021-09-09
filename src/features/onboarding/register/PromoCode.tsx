@@ -15,7 +15,6 @@ type TPromoCodeProps = {
   pastelPromoCode: string
   setPastelPromoCode(val: string): void
   password: string
-  finish(): void
   goBack(): void
 }
 

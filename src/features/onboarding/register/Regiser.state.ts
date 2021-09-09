@@ -65,7 +65,7 @@ export type TRegisterState = {
 }
 
 export const useRegisterState = (): TRegisterState => {
-  const [step, setStep] = useState<Steps>(Steps.Login)
+  const [step, setStep] = useState<Steps>(Steps.Fee)
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)

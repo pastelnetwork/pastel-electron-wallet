@@ -18,7 +18,7 @@ import RegistrationPending from './register/RegistrationPending'
 // to check password: pastelid sign login *id* *password*
 
 export default function OnboardingRouter(): JSX.Element {
-  useInitializeOnboarding()
+  const { isLoadingPastelId } = useInitializeOnboarding()
   const pastelId = useOnboardingStore(state => state.pastelId)
   const error = useOnboardingStore(state => state.pastelIdLoadingError)
 
@@ -26,7 +26,7 @@ export default function OnboardingRouter(): JSX.Element {
     return <p>Failed to load PastelId: ${error.message}</p>
   }
 
-  if (!pastelId) {
+  if (isLoadingPastelId) {
     return <LoadingScreen message='Loading...' />
   }
 
@@ -42,9 +42,7 @@ export default function OnboardingRouter(): JSX.Element {
     <OnboardingLayout>
       <Switch>
         <Route exact path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
-        <Route exact path={ROUTES.SIGN_UP}>
-          <RegisterPage />
-        </Route>
+        <Route exact path={ROUTES.SIGN_UP} component={RegisterPage} />
         <Route exact path={ROUTES.LOGIN} component={LoginPage} />
         <Route
           exact

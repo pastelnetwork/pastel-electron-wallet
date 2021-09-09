@@ -1,10 +1,6 @@
 import React, { useState, FormEvent } from 'react'
 import cn from 'classnames'
-import {
-  PaymentMethods,
-  TCentralizedExchangeEntity,
-  TRegisterState,
-} from './Regiser.state'
+import { PaymentMethods, TCentralizedExchangeEntity } from './Regiser.state'
 import { PrevButton, NextButton } from './Buttons'
 import Radio from 'common/components/Radio/Radio'
 import { Input } from 'common/components/Inputs'
@@ -91,7 +87,6 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
           pastelPromoCode={props.pastelPromoCode}
           setPastelPromoCode={props.setPastelPromoCode}
           password={props.password}
-          finish={props.finish}
           goBack={props.goBack}
         />
       ) : (

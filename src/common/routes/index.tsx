@@ -1,7 +1,6 @@
 import OnboardingLayout from '../layout/Onboarding'
 import PageLayout from '../layout/PageLayout'
 
-import { OnboardingRouter } from '../../features/onboarding/index'
 import PortfolioMain from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
 import SearchPage from '../../features/searchResults'
@@ -16,11 +15,6 @@ import { Forum } from '../../features/forum'
 import { PasteldFn } from 'legacy/components/Pasteld'
 
 import * as ROUTES from '../utils/constants/routes'
-
-const onboardingRoute = {
-  path: ROUTES.ONBOARDING,
-  component: OnboardingRouter,
-}
 
 const Dashboard = {
   path: ROUTES.DASHBOARD,
@@ -95,7 +89,6 @@ const pasteld = {
 }
 
 export const pageRoutes = [
-  onboardingRoute,
   Dashboard,
   Portfolio,
   searchResults,
