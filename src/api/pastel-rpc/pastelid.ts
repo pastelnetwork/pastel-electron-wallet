@@ -58,7 +58,7 @@ export type TTicket = {
   ticket: {
     address: string
     id_type: string
-    pastelId: string
+    pastelID: string
     pg_key: string
     signature: string
     timeStamp: string
@@ -77,7 +77,7 @@ export type TPastelIdWithTxIdAndConfirmed = {
   isConfirmed: boolean
 }
 
-export const useFirstIdPastelWithTxIdConfirmed = (
+export const useFirstPastelIdWithTxIdAndConfirmed = (
   options?: UseQueryOptions<TPastelIdWithTxIdAndConfirmed | undefined, Error>,
 ): UseQueryResult<TPastelIdWithTxIdAndConfirmed | undefined, Error> => {
   return useQuery(
@@ -91,7 +91,7 @@ export const useFirstIdPastelWithTxIdConfirmed = (
         .map(id => ({
           pastelId: id.pastelid,
           ticket: pastelIdsTickets.find(
-            item => item.ticket.pastelId === id.pastelid,
+            item => item.ticket.pastelID === id.pastelid,
           ) as TTicket,
         }))
         .find(item => item.ticket)

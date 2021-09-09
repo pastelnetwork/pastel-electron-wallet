@@ -1,86 +1,79 @@
-import React, { useState, FormEvent } from 'react'
-
+import React, { FormEvent, useState } from 'react'
 import { Input } from 'common/components/Inputs'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatNumber } from 'common/utils/format'
 import { PrevButton, NextButton } from './Buttons'
 import { isValidPrivateKey } from 'common/utils/wallet'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
-import { WalletRPC } from 'api/pastel-rpc'
-import { PaymentMethods } from './Regiser.state'
-import { useCreatePastelId } from '../Onboarding.service'
-
-type TPromoCodeProps = {
-  paymentMethod: PaymentMethods
-  pastelPromoCode: string
-  setPastelPromoCode(val: string): void
-  password: string
-  goBack(): void
-}
+import { walletRPC } from 'api/pastel-rpc'
+import { useRegisterStore } from './Register.store'
+import { useMutation, UseMutationResult } from 'react-query'
 
 const targetBalance = 1000
 
-export default function PromoCode(props: TPromoCodeProps): JSX.Element {
-  const walletRPC = new WalletRPC()
-  const currencyName = useCurrencyName()
-  const [isValidPromoCode, setValidPromoCode] = useState<boolean>(false)
-  const [message, setMessage] = useState<string>('')
-  const [promoBalance, setPromoBalance] = useState(0)
-  const [status, setStatus] = useState<string>('')
-  const [walletBalance, setWalletBalance] = useState(0)
-  const [selectedAddress, setSelectedAddress] = useState<string>('')
-  const createPastelIdQuery = useCreatePastelId()
+type TPromoCode = {
+  address: string
+  balance: number
+}
 
-  const handleNextClick = async (type?: string) => {
-    if (type === 'next') {
+const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
+  return useMutation(async promoCode => {
+    if (!isValidPrivateKey(promoCode)) {
+      throw new Error('Promo Code is invalid.')
+    }
+
+    const address = await importPastelPromoCode(promoCode)
+    if (!address) {
+      throw new Error('Promo Code is invalid.')
+    }
+
+    const [tUnspent, zUnspent] = await Promise.all([
+      walletRPC.fetchTListUnspent(),
+      walletRPC.fetchZListUnspent(),
+    ])
+    const unspent = [...tUnspent, ...zUnspent].find(
+      item => item.address === address,
+    )
+
+    const balance = unspent?.amount || 0
+    if (balance < targetBalance) {
+      throw new Error('Promo Code is invalid.')
+    }
+
+    return {
+      address,
+      balance,
+    }
+  })
+}
+
+export default function PromoCode(): JSX.Element {
+  const currencyName = useCurrencyName()
+  const goBack = useRegisterStore(state => state.goBack)
+  const promoCodeQuery = useImportPromoCode()
+  const createPastelIdQuery = useRegisterStore(
+    state => state.createPastelIdQuery,
+  )
+  const walletBalance = walletRPC.useTotalBalance()
+  const [promoCodeKey, setPromoCodeKey] = useState('')
+  const password = useRegisterStore(state => state.password)
+
+  const handleNextClick = async () => {
+    const promoCode = promoCodeQuery.data
+    if (promoCode) {
       createPastelIdQuery.mutate({
-        password: props.password,
-        address: selectedAddress,
+        password,
+        address: promoCode.address,
       })
     } else {
-      setMessage('')
-      setValidPromoCode(false)
-      if (isValidPrivateKey(props.pastelPromoCode)) {
-        setStatus('loading')
-        const result = await importPastelPromoCode(props.pastelPromoCode)
-        if (result) {
-          const [addresses, totalBalances] = await Promise.all([
-            walletRPC.fetchTandZAddresses(),
-            walletRPC.fetchTotalBalance(),
-          ])
-          const promoCodeBalance = addresses.find(
-            address => address.address === result,
-          )
-          if (promoCodeBalance) {
-            setPromoBalance(parseFloat(promoCodeBalance.amount.toString()))
-          } else {
-            setPromoBalance(0)
-          }
-          setWalletBalance(totalBalances.total)
-          setStatus('done')
-          setValidPromoCode(true)
-          setSelectedAddress(result)
-        } else {
-          setStatus('error')
-          setMessage('Promo Code is invalid.')
-        }
-      } else {
-        setMessage('Promo Code is invalid.')
-      }
+      promoCodeQuery.mutate(promoCodeKey)
     }
   }
 
-  const nextActive =
-    props.paymentMethod === PaymentMethods.PastelPromoCode &&
-    props.pastelPromoCode.length > 0
-
-  let promoCodeIsValid = null
-  if (!isValidPromoCode && message) {
-    promoCodeIsValid = false
-  }
-
   const isLoading = status === 'loading' || createPastelIdQuery.isLoading
-  const errorMessage = message || createPastelIdQuery.error?.message
+  const error = promoCodeQuery.error || createPastelIdQuery.error
+  const errorMessage = error?.message
+  const totalBalance = walletBalance.data?.total
 
   return (
     <>
@@ -92,58 +85,48 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
             type='text'
             placeholder='Paste your promo code here'
             onChange={(e: FormEvent<HTMLInputElement>) =>
-              props.setPastelPromoCode(e.currentTarget.value.trim())
+              setPromoCodeKey(e.currentTarget.value.trim())
             }
-            isValid={promoCodeIsValid}
+            isValid={!promoCodeQuery.error}
             errorMessage={errorMessage}
             hint
             hintAsTooltip={false}
-            value={props.pastelPromoCode}
+            value={promoCodeKey}
           />
         </div>
-        {status === 'done' ? (
+        {promoCodeQuery.isSuccess && totalBalance && (
           <div className='mt-6 text-gray-71 text-base font-normal'>
             Congratulations, your personalized promotional code has been
-            accepted! You now have {formatNumber(promoBalance)} {currencyName}{' '}
+            accepted! You now have {formatNumber(totalBalance)} {currencyName}{' '}
             in your wallet.{' '}
             <button
               type='button'
               className='link'
               onClick={() => {
-                props.setPastelPromoCode('')
-                setStatus('')
-                setMessage('')
-                setValidPromoCode(false)
+                setPromoCodeKey('')
+                promoCodeQuery.reset()
               }}
             >
               Add new pastel promo code.
             </button>
           </div>
-        ) : null}
+        )}
       </div>
       <div className='mt-7 flex justify-between'>
-        <PrevButton onClick={() => props.goBack()} />
+        <PrevButton onClick={goBack} />
         <NextButton
           className='min-w-160px'
-          onClick={() =>
-            handleNextClick(
-              status === 'done' && walletBalance >= targetBalance
-                ? 'next'
-                : 'apply',
-            )
-          }
+          onClick={handleNextClick}
           text={
             isLoading
               ? 'Applying'
-              : (walletBalance < targetBalance || !status) && status !== 'done'
-              ? 'Apply'
-              : `Proceed to 1,000 ${currencyName} Payment`
+              : promoCodeQuery.isSuccess
+              ? `Proceed to ${formatNumber(
+                  targetBalance,
+                )} ${currencyName} Payment`
+              : 'Apply'
           }
-          disabled={
-            !nextActive ||
-            (status === 'done' && walletBalance < targetBalance) ||
-            isLoading
-          }
+          disabled={!promoCodeKey || isLoading}
         />
       </div>
     </>

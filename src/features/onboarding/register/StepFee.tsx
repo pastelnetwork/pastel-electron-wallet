@@ -1,6 +1,5 @@
 import React, { useState, FormEvent } from 'react'
 import cn from 'classnames'
-import { PaymentMethods, TCentralizedExchangeEntity } from './Regiser.state'
 import { PrevButton, NextButton } from './Buttons'
 import Radio from 'common/components/Radio/Radio'
 import { Input } from 'common/components/Inputs'
@@ -9,26 +8,31 @@ import styles from './Register.module.css'
 import { Clipboard } from 'common/components/Icons'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import PromoCode from './PromoCode'
+import {
+  PaymentMethods,
+  TCentralizedExchangeEntity,
+  useRegisterStore,
+} from './Register.store'
+import { finish } from './Register.service'
+import shallow from 'zustand/shallow'
 
-export type TStepFeeProps = {
-  paymentMethod: PaymentMethods
-  centralizedExchangeName: string | null
-  setCentralizedExchangeName(val: string | null): void
-  promoCode: string
-  setPromoCode(val: string): void
-  pastelPromoCode: string
-  setPastelPromoCode(val: string): void
-  exchangeAddress: string
-  password: string
-  setExchangeAddress(val: string): void
-  finish(): void
-  goBack(): void
-}
-
-const StepFee = (props: TStepFeeProps): JSX.Element => {
+const StepFee = (): JSX.Element => {
   const currencyName = useCurrencyName()
   const [copying, setCopying] = useState<boolean>(false)
   const [copied, setCopied] = useState<boolean>(false)
+  const store = useRegisterStore(
+    state => ({
+      paymentMethod: state.paymentMethod,
+      centralizedExchangeName: state.centralizedExchangeName,
+      setCentralizedExchangeName: state.setCentralizedExchangeName,
+      promoCode: state.promoCode,
+      setPromoCode: state.setPromoCode,
+      exchangeAddress: state.exchangeAddress,
+      setExchangeAddress: state.setExchangeAddress,
+      goBack: state.goBack,
+    }),
+    shallow,
+  )
 
   // maybe it would be better to load this list from somewhere
   const centralizedExs: TCentralizedExchangeEntity[] = [
@@ -47,10 +51,10 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
     if (!state) {
       return
     }
-    props.setCentralizedExchangeName(platformName)
+    store.setCentralizedExchangeName(platformName)
 
     const addr = '' + BigInt(Math.random() * 1e60) // demo
-    props.setExchangeAddress(addr)
+    store.setExchangeAddress(addr)
     setCopied(false)
   }
 
@@ -58,41 +62,35 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
     setCopying(true) // animate icon
     setTimeout(() => setCopying(false), 200)
 
-    navigator.clipboard.writeText(props.exchangeAddress)
+    navigator.clipboard.writeText(store.exchangeAddress)
     setCopied(true)
   }
 
   const showWarn =
     !copied &&
-    ((props.paymentMethod === PaymentMethods.CentralizedExchange &&
-      props.centralizedExchangeName) ||
-      props.paymentMethod === PaymentMethods.DecentralizedExchange ||
-      props.paymentMethod === PaymentMethods.PslAddress)
+    ((store.paymentMethod === PaymentMethods.CentralizedExchange &&
+      store.centralizedExchangeName) ||
+      store.paymentMethod === PaymentMethods.DecentralizedExchange ||
+      store.paymentMethod === PaymentMethods.PslAddress)
 
   const nextActive =
-    (props.paymentMethod === PaymentMethods.AirdropPromoCode &&
-      props.promoCode.length > 0) ||
-    (props.paymentMethod === PaymentMethods.CentralizedExchange &&
-      props.centralizedExchangeName &&
-      props.centralizedExchangeName.length > 0 &&
+    (store.paymentMethod === PaymentMethods.AirdropPromoCode &&
+      store.promoCode.length > 0) ||
+    (store.paymentMethod === PaymentMethods.CentralizedExchange &&
+      store.centralizedExchangeName &&
+      store.centralizedExchangeName.length > 0 &&
       copied) ||
-    (props.paymentMethod === PaymentMethods.DecentralizedExchange && copied) ||
-    props.paymentMethod === PaymentMethods.PslAddress
+    (store.paymentMethod === PaymentMethods.DecentralizedExchange && copied) ||
+    store.paymentMethod === PaymentMethods.PslAddress
 
   return (
     <div className='flex flex-col h-full'>
-      {props.paymentMethod === PaymentMethods.PastelPromoCode ? (
-        <PromoCode
-          paymentMethod={props.paymentMethod}
-          pastelPromoCode={props.pastelPromoCode}
-          setPastelPromoCode={props.setPastelPromoCode}
-          password={props.password}
-          goBack={props.goBack}
-        />
+      {store.paymentMethod === PaymentMethods.PastelPromoCode ? (
+        <PromoCode />
       ) : (
         <>
           <div className='flex-grow pt-28'>
-            {props.paymentMethod !== PaymentMethods.AirdropPromoCode && (
+            {store.paymentMethod !== PaymentMethods.AirdropPromoCode && (
               <>
                 <h1 className='text-gray-4a text-h3 font-extrabold'>
                   Choose Exchange to Purchase {currencyName}
@@ -109,7 +107,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                     )}
                   >
                     <div className='mr-3 overflow-hidden overflow-ellipsis h-5'>
-                      {props.exchangeAddress}
+                      {store.exchangeAddress}
                     </div>
                     <button type='button' onClick={toClipboard}>
                       <Clipboard
@@ -126,7 +124,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                   </div>
                 </div>
 
-                {props.paymentMethod === PaymentMethods.CentralizedExchange && (
+                {store.paymentMethod === PaymentMethods.CentralizedExchange && (
                   <div className='mt-5'>
                     <div className='text-base text-gray-a0'>
                       Choose platform and pay
@@ -136,12 +134,12 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                       <div className='mt-3' key={i}>
                         <Radio
                           key={i}
-                          checked={props.centralizedExchangeName === item.name}
+                          checked={store.centralizedExchangeName === item.name}
                           onChange={val => onChangePayPlatform(item.name, val)}
                         >
                           <span
                             className={cn(
-                              props.centralizedExchangeName === item.name
+                              store.centralizedExchangeName === item.name
                                 ? 'text-gray-4a font-black text-base'
                                 : 'text-gray-4a text-opacity-50 text-base font-medium',
                             )}
@@ -156,7 +154,7 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
               </>
             )}
 
-            {props.paymentMethod === PaymentMethods.AirdropPromoCode && (
+            {store.paymentMethod === PaymentMethods.AirdropPromoCode && (
               <>
                 <h1 className='text-gray-23 text-xl font-black'>
                   Airdrop Promo Code
@@ -174,21 +172,21 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
                     type='text'
                     placeholder='Paste your promo code here'
                     onChange={(e: FormEvent<HTMLInputElement>) =>
-                      props.setPromoCode(e.currentTarget.value)
+                      store.setPromoCode(e.currentTarget.value)
                     }
                   />
-                  <div></div>
+                  <div />
                 </div>
               </>
             )}
           </div>
           <div className='mt-7 flex justify-between'>
-            <PrevButton onClick={() => props.goBack()} />
+            <PrevButton onClick={store.goBack} />
             <NextButton
               className='min-w-160px'
-              onClick={() => props.finish()}
+              onClick={finish}
               text={
-                props.paymentMethod === PaymentMethods.AirdropPromoCode
+                store.paymentMethod === PaymentMethods.AirdropPromoCode
                   ? 'Apply'
                   : `Proceed to 1,000 ${currencyName} Payment`
               }

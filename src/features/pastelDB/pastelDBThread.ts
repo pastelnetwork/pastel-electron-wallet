@@ -283,7 +283,9 @@ export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchTotalBalance(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<TTotalBalanceResponse>('z_gettotalbalance', [])
+    const result = await rpc<TTotalBalanceResponse>('z_gettotalbalance', [], {
+      throw: true,
+    })
 
     insertTotalbalance(props.pastelDB, result)
 

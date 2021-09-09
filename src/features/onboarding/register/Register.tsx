@@ -13,16 +13,23 @@ import {
   LongArrow,
 } from 'common/components/Icons'
 import CircleSteper from 'common/components/CircleSteper'
+import {
+  RegisterStoreProvider,
+  Steps,
+  stepsCount,
+  useRegisterStore,
+} from './Register.store'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import styles from './Register.module.css'
-
-import { Steps, useRegisterState } from './Regiser.state'
 
 import StepLogin from './StepRegister'
 import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
+import RegistrationPending from './RegistrationPending'
+import { useInitializeRegister } from './Register.service'
+import { TPastelIdWithTxIdAndConfirmed } from '../../../api/pastel-rpc'
 
 const STEPS = [
   {
@@ -59,11 +66,29 @@ const STEPS = [
   },
 ]
 
-const RegisterContent = (): JSX.Element => {
+export default function Register({
+  fetchedPastelId,
+}: {
+  fetchedPastelId?: TPastelIdWithTxIdAndConfirmed
+}): JSX.Element {
+  const store = useInitializeRegister({ fetchedPastelId })
+
+  return (
+    <RegisterStoreProvider createStore={() => store}>
+      <RegisterContent />
+    </RegisterStoreProvider>
+  )
+}
+
+const RegisterContent = () => {
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
 
-  const state = useRegisterState()
+  const step = useRegisterStore(state => state.step)
+
+  if (step === Steps.ProcessingFee) {
+    return <RegistrationPending />
+  }
 
   const confirmClose = (val: boolean) => {
     if (val) {
@@ -71,10 +96,6 @@ const RegisterContent = (): JSX.Element => {
     } else {
       setCloseRequested(false)
     }
-  }
-
-  const onLastStepPassed = () => {
-    // todo
   }
 
   return (
@@ -104,9 +125,9 @@ const RegisterContent = (): JSX.Element => {
             <div>
               <CircleSteper
                 size={65}
-                totalStep={state.stepsCount}
+                totalStep={stepsCount}
                 spaceAngle={10}
-                currentStep={state.step}
+                currentStep={step}
               />
             </div>
           </div>
@@ -124,16 +145,14 @@ const RegisterContent = (): JSX.Element => {
                   className={cn(
                     'rounded-lg flex items-center px-8 py-3 step',
                     styles.step,
-                    state.step === id ? 'bg-gray-ed' : '',
+                    step === id ? 'bg-gray-ed' : '',
                   )}
                 >
-                  {state.step <= id ? (
+                  {step <= id ? (
                     <Component
                       size={44}
-                      className={
-                        state.step === id ? 'text-gray-33' : 'text-gray-ec'
-                      }
-                      pathColor={state.step === id ? '#FFFFFF' : '#8894AA'}
+                      className={step === id ? 'text-gray-33' : 'text-gray-ec'}
+                      pathColor={step === id ? '#FFFFFF' : '#8894AA'}
                     />
                   ) : (
                     <CircleCheck size={40} className='text-green-45 ml-1' />
@@ -141,15 +160,15 @@ const RegisterContent = (): JSX.Element => {
                   <div
                     className={cn(
                       'flex-grow flex items-center ml-8 text-lg',
-                      state.step === id
+                      step === id
                         ? 'font-extrabold text-gray-2d'
-                        : state.step < id
+                        : step < id
                         ? 'font-medium text-gray-a0'
                         : 'font-medium text-gray-4a',
                     )}
                   >
                     <span>{label}</span>
-                    {state.step === id && tooltipText && tooltipWidth && (
+                    {step === id && tooltipText && tooltipWidth && (
                       <div className='inline-block mx-2'>
                         <Tooltip
                           classnames='font-medium py-2'
@@ -164,7 +183,7 @@ const RegisterContent = (): JSX.Element => {
                     )}
                   </div>
 
-                  {state.step === id && (
+                  {step === id && (
                     <LongArrow size={20} className='text-gray-88' />
                   )}
                 </div>
@@ -174,14 +193,10 @@ const RegisterContent = (): JSX.Element => {
         </div>
 
         <div className='w-1/2 flex-shrink-0 pb-10 pl-10 pr-7 mt-7'>
-          {state.step === Steps.Login && <StepLogin {...state} />}
-          {state.step === Steps.Backup && (
-            <StepBackup {...state} finish={onLastStepPassed} />
-          )}
-          {state.step === Steps.Payment && <StepPayment {...state} />}
-          {state.step === Steps.Fee && (
-            <StepFee finish={onLastStepPassed} {...state} />
-          )}
+          {step === Steps.Login && <StepLogin />}
+          {step === Steps.Backup && <StepBackup />}
+          {step === Steps.Payment && <StepPayment />}
+          {step === Steps.Fee && <StepFee />}
         </div>
       </div>
 
@@ -218,5 +233,3 @@ const RegisterContent = (): JSX.Element => {
     </>
   )
 }
-
-export default RegisterContent

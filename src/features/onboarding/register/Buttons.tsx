@@ -37,7 +37,7 @@ export const NextButton = ({
     >
       {text}
       {showIcon && (
-        <i className='text-sm inline-block ml-3 fas fa-chevron-right'></i>
+        <i className='text-sm inline-block ml-3 fas fa-chevron-right' />
       )}
     </button>
   )

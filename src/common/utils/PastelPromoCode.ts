@@ -77,9 +77,9 @@ export const importPastelPromoCode = async (
     const walletRPC = new WalletRPC()
     const address = await walletRPC.importPrivKey(pastelPromoCode, true)
     const currentPromoCodeList = await readPastelPromoCode()
-    const promoCode = currentPromoCodeList.filter(pc => pc.address === address)
+    const alreadySaved = currentPromoCodeList.some(pc => pc.address === address)
 
-    if (promoCode.length < 1) {
+    if (!alreadySaved) {
       const newPromoCode = currentPromoCodeList.concat({
         label: `Pastel Promo Code ${dayjs().format('MM/DD/YYYY-HH:mm')}`,
         address,

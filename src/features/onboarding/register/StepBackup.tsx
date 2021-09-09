@@ -4,10 +4,9 @@ import dayjs from 'dayjs'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { PrevButton, NextButton } from './Buttons'
+import { NextButton } from './Buttons'
 import Tooltip from 'common/components/Tooltip'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
-import { BackupMethods } from './Regiser.state'
 import { DownloadArrow, PDF } from 'common/components/Icons'
 import { ffmpegwasm } from 'common/constants/ServeStatic'
 import {
@@ -17,16 +16,17 @@ import {
   TDataForPdf,
 } from '../../profile/mySecurity/common/utils'
 import { QRCodeSlider, PDFDocument } from '../../profile'
+import { finish } from './Register.service'
 
-export type TStepBackupMethodProps = {
-  backupMethod: BackupMethods
-  setBackupMethod(val: BackupMethods): void
-  goToNextStep(): void
-  goBack(): void
-  finish(): void
+enum BackupMethods {
+  PDF,
+  QR,
 }
 
-const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
+const StepBackupMethod = (): JSX.Element => {
+  const [backupMethod, setBackupMethod] = useState<BackupMethods>(
+    BackupMethods.PDF,
+  )
   const currencyName = useCurrencyName()
   const pdfFileName = `${
     currencyName || 'LSP'
@@ -154,8 +154,8 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
       <div>
         <MultiToggleSwitch
           data={methods}
-          activeIndex={props.backupMethod}
-          onToggle={props.setBackupMethod}
+          activeIndex={backupMethod}
+          onToggle={setBackupMethod}
           itemActiveClassName='bg-gray-4a rounded-full text-white'
           countInactiveClassName='bg-warning-hover font-extrabold'
         />
@@ -167,7 +167,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
       ) : (
         <>
           <div className='flex-grow'>
-            {props.backupMethod === BackupMethods.PDF && (
+            {backupMethod === BackupMethods.PDF && (
               <div className='mt-42px'>
                 <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
                   Crypto Keys Backup Method
@@ -234,7 +234,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
                         <div
                           className='h-5px rounded-full bg-green-77'
                           style={{ width: pdfPrepareProgress + '%' }}
-                        ></div>
+                        />
                       </div>
                       <span className='font-extrabold text-sm'>
                         {pdfPrepareProgress}%
@@ -245,7 +245,7 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
               </div>
             )}
 
-            {props.backupMethod === BackupMethods.QR && (
+            {backupMethod === BackupMethods.QR && (
               <div className='mt-42px'>
                 <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
                   QR-Code Backup Method
@@ -279,13 +279,8 @@ const StepBackupMethod = (props: TStepBackupMethodProps): JSX.Element => {
           </div>
         </>
       )}
-      <div className='mt-7 flex justify-between'>
-        <PrevButton onClick={() => props.goBack()} />
-        <NextButton
-          onClick={() => props.finish()}
-          text='Finish'
-          disabled={!nextActive}
-        />
+      <div className='mt-7 flex justify-end'>
+        <NextButton onClick={finish} text='Finish' disabled={!nextActive} />
       </div>
       {allKeys ? (
         <div className='hidden'>

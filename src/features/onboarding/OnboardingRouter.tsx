@@ -11,38 +11,39 @@ import {
   RegistrationSuccessful,
   WelcomePage,
 } from './index'
-import { useInitializeOnboarding } from './Onboarding.service'
-import { useOnboardingStore } from './Onboarding.store'
-import RegistrationPending from './register/RegistrationPending'
+import { useFirstPastelIdWithTxIdAndConfirmed } from '../../api/pastel-rpc'
+import history from '../../common/utils/history'
 
 // to check password: pastelid sign login *id* *password*
 
 export default function OnboardingRouter(): JSX.Element {
-  const { isLoadingPastelId } = useInitializeOnboarding()
-  const pastelId = useOnboardingStore(state => state.pastelId)
-  const error = useOnboardingStore(state => state.pastelIdLoadingError)
+  const {
+    data: fetchedPastelId,
+    isLoading,
+    error,
+  } = useFirstPastelIdWithTxIdAndConfirmed({
+    onSuccess(pastelId) {
+      if (history.location.pathname === ROUTES.ONBOARDING) {
+        history.push(pastelId?.isConfirmed ? ROUTES.LOGIN : ROUTES.WELCOME_PAGE)
+      }
+    },
+  })
 
-  if (error) {
-    return <p>Failed to load PastelId: ${error.message}</p>
-  }
-
-  if (isLoadingPastelId) {
+  if (isLoading) {
     return <LoadingScreen message='Loading...' />
   }
 
-  if (pastelId?.isConfirmed === false) {
-    return (
-      <OnboardingLayout>
-        <RegistrationPending />
-      </OnboardingLayout>
-    )
+  if (error) {
+    return <p>Failed to load PastelId: ${error.message}</p>
   }
 
   return (
     <OnboardingLayout>
       <Switch>
         <Route exact path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
-        <Route exact path={ROUTES.SIGN_UP} component={RegisterPage} />
+        <Route exact path={ROUTES.SIGN_UP}>
+          <RegisterPage fetchedPastelId={fetchedPastelId} />
+        </Route>
         <Route exact path={ROUTES.LOGIN} component={LoginPage} />
         <Route
           exact

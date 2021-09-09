@@ -11,39 +11,37 @@ import Link from 'common/components/Link'
 import InputPassword from 'common/components/Inputs/InputPassword'
 import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
-
-export type TStepRegisterProps = {
-  username: string
-  setUsername(val: string): void
-  password: string
-  setPassword(val: string): void
-  showPassword: boolean
-  setShowPassword(val: boolean): void
-  termsAgreed: boolean
-  setTermsAgreed(val: boolean): void
-  goToNextStep(): void
-}
+import { useRegisterStore } from './Register.store'
+import shallow from 'zustand/shallow'
 
 function validateUserName(val: string): boolean {
   const validationRe = /^[0-9a-z_]{3,}$/i
   return validationRe.test(val)
 }
 
-const StepRegister = (props: TStepRegisterProps): JSX.Element => {
+const StepRegister = (): JSX.Element => {
+  const store = useRegisterStore(
+    state => ({
+      username: state.username,
+      setUsername: state.setUsername,
+      password: state.password,
+      setPassword: state.setPassword,
+      goToNextStep: state.goToNextStep,
+    }),
+    shallow,
+  )
+  const [termsAgreed, setTermsAgreed] = useState(false)
+
   const [usernameInvalid, setUsernameInvalid] = useState<boolean>(
-    !validateUserName(props.username),
+    !validateUserName(store.username),
   )
   const [passwordStrength, setPasswordStrength] = useState<number>(
-    calcPasswordStrength(props.password),
+    calcPasswordStrength(store.password),
   )
 
   const updateUserName = (val: string) => {
-    props.setUsername(val)
+    store.setUsername(val)
     setUsernameInvalid(!validateUserName(val))
-  }
-
-  const onAgreementClicked = (selected: boolean) => {
-    props.setTermsAgreed(selected)
   }
 
   const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {
@@ -52,12 +50,12 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
 
   const onPasswordChanged = (event: FormEvent<HTMLInputElement>) => {
     const val = event.currentTarget.value
-    props.setPassword(val)
+    store.setPassword(val)
     setPasswordStrength(calcPasswordStrength(val))
   }
 
   const getPasswordHint = (): string => {
-    if (!props.password) {
+    if (!store.password) {
       return ''
     }
 
@@ -76,11 +74,10 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
     return 'At least 8 characters and at least 2 numbers'
   }
 
-  const nextActive =
-    !usernameInvalid && passwordStrength >= 2 && props.termsAgreed
+  const nextActive = !usernameInvalid && passwordStrength >= 2 && termsAgreed
 
   let usernameIsValid = null
-  if (props.username.length > 0 && usernameInvalid) {
+  if (store.username.length > 0 && usernameInvalid) {
     usernameIsValid = false
   }
 
@@ -91,12 +88,12 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
           className='w-full'
           type='text'
           label='Choose your username to use on the Pastel Network'
-          value={props.username}
+          value={store.username}
           onChange={onUsernameChanged}
           ref={null}
           isValid={usernameIsValid}
           errorMessage={
-            usernameInvalid && props.username
+            usernameInvalid && store.username
               ? 'Please enter a valid username'
               : null
           }
@@ -107,7 +104,6 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
         <div className='mt-6'>
           <InputPassword
             className='w-full'
-            type={props.showPassword ? 'text' : 'password'}
             label={
               <div className='flex items-center'>
                 <span className='mr-2'>Set your wallet password</span>
@@ -122,17 +118,17 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
                 </Tooltip>
               </div>
             }
-            value={props.password}
+            value={store.password}
             onChange={onPasswordChanged}
             hint={getPasswordHint()}
           />
         </div>
-        {props.password && <PasswordStrength strength={passwordStrength} />}
+        {store.password && <PasswordStrength strength={passwordStrength} />}
 
         <div className='mt-6'>
           <Checkbox
-            isChecked={props.termsAgreed}
-            clickHandler={onAgreementClicked}
+            isChecked={termsAgreed}
+            clickHandler={setTermsAgreed}
             className='items-start'
           >
             <span className='text-14px text-gray-a0'>
@@ -143,7 +139,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
             </span>
           </Checkbox>
         </div>
-        {!props.username && (
+        {!store.username && (
           <div className='mt-6'>
             <p className='mb-0 text-sm font-normal text-gray-71'>
               Note: Your Pastel username is a user-friendly way to identify you
@@ -158,7 +154,7 @@ const StepRegister = (props: TStepRegisterProps): JSX.Element => {
 
       <div className='mt-7 flex justify-end'>
         <NextButton
-          onClick={() => props.goToNextStep()}
+          onClick={store.goToNextStep}
           text='Next step'
           disabled={!nextActive}
         />
