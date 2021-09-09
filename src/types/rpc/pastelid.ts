@@ -12,7 +12,7 @@ type TCreateNewPastelIdResult = {
   pastelid: string
 }
 
-type TGetPastelIdsResponse = TResponse<TGetPastelIdsResult[]>
+type TGetPastelIdsResponse = TGetPastelIdsResult[]
 type TCreateNewPastelIdResponse = TResponse<TCreateNewPastelIdResult>
 type TTicketsRegisterIdResponse = TResponse<TTicketsRegisterIdResult>
 

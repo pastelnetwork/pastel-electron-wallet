@@ -32,7 +32,7 @@ const Login = (): JSX.Element => {
 
   return (
     <div className='w-[398px] my-9 mx-60px'>
-      <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
+      <CloseButton gotoUrl={ROUTES.ONBOARDING} />
       <div className='text-h1-heavy text-gray-2d'>Login</div>
       <form className='flex flex-col mt-30px'>
         <Input

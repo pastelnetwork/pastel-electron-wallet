@@ -1,3 +1,4 @@
+export const ONBOARDING = '/onboarding'
 export const WELCOME_PAGE = '/welcome-page'
 export const SIGN_UP = '/sign-up'
 export const LOGIN = '/login'

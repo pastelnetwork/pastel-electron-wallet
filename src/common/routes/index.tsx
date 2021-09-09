@@ -1,14 +1,7 @@
 import OnboardingLayout from '../layout/Onboarding'
 import PageLayout from '../layout/PageLayout'
 
-import {
-  WelcomePage,
-  RegisterPage,
-  LoginPage,
-  PasswordRecoveryPage,
-  RegistrationSuccessful,
-  NewPassword,
-} from '../../features/onboarding/index'
+import { OnboardingRouter } from '../../features/onboarding/index'
 import PortfolioMain from '../../features/portfolio'
 import DashboardPage from '../../features/dashboard/DashboardPage'
 import SearchPage from '../../features/searchResults'
@@ -25,126 +18,77 @@ import { PasteldFn } from 'legacy/components/Pasteld'
 import * as ROUTES from '../utils/constants/routes'
 
 const onboardingRoute = {
-  id: 'welcomePage',
-  path: ROUTES.WELCOME_PAGE,
-  component: WelcomePage,
-  layout: OnboardingLayout,
-}
-
-const registerRoute = {
-  id: 'signUp',
-  path: ROUTES.SIGN_UP,
-  component: RegisterPage,
-  layout: OnboardingLayout,
-}
-
-const loginRoute = {
-  id: 'login',
-  path: ROUTES.LOGIN,
-  component: LoginPage,
-  layout: OnboardingLayout,
-}
-
-const passwordRecoveryRoute = {
-  id: 'passwordRecovery',
-  path: ROUTES.PASSWORD_RECOVERY,
-  component: PasswordRecoveryPage,
-  layout: OnboardingLayout,
-}
-
-const registrationSuccessful = {
-  id: 'registrationSuccessful',
-  path: ROUTES.REGISTER_SUCCESSFUL,
-  component: RegistrationSuccessful,
-  layout: OnboardingLayout,
-}
-
-const newPassword = {
-  id: 'newPassword',
-  path: ROUTES.NEW_PASSWORD,
-  component: NewPassword,
-  layout: OnboardingLayout,
+  path: ROUTES.ONBOARDING,
+  component: OnboardingRouter,
 }
 
 const Dashboard = {
-  id: 'dashboard',
   path: ROUTES.DASHBOARD,
   component: DashboardPage,
   layout: PageLayout,
 }
 
 const Portfolio = {
-  id: 'portfolio',
   path: ROUTES.PORTFOLIO,
   component: PortfolioMain,
   layout: PageLayout,
 }
 
 const myProfile = {
-  id: 'myProfile',
   path: ROUTES.MY_PROFILE,
   component: MyProfile,
   layout: PageLayout,
 }
 
 const walletScreen = {
-  id: 'walletScreen',
   path: ROUTES.WALLET,
   component: WalletScreenPage,
   layout: PageLayout,
 }
 
 const nft = {
-  id: 'nft',
   path: ROUTES.MARKET,
   component: NFTMarketFeedPage,
   layout: PageLayout,
 }
 
 const chat = {
-  id: 'chat',
   path: ROUTES.CHAT,
   component: ChatPage,
   layout: PageLayout,
 }
 
 const membersDirectory = {
-  id: 'membersDirectory',
   path: ROUTES.MEMBERS,
   component: MembersDirectory,
   layout: PageLayout,
 }
 
 const searchResults = {
-  id: 'searchResults',
   path: ROUTES.SEARCH_RESULT,
   component: SearchPage,
   layout: PageLayout,
 }
 
 const membersProfile = {
-  id: 'membersProfile',
   path: ROUTES.MEMBERS_PROFILE,
   component: MemberProfile,
   layout: PageLayout,
 }
 
 const portfolioDetail = {
-  id: 'portfolioDetail',
   path: ROUTES.PORTFOLIO_DETAIL,
   component: PortfolioPage,
   layout: PageLayout,
 }
 
 const forum = {
-  id: 'forum',
   path: ROUTES.FORUM,
   component: Forum,
   layout: PageLayout,
 }
 
 const pasteld = {
-  id: 'pasteld',
   path: ROUTES.PASTELD,
   component: PasteldFn,
   layout: OnboardingLayout,
@@ -152,11 +96,6 @@ const pasteld = {
 
 export const pageRoutes = [
   onboardingRoute,
-  registerRoute,
-  loginRoute,
-  passwordRecoveryRoute,
-  registrationSuccessful,
-  newPassword,
   Dashboard,
   Portfolio,
   searchResults,

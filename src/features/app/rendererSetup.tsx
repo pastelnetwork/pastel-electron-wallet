@@ -70,7 +70,7 @@ export const rendererSetup = (): void => {
     }
 
     if (history.location.pathname === ROUTES.LOADING) {
-      history.replace(ROUTES.WELCOME_PAGE)
+      history.replace(ROUTES.ONBOARDING)
     }
   })
 

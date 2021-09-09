@@ -23,7 +23,7 @@ import StepLogin from './StepRegister'
 import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
-import RegistrationPending from './RegistrationPending'
+import { TRegisterPastelID } from '../../pastelID'
 
 const STEPS = [
   {
@@ -63,28 +63,19 @@ const STEPS = [
 const RegisterContent = (): JSX.Element => {
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
+
   const state = useRegisterState()
-
-  if (state.step === Steps.ProcessingFee) {
-    return <RegistrationPending />
-  }
-
-  useEffect(() => {
-    if (state.isPastelIdConfirmed) {
-      history.push(ROUTES.DASHBOARD)
-    }
-  }, [state.isPastelIdConfirmed])
 
   const confirmClose = (val: boolean) => {
     if (val) {
-      history.push(ROUTES.WELCOME_PAGE)
+      history.push(ROUTES.ONBOARDING)
     } else {
       setCloseRequested(false)
     }
   }
 
   const onLastStepPassed = () => {
-    state.setStep(Steps.ProcessingFee)
+    // todo
   }
 
   return (

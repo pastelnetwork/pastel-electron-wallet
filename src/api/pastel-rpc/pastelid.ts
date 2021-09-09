@@ -5,6 +5,11 @@ import {
   TTicketsRegisterIdResponse,
 } from '../../types/rpc'
 import { rpc } from './rpc'
+import { useQuery, UseQueryResult } from 'react-query'
+import { UseQueryOptions } from 'react-query/types/react/types'
+import { transactionRPC } from './transaction'
+
+export const PASTELID_MIN_CONFIRMATIONS = 1
 
 export async function createNewPastelID(
   passphrase: string,
@@ -29,32 +34,79 @@ export async function createNewPastelID(
 }
 
 export async function getPastelIDs(): Promise<TPastelID[]> {
-  let resp: TGetPastelIdsResponse | null = null
-
   try {
-    resp = await rpc<TGetPastelIdsResponse>('pastelid', ['list'])
+    const ids = await rpc<TGetPastelIdsResponse>('pastelid', ['list', 'id'], {
+      throw: true,
+    })
+    return ids.map(id => ({ pastelid: id.PastelID }))
   } catch (error) {
     if (
       // this happens when there is no PastelIDs created yet, therefore this is a valid state.
-      String(error).indexOf(
+      String(error).includes(
         'boost::filesystem::directory_iterator::construct: The system cannot find the path specified',
-      ) !== -1
+      )
     ) {
       return []
     }
+    throw error
   }
-  // TODO RPC calls "pastel list" and "pastel newkey <pass>" return inconsistent results:
-  // one returns [{ PastelID: string }] and the other { pastelid: string }. This difference in keys must be fixed on RPC side.
-  // The loop below is a workaroud to translate the [{ PastelID: string }] of "pastel list" into [{ pastelid: string }].
-  if (!resp) {
-    return []
-  }
+}
 
-  if (resp.result === null || resp.result.length === 0) {
-    return []
+export type TTicket = {
+  height: number
+  txid: string
+  ticket: {
+    address: string
+    id_type: string
+    pastelId: string
+    pg_key: string
+    signature: string
+    timeStamp: string
+    type: string
+    version: number
   }
+}
 
-  return resp.result.map(id => {
-    return { pastelid: id.PastelID }
-  })
+async function getPastelIdTickets(): Promise<TTicket[]> {
+  return await rpc('tickets', ['list', 'id'], { throw: true })
+}
+
+export type TPastelIdWithTxIdAndConfirmed = {
+  pastelid: string
+  txid: string
+  isConfirmed: boolean
+}
+
+export const useFirstIdPastelWithTxIdConfirmed = (
+  options?: UseQueryOptions<TPastelIdWithTxIdAndConfirmed | undefined, Error>,
+): UseQueryResult<TPastelIdWithTxIdAndConfirmed | undefined, Error> => {
+  return useQuery(
+    'firstPastelIdWithTicketAndConfirmed',
+    async () => {
+      const [pastelIds, pastelIdsTickets] = await Promise.all([
+        getPastelIDs(),
+        getPastelIdTickets(),
+      ])
+      const item = pastelIds
+        .map(id => ({
+          pastelId: id.pastelid,
+          ticket: pastelIdsTickets.find(
+            item => item.ticket.pastelId === id.pastelid,
+          ) as TTicket,
+        }))
+        .find(item => item.ticket)
+
+      const tx = item && (await transactionRPC.getTransaction(item.ticket.txid))
+      if (!item || !tx) {
+        return
+      }
+
+      return {
+        pastelid: item.pastelId,
+        txid: item.ticket.txid,
+        isConfirmed: tx.confirmations >= PASTELID_MIN_CONFIRMATIONS,
+      }
+    },
+    options,
+  )
 }

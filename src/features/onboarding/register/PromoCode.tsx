@@ -7,14 +7,14 @@ import { PrevButton, NextButton } from './Buttons'
 import { isValidPrivateKey } from 'common/utils/wallet'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { WalletRPC } from 'api/pastel-rpc'
-import { PaymentMethods, TRegisterState } from './Regiser.state'
+import { PaymentMethods } from './Regiser.state'
+import { useCreatePastelId } from '../Onboarding.service'
 
 type TPromoCodeProps = {
   paymentMethod: PaymentMethods
   pastelPromoCode: string
   setPastelPromoCode(val: string): void
   password: string
-  createPastelIdQuery: TRegisterState['createPastelIdQuery']
   finish(): void
   goBack(): void
 }
@@ -30,10 +30,11 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
   const [status, setStatus] = useState<string>('')
   const [walletBalance, setWalletBalance] = useState(0)
   const [selectedAddress, setSelectedAddress] = useState<string>('')
+  const createPastelIdQuery = useCreatePastelId()
 
   const handleNextClick = async (type?: string) => {
     if (type === 'next') {
-      props.createPastelIdQuery.mutate({
+      createPastelIdQuery.mutate({
         password: props.password,
         address: selectedAddress,
       })
@@ -79,8 +80,8 @@ export default function PromoCode(props: TPromoCodeProps): JSX.Element {
     promoCodeIsValid = false
   }
 
-  const isLoading = status === 'loading' || props.createPastelIdQuery.isLoading
-  const errorMessage = message || props.createPastelIdQuery.error?.message
+  const isLoading = status === 'loading' || createPastelIdQuery.isLoading
+  const errorMessage = message || createPastelIdQuery.error?.message
 
   return (
     <>

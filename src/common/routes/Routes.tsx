@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps, Router } from 'react-router'
+import { Router } from 'react-router'
 import { Route, Switch } from 'react-router-dom'
 import * as ROUTES from '../utils/constants/routes'
 import LoadingScreen from 'features/loading'
@@ -11,26 +11,27 @@ import { pageRoutes } from './index'
 import { useAppSelector } from '../../redux/hooks'
 
 type TRouteType = {
-  id: string
   path: string
-  component:
-    | React.FunctionComponent<RouteComponentProps>
-    | React.ComponentClass<RouteComponentProps>
-  layout: React.FunctionComponent<unknown> | React.ComponentClass<unknown>
+  component: React.FunctionComponent | React.ComponentClass
+  layout?: React.FunctionComponent<unknown> | React.ComponentClass<unknown>
 }
 
 const childRoutes = (routes: Array<TRouteType>) =>
-  routes.map(({ component: Component, layout: Layout, path, id }) => {
+  routes.map(({ component: Component, layout: Layout, path }) => {
     return (
       <Route
-        key={id}
+        key={path}
         path={path}
         exact
-        render={props => (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        )}
+        render={() =>
+          Layout ? (
+            <Layout>
+              <Component />
+            </Layout>
+          ) : (
+            <Component />
+          )
+        }
       />
     )
   })

@@ -24,7 +24,6 @@ export type TStepFeeProps = {
   setPastelPromoCode(val: string): void
   exchangeAddress: string
   password: string
-  createPastelIdQuery: TRegisterState['createPastelIdQuery']
   setExchangeAddress(val: string): void
   finish(): void
   goBack(): void
@@ -91,7 +90,6 @@ const StepFee = (props: TStepFeeProps): JSX.Element => {
           paymentMethod={props.paymentMethod}
           pastelPromoCode={props.pastelPromoCode}
           setPastelPromoCode={props.setPastelPromoCode}
-          createPastelIdQuery={props.createPastelIdQuery}
           password={props.password}
           finish={props.finish}
           goBack={props.goBack}

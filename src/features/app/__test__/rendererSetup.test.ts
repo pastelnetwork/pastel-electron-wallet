@@ -130,7 +130,7 @@ describe('rendererSetup', () => {
     it('should redirect to welcome page', async () => {
       await emitRendererEvent('setRpcConfig', { rpcConfig })
 
-      expect(history.replace).toHaveBeenCalledWith(ROUTES.WELCOME_PAGE)
+      expect(history.replace).toHaveBeenCalledWith(ROUTES.ONBOARDING)
     })
   })
 

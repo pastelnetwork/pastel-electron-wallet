@@ -19,7 +19,7 @@ const PasswordRecovery = (): JSX.Element => {
   }
   return (
     <div className='mx-60px my-11 w-517px'>
-      <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
+      <CloseButton gotoUrl={ROUTES.ONBOARDING} />
       <div className='font-extrabold text-gray-2d text-h1-heavy'>
         Password Recovery
       </div>
