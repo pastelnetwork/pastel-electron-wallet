@@ -7,12 +7,9 @@ import {
   ITaskState,
   IArtworkImage,
 } from './interfaces'
+import { walletNodeApiURL } from '../../../common/constants/urls'
 
-// TODO: find better place to this param (Config file? Common constants?)
-// Config file is parsed in LoadingScreen.tsx, use only rpc values and don't export others
-const apiServer = 'http://127.0.0.1:8080'
-
-const baseUrl = apiServer + '/artworks'
+const baseUrl = walletNodeApiURL + '/artworks'
 
 async function makeRequest<T>(
   params: AxiosRequestConfig,

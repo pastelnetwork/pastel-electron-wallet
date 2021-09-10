@@ -14,8 +14,6 @@ export default function ErrorMessage({
   name,
   className = 'text-red-fe mt-2',
 }: TErrorMessageProps): JSX.Element {
-  console.log(form.formState.errors)
-
   return (
     <OriginalErrorMessage
       errors={form.formState.errors}
