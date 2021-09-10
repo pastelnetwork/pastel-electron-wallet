@@ -1,73 +1,81 @@
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
 
-import { Input, InputPassword } from 'common/components/Inputs'
+import Input from 'common/components/Form/Input'
 import { Button } from 'common/components/Buttons'
 import CloseButton from '../common/closeButton'
 import Link from 'common/components/Link'
 
 import * as ROUTES from 'common/utils/constants/routes'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import {
+  TPastelIdWithTxIdAndConfirmed,
+  useVerifyPastelIdPassword,
+} from '../../../api/pastel-rpc'
+import history from '../../../common/utils/history'
 
-interface ILoginFormInput {
-  value: string
-  hasError: boolean
-  isTouched: boolean
-}
+const schema = yup.object({
+  username: yup.string().required(),
+  password: yup.string().required(),
+})
 
-const initialInputState = {
-  value: '',
-  hasError: false,
-  isTouched: false,
-}
+type TSchema = ReturnType<typeof schema.validateSync>
 
-const Login = (): JSX.Element => {
-  const history = useHistory()
+const Login = ({
+  pastelId,
+}: {
+  pastelId: TPastelIdWithTxIdAndConfirmed
+}): JSX.Element => {
+  const form = useForm<TSchema>({
+    resolver: yupResolver(schema),
+  })
 
-  const [username, setUsername] = React.useState<ILoginFormInput>(
-    initialInputState,
-  )
-  const [password, setPassword] = React.useState<ILoginFormInput>(
-    initialInputState,
-  )
+  const verifyPassword = useVerifyPastelIdPassword({
+    onSuccess() {
+      history.push(ROUTES.DASHBOARD)
+    },
+  })
+
+  const onSubmit = () => {
+    if (!pastelId) {
+      return
+    }
+
+    const { password } = form.getValues()
+    verifyPassword.mutate({
+      pastelId: pastelId.pastelid,
+      password,
+    })
+  }
 
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.ONBOARDING} />
-      <div className='text-h1-heavy text-gray-2d'>Login</div>
-      <form className='flex flex-col mt-30px'>
+      <div className='text-h1-heavy text-gray-2d mb-3'>Login</div>
+      <form
+        className='flex flex-col mt-30px'
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        {verifyPassword.error && (
+          <div className='text-red-fe mb-2'>
+            Username or password is incorrect
+          </div>
+        )}
         <Input
-          type='text'
+          form={form}
+          name='username'
           label='Username'
+          labelClass='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
           placeholder='i.e banksy168'
-          value={username.value}
-          labelClassName='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
-          onChange={(event: React.FormEvent<HTMLInputElement>) =>
-            setUsername({
-              ...username,
-              value: event.currentTarget.value,
-            })
-          }
-          ref={null}
-          errorMessage={
-            username.hasError ? 'Please enter a valid username' : null
-          }
-          className='mb-6'
+          className='mt-4 mb-6'
         />
-        <InputPassword
+        <Input
+          form={form}
           type='password'
+          name='password'
           label='Password'
-          labelClassName='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
-          value={password.value}
-          onChange={(event: React.FormEvent<HTMLInputElement>) =>
-            setPassword({
-              ...password,
-              value: event.currentTarget.value,
-            })
-          }
-          ref={null}
-          errorMessage={
-            password.hasError ? 'Please enter a valid password' : null
-          }
+          labelClass='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
         />
         <div className='text-gray-71 text-h6 my-5'>
           Forgot your password?
@@ -76,13 +84,7 @@ const Login = (): JSX.Element => {
             Restore access now
           </Link>
         </div>
-        <Button
-          className='w-full'
-          type='submit'
-          onClick={() => {
-            history.push(ROUTES.DASHBOARD)
-          }}
-        >
+        <Button className='w-full' type='submit'>
           Login
         </Button>
       </form>

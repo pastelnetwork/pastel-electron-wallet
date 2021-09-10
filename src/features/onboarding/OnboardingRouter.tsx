@@ -14,8 +14,6 @@ import {
 import { useFirstPastelIdWithTxIdAndConfirmed } from '../../api/pastel-rpc'
 import history from '../../common/utils/history'
 
-// to check password: pastelid sign login *id* *password*
-
 export default function OnboardingRouter(): JSX.Element {
   const {
     data: fetchedPastelId,
@@ -44,7 +42,11 @@ export default function OnboardingRouter(): JSX.Element {
         <Route exact path={ROUTES.SIGN_UP}>
           <RegisterPage fetchedPastelId={fetchedPastelId} />
         </Route>
-        <Route exact path={ROUTES.LOGIN} component={LoginPage} />
+        {fetchedPastelId && (
+          <Route exact path={ROUTES.LOGIN}>
+            <LoginPage pastelId={fetchedPastelId} />
+          </Route>
+        )}
         <Route
           exact
           path={ROUTES.PASSWORD_RECOVERY}

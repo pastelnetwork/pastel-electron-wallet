@@ -5,7 +5,13 @@ import {
   TTicketsRegisterIdResponse,
 } from '../../types/rpc'
 import { rpc } from './rpc'
-import { useQuery, UseQueryResult } from 'react-query'
+import {
+  useMutation,
+  UseMutationOptions,
+  UseMutationResult,
+  useQuery,
+  UseQueryResult,
+} from 'react-query'
 import { UseQueryOptions } from 'react-query/types/react/types'
 import { transactionRPC } from './transaction'
 
@@ -109,4 +115,24 @@ export const useFirstPastelIdWithTxIdAndConfirmed = (
     },
     options,
   )
+}
+
+type TVerifyPastelIdPasswordParams = {
+  pastelId: string
+  password: string
+}
+
+async function verifyPastelIdPassword({
+  pastelId,
+  password,
+}: TVerifyPastelIdPasswordParams) {
+  return await rpc('pastelid', ['sign', 'login', pastelId, password], {
+    throw: true,
+  })
+}
+
+export function useVerifyPastelIdPassword(
+  options?: UseMutationOptions<unknown, Error, TVerifyPastelIdPasswordParams>,
+): UseMutationResult<unknown, Error, TVerifyPastelIdPasswordParams> {
+  return useMutation(params => verifyPastelIdPassword(params), options)
 }

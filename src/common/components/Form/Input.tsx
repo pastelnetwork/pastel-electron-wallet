@@ -1,6 +1,7 @@
-import React, { InputHTMLAttributes, ReactNode } from 'react'
+import React, { InputHTMLAttributes, ReactNode, useState } from 'react'
 import FormControl, { TFormControlProps } from './FormControl'
 import { FieldValues } from 'react-hook-form'
+import { Eye } from '../Icons'
 
 export type TInputProps<TForm> = Omit<TFormControlProps<TForm>, 'children'> & {
   inputClassName?: string
@@ -24,6 +25,10 @@ export default function Input<TForm extends FieldValues>({
     className: inputClassName,
   }
 
+  const [type, setType] = useState(inputProps.type)
+  const togglePasswordType = () =>
+    setType(type === 'password' ? 'text' : 'password')
+
   return (
     <FormControl
       form={form}
@@ -33,7 +38,22 @@ export default function Input<TForm extends FieldValues>({
       labelClass={labelClass}
       style={style}
     >
-      {renderInput ? renderInput(inputProps) : <input {...inputProps} />}
+      <div className='relative'>
+        {renderInput ? (
+          renderInput({ ...inputProps, type })
+        ) : (
+          <input {...inputProps} type={type} />
+        )}
+        {inputProps.type === 'password' && (
+          <button
+            type='button'
+            className='absolute top-[13px] right-[14px] focus-visible:text-button-hover'
+            onClick={togglePasswordType}
+          >
+            <Eye size={18} variant={type === 'password' ? 'type1' : 'hidden'} />
+          </button>
+        )}
+      </div>
     </FormControl>
   )
 }
