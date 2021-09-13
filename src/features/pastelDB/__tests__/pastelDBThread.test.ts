@@ -173,11 +173,9 @@ describe('PastelDBThread', () => {
   }
 
   const mockTotalBalance = {
-    result: {
-      transparent: 'totalbalance-transparent',
-      private: '',
-      total: '',
-    },
+    transparent: 'totalbalance-transparent',
+    private: '',
+    total: '',
   }
 
   const mockListAddresses = ['address']
@@ -522,7 +520,9 @@ describe('PastelDBThread', () => {
     })
 
     // Assert
-    expect(rpcSpy).toHaveBeenCalledWith('z_gettotalbalance', [])
+    expect(rpcSpy).toHaveBeenCalledWith('z_gettotalbalance', [], {
+      throw: true,
+    })
     expect(insertTotalbalanceSpy).toHaveBeenCalledWith(db, {
       private: '',
       total: '',
