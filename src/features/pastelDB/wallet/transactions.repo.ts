@@ -93,6 +93,9 @@ export function insertTransaction(
   stmt.run({
     ...transaction,
     blockhash: transaction.blockhash ?? null,
+    blockindex: transaction.blockindex ?? null,
+    blocktime: transaction.blocktime ?? null,
+    expiryheight: transaction.expiryheight ?? null,
     fee: transaction.fee ?? null,
     address: transaction.address ?? null,
     walletconflicts: JSON.stringify(transaction.walletconflicts),
