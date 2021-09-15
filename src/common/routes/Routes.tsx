@@ -9,6 +9,7 @@ import PastelDB from '../../features/pastelDB/database'
 import { AppContext } from '../../features/app/AppContext'
 import { pageRoutes } from './index'
 import { useAppSelector } from '../../redux/hooks'
+import Utilities from '../../features/utilities'
 
 type TRouteType = {
   id: string
@@ -56,6 +57,7 @@ const Routes = (): JSX.Element => {
         <Switch>
           <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
         </Switch>
+        {db ? <Utilities /> : null}
       </Router>
     </div>
   )
