@@ -32,7 +32,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
       return
     }
 
-    let keys = privateKey.split(new RegExp('[\\n\\r]+'))
+    let keys = privateKey.replace(/\n/g, ' ').split(' ')
     if (!keys || keys.length === 0) {
       setMessage('No ANI keys were specified, so none were imported')
       return
@@ -92,7 +92,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
               <textarea
                 placeholder='ANI Private Keys'
                 className={cn(
-                  'w-full rounded shadow-2px py-2 px-4 outline-none h-10 resize-none text-base text-gray-4a font-normal leading-6 transition duration-300 focus:border-blue-3f active:border-blue-3f',
+                  'w-full rounded shadow-2px py-2 px-4 outline-none h-10 resize-none text-base text-gray-4a font-normal leading-6 transition duration-300 focus:border focus:border-blue-3f active:border-blue-3f',
                   message && 'border border-red-fe',
                 )}
                 value={privateKey}
