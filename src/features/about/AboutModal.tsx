@@ -20,15 +20,12 @@ export default function AboutModal(): JSX.Element | null {
       isOpen={modalIsOpen}
       handleClose={() => dispatch(closeAboutModal())}
       classNames='max-w-4xl'
+      title='Pastel Wallet Fullnode'
     >
-      <div className='flex-col'>
-        <div className='mt-6 text-center text-gray-800 text-2xl font-extrabold mb-0.5'>
-          Pastelwallet Fullnode
-        </div>
-
-        <div className='p-4 mr-7 text-center break-all max-h-[400px] overflow-y-auto'>
+      <div className='flex-col pr-8'>
+        <div className='p-4 text-center break-all max-h-[400px] overflow-y-auto'>
           <div className='flex-col'>
-            <div className='mt-6'>Pastelwallet Fullnode v{appVersion}</div>
+            <div>Pastelwallet Fullnode v{appVersion}</div>
             <div className='mt-6'>
               Built with Electron. Copyright (c) 2018-{txYear}.
             </div>

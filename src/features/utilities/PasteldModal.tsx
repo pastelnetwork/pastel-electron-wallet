@@ -23,7 +23,7 @@ export default function PasteldModal(): JSX.Element | null {
       isOpen={pasteldModalIsOpen}
       handleClose={() => dispatch(closePasteldModal())}
       classNames='max-w-[700px]'
-      title='Pasteld info'
+      title='Pasteld Info'
     >
       {!info || !info.version ? (
         <div className='pr-8 text-center'>
@@ -34,8 +34,8 @@ export default function PasteldModal(): JSX.Element | null {
         </div>
       ) : (
         <div className='pr-8'>
-          <div className='mt-6 flex justify-between'>
-            <div>version:</div>
+          <div className='mt-2 flex justify-between'>
+            <div>Version:</div>
             <div>{info.version}</div>
           </div>
           <div className='flex justify-between'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import fs from 'fs'
 
@@ -31,39 +31,11 @@ import ImportPrivKeyModal from './ImportPrivKeyModal'
 import ErrorModal from './ErrorModal'
 import PasteldModal from './PasteldModal'
 
-type TTransactionItemProps = {
-  type: TTransactionType
-  amount: number
-  txid: string
-  time: number
-  address: string
-  escapedMemo?: string
-  normaldate: string
-}
-
 export default function Utilities(): JSX.Element {
   const dispatch = useAppDispatch()
   const history = useHistory()
   const [exportTxnError, setExportTxnError] = useState('')
   const [closeExportTxn, setCloseExportTxn] = useState(false)
-
-  const { data: transactionsRaw } = transactionRPC.useTAndZTransactions()
-
-  const transactions = useMemo<TTransactionItemProps[]>(
-    () =>
-      transactionsRaw?.map(transaction => ({
-        type: (transaction.type as TTransactionType) || TTransactionType.ALL,
-        amount: transaction.amount || 0,
-        txid: transaction.txid,
-        time: transaction.time,
-        address: transaction.address,
-        escapedMemo: transaction.memo
-          ? `'${transaction.memo.replace(/"/g, '""')}'`
-          : '',
-        normaldate: dayjs.unix(transaction.time).format('MMM DD YYYY hh::mm A'),
-      })) || [],
-    [transactionsRaw],
-  )
 
   useEffect(() => {
     onRendererEvent('pastelPhotopea', () => {
@@ -124,12 +96,30 @@ export default function Utilities(): JSX.Element {
         'showSaveTransactionsAsCSVDialog',
         undefined,
       )
+
       if (save.filePath) {
+        const transactionsRaw = await transactionRPC.fetchTAndZTransactions()
+
+        const transactions =
+          transactionsRaw?.map(transaction => ({
+            type:
+              (transaction.type as TTransactionType) || TTransactionType.ALL,
+            amount: transaction.amount || 0,
+            txid: transaction.txid,
+            time: transaction.time,
+            address: transaction.address,
+            escapedMemo: transaction.memo
+              ? `'${transaction.memo.replace(/"/g, '""')}'`
+              : '',
+            normaldate: dayjs
+              .unix(transaction.time)
+              .format('MMM DD YYYY hh:mm A'),
+          })) || []
+
         const rows = transactions.map(
           transaction =>
             `${transaction.time},"${transaction.normaldate}","${transaction.txid}","${transaction.type}",${transaction.amount},"${transaction.address}","${transaction.escapedMemo}"`,
         )
-
         const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
         try {
           await fs.promises.writeFile(
