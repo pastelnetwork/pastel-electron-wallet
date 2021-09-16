@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ToastContainer } from 'react-toastify'
+import { useLocation } from 'react-router-dom'
 
 import { walletRPC } from 'api/pastel-rpc'
 import { TPaymentSources } from './walletScreen.types'
@@ -136,6 +137,7 @@ export default function WalletScreen(): JSX.Element {
 }
 
 const WalletScreenContent = (): JSX.Element => {
+  const location = useLocation()
   const currencyName = useCurrencyName()
   const {
     activePeriod,
@@ -148,6 +150,12 @@ const WalletScreenContent = (): JSX.Element => {
   } = useWalletScreenContext()
 
   const createNewAddress = useCreateNewAddress()
+
+  useEffect(() => {
+    if (location.state) {
+      setPaymentModalOpen(true)
+    }
+  }, [location])
 
   return (
     <div>

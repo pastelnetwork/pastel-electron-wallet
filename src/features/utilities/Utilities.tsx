@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import fs from 'fs'
 
+import dayjs from 'common/utils/initDayjs'
 import { useAppDispatch } from 'redux/hooks'
 import * as ROUTES from 'common/utils/constants/routes'
 
+import { transactionRPC } from 'api/pastel-rpc'
+import { TTransactionType } from 'types/rpc'
 import PastelPhotopeaModal, { openPastelPhotopeaModal } from '../pastelPhotopea'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
@@ -12,21 +16,54 @@ import AboutModal, { openAboutModal } from '../about'
 import SquooshToolModal, { openSquooshToolModal } from '../squooshTool'
 import GlitchImageModal, { openGlitchImageModal } from '../glitchImage'
 import { openUpdateToast } from '../updateToast'
-import { onRendererEvent } from '../app/rendererEvents'
+import { onRendererEvent, invokeMainTask } from '../app/rendererEvents'
 import {
   openPayURIModal,
   openExportPrivKeyModal,
   openImportPrivKeyModal,
   openImportANIPrivKeyModal,
+  openPasteldModal,
 } from './index'
 import PayURIModal from './PayURIModal'
 import ExportPrivKeyModal from './ExportPrivKeyModal'
 import ImportANIPrivKeyModal from './ImportANIPrivKeyModal'
 import ImportPrivKeyModal from './ImportPrivKeyModal'
+import ErrorModal from './ErrorModal'
+import PasteldModal from './PasteldModal'
+
+type TTransactionItemProps = {
+  type: TTransactionType
+  amount: number
+  txid: string
+  time: number
+  address: string
+  escapedMemo?: string
+  normaldate: string
+}
 
 export default function Utilities(): JSX.Element {
   const dispatch = useAppDispatch()
   const history = useHistory()
+  const [exportTxnError, setExportTxnError] = useState('')
+  const [closeExportTxn, setCloseExportTxn] = useState(false)
+
+  const { data: transactionsRaw } = transactionRPC.useTAndZTransactions()
+
+  const transactions = useMemo<TTransactionItemProps[]>(
+    () =>
+      transactionsRaw?.map(transaction => ({
+        type: (transaction.type as TTransactionType) || TTransactionType.ALL,
+        amount: transaction.amount || 0,
+        txid: transaction.txid,
+        time: transaction.time,
+        address: transaction.address,
+        escapedMemo: transaction.memo
+          ? `'${transaction.memo.replace(/"/g, '""')}'`
+          : '',
+        normaldate: dayjs.unix(transaction.time).format('MMM DD YYYY hh::mm A'),
+      })) || [],
+    [transactionsRaw],
+  )
 
   useEffect(() => {
     onRendererEvent('pastelPhotopea', () => {
@@ -63,7 +100,7 @@ export default function Utilities(): JSX.Element {
     })
 
     onRendererEvent('pasteld', () => {
-      history.push(ROUTES.PASTELD)
+      dispatch(openPasteldModal())
     })
 
     onRendererEvent('payuri', () => {
@@ -83,36 +120,27 @@ export default function Utilities(): JSX.Element {
     })
 
     onRendererEvent('exportalltx', async () => {
-      // const save = await invokeMainTask(
-      //   'showSaveTransactionsAsCSVDialog',
-      //   undefined,
-      // )
-      // if (save.filePath) {
-      //   // Construct a CSV
-      //   const { transactions } = this.props
-      //   const rows = transactions.flatMap((t: any) => {
-      //     if (t.detailedTxns) {
-      //       return t.detailedTxns.map((dt: any) => {
-      //         const normaldate = dayjs(t.time * 1000).format('mmm dd yyyy hh::MM tt')
-      //         const escapedMemo = dt.memo
-      //           ? `'${dt.memo.replace(/"/g, '""')}'`
-      //           : ''
-      //         return `${t.time},"${normaldate}","${t.txid}","${t.type}",${dt.amount},"${dt.address}","${escapedMemo}"`
-      //       })
-      //     } else {
-      //       return []
-      //     }
-      //   })
-      //   const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
-      //   try {
-      //     await fs.promises.writeFile(
-      //       save.filePath,
-      //       header.concat(rows).join('\n'),
-      //     )
-      //   } catch (err) {
-      //     openErrorModal('Error Exporting Transactions', `${err}`)
-      //   }
-      // }
+      const save = await invokeMainTask(
+        'showSaveTransactionsAsCSVDialog',
+        undefined,
+      )
+      if (save.filePath) {
+        const rows = transactions.map(
+          transaction =>
+            `${transaction.time},"${transaction.normaldate}","${transaction.txid}","${transaction.type}",${transaction.amount},"${transaction.address}","${transaction.escapedMemo}"`,
+        )
+
+        const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
+        try {
+          await fs.promises.writeFile(
+            save.filePath,
+            header.concat(rows).join('\n'),
+          )
+        } catch (err) {
+          setExportTxnError(`${err}`)
+          setCloseExportTxn(true)
+        }
+      }
     })
   }, [])
 
@@ -127,6 +155,12 @@ export default function Utilities(): JSX.Element {
       <ExportPrivKeyModal />
       <ImportANIPrivKeyModal />
       <ImportPrivKeyModal />
+      <ErrorModal
+        message={exportTxnError}
+        isOpen={closeExportTxn}
+        closeModal={() => setCloseExportTxn(false)}
+      />
+      <PasteldModal />
     </>
   )
 }

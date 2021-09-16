@@ -10,6 +10,8 @@ export {
   closeImportPrivKeyModal,
   openImportANIPrivKeyModal,
   closeImportANIPrivKeyModal,
+  openPasteldModal,
+  closePasteldModal,
 } from './UtilitiesSlice'
 
 export default Utilities

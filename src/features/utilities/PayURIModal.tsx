@@ -54,10 +54,8 @@ export default function PayURIModal(): JSX.Element | null {
       isOpen={payURIModalIsOpen}
       handleClose={() => dispatch(closePayURIModal())}
       classNames='max-w-[700px]'
+      title='Pay URI'
     >
-      <div className='mt-6 text-center text-gray-800 text-2xl font-extrabold mb-0.5'>
-        Pay URI
-      </div>
       <div className='mt-6'>
         <Input
           placeholder='URI'

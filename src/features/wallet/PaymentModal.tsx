@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { TitleModal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
@@ -16,6 +17,7 @@ const selectListClassName =
   'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-[200px] overflow-y-auto z-100 whitespace-normal'
 
 const PaymentModal = (): JSX.Element => {
+  const location = useLocation()
   const {
     setPaymentModalOpen: setIsOpen,
     paymentSources,
@@ -26,9 +28,16 @@ const PaymentModal = (): JSX.Element => {
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(12)
   const [psl, setPSL] = useState<number>(12000)
+  const [recipientAddress, setRecipientAddress] = useState<string>('')
 
   const close = () => setIsOpen(false)
 
+  useEffect(() => {
+    if (location.state) {
+      setPSL(location.state.amount)
+      setRecipientAddress(location.state.address)
+    }
+  }, [location])
   return (
     <TitleModal
       isOpen
@@ -111,6 +120,8 @@ const PaymentModal = (): JSX.Element => {
           <input
             placeholder='input recipient address'
             className='px-3 py-2 bg-transparent focus:outline-none border w-full rounded border-gray-ec'
+            value={recipientAddress}
+            onChange={e => setRecipientAddress(e.target.value)}
           />
         </div>
       </div>

@@ -5,6 +5,7 @@ export interface IUtilitiesState {
   exportPrivKeyModalIsOpen: boolean
   importANIPrivKeyModalIsOpen: boolean
   importPrivKeyModalIsOpen: boolean
+  pasteldModalIsOpen: boolean
 }
 
 const initialState: IUtilitiesState = {
@@ -12,6 +13,7 @@ const initialState: IUtilitiesState = {
   exportPrivKeyModalIsOpen: false,
   importANIPrivKeyModalIsOpen: false,
   importPrivKeyModalIsOpen: false,
+  pasteldModalIsOpen: false,
 }
 
 export const utilitiesSlice = createSlice({
@@ -42,6 +44,12 @@ export const utilitiesSlice = createSlice({
     closeImportANIPrivKeyModal(state: IUtilitiesState) {
       state.importANIPrivKeyModalIsOpen = false
     },
+    openPasteldModal(state: IUtilitiesState) {
+      state.pasteldModalIsOpen = true
+    },
+    closePasteldModal(state: IUtilitiesState) {
+      state.pasteldModalIsOpen = false
+    },
   },
 })
 
@@ -56,4 +64,6 @@ export const {
   closeImportPrivKeyModal,
   openImportANIPrivKeyModal,
   closeImportANIPrivKeyModal,
+  openPasteldModal,
+  closePasteldModal,
 } = utilitiesSlice.actions

@@ -30,7 +30,6 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
       return
     }
     let keys = privateKey.split(new RegExp('[\\n\\r]+'))
-    console.log(keys)
     if (!keys || keys.length === 0) {
       setMessage('No keys were specified, so none were imported')
       return
@@ -61,6 +60,7 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
       isOpen={importPrivKeyModalIsOpen}
       handleClose={() => dispatch(closeImportPrivKeyModal())}
       classNames='max-w-[700px]'
+      title='Import Private Keys'
     >
       {isComplete ? (
         <>
@@ -83,9 +83,6 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
         </>
       ) : (
         <>
-          <div className='mt-2 text-center text-gray-800 text-2xl font-extrabold mb-0.5'>
-            Import Private Keys
-          </div>
           <div className='mt-6'>
             Please paste your private or viewing keys here (transparent address
             or shielded address), one line per key.

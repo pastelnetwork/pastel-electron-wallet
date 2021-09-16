@@ -325,6 +325,29 @@ export class WalletRPC {
     }
   }
 
+  async doImportANIPrivKey(key: string): Promise<string> {
+    if (key.startsWith('P') && key.length === 52) {
+      try {
+        const { result } = await rpc<TPrivKeyResponse>(
+          'ingest',
+          ['ani2psl_secret', key],
+          { throw: true },
+        )
+        return result
+      } catch (err) {
+        log.error(
+          `api/pastel-rpc/wallet doImportANIPrivKey error: ${err.message}`,
+          err,
+        )
+        throw err
+      }
+    } else {
+      throw new Error(
+        'Error: The entered ANI private key was the wrong length or did not start with the character "p"!',
+      )
+    }
+  }
+
   private useMapListUnspentToAddressAmounts(
     data?: { address: string; amount: number }[],
   ) {
