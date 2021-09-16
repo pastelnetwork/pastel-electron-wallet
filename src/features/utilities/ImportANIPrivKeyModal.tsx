@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
 import { toast } from 'react-toastify'
 
@@ -18,6 +18,12 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
   const [isComplete, setComplete] = useState<boolean>(false)
   const [privateKey, setPrivateKey] = useState<string>('')
   const [message, setMessage] = useState<string>('')
+
+  useEffect(() => {
+    setMessage('')
+    setPrivateKey('')
+    setComplete(false)
+  }, [importANIPrivKeyModalIsOpen])
 
   if (!importANIPrivKeyModalIsOpen) {
     return null
@@ -44,7 +50,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
 
     for (let i = 0; i < keys.length; i++) {
       try {
-        await walletRPC.doImportANIPrivKey(keys[i])
+        walletRPC.doImportANIPrivKey(keys[i])
         if (i === keys.length - 1) {
           setComplete(true)
         }
@@ -59,7 +65,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
       isOpen={importANIPrivKeyModalIsOpen}
       handleClose={() => dispatch(closeImportANIPrivKeyModal())}
       classNames='max-w-[700px]'
-      title='Import ANI (Animecoin) Private Keys'
+      title={!isComplete ? 'Import ANI (Animecoin) Private Keys' : ''}
     >
       <div className='pr-8'>
         {isComplete ? (

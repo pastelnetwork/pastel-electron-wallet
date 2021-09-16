@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
 import cn from 'classnames'
 
@@ -17,6 +17,12 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
   const [isComplete, setComplete] = useState<boolean>(false)
   const [privateKey, setPrivateKey] = useState<string>('')
   const [message, setMessage] = useState<string>('')
+
+  useEffect(() => {
+    setMessage('')
+    setPrivateKey('')
+    setComplete(false)
+  }, [importPrivKeyModalIsOpen])
 
   if (!importPrivKeyModalIsOpen) {
     return null
@@ -45,7 +51,7 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
 
     for (let i = 0; i < keys.length; i++) {
       try {
-        await walletRPC.importPrivKey(keys[i].trim(), i === keys.length - 1)
+        walletRPC.importPrivKey(keys[i].trim(), i === keys.length - 1)
         if (i === keys.length - 1) {
           setComplete(true)
         }
@@ -60,7 +66,7 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
       isOpen={importPrivKeyModalIsOpen}
       handleClose={() => dispatch(closeImportPrivKeyModal())}
       classNames='max-w-[700px]'
-      title='Import Private Keys'
+      title={!isComplete ? 'Import Private Keys' : ''}
     >
       <div className='pr-8'>
         {isComplete ? (

@@ -16,6 +16,11 @@ import { useWalletScreenContext } from './walletScreen.context'
 const selectListClassName =
   'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-[200px] overflow-y-auto z-100 whitespace-normal'
 
+type Tlocation = {
+  amount: number
+  address: string
+}
+
 const PaymentModal = (): JSX.Element => {
   const location = useLocation()
   const {
@@ -34,8 +39,9 @@ const PaymentModal = (): JSX.Element => {
 
   useEffect(() => {
     if (location.state) {
-      setPSL(location.state.amount)
-      setRecipientAddress(location.state.address)
+      const state = location.state as Tlocation
+      setPSL(state.amount)
+      setRecipientAddress(state.address)
     }
   }, [location])
   return (
