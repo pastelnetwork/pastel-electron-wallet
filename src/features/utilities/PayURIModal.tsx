@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -17,6 +17,12 @@ export default function PayURIModal(): JSX.Element | null {
   const [isValid, setValid] = useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    setUri('')
+    setMessage('')
+    setValid(false)
+  }, [payURIModalIsOpen])
 
   if (!payURIModalIsOpen) {
     return null

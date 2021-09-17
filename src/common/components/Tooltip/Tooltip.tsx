@@ -64,16 +64,16 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
     },
     left: {
       width: '10px',
-      left: 'calc(100% + 3px)',
+      left: 'calc(100% + 4px)',
       top: '50%',
-      transform: 'rotate(-90deg)',
+      transform: 'rotate(90deg)',
       marginTop,
     },
     right: {
       width: '10px',
-      right: 'calc(100% + 3px)',
+      right: 'calc(100% + 4px)',
       top: '50%',
-      transform: 'rotate(90deg)',
+      transform: 'rotate(-90deg)',
       marginTop,
     },
   }

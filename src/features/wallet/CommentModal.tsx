@@ -46,8 +46,12 @@ const CommentModal = ({ isOpen, onClose }: TCommentModalProps): JSX.Element => {
           <Tooltip
             classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
             wrapperClassNames='absolute top-0 right-0'
-            content='Info'
-            width={110}
+            content={
+              tab === 'Note'
+                ? 'You can include a short message to the recipient if the recipient’s address is a shielded PSL address; this message will only be visible to the recipient.'
+                : 'This is a short note that is only visible to you; it can be used to record a short note to yourself reminding you of the purpose of the transaction. For example “Sent PSL to brother for cat NFT”'
+            }
+            width={250}
             type='top'
           >
             <EliminationIcon

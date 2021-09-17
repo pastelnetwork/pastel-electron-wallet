@@ -11,6 +11,8 @@ export const defaultPastelInfo = {
   testnet: false,
   verificationProgress: 0,
   version: 0,
+  paytxfee: 0,
+  relayfee: 0,
 }
 
 export type TWalletInfo = {
@@ -23,6 +25,8 @@ export type TWalletInfo = {
   testnet: boolean
   verificationProgress: number
   version: number
+  paytxfee: number
+  relayfee: number
 }
 
 export interface IAppInfoState {

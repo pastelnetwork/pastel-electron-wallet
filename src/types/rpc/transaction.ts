@@ -15,14 +15,16 @@ type TxDetail = {
   address: string
   amount: number
   memo?: string
+  fee?: number
 }
 
 type TTransferPayload = {
   from: string
   to: TxDetail[]
+  fee: number
 }
 
-type TRpcParam = string | number | boolean | TxDetail[]
+type TRpcParam = string | number | boolean | TxDetail[] | string[]
 
 type TBaseTransaction = {
   // TODO: fix type, address may be undefined https://rpc-doc.pastel.network/listtransactions.html
@@ -197,6 +199,17 @@ type TSinceBlockTransaction = {
   to?: string
 }
 
+type TTransactionStatus = {
+  status: string
+  params: {
+    fromaddress: string
+  }
+  id: string
+  error?: {
+    message: string
+  }
+}
+
 type TTxoutResponse = TResponse<TTxout>
 type TTransactionResponse = TTransaction[]
 type TRawTransactionResponse = TResponse<TRawTransaction>
@@ -229,4 +242,5 @@ export type {
   TTransactionInfoDetail,
   TTransactionInfoResponse,
   TRawTransactionResponse,
+  TTransactionStatus,
 }

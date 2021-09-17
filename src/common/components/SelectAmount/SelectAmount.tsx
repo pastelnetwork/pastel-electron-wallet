@@ -21,6 +21,7 @@ export type TSelectAmountProps = {
   disabled?: boolean
   defaultValue?: TOption
   forceUpdate?: boolean
+  label?: string
 }
 
 const inputEventTypesToIgnore: string[] = [
@@ -40,6 +41,7 @@ export default function SelectAmount({
   invalidInputClassName,
   defaultValue,
   forceUpdate,
+  label,
 }: TSelectAmountProps): JSX.Element {
   const [isValid, setIsValid] = useState(true)
   const options: TOption[] = useOptions(min, max, step)
@@ -54,7 +56,7 @@ export default function SelectAmount({
     if (forceUpdate && defaultValue?.value) {
       setSelected(defaultValue)
     }
-  }, [forceUpdate])
+  }, [defaultValue])
 
   const handleOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!validate(e)) {
@@ -130,8 +132,14 @@ export default function SelectAmount({
                   'h-full w-full rounded px-10px text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
                   disabled && 'cursor-not-allowed',
                   !isValid && invalidInputClassName,
+                  label && 'pr-10',
                 )}
               />
+              {label ? (
+                <span className='text-base font-normal text-gray-a0 mr-2 absolute right-[25px]'>
+                  {label}
+                </span>
+              ) : null}
               <button {...getToggleButtonProps()} className='w-10px mr-4'>
                 <Caret
                   size={10}
