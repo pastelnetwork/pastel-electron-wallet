@@ -97,7 +97,7 @@ export default function WalletAddresses(): JSX.Element {
             <div className='flex items-center'>
               <div className='text-gray-71 text-h4'>Selected total:</div>
               <div className='ml-3 text-gray-2d text-h3-heavy'>
-                {formatPrice(selectedAmount, currencyName)}
+                {formatPrice(selectedAmount, currencyName, 4)}
               </div>
             </div>
           </div>

@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 
 import { TitleModal } from 'common/components/Modal'
 import Checkbox from 'common/components/Checkbox'
-import { formatAddress, formatNumber } from 'common/utils/format'
+import { formatAddress, formatPrice } from 'common/utils/format'
 import { Button } from 'common/components/Buttons'
 import { useWalletScreenContext } from './walletScreen.context'
 import { useSetPaymentSource } from './walletScreen.hooks'
+import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TAddPaymentSourceModal = {
   isOpen: boolean
@@ -16,6 +17,7 @@ export default function AddPaymentSourceModal({
   isOpen,
   onClose,
 }: TAddPaymentSourceModal): JSX.Element {
+  const currencyName = useCurrencyName()
   const [selected, setSelected] = useState<string[]>([])
   const {
     paymentSources,
@@ -90,10 +92,10 @@ export default function AddPaymentSourceModal({
                       </div>
                     </td>
                     <td>
-                      {formatNumber(
-                        parseFloat(
-                          allAddressAmounts.data?.[address].toFixed(4),
-                        ),
+                      {formatPrice(
+                        allAddressAmounts.data?.[address],
+                        currencyName,
+                        4,
                       )}
                     </td>
                   </tr>

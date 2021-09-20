@@ -9,7 +9,7 @@ import { UseQueryResult } from 'react-query'
 import { TAddress } from '../../types/rpc'
 import { useWalletScreenContext } from './walletScreen.context'
 import SelectPaymentSourceAmount from './SelectPaymentSourceAmount'
-import { formatAbbreviatedNumber, timeAgo } from 'common/utils/format'
+import { formatPrice, timeAgo } from 'common/utils/format'
 
 const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
 
@@ -150,7 +150,7 @@ export default function AddressesTable({
           loadingCell
         ) : (
           <div className='text-gray-71 text-h5-medium'>
-            {formatAbbreviatedNumber(amount || 0, 4)}
+            {formatPrice(amount || 0, '', 4)}
           </div>
         ),
     },

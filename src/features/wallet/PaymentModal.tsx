@@ -56,7 +56,7 @@ const PaymentModal = (): JSX.Element => {
   const [recipientAddress, setRecipientAddress] = useState<string>('')
   const [memoString, setMemoString] = useState<string>('')
   const [defaulSelectedAmount, setDefaulSelectedAmount] = useState({
-    label: `${selectedAmount}`,
+    label: `${formatPrice(selectedAmount, '', 4)}`,
     value: `${selectedAmount}`,
   })
   const [messages, setMessages] = useState<string[]>([])
