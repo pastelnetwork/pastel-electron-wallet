@@ -208,6 +208,9 @@ type TTransactionStatus = {
   error?: {
     message: string
   }
+  result?: {
+    txid: string
+  }
 }
 
 type TTxoutResponse = TResponse<TTxout>

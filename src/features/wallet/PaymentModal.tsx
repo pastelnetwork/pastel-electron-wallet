@@ -17,12 +17,15 @@ import SelectAmount, {
   generateStep,
   TOption,
 } from '../../common/components/SelectAmount'
+import { saveTransactionNote } from 'common/utils/TransactionNote'
 import { EliminationIcon, AddIcon } from 'common/components/Icons'
 import { useWalletScreenContext } from './walletScreen.context'
 import { useSetPaymentSource } from './walletScreen.hooks'
 import { useAppSelector } from '../../redux/hooks'
 import Input from 'common/components/Inputs/Input'
 import AddPaymentSourceModal from './AddPaymentSourceModal'
+import { TNote } from './CommentModal'
+import congratulations from 'common/assets/icons/ico-congratulations.svg'
 
 const selectListClassName =
   'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-[200px] overflow-y-auto z-100 whitespace-normal'
@@ -44,6 +47,8 @@ const PaymentModal = (): JSX.Element => {
     totalBalances,
     selectedAmount,
     allAddressAmounts,
+    setPaymentSources,
+    setSelectedAddresses,
   } = useWalletScreenContext()
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(12)
@@ -51,10 +56,11 @@ const PaymentModal = (): JSX.Element => {
   const [recipientAddress, setRecipientAddress] = useState<string>('')
   const [memoString, setMemoString] = useState<string>('')
   const [defaulSelectedAmount, setDefaulSelectedAmount] = useState({
-    label: '0',
-    value: '0',
+    label: `${selectedAmount}`,
+    value: `${selectedAmount}`,
   })
   const [messages, setMessages] = useState<string[]>([])
+  const [paymentNotes, setPaymentNotes] = useState<TNote[]>([])
   const [isLoading, setLoading] = useState(false)
   const [isComplete, setComplete] = useState(false)
   const [fee, setFee] = useState<string>(
@@ -71,6 +77,12 @@ const PaymentModal = (): JSX.Element => {
     setMessages([])
     setMemoString('')
     setRecipientAddress('')
+    setPaymentSources(() => {
+      return {}
+    })
+    setSelectedAddresses(() => {
+      return []
+    })
     if (location.state) {
       history.push(ROUTES.WALLET)
     }
@@ -83,27 +95,57 @@ const PaymentModal = (): JSX.Element => {
       setPSL(state.amount)
       setRecipientAddress(state.address)
       if (state.memoString) {
-        const textEncoder = new TextEncoder()
-        setMemoString(hex.encode(textEncoder.encode(state.memoString)))
-        setDefaulSelectedAmount({
-          label: formatNumber(state.amount),
-          value: String(state.amount),
-        })
-
-        handleUpdatePaymentSource(state)
+        setMemoString(state.memoString)
       }
+      setDefaulSelectedAmount({
+        label: formatNumber(state.amount),
+        value: String(state.amount),
+      })
+      updatePaymentSources(state.amount)
     }
   }, [location])
 
-  const handleUpdatePaymentSource = (state: TLocationSate) => {
+  const getTotalPaymentSources = () => {
+    let total = 0
+    for (const key in paymentSources) {
+      total += paymentSources[key]
+    }
+
+    return total
+  }
+
+  const updatePaymentSources = (amount: number) => {
     const addressAmounts = allAddressAmounts.data
     if (addressAmounts) {
-      let total = 0
-      for (const key in addressAmounts) {
-        if (total < state.amount) {
-          if (addressAmounts[key] >= 1) {
-            if (total + addressAmounts[key] >= state.amount) {
-              setPaymentSource(key, state.amount - total)
+      let totalAmountSelectedAddress = 0
+      if (addressAmounts) {
+        for (const key in addressAmounts) {
+          if (paymentSources[key]) {
+            totalAmountSelectedAddress += addressAmounts[key]
+          }
+        }
+      }
+      setPaymentSources(() => {
+        return {}
+      })
+      if (totalAmountSelectedAddress >= amount) {
+        let total = 0
+        for (const key in paymentSources) {
+          if (total < amount && addressAmounts[key]) {
+            if (total + addressAmounts[key] >= amount) {
+              setPaymentSource(key, amount - total)
+            } else {
+              setPaymentSource(key, addressAmounts[key])
+            }
+            total += addressAmounts[key]
+          }
+        }
+      } else {
+        let total = 0
+        for (const key in addressAmounts) {
+          if (total < amount) {
+            if (total + addressAmounts[key] >= amount) {
+              setPaymentSource(key, amount - total)
             } else {
               setPaymentSource(key, addressAmounts[key])
             }
@@ -114,7 +156,7 @@ const PaymentModal = (): JSX.Element => {
     }
   }
 
-  const handlePayment = async () => {
+  const handleSendPayment = async () => {
     setMessages([])
     const errors = []
     let total = 0
@@ -122,7 +164,8 @@ const PaymentModal = (): JSX.Element => {
       const amount = paymentSources[key]
       if (
         allAddressAmounts.data?.[key] &&
-        amount + parseFloat(fee) > allAddressAmounts.data?.[key]
+        amount + parseFloat(fee) > allAddressAmounts.data?.[key] &&
+        psl > allAddressAmounts.data?.[key]
       ) {
         errors.push(
           `Address: ${key} failed. Insufficient shielded funds, have ${formatPrice(
@@ -147,15 +190,19 @@ const PaymentModal = (): JSX.Element => {
     }
     setLoading(true)
     const operationIdList = []
+    const textEncoder = new TextEncoder()
     for (const key in paymentSources) {
       try {
+        const note = paymentNotes.find(n => n.address === key)
         const { result } = await transactionRPC.sendTransactionWithCustomFee({
           from: key,
           to: [
             {
               address: recipientAddress,
               amount: paymentSources[key],
-              memo: memoString,
+              memo: note?.recipientNote
+                ? hex.encode(textEncoder.encode(note?.recipientNote))
+                : undefined,
             },
           ],
           fee: parseFloat(fee),
@@ -165,28 +212,65 @@ const PaymentModal = (): JSX.Element => {
         toast(error.message, { type: 'error' })
       }
     }
+
     if (operationIdList.length > 0) {
-      const {
-        result: transactionStatus,
-      } = await transactionRPC.getTransactionStatus(operationIdList)
-      const errorMgs: string[] = []
-      let hasError = false
-      transactionStatus.forEach(item => {
-        if (item.status === 'failed') {
-          errorMgs.push(`Opid ${item.id} Failed. ${item.error?.message}`)
-          hasError = true
-        } else {
-          errorMgs.push(
-            `Transaction was successfully broadcast. TXID: ${item.id}`,
-          )
+      handleGetTransactionResult(operationIdList)
+    } else {
+      setLoading(false)
+    }
+  }
+
+  const handleGetTransactionResult = async (operationIdList: string[]) => {
+    const {
+      result: transactionResult,
+    } = await transactionRPC.getTransactionStatus(operationIdList)
+    const errorMgs: string[] = []
+    let hasError = false
+    let isExecuting = false
+    transactionResult.forEach(item => {
+      if (item.status === 'failed') {
+        errorMgs.push(`Opid ${item.id} Failed. ${item.error?.message}`)
+        hasError = true
+      } else if (item.status === 'success') {
+        errorMgs.push(
+          `Transaction was successfully broadcast. \nTXID: ${item?.result?.txid}`,
+        )
+        const note = paymentNotes.find(
+          n => n.address === item.params.fromaddress,
+        )
+        if (note?.privateNote && item?.result?.txid) {
+          saveTransactionNote({
+            txnId: item.result.txid,
+            privateNote: note.privateNote,
+          })
         }
-      })
+      } else {
+        isExecuting = true
+      }
+    })
+
+    if (isExecuting) {
+      setTimeout(() => {
+        handleGetTransactionResult(operationIdList)
+      }, 2000) // 2 sec
+    } else {
       setMessages(errorMgs)
       if (!hasError) {
         setComplete(true)
       }
+      setLoading(false)
     }
-    setLoading(false)
+  }
+
+  const handleSavePaymentNote = (note: TNote) => {
+    const index = paymentNotes.findIndex(n => n.address === note.address)
+    if (index !== -1) {
+      const tmp = paymentNotes
+      tmp[index] = note
+      setPaymentNotes(tmp)
+    } else {
+      setPaymentNotes([...paymentNotes, note])
+    }
   }
 
   return (
@@ -199,11 +283,22 @@ const PaymentModal = (): JSX.Element => {
       >
         {isComplete ? (
           <>
-            {messages.map((err, idx) => (
-              <p key={idx} className='pt-2 mb-1 text-h4'>
-                {err}
-              </p>
-            ))}
+            <div className='text-center'>
+              <div>
+                <img
+                  src={congratulations}
+                  alt='Congratulations'
+                  className='w-54px h-54px mx-auto'
+                />
+              </div>
+              <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
+                {messages.map((err, idx) => (
+                  <p key={idx} className='pt-2 mb-1 text-h4'>
+                    {err}
+                  </p>
+                ))}
+              </div>
+            </div>
           </>
         ) : (
           <>
@@ -240,12 +335,13 @@ const PaymentModal = (): JSX.Element => {
                     if (value) {
                       setBalance(balance)
                       if (totalBalances.data?.total) {
-                        const tmp = (totalBalances.data?.total * value) / 100
-                        setPSL(tmp)
+                        const newPsl = (totalBalances.data?.total * value) / 100
+                        setPSL(newPsl)
                         setDefaulSelectedAmount({
-                          label: formatPrice(tmp, '', 2),
-                          value: tmp.toString(),
+                          label: formatPrice(newPsl, '', 2),
+                          value: newPsl.toString(),
                         })
+                        updatePaymentSources(newPsl)
                       }
                     }
                   }}
@@ -274,7 +370,7 @@ const PaymentModal = (): JSX.Element => {
                       info.paytxfee || info.relayfee
                     } ${currencyName}. The transaction fee is required as an incentive for miners to include your transaction in the next Pastel block; a transaction with a low fee may take longer to be confirmed by the network.`}
                     width={250}
-                    type='right'
+                    type='left'
                   >
                     <EliminationIcon
                       size={13}
@@ -355,9 +451,16 @@ const PaymentModal = (): JSX.Element => {
               </div>
               <table className='w-full'>
                 <tbody>
-                  {Object.keys(paymentSources).map((address: string) => (
-                    <PaymentSource key={address} address={address} />
-                  ))}
+                  {Object.entries(paymentSources).map(
+                    (address: [string, number]) => (
+                      <PaymentSource
+                        key={`${address[0]}-${address[1]}`}
+                        address={address[0]}
+                        onSavePaymentNote={handleSavePaymentNote}
+                        defaultsNote={memoString}
+                      />
+                    ),
+                  )}
                 </tbody>
               </table>
             </div>
@@ -384,8 +487,8 @@ const PaymentModal = (): JSX.Element => {
               <Button
                 className='ml-[30px] px-0'
                 childrenClassName='w-full'
-                onClick={handlePayment}
-                disabled={isLoading}
+                onClick={handleSendPayment}
+                disabled={isLoading || getTotalPaymentSources() < psl}
               >
                 <div className='flex items-center px-5 text-white text-h5-heavy'>
                   <img src={checkIcon} className='py-3.5' />

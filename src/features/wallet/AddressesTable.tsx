@@ -33,10 +33,27 @@ export default function AddressesTable({
     setCurrentAddress,
     setIsQRCodeModalOpen,
     setExportKeysModalOpen,
+    setPaymentSources,
   } = useWalletScreenContext()
 
-  const selectAddress = (address: string) =>
-    setSelectedAddresses(addresses => [...addresses, address])
+  const selectAddress = (address: string, amount: number) => {
+    setSelectedAddresses(addresses => {
+      if (addresses.includes(address)) {
+        return addresses.filter(item => item !== address)
+      } else {
+        return [...addresses, address]
+      }
+    })
+    setPaymentSources(sources => {
+      if (sources[address]) {
+        const adr = sources
+        delete adr[address]
+        return { ...sources }
+      } else {
+        return { ...sources, [address]: amount }
+      }
+    })
+  }
 
   const Columns = [
     {
@@ -44,7 +61,7 @@ export default function AddressesTable({
       colClasses: 'w-[35%] text-h6 leading-5 font-normal',
       name: 'Address name',
       headerColClasses: 'mx-30px',
-      custom: (address: string) => (
+      custom: (address: string, row: TRow) => (
         <div className='flex items-center mx-30px'>
           {isLoadingAddresses ? (
             loadingCell
@@ -52,7 +69,7 @@ export default function AddressesTable({
             <>
               <Checkbox
                 isChecked={Boolean(selectedAddresses.includes(address))}
-                clickHandler={() => selectAddress(address)}
+                clickHandler={() => selectAddress(address, row.amount)}
               />
               <AddressForm address={address} />
             </>

@@ -63,7 +63,7 @@ export const AddressForm = ({
           />
         </>
       ) : addressLabel ? (
-        <div className='w-220px md:w-[312px]'>
+        <div className='w-220px md:w-[312px] pl-[10px]'>
           <Tooltip
             autoWidth={true}
             type='top'
@@ -132,7 +132,7 @@ export const AddressForm = ({
                 <Tooltip
                   classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
                   content='Copy address to clipboard'
-                  width={120}
+                  width={130}
                   type='top'
                 >
                   <span
@@ -156,7 +156,7 @@ export const AddressForm = ({
               >
                 <Pencil
                   strokeWidth={0.2}
-                  className='cursor-pointer'
+                  className='cursor-pointer text-gray-88'
                   size={16}
                 />
               </span>
