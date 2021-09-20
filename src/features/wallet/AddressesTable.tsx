@@ -34,6 +34,7 @@ export default function AddressesTable({
     setIsQRCodeModalOpen,
     setExportKeysModalOpen,
     setPaymentSources,
+    pastelPromoCode,
   } = useWalletScreenContext()
 
   const selectAddress = (address: string, amount: number) => {
@@ -54,6 +55,7 @@ export default function AddressesTable({
       }
     })
   }
+  const pastelPromoCodeList = pastelPromoCode.data
 
   const Columns = [
     {
@@ -67,10 +69,14 @@ export default function AddressesTable({
             loadingCell
           ) : (
             <>
-              <Checkbox
-                isChecked={Boolean(selectedAddresses.includes(address))}
-                clickHandler={() => selectAddress(address, row.amount)}
-              />
+              {!pastelPromoCodeList?.find(
+                promoCode => promoCode.address === address,
+              ) ? (
+                <Checkbox
+                  isChecked={Boolean(selectedAddresses.includes(address))}
+                  clickHandler={() => selectAddress(address, row.amount)}
+                />
+              ) : null}
               <AddressForm address={address} />
             </>
           )}
@@ -144,7 +150,7 @@ export default function AddressesTable({
           loadingCell
         ) : (
           <div className='text-gray-71 text-h5-medium'>
-            {formatAbbreviatedNumber(amount || 0, 2)}
+            {formatAbbreviatedNumber(amount || 0, 4)}
           </div>
         ),
     },
@@ -156,7 +162,13 @@ export default function AddressesTable({
         isLoadingAddresses ? (
           loadingCell
         ) : (
-          <SelectPaymentSourceAmount address={address} />
+          <>
+            {!pastelPromoCodeList?.find(
+              promoCode => promoCode.address === address,
+            ) ? (
+              <SelectPaymentSourceAmount address={address} />
+            ) : null}
+          </>
         ),
     },
   ]

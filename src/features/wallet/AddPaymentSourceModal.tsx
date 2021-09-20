@@ -69,10 +69,10 @@ export default function AddPaymentSourceModal({
         <tbody>
           {allAddressAmounts?.data &&
             Object.keys(allAddressAmounts.data).map((address: string) => {
-              if (!paymentSourcesMap.includes(address)) {
-                const promoCode = pastelPromoCode.data?.find(
-                  code => code.address === address,
-                )
+              const promoCode = pastelPromoCode.data?.find(
+                code => code.address === address,
+              )
+              if (!paymentSourcesMap.includes(address) && !promoCode) {
                 return (
                   <tr
                     className='text-gray-71 text-sm h-10 bg-white border-b border-line'
@@ -85,9 +85,7 @@ export default function AddPaymentSourceModal({
                           clickHandler={() => handleSelected(address)}
                         />
                         <span className='text-blue-3f ml-5 truncate max-w-[240px]'>
-                          {promoCode
-                            ? promoCode.label
-                            : addressBookMap[address] || formatAddress(address)}
+                          {addressBookMap[address] || formatAddress(address)}
                         </span>
                       </div>
                     </td>
