@@ -25,6 +25,7 @@ import { useAppSelector } from '../../redux/hooks'
 import Input from 'common/components/Inputs/Input'
 import AddPaymentSourceModal from './AddPaymentSourceModal'
 import { TNote } from './CommentModal'
+import { isZaddr, isTransparent } from 'common/utils/wallet'
 import congratulations from 'common/assets/icons/ico-congratulations.svg'
 
 const selectListClassName =
@@ -49,6 +50,7 @@ const PaymentModal = (): JSX.Element => {
     allAddressAmounts,
     setPaymentSources,
     setSelectedAddresses,
+    selectedAddresses,
   } = useWalletScreenContext()
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(!selectedAmount ? 0 : 12)
@@ -70,6 +72,10 @@ const PaymentModal = (): JSX.Element => {
     addPaymentSourceModalIsOpen,
     setAddPaymentSourceModalIsOpen,
   ] = useState(false)
+  const [isValidRecipientAddress, setValidRecipientAddress] = useState<boolean>(
+    false,
+  )
+  const [message, setMessage] = useState<string>('')
 
   const close = () => {
     setComplete(false)
@@ -132,26 +138,41 @@ const PaymentModal = (): JSX.Element => {
   }
 
   const handleSendPayment = async () => {
+    if (!recipientAddress) {
+      setValidRecipientAddress(false)
+      setMessage('Recipient address is required')
+      return
+    }
+
+    if (!isZaddr(recipientAddress) && !isTransparent(recipientAddress)) {
+      setValidRecipientAddress(false)
+      setMessage('Recipient address is invalid')
+      return
+    }
+
     setMessages([])
     const errors = []
     let total = 0
-    for (const key in paymentSources) {
-      const amount = paymentSources[key]
-      if (
-        allAddressAmounts.data?.[key] &&
-        amount + parseFloat(fee) > allAddressAmounts.data?.[key] &&
-        psl > allAddressAmounts.data?.[key]
-      ) {
-        errors.push(
-          `Address: ${key} failed. Insufficient shielded funds, have ${formatPrice(
-            allAddressAmounts.data?.[key],
-            '',
-            4,
-          )}, need ${formatPrice(amount + parseFloat(fee), '', 4)}`,
-        )
-      }
+    for (let i = 0; i < selectedAddresses.length; i++) {
+      const address = selectedAddresses[i]
+      if (paymentSources[address]) {
+        const amount = paymentSources[address]
+        if (
+          allAddressAmounts.data?.[address] &&
+          amount + parseFloat(fee) > allAddressAmounts.data?.[address] &&
+          psl > allAddressAmounts.data?.[address]
+        ) {
+          errors.push(
+            `Address: ${address} failed. Insufficient shielded funds, have ${formatPrice(
+              allAddressAmounts.data?.[address],
+              '',
+              4,
+            )}, need ${formatPrice(amount + parseFloat(fee), '', 4)}`,
+          )
+        }
 
-      total += amount
+        total += amount
+      }
     }
 
     if (errors.length > 0) {
@@ -166,25 +187,28 @@ const PaymentModal = (): JSX.Element => {
     setLoading(true)
     const operationIdList = []
     const textEncoder = new TextEncoder()
-    for (const key in paymentSources) {
-      try {
-        const note = paymentNotes.find(n => n.address === key)
-        const { result } = await transactionRPC.sendTransactionWithCustomFee({
-          from: key,
-          to: [
-            {
-              address: recipientAddress,
-              amount: paymentSources[key],
-              memo: note?.recipientNote
-                ? hex.encode(textEncoder.encode(note?.recipientNote))
-                : undefined,
-            },
-          ],
-          fee: parseFloat(fee),
-        })
-        operationIdList.push(result)
-      } catch (error) {
-        toast(error.message, { type: 'error' })
+    for (let i = 0; i < selectedAddresses.length; i++) {
+      const address = selectedAddresses[i]
+      if (paymentSources[address]) {
+        try {
+          const note = paymentNotes.find(n => n.address === address)
+          const { result } = await transactionRPC.sendTransactionWithCustomFee({
+            from: address,
+            to: [
+              {
+                address: recipientAddress,
+                amount: paymentSources[address],
+                memo: note?.recipientNote
+                  ? hex.encode(textEncoder.encode(note?.recipientNote))
+                  : undefined,
+              },
+            ],
+            fee: parseFloat(fee),
+          })
+          operationIdList.push(result)
+        } catch (error) {
+          toast(error.message, { type: 'error' })
+        }
       }
     }
 
@@ -248,6 +272,11 @@ const PaymentModal = (): JSX.Element => {
     }
   }
 
+  let recipientAddressIsValid = null
+  if (!isValidRecipientAddress && message) {
+    recipientAddressIsValid = false
+  }
+
   return (
     <>
       <TitleModal
@@ -302,7 +331,7 @@ const PaymentModal = (): JSX.Element => {
                   inputWrapperClassName='w-full'
                   customListClassName={selectListClassName}
                   autocomplete={true}
-                  min={1}
+                  min={0}
                   max={100}
                   step={1}
                   value={balance}
@@ -386,6 +415,13 @@ const PaymentModal = (): JSX.Element => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setRecipientAddress(e.target.value)
                   }
+                  isValid={recipientAddressIsValid}
+                  errorMessage={
+                    !recipientAddressIsValid && message
+                      ? message || 'Recipient address is invalid.'
+                      : null
+                  }
+                  hint
                   hintAsTooltip={false}
                 />
               </div>
@@ -462,7 +498,12 @@ const PaymentModal = (): JSX.Element => {
                 className='ml-[30px] px-0'
                 childrenClassName='w-full'
                 onClick={handleSendPayment}
-                disabled={isLoading || getTotalPaymentSources() < psl || !psl}
+                disabled={
+                  isLoading ||
+                  getTotalPaymentSources() < psl ||
+                  !psl ||
+                  !recipientAddress
+                }
               >
                 <div className='flex items-center px-5 text-white text-h5-heavy'>
                   <img src={checkIcon} className='py-3.5' />

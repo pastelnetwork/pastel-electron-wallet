@@ -59,7 +59,7 @@ export const AddressForm = ({
             onChange={e => {
               setEditName(e.target.value)
             }}
-            className='w-220px md:w-[270px] h-10 border border-link text-sm font-medium rounded px-4'
+            className='w-220px md:w-[270px] h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
           />
         </>
       ) : addressLabel ? (
@@ -72,7 +72,9 @@ export const AddressForm = ({
             content={formatAddress(address, 24)}
             classnames='py-2 text-gray-a0'
           >
-            <span className='text-blue-3f cursor-pointer'>{addressLabel}</span>
+            <span className='text-blue-3f cursor-pointer w-220px md:w-[270px]'>
+              {addressLabel}
+            </span>
           </Tooltip>
         </div>
       ) : (
@@ -123,7 +125,7 @@ export const AddressForm = ({
                 >
                   <span
                     onClick={() => copyAddress(address)}
-                    className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                    className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
                   >
                     <CheckIcon className='text-green-45' size={14} />
                   </span>
@@ -137,7 +139,7 @@ export const AddressForm = ({
                 >
                   <span
                     onClick={() => copyAddress(address)}
-                    className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                    className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
                   >
                     <Clipboard className='cursor-pointer' size={14} />
                   </span>
@@ -152,7 +154,7 @@ export const AddressForm = ({
                   setEditName(addressLabel || '')
                   setEdit(address)
                 }}
-                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
               >
                 <Pencil
                   strokeWidth={0.2}
@@ -164,7 +166,7 @@ export const AddressForm = ({
           </div>
           {hidable && (
             <div className='flex items-center ml-13px'>
-              <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+              <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
                 <img className='cursor-pointer' src={passEyeIcon} />
               </span>
             </div>

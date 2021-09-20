@@ -21,11 +21,7 @@ const PaymentSource = ({
   defaultsNote,
 }: TDataType): JSX.Element => {
   const [isCommentOpen, setCommentOpen] = useState(false)
-  const {
-    setPaymentSources,
-    allAddressAmounts,
-    setSelectedAddresses,
-  } = useWalletScreenContext()
+  const { setSelectedAddresses } = useWalletScreenContext()
 
   const handleSelectedAddress = (addr: string) => {
     setSelectedAddresses(addresses => {
@@ -33,16 +29,6 @@ const PaymentSource = ({
         return addresses.filter(item => item !== addr)
       } else {
         return [...addresses, addr]
-      }
-    })
-    setPaymentSources(sources => {
-      if (sources[addr]) {
-        const adr = sources
-        delete adr[addr]
-        return { ...sources }
-      } else {
-        const amount = allAddressAmounts.data?.[addr] || 0
-        return { ...sources, [addr]: amount }
       }
     })
   }
@@ -56,7 +42,7 @@ const PaymentSource = ({
             clickHandler={() => handleSelectedAddress(address)}
           />
           <AddressForm address={address} copyable={false} />
-          <span className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
+          <span className='ml-10px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
             <Eye size={19} className='text-gray-88' />
           </span>
           <span

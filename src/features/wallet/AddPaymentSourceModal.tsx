@@ -24,6 +24,7 @@ export default function AddPaymentSourceModal({
     allAddressAmounts,
     addressBook: { addressBookMap },
     pastelPromoCode,
+    setSelectedAddresses,
   } = useWalletScreenContext()
   const setPaymentSource = useSetPaymentSource()
   const paymentSourcesMap = Object.keys(paymentSources)
@@ -44,6 +45,13 @@ export default function AddPaymentSourceModal({
       selected.forEach(address => {
         if (allAddressAmounts?.data?.[address]) {
           setPaymentSource(address, allAddressAmounts?.data?.[address])
+          setSelectedAddresses(addresses => {
+            if (addresses.includes(address)) {
+              return addresses.filter(item => item !== address)
+            } else {
+              return [...addresses, address]
+            }
+          })
         }
       })
     }
