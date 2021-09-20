@@ -85,3 +85,13 @@ export const useSetPaymentSource = (): ((
   return (address: string, amount: number) =>
     setPaymentSources(sources => ({ ...sources, [address]: amount }))
 }
+
+export const useSetPaymentSourceModal = (): ((
+  address: string,
+  amount: number,
+) => void) => {
+  const { setPaymentSourcesModal } = useWalletScreenContext()
+
+  return (address: string, amount: number) =>
+    setPaymentSourcesModal(sources => ({ ...sources, [address]: amount }))
+}

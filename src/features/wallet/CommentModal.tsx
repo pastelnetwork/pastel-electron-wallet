@@ -110,7 +110,7 @@ const CommentModal = ({
         </div>
         <div className='ml-9px absolute right-[11px] top-[9px]'>
           <Tooltip
-            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs top-[-46px]'
             wrapperClassNames='absolute top-0 right-0'
             content={
               tab === Tabs.NoteToRecipient
@@ -118,7 +118,7 @@ const CommentModal = ({
                 : 'This is a short note that is only visible to you; it can be used to record a short note to yourself reminding you of the purpose of the transaction. For example “Sent PSL to brother for cat NFT”'
             }
             width={220}
-            type='top'
+            type='left'
           >
             <EliminationIcon
               size={13}

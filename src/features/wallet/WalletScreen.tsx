@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { ToastContainer } from 'react-toastify'
 import { useLocation } from 'react-router-dom'
 
 import { walletRPC } from 'api/pastel-rpc'
@@ -51,7 +50,14 @@ export default function WalletScreen(): JSX.Element {
   const lastActivityTimes = useAddressesLastActivityTime()
   const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(true)
   const [selectedAddresses, setSelectedAddresses] = useState<TAddress[]>([])
+  const [selectedAddressesModal, setSelectedAddressesModal] = useState<
+    TAddress[]
+  >([])
   const [paymentSources, setPaymentSources] = useState<TPaymentSources>({})
+  const [
+    paymentSourcesModal,
+    setPaymentSourcesModal,
+  ] = useState<TPaymentSources>({})
   const [activeTab, setActiveTab] = useState(0)
   const [activePeriod, setActivePeriod] = useState(0)
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
@@ -127,6 +133,10 @@ export default function WalletScreen(): JSX.Element {
     setCurrentAddress,
     selectedAmount,
     pastelPromoCode,
+    paymentSourcesModal,
+    setPaymentSourcesModal,
+    selectedAddressesModal,
+    setSelectedAddressesModal,
   }
 
   return (
@@ -263,12 +273,6 @@ const WalletScreenContent = (): JSX.Element => {
       </div>
 
       <Modals />
-
-      <ToastContainer
-        className='flex flex-grow w-auto'
-        hideProgressBar={true}
-        autoClose={false}
-      />
     </div>
   )
 }

@@ -5,7 +5,7 @@ import Checkbox from 'common/components/Checkbox'
 import { formatAddress, formatPrice } from 'common/utils/format'
 import { Button } from 'common/components/Buttons'
 import { useWalletScreenContext } from './walletScreen.context'
-import { useSetPaymentSource } from './walletScreen.hooks'
+import { useSetPaymentSourceModal } from './walletScreen.hooks'
 import { useCurrencyName } from 'common/hooks/appInfo'
 
 type TAddPaymentSourceModal = {
@@ -20,14 +20,13 @@ export default function AddPaymentSourceModal({
   const currencyName = useCurrencyName()
   const [selected, setSelected] = useState<string[]>([])
   const {
-    paymentSources,
     allAddressAmounts,
     addressBook: { addressBookMap },
     pastelPromoCode,
-    setSelectedAddresses,
+    setSelectedAddressesModal,
+    selectedAddressesModal,
   } = useWalletScreenContext()
-  const setPaymentSource = useSetPaymentSource()
-  const paymentSourcesMap = Object.keys(paymentSources)
+  const setPaymentSourcesModal = useSetPaymentSourceModal()
 
   const handleSelected = (address: string) => {
     let tmp = selected
@@ -42,17 +41,19 @@ export default function AddPaymentSourceModal({
 
   const handleAddPaymentSource = () => {
     if (selected.length > 0) {
+      const selectedAddresses: string[] = []
       selected.forEach(address => {
         if (allAddressAmounts?.data?.[address]) {
-          setPaymentSource(address, allAddressAmounts?.data?.[address])
-          setSelectedAddresses(addresses => {
-            if (addresses.includes(address)) {
-              return addresses.filter(item => item !== address)
-            } else {
-              return [...addresses, address]
-            }
-          })
+          setPaymentSourcesModal(address, allAddressAmounts?.data?.[address])
+          selectedAddresses.push(address)
         }
+        setSelectedAddressesModal(addresses => {
+          if (addresses.includes(address)) {
+            return addresses.filter(item => item !== address)
+          } else {
+            return [...addresses, address]
+          }
+        })
       })
     }
 
@@ -82,7 +83,7 @@ export default function AddPaymentSourceModal({
               const promoCode = pastelPromoCode.data?.find(
                 code => code.address === address,
               )
-              if (!paymentSourcesMap.includes(address) && !promoCode) {
+              if (!selectedAddressesModal.includes(address) && !promoCode) {
                 return (
                   <tr
                     className='text-gray-71 text-sm h-10 bg-white border-b border-line'

@@ -44,13 +44,11 @@ const PaymentModal = (): JSX.Element => {
   const setPaymentSource = useSetPaymentSource()
   const {
     setPaymentModalOpen: setIsOpen,
-    paymentSources,
+    paymentSourcesModal,
     totalBalances,
     selectedAmount,
     allAddressAmounts,
-    setPaymentSources,
-    setSelectedAddresses,
-    selectedAddresses,
+    selectedAddressesModal,
   } = useWalletScreenContext()
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(!selectedAmount ? 0 : 12)
@@ -75,20 +73,18 @@ const PaymentModal = (): JSX.Element => {
   const [isValidRecipientAddress, setValidRecipientAddress] = useState<boolean>(
     false,
   )
-  const [message, setMessage] = useState<string>('')
+  const [
+    recipientAddressMessage,
+    setRecipientAddressMessage,
+  ] = useState<string>('')
 
   const close = () => {
     setComplete(false)
     setLoading(false)
     setMessages([])
+    setRecipientAddressMessage('')
     setMemoString('')
     setRecipientAddress('')
-    setPaymentSources(() => {
-      return {}
-    })
-    setSelectedAddresses(() => {
-      return []
-    })
     if (location.state) {
       history.push(ROUTES.WALLET)
     }
@@ -113,8 +109,8 @@ const PaymentModal = (): JSX.Element => {
 
   const getTotalPaymentSources = () => {
     let total = 0
-    for (const key in paymentSources) {
-      total += paymentSources[key]
+    for (const key in paymentSourcesModal) {
+      total += paymentSourcesModal[key]
     }
 
     return total
@@ -138,25 +134,27 @@ const PaymentModal = (): JSX.Element => {
   }
 
   const handleSendPayment = async () => {
+    setValidRecipientAddress(false)
+    setRecipientAddressMessage('')
     if (!recipientAddress) {
       setValidRecipientAddress(false)
-      setMessage('Recipient address is required')
+      setRecipientAddressMessage('Recipient address is required')
       return
     }
 
     if (!isZaddr(recipientAddress) && !isTransparent(recipientAddress)) {
       setValidRecipientAddress(false)
-      setMessage('Recipient address is invalid')
+      setRecipientAddressMessage('Recipient address is invalid')
       return
     }
 
     setMessages([])
     const errors = []
     let total = 0
-    for (let i = 0; i < selectedAddresses.length; i++) {
-      const address = selectedAddresses[i]
-      if (paymentSources[address]) {
-        const amount = paymentSources[address]
+    for (let i = 0; i < selectedAddressesModal.length; i++) {
+      const address = selectedAddressesModal[i]
+      if (paymentSourcesModal[address]) {
+        const amount = paymentSourcesModal[address]
         if (
           allAddressAmounts.data?.[address] &&
           amount + parseFloat(fee) > allAddressAmounts.data?.[address] &&
@@ -187,9 +185,9 @@ const PaymentModal = (): JSX.Element => {
     setLoading(true)
     const operationIdList = []
     const textEncoder = new TextEncoder()
-    for (let i = 0; i < selectedAddresses.length; i++) {
-      const address = selectedAddresses[i]
-      if (paymentSources[address]) {
+    for (let i = 0; i < selectedAddressesModal.length; i++) {
+      const address = selectedAddressesModal[i]
+      if (paymentSourcesModal[address]) {
         try {
           const note = paymentNotes.find(n => n.address === address)
           const { result } = await transactionRPC.sendTransactionWithCustomFee({
@@ -197,7 +195,7 @@ const PaymentModal = (): JSX.Element => {
             to: [
               {
                 address: recipientAddress,
-                amount: paymentSources[address],
+                amount: paymentSourcesModal[address],
                 memo: note?.recipientNote
                   ? hex.encode(textEncoder.encode(note?.recipientNote))
                   : undefined,
@@ -272,8 +270,20 @@ const PaymentModal = (): JSX.Element => {
     }
   }
 
+  const handleRecipientAddressBlur = () => {
+    setValidRecipientAddress(false)
+    setRecipientAddressMessage('')
+    if (!recipientAddress) {
+      setValidRecipientAddress(false)
+      setRecipientAddressMessage('Recipient address is required')
+    } else if (!isZaddr(recipientAddress) && !isTransparent(recipientAddress)) {
+      setValidRecipientAddress(false)
+      setRecipientAddressMessage('Recipient address is invalid')
+    }
+  }
+
   let recipientAddressIsValid = null
-  if (!isValidRecipientAddress && message) {
+  if (!isValidRecipientAddress && recipientAddressMessage) {
     recipientAddressIsValid = false
   }
 
@@ -355,11 +365,19 @@ const PaymentModal = (): JSX.Element => {
                   <Input
                     placeholder='fee'
                     type='number'
+                    pattern='[0-9.]*'
                     value={fee}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       setFee(e.target.value)
                     }
                     hintAsTooltip={false}
+                    onKeyPress={(
+                      event: React.KeyboardEvent<HTMLInputElement>,
+                    ) => {
+                      if (!/[0-9.]/.test(event.key)) {
+                        event.preventDefault()
+                      }
+                    }}
                   />
                 </div>{' '}
                 &nbsp;
@@ -387,6 +405,7 @@ const PaymentModal = (): JSX.Element => {
               {formatPrice(
                 (totalBalances.data?.total || 0) - psl,
                 currencyName,
+                4,
               )}{' '}
               balance remaining after payment
             </div>
@@ -417,12 +436,14 @@ const PaymentModal = (): JSX.Element => {
                   }
                   isValid={recipientAddressIsValid}
                   errorMessage={
-                    !recipientAddressIsValid && message
-                      ? message || 'Recipient address is invalid.'
+                    !recipientAddressIsValid && recipientAddressMessage
+                      ? recipientAddressMessage ||
+                        'Recipient address is invalid.'
                       : null
                   }
                   hint
                   hintAsTooltip={false}
+                  onBlur={handleRecipientAddressBlur}
                 />
               </div>
             </div>
@@ -461,16 +482,14 @@ const PaymentModal = (): JSX.Element => {
               </div>
               <table className='w-full'>
                 <tbody>
-                  {Object.entries(paymentSources).map(
-                    (address: [string, number]) => (
-                      <PaymentSource
-                        key={`${address[0]}-${address[1]}`}
-                        address={address[0]}
-                        onSavePaymentNote={handleSavePaymentNote}
-                        defaultsNote={memoString}
-                      />
-                    ),
-                  )}
+                  {selectedAddressesModal.map(address => (
+                    <PaymentSource
+                      key={address}
+                      address={address}
+                      onSavePaymentNote={handleSavePaymentNote}
+                      defaultsNote={memoString}
+                    />
+                  ))}
                 </tbody>
               </table>
             </div>
@@ -508,7 +527,7 @@ const PaymentModal = (): JSX.Element => {
                 <div className='flex items-center px-5 text-white text-h5-heavy'>
                   <img src={checkIcon} className='py-3.5' />
                   <span className='ml-[9px]'>
-                    Confirm Payment of {formatPrice(psl, currencyName, 2)}
+                    Confirm Payment of {formatPrice(psl, currencyName, 4)}
                   </span>
                 </div>
               </Button>

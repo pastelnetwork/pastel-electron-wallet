@@ -19,12 +19,14 @@ type TAddressFormProps = {
   copyable?: boolean
   hidable?: boolean
   className?: string
+  hidePromoCodeEmpty?: boolean
 }
 
 export const AddressForm = ({
   address,
   copyable = true,
   hidable = false,
+  hidePromoCodeEmpty = false,
   className,
 }: TAddressFormProps): JSX.Element => {
   const [edit, setEdit] = useState<string | null>(null)
@@ -59,11 +61,11 @@ export const AddressForm = ({
             onChange={e => {
               setEditName(e.target.value)
             }}
-            className='w-220px md:w-[270px] h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
+            className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
           />
         </>
       ) : addressLabel ? (
-        <div className='w-220px md:w-[312px] pl-[10px]'>
+        <div className='w-220px md:w-[270px] pl-[10px]'>
           <Tooltip
             autoWidth={true}
             type='top'
@@ -72,9 +74,7 @@ export const AddressForm = ({
             content={formatAddress(address, 24)}
             classnames='py-2 text-gray-a0'
           >
-            <span className='text-blue-3f cursor-pointer w-220px md:w-[270px]'>
-              {addressLabel}
-            </span>
+            <span className='text-blue-3f cursor-pointer'>{addressLabel}</span>
           </Tooltip>
         </div>
       ) : (
@@ -82,7 +82,9 @@ export const AddressForm = ({
           {formatAddress(address, 24)}
         </span>
       )}
-      {promoCode && <div className='w-5 h5 xl:ml-21px'>&nbsp;</div>}
+      {promoCode && !hidePromoCodeEmpty && (
+        <div className='w-5 h5 xl:ml-21px'>&nbsp;</div>
+      )}
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-25px'>

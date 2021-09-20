@@ -21,10 +21,10 @@ const PaymentSource = ({
   defaultsNote,
 }: TDataType): JSX.Element => {
   const [isCommentOpen, setCommentOpen] = useState(false)
-  const { setSelectedAddresses } = useWalletScreenContext()
+  const { setSelectedAddressesModal } = useWalletScreenContext()
 
   const handleSelectedAddress = (addr: string) => {
-    setSelectedAddresses(addresses => {
+    setSelectedAddressesModal(addresses => {
       if (addresses.includes(addr)) {
         return addresses.filter(item => item !== addr)
       } else {
@@ -73,7 +73,7 @@ const PaymentSource = ({
       </td>
       <td>
         <div className='flex justify-end pr-4'>
-          <SelectPaymentSourceAmount address={address} />
+          <SelectPaymentSourceAmount address={address} isModal />
         </div>
       </td>
     </tr>

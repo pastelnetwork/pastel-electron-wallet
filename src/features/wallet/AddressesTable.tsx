@@ -35,6 +35,8 @@ export default function AddressesTable({
     setExportKeysModalOpen,
     setPaymentSources,
     pastelPromoCode,
+    setPaymentSourcesModal,
+    setSelectedAddressesModal,
   } = useWalletScreenContext()
 
   const selectAddress = (address: string, amount: number) => {
@@ -45,7 +47,23 @@ export default function AddressesTable({
         return [...addresses, address]
       }
     })
+    setSelectedAddressesModal(addresses => {
+      if (addresses.includes(address)) {
+        return addresses.filter(item => item !== address)
+      } else {
+        return [...addresses, address]
+      }
+    })
     setPaymentSources(sources => {
+      if (sources[address]) {
+        const adr = sources
+        delete adr[address]
+        return { ...sources }
+      } else {
+        return { ...sources, [address]: amount }
+      }
+    })
+    setPaymentSourcesModal(sources => {
       if (sources[address]) {
         const adr = sources
         delete adr[address]
@@ -76,8 +94,17 @@ export default function AddressesTable({
                   isChecked={Boolean(selectedAddresses.includes(address))}
                   clickHandler={() => selectAddress(address, row.amount)}
                 />
-              ) : null}
-              <AddressForm address={address} />
+              ) : (
+                <div className='w-5 h-5'></div>
+              )}
+              <AddressForm
+                address={address}
+                hidePromoCodeEmpty={
+                  !!pastelPromoCodeList?.find(
+                    promoCode => promoCode.address === address,
+                  )
+                }
+              />
             </>
           )}
         </div>
