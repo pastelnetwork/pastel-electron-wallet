@@ -51,7 +51,7 @@ const PaymentModal = (): JSX.Element => {
     setSelectedAddresses,
   } = useWalletScreenContext()
   const currencyName = useCurrencyName()
-  const [balance, setBalance] = useState<number>(12)
+  const [balance, setBalance] = useState<number>(!selectedAmount ? 0 : 12)
   const [psl, setPSL] = useState<number>(selectedAmount)
   const [recipientAddress, setRecipientAddress] = useState<string>('')
   const [memoString, setMemoString] = useState<string>('')
@@ -462,7 +462,7 @@ const PaymentModal = (): JSX.Element => {
                 className='ml-[30px] px-0'
                 childrenClassName='w-full'
                 onClick={handleSendPayment}
-                disabled={isLoading || getTotalPaymentSources() < psl}
+                disabled={isLoading || getTotalPaymentSources() < psl || !psl}
               >
                 <div className='flex items-center px-5 text-white text-h5-heavy'>
                   <img src={checkIcon} className='py-3.5' />

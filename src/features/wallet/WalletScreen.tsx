@@ -49,7 +49,7 @@ export default function WalletScreen(): JSX.Element {
   const totalBalances = walletRPC.useTotalBalance()
   const addressBook = useAddressBook()
   const lastActivityTimes = useAddressesLastActivityTime()
-  const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(false)
+  const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(true)
   const [selectedAddresses, setSelectedAddresses] = useState<TAddress[]>([])
   const [paymentSources, setPaymentSources] = useState<TPaymentSources>({})
   const [activeTab, setActiveTab] = useState(0)
