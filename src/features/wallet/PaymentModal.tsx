@@ -117,40 +117,15 @@ const PaymentModal = (): JSX.Element => {
   const updatePaymentSources = (amount: number) => {
     const addressAmounts = allAddressAmounts.data
     if (addressAmounts) {
-      let totalAmountSelectedAddress = 0
-      if (addressAmounts) {
-        for (const key in addressAmounts) {
-          if (paymentSources[key]) {
-            totalAmountSelectedAddress += addressAmounts[key]
+      let total = 0
+      for (const key in addressAmounts) {
+        if (total < amount) {
+          if (total + addressAmounts[key] >= amount) {
+            setPaymentSource(key, amount - total)
+          } else {
+            setPaymentSource(key, addressAmounts[key])
           }
-        }
-      }
-      setPaymentSources(() => {
-        return {}
-      })
-      if (totalAmountSelectedAddress >= amount) {
-        let total = 0
-        for (const key in paymentSources) {
-          if (total < amount && addressAmounts[key]) {
-            if (total + addressAmounts[key] >= amount) {
-              setPaymentSource(key, amount - total)
-            } else {
-              setPaymentSource(key, addressAmounts[key])
-            }
-            total += addressAmounts[key]
-          }
-        }
-      } else {
-        let total = 0
-        for (const key in addressAmounts) {
-          if (total < amount) {
-            if (total + addressAmounts[key] >= amount) {
-              setPaymentSource(key, amount - total)
-            } else {
-              setPaymentSource(key, addressAmounts[key])
-            }
-            total += addressAmounts[key]
-          }
+          total += addressAmounts[key]
         }
       }
     }
@@ -341,7 +316,6 @@ const PaymentModal = (): JSX.Element => {
                           label: formatPrice(newPsl, '', 2),
                           value: newPsl.toString(),
                         })
-                        updatePaymentSources(newPsl)
                       }
                     }
                   }}
@@ -406,7 +380,7 @@ const PaymentModal = (): JSX.Element => {
               </div>
               <div className='mt-[19px] w-[390px]'>
                 <Input
-                  placeholder='input recipient address'
+                  placeholder='Input recipient address'
                   type='text'
                   value={recipientAddress}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

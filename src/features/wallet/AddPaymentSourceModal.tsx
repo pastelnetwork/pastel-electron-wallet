@@ -55,7 +55,7 @@ export default function AddPaymentSourceModal({
       isOpen={isOpen}
       handleClose={onClose}
       title='Add Payment Source'
-      classNames='max-w-4xl'
+      classNames='max-w-[650px]'
     >
       <table className='w-full text-gray-71 relative table-auto'>
         <thead>
@@ -63,7 +63,7 @@ export default function AddPaymentSourceModal({
             <th className='text-left sticky bg-white z-30 text-h6 leading-5 font-normal top-[23px]'>
               Address name
             </th>
-            <th className='text-left w-[10%] sticky bg-white z-30 text-h6 leading-5 font-normal top-[23px]'>
+            <th className='text-left w-[20%] sticky bg-white z-30 text-h6 leading-5 font-normal top-[23px]'>
               Balance
             </th>
           </tr>
