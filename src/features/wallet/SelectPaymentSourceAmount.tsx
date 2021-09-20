@@ -1,7 +1,7 @@
 import React from 'react'
 import { useWalletScreenContext } from './walletScreen.context'
 import { useSetPaymentSource } from './walletScreen.hooks'
-import { parseFormattedNumber } from '../../common/utils/format'
+import { parseFormattedNumber, formatPrice } from '../../common/utils/format'
 import SelectAmount, {
   generateStep,
   TOption,
@@ -26,7 +26,7 @@ export default function SelectPaymentSourceAmount({
       max={amount}
       step={generateStep(amount)}
       defaultValue={{
-        label: String(value),
+        label: formatPrice(value, '', 4),
         value: String(value),
       }}
       onChange={(selection: TOption) => {

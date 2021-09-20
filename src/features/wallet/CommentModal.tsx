@@ -117,7 +117,7 @@ const CommentModal = ({
                 ? 'You can include a short message to the recipient if the recipient’s address is a shielded PSL address; this message will only be visible to the recipient.'
                 : 'This is a short note that is only visible to you; it can be used to record a short note to yourself reminding you of the purpose of the transaction. For example “Sent PSL to brother for cat NFT”'
             }
-            width={250}
+            width={220}
             type='top'
           >
             <EliminationIcon

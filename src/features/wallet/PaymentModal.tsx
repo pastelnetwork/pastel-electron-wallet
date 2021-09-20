@@ -313,7 +313,7 @@ const PaymentModal = (): JSX.Element => {
                         const newPsl = (totalBalances.data?.total * value) / 100
                         setPSL(newPsl)
                         setDefaulSelectedAmount({
-                          label: formatPrice(newPsl, '', 2),
+                          label: formatPrice(newPsl, '', 4),
                           value: newPsl.toString(),
                         })
                       }
