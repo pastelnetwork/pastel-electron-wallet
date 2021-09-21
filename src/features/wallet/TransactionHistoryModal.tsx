@@ -193,11 +193,11 @@ const TransactionHistoryModal = (): JSX.Element => {
           <div className='ml-46px flex items-center'>
             {!isTransparent(row?.address) ? 'Shielded' : 'Transparent'}
 
-            {Math.floor(Math.random() * 10) % 2 ? (
+            {row?.comments ? (
               <div className='inline-block'>
                 <Tooltip
                   classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content='Note content here.'
+                  content={row.comments}
                   width={150}
                   type='top'
                 >
@@ -215,13 +215,11 @@ const TransactionHistoryModal = (): JSX.Element => {
       key: 'status',
       name: 'Status',
       headerColClasses: 'mr-15px',
-      custom: () => {
+      custom: (value: string | number) => {
         return (
           <img
             src={
-              Math.floor(Math.random() * 10) % 2
-                ? checkGreenIcon
-                : clockYellowIcon
+              value.toString() === 'receive' ? checkGreenIcon : clockYellowIcon
             }
             className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
           />

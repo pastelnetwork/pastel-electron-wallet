@@ -71,7 +71,7 @@ export const AddressForm = ({
             type='top'
             width={211}
             padding={5}
-            content={formatAddress(address, 24)}
+            content={address ? formatAddress(address, 24) : ''}
             classnames='py-2 text-gray-a0'
           >
             <span className='text-blue-3f cursor-pointer'>{addressLabel}</span>
@@ -79,7 +79,7 @@ export const AddressForm = ({
         </div>
       ) : (
         <span className='w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]'>
-          {formatAddress(address, 24)}
+          {address ? formatAddress(address, 24) : ''}
         </span>
       )}
       {promoCode && !hidePromoCodeEmpty && (

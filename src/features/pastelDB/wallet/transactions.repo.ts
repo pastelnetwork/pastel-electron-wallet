@@ -40,7 +40,11 @@ export function insertTransactions(
 ): void {
   const stmt = db.prepare(insertQuery)
   for (let i = 0; i < transactions.length; i++) {
-    insertTransaction(db, transactions[i], stmt)
+    const transaction = transactions[i]
+    if (transaction.blockhash === undefined) {
+      transaction.blockhash = ''
+    }
+    insertTransaction(db, transaction, stmt)
   }
 }
 

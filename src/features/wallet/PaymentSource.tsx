@@ -21,9 +21,12 @@ const PaymentSource = ({
   defaultsNote,
 }: TDataType): JSX.Element => {
   const [isCommentOpen, setCommentOpen] = useState(false)
-  const { setSelectedAddressesModal } = useWalletScreenContext()
+  const {
+    setSelectedAddressesModal,
+    setPaymentSourcesModal,
+  } = useWalletScreenContext()
 
-  const handleSelectedAddress = (addr: string) => {
+  const handleSelectedAddress = (addr: string, isDelete = false) => {
     setSelectedAddressesModal(addresses => {
       if (addresses.includes(addr)) {
         return addresses.filter(item => item !== addr)
@@ -31,6 +34,18 @@ const PaymentSource = ({
         return [...addresses, addr]
       }
     })
+
+    if (isDelete) {
+      setPaymentSourcesModal(sources => {
+        if (sources[address]) {
+          const adr = sources
+          delete adr[address]
+          return { ...sources }
+        } else {
+          return { ...sources }
+        }
+      })
+    }
   }
 
   return (
@@ -47,7 +62,7 @@ const PaymentSource = ({
           </span>
           <span
             className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            onClick={() => handleSelectedAddress(address)}
+            onClick={() => handleSelectedAddress(address, true)}
           >
             <Trash size={14} className='text-gray-88' />
           </span>
