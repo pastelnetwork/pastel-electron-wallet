@@ -44,6 +44,7 @@ export default function WalletScreen(): JSX.Element {
   const totalBalances = walletRPC.useTotalBalance()
   const addressBook = useAddressBook()
   const lastActivityTimes = useAddressesLastActivityTime()
+  const [isNewAddress, setNewAddress] = useToggle(true)
   const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(true)
   const [selectedAddresses, setSelectedAddresses] = useState<TAddress[]>([])
   const [selectedAddressesModal, setSelectedAddressesModal] = useState<
@@ -133,6 +134,8 @@ export default function WalletScreen(): JSX.Element {
     setPaymentSourcesModal,
     selectedAddressesModal,
     setSelectedAddressesModal,
+    isNewAddress,
+    setNewAddress,
   }
 
   return (
@@ -156,9 +159,14 @@ const WalletScreenContent = (): JSX.Element => {
     activeTab,
     tAddresses,
     zAddresses,
+    setExportKeysModalOpen,
+    setCurrentAddress,
+    setNewAddress,
   } = useWalletScreenContext()
+  const [isLoading, setLoading] = useState(false)
 
   const createNewAddress = async () => {
+    setLoading(true)
     const isZAddress = activeTab === 2
     const result = await walletRPC.createNewAddress(isZAddress)
     if (result) {
@@ -167,7 +175,11 @@ const WalletScreenContent = (): JSX.Element => {
       } else {
         tAddresses.refetch()
       }
+      setCurrentAddress(result)
+      setExportKeysModalOpen(true)
+      setNewAddress(true)
     }
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -257,6 +269,7 @@ const WalletScreenContent = (): JSX.Element => {
               className='w-[264px] ml-30px px-0'
               childrenClassName='w-full'
               onClick={createNewAddress}
+              disabled={isLoading}
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />

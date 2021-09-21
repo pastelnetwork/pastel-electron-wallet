@@ -129,7 +129,7 @@ export default function SelectAmount({
                 {...getInputProps()}
                 type='text'
                 role='input'
-                value={formatDisplayNumber(selected?.label)}
+                value={formatDisplayNumber(selected?.label).trim()}
                 onKeyUp={handleOnKeyUp}
                 className={cn(
                   'h-full w-full rounded px-10px text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',

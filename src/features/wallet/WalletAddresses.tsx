@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import cn from 'classnames'
 import styles from './WalletScreen.module.css'
 import AddressesTable from './AddressesTable'
@@ -23,9 +23,14 @@ export default function WalletAddresses(): JSX.Element {
     totalBalances,
     toggleHideEmptyAddresses,
     selectedAmount,
+    setCurrentAddress,
+    setExportKeysModalOpen,
+    setNewAddress,
   } = useWalletScreenContext()
+  const [isLoading, setLoading] = useState(false)
 
   const createNewAddress = async () => {
+    setLoading(true)
     const isZAddress = activeTab === 2
     const result = await walletRPC.createNewAddress(isZAddress)
     if (result) {
@@ -34,7 +39,11 @@ export default function WalletAddresses(): JSX.Element {
       } else {
         tAddresses.refetch()
       }
+      setCurrentAddress(result)
+      setExportKeysModalOpen(true)
+      setNewAddress(true)
     }
+    setLoading(false)
   }
 
   return (
@@ -130,6 +139,7 @@ export default function WalletAddresses(): JSX.Element {
               className='w-[264px] px-0 mt-3'
               childrenClassName='w-full'
               onClick={createNewAddress}
+              disabled={isLoading}
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />

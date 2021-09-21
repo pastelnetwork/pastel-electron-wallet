@@ -43,6 +43,8 @@ export type TWalletScreenContextValues = {
   setPaymentSourcesModal: Dispatch<SetStateAction<TPaymentSources>>
   selectedAddressesModal: TAddress[]
   setSelectedAddressesModal: Dispatch<SetStateAction<TAddress[]>>
+  isNewAddress: boolean
+  setNewAddress: Dispatch<SetStateAction<boolean>>
 }
 
 export const WalletScreenContext = createContext(
