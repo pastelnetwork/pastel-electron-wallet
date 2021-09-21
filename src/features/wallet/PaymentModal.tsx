@@ -20,7 +20,7 @@ import SelectAmount, {
 import { saveTransactionNote } from 'common/utils/TransactionNote'
 import { EliminationIcon, AddIcon } from 'common/components/Icons'
 import { useWalletScreenContext } from './walletScreen.context'
-import { useSetPaymentSource } from './walletScreen.hooks'
+import { useSetPaymentSourceModal } from './walletScreen.hooks'
 import { useAppSelector } from '../../redux/hooks'
 import Input from 'common/components/Inputs/Input'
 import AddPaymentSourceModal from './AddPaymentSourceModal'
@@ -41,7 +41,7 @@ const PaymentModal = (): JSX.Element => {
   const info = useAppSelector(state => state.appInfo.info)
   const location = useLocation()
   const history = useHistory()
-  const setPaymentSource = useSetPaymentSource()
+  const setPaymentSourcesModal = useSetPaymentSourceModal()
   const {
     setPaymentModalOpen: setIsOpen,
     paymentSourcesModal,
@@ -49,6 +49,7 @@ const PaymentModal = (): JSX.Element => {
     selectedAmount,
     allAddressAmounts,
     selectedAddressesModal,
+    setSelectedAddressesModal,
   } = useWalletScreenContext()
   const currencyName = useCurrencyName()
   const [balance, setBalance] = useState<number>(!selectedAmount ? 0 : 12)
@@ -123,11 +124,19 @@ const PaymentModal = (): JSX.Element => {
       for (const key in addressAmounts) {
         if (total < amount) {
           if (total + addressAmounts[key] >= amount) {
-            setPaymentSource(key, amount - total)
+            setPaymentSourcesModal(key, amount - total)
           } else {
-            setPaymentSource(key, addressAmounts[key])
+            setPaymentSourcesModal(key, addressAmounts[key])
           }
           total += addressAmounts[key]
+
+          setSelectedAddressesModal(addresses => {
+            if (addresses.includes(key)) {
+              return addresses.filter(item => item !== key)
+            } else {
+              return [...addresses, key]
+            }
+          })
         }
       }
     }
@@ -168,7 +177,6 @@ const PaymentModal = (): JSX.Element => {
             )}, need ${formatPrice(amount + parseFloat(fee), '', 4)}`,
           )
         }
-
         total += amount
       }
     }
@@ -287,6 +295,8 @@ const PaymentModal = (): JSX.Element => {
     recipientAddressIsValid = false
   }
 
+  const totalBalance = totalBalances.data?.total || 0
+
   return (
     <>
       <TitleModal
@@ -321,8 +331,8 @@ const PaymentModal = (): JSX.Element => {
                 <SelectAmount
                   className='text-gray-2d'
                   min={0}
-                  max={totalBalances.data?.total || 0}
-                  step={generateStep(totalBalances.data?.total || 0)}
+                  max={totalBalance}
+                  step={generateStep(totalBalance)}
                   defaultValue={defaulSelectedAmount}
                   onChange={(selection: TOption) => {
                     setPSL(parseFloat(selection.value))
@@ -348,8 +358,8 @@ const PaymentModal = (): JSX.Element => {
                   onChange={(value: number | null) => {
                     if (value) {
                       setBalance(balance)
-                      if (totalBalances.data?.total) {
-                        const newPsl = (totalBalances.data?.total * value) / 100
+                      if (totalBalance) {
+                        const newPsl = (totalBalance * value) / 100
                         setPSL(newPsl)
                         setDefaulSelectedAmount({
                           label: formatPrice(newPsl, '', 4),
@@ -403,7 +413,7 @@ const PaymentModal = (): JSX.Element => {
             </div>
             <div className='pt-6px text-gray-a0 text-h6-leading-20'>
               {formatPrice(
-                (totalBalances.data?.total || 0) - psl,
+                totalBalance - psl < 0 ? 0 : totalBalance - psl,
                 currencyName,
                 4,
               )}{' '}
@@ -482,7 +492,7 @@ const PaymentModal = (): JSX.Element => {
               </div>
               <table className='w-full'>
                 <tbody>
-                  {selectedAddressesModal.map(address => (
+                  {Object.keys(paymentSourcesModal).map(address => (
                     <PaymentSource
                       key={address}
                       address={address}

@@ -19,11 +19,7 @@ import {
   WalletScreenContext,
 } from './walletScreen.context'
 import { useAddressesLastActivityTime } from '../pastelDB/wallet/transactions.repo'
-import {
-  useCreateNewAddress,
-  useFilterAddresses,
-  useSelectedAmount,
-} from './walletScreen.hooks'
+import { useFilterAddresses, useSelectedAmount } from './walletScreen.hooks'
 import { TAddress } from '../../types/rpc'
 import {
   useCombineQueryArray,
@@ -157,9 +153,22 @@ const WalletScreenContent = (): JSX.Element => {
     allAddresses,
     setPaymentModalOpen,
     setAddPastelPromoCodeModalOpen,
+    activeTab,
+    tAddresses,
+    zAddresses,
   } = useWalletScreenContext()
 
-  const createNewAddress = useCreateNewAddress()
+  const createNewAddress = async () => {
+    const isZAddress = activeTab === 2
+    const result = await walletRPC.createNewAddress(isZAddress)
+    if (result) {
+      if (isZAddress) {
+        zAddresses.refetch()
+      } else {
+        tAddresses.refetch()
+      }
+    }
+  }
 
   useEffect(() => {
     if (location.state) {

@@ -9,7 +9,7 @@ import { Button } from 'common/components/Buttons'
 import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { useWalletScreenContext } from './walletScreen.context'
-import { useCreateNewAddress } from './walletScreen.hooks'
+import { walletRPC } from 'api/pastel-rpc'
 
 export default function WalletAddresses(): JSX.Element {
   const currencyName = useCurrencyName()
@@ -25,7 +25,17 @@ export default function WalletAddresses(): JSX.Element {
     selectedAmount,
   } = useWalletScreenContext()
 
-  const createNewAddress = useCreateNewAddress()
+  const createNewAddress = async () => {
+    const isZAddress = activeTab === 2
+    const result = await walletRPC.createNewAddress(isZAddress)
+    if (result) {
+      if (isZAddress) {
+        zAddresses.refetch()
+      } else {
+        tAddresses.refetch()
+      }
+    }
+  }
 
   return (
     <>

@@ -44,6 +44,7 @@ export default function SelectAmount({
   label,
 }: TSelectAmountProps): JSX.Element {
   const [isValid, setIsValid] = useState(true)
+  const [isTyping, setTyping] = useState(false)
   const options: TOption[] = useOptions(min, max, step)
   const [selected, setSelected] = useState(
     defaultValue || {
@@ -74,6 +75,7 @@ export default function SelectAmount({
       onChange={selection => {
         setSelected(selection)
         onChange && onChange(selection)
+        setTyping(false)
       }}
       onInputValueChange={(inputValue: string, options) => {
         const { type } = (options as unknown) as { type: string }
@@ -85,7 +87,7 @@ export default function SelectAmount({
         }
         const selection = {
           label: inputValue,
-          value: inputValue,
+          value: inputValue.replaceAll(',', ''),
         }
         setSelected(selection)
         onChange && onChange(selection)
@@ -102,9 +104,10 @@ export default function SelectAmount({
         inputValue,
         highlightedIndex,
       }) => {
-        const filteredOptions = inputValue
-          ? options.filter(option => option.value.startsWith(inputValue))
-          : options
+        const filteredOptions =
+          inputValue && isTyping
+            ? options.filter(option => option.value.startsWith(inputValue))
+            : options
 
         return (
           <div
@@ -134,6 +137,8 @@ export default function SelectAmount({
                   !isValid && invalidInputClassName,
                   label && 'pr-10',
                 )}
+                onBlur={() => setTyping(false)}
+                onKeyPress={() => setTyping(true)}
               />
               {label ? (
                 <span className='text-base font-normal text-gray-a0 mr-2 absolute right-[25px]'>

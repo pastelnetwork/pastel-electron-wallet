@@ -21,7 +21,10 @@ const PaymentSource = ({
   defaultsNote,
 }: TDataType): JSX.Element => {
   const [isCommentOpen, setCommentOpen] = useState(false)
-  const { setSelectedAddressesModal } = useWalletScreenContext()
+  const {
+    setSelectedAddressesModal,
+    setPaymentSourcesModal,
+  } = useWalletScreenContext()
 
   const handleSelectedAddress = (addr: string) => {
     setSelectedAddressesModal(addresses => {
@@ -29,6 +32,15 @@ const PaymentSource = ({
         return addresses.filter(item => item !== addr)
       } else {
         return [...addresses, addr]
+      }
+    })
+    setPaymentSourcesModal(sources => {
+      if (sources[address]) {
+        const adr = sources
+        delete adr[address]
+        return { ...sources }
+      } else {
+        return { ...sources }
       }
     })
   }

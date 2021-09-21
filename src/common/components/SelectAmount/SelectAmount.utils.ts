@@ -39,7 +39,10 @@ export const validate = (e: KeyboardEvent<HTMLInputElement>): boolean => {
 }
 
 export const formatDisplayNumber = (x: string, delimiter = ','): string =>
-  x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, delimiter)
+  x
+    .toString()
+    .replaceAll(delimiter, '')
+    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, delimiter)
 
 export const generateStep = (value: number): number => {
   if (value >= 10000) {

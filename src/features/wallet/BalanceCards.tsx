@@ -10,7 +10,6 @@ import cn from 'classnames'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatPrice } from 'common/utils/format'
 import RectangleLoader from 'common/components/Loader'
-import { walletRPC } from '../../api/pastel-rpc'
 import { useWalletScreenContext } from './walletScreen.context'
 
 type TBalanceCard = {
@@ -25,11 +24,10 @@ type TBalanceCard = {
 }
 
 export default function BalanceCards(): JSX.Element {
-  const { data: totalBalances, isLoading } = walletRPC.useTotalBalance()
-  const { activeTab, setActiveTab } = useWalletScreenContext()
+  const { activeTab, setActiveTab, totalBalances } = useWalletScreenContext()
   const currencyName = useCurrencyName()
 
-  const loaderItem = isLoading && (
+  const loaderItem = (
     <div className='h-8 flex items-center'>
       <RectangleLoader
         className='h-3'
@@ -47,7 +45,7 @@ export default function BalanceCards(): JSX.Element {
           type: 'total_balance',
           info: false,
         },
-        psl: totalBalances?.total,
+        psl: totalBalances.data?.total,
         activeIcon: <TotalBalance />,
         inactiveIcon: <TotalBalance variant='inactive' />,
         info: 'Total Balance',
@@ -57,7 +55,7 @@ export default function BalanceCards(): JSX.Element {
           type: 'transparent',
           info: false,
         },
-        psl: totalBalances?.transparent,
+        psl: totalBalances.data?.transparent,
         activeIcon: <TransparencyBalance />,
         inactiveIcon: <TransparencyBalance variant='inactive' />,
         info: 'Transparent Information',
@@ -67,7 +65,7 @@ export default function BalanceCards(): JSX.Element {
           type: 'shielded',
           info: false,
         },
-        psl: totalBalances?.private,
+        psl: totalBalances.data?.private,
         activeIcon: <ShieldedBalance />,
         inactiveIcon: <ShieldedBalance variant='inactive' />,
         info: 'Shielded Information',

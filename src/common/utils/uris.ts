@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import url from 'url'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'
@@ -14,7 +12,13 @@ export class PastelURITarget {
   ) {}
 }
 
-export const parsePastelURI = (uri: string) => {
+type TParsePastelURI = {
+  address: string
+  amount: number
+  memoString?: string
+}
+
+export const parsePastelURI = (uri: string): string | TParsePastelURI[] => {
   if (!uri || uri === '') {
     return 'Bad URI'
   }
@@ -66,6 +70,7 @@ export const parsePastelURI = (uri: string) => {
       return `Unknown index ${qIdx}`
     }
 
+    const amountValue = parseFloat(value)
     switch (qName.toLowerCase()) {
       case 'address':
         if (typeof target.address !== 'undefined') {
@@ -114,13 +119,11 @@ export const parsePastelURI = (uri: string) => {
           return `Duplicate param ${qName}`
         }
 
-        const a = parseFloat(value)
-
-        if (isNaN(a)) {
+        if (isNaN(amountValue)) {
           return `Amount ${value} could not be parsed`
         }
 
-        target.amount = a
+        target.amount = amountValue
         break
 
       default:
