@@ -13,12 +13,14 @@ export type TDataType = {
   address: string
   onSavePaymentNote: (note: TNote) => void
   defaultsNote: string
+  isMemoDisabled?: boolean
 }
 
 const PaymentSource = ({
   address,
   onSavePaymentNote,
   defaultsNote,
+  isMemoDisabled,
 }: TDataType): JSX.Element => {
   const [isCommentOpen, setCommentOpen] = useState(false)
   const {
@@ -69,22 +71,24 @@ const PaymentSource = ({
         </div>
       </td>
       <td className='w-24'>
-        <div className='relative'>
-          <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
-            <img
-              className='cursor-pointer'
-              onClick={() => setCommentOpen(!isCommentOpen)}
-              src={add2Icon}
+        {!isMemoDisabled ? (
+          <div className='relative'>
+            <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
+              <img
+                className='cursor-pointer'
+                onClick={() => setCommentOpen(!isCommentOpen)}
+                src={add2Icon}
+              />
+            </span>
+            <CommentModal
+              isOpen={isCommentOpen}
+              onClose={() => setCommentOpen(false)}
+              address={address}
+              onSavePaymentNote={onSavePaymentNote}
+              defaultsNote={defaultsNote}
             />
-          </span>
-          <CommentModal
-            isOpen={isCommentOpen}
-            onClose={() => setCommentOpen(false)}
-            address={address}
-            onSavePaymentNote={onSavePaymentNote}
-            defaultsNote={defaultsNote}
-          />
-        </div>
+          </div>
+        ) : null}
       </td>
       <td>
         <div className='flex justify-end pr-4'>

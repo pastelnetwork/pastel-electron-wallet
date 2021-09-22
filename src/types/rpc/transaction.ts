@@ -125,6 +125,7 @@ type TTransactionRow = {
   comments: string
   fee: number
   amount: number
+  privateNote?: string
 }
 
 type TTransactionInfoDetail = TBaseAddAm & {

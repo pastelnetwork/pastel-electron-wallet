@@ -35,6 +35,7 @@ export type TBaseProps = {
   debounce?: number
   customListClassName?: string
   listClassName?: string
+  listItemClassName?: string
   customInputWrapperClassName?: string
   disabledInputWrapperClassName?: string
   inputWrapperClassName?: string
@@ -108,6 +109,8 @@ export default function Select<TForm extends FieldValues>(
     }`,
     disabledInputClassName = 'cursor-not-allowed',
     inputClassName,
+    listItemClassName,
+    listClassName,
   } = props
 
   let { onInputChange } = props
@@ -201,7 +204,9 @@ export default function Select<TForm extends FieldValues>(
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}
-                {selectedItem ? selectedItem.label : placeholder}
+                <span className='max-w-[80%] truncate'>
+                  {selectedItem ? selectedItem.label : placeholder}
+                </span>
               </button>
             )}
             {isLoading && (
@@ -225,6 +230,8 @@ export default function Select<TForm extends FieldValues>(
               highlightedIndex={highlightedIndex}
               inputValue={inputValue}
               enableFiltering={enableFiltering}
+              listItemClassName={listItemClassName}
+              listClassName={listClassName}
             />
           </div>
         )

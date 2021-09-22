@@ -214,9 +214,10 @@ const PaymentModal = (): JSX.Element => {
               {
                 address: recipientAddress,
                 amount: paymentSourcesModal[address],
-                memo: note?.recipientNote
-                  ? hex.encode(textEncoder.encode(note?.recipientNote))
-                  : undefined,
+                memo:
+                  note?.recipientNote && !isZaddr(recipientAddress)
+                    ? hex.encode(textEncoder.encode(note?.recipientNote))
+                    : undefined,
               },
             ],
             fee: parseFloat(fee),
@@ -568,6 +569,7 @@ const PaymentModal = (): JSX.Element => {
                           address={address}
                           onSavePaymentNote={handleSavePaymentNote}
                           defaultsNote={memoString}
+                          isMemoDisabled={!isZaddr(recipientAddress)}
                         />
                       ))}
                     </tbody>

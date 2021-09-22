@@ -3,7 +3,7 @@ import path from 'path'
 import log from 'electron-log'
 import store from '../../redux/store'
 
-export type TTransaction = {
+export type TTransactionNote = {
   txnId: string
   privateNote: string
 }
@@ -27,7 +27,7 @@ export const getFileName = async (): Promise<string | null> => {
 }
 
 export const writeTransaction = async (
-  transaction?: TTransaction[],
+  transaction?: TTransactionNote[],
 ): Promise<void> => {
   if (transaction?.length) {
     const fileName = await getFileName()
@@ -38,7 +38,7 @@ export const writeTransaction = async (
   }
 }
 
-export const readTransaction = async (): Promise<TTransaction[]> => {
+export const readTransaction = async (): Promise<TTransactionNote[]> => {
   const fileName = await getFileName()
 
   try {
@@ -58,8 +58,8 @@ export const readTransaction = async (): Promise<TTransaction[]> => {
 }
 
 export const saveTransactionNote = async (
-  transaction: TTransaction,
-): Promise<TTransaction[] | null> => {
+  transaction: TTransactionNote,
+): Promise<TTransactionNote[] | null> => {
   try {
     const currentTransactionList = await readTransaction()
     const newTransactionList = currentTransactionList.concat(transaction)
