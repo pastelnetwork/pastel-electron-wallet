@@ -96,7 +96,7 @@ export class WalletRPC {
   }
 
   useTotalBalance(): UseQueryResult<TTotalBalance> {
-    return useQuery('z_gettotalbalance', () => this.fetchTotalBalance())
+    return useQuery('wz_gettotalbalance', () => this.fetchTotalBalance())
   }
 
   async fetchTGetAddressesByAccount(): Promise<TListAddressesResponse> {
