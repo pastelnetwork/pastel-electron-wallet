@@ -66,16 +66,18 @@ export const AddressForm = ({
         </>
       ) : addressLabel ? (
         <div className='w-220px md:w-[270px] pl-[10px]'>
-          <Tooltip
-            autoWidth={true}
-            type='top'
-            width={211}
-            padding={5}
-            content={address ? formatAddress(address, 24) : ''}
-            classnames='py-2 text-gray-a0'
-          >
-            <span className='text-blue-3f cursor-pointer'>{addressLabel}</span>
-          </Tooltip>
+          <span className='text-blue-3f cursor-pointer inline-block'>
+            <Tooltip
+              autoWidth={true}
+              type='top'
+              width={211}
+              padding={5}
+              content={address ? formatAddress(address, 24) : ''}
+              classnames='py-2 text-gray-a0'
+            >
+              {addressLabel}
+            </Tooltip>
+          </span>
         </div>
       ) : (
         <span className='w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]'>
@@ -88,30 +90,44 @@ export const AddressForm = ({
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-25px'>
-            <button
-              type='button'
-              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-              onClick={() => {
-                setEdit(null)
-              }}
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content='Close'
+              width={130}
+              type='top'
             >
-              <Close size={16} />
-            </button>
+              <button
+                type='button'
+                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                onClick={() => {
+                  setEdit(null)
+                }}
+              >
+                <Close size={16} />
+              </button>
+            </Tooltip>
           </div>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-22px'>
-            <button
-              type='button'
-              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-              onClick={() => {
-                updateAddressBook({
-                  address: edit,
-                  label: editName,
-                })
-                setEdit(null)
-              }}
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content='Save Label'
+              width={130}
+              type='top'
             >
-              <SaveIcon className='text-blue-3f' size={20} />
-            </button>
+              <button
+                type='button'
+                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+                onClick={() => {
+                  updateAddressBook({
+                    address: edit,
+                    label: editName,
+                  })
+                  setEdit(null)
+                }}
+              >
+                <SaveIcon className='text-blue-3f' size={20} />
+              </button>
+            </Tooltip>
           </div>
         </>
       ) : (
@@ -151,26 +167,40 @@ export const AddressForm = ({
           )}
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-26px'>
             {!promoCode && (
-              <span
-                onClick={() => {
-                  setEditName(addressLabel || '')
-                  setEdit(address)
-                }}
-                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+              <Tooltip
+                classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                content='Edit Label'
+                width={100}
+                type='top'
               >
-                <Pencil
-                  strokeWidth={0.2}
-                  className='cursor-pointer text-gray-88'
-                  size={16}
-                />
-              </span>
+                <span
+                  onClick={() => {
+                    setEditName(addressLabel || '')
+                    setEdit(address)
+                  }}
+                  className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                >
+                  <Pencil
+                    strokeWidth={0.2}
+                    className='cursor-pointer text-gray-88'
+                    size={16}
+                  />
+                </span>
+              </Tooltip>
             )}
           </div>
           {hidable && (
             <div className='flex items-center ml-13px'>
-              <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
-                <img className='cursor-pointer' src={passEyeIcon} />
-              </span>
+              <Tooltip
+                classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+                content='Info'
+                width={100}
+                type='top'
+              >
+                <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
+                  <img className='cursor-pointer' src={passEyeIcon} />
+                </span>
+              </Tooltip>
             </div>
           )}
         </>

@@ -154,7 +154,6 @@ const TransactionHistoryModal = (): JSX.Element => {
           privateNote: note?.privateNote,
         }
       })
-
       // Source/Target addresses
       setSourceAddresses(getFilterAddresses(trans, true))
       setRecipients(getFilterAddresses(trans, false))
@@ -262,14 +261,25 @@ const TransactionHistoryModal = (): JSX.Element => {
       headerColClasses: 'mr-15px',
       custom: (value: string | number) => {
         return (
-          <img
-            src={
-              value.toString() === 'confirmed'
-                ? checkGreenIcon
-                : clockYellowIcon
-            }
-            className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
-          />
+          <div className='mt-3 pl-5 inline-block'>
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content={
+                value.toString() === 'confirmed' ? 'Confirmed' : 'Unconfirmed'
+              }
+              width={110}
+              type='top'
+            >
+              <img
+                src={
+                  value.toString() === 'confirmed'
+                    ? checkGreenIcon
+                    : clockYellowIcon
+                }
+                className='inline-block'
+              />
+            </Tooltip>
+          </div>
         )
       },
     },
@@ -363,7 +373,7 @@ const TransactionHistoryModal = (): JSX.Element => {
                   options={sourceAddresses}
                   onChange={setSourceAddress}
                   listClassName='max-w-[450px]'
-                  listItemClassName='break-all'
+                  listItemClassName='truncate'
                 />
               </div>
             </div>
@@ -379,7 +389,7 @@ const TransactionHistoryModal = (): JSX.Element => {
                   options={recipients}
                   onChange={setRecipientAddress}
                   listClassName='max-w-[450px]'
-                  listItemClassName='break-all'
+                  listItemClassName='truncate'
                 />
               </div>
             </div>

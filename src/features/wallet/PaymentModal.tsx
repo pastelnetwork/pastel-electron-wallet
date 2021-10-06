@@ -277,6 +277,7 @@ const PaymentModal = (): JSX.Element => {
       setPaymentResults(paymentStatus)
       setComplete(true)
       setLoading(false)
+      totalBalances.refetch()
     }
   }
 

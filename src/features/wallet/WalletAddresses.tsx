@@ -48,7 +48,7 @@ export default function WalletAddresses(): JSX.Element {
 
   return (
     <>
-      {(allAddresses.isLoading || allAddresses.data?.length) && (
+      {allAddresses.isLoading || allAddresses.data?.length ? (
         <div className='bg-white pt-[30px] rounded-lg mt-[30px] min-w-594px'>
           <div
             className={cn(
@@ -121,9 +121,9 @@ export default function WalletAddresses(): JSX.Element {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
-      {allAddresses.data?.length === 0 && (
+      {allAddresses.data?.length === 0 ? (
         <div
           className={cn(
             'bg-white rounded-lg mt-3.5 flex items-center justify-center pb-10',
@@ -150,7 +150,7 @@ export default function WalletAddresses(): JSX.Element {
             </Button>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   )
 }

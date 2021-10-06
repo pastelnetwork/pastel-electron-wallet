@@ -10,6 +10,7 @@ import { TAddress } from '../../types/rpc'
 import { useWalletScreenContext } from './walletScreen.context'
 import SelectPaymentSourceAmount from './SelectPaymentSourceAmount'
 import { formatPrice, timeAgo } from 'common/utils/format'
+import Tooltip from 'common/components/Tooltip'
 
 const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
 
@@ -140,7 +141,16 @@ export default function AddressesTable({
                 setIsQRCodeModalOpen(true)
               }}
             >
-              <QRCode size={20} />
+              <Tooltip
+                autoWidth={true}
+                type='top'
+                width={130}
+                padding={5}
+                content='Open Address QR'
+                classnames='py-2 text-gray-a0'
+              >
+                <QRCode size={20} />
+              </Tooltip>
             </span>
           </div>
         ),
@@ -163,7 +173,19 @@ export default function AddressesTable({
               }}
               className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
             >
-              <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
+              <Tooltip
+                autoWidth={true}
+                type='top'
+                width={130}
+                padding={5}
+                content='Open Private Key'
+                classnames='py-2 text-gray-a0'
+              >
+                <FilePDFIcon
+                  size={20}
+                  className='text-gray-88 cursor-pointer'
+                />
+              </Tooltip>
             </span>
           </div>
         ),

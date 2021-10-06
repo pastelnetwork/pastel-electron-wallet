@@ -44,7 +44,7 @@ export default function WalletScreen(): JSX.Element {
   const totalBalances = walletRPC.useTotalBalance()
   const addressBook = useAddressBook()
   const lastActivityTimes = useAddressesLastActivityTime()
-  const [isNewAddress, setNewAddress] = useToggle(true)
+  const [isNewAddress, setNewAddress] = useToggle(false)
   const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(true)
   const [selectedAddresses, setSelectedAddresses] = useState<TAddress[]>([])
   const [selectedAddressesModal, setSelectedAddressesModal] = useState<
@@ -263,7 +263,7 @@ const WalletScreenContent = (): JSX.Element => {
             </div>
           </Button>
 
-          {allAddresses.data?.length && (
+          {allAddresses.data?.length ? (
             <Button
               variant='secondary'
               className='w-[264px] ml-30px px-0'
@@ -278,7 +278,7 @@ const WalletScreenContent = (): JSX.Element => {
                 </div>
               </div>
             </Button>
-          )}
+          ) : null}
           <Button
             onClick={() => setPaymentModalOpen(true)}
             className='ml-30px w-[190px] px-0'
