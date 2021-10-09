@@ -1,5 +1,5 @@
 import { KeyboardEvent } from 'react'
-import { formatNumber } from 'common/utils/format'
+import { formatAbbreviatedNumber } from 'common/utils/format'
 import { TOption } from './SelectAmount'
 
 const specialKeys: number[] = []
@@ -17,7 +17,7 @@ export const useOptions = (
   let maxValue = 0
   for (let i = min; i <= max; i += step) {
     const option = {
-      label: formatNumber(i),
+      label: formatAbbreviatedNumber(i, 4),
       value: i.toString(),
     }
     maxValue = i
@@ -25,7 +25,7 @@ export const useOptions = (
   }
   if (maxValue < max) {
     options.push({
-      label: formatNumber(max),
+      label: formatAbbreviatedNumber(max, 4),
       value: max.toString(),
     })
   }
@@ -39,7 +39,10 @@ export const validate = (e: KeyboardEvent<HTMLInputElement>): boolean => {
 }
 
 export const formatDisplayNumber = (x: string, delimiter = ','): string =>
-  x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, delimiter)
+  x
+    .toString()
+    .replaceAll(delimiter, '')
+    .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, delimiter)
 
 export const generateStep = (value: number): number => {
   if (value >= 10000) {

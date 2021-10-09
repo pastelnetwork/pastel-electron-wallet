@@ -11,6 +11,7 @@ import { squooshToolModalReducer } from '../features/squooshTool'
 import { updateToastReducer } from '../features/updateToast'
 import { glitchImageModalReducer } from '../features/glitchImage'
 import { appInfoReducer } from '../features/app/AppInfoSlice'
+import { utilitiesReducer } from '../features/utilities/UtilitiesSlice'
 
 const store = configureStore({
   reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
     squooshToolModal: squooshToolModalReducer,
     glitchImageModal: glitchImageModalReducer,
     appInfo: appInfoReducer,
+    utilities: utilitiesReducer,
   },
 })
 

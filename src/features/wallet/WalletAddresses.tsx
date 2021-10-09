@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import cn from 'classnames'
 import styles from './WalletScreen.module.css'
 import AddressesTable from './AddressesTable'
@@ -9,7 +9,7 @@ import { Button } from 'common/components/Buttons'
 import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { useWalletScreenContext } from './walletScreen.context'
-import { useCreateNewAddress } from './walletScreen.hooks'
+import { walletRPC } from 'api/pastel-rpc'
 
 export default function WalletAddresses(): JSX.Element {
   const currencyName = useCurrencyName()
@@ -23,13 +23,32 @@ export default function WalletAddresses(): JSX.Element {
     totalBalances,
     toggleHideEmptyAddresses,
     selectedAmount,
+    setCurrentAddress,
+    setExportKeysModalOpen,
+    setNewAddress,
   } = useWalletScreenContext()
+  const [isLoading, setLoading] = useState(false)
 
-  const createNewAddress = useCreateNewAddress()
+  const createNewAddress = async () => {
+    setLoading(true)
+    const isZAddress = activeTab === 2
+    const result = await walletRPC.createNewAddress(isZAddress)
+    if (result) {
+      if (isZAddress) {
+        zAddresses.refetch()
+      } else {
+        tAddresses.refetch()
+      }
+      setCurrentAddress(result)
+      setExportKeysModalOpen(true)
+      setNewAddress(true)
+    }
+    setLoading(false)
+  }
 
   return (
     <>
-      {(allAddresses.isLoading || allAddresses.data?.length) && (
+      {allAddresses.isLoading || allAddresses.data?.length ? (
         <div className='bg-white pt-[30px] rounded-lg mt-[30px] min-w-594px'>
           <div
             className={cn(
@@ -97,14 +116,14 @@ export default function WalletAddresses(): JSX.Element {
             <div className='flex items-center'>
               <div className='text-gray-71 text-h4'>Selected total:</div>
               <div className='ml-3 text-gray-2d text-h3-heavy'>
-                {formatPrice(selectedAmount, currencyName)}
+                {formatPrice(selectedAmount, currencyName, 4)}
               </div>
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
-      {allAddresses.data?.length === 0 && (
+      {allAddresses.data?.length === 0 ? (
         <div
           className={cn(
             'bg-white rounded-lg mt-3.5 flex items-center justify-center pb-10',
@@ -120,6 +139,7 @@ export default function WalletAddresses(): JSX.Element {
               className='w-[264px] px-0 mt-3'
               childrenClassName='w-full'
               onClick={createNewAddress}
+              disabled={isLoading}
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
@@ -130,7 +150,7 @@ export default function WalletAddresses(): JSX.Element {
             </Button>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   )
 }

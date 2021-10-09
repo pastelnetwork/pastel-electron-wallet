@@ -9,7 +9,8 @@ import { UseQueryResult } from 'react-query'
 import { TAddress } from '../../types/rpc'
 import { useWalletScreenContext } from './walletScreen.context'
 import SelectPaymentSourceAmount from './SelectPaymentSourceAmount'
-import { formatAbbreviatedNumber, timeAgo } from 'common/utils/format'
+import { formatPrice, timeAgo } from 'common/utils/format'
+import Tooltip from 'common/components/Tooltip'
 
 const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
 
@@ -33,10 +34,47 @@ export default function AddressesTable({
     setCurrentAddress,
     setIsQRCodeModalOpen,
     setExportKeysModalOpen,
+    setPaymentSources,
+    pastelPromoCode,
+    setPaymentSourcesModal,
+    setSelectedAddressesModal,
   } = useWalletScreenContext()
 
-  const selectAddress = (address: string) =>
-    setSelectedAddresses(addresses => [...addresses, address])
+  const selectAddress = (address: string, amount: number) => {
+    setSelectedAddresses(addresses => {
+      if (addresses.includes(address)) {
+        return addresses.filter(item => item !== address)
+      } else {
+        return [...addresses, address]
+      }
+    })
+    setSelectedAddressesModal(addresses => {
+      if (addresses.includes(address)) {
+        return addresses.filter(item => item !== address)
+      } else {
+        return [...addresses, address]
+      }
+    })
+    setPaymentSources(sources => {
+      if (sources[address]) {
+        const adr = sources
+        delete adr[address]
+        return { ...sources }
+      } else {
+        return { ...sources, [address]: amount }
+      }
+    })
+    setPaymentSourcesModal(sources => {
+      if (sources[address]) {
+        const adr = sources
+        delete adr[address]
+        return { ...sources }
+      } else {
+        return { ...sources, [address]: amount }
+      }
+    })
+  }
+  const pastelPromoCodeList = pastelPromoCode.data
 
   const Columns = [
     {
@@ -44,17 +82,30 @@ export default function AddressesTable({
       colClasses: 'w-[35%] text-h6 leading-5 font-normal',
       name: 'Address name',
       headerColClasses: 'mx-30px',
-      custom: (address: string) => (
+      custom: (address: string, row: TRow) => (
         <div className='flex items-center mx-30px'>
           {isLoadingAddresses ? (
             loadingCell
           ) : (
             <>
-              <Checkbox
-                isChecked={Boolean(selectedAddresses.includes(address))}
-                clickHandler={() => selectAddress(address)}
+              {!pastelPromoCodeList?.find(
+                promoCode => promoCode.address === address,
+              ) ? (
+                <Checkbox
+                  isChecked={Boolean(selectedAddresses.includes(address))}
+                  clickHandler={() => selectAddress(address, row.amount)}
+                />
+              ) : (
+                <div className='w-5 h-5'></div>
+              )}
+              <AddressForm
+                address={address}
+                hidePromoCodeEmpty={
+                  !!pastelPromoCodeList?.find(
+                    promoCode => promoCode.address === address,
+                  )
+                }
               />
-              <AddressForm address={address} />
             </>
           )}
         </div>
@@ -90,7 +141,16 @@ export default function AddressesTable({
                 setIsQRCodeModalOpen(true)
               }}
             >
-              <QRCode size={20} />
+              <Tooltip
+                autoWidth={true}
+                type='top'
+                width={130}
+                padding={5}
+                content='Open Address QR'
+                classnames='py-2 text-gray-a0'
+              >
+                <QRCode size={20} />
+              </Tooltip>
             </span>
           </div>
         ),
@@ -113,7 +173,19 @@ export default function AddressesTable({
               }}
               className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
             >
-              <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
+              <Tooltip
+                autoWidth={true}
+                type='top'
+                width={130}
+                padding={5}
+                content='Open Private Key'
+                classnames='py-2 text-gray-a0'
+              >
+                <FilePDFIcon
+                  size={20}
+                  className='text-gray-88 cursor-pointer'
+                />
+              </Tooltip>
             </span>
           </div>
         ),
@@ -127,7 +199,7 @@ export default function AddressesTable({
           loadingCell
         ) : (
           <div className='text-gray-71 text-h5-medium'>
-            {formatAbbreviatedNumber(amount || 0, 2)}
+            {formatPrice(amount || 0, '', 4)}
           </div>
         ),
     },
@@ -139,7 +211,13 @@ export default function AddressesTable({
         isLoadingAddresses ? (
           loadingCell
         ) : (
-          <SelectPaymentSourceAmount address={address} />
+          <>
+            {!pastelPromoCodeList?.find(
+              promoCode => promoCode.address === address,
+            ) ? (
+              <SelectPaymentSourceAmount address={address} />
+            ) : null}
+          </>
         ),
     },
   ]

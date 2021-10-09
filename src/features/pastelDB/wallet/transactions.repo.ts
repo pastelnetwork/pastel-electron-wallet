@@ -40,7 +40,11 @@ export function insertTransactions(
 ): void {
   const stmt = db.prepare(insertQuery)
   for (let i = 0; i < transactions.length; i++) {
-    insertTransaction(db, transactions[i], stmt)
+    const transaction = transactions[i]
+    if (transaction.blockhash === undefined) {
+      transaction.blockhash = ''
+    }
+    insertTransaction(db, transaction, stmt)
   }
 }
 
@@ -92,6 +96,9 @@ export function insertTransaction(
 ): void {
   stmt.run({
     ...transaction,
+    fee: transaction.blockindex ?? 0,
+    blockindex: transaction.blockindex ?? 0,
+    blockhash: transaction.blockhash ?? '',
     address: transaction.address ?? null,
     walletconflicts: JSON.stringify(transaction.walletconflicts),
     vjoinsplit: JSON.stringify(transaction.vjoinsplit),

@@ -154,9 +154,14 @@ const ExportKeysModal = (): JSX.Element => {
   const {
     currentAddress: address = '',
     setExportKeysModalOpen: setIsOpen,
+    isNewAddress,
+    setNewAddress,
   } = useWalletScreenContext()
 
-  const handleClose = () => setIsOpen(false)
+  const handleClose = () => {
+    setNewAddress(false)
+    setIsOpen(false)
+  }
 
   const currencyName = useCurrencyName()
   const [privateKey, setPrivateKey] = useState('')
@@ -182,7 +187,11 @@ const ExportKeysModal = (): JSX.Element => {
     <TitleModal
       isOpen
       handleClose={() => handleClose()}
-      title='Generate Paper Wallet for Address'
+      title={
+        !isNewAddress
+          ? 'Generate Paper Wallet for Address'
+          : 'New Pastel Address'
+      }
       classNames='w-[598px]'
     >
       <div className='mt-[11px] pr-22px'>

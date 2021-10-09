@@ -21,6 +21,7 @@ export type TSelectAmountProps = {
   disabled?: boolean
   defaultValue?: TOption
   forceUpdate?: boolean
+  label?: string
 }
 
 const inputEventTypesToIgnore: string[] = [
@@ -40,8 +41,10 @@ export default function SelectAmount({
   invalidInputClassName,
   defaultValue,
   forceUpdate,
+  label,
 }: TSelectAmountProps): JSX.Element {
   const [isValid, setIsValid] = useState(true)
+  const [isTyping, setTyping] = useState(false)
   const options: TOption[] = useOptions(min, max, step)
   const [selected, setSelected] = useState(
     defaultValue || {
@@ -54,7 +57,7 @@ export default function SelectAmount({
     if (forceUpdate && defaultValue?.value) {
       setSelected(defaultValue)
     }
-  }, [forceUpdate])
+  }, [defaultValue])
 
   const handleOnKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!validate(e)) {
@@ -72,6 +75,7 @@ export default function SelectAmount({
       onChange={selection => {
         setSelected(selection)
         onChange && onChange(selection)
+        setTyping(false)
       }}
       onInputValueChange={(inputValue: string, options) => {
         const { type } = (options as unknown) as { type: string }
@@ -83,7 +87,7 @@ export default function SelectAmount({
         }
         const selection = {
           label: inputValue,
-          value: inputValue,
+          value: inputValue.replaceAll(',', ''),
         }
         setSelected(selection)
         onChange && onChange(selection)
@@ -100,9 +104,10 @@ export default function SelectAmount({
         inputValue,
         highlightedIndex,
       }) => {
-        const filteredOptions = inputValue
-          ? options.filter(option => option.value.startsWith(inputValue))
-          : options
+        const filteredOptions =
+          inputValue && isTyping
+            ? options.filter(option => option.value.startsWith(inputValue))
+            : options
 
         return (
           <div
@@ -124,14 +129,22 @@ export default function SelectAmount({
                 {...getInputProps()}
                 type='text'
                 role='input'
-                value={formatDisplayNumber(selected?.label)}
+                value={formatDisplayNumber(selected?.label).trim()}
                 onKeyUp={handleOnKeyUp}
                 className={cn(
                   'h-full w-full rounded px-10px text-gray-35 font-extrabold focus-visible-border disabled:bg-gray-f6',
                   disabled && 'cursor-not-allowed',
                   !isValid && invalidInputClassName,
+                  label && 'pr-10',
                 )}
+                onBlur={() => setTyping(false)}
+                onKeyPress={() => setTyping(true)}
               />
+              {label ? (
+                <span className='text-base font-normal text-gray-a0 mr-2 absolute right-[25px]'>
+                  {label}
+                </span>
+              ) : null}
               <button {...getToggleButtonProps()} className='w-10px mr-4'>
                 <Caret
                   size={10}

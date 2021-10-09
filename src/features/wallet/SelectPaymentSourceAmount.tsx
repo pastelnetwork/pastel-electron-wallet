@@ -1,7 +1,10 @@
 import React from 'react'
 import { useWalletScreenContext } from './walletScreen.context'
-import { useSetPaymentSource } from './walletScreen.hooks'
-import { parseFormattedNumber } from '../../common/utils/format'
+import {
+  useSetPaymentSource,
+  useSetPaymentSourceModal,
+} from './walletScreen.hooks'
+import { parseFormattedNumber, formatPrice } from '../../common/utils/format'
 import SelectAmount, {
   generateStep,
   TOption,
@@ -9,13 +12,23 @@ import SelectAmount, {
 
 export default function SelectPaymentSourceAmount({
   address,
+  isModal,
 }: {
   address: string
+  isModal?: boolean
 }): JSX.Element {
-  const { paymentSources, allAddressAmounts } = useWalletScreenContext()
+  const {
+    paymentSources,
+    allAddressAmounts,
+    paymentSourcesModal,
+  } = useWalletScreenContext()
   const setPaymentSource = useSetPaymentSource()
+  const setPaymentSourcesModal = useSetPaymentSourceModal()
 
-  const selected = paymentSources[address]
+  let selected = paymentSources[address]
+  if (isModal) {
+    selected = paymentSourcesModal[address]
+  }
   const amount = allAddressAmounts.data?.[address] || 0
   const value = selected ?? amount
 
@@ -26,12 +39,15 @@ export default function SelectPaymentSourceAmount({
       max={amount}
       step={generateStep(amount)}
       defaultValue={{
-        label: String(value),
+        label: formatPrice(value, '', 4),
         value: String(value),
       }}
       onChange={(selection: TOption) => {
         const value = parseFormattedNumber(selection.value)
-        setPaymentSource(address, value)
+        setPaymentSourcesModal(address, value)
+        if (!isModal) {
+          setPaymentSource(address, value)
+        }
       }}
     />
   )

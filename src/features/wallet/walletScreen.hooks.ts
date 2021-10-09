@@ -2,7 +2,6 @@ import { TAddress, TAddressBalancesResponse } from '../../types/rpc'
 import { UseQueryResult } from 'react-query'
 import { useMemo } from 'react'
 import { useWalletScreenContext } from './walletScreen.context'
-import { walletRPC } from '../../api/pastel-rpc'
 
 export const useFilterAddresses = (
   addressesQuery: UseQueryResult<TAddress[]>,
@@ -49,33 +48,6 @@ export const useSelectedAmount = ({
   }, [addresses, amounts, selectedAddresses, paymentSources])
 }
 
-export const useToggleSelectAddress = (): ((
-  address: string,
-) => void) => address => {
-  const { setSelectedAddresses } = useWalletScreenContext()
-
-  setSelectedAddresses(addresses => {
-    if (addresses.includes(address)) {
-      return addresses.filter(item => item !== address)
-    } else {
-      return [...addresses, address]
-    }
-  })
-}
-
-export const useCreateNewAddress = (): (() => Promise<void>) => async () => {
-  const { activeTab, tAddresses, zAddresses } = useWalletScreenContext()
-  const isZAddress = activeTab === 2
-  const result = await walletRPC.createNewAddress(isZAddress)
-  if (result) {
-    if (isZAddress) {
-      zAddresses.refetch()
-    } else {
-      tAddresses.refetch()
-    }
-  }
-}
-
 export const useSetPaymentSource = (): ((
   address: string,
   amount: number,
@@ -84,4 +56,14 @@ export const useSetPaymentSource = (): ((
 
   return (address: string, amount: number) =>
     setPaymentSources(sources => ({ ...sources, [address]: amount }))
+}
+
+export const useSetPaymentSourceModal = (): ((
+  address: string,
+  amount: number,
+) => void) => {
+  const { setPaymentSourcesModal } = useWalletScreenContext()
+
+  return (address: string, amount: number) =>
+    setPaymentSourcesModal(sources => ({ ...sources, [address]: amount }))
 }

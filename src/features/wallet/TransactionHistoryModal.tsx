@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import cn from 'classnames'
+import { shell } from 'electron'
+import dayjs from 'dayjs'
 import { TitleModal } from '../../common/components/Modal'
 import Table, { TRow } from '../../common/components/Table'
 import DateRangeSelector, {
@@ -20,10 +22,12 @@ import {
   TTransactionType,
   TAddressBook,
 } from 'types/rpc'
-import dayjs from 'dayjs'
 import { AddressForm } from './AddressForm'
-import { isSapling, isTransparent } from 'common/utils/wallet'
+import { isTransparent } from 'common/utils/wallet'
 import { useWalletScreenContext } from './walletScreen.context'
+import { readTransaction } from 'common/utils/TransactionNote'
+
+const BLOCK_CONFIRMED_NUMBER = 6
 
 const TransactionHistoryModal = (): JSX.Element => {
   const {
@@ -59,15 +63,38 @@ const TransactionHistoryModal = (): JSX.Element => {
   const [recipientAddress, setRecipientAddress] = useState<TOption | null>(
     recipients[0],
   )
-
+  const [isLoading, setLoading] = useState(false)
   const onSelectDateRange = (dates: TDateRangeProp) => {
     setDates(dates)
+    const startDate = dayjs(dates.start)
+      .set('hour', 0)
+      .set('minute', 0)
+      .set('second', 0)
+      .valueOf()
+    let filterTransactions = originTransactions.filter(
+      t => dayjs.unix(parseInt(t.date)).valueOf() >= startDate,
+    )
+    if (dates.end) {
+      const endDate = dayjs(dates.end)
+        .set('hour', 0)
+        .set('minute', 0)
+        .set('second', 0)
+        .valueOf()
+      filterTransactions = originTransactions.filter(
+        t =>
+          dayjs.unix(parseInt(t.date)).valueOf() >= startDate &&
+          dayjs.unix(parseInt(t.date)).valueOf() <= endDate,
+      )
+    }
+    setTransactions(filterTransactions)
   }
 
   const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {
     const filtered = trans
       .filter(t => {
-        return isSource ? isSapling(t.address) : !isSapling(t.address)
+        return isSource
+          ? t.type === TTransactionType.SEND
+          : t.type === TTransactionType.RECEIVE
       })
       .map(t => {
         return {
@@ -75,13 +102,18 @@ const TransactionHistoryModal = (): JSX.Element => {
           value: t.address,
         }
       })
-
+    const newFiltered: TOption[] = []
+    filtered.forEach(tran => {
+      if (!newFiltered.find(i => i.value === tran.value)) {
+        newFiltered.push(tran)
+      }
+    })
     return [
       {
         label: 'All',
         value: '',
       },
-    ].concat(filtered)
+    ].concat(newFiltered)
   }
 
   const filterTransactionByType = (
@@ -97,22 +129,31 @@ const TransactionHistoryModal = (): JSX.Element => {
 
   useEffect(() => {
     const getTransactions = async () => {
+      setLoading(true)
       const transactionRPC = new TransactionRPC()
       const trans = await transactionRPC.fetchTAndZTransactions()
+      const privateNotes = await readTransaction()
       const filterTransactions = trans.map(t => {
+        const note = privateNotes.find(n => n.txnId === t.txid)
         return {
-          date: dayjs.unix(t.time).format('DD/MM/YY HH:mm'),
+          date: t.time.toString(),
           address: t.address,
           addressNick: '',
           type: (t.type as TTransactionType) || TTransactionType.ALL,
-          status: '',
+          status:
+            t.confirmations > BLOCK_CONFIRMED_NUMBER
+              ? 'confirmed'
+              : 'unconfirmed',
           id: t.txid,
-          comments: '',
+          comments:
+            t.detailedTxns && t.detailedTxns[0]?.memo
+              ? t.detailedTxns[0].memo
+              : '',
           fee: t.fee || 0,
           amount: t.amount || 0,
+          privateNote: note?.privateNote,
         }
       })
-
       // Source/Target addresses
       setSourceAddresses(getFilterAddresses(trans, true))
       setRecipients(getFilterAddresses(trans, false))
@@ -120,6 +161,7 @@ const TransactionHistoryModal = (): JSX.Element => {
       // Map transaction row data
       setTransactions(filterTransactions)
       setOriginTransactions(filterTransactions)
+      setLoading(false)
     }
     getTransactions()
   }, [])
@@ -168,7 +210,9 @@ const TransactionHistoryModal = (): JSX.Element => {
       key: 'date',
       headerColClasses: 'ml-15px',
       custom: (value: string | number) => (
-        <div className='ml-15px whitespace-nowrap mr-15px'>{value}</div>
+        <div className='ml-15px whitespace-nowrap mr-15px'>
+          {dayjs.unix(parseInt(value.toString())).format('DD/MM/YY HH:mm')}
+        </div>
       ),
     },
     {
@@ -193,11 +237,11 @@ const TransactionHistoryModal = (): JSX.Element => {
           <div className='ml-46px flex items-center'>
             {!isTransparent(row?.address) ? 'Shielded' : 'Transparent'}
 
-            {Math.floor(Math.random() * 10) % 2 ? (
+            {row?.comments ? (
               <div className='inline-block'>
                 <Tooltip
                   classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content='Note content here.'
+                  content={row.comments}
                   width={150}
                   type='top'
                 >
@@ -215,16 +259,27 @@ const TransactionHistoryModal = (): JSX.Element => {
       key: 'status',
       name: 'Status',
       headerColClasses: 'mr-15px',
-      custom: () => {
+      custom: (value: string | number) => {
         return (
-          <img
-            src={
-              Math.floor(Math.random() * 10) % 2
-                ? checkGreenIcon
-                : clockYellowIcon
-            }
-            className='mt-3 ml-5 transform -translate-y-2/4 -translate-x-2/4'
-          />
+          <div className='mt-3 pl-5 inline-block'>
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content={
+                value.toString() === 'confirmed' ? 'Confirmed' : 'Unconfirmed'
+              }
+              width={110}
+              type='top'
+            >
+              <img
+                src={
+                  value.toString() === 'confirmed'
+                    ? checkGreenIcon
+                    : clockYellowIcon
+                }
+                className='inline-block'
+              />
+            </Tooltip>
+          </div>
         )
       },
     },
@@ -239,27 +294,38 @@ const TransactionHistoryModal = (): JSX.Element => {
           type='top'
         >
           <div className='w-[103px] overflow-ellipsis overflow-hidden'>
-            {value}
+            <span
+              className='cursor-pointer text-blue-3f'
+              onClick={() =>
+                shell.openExternal(
+                  `https://explorer.pastel.network/tx/${value}`,
+                )
+              }
+            >
+              {value}
+            </span>
           </div>
         </Tooltip>
       ),
     },
     {
-      key: 'comments',
+      key: 'privateNote',
       name: 'Private Notes',
       headerColClasses: 'whitespace-nowrap mr-15px',
-      custom: () => (
+      custom: (value: string | number) => (
         <div className='ml-8 inline-block'>
-          <Tooltip
-            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-            content='Note content here.'
-            width={150}
-            type='top'
-          >
-            <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
-              <img className='cursor-pointer' src={commentIcon} />
-            </span>
-          </Tooltip>
+          {value ? (
+            <Tooltip
+              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+              content={value}
+              width={250}
+              type='top'
+            >
+              <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+                <img className='cursor-pointer' src={commentIcon} />
+              </span>
+            </Tooltip>
+          ) : null}
         </div>
       ),
     },
@@ -306,6 +372,8 @@ const TransactionHistoryModal = (): JSX.Element => {
                   selected={sourceAddress}
                   options={sourceAddresses}
                   onChange={setSourceAddress}
+                  listClassName='max-w-[450px]'
+                  listItemClassName='truncate'
                 />
               </div>
             </div>
@@ -320,6 +388,8 @@ const TransactionHistoryModal = (): JSX.Element => {
                   selected={recipientAddress}
                   options={recipients}
                   onChange={setRecipientAddress}
+                  listClassName='max-w-[450px]'
+                  listItemClassName='truncate'
                 />
               </div>
             </div>
@@ -384,6 +454,7 @@ const TransactionHistoryModal = (): JSX.Element => {
             data={mappedAddressTransactions}
             headerTrClasses='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'
             bodyTrClasses='h-67px border-b border-line text-sm md:text-base'
+            isLoading={isLoading}
           />
         </div>
       </div>

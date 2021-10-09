@@ -35,7 +35,7 @@ export default function QRCodeModal(): JSX.Element {
       title='Address QR'
       classNames='w-[598px]'
     >
-      <div className='flex items-center justify-center pt-6 pb-4'>
+      <div className='flex items-center justify-center pt-6 pb-4 pr-22px'>
         {loading ? (
           <Spinner className='w-8 h-8 text-blue-3f' />
         ) : (

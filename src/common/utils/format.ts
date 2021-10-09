@@ -13,6 +13,13 @@ export const parseFormattedNumber = (input: string, delimiter = ','): number =>
 // case 1: formatAbbreviatedNumber(759878, 1) = 759.9k
 // case 2: formatAbbreviatedNumber(759878, 0) = 760k
 export const formatAbbreviatedNumber = (x: number, digits: number): string => {
+  if (x === 0) {
+    return '0'
+  }
+
+  if (x <= 100) {
+    return parseFloat(x.toString()).toFixed(4)
+  }
   const lookup = [
     { value: 1, symbol: '' },
     { value: 1e3, symbol: 'K' },

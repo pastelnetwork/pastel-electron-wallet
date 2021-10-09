@@ -40,7 +40,7 @@
   }
 
   .input-field:focus + fieldset {
-    @apply border border-gray-8e;
+    @apply border border-blue-3f;
   }
   .input-field:active + fieldset {
     @apply border border-blue-3f;
