@@ -2,7 +2,7 @@ import { createContext, Dispatch, SetStateAction, useContext } from 'react'
 import { UseQueryResult } from 'react-query'
 import { TAddress, TBalance, TTotalBalance } from '../../types/rpc'
 import { TUseAddressBookResult } from '../../common/hooks/useAddressBook'
-import { TPaymentSources } from './walletScreen.types'
+import { TPaymentSources, TDate } from './walletScreen.types'
 import { TPastelPromoCode } from '../../common/utils/PastelPromoCode'
 
 export type TWalletScreenContextValues = {
@@ -45,6 +45,8 @@ export type TWalletScreenContextValues = {
   setSelectedAddressesModal: Dispatch<SetStateAction<TAddress[]>>
   isNewAddress: boolean
   setNewAddress: Dispatch<SetStateAction<boolean>>
+  selectedDate: TDate
+  setSelectedDate(dates: TDate): void
 }
 
 export const WalletScreenContext = createContext(

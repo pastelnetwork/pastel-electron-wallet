@@ -33,6 +33,7 @@ const TransactionHistoryModal = (): JSX.Element => {
   const {
     setTransactionHistoryModalOpen: setIsOpen,
     addressBook: { addressBook },
+    selectedDate,
   } = useWalletScreenContext()
 
   const handleClose = () => setIsOpen(false)
@@ -56,7 +57,7 @@ const TransactionHistoryModal = (): JSX.Element => {
       value: '',
     },
   ])
-  const [dates, setDates] = useState<TDateRangeProp>()
+  const [dates, setDates] = useState<TDateRangeProp>(selectedDate)
   const [sourceAddress, setSourceAddress] = useState<TOption | null>(
     sourceAddresses[0],
   )
@@ -66,26 +67,34 @@ const TransactionHistoryModal = (): JSX.Element => {
   const [isLoading, setLoading] = useState(false)
   const onSelectDateRange = (dates: TDateRangeProp) => {
     setDates(dates)
+    filterTransactionByDate(dates, originTransactions)
+  }
+
+  const filterTransactionByDate = (
+    dates: TDateRangeProp,
+    trans: TTransactionRow[],
+  ) => {
     const startDate = dayjs(dates.start)
       .set('hour', 0)
       .set('minute', 0)
       .set('second', 0)
       .valueOf()
-    let filterTransactions = originTransactions.filter(
+    let filterTransactions = trans.filter(
       t => dayjs.unix(parseInt(t.date)).valueOf() >= startDate,
     )
     if (dates.end) {
       const endDate = dayjs(dates.end)
-        .set('hour', 0)
-        .set('minute', 0)
-        .set('second', 0)
+        .set('hour', 23)
+        .set('minute', 59)
+        .set('second', 59)
         .valueOf()
-      filterTransactions = originTransactions.filter(
+      filterTransactions = trans.filter(
         t =>
           dayjs.unix(parseInt(t.date)).valueOf() >= startDate &&
           dayjs.unix(parseInt(t.date)).valueOf() <= endDate,
       )
     }
+
     setTransactions(filterTransactions)
   }
 
@@ -161,6 +170,7 @@ const TransactionHistoryModal = (): JSX.Element => {
       // Map transaction row data
       setTransactions(filterTransactions)
       setOriginTransactions(filterTransactions)
+      filterTransactionByDate(selectedDate, filterTransactions)
       setLoading(false)
     }
     getTransactions()

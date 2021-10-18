@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { walletRPC } from 'api/pastel-rpc'
-import { TPaymentSources } from './walletScreen.types'
+import { walletRPC, transactionRPC } from 'api/pastel-rpc'
+import { TPaymentSources, TDate } from './walletScreen.types'
 import { useAddressBook } from 'common/hooks'
 import Alert from 'common/components/Alert'
 import { Button } from 'common/components/Buttons'
@@ -28,6 +28,7 @@ import {
 import { ROUTES } from '../../common/constants/routes'
 import Modals from './Modals'
 import { useReadPastelPromoCode } from 'common/utils/PastelPromoCode'
+import dayjs from 'common/utils/initDayjs'
 
 export type TSelectionPslProps = {
   address: string
@@ -69,6 +70,10 @@ export default function WalletScreen(): JSX.Element {
     setAddPastelPromoCodeModalOpen,
   ] = useState(false)
   const [currentAddress, setCurrentAddress] = useState<string>()
+  const [selectedDate, setSelectedDate] = useState<TDate>({
+    start: new Date(),
+    end: new Date(),
+  })
 
   const tAddresses = useFilterAddresses(
     tAddressesOriginal,
@@ -136,6 +141,8 @@ export default function WalletScreen(): JSX.Element {
     setSelectedAddressesModal,
     isNewAddress,
     setNewAddress,
+    selectedDate,
+    setSelectedDate,
   }
 
   return (
@@ -162,8 +169,16 @@ const WalletScreenContent = (): JSX.Element => {
     setExportKeysModalOpen,
     setCurrentAddress,
     setNewAddress,
+    selectedDate,
+    setSelectedDate,
   } = useWalletScreenContext()
   const [isLoading, setLoading] = useState(false)
+  const [filterTransactions, setFilterTransactions] = useState({
+    week: 0,
+    month: 0,
+    year: 0,
+  })
+  const [date, setDate] = useState<Date[]>([])
 
   const createNewAddress = async () => {
     setLoading(true)
@@ -188,6 +203,60 @@ const WalletScreenContent = (): JSX.Element => {
     }
   }, [location])
 
+  useEffect(() => {
+    const getTransaction = async () => {
+      const trans = await transactionRPC.fetchTAndZTransactions()
+      const dayOfWeek = dayjs()
+        .add(-7, 'day')
+        .set('hour', 0)
+        .set('minute', 0)
+        .set('second', 0)
+      const dayOfMonth = dayjs()
+        .add(-30, 'day')
+        .set('hour', 0)
+        .set('minute', 0)
+        .set('second', 0)
+      const dayOfYear = dayjs()
+        .add(-365, 'day')
+        .set('hour', 0)
+        .set('minute', 0)
+        .set('second', 0)
+      setDate([dayOfWeek.toDate(), dayOfMonth.toDate(), dayOfYear.toDate()])
+      setFilterTransactions({
+        week: trans.filter(
+          t =>
+            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
+            dayOfWeek.valueOf(),
+        ).length,
+        month: trans.filter(
+          t =>
+            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
+            dayOfMonth.valueOf(),
+        ).length,
+        year: trans.filter(
+          t =>
+            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
+            dayOfYear.valueOf(),
+        ).length,
+      })
+
+      setSelectedDate({
+        ...selectedDate,
+        start: dayOfWeek.toDate(),
+      })
+    }
+
+    getTransaction()
+  }, [])
+
+  const onTabToggle = (index: number) => {
+    setActivePeriod(index)
+    setSelectedDate({
+      ...selectedDate,
+      start: date[index],
+    })
+  }
+
   return (
     <div>
       <Breadcrumbs
@@ -209,14 +278,15 @@ const WalletScreenContent = (): JSX.Element => {
           </div>
           <MultiToggleSwitch
             data={[
-              { label: 'Week', count: 1122 },
-              { label: 'Month', count: 12 },
-              { label: 'Year', count: 12 },
+              { label: 'Week', count: filterTransactions.week },
+              { label: 'Month', count: filterTransactions.month },
+              { label: 'Year', count: filterTransactions.year },
             ]}
             activeIndex={activePeriod}
-            onToggle={setActivePeriod}
+            onToggle={onTabToggle}
             itemActiveClassName='bg-gray-4a rounded-full text-white'
             countInactiveClassName='bg-warning-hover font-extrabold'
+            showEmpty
           />
         </div>
         <div
