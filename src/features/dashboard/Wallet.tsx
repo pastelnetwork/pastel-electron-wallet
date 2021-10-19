@@ -41,7 +41,7 @@ export default function Wallet(): JSX.Element {
         </div>
         {!isBalanceLoading && balance && (
           <div className='font-extrabold text-gray-2d text-sm'>
-            {formatPrice(balance.total, currencyName)}
+            {formatPrice(balance.total, currencyName, 2)}
           </div>
         )}
         {isBalanceLoading && <RectangleLoader colorClass='text-gray-dd' />}

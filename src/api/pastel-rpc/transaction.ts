@@ -4,6 +4,7 @@ import {
   TBaseTransaction,
   TResponse,
   TRpcParam,
+  TTransferPayload,
   TRawTransactionResponse,
   TTransactionDetail,
   TTransactionInfoResponse,
@@ -13,6 +14,7 @@ import {
   TZListReceivedByAddressResponse,
   TZListReceivedByAddress,
   TListSinceBlockResponse,
+  TTransactionStatus,
 } from '../../types/rpc'
 import { mapTxnsResult, parseMemo, sortTxnsResult } from '../helpers'
 import { rpc } from './rpc'
@@ -239,6 +241,25 @@ export class TransactionRPC {
    */
   async sendTransaction(data: TRpcParam[]): Promise<TResponse<string>> {
     return rpc<TResponse<string>>('z_sendmany', data)
+  }
+
+  async sendTransactionWithCustomFee(
+    data: TTransferPayload,
+  ): Promise<TResponse<string>> {
+    return rpc<TResponse<string>>('z_sendmanywithchangetosender', [
+      data.from,
+      data.to,
+      1,
+      data.fee,
+    ])
+  }
+
+  async getTransactionStatus(
+    operationIdList: string[],
+  ): Promise<TResponse<TTransactionStatus[]>> {
+    return rpc<TResponse<TTransactionStatus[]>>('z_getoperationstatus', [
+      operationIdList,
+    ])
   }
 }
 

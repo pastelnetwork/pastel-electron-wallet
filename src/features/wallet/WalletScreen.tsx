@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { ToastContainer } from 'react-toastify'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { walletRPC } from 'api/pastel-rpc'
 import { TPaymentSources } from './walletScreen.types'
@@ -19,11 +19,7 @@ import {
   WalletScreenContext,
 } from './walletScreen.context'
 import { useAddressesLastActivityTime } from '../pastelDB/wallet/transactions.repo'
-import {
-  useCreateNewAddress,
-  useFilterAddresses,
-  useSelectedAmount,
-} from './walletScreen.hooks'
+import { useFilterAddresses, useSelectedAmount } from './walletScreen.hooks'
 import { TAddress } from '../../types/rpc'
 import {
   useCombineQueryArray,
@@ -48,9 +44,17 @@ export default function WalletScreen(): JSX.Element {
   const totalBalances = walletRPC.useTotalBalance()
   const addressBook = useAddressBook()
   const lastActivityTimes = useAddressesLastActivityTime()
-  const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(false)
+  const [isNewAddress, setNewAddress] = useToggle(false)
+  const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(true)
   const [selectedAddresses, setSelectedAddresses] = useState<TAddress[]>([])
+  const [selectedAddressesModal, setSelectedAddressesModal] = useState<
+    TAddress[]
+  >([])
   const [paymentSources, setPaymentSources] = useState<TPaymentSources>({})
+  const [
+    paymentSourcesModal,
+    setPaymentSourcesModal,
+  ] = useState<TPaymentSources>({})
   const [activeTab, setActiveTab] = useState(0)
   const [activePeriod, setActivePeriod] = useState(0)
   const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
@@ -126,6 +130,12 @@ export default function WalletScreen(): JSX.Element {
     setCurrentAddress,
     selectedAmount,
     pastelPromoCode,
+    paymentSourcesModal,
+    setPaymentSourcesModal,
+    selectedAddressesModal,
+    setSelectedAddressesModal,
+    isNewAddress,
+    setNewAddress,
   }
 
   return (
@@ -136,6 +146,7 @@ export default function WalletScreen(): JSX.Element {
 }
 
 const WalletScreenContent = (): JSX.Element => {
+  const location = useLocation()
   const currencyName = useCurrencyName()
   const {
     activePeriod,
@@ -145,9 +156,37 @@ const WalletScreenContent = (): JSX.Element => {
     allAddresses,
     setPaymentModalOpen,
     setAddPastelPromoCodeModalOpen,
+    activeTab,
+    tAddresses,
+    zAddresses,
+    setExportKeysModalOpen,
+    setCurrentAddress,
+    setNewAddress,
   } = useWalletScreenContext()
+  const [isLoading, setLoading] = useState(false)
 
-  const createNewAddress = useCreateNewAddress()
+  const createNewAddress = async () => {
+    setLoading(true)
+    const isZAddress = activeTab === 2
+    const result = await walletRPC.createNewAddress(isZAddress)
+    if (result) {
+      if (isZAddress) {
+        zAddresses.refetch()
+      } else {
+        tAddresses.refetch()
+      }
+      setCurrentAddress(result)
+      setExportKeysModalOpen(true)
+      setNewAddress(true)
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    if (location.state) {
+      setPaymentModalOpen(true)
+    }
+  }, [location])
 
   return (
     <div>
@@ -224,12 +263,13 @@ const WalletScreenContent = (): JSX.Element => {
             </div>
           </Button>
 
-          {allAddresses.data?.length && (
+          {allAddresses.data?.length ? (
             <Button
               variant='secondary'
               className='w-[264px] ml-30px px-0'
               childrenClassName='w-full'
               onClick={createNewAddress}
+              disabled={isLoading}
             >
               <div className='flex items-center ml-[19px]'>
                 <ElectricityIcon size={11} className='text-blue-3f py-3' />
@@ -238,7 +278,7 @@ const WalletScreenContent = (): JSX.Element => {
                 </div>
               </div>
             </Button>
-          )}
+          ) : null}
           <Button
             onClick={() => setPaymentModalOpen(true)}
             className='ml-30px w-[190px] px-0'
@@ -255,12 +295,6 @@ const WalletScreenContent = (): JSX.Element => {
       </div>
 
       <Modals />
-
-      <ToastContainer
-        className='flex flex-grow w-auto'
-        hideProgressBar={true}
-        autoClose={false}
-      />
     </div>
   )
 }

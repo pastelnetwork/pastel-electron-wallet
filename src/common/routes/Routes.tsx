@@ -10,6 +10,7 @@ import { AppContext } from '../../features/app/AppContext'
 import { pageRoutes } from './index'
 import { useAppSelector } from '../../redux/hooks'
 import { OnboardingRouter } from '../../features/onboarding'
+import Utilities from '../../features/utilities'
 
 type TRouteType = {
   path: string
@@ -61,6 +62,7 @@ const Routes = (): JSX.Element => {
         <Switch>
           <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
         </Switch>
+        {db ? <Utilities /> : null}
       </Router>
     </div>
   )

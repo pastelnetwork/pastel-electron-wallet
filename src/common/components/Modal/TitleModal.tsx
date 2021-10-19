@@ -15,6 +15,7 @@ export type TModalProps = {
   children?: ReactNode
   title?: string
   classNames?: string
+  hideCloseButton?: boolean
 }
 
 const TitleModal = ({
@@ -23,6 +24,7 @@ const TitleModal = ({
   children,
   title,
   classNames,
+  hideCloseButton = false,
 }: TModalProps): JSX.Element => {
   const modalClasses = cn(
     'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full pt-10 pb-30px overflow-auto mx-auto focus:outline-none',
@@ -37,13 +39,17 @@ const TitleModal = ({
       contentLabel='modal'
       onRequestClose={handleClose}
     >
-      <div className='flex justify-between items-center px-10 pb-6'>
-        <div className='text-h2 leading-none font-bold'>{title}</div>
-        <CloseButton
-          onClick={handleClose}
-          className='absolute top-6 right-[26px]'
-        />
-      </div>
+      {title || !hideCloseButton ? (
+        <div className='flex justify-between items-center px-10 pb-6'>
+          <div className='text-h2 leading-none font-bold'>{title}</div>
+          {!hideCloseButton ? (
+            <CloseButton
+              onClick={handleClose}
+              className='absolute top-6 right-[26px]'
+            />
+          ) : null}
+        </div>
+      ) : null}
       <div className='pl-10 pr-18px'>{children}</div>
     </ReactModal>
   )

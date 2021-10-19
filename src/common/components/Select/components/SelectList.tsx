@@ -27,6 +27,7 @@ type TProps = {
   filterOptions?: TBaseProps['filterOptions']
   customListClassName?: string
   listClassName?: string
+  listItemClassName?: string
 }
 
 export default function SelectList({
@@ -46,6 +47,7 @@ export default function SelectList({
   filterOptions = defaultFilterOptions,
   customListClassName = 'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-40 whitespace-normal',
   listClassName,
+  listItemClassName,
 }: TProps): JSX.Element | null {
   const filteredOptions =
     enableFiltering && typeof inputValue === 'string'
@@ -104,6 +106,7 @@ export default function SelectList({
             className={cn(
               'w-full py-2 px-4 text-gray-71 cursor-pointer',
               isSelected && 'bg-gray-f7',
+              listItemClassName,
             )}
           >
             {content}

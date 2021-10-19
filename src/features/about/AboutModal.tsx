@@ -1,11 +1,10 @@
 import React from 'react'
-import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
-import styles from './AboutModal.module.css'
 import { closeAboutModal } from './AboutModalSlice'
+import { TitleModal } from 'common/components/Modal'
 
-export default function AboutModal(): JSX.Element {
+export default function AboutModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.aboutModal)
   const appVersion = useAppSelector(state => state.appInfo.appVersion)
   const dispatch = useAppDispatch()
@@ -13,43 +12,24 @@ export default function AboutModal(): JSX.Element {
   const txYear = new Date().getFullYear()
 
   if (!modalIsOpen) {
-    return <></>
+    return null
   }
 
   return (
-    <Modal
+    <TitleModal
       isOpen={modalIsOpen}
-      onRequestClose={() => dispatch(closeAboutModal())}
-      className={styles.modal}
-      overlayClassName={styles.modalOverlay}
+      handleClose={() => dispatch(closeAboutModal())}
+      classNames='max-w-4xl'
+      title='Pastel Wallet Fullnode'
     >
-      <div className={[styles.verticalflex].join(' ')}>
-        <div
-          className={styles.marginbottomlarge}
-          style={{
-            textAlign: 'center',
-          }}
-        >
-          Pastelwallet Fullnode
-        </div>
-
-        <div
-          className={styles.well}
-          style={{
-            textAlign: 'center',
-            wordBreak: 'break-all',
-            maxHeight: '400px',
-            overflowY: 'auto',
-          }}
-        >
-          <div className={styles.verticalflex}>
-            <div className={styles.margintoplarge}>
-              Pastelwallet Fullnode v{appVersion}
-            </div>
-            <div className={styles.margintoplarge}>
+      <div className='flex-col pr-8'>
+        <div className='p-4 text-center break-all max-h-[400px] overflow-y-auto'>
+          <div className='flex-col'>
+            <div>Pastelwallet Fullnode v{appVersion}</div>
+            <div className='mt-6'>
               Built with Electron. Copyright (c) 2018-{txYear}.
             </div>
-            <div className={styles.margintoplarge}>
+            <div className='mt-6'>
               The MIT License (MIT) Copyright (c) 2018-{txYear} Pastelwallet
               <br />
               <br />
@@ -78,16 +58,6 @@ export default function AboutModal(): JSX.Element {
           </div>
         </div>
       </div>
-
-      <div className={styles.buttoncontainer}>
-        <button
-          type='button'
-          className={styles.primarybutton}
-          onClick={() => dispatch(closeAboutModal())}
-        >
-          Close
-        </button>
-      </div>
-    </Modal>
+    </TitleModal>
   )
 }

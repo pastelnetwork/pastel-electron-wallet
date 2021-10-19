@@ -158,6 +158,8 @@ export default class RPC {
     info.pslPrice = null // Setting this to null will copy over the existing price
 
     info.disconnected = false
+    info.paytxfee = infoResult.result.paytxfee
+    info.relayfee = infoResult.result.relayfee
     const blkInfoResult: any = await RPC.doRPC(
       'getblockchaininfo',
       [],

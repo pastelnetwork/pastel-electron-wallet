@@ -152,7 +152,7 @@ const DateRangeSelector = ({
         />
       </div>
       {isOpenCalendar && (
-        <div className='absolute bg-white z-20'>
+        <div className='absolute bg-white z-100'>
           <DatePicker
             renderCustomHeader={customHeader}
             calendarClassName='date-picker'

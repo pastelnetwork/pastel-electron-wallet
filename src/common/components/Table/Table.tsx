@@ -5,6 +5,7 @@ import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
 import reactElementToJSXString from 'react-element-to-jsx-string'
 import parse from 'html-react-parser'
+import RectangleLoader from 'common/components/Loader'
 
 export type TRow = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,6 +37,7 @@ export type TTableProps = {
   extendHeader?: ReactNode
   stickyTopClassName?: string
   extendHeaderClassName?: string
+  isLoading?: boolean
 }
 
 const Table = ({
@@ -53,6 +55,7 @@ const Table = ({
   extendHeader,
   stickyTopClassName = 'top-0',
   extendHeaderClassName,
+  isLoading,
 }: TTableProps): JSX.Element => {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
@@ -158,6 +161,20 @@ const Table = ({
         </thead>
       )}
       <tbody className={bodyClasses}>
+        {isLoading ? (
+          <tr className={bodyTrClasses}>
+            {showCheckbox ? (
+              <td className='pl-4 md:pl-30px w-5'>
+                <RectangleLoader colorClass='text-gray-dd' />
+              </td>
+            ) : null}
+            {columns.map((column, index) => (
+              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
+                <RectangleLoader colorClass='text-gray-dd' />
+              </td>
+            ))}
+          </tr>
+        ) : null}
         {tableData.map((row: TRow, index: number) => (
           <tr
             key={index}
