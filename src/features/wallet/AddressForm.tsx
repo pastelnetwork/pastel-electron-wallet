@@ -20,6 +20,8 @@ type TAddressFormProps = {
   hidable?: boolean
   className?: string
   hidePromoCodeEmpty?: boolean
+  startLength?: number
+  endLength?: number
 }
 
 export const AddressForm = ({
@@ -28,6 +30,8 @@ export const AddressForm = ({
   hidable = false,
   hidePromoCodeEmpty = false,
   className,
+  startLength = 24,
+  endLength = -6,
 }: TAddressFormProps): JSX.Element => {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
@@ -72,7 +76,9 @@ export const AddressForm = ({
               type='top'
               width={211}
               padding={5}
-              content={address ? formatAddress(address, 24) : ''}
+              content={
+                address ? formatAddress(address, startLength, endLength) : ''
+              }
               classnames='py-2 text-gray-a0'
             >
               {addressLabel}
@@ -81,7 +87,7 @@ export const AddressForm = ({
         </div>
       ) : (
         <span className='w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]'>
-          {address ? formatAddress(address, 24) : ''}
+          {address ? formatAddress(address, startLength, endLength) : ''}
         </span>
       )}
       {promoCode && !hidePromoCodeEmpty && (

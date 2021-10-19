@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker'
 
 import dayjs from 'common/utils/initDayjs'
 import { Caret } from 'common/components/Icons'
+import { SelectButton } from '../../../common/components/Buttons'
 import caretDownIcon from '../../assets/icons/ico-caret-down.svg'
 import calendarIcon from '../../assets/icons/ico-calendar.svg'
 import './DateRangeSelector.css'
@@ -24,6 +25,8 @@ export type TDateRangeProp = {
 export type DateRangeSelectorProp = {
   value?: TDateRangeProp
   onSelect: (value: TDateRangeProp) => void
+  showFooter?: boolean
+  defaultSelected?: boolean
 }
 
 type TDateRangeSelectorContentProp = {
@@ -31,6 +34,18 @@ type TDateRangeSelectorContentProp = {
   startDate?: Date
   endDate?: Date
 }
+
+type TDateFooter = {
+  value: string
+  title: string
+}
+
+const dateButtons = [
+  { value: 'today', title: 'Today' },
+  { value: 'yesterday', title: 'Yesterday' },
+  { value: 'last7days', title: 'Last 7 days' },
+  { value: 'last30days', title: 'Last 30 days' },
+]
 
 const DateRangeSelectorContent = ({
   value,
@@ -69,6 +84,8 @@ const DateRangeSelectorContent = ({
 const DateRangeSelector = ({
   value,
   onSelect,
+  showFooter = false,
+  defaultSelected = false,
 }: DateRangeSelectorProp): JSX.Element => {
   const [startDate, setStartDate] = React.useState<Date>(
     value?.start || new Date(),
@@ -76,6 +93,9 @@ const DateRangeSelector = ({
   const [endDate, setEndDate] = React.useState<Date>(value?.end || new Date())
 
   const [isOpenCalendar, setOpenCalendar] = useState(false)
+  const [dateTitle, setDateTitle] = useState<TDateFooter | null>(
+    defaultSelected ? dateButtons[0] : null,
+  )
 
   const handleOnChange = (dates: [Date, Date] | null): void => {
     if (dates) {
@@ -132,6 +152,50 @@ const DateRangeSelector = ({
     </div>
   )
 
+  const handleDateSelect = (date: TDateFooter): void => {
+    if (dateTitle?.value === date.value) {
+      return
+    }
+    setDateTitle(date)
+    const now = new Date()
+    switch (date.value) {
+      case 'today':
+        setStartDate(now)
+        setEndDate(now)
+        onSelect({
+          start: new Date(),
+          end: new Date(),
+        })
+        break
+      case 'yesterday':
+        setStartDate(dayjs(new Date()).add(-1, 'days').toDate())
+        setEndDate(now)
+        onSelect({
+          start: dayjs(new Date()).add(-1, 'days').toDate(),
+          end: new Date(),
+        })
+        break
+      case 'last7days':
+        setStartDate(dayjs(new Date()).add(-1, 'weeks').toDate())
+        setEndDate(now)
+        onSelect({
+          start: dayjs(new Date()).add(-1, 'weeks').toDate(),
+          end: new Date(),
+        })
+        break
+      case 'last30days':
+        setStartDate(dayjs(new Date()).add(-30, 'days').toDate())
+        setEndDate(now)
+        onSelect({
+          start: dayjs(new Date()).add(-30, 'days').toDate(),
+          end: new Date(),
+        })
+        break
+      default:
+        break
+    }
+  }
+
   return (
     <div className='relative'>
       <div
@@ -165,7 +229,23 @@ const DateRangeSelector = ({
             endDate={endDate}
             selectsRange
             inline
-          />
+          >
+            {showFooter ? (
+              <div className='p-3 pb-5'>
+                <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
+                  {dateButtons.map((date, idx) => (
+                    <SelectButton
+                      key={idx}
+                      isActive={date.value === dateTitle?.value}
+                      onClick={() => handleDateSelect(date)}
+                    >
+                      {date.title}
+                    </SelectButton>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </DatePicker>
         </div>
       )}
     </div>

@@ -42,11 +42,9 @@ export default function OnboardingRouter(): JSX.Element {
         <Route exact path={ROUTES.SIGN_UP}>
           <RegisterPage fetchedPastelId={fetchedPastelId} />
         </Route>
-        {fetchedPastelId && (
-          <Route exact path={ROUTES.LOGIN}>
-            <LoginPage pastelId={fetchedPastelId} />
-          </Route>
-        )}
+        <Route exact path={ROUTES.LOGIN}>
+          <LoginPage pastelId={fetchedPastelId} />
+        </Route>
         <Route
           exact
           path={ROUTES.PASSWORD_RECOVERY}

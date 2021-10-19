@@ -235,6 +235,8 @@ const TransactionHistoryModal = (): JSX.Element => {
           copyable={false}
           hidable
           className='xl:ml-0'
+          startLength={23}
+          endLength={-3}
         />
       ),
     },
@@ -358,7 +360,7 @@ const TransactionHistoryModal = (): JSX.Element => {
       isOpen
       handleClose={handleClose}
       title='Transaction history'
-      classNames='max-w-7xl'
+      classNames='max-w-7xl min-h-[88vh]'
     >
       <div className='bg-white z-50'>
         <div className='flex text-gray-71 text-sm'>
@@ -368,7 +370,11 @@ const TransactionHistoryModal = (): JSX.Element => {
                 Time range
               </div>
               <div className='w-[208px]'>
-                <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
+                <DateRangeSelector
+                  value={dates}
+                  onSelect={onSelectDateRange}
+                  showFooter
+                />
               </div>
             </div>
             <div className='w-[264px] pr-6'>

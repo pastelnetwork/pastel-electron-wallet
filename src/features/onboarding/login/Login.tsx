@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 
 import Input from 'common/components/Form/Input'
 import { Button } from 'common/components/Buttons'
@@ -25,8 +25,9 @@ type TSchema = ReturnType<typeof schema.validateSync>
 const Login = ({
   pastelId,
 }: {
-  pastelId: TPastelIdWithTxIdAndConfirmed
+  pastelId?: TPastelIdWithTxIdAndConfirmed
 }): JSX.Element => {
+  const [errorMessage, setErrorMessage] = useState('')
   const form = useForm<TSchema>({
     resolver: yupResolver(schema),
   })
@@ -38,7 +39,9 @@ const Login = ({
   })
 
   const onSubmit = () => {
+    setErrorMessage('')
     if (!pastelId) {
+      setErrorMessage("Pastel ID doesn't exist")
       return
     }
 
@@ -62,6 +65,9 @@ const Login = ({
             Username or password is incorrect
           </div>
         )}
+        {errorMessage ? (
+          <div className='text-red-fe mb-2'>{errorMessage}</div>
+        ) : null}
         <Input
           form={form}
           name='username'

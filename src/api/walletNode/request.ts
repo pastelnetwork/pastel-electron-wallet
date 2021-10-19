@@ -1,4 +1,5 @@
 import { walletNodeApiURL } from '../../common/constants/urls'
+import axios, { Method, AxiosResponse } from 'axios'
 
 type TOptions = {
   data?: Record<string, unknown>
@@ -7,7 +8,7 @@ type TOptions = {
 }
 
 const makeRequest = async <T>(
-  method: string,
+  method: Method,
   path: string,
   { data, removeEmpty, removeNullStrings }: TOptions = {},
 ): Promise<T> => {
@@ -26,8 +27,11 @@ const makeRequest = async <T>(
     fetchOptions.body = formData
   }
 
-  const response = await fetch(walletNodeApiURL + path, fetchOptions)
-  const result = await response.json()
+  const response: AxiosResponse = await axios(walletNodeApiURL + path, {
+    method,
+    data: fetchOptions,
+  })
+  const result = response.data
 
   if (removeEmpty || removeNullStrings) {
     const filtered: typeof result = {}
@@ -49,7 +53,7 @@ const makeRequest = async <T>(
 
 export const request = {
   get: <T>(path: string, options?: TOptions): Promise<T> =>
-    makeRequest('POST', path, options),
+    makeRequest('GET', path, options),
   post: <T>(path: string, options?: TOptions): Promise<T> =>
     makeRequest('POST', path, options),
 }

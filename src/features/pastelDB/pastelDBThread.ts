@@ -312,7 +312,7 @@ export async function fetchListaddresses(
 
 export async function fetchPastelPrices(props: fetchFuncConfig): Promise<void> {
   try {
-    const resp = await coinGeckoClient.simple.price({
+    const resp = await coinGeckoClient?.simple?.price({
       ids: ['pastel'],
       vs_currencies: ['usd'],
     })

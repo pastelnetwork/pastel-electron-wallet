@@ -11,7 +11,11 @@ export const DateRangeSelectorDefault: Story<TDateRangeProp> = () => {
 
   return (
     <div>
-      <DateRangeSelector value={dates} onSelect={onSelectDateRange} />
+      <DateRangeSelector
+        showFooter
+        value={dates}
+        onSelect={onSelectDateRange}
+      />
     </div>
   )
 }
