@@ -15,6 +15,7 @@ export type TMultiToggle = {
   countInactiveClassName?: string
   countActiveClassName?: string
   onToggle: (index: number) => void
+  showEmpty?: boolean
 }
 
 const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
@@ -26,6 +27,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
     itemActiveClassName,
     countActiveClassName,
     onToggle,
+    showEmpty = false,
   } = props
   const container_className = `inline-flex gap-3 p-3px rounded-full border border-navigation-default ${containerClassName}`
 
@@ -66,16 +68,16 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
                 onClick={() => handleClick(index)}
               >
                 <span>{item.label}</span>
-                {item?.count && item.count > 0 && (
+                {(item?.count && item.count > 0) || showEmpty ? (
                   <div
                     className={cn(
                       getCountClassName(),
-                      item.count > 99 && 'w-7',
+                      item?.count && item.count > 99 && 'w-7',
                     )}
                   >
                     {item.count}
                   </div>
-                )}
+                ) : null}
               </div>
             )
           })}

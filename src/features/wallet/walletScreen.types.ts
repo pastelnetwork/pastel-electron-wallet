@@ -9,3 +9,8 @@ export type TAddressRow = {
 }
 
 export type TPaymentSources = Record<TAddress, number>
+
+export type TDate = {
+  start: Date
+  end: Date
+}
