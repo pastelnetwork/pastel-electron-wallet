@@ -72,7 +72,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
                   <div
                     className={cn(
                       getCountClassName(),
-                      item?.count > 99 && 'w-7',
+                      item?.count && item.count > 99 && 'w-7',
                     )}
                   >
                     {item.count}
