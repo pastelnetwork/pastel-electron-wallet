@@ -134,7 +134,7 @@ export class TransactionRPC {
         transaction.fee = Math.abs(tx.fee || 0)
         transaction.confirmations = tx.confirmations
         transaction.txid = tx.txid
-        transaction.time = tx.time
+        transaction.time = tx.blocktime
         transaction.detailedTxns = [
           {
             address: '',

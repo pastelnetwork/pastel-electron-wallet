@@ -60,7 +60,7 @@ const mapTxnsResult = (
   txInfoResult: TTransactionInfo,
 ): TTransaction => {
   const { address, amount, txid, index = 0 } = tx
-  const { confirmations, time } = txInfoResult
+  const { confirmations, blocktime } = txInfoResult
   const memo = tx.memo ? tx.memo.replace(/\\u0000/g, '') : ''
   const detailedTxns: (TBaseAddAm & { memo: string | null })[] = [
     {
@@ -83,7 +83,7 @@ const mapTxnsResult = (
     expiryheight: 0,
     txid,
     walletconflicts: [],
-    time,
+    time: blocktime,
     index,
     timereceived: 0,
     vjoinsplit: [],
