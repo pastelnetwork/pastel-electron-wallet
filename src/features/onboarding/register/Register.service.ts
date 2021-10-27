@@ -5,6 +5,7 @@ import {
   TPastelIdWithTxIdAndConfirmed,
   transactionRPC,
 } from '../../../api/pastel-rpc'
+import { walletNodeApi } from 'api/walletNode/walletNode.api'
 import {
   createRegisterStore,
   Steps,
@@ -36,14 +37,20 @@ export const useInitializeRegister = ({
       }),
     [],
   )
-  const [step, setStep] = useStore(
-    state => [state.step, state.setStep],
+  const [step, setStep, username, password] = useStore(
+    state => [state.step, state.setStep, state.username, state.password],
     shallow,
   )
 
   useEffect(() => {
     if (createPastelIdQuery.isSuccess) {
-      setStep(Steps.ProcessingFee)
+      if (createPastelIdQuery.data?.pastelid) {
+        walletNodeApi.userData.create({
+          artist_pastelid: createPastelIdQuery.data.pastelid,
+          artist_pastelid_passphrase: `${password}${username}`,
+        })
+      }
+      setStep(Steps.Backup)
     }
   }, [createPastelIdQuery.status])
 

@@ -75,6 +75,7 @@ onMainEvent('rendererStarted', () => {
 
 export const retriableAppSetup = async (): Promise<void> => {
   try {
+    sendEventToRenderer('appLoadingFailed', { error: '' })
     await startWalletNode()
     rpcConfig = await readRpcConfig(pastelConfigFilePath)
 

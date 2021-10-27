@@ -1,5 +1,6 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useEffect } from 'react'
 import cn from 'classnames'
+import { toast } from 'react-toastify'
 import { PrevButton, NextButton } from './Buttons'
 import Radio from 'common/components/Radio/Radio'
 import { Input } from 'common/components/Inputs'
@@ -12,14 +13,19 @@ import {
   PaymentMethods,
   TCentralizedExchangeEntity,
   useRegisterStore,
+  targetBalance,
 } from './Register.store'
-import { finish } from './Register.service'
 import shallow from 'zustand/shallow'
+import { walletRPC } from 'api/pastel-rpc'
+import { formatNumber } from 'common/utils/format'
 
 const StepFee = (): JSX.Element => {
   const currencyName = useCurrencyName()
   const [copying, setCopying] = useState<boolean>(false)
+  const [isSuccess, setSuccess] = useState<boolean>(false)
   const [copied, setCopied] = useState<boolean>(false)
+  const [totalBalance, setTotalBalance] = useState<number>(1000)
+  const [addresses, setAddresses] = useState<string[]>([])
   const store = useRegisterStore(
     state => ({
       paymentMethod: state.paymentMethod,
@@ -28,11 +34,33 @@ const StepFee = (): JSX.Element => {
       promoCode: state.promoCode,
       setPromoCode: state.setPromoCode,
       exchangeAddress: state.exchangeAddress,
+      password: state.password,
+      username: state.username,
       setExchangeAddress: state.setExchangeAddress,
       goBack: state.goBack,
+      goToNextStep: state.goToNextStep,
+      createPastelIdQuery: state.createPastelIdQuery,
     }),
     shallow,
   )
+
+  useEffect(() => {
+    const getData = async () => {
+      const result = await walletRPC.fetchAllAddresses()
+      setAddresses(result)
+
+      const [tUnspent, zUnspent] = await Promise.all([
+        walletRPC.fetchTListUnspent(),
+        walletRPC.fetchZListUnspent(),
+      ])
+      const unspent = [...tUnspent, ...zUnspent].find(
+        item => item.address === store.exchangeAddress,
+      )
+      setTotalBalance(unspent?.amount || 0)
+    }
+
+    getData()
+  }, [])
 
   // maybe it would be better to load this list from somewhere
   const centralizedExs: TCentralizedExchangeEntity[] = [
@@ -53,7 +81,7 @@ const StepFee = (): JSX.Element => {
     }
     store.setCentralizedExchangeName(platformName)
 
-    const addr = '' + BigInt(Math.random() * 1e60) // demo
+    const addr = addresses[0]
     store.setExchangeAddress(addr)
     setCopied(false)
   }
@@ -64,6 +92,30 @@ const StepFee = (): JSX.Element => {
 
     navigator.clipboard.writeText(store.exchangeAddress)
     setCopied(true)
+  }
+
+  const handleNextClick = async () => {
+    if (!isSuccess) {
+      setSuccess(true)
+    } else {
+      if (totalBalance < 1) {
+        toast.error(
+          `You will need ${formatNumber(
+            targetBalance,
+          )} ${currencyName} coins to write this ticket to the blockchain.`,
+        )
+        return
+      }
+
+      try {
+        store.createPastelIdQuery.mutate({
+          password: `${store.password}${store.username}`,
+          address: store.exchangeAddress,
+        })
+      } catch (error) {
+        toast.error(error.message)
+      }
+    }
   }
 
   const showWarn =
@@ -82,6 +134,8 @@ const StepFee = (): JSX.Element => {
       copied) ||
     (store.paymentMethod === PaymentMethods.DecentralizedExchange && copied) ||
     store.paymentMethod === PaymentMethods.PslAddress
+
+  const isLoading = status === 'loading' || store.createPastelIdQuery.isLoading
 
   return (
     <div className='flex flex-col h-full'>
@@ -184,13 +238,17 @@ const StepFee = (): JSX.Element => {
             <PrevButton onClick={store.goBack} />
             <NextButton
               className='min-w-160px'
-              onClick={finish}
+              onClick={handleNextClick}
               text={
-                store.paymentMethod === PaymentMethods.AirdropPromoCode
+                isLoading
+                  ? 'Applying'
+                  : !isSuccess
                   ? 'Apply'
-                  : `Proceed to 1,000 ${currencyName} Payment`
+                  : `Proceed to ${formatNumber(
+                      targetBalance,
+                    )} ${currencyName} Payment`
               }
-              disabled={!nextActive}
+              disabled={!nextActive && totalBalance < targetBalance}
             />
           </div>
         </>

@@ -6,10 +6,8 @@ import { PrevButton, NextButton } from './Buttons'
 import { isValidPrivateKey } from 'common/utils/wallet'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { walletRPC } from 'api/pastel-rpc'
-import { useRegisterStore } from './Register.store'
+import { useRegisterStore, targetBalance } from './Register.store'
 import { useMutation, UseMutationResult } from 'react-query'
-
-const targetBalance = 1000
 
 type TPromoCode = {
   address: string
@@ -57,12 +55,13 @@ export default function PromoCode(): JSX.Element {
   const walletBalance = walletRPC.useTotalBalance()
   const [promoCodeKey, setPromoCodeKey] = useState('')
   const password = useRegisterStore(state => state.password)
+  const userName = useRegisterStore(state => state.username)
 
   const handleNextClick = async () => {
     const promoCode = promoCodeQuery.data
     if (promoCode) {
       createPastelIdQuery.mutate({
-        password,
+        password: `${password}${userName}`,
         address: promoCode.address,
       })
     } else {
@@ -70,7 +69,10 @@ export default function PromoCode(): JSX.Element {
     }
   }
 
-  const isLoading = status === 'loading' || createPastelIdQuery.isLoading
+  const isLoading =
+    status === 'loading' ||
+    createPastelIdQuery.isLoading ||
+    promoCodeQuery.isLoading
   const error = promoCodeQuery.error || createPastelIdQuery.error
   const errorMessage = error?.message
   const totalBalance = walletBalance.data?.total
@@ -92,6 +94,7 @@ export default function PromoCode(): JSX.Element {
             hint
             hintAsTooltip={false}
             value={promoCodeKey}
+            readOnly={isLoading}
           />
         </div>
         {promoCodeQuery.isSuccess && totalBalance && (

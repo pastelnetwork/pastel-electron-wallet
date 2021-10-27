@@ -3,6 +3,8 @@ import create, { UseStore } from 'zustand'
 import { UseMutationResult } from 'react-query'
 import { TRegisterPastelID } from '../../pastelID'
 
+export const targetBalance = 1000
+
 export const {
   Provider: RegisterStoreProvider,
   useStore: useRegisterStore,
@@ -12,12 +14,12 @@ export enum Steps {
   Login = 1,
   Payment,
   Fee,
-  ProcessingFee,
   Backup,
+  ProcessingFee,
 }
 
 const firstStep = Steps.Login
-const lastStep = Steps.Backup
+const lastStep = Steps.ProcessingFee
 export const stepsCount = Steps.Backup
 
 export enum PaymentMethods {

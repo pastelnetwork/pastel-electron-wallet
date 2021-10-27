@@ -280,7 +280,12 @@ const StepBackupMethod = (): JSX.Element => {
         </>
       )}
       <div className='mt-7 flex justify-end'>
-        <NextButton onClick={finish} text='Finish' disabled={!nextActive} />
+        <NextButton
+          onClick={finish}
+          text='Finish'
+          disabled={!nextActive}
+          className='min-w-[120px]'
+        />
       </div>
       {allKeys ? (
         <div className='hidden'>

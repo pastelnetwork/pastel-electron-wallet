@@ -1,4 +1,5 @@
 import React, { useState, FormEvent } from 'react'
+import shallow from 'zustand/shallow'
 
 import Input from 'common/components/Inputs/Input'
 import Checkbox from 'common/components/Checkbox/Checkbox'
@@ -12,7 +13,7 @@ import InputPassword from 'common/components/Inputs/InputPassword'
 import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
 import { useRegisterStore } from './Register.store'
-import shallow from 'zustand/shallow'
+import { verifyPastelIdPassword, getPastelIdTickets } from 'api/pastel-rpc'
 
 function validateUserName(val: string): boolean {
   const validationRe = /^[0-9a-z_]{3,}$/i
@@ -31,6 +32,7 @@ const StepRegister = (): JSX.Element => {
     shallow,
   )
   const [termsAgreed, setTermsAgreed] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const [usernameInvalid, setUsernameInvalid] = useState<boolean>(
     !validateUserName(store.username),
@@ -79,6 +81,30 @@ const StepRegister = (): JSX.Element => {
   let usernameIsValid = null
   if (store.username.length > 0 && usernameInvalid) {
     usernameIsValid = false
+  }
+
+  const hanleNextStep = async () => {
+    setErrorMessage('')
+    const pastels = await getPastelIdTickets()
+    let exist = false
+    for (let i = 0; i < pastels.length; i++) {
+      try {
+        const pastel = await verifyPastelIdPassword({
+          pastelId: pastels[i].ticket.pastelID,
+          password: `${store.password}${store.username}`,
+        })
+        if (pastel.signature) {
+          exist = true
+        }
+      } catch {
+        // noop
+      }
+    }
+    if (!exist) {
+      store.goToNextStep()
+    } else {
+      setErrorMessage('Username already exists')
+    }
   }
 
   return (
@@ -150,11 +176,16 @@ const StepRegister = (): JSX.Element => {
             </p>
           </div>
         )}
+        {errorMessage ? (
+          <div className='mt-6'>
+            <p className='mb-0 text-sm font-normal text-re'>{errorMessage}</p>
+          </div>
+        ) : null}
       </form>
 
       <div className='mt-7 flex justify-end'>
         <NextButton
-          onClick={store.goToNextStep}
+          onClick={hanleNextStep}
           text='Next step'
           disabled={!nextActive}
         />

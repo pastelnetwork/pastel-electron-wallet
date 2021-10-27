@@ -73,7 +73,7 @@ export type TTicket = {
   }
 }
 
-async function getPastelIdTickets(): Promise<TTicket[]> {
+export async function getPastelIdTickets(): Promise<TTicket[]> {
   return await rpc('tickets', ['list', 'id'], { throw: true })
 }
 
@@ -122,10 +122,14 @@ type TVerifyPastelIdPasswordParams = {
   password: string
 }
 
-async function verifyPastelIdPassword({
+type TVerifyPastelIdPasswordResponse = {
+  signature: string
+}
+
+export async function verifyPastelIdPassword({
   pastelId,
   password,
-}: TVerifyPastelIdPasswordParams) {
+}: TVerifyPastelIdPasswordParams): Promise<TVerifyPastelIdPasswordResponse> {
   return await rpc('pastelid', ['sign', 'login', pastelId, password], {
     throw: true,
   })

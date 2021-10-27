@@ -34,7 +34,7 @@ type TCreateOrUpdateResponse = {
 const createOrUpdate = async (path: string, data: TCreateOrUpdateParams) => {
   const result = await request.post<
     Override<TCreateOrUpdateResponse, { categories: string }>
-  >('/userdatas/create', {
+  >(path, {
     data,
     removeEmpty: true,
   })

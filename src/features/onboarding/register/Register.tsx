@@ -194,9 +194,9 @@ const RegisterContent = () => {
 
         <div className='w-1/2 flex-shrink-0 pb-10 pl-10 pr-7 mt-7'>
           {step === Steps.Login && <StepLogin />}
-          {step === Steps.Backup && <StepBackup />}
           {step === Steps.Payment && <StepPayment />}
           {step === Steps.Fee && <StepFee />}
+          {step === Steps.Backup && <StepBackup />}
         </div>
       </div>
 

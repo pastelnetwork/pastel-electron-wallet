@@ -38,17 +38,17 @@ const Login = ({
     },
   })
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setErrorMessage('')
     if (!pastelId) {
       setErrorMessage("Pastel ID doesn't exist")
       return
     }
 
-    const { password } = form.getValues()
+    const { password, username } = form.getValues()
     verifyPassword.mutate({
       pastelId: pastelId.pastelid,
-      password,
+      password: `${password}${username}`,
     })
   }
 

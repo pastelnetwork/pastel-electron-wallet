@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
+import eyeIcon from 'common/assets/icons/ico-eye.svg'
 import Tooltip from 'common/components/Tooltip'
 import React, { useState } from 'react'
 import { clipboard } from 'electron'
@@ -36,6 +37,7 @@ export const AddressForm = ({
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
   const [copyStatus, setCopyStatus] = useState<boolean>(false)
+  const [showFullAddress, setShowFullAddress] = useState<boolean>(false)
   const {
     addressBook: { addressBookMap, updateAddressBook },
     pastelPromoCode,
@@ -50,6 +52,10 @@ export const AddressForm = ({
     setTimeout(() => {
       setCopyStatus(false)
     }, 2000)
+  }
+
+  const handleShowFullAddress = () => {
+    setShowFullAddress(!showFullAddress)
   }
 
   const promoCode = pastelPromoCode.data?.find(code => code.address === address)
@@ -70,7 +76,12 @@ export const AddressForm = ({
         </>
       ) : addressLabel ? (
         <div className='w-220px md:w-[270px] pl-[10px]'>
-          <span className='text-blue-3f cursor-pointer inline-block'>
+          <span
+            className={cn(
+              'text-blue-3f cursor-pointer inline-block',
+              showFullAddress && 'break-all',
+            )}
+          >
             <Tooltip
               autoWidth={true}
               type='top'
@@ -81,13 +92,22 @@ export const AddressForm = ({
               }
               classnames='py-2 text-gray-a0'
             >
-              {addressLabel}
+              {!showFullAddress ? addressLabel : address}
             </Tooltip>
           </span>
         </div>
       ) : (
-        <span className='w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]'>
-          {address ? formatAddress(address, startLength, endLength) : ''}
+        <span
+          className={cn(
+            'w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]',
+            showFullAddress && 'break-all',
+          )}
+        >
+          {address
+            ? !showFullAddress
+              ? formatAddress(address, startLength, endLength)
+              : address
+            : ''}
         </span>
       )}
       {promoCode && !hidePromoCodeEmpty && (
@@ -199,12 +219,20 @@ export const AddressForm = ({
             <div className='flex items-center ml-13px'>
               <Tooltip
                 classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                content='Info'
-                width={100}
+                content={
+                  !showFullAddress
+                    ? 'Show Recipient Address'
+                    : 'Hide Recipient Address'
+                }
+                width={160}
                 type='top'
               >
                 <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
-                  <img className='cursor-pointer' src={passEyeIcon} />
+                  <img
+                    className='cursor-pointer'
+                    src={!showFullAddress ? eyeIcon : passEyeIcon}
+                    onClick={handleShowFullAddress}
+                  />
                 </span>
               </Tooltip>
             </div>
