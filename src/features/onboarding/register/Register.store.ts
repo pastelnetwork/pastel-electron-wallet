@@ -47,10 +47,14 @@ export type TRegisterStore = {
   setCentralizedExchangeName(val: string | null): void
   promoCode: string
   setPromoCode(val: string): void
+  pslAddressPrivateKey: string
+  setPSLAddressPrivateKey(val: string): void
   exchangeAddress: string
   setExchangeAddress(val: string): void
   goBack(): void
   goToNextStep(): void
+  termsAgreed: boolean
+  setTermsAgreed(termsAgreed: boolean): void
 }
 
 export type TCreatePastelIdQuery = UseMutationResult<
@@ -84,6 +88,9 @@ export const createRegisterStore = ({
       set({ centralizedExchangeName }),
     promoCode: '',
     setPromoCode: promoCode => set({ promoCode }),
+    pslAddressPrivateKey: '',
+    setPSLAddressPrivateKey: pslAddressPrivateKey =>
+      set({ pslAddressPrivateKey }),
     exchangeAddress: '',
     setExchangeAddress: exchangeAddress => set({ exchangeAddress }),
     goBack() {
@@ -98,5 +105,7 @@ export const createRegisterStore = ({
         set({ step: step + 1 })
       }
     },
+    termsAgreed: false,
+    setTermsAgreed: termsAgreed => set({ termsAgreed }),
   }))
 }

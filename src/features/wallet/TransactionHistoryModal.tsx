@@ -355,6 +355,113 @@ const TransactionHistoryModal = (): JSX.Element => {
     },
   ]
 
+  const renderDateFilter = () => (
+    <div className='w-[264px] pr-6'>
+      <div className='text-gray-71 text-h6-leading-20-medium'>Time range</div>
+      <div className='w-[208px]'>
+        <DateRangeSelector
+          value={dates}
+          onSelect={onSelectDateRange}
+          showFooter
+        />
+      </div>
+    </div>
+  )
+
+  const renderSourceAddressFilter = () => (
+    <div className='w-[264px] pr-6'>
+      <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
+        Source address
+      </div>
+      <div className='w-[208px]'>
+        <Select
+          label={<img src={addressbookIcon} className='mr-2' />}
+          className='text-gray-2d w-full'
+          selected={sourceAddress}
+          options={sourceAddresses}
+          onChange={setSourceAddress}
+          listClassName='max-w-[450px]'
+          listItemClassName='truncate'
+        />
+      </div>
+    </div>
+  )
+
+  const renderRecipientsFilter = () => (
+    <div className='w-[264px] pr-6'>
+      <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
+        Recipients
+      </div>
+      <div className='w-[208px]'>
+        <Select
+          label={<img src={user2Icon} className='mr-2' />}
+          className='text-gray-2d w-full'
+          selected={recipientAddress}
+          options={recipients}
+          onChange={setRecipientAddress}
+          listClassName='max-w-[450px]'
+          listItemClassName='truncate'
+        />
+      </div>
+    </div>
+  )
+
+  const renderTransactionTypeFilter = () => (
+    <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
+      <Radio
+        checked={selectedOption === 'all'}
+        onChange={() => {
+          filterTransactionByType(TTransactionType.ALL)
+          setSelectedOption('all')
+        }}
+      >
+        <div
+          className={cn(
+            selectedOption === 'all'
+              ? 'text-gray-4a text-h5-heavy'
+              : 'text-gray-71 text-h5-medium',
+          )}
+        >
+          All
+        </div>
+      </Radio>
+      <Radio
+        checked={selectedOption === 'received'}
+        onChange={() => {
+          filterTransactionByType(TTransactionType.RECEIVE)
+          setSelectedOption('received')
+        }}
+      >
+        <div
+          className={cn(
+            selectedOption === 'received'
+              ? 'text-gray-4a text-h5-heavy'
+              : 'text-gray-71 text-h5-medium',
+          )}
+        >
+          Received
+        </div>
+      </Radio>
+      <Radio
+        checked={selectedOption === 'sent'}
+        onChange={() => {
+          filterTransactionByType(TTransactionType.SEND)
+          setSelectedOption('sent')
+        }}
+      >
+        <div
+          className={
+            selectedOption === 'sent'
+              ? 'text-gray-4a text-h5-heavy'
+              : 'text-gray-71 text-h5-medium'
+          }
+        >
+          Sent
+        </div>
+      </Radio>
+    </div>
+  )
+
   return (
     <TitleModal
       isOpen
@@ -365,104 +472,11 @@ const TransactionHistoryModal = (): JSX.Element => {
       <div className='bg-white z-50'>
         <div className='flex text-gray-71 text-sm'>
           <div className='w-2/3 flex'>
-            <div className='w-[264px] pr-6'>
-              <div className='text-gray-71 text-h6-leading-20-medium'>
-                Time range
-              </div>
-              <div className='w-[208px]'>
-                <DateRangeSelector
-                  value={dates}
-                  onSelect={onSelectDateRange}
-                  showFooter
-                />
-              </div>
-            </div>
-            <div className='w-[264px] pr-6'>
-              <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
-                Source address
-              </div>
-              <div className='w-[208px]'>
-                <Select
-                  label={<img src={addressbookIcon} className='mr-2' />}
-                  className='text-gray-2d w-full'
-                  selected={sourceAddress}
-                  options={sourceAddresses}
-                  onChange={setSourceAddress}
-                  listClassName='max-w-[450px]'
-                  listItemClassName='truncate'
-                />
-              </div>
-            </div>
-            <div className='w-[264px] pr-6'>
-              <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
-                Recipients
-              </div>
-              <div className='w-[208px]'>
-                <Select
-                  label={<img src={user2Icon} className='mr-2' />}
-                  className='text-gray-2d w-full'
-                  selected={recipientAddress}
-                  options={recipients}
-                  onChange={setRecipientAddress}
-                  listClassName='max-w-[450px]'
-                  listItemClassName='truncate'
-                />
-              </div>
-            </div>
+            {renderDateFilter()}
+            {renderSourceAddressFilter()}
+            {renderRecipientsFilter()}
           </div>
-          <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
-            <Radio
-              checked={selectedOption === 'all'}
-              onChange={() => {
-                filterTransactionByType(TTransactionType.ALL)
-                setSelectedOption('all')
-              }}
-            >
-              <div
-                className={cn(
-                  selectedOption === 'all'
-                    ? 'text-gray-4a text-h5-heavy'
-                    : 'text-gray-71 text-h5-medium',
-                )}
-              >
-                All
-              </div>
-            </Radio>
-            <Radio
-              checked={selectedOption === 'received'}
-              onChange={() => {
-                filterTransactionByType(TTransactionType.RECEIVE)
-                setSelectedOption('received')
-              }}
-            >
-              <div
-                className={cn(
-                  selectedOption === 'received'
-                    ? 'text-gray-4a text-h5-heavy'
-                    : 'text-gray-71 text-h5-medium',
-                )}
-              >
-                Received
-              </div>
-            </Radio>
-            <Radio
-              checked={selectedOption === 'sent'}
-              onChange={() => {
-                filterTransactionByType(TTransactionType.SEND)
-                setSelectedOption('sent')
-              }}
-            >
-              <div
-                className={
-                  selectedOption === 'sent'
-                    ? 'text-gray-4a text-h5-heavy'
-                    : 'text-gray-71 text-h5-medium'
-                }
-              >
-                Sent
-              </div>
-            </Radio>
-          </div>
+          {renderTransactionTypeFilter()}
         </div>
         <div className='h-409px overflow-y-auto mt-3 pr-2'>
           <Table

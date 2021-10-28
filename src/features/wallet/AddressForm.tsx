@@ -62,6 +62,35 @@ export const AddressForm = ({
 
   const addressLabel = promoCode ? promoCode.label : addressBookMap[address]
 
+  const renderShowFullAddress = () => (
+    <div className='flex items-center ml-13px'>
+      <Tooltip
+        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+        content={
+          !showFullAddress ? 'Show Recipient Address' : 'Hide Recipient Address'
+        }
+        width={160}
+        type='top'
+      >
+        <button
+          type='button'
+          className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+          onClick={handleShowFullAddress}
+        >
+          <img
+            alt={
+              !showFullAddress
+                ? 'Show Recipient Address'
+                : 'Hide Recipient Address'
+            }
+            className='cursor-pointer'
+            src={!showFullAddress ? eyeIcon : passEyeIcon}
+          />
+        </button>
+      </Tooltip>
+    </div>
+  )
+
   return (
     <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
       {edit === address ? (
@@ -215,36 +244,7 @@ export const AddressForm = ({
               </Tooltip>
             )}
           </div>
-          {hidable && (
-            <div className='flex items-center ml-13px'>
-              <Tooltip
-                classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                content={
-                  !showFullAddress
-                    ? 'Show Recipient Address'
-                    : 'Hide Recipient Address'
-                }
-                width={160}
-                type='top'
-              >
-                <button
-                  type='button'
-                  className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
-                  onClick={handleShowFullAddress}
-                >
-                  <img
-                    alt={
-                      !showFullAddress
-                        ? 'Show Recipient Address'
-                        : 'Hide Recipient Address'
-                    }
-                    className='cursor-pointer'
-                    src={!showFullAddress ? eyeIcon : passEyeIcon}
-                  />
-                </button>
-              </Tooltip>
-            </div>
-          )}
+          {hidable ? renderShowFullAddress() : null}
         </>
       )}
     </div>

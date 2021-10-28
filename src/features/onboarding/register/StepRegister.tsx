@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react'
 import shallow from 'zustand/shallow'
+import { shell } from 'electron'
 
 import Input from 'common/components/Inputs/Input'
 import Checkbox from 'common/components/Checkbox/Checkbox'
@@ -13,7 +14,6 @@ import InputPassword from 'common/components/Inputs/InputPassword'
 import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
 import { useRegisterStore } from './Register.store'
-import { verifyPastelIdPassword, getPastelIdTickets } from 'api/pastel-rpc'
 
 function validateUserName(val: string): boolean {
   const validationRe = /^[0-9a-z_]{3,}$/i
@@ -28,12 +28,11 @@ const StepRegister = (): JSX.Element => {
       password: state.password,
       setPassword: state.setPassword,
       goToNextStep: state.goToNextStep,
+      termsAgreed: state.termsAgreed,
+      setTermsAgreed: state.setTermsAgreed,
     }),
     shallow,
   )
-  const [termsAgreed, setTermsAgreed] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-
   const [usernameInvalid, setUsernameInvalid] = useState<boolean>(
     !validateUserName(store.username),
   )
@@ -76,7 +75,8 @@ const StepRegister = (): JSX.Element => {
     return 'At least 8 characters and at least 2 numbers'
   }
 
-  const nextActive = !usernameInvalid && passwordStrength >= 2 && termsAgreed
+  const nextActive =
+    !usernameInvalid && passwordStrength >= 2 && store.termsAgreed
 
   let usernameIsValid = null
   if (store.username.length > 0 && usernameInvalid) {
@@ -84,27 +84,34 @@ const StepRegister = (): JSX.Element => {
   }
 
   const hanleNextStep = async () => {
-    setErrorMessage('')
-    const pastels = await getPastelIdTickets()
-    let exist = false
-    for (let i = 0; i < pastels.length; i++) {
-      try {
-        const pastel = await verifyPastelIdPassword({
-          pastelId: pastels[i].ticket.pastelID,
-          password: `${store.password}${store.username}`,
-        })
-        if (pastel.signature) {
-          exist = true
-        }
-      } catch {
-        // noop
+    store.goToNextStep()
+  }
+
+  const renderPasswordInput = () => (
+    <InputPassword
+      className='w-full'
+      label={
+        <div className='flex items-center'>
+          <span className='mr-2'>Set your wallet password</span>
+          <Tooltip
+            classnames='font-medium py-2'
+            content='This password is to the secure container that stores your PSL coins and NFTs on your own machine and is never sent over the network. Please keep this password secure and be sure to backup your secret data in the next step.'
+            type='top'
+            width={260}
+            vPosPercent={100}
+          >
+            <Info size={17} />
+          </Tooltip>
+        </div>
       }
-    }
-    if (!exist) {
-      store.goToNextStep()
-    } else {
-      setErrorMessage('Username already exists')
-    }
+      value={store.password}
+      onChange={onPasswordChanged}
+      hint={getPasswordHint()}
+    />
+  )
+
+  const handleOpenPrivacyPolicy = () => {
+    shell.openExternal('https://pastel.network/privacy-policy/')
   }
 
   return (
@@ -127,39 +134,22 @@ const StepRegister = (): JSX.Element => {
           hintAsTooltip={true}
           appliedStyleValid={false}
         />
-        <div className='mt-6'>
-          <InputPassword
-            className='w-full'
-            label={
-              <div className='flex items-center'>
-                <span className='mr-2'>Set your wallet password</span>
-                <Tooltip
-                  classnames='font-medium py-2'
-                  content='This password is to the secure container that stores your PSL coins and NFTs on your own machine and is never sent over the network. Please keep this password secure and be sure to backup your secret data in the next step.'
-                  type='top'
-                  width={260}
-                  vPosPercent={100}
-                >
-                  <Info size={17} />
-                </Tooltip>
-              </div>
-            }
-            value={store.password}
-            onChange={onPasswordChanged}
-            hint={getPasswordHint()}
-          />
-        </div>
+        <div className='mt-6'>{renderPasswordInput()}</div>
         {store.password && <PasswordStrength strength={passwordStrength} />}
 
         <div className='mt-6'>
           <Checkbox
-            isChecked={termsAgreed}
-            clickHandler={setTermsAgreed}
+            isChecked={store.termsAgreed}
+            clickHandler={store.setTermsAgreed}
             className='items-start'
           >
             <span className='text-14px text-gray-a0'>
               I certify that I’m 18 years of age or older, and agree to the{' '}
-              <Link to='#' className='link'>
+              <Link
+                onClick={handleOpenPrivacyPolicy}
+                className='link'
+                type='button'
+              >
                 User Agreement and Privacy Policy
               </Link>
             </span>
@@ -176,11 +166,6 @@ const StepRegister = (): JSX.Element => {
             </p>
           </div>
         )}
-        {errorMessage ? (
-          <div className='mt-6'>
-            <p className='mb-0 text-sm font-normal text-re'>{errorMessage}</p>
-          </div>
-        ) : null}
       </form>
 
       <div className='mt-7 flex justify-end'>

@@ -10,7 +10,7 @@ import {
 } from './interfaces'
 import { walletNodeApiURL } from '../../../common/constants/urls'
 
-const baseUrl = walletNodeApiURL + '/artworks'
+const baseUrl: string = walletNodeApiURL + '/artworks'
 
 async function makeRequest<T>(
   params: AxiosRequestConfig,

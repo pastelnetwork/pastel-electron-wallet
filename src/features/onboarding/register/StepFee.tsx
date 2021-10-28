@@ -152,7 +152,8 @@ const StepFee = (): JSX.Element => {
 
   return (
     <div className='flex flex-col h-full'>
-      {store.paymentMethod === PaymentMethods.PastelPromoCode ? (
+      {store.paymentMethod === PaymentMethods.PastelPromoCode ||
+      store.paymentMethod === PaymentMethods.PslAddress ? (
         <PromoCode />
       ) : (
         <>

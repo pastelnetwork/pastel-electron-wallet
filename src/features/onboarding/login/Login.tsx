@@ -39,7 +39,6 @@ const Login = ({
   })
 
   const onSubmit = () => {
-    history.push(ROUTES.DASHBOARD)
     setErrorMessage('')
     if (!pastelId) {
       setErrorMessage('Account does not exist')
@@ -55,7 +54,7 @@ const Login = ({
 
   return (
     <div className='w-[398px] my-9 mx-60px'>
-      <CloseButton gotoUrl={ROUTES.ONBOARDING} />
+      <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
       <div className='text-h1-heavy text-gray-2d mb-3'>Login</div>
       <form
         className='flex flex-col mt-30px'

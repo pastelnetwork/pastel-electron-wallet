@@ -68,7 +68,7 @@ const NewPassword = (): JSX.Element => {
 
   return (
     <div className='my-9 mx-60px'>
-      <CloseButton gotoUrl={ROUTES.ONBOARDING} />
+      <CloseButton gotoUrl={ROUTES.PASSWORD_RECOVERY} />
       <div className='text-h1-heavy text-gray-2d'>Set New Password</div>
       <div className='mt-1'>
         <div className='text-text-77 text-h4'>

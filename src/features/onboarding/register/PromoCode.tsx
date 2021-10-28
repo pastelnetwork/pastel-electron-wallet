@@ -6,7 +6,11 @@ import { PrevButton, NextButton } from './Buttons'
 import { isValidPrivateKey } from 'common/utils/wallet'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { walletRPC } from 'api/pastel-rpc'
-import { useRegisterStore, targetBalance } from './Register.store'
+import {
+  useRegisterStore,
+  targetBalance,
+  PaymentMethods,
+} from './Register.store'
 import { useMutation, UseMutationResult } from 'react-query'
 
 type TPromoCode = {
@@ -15,14 +19,23 @@ type TPromoCode = {
 }
 
 const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
+  const paymentMethod = useRegisterStore(state => state.paymentMethod)
   return useMutation(async promoCode => {
     if (!isValidPrivateKey(promoCode)) {
-      throw new Error('Promo Code is invalid.')
+      throw new Error(
+        paymentMethod === PaymentMethods.PastelPromoCode
+          ? 'Promo Code is invalid.'
+          : 'PSL Address Private Key is invalid.',
+      )
     }
 
     const address = await importPastelPromoCode(promoCode)
     if (!address) {
-      throw new Error('Promo Code is invalid.')
+      throw new Error(
+        paymentMethod === PaymentMethods.PastelPromoCode
+          ? 'Promo Code is invalid.'
+          : 'PSL Address Private Key is invalid.',
+      )
     }
 
     const [tUnspent, zUnspent] = await Promise.all([
@@ -34,9 +47,6 @@ const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
     )
 
     const balance = unspent?.amount || 0
-    if (balance < targetBalance) {
-      throw new Error('Promo Code is invalid.')
-    }
 
     return {
       address,
@@ -47,89 +57,137 @@ const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
 
 export default function PromoCode(): JSX.Element {
   const currencyName = useCurrencyName()
-  const goBack = useRegisterStore(state => state.goBack)
+  const [isAddNew, setAddNew] = useState(false)
+  const store = useRegisterStore(state => ({
+    goBack: state.goBack,
+    promoCodeKey: state.promoCode,
+    setPromoCode: state.setPromoCode,
+    paymentMethod: state.paymentMethod,
+    pslAddressPrivateKey: state.pslAddressPrivateKey,
+    setPSLAddressPrivateKey: state.setPSLAddressPrivateKey,
+    createPastelIdQuery: state.createPastelIdQuery,
+    username: state.username,
+    password: state.password,
+  }))
+  const isPastelPromoCode =
+    store.paymentMethod === PaymentMethods.PastelPromoCode
   const promoCodeQuery = useImportPromoCode()
-  const createPastelIdQuery = useRegisterStore(
-    state => state.createPastelIdQuery,
-  )
-  const walletBalance = walletRPC.useTotalBalance()
-  const [promoCodeKey, setPromoCodeKey] = useState('')
-  const password = useRegisterStore(state => state.password)
-  const userName = useRegisterStore(state => state.username)
 
   const handleNextClick = () => {
+    setAddNew(false)
     const promoCode = promoCodeQuery.data
     if (promoCode) {
-      createPastelIdQuery.mutate({
-        password: `${password}${userName}`,
+      store.createPastelIdQuery.mutate({
+        password: `${store.password}${store.username}`,
         address: promoCode.address,
       })
     } else {
-      promoCodeQuery.mutate(promoCodeKey)
+      promoCodeQuery.mutate(
+        isPastelPromoCode ? store.promoCodeKey : store.pslAddressPrivateKey,
+      )
     }
   }
 
   const isLoading =
     status === 'loading' ||
-    createPastelIdQuery.isLoading ||
+    store.createPastelIdQuery.isLoading ||
     promoCodeQuery.isLoading
-  const error = promoCodeQuery.error || createPastelIdQuery.error
+  const error = promoCodeQuery.error || store.createPastelIdQuery.error
   const errorMessage = error?.message
-  const totalBalance = walletBalance.data?.total
+  const addressBalance = promoCodeQuery.data?.balance || 0
+
+  let promoCodeIsValid = null
+  if (promoCodeQuery.error) {
+    promoCodeIsValid = false
+  }
 
   return (
     <>
       <div className='flex-grow pt-28'>
-        <h1 className='text-gray-23 text-xl font-black'>Pastel Promo Code</h1>
+        <h1 className='text-gray-23 text-xl font-black'>
+          {isPastelPromoCode
+            ? 'Pastel Promo Code'
+            : 'PSL Address Private Key Import'}
+        </h1>
         <div className='mt-4 airdrop'>
           <Input
             className='w-full'
             type='text'
-            placeholder='Paste your promo code here'
-            onChange={(e: FormEvent<HTMLInputElement>) =>
-              setPromoCodeKey(e.currentTarget.value.trim())
+            placeholder={
+              isPastelPromoCode
+                ? 'Paste your promo code here'
+                : 'PSL Address Private Key here'
             }
-            isValid={!promoCodeQuery.error}
+            onChange={(e: FormEvent<HTMLInputElement>) => {
+              if (isPastelPromoCode) {
+                store.setPromoCode(e.currentTarget.value.trim())
+              } else {
+                store.setPSLAddressPrivateKey(e.currentTarget.value.trim())
+              }
+            }}
+            isValid={promoCodeIsValid}
             errorMessage={errorMessage}
             hint
             hintAsTooltip={false}
-            value={promoCodeKey}
+            value={
+              isPastelPromoCode
+                ? store.promoCodeKey
+                : store.pslAddressPrivateKey
+            }
             readOnly={isLoading}
           />
         </div>
-        {promoCodeQuery.isSuccess && totalBalance && (
+        {promoCodeQuery.isSuccess && addressBalance && (
           <div className='mt-6 text-gray-71 text-base font-normal'>
-            Congratulations, your personalized promotional code has been
-            accepted! You now have {formatNumber(totalBalance)} {currencyName}{' '}
-            in your wallet.{' '}
+            Congratulations, your{' '}
+            {isPastelPromoCode
+              ? 'personalized promotional code'
+              : 'PSL Address Private Key'}{' '}
+            has been accepted! You now have {formatNumber(addressBalance)}{' '}
+            {currencyName} in your wallet.{' '}
             <button
               type='button'
               className='link'
               onClick={() => {
-                setPromoCodeKey('')
+                if (isPastelPromoCode) {
+                  store.setPromoCode('')
+                } else {
+                  store.setPSLAddressPrivateKey('')
+                }
                 promoCodeQuery.reset()
+                setAddNew(true)
               }}
             >
-              Add new pastel promo code.
+              {isPastelPromoCode
+                ? 'Add new pastel promo code.'
+                : 'Add new PSL Address Private Key.'}
             </button>
           </div>
         )}
       </div>
       <div className='mt-7 flex justify-between'>
-        <PrevButton onClick={goBack} />
+        <PrevButton onClick={store.goBack} disabled={isLoading} />
         <NextButton
           className='min-w-160px'
           onClick={handleNextClick}
           text={
             isLoading
               ? 'Applying'
-              : promoCodeQuery.isSuccess
+              : promoCodeQuery.isSuccess && !isAddNew
               ? `Proceed to ${formatNumber(
                   targetBalance,
                 )} ${currencyName} Payment`
               : 'Apply'
           }
-          disabled={!promoCodeKey || isLoading}
+          disabled={
+            !(isPastelPromoCode
+              ? store.promoCodeKey
+              : store.pslAddressPrivateKey) ||
+            isLoading ||
+            (promoCodeQuery.isSuccess &&
+              addressBalance < targetBalance &&
+              !isAddNew)
+          }
         />
       </div>
     </>

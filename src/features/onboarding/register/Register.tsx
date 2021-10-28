@@ -89,7 +89,11 @@ const RegisterContent = () => {
       <CloseButton
         className='absolute top-6 right-6 w-7 h-7'
         onClick={() => {
-          setCloseRequested(true)
+          if (closeRequested) {
+            history.push(ROUTES.WELCOME_PAGE)
+          } else {
+            setCloseRequested(true)
+          }
         }}
       />
       <div
