@@ -82,9 +82,15 @@ export const useInitializeRegister = ({
             artist_pastelid: createPastelIdQuery.data.pastelid,
             artist_pastelid_passphrase: `${password}${username}`,
           })
-          .then()
-          .catch()
-          .finally()
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
       }
       setStep(Steps.Backup)
     }

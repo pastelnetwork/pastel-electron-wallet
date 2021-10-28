@@ -227,14 +227,21 @@ export const AddressForm = ({
                 width={160}
                 type='top'
               >
-                <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
+                <button
+                  type='button'
+                  className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                >
                   <img
-                    role='button'
+                    alt={
+                      !showFullAddress
+                        ? 'Show Recipient Address'
+                        : 'Hide Recipient Address'
+                    }
                     className='cursor-pointer'
                     src={!showFullAddress ? eyeIcon : passEyeIcon}
                     onClick={handleShowFullAddress}
                   />
-                </span>
+                </button>
               </Tooltip>
             </div>
           )}
