@@ -83,7 +83,7 @@ const StepRegister = (): JSX.Element => {
     usernameIsValid = false
   }
 
-  const hanleNextStep = async () => {
+  const hanleNextStep = () => {
     store.goToNextStep()
   }
 

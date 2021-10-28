@@ -88,6 +88,10 @@ export default function PromoCode(): JSX.Element {
     }
   }
 
+  const handleBack = () => {
+    store.goBack()
+  }
+
   const isLoading =
     status === 'loading' ||
     store.createPastelIdQuery.isLoading ||
@@ -166,7 +170,7 @@ export default function PromoCode(): JSX.Element {
         )}
       </div>
       <div className='mt-7 flex justify-between'>
-        <PrevButton onClick={store.goBack} disabled={isLoading} />
+        <PrevButton onClick={handleBack} disabled={isLoading} />
         <NextButton
           className='min-w-160px'
           onClick={handleNextClick}

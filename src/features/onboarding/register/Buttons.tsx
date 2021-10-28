@@ -44,15 +44,19 @@ export const NextButton = ({
   )
 }
 
-export const PrevButton = (props: TPrevBtnProps): JSX.Element => {
+export const PrevButton = ({
+  disabled,
+  onClick,
+}: TPrevBtnProps): JSX.Element => {
   return (
     <button
       className={cn(
         'w-10 h-10 flex items-center justify-center rounded-full border border-gray-88 cursor-pointer hover:border-gray-8e hover:bg-gray-f6 active:bg-gray-f6 active:border-gray-55 active:text-border-gray-55',
-        !props.disabled && 'opacity-50',
+        !disabled && 'opacity-50',
       )}
-      onClick={() => props.onClick()}
-      disabled={props.disabled}
+      onClick={() => onClick()}
+      disabled={disabled}
+      type='button'
     >
       <LongArrow size={18} to='left' className='transform text-gray-88' />
     </button>
