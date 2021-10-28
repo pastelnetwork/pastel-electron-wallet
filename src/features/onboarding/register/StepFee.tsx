@@ -103,7 +103,7 @@ const StepFee = (): JSX.Element => {
     setCopied(true)
   }
 
-  const handleNextClick = async () => {
+  const handleNextClick = () => {
     if (!isSuccess) {
       setSuccess(true)
     } else {
@@ -125,6 +125,10 @@ const StepFee = (): JSX.Element => {
         toast.error(error.message)
       }
     }
+  }
+
+  const handleBack = () => {
+    store.goBack()
   }
 
   const showWarn =
@@ -244,7 +248,7 @@ const StepFee = (): JSX.Element => {
             )}
           </div>
           <div className='mt-7 flex justify-between'>
-            <PrevButton onClick={store.goBack} />
+            <PrevButton onClick={handleBack} />
             <NextButton
               className='min-w-160px'
               onClick={handleNextClick}

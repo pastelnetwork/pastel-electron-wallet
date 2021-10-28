@@ -230,6 +230,7 @@ export const AddressForm = ({
                 <button
                   type='button'
                   className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                  onClick={handleShowFullAddress}
                 >
                   <img
                     alt={
@@ -239,7 +240,6 @@ export const AddressForm = ({
                     }
                     className='cursor-pointer'
                     src={!showFullAddress ? eyeIcon : passEyeIcon}
-                    onClick={handleShowFullAddress}
                   />
                 </button>
               </Tooltip>

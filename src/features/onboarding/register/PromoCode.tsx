@@ -57,7 +57,7 @@ export default function PromoCode(): JSX.Element {
   const password = useRegisterStore(state => state.password)
   const userName = useRegisterStore(state => state.username)
 
-  const handleNextClick = async () => {
+  const handleNextClick = () => {
     const promoCode = promoCodeQuery.data
     if (promoCode) {
       createPastelIdQuery.mutate({

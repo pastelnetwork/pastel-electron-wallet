@@ -38,7 +38,8 @@ const Login = ({
     },
   })
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
+    history.push(ROUTES.DASHBOARD)
     setErrorMessage('')
     if (!pastelId) {
       setErrorMessage('Account does not exist')

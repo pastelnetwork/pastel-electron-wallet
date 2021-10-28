@@ -67,6 +67,14 @@ const StepPaymentMethod = (): JSX.Element => {
     store.setPaymentMethod(method)
   }
 
+  const handleNext = () => {
+    store.goToNextStep()
+  }
+
+  const handleBack = () => {
+    store.goBack()
+  }
+
   return (
     <div className='flex flex-col h-full'>
       <div className='flex-grow flex flex-col justify-center'>
@@ -102,11 +110,8 @@ const StepPaymentMethod = (): JSX.Element => {
         </div>
       </div>
       <div className='mt-7 flex justify-between'>
-        <PrevButton onClick={store.goBack} />
-        <NextButton
-          onClick={store.goToNextStep}
-          text='Proceed to the Payment Method'
-        />
+        <PrevButton onClick={handleBack} />
+        <NextButton onClick={handleNext} text='Proceed to the Payment Method' />
       </div>
     </div>
   )
