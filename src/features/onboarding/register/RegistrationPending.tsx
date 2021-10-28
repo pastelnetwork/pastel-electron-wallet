@@ -12,8 +12,8 @@ const RegistrationPending = (): JSX.Element => {
         Registration Fee Pending
       </h1>
       <h2 className='text-base font-medium text-gray-71 mt-4'>
-        It can take up to 10 minutes after you've made <br /> the payment for
-        this process to be completed
+        It can take up to 10 minutes after you{"'"}ve made <br /> the payment
+        for this process to be completed
       </h2>
       <div className='relative mt-6 pb-14'>
         <img

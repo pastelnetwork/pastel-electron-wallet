@@ -66,20 +66,6 @@ const STEPS = [
   },
 ]
 
-export default function Register({
-  fetchedPastelId,
-}: {
-  fetchedPastelId?: TPastelIdWithTxIdAndConfirmed
-}): JSX.Element {
-  const store = useInitializeRegister({ fetchedPastelId })
-
-  return (
-    <RegisterStoreProvider createStore={() => store}>
-      <RegisterContent />
-    </RegisterStoreProvider>
-  )
-}
-
 const RegisterContent = () => {
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
@@ -231,5 +217,19 @@ const RegisterContent = () => {
         </div>
       )}
     </>
+  )
+}
+
+export default function Register({
+  fetchedPastelId,
+}: {
+  fetchedPastelId?: TPastelIdWithTxIdAndConfirmed
+}): JSX.Element {
+  const store = useInitializeRegister({ fetchedPastelId })
+
+  return (
+    <RegisterStoreProvider createStore={() => store}>
+      <RegisterContent />
+    </RegisterStoreProvider>
   )
 }

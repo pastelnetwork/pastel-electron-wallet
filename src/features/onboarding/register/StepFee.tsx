@@ -59,7 +59,7 @@ const StepFee = (): JSX.Element => {
       setTotalBalance(unspent?.amount || 0)
     }
 
-    getData()
+    getData().then().catch().finally()
   }, [])
 
   // maybe it would be better to load this list from somewhere

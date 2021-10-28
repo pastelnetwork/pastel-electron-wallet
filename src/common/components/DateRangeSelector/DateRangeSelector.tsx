@@ -233,9 +233,9 @@ const DateRangeSelector = ({
             {showFooter ? (
               <div className='p-3 pb-5'>
                 <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
-                  {dateButtons.map((date, idx) => (
+                  {dateButtons.map(date => (
                     <SelectButton
-                      key={idx}
+                      key={date.value}
                       isActive={date.value === dateTitle?.value}
                       onClick={() => handleDateSelect(date)}
                     >

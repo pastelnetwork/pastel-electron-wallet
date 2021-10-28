@@ -20,6 +20,38 @@ import shallow from 'zustand/shallow'
 
 const CHECK_PASTELID_CONFIRMATIONS_INTERVAL = 1000
 
+const useCheckPastelIdConfirmationsInterval = ({
+  step,
+  txid,
+  onConfirmed,
+}: {
+  step: Steps
+  txid?: string
+  onConfirmed(): void
+}) => {
+  useEffect(() => {
+    if (step !== Steps.ProcessingFee || !txid) {
+      return
+    }
+
+    const interval = setInterval(async () => {
+      const transaction = await transactionRPC.getTransaction(txid)
+      if (transaction.confirmations >= PASTELID_MIN_CONFIRMATIONS) {
+        onConfirmed()
+        clearInterval(interval)
+      }
+    }, CHECK_PASTELID_CONFIRMATIONS_INTERVAL)
+
+    return () => clearInterval(interval)
+  }, [step, txid])
+}
+
+const useCreatePastelId = (): TCreatePastelIdQuery => {
+  return useMutation(async ({ password, address }) =>
+    createNewPastelID(password, address),
+  )
+}
+
 export const useInitializeRegister = ({
   fetchedPastelId,
 }: {
@@ -45,10 +77,14 @@ export const useInitializeRegister = ({
   useEffect(() => {
     if (createPastelIdQuery.isSuccess) {
       if (createPastelIdQuery.data?.pastelid) {
-        walletNodeApi.userData.create({
-          artist_pastelid: createPastelIdQuery.data.pastelid,
-          artist_pastelid_passphrase: `${password}${username}`,
-        })
+        walletNodeApi.userData
+          .create({
+            artist_pastelid: createPastelIdQuery.data.pastelid,
+            artist_pastelid_passphrase: `${password}${username}`,
+          })
+          .then()
+          .catch()
+          .finally()
       }
       setStep(Steps.Backup)
     }
@@ -67,36 +103,4 @@ export const useInitializeRegister = ({
 
 export const finish = (): void => {
   history.push(ROUTES.DASHBOARD)
-}
-
-const useCreatePastelId = (): TCreatePastelIdQuery => {
-  return useMutation(async ({ password, address }) =>
-    createNewPastelID(password, address),
-  )
-}
-
-const useCheckPastelIdConfirmationsInterval = ({
-  step,
-  txid,
-  onConfirmed,
-}: {
-  step: Steps
-  txid?: string
-  onConfirmed(): void
-}) => {
-  useEffect(() => {
-    if (step !== Steps.ProcessingFee || !txid) {
-      return
-    }
-
-    const interval = setInterval(async () => {
-      const transaction = await transactionRPC.getTransaction(txid)
-      if (transaction.confirmations >= PASTELID_MIN_CONFIRMATIONS) {
-        onConfirmed()
-        clearInterval(interval)
-      }
-    }, CHECK_PASTELID_CONFIRMATIONS_INTERVAL)
-
-    return () => clearInterval(interval)
-  }, [step, txid])
 }

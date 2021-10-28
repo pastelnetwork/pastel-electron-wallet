@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
+import log from 'electron-log'
 import {
   TArtworkTicket,
   IRegisterResult,
@@ -15,19 +16,19 @@ async function makeRequest<T>(
   params: AxiosRequestConfig,
   goodResponseCodes?: number[],
 ): Promise<T> {
-  params.url = baseUrl + params.url
+  params.url = baseUrl + params.url?.toString()
   const res = await axios.request(params)
   if (!goodResponseCodes) {
     goodResponseCodes = [200]
   }
 
   if (!goodResponseCodes.includes(res.status)) {
-    console.log(`${params.url} return status ${res.status} and data:`, res.data)
+    log.info(`${params.url} return status ${res.status} and data:`, res.data)
     throw new Error(`API route ${params.url} return status ${res.status}`)
   }
 
   if (res.data.fault) {
-    console.log(`${params.url} failed:`, res.data)
+    log.info(`${params.url} failed:`, res.data)
     throw new Error(`API route ${params.url} return error`)
   }
 

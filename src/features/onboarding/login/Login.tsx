@@ -41,7 +41,7 @@ const Login = ({
   const onSubmit = async () => {
     setErrorMessage('')
     if (!pastelId) {
-      setErrorMessage("Pastel ID doesn't exist")
+      setErrorMessage('Account does not exist')
       return
     }
 
@@ -95,7 +95,7 @@ const Login = ({
         </Button>
       </form>
       <div className='flex justify-center text-gray-a0 font-medium text-h6 mt-30px'>
-        <span className='mr-1'>Don't have an account?</span>
+        <span className='mr-1'>Don{"'"}t have an account?</span>
         <Link className='text-link' to={ROUTES.SIGN_UP}>
           Register on Pastel
         </Link>

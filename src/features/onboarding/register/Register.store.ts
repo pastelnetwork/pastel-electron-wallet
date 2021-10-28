@@ -93,7 +93,7 @@ export const createRegisterStore = ({
       }
     },
     goToNextStep() {
-      const step = get().step
+      const step: number = get().step
       if (step < lastStep) {
         set({ step: step + 1 })
       }

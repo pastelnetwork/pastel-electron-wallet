@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 import { TPastelID, TRegisterPastelID } from '../../features/pastelID'
 import {
   TCreateNewPastelIdResponse,
@@ -21,22 +23,27 @@ export async function createNewPastelID(
   passphrase: string,
   address: string,
 ): Promise<TRegisterPastelID> {
-  const resp = await rpc<TCreateNewPastelIdResponse>('pastelid', [
-    'newkey',
-    passphrase,
-  ])
-  const resRP = await rpc<TTicketsRegisterIdResponse>('tickets', [
-    'register',
-    'id',
-    resp.result.pastelid,
-    passphrase,
-    address,
-  ])
-  const res: TRegisterPastelID = {
-    pastelid: resp.result.pastelid,
-    txid: resRP.result.txid,
+  try {
+    const resp = await rpc<TCreateNewPastelIdResponse>('pastelid', [
+      'newkey',
+      passphrase,
+    ])
+    const resRP = await rpc<TTicketsRegisterIdResponse>('tickets', [
+      'register',
+      'id',
+      resp.result.pastelid,
+      passphrase,
+      address,
+    ])
+    const res: TRegisterPastelID = {
+      pastelid: resp.result.pastelid,
+      txid: resRP.result.txid,
+    }
+    return res
+  } catch (error) {
+    toast.error(error.message)
+    throw error
   }
-  return res
 }
 
 export async function getPastelIDs(): Promise<TPastelID[]> {
