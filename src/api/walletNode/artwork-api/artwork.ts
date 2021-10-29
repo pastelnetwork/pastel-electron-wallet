@@ -16,9 +16,7 @@ async function makeRequest<T>(
   params: AxiosRequestConfig,
   goodResponseCodes?: number[],
 ): Promise<T> {
-  if (params.url) {
-    params.url = baseUrl.toString() + params.url.toString()
-  }
+  params.url = baseUrl + params.url
   const res = await axios.request(params)
   if (!goodResponseCodes) {
     goodResponseCodes = [200]

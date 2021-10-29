@@ -55,6 +55,8 @@ export type TRegisterStore = {
   goToNextStep(): void
   termsAgreed: boolean
   setTermsAgreed(termsAgreed: boolean): void
+  pastelId: string
+  setPastelId(pastelId: string): void
 }
 
 export type TCreatePastelIdQuery = UseMutationResult<
@@ -107,5 +109,7 @@ export const createRegisterStore = ({
     },
     termsAgreed: false,
     setTermsAgreed: termsAgreed => set({ termsAgreed }),
+    pastelId: '',
+    setPastelId: pastelId => set({ pastelId }),
   }))
 }

@@ -13,6 +13,7 @@ import Link from 'common/components/Link'
 import InputPassword from 'common/components/Inputs/InputPassword'
 import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
+import { readUsersInfo } from 'common/utils/User'
 import { useRegisterStore } from './Register.store'
 
 function validateUserName(val: string): boolean {
@@ -39,6 +40,7 @@ export default function StepRegister(): JSX.Element {
   const [passwordStrength, setPasswordStrength] = useState<number>(
     calcPasswordStrength(store.password),
   )
+  const [errorMsg, setErrorMsg] = useState('')
 
   const updateUserName = (val: string) => {
     store.setUsername(val)
@@ -83,8 +85,17 @@ export default function StepRegister(): JSX.Element {
     usernameIsValid = false
   }
 
-  const hanleNextStep = () => {
-    store.goToNextStep()
+  const hanleNextStep = async () => {
+    setErrorMsg('')
+    setUsernameInvalid(false)
+    const users = await readUsersInfo()
+    const user = users.find(u => u.username === store.username)
+    if (user) {
+      setErrorMsg('Username already exists.')
+      setUsernameInvalid(true)
+    } else {
+      store.goToNextStep()
+    }
   }
 
   const renderPasswordInput = () => (
@@ -127,7 +138,7 @@ export default function StepRegister(): JSX.Element {
           isValid={usernameIsValid}
           errorMessage={
             usernameInvalid && store.username
-              ? 'Please enter a valid username'
+              ? errorMsg || 'Please enter a valid username'
               : null
           }
           hint='Only Latin Characters and Numbers Allowed'

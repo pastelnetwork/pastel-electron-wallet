@@ -3,6 +3,7 @@ import { toast } from 'react-toastify'
 
 import { rpc } from 'api/pastel-rpc/rpc'
 import AddressbookImpl from 'common/utils/AddressbookImpl'
+import { TUserInfo, writeUsersInfo, readUsersInfo } from 'common/utils/User'
 
 type TAddressesResponse = {
   error: string | null
@@ -44,6 +45,7 @@ type TAllAddressesAndPastelID = {
   profile: {
     userName: string
   }
+  userInfo: TUserInfo[]
 }
 
 type TQRCode = {
@@ -153,6 +155,7 @@ export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
 
   const pastelIDs = await getPastelIDs()
   const addressBook = await getAddressBook()
+  const info = await readUsersInfo()
 
   if (
     pastelIDs?.length ||
@@ -165,6 +168,7 @@ export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
       tPrivateKeys,
       pastelIDs,
       addressBook,
+      userInfo: info,
     }
 
     return encodeURIComponent(
@@ -280,10 +284,12 @@ async function importAddressBook(addresses: TAddressBook[]) {
   }
 }
 
-export async function doImportPrivKeys(privateKeys: string): Promise<boolean> {
+export async function doImportPrivKeys(
+  privateKeys: string,
+  setPastelId?: (pastelId: string) => void,
+): Promise<boolean> {
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
-
     if (keys) {
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
@@ -302,6 +308,14 @@ export async function doImportPrivKeys(privateKeys: string): Promise<boolean> {
       const addressBook = keys.addressBook
       if (addressBook.length) {
         await importAddressBook(addressBook)
+      }
+
+      const userInfo = keys.userInfo
+      if (userInfo.length) {
+        await writeUsersInfo(userInfo, true)
+        if (setPastelId) {
+          setPastelId(userInfo[0].pastelId)
+        }
       }
 
       return true

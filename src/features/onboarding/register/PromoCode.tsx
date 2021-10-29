@@ -20,21 +20,22 @@ type TPromoCode = {
 
 const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
   const paymentMethod = useRegisterStore(state => state.paymentMethod)
+  const isPastelPromoCode = paymentMethod === PaymentMethods.PastelPromoCode
+  const currencyName = useCurrencyName()
   return useMutation(async promoCode => {
     if (!isValidPrivateKey(promoCode)) {
       throw new Error(
-        paymentMethod === PaymentMethods.PastelPromoCode
+        isPastelPromoCode
           ? 'Promo Code is invalid.'
-          : 'PSL Address Private Key is invalid.',
+          : `${currencyName} Address Private Key is invalid.`,
       )
     }
-
-    const address = await importPastelPromoCode(promoCode)
+    const address = await importPastelPromoCode(promoCode, !!isPastelPromoCode)
     if (!address) {
       throw new Error(
-        paymentMethod === PaymentMethods.PastelPromoCode
+        isPastelPromoCode
           ? 'Promo Code is invalid.'
-          : 'PSL Address Private Key is invalid.',
+          : `${currencyName} Address Private Key is invalid.`,
       )
     }
 
@@ -45,9 +46,7 @@ const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
     const unspent = [...tUnspent, ...zUnspent].find(
       item => item.address === address,
     )
-
     const balance = unspent?.amount || 0
-
     return {
       address,
       balance,
@@ -111,7 +110,7 @@ export default function PromoCode(): JSX.Element {
         <h1 className='text-gray-23 text-xl font-black'>
           {isPastelPromoCode
             ? 'Pastel Promo Code'
-            : 'PSL Address Private Key Import'}
+            : `${currencyName} Address Private Key Import`}
         </h1>
         <div className='mt-4 airdrop'>
           <Input
@@ -120,7 +119,7 @@ export default function PromoCode(): JSX.Element {
             placeholder={
               isPastelPromoCode
                 ? 'Paste your promo code here'
-                : 'PSL Address Private Key here'
+                : `${currencyName} Address Private Key here`
             }
             onChange={(e: FormEvent<HTMLInputElement>) => {
               if (isPastelPromoCode) {
@@ -138,15 +137,15 @@ export default function PromoCode(): JSX.Element {
                 ? store.promoCodeKey
                 : store.pslAddressPrivateKey
             }
-            readOnly={isLoading}
+            disabled={isLoading}
           />
         </div>
-        {promoCodeQuery.isSuccess && addressBalance && (
+        {promoCodeQuery.isSuccess ? (
           <div className='mt-6 text-gray-71 text-base font-normal'>
             Congratulations, your{' '}
             {isPastelPromoCode
               ? 'personalized promotional code'
-              : 'PSL Address Private Key'}{' '}
+              : `${currencyName} Address Private Key`}{' '}
             has been accepted! You now have {formatNumber(addressBalance)}{' '}
             {currencyName} in your wallet.{' '}
             <button
@@ -164,10 +163,10 @@ export default function PromoCode(): JSX.Element {
             >
               {isPastelPromoCode
                 ? 'Add new pastel promo code.'
-                : 'Add new PSL Address Private Key.'}
+                : `Add new ${currencyName} Address Private Key.`}
             </button>
           </div>
-        )}
+        ) : null}
       </div>
       <div className='mt-7 flex justify-between'>
         <PrevButton onClick={handleBack} disabled={isLoading} />

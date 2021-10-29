@@ -9,25 +9,32 @@ import { doImportPrivKeys } from '../common/utils'
 import { Refresh, PDF } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
+import history from 'common/utils/history'
 
 type TRestoreByPdfProps = {
-  onHideHeader: (status: boolean) => void
+  onHideHeader?: (status: boolean) => void
+  redirectTo?: string
+  setPastelId?: (pastelId: string) => void
 }
 
 export default function RestoreByPdf({
   onHideHeader,
-}: TRestoreByPdfProps): JSX.Element {
+  redirectTo,
+  setPastelId,
+}: TRestoreByPdfProps): JSX.Element | null {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [fileSelected, setFileSelected] = useState<File>()
 
   const doImport = async (value: string) => {
-    const result = await doImportPrivKeys(value)
+    const result = await doImportPrivKeys(value, setPastelId)
     if (result) {
       setCurrentStatus('done')
     } else {
       setCurrentStatus('error')
     }
-    onHideHeader(true)
+    if (onHideHeader) {
+      onHideHeader(true)
+    }
   }
 
   const handleRestoreByUpload = async () => {
@@ -44,7 +51,9 @@ export default function RestoreByPdf({
         }
       } catch {
         setCurrentStatus('error')
-        onHideHeader(true)
+        if (onHideHeader) {
+          onHideHeader(true)
+        }
       }
     }
   }
@@ -58,6 +67,11 @@ export default function RestoreByPdf({
   }
 
   if (currentStatus === 'done') {
+    if (redirectTo) {
+      history.push(redirectTo)
+      return null
+    }
+
     return <RestoreSuccess />
   }
 

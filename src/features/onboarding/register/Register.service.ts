@@ -1,4 +1,8 @@
 import { useMutation } from 'react-query'
+import shallow from 'zustand/shallow'
+import { UseStore } from 'zustand'
+import { useEffect, useMemo } from 'react'
+
 import {
   createNewPastelID,
   PASTELID_MIN_CONFIRMATIONS,
@@ -12,11 +16,10 @@ import {
   TCreatePastelIdQuery,
   TRegisterStore,
 } from './Register.store'
-import { UseStore } from 'zustand'
-import { useEffect, useMemo } from 'react'
 import history from '../../../common/utils/history'
 import { ROUTES } from '../../../common/constants/routes'
-import shallow from 'zustand/shallow'
+import { writeUsersInfo } from 'common/utils/User'
+import { encode } from 'common/utils/encryption'
 
 const CHECK_PASTELID_CONFIRMATIONS_INTERVAL = 1000
 
@@ -69,14 +72,32 @@ export const useInitializeRegister = ({
       }),
     [],
   )
-  const [step, setStep, username, password] = useStore(
-    state => [state.step, state.setStep, state.username, state.password],
+  const [step, setStep, username, password, setPastelId] = useStore(
+    state => [
+      state.step,
+      state.setStep,
+      state.username,
+      state.password,
+      state.setPastelId,
+    ],
     shallow,
   )
 
   useEffect(() => {
     if (createPastelIdQuery.isSuccess) {
       if (createPastelIdQuery.data?.pastelid) {
+        setPastelId(createPastelIdQuery.data.pastelid)
+        writeUsersInfo(
+          [
+            {
+              username,
+              password: encode(password),
+              newPassword: encode(password),
+              pastelId: createPastelIdQuery.data.pastelid,
+            },
+          ],
+          true,
+        )
         walletNodeApi.userData
           .create({
             artist_pastelid: createPastelIdQuery.data.pastelid,
@@ -108,5 +129,5 @@ export const useInitializeRegister = ({
 }
 
 export const finish = (): void => {
-  history.push(ROUTES.DASHBOARD)
+  history.push(ROUTES.LOGIN)
 }

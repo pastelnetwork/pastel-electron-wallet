@@ -72,19 +72,24 @@ export const useReadPastelPromoCode = (): UseQueryResult<
 
 export const importPastelPromoCode = async (
   pastelPromoCode: string,
+  isNotSave?: boolean,
 ): Promise<string | null> => {
   try {
     const walletRPC = new WalletRPC()
     const address = await walletRPC.importPrivKey(pastelPromoCode, true)
-    const currentPromoCodeList = await readPastelPromoCode()
-    const alreadySaved = currentPromoCodeList.some(pc => pc.address === address)
+    if (!isNotSave) {
+      const currentPromoCodeList = await readPastelPromoCode()
+      const alreadySaved = currentPromoCodeList.some(
+        pc => pc.address === address,
+      )
 
-    if (!alreadySaved) {
-      const newPromoCode = currentPromoCodeList.concat({
-        label: `Pastel Promo Code ${dayjs().format('MM/DD/YYYY-HH:mm')}`,
-        address,
-      })
-      await writePastelPromoCode(newPromoCode)
+      if (!alreadySaved) {
+        const newPromoCode = currentPromoCodeList.concat({
+          label: `Pastel Promo Code ${dayjs().format('MM/DD/YYYY-HH:mm')}`,
+          address,
+        })
+        await writePastelPromoCode(newPromoCode)
+      }
     }
     return address
   } catch (err) {

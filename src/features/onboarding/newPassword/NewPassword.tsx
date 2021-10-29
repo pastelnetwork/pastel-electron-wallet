@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import shallow from 'zustand/shallow'
 
 import { InputPassword, Input } from '../../../common/components/Inputs'
 import { Button } from '../../../common/components/Buttons'
@@ -9,6 +9,12 @@ import PasswordStrength, {
 } from 'common/components/PasswordStrength/PasswordStrength'
 import * as ROUTES from '../../../common/utils/constants/routes'
 import { calcPasswordStrength, randomPassword } from 'common/utils/passwords'
+import { readUsersInfo, writeUsersInfo } from 'common/utils/User'
+import {
+  useRegisterStore,
+  RegisterStoreProvider,
+} from '../register/Register.store'
+import { useInitializeRegister } from '../register/Register.service'
 
 interface NewPasswordFormInput {
   value: string
@@ -22,7 +28,13 @@ const initialInputState = {
   isTouched: false,
 }
 
-const NewPassword = (): JSX.Element => {
+function NewPasswordContent(): JSX.Element {
+  const store = useRegisterStore(
+    state => ({
+      pastelId: state.pastelId,
+    }),
+    shallow,
+  )
   const [newPassword, setNewPassword] = useState<NewPasswordFormInput>(
     initialInputState,
   )
@@ -30,6 +42,7 @@ const NewPassword = (): JSX.Element => {
     initialInputState,
   )
   const [showPassword, setShowPassword] = useState(false)
+  const [isSuccess, setSuccess] = useState(false)
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -66,9 +79,19 @@ const NewPassword = (): JSX.Element => {
     setShowPassword(true)
   }
 
+  const handleChangePassword = async () => {
+    const uers = await readUsersInfo()
+    const user = uers.find(u => u.pastelId === store.pastelId)
+    if (user) {
+      user.newPassword = newPassword.value
+      writeUsersInfo([user], true)
+      setSuccess(true)
+    }
+  }
+
   return (
     <div className='my-9 mx-60px'>
-      <CloseButton gotoUrl={ROUTES.PASSWORD_RECOVERY} />
+      {isSuccess ? <CloseButton gotoUrl={ROUTES.LOGIN} /> : null}
       <div className='text-h1-heavy text-gray-2d'>Set New Password</div>
       <div className='mt-1'>
         <div className='text-text-77 text-h4'>
@@ -118,9 +141,12 @@ const NewPassword = (): JSX.Element => {
             repeatPassword.hasError ? 'Please enter a valid password' : null
           }
         />
-        <Link to={ROUTES.LOGIN}>
-          <Button className='w-full mt-[30px] font-semibold'>Confirm</Button>
-        </Link>
+        <Button
+          className='w-full mt-[30px] font-semibold'
+          onClick={handleChangePassword}
+        >
+          Confirm
+        </Button>
         <div className='mt-[18px] mb-66px text-center'>
           <button
             type='button'
@@ -135,4 +161,11 @@ const NewPassword = (): JSX.Element => {
   )
 }
 
-export default NewPassword
+export default function NewPassword(): JSX.Element {
+  const store = useInitializeRegister({})
+  return (
+    <RegisterStoreProvider createStore={() => store}>
+      <NewPasswordContent />
+    </RegisterStoreProvider>
+  )
+}

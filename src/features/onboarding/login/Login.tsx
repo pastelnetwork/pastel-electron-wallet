@@ -13,7 +13,9 @@ import {
   TPastelIdWithTxIdAndConfirmed,
   useVerifyPastelIdPassword,
 } from '../../../api/pastel-rpc'
-import history from '../../../common/utils/history'
+import history from 'common/utils/history'
+import { readUsersInfo } from 'common/utils/User'
+import { decode } from 'common/utils/encryption'
 
 const schema = yup.object({
   username: yup.string().required(),
@@ -38,18 +40,25 @@ export default function Login({
     },
   })
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setErrorMessage('')
     if (!pastelId) {
       setErrorMessage('Account does not exist')
       return
     }
-
     const { password, username } = form.getValues()
-    verifyPassword.mutate({
-      pastelId: pastelId.pastelid,
-      password: `${password}${username}`,
-    })
+    const users = await readUsersInfo()
+    const user = users.find(
+      u => u.pastelId === pastelId.pastelid && u.newPassword === password,
+    )
+    if (user) {
+      verifyPassword.mutate({
+        pastelId: pastelId.pastelid,
+        password: `${decode(user.password)}${username}`,
+      })
+    } else {
+      setErrorMessage('Account does not exist')
+    }
   }
 
   return (

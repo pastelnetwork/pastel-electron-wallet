@@ -4,6 +4,7 @@ import QrReader from 'react-qr-reader'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
+import history from 'common/utils/history'
 
 type TQRReader = {
   index: number
@@ -13,13 +14,17 @@ type TQRReader = {
 
 type TRestoreByCameraProps = {
   turnOffCamera?: boolean
-  onHideHeader: (status: boolean) => void
+  onHideHeader?: (status: boolean) => void
+  redirectTo?: string
+  setPastelId?: (pastelId: string) => void
 }
 
 export default function RestoreByCamera({
   turnOffCamera,
   onHideHeader,
-}: TRestoreByCameraProps): JSX.Element {
+  redirectTo,
+  setPastelId,
+}: TRestoreByCameraProps): JSX.Element | null {
   const [results, setResults] = useState<TQRReader[]>([])
   const [showQrReader, setShowQrReader] = useState(true)
   const [currentStatus, setCurrentStatus] = useState<string>('')
@@ -41,7 +46,7 @@ export default function RestoreByCamera({
           try {
             setShowQrReader(false)
             const finalData = data.map(q => q.qrCode).join('')
-            const result = await doImportPrivKeys(finalData)
+            const result = await doImportPrivKeys(finalData, setPastelId)
             if (result) {
               setCurrentStatus('done')
             } else {
@@ -50,7 +55,9 @@ export default function RestoreByCamera({
           } catch (err) {
             setCurrentStatus('error')
           }
-          onHideHeader(true)
+          if (onHideHeader) {
+            onHideHeader(true)
+          }
         }
       }
     }
@@ -61,6 +68,11 @@ export default function RestoreByCamera({
   }
 
   if (currentStatus === 'done') {
+    if (redirectTo) {
+      history.push(redirectTo)
+      return null
+    }
+
     return <RestoreSuccess />
   }
 

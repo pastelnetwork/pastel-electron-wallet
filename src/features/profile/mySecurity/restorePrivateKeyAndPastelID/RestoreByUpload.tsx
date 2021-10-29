@@ -10,27 +10,34 @@ import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { Video, Refresh } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
+import history from 'common/utils/history'
 
 type TRestoreByUploadProps = {
-  onHideHeader: (status: boolean) => void
+  onHideHeader?: (status: boolean) => void
+  redirectTo?: string
+  setPastelId?: (pastelId: string) => void
 }
 
 export default function RestoreByUpload({
   onHideHeader,
-}: TRestoreByUploadProps): JSX.Element {
+  redirectTo,
+  setPastelId,
+}: TRestoreByUploadProps): JSX.Element | null {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
   const [fileSelected, setFileSelected] = useState<File>()
 
   useEffect(() => {
     const doImport = async () => {
-      const result = await doImportPrivKeys(qrCodeData.join(''))
+      const result = await doImportPrivKeys(qrCodeData.join(''), setPastelId)
       if (result) {
         setCurrentStatus('done')
       } else {
         setCurrentStatus('error')
       }
-      onHideHeader(true)
+      if (onHideHeader) {
+        onHideHeader(true)
+      }
     }
     if (qrCodeData.length) {
       doImport()
@@ -66,16 +73,22 @@ export default function RestoreByUpload({
               setQRCodeData(qrCode)
             } else {
               setCurrentStatus('error')
-              onHideHeader(true)
+              if (onHideHeader) {
+                onHideHeader(true)
+              }
             }
           })
           .catch(() => {
             setCurrentStatus('error')
-            onHideHeader(true)
+            if (onHideHeader) {
+              onHideHeader(true)
+            }
           })
       } catch {
         setCurrentStatus('error')
-        onHideHeader(true)
+        if (onHideHeader) {
+          onHideHeader(true)
+        }
       }
     }
   }
@@ -89,6 +102,11 @@ export default function RestoreByUpload({
   }
 
   if (currentStatus === 'done') {
+    if (redirectTo) {
+      history.push(redirectTo)
+      return null
+    }
+
     return <RestoreSuccess />
   }
 

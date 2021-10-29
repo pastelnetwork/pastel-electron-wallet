@@ -103,7 +103,7 @@ export const useFirstPastelIdWithTxIdAndConfirmed = (
       const item = pastelIds
         .map(id => ({
           pastelId: id.pastelid,
-          ticket: pastelIdsTickets.find(
+          ticket: pastelIdsTickets?.find(
             item => item.ticket.pastelID === id.pastelid,
           ) as TTicket,
         }))
