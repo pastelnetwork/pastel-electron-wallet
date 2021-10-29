@@ -5,7 +5,7 @@ import registerImage from 'common/assets/images/registration-fee-pending.png'
 import * as ROUTES from 'common/utils/constants/routes'
 import Link from 'common/components/Link'
 
-const RegistrationPending = (): JSX.Element => {
+export default function RegistrationPending(): JSX.Element {
   return (
     <div className='mx-20 mt-10 mb-14 flex flex-col items-center'>
       <h1 className='text-32px font-extrabold text-gray-2d'>
@@ -35,5 +35,3 @@ const RegistrationPending = (): JSX.Element => {
     </div>
   )
 }
-
-export default RegistrationPending

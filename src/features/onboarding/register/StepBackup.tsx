@@ -23,7 +23,7 @@ enum BackupMethods {
   QR,
 }
 
-const StepBackupMethod = (): JSX.Element => {
+export default function StepBackupMethod(): JSX.Element {
   const [backupMethod, setBackupMethod] = useState<BackupMethods>(
     BackupMethods.PDF,
   )
@@ -307,5 +307,3 @@ const StepBackupMethod = (): JSX.Element => {
     </div>
   )
 }
-
-export default StepBackupMethod

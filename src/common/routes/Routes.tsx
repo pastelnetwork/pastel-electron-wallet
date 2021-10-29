@@ -38,7 +38,7 @@ const childRoutes = (routes: Array<TRouteType>) =>
     )
   })
 
-const Routes = (): JSX.Element => {
+export default function Routes(): JSX.Element {
   const [db, setDb] = useState<Database>()
   const sqliteFilePath = useAppSelector(state => state.appInfo.sqliteFilePath)
 
@@ -67,5 +67,3 @@ const Routes = (): JSX.Element => {
     </div>
   )
 }
-
-export default Routes

@@ -15,13 +15,13 @@ export type TPrevBtnProps = {
   disabled?: boolean
 }
 
-export const NextButton = ({
+export function NextButton({
   disabled,
   onClick,
   text,
   className,
   showIcon = true,
-}: TNextBtnProps): JSX.Element => {
+}: TNextBtnProps): JSX.Element {
   return (
     <button
       onClick={() => {
@@ -44,10 +44,7 @@ export const NextButton = ({
   )
 }
 
-export const PrevButton = ({
-  disabled,
-  onClick,
-}: TPrevBtnProps): JSX.Element => {
+export function PrevButton({ disabled, onClick }: TPrevBtnProps): JSX.Element {
   return (
     <button
       className={cn(

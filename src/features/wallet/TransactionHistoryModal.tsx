@@ -29,7 +29,7 @@ import { readTransaction } from 'common/utils/TransactionNote'
 
 const BLOCK_CONFIRMED_NUMBER = 6
 
-const TransactionHistoryModal = (): JSX.Element => {
+export default function TransactionHistoryModal(): JSX.Element {
   const {
     setTransactionHistoryModalOpen: setIsOpen,
     addressBook: { addressBook },
@@ -491,5 +491,3 @@ const TransactionHistoryModal = (): JSX.Element => {
     </TitleModal>
   )
 }
-
-export default TransactionHistoryModal

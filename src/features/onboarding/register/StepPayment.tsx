@@ -7,7 +7,7 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import { PaymentMethods, useRegisterStore } from './Register.store'
 import shallow from 'zustand/shallow'
 
-const StepPaymentMethod = (): JSX.Element => {
+export default function StepPaymentMethod(): JSX.Element {
   const store = useRegisterStore(
     state => ({
       paymentMethod: state.paymentMethod,
@@ -116,5 +116,3 @@ const StepPaymentMethod = (): JSX.Element => {
     </div>
   )
 }
-
-export default StepPaymentMethod

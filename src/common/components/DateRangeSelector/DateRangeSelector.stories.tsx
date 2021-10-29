@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 import DateRangeSelector, { TDateRangeProp } from './index'
 
-export const DateRangeSelectorDefault: Story<TDateRangeProp> = () => {
+const DateRangeSelectorDefault: Story<TDateRangeProp> = () => {
   const [dates, setDates] = useState<TDateRangeProp>()
 
   const onSelectDateRange = (dates: TDateRangeProp) => {
@@ -19,6 +19,8 @@ export const DateRangeSelectorDefault: Story<TDateRangeProp> = () => {
     </div>
   )
 }
+
+export const SimpleCheckbox = DateRangeSelectorDefault.bind({})
 
 export default {
   component: DateRangeSelector,

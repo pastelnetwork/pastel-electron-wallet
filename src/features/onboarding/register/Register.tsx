@@ -66,7 +66,7 @@ const STEPS = [
   },
 ]
 
-const RegisterContent = () => {
+function RegisterContent() {
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
 

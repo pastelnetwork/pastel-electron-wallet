@@ -81,12 +81,12 @@ const DateRangeSelectorContent = ({
   )
 }
 
-const DateRangeSelector = ({
+export default function DateRangeSelector({
   value,
   onSelect,
   showFooter = false,
   defaultSelected = false,
-}: DateRangeSelectorProp): JSX.Element => {
+}: DateRangeSelectorProp): JSX.Element {
   const [startDate, setStartDate] = React.useState<Date>(
     value?.start || new Date(),
   )
@@ -251,5 +251,3 @@ const DateRangeSelector = ({
     </div>
   )
 }
-
-export default DateRangeSelector

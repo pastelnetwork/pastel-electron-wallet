@@ -20,7 +20,7 @@ function validateUserName(val: string): boolean {
   return validationRe.test(val)
 }
 
-const StepRegister = (): JSX.Element => {
+export default function StepRegister(): JSX.Element {
   const store = useRegisterStore(
     state => ({
       username: state.username,
@@ -178,5 +178,3 @@ const StepRegister = (): JSX.Element => {
     </div>
   )
 }
-
-export default StepRegister

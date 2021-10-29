@@ -19,7 +19,7 @@ import shallow from 'zustand/shallow'
 import { walletRPC } from 'api/pastel-rpc'
 import { formatNumber } from 'common/utils/format'
 
-const StepFee = (): JSX.Element => {
+export default function StepFee(): JSX.Element {
   const currencyName = useCurrencyName()
   const [copying, setCopying] = useState<boolean>(false)
   const [isSuccess, setSuccess] = useState<boolean>(false)
@@ -270,5 +270,3 @@ const StepFee = (): JSX.Element => {
     </div>
   )
 }
-
-export default StepFee
