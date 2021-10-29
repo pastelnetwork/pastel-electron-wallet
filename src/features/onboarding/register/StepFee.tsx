@@ -118,7 +118,7 @@ export default function StepFee(): JSX.Element {
 
       try {
         store.createPastelIdQuery.mutate({
-          password: `${store.password}${store.username}`,
+          password: `${store.password.toString()}${store.username.toString()}`,
           address: store.exchangeAddress,
         })
       } catch (error) {
