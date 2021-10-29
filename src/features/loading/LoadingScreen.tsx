@@ -49,8 +49,16 @@ export default function LoadingScreen({
   )
 }
 
-const LoadingMessage = ({ customMessage }: { customMessage?: string }) => {
+function LoadingMessage({ customMessage }: { customMessage?: string }) {
   const message = useLoadingMessage()
 
   return <span>{customMessage || message}</span>
+}
+
+LoadingScreen.defaultProps = {
+  message: '',
+}
+
+LoadingMessage.defaultProps = {
+  customMessage: '',
 }

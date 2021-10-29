@@ -22,11 +22,11 @@ const schema = yup.object({
 
 type TSchema = ReturnType<typeof schema.validateSync>
 
-const Login = ({
+export default function Login({
   pastelId,
 }: {
   pastelId?: TPastelIdWithTxIdAndConfirmed
-}): JSX.Element => {
+}): JSX.Element {
   const [errorMessage, setErrorMessage] = useState('')
   const form = useForm<TSchema>({
     resolver: yupResolver(schema),
@@ -104,4 +104,6 @@ const Login = ({
   )
 }
 
-export default Login
+Login.defaultProps = {
+  pastelId: undefined,
+}

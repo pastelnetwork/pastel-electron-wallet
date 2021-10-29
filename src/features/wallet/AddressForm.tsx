@@ -25,15 +25,15 @@ type TAddressFormProps = {
   endLength?: number
 }
 
-export const AddressForm = ({
+export function AddressForm({
   address,
-  copyable = true,
-  hidable = false,
-  hidePromoCodeEmpty = false,
+  copyable,
+  hidable,
+  hidePromoCodeEmpty,
   className,
-  startLength = 24,
-  endLength = -6,
-}: TAddressFormProps): JSX.Element => {
+  startLength,
+  endLength,
+}: TAddressFormProps): JSX.Element {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
   const [copyStatus, setCopyStatus] = useState<boolean>(false)
@@ -249,4 +249,12 @@ export const AddressForm = ({
       )}
     </div>
   )
+}
+
+AddressForm.defaultProps = {
+  copyable: true,
+  hidable: false,
+  hidePromoCodeEmpty: false,
+  startLength: 24,
+  endLength: -6,
 }

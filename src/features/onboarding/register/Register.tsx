@@ -237,3 +237,7 @@ export default function Register({
     </RegisterStoreProvider>
   )
 }
+
+Register.defaultProps = {
+  fetchedPastelId: undefined,
+}
