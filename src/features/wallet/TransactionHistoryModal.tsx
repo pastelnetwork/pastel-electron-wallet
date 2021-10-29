@@ -380,7 +380,9 @@ export default function TransactionHistoryModal(): JSX.Element {
       </div>
       <div className='w-[208px]'>
         <Select
-          label={<img src={addressbookIcon} className='mr-2' />}
+          label={
+            <img src={addressbookIcon} className='mr-2' alt='Source address' />
+          }
           className='text-gray-2d w-full'
           selected={sourceAddress}
           options={sourceAddresses}
@@ -399,7 +401,7 @@ export default function TransactionHistoryModal(): JSX.Element {
       </div>
       <div className='w-[208px]'>
         <Select
-          label={<img src={user2Icon} className='mr-2' />}
+          label={<img src={user2Icon} className='mr-2' alt='Recipients' />}
           className='text-gray-2d w-full'
           selected={recipientAddress}
           options={recipients}
