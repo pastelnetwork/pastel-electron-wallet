@@ -120,6 +120,7 @@ export default function StepFee(): JSX.Element {
         store.createPastelIdQuery.mutate({
           password: `${store.password.toString()}${store.username.toString()}`,
           address: store.exchangeAddress,
+          username: store.username,
         })
       } catch (error) {
         toast.error(error.message)
