@@ -7,11 +7,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 import RestoreByUpload from '../../profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByUpload'
 import RestoreByCamera from '../../profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByCamera'
 import RestoreByPdf from '../../profile/mySecurity/restorePrivateKeyAndPastelID/RestoreByPdf'
-import {
-  useRegisterStore,
-  RegisterStoreProvider,
-} from '../register/Register.store'
-import { useInitializeRegister } from '../register/Register.service'
+import { useRegisterStore } from '../register/Register.store'
 
 enum Tabs {
   selectPDF,
@@ -25,18 +21,22 @@ const tabs = [
   { label: 'QR Code Video' },
 ]
 
-function PasswordRecoveryContent(): JSX.Element {
+export default function PasswordRecovery(): JSX.Element {
   const store = useRegisterStore(
     state => ({
       setPastelId: state.setPastelId,
     }),
     shallow,
   )
-
+  const [turnOffCamera, setTurnOffCamera] = useState(false)
   const [tab, setTab] = useState(Tabs.selectPDF)
 
   const onTabToggle = (index: number) => {
+    setTurnOffCamera(false)
     setTab(index)
+    if (index !== Tabs.scanQRCodeVideo) {
+      setTurnOffCamera(true)
+    }
   }
 
   return (
@@ -68,6 +68,7 @@ function PasswordRecoveryContent(): JSX.Element {
           <RestoreByCamera
             redirectTo={ROUTES.NEW_PASSWORD}
             setPastelId={store.setPastelId}
+            turnOffCamera={turnOffCamera}
           />
         </div>
       )}
@@ -80,14 +81,5 @@ function PasswordRecoveryContent(): JSX.Element {
         </div>
       )}
     </div>
-  )
-}
-
-export default function PasswordRecovery(): JSX.Element {
-  const store = useInitializeRegister({})
-  return (
-    <RegisterStoreProvider createStore={() => store}>
-      <PasswordRecoveryContent />
-    </RegisterStoreProvider>
   )
 }

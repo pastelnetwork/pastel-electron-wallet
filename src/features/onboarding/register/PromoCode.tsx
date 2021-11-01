@@ -79,6 +79,7 @@ export default function PromoCode(): JSX.Element {
       store.createPastelIdQuery.mutate({
         password: `${store.password}${store.username}`,
         address: promoCode.address,
+        username: store.username,
       })
     } else {
       promoCodeQuery.mutate(

@@ -149,6 +149,10 @@ export default function StepBackupMethod(): JSX.Element {
     }
   }
 
+  const handleNext = () => {
+    finish()
+  }
+
   return (
     <div className='pt-16 flex flex-col h-full'>
       <div>
@@ -261,16 +265,29 @@ export default function StepBackupMethod(): JSX.Element {
 
                   {qrcodeData.length ? (
                     <div className='absolute bottom-3 right-3 z-50'>
-                      <button
-                        className={cn(
-                          'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
-                          currentStatus === 'downloading' &&
-                            'bg-blue-9b cursor-not-allowed',
-                        )}
-                        onClick={handleDownloadVideo}
+                      <Tooltip
+                        type='bottom'
+                        width={98}
+                        content={
+                          currentStatus === 'downloading'
+                            ? 'Downloading QR Code Video'
+                            : 'Download QR Code Video'
+                        }
+                        vPosPercent={120}
+                        classnames='font-extrabold py-2'
                       >
-                        <DownloadArrow size={24} className='text-blue-3f' />
-                      </button>
+                        <button
+                          className={cn(
+                            'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
+                            currentStatus === 'downloading' &&
+                              'bg-blue-9b cursor-not-allowed opacity-30',
+                          )}
+                          onClick={handleDownloadVideo}
+                          disabled={currentStatus === 'downloading'}
+                        >
+                          <DownloadArrow size={24} className='text-blue-3f' />
+                        </button>
+                      </Tooltip>
                     </div>
                   ) : null}
                 </div>
@@ -281,7 +298,7 @@ export default function StepBackupMethod(): JSX.Element {
       )}
       <div className='mt-7 flex justify-end'>
         <NextButton
-          onClick={finish}
+          onClick={handleNext}
           text='Finish'
           disabled={!nextActive}
           className='min-w-[120px]'

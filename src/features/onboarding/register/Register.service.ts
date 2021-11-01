@@ -50,8 +50,8 @@ const useCheckPastelIdConfirmationsInterval = ({
 }
 
 const useCreatePastelId = (): TCreatePastelIdQuery => {
-  return useMutation(async ({ password, address }) =>
-    createNewPastelID(password, address),
+  return useMutation(async ({ password, address, username }) =>
+    createNewPastelID(password, address, username),
   )
 }
 

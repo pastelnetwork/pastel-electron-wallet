@@ -13,6 +13,7 @@ import {
 } from './index'
 import { useFirstPastelIdWithTxIdAndConfirmed } from '../../api/pastel-rpc'
 import history from '../../common/utils/history'
+import OnboardingStoreProvider from './OnboardingStoreProvider'
 
 export default function OnboardingRouter(): JSX.Element {
   const {
@@ -26,7 +27,6 @@ export default function OnboardingRouter(): JSX.Element {
       }
     },
   })
-
   if (isLoading) {
     return <LoadingScreen message='Loading...' />
   }
@@ -37,26 +37,28 @@ export default function OnboardingRouter(): JSX.Element {
 
   return (
     <OnboardingLayout>
-      <Switch>
-        <Route exact path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
-        <Route exact path={ROUTES.SIGN_UP}>
-          <RegisterPage fetchedPastelId={fetchedPastelId} />
-        </Route>
-        <Route exact path={ROUTES.LOGIN}>
-          <LoginPage pastelId={fetchedPastelId} />
-        </Route>
-        <Route
-          exact
-          path={ROUTES.PASSWORD_RECOVERY}
-          component={PasswordRecoveryPage}
-        />
-        <Route
-          exact
-          path={ROUTES.REGISTER_SUCCESSFUL}
-          component={RegistrationSuccessful}
-        />
-        <Route exact path={ROUTES.NEW_PASSWORD} component={NewPassword} />
-      </Switch>
+      <OnboardingStoreProvider fetchedPastelId={fetchedPastelId}>
+        <Switch>
+          <Route exact path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
+          <Route exact path={ROUTES.NEW_PASSWORD} component={NewPassword} />
+          <Route
+            exact
+            path={ROUTES.PASSWORD_RECOVERY}
+            component={PasswordRecoveryPage}
+          />
+          <Route exact path={ROUTES.SIGN_UP}>
+            <RegisterPage />
+          </Route>
+          <Route exact path={ROUTES.LOGIN}>
+            <LoginPage pastelId={fetchedPastelId} />
+          </Route>
+          <Route
+            exact
+            path={ROUTES.REGISTER_SUCCESSFUL}
+            component={RegistrationSuccessful}
+          />
+        </Switch>
+      </OnboardingStoreProvider>
     </OnboardingLayout>
   )
 }

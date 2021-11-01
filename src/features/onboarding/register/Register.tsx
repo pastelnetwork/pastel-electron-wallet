@@ -13,12 +13,7 @@ import {
   LongArrow,
 } from 'common/components/Icons'
 import CircleSteper from 'common/components/CircleSteper'
-import {
-  RegisterStoreProvider,
-  Steps,
-  stepsCount,
-  useRegisterStore,
-} from './Register.store'
+import { Steps, stepsCount, useRegisterStore } from './Register.store'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import styles from './Register.module.css'
@@ -28,8 +23,6 @@ import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
 import RegistrationPending from './RegistrationPending'
-import { useInitializeRegister } from './Register.service'
-import { TPastelIdWithTxIdAndConfirmed } from '../../../api/pastel-rpc'
 
 const STEPS = [
   {
@@ -66,7 +59,7 @@ const STEPS = [
   },
 ]
 
-function RegisterContent() {
+export default function Register(): JSX.Element {
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
 
@@ -222,22 +215,4 @@ function RegisterContent() {
       )}
     </>
   )
-}
-
-export default function Register({
-  fetchedPastelId,
-}: {
-  fetchedPastelId?: TPastelIdWithTxIdAndConfirmed
-}): JSX.Element {
-  const store = useInitializeRegister({ fetchedPastelId })
-
-  return (
-    <RegisterStoreProvider createStore={() => store}>
-      <RegisterContent />
-    </RegisterStoreProvider>
-  )
-}
-
-Register.defaultProps = {
-  fetchedPastelId: undefined,
 }

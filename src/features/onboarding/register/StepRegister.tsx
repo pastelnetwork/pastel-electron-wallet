@@ -13,8 +13,8 @@ import Link from 'common/components/Link'
 import InputPassword from 'common/components/Inputs/InputPassword'
 import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
-import { readUsersInfo } from 'common/utils/User'
 import { useRegisterStore } from './Register.store'
+import { checkPastelIdUsername } from 'api/pastel-rpc'
 
 function validateUserName(val: string): boolean {
   const validationRe = /^[0-9a-z_]{3,}$/i
@@ -88,14 +88,13 @@ export default function StepRegister(): JSX.Element {
   const hanleNextStep = async () => {
     setErrorMsg('')
     setUsernameInvalid(false)
-    const users = await readUsersInfo()
-    const user = users.find(u => u.username === store.username)
-    if (user) {
-      setErrorMsg('Username already exists.')
+    const validation = await checkPastelIdUsername({ username: store.username })
+    if (validation.isBad) {
+      setErrorMsg(validation.validationError)
       setUsernameInvalid(true)
-    } else {
-      store.goToNextStep()
+      return
     }
+    store.goToNextStep()
   }
 
   const renderPasswordInput = () => (

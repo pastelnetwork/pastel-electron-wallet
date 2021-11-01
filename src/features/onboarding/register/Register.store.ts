@@ -65,6 +65,7 @@ export type TCreatePastelIdQuery = UseMutationResult<
   {
     password: string
     address: string
+    username: string
   }
 >
 

@@ -5,6 +5,7 @@ import {
   TCreateNewPastelIdResponse,
   TGetPastelIdsResponse,
   TTicketsRegisterIdResponse,
+  TValidateUsername,
 } from '../../types/rpc'
 import { rpc } from './rpc'
 import {
@@ -22,6 +23,7 @@ export const PASTELID_MIN_CONFIRMATIONS = 1
 export async function createNewPastelID(
   passphrase: string,
   address: string,
+  username?: string,
 ): Promise<TRegisterPastelID> {
   try {
     const resp = await rpc<TCreateNewPastelIdResponse>('pastelid', [
@@ -35,9 +37,28 @@ export async function createNewPastelID(
       passphrase,
       address,
     ])
+    let resRU: TTicketsRegisterIdResponse = {
+      error: {
+        message: '',
+      },
+      result: {
+        txid: '',
+      },
+      id: '',
+    }
+    if (username) {
+      resRU = await rpc<TTicketsRegisterIdResponse>('tickets', [
+        'register',
+        'username',
+        username,
+        resp.result.pastelid,
+        passphrase,
+      ])
+    }
     const res: TRegisterPastelID = {
       pastelid: resp.result.pastelid,
       txid: resRP.result.txid,
+      uTxid: resRU?.result.txid,
     }
     return res
   } catch (error) {
@@ -146,4 +167,14 @@ export function useVerifyPastelIdPassword(
   options?: UseMutationOptions<unknown, Error, TVerifyPastelIdPasswordParams>,
 ): UseMutationResult<unknown, Error, TVerifyPastelIdPasswordParams> {
   return useMutation(params => verifyPastelIdPassword(params), options)
+}
+
+export async function checkPastelIdUsername({
+  username,
+}: {
+  username: string
+}): Promise<TValidateUsername> {
+  return await rpc('tickets', ['tools', 'validateusername', username], {
+    throw: true,
+  })
 }
