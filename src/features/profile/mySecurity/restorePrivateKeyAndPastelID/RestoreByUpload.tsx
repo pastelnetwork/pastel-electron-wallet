@@ -10,18 +10,17 @@ import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { Video, Refresh } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
-import history from 'common/utils/history'
 
 type TRestoreByUploadProps = {
   onHideHeader?: (status: boolean) => void
-  redirectTo?: string
   setPastelId?: (pastelId: string) => void
+  callback?: () => void
 }
 
 export default function RestoreByUpload({
   onHideHeader,
-  redirectTo,
   setPastelId,
+  callback,
 }: TRestoreByUploadProps): JSX.Element | null {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
@@ -102,8 +101,8 @@ export default function RestoreByUpload({
   }
 
   if (currentStatus === 'done') {
-    if (redirectTo) {
-      history.push(redirectTo)
+    if (callback) {
+      callback()
       return null
     }
 

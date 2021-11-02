@@ -96,9 +96,10 @@ export default function NewPassword(): JSX.Element {
           <div className='text-text-77 text-h3'>
             Your password has been reset successfully.
           </div>
-          <div className='mt-3'>
+          <div className='mt-6'>
             <Link className='text-link' to={ROUTES.LOGIN}>
               Login
+              <Button className='w-full'>Login</Button>
             </Link>
           </div>
         </div>

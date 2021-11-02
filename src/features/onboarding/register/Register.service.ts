@@ -98,6 +98,15 @@ export const useInitializeRegister = ({
           ],
           true,
         )
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
         walletNodeApi.userData
           .create({
             artist_pastelid: createPastelIdQuery.data.pastelid,

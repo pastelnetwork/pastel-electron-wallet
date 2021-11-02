@@ -47,7 +47,9 @@ const OnboardingWelcome = (): JSX.Element => {
       </div>
       <div className='mt-4 text-center text-base font-normal text-gray-a0'>
         Already have an account?{' '}
-        <Link to={ROUTES.LOGIN}>Restore account from backup</Link>
+        <Link to={`${ROUTES.PASSWORD_RECOVERY}?isRestore=true`}>
+          Restore account from backup
+        </Link>
       </div>
     </div>
   )

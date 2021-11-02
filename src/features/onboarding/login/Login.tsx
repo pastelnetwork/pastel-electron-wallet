@@ -15,7 +15,7 @@ import {
   getPastelIdWithTxIdAndConfirmed,
 } from '../../../api/pastel-rpc'
 import history from 'common/utils/history'
-import { readUsersInfo } from 'common/utils/User'
+import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
 
 const schema = yup.object({
   username: yup.string().required(),
@@ -32,6 +32,7 @@ export default function Login(): JSX.Element {
 
   const verifyPassword = useVerifyPastelIdPassword({
     onSuccess() {
+      setAutoSignIn()
       history.push(ROUTES.DASHBOARD)
     },
   })

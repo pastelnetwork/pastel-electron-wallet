@@ -9,18 +9,17 @@ import { doImportPrivKeys } from '../common/utils'
 import { Refresh, PDF } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
-import history from 'common/utils/history'
 
 type TRestoreByPdfProps = {
   onHideHeader?: (status: boolean) => void
-  redirectTo?: string
   setPastelId?: (pastelId: string) => void
+  callback?: () => void
 }
 
 export default function RestoreByPdf({
   onHideHeader,
-  redirectTo,
   setPastelId,
+  callback,
 }: TRestoreByPdfProps): JSX.Element | null {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [fileSelected, setFileSelected] = useState<File>()
@@ -67,8 +66,8 @@ export default function RestoreByPdf({
   }
 
   if (currentStatus === 'done') {
-    if (redirectTo) {
-      history.push(redirectTo)
+    if (callback) {
+      callback()
       return null
     }
 

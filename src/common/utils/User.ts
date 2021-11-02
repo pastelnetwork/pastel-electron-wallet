@@ -70,3 +70,11 @@ export const writeUsersInfo = async (
     }
   }
 }
+
+export const setAutoSignIn = (): void => {
+  localStorage.setItem('pastelAutoSignIn', 'true')
+}
+
+export const getAutoSignIn = (): boolean => {
+  return localStorage.getItem('pastelAutoSignIn') === 'true'
+}

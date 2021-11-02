@@ -4,7 +4,6 @@ import QrReader from 'react-qr-reader'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
-import history from 'common/utils/history'
 
 type TQRReader = {
   index: number
@@ -15,15 +14,15 @@ type TQRReader = {
 type TRestoreByCameraProps = {
   turnOffCamera?: boolean
   onHideHeader?: (status: boolean) => void
-  redirectTo?: string
   setPastelId?: (pastelId: string) => void
+  callback?: () => void
 }
 
 export default function RestoreByCamera({
   turnOffCamera,
   onHideHeader,
-  redirectTo,
   setPastelId,
+  callback,
 }: TRestoreByCameraProps): JSX.Element | null {
   const [results, setResults] = useState<TQRReader[]>([])
   const [showQrReader, setShowQrReader] = useState(true)
@@ -68,8 +67,8 @@ export default function RestoreByCamera({
   }
 
   if (currentStatus === 'done') {
-    if (redirectTo) {
-      history.push(redirectTo)
+    if (callback) {
+      callback()
       return null
     }
 

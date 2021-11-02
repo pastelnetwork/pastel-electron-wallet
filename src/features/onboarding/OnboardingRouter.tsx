@@ -14,6 +14,7 @@ import {
 import { useFirstPastelIdWithTxIdAndConfirmed } from '../../api/pastel-rpc'
 import history from '../../common/utils/history'
 import OnboardingStoreProvider from './OnboardingStoreProvider'
+import { getAutoSignIn } from 'common/utils/User'
 
 export default function OnboardingRouter(): JSX.Element {
   const {
@@ -22,6 +23,10 @@ export default function OnboardingRouter(): JSX.Element {
     error,
   } = useFirstPastelIdWithTxIdAndConfirmed({
     onSuccess(pastelId) {
+      const autoSignIn = getAutoSignIn()
+      if (autoSignIn) {
+        history.push(ROUTES.DASHBOARD)
+      }
       if (history.location.pathname === ROUTES.ONBOARDING) {
         history.push(pastelId?.isConfirmed ? ROUTES.LOGIN : ROUTES.WELCOME_PAGE)
       }
