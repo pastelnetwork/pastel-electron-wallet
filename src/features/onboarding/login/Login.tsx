@@ -10,10 +10,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import {
-  useVerifyPastelIdPassword,
-  getPastelIdWithTxIdAndConfirmed,
-} from '../../../api/pastel-rpc'
+import { useVerifyPastelIdPassword } from '../../../api/pastel-rpc'
 import history from 'common/utils/history'
 import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
 
@@ -39,21 +36,13 @@ export default function Login(): JSX.Element {
 
   const onSubmit = async () => {
     setErrorMessage('')
-    const pastel = await getPastelIdWithTxIdAndConfirmed()
-    if (!pastel?.pastelid) {
-      setErrorMessage('Account does not exist')
-      return
-    }
     const { password, username } = form.getValues()
     const users = await readUsersInfo()
     const user = users.find(
-      u => u.pastelId === pastel.pastelid && u.newPassword === md5(password),
+      u => u.username === username && u.newPassword === md5(password),
     )
     if (user) {
-      verifyPassword.mutate({
-        pastelId: pastel.pastelid,
-        password: `${user.password}${username}`,
-      })
+      history.push(ROUTES.DASHBOARD)
     } else {
       setErrorMessage('Username or password is incorrect')
     }
