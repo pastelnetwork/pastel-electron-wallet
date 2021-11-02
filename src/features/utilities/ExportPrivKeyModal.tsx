@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import cn from 'classnames'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
 import { closeExportPrivKeyModal } from './index'
 import { walletRPC } from 'api/pastel-rpc'
-
-import styles from './ExportPrivKeyModal.module.css'
 
 export default function ExportPrivKeyModal(): JSX.Element | null {
   const dispatch = useAppDispatch()
@@ -40,7 +37,7 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
       classNames='max-w-[700px]'
       title='Your Wallet Private Keys'
     >
-      <div className='pr-8'>
+      <div className='pr-8 pb-2'>
         <div className='mt-6'>
           These are all the private keys in your wallet. Please store them
           carefully!
@@ -48,10 +45,9 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
         <div className='mt-3'>
           <textarea
             placeholder='Private Keys'
-            className={cn(
-              'w-full rounded shadow-2px py-2 px-4 outline-none h-full resize-none text-base text-gray-4a font-normal leading-6 bg-gray-100',
-              styles.exportedPrivKeys,
-            )}
+            className={
+              'w-full rounded shadow-2px py-2 px-4 outline-none h-full resize-none text-base text-gray-4a font-normal leading-6 bg-gray-100 min-h-[140px]'
+            }
             value={exportedPrivKeys.join('\n')}
             onChange={e => setExportedPrivKeys([e.target.value])}
             readOnly
