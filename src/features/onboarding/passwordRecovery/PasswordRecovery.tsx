@@ -140,7 +140,7 @@ export default function PasswordRecovery(): JSX.Element {
       )}
       {users.length || isSuccess ? (
         <div className='mt-9'>
-          <Link to={ROUTES.LOGIN} c>
+          <Link to={ROUTES.LOGIN}>
             <Button
               variant='transparent'
               className='w-full bg-white border border-link text-link font-medium text-base'
