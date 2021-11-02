@@ -72,6 +72,15 @@ export default function PasswordRecovery(): JSX.Element {
   const handleRedirect = async () => {
     if (isRestore) {
       getUsers()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
       setSuccess(true)
     } else {
       history.push(ROUTES.NEW_PASSWORD)
