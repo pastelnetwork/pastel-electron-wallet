@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from 'react'
 import shallow from 'zustand/shallow'
+import md5 from 'md5'
 
 import { InputPassword, Input } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
@@ -12,7 +13,6 @@ import * as ROUTES from 'common/utils/constants/routes'
 import { calcPasswordStrength, randomPassword } from 'common/utils/passwords'
 import { readUsersInfo, writeUsersInfo } from 'common/utils/User'
 import { useRegisterStore } from '../register/Register.store'
-import { encode } from 'common/utils/encryption'
 
 interface NewPasswordFormInput {
   value: string
@@ -81,7 +81,7 @@ export default function NewPassword(): JSX.Element {
     const uers = await readUsersInfo()
     const user = uers.find(u => u.pastelId === store.pastelId)
     if (user) {
-      user.newPassword = encode(newPassword.value)
+      user.newPassword = md5(newPassword.value)
       await writeUsersInfo([user], true)
       setSuccess(true)
     }

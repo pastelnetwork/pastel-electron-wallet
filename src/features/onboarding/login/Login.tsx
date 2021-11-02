@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import md5 from 'md5'
 
 import Input from 'common/components/Form/Input'
 import { Button } from 'common/components/Buttons'
@@ -10,12 +11,11 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import {
-  TPastelIdWithTxIdAndConfirmed,
   useVerifyPastelIdPassword,
+  getPastelIdWithTxIdAndConfirmed,
 } from '../../../api/pastel-rpc'
 import history from 'common/utils/history'
 import { readUsersInfo } from 'common/utils/User'
-import { decode } from 'common/utils/encryption'
 
 const schema = yup.object({
   username: yup.string().required(),
@@ -24,11 +24,7 @@ const schema = yup.object({
 
 type TSchema = ReturnType<typeof schema.validateSync>
 
-export default function Login({
-  pastelId,
-}: {
-  pastelId?: TPastelIdWithTxIdAndConfirmed
-}): JSX.Element {
+export default function Login(): JSX.Element {
   const [errorMessage, setErrorMessage] = useState('')
   const form = useForm<TSchema>({
     resolver: yupResolver(schema),
@@ -42,24 +38,27 @@ export default function Login({
 
   const onSubmit = async () => {
     setErrorMessage('')
-    if (!pastelId) {
+    const pastel = await getPastelIdWithTxIdAndConfirmed()
+    if (!pastel?.pastelid) {
       setErrorMessage('Account does not exist')
       return
     }
     const { password, username } = form.getValues()
     const users = await readUsersInfo()
     const user = users.find(
-      u => u.pastelId === pastelId.pastelid && u.newPassword === password,
+      u => u.pastelId === pastel.pastelid && u.newPassword === md5(password),
     )
     if (user) {
       verifyPassword.mutate({
-        pastelId: pastelId.pastelid,
-        password: `${decode(user.password)}${username}`,
+        pastelId: pastel.pastelid,
+        password: `${user.password}${username}`,
       })
     } else {
-      setErrorMessage('Account does not exist')
+      setErrorMessage('Username or password is incorrect')
     }
   }
+
+  const isLoading = status === 'loading' || verifyPassword.isLoading
 
   return (
     <div className='w-[398px] my-9 mx-60px'>
@@ -99,7 +98,7 @@ export default function Login({
             Restore access now
           </Link>
         </div>
-        <Button className='w-full' type='submit'>
+        <Button className='w-full' type='submit' disabled={isLoading}>
           Login
         </Button>
       </form>

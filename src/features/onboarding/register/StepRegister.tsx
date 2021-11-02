@@ -120,7 +120,8 @@ export default function StepRegister(): JSX.Element {
     />
   )
 
-  const handleOpenPrivacyPolicy = () => {
+  const handleOpenPrivacyPolicy = (e: MouseEvent) => {
+    e.stopPropagation()
     shell.openExternal('https://pastel.network/privacy-policy/')
   }
 

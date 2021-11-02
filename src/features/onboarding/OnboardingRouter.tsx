@@ -50,7 +50,7 @@ export default function OnboardingRouter(): JSX.Element {
             <RegisterPage />
           </Route>
           <Route exact path={ROUTES.LOGIN}>
-            <LoginPage pastelId={fetchedPastelId} />
+            <LoginPage />
           </Route>
           <Route
             exact

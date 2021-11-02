@@ -18,6 +18,30 @@ import {
 import { UseQueryOptions } from 'react-query/types/react/types'
 import { transactionRPC } from './transaction'
 
+type TVerifyPastelIdPasswordParams = {
+  pastelId: string
+  password: string
+}
+
+type TVerifyPastelIdPasswordResponse = {
+  signature: string
+}
+
+export type TTicket = {
+  height: number
+  txid: string
+  ticket: {
+    address: string
+    id_type: string
+    pastelID: string
+    pg_key: string
+    signature: string
+    timeStamp: string
+    type: string
+    version: number
+  }
+}
+
 export const PASTELID_MIN_CONFIRMATIONS = 1
 
 export async function createNewPastelID(
@@ -86,21 +110,6 @@ export async function getPastelIDs(): Promise<TPastelID[]> {
   }
 }
 
-export type TTicket = {
-  height: number
-  txid: string
-  ticket: {
-    address: string
-    id_type: string
-    pastelID: string
-    pg_key: string
-    signature: string
-    timeStamp: string
-    type: string
-    version: number
-  }
-}
-
 export async function getPastelIdTickets(): Promise<TTicket[]> {
   return await rpc('tickets', ['list', 'id'], { throw: true })
 }
@@ -145,15 +154,6 @@ export const useFirstPastelIdWithTxIdAndConfirmed = (
   )
 }
 
-type TVerifyPastelIdPasswordParams = {
-  pastelId: string
-  password: string
-}
-
-type TVerifyPastelIdPasswordResponse = {
-  signature: string
-}
-
 export async function verifyPastelIdPassword({
   pastelId,
   password,
@@ -177,4 +177,32 @@ export async function checkPastelIdUsername({
   return await rpc('tickets', ['tools', 'validateusername', username], {
     throw: true,
   })
+}
+
+export async function getPastelIdWithTxIdAndConfirmed(): Promise<
+  TPastelIdWithTxIdAndConfirmed | undefined
+> {
+  const [pastelIds, pastelIdsTickets] = await Promise.all([
+    getPastelIDs(),
+    getPastelIdTickets(),
+  ])
+  const item = pastelIds
+    .map(id => ({
+      pastelId: id.pastelid,
+      ticket: pastelIdsTickets?.find(
+        item => item.ticket.pastelID === id.pastelid,
+      ) as TTicket,
+    }))
+    .find(item => item.ticket)
+
+  const tx = item && (await transactionRPC.getTransaction(item.ticket.txid))
+  if (!item || !tx) {
+    return
+  }
+
+  return {
+    pastelid: item.pastelId,
+    txid: item.ticket.txid,
+    isConfirmed: tx.confirmations >= PASTELID_MIN_CONFIRMATIONS,
+  }
 }

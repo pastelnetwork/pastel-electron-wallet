@@ -1,4 +1,7 @@
 import React, { FormEvent, useState } from 'react'
+import { useMutation, UseMutationResult } from 'react-query'
+import md5 from 'md5'
+
 import { Input } from 'common/components/Inputs'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatNumber } from 'common/utils/format'
@@ -11,7 +14,6 @@ import {
   targetBalance,
   PaymentMethods,
 } from './Register.store'
-import { useMutation, UseMutationResult } from 'react-query'
 
 type TPromoCode = {
   address: string
@@ -77,7 +79,7 @@ export default function PromoCode(): JSX.Element {
     const promoCode = promoCodeQuery.data
     if (promoCode) {
       store.createPastelIdQuery.mutate({
-        password: `${store.password}${store.username}`,
+        password: `${md5(store.password)}${store.username}`,
         address: promoCode.address,
         username: store.username,
       })

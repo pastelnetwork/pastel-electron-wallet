@@ -1,6 +1,9 @@
 import React, { useState, FormEvent, useEffect } from 'react'
 import cn from 'classnames'
 import { toast } from 'react-toastify'
+import shallow from 'zustand/shallow'
+import md5 from 'md5'
+
 import { PrevButton, NextButton } from './Buttons'
 import Radio from 'common/components/Radio/Radio'
 import { Input } from 'common/components/Inputs'
@@ -15,7 +18,6 @@ import {
   useRegisterStore,
   targetBalance,
 } from './Register.store'
-import shallow from 'zustand/shallow'
 import { walletRPC } from 'api/pastel-rpc'
 import { formatNumber } from 'common/utils/format'
 
@@ -118,7 +120,7 @@ export default function StepFee(): JSX.Element {
 
       try {
         store.createPastelIdQuery.mutate({
-          password: `${store.password.toString()}${store.username.toString()}`,
+          password: `${md5(store.password)}${store.username.toString()}`,
           address: store.exchangeAddress,
           username: store.username,
         })
