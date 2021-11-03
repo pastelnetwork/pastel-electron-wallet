@@ -89,7 +89,7 @@ export default function PasswordRecovery(): JSX.Element {
 
   return (
     <div className='mx-60px my-11 w-517px'>
-      <CloseButton gotoUrl={ROUTES.LOGIN} />
+      <CloseButton gotoUrl={isRestore ? ROUTES.WELCOME_PAGE : ROUTES.LOGIN} />
       <div className='font-extrabold text-gray-2d text-h1-heavy'>
         {isRestore ? 'Restore account from backup' : 'Password Recovery'}
       </div>
@@ -138,16 +138,18 @@ export default function PasswordRecovery(): JSX.Element {
           <RestoreSuccess />
         </div>
       )}
-      {users.length || isSuccess ? (
+      {isRestore && isSuccess ? (
         <div className='mt-9'>
           <Link to={ROUTES.LOGIN}>
-            <Button
-              variant='transparent'
-              className='w-full bg-white border border-link text-link font-medium text-base'
-            >
-              {!isRestore ? 'Or try to Login again' : 'Login'}
+            <Button className='w-full' type='button'>
+              Login
             </Button>
           </Link>
+        </div>
+      ) : null}
+      {isRestore && users.length && !isSuccess ? (
+        <div className='mt-9 text-center text-base font-normal text-gray-a0'>
+          Already have an account? <Link to={ROUTES.LOGIN}>Login</Link>
         </div>
       ) : null}
     </div>

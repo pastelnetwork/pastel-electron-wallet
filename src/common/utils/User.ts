@@ -9,6 +9,8 @@ export type TUserInfo = {
   password: string
   newPassword: string
   pastelId: string
+  addresses?: string[]
+  pastelIds?: string[]
 }
 
 export const getFileName = async (): Promise<string | null> => {

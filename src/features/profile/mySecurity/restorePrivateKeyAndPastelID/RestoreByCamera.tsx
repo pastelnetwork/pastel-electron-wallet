@@ -47,6 +47,10 @@ export default function RestoreByCamera({
             const finalData = data.map(q => q.qrCode).join('')
             const result = await doImportPrivKeys(finalData, setPastelId)
             if (result) {
+              if (callback) {
+                callback()
+                return
+              }
               setCurrentStatus('done')
             } else {
               setCurrentStatus('error')
@@ -67,11 +71,6 @@ export default function RestoreByCamera({
   }
 
   if (currentStatus === 'done') {
-    if (callback) {
-      callback()
-      return null
-    }
-
     return <RestoreSuccess />
   }
 

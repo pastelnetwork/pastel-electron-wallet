@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
+import shallow from 'zustand/shallow'
 
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { NextButton } from './Buttons'
@@ -17,6 +18,7 @@ import {
 } from '../../profile/mySecurity/common/utils'
 import { QRCodeSlider, PDFDocument } from '../../profile'
 import { finish } from './Register.service'
+import { Steps, useRegisterStore } from './Register.store'
 
 enum BackupMethods {
   PDF,
@@ -24,6 +26,19 @@ enum BackupMethods {
 }
 
 export default function StepBackupMethod(): JSX.Element {
+  const store = useRegisterStore(
+    state => ({
+      setStep: state.setStep,
+      setPromoCode: state.setPromoCode,
+      setExchangeAddress: state.setExchangeAddress,
+      setPassword: state.setPassword,
+      setUsername: state.setUsername,
+      setTermsAgreed: state.setTermsAgreed,
+      setPSLAddressPrivateKey: state.setPSLAddressPrivateKey,
+      setPastelId: state.setPastelId,
+    }),
+    shallow,
+  )
   const [backupMethod, setBackupMethod] = useState<BackupMethods>(
     BackupMethods.PDF,
   )
@@ -150,6 +165,14 @@ export default function StepBackupMethod(): JSX.Element {
   }
 
   const handleNext = () => {
+    store.setStep(Steps.Login)
+    store.setExchangeAddress('')
+    store.setPSLAddressPrivateKey('')
+    store.setPassword('')
+    store.setPastelId('')
+    store.setPromoCode('')
+    store.setTermsAgreed(false)
+    store.setUsername('')
     finish()
   }
 

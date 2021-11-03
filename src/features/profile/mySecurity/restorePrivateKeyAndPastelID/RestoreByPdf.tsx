@@ -27,6 +27,10 @@ export default function RestoreByPdf({
   const doImport = async (value: string) => {
     const result = await doImportPrivKeys(value, setPastelId)
     if (result) {
+      if (callback) {
+        callback()
+        return
+      }
       setCurrentStatus('done')
     } else {
       setCurrentStatus('error')
@@ -66,11 +70,6 @@ export default function RestoreByPdf({
   }
 
   if (currentStatus === 'done') {
-    if (callback) {
-      callback()
-      return null
-    }
-
     return <RestoreSuccess />
   }
 

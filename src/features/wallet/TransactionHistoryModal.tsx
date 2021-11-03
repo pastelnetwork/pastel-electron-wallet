@@ -145,7 +145,7 @@ export default function TransactionHistoryModal(): JSX.Element {
       const filterTransactions = trans.map(t => {
         const note = privateNotes.find(n => n.txnId === t.txid)
         return {
-          date: t.time.toString(),
+          date: t.time?.toString(),
           address: t.address,
           addressNick: '',
           type: (t.type as TTransactionType) || TTransactionType.ALL,

@@ -30,6 +30,10 @@ export default function RestoreByUpload({
     const doImport = async () => {
       const result = await doImportPrivKeys(qrCodeData.join(''), setPastelId)
       if (result) {
+        if (callback) {
+          callback()
+          return
+        }
         setCurrentStatus('done')
       } else {
         setCurrentStatus('error')
@@ -101,11 +105,6 @@ export default function RestoreByUpload({
   }
 
   if (currentStatus === 'done') {
-    if (callback) {
-      callback()
-      return null
-    }
-
     return <RestoreSuccess />
   }
 

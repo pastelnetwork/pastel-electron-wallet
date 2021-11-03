@@ -9,6 +9,7 @@ import {
   PASTELID_MIN_CONFIRMATIONS,
   TPastelIdWithTxIdAndConfirmed,
   transactionRPC,
+  walletRPC,
 } from '../../../api/pastel-rpc'
 import { walletNodeApi } from 'api/walletNode/walletNode.api'
 import {
@@ -83,21 +84,30 @@ export const useInitializeRegister = ({
     shallow,
   )
 
+  const addUserInfo = async ({ pastelid }: { pastelid: string }) => {
+    const addresses = await walletRPC.fetchAllAddresses()
+    await writeUsersInfo(
+      [
+        {
+          username,
+          password: md5(password),
+          newPassword: md5(password),
+          pastelId: pastelid,
+          pastelIds: [pastelid],
+          addresses,
+        },
+      ],
+      true,
+    )
+  }
+
   useEffect(() => {
     if (createPastelIdQuery.isSuccess) {
       if (createPastelIdQuery.data?.pastelid) {
         setPastelId(createPastelIdQuery.data.pastelid)
-        writeUsersInfo(
-          [
-            {
-              username,
-              password: md5(password),
-              newPassword: md5(password),
-              pastelId: createPastelIdQuery.data.pastelid,
-            },
-          ],
-          true,
-        )
+        addUserInfo({
+          pastelid: createPastelIdQuery.data.pastelid,
+        })
           .then(() => {
             // noop
           })

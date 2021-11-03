@@ -93,7 +93,7 @@ export default function NewPassword(): JSX.Element {
       <div className='text-h1-heavy text-gray-2d'>Set New Password</div>
       {isSuccess ? (
         <div className='mt-8'>
-          <div className='text-text-77 text-h3'>
+          <div className='text-text-77 text-h4'>
             Your password has been reset successfully.
           </div>
           <div className='mt-6'>
@@ -155,6 +155,7 @@ export default function NewPassword(): JSX.Element {
             <Button
               className='w-full mt-[30px] font-semibold'
               onClick={handleChangePassword}
+              type='button'
             >
               Confirm
             </Button>

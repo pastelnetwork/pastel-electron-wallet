@@ -1,85 +1,70 @@
-import React, { useState } from 'react'
+import React, { useState, FormEvent } from 'react'
 import md5 from 'md5'
 
-import Input from 'common/components/Form/Input'
+import Input from 'common/components/Inputs/Input'
 import { Button } from 'common/components/Buttons'
 import CloseButton from '../common/closeButton'
 import Link from 'common/components/Link'
 
 import * as ROUTES from 'common/utils/constants/routes'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import { useVerifyPastelIdPassword } from '../../../api/pastel-rpc'
 import history from 'common/utils/history'
 import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
 
-const schema = yup.object({
-  username: yup.string().required(),
-  password: yup.string().required(),
-})
-
-type TSchema = ReturnType<typeof schema.validateSync>
-
 export default function Login(): JSX.Element {
+  const [isLoading, setLoading] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
-  const form = useForm<TSchema>({
-    resolver: yupResolver(schema),
-  })
-
-  const verifyPassword = useVerifyPastelIdPassword({
-    onSuccess() {
-      setAutoSignIn()
-      history.push(ROUTES.DASHBOARD)
-    },
-  })
 
   const onSubmit = async () => {
+    setLoading(true)
     setErrorMessage('')
-    const { password, username } = form.getValues()
     const users = await readUsersInfo()
     const user = users.find(
       u => u.username === username && u.newPassword === md5(password),
     )
     if (user) {
+      setAutoSignIn()
+      setLoading(false)
       history.push(ROUTES.DASHBOARD)
     } else {
       setErrorMessage('Username or password is incorrect')
+      setLoading(false)
     }
   }
 
-  const isLoading = status === 'loading' || verifyPassword.isLoading
+  const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {
+    setUsername(event.currentTarget.value)
+  }
+
+  const onPasswordChanged = (event: FormEvent<HTMLInputElement>) => {
+    setPassword(event.currentTarget.value)
+  }
+
+  const inValid = !username || !password ? true : false
 
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
       <div className='text-h1-heavy text-gray-2d mb-3'>Login</div>
-      <form
-        className='flex flex-col mt-30px'
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        {verifyPassword.error && (
-          <div className='text-red-fe mb-2'>
-            Username or password is incorrect
-          </div>
-        )}
+      <form className='flex flex-col mt-30px'>
         {errorMessage ? (
           <div className='text-red-fe mb-2'>{errorMessage}</div>
         ) : null}
         <Input
-          form={form}
           name='username'
           label='Username'
-          labelClass='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
           placeholder='i.e banksy168'
           className='mt-4 mb-6'
+          onChange={onUsernameChanged}
+          value={username}
         />
         <Input
-          form={form}
           type='password'
           name='password'
           label='Password'
-          labelClass='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
+          onChange={onPasswordChanged}
+          value={password}
         />
         <div className='text-gray-71 text-h6 my-5'>
           Forgot your password?
@@ -88,7 +73,12 @@ export default function Login(): JSX.Element {
             Restore access now
           </Link>
         </div>
-        <Button className='w-full' type='submit' disabled={isLoading}>
+        <Button
+          className='w-full'
+          type='button'
+          onClick={onSubmit}
+          disabled={isLoading || inValid}
+        >
           Login
         </Button>
       </form>

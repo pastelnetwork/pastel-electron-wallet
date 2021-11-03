@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
+import shallow from 'zustand/shallow'
+
 import Tooltip from 'common/components/Tooltip'
 import { CloseButton } from 'common/components/Buttons'
 import {
@@ -13,16 +15,15 @@ import {
   LongArrow,
 } from 'common/components/Icons'
 import CircleSteper from 'common/components/CircleSteper'
-import { Steps, stepsCount, useRegisterStore } from './Register.store'
-
 import * as ROUTES from 'common/utils/constants/routes'
-import styles from './Register.module.css'
-
+import { Steps, stepsCount, useRegisterStore } from './Register.store'
 import StepLogin from './StepRegister'
 import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
 import RegistrationPending from './RegistrationPending'
+
+import styles from './Register.module.css'
 
 const STEPS = [
   {
@@ -62,6 +63,19 @@ const STEPS = [
 export default function Register(): JSX.Element {
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
+  const store = useRegisterStore(
+    state => ({
+      setStep: state.setStep,
+      setPromoCode: state.setPromoCode,
+      setExchangeAddress: state.setExchangeAddress,
+      setPassword: state.setPassword,
+      setUsername: state.setUsername,
+      setTermsAgreed: state.setTermsAgreed,
+      setPSLAddressPrivateKey: state.setPSLAddressPrivateKey,
+      setPastelId: state.setPastelId,
+    }),
+    shallow,
+  )
 
   const step = useRegisterStore(state => state.step)
 
@@ -69,8 +83,20 @@ export default function Register(): JSX.Element {
     return <RegistrationPending />
   }
 
+  const resetStore = () => {
+    store.setStep(Steps.Login)
+    store.setExchangeAddress('')
+    store.setPSLAddressPrivateKey('')
+    store.setPassword('')
+    store.setPastelId('')
+    store.setPromoCode('')
+    store.setTermsAgreed(false)
+    store.setUsername('')
+  }
+
   const confirmClose = (val: boolean) => {
     if (val) {
+      resetStore()
       history.push(ROUTES.WELCOME_PAGE)
     } else {
       setCloseRequested(false)
@@ -83,6 +109,7 @@ export default function Register(): JSX.Element {
         className='absolute top-6 right-6 w-7 h-7'
         onClick={() => {
           if (closeRequested) {
+            resetStore()
             history.push(ROUTES.WELCOME_PAGE)
           } else {
             setCloseRequested(true)

@@ -23,12 +23,15 @@ export default function OnboardingRouter(): JSX.Element {
     error,
   } = useFirstPastelIdWithTxIdAndConfirmed({
     onSuccess(pastelId) {
-      const autoSignIn = getAutoSignIn()
-      if (autoSignIn) {
-        history.push(ROUTES.DASHBOARD)
-      }
       if (history.location.pathname === ROUTES.ONBOARDING) {
-        history.push(pastelId?.isConfirmed ? ROUTES.LOGIN : ROUTES.WELCOME_PAGE)
+        const autoSignIn = getAutoSignIn()
+        if (autoSignIn) {
+          history.push(ROUTES.DASHBOARD)
+        } else {
+          history.push(
+            pastelId?.isConfirmed ? ROUTES.LOGIN : ROUTES.WELCOME_PAGE,
+          )
+        }
       }
     },
   })
