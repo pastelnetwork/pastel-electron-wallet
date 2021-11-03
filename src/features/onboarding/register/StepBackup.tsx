@@ -300,6 +300,7 @@ export default function StepBackupMethod(): JSX.Element {
                         classnames='font-extrabold py-2'
                       >
                         <button
+                          type='button'
                           className={cn(
                             'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
                             currentStatus === 'downloading' &&

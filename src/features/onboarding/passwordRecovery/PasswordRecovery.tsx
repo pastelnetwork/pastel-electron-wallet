@@ -69,7 +69,7 @@ export default function PasswordRecovery(): JSX.Element {
     }
   }
 
-  const handleRedirect = async () => {
+  const handleRedirect = () => {
     if (isRestore) {
       getUsers()
         .then(() => {
