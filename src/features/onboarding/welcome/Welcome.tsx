@@ -6,7 +6,7 @@ import { Button } from 'common/components/Buttons'
 import Link from 'common/components/Link'
 import * as ROUTES from 'common/utils/constants/routes'
 
-const OnboardingWelcome = (): JSX.Element => {
+export default function OnboardingWelcome(): JSX.Element {
   return (
     <div className='w-649px mx-14 my-11'>
       <div className='text-gray-2d text-h1 font-extrabold leading-10 text-center'>
@@ -54,5 +54,3 @@ const OnboardingWelcome = (): JSX.Element => {
     </div>
   )
 }
-
-export default OnboardingWelcome

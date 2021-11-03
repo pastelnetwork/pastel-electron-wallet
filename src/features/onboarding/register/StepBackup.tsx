@@ -192,133 +192,129 @@ export default function StepBackupMethod(): JSX.Element {
           Loading ...
         </div>
       ) : (
-        <>
-          <div className='flex-grow'>
-            {backupMethod === BackupMethods.PDF && (
-              <div className='mt-42px'>
-                <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
-                  Crypto Keys Backup Method
-                </h1>
-                <h2 className='text-gray-71 text-sm font-normal'>
-                  Download a PDF “paper wallet” file with keys for your PastelID
-                </h2>
+        <div className='flex-grow'>
+          {backupMethod === BackupMethods.PDF && (
+            <div className='mt-42px'>
+              <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
+                Crypto Keys Backup Method
+              </h1>
+              <h2 className='text-gray-71 text-sm font-normal'>
+                Download a PDF “paper wallet” file with keys for your PastelID
+              </h2>
+
+              <div
+                className={cn(
+                  'mt-6 px-6 py-4 border border-gray-e1 flex items-center rounded-lg',
+                  currentStatus === 'downloading' && 'cursor-not-allowed',
+                )}
+              >
+                <PDF size={55} className='text-red-fa' variant='secondary' />
 
                 <div
-                  className={cn(
-                    'mt-6 px-6 py-4 border border-gray-e1 flex items-center rounded-lg',
-                    currentStatus === 'downloading' && 'cursor-not-allowed',
-                  )}
+                  className='ml-4 mr-4'
+                  onClick={() => setPdfPrepareProgress(65)}
                 >
-                  <PDF size={55} className='text-red-fa' variant='secondary' />
-
-                  <div
-                    className='ml-4 mr-4'
-                    onClick={() => setPdfPrepareProgress(65)}
-                  >
-                    <div className='text-base font-medium text-gray-4a'>
-                      Crypto Keys
-                    </div>
-                    <div className='text-xs font-medium text-gray-a0'>
-                      0.5mb
-                    </div>
+                  <div className='text-base font-medium text-gray-4a'>
+                    Crypto Keys
                   </div>
-
-                  {pdfPrepareProgress === 0 && (
-                    <div className='flex-grow flex justify-end'>
-                      <Tooltip
-                        type='bottom'
-                        width={98}
-                        content='Download PDF'
-                        vPosPercent={120}
-                        classnames='font-extrabold py-2'
-                      >
-                        <PDFDownloadLink
-                          document={
-                            <PDFDocument
-                              allKeys={allKeys}
-                              currencyName={currencyName}
-                              title={pdfFileName}
-                              qrcodeData={qrcodeData.join('')}
-                            />
-                          }
-                          fileName={pdfFileName}
-                          className='block w-full'
-                        >
-                          <button
-                            type='button'
-                            className='w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa flex justify-center items-center cursor-pointer transition duration-300'
-                          >
-                            <DownloadArrow size={24} className='text-blue-3f' />
-                          </button>
-                        </PDFDownloadLink>
-                      </Tooltip>
-                    </div>
-                  )}
-
-                  {pdfPrepareProgress > 0 && (
-                    <div className='flex-grow flex items-center justify-end'>
-                      <div className='h-5px w-[108px] rounded-full bg-green-e4 mr-3 overflow-hidden'>
-                        <div
-                          className='h-5px rounded-full bg-green-77'
-                          style={{ width: pdfPrepareProgress + '%' }}
-                        />
-                      </div>
-                      <span className='font-extrabold text-sm'>
-                        {pdfPrepareProgress}%
-                      </span>
-                    </div>
-                  )}
+                  <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
                 </div>
-              </div>
-            )}
 
-            {backupMethod === BackupMethods.QR && (
-              <div className='mt-42px'>
-                <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
-                  QR-Code Backup Method
-                </h1>
-                <h2 className='text-gray-77 text-sm font-normal'>
-                  Save QR Code Video to a Secure Place, or Take a Video
-                  <br />
-                  of Changing Code with your Smartphone:
-                </h2>
-
-                <div className='relative mt-4 p-5 border bg-gray-f8 flex rounded-md justify-center shadow-textbox'>
-                  <QRCodeSlider qrcodeData={qrcodeData} />
-
-                  {qrcodeData.length ? (
-                    <div className='absolute bottom-3 right-3 z-50'>
-                      <Tooltip
-                        type='bottom'
-                        width={98}
-                        content={
-                          currentStatus === 'downloading'
-                            ? 'Downloading QR Code Video'
-                            : 'Download QR Code Video'
+                {pdfPrepareProgress === 0 && (
+                  <div className='flex-grow flex justify-end'>
+                    <Tooltip
+                      type='bottom'
+                      width={98}
+                      content='Download PDF'
+                      vPosPercent={120}
+                      classnames='font-extrabold py-2'
+                    >
+                      <PDFDownloadLink
+                        document={
+                          <PDFDocument
+                            allKeys={allKeys}
+                            currencyName={currencyName}
+                            title={pdfFileName}
+                            qrcodeData={qrcodeData.join('')}
+                          />
                         }
-                        vPosPercent={120}
-                        classnames='font-extrabold py-2'
+                        fileName={pdfFileName}
+                        className='block w-full'
                       >
                         <button
                           type='button'
-                          className={cn(
-                            'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
-                            currentStatus === 'downloading' &&
-                              'bg-blue-9b cursor-not-allowed opacity-30',
-                          )}
-                          onClick={handleDownloadVideo}
-                          disabled={currentStatus === 'downloading'}
+                          className='w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa flex justify-center items-center cursor-pointer transition duration-300'
                         >
                           <DownloadArrow size={24} className='text-blue-3f' />
                         </button>
-                      </Tooltip>
+                      </PDFDownloadLink>
+                    </Tooltip>
+                  </div>
+                )}
+
+                {pdfPrepareProgress > 0 && (
+                  <div className='flex-grow flex items-center justify-end'>
+                    <div className='h-5px w-[108px] rounded-full bg-green-e4 mr-3 overflow-hidden'>
+                      <div
+                        className='h-5px rounded-full bg-green-77'
+                        style={{ width: pdfPrepareProgress + '%' }}
+                      />
                     </div>
-                  ) : null}
-                </div>
+                    <span className='font-extrabold text-sm'>
+                      {pdfPrepareProgress}%
+                    </span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </>
+            </div>
+          )}
+
+          {backupMethod === BackupMethods.QR && (
+            <div className='mt-42px'>
+              <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
+                QR-Code Backup Method
+              </h1>
+              <h2 className='text-gray-77 text-sm font-normal'>
+                Save QR Code Video to a Secure Place, or Take a Video
+                <br />
+                of Changing Code with your Smartphone:
+              </h2>
+
+              <div className='relative mt-4 p-5 border bg-gray-f8 flex rounded-md justify-center shadow-textbox'>
+                <QRCodeSlider qrcodeData={qrcodeData} />
+
+                {qrcodeData.length ? (
+                  <div className='absolute bottom-3 right-3 z-50'>
+                    <Tooltip
+                      type='bottom'
+                      width={98}
+                      content={
+                        currentStatus === 'downloading'
+                          ? 'Downloading QR Code Video'
+                          : 'Download QR Code Video'
+                      }
+                      vPosPercent={120}
+                      classnames='font-extrabold py-2'
+                    >
+                      <button
+                        type='button'
+                        className={cn(
+                          'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
+                          currentStatus === 'downloading' &&
+                            'bg-blue-9b cursor-not-allowed opacity-30',
+                        )}
+                        onClick={handleDownloadVideo}
+                        disabled={currentStatus === 'downloading'}
+                      >
+                        <DownloadArrow size={24} className='text-blue-3f' />
+                      </button>
+                    </Tooltip>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          )}
+        </div>
       )}
       <div className='mt-7 flex justify-end'>
         <NextButton

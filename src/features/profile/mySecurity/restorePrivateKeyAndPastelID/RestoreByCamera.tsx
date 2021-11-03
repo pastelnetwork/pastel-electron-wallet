@@ -100,7 +100,7 @@ export default function RestoreByCamera({
         </div>
       </div>
       <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
-        Holding your phone up to your computer's webcam.{' '}
+        Holding your phone up to your computer{"'"}s webcam.{' '}
         {results.length ? (
           <span>
             Restoring ... {results.length}/{results[0].total}
