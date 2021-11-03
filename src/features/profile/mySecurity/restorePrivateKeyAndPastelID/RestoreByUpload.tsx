@@ -161,9 +161,10 @@ export default function RestoreByUpload({
               width={130}
               vPosPercent={110}
             >
-              <span
+              <button
                 onClick={handleRestoreByUpload}
                 className={cn(
+                  'inline-block',
                   fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
                 )}
               >
@@ -177,7 +178,7 @@ export default function RestoreByUpload({
                   )}
                   pathColor={fileSelected ? '#3F9AF7' : '#fff'}
                 />
-              </span>
+              </button>
             </Tooltip>
           </div>
         </div>

@@ -210,14 +210,18 @@ export default function StepBackupMethod(): JSX.Element {
               >
                 <PDF size={55} className='text-red-fa' variant='secondary' />
 
-                <div
-                  className='ml-4 mr-4'
-                  onClick={() => setPdfPrepareProgress(65)}
-                >
-                  <div className='text-base font-medium text-gray-4a'>
-                    Crypto Keys
-                  </div>
-                  <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
+                <div className='ml-4 mr-4'>
+                  <button
+                    type='button'
+                    onClick={() => setPdfPrepareProgress(65)}
+                  >
+                    <div className='text-base font-medium text-gray-4a'>
+                      Crypto Keys
+                    </div>
+                    <div className='text-xs font-medium text-gray-a0'>
+                      0.5mb
+                    </div>
+                  </button>
                 </div>
 
                 {pdfPrepareProgress === 0 && (
