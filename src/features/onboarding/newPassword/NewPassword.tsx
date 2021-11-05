@@ -82,13 +82,16 @@ export default function NewPassword(): JSX.Element {
     const uers = await readUsersInfo()
     const user = uers.find(u => u.pastelId === store.pastelId)
     if (user) {
+      const password: string = user.password
+      const username: string = user.username
+      const vNewPassword: string = md5(newPassword.value) || ''
       await changePastelIdPassword({
         pastelId: user.pastelId,
-        oldPassphrase: `${user.password}${user.username}`,
-        newPassphrase: `${md5(newPassword.value)}${user.username}`,
+        oldPassphrase: `${password}${username}`,
+        newPassphrase: `${vNewPassword}${username}`,
       })
-      user.newPassword = md5(newPassword.value)
-      user.password = md5(newPassword.value)
+      user.newPassword = vNewPassword
+      user.password = vNewPassword
       await writeUsersInfo([user], true)
       setSuccess(true)
     }

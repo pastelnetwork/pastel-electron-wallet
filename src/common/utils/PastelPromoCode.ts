@@ -84,8 +84,9 @@ export const importPastelPromoCode = async (
       )
 
       if (!alreadySaved) {
+        const newDate: string = dayjs().format('MM/DD/YYYY-HH:mm') || ''
         const newPromoCode = currentPromoCodeList.concat({
-          label: `Pastel Promo Code ${dayjs().format('MM/DD/YYYY-HH:mm')}`,
+          label: `Pastel Promo Code ${newDate}`,
           address,
         })
         await writePastelPromoCode(newPromoCode)

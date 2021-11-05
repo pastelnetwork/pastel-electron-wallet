@@ -21,15 +21,15 @@ async function makeRequest<T>(
   if (!goodResponseCodes) {
     goodResponseCodes = [200]
   }
-
+  const url: string = params.url || ''
   if (!goodResponseCodes.includes(res.status)) {
-    log.info(`${params.url} return status ${res.status} and data:`, res.data)
-    throw new Error(`API route ${params.url} return status ${res.status}`)
+    log.info(`${url} return status ${res.status} and data:`, res.data)
+    throw new Error(`API route ${url} return status ${res.status}`)
   }
 
   if (res.data.fault) {
-    log.info(`${params.url} failed:`, res.data)
-    throw new Error(`API route ${params.url} return error`)
+    log.info(`${url} failed:`, res.data)
+    throw new Error(`API route ${url} return error`)
   }
 
   return res.data

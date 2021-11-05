@@ -45,8 +45,9 @@ export const readUsersInfo = async (): Promise<TUserInfo[]> => {
 
     return []
   } catch (err) {
+    const msg: string = err?.message || ''
     log.error(
-      `common/utils/PastelPromoCode readPastelPromoCode error: ${err}`,
+      `common/utils/PastelPromoCode readPastelPromoCode error: ${msg}`,
       err,
     )
     return []

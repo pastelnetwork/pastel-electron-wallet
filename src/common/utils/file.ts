@@ -63,7 +63,8 @@ export const readFileName = async (
 
     return ''
   } catch (err) {
-    log.error(`common/utils/file readFileName error: ${err}`, err)
+    const msg: string = err?.message || ''
+    log.error(`common/utils/file readFileName error: ${msg}`, err)
     return ''
   }
 }
