@@ -72,6 +72,7 @@ describe('rendererSetup', () => {
       pastelWalletDirPath: 'path',
       sqliteFilePath: 'path',
       migrationsPath: 'path',
+      pastelKeysPath: 'path',
     }
     await emitRendererEvent('setAppInfo', info)
 
