@@ -167,6 +167,7 @@ export default function RestoreByUpload({
                   'inline-block',
                   fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
                 )}
+                type='button'
               >
                 <Refresh
                   size={44}
