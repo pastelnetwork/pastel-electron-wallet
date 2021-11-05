@@ -9,6 +9,7 @@ import Link from 'common/components/Link'
 import * as ROUTES from 'common/utils/constants/routes'
 import history from 'common/utils/history'
 import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
+import { verifyPastelIdPassword } from 'api/pastel-rpc'
 
 export default function Login(): JSX.Element {
   const [isLoading, setLoading] = useState(false)
@@ -24,13 +25,21 @@ export default function Login(): JSX.Element {
       u => u.username === username && u.newPassword === md5(password),
     )
     if (user) {
-      setAutoSignIn()
-      setLoading(false)
-      history.push(ROUTES.DASHBOARD)
+      const verify = await verifyPastelIdPassword({
+        pastelId: user.pastelId,
+        password: `${user.password}${user.username}`,
+      })
+      if (verify.signature) {
+        setAutoSignIn()
+        setLoading(false)
+        history.push(ROUTES.DASHBOARD)
+      } else {
+        setErrorMessage('Username or password is incorrect')
+      }
     } else {
       setErrorMessage('Username or password is incorrect')
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {

@@ -23,8 +23,18 @@ type TVerifyPastelIdPasswordParams = {
   password: string
 }
 
+type TChangePastelIdPasswordParams = {
+  pastelId: string
+  oldPassphrase: string
+  newPassphrase: string
+}
+
 type TVerifyPastelIdPasswordResponse = {
   signature: string
+}
+
+type TChangePastelIdPasswordResponse = {
+  status: string
 }
 
 export type TTicket = {
@@ -161,6 +171,20 @@ export async function verifyPastelIdPassword({
   return await rpc('pastelid', ['sign', 'login', pastelId, password], {
     throw: true,
   })
+}
+
+export async function changePastelIdPassword({
+  pastelId,
+  oldPassphrase,
+  newPassphrase,
+}: TChangePastelIdPasswordParams): Promise<TChangePastelIdPasswordResponse> {
+  return await rpc(
+    'pastelid',
+    ['passwd', pastelId, oldPassphrase, newPassphrase],
+    {
+      throw: true,
+    },
+  )
 }
 
 export function useVerifyPastelIdPassword(

@@ -40,6 +40,7 @@ export interface IAppInfoState {
   pastelWalletDirPath?: string
   sqliteFilePath?: string
   migrationsPath?: string
+  pastelKeysPath?: string
 }
 
 const initialState: IAppInfoState = {
@@ -56,6 +57,7 @@ type TIsPackagedAndPathsAction = {
   pastelWalletDirPath: string
   sqliteFilePath: string
   migrationsPath: string
+  pastelKeysPath: string
 }
 
 type TInfoAction = {
@@ -81,6 +83,7 @@ export const appInfoSlice = createSlice({
       state.pastelWalletDirPath = payload.pastelWalletDirPath
       state.sqliteFilePath = payload.sqliteFilePath
       state.migrationsPath = payload.migrationsPath
+      state.pastelKeysPath = payload.pastelKeysPath
     },
     setPastelInfo(state: IAppInfoState, action: PayloadAction<TInfoAction>) {
       state.info = action.payload.info

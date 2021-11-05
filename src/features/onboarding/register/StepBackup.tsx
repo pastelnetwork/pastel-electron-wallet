@@ -165,7 +165,6 @@ export default function StepBackupMethod(): JSX.Element {
   }
 
   const handleNext = () => {
-    store.setStep(Steps.Login)
     store.setExchangeAddress('')
     store.setPSLAddressPrivateKey('')
     store.setPassword('')
@@ -173,6 +172,7 @@ export default function StepBackupMethod(): JSX.Element {
     store.setPromoCode('')
     store.setTermsAgreed(false)
     store.setUsername('')
+    store.setStep(Steps.Login)
     finish()
   }
 

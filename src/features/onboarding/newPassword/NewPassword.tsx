@@ -13,6 +13,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 import { calcPasswordStrength, randomPassword } from 'common/utils/passwords'
 import { readUsersInfo, writeUsersInfo } from 'common/utils/User'
 import { useRegisterStore } from '../register/Register.store'
+import { changePastelIdPassword } from 'api/pastel-rpc'
 
 interface NewPasswordFormInput {
   value: string
@@ -81,7 +82,13 @@ export default function NewPassword(): JSX.Element {
     const uers = await readUsersInfo()
     const user = uers.find(u => u.pastelId === store.pastelId)
     if (user) {
+      await changePastelIdPassword({
+        pastelId: user.pastelId,
+        oldPassphrase: `${user.password}${user.username}`,
+        newPassphrase: `${md5(newPassword.value)}${user.username}`,
+      })
       user.newPassword = md5(newPassword.value)
+      user.password = md5(newPassword.value)
       await writeUsersInfo([user], true)
       setSuccess(true)
     }

@@ -219,7 +219,7 @@ export default function Register(): JSX.Element {
             />
           </div>
           <div className='mt-27px text-center text-h5 leading-6 font-medium text-gray-4a'>
-            Are you sure you want to close the wizard
+            Are you sure you want to close the onboarding
             <br /> and return to the home screen?
           </div>
           <div className='mt-4 text-center'>
