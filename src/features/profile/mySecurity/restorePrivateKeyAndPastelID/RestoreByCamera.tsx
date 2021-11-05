@@ -110,3 +110,10 @@ export default function RestoreByCamera({
     </div>
   )
 }
+
+RestoreByCamera.defaultProps = {
+  onHideHeader: undefined,
+  setPastelId: undefined,
+  callback: undefined,
+  turnOffCamera: false,
+}

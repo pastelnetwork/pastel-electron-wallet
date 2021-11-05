@@ -152,9 +152,10 @@ async function getPastelIDsWithContent(): Promise<
     }
     return []
   } catch (err) {
-    toast(err.message, { type: 'error' })
+    const msg: string = err?.message || ''
+    toast(msg, { type: 'error' })
     console.log(
-      `profile/mySecurity/common/utils getPastelIDs error: ${err.message}`,
+      `profile/mySecurity/common/utils getPastelIDs error: ${msg}`,
       err,
     )
     return null

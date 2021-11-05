@@ -155,3 +155,9 @@ export default function RestoreByPdf({
     </div>
   )
 }
+
+RestoreByPdf.defaultProps = {
+  onHideHeader: undefined,
+  setPastelId: undefined,
+  callback: undefined,
+}

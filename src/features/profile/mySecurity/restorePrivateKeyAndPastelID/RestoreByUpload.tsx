@@ -192,3 +192,9 @@ export default function RestoreByUpload({
     </div>
   )
 }
+
+RestoreByUpload.defaultProps = {
+  onHideHeader: undefined,
+  setPastelId: undefined,
+  callback: undefined,
+}

@@ -119,8 +119,11 @@ export default function StepFee(): JSX.Element {
       }
 
       try {
+        const password: string = md5(store.password) || ''
+        const username: string = store.username || ''
+
         store.createPastelIdQuery.mutate({
-          password: `${md5(store.password)}${store.username.toString()}`,
+          password: `${password}${username}`,
           address: store.exchangeAddress,
           username: store.username,
         })

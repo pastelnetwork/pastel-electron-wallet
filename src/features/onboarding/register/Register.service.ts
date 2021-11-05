@@ -120,7 +120,9 @@ export const useInitializeRegister = ({
         walletNodeApi.userData
           .create({
             artist_pastelid: createPastelIdQuery.data.pastelid,
-            artist_pastelid_passphrase: `${md5(password)}${username}`,
+            artist_pastelid_passphrase: `${md5(password) || ''}${
+              username || ''
+            }`,
           })
           .then(() => {
             // noop
