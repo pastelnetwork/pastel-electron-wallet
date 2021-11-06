@@ -23,8 +23,9 @@ async function makeRequest<T>(
   }
   const url: string = params.url || ''
   if (!goodResponseCodes.includes(res.status)) {
-    log.info(`${url} return status ${res.status} and data:`, res.data)
-    throw new Error(`API route ${url} return status ${res.status}`)
+    const status: string = res.status?.toString()
+    log.info(`${url} return status ${status} and data:`, res.data)
+    throw new Error(`API route ${url} return status ${status}`)
   }
 
   if (res.data.fault) {

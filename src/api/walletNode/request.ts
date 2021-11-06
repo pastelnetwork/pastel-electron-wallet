@@ -29,7 +29,7 @@ const makeRequest = async <T>(
 
   const response: AxiosResponse = await axios(walletNodeApiURL + path, {
     method,
-    data: fetchOptions,
+    data: fetchOptions.body,
   })
   const result = response.data
 
