@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
+import log from 'electron-log'
 import {
   TArtworkTicket,
   IRegisterResult,
@@ -7,12 +8,9 @@ import {
   ITaskState,
   IArtworkImage,
 } from './interfaces'
+import { walletNodeApiURL } from '../../../common/constants/urls'
 
-// TODO: find better place to this param (Config file? Common constants?)
-// Config file is parsed in LoadingScreen.tsx, use only rpc values and don't export others
-const apiServer = 'http://127.0.0.1:8080'
-
-const baseUrl = apiServer + '/artworks'
+const baseUrl: string = walletNodeApiURL + '/artworks'
 
 async function makeRequest<T>(
   params: AxiosRequestConfig,
@@ -23,15 +21,16 @@ async function makeRequest<T>(
   if (!goodResponseCodes) {
     goodResponseCodes = [200]
   }
-
+  const url: string = params.url || ''
   if (!goodResponseCodes.includes(res.status)) {
-    console.log(`${params.url} return status ${res.status} and data:`, res.data)
-    throw new Error(`API route ${params.url} return status ${res.status}`)
+    const status: string = res.status?.toString()
+    log.info(`${url} return status ${status} and data:`, res.data)
+    throw new Error(`API route ${url} return status ${status}`)
   }
 
   if (res.data.fault) {
-    console.log(`${params.url} failed:`, res.data)
-    throw new Error(`API route ${params.url} return error`)
+    log.info(`${url} failed:`, res.data)
+    throw new Error(`API route ${url} return error`)
   }
 
   return res.data

@@ -7,6 +7,7 @@ import { openPastelModal } from '../pastelModal'
 export type TRegisterPastelID = {
   pastelid: string
   txid: string
+  uTxid?: string
 }
 
 export type TPastelID = {

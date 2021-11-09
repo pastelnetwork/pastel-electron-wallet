@@ -12,25 +12,35 @@ import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
 
 type TRestoreByUploadProps = {
-  onHideHeader: (status: boolean) => void
+  onHideHeader?: (status: boolean) => void
+  setPastelId?: (pastelId: string) => void
+  callback?: () => void
 }
 
 export default function RestoreByUpload({
   onHideHeader,
-}: TRestoreByUploadProps): JSX.Element {
+  setPastelId,
+  callback,
+}: TRestoreByUploadProps): JSX.Element | null {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [qrCodeData, setQRCodeData] = useState<string[]>([])
   const [fileSelected, setFileSelected] = useState<File>()
 
   useEffect(() => {
     const doImport = async () => {
-      const result = await doImportPrivKeys(qrCodeData.join(''))
+      const result = await doImportPrivKeys(qrCodeData.join(''), setPastelId)
       if (result) {
+        if (callback) {
+          callback()
+          return
+        }
         setCurrentStatus('done')
       } else {
         setCurrentStatus('error')
       }
-      onHideHeader(true)
+      if (onHideHeader) {
+        onHideHeader(true)
+      }
     }
     if (qrCodeData.length) {
       doImport()
@@ -66,16 +76,22 @@ export default function RestoreByUpload({
               setQRCodeData(qrCode)
             } else {
               setCurrentStatus('error')
-              onHideHeader(true)
+              if (onHideHeader) {
+                onHideHeader(true)
+              }
             }
           })
           .catch(() => {
             setCurrentStatus('error')
-            onHideHeader(true)
+            if (onHideHeader) {
+              onHideHeader(true)
+            }
           })
       } catch {
         setCurrentStatus('error')
-        onHideHeader(true)
+        if (onHideHeader) {
+          onHideHeader(true)
+        }
       }
     }
   }
@@ -145,11 +161,13 @@ export default function RestoreByUpload({
               width={130}
               vPosPercent={110}
             >
-              <span
+              <button
                 onClick={handleRestoreByUpload}
                 className={cn(
+                  'inline-block',
                   fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
                 )}
+                type='button'
               >
                 <Refresh
                   size={44}
@@ -161,7 +179,7 @@ export default function RestoreByUpload({
                   )}
                   pathColor={fileSelected ? '#3F9AF7' : '#fff'}
                 />
-              </span>
+              </button>
             </Tooltip>
           </div>
         </div>
@@ -173,4 +191,10 @@ export default function RestoreByUpload({
       </div>
     </div>
   )
+}
+
+RestoreByUpload.defaultProps = {
+  onHideHeader: undefined,
+  setPastelId: undefined,
+  callback: undefined,
 }

@@ -101,8 +101,12 @@ export const formatFileSize = (size: number, fractionDigits = 1): string => {
   return Math.max(size, 0.1).toFixed(fractionDigits) + units[i]
 }
 
-export const formatAddress = (address: string, length = 20): string => {
-  return address.substr(0, length) + '...' + address.substr(-6)
+export const formatAddress = (
+  address: string,
+  length = 20,
+  endLength = -6,
+): string => {
+  return address.substr(0, length) + '...' + address.substr(endLength)
 }
 
 export function timeAgo(date: number): string {

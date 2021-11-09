@@ -1,5 +1,8 @@
-import { artworkRegister, artworkUploadImage } from 'api/artwork-api/artwork'
-import { TArtworkTicket } from 'api/artwork-api/interfaces'
+import {
+  artworkRegister,
+  artworkUploadImage,
+} from 'api/walletNode/artwork-api/artwork'
+import { TArtworkTicket } from 'api/walletNode/artwork-api/interfaces'
 import { toast } from 'react-toastify'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
 import log from 'electron-log'

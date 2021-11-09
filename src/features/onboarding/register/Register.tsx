@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
+import shallow from 'zustand/shallow'
+
 import Tooltip from 'common/components/Tooltip'
 import { CloseButton } from 'common/components/Buttons'
 import {
@@ -13,16 +15,15 @@ import {
   LongArrow,
 } from 'common/components/Icons'
 import CircleSteper from 'common/components/CircleSteper'
-
 import * as ROUTES from 'common/utils/constants/routes'
-import styles from './Register.module.css'
-
-import { Steps, useRegisterState } from './Regiser.state'
-
+import { Steps, stepsCount, useRegisterStore } from './Register.store'
 import StepLogin from './StepRegister'
 import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
+import RegistrationPending from './RegistrationPending'
+
+import styles from './Register.module.css'
 
 const STEPS = [
   {
@@ -59,21 +60,47 @@ const STEPS = [
   },
 ]
 
-const RegisterContent = (): JSX.Element => {
+export default function Register(): JSX.Element {
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
-  const state = useRegisterState()
+  const store = useRegisterStore(
+    state => ({
+      setStep: state.setStep,
+      setPromoCode: state.setPromoCode,
+      setExchangeAddress: state.setExchangeAddress,
+      setPassword: state.setPassword,
+      setUsername: state.setUsername,
+      setTermsAgreed: state.setTermsAgreed,
+      setPSLAddressPrivateKey: state.setPSLAddressPrivateKey,
+      setPastelId: state.setPastelId,
+    }),
+    shallow,
+  )
+
+  const step = useRegisterStore(state => state.step)
+
+  if (step === Steps.ProcessingFee) {
+    return <RegistrationPending />
+  }
+
+  const resetStore = () => {
+    store.setStep(Steps.Login)
+    store.setExchangeAddress('')
+    store.setPSLAddressPrivateKey('')
+    store.setPassword('')
+    store.setPastelId('')
+    store.setPromoCode('')
+    store.setTermsAgreed(false)
+    store.setUsername('')
+  }
 
   const confirmClose = (val: boolean) => {
     if (val) {
+      resetStore()
       history.push(ROUTES.WELCOME_PAGE)
     } else {
       setCloseRequested(false)
     }
-  }
-
-  const onLastStepPassed = () => {
-    history.push(ROUTES.REGISTER_PENDING)
   }
 
   return (
@@ -81,7 +108,12 @@ const RegisterContent = (): JSX.Element => {
       <CloseButton
         className='absolute top-6 right-6 w-7 h-7'
         onClick={() => {
-          setCloseRequested(true)
+          if (closeRequested) {
+            resetStore()
+            history.push(ROUTES.WELCOME_PAGE)
+          } else {
+            setCloseRequested(true)
+          }
         }}
       />
       <div
@@ -103,9 +135,9 @@ const RegisterContent = (): JSX.Element => {
             <div>
               <CircleSteper
                 size={65}
-                totalStep={state.stepsCount}
+                totalStep={stepsCount}
                 spaceAngle={10}
-                currentStep={state.step}
+                currentStep={step}
               />
             </div>
           </div>
@@ -123,16 +155,14 @@ const RegisterContent = (): JSX.Element => {
                   className={cn(
                     'rounded-lg flex items-center px-8 py-3 step',
                     styles.step,
-                    state.step === id ? 'bg-gray-ed' : '',
+                    step === id ? 'bg-gray-ed' : '',
                   )}
                 >
-                  {state.step <= id ? (
+                  {step <= id ? (
                     <Component
                       size={44}
-                      className={
-                        state.step === id ? 'text-gray-33' : 'text-gray-ec'
-                      }
-                      pathColor={state.step === id ? '#FFFFFF' : '#8894AA'}
+                      className={step === id ? 'text-gray-33' : 'text-gray-ec'}
+                      pathColor={step === id ? '#FFFFFF' : '#8894AA'}
                     />
                   ) : (
                     <CircleCheck size={40} className='text-green-45 ml-1' />
@@ -140,15 +170,15 @@ const RegisterContent = (): JSX.Element => {
                   <div
                     className={cn(
                       'flex-grow flex items-center ml-8 text-lg',
-                      state.step === id
+                      step === id
                         ? 'font-extrabold text-gray-2d'
-                        : state.step < id
+                        : step < id
                         ? 'font-medium text-gray-a0'
                         : 'font-medium text-gray-4a',
                     )}
                   >
                     <span>{label}</span>
-                    {state.step === id && tooltipText && tooltipWidth && (
+                    {step === id && tooltipText && tooltipWidth && (
                       <div className='inline-block mx-2'>
                         <Tooltip
                           classnames='font-medium py-2'
@@ -163,7 +193,7 @@ const RegisterContent = (): JSX.Element => {
                     )}
                   </div>
 
-                  {state.step === id && (
+                  {step === id && (
                     <LongArrow size={20} className='text-gray-88' />
                   )}
                 </div>
@@ -173,14 +203,10 @@ const RegisterContent = (): JSX.Element => {
         </div>
 
         <div className='w-1/2 flex-shrink-0 pb-10 pl-10 pr-7 mt-7'>
-          {state.step === Steps.Login && <StepLogin {...state} />}
-          {state.step === Steps.Backup && (
-            <StepBackup {...state} finish={onLastStepPassed} />
-          )}
-          {state.step === Steps.Payment && <StepPayment {...state} />}
-          {state.step === Steps.Fee && (
-            <StepFee finish={onLastStepPassed} {...state} />
-          )}
+          {step === Steps.Login && <StepLogin />}
+          {step === Steps.Payment && <StepPayment />}
+          {step === Steps.Fee && <StepFee />}
+          {step === Steps.Backup && <StepBackup />}
         </div>
       </div>
 
@@ -193,7 +219,7 @@ const RegisterContent = (): JSX.Element => {
             />
           </div>
           <div className='mt-27px text-center text-h5 leading-6 font-medium text-gray-4a'>
-            Are you sure you want to close the wizard
+            Are you sure you want to close the onboarding
             <br /> and return to the home screen?
           </div>
           <div className='mt-4 text-center'>
@@ -217,5 +243,3 @@ const RegisterContent = (): JSX.Element => {
     </>
   )
 }
-
-export default RegisterContent

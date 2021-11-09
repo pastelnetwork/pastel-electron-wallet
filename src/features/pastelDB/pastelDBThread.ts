@@ -189,7 +189,7 @@ export async function fetchTransaction(props: fetchFuncConfig): Promise<void> {
       const transaction: TSinceBlockTransaction = listSinceBlock.transactions[i]
 
       const transactionRPC = new TransactionRPC()
-      const { result } = await transactionRPC.getTxn(transaction.txid)
+      const result = await transactionRPC.getTransaction(transaction.txid)
       insertTransaction(props.pastelDB, result)
     }
   } catch ({ message }) {
@@ -283,7 +283,9 @@ export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
 
 export async function fetchTotalBalance(props: fetchFuncConfig): Promise<void> {
   try {
-    const { result } = await rpc<TTotalBalanceResponse>('z_gettotalbalance', [])
+    const result = await rpc<TTotalBalanceResponse>('z_gettotalbalance', [], {
+      throw: true,
+    })
 
     insertTotalbalance(props.pastelDB, result)
 
@@ -310,7 +312,7 @@ export async function fetchListaddresses(
 
 export async function fetchPastelPrices(props: fetchFuncConfig): Promise<void> {
   try {
-    const resp = await coinGeckoClient.simple.price({
+    const resp = await coinGeckoClient?.simple?.price({
       ids: ['pastel'],
       vs_currencies: ['usd'],
     })

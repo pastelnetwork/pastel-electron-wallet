@@ -11,23 +11,33 @@ import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
 
 type TRestoreByPdfProps = {
-  onHideHeader: (status: boolean) => void
+  onHideHeader?: (status: boolean) => void
+  setPastelId?: (pastelId: string) => void
+  callback?: () => void
 }
 
 export default function RestoreByPdf({
   onHideHeader,
-}: TRestoreByPdfProps): JSX.Element {
+  setPastelId,
+  callback,
+}: TRestoreByPdfProps): JSX.Element | null {
   const [currentStatus, setCurrentStatus] = useState<string>('')
   const [fileSelected, setFileSelected] = useState<File>()
 
   const doImport = async (value: string) => {
-    const result = await doImportPrivKeys(value)
+    const result = await doImportPrivKeys(value, setPastelId)
     if (result) {
+      if (callback) {
+        callback()
+        return
+      }
       setCurrentStatus('done')
     } else {
       setCurrentStatus('error')
     }
-    onHideHeader(true)
+    if (onHideHeader) {
+      onHideHeader(true)
+    }
   }
 
   const handleRestoreByUpload = async () => {
@@ -44,7 +54,9 @@ export default function RestoreByPdf({
         }
       } catch {
         setCurrentStatus('error')
-        onHideHeader(true)
+        if (onHideHeader) {
+          onHideHeader(true)
+        }
       }
     }
   }
@@ -142,4 +154,10 @@ export default function RestoreByPdf({
       </div>
     </div>
   )
+}
+
+RestoreByPdf.defaultProps = {
+  onHideHeader: undefined,
+  setPastelId: undefined,
+  callback: undefined,
 }

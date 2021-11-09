@@ -70,7 +70,11 @@ export const rendererSetup = (): void => {
     }
 
     if (history.location.pathname === ROUTES.LOADING) {
-      history.replace(ROUTES.WELCOME_PAGE)
+      const skipLogin =
+        process.env.NODE_ENV === 'development' &&
+        process.env.AUTO_LOGIN_USERNAME &&
+        process.env.AUTO_LOGIN_PASSWORD
+      history.replace(skipLogin ? ROUTES.DASHBOARD : ROUTES.ONBOARDING)
     }
   })
 

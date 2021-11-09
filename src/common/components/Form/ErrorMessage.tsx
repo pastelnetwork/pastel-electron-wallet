@@ -12,7 +12,7 @@ export type TErrorMessageProps = {
 export default function ErrorMessage({
   form,
   name,
-  className = 'text-error mt-2',
+  className = 'text-red-fe mt-2',
 }: TErrorMessageProps): JSX.Element {
   return (
     <OriginalErrorMessage

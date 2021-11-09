@@ -28,6 +28,7 @@ export type TRendererEvents = {
     pastelWalletDirPath: string
     sqliteFilePath: string
     migrationsPath: string
+    pastelKeysPath: string
   }
   setRpcConfig: {
     rpcConfig: TRPCConfig

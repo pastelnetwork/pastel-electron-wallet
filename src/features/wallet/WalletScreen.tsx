@@ -225,17 +225,17 @@ const WalletScreenContent = (): JSX.Element => {
       setFilterTransactions({
         week: trans.filter(
           t =>
-            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
+            dayjs.unix(parseInt(t.time?.toString())).valueOf() >=
             dayOfWeek.valueOf(),
         ).length,
         month: trans.filter(
           t =>
-            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
+            dayjs.unix(parseInt(t.time?.toString())).valueOf() >=
             dayOfMonth.valueOf(),
         ).length,
         year: trans.filter(
           t =>
-            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
+            dayjs.unix(parseInt(t.time?.toString())).valueOf() >=
             dayOfYear.valueOf(),
         ).length,
       })

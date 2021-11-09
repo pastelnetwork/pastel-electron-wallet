@@ -3,6 +3,9 @@ import { toast } from 'react-toastify'
 
 import { rpc } from 'api/pastel-rpc/rpc'
 import AddressbookImpl from 'common/utils/AddressbookImpl'
+import { TUserInfo, writeUsersInfo, readUsersInfo } from 'common/utils/User'
+import { readFileName, writeFileContent } from 'common/utils/file'
+import store from '../../../../redux/store'
 
 type TAddressesResponse = {
   error: string | null
@@ -39,11 +42,12 @@ type TAddressBook = {
 type TAllAddressesAndPastelID = {
   zPrivateKeys: string[]
   tPrivateKeys: string[]
-  pastelIDs: TPastelID[]
+  pastelIDs: TPastelWithContentID[]
   addressBook: TAddressBook[]
   profile: {
     userName: string
   }
+  userInfo: TUserInfo[]
 }
 
 type TQRCode = {
@@ -61,6 +65,11 @@ export type TDataForPdf = {
 export type TPrivateKey = {
   address: string
   privateKey: string
+}
+
+type TPastelWithContentID = {
+  pastelId: string
+  content: string
 }
 
 async function fetchAllAddress(): Promise<TAllAddresses | null> {
@@ -118,6 +127,41 @@ async function getPastelIDs(): Promise<TPastelID[] | null> {
   }
 }
 
+async function getPastelIDsWithContent(): Promise<
+  TPastelWithContentID[] | null
+> {
+  try {
+    const { result } = await rpc<TPastelIDResponse>('pastelid', ['list'])
+    if (result) {
+      const pastels = []
+      for (let i = 0; i < result.length; i++) {
+        const pastelKeysPath = store.getState().appInfo.pastelKeysPath
+        if (pastelKeysPath) {
+          const content = await readFileName(pastelKeysPath, result[i].PastelID)
+          pastels.push({
+            pastelId: result[i].PastelID,
+            content: encodeURIComponent(
+              LZUTF8.compress(JSON.stringify(content), {
+                outputEncoding: 'Base64',
+              }),
+            ),
+          })
+        }
+      }
+      return pastels
+    }
+    return []
+  } catch (err) {
+    const msg: string = err?.message || ''
+    toast(msg, { type: 'error' })
+    console.log(
+      `profile/mySecurity/common/utils getPastelIDs error: ${msg}`,
+      err,
+    )
+    return null
+  }
+}
+
 async function getAddressBook(): Promise<TAddressBook[] | null> {
   const addresses = await AddressbookImpl.readAddressBook()
 
@@ -151,8 +195,9 @@ export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
     }
   }
 
-  const pastelIDs = await getPastelIDs()
+  const pastelIDs = await getPastelIDsWithContent()
   const addressBook = await getAddressBook()
+  const info = await readUsersInfo()
 
   if (
     pastelIDs?.length ||
@@ -165,6 +210,7 @@ export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
       tPrivateKeys,
       pastelIDs,
       addressBook,
+      userInfo: info,
     }
 
     return encodeURIComponent(
@@ -280,10 +326,27 @@ async function importAddressBook(addresses: TAddressBook[]) {
   }
 }
 
-export async function doImportPrivKeys(privateKeys: string): Promise<boolean> {
+async function importPastelId(pastelIds: TPastelWithContentID[]) {
+  const pastelKeysPath = store.getState().appInfo.pastelKeysPath
+  if (pastelKeysPath) {
+    for (let i = 0; i < pastelIds.length; i++) {
+      const pastelId = pastelIds[i]
+      const content = JSON.parse(
+        LZUTF8.decompress(decodeURIComponent(pastelId.content), {
+          inputEncoding: 'Base64',
+        }),
+      )
+      await writeFileContent(content, pastelKeysPath, pastelId.pastelId)
+    }
+  }
+}
+
+export async function doImportPrivKeys(
+  privateKeys: string,
+  setPastelId?: (pastelId: string) => void,
+): Promise<boolean> {
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
-
     if (keys) {
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
@@ -302,6 +365,19 @@ export async function doImportPrivKeys(privateKeys: string): Promise<boolean> {
       const addressBook = keys.addressBook
       if (addressBook.length) {
         await importAddressBook(addressBook)
+      }
+
+      const userInfo = keys.userInfo
+      if (userInfo.length) {
+        await writeUsersInfo(userInfo, true)
+        if (setPastelId) {
+          setPastelId(userInfo[0].pastelId)
+        }
+      }
+
+      const pastelIds = keys.pastelIDs
+      if (pastelIds.length) {
+        await importPastelId(pastelIds)
       }
 
       return true

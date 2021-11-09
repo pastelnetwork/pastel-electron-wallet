@@ -80,3 +80,5 @@ export const pastelUtilityBinPath = getBinPath({
   darwin: 'pastel-utility-darwin-amd64',
   windows: 'pastel-utility-windows-amd64.exe',
 })
+
+export const pastelKeysPath = path.join(configDirPath, 'pastelkeys')

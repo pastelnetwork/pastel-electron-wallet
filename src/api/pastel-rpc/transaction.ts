@@ -44,8 +44,10 @@ export class TransactionRPC {
    * @param txid Transaction Id
    * @returns
    */
-  async getTxn(txid: string): Promise<TTransactionInfoResponse> {
-    return rpc<TTransactionInfoResponse>('gettransaction', [txid])
+  async getTransaction(txid: string): Promise<TTransactionInfoResponse> {
+    return rpc<TTransactionInfoResponse>('gettransaction', [txid], {
+      throw: true,
+    })
   }
 
   /**
@@ -61,7 +63,7 @@ export class TransactionRPC {
       const inputAddresses: string[] = []
       await result.vin.map(async (v: TVin) => {
         try {
-          const { result } = await this.getTxn(v.txid)
+          const result = await this.getTransaction(v.txid)
 
           result.details.map((d: TTransactionDetail) => {
             if (d && inputAddresses.indexOf(d.address) === -1) {
@@ -215,7 +217,7 @@ export class TransactionRPC {
     const ztxlist = await Promise.all(
       alltxns.map(
         async (tx): Promise<TTransaction> => {
-          const { result: txInfoResult } = await this.getTxn(tx.txid)
+          const txInfoResult = await this.getTransaction(tx.txid)
           return mapTxnsResult(tx, txInfoResult)
         },
       ),

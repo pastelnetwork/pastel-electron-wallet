@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps, Router } from 'react-router'
+import { Router } from 'react-router'
 import { Route, Switch } from 'react-router-dom'
 import * as ROUTES from '../utils/constants/routes'
 import LoadingScreen from 'features/loading'
@@ -9,34 +9,36 @@ import PastelDB from '../../features/pastelDB/database'
 import { AppContext } from '../../features/app/AppContext'
 import { pageRoutes } from './index'
 import { useAppSelector } from '../../redux/hooks'
+import { OnboardingRouter } from '../../features/onboarding'
 import Utilities from '../../features/utilities'
 
 type TRouteType = {
-  id: string
   path: string
-  component:
-    | React.FunctionComponent<RouteComponentProps>
-    | React.ComponentClass<RouteComponentProps>
-  layout: React.FunctionComponent<unknown> | React.ComponentClass<unknown>
+  component: React.FunctionComponent | React.ComponentClass
+  layout?: React.FunctionComponent<unknown> | React.ComponentClass<unknown>
 }
 
 const childRoutes = (routes: Array<TRouteType>) =>
-  routes.map(({ component: Component, layout: Layout, path, id }) => {
+  routes.map(({ component: Component, layout: Layout, path }) => {
     return (
       <Route
-        key={id}
+        key={path}
         path={path}
         exact
-        render={props => (
-          <Layout>
-            <Component {...props} />
-          </Layout>
-        )}
+        render={() =>
+          Layout ? (
+            <Layout>
+              <Component />
+            </Layout>
+          ) : (
+            <Component />
+          )
+        }
       />
     )
   })
 
-const Routes = (): JSX.Element => {
+export default function Routes(): JSX.Element {
   const [db, setDb] = useState<Database>()
   const sqliteFilePath = useAppSelector(state => state.appInfo.sqliteFilePath)
 
@@ -51,7 +53,10 @@ const Routes = (): JSX.Element => {
       <Router history={history}>
         {db && (
           <AppContext.Provider value={{ db }}>
-            <Switch>{childRoutes(pageRoutes)}</Switch>
+            <Switch>
+              <Route path={ROUTES.ONBOARDING} component={OnboardingRouter} />
+              {childRoutes(pageRoutes)}
+            </Switch>
           </AppContext.Provider>
         )}
         <Switch>
@@ -62,5 +67,3 @@ const Routes = (): JSX.Element => {
     </div>
   )
 }
-
-export default Routes

@@ -22,6 +22,7 @@ import {
   pastelWalletDirPath,
   sentTxStorePath,
   sqliteFilePath,
+  pastelKeysPath,
 } from './paths'
 import initServeStatic, { closeServeStatic } from '../serveStatic'
 import { setupOptimizeImageHandler } from '../nft/addNFT/imageOptimization/ImageOptimization.main'
@@ -59,6 +60,7 @@ onMainEvent('rendererStarted', () => {
     pastelWalletDirPath,
     sqliteFilePath,
     migrationsPath,
+    pastelKeysPath,
   })
 
   // in case of page reload we already have rpcConfig and no need to launch wallet node again
@@ -75,6 +77,7 @@ onMainEvent('rendererStarted', () => {
 
 export const retriableAppSetup = async (): Promise<void> => {
   try {
+    sendEventToRenderer('appLoadingFailed', { error: '' })
     await startWalletNode()
     rpcConfig = await readRpcConfig(pastelConfigFilePath)
 

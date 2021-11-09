@@ -13,6 +13,7 @@ import {
   TAddressBalancesResponse,
   TAddressList,
   TZListUnspent,
+  TListUnspent,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -89,14 +90,13 @@ export class WalletRPC {
    * @returns ITotalBalanceResponse
    */
   async fetchTotalBalance(): Promise<TTotalBalance> {
-    const { result } = await rpc<TTotalBalanceResponse>('z_gettotalbalance', [
-      0,
-    ])
-    return result
+    return await rpc<TTotalBalanceResponse>('z_gettotalbalance', [0], {
+      throw: true,
+    })
   }
 
   useTotalBalance(): UseQueryResult<TTotalBalance> {
-    return useQuery('wz_gettotalbalance', () => this.fetchTotalBalance())
+    return useQuery(['z_gettotalbalance', 0], () => this.fetchTotalBalance())
   }
 
   async fetchTGetAddressesByAccount(): Promise<TListAddressesResponse> {
@@ -221,21 +221,12 @@ export class WalletRPC {
    * @returns IAddressBalance[]
    */
   async fetchTandZAddresses(): Promise<TAddressList[]> {
-    const results = await Promise.all([
-      this.fetchZListUnspent(),
+    const [TUnspent, ZUnspent] = await Promise.all([
       this.fetchTListUnspent(),
+      this.fetchZListUnspent(),
     ])
 
-    const zResult: TAddressList[] = results[0].map((addr: TZListUnspent) => {
-      return {
-        txid: addr.txid,
-        address: addr.address,
-        amount: addr.amount,
-        type: 'shielded',
-      }
-    })
-
-    const tResult: TAddressList[] = results[0].map((addr: TZListUnspent) => {
+    const tResult: TAddressList[] = TUnspent.map((addr: TListUnspent) => {
       return {
         txid: addr.txid,
         address: addr.address,
@@ -244,7 +235,16 @@ export class WalletRPC {
       }
     })
 
-    return zResult.concat(tResult)
+    const zResult: TAddressList[] = ZUnspent.map((addr: TZListUnspent) => {
+      return {
+        txid: addr.txid,
+        address: addr.address,
+        amount: addr.amount,
+        type: 'shielded',
+      }
+    })
+
+    return tResult.concat(zResult)
   }
 
   useTAddressBalances(): UseQueryResult<TAddressBalancesResponse> {

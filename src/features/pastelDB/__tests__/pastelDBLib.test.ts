@@ -1,4 +1,5 @@
 import { Database } from 'better-sqlite3'
+import '../../../common/utils/initDayjs'
 
 import { selectAllQuery } from '../constants'
 
@@ -634,7 +635,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([
       {
         averageSize: blockInfo.size,
-        date: dayjs(blockInfo.createdAt).format('MM/DD/YYYY'),
+        date: dayjs(blockInfo.createdAt).utc().format('MM/DD/YYYY'),
       },
     ])
 
@@ -671,7 +672,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([
       {
         count: 2,
-        date: dayjs().format('MM/DD/YYYY'),
+        date: dayjs().utc().format('MM/DD/YYYY'),
       },
     ])
   })
