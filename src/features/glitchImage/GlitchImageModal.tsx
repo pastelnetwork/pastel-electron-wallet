@@ -7,7 +7,7 @@ import { closeGlitchImageModal } from './GlitchImageModalSlice'
 
 import { glitch } from '../../common/constants/ServeStatic'
 
-export default function glitchImageModal(): JSX.Element | null {
+export default function GlitchImageModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.glitchImageModal)
   const dispatch = useAppDispatch()
 

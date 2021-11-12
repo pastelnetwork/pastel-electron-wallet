@@ -7,7 +7,7 @@ import { closeSquooshToolModal } from './squooshToolModalSlice'
 
 import { squoosh } from '../../common/constants/ServeStatic'
 
-export default function squooshToolModal(): JSX.Element {
+export default function SquooshToolModal(): JSX.Element {
   const { modalIsOpen } = useAppSelector(state => state.squooshToolModal)
   const dispatch = useAppDispatch()
 

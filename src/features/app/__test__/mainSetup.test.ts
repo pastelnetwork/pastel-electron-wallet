@@ -1,3 +1,5 @@
+import log from 'electron-log'
+
 import { redirectDeepLinkingUrl, setupDeepLinking } from '../../deepLinking'
 import { setupAutoUpdater } from '../autoUpdater'
 import { setupOptimizeImageHandler } from '../../nft/addNFT/imageOptimization/ImageOptimization.main'
@@ -128,7 +130,7 @@ describe('mainSetup', () => {
   test('should quit after 10 seconds if renderer hangs', async () => {
     jest.useFakeTimers()
     resetWindowCloseFlags()
-    console.warn = jest.fn()
+    log.warn = jest.fn()
 
     asMock(mainEventPromise).mockReturnValueOnce(
       new Promise(() => {
@@ -136,12 +138,21 @@ describe('mainSetup', () => {
       }),
     )
 
-    await onWindowClose(new Event('close'))
+    onWindowClose(new Event('close'))
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     await nextTickPromise()
     expect(app.quit).not.toHaveBeenCalled()
 
     jest.advanceTimersByTime(10000)
-    expect(console.warn).toHaveBeenCalledWith('Timeout, quitting')
+    expect(log.warn).toHaveBeenCalledWith('Timeout, quitting')
     expect(app.quit).toHaveBeenCalled()
   })
 })
