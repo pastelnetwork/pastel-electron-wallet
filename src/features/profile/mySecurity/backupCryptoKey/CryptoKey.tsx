@@ -164,8 +164,8 @@ export const PDFDocument = ({
             </View>
           </View>
         ))}
-        {allKeys.addressBook?.map((addressBook, idx) => (
-          <View style={pdfStyles.section} key={`${addressBook.address}-${idx}`}>
+        {allKeys.addressBook?.map(addressBook => (
+          <View style={pdfStyles.section} key={addressBook.address}>
             <View style={pdfStyles.mainContentFull}>
               <View style={pdfStyles.contentItem}>
                 <Text style={pdfStyles.contentTitle}>Label:</Text>
