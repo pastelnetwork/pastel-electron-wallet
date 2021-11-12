@@ -1,5 +1,7 @@
 import './Progressbar.css'
 
+import React from 'react'
+
 export type TProgressbarProps = {
   className?: string
   percent: number
