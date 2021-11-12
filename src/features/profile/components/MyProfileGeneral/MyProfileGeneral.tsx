@@ -90,6 +90,15 @@ const ProfileGeneral = ({
       setCurrentPrice(result)
     }
     getNativeCurrency()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [nativeCurrency])
 
   return (

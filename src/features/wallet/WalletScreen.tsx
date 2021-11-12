@@ -247,6 +247,15 @@ const WalletScreenContent = (): JSX.Element => {
     }
 
     getTransaction()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   const onTabToggle = (index: number) => {

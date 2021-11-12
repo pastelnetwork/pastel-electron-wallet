@@ -53,7 +53,7 @@ describe('mainSetup', () => {
 
     expect(createWindow).toHaveBeenCalled()
 
-    emitMainEvent('rendererStarted', null)
+    await emitMainEvent('rendererStarted', null)
 
     expect(sendEventToRenderer).toHaveBeenCalledWith(
       'setAppInfo',
@@ -75,7 +75,7 @@ describe('mainSetup', () => {
   })
 
   test('retryInitializingApp event should start wallet node, send rpc config and redirect deep linking', async () => {
-    emitMainEvent('retryInitializingApp', null)
+    await emitMainEvent('retryInitializingApp', null)
     expect(startWalletNode).toHaveBeenCalled()
     await nextTickPromise()
     expect(sendEventToRenderer).toHaveBeenCalled()
@@ -85,7 +85,7 @@ describe('mainSetup', () => {
   test('should send appLoadingFailed event if wallet node fails', async () => {
     asMock(startWalletNode).mockRejectedValueOnce(new Error('failed'))
 
-    mainSetup()
+    await mainSetup()
 
     await resolveAppReadyPromise()
     await emitMainEvent('rendererStarted', null)
@@ -98,7 +98,7 @@ describe('mainSetup', () => {
   test('should send appLoadingFailed event if readRpcConfig fails', async () => {
     asMock(readRpcConfig).mockRejectedValueOnce(new Error('failed'))
 
-    mainSetup()
+    await mainSetup()
 
     await resolveAppReadyPromise()
     await emitMainEvent('rendererStarted', null)
@@ -113,7 +113,7 @@ describe('mainSetup', () => {
 
     const event = new Event('close')
     event.preventDefault = jest.fn()
-    onWindowClose(event)
+    await onWindowClose(event)
 
     await nextTickPromise()
 
@@ -136,7 +136,7 @@ describe('mainSetup', () => {
       }),
     )
 
-    onWindowClose(new Event('close'))
+    await onWindowClose(new Event('close'))
     await nextTickPromise()
     expect(app.quit).not.toHaveBeenCalled()
 

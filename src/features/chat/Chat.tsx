@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, KeyboardEvent } from 'react'
 import cn from 'classnames'
+import log from 'electron-log'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import { useHistory } from 'react-router-dom'
@@ -59,7 +60,7 @@ const Chat = (): JSX.Element => {
   }
 
   const onSendMsg = () => {
-    const val = newMsg.replace(/\s{1,}$/, '') // strip ending whitespaces
+    const val = newMsg.trimEnd() // strip ending whitespaces
     if (val.length === 0) {
       // don't send empty messages
       setNewMsg('')
@@ -72,15 +73,15 @@ const Chat = (): JSX.Element => {
   }
 
   const onEmoji = () => {
-    console.log('show/hide emoji panel')
+    log.log('show/hide emoji panel')
   }
 
   const onAttach = () => {
-    console.log('show/hide attachment panel')
+    log.log('show/hide attachment panel')
   }
 
   const saveAttachment = (url: string) => {
-    console.log('save attached file', url)
+    log.log('save attached file', url)
   }
 
   const history = useHistory()

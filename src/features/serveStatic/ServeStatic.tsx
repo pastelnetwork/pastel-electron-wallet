@@ -3,6 +3,7 @@ import serveStatic from 'serve-static'
 import path from 'path'
 import detect from 'detect-port'
 import { app } from 'electron'
+import log from 'electron-log'
 
 import { glitch, squoosh, ffmpegwasm } from '../../common/constants/ServeStatic'
 
@@ -29,8 +30,35 @@ export default function initServeStatic(): void {
   }
 
   setupServeStatic(squooshStaticPath, squoosh.staticPort)
+    .then(() => {
+      // noop
+    })
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
   setupServeStatic(glitchStaticPath, glitch.staticPort)
+    .then(() => {
+      // noop
+    })
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
   setupServeStatic(ffmpegStaticPath, ffmpegwasm.staticPort)
+    .then(() => {
+      // noop
+    })
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
 }
 
 async function setupServeStatic(staticPath: string, port: number) {
@@ -43,7 +71,7 @@ async function setupServeStatic(staticPath: string, port: number) {
       // Create server
       const server = http.createServer(function onRequest(req, res) {
         serve(req, res, () => {
-          console.log('Created server')
+          log.log('Created server')
         })
       })
       // Listen
@@ -57,14 +85,14 @@ async function setupServeStatic(staticPath: string, port: number) {
 
 export function closeServeStatic(): void {
   if (servers && servers.length > 0) {
-    servers.map(server => {
+    servers.map(server =>
       server.close(error => {
         if (error) {
           throw new Error(
             `serveStatic closeServeStatic error: ${error.message}`,
           )
         }
-      })
-    })
+      }),
+    )
   }
 }

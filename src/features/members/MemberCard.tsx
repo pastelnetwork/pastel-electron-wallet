@@ -1,5 +1,6 @@
 import React from 'react'
 import cn from 'classnames'
+import parse from 'html-react-parser'
 
 import { DiamondInHexagon } from 'common/components/Icons/DiamondInHexagon'
 
@@ -31,17 +32,17 @@ const MemberCard = ({
         <div className='flex flex-col justify-between w-115px'>
           <h5 className='text-gray-1a font-semibold truncate'>
             {searchText ? (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: searchText
+              <div>
+                {parse(
+                  searchText
                     ? name.replace(
                         new RegExp(searchText, 'gi'),
                         match =>
                           `<mark class='bg-blue-9b py-1'>${match}</mark>`,
                       )
                     : name,
-                }}
-              ></div>
+                )}
+              </div>
             ) : (
               name
             )}

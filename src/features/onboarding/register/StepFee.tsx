@@ -101,7 +101,17 @@ export default function StepFee(): JSX.Element {
     setCopying(true) // animate icon
     setTimeout(() => setCopying(false), 200)
 
-    navigator.clipboard.writeText(store.exchangeAddress)
+    navigator.clipboard
+      .writeText(store.exchangeAddress)
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     setCopied(true)
   }
 

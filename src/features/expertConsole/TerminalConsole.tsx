@@ -143,6 +143,15 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   const onTabPress = () => {
     if (!typing) {
       addOutputThenDisplay("$\nType 'help' for a list of available commands.")
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
       return
     }
     const autoCompletionStr = emulator.autocomplete(emulatorState, typing)
@@ -155,6 +164,15 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
       return
     }
     addOutputThenDisplay(`$ ${typing}\n${suggestions.join('\n')}`)
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }
 
   const onArrowDownPress = () => {
@@ -264,7 +282,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
         textConsole = textAsTable(tempArr)
       }
 
-      if (data == null || (Array.isArray(data) && data.length == 0)) {
+      if (data === null || (Array.isArray(data) && data.length === 0)) {
         textConsole = 'null'
       }
     } catch (error) {

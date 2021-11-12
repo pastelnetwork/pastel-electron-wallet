@@ -26,6 +26,15 @@ export default function QRCodeModal(): JSX.Element {
       setLoading(false)
     }
     getKeys()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [address])
 
   return (

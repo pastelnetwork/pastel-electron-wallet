@@ -44,6 +44,15 @@ export default function RestoreByUpload({
     }
     if (qrCodeData.length) {
       doImport()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [qrCodeData])
 

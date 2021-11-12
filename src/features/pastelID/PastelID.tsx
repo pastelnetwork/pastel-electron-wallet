@@ -4,6 +4,7 @@ import {
 } from 'check-password-strength'
 import React, { useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid'
+import log from 'electron-log'
 
 import { useCurrencyName } from '../../common/hooks/appInfo'
 import LoadingOverlay from '../../legacy/components/LoadingOverlay'
@@ -111,7 +112,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
       )
 
       // TODO log errors to a central logger so we can address them later.
-      console.warn(error)
+      log.warn(error)
     }
   }
 

@@ -44,7 +44,14 @@ export default function Routes(): JSX.Element {
 
   useEffect(() => {
     if (sqliteFilePath) {
-      PastelDB.getDatabaseInstance().then(setDb)
+      PastelDB.getDatabaseInstance()
+        .then(setDb)
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [sqliteFilePath])
 

@@ -231,6 +231,15 @@ const PaymentModal = (): JSX.Element => {
 
     if (operationIdList.length > 0) {
       handleGetTransactionResult(operationIdList)
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     } else {
       setLoading(false)
     }
@@ -263,6 +272,15 @@ const PaymentModal = (): JSX.Element => {
             txnId: item.result.txid,
             privateNote: note.privateNote,
           })
+            .then(() => {
+              // noop
+            })
+            .catch(() => {
+              // noop
+            })
+            .finally(() => {
+              // noop
+            })
         }
       } else {
         isExecuting = true
@@ -272,6 +290,15 @@ const PaymentModal = (): JSX.Element => {
     if (isExecuting) {
       setTimeout(() => {
         handleGetTransactionResult(operationIdList)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
       }, 2000) // 2 sec
     } else {
       setPaymentResults(paymentStatus)

@@ -24,6 +24,15 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
     }
 
     fetchData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [exportPrivKeyModalIsOpen])
 
   if (!exportPrivKeyModalIsOpen) {

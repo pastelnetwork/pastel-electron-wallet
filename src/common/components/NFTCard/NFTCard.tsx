@@ -151,17 +151,15 @@ const NFTCard = ({
                   : 'h4_18_24_medium',
               )}
             >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: searchText
-                    ? `@${fullCardProps.author}`.replace(
-                        new RegExp(searchText, 'gi'),
-                        match =>
-                          `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
-                      )
-                    : `@${fullCardProps.author}`,
-                }}
-              />
+              {parse(
+                searchText
+                  ? `@${fullCardProps.author}`.replace(
+                      new RegExp(searchText, 'gi'),
+                      match =>
+                        `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+                    )
+                  : `@${fullCardProps.author}`,
+              )}
             </div>
           </div>
           {!fullCardProps.hideLikeButton ? (

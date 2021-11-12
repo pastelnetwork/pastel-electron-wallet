@@ -50,7 +50,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
 
     for (let i = 0; i < keys.length; i++) {
       try {
-        walletRPC.doImportANIPrivKey(keys[i])
+        await walletRPC.doImportANIPrivKey(keys[i])
         if (i === keys.length - 1) {
           setComplete(true)
         }

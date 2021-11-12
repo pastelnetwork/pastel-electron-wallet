@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import log from 'electron-log'
 import ProfileCard from '../components/MyProfileCard'
 import ProfileComments from '../components/ProfileComments'
 import { nativeCurrencyOptions } from '../myProfile/MyProfile'
@@ -183,15 +184,15 @@ const MyComments = (): JSX.Element => {
   )
 
   const handleOnReply = (replyId: number, reply: string) => {
-    console.log(replyId, reply)
+    log.log(replyId, reply)
   }
 
   const handleOnLikeClick = (commentId: number) => {
-    console.log(commentId)
+    log.log(commentId)
   }
 
   const onClickFilter = (value: string) => {
-    console.log(value)
+    log.log(value)
   }
 
   const isEmpty = false

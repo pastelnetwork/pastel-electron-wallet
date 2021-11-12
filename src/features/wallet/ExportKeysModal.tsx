@@ -176,6 +176,15 @@ const ExportKeysModal = (): JSX.Element => {
       setHavePDFLink(true)
     }
     getKeys()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [address])
 
   const getPdfFilename = () => {

@@ -184,7 +184,6 @@ export default function Select<TForm extends FieldValues>(
                   {...getToggleButtonProps()}
                   {...inputProps}
                   type='text'
-                  role='input'
                   disabled={disabled}
                   value={
                     append ? `${inputProps.value}${append}` : inputProps.value

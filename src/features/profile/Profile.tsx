@@ -56,6 +56,15 @@ const Profile = (): JSX.Element => {
     }
     if (!qrcodeData.length) {
       fetchData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [])
 

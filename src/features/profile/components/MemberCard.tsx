@@ -42,7 +42,6 @@ const MemberCard = ({
       )}
       onClick={e => {
         e.preventDefault()
-        console.log('debug')
         onClick(id)
       }}
     >

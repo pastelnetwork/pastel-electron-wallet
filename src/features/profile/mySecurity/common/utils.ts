@@ -1,5 +1,6 @@
 import LZUTF8 from 'lzutf8'
 import { toast } from 'react-toastify'
+import log from 'electron-log'
 
 import { rpc } from 'api/pastel-rpc/rpc'
 import AddressbookImpl from 'common/utils/AddressbookImpl'
@@ -88,7 +89,7 @@ async function fetchAllAddress(): Promise<TAllAddresses | null> {
     }
   } catch (err) {
     toast(err.message, { type: 'error' })
-    console.log(
+    log.log(
       `profile/mySecurity/common/utils fetchAllAddress error: ${err.message}`,
       err,
     )
@@ -105,7 +106,7 @@ async function getPrivKeyAsString(
     return res.result
   } catch (err) {
     toast(err.message, { type: 'error' })
-    console.log(
+    log.log(
       `profile/mySecurity/common/utils getPrivKeyAsString error: ${err.message}`,
       err,
     )
@@ -119,7 +120,7 @@ async function getPastelIDs(): Promise<TPastelID[] | null> {
     return res.result
   } catch (err) {
     toast(err.message, { type: 'error' })
-    console.log(
+    log.log(
       `profile/mySecurity/common/utils getPastelIDs error: ${err.message}`,
       err,
     )
@@ -154,10 +155,7 @@ async function getPastelIDsWithContent(): Promise<
   } catch (err) {
     const msg: string = err?.message || ''
     toast(msg, { type: 'error' })
-    console.log(
-      `profile/mySecurity/common/utils getPastelIDs error: ${msg}`,
-      err,
-    )
+    log.log(`profile/mySecurity/common/utils getPastelIDs error: ${msg}`, err)
     return null
   }
 }
@@ -269,7 +267,7 @@ async function importPrivKey(key: string, rescan: boolean) {
     try {
       await rpc<TPrivKeyResponse>('z_importkey', [key, rescan ? 'yes' : 'no'])
     } catch (err) {
-      console.log(
+      log.log(
         `profile/mySecurity/common importPrivKey z_importkey error: ${err.message}`,
         err,
       )
@@ -282,7 +280,7 @@ async function importPrivKey(key: string, rescan: boolean) {
         rescan ? 'yes' : 'no',
       ])
     } catch (err) {
-      console.log(
+      log.log(
         `profile/mySecurity/common importPrivKey z_importviewingkey error: ${err.message}`,
         err,
       )
@@ -292,7 +290,7 @@ async function importPrivKey(key: string, rescan: boolean) {
     try {
       await rpc<TPrivKeyResponse>('importprivkey', [key, 'imported', rescan])
     } catch (err) {
-      console.log(
+      log.log(
         `profile/mySecurity/common importPrivKey importprivkey error: ${err.message}`,
         err,
       )
@@ -322,7 +320,7 @@ async function importAddressBook(addresses: TAddressBook[]) {
   }
 
   if (addressBooks?.length) {
-    AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+    await AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
   }
 }
 
@@ -351,14 +349,14 @@ export async function doImportPrivKeys(
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {
-          importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
+          await importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
         }
       }
 
       const tPrivateKeys = keys.tPrivateKeys
       if (tPrivateKeys?.length) {
         for (let i = 0; i < tPrivateKeys.length; i++) {
-          importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
+          await importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
         }
       }
 

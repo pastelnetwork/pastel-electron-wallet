@@ -128,7 +128,6 @@ export default function SelectAmount({
                 {...getToggleButtonProps()}
                 {...getInputProps()}
                 type='text'
-                role='input'
                 value={formatDisplayNumber(selected?.label).trim()}
                 onKeyUp={handleOnKeyUp}
                 className={cn(

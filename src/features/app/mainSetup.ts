@@ -45,7 +45,7 @@ export const mainSetup = async (): Promise<void> => {
 }
 
 const setupWindow = async () => {
-  createWindow(onWindowClose)
+  await createWindow(onWindowClose)
 }
 
 let rpcConfig: TRPCConfig | undefined
@@ -73,6 +73,15 @@ onMainEvent('rendererStarted', () => {
 
   initServeStatic()
   retriableAppSetup()
+    .then(() => {
+      // noop
+    })
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
 })
 
 export const retriableAppSetup = async (): Promise<void> => {
@@ -105,8 +114,8 @@ const enableDevTools = () => {
   if (!app.isPackaged) {
     app.whenReady().then(() => {
       installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-        .then((name: string) => console.warn(`Added Extension:  ${name}`))
-        .catch((err: Error) => console.warn('An error occurred: ', err))
+        .then((name: string) => log.warn(`Added Extension:  ${name}`))
+        .catch((err: Error) => log.warn('An error occurred: ', err))
     })
   }
 }
@@ -132,6 +141,15 @@ const setupEventListeners = () => {
     // dock icon is clicked and there are no other windows open.
     if (!browserWindow.current) {
       setupWindow()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   })
 
@@ -169,13 +187,13 @@ export const resetWindowCloseFlags = (): void => {
 export const onWindowClose = async (event: Event): Promise<void> => {
   // If we are clear to close, then return and allow everything to close
   if (proceedToClose) {
-    console.warn('proceed to close, so closing')
+    log.warn('proceed to close, so closing')
     return
   }
 
   // If we're already waiting for close, then don't allow another close event to actually close the window
   if (waitingForClose) {
-    console.warn('Waiting for close... Timeout in 10s')
+    log.warn('Waiting for close... Timeout in 10s')
     event.preventDefault()
     return
   }
@@ -191,7 +209,7 @@ export const onWindowClose = async (event: Event): Promise<void> => {
   setTimeout(() => {
     waitingForClose = false
     proceedToClose = true
-    console.warn('Timeout, quitting')
+    log.warn('Timeout, quitting')
     app.quit()
   }, 10 * 1000)
 

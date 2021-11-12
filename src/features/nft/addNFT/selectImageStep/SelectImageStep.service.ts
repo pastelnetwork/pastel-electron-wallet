@@ -134,7 +134,17 @@ export const useSelectImageService = (
       if (imageFile) {
         const { arrayBuffer, ...image } = imageFile
         state.setImage(image)
-        state.optimizationService.optimizeImage(image.type, arrayBuffer)
+        state.optimizationService
+          .optimizeImage(image.type, arrayBuffer)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
       }
 
       state.goToNextStep()

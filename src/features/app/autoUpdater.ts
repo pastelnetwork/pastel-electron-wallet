@@ -1,5 +1,6 @@
 import { onMainEvent, sendEventToRenderer } from './mainEvents'
 import { app, autoUpdater } from 'electron'
+import log from 'electron-log'
 import pkg from '../../../package.json'
 
 export const setupAutoUpdater = (): void => {
@@ -30,7 +31,7 @@ export const setupAutoUpdater = (): void => {
     'update-downloaded',
     (event, releaseNotes, releaseName, updateURL) => {
       sendEventToRenderer('updateDownloaded', null)
-      console.info('updateDownloaded', {
+      log.info('updateDownloaded', {
         event,
         releaseNotes,
         releaseName,
@@ -40,6 +41,6 @@ export const setupAutoUpdater = (): void => {
   )
 
   autoUpdater.on('error', err => {
-    console.warn(`autoUpdater error: ${err.message}`, err)
+    log.warn(`autoUpdater error: ${err.message}`, err)
   })
 }

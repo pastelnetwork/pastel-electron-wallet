@@ -51,6 +51,15 @@ const MySecurity = (props: TSecurity): JSX.Element => {
       if (evt.data.videoUrl && !videoUrl) {
         setVideoUrl(evt.data.videoUrl)
         saveFile(evt.data.videoUrl)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
       } else {
         setCurrentStatus('error')
       }
@@ -71,6 +80,15 @@ const MySecurity = (props: TSecurity): JSX.Element => {
   const handleDownloadVideo = () => {
     if (videoUrl) {
       saveFile(videoUrl)
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     } else {
       setCurrentStatus('downloading')
       const canvas = document.querySelectorAll('.canvasQRCodeData')

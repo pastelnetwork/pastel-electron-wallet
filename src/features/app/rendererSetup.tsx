@@ -31,6 +31,15 @@ export const rendererSetup = (): void => {
     clearInterval(intervals.fetchPrice)
   } else {
     fetchPastelPrice()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     intervals.fetchPrice = setInterval(fetchPastelPrice, oneHour)
   }
 
@@ -60,12 +69,30 @@ export const rendererSetup = (): void => {
         },
       },
     )
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
 
     if (intervals.dbThread) {
       clearInterval(intervals.dbThread)
     } else {
       const period = 1000 * 10
       PastelDBThread()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
       setInterval(PastelDBThread, period)
     }
 

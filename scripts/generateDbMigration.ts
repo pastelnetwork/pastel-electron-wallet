@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import log from 'electron-log'
 
 const migrationsPath = path.join(
   __dirname,
@@ -26,4 +27,4 @@ const migrationPath = path.join(migrationsPath, migrationName)
 
 fs.writeFileSync(migrationPath, '')
 
-console.log(`Created: ${migrationPath}`)
+log.log(`Created: ${migrationPath}`)

@@ -52,8 +52,26 @@ const PriceOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 

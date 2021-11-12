@@ -2,7 +2,6 @@ import './index.css'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
-import { hot } from 'react-hot-loader' // has to stay first
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -36,5 +35,3 @@ const App = () => {
 const application = <App />
 
 render(application, document.getElementById('root'))
-
-export default hot(module)(application)

@@ -1,4 +1,5 @@
 import { app, protocol } from 'electron'
+import log from 'electron-log'
 
 import pkg from '../../../package.json'
 import { browserWindow } from '../app/window'
@@ -55,7 +56,7 @@ const registerFileProtocol = (): void => {
     try {
       return callback(decodedUrl)
     } catch (error) {
-      console.error(
+      log.error(
         `feature/deepLinking registerFileProtocol error: Could not get file path: ${error?.message}`,
         error,
       )

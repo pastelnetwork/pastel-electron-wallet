@@ -50,7 +50,7 @@ export default function RestoreByPdf({
             '//mozilla.github.io/pdf.js/build/pdf.worker.js'
           const doc = await pdfjs.getDocument('file://' + pdfPath).promise
           const metaData = await doc.getMetadata()
-          doImport(metaData.info?.Keywords)
+          await doImport(metaData.info?.Keywords)
         }
       } catch {
         setCurrentStatus('error')

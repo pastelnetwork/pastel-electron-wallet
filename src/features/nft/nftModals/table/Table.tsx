@@ -47,7 +47,6 @@ const Table = ({
   }, [data])
 
   useEffect(() => {
-    console.log(sortIndex, sortOrder)
     if (sortOrder == 0) {
       return
     }

@@ -17,7 +17,7 @@ describe('walletNode', () => {
       .mockResolvedValueOnce('ok')
       .mockResolvedValueOnce('ok')
 
-    startWalletNode()
+    await startWalletNode()
     await nextTickPromise()
 
     expect(spawnProcess).toHaveBeenCalledWith(
@@ -45,7 +45,7 @@ describe('walletNode', () => {
       .mockResolvedValueOnce('ok')
       .mockResolvedValueOnce('ok')
 
-    startWalletNode()
+    await startWalletNode()
     await nextTickPromise()
 
     const onLineCallbacks = asMock(spawnProcess).mock.calls.map(

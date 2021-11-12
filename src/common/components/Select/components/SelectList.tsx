@@ -103,6 +103,7 @@ export default function SelectList({
               index,
               item,
             })}
+            key={item.value}
             className={cn(
               'w-full py-2 px-4 text-gray-71 cursor-pointer',
               isSelected && 'bg-gray-f7',

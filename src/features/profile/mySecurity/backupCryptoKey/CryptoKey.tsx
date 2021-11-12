@@ -199,6 +199,15 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
       setAllKeys(result)
     }
     fetchData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   const fileName = `${currencyName || 'LSP'}_Paper_Wallet__Private_Keys_${dayjs(

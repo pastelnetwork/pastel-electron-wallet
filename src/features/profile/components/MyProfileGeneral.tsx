@@ -78,6 +78,15 @@ const ProfileGeneral = ({
       setCurrentPSLPrice(result.toFixed(2))
     }
     getNativeCurrency()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [nativeCurrency])
 
   return (

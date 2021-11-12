@@ -174,6 +174,15 @@ export default function TransactionHistoryModal(): JSX.Element {
       setLoading(false)
     }
     getTransactions()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   useEffect(() => {
