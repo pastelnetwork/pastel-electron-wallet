@@ -29,7 +29,7 @@ const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
         <div className='flex flex-none'>
           {keywords.slice(0, 5).map((item, index) => (
             <div
-              key={index}
+              key={`${item}-${index}`}
               className='py-0.5 px-2 bg-gray-71 rounded-full mr-2 text-white font-medium cursor-pointer'
             >
               #{item}
@@ -61,7 +61,7 @@ const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
       <div className='flex-grow overflow-y-auto overflow-x-hidden grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mt-10 pb-3 gap-y-[30px] gap-x-[18px]'>
         {mockNFTs.map((item, i) => (
           <NFTCard
-            key={i}
+            key={`${item.title}-${i}`}
             hideFollow={true}
             hideLikeButton={true}
             {...item}

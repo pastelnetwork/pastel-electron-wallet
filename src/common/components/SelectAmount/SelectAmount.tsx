@@ -168,7 +168,7 @@ export default function SelectAmount({
 
                     return (
                       <li
-                        key={index}
+                        key={item.value}
                         {...getItemProps({
                           key: item.label,
                           item,

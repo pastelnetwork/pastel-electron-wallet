@@ -161,7 +161,7 @@ const ProfileCard = ({
                   type='top'
                   width={114}
                   content={
-                    <p className='mb-0 px-2 py-6px text-xs text-white text-sm'>
+                    <p className='mb-0 px-2 py-6px text-white text-sm'>
                       PastelID Identifier
                     </p>
                   }
@@ -175,8 +175,8 @@ const ProfileCard = ({
                 </button>
               </div>
               <div className='space-y-6'>
-                {edits.map((each, index) => (
-                  <div key={index}>
+                {edits.map(each => (
+                  <div key={each.value}>
                     <div className='text-gray-71 text-lg mb-2'>
                       {each.title}
                     </div>

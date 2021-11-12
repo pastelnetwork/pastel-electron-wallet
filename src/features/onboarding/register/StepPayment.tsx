@@ -87,8 +87,8 @@ export default function StepPaymentMethod(): JSX.Element {
           register or purchase NFTs on Pastel
         </h2>
         <div className='mt-6'>
-          {methods.map((method, i) => (
-            <div className='flex items-center mt-4' key={i}>
+          {methods.map(method => (
+            <div className='flex items-center mt-4' key={method.method}>
               <Radio
                 checked={store.paymentMethod === method.method}
                 onChange={val => onChangePayMethod(method.method, val)}

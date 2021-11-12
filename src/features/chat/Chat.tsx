@@ -132,9 +132,9 @@ const Chat = (): JSX.Element => {
             </i>
           </div>
           <div className='px-5 flex-grow overflow-auto'>
-            {chats.map((chat, i) => (
+            {chats.map(chat => (
               <ChatItem
-                key={i}
+                key={chat.id}
                 {...chat}
                 onClick={onSelectChat}
                 isActive={activeChatId === chat.id}
@@ -186,7 +186,7 @@ const Chat = (): JSX.Element => {
                 }
                 return (
                   <ChatMessage
-                    key={i}
+                    key={msg.id}
                     {...props}
                     onSaveAttachment={saveAttachment}
                   />

@@ -10,6 +10,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 import history from 'common/utils/history'
 import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
 import { verifyPastelIdPassword } from 'api/pastel-rpc'
+import { toast } from 'react-toastify'
 
 export default function Login(): JSX.Element {
   const [isLoading, setLoading] = useState(false)
@@ -25,16 +26,20 @@ export default function Login(): JSX.Element {
       u => u.username === username && u.newPassword === md5(password),
     )
     if (user) {
-      const verify = await verifyPastelIdPassword({
-        pastelId: user.pastelId,
-        password: `${user.password}${user.username}`,
-      })
-      if (verify.signature) {
-        setAutoSignIn()
-        setLoading(false)
-        history.push(ROUTES.DASHBOARD)
-      } else {
-        setErrorMessage('Username or password is incorrect')
+      try {
+        const verify = await verifyPastelIdPassword({
+          pastelId: user.pastelId,
+          password: `${user.password}${user.username}`,
+        })
+        if (verify.signature) {
+          setAutoSignIn()
+          setLoading(false)
+          history.push(ROUTES.DASHBOARD)
+        } else {
+          setErrorMessage('Username or password is incorrect')
+        }
+      } catch (error) {
+        toast(error.message, { type: 'error' })
       }
     } else {
       setErrorMessage('Username or password is incorrect')

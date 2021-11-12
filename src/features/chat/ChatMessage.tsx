@@ -6,6 +6,7 @@ import { TChatUser } from './common'
 import { UserAvatar } from './components/UserAvatar'
 
 export type TChatMessageProps = {
+  id: string
   text?: string
   sender: TChatUser
   date: Date
@@ -51,9 +52,9 @@ export const ChatMessage = (props: TChatMessageProps): JSX.Element => {
 
         {props.attachments && (
           <div className='flex flex-wrap mt-3'>
-            {props.attachments.map((att, i) => (
+            {props.attachments.map(att => (
               <div
-                key={i}
+                key={att}
                 className={cn(
                   'inline-block bg-gray-300 rounded-2xl bg-cover bg-center cursor-pointer mr-3 mb-3 w-48 h-44',
                   styles.oneAttachment,

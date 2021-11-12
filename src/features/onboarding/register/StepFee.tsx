@@ -214,10 +214,9 @@ export default function StepFee(): JSX.Element {
                       Choose platform and pay
                     </div>
 
-                    {centralizedExs.map((item, i) => (
-                      <div className='mt-3' key={i}>
+                    {centralizedExs.map(item => (
+                      <div className='mt-3' key={item.name}>
                         <Radio
-                          key={i}
                           checked={store.centralizedExchangeName === item.name}
                           onChange={val => onChangePayPlatform(item.name, val)}
                         >

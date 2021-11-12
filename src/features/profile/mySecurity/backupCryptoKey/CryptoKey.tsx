@@ -127,8 +127,8 @@ export const PDFDocument = ({
   return (
     <Document title={title} keywords={qrcodeData}>
       <Page size='A4' style={pdfStyles.page}>
-        {allKeys.addressKeys?.map((privateKey, idx) => (
-          <View style={pdfStyles.section} key={idx}>
+        {allKeys.addressKeys?.map(privateKey => (
+          <View style={pdfStyles.section} key={privateKey.privateKey}>
             <View style={pdfStyles.mainContent}>
               <View style={pdfStyles.mainContentWrapper}>
                 <View style={pdfStyles.contentItem}>
@@ -152,8 +152,8 @@ export const PDFDocument = ({
             </View>
           </View>
         ))}
-        {allKeys.pastelIDs?.map((pastelID, idx) => (
-          <View style={pdfStyles.section} key={idx}>
+        {allKeys.pastelIDs?.map(pastelID => (
+          <View style={pdfStyles.section} key={pastelID.PastelID}>
             <View style={pdfStyles.mainContent}>
               <View style={pdfStyles.contentItem}>
                 <Text style={pdfStyles.contentTitle}>PastelID</Text>
@@ -165,7 +165,7 @@ export const PDFDocument = ({
           </View>
         ))}
         {allKeys.addressBook?.map((addressBook, idx) => (
-          <View style={pdfStyles.section} key={idx}>
+          <View style={pdfStyles.section} key={`${addressBook.address}-${idx}`}>
             <View style={pdfStyles.mainContentFull}>
               <View style={pdfStyles.contentItem}>
                 <Text style={pdfStyles.contentTitle}>Label:</Text>

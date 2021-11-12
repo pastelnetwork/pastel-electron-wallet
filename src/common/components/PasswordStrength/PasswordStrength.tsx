@@ -48,8 +48,11 @@ const PasswordStrength = (props: TPasswordStrengthProps): JSX.Element => {
         props.className ? props.className : '',
       )}
     >
-      {segmentsClasses.map((segClass, i) => (
-        <div key={i} className={cn('h-1.5 rounded-full ', segClass)}></div>
+      {segmentsClasses.map(segClass => (
+        <div
+          key={segClass}
+          className={cn('h-1.5 rounded-full ', segClass)}
+        ></div>
       ))}
     </div>
   )

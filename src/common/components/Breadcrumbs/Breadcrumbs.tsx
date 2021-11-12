@@ -23,10 +23,10 @@ const Breadcrumbs = (props: TBreadcrumbs): JSX.Element => {
         className,
       )}
     >
-      {breadcrumbs.map((breadcrumb, index) => {
+      {breadcrumbs.map(breadcrumb => {
         if (breadcrumb.route) {
           return (
-            <React.Fragment key={index}>
+            <React.Fragment key={`${breadcrumb.label}${breadcrumb.route}`}>
               <Link
                 to={breadcrumb.route}
                 className={cn('hover:text-gray-2d', breadcrumb.className)}
@@ -39,7 +39,7 @@ const Breadcrumbs = (props: TBreadcrumbs): JSX.Element => {
         }
 
         return (
-          <span key={index} className={breadcrumb.className}>
+          <span key={breadcrumb.label} className={breadcrumb.className}>
             {breadcrumb.label}
           </span>
         )

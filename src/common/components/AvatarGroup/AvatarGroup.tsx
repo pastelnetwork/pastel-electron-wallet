@@ -14,9 +14,9 @@ const AvatarGroup = ({
 }: TAvatarGroupProps): JSX.Element => {
   return (
     <div className={cn('flex', className)}>
-      {urlData.slice(0, limitNumber).map((image, index) => (
+      {urlData.slice(0, limitNumber).map(image => (
         <img
-          key={index}
+          key={image}
           className='w-7 h-7 rounded-full border-2 border-white -m-1'
           src={image}
         />

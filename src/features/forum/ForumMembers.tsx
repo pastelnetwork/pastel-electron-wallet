@@ -17,9 +17,9 @@ const ForumMembers = ({ members }: TForumMemberProps): JSX.Element => {
   const leftOver = members.length - DISPLAY_NUMBER
   return (
     <div className='flex'>
-      {displayMembers.map((member, index) => (
+      {displayMembers.map(member => (
         <div
-          key={index}
+          key={`${member.avatar}-${member.name}`}
           className='rounded-full bg-line-default w-8 h-8 relative -mr-2.5 border-2 border-white border-solid'
         >
           <img src={member.avatar} className='opacity-30' />

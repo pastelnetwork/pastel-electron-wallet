@@ -79,7 +79,7 @@ const Table = ({
           <tr className='h-12 text-gray-4a border-b border-gray-a6 bg-white border-opacity-50'>
             {columns.map((column, index) => (
               <th
-                key={index}
+                key={`${column.key}-${column.name}`}
                 className={cn(
                   column.className,
                   column.thClassName,
@@ -120,11 +120,14 @@ const Table = ({
           </tr>
         </thead>
         <tbody className={cn('overflow-y-auto', bodyClassName)}>
-          {tableData.map((row: TRow, rowIndex: number) => (
-            <tr key={rowIndex} className={cn('h-67px', trClassName)}>
-              {columns.map((column, index) => (
+          {tableData.map((row: TRow, rowIndex) => (
+            <tr
+              key={row[rowIndex].toString()}
+              className={cn('h-67px', trClassName)}
+            >
+              {columns.map(column => (
                 <td
-                  key={index}
+                  key={column.key}
                   className={cn(column.className, column.tdClassName)}
                 >
                   {column.custom

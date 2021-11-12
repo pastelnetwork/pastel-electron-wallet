@@ -10,6 +10,8 @@ import dayjs from 'dayjs'
 import ContentLoader from 'react-content-loader'
 import RectangleLoader from '../../common/components/Loader'
 
+type TTransactionsProps = TTransactionItemProps & { id: string }
+
 export default function Wallet(): JSX.Element {
   const currencyName = useCurrencyName()
 
@@ -23,14 +25,44 @@ export default function Wallet(): JSX.Element {
     isLoading: isTransactionsLoading,
   } = transactionRPC.useTAndZTransactions()
 
-  const transactions = useMemo<TTransactionItemProps[]>(
+  const transactions = useMemo<TTransactionsProps[]>(
     () =>
       transactionsRaw?.map(transaction => ({
         type: (transaction.type as TTransactionType) || TTransactionType.ALL,
         amount: transaction.amount || 0,
         date: dayjs.unix(transaction.time).format('DD/MM/YY'),
+        id: transaction.txid,
       })) || [],
     [transactionsRaw],
+  )
+
+  const renderTransactionsLoading = () => (
+    <>
+      <div className='p-3 pr-5 mb-3'>
+        <ContentLoader className='h-[50px]'>
+          <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
+          <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
+          <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
+          <circle cx='12' cy='12' r='12' />
+        </ContentLoader>
+      </div>
+      <div className='p-3 pr-5 mb-3'>
+        <ContentLoader className='h-[50px]'>
+          <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
+          <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
+          <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
+          <circle cx='12' cy='12' r='12' />
+        </ContentLoader>
+      </div>
+      <div className='p-3 pr-5 mb-3'>
+        <ContentLoader className='h-[50px]'>
+          <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
+          <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
+          <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
+          <circle cx='12' cy='12' r='12' />
+        </ContentLoader>
+      </div>
+    </>
   )
 
   return (
@@ -47,19 +79,9 @@ export default function Wallet(): JSX.Element {
         {isBalanceLoading && <RectangleLoader colorClass='text-gray-dd' />}
       </div>
       <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
-        {isTransactionsLoading &&
-          Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className='p-3 pr-5 mb-3'>
-              <ContentLoader className='h-[50px]'>
-                <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
-                <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
-                <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
-                <circle cx='12' cy='12' r='12' />
-              </ContentLoader>
-            </div>
-          ))}
-        {transactions.map((transaction, i) => (
-          <TransactionItem key={i} {...transaction} />
+        {isTransactionsLoading ? renderTransactionsLoading() : null}
+        {transactions.map(transaction => (
+          <TransactionItem key={transaction.id} {...transaction} />
         ))}
         {!isTransactionsLoading && transactions.length === 0 && (
           <div className='flex justify-center mt-[111px]'>

@@ -354,7 +354,7 @@ export default function Portfolio(): JSX.Element {
                 {cards.map((nftItem, index) => (
                   <NFTCard
                     {...nftItem}
-                    key={index}
+                    key={`${nftItem.title}-${index}`}
                     hideFollow
                     variant={NFTCardVariantSize.M}
                   />

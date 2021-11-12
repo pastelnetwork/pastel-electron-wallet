@@ -146,8 +146,11 @@ const SearchBar = (): JSX.Element => {
         {selectedCategory &&
           categories
             .filter(item => item.type === selectedCategory)
-            .map((category, index) => (
-              <div key={index} className='absolute top-2.5 left-[50px]'>
+            .map(category => (
+              <div
+                key={`${category.type}${category.label}`}
+                className='absolute top-2.5 left-[50px]'
+              >
                 <SearchTag type={category.type} label={category.label} />
               </div>
             ))}
@@ -173,9 +176,9 @@ const SearchBar = (): JSX.Element => {
               <div className='px-6 pt-4 pb-[46px]'>
                 <div className='text-base'>I'm looking for</div>
                 <div className='flex text-gray-4a text-medium mt-2'>
-                  {categories.map((category, index) => (
+                  {categories.map(category => (
                     <SearchTag
-                      key={index}
+                      key={`${category.label}${category.type}`}
                       type={category.type}
                       label={category.label}
                       clickHandle={param => clickedCategory(param)}
@@ -185,9 +188,9 @@ const SearchBar = (): JSX.Element => {
                 <div className='mt-6'>
                   <div className='text-gray-71 text-base'>Recent searches</div>
                   <div className='mt-3'>
-                    {recent_searchs.map((item, index) => (
+                    {recent_searchs.map(item => (
                       <RecentSearchItem
-                        key={index}
+                        key={item.label}
                         tagType={item.tagType}
                         label={item.label}
                       />
@@ -206,9 +209,9 @@ const SearchBar = (): JSX.Element => {
                 <div className='px-6 pt-[13px] pb-[29px] h-[292px] overflow-y-auto'>
                   {search_results
                     .filter(item => item.name.includes(inputText))
-                    .map((item, index) => (
+                    .map(item => (
                       <ResultSearchRow
-                        key={index}
+                        key={`${item.name}${item.img}`}
                         name={item.name}
                         image={item.img}
                         followers={item.followers}

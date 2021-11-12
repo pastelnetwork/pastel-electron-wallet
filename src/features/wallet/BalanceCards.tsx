@@ -81,7 +81,7 @@ export default function BalanceCards(): JSX.Element {
 
         return (
           <div
-            key={index}
+            key={card.info}
             onClick={() => {
               setActiveTab(index)
             }}

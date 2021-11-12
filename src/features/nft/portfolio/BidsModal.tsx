@@ -82,10 +82,10 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
       }
       infoIcon={false}
     >
-      {comments.map((comment, index) => (
+      {comments.map(comment => (
         <div
           className='flex py-4 border-t border-gray-f2 justify-between'
-          key={index}
+          key={comment.id}
         >
           <div className='flex space-x-2'>
             <div className='w-8 h-8 rounded-full overflow-hidden'>

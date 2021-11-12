@@ -56,7 +56,7 @@ const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
       <div className='flex-grow overflow-y-auto overflow-x-hidden grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mt-10 pb-3 gap-y-[30px] gap-x-[18px]'>
         {mockNFTs.map((item, i) => (
           <NFTCard
-            key={i}
+            key={`${item.title}-${i}`}
             hideFollow={true}
             hideLikeButton={true}
             {...item}

@@ -16,7 +16,7 @@ export default function PastelModal(): JSX.Element {
   function renderModalContent() {
     if (body && body.length > 0) {
       return body.map((content: string, idx: number) => (
-        <p className={styles.content} key={idx}>
+        <p className={styles.content} key={`${content}-${idx}`}>
           {content}
         </p>
       ))

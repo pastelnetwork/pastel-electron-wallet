@@ -121,7 +121,7 @@ const Table = ({
             ) : null}
             {columns.map((column, index) => (
               <td
-                key={index}
+                key={`${column.key}${column.name}`}
                 className={cx(
                   column.align ? 'text-' + column.align : 'text-left',
                   'sticky bg-white z-30',
@@ -168,8 +168,11 @@ const Table = ({
                 <RectangleLoader colorClass='text-gray-dd' />
               </td>
             ) : null}
-            {columns.map((column, index) => (
-              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
+            {columns.map(column => (
+              <td
+                key={column.key}
+                className={cx(column.colClasses, bodyTdClasses)}
+              >
                 <RectangleLoader colorClass='text-gray-dd' />
               </td>
             ))}
@@ -177,12 +180,13 @@ const Table = ({
         ) : null}
         {tableData.map((row: TRow, index: number) => (
           <tr
-            key={index}
+            key={row[index]?.toString()}
             className={cx(
               bodyTrClasses,
               selectedRows.includes(index) && 'bg-blue-fa',
             )}
           >
+            {row[index]?.toString()}
             {showCheckbox ? (
               <td className='pl-4 md:pl-30px w-5'>
                 <Checkbox
@@ -202,8 +206,11 @@ const Table = ({
                 />
               </td>
             ) : null}
-            {columns.map((column, index) => (
-              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
+            {columns.map(column => (
+              <td
+                key={`${column.key}-${column.name}`}
+                className={cx(column.colClasses, bodyTdClasses)}
+              >
                 {column.custom
                   ? searchKey
                     ? renderSearchKeyDiv(

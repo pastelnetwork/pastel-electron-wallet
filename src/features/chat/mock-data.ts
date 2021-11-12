@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import { TChatItemProps } from './ChatItem'
 import { TChatUser } from './common'
 
@@ -48,12 +50,14 @@ export const mockChats: TChatItemProps[] = [
     title: 'Galactic Arch',
     messages: [
       {
+        id: uuidv4(),
         text: 'Hi! How are things with the illumination of office?',
         date: new Date(),
         unread: true,
         sender: mockUsers[0],
       },
       {
+        id: uuidv4(),
         text: 'Unfortunately, no progress for now. Waiting for John',
         date: new Date(),
         unread: true,
@@ -66,6 +70,7 @@ export const mockChats: TChatItemProps[] = [
     title: 'Alice in Wonderland Chat',
     messages: [
       {
+        id: uuidv4(),
         text:
           'As she said these words her foot slipped, and in another moment, splash! she was up to her chin in salt water',
         date: new Date(),
@@ -73,6 +78,7 @@ export const mockChats: TChatItemProps[] = [
         sender: mockUsers[1],
       },
       {
+        id: uuidv4(),
         text:
           'Just then she heard something splashing about in the pool a little way off, and she swam nearer to make out what it was: at first she thought it must be a walrus or hippopotamus, but then she remembered how small she was now, and she soon made out that it was only a mouse that had slipped in like herself.',
         date: new Date(),
@@ -80,6 +86,7 @@ export const mockChats: TChatItemProps[] = [
         sender: curUser,
       },
       {
+        id: uuidv4(),
         text:
           'They were indeed a queer-looking party that assembled on the bank--the birds with draggled feathers, the animals with their fur clinging close to them, and all dripping wet, cross, and uncomfortable. ',
         date: new Date(),
@@ -87,6 +94,7 @@ export const mockChats: TChatItemProps[] = [
         sender: mockUsers[1],
       },
       {
+        id: uuidv4(),
         text:
           'Just then she heard something splashing about in the pool a little way off, and she swam nearer to make out what it was: at first she thought it must be a walrus or hippopotamus, but then she remembered how small she was now, and she soon made out that it was only a mouse that had slipped in like herself.',
         date: new Date(),
@@ -94,6 +102,7 @@ export const mockChats: TChatItemProps[] = [
         sender: curUser,
       },
       {
+        id: uuidv4(),
         text:
           'Alice thought the whole thing very absurd, but they all looked so grave that she did not dare to laugh; and, as she could not think of anything to say, she simply bowed, and took the thimble, looking as solemn as she could.',
         date: new Date(),
@@ -107,6 +116,7 @@ export const mockChats: TChatItemProps[] = [
     title: 'Piter Pan Chat',
     messages: [
       {
+        id: uuidv4(),
         text:
           'That, Peter had told Wendy, was the way to the Neverland; but even birds, carrying maps and consulting them at windy corners, could not have sighted it with these instructions. Peter, you see, just said anything that came into his head.',
         date: new Date(),
@@ -114,6 +124,7 @@ export const mockChats: TChatItemProps[] = [
         sender: mockUsers[2],
       },
       {
+        id: uuidv4(),
         text:
           'At first his companions trusted him implicitly, and so great were the delights of flying that they wasted time circling round church spires or any other tall objects on the way that took their fancy.',
         date: new Date(),
@@ -121,12 +132,14 @@ export const mockChats: TChatItemProps[] = [
         sender: curUser,
       },
       {
+        id: uuidv4(),
         text: 'John and Michael raced, Michael getting a start.',
         date: new Date(),
         unread: true,
         sender: mockUsers[2],
       },
       {
+        id: uuidv4(),
         text:
           'They recalled with contempt that not so long ago they had thought themselves fine fellows for being able to fly round a room.',
         date: new Date(),
@@ -134,6 +147,7 @@ export const mockChats: TChatItemProps[] = [
         sender: curUser,
       },
       {
+        id: uuidv4(),
         text:
           'Not long ago. But how long ago? They were flying over the sea before this thought began to disturb Wendy seriously. John thought it was their second sea and their third night.',
         date: new Date(),
@@ -141,6 +155,7 @@ export const mockChats: TChatItemProps[] = [
         sender: mockUsers[2],
       },
       {
+        id: uuidv4(),
         text:
           'Sometimes it was dark and sometimes light, and now they were very cold and again too warm. Did they really feel hungry at times, or were they merely pretending, because Peter had such a jolly new way of feeding them? His way was to pursue birds who had food in their mouths suitable for humans and snatch it from them; then the birds would follow and snatch it back; and they would all go chasing each other gaily for miles, parting at last with mutual expressions of good-will. But Wendy noticed with gentle concern that Peter did not seem to know that this was rather an odd way of getting your bread and butter, nor even that there are other ways.',
         date: new Date(),
@@ -148,6 +163,7 @@ export const mockChats: TChatItemProps[] = [
         sender: curUser,
       },
       {
+        id: uuidv4(),
         text:
           'Certainly they did not pretend to be sleepy, they were sleepy; and that was a danger, for the moment they popped off, down they fell. The awful thing was that Peter thought this funny.',
         date: new Date(),
@@ -161,24 +177,28 @@ export const mockChats: TChatItemProps[] = [
     title: 'Amazinng Digital Arch',
     messages: [
       {
+        id: uuidv4(),
         text: 'I would think about the pink color for that shape. And you?',
         date: new Date(),
         unread: true,
         sender: mockUsers[0],
       },
       {
+        id: uuidv4(),
         text: 'I dont like pink!',
         date: new Date(),
         unread: true,
         sender: curUser,
       },
       {
+        id: uuidv4(),
         text: 'Sorry, bro :-(',
         date: new Date(),
         unread: true,
         sender: mockUsers[0],
       },
       {
+        id: uuidv4(),
         text: 'Because of your ex?',
         date: new Date(),
         unread: true,
@@ -191,6 +211,7 @@ export const mockChats: TChatItemProps[] = [
     title: 'Soccer 2021',
     messages: [
       {
+        id: uuidv4(),
         text:
           'did you watch a Netherlads-Ukraine battle yesterday? 5 goals! Good goals. It was a fun. ',
         date: new Date(),
@@ -198,6 +219,7 @@ export const mockChats: TChatItemProps[] = [
         sender: mockUsers[2],
       },
       {
+        id: uuidv4(),
         text:
           'No, I was busy with kids. Hope to have time today for Spain vs Sweden :-)',
         date: new Date(),
@@ -211,6 +233,7 @@ export const mockChats: TChatItemProps[] = [
     title: 'Amazinng Digital Arch',
     messages: [
       {
+        id: uuidv4(),
         text: 'Do you like these cuties?',
         date: new Date(),
         unread: true,
@@ -228,6 +251,7 @@ export const mockChats: TChatItemProps[] = [
     title: 'Project Coca-Cola',
     messages: [
       {
+        id: uuidv4(),
         text: 'Hi, meeting by this project at 10 am. You should be in time',
         date: new Date(),
         unread: true,
@@ -240,6 +264,7 @@ export const mockChats: TChatItemProps[] = [
     title: 'Project Nike',
     messages: [
       {
+        id: uuidv4(),
         text: 'They agreed. Start from Monday',
         date: new Date(),
         unread: true,

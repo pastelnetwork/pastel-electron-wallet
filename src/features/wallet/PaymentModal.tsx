@@ -39,6 +39,7 @@ type TLocationSate = {
 }
 
 type TPaymentResults = {
+  id: number
   txId?: string
   status: string
   message?: string
@@ -251,12 +252,13 @@ const PaymentModal = (): JSX.Element => {
     } = await transactionRPC.getTransactionStatus(operationIdList)
     const paymentStatus: TPaymentResults[] = []
     let isExecuting = false
-    transactionResult.forEach(item => {
+    transactionResult.forEach((item, idx) => {
       if (item.status === 'failed') {
         paymentStatus.push({
           txId: item.id,
           status: 'Failed',
           message: item.error?.message,
+          id: idx,
         })
       } else if (item.status === 'success') {
         const note = paymentNotes.find(
@@ -266,6 +268,7 @@ const PaymentModal = (): JSX.Element => {
           txId: item?.result?.txid,
           status: 'Success',
           message: '',
+          id: idx,
         })
         if (note?.privateNote && item?.result?.txid) {
           saveTransactionNote({
@@ -370,10 +373,10 @@ const PaymentModal = (): JSX.Element => {
                     </tr>
                   </thead>
                   <tbody className='h-220px overflow-y-scroll'>
-                    {paymentResults.map((result, idx) => (
+                    {paymentResults.map(result => (
                       <tr
                         className='h-[60px] border-b border-line text-sm md:text-base'
-                        key={idx}
+                        key={result.id}
                       >
                         <td className='py-1'>
                           <div className='mx-15px'>{result.status}</div>
@@ -605,8 +608,8 @@ const PaymentModal = (): JSX.Element => {
                 </div>
                 {messages.length > 0 ? (
                   <>
-                    {messages.map((err, idx) => (
-                      <p key={idx} className='pt-2 mb-1 text-red-4a'>
+                    {messages.map(err => (
+                      <p key={err} className='pt-2 mb-1 text-red-4a'>
                         {err}
                       </p>
                     ))}

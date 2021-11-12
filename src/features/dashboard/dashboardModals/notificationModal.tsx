@@ -154,9 +154,9 @@ const NotificationModal = ({
               label='Time range'
               footer={
                 <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
-                  {dateButtons.map(({ title }, idx) => (
+                  {dateButtons.map(({ title }) => (
                     <SelectButton
-                      key={idx}
+                      key={title}
                       isActive={title === dateTitle}
                       onClick={() => handleDateSelect(title)}
                     >

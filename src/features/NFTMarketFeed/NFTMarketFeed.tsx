@@ -170,8 +170,8 @@ const NFTMarketFeed = (): JSX.Element => {
           <div
             className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
           >
-            {mockNFTs.map((nft, i) => (
-              <NFTCard {...nft} key={i} />
+            {mockNFTs.map(nft => (
+              <NFTCard {...nft} key={nft.title} />
             ))}
           </div>
         </div>

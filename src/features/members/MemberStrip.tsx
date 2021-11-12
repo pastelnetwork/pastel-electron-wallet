@@ -66,10 +66,10 @@ const MemberStrip = ({
           </div>
           {/* Images */}
           <div className='flex space-x-5 h-full overflow-x-auto overflow-y-hidden scrollbar-bg-white'>
-            {images.map((imgSrc, i) => (
+            {images.map(imgSrc => (
               <div
                 className='flex flex-col justify-center h-full '
-                key={`${id}${i}`}
+                key={`${id}${imgSrc.url}`}
               >
                 <div className='w-28 h-101px'>
                   <img src={imgSrc.url} className='object-cover rounded-xl' />

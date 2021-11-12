@@ -10,7 +10,7 @@ import Select, { TOption } from '../../../common/components/Select/Select'
 import NFTCard, { TNFTCard } from '../../../common/components/NFTCard'
 import image from '../../../common/assets/images/nft-card-placeholder.png'
 import avatar from '../../../common/assets/images/avatar-placeholder.png'
-import MemberCard from '../components/MemberCard'
+import MemberCard, { TMemberBoardProps } from '../components/MemberCard'
 import Checkbox from '../../../common/components/Checkbox'
 
 const profile_data = {
@@ -91,6 +91,159 @@ const MemberProfile = (): JSX.Element => {
     setTab(index)
   }
 
+  const mockComments: TMemberBoardProps[] = [
+    {
+      id: 1,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 2,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 3,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 4,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 5,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 6,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 7,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 8,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 9,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+    {
+      id: 10,
+      active: false,
+      name: 'Glenn Greer',
+      iconType: 'comment',
+      iconPosition: 'top',
+      behaviour: 'commented',
+      object: 'Collab.',
+      avatarSrc: avatar,
+      time: '12h ago',
+      description:
+        'Love this so much! What tools do you use to create your 3d illustrations?',
+      productURL: image,
+      onClick: setActiveIndex,
+    },
+  ]
+
   return (
     <div>
       <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
@@ -163,7 +316,7 @@ const MemberProfile = (): JSX.Element => {
                         isAuctionBid={(i + 1) % 2 === 0}
                         isFixedPrice={(i + 1) % 3 === 0 && (i + 1) % 2 !== 0}
                         isNotForSale={(i + 1) % 2 !== 0 && (i + 1) % 3 !== 0}
-                        key={i}
+                        key={`${mockCardProps.title}-${i}`}
                       />
                     ))}
                   </div>
@@ -173,21 +326,11 @@ const MemberProfile = (): JSX.Element => {
                 <div className='flex justify-between flex-col-reverse md:flex-row'>
                   <div className='w-full h-screen overflow-y-auto'>
                     <div className='pr-22px'>
-                      {Array.from({ length: 10 }).map((_, i) => (
+                      {mockComments.map((comment, i) => (
                         <MemberCard
-                          id={i}
+                          key={comment.id}
+                          {...comment}
                           active={i === activeIndex}
-                          name='Glenn Greer'
-                          key={i}
-                          iconType='comment'
-                          iconPosition='top'
-                          behaviour='commented'
-                          object='Collab.'
-                          avatarSrc={avatar}
-                          time='12h ago'
-                          description='Love this so much! What tools do you use to create your 3d illustrations?'
-                          productURL={image}
-                          onClick={setActiveIndex}
                         />
                       ))}
                     </div>
@@ -195,7 +338,7 @@ const MemberProfile = (): JSX.Element => {
                   <div className='w-[271px] md:pt-34px flex md:block'>
                     {filterData.map((item, index) => (
                       <div
-                        key={index}
+                        key={`${item.value}-${index}`}
                         className='pl-33px md:pl-[106px] pb-14px'
                       >
                         <Checkbox isChecked={item.checked}>

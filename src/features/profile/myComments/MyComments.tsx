@@ -224,7 +224,10 @@ const MyComments = (): JSX.Element => {
             </p>
             <ul className='mt-4 flex lg:block'>
               {filters.map((filter, index) => (
-                <li className='lg:mb-3 mr-3 lg:mr-0' key={index}>
+                <li
+                  className='lg:mb-3 mr-3 lg:mr-0'
+                  key={`${filter.value}-${index}`}
+                >
                   <Checkbox
                     isChecked={filter.isChecked}
                     clickHandler={() => onClickFilter(filter.value)}

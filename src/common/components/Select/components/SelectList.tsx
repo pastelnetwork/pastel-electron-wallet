@@ -87,7 +87,7 @@ export default function SelectList({
                   pos += part.length + inputValue.length
 
                   return (
-                    <React.Fragment key={i}>
+                    <React.Fragment key={`${item.value}${item.value}`}>
                       {matched && (
                         <span className={highlightClassName}>{matched}</span>
                       )}

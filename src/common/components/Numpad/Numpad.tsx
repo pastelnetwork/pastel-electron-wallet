@@ -80,13 +80,13 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       )}
     >
       <div className='input h-8 px-2 mb-1 w-[112px] flex justify-between items-center text-gray-a0 font-medium'>
-        {getNumPadList().map((item, index) => (
+        {getNumPadList().map(item => (
           <span
             className={cn(
               'text-base font-medium',
               item.type === 'default' ? 'text-gray-a0' : 'text-gray-4a',
             )}
-            key={index}
+            key={`${item.value}${item.type}`}
           >
             {item.value}
           </span>

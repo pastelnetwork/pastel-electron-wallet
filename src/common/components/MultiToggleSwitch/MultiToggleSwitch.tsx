@@ -64,7 +64,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
             return (
               <div
                 className={getItemClassName(index === activeIndex)}
-                key={index}
+                key={`${item.label}${item.count}`}
                 onClick={() => handleClick(index)}
               >
                 <span>{item.label}</span>

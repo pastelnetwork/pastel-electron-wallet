@@ -213,7 +213,12 @@ const Password = (props: TPassword): JSX.Element => {
       {passStrength && (
         <div className='grid grid-cols-4 gap-1 mt-5 mb-6'>
           {passStrength?.map((status: string, index: number) => {
-            return <div className={`${status} h-1.5 rounded`} key={index} />
+            return (
+              <div
+                className={`${status} h-1.5 rounded`}
+                key={`${status}-${index}`}
+              />
+            )
           })}
         </div>
       )}

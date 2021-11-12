@@ -30,41 +30,157 @@ enum Tabs {
 }
 
 type TNotification = {
+  id: string
   message: string
   date: Dayjs
   read: boolean
 }
 
-let notifications: Array<TNotification> = [
+const notifications: Array<TNotification> = [
   {
+    id: '1',
     message: '1 new listing',
     date,
     read: false,
   },
   {
+    id: '2',
     message: '1 new sale',
     date,
     read: true,
   },
   {
+    id: '3',
     message: '1 new transfer',
     date,
     read: true,
   },
   {
+    id: '4',
     message: '1 new sale',
     date,
     read: true,
   },
-]
-notifications = [
-  ...notifications,
-  ...notifications,
-  ...notifications,
-  ...notifications,
-  ...notifications,
-  ...notifications,
-  ...notifications,
+  {
+    id: '5',
+    message: '1 new listing',
+    date,
+    read: false,
+  },
+  {
+    id: '6',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '7',
+    message: '1 new transfer',
+    date,
+    read: true,
+  },
+  {
+    id: '8',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '9',
+    message: '1 new listing',
+    date,
+    read: false,
+  },
+  {
+    id: '10',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '11',
+    message: '1 new transfer',
+    date,
+    read: true,
+  },
+  {
+    id: '12',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '13',
+    message: '1 new listing',
+    date,
+    read: false,
+  },
+  {
+    id: '14',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '15',
+    message: '1 new transfer',
+    date,
+    read: true,
+  },
+  {
+    id: '16',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '17',
+    message: '1 new listing',
+    date,
+    read: false,
+  },
+  {
+    id: '18',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '19',
+    message: '1 new transfer',
+    date,
+    read: true,
+  },
+  {
+    id: '20',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '21',
+    message: '1 new listing',
+    date,
+    read: false,
+  },
+  {
+    id: '22',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
+  {
+    id: '23',
+    message: '1 new transfer',
+    date,
+    read: true,
+  },
+  {
+    id: '24',
+    message: '1 new sale',
+    date,
+    read: true,
+  },
 ]
 
 const mockNFTImagesList = [
@@ -167,22 +283,31 @@ export default function DashboardPage(): JSX.Element {
               <PortfolioColumn title='Sales in progress (2)'>
                 {followers
                   .filter(item => item.type == 'progress')
-                  .map((item, index) => (
-                    <PortfolioItem key={index} {...item} />
+                  .map(item => (
+                    <PortfolioItem
+                      key={`${item.title}-${item.type}`}
+                      {...item}
+                    />
                   ))}
               </PortfolioColumn>
               <PortfolioColumn title='In review (1)'>
                 {followers
                   .filter(item => item.type == 'review')
-                  .map((item, index) => (
-                    <PortfolioItem key={index} {...item} />
+                  .map(item => (
+                    <PortfolioItem
+                      key={`${item.title}-${item.type}`}
+                      {...item}
+                    />
                   ))}
               </PortfolioColumn>
               <PortfolioColumn title='On Sale (2)'>
                 {followers
                   .filter(item => item.type == 'sale')
-                  .map((item, index) => (
-                    <PortfolioItem key={index} {...item} />
+                  .map(item => (
+                    <PortfolioItem
+                      key={`${item.title}-${item.type}`}
+                      {...item}
+                    />
                   ))}
               </PortfolioColumn>
             </div>
@@ -243,8 +368,12 @@ export default function DashboardPage(): JSX.Element {
                   : 'flex justify-center'
               }
             >
-              {cards.map((item, i) => (
-                <NFTCard key={i} {...item} variant={NFTCardVariantSize.M} />
+              {cards.map(item => (
+                <NFTCard
+                  key={item.title}
+                  {...item}
+                  variant={NFTCardVariantSize.M}
+                />
               ))}
               {cards.length === 0 && (
                 <div className='text-gray-a0 text-base mt-[146px]'>
@@ -268,8 +397,12 @@ export default function DashboardPage(): JSX.Element {
                 : 'flex justify-center'
             }
           >
-            {notifications.map((notification, i) => (
-              <Notification key={i} {...notification} className='h-[52px]' />
+            {notifications.map(notification => (
+              <Notification
+                key={notification.id}
+                {...notification}
+                className='h-[52px]'
+              />
             ))}
             {notifications.length === 0 && (
               <div className='text-gray-a0 text-base mt-[146px]'>
