@@ -57,6 +57,7 @@ export type TNFTCompactCard = {
 export type TNFTCard = Override<
   TNFTCompactCard,
   {
+    id: string
     author: string
     avatarSrc: string
     price: number

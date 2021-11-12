@@ -2,6 +2,7 @@ import React from 'react'
 import { NFT, Keyword, Creator, User, Forum } from '../Icons'
 
 export type TSearchTagProps = {
+  id: string
   label: string
   type: 'nfts' | 'keyword' | 'creators' | 'users' | 'forum' | undefined
   clickHandle?: (

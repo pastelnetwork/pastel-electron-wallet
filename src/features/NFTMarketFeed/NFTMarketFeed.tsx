@@ -24,6 +24,7 @@ enum Tabs {
 const NFTMarketFeed = (): JSX.Element => {
   const currencyName = useCurrencyName()
   const mockCardProps: TNFTCard = {
+    id: '1',
     author: 'zndrson',
     avatarSrc: mockAvatarImagesList[0],
     imageSrc: mockDataImagesList[0].url,
@@ -67,6 +68,7 @@ const NFTMarketFeed = (): JSX.Element => {
 
     return {
       ...mockCardProps,
+      id: i.toString(),
       nsfw: { porn: nsfw, hentai: nsfw },
       imageSrc: mockDataImagesList[i].url,
       avatarSrc: mockAvatarImagesList[i],
@@ -171,7 +173,7 @@ const NFTMarketFeed = (): JSX.Element => {
             className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
           >
             {mockNFTs.map(nft => (
-              <NFTCard {...nft} key={nft.title} />
+              <NFTCard {...nft} key={nft.id} />
             ))}
           </div>
         </div>

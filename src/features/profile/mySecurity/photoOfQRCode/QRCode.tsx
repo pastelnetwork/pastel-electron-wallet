@@ -46,7 +46,7 @@ export function QRCodeSlider({
       fadeEffect={{ crossFade: true }}
     >
       {qrcodeData.map((item, idx) => (
-        <SwiperSlide key={`${item}-${idx}`} className='d-block h-205px'>
+        <SwiperSlide key={item} className='d-block h-205px'>
           <div className='flex items-center h-205px w-205px max-w-205px mx-auto'>
             <QRCode
               value={`${idx}::${qrcodeData.length}::${item}`}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import { v4 as uuidv4 } from 'uuid'
 
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
@@ -72,6 +73,7 @@ export default function Portfolio(): JSX.Element {
   const mockupPortfolio: TNFTCard[] = []
   Array.from({ length: 26 }).map((_, index) => {
     mockupPortfolio.push({
+      id: index.toString(),
       author: mockNamesList[index],
       avatarSrc: mockAvatarImagesList[index],
       imageSrc: mockDataImagesList[index].url,
@@ -94,6 +96,7 @@ export default function Portfolio(): JSX.Element {
 
   const mockupPortfolioOwned: TNFTCard[] = [
     {
+      id: uuidv4(),
       author: 'zndrson',
       avatarSrc: avatar,
       imageSrc: portfolio1,
@@ -110,6 +113,7 @@ export default function Portfolio(): JSX.Element {
       isAuctionBid: true,
     },
     {
+      id: uuidv4(),
       author: 'zndrson',
       avatarSrc: avatar,
       imageSrc: portfolio2,
@@ -129,6 +133,7 @@ export default function Portfolio(): JSX.Element {
 
   const mockupPortfolioSold: TNFTCard[] = [
     {
+      id: uuidv4(),
       author: 'zndrson',
       avatarSrc: avatar,
       imageSrc: portfolio3,
@@ -145,6 +150,7 @@ export default function Portfolio(): JSX.Element {
       isFixedPrice: true,
     },
     {
+      id: uuidv4(),
       author: 'zndrson',
       avatarSrc: avatar,
       imageSrc: portfolio4,
@@ -166,6 +172,7 @@ export default function Portfolio(): JSX.Element {
   Array.from({ length: 32 }).map((_, index) => {
     const randomPortfolioIndex = Math.floor(Math.random() * 4)
     mockupPortfolioLiked.push({
+      id: uuidv4(),
       author: 'zndrson',
       avatarSrc: avatar,
       imageSrc: portfolios[randomPortfolioIndex],
@@ -351,10 +358,10 @@ export default function Portfolio(): JSX.Element {
               className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
             >
               <div className='grid grid-cols-3 1200px:grid-cols-4 xl:grid-cols-5 gap-y-[21px] gap-4'>
-                {cards.map((nftItem, index) => (
+                {cards.map(nftItem => (
                   <NFTCard
                     {...nftItem}
-                    key={`${nftItem.title}-${index}`}
+                    key={nftItem.id}
                     hideFollow
                     variant={NFTCardVariantSize.M}
                   />

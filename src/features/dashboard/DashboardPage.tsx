@@ -198,6 +198,7 @@ export default function DashboardPage(): JSX.Element {
   const cards: TNFTCard[] = useMemo(
     () =>
       Array.from({ length: 3 }).map((_, index) => ({
+        id: index.toString(),
         imageSrc: mockNFTImagesList[index],
         likes: 23,
         title: mockDataImagesList[index].title,
@@ -370,7 +371,7 @@ export default function DashboardPage(): JSX.Element {
             >
               {cards.map(item => (
                 <NFTCard
-                  key={item.title}
+                  key={item.id}
                   {...item}
                   variant={NFTCardVariantSize.M}
                 />

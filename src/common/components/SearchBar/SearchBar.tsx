@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { CloseButton } from '../../components/Buttons'
 import { Search } from '../Icons'
 import cn from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
 import SearchTag, { TSearchTagProps } from './SearchTag'
 import RecentSearchItem, { TRecentSearchItem } from './RecentSearchItem'
 import Banksy82 from '../../assets/images/banksy82_avatar.png'
@@ -27,22 +28,27 @@ const SearchBar = (): JSX.Element => {
 
   const categories: Array<TSearchTagProps> = [
     {
+      id: uuidv4(),
       label: 'NFTs',
       type: 'nfts',
     },
     {
+      id: uuidv4(),
       label: 'Keywords',
       type: 'keyword',
     },
     {
+      id: uuidv4(),
       label: 'Creators',
       type: 'creators',
     },
     {
+      id: uuidv4(),
       label: 'Users',
       type: 'users',
     },
     {
+      id: uuidv4(),
       label: 'Forum Post',
       type: 'forum',
     },
@@ -50,13 +56,16 @@ const SearchBar = (): JSX.Element => {
 
   const recent_searchs: Array<TRecentSearchItem> = [
     {
+      id: uuidv4(),
       tagType: 'creators',
       label: 'Bansky',
     },
     {
+      id: uuidv4(),
       label: 'End of an Era',
     },
     {
+      id: uuidv4(),
       tagType: 'nfts',
       label: 'End of an Era',
     },
@@ -64,36 +73,43 @@ const SearchBar = (): JSX.Element => {
 
   const search_results = [
     {
+      id: uuidv4(),
       name: 'Banksy82',
       img: Banksy82,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'theRealBanksy',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'Banksyyyy',
       img: Banksy82,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'IheartBanksy',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'banksySuchlol',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'banksySuchlol',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'banksySuchlol',
       img: Banksyyyy,
       followers: 161,
@@ -147,11 +163,12 @@ const SearchBar = (): JSX.Element => {
           categories
             .filter(item => item.type === selectedCategory)
             .map(category => (
-              <div
-                key={`${category.type}${category.label}`}
-                className='absolute top-2.5 left-[50px]'
-              >
-                <SearchTag type={category.type} label={category.label} />
+              <div key={category.id} className='absolute top-2.5 left-[50px]'>
+                <SearchTag
+                  type={category.type}
+                  label={category.label}
+                  id={category.id}
+                />
               </div>
             ))}
 
@@ -178,10 +195,11 @@ const SearchBar = (): JSX.Element => {
                 <div className='flex text-gray-4a text-medium mt-2'>
                   {categories.map(category => (
                     <SearchTag
-                      key={`${category.label}${category.type}`}
+                      key={`${category.label}${category.type}${category.id}`}
                       type={category.type}
                       label={category.label}
                       clickHandle={param => clickedCategory(param)}
+                      id={category.id}
                     />
                   ))}
                 </div>
@@ -190,9 +208,10 @@ const SearchBar = (): JSX.Element => {
                   <div className='mt-3'>
                     {recent_searchs.map(item => (
                       <RecentSearchItem
-                        key={item.label}
+                        key={item.id}
                         tagType={item.tagType}
                         label={item.label}
+                        id={item.id}
                       />
                     ))}
                   </div>
@@ -211,7 +230,7 @@ const SearchBar = (): JSX.Element => {
                     .filter(item => item.name.includes(inputText))
                     .map(item => (
                       <ResultSearchRow
-                        key={`${item.name}${item.img}`}
+                        key={item.id}
                         name={item.name}
                         image={item.img}
                         followers={item.followers}

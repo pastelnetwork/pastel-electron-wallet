@@ -40,11 +40,12 @@ export default function Login(): JSX.Element {
         }
       } catch (error) {
         toast(error.message, { type: 'error' })
+        setLoading(false)
       }
     } else {
       setErrorMessage('Username or password is incorrect')
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import log from 'electron-log'
+import { v4 as uuidv4 } from 'uuid'
 import ProfileCard from '../components/MyProfileCard'
 import ProfileComments from '../components/ProfileComments'
 import { nativeCurrencyOptions } from '../myProfile/MyProfile'
@@ -156,21 +157,25 @@ const commentsData: TComment[] = [
 
 const filters = [
   {
+    id: uuidv4(),
     name: 'All',
     isChecked: false,
     value: '',
   },
   {
+    id: uuidv4(),
     name: 'Friends',
     isChecked: true,
     value: 'friends',
   },
   {
+    id: uuidv4(),
     name: 'Followers',
     isChecked: true,
     value: 'followers',
   },
   {
+    id: uuidv4(),
     name: 'Others',
     isChecked: false,
     value: 'others',
@@ -223,11 +228,8 @@ const MyComments = (): JSX.Element => {
               Filter by:
             </p>
             <ul className='mt-4 flex lg:block'>
-              {filters.map((filter, index) => (
-                <li
-                  className='lg:mb-3 mr-3 lg:mr-0'
-                  key={`${filter.value}-${index}`}
-                >
+              {filters.map(filter => (
+                <li className='lg:mb-3 mr-3 lg:mr-0' key={filter.id}>
                   <Checkbox
                     isChecked={filter.isChecked}
                     clickHandler={() => onClickFilter(filter.value)}

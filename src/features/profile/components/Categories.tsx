@@ -40,7 +40,7 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
   return (
     <div className='bg-white rounded flex flex-grow shadow-4px flex-wrap p-2 items-center transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f'>
       {value.map((category: string, index: number) => (
-        <div className='flex' key={`${category}-${index}`}>
+        <div className='flex' key={category}>
           <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center  mb-2'>
             <div className='h-6 text-gray-4a flex items-center'>{category}</div>
             <div

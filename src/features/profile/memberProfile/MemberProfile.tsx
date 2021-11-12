@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import dayjs from 'dayjs'
+import { v4 as uuidv4 } from 'uuid'
 
 import { useCurrencyName } from 'common/hooks/appInfo'
 import ProfileCard from '../components/ProfileCard'
@@ -67,19 +68,148 @@ const MemberProfile = (): JSX.Element => {
       'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
   }
 
-  const mockCardProps: TNFTCard = {
-    likes: 23,
-    price: 22000,
-    currencyName,
-    author: 'vanecha',
-    avatarSrc: avatar,
-    imageSrc: image,
-    title: 'Infinity I',
-    nsfw: { porn: 0, hentai: 0 },
-    leftTime: dayjs().add(2, 'day').valueOf(),
-    copiesAvailable: 15,
-    followers: 256,
-  }
+  const mockCardProps: TNFTCard[] = [
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+    {
+      id: uuidv4(),
+      likes: 23,
+      price: 22000,
+      currencyName,
+      author: 'vanecha',
+      avatarSrc: avatar,
+      imageSrc: image,
+      title: 'Infinity I',
+      nsfw: { porn: 0, hentai: 0 },
+      leftTime: dayjs().add(2, 'day').valueOf(),
+      copiesAvailable: 15,
+      followers: 256,
+    },
+  ]
 
   const [tab, setTab] = useState(2)
   const [category, setCategory] = useState<TOption | null>(categoriesOptions[0])
@@ -310,13 +440,13 @@ const MemberProfile = (): JSX.Element => {
                     </div>
                   </div>
                   <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3 text-gray-1a overflow-y-auto pr-33px h-608px gap-y-[12px] gap-x-[15px]'>
-                    {Array.from({ length: 10 }).map((_, i) => (
+                    {mockCardProps.map((nftItem, i) => (
                       <NFTCard
-                        {...mockCardProps}
+                        {...nftItem}
                         isAuctionBid={(i + 1) % 2 === 0}
                         isFixedPrice={(i + 1) % 3 === 0 && (i + 1) % 2 !== 0}
                         isNotForSale={(i + 1) % 2 !== 0 && (i + 1) % 3 !== 0}
-                        key={`${mockCardProps.title}-${i}`}
+                        key={nftItem.id}
                       />
                     ))}
                   </div>
@@ -336,9 +466,9 @@ const MemberProfile = (): JSX.Element => {
                     </div>
                   </div>
                   <div className='w-[271px] md:pt-34px flex md:block'>
-                    {filterData.map((item, index) => (
+                    {filterData.map(item => (
                       <div
-                        key={`${item.value}-${index}`}
+                        key={item.value}
                         className='pl-33px md:pl-[106px] pb-14px'
                       >
                         <Checkbox isChecked={item.checked}>

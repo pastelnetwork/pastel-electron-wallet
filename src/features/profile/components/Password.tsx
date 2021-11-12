@@ -41,6 +41,11 @@ const passOptions: IPasswordOption[] = [
   },
 ]
 
+type TPassStrengthProps = {
+  key: string
+  value: string
+}
+
 const Password = (props: TPassword): JSX.Element => {
   const {
     newPassword,
@@ -52,7 +57,7 @@ const Password = (props: TPassword): JSX.Element => {
 
   const [newPasswordVisible, setNewPasswordVisible] = useState(false)
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
-  const [passStrength, setPassStrength] = useState<string[]>([])
+  const [passStrength, setPassStrength] = useState<TPassStrengthProps[]>([])
   const inputRef = createRef<HTMLInputElement>()
 
   useEffect(() => {
@@ -75,34 +80,99 @@ const Password = (props: TPassword): JSX.Element => {
     const validation = passwordStrength(newPass, passOptions)
 
     let status = [
-      'bg-navigation opacity-20',
-      'bg-navigation opacity-20',
-      'bg-navigation opacity-20',
-      'bg-navigation opacity-20',
+      {
+        key: 'line-1',
+        value: 'bg-navigation opacity-20',
+      },
+      {
+        key: 'line-2',
+        value: 'bg-navigation opacity-20',
+      },
+      {
+        key: 'line-3',
+        value: 'bg-navigation opacity-20',
+      },
+      {
+        key: 'line-4',
+        value: 'bg-navigation opacity-20',
+      },
     ]
     if (validation.id === 0) {
       status = [
-        'bg-red-fe',
-        'bg-navigation opacity-20',
-        'bg-navigation opacity-20',
-        'bg-navigation opacity-20',
+        {
+          key: 'line-1',
+          value: 'bg-red-fe',
+        },
+        {
+          key: 'line-2',
+          value: 'bg-navigation opacity-20',
+        },
+        {
+          key: 'line-3',
+          value: 'bg-navigation opacity-20',
+        },
+        {
+          key: 'line-4',
+          value: 'bg-navigation opacity-20',
+        },
       ]
     } else if (validation.id === 1) {
       status = [
-        'bg-yellow-ff',
-        'bg-yellow-ff',
-        'bg-navigation opacity-20',
-        'bg-navigation opacity-20',
+        {
+          key: 'line-1',
+          value: 'bg-yellow-ff',
+        },
+        {
+          key: 'line-2',
+          value: 'bg-yellow-ff',
+        },
+        {
+          key: 'line-3',
+          value: 'bg-navigation opacity-20',
+        },
+        {
+          key: 'line-4',
+          value: 'bg-navigation opacity-20',
+        },
       ]
     } else if (validation.id === 2) {
       status = [
-        'bg-yellow-ff',
-        'bg-yellow-ff',
-        'bg-yellow-ff',
-        'bg-navigation opacity-20',
+        {
+          key: 'line-1',
+          value: 'bg-yellow-ff',
+        },
+        {
+          key: 'line-2',
+          value: 'bg-yellow-ff',
+        },
+        {
+          key: 'line-3',
+          value: 'bg-yellow-ff',
+        },
+        {
+          key: 'line-4',
+          value: 'bg-navigation opacity-20',
+        },
       ]
     } else if (validation.id === 3) {
-      status = ['bg-success', 'bg-success', 'bg-success', 'bg-success']
+      status = [
+        {
+          key: 'line-1',
+          value: 'bg-success',
+        },
+        {
+          key: 'line-2',
+          value: 'bg-success',
+        },
+        {
+          key: 'line-3',
+          value: 'bg-success',
+        },
+        {
+          key: 'line-4',
+          value: 'bg-success',
+        },
+      ]
     }
 
     setPassStrength(status)
@@ -212,11 +282,11 @@ const Password = (props: TPassword): JSX.Element => {
       </div>
       {passStrength && (
         <div className='grid grid-cols-4 gap-1 mt-5 mb-6'>
-          {passStrength?.map((status: string, index: number) => {
+          {passStrength?.map((status: TPassStrengthProps) => {
             return (
               <div
-                className={`${status} h-1.5 rounded`}
-                key={`${status}-${index}`}
+                className={`${status.value} h-1.5 rounded`}
+                key={status.key}
               />
             )
           })}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import { mockNFTs, typesData, rarenessesData } from './mockData'
 import Select, { TOption } from 'common/components/Select/Select'
 import NFTCard, { NFTCardVariantSize } from 'common/components/NFTCard'
@@ -9,15 +10,38 @@ export type TKeywordResultProps = {
 
 const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
   const keywords = [
-    'Banksy82',
-    'Banksy_art',
-    'Banksy_mood',
-    'theRealBanksy',
-    'theRealBanksy',
-    'theRealBanksy',
-    'theRealBanksy',
-    'theRealBanksy',
-    'theRealBanksy',
+    {
+      id: uuidv4(),
+      label: 'Banksy82',
+    },
+    {
+      id: uuidv4(),
+      label: 'Banksy_art',
+    },
+    {
+      id: uuidv4(),
+      label: 'Banksy_mood',
+    },
+    {
+      id: uuidv4(),
+      label: 'theRealBanksy',
+    },
+    {
+      id: uuidv4(),
+      label: 'theRealBanksy',
+    },
+    {
+      id: uuidv4(),
+      label: 'theRealBanksy',
+    },
+    {
+      id: uuidv4(),
+      label: 'theRealBanksy',
+    },
+    {
+      id: uuidv4(),
+      label: 'theRealBanksy',
+    },
   ]
 
   const [types, setTypes] = useState<TOption | null>(typesData[0])
@@ -27,12 +51,12 @@ const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
     <div>
       <div className='bg-white 1200px:flex py-[17px] pl-[25px] flex-none justify-between items-center'>
         <div className='flex flex-none'>
-          {keywords.slice(0, 5).map((item, index) => (
+          {keywords.slice(0, 5).map(item => (
             <div
-              key={`${item}-${index}`}
+              key={item.id}
               className='py-0.5 px-2 bg-gray-71 rounded-full mr-2 text-white font-medium cursor-pointer'
             >
-              #{item}
+              #{item.label}
             </div>
           ))}
           {keywords.length > 5 && (
@@ -61,7 +85,7 @@ const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
       <div className='flex-grow overflow-y-auto overflow-x-hidden grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mt-10 pb-3 gap-y-[30px] gap-x-[18px]'>
         {mockNFTs.map((item, i) => (
           <NFTCard
-            key={`${item.title}-${i}`}
+            key={item.id}
             hideFollow={true}
             hideLikeButton={true}
             {...item}

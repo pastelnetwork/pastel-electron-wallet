@@ -1,4 +1,6 @@
 import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
+
 import svg_diamond from 'common/assets/icons/ico-diamond.svg'
 import svg_oval_1 from 'common/assets/images/avatars/oval-1.svg'
 import svg_oval_2 from 'common/assets/images/avatars/oval-2.svg'
@@ -9,9 +11,8 @@ import svg_oval_6 from 'common/assets/images/avatars/oval-6.svg'
 import svg_oval_7 from 'common/assets/images/avatars/oval-7.svg'
 import { Button } from 'common/components/Buttons'
 
-export type TFollowers = TFollower[]
-
 export type TFollower = {
+  id: string
   name: string
   count: number
   avatar: string
@@ -19,12 +20,14 @@ export type TFollower = {
   is_followed: boolean
 }
 
+export type TFollowers = TFollower[]
+
 const Followers = (): JSX.Element => {
   return (
     <div className='flex flex-col pt-2 max-h-700px overflow-y-auto pr-8 -mt-7'>
       <div className='pt-7' />
-      {followers.map((follower: TFollower, index: number) => (
-        <Follower {...follower} key={`${follower.name}-${index}`} />
+      {followers.map((follower: TFollower) => (
+        <Follower {...follower} key={follower.id} />
       ))}
     </div>
   )
@@ -72,6 +75,7 @@ const Follower = ({
 
 const followers: TFollowers = [
   {
+    id: uuidv4(),
     name: 'Salley Fadel',
     is_followed: false,
     count: 161,
@@ -79,18 +83,21 @@ const followers: TFollowers = [
     diamond: true,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 162,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 16,
     avatar: svg_oval_3,
     is_followed: true,
   },
   {
+    id: uuidv4(),
     name: 'Edwardo Bea',
     count: 163,
     avatar: svg_oval_4,
@@ -98,36 +105,42 @@ const followers: TFollowers = [
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aiya Gerald',
     count: 161,
     avatar: svg_oval_5,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Edwardo Bea',
     count: 161,
     avatar: svg_oval_3,
@@ -135,12 +148,14 @@ const followers: TFollowers = [
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_4,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Sally Fadel',
     count: 161,
     avatar: svg_oval_5,
@@ -148,6 +163,7 @@ const followers: TFollowers = [
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Sally Fadel',
     count: 161,
     avatar: svg_oval_5,
@@ -155,6 +171,7 @@ const followers: TFollowers = [
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Sally Fadel',
     count: 161,
     avatar: svg_oval_5,
@@ -162,6 +179,7 @@ const followers: TFollowers = [
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Sally Fadel',
     count: 161,
     avatar: svg_oval_5,
@@ -169,294 +187,343 @@ const followers: TFollowers = [
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_6,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_7,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Aniya Harber',
     count: 161,
     avatar: svg_oval_1,
     is_followed: false,
   },
   {
+    id: uuidv4(),
     name: 'Reymundo',
     count: 161,
     avatar: svg_oval_2,
