@@ -374,6 +374,85 @@ export default function MemberProfile(): JSX.Element {
     },
   ]
 
+  const renderTabContent = () => (
+    <div className='flex flex-col flex-grow pl-8'>
+      {tab === 0 && (
+        <div className='flex justify-between flex-col 1200px:flex-row'>
+          <ProfileGeneral {...general_data} />
+          <ProfileRelations />
+        </div>
+      )}
+      {tab === 1 && (
+        <div>
+          <div className='flex items-center justify-between text-gray-42 text-base flex-wrap gap-2'>
+            <div className='flex items-center'>
+              <div className='flex items-center mr-6'>
+                <p className='mr-4'>Categories</p>
+                <Select
+                  options={categoriesOptions}
+                  selected={category}
+                  onChange={setCategory}
+                  className='w-113px bg-white'
+                />
+              </div>
+              <div className='flex items-center'>
+                <p className='mr-4'>Type</p>
+                <Select
+                  options={categoriesOptions}
+                  selected={type}
+                  onChange={setType}
+                  className='w-113px bg-white'
+                />
+              </div>
+            </div>
+            <div className='flex items-center mr-8'>
+              <p className='mr-4'>Sorty by</p>
+              <Select
+                options={categoriesOptions}
+                selected={sort}
+                onChange={setSort}
+                className='w-113px bg-white'
+              />
+            </div>
+          </div>
+          <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3 text-gray-1a overflow-y-auto pr-33px h-608px gap-y-[12px] gap-x-[15px]'>
+            {mockCardProps.map((nftItem, i) => (
+              <NFTCard
+                {...nftItem}
+                isAuctionBid={(i + 1) % 2 === 0}
+                isFixedPrice={(i + 1) % 3 === 0 && (i + 1) % 2 !== 0}
+                isNotForSale={(i + 1) % 2 !== 0 && (i + 1) % 3 !== 0}
+                key={nftItem.id}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      {tab === 2 && (
+        <div className='flex justify-between flex-col-reverse md:flex-row'>
+          <div className='w-full h-screen overflow-y-auto'>
+            <div className='pr-22px'>
+              {mockComments.map((comment, i) => (
+                <MemberCard
+                  key={comment.id}
+                  {...comment}
+                  active={i === activeIndex}
+                />
+              ))}
+            </div>
+          </div>
+          <div className='w-[271px] md:pt-34px flex md:block'>
+            {filterData.map(item => (
+              <div key={item.value} className='pl-33px md:pl-[106px] pb-14px'>
+                <Checkbox isChecked={item.checked}>{item.label}</Checkbox>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <div>
       <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
@@ -399,87 +478,7 @@ export default function MemberProfile(): JSX.Element {
             <div className='flex flex-col items-center lg:justify-between'>
               <ProfileCard {...profile_data} isMyProfile={true} />
             </div>
-            <div className='flex flex-col flex-grow pl-8'>
-              {tab === 0 && (
-                <div className='flex justify-between flex-col 1200px:flex-row'>
-                  <ProfileGeneral {...general_data} />
-                  <ProfileRelations />
-                </div>
-              )}
-              {tab === 1 && (
-                <div>
-                  <div className='flex items-center justify-between text-gray-42 text-base flex-wrap gap-2'>
-                    <div className='flex items-center'>
-                      <div className='flex items-center mr-6'>
-                        <p className='mr-4'>Categories</p>
-                        <Select
-                          options={categoriesOptions}
-                          selected={category}
-                          onChange={setCategory}
-                          className='w-113px bg-white'
-                        />
-                      </div>
-                      <div className='flex items-center'>
-                        <p className='mr-4'>Type</p>
-                        <Select
-                          options={categoriesOptions}
-                          selected={type}
-                          onChange={setType}
-                          className='w-113px bg-white'
-                        />
-                      </div>
-                    </div>
-                    <div className='flex items-center mr-8'>
-                      <p className='mr-4'>Sorty by</p>
-                      <Select
-                        options={categoriesOptions}
-                        selected={sort}
-                        onChange={setSort}
-                        className='w-113px bg-white'
-                      />
-                    </div>
-                  </div>
-                  <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3 text-gray-1a overflow-y-auto pr-33px h-608px gap-y-[12px] gap-x-[15px]'>
-                    {mockCardProps.map((nftItem, i) => (
-                      <NFTCard
-                        {...nftItem}
-                        isAuctionBid={(i + 1) % 2 === 0}
-                        isFixedPrice={(i + 1) % 3 === 0 && (i + 1) % 2 !== 0}
-                        isNotForSale={(i + 1) % 2 !== 0 && (i + 1) % 3 !== 0}
-                        key={nftItem.id}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-              {tab === 2 && (
-                <div className='flex justify-between flex-col-reverse md:flex-row'>
-                  <div className='w-full h-screen overflow-y-auto'>
-                    <div className='pr-22px'>
-                      {mockComments.map((comment, i) => (
-                        <MemberCard
-                          key={comment.id}
-                          {...comment}
-                          active={i === activeIndex}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                  <div className='w-[271px] md:pt-34px flex md:block'>
-                    {filterData.map(item => (
-                      <div
-                        key={item.value}
-                        className='pl-33px md:pl-[106px] pb-14px'
-                      >
-                        <Checkbox isChecked={item.checked}>
-                          {item.label}
-                        </Checkbox>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            {renderTabContent()}
           </div>
         </div>
       </div>

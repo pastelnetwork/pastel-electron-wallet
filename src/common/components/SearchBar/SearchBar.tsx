@@ -193,15 +193,20 @@ export default function SearchBar(): JSX.Element {
               <div className='px-6 pt-4 pb-[46px]'>
                 <div className='text-base'>I{"'"}m looking for</div>
                 <div className='flex text-gray-4a text-medium mt-2'>
-                  {categories.map(category => (
-                    <SearchTag
-                      key={`${category.label}${category.type}${category.id}`}
-                      type={category.type}
-                      label={category.label}
-                      clickHandle={param => clickedCategory(param)}
-                      id={category.id}
-                    />
-                  ))}
+                  {categories.map(category => {
+                    const label: string = category.label || ''
+                    const type: string = category.type || ''
+                    const id: string = category.id || ''
+                    return (
+                      <SearchTag
+                        key={`${label}${type}${id}`}
+                        type={category.type}
+                        label={category.label}
+                        clickHandle={param => clickedCategory(param)}
+                        id={category.id}
+                      />
+                    )
+                  })}
                 </div>
                 <div className='mt-6'>
                   <div className='text-gray-71 text-base'>Recent searches</div>

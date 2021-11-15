@@ -268,6 +268,100 @@ export default function DashboardPage(): JSX.Element {
     },
   ]
 
+  const renderNofications = () => (
+    <div className='paper pt-6 w-419px min-h-[458px] flex-shrink-0 flex flex-col relative md:w-[451px]'>
+      <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
+        <div className='font-extrabold text-lg text-gray-2d'>
+          Latest Notifications
+        </div>
+        <div className='font-medium text-gray-a0 text-sm'>1 unread</div>
+      </div>
+      <div
+        className={
+          notifications.length > 0
+            ? 'pl-8 pr-3.5 mr-18px overflow-y-auto h-full max-h-[1360px] md:max-h-[970px] xl:max-h-[460px]'
+            : 'flex justify-center'
+        }
+      >
+        {notifications.map(notification => (
+          <Notification
+            key={notification.id}
+            {...notification}
+            className='h-[52px]'
+          />
+        ))}
+        {notifications.length === 0 && (
+          <div className='text-gray-a0 text-base mt-[146px]'>
+            You have no Notifications
+          </div>
+        )}
+      </div>
+      <div className='pt-4 pb-4 text-center rounded-b-md leading-none absolute bottom-0 w-full'>
+        <Link
+          onClick={() => setOpenNotificationModal(true)}
+          className='text-blue-3f text-sm font-medium inline-block h-3'
+        >
+          Check All Notifications
+        </Link>
+      </div>
+    </div>
+  )
+
+  const renderTrendingNFTs = () => (
+    <div className='paper pt-6 flex-grow lg:flex lg:flex-col w-0 mr-5 relative'>
+      <div className='flex items-center h-6 mb-30px flex-shrink-0 px-30px justify-between'>
+        <div className='flex items-center'>
+          <div className='font-extrabold text-gray-2d text-lg leading-6'>
+            Trending NFTs
+          </div>
+          <div className='font-medium text-gray-a0 text-sm ml-2'>
+            312,000 listed
+          </div>
+        </div>
+        <div className='flex items-center'>
+          <div className='mr-6'>
+            <Radio
+              checked={tab === Tabs.Creators}
+              onChange={param => {
+                param && setTab(0)
+              }}
+              labelClassName='text-sm ml-3'
+            >
+              Creators
+            </Radio>
+          </div>
+          <Radio
+            checked={tab === Tabs.NFTs}
+            onChange={param => {
+              param && setTab(1)
+            }}
+            labelClassName='text-sm ml-3'
+          >
+            NFTs
+          </Radio>
+        </div>
+      </div>
+      <div className='lg:flex-grow px-30px pb-7'>
+        <div
+          className={
+            cards.length > 0
+              ? 'flex flex-col items-center space-y-30px md:space-y-0 md:grid grid-cols-1 md:grid-cols-2 md:gap-5 xl:grid-cols-3'
+              : 'flex justify-center'
+          }
+        >
+          {cards.map(item => (
+            <NFTCard key={item.id} {...item} variant={NFTCardVariantSize.M} />
+          ))}
+          {cards.length === 0 && (
+            <div className='text-gray-a0 text-base mt-[146px]'>
+              You have no NFTs
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className='wrapper content with-page-header h-full w-screen py-5 max-w-screen-2xl'>
       <div className='flex mb-5'>
@@ -284,32 +378,29 @@ export default function DashboardPage(): JSX.Element {
               <PortfolioColumn title='Sales in progress (2)'>
                 {followers
                   .filter(item => item.type == 'progress')
-                  .map(item => (
-                    <PortfolioItem
-                      key={`${item.title}-${item.type}`}
-                      {...item}
-                    />
-                  ))}
+                  .map(item => {
+                    const title: string = item.title || ''
+                    const type: string = item.type || ''
+                    return <PortfolioItem key={`${title}-${type}`} {...item} />
+                  })}
               </PortfolioColumn>
               <PortfolioColumn title='In review (1)'>
                 {followers
                   .filter(item => item.type == 'review')
-                  .map(item => (
-                    <PortfolioItem
-                      key={`${item.title}-${item.type}`}
-                      {...item}
-                    />
-                  ))}
+                  .map(item => {
+                    const title: string = item.title || ''
+                    const type: string = item.type || ''
+                    return <PortfolioItem key={`${title}-${type}`} {...item} />
+                  })}
               </PortfolioColumn>
               <PortfolioColumn title='On Sale (2)'>
                 {followers
                   .filter(item => item.type == 'sale')
-                  .map(item => (
-                    <PortfolioItem
-                      key={`${item.title}-${item.type}`}
-                      {...item}
-                    />
-                  ))}
+                  .map(item => {
+                    const title: string = item.title || ''
+                    const type: string = item.type || ''
+                    return <PortfolioItem key={`${title}-${type}`} {...item} />
+                  })}
               </PortfolioColumn>
             </div>
           )}
@@ -328,98 +419,8 @@ export default function DashboardPage(): JSX.Element {
         </div>
       </div>
       <div className='flex'>
-        <div className='paper pt-6 flex-grow lg:flex lg:flex-col w-0 mr-5 relative'>
-          <div className='flex items-center h-6 mb-30px flex-shrink-0 px-30px justify-between'>
-            <div className='flex items-center'>
-              <div className='font-extrabold text-gray-2d text-lg leading-6'>
-                Trending NFTs
-              </div>
-              <div className='font-medium text-gray-a0 text-sm ml-2'>
-                312,000 listed
-              </div>
-            </div>
-            <div className='flex items-center'>
-              <div className='mr-6'>
-                <Radio
-                  checked={tab === Tabs.Creators}
-                  onChange={param => {
-                    param && setTab(0)
-                  }}
-                  labelClassName='text-sm ml-3'
-                >
-                  Creators
-                </Radio>
-              </div>
-              <Radio
-                checked={tab === Tabs.NFTs}
-                onChange={param => {
-                  param && setTab(1)
-                }}
-                labelClassName='text-sm ml-3'
-              >
-                NFTs
-              </Radio>
-            </div>
-          </div>
-          <div className='lg:flex-grow px-30px pb-7'>
-            <div
-              className={
-                cards.length > 0
-                  ? 'flex flex-col items-center space-y-30px md:space-y-0 md:grid grid-cols-1 md:grid-cols-2 md:gap-5 xl:grid-cols-3'
-                  : 'flex justify-center'
-              }
-            >
-              {cards.map(item => (
-                <NFTCard
-                  key={item.id}
-                  {...item}
-                  variant={NFTCardVariantSize.M}
-                />
-              ))}
-              {cards.length === 0 && (
-                <div className='text-gray-a0 text-base mt-[146px]'>
-                  You have no NFTs
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className='paper pt-6 w-419px min-h-[458px] flex-shrink-0 flex flex-col relative md:w-[451px]'>
-          <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
-            <div className='font-extrabold text-lg text-gray-2d'>
-              Latest Notifications
-            </div>
-            <div className='font-medium text-gray-a0 text-sm'>1 unread</div>
-          </div>
-          <div
-            className={
-              notifications.length > 0
-                ? 'pl-8 pr-3.5 mr-18px overflow-y-auto h-full max-h-[1360px] md:max-h-[970px] xl:max-h-[460px]'
-                : 'flex justify-center'
-            }
-          >
-            {notifications.map(notification => (
-              <Notification
-                key={notification.id}
-                {...notification}
-                className='h-[52px]'
-              />
-            ))}
-            {notifications.length === 0 && (
-              <div className='text-gray-a0 text-base mt-[146px]'>
-                You have no Notifications
-              </div>
-            )}
-          </div>
-          <div className='pt-4 pb-4 text-center rounded-b-md leading-none absolute bottom-0 w-full'>
-            <Link
-              onClick={() => setOpenNotificationModal(true)}
-              className='text-blue-3f text-sm font-medium inline-block h-3'
-            >
-              Check All Notifications
-            </Link>
-          </div>
-        </div>
+        {renderTrendingNFTs()}
+        {renderNofications()}
       </div>
       <NotificationModal
         isOpen={openNotificationModal}

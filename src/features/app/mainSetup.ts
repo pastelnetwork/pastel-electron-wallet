@@ -31,6 +31,47 @@ import { readRpcConfig } from '../rpcConfig'
 import { ignorePromiseError } from '../../common/utils/promises'
 import { TRPCConfig } from '../../api/pastel-rpc'
 
+export const onWindowClose = async (event: Event): Promise<void> => {
+  // If we are clear to close, then return and allow everything to close
+  if (proceedToClose) {
+    log.warn('proceed to close, so closing')
+    return
+  }
+
+  // If we're already waiting for close, then don't allow another close event to actually close the window
+  if (waitingForClose) {
+    log.warn('Waiting for close... Timeout in 10s')
+    event.preventDefault()
+    return
+  }
+
+  waitingForClose = true
+  event.preventDefault()
+
+  closeServeStatic()
+
+  sendEventToRenderer('prepareToQuit', null)
+
+  // Failsafe, timeout after 10 seconds
+  setTimeout(() => {
+    waitingForClose = false
+    proceedToClose = true
+    log.warn('Timeout, quitting')
+    app.quit()
+  }, 10 * 1000)
+
+  await mainEventPromise('rendererIsReadyForQuit')
+  await ignorePromiseError(stopWalletNode())
+
+  waitingForClose = false
+  proceedToClose = true
+  app.quit()
+}
+
+const setupWindow = async () => {
+  await createWindow(onWindowClose)
+}
+
 export const mainSetup = async (): Promise<void> => {
   setupDeepLinking()
   enableDevTools()
@@ -178,45 +219,4 @@ let proceedToClose = false
 
 export const resetWindowCloseFlags = (): void => {
   waitingForClose = proceedToClose = false
-}
-
-export const onWindowClose = async (event: Event): Promise<void> => {
-  // If we are clear to close, then return and allow everything to close
-  if (proceedToClose) {
-    log.warn('proceed to close, so closing')
-    return
-  }
-
-  // If we're already waiting for close, then don't allow another close event to actually close the window
-  if (waitingForClose) {
-    log.warn('Waiting for close... Timeout in 10s')
-    event.preventDefault()
-    return
-  }
-
-  waitingForClose = true
-  event.preventDefault()
-
-  closeServeStatic()
-
-  sendEventToRenderer('prepareToQuit', null)
-
-  // Failsafe, timeout after 10 seconds
-  setTimeout(() => {
-    waitingForClose = false
-    proceedToClose = true
-    log.warn('Timeout, quitting')
-    app.quit()
-  }, 10 * 1000)
-
-  await mainEventPromise('rendererIsReadyForQuit')
-  await ignorePromiseError(stopWalletNode())
-
-  waitingForClose = false
-  proceedToClose = true
-  app.quit()
-}
-
-const setupWindow = async () => {
-  await createWindow(onWindowClose)
 }

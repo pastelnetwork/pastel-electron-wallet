@@ -41,6 +41,7 @@ export const setupAutoUpdater = (): void => {
   )
 
   autoUpdater.on('error', err => {
-    log.warn(`autoUpdater error: ${err.message}`, err)
+    const message: string = err.message || ''
+    log.warn(`autoUpdater error: ${message}`, err)
   })
 }

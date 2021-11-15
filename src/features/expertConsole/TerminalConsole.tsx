@@ -451,17 +451,21 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
       </div>
       <div className={styles.terminalInputLongArea}>
         <div className={styles.terminalOutput}>
-          {outputs.map((out: any) => (
-            <ConsoleOutput
-              key={`${out.content.command}-${out.type}`}
-              type={out.type}
-              textContent={
-                out.type === OutputType.HEADER_OUTPUT_TYPE
-                  ? `$ ${out.content.command}`
-                  : out.content
-              }
-            />
-          ))}
+          {outputs.map((out: any) => {
+            const outCommand: string = out.content.command || ''
+            const outType: string = out.type || ''
+            return (
+              <ConsoleOutput
+                key={`${outCommand}-${outType}`}
+                type={out.type}
+                textContent={
+                  out.type === OutputType.HEADER_OUTPUT_TYPE
+                    ? `$ ${out.content.command}`
+                    : out.content
+                }
+              />
+            )
+          })}
         </div>
         <div
           className={styles.terminalInputLongAreaClickable}

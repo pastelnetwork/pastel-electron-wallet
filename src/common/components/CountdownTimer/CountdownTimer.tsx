@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 export type TCountdownTimerProps = {
-  countDownDate: number
+  countDownDate?: number
   className?: string
 }
 
@@ -25,6 +25,10 @@ export default function CountdownTimer({
   let token: NodeJS.Timer
 
   const updateTime = () => {
+    if (!countDownDate) {
+      return
+    }
+
     const now = new Date().getTime()
     const distance = countDownDate - now
     const days = Math.floor(distance / (1000 * 60 * 60 * 24))

@@ -23,7 +23,7 @@ if (!fs.existsSync(migrationsPath)) {
 const migrationName = `${Math.floor(Date.now() / 1000)}-${
   process.argv[fileNameIndex + 1]
 }.sql`
-const migrationPath = path.join(migrationsPath, migrationName)
+const migrationPath: string = path.join(migrationsPath, migrationName) || ''
 
 fs.writeFileSync(migrationPath, '')
 

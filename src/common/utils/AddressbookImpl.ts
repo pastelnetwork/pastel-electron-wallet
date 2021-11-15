@@ -51,7 +51,11 @@ export default class AddressbookImpl {
 
       return []
     } catch (err) {
-      log.log(`common/utils/AddressbookImpl readAddressBook error: ${err}`, err)
+      const message: string = err.message || ''
+      log.log(
+        `common/utils/AddressbookImpl readAddressBook error: ${message}`,
+        err,
+      )
       return []
     }
   }

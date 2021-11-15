@@ -61,10 +61,12 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
       {data?.length && (
         <div className={container_className}>
           {data.map((item: TMultiToggleDataItem, index: number) => {
+            const label: string = item.label || ''
+            const countItem: string = item.count?.toString() || ''
             return (
               <div
                 className={getItemClassName(index === activeIndex)}
-                key={`${item.label}${item.count}`}
+                key={`${label}${countItem}`}
                 onClick={() => handleClick(index)}
               >
                 <span>{item.label}</span>

@@ -33,34 +33,30 @@ export default function Wallet(): JSX.Element {
     [transactionsRaw],
   )
 
-  const renderTransactionsLoading = () => (
-    <>
-      <div className='p-3 pr-5 mb-3'>
-        <ContentLoader className='h-[50px]'>
-          <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
-          <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
-          <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
-          <circle cx='12' cy='12' r='12' />
-        </ContentLoader>
-      </div>
-      <div className='p-3 pr-5 mb-3'>
-        <ContentLoader className='h-[50px]'>
-          <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
-          <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
-          <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
-          <circle cx='12' cy='12' r='12' />
-        </ContentLoader>
-      </div>
-      <div className='p-3 pr-5 mb-3'>
-        <ContentLoader className='h-[50px]'>
-          <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
-          <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
-          <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
-          <circle cx='12' cy='12' r='12' />
-        </ContentLoader>
-      </div>
-    </>
+  const renderLoading = () => (
+    <div className='p-3 pr-5 mb-3'>
+      <ContentLoader className='h-[50px]'>
+        <rect x='36' y='8' rx='4' ry='4' width='88' height='8' />
+        <rect x='36' y='32' rx='4' ry='4' width='52' height='8' />
+        <rect x='120' y='32' rx='4' ry='4' width='100' height='8' />
+        <circle cx='12' cy='12' r='12' />
+      </ContentLoader>
+    </div>
   )
+
+  const renderTransactionsLoading = () => {
+    if (!isTransactionsLoading) {
+      return null
+    }
+
+    return (
+      <>
+        {renderLoading()}
+        {renderLoading()}
+        {renderLoading()}
+      </>
+    )
+  }
 
   return (
     <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
@@ -76,7 +72,7 @@ export default function Wallet(): JSX.Element {
         {isBalanceLoading && <RectangleLoader colorClass='text-gray-dd' />}
       </div>
       <div className='pl-[30px] pr-4 mr-14px overflow-auto h-[252px]'>
-        {isTransactionsLoading ? renderTransactionsLoading() : null}
+        {renderTransactionsLoading()}
         {transactions.map(transaction => (
           <TransactionItem key={transaction.id} {...transaction} />
         ))}
