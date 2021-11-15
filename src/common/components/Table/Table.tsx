@@ -1,5 +1,7 @@
 import React, { useState, ReactNode, useMemo } from 'react'
 import cx from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
+
 import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
@@ -180,13 +182,12 @@ const Table = ({
         ) : null}
         {tableData.map((row: TRow, index: number) => (
           <tr
-            key={row[index]?.toString()}
+            key={uuidv4()}
             className={cx(
               bodyTrClasses,
               selectedRows.includes(index) && 'bg-blue-fa',
             )}
           >
-            {row[index]?.toString()}
             {showCheckbox ? (
               <td className='pl-4 md:pl-30px w-5'>
                 <Checkbox

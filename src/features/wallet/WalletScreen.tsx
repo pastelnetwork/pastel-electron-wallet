@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { walletRPC, transactionRPC } from 'api/pastel-rpc'
+import {
+  useTAddresses,
+  useTAddressBalances,
+  useZAddresses,
+  useZAddressBalances,
+  useTotalBalance,
+  walletRPC,
+  transactionRPC,
+} from 'api/pastel-rpc'
 import { TPaymentSources, TDate } from './walletScreen.types'
 import { useAddressBook } from 'common/hooks'
 import Alert from 'common/components/Alert'
@@ -38,11 +46,11 @@ export type TSelectionPslProps = {
 }
 
 export default function WalletScreen(): JSX.Element {
-  const tAddressesOriginal = walletRPC.useTAddresses()
-  const tAddressAmounts = walletRPC.useTAddressBalances()
-  const zAddressesOriginal = walletRPC.useZAddresses()
-  const zAddressAmounts = walletRPC.useZAddressBalances()
-  const totalBalances = walletRPC.useTotalBalance()
+  const tAddressesOriginal = useTAddresses()
+  const tAddressAmounts = useTAddressBalances()
+  const zAddressesOriginal = useZAddresses()
+  const zAddressAmounts = useZAddressBalances()
+  const totalBalances = useTotalBalance()
   const addressBook = useAddressBook()
   const lastActivityTimes = useAddressesLastActivityTime()
   const [isNewAddress, setNewAddress] = useToggle(false)

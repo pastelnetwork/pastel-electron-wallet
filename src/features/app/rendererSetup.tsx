@@ -19,7 +19,7 @@ import history from '../../common/utils/history'
 import * as ROUTES from '../../common/utils/constants/routes'
 import { ignorePromiseError, retryPromise } from '../../common/utils/promises'
 import { useEffect, useState } from 'react'
-import { WalletRPC } from '../../api/pastel-rpc'
+import { useZListUnspent, useTListUnspent } from '../../api/pastel-rpc'
 
 // workaround for Hot Module Replacement behavior to not start the same intervals twice
 const intervals: Record<string, ReturnType<typeof setInterval>> = {}
@@ -97,9 +97,8 @@ export const RendererSetupHooks = (): null => {
 
   // Pre-load queries for Wallet screen for the list of addresses
   // Wallet balances, pastel prices are fetched by PastelDBThread
-  const walletRPC = new WalletRPC()
-  walletRPC.useZListUnspent({ enabled: hasRpcConfig })
-  walletRPC.useTListUnspent({ enabled: hasRpcConfig })
+  useZListUnspent({ enabled: hasRpcConfig })
+  useTListUnspent({ enabled: hasRpcConfig })
 
   useEffect(() => {
     sendEventToMain('rendererStarted', null)

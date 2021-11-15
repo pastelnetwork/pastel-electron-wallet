@@ -3,7 +3,7 @@ import { formatPrice } from '../../common/utils/format'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import LinkSection from './LinkSection'
 import * as ROUTES from '../../common/utils/constants/routes'
-import { transactionRPC, walletRPC } from '../../api/pastel-rpc'
+import { useTAndZTransactions, useTotalBalance } from '../../api/pastel-rpc'
 import { useCurrencyName } from '../../common/hooks/appInfo'
 import { TTransactionType } from '../../types/rpc'
 import dayjs from 'dayjs'
@@ -15,15 +15,12 @@ type TTransactionsProps = TTransactionItemProps & { id: string }
 export default function Wallet(): JSX.Element {
   const currencyName = useCurrencyName()
 
-  const {
-    data: balance,
-    isLoading: isBalanceLoading,
-  } = walletRPC.useTotalBalance()
+  const { data: balance, isLoading: isBalanceLoading } = useTotalBalance()
 
   const {
     data: transactionsRaw,
     isLoading: isTransactionsLoading,
-  } = transactionRPC.useTAndZTransactions()
+  } = useTAndZTransactions()
 
   const transactions = useMemo<TTransactionsProps[]>(
     () =>

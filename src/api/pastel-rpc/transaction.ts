@@ -228,10 +228,6 @@ export class TransactionRPC {
     return sortTxnsResult(transactions)
   }
 
-  useTAndZTransactions(): UseQueryResult<TTransaction[]> {
-    return useQuery('TAndZTransactions', () => this.fetchTAndZTransactions())
-  }
-
   /**
    * Send to make a transaction.
    * Please note it's not same the old version that include to call <fnOpenSendErrorModal>.
@@ -264,3 +260,9 @@ export class TransactionRPC {
 }
 
 export const transactionRPC = new TransactionRPC()
+
+export const useTAndZTransactions = (): UseQueryResult<TTransaction[]> => {
+  return useQuery('TAndZTransactions', () =>
+    transactionRPC.fetchTAndZTransactions(),
+  )
+}
