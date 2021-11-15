@@ -38,6 +38,7 @@ export default function FullScreenImage({
         <button
           className='absolute top-0 -right-10 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-f8 hover:text-white border border-gray-f8 border-opacity-50 hover:border-opacity-100'
           onClick={onClose}
+          type='button'
         >
           <X size={8} />
         </button>

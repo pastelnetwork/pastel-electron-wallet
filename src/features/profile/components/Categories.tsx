@@ -52,7 +52,12 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
           </div>
         </div>
       ))}
-      <button hidden={isAdding} className='mb-2' onClick={startAdd}>
+      <button
+        hidden={isAdding}
+        className='mb-2'
+        onClick={startAdd}
+        type='button'
+      >
         <img src={ico_add} className='cursor-pointer w-21px' />
       </button>
 
@@ -69,6 +74,7 @@ const Categories = ({ value, onChange }: TCategories): JSX.Element => {
             onClick={() => {
               setAdding(false), setNewText('')
             }}
+            type='button'
           >
             <img src={ico_close} className='cursor-pointer' />
           </button>

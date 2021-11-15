@@ -70,6 +70,7 @@ export default function SubmitStep({
             <button
               className='absolute z-10 bottom-3 px-4 py-[10px] rounded-full bg-rgba-gray-2e flex items-center'
               onClick={onFullScreenToggle}
+              type='button'
             >
               <PreviewIco size={20} className='inline-block mr-4 text-white' />
               <span className='text-white text-xs font-medium inline-block whitespace-nowrap'>

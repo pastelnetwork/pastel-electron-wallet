@@ -194,7 +194,7 @@ export default function PastelPaperWalletModal({
   }
 
   const DownloadButton = () => (
-    <button className={styles.btn_download} id='PDFDownloadBtn'>
+    <button className={styles.btn_download} id='PDFDownloadBtn' type='button'>
       <PDFDownloadLink
         document={
           <PDFDocument

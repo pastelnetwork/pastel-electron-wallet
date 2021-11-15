@@ -142,3 +142,7 @@ export default function StepsCircle({
     </div>
   )
 }
+
+StepsCircle.defaultProps = {
+  className: '',
+}

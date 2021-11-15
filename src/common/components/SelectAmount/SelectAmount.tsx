@@ -144,7 +144,11 @@ export default function SelectAmount({
                   {label}
                 </span>
               ) : null}
-              <button {...getToggleButtonProps()} className='w-10px mr-4'>
+              <button
+                {...getToggleButtonProps()}
+                className='w-10px mr-4'
+                type='button'
+              >
                 <Caret
                   size={10}
                   to='bottom'

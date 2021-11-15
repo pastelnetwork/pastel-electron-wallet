@@ -22,7 +22,7 @@ const CloseButton = ({
   )
 
   return (
-    <button onClick={onClick} className={classes}>
+    <button onClick={onClick} className={classes} type='button'>
       <svg
         className='fill-current'
         width='8'

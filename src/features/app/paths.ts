@@ -13,7 +13,7 @@ const getBinPath = (fileNames: {
   darwin: string
   windows: string
 }): string => {
-  let binPath: string
+  let binPath = ''
   if (app.isPackaged) {
     binPath = process.resourcesPath
   } else {

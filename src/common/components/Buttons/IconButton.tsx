@@ -31,7 +31,7 @@ export const IconButton = ({
   )
 
   return (
-    <button className={classes} {...otherProps}>
+    <button className={classes} {...otherProps} type='button'>
       {React.cloneElement(children as React.ReactElement, {
         className: 'fill-current w-6',
       })}

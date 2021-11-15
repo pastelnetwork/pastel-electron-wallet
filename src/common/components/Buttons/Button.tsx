@@ -58,7 +58,7 @@ const Button = ({
   return (
     <>
       {variant === 'navigation' ? (
-        <button className={navButtonClasses} {...otherProps}>
+        <button className={navButtonClasses} {...otherProps} type={type}>
           {children}
         </button>
       ) : (

@@ -113,3 +113,7 @@ export default function UploadingCircle({
     </div>
   )
 }
+
+UploadingCircle.defaultProps = {
+  file: undefined,
+}

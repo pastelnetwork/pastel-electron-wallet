@@ -27,3 +27,8 @@ export default function Row({
     </div>
   )
 }
+
+Row.defaultProps = {
+  className: '',
+  link: '',
+}

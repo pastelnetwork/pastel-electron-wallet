@@ -87,6 +87,7 @@ const AnimatedModalInner = ({
               <button
                 className='absolute top-6 right-6 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-55 bg-white border border-gray-ec hover:border-gray-8e hover:bg-gray-f6 active:bg-gray-f6 active:border-gray-55'
                 onClick={onClose}
+                type='button'
               >
                 <X size={8} />
               </button>

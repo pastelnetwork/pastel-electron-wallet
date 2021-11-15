@@ -200,6 +200,7 @@ export default function Select<TForm extends FieldValues>(
                   disabled && 'cursor-not-allowed',
                 )}
                 disabled={disabled}
+                type='button'
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}

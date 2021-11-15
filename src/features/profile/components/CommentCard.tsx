@@ -133,3 +133,11 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
     </div>
   )
 }
+
+CommentCard.defaultProps = {
+  hideLike: false,
+  hideReply: false,
+  children: null,
+  hasBorder: false,
+  className: '',
+}

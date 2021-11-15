@@ -23,3 +23,7 @@ const PortfolioColumn = ({
 }
 
 export default PortfolioColumn
+
+PortfolioColumn.defaultProps = {
+  className: '',
+}

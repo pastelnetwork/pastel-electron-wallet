@@ -270,3 +270,11 @@ export default function CryptoKey(props: TCrypto): JSX.Element {
     </>
   )
 }
+
+PDFDocument.defaultProps = {
+  currencyName: 'PSL',
+}
+
+CryptoKey.defaultProps = {
+  currencyName: 'PSL',
+}

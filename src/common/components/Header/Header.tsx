@@ -102,6 +102,7 @@ const Header = (): JSX.Element | null => {
             <button
               className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
               onClick={toggleAddNFT}
+              type='button'
             >
               <AddNFTIcon size={21} className='mr-2' />
               <span className='text-blue-3f whitespace-nowrap font-extrabold'>
@@ -152,3 +153,8 @@ const Header = (): JSX.Element | null => {
 }
 
 export default Header
+
+MenuItem.defaultProps = {
+  classes: '',
+  exact: false,
+}

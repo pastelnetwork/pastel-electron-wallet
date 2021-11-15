@@ -52,3 +52,7 @@ export default function SelectPaymentSourceAmount({
     />
   )
 }
+
+SelectPaymentSourceAmount.defaultProps = {
+  isModal: undefined,
+}

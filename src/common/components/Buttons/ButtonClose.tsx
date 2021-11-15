@@ -16,7 +16,7 @@ const ButtonClose = ({
   )
 
   return (
-    <button onClick={onClick} className={classes}>
+    <button onClick={onClick} className={classes} type='button'>
       <svg
         width='8'
         height='9'

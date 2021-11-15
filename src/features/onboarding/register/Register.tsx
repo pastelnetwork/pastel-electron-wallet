@@ -226,6 +226,7 @@ export default function Register(): JSX.Element {
             <button
               className='rounded-full text-sm font-medium text-white bg-red-fe inline-block w-[232px] text-center py-6px cursor-pointer'
               onClick={() => confirmClose(true)}
+              type='button'
             >
               Close
             </button>
@@ -234,6 +235,7 @@ export default function Register(): JSX.Element {
             <button
               className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-[232px] text-center py-6px cursor-pointer'
               onClick={() => confirmClose(false)}
+              type='button'
             >
               Back
             </button>

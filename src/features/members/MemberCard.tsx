@@ -54,6 +54,7 @@ const MemberCard = ({
               'border-blue-3f text-blue-3f': !followedByUser,
               'border-button-text text-button-text': followedByUser,
             })}
+            type='button'
           >
             {followedByUser ? 'Unfollow' : 'Follow'}
           </button>

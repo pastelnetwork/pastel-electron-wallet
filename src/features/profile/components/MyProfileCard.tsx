@@ -96,17 +96,17 @@ const ProfileCard = ({
               </div>
               <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
                 {truncateMiddle(data.walletId, 8, 4, '...')}
-                <button className='ml-10px'>
+                <button className='ml-10px' type='button'>
                   <Clipboard size={12} className='text-gray-88' />
                 </button>
               </div>
               <div className='py-4 flex justify-center space-x-2'>
-                <button>
+                <button type='button'>
                   {facebook.length && (
                     <FacebookIcon size={20} className='text-gray-88' />
                   )}
                 </button>
-                <button>
+                <button type='button'>
                   {twitter.length && (
                     <TwitterIcon size={20} className='text-gray-88' />
                   )}
@@ -170,7 +170,7 @@ const ProfileCard = ({
                     {truncateMiddle(data.walletId, 8, 4, '...')}
                   </span>
                 </Tooltip>
-                <button className='pl-10px'>
+                <button className='pl-10px' type='button'>
                   <Clipboard size={12} className='text-gray-88' />
                 </button>
               </div>
@@ -199,6 +199,7 @@ const ProfileCard = ({
               onClick={() => {
                 setEditMode(false)
               }}
+              type='button'
             >
               Save Changes
             </button>

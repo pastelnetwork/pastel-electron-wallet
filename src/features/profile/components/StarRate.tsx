@@ -59,3 +59,7 @@ const EmptyStar = (): JSX.Element => (
 )
 
 export default StarRate
+
+StarRate.defaultProps = {
+  maxRate: DEFAULT_MAX_RATE,
+}

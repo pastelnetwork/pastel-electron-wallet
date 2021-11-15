@@ -108,3 +108,7 @@ const QR = ({
 }
 
 export default QR
+
+QR.defaultProps = {
+  currentStatus: '',
+}

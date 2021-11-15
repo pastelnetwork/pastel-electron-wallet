@@ -21,8 +21,13 @@ export default function FullScreenButton({
       )}
       onClick={onClick}
       disabled={disabled}
+      type='button'
     >
       <Expand size={13} />
     </button>
   )
+}
+
+FullScreenButton.defaultProps = {
+  disabled: false,
 }

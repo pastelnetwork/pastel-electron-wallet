@@ -242,3 +242,9 @@ export default function AddressesTable({
     />
   )
 }
+
+AddressesTable.defaultProps = {
+  extendHeader: undefined,
+  extendHeaderClassName: '',
+  stickyTopClassName: '',
+}

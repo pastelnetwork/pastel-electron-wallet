@@ -496,3 +496,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
 }
 
 export default TerminalConsole
+
+TerminalConsole.defaultProps = {
+  txDetail: undefined,
+}

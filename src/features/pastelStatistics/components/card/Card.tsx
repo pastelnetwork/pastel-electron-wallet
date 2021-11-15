@@ -22,3 +22,9 @@ export const Card = (props: CardProps): JSX.Element => {
     </div>
   )
 }
+
+Card.defaultProps = {
+  backgroundImage: '',
+  title: '',
+  subTitle: '',
+}

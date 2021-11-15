@@ -15,7 +15,7 @@ const CircleAddButton = ({
   })
 
   return (
-    <button onClick={onClick} className={classes}>
+    <button onClick={onClick} className={classes} type='button'>
       <svg
         className='transition duration-300 button-add-icon fill-current text-blue-3f'
         width='12'

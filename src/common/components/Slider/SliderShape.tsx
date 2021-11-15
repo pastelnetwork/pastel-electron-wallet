@@ -44,3 +44,7 @@ export const SliderShape = ({
     </svg>
   )
 }
+
+SliderShape.defaultProps = {
+  style: undefined,
+}

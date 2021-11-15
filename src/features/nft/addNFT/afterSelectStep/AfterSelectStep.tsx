@@ -49,6 +49,7 @@ export default function UploadStep({
               <button
                 className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
                 onClick={goBack}
+                type='button'
               >
                 <Trash size={15} />
               </button>

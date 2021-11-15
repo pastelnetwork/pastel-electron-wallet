@@ -34,3 +34,9 @@ export default function LinkSection({
     </div>
   )
 }
+
+LinkSection.defaultProps = {
+  absolute: false,
+  gradient: false,
+  className: '',
+}

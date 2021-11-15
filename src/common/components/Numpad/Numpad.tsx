@@ -160,3 +160,7 @@ const NumpadButton = ({
     </button>
   )
 }
+
+NumpadButton.defaultProps = {
+  className: '',
+}

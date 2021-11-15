@@ -75,3 +75,14 @@ export default function CroppingStep({
     </div>
   )
 }
+
+CroppingStep.defaultProps = {
+  titleClass: '',
+  titleClassName: '',
+  subtitle: '',
+  subtitleClassName: '',
+  step: 0,
+  fixedHeight: false,
+  contentClass: '',
+  rightColumnClass: '',
+}

@@ -51,10 +51,14 @@ export default function UploadStep({
               <button
                 className='absolute z-10 top-3 right-3 w-[30px] h-[30px] rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
                 onClick={goBack}
+                type='button'
               >
                 <Trash size={11} />
               </button>
-              <button className='absolute z-10 top-3 left-3 w-[30px] h-[30px] hover:bg-opacity-50 text-white'>
+              <button
+                className='absolute z-10 top-3 left-3 w-[30px] h-[30px] hover:bg-opacity-50 text-white'
+                type='button'
+              >
                 <EditImage size={30} />
               </button>
               <DraggableCore

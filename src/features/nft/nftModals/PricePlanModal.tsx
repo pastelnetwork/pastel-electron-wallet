@@ -53,6 +53,7 @@ const PricePlanModal = ({
           </div>
           <button
             onClick={() => setCellEdit({ row: row.id as number, col: 1 })}
+            type='button'
           >
             <img src={pencilIcon} />
           </button>

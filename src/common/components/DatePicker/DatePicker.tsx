@@ -76,6 +76,7 @@ const DatePicker = ({
           onClick={decreaseMonth}
           disabled={prevMonthButtonDisabled}
           className='focus:outline-none p-1 mr-5'
+          type='button'
         >
           <Caret
             to='left'
@@ -87,6 +88,7 @@ const DatePicker = ({
           onClick={increaseMonth}
           disabled={nextMonthButtonDisabled}
           className='focus:outline-none p-1'
+          type='button'
         >
           <Caret
             to='right'

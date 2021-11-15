@@ -130,6 +130,7 @@ export default function DateRangeSelector({
           onClick={decreaseMonth}
           disabled={prevMonthButtonDisabled}
           className='focus:outline-none p-1 mr-5'
+          type='button'
         >
           <Caret
             to='left'
@@ -141,6 +142,7 @@ export default function DateRangeSelector({
           onClick={increaseMonth}
           disabled={nextMonthButtonDisabled}
           className='focus:outline-none p-1'
+          type='button'
         >
           <Caret
             to='right'
@@ -250,4 +252,10 @@ export default function DateRangeSelector({
       )}
     </div>
   )
+}
+
+DateRangeSelectorContent.defaultProps = {
+  value: undefined,
+  endDate: undefined,
+  startDate: undefined,
 }

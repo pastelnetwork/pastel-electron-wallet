@@ -123,3 +123,17 @@ export default function SelectList({
     </ul>
   )
 }
+
+SelectList.defaultProps = {
+  highlight: false,
+  highlightClassName: 'text-link',
+  inputValue: '',
+  append: null,
+  noOptionsText: null,
+  isLoading: false,
+  filterOptions: defaultFilterOptions,
+  customListClassName:
+    'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-40 whitespace-normal',
+  listClassName: '',
+  listItemClassName: '',
+}

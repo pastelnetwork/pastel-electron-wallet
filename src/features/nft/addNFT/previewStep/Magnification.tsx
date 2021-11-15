@@ -136,3 +136,7 @@ export default function Magnification({
     </div>
   )
 }
+
+Magnification.defaultProps = {
+  optimizedImage: undefined,
+}

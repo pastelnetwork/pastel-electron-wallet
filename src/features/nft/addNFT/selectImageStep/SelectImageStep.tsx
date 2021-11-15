@@ -150,6 +150,7 @@ export default function SelectImageStep({
               className='btn btn-primary px-[30px]'
               onClick={service.submit}
               disabled={!imageForPreview}
+              type='button'
             >
               Go to Image Optimization
             </button>

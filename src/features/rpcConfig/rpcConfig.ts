@@ -3,7 +3,7 @@ import ini from 'ini'
 
 import { TRPCConfig } from '../../api/pastel-rpc'
 
-let rpcConfig: TRPCConfig | undefined
+let rpcConfig: TRPCConfig | undefined = undefined
 
 export const getRpcConfig = (): TRPCConfig | undefined => {
   return rpcConfig

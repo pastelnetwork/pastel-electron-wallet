@@ -88,7 +88,7 @@ export const mainSetup = async (): Promise<void> => {
   app.whenReady().then(setupWindow)
 }
 
-let rpcConfig: TRPCConfig | undefined
+let rpcConfig: TRPCConfig | undefined = undefined
 
 onMainEvent('rendererStarted', () => {
   // We have to pass isPackaged and app paths via IPC because electron `remote` api is deprecated

@@ -257,4 +257,5 @@ AddressForm.defaultProps = {
   hidePromoCodeEmpty: false,
   startLength: 24,
   endLength: -6,
+  className: '',
 }

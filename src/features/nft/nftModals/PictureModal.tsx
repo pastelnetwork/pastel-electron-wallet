@@ -38,11 +38,11 @@ const PictureModal = ({ isOpen, handleClose }: TPictureModal): JSX.Element => {
         />
       </div>
       <div className='absolute bottom-30px left-1/2 rounded-lg transform -translate-x-1/2 w-180px h-34px bg-gray-1a bg-opacity-60 flex items-center'>
-        <button className='ml-3 mr-6px'>
+        <button className='ml-3 mr-6px' type='button'>
           <img src={ico_minus} />
         </button>
         <Slider value={zoom} setValue={setZoom} />
-        <button className='mr-3 ml-6px'>
+        <button className='mr-3 ml-6px' type='button'>
           <img src={ico_plus} />
         </button>
       </div>
