@@ -60,7 +60,7 @@ const Profile = (): JSX.Element => {
         <div className='wrapper flex py-8 px-60px'>
           <div className='flex w-full'>
             <div className='flex flex-col items-center lg:justify-between'>
-              <ProfileCard {...profile_data} isMyProfile={true} />
+              <ProfileCard {...profile_data} isMyProfile />
               <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
                 Member Since May 15, 2021
               </div>

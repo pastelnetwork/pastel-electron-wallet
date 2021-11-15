@@ -142,7 +142,7 @@ export default function AddressesTable({
               }}
             >
               <Tooltip
-                autoWidth={true}
+                autoWidth
                 type='top'
                 width={130}
                 padding={5}
@@ -174,7 +174,7 @@ export default function AddressesTable({
               className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
             >
               <Tooltip
-                autoWidth={true}
+                autoWidth
                 type='top'
                 width={130}
                 padding={5}

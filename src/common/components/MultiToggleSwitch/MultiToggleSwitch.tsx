@@ -57,7 +57,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
   }
 
   return (
-    <>
+    <div>
       {data?.length && (
         <div className={container_className}>
           {data.map((item: TMultiToggleDataItem, index: number) => {
@@ -85,7 +85,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
           })}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

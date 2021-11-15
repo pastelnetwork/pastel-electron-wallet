@@ -31,6 +31,9 @@ import { readRpcConfig } from '../rpcConfig'
 import { ignorePromiseError } from '../../common/utils/promises'
 import { TRPCConfig } from '../../api/pastel-rpc'
 
+let waitingForClose = false
+let proceedToClose = false
+
 export const onWindowClose = async (event: Event): Promise<void> => {
   // If we are clear to close, then return and allow everything to close
   if (proceedToClose) {
@@ -69,7 +72,7 @@ export const onWindowClose = async (event: Event): Promise<void> => {
 }
 
 const setupWindow = async () => {
-  await createWindow(onWindowClose)
+  await createWindow(await onWindowClose)
 }
 
 export const mainSetup = async (): Promise<void> => {
@@ -213,9 +216,6 @@ const setupEventListeners = () => {
     })
   })
 }
-
-let waitingForClose = false
-let proceedToClose = false
 
 export const resetWindowCloseFlags = (): void => {
   waitingForClose = proceedToClose = false

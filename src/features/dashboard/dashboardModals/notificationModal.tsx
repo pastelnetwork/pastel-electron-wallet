@@ -179,11 +179,7 @@ const NotificationModal = ({
             key={id}
             className={cn(idx < notifications.length - 1 && 'pb-3')}
           >
-            <Notification
-              type={type}
-              title={title}
-              status={status as TNotification['status']}
-            />
+            <Notification type={type} title={title} status={status} />
           </div>
         ))}
       </Scrollbar>

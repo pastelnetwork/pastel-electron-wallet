@@ -51,18 +51,14 @@ const OwnershipHistoryModal = ({
       custom: (value: string) => (
         <div className='flex items-center'>
           <div className='text-base text-gray-4a font-medium min-w-[81px]'>
-            <NumberFormat
-              value={value}
-              displayType='text'
-              thousandSeparator={true}
-            />{' '}
+            <NumberFormat value={value} displayType='text' thousandSeparator />{' '}
             {currencyName}
           </div>
           <div className='ml-7 text-gray-71 font-normal text-sm min-w-[67px]'>
             <NumberFormat
               value={parseInt(value) * rate}
               displayType='text'
-              thousandSeparator={true}
+              thousandSeparator
               decimalScale={2}
             />{' '}
             USD
@@ -90,7 +86,7 @@ const OwnershipHistoryModal = ({
       handleClose={() => handleClose()}
       size='1224px'
       title={'“Diamonds in the sky”: copy #1 ownership history'}
-      infoIcon={true}
+      infoIcon
       bodyClassName='pr-5 pl-10'
       titleClassName='font-black text-2xl text-gray-2d'
     >
@@ -98,7 +94,7 @@ const OwnershipHistoryModal = ({
         <Table
           columns={Columns}
           data={tableData}
-          fixedHeader={true}
+          fixedHeader
           className='h-401px pr-5'
           trClassName='border-b border-gray-f2'
         />

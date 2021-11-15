@@ -27,7 +27,7 @@ const ForumPost = (): JSX.Element => {
           <div>{value}</div>
           <div className='flex items-center'>
             {row && row.favourite && (
-              <Star className='text-yellow-ffd' filled={true} />
+              <Star className='text-yellow-ffd' filled />
             )}
             {row && row.favourite === false && (
               <Star className='text-gray-8e' filled={false} />

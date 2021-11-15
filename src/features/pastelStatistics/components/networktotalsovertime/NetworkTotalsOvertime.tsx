@@ -77,7 +77,9 @@ export default function NetworkTotalsOvertime(): JSX.Element {
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {

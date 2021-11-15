@@ -127,7 +127,7 @@ export const Forum = (): JSX.Element => {
           </div>
         </div>
       </div>
-      <Scrollbar hasPageHeader={true}>
+      <Scrollbar hasPageHeader>
         <div className='bg-white px-7 py-5 rounded-lg'>
           <Table {...table} />
         </div>

@@ -24,7 +24,7 @@ const AuthorshipClaimModal = ({
       size='690px'
       title={'Claim Petition'}
       titleClassName='font-extrabold text-3xl text-gray-2d'
-      infoIcon={true}
+      infoIcon
     >
       <div className='md:w-[610px]'>
         <div className='flex space-x-50px text-base font-medium'>

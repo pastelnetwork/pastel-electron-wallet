@@ -36,7 +36,7 @@ export const ChatMessage = (props: TChatMessageProps): JSX.Element => {
         size={9}
         user={props.sender}
         hideAvatar={!props.showAvatar}
-        hideOnline={true}
+        hideOnline
       />
       <div>
         {props.text && (

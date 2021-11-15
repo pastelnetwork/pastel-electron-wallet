@@ -165,7 +165,7 @@ const MembersDirectory = (): JSX.Element => {
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <Scrollbar hasPageHeader={true}>
+      <Scrollbar hasPageHeader>
         <div
           className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
         >

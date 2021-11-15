@@ -91,47 +91,50 @@ export default function Utilities(): JSX.Element {
       dispatch(openExportPrivKeyModal())
     })
 
-    onRendererEvent('exportalltx', async () => {
-      const save = await invokeMainTask(
-        'showSaveTransactionsAsCSVDialog',
-        undefined,
-      )
-
-      if (save.filePath) {
-        const transactionsRaw = await transactionRPC.fetchTAndZTransactions()
-
-        const transactions =
-          transactionsRaw?.map(transaction => ({
-            type:
-              (transaction.type as TTransactionType) || TTransactionType.ALL,
-            amount: transaction.amount || 0,
-            txid: transaction.txid,
-            time: transaction.time,
-            address: transaction.address,
-            escapedMemo: transaction.memo
-              ? `'${transaction.memo.replace(/"/g, '""')}'`
-              : '',
-            normaldate: dayjs
-              .unix(transaction.time)
-              .format('MMM DD YYYY hh:mm A'),
-          })) || []
-
-        const rows = transactions.map(
-          transaction =>
-            `${transaction.time},"${transaction.normaldate}","${transaction.txid}","${transaction.type}",${transaction.amount},"${transaction.address}","${transaction.escapedMemo}"`,
+    onRendererEvent(
+      'exportalltx',
+      async (): Promise<void> => {
+        const save = await invokeMainTask(
+          'showSaveTransactionsAsCSVDialog',
+          undefined,
         )
-        const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
-        try {
-          await fs.promises.writeFile(
-            save.filePath,
-            header.concat(rows).join('\n'),
+
+        if (save.filePath) {
+          const transactionsRaw = await transactionRPC.fetchTAndZTransactions()
+
+          const transactions =
+            transactionsRaw?.map(transaction => ({
+              type:
+                (transaction.type as TTransactionType) || TTransactionType.ALL,
+              amount: transaction.amount || 0,
+              txid: transaction.txid,
+              time: transaction.time,
+              address: transaction.address,
+              escapedMemo: transaction.memo
+                ? `'${transaction.memo.replace(/"/g, '""')}'`
+                : '',
+              normaldate: dayjs
+                .unix(transaction.time)
+                .format('MMM DD YYYY hh:mm A'),
+            })) || []
+
+          const rows = transactions.map(
+            transaction =>
+              `${transaction.time},"${transaction.normaldate}","${transaction.txid}","${transaction.type}",${transaction.amount},"${transaction.address}","${transaction.escapedMemo}"`,
           )
-        } catch (err) {
-          setExportTxnError(`${err}`)
-          setCloseExportTxn(true)
+          const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
+          try {
+            await fs.promises.writeFile(
+              save.filePath,
+              header.concat(rows).join('\n'),
+            )
+          } catch (err) {
+            setExportTxnError(`${err}`)
+            setCloseExportTxn(true)
+          }
         }
-      }
-    })
+      },
+    )
   }, [])
 
   return (

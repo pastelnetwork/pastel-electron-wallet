@@ -452,7 +452,7 @@ export default function PaymentModal(): JSX.Element {
                       inputClassName='text-base font-normal text-gray-4a pl-0'
                       inputWrapperClassName='w-full'
                       customListClassName={selectListClassName}
-                      autocomplete={true}
+                      autocomplete
                       min={0}
                       max={100}
                       step={1}

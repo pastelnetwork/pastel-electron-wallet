@@ -323,8 +323,8 @@ function WalletScreenContent(): JSX.Element {
           <Alert
             variant='warning'
             className='mt-7 relative'
-            showClose={true}
-            onShowing={true}
+            showClose
+            onShowing
           >
             <strong className='font-bold'>Warning! </strong>
             <span className='block sm:inline'>

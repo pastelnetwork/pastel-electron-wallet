@@ -142,7 +142,7 @@ export default function StepRegister(): JSX.Element {
               : null
           }
           hint='Only Latin Characters and Numbers Allowed'
-          hintAsTooltip={true}
+          hintAsTooltip
           appliedStyleValid={false}
         />
         <div className='mt-6'>{renderPasswordInput()}</div>

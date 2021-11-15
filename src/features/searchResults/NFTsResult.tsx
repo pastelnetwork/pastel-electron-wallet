@@ -57,8 +57,8 @@ const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
         {mockNFTs.map((item, i) => (
           <NFTCard
             key={item.id}
-            hideFollow={true}
-            hideLikeButton={true}
+            hideFollow
+            hideLikeButton
             {...item}
             searchText={searchKey}
             isAuctionBid={(i + 1) % 2 === 0}

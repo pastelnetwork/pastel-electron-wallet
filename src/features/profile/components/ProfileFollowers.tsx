@@ -58,7 +58,7 @@ const Follower = ({
         {is_followed ? (
           <Button
             variant='secondary'
-            disabled={true}
+            disabled
             className='py-1.5 px-[13px] text-blue-9b'
           >
             Unfollow

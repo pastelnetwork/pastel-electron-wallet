@@ -13,7 +13,7 @@ const InputNumberFormat = ({
     <NumberFormat
       displayType={displayType}
       customInput={Input}
-      thousandSeparator={true}
+      thousandSeparator
       className='w-full'
       {...props}
     />

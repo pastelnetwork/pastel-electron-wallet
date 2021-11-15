@@ -476,7 +476,7 @@ export default function MemberProfile(): JSX.Element {
         <div className='wrapper flex py-8 pl-60px pr-25px'>
           <div className='flex w-full'>
             <div className='flex flex-col items-center lg:justify-between'>
-              <ProfileCard {...profile_data} isMyProfile={true} />
+              <ProfileCard {...profile_data} isMyProfile />
             </div>
             {renderTabContent()}
           </div>

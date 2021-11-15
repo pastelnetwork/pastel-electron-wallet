@@ -19,8 +19,8 @@ export default function Arrow({ size, className }: TVoteProps): JSX.Element {
         cy='16'
         r='15.5'
         stroke='#E4E4E4'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       />
       <path
         d='M20.5 14.5H16V11.5C16 10.6 15.4 10 14.5 10L12.25 15.25H10.75C10.3 15.25 10 15.55 10 16V21.25C10 21.7 10.3 22 10.75 22H19C20.05 22 21.025 21.25 21.175 20.2L21.925 16.3C22.15 15.4 21.475 14.5 20.5 14.5Z'

@@ -151,11 +151,7 @@ const Chat = (): JSX.Element => {
             )}
           >
             {activeChat && (
-              <UserAvatar
-                user={TChatUser(activeChat)}
-                size={9}
-                hideOnline={true}
-              />
+              <UserAvatar user={TChatUser(activeChat)} size={9} hideOnline />
             )}
 
             <div className='flex-grow font-extrabold text-lg text-gray-600'>
@@ -195,7 +191,7 @@ const Chat = (): JSX.Element => {
             <div ref={endRef}></div>
           </div>
           <div className='flex items-center mx-5 my-4 box-border rounded-lg px-4 py-2 border border-gray-300'>
-            <UserAvatar user={curUser} size={10} hideOnline={true} />
+            <UserAvatar user={curUser} size={10} hideOnline />
 
             <div className='flex-grow mr-4 h-full relative'>
               {newMsgPlaceholder && (

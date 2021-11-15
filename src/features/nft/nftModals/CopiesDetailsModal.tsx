@@ -18,13 +18,13 @@ const CopiesDetailsModal = ({
       size='432px'
       title={'List of NFT copies'}
       titleClassName='font-black text-2xl text-gray-2d mt-2'
-      infoIcon={true}
+      infoIcon
     >
       <div className='w-[350px]'>
         <Table
           columns={Columns}
           data={tableData}
-          fixedHeader={true}
+          fixedHeader
           bodyClassName='h-401px'
           trClassName='border-b border-gray-f2'
         />

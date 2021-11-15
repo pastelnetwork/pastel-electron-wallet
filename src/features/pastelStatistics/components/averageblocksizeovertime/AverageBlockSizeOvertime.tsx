@@ -83,12 +83,16 @@ export default function AverageBlockSizeOvertime(): JSX.Element {
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleGranularityFilterChange = (granularity: TGranularity) => {
     setGranularity(granularity)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {

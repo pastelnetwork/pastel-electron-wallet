@@ -282,7 +282,7 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
       <div className={styles.lineChartWrap}>
         <ReactECharts
           notMerge={false}
-          lazyUpdate={true}
+          lazyUpdate
           option={options}
           className={styles.reactECharts}
           ref={e => {

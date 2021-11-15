@@ -45,7 +45,7 @@ const ReviewOfferModal = ({
                   value={price / 1000}
                   decimalScale={2}
                   displayType='text'
-                  thousandSeparator={true}
+                  thousandSeparator
                 />
                 k {currencyName}{' '}
               </span>

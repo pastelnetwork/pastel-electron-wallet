@@ -49,18 +49,14 @@ export const SaleHistoryModal = ({
       custom: (value: string) => (
         <div className='flex items-center'>
           <div className='text-base text-gray-4a font-medium min-w-[81px]'>
-            <NumberFormat
-              value={value}
-              displayType='text'
-              thousandSeparator={true}
-            />{' '}
+            <NumberFormat value={value} displayType='text' thousandSeparator />{' '}
             {currencyName}
           </div>
           <div className='ml-7 text-gray-71 font-normal text-sm min-w-[67px]'>
             <NumberFormat
               value={parseInt(value) * rate}
               displayType='text'
-              thousandSeparator={true}
+              thousandSeparator
               decimalScale={2}
             />{' '}
             USD
@@ -80,7 +76,7 @@ export const SaleHistoryModal = ({
       size='1142px'
       title={'"Diamonds in the sky" Sale History'}
       titleClassName='text-2xl font-black text-gray-2d'
-      infoIcon={true}
+      infoIcon
       bodyClassName='px-0'
       append={
         <span className='font-medium text-base text-gray-71 mb-1 ml-[13px]'>

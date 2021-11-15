@@ -44,7 +44,7 @@ const ChangeUsernameModal = ({
           <Input
             placeholder='@MrVanGogh'
             type='text'
-            disabled={true}
+            disabled
             label='Current Username'
             labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
           />
@@ -81,7 +81,7 @@ const ChangeUsernameModal = ({
               <NumberFormat
                 value={25000}
                 displayType='text'
-                thousandSeparator={true}
+                thousandSeparator
               />{' '}
               {currencyName}
             </div>
@@ -94,11 +94,7 @@ const ChangeUsernameModal = ({
               <div className='mr-[9px]'>
                 <Fire size={18} />
               </div>
-              <NumberFormat
-                value={5000}
-                displayType='text'
-                thousandSeparator={true}
-              />{' '}
+              <NumberFormat value={5000} displayType='text' thousandSeparator />{' '}
               {currencyName}
             </div>
           </div>
@@ -110,7 +106,7 @@ const ChangeUsernameModal = ({
               <NumberFormat
                 value={20000}
                 displayType='text'
-                thousandSeparator={true}
+                thousandSeparator
               />{' '}
               {currencyName}
             </div>

@@ -27,7 +27,7 @@ const ClaimTicketModal = ({
       handleClose={() => handleClose()}
       size='874px'
       title={'Authorship Claim Ticket'}
-      infoIcon={true}
+      infoIcon
       titleClassName='font-black text-2xl text-gray-2d'
     >
       <div className='md:w-[794px]'>

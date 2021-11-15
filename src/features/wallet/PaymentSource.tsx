@@ -55,7 +55,7 @@ const PaymentSource = ({
       <td className='whitespace-nowrap'>
         <div className='flex items-center'>
           <Checkbox
-            isChecked={true}
+            isChecked
             clickHandler={() => handleSelectedAddress(address)}
           />
           <AddressForm address={address} copyable={false} />

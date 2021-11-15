@@ -166,7 +166,7 @@ export default function ProfileGeneral({
                     <NumberFormat
                       value={data.highestFeeRecieved.value}
                       displayType='text'
-                      thousandSeparator={true}
+                      thousandSeparator
                     />{' '}
                     {currencyName}
                   </span>
@@ -205,7 +205,7 @@ export default function ProfileGeneral({
                     <NumberFormat
                       value={data.totalSalesAmount.value}
                       displayType='text'
-                      thousandSeparator={true}
+                      thousandSeparator
                     />{' '}
                     {currencyName}
                   </span>

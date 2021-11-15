@@ -115,14 +115,14 @@ const Header = (): JSX.Element | null => {
             <ButtonTag onClick={() => setOpenNotificationModal(true)}>
               <BellIcon
                 size={16}
-                hasNotification={true}
+                hasNotification
                 className='text-gray-33 ml-4 md:ml-6 lg:ml-27px w-4'
               />
             </ButtonTag>
             <Link to={ROUTES.CHAT}>
               <MessageIcon
                 size={18}
-                hasNotification={true}
+                hasNotification
                 className='text-gray-33 ml-4 md:ml-6 lg:ml-30px w-4'
               />
             </Link>

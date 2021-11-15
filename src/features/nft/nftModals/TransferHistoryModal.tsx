@@ -21,7 +21,7 @@ const TransferHistoryModal = ({
       size='874px'
       title={'Royalty rights transfer history'}
       titleClassName='text-2xl font-black text-gray-2d'
-      infoIcon={true}
+      infoIcon
       bodyClassName='px-0'
     >
       <div className='ml-10 mr-9 mb-6 w- overflow-auto w-[798px]'>

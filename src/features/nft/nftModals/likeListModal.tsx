@@ -82,7 +82,7 @@ const LikeListModal = ({
           data={tableData}
           className='h-401px pr-[30px]'
           trClassName='border-b border-gray-f2'
-          fixedHeader={true}
+          fixedHeader
         />
       </div>
     </Modal>
@@ -122,7 +122,7 @@ const Columns = [
           value={parseInt(value) / 1000}
           decimalScale={2}
           displayType='text'
-          thousandSeparator={true}
+          thousandSeparator
         />
         k{' '}
       </div>

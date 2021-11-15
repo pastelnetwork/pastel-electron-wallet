@@ -112,7 +112,7 @@ export function AddressForm({
             )}
           >
             <Tooltip
-              autoWidth={true}
+              autoWidth
               type='top'
               width={211}
               padding={5}

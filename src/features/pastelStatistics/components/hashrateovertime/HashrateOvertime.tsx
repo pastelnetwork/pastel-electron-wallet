@@ -76,7 +76,9 @@ export default function HashrateOvertime(): JSX.Element {
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {

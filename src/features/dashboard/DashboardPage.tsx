@@ -322,9 +322,7 @@ export default function DashboardPage(): JSX.Element {
           <div className='mr-6'>
             <Radio
               checked={tab === Tabs.Creators}
-              onChange={param => {
-                param && setTab(0)
-              }}
+              onChange={() => setTab(0)}
               labelClassName='text-sm ml-3'
             >
               Creators
@@ -332,9 +330,7 @@ export default function DashboardPage(): JSX.Element {
           </div>
           <Radio
             checked={tab === Tabs.NFTs}
-            onChange={param => {
-              param && setTab(1)
-            }}
+            onChange={() => setTab(1)}
             labelClassName='text-sm ml-3'
           >
             NFTs

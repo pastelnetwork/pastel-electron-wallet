@@ -94,7 +94,7 @@ const PricePlanModal = ({
       handleClose={onClose}
       size='874px'
       title={'“Diamonds in the sky”: copies buy-it-now price plan:'}
-      infoIcon={true}
+      infoIcon
       titleClassName='font-black text-2xl text-gray-2d'
       headerClassName='px-10'
       bodyClassName='pl-10 pr-[35px]'
@@ -108,7 +108,7 @@ const PricePlanModal = ({
           <Table
             columns={cellEdit ? Columns_edit : Columns}
             data={tableData}
-            fixedHeader={true}
+            fixedHeader
             bodyClassName='h-401px'
             trClassName={cn(
               'border-b border-gray-f2',
