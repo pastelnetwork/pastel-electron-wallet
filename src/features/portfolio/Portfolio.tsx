@@ -376,8 +376,8 @@ export default function Portfolio(): JSX.Element {
             You have not created any NFTs
           </span>
           <p className='text-center text-gray-71 text-sm font-normal'>
-            To create a new NFT, click the "new NFT" <br /> button at the top of
-            the screen
+            To create a new NFT, click the {'"'}new NFT{'"'} <br /> button at
+            the top of the screen
           </p>
         </div>
       )}

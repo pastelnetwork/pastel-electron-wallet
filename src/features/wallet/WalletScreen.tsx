@@ -160,7 +160,7 @@ export default function WalletScreen(): JSX.Element {
   )
 }
 
-const WalletScreenContent = (): JSX.Element => {
+function WalletScreenContent(): JSX.Element {
   const location = useLocation()
   const currencyName = useCurrencyName()
   const {

@@ -42,7 +42,7 @@ export type TTableProps = {
   isLoading?: boolean
 }
 
-const Table = ({
+export default function Table({
   columns,
   data,
   haveHeader = true,
@@ -58,7 +58,7 @@ const Table = ({
   stickyTopClassName = 'top-0',
   extendHeaderClassName,
   isLoading,
-}: TTableProps): JSX.Element => {
+}: TTableProps): JSX.Element {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
   const [selectedRows, setSelectedRows] = useState<Array<number>>([])
@@ -230,5 +230,3 @@ const Table = ({
     </table>
   )
 }
-
-export default Table

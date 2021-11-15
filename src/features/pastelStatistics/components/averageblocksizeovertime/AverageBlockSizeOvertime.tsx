@@ -21,7 +21,7 @@ import {
 
 const redrawCycle = 60000
 
-const AverageBlockSizeOvertime = (): JSX.Element => {
+export default function AverageBlockSizeOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -121,5 +121,3 @@ const AverageBlockSizeOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default AverageBlockSizeOvertime

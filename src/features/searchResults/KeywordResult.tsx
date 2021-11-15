@@ -8,7 +8,9 @@ export type TKeywordResultProps = {
   searchKey: string
 }
 
-const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
+export default function KeywordResult({
+  searchKey,
+}: TKeywordResultProps): JSX.Element {
   const keywords = [
     {
       id: uuidv4(),
@@ -100,5 +102,3 @@ const KeywordResult = ({ searchKey }: TKeywordResultProps): JSX.Element => {
     </div>
   )
 }
-
-export default KeywordResult

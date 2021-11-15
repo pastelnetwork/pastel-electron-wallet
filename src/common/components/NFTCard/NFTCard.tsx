@@ -68,7 +68,7 @@ export type TNFTCard = Override<
   }
 >
 
-const NFTCard = ({
+export default function NFTCard({
   imageSrc,
   title,
   className,
@@ -91,7 +91,7 @@ const NFTCard = ({
   copiesAvailable,
   leftTime,
   ...props
-}: TNFTCompactCard | TNFTCard): JSX.Element => {
+}: TNFTCompactCard | TNFTCard): JSX.Element {
   const isNSFW = useIsNSFW(nsfw)
 
   const fullCardProps = 'author' in props && (props as TNFTCard)
@@ -525,5 +525,3 @@ const NFTCard = ({
     </div>
   )
 }
-
-export default NFTCard

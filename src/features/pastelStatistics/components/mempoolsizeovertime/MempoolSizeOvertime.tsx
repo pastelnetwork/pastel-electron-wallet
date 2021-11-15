@@ -16,7 +16,7 @@ import { TDbMemPoolInfo } from '../../../pastelDB/blockchain/memPoolInfo.repo'
 
 const redrawCycle = 6000
 
-const MempoolSizeOvertime = (): JSX.Element => {
+export default function MempoolSizeOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -107,5 +107,3 @@ const MempoolSizeOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default MempoolSizeOvertime

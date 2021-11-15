@@ -51,7 +51,7 @@ const filterData = [
   { label: 'Followers', value: 'Followers', checked: false },
 ]
 
-const MemberProfile = (): JSX.Element => {
+export default function MemberProfile(): JSX.Element {
   const currencyName = useCurrencyName()
 
   const general_data = {
@@ -486,5 +486,3 @@ const MemberProfile = (): JSX.Element => {
     </div>
   )
 }
-
-export default MemberProfile

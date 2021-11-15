@@ -18,7 +18,7 @@ import {
 
 const redrawCycle = 6000
 
-const TransactionsPerSecondOvertime = (): JSX.Element => {
+export default function TransactionsPerSecondOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -110,5 +110,3 @@ const TransactionsPerSecondOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default TransactionsPerSecondOvertime

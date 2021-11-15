@@ -46,7 +46,7 @@ type TPassStrengthProps = {
   value: string
 }
 
-const Password = (props: TPassword): JSX.Element => {
+export default function Password(props: TPassword): JSX.Element {
   const {
     newPassword,
     confirmPassword,
@@ -295,5 +295,3 @@ const Password = (props: TPassword): JSX.Element => {
     </>
   )
 }
-
-export default Password

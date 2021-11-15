@@ -150,7 +150,7 @@ function PDFDocument({
   )
 }
 
-const ExportKeysModal = (): JSX.Element => {
+export default function ExportKeysModal(): JSX.Element {
   const {
     currentAddress: address = '',
     setExportKeysModalOpen: setIsOpen,
@@ -250,5 +250,3 @@ const ExportKeysModal = (): JSX.Element => {
     </TitleModal>
   )
 }
-
-export default ExportKeysModal

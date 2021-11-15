@@ -21,7 +21,7 @@ enum Tabs {
   statistics,
 }
 
-const NFTMarketFeed = (): JSX.Element => {
+export default function NFTMarketFeed(): JSX.Element {
   const currencyName = useCurrencyName()
   const mockCardProps: TNFTCard = {
     id: '1',
@@ -181,5 +181,3 @@ const NFTMarketFeed = (): JSX.Element => {
     </div>
   )
 }
-
-export default NFTMarketFeed

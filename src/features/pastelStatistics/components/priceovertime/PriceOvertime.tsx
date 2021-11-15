@@ -22,7 +22,7 @@ type TLineChartData = {
 
 const redrawCycle = 6000
 
-const PriceOvertime = (): JSX.Element => {
+export default function PriceOvertime(): JSX.Element {
   const currencyName = useCurrencyName()
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -116,5 +116,3 @@ const PriceOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default PriceOvertime

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 export type TCountdownTimerProps = {
-  countDownDate?: number
+  countDownDate: number
   className?: string
 }
 
@@ -23,20 +23,6 @@ export default function CountdownTimer({
     seconds: 0,
   })
   let token: NodeJS.Timer
-
-  useEffect(() => {
-    if (countDownDate) {
-      token = setInterval(updateTime, 1000)
-    }
-
-    return () => {
-      clearInterval(token)
-    }
-  }, [])
-
-  if (!countDownDate) {
-    return null
-  }
 
   const updateTime = () => {
     const now = new Date().getTime()
@@ -64,6 +50,20 @@ export default function CountdownTimer({
       })
       clearInterval(token)
     }
+  }
+
+  useEffect(() => {
+    if (countDownDate) {
+      token = setInterval(updateTime, 1000)
+    }
+
+    return () => {
+      clearInterval(token)
+    }
+  }, [])
+
+  if (!countDownDate) {
+    return null
   }
 
   return (

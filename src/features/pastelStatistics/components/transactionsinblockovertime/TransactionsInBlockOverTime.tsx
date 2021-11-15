@@ -25,9 +25,9 @@ type TTransactionsInBlockOvertimeProps = {
 
 const redrawCycle = 6000
 
-const TransactionsInBlockOvertime = (
+export default function TransactionsInBlockOvertime(
   props: TTransactionsInBlockOvertimeProps,
-): JSX.Element => {
+): JSX.Element {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -120,5 +120,3 @@ const TransactionsInBlockOvertime = (
     </>
   )
 }
-
-export default TransactionsInBlockOvertime

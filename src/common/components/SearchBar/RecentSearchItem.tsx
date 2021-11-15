@@ -10,12 +10,12 @@ export type TRecentSearchItem = {
   id: string
 }
 
-const RecentSearchItem = ({
+export default function RecentSearchItem({
   tagType,
   label,
   className,
   id,
-}: TRecentSearchItem): JSX.Element => {
+}: TRecentSearchItem): JSX.Element {
   return (
     <div className={cn('flex items-center mt-18px', className)}>
       <Clock className='text-gray-71 mr-2' />
@@ -32,5 +32,3 @@ const RecentSearchItem = ({
     </div>
   )
 }
-
-export default RecentSearchItem

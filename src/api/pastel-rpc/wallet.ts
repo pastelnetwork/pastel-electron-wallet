@@ -301,6 +301,19 @@ export const useTGetAddressesByAccount = (): UseQueryResult<TListAddressesRespon
   )
 }
 
+export const useTListUnspent = (options?: {
+  enabled?: boolean
+}): UseQueryResult<TListUnspentResponse> => {
+  return useQuery('listunspent', () => walletRPC.fetchTListUnspent(), options)
+}
+
+export const useTAddressBalances = (): UseQueryResult<TAddressBalancesResponse> => {
+  const query = useTListUnspent()
+  const data = useMapListUnspentToAddressAmounts(query.data)
+
+  return { ...query, data } as UseQueryResult<TAddressBalancesResponse>
+}
+
 export const useTAddresses = (): UseQueryResult<TListAddressesResponse> => {
   const addressesQuery = useTGetAddressesByAccount()
   const addressesBalancesQuery = useTAddressBalances() // balances may have additional addresses
@@ -349,19 +362,6 @@ export const useZListUnspent = (options?: {
 
 export const useZAddressBalances = (): UseQueryResult<TAddressBalancesResponse> => {
   const query = useZListUnspent()
-  const data = useMapListUnspentToAddressAmounts(query.data)
-
-  return { ...query, data } as UseQueryResult<TAddressBalancesResponse>
-}
-
-export const useTListUnspent = (options?: {
-  enabled?: boolean
-}): UseQueryResult<TListUnspentResponse> => {
-  return useQuery('listunspent', () => walletRPC.fetchTListUnspent(), options)
-}
-
-export const useTAddressBalances = (): UseQueryResult<TAddressBalancesResponse> => {
-  const query = useTListUnspent()
   const data = useMapListUnspentToAddressAmounts(query.data)
 
   return { ...query, data } as UseQueryResult<TAddressBalancesResponse>

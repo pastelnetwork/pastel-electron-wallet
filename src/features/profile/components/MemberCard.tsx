@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Avatar from '../../../common/components/Avatar'
 import { Link } from 'react-router-dom'
 import cn from 'classnames'
@@ -18,7 +18,7 @@ export type TMemberBoardProps = {
   onClick: (index: number) => void
 }
 
-const MemberCard = ({
+export default function MemberCard({
   id,
   name,
   avatarSrc,
@@ -31,19 +31,21 @@ const MemberCard = ({
   object = 'Collab.',
   active = false,
   onClick,
-}: TMemberBoardProps): JSX.Element => {
+}: TMemberBoardProps): JSX.Element {
+  const handleClick = useCallback(() => {
+    onClick(id)
+  }, [])
+
   return (
-    <div
+    <button
+      type='button'
       className={cn(
         'flex justify-between w-full py-8 gap-2',
         active
           ? 'bg-white rounded-xl pr-2.5 md:pr-33px pl-4'
           : 'border-b border-gray-e0',
       )}
-      onClick={e => {
-        e.preventDefault()
-        onClick(id)
-      }}
+      onClick={handleClick}
     >
       <div className='flex flex-grow'>
         <div className='flex-none'>
@@ -83,8 +85,6 @@ const MemberCard = ({
           alt='Product Image'
         />
       </div>
-    </div>
+    </button>
   )
 }
-
-export default MemberCard

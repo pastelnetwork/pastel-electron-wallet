@@ -33,11 +33,11 @@ export type TProfileGeneral = {
   nativeCurrency: TCurrency
 }
 
-const ProfileGeneral = ({
+export default function ProfileGeneral({
   editMode,
   isEmpty,
   nativeCurrency,
-}: TProfileGeneral): JSX.Element => {
+}: TProfileGeneral): JSX.Element {
   const data = {
     location: 'New York, US',
     language: 'English',
@@ -262,5 +262,3 @@ const ProfileGeneral = ({
     </div>
   )
 }
-
-export default ProfileGeneral

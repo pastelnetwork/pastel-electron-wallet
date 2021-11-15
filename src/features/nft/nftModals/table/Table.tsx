@@ -30,14 +30,14 @@ export type TTable = {
   trClassName?: string
 }
 
-const Table = ({
+export default function Table({
   columns,
   data,
   fixedHeader,
   className,
   bodyClassName,
   trClassName,
-}: TTable): JSX.Element => {
+}: TTable): JSX.Element {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
   const [tableData, setTableData] = useState(Array<TRow>())
@@ -145,5 +145,3 @@ const Table = ({
     </div>
   )
 }
-
-export default Table

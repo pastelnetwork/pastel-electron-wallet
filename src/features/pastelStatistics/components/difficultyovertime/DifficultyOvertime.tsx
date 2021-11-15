@@ -19,7 +19,7 @@ import { TDbStatisticInfo } from '../../../pastelDB/statistic/statisticInfo.repo
 
 const redrawCycle = 6000
 
-const DifficultyOvertime = (): JSX.Element => {
+export default function DifficultyOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -110,5 +110,3 @@ const DifficultyOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default DifficultyOvertime

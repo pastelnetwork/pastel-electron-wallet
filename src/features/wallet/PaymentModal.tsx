@@ -45,7 +45,7 @@ type TPaymentResults = {
   message?: string
 }
 
-const PaymentModal = (): JSX.Element => {
+export default function PaymentModal(): JSX.Element {
   const info = useAppSelector(state => state.appInfo.info)
   const location = useLocation()
   const history = useHistory()
@@ -657,5 +657,3 @@ const PaymentModal = (): JSX.Element => {
     </>
   )
 }
-
-export default PaymentModal

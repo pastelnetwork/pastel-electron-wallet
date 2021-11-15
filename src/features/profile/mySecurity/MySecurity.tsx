@@ -12,7 +12,7 @@ type TSecurity = {
   qrcodeData: string[]
 }
 
-const MySecurity = (props: TSecurity): JSX.Element => {
+export default function MySecurity(props: TSecurity): JSX.Element {
   const { currencyName, qrcodeData } = props
   const [videoUrl, setVideoUrl] = useState<string>('')
   const [imagesData, setImagesData] = useState<string[]>([])
@@ -134,5 +134,3 @@ const MySecurity = (props: TSecurity): JSX.Element => {
     </div>
   )
 }
-
-export default MySecurity

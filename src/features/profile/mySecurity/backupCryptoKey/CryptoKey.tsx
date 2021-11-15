@@ -185,7 +185,7 @@ export const PDFDocument = ({
   )
 }
 
-const CryptoKey = (props: TCrypto): JSX.Element => {
+export default function CryptoKey(props: TCrypto): JSX.Element {
   const { currencyName, qrcodeData } = props
   const [allKeys, setAllKeys] = useState<TDataForPdf>({
     addressKeys: [],
@@ -270,5 +270,3 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
     </>
   )
 }
-
-export default CryptoKey

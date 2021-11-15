@@ -14,7 +14,9 @@ export type TPasswordStrengthProps = {
   className?: string
 }
 
-const PasswordStrength = (props: TPasswordStrengthProps): JSX.Element => {
+export default function PasswordStrength(
+  props: TPasswordStrengthProps,
+): JSX.Element {
   let colorClass = ''
 
   // colors logic
@@ -57,5 +59,3 @@ const PasswordStrength = (props: TPasswordStrengthProps): JSX.Element => {
     </div>
   )
 }
-
-export default PasswordStrength

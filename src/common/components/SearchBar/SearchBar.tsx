@@ -11,7 +11,7 @@ import Banksyyyy from '../../assets/images/banksyyyy_avatar.png'
 import ResultSearchRow from './ResultSearchRow'
 import * as ROUTES from 'common/utils/constants/routes'
 
-const SearchBar = (): JSX.Element => {
+export default function SearchBar(): JSX.Element {
   const history = useHistory()
   const [inputFocused, setInputFocused] = useState<boolean>(false)
   const [selectedCategory, setSelectedCategory] = useState<
@@ -191,7 +191,7 @@ const SearchBar = (): JSX.Element => {
           <div className='z-50 bg-white border border-line rounded-b-10px shadow-xl'>
             {selectedCategory === undefined ? (
               <div className='px-6 pt-4 pb-[46px]'>
-                <div className='text-base'>I'm looking for</div>
+                <div className='text-base'>I{"'"}m looking for</div>
                 <div className='flex text-gray-4a text-medium mt-2'>
                   {categories.map(category => (
                     <SearchTag
@@ -250,5 +250,3 @@ const SearchBar = (): JSX.Element => {
     </div>
   )
 }
-
-export default SearchBar

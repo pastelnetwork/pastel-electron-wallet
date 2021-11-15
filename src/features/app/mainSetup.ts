@@ -44,10 +44,6 @@ export const mainSetup = async (): Promise<void> => {
   app.whenReady().then(setupWindow)
 }
 
-const setupWindow = async () => {
-  await createWindow(onWindowClose)
-}
-
 let rpcConfig: TRPCConfig | undefined
 
 onMainEvent('rendererStarted', () => {
@@ -219,4 +215,8 @@ export const onWindowClose = async (event: Event): Promise<void> => {
   waitingForClose = false
   proceedToClose = true
   app.quit()
+}
+
+const setupWindow = async () => {
+  await createWindow(onWindowClose)
 }

@@ -16,7 +16,7 @@ import { TDbNetTotals } from '../../../pastelDB/network/netTotals.repo'
 
 const redrawCycle = 6000
 
-const NetworkTotalsOvertime = (): JSX.Element => {
+export default function NetworkTotalsOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -109,5 +109,3 @@ const NetworkTotalsOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default NetworkTotalsOvertime

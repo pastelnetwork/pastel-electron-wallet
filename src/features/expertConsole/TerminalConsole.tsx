@@ -443,7 +443,9 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
         {isReady && (
           <>
             <p>............................................................</p>
-            <p>Type 'help' for a list of available commands.</p>
+            <p>
+              Type {"'"}help{"'"} for a list of available commands.
+            </p>
           </>
         )}
       </div>

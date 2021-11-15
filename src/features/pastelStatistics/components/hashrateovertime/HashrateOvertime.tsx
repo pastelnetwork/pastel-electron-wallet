@@ -16,7 +16,7 @@ import { TDbMiningInfo } from '../../../pastelDB/mining/miningInfo.repo'
 
 const redrawCycle = 6000
 
-const HashrateOvertime = (): JSX.Element => {
+export default function HashrateOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -107,5 +107,3 @@ const HashrateOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default HashrateOvertime

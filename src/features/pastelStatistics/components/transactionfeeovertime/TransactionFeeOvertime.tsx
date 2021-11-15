@@ -19,7 +19,7 @@ import { TDbRawMemPoolInfo } from '../../../pastelDB/blockchain/rawMemPoolInfo.r
 
 const redrawCycle = 6000
 
-const TransactionFeeOvertime = (): JSX.Element => {
+export default function TransactionFeeOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -110,5 +110,3 @@ const TransactionFeeOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default TransactionFeeOvertime

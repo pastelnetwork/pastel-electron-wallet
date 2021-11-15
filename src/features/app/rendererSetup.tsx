@@ -92,7 +92,7 @@ const stopRpc = async () => {
   }
 }
 
-export const RendererSetupHooks = (): null => {
+export function RendererSetupHooks(): null {
   const [hasRpcConfig, setHasRpcConfig] = useState(Boolean(getRpcConfig()))
 
   // Pre-load queries for Wallet screen for the list of addresses
