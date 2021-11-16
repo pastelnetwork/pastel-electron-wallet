@@ -1,6 +1,6 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 
-function OnboardingLayout({ children }: { children: ReactNode }): JSX.Element {
+const OnboardingLayout: React.FC = ({ children }) => {
   return (
     <div className='opacity-100 rounded-xl bg-white shadow-xl relative overflow-hidden max-w-9/10 max-h-9/10'>
       {children}
