@@ -291,6 +291,10 @@ export default function Portfolio(): JSX.Element {
   const formatValue = (value: number) => `${value.toFixed(0)}k`
   const formatRarenessValue = (value: number) => `${value.toFixed(1)}`
 
+  const handleLikeOptionChange = (val: TOption | null) => {
+    setLikes(val)
+  }
+
   return (
     <div className='flex flex-col w-full min-h-full'>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -333,7 +337,7 @@ export default function Portfolio(): JSX.Element {
                     placeholder={sortByOptions.placeholder}
                     options={sortByOptions.options}
                     selected={sortByOptions.selected}
-                    onChange={sortByOptions.onOptionChange}
+                    onChange={handleLikeOptionChange}
                     className='bg-white min-w-118px'
                   />
                 </div>

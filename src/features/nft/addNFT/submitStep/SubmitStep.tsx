@@ -52,6 +52,10 @@ export default function SubmitStep({
 
   const onSubmit = () => submit({ state, image, nftData })
 
+  const handleBack = () => {
+    state.goBack()
+  }
+
   return (
     <ModalLayout
       title='Submit NFT'
@@ -161,7 +165,7 @@ export default function SubmitStep({
             <button
               type='button'
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={state.goBack}
+              onClick={handleBack}
             >
               <ArrowSlim to='left' size={14} />
             </button>

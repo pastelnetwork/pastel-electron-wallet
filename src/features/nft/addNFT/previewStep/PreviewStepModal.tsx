@@ -64,6 +64,10 @@ export default function PreviewStepModal({
     }
   }
 
+  const handleBack = () => {
+    state.goBack()
+  }
+
   return (
     <ModalLayout
       title='Image Preview'
@@ -123,7 +127,7 @@ export default function PreviewStepModal({
             </div>
           </div>
           <div className='flex-between mb-5 text-base'>
-            <div className='font-medium text-gray-4a font-medium'>
+            <div className='text-gray-4a font-medium'>
               Estimated registration fee
             </div>
             <div className='text-gray-2d font-extrabold'>
@@ -178,7 +182,7 @@ export default function PreviewStepModal({
             <button
               type='button'
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={state.goBack}
+              onClick={handleBack}
             >
               <ArrowSlim to='left' size={14} />
             </button>

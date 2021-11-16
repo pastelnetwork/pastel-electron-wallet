@@ -175,12 +175,10 @@ function ProfileCard({
                 </button>
               </div>
               <div className='space-y-6'>
-                {edits.map(each => (
-                  <div key={each.value}>
-                    <div className='text-gray-71 text-lg mb-2'>
-                      {each.title}
-                    </div>
-                    <LineEdit value={each.value} onChange={each.onChange} />
+                {edits.map(({ value, title, onChange }) => (
+                  <div key={value}>
+                    <div className='text-gray-71 text-lg mb-2'>{title}</div>
+                    <LineEdit value={value} onChange={onChange} />
                   </div>
                 ))}
               </div>

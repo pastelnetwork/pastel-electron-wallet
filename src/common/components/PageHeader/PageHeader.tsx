@@ -59,16 +59,18 @@ function PageHeader({
                   {sortByText || 'Sort by'}
                 </p>
                 <div className='flex space-x-6'>
-                  {sortByOptions.map(item => (
-                    <Select
-                      placeholder={item.placeholder}
-                      options={item.options}
-                      selected={item.selected}
-                      onChange={item.onOptionChange}
-                      key={item.placeholder}
-                      className='min-w-118px'
-                    />
-                  ))}
+                  {sortByOptions.map(
+                    ({ placeholder, options, selected, onOptionChange }) => (
+                      <Select
+                        placeholder={placeholder}
+                        options={options}
+                        selected={selected}
+                        onChange={onOptionChange}
+                        key={placeholder}
+                        className='min-w-118px'
+                      />
+                    ),
+                  )}
                 </div>
               </div>
             )}

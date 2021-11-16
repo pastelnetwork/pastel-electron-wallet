@@ -121,8 +121,4 @@ export class BrowserWindow extends EventEmitter {
 
   public webContents = new WebContentsMock()
   public id = 1
-
-  constructor() {
-    super()
-  }
 }

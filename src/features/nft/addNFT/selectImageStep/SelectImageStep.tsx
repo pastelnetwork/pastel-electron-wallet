@@ -34,6 +34,14 @@ export default function SelectImageStep({
   const size = imageForPreview?.size || selectedFile?.size
   const currencyName = useCurrencyName()
 
+  const handleBack = () => {
+    state.goBack()
+  }
+
+  const handleImageOptimizationSubmit = () => {
+    service.submit()
+  }
+
   return (
     <ModalLayout
       title='Select Image'
@@ -142,13 +150,13 @@ export default function SelectImageStep({
             <button
               type='button'
               className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={state.goBack}
+              onClick={handleBack}
             >
               <ArrowSlim to='left' size={14} />
             </button>
             <button
               className='btn btn-primary px-[30px]'
-              onClick={service.submit}
+              onClick={handleImageOptimizationSubmit}
               disabled={!imageForPreview}
               type='button'
             >

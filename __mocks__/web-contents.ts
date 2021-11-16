@@ -93,10 +93,6 @@ export class WebContentsMock extends EventEmitter {
   public devToolsWebContents = null
   public debugger = null
 
-  constructor() {
-    super()
-  }
-
   public get id(): void {
     return this.idMock()
   }
