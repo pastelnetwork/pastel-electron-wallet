@@ -72,7 +72,7 @@ export const onWindowClose = async (event: Event): Promise<void> => {
 }
 
 const setupWindow = async () => {
-  await createWindow(await onWindowClose)
+  await createWindow(onWindowClose)
 }
 
 export const mainSetup = async (): Promise<void> => {
