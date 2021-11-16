@@ -12,6 +12,29 @@ export type TProps = {
   className?: string
 }
 
+function NumpadButton({
+  value,
+  onClick,
+  className,
+}: {
+  value: number | string
+  onClick(): void
+  className?: string
+}) {
+  return (
+    <button
+      type='button'
+      className={cn(
+        'shadow-sm text-blue-3f border border-blue-3f w-8 h-8 flex-center rounded-lg duration-200 transition hover:bg-blue-e1 flex-shrink-0',
+        className,
+      )}
+      onClick={onClick}
+    >
+      {value}
+    </button>
+  )
+}
+
 export default forwardRef<HTMLDivElement, TProps>(function Numpad(
   {
     value: valueProp,
@@ -137,29 +160,6 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
     </div>
   )
 })
-
-function NumpadButton({
-  value,
-  onClick,
-  className,
-}: {
-  value: number | string
-  onClick(): void
-  className?: string
-}) {
-  return (
-    <button
-      type='button'
-      className={cn(
-        'shadow-sm text-blue-3f border border-blue-3f w-8 h-8 flex-center rounded-lg duration-200 transition hover:bg-blue-e1 flex-shrink-0',
-        className,
-      )}
-      onClick={onClick}
-    >
-      {value}
-    </button>
-  )
-}
 
 NumpadButton.defaultProps = {
   className: '',

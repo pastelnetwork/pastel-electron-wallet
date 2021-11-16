@@ -65,10 +65,6 @@ export default function TransactionHistoryModal(): JSX.Element {
     recipients[0],
   )
   const [isLoading, setLoading] = useState(false)
-  const onSelectDateRange = (dates: TDateRangeProp) => {
-    setDates(dates)
-    filterTransactionByDate(dates, originTransactions)
-  }
 
   const filterTransactionByDate = (
     dates: TDateRangeProp,
@@ -96,6 +92,11 @@ export default function TransactionHistoryModal(): JSX.Element {
     }
 
     setTransactions(filterTransactions)
+  }
+
+  const onSelectDateRange = (dates: TDateRangeProp) => {
+    setDates(dates)
+    filterTransactionByDate(dates, originTransactions)
   }
 
   const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {

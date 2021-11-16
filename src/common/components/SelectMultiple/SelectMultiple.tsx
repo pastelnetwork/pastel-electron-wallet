@@ -26,30 +26,6 @@ export type TControlledProps = TBaseProps & {
 export type TFormProps<TForm> = TBaseProps &
   Omit<TFormControlProps<TForm>, 'children'>
 
-export default function SelectMultiple<TForm extends FieldValues>(
-  props: TControlledProps | TFormProps<TForm>,
-): JSX.Element {
-  if ('form' in props) {
-    return (
-      <FormControl {...props}>
-        <Controller
-          name={props.name}
-          control={props.form.control}
-          render={({ field: { value, onChange } }) => (
-            <SelectMultipleInner
-              {...props}
-              selected={value}
-              onChange={onChange}
-            />
-          )}
-        />
-      </FormControl>
-    )
-  }
-
-  return <SelectMultipleInner {...props} />
-}
-
 function SelectMultipleInner({
   options,
   selected,
@@ -221,4 +197,28 @@ function SelectMultipleInner({
       </div>
     </label>
   )
+}
+
+export default function SelectMultiple<TForm extends FieldValues>(
+  props: TControlledProps | TFormProps<TForm>,
+): JSX.Element {
+  if ('form' in props) {
+    return (
+      <FormControl {...props}>
+        <Controller
+          name={props.name}
+          control={props.form.control}
+          render={({ field: { value, onChange } }) => (
+            <SelectMultipleInner
+              {...props}
+              selected={value}
+              onChange={onChange}
+            />
+          )}
+        />
+      </FormControl>
+    )
+  }
+
+  return <SelectMultipleInner {...props} />
 }

@@ -9,6 +9,28 @@ import { glitch, squoosh, ffmpegwasm } from '../../common/constants/ServeStatic'
 
 const servers: Server[] = []
 
+async function setupServeStatic(staticPath: string, port: number) {
+  try {
+    const _port = await detect(port)
+    if (port === _port) {
+      const serve = serveStatic(staticPath, {
+        index: ['index.html'],
+      })
+      // Create server
+      const server = http.createServer(function onRequest(req, res) {
+        serve(req, res, () => {
+          log.log('Created server')
+        })
+      })
+      // Listen
+      server.listen(port)
+      servers.push(server)
+    }
+  } catch (error) {
+    throw new Error(`serveStatic setupServeStatic error: ${error.message}`)
+  }
+}
+
 export default function initServeStatic(): void {
   let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
   let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
@@ -59,28 +81,6 @@ export default function initServeStatic(): void {
     .finally(() => {
       // noop
     })
-}
-
-async function setupServeStatic(staticPath: string, port: number) {
-  try {
-    const _port = await detect(port)
-    if (port === _port) {
-      const serve = serveStatic(staticPath, {
-        index: ['index.html'],
-      })
-      // Create server
-      const server = http.createServer(function onRequest(req, res) {
-        serve(req, res, () => {
-          log.log('Created server')
-        })
-      })
-      // Listen
-      server.listen(port)
-      servers.push(server)
-    }
-  } catch (error) {
-    throw new Error(`serveStatic setupServeStatic error: ${error.message}`)
-  }
 }
 
 export function closeServeStatic(): void {

@@ -103,6 +103,31 @@ export default function PaymentModal(): JSX.Element {
     }
   }
 
+  const updatePaymentSources = (amount: number) => {
+    const addressAmounts = allAddressAmounts.data
+    if (addressAmounts) {
+      let total = 0
+      for (const key in addressAmounts) {
+        if (total < amount) {
+          if (total + addressAmounts[key] >= amount) {
+            setPaymentSourcesModal(key, amount - total)
+          } else {
+            setPaymentSourcesModal(key, addressAmounts[key])
+          }
+          total += addressAmounts[key]
+
+          setSelectedAddressesModal(addresses => {
+            if (addresses.includes(key)) {
+              return addresses.filter(item => item !== key)
+            } else {
+              return [...addresses, key]
+            }
+          })
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     if (location.state) {
       const state = location.state as TLocationSate
@@ -128,28 +153,68 @@ export default function PaymentModal(): JSX.Element {
     return total
   }
 
-  const updatePaymentSources = (amount: number) => {
-    const addressAmounts = allAddressAmounts.data
-    if (addressAmounts) {
-      let total = 0
-      for (const key in addressAmounts) {
-        if (total < amount) {
-          if (total + addressAmounts[key] >= amount) {
-            setPaymentSourcesModal(key, amount - total)
-          } else {
-            setPaymentSourcesModal(key, addressAmounts[key])
-          }
-          total += addressAmounts[key]
-
-          setSelectedAddressesModal(addresses => {
-            if (addresses.includes(key)) {
-              return addresses.filter(item => item !== key)
-            } else {
-              return [...addresses, key]
-            }
+  const handleGetTransactionResult = async (operationIdList: string[]) => {
+    const {
+      result: transactionResult,
+    } = await transactionRPC.getTransactionStatus(operationIdList)
+    const paymentStatus: TPaymentResults[] = []
+    let isExecuting = false
+    transactionResult.forEach((item, idx) => {
+      if (item.status === 'failed') {
+        paymentStatus.push({
+          txId: item.id,
+          status: 'Failed',
+          message: item.error?.message,
+          id: idx,
+        })
+      } else if (item.status === 'success') {
+        const note = paymentNotes.find(
+          n => n.address === item.params.fromaddress,
+        )
+        paymentStatus.push({
+          txId: item?.result?.txid,
+          status: 'Success',
+          message: '',
+          id: idx,
+        })
+        if (note?.privateNote && item?.result?.txid) {
+          saveTransactionNote({
+            txnId: item.result.txid,
+            privateNote: note.privateNote,
           })
+            .then(() => {
+              // noop
+            })
+            .catch(() => {
+              // noop
+            })
+            .finally(() => {
+              // noop
+            })
         }
+      } else {
+        isExecuting = true
       }
+    })
+
+    if (isExecuting) {
+      setTimeout(() => {
+        handleGetTransactionResult(operationIdList)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
+      }, 2000) // 2 sec
+    } else {
+      setPaymentResults(paymentStatus)
+      setComplete(true)
+      setLoading(false)
+      totalBalances.refetch()
     }
   }
 
@@ -243,71 +308,6 @@ export default function PaymentModal(): JSX.Element {
         })
     } else {
       setLoading(false)
-    }
-  }
-
-  const handleGetTransactionResult = async (operationIdList: string[]) => {
-    const {
-      result: transactionResult,
-    } = await transactionRPC.getTransactionStatus(operationIdList)
-    const paymentStatus: TPaymentResults[] = []
-    let isExecuting = false
-    transactionResult.forEach((item, idx) => {
-      if (item.status === 'failed') {
-        paymentStatus.push({
-          txId: item.id,
-          status: 'Failed',
-          message: item.error?.message,
-          id: idx,
-        })
-      } else if (item.status === 'success') {
-        const note = paymentNotes.find(
-          n => n.address === item.params.fromaddress,
-        )
-        paymentStatus.push({
-          txId: item?.result?.txid,
-          status: 'Success',
-          message: '',
-          id: idx,
-        })
-        if (note?.privateNote && item?.result?.txid) {
-          saveTransactionNote({
-            txnId: item.result.txid,
-            privateNote: note.privateNote,
-          })
-            .then(() => {
-              // noop
-            })
-            .catch(() => {
-              // noop
-            })
-            .finally(() => {
-              // noop
-            })
-        }
-      } else {
-        isExecuting = true
-      }
-    })
-
-    if (isExecuting) {
-      setTimeout(() => {
-        handleGetTransactionResult(operationIdList)
-          .then(() => {
-            // noop
-          })
-          .catch(() => {
-            // noop
-          })
-          .finally(() => {
-            // noop
-          })
-      }, 2000) // 2 sec
-    } else {
-      setPaymentResults(paymentStatus)
-      setComplete(true)
-      setLoading(false)
-      totalBalances.refetch()
     }
   }
 

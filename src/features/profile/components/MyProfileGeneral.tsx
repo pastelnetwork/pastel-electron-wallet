@@ -11,6 +11,31 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import NumberFormat from 'react-number-format'
 import Select, { TOption } from 'common/components/Select'
 
+const locations: Array<TOption> = [
+  {
+    label: 'None',
+    value: 'None',
+  },
+  {
+    label: 'New York, US',
+    value: 'New York, US',
+  },
+  {
+    label: 'California, US',
+    value: 'California, US',
+  },
+]
+const languages: Array<TOption> = [
+  {
+    label: 'English',
+    value: '0',
+  },
+  {
+    label: 'Spanish',
+    value: '1',
+  },
+]
+
 export type TCurrency =
   | 'EUR'
   | 'CNY'
@@ -250,28 +275,3 @@ export default function ProfileGeneral({
     </div>
   )
 }
-
-const locations: Array<TOption> = [
-  {
-    label: 'None',
-    value: 'None',
-  },
-  {
-    label: 'New York, US',
-    value: 'New York, US',
-  },
-  {
-    label: 'California, US',
-    value: 'California, US',
-  },
-]
-const languages: Array<TOption> = [
-  {
-    label: 'English',
-    value: '0',
-  },
-  {
-    label: 'Spanish',
-    value: '1',
-  },
-]

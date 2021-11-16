@@ -24,6 +24,13 @@ import { useZListUnspent, useTListUnspent } from '../../api/pastel-rpc'
 // workaround for Hot Module Replacement behavior to not start the same intervals twice
 const intervals: Record<string, ReturnType<typeof setInterval>> = {}
 
+const stopRpc = async () => {
+  const rpcConfig = getRpcConfig()
+  if (rpcConfig) {
+    await ignorePromiseError(RPC.doRPC('stop', [], rpcConfig))
+  }
+}
+
 export const rendererSetup = (): void => {
   const oneHour = 1000 * 60 * 60
 
@@ -89,13 +96,6 @@ export const rendererSetup = (): void => {
       sendEventToMain('rendererIsReadyForQuit', null)
     },
   )
-}
-
-const stopRpc = async () => {
-  const rpcConfig = getRpcConfig()
-  if (rpcConfig) {
-    await ignorePromiseError(RPC.doRPC('stop', [], rpcConfig))
-  }
 }
 
 export function RendererSetupHooks(): null {

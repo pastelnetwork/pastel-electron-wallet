@@ -45,121 +45,6 @@ export type TSelectionPslProps = {
   date: number
 }
 
-export default function WalletScreen(): JSX.Element {
-  const tAddressesOriginal = useTAddresses()
-  const tAddressAmounts = useTAddressBalances()
-  const zAddressesOriginal = useZAddresses()
-  const zAddressAmounts = useZAddressBalances()
-  const totalBalances = useTotalBalance()
-  const addressBook = useAddressBook()
-  const lastActivityTimes = useAddressesLastActivityTime()
-  const [isNewAddress, setNewAddress] = useToggle(false)
-  const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(true)
-  const [selectedAddresses, setSelectedAddresses] = useState<TAddress[]>([])
-  const [selectedAddressesModal, setSelectedAddressesModal] = useState<
-    TAddress[]
-  >([])
-  const [paymentSources, setPaymentSources] = useState<TPaymentSources>({})
-  const [
-    paymentSourcesModal,
-    setPaymentSourcesModal,
-  ] = useState<TPaymentSources>({})
-  const [activeTab, setActiveTab] = useState(0)
-  const [activePeriod, setActivePeriod] = useState(0)
-  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
-  const [
-    isTransactionHistoryModalOpen,
-    setTransactionHistoryModalOpen,
-  ] = useState(false)
-  const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
-  const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
-  const [
-    isAddPastelPromoCodeModalOpen,
-    setAddPastelPromoCodeModalOpen,
-  ] = useState(false)
-  const [currentAddress, setCurrentAddress] = useState<string>()
-  const [selectedDate, setSelectedDate] = useState<TDate>({
-    start: new Date(),
-    end: new Date(),
-  })
-
-  const tAddresses = useFilterAddresses(
-    tAddressesOriginal,
-    tAddressAmounts,
-    hideEmptyAddresses,
-  )
-  const zAddresses = useFilterAddresses(
-    zAddressesOriginal,
-    zAddressAmounts,
-    hideEmptyAddresses,
-  )
-
-  const allAddresses = useCombineQueryArray([tAddresses, zAddresses])
-  const allAddressAmounts = useCombineQueryObject([
-    tAddressAmounts,
-    zAddressAmounts,
-  ])
-
-  const selectedAmount = useSelectedAmount({
-    addresses: allAddresses.data,
-    amounts: allAddressAmounts.data,
-    selectedAddresses,
-    paymentSources,
-  })
-
-  const pastelPromoCode = useReadPastelPromoCode()
-
-  const values: TWalletScreenContextValues = {
-    tAddresses,
-    tAddressAmounts,
-    zAddresses,
-    zAddressAmounts,
-    allAddresses,
-    allAddressAmounts,
-    totalBalances,
-    addressBook,
-    lastActivityTimes,
-    hideEmptyAddresses,
-    toggleHideEmptyAddresses,
-    selectedAddresses,
-    setSelectedAddresses,
-    paymentSources,
-    setPaymentSources,
-    activeTab,
-    setActiveTab,
-    activePeriod,
-    setActivePeriod,
-    isPaymentModalOpen,
-    setPaymentModalOpen,
-    isTransactionHistoryModalOpen,
-    setTransactionHistoryModalOpen,
-    isExportKeysModalOpen,
-    setExportKeysModalOpen,
-    isQRCodeModalOpen,
-    setIsQRCodeModalOpen,
-    isAddPastelPromoCodeModalOpen,
-    setAddPastelPromoCodeModalOpen,
-    currentAddress,
-    setCurrentAddress,
-    selectedAmount,
-    pastelPromoCode,
-    paymentSourcesModal,
-    setPaymentSourcesModal,
-    selectedAddressesModal,
-    setSelectedAddressesModal,
-    isNewAddress,
-    setNewAddress,
-    selectedDate,
-    setSelectedDate,
-  }
-
-  return (
-    <WalletScreenContext.Provider value={values}>
-      <WalletScreenContent />
-    </WalletScreenContext.Provider>
-  )
-}
-
 function WalletScreenContent(): JSX.Element {
   const location = useLocation()
   const currencyName = useCurrencyName()
@@ -383,5 +268,120 @@ function WalletScreenContent(): JSX.Element {
 
       <Modals />
     </div>
+  )
+}
+
+export default function WalletScreen(): JSX.Element {
+  const tAddressesOriginal = useTAddresses()
+  const tAddressAmounts = useTAddressBalances()
+  const zAddressesOriginal = useZAddresses()
+  const zAddressAmounts = useZAddressBalances()
+  const totalBalances = useTotalBalance()
+  const addressBook = useAddressBook()
+  const lastActivityTimes = useAddressesLastActivityTime()
+  const [isNewAddress, setNewAddress] = useToggle(false)
+  const [hideEmptyAddresses, toggleHideEmptyAddresses] = useToggle(true)
+  const [selectedAddresses, setSelectedAddresses] = useState<TAddress[]>([])
+  const [selectedAddressesModal, setSelectedAddressesModal] = useState<
+    TAddress[]
+  >([])
+  const [paymentSources, setPaymentSources] = useState<TPaymentSources>({})
+  const [
+    paymentSourcesModal,
+    setPaymentSourcesModal,
+  ] = useState<TPaymentSources>({})
+  const [activeTab, setActiveTab] = useState(0)
+  const [activePeriod, setActivePeriod] = useState(0)
+  const [isPaymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [
+    isTransactionHistoryModalOpen,
+    setTransactionHistoryModalOpen,
+  ] = useState(false)
+  const [isExportKeysModalOpen, setExportKeysModalOpen] = useState(false)
+  const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
+  const [
+    isAddPastelPromoCodeModalOpen,
+    setAddPastelPromoCodeModalOpen,
+  ] = useState(false)
+  const [currentAddress, setCurrentAddress] = useState<string>()
+  const [selectedDate, setSelectedDate] = useState<TDate>({
+    start: new Date(),
+    end: new Date(),
+  })
+
+  const tAddresses = useFilterAddresses(
+    tAddressesOriginal,
+    tAddressAmounts,
+    hideEmptyAddresses,
+  )
+  const zAddresses = useFilterAddresses(
+    zAddressesOriginal,
+    zAddressAmounts,
+    hideEmptyAddresses,
+  )
+
+  const allAddresses = useCombineQueryArray([tAddresses, zAddresses])
+  const allAddressAmounts = useCombineQueryObject([
+    tAddressAmounts,
+    zAddressAmounts,
+  ])
+
+  const selectedAmount = useSelectedAmount({
+    addresses: allAddresses.data,
+    amounts: allAddressAmounts.data,
+    selectedAddresses,
+    paymentSources,
+  })
+
+  const pastelPromoCode = useReadPastelPromoCode()
+
+  const values: TWalletScreenContextValues = {
+    tAddresses,
+    tAddressAmounts,
+    zAddresses,
+    zAddressAmounts,
+    allAddresses,
+    allAddressAmounts,
+    totalBalances,
+    addressBook,
+    lastActivityTimes,
+    hideEmptyAddresses,
+    toggleHideEmptyAddresses,
+    selectedAddresses,
+    setSelectedAddresses,
+    paymentSources,
+    setPaymentSources,
+    activeTab,
+    setActiveTab,
+    activePeriod,
+    setActivePeriod,
+    isPaymentModalOpen,
+    setPaymentModalOpen,
+    isTransactionHistoryModalOpen,
+    setTransactionHistoryModalOpen,
+    isExportKeysModalOpen,
+    setExportKeysModalOpen,
+    isQRCodeModalOpen,
+    setIsQRCodeModalOpen,
+    isAddPastelPromoCodeModalOpen,
+    setAddPastelPromoCodeModalOpen,
+    currentAddress,
+    setCurrentAddress,
+    selectedAmount,
+    pastelPromoCode,
+    paymentSourcesModal,
+    setPaymentSourcesModal,
+    selectedAddressesModal,
+    setSelectedAddressesModal,
+    isNewAddress,
+    setNewAddress,
+    selectedDate,
+    setSelectedDate,
+  }
+
+  return (
+    <WalletScreenContext.Provider value={values}>
+      <WalletScreenContent />
+    </WalletScreenContext.Provider>
   )
 }

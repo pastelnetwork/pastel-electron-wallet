@@ -12,6 +12,58 @@ export type TSaleHistoryModal = {
 
 const rate = 0.004
 
+const tableData = [
+  {
+    copy: '1345/1',
+    date: '11/04/21 01:43',
+    owner: 'Katy Jailson',
+    current_owner: 'Williams Scottish',
+    price_paid: 12000,
+  },
+  {
+    copy: '1345/2',
+    date: '11/04/21 01:43',
+    owner: 'Katy Jailson',
+    current_owner: 'Williams Scottish',
+    price_paid: 12000,
+  },
+  {
+    copy: '1345/2',
+    date: '11/04/21 01:43',
+    owner: 'Katy Jailson',
+    current_owner: 'Williams Scottish',
+    price_paid: 12000,
+  },
+  {
+    copy: '1345/2',
+    date: '11/04/21 01:43',
+    owner: 'Katy Jailson',
+    current_owner: 'Williams Scottish',
+    price_paid: 12000,
+  },
+  {
+    copy: '1345/2',
+    date: '11/04/21 01:43',
+    owner: 'Katy Jailson',
+    current_owner: 'Williams Scottish',
+    price_paid: 12000,
+  },
+  {
+    copy: '1345/2',
+    date: '11/04/21 01:43',
+    owner: 'Katy Jailson',
+    current_owner: 'Williams Scottish',
+    price_paid: 12000,
+  },
+  {
+    copy: '1345/2',
+    date: '11/04/21 01:43',
+    owner: 'Katy Jailson',
+    current_owner: 'Williams Scottish',
+    price_paid: 12000,
+  },
+]
+
 export function SaleHistoryModal({
   isOpen,
   handleClose,
@@ -95,55 +147,3 @@ export function SaleHistoryModal({
     </Modal>
   )
 }
-
-const tableData = [
-  {
-    copy: '1345/1',
-    date: '11/04/21 01:43',
-    owner: 'Katy Jailson',
-    current_owner: 'Williams Scottish',
-    price_paid: 12000,
-  },
-  {
-    copy: '1345/2',
-    date: '11/04/21 01:43',
-    owner: 'Katy Jailson',
-    current_owner: 'Williams Scottish',
-    price_paid: 12000,
-  },
-  {
-    copy: '1345/2',
-    date: '11/04/21 01:43',
-    owner: 'Katy Jailson',
-    current_owner: 'Williams Scottish',
-    price_paid: 12000,
-  },
-  {
-    copy: '1345/2',
-    date: '11/04/21 01:43',
-    owner: 'Katy Jailson',
-    current_owner: 'Williams Scottish',
-    price_paid: 12000,
-  },
-  {
-    copy: '1345/2',
-    date: '11/04/21 01:43',
-    owner: 'Katy Jailson',
-    current_owner: 'Williams Scottish',
-    price_paid: 12000,
-  },
-  {
-    copy: '1345/2',
-    date: '11/04/21 01:43',
-    owner: 'Katy Jailson',
-    current_owner: 'Williams Scottish',
-    price_paid: 12000,
-  },
-  {
-    copy: '1345/2',
-    date: '11/04/21 01:43',
-    owner: 'Katy Jailson',
-    current_owner: 'Williams Scottish',
-    price_paid: 12000,
-  },
-]

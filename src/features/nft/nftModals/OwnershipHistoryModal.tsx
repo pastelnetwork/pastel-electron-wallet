@@ -13,6 +13,93 @@ export type TOwnershipHistoryModal = {
   handleClose: () => void
 }
 
+const tableData = [
+  {
+    Deal: '#1',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#2',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#3',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#4',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#5',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#6',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#7',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#8',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#1',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#1',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#1',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+  {
+    Deal: '#1',
+    Date: '11/11/21 16:55',
+    buyer: 'Katy Jailson',
+    seller: 'Williams Scottish',
+    fee_paid: 12000,
+  },
+]
+
 function OwnershipHistoryModal({
   isOpen,
   handleClose,
@@ -102,92 +189,5 @@ function OwnershipHistoryModal({
     </Modal>
   )
 }
-
-const tableData = [
-  {
-    Deal: '#1',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#2',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#3',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#4',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#5',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#6',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#7',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#8',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#1',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#1',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#1',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-  {
-    Deal: '#1',
-    Date: '11/11/21 16:55',
-    buyer: 'Katy Jailson',
-    seller: 'Williams Scottish',
-    fee_paid: 12000,
-  },
-]
 
 export default OwnershipHistoryModal

@@ -75,106 +75,6 @@ const setupWindow = async () => {
   await createWindow(onWindowClose)
 }
 
-export const mainSetup = async (): Promise<void> => {
-  setupDeepLinking()
-  enableDevTools()
-  enableSourceMapSupport()
-  enableElectronDebug()
-  setupEventListeners()
-  setupAutoUpdater()
-  setupOptimizeImageHandler()
-  setupLogs()
-
-  app.whenReady().then(setupWindow)
-}
-
-let rpcConfig: TRPCConfig | undefined = undefined
-
-onMainEvent('rendererStarted', () => {
-  // We have to pass isPackaged and app paths via IPC because electron `remote` api is deprecated
-  sendEventToRenderer('setAppInfo', {
-    isPackaged: app.isPackaged,
-    appVersion: app.getVersion(),
-    sentTxStorePath,
-    debugLogPath,
-    pastelWalletDirPath,
-    sqliteFilePath,
-    migrationsPath,
-    pastelKeysPath,
-  })
-
-  // in case of page reload we already have rpcConfig and no need to launch wallet node again
-  if (rpcConfig) {
-    sendEventToRenderer('setRpcConfig', {
-      rpcConfig,
-    })
-    return
-  }
-
-  initServeStatic()
-  retriableAppSetup()
-    .then(() => {
-      // noop
-    })
-    .catch(() => {
-      // noop
-    })
-    .finally(() => {
-      // noop
-    })
-})
-
-export const retriableAppSetup = async (): Promise<void> => {
-  try {
-    sendEventToRenderer('appLoadingFailed', { error: '' })
-    await startWalletNode()
-    rpcConfig = await readRpcConfig(pastelConfigFilePath)
-
-    sendEventToRenderer('setRpcConfig', {
-      rpcConfig,
-    })
-    redirectDeepLinkingUrl()
-  } catch (error) {
-    sendEventToRenderer('appLoadingFailed', { error: error.message })
-    log.error(error)
-  }
-}
-
-onMainEvent('retryInitializingApp', retriableAppSetup)
-
-const setupLogs = () => {
-  if (app.isPackaged) {
-    log.transports.file.level = 'info'
-    log.transports.console.level = false
-  }
-}
-
-const enableDevTools = () => {
-  // Enable dev tools
-  if (!app.isPackaged) {
-    app.whenReady().then(() => {
-      installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-        .then((name: string) => log.warn(`Added Extension:  ${name}`))
-        .catch((err: Error) => log.warn('An error occurred: ', err))
-    })
-  }
-}
-
-const enableSourceMapSupport = () => {
-  if (process.env.NODE_ENV === 'production') {
-    sourceMapSupport.install()
-  }
-}
-
-const enableElectronDebug = () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
-    electronDebug()
-  }
-}
-
 const setupEventListeners = () => {
   app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
@@ -217,6 +117,106 @@ const setupEventListeners = () => {
   })
 }
 
+const setupLogs = () => {
+  if (app.isPackaged) {
+    log.transports.file.level = 'info'
+    log.transports.console.level = false
+  }
+}
+
+const enableDevTools = () => {
+  // Enable dev tools
+  if (!app.isPackaged) {
+    app.whenReady().then(() => {
+      installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
+        .then((name: string) => log.warn(`Added Extension:  ${name}`))
+        .catch((err: Error) => log.warn('An error occurred: ', err))
+    })
+  }
+}
+
+const enableSourceMapSupport = () => {
+  if (process.env.NODE_ENV === 'production') {
+    sourceMapSupport.install()
+  }
+}
+
+const enableElectronDebug = () => {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.DEBUG_PROD === 'true'
+  ) {
+    electronDebug()
+  }
+}
+
 export const resetWindowCloseFlags = (): void => {
   waitingForClose = proceedToClose = false
 }
+
+export const mainSetup = async (): Promise<void> => {
+  setupDeepLinking()
+  enableDevTools()
+  enableSourceMapSupport()
+  enableElectronDebug()
+  setupEventListeners()
+  setupAutoUpdater()
+  setupOptimizeImageHandler()
+  setupLogs()
+
+  app.whenReady().then(setupWindow)
+}
+
+let rpcConfig: TRPCConfig | undefined = undefined
+
+export const retriableAppSetup = async (): Promise<void> => {
+  try {
+    sendEventToRenderer('appLoadingFailed', { error: '' })
+    await startWalletNode()
+    rpcConfig = await readRpcConfig(pastelConfigFilePath)
+
+    sendEventToRenderer('setRpcConfig', {
+      rpcConfig,
+    })
+    redirectDeepLinkingUrl()
+  } catch (error) {
+    sendEventToRenderer('appLoadingFailed', { error: error.message })
+    log.error(error)
+  }
+}
+
+onMainEvent('rendererStarted', () => {
+  // We have to pass isPackaged and app paths via IPC because electron `remote` api is deprecated
+  sendEventToRenderer('setAppInfo', {
+    isPackaged: app.isPackaged,
+    appVersion: app.getVersion(),
+    sentTxStorePath,
+    debugLogPath,
+    pastelWalletDirPath,
+    sqliteFilePath,
+    migrationsPath,
+    pastelKeysPath,
+  })
+
+  // in case of page reload we already have rpcConfig and no need to launch wallet node again
+  if (rpcConfig) {
+    sendEventToRenderer('setRpcConfig', {
+      rpcConfig,
+    })
+    return
+  }
+
+  initServeStatic()
+  retriableAppSetup()
+    .then(() => {
+      // noop
+    })
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
+})
+
+onMainEvent('retryInitializingApp', retriableAppSetup)

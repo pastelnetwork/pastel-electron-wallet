@@ -6,6 +6,22 @@ export type TClaimTicketModal = {
   handleClose: () => void
 }
 
+type TSegment = {
+  title: string
+  value: string
+}
+
+function Segment({ title, value }: TSegment) {
+  return (
+    <div className='w-1/2'>
+      <div className='font-extrabold text-base text-gray-4a leading-6'>
+        {title}
+      </div>
+      <div className='mt-1 text-gray-71'>{value}</div>
+    </div>
+  )
+}
+
 function ClaimTicketModal({
   isOpen,
   handleClose,
@@ -60,22 +76,6 @@ function ClaimTicketModal({
         </div>
       </div>
     </Modal>
-  )
-}
-
-type TSegment = {
-  title: string
-  value: string
-}
-
-function Segment({ title, value }: TSegment) {
-  return (
-    <div className='w-1/2'>
-      <div className='font-extrabold text-base text-gray-4a leading-6'>
-        {title}
-      </div>
-      <div className='mt-1 text-gray-71'>{value}</div>
-    </div>
   )
 }
 

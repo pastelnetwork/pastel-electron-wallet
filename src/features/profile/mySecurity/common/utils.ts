@@ -73,6 +73,47 @@ type TPastelWithContentID = {
   content: string
 }
 
+export const addLineBreakForContent = (str: string): string => {
+  const breakChar = '\n'
+  return str.replace(/(.{46})/g, `$1${breakChar}`)
+}
+
+export const addLineBreakFoFullrContent = (str: string): string => {
+  const breakChar = '\n'
+  return str.replace(/(.{74})/g, `$1${breakChar}`)
+}
+
+export const decompressPastelIDAndPrivateKeys = (
+  str: string,
+): TAllAddressesAndPastelID | null => {
+  if (!str) {
+    return null
+  }
+
+  return JSON.parse(
+    LZUTF8.decompress(decodeURIComponent(str), {
+      inputEncoding: 'Base64',
+    }),
+  )
+}
+
+export const parseQRCodeFromString = (str: string): TQRCode | null => {
+  if (!str) {
+    return null
+  }
+
+  const qr = str.split('::')
+  if (qr.length) {
+    return {
+      index: parseInt(qr[0]),
+      total: parseInt(qr[1]),
+      qrCode: qr[2],
+    }
+  }
+
+  return null
+}
+
 async function fetchAllAddress(): Promise<TAllAddresses | null> {
   try {
     const rpcTAddresses = rpc<TAddressesResponse>('z_listaddresses', [])
@@ -397,45 +438,4 @@ export const splitStringIntoChunks = (
   }
 
   return chunks
-}
-
-export const addLineBreakForContent = (str: string): string => {
-  const breakChar = '\n'
-  return str.replace(/(.{46})/g, `$1${breakChar}`)
-}
-
-export const addLineBreakFoFullrContent = (str: string): string => {
-  const breakChar = '\n'
-  return str.replace(/(.{74})/g, `$1${breakChar}`)
-}
-
-export const decompressPastelIDAndPrivateKeys = (
-  str: string,
-): TAllAddressesAndPastelID | null => {
-  if (!str) {
-    return null
-  }
-
-  return JSON.parse(
-    LZUTF8.decompress(decodeURIComponent(str), {
-      inputEncoding: 'Base64',
-    }),
-  )
-}
-
-export const parseQRCodeFromString = (str: string): TQRCode | null => {
-  if (!str) {
-    return null
-  }
-
-  const qr = str.split('::')
-  if (qr.length) {
-    return {
-      index: parseInt(qr[0]),
-      total: parseInt(qr[1]),
-      qrCode: qr[2],
-    }
-  }
-
-  return null
 }

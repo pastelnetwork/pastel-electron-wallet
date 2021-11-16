@@ -109,11 +109,6 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }, 0)
   }
 
-  const focusTerminalInput = () => {
-    inputRef.current?.focus()
-    resetScroll()
-  }
-
   const resetScroll = () => {
     const terminalWrap = document.getElementById('terminalWrap')
     if (terminalWrap) {
@@ -124,6 +119,11 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
   }
 
+  const focusTerminalInput = () => {
+    inputRef.current?.focus()
+    resetScroll()
+  }
+
   const displayOutputs = (result: any[]) => {
     const outputNodes = Array.from(result)
     setOutputs(outputNodes)
@@ -132,6 +132,16 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
 
   const clearInput = () => {
     setTyping('')
+  }
+
+  const addOutputThenDisplay = async (text: string) => {
+    const oldOutputs = emulatorState.getOutputs()
+    const newOutputs = Outputs.addRecord(
+      oldOutputs,
+      OutputFactory.makeTextOutput(text),
+    )
+    emulatorState = await emulatorState.setOutputs(newOutputs)
+    displayOutputs(emulatorState.getOutputs())
   }
 
   const onEnterKeyDown = () => {
@@ -261,6 +271,29 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
   }
 
+  const onKeyDownHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    switch (e.key) {
+      case 'Enter':
+        e.preventDefault()
+        onEnterKeyDown()
+        break
+      case 'ArrowUp':
+        e.preventDefault()
+        onArrowUpPress()
+        break
+      case 'ArrowDown':
+        e.preventDefault()
+        onArrowDownPress()
+        break
+      case 'Tab':
+        e.preventDefault()
+        onTabPress()
+        break
+      default:
+        break
+    }
+  }
+
   const rpcCommandResponse = (commandKey: string) => async (
     state: any,
     opts: string[],
@@ -291,39 +324,6 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     await addOutputThenDisplay(textConsole)
     setExecutingCommand(false)
     inputTerminal?.focus()
-  }
-
-  const addOutputThenDisplay = async (text: string) => {
-    const oldOutputs = emulatorState.getOutputs()
-    const newOutputs = Outputs.addRecord(
-      oldOutputs,
-      OutputFactory.makeTextOutput(text),
-    )
-    emulatorState = await emulatorState.setOutputs(newOutputs)
-    displayOutputs(emulatorState.getOutputs())
-  }
-
-  const onKeyDownHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    switch (e.key) {
-      case 'Enter':
-        e.preventDefault()
-        onEnterKeyDown()
-        break
-      case 'ArrowUp':
-        e.preventDefault()
-        onArrowUpPress()
-        break
-      case 'ArrowDown':
-        e.preventDefault()
-        onArrowDownPress()
-        break
-      case 'Tab':
-        e.preventDefault()
-        onTabPress()
-        break
-      default:
-        break
-    }
   }
 
   const initTerminal = () => {

@@ -7,32 +7,6 @@ export type TCopiesDetailsModal = {
   handleClose: () => void
 }
 
-function CopiesDetailsModal({
-  isOpen,
-  handleClose,
-}: TCopiesDetailsModal): JSX.Element {
-  return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={() => handleClose()}
-      size='432px'
-      title={'List of NFT copies'}
-      titleClassName='font-black text-2xl text-gray-2d mt-2'
-      infoIcon
-    >
-      <div className='w-[350px]'>
-        <Table
-          columns={Columns}
-          data={tableData}
-          fixedHeader
-          bodyClassName='h-401px'
-          trClassName='border-b border-gray-f2'
-        />
-      </div>
-    </Modal>
-  )
-}
-
 const Columns = [
   {
     name: 'Copy ID',
@@ -95,5 +69,31 @@ const tableData = [
     Owner: 'Banksy123',
   },
 ]
+
+function CopiesDetailsModal({
+  isOpen,
+  handleClose,
+}: TCopiesDetailsModal): JSX.Element {
+  return (
+    <Modal
+      isOpen={isOpen}
+      handleClose={() => handleClose()}
+      size='432px'
+      title={'List of NFT copies'}
+      titleClassName='font-black text-2xl text-gray-2d mt-2'
+      infoIcon
+    >
+      <div className='w-[350px]'>
+        <Table
+          columns={Columns}
+          data={tableData}
+          fixedHeader
+          bodyClassName='h-401px'
+          trClassName='border-b border-gray-f2'
+        />
+      </div>
+    </Modal>
+  )
+}
 
 export default CopiesDetailsModal

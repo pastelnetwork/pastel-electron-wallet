@@ -7,6 +7,12 @@ import {
 } from './LoadingScreen.service'
 import { useAppSelector } from '../../redux/hooks'
 
+function LoadingMessage({ customMessage }: { customMessage?: string }) {
+  const message = useLoadingMessage()
+
+  return <span>{customMessage || message}</span>
+}
+
 export default function LoadingScreen({
   message,
 }: {
@@ -47,12 +53,6 @@ export default function LoadingScreen({
       </div>
     </div>
   )
-}
-
-function LoadingMessage({ customMessage }: { customMessage?: string }) {
-  const message = useLoadingMessage()
-
-  return <span>{customMessage || message}</span>
 }
 
 LoadingScreen.defaultProps = {

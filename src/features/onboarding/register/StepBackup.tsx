@@ -101,6 +101,37 @@ export default function StepBackupMethod(): JSX.Element {
     }
   }, [])
 
+  const saveFile = async (url: string) => {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = videoFileName
+    a.dispatchEvent(new MouseEvent('click'))
+    setCurrentStatus('downloaded')
+    a.remove()
+  }
+
+  const handleReReceivedMessage = (evt: MessageEvent) => {
+    if (!evt.data.error) {
+      if (evt.data.videoUrl && !videoUrl) {
+        setVideoUrl(evt.data.videoUrl)
+        saveFile(evt.data.videoUrl)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
+      } else {
+        setCurrentStatus('error')
+      }
+    } else {
+      setCurrentStatus('error')
+    }
+  }
+
   useEffect(() => {
     if (imagesData.length && !videoUrl) {
       try {
@@ -125,37 +156,6 @@ export default function StepBackupMethod(): JSX.Element {
       window.removeEventListener('message', handleReReceivedMessage, false)
     }
   }, [imagesData])
-
-  const handleReReceivedMessage = (evt: MessageEvent) => {
-    if (!evt.data.error) {
-      if (evt.data.videoUrl && !videoUrl) {
-        setVideoUrl(evt.data.videoUrl)
-        saveFile(evt.data.videoUrl)
-          .then(() => {
-            // noop
-          })
-          .catch(() => {
-            // noop
-          })
-          .finally(() => {
-            // noop
-          })
-      } else {
-        setCurrentStatus('error')
-      }
-    } else {
-      setCurrentStatus('error')
-    }
-  }
-
-  const saveFile = async (url: string) => {
-    const a = document.createElement('a')
-    a.href = url
-    a.download = videoFileName
-    a.dispatchEvent(new MouseEvent('click'))
-    setCurrentStatus('downloaded')
-    a.remove()
-  }
 
   const handleDownloadVideo = () => {
     if (videoUrl) {

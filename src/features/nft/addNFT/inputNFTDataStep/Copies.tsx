@@ -6,6 +6,24 @@ import StepSlider from './StepSlider'
 import { useWatch } from 'react-hook-form'
 import { copiesAmountToShowWarning } from '../AddNft.constants'
 
+function Warning({ form }: { form: TForm }) {
+  const copies = useWatch({
+    control: form.control,
+    name: 'copies',
+  })
+
+  if (copies < copiesAmountToShowWarning) {
+    return null
+  }
+
+  return (
+    <div className='text-red-fe text-xs font-italic font-medium w-[190px] mt-2'>
+      Warning: the higher the number of copies you create, the less valuable
+      each copy is likely to be!
+    </div>
+  )
+}
+
 export default function Copies({ form }: { form: TForm }): JSX.Element {
   return (
     <div className='bg-gray-f8 rounded-lg pl-6 pr-[18px] flex justify-between min-h-[117px]'>
@@ -30,24 +48,6 @@ export default function Copies({ form }: { form: TForm }): JSX.Element {
           formatTooltipValue={Math.round}
         />
       </div>
-    </div>
-  )
-}
-
-function Warning({ form }: { form: TForm }) {
-  const copies = useWatch({
-    control: form.control,
-    name: 'copies',
-  })
-
-  if (copies < copiesAmountToShowWarning) {
-    return null
-  }
-
-  return (
-    <div className='text-red-fe text-xs font-italic font-medium w-[190px] mt-2'>
-      Warning: the higher the number of copies you create, the less valuable
-      each copy is likely to be!
     </div>
   )
 }

@@ -10,34 +10,6 @@ export type TTransferHistoryModal = {
   handleClose: () => void
 }
 
-function TransferHistoryModal({
-  isOpen,
-  handleClose,
-}: TTransferHistoryModal): JSX.Element {
-  return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={() => handleClose()}
-      size='874px'
-      title={'Royalty rights transfer history'}
-      titleClassName='text-2xl font-black text-gray-2d'
-      infoIcon
-      bodyClassName='px-0'
-    >
-      <div className='ml-10 mr-9 mb-6 w- overflow-auto w-[798px]'>
-        <div className='mr-8'>
-          <Table
-            columns={Columns}
-            data={tableData}
-            className='h-401px'
-            trClassName='border-b border-gray-f2'
-          />
-        </div>
-      </div>
-    </Modal>
-  )
-}
-
 const getTooltip = () => {
   return (
     <div className='p-2 text-xs'>
@@ -116,5 +88,33 @@ const tableData = [
     Recipient: 'Harber',
   },
 ]
+
+function TransferHistoryModal({
+  isOpen,
+  handleClose,
+}: TTransferHistoryModal): JSX.Element {
+  return (
+    <Modal
+      isOpen={isOpen}
+      handleClose={() => handleClose()}
+      size='874px'
+      title={'Royalty rights transfer history'}
+      titleClassName='text-2xl font-black text-gray-2d'
+      infoIcon
+      bodyClassName='px-0'
+    >
+      <div className='ml-10 mr-9 mb-6 w- overflow-auto w-[798px]'>
+        <div className='mr-8'>
+          <Table
+            columns={Columns}
+            data={tableData}
+            className='h-401px'
+            trClassName='border-b border-gray-f2'
+          />
+        </div>
+      </div>
+    </Modal>
+  )
+}
 
 export default TransferHistoryModal

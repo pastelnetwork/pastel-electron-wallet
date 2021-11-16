@@ -12,20 +12,6 @@ export type TAnimatedModalProps = {
   easyToClose?: boolean // close by clicking on background or pressing Esc
 }
 
-function AnimatedModal(props: TAnimatedModalProps): JSX.Element | null {
-  // local open state is for closing animation
-  const [localOpen, setLocalOpen] = useState(props.open)
-
-  if (!props.open && !localOpen) {
-    return null
-  }
-
-  // logic is moved to separate component to init hooks, functions, variables only when AnimatedModal is open
-  return <AnimatedModalInner {...props} setLocalOpen={setLocalOpen} />
-}
-
-export default AnimatedModal
-
 function AnimatedModalInner({
   open,
   onClose,
@@ -99,3 +85,17 @@ function AnimatedModalInner({
     </div>
   )
 }
+
+function AnimatedModal(props: TAnimatedModalProps): JSX.Element | null {
+  // local open state is for closing animation
+  const [localOpen, setLocalOpen] = useState(props.open)
+
+  if (!props.open && !localOpen) {
+    return null
+  }
+
+  // logic is moved to separate component to init hooks, functions, variables only when AnimatedModal is open
+  return <AnimatedModalInner {...props} setLocalOpen={setLocalOpen} />
+}
+
+export default AnimatedModal

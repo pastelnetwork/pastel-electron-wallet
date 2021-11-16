@@ -32,6 +32,14 @@ function Dropdown({
   const [dropdownBoxRef, setDropdownBoxRef] = useState<HTMLDivElement | null>(
     null,
   )
+
+  const clickOutside = (event: MouseEvent) => {
+    if (!dropdownRef || dropdownRef.contains(event.target as Node)) {
+      return
+    }
+    handleClose()
+  }
+
   const { styles, attributes } = usePopper(dropdownRef, dropdownBoxRef, {
     strategy,
     placement,
@@ -51,13 +59,6 @@ function Dropdown({
       document.removeEventListener('click', clickOutside)
     }
   }, [dropdownRef])
-
-  const clickOutside = (event: MouseEvent) => {
-    if (!dropdownRef || dropdownRef.contains(event.target as Node)) {
-      return
-    }
-    handleClose()
-  }
 
   const classes = cn('relative inline-flex', className)
 

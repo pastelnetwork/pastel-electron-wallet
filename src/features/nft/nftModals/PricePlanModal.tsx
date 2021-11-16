@@ -8,6 +8,77 @@ import Button from 'common/components/Buttons/Button'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import cn from 'classnames'
 
+const tableData = [
+  {
+    Copies: [1, 5],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [2, 10],
+    'Auto-listing price': 1200,
+  },
+  {
+    Copies: [3, 30],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [40, 100],
+    'Auto-listing price': 1200,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+  {
+    Copies: [1, 1],
+    'Auto-listing price': 1000,
+  },
+]
+
+type TSliderComponent = {
+  range: [number, number]
+  disabled: boolean
+}
+
+function SliderComponent({ range, disabled }: TSliderComponent): JSX.Element {
+  const [values, setValues] = useState<[number, number]>(range)
+  return (
+    <div className={disabled ? 'filter grayscale' : ''}>
+      <Slider
+        min={0}
+        max={100}
+        values={values}
+        onChange={disabled ? () => ({}) : setValues}
+        step={1}
+      />
+    </div>
+  )
+}
+
 export type TPricePlanModal = {
   isOpen: boolean
   handleClose: () => void
@@ -134,76 +205,5 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
     </Modal>
   )
 }
-
-type TSliderComponent = {
-  range: [number, number]
-  disabled: boolean
-}
-
-function SliderComponent({ range, disabled }: TSliderComponent): JSX.Element {
-  const [values, setValues] = useState<[number, number]>(range)
-  return (
-    <div className={disabled ? 'filter grayscale' : ''}>
-      <Slider
-        min={0}
-        max={100}
-        values={values}
-        onChange={disabled ? () => ({}) : setValues}
-        step={1}
-      />
-    </div>
-  )
-}
-
-const tableData = [
-  {
-    Copies: [1, 5],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [2, 10],
-    'Auto-listing price': 1200,
-  },
-  {
-    Copies: [3, 30],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [40, 100],
-    'Auto-listing price': 1200,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-  {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
-  },
-]
 
 export default PricePlanModal

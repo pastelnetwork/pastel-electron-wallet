@@ -84,6 +84,12 @@ function PastelID(props: PastelIDProps): JSX.Element {
     setSelectedAddress(selectedAddress)
   }
 
+  function valid(): boolean {
+    return (
+      parseFloat(totalBalance.total) >= 1000 && passphraseValidation.id === 3
+    )
+  }
+
   async function onCreate(): Promise<void> {
     try {
       if (!valid()) {
@@ -119,12 +125,6 @@ function PastelID(props: PastelIDProps): JSX.Element {
   const passphraseColor = passphraseStatusColor(
     passphraseValidation as TPasswordStrengthResult,
   )
-
-  function valid(): boolean {
-    return (
-      parseFloat(totalBalance.total) >= 1000 && passphraseValidation.id === 3
-    )
-  }
 
   function getAddressBalanceOption(balance: number) {
     if (balance < 0) {

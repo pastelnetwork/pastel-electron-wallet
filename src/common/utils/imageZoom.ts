@@ -27,28 +27,6 @@ export const useImageZoom = (): {
     transform.scale = transform.x = transform.y = 0
   }, [])
 
-  const onDragControl = (e: DraggableEvent, data: DraggableData) => {
-    const el = controlRef.current
-    if (!el) {
-      return
-    }
-    applyScale(transformRef.current.scale + data.deltaX / el.offsetWidth)
-  }
-
-  const onWheelImage = (e: WheelEvent) =>
-    applyScale(transformRef.current.scale + e.deltaY / 1000)
-
-  const applyScale = (delta: number) => {
-    transformRef.current.scale = Math.max(0, Math.min(1, delta))
-    setTransform()
-    applyTransform()
-  }
-
-  const onDragImage = (e: DraggableEvent, data: DraggableData) => {
-    setTransform(data.deltaX, data.deltaY)
-    applyTransform()
-  }
-
   const setTransform = (deltaX = 0, deltaY = 0) => {
     const image = imageRef.current
     if (!image) {
@@ -79,6 +57,28 @@ export const useImageZoom = (): {
     progressBar.style.width = `${transform.scale * 100}%`
     const scale = minZoom + (maxZoom - minZoom) * transform.scale
     image.style.transform = `scale(${scale}) translateX(${transform.x}px) translateY(${transform.y}px)`
+  }
+
+  const applyScale = (delta: number) => {
+    transformRef.current.scale = Math.max(0, Math.min(1, delta))
+    setTransform()
+    applyTransform()
+  }
+
+  const onDragControl = (e: DraggableEvent, data: DraggableData) => {
+    const el = controlRef.current
+    if (!el) {
+      return
+    }
+    applyScale(transformRef.current.scale + data.deltaX / el.offsetWidth)
+  }
+
+  const onWheelImage = (e: WheelEvent) =>
+    applyScale(transformRef.current.scale + e.deltaY / 1000)
+
+  const onDragImage = (e: DraggableEvent, data: DraggableData) => {
+    setTransform(data.deltaX, data.deltaY)
+    applyTransform()
   }
 
   return {

@@ -24,6 +24,28 @@ export type TProfileCard = {
   }
 }
 
+function truncateMiddle(
+  str: string,
+  frontLen: number,
+  backLen: number,
+  truncateStr = '&hellip;',
+) {
+  // Setting default values
+  frontLen = Math.floor(frontLen)
+  backLen = Math.floor(backLen)
+  if (
+    (frontLen === 0 && backLen === 0) ||
+    frontLen >= str.length ||
+    backLen >= str.length ||
+    frontLen + backLen >= str.length
+  ) {
+    return str
+  } else if (backLen === 0) {
+    return str.slice(0, frontLen) + truncateStr
+  }
+  return str.slice(0, frontLen) + truncateStr + str.slice(str.length - backLen)
+}
+
 function ProfileCard({
   isMyProfile,
   username,
@@ -101,28 +123,6 @@ function ProfileCard({
       )}
     </div>
   )
-}
-
-function truncateMiddle(
-  str: string,
-  frontLen: number,
-  backLen: number,
-  truncateStr = '&hellip;',
-) {
-  // Setting default values
-  frontLen = Math.floor(frontLen)
-  backLen = Math.floor(backLen)
-  if (
-    (frontLen === 0 && backLen === 0) ||
-    frontLen >= str.length ||
-    backLen >= str.length ||
-    frontLen + backLen >= str.length
-  ) {
-    return str
-  } else if (backLen === 0) {
-    return str.slice(0, frontLen) + truncateStr
-  }
-  return str.slice(0, frontLen) + truncateStr + str.slice(str.length - backLen)
 }
 
 export default ProfileCard

@@ -43,6 +43,8 @@ const splitStringIntoChunks = (str: string, chunkQuantity: number) => {
   return chunks
 }
 
+const breakChar = '\u00ad'
+
 const addLineBreakForContent = (str: string) => {
   return str.replace(/(.{40})/g, `$1${breakChar}`)
 }
@@ -116,7 +118,6 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
   },
 })
-const breakChar = '\u00ad'
 
 function PDFDocument({
   address,
