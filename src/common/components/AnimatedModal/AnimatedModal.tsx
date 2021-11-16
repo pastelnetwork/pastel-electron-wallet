@@ -87,10 +87,11 @@ function AnimatedModalInner({
 }
 
 function AnimatedModal(props: TAnimatedModalProps): JSX.Element | null {
+  const { open } = props
   // local open state is for closing animation
-  const [localOpen, setLocalOpen] = useState(props.open)
+  const [localOpen, setLocalOpen] = useState(open)
 
-  if (!props.open && !localOpen) {
+  if (!open && !localOpen) {
     return null
   }
 

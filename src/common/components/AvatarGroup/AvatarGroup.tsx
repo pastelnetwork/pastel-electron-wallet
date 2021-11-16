@@ -19,6 +19,7 @@ function AvatarGroup({
           key={image}
           className='w-7 h-7 rounded-full border-2 border-white -m-1'
           src={image}
+          alt='avatar'
         />
       ))}
       {urlData.length > limitNumber && (

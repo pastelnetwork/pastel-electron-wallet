@@ -101,7 +101,12 @@ export default function PreviewStepModal({
                 </button>
               )}
             </Tooltip2>
-            <img ref={setImageElement} src={displayUrl} className='rounded' />
+            <img
+              ref={setImageElement}
+              src={displayUrl}
+              className='rounded'
+              alt='Pastel'
+            />
           </div>
         </div>
       }
@@ -168,6 +173,7 @@ export default function PreviewStepModal({
                   <img
                     src={croppedImage.src}
                     className='rounded w-full h-full relative z-10'
+                    alt='Pastel Network'
                   />
                 </>
               )}

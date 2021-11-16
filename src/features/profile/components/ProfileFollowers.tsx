@@ -490,9 +490,13 @@ function Follower({
   return (
     <div className='flex items-center py-2 text-md'>
       <div className='rounded-full bg-pink-300 w-10 h-10 relative'>
-        <img src={avatar} />
+        <img src={avatar} alt={name} />
         {diamond && (
-          <img src={svg_diamond} className='absolute bottom-0 right-0' />
+          <img
+            src={svg_diamond}
+            className='absolute bottom-0 right-0'
+            alt='Diamond'
+          />
         )}
       </div>
       <div className='flex-grow font-bold pl-4 text-gray-23'>

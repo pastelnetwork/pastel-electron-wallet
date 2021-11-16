@@ -114,8 +114,9 @@ export default function Select<TForm extends FieldValues>(
   } = props
 
   let { onInputChange } = props
-  if (props.debounce && props.onInputChange) {
-    onInputChange = debounce(props.onInputChange, props.debounce)
+  const { debounce: customDebounce } = props
+  if (customDebounce && onInputChange) {
+    onInputChange = debounce(onInputChange, customDebounce)
   }
 
   const onInputValueChange = (
@@ -165,6 +166,7 @@ export default function Select<TForm extends FieldValues>(
                   'absolute top-2/4 left-3 transform -translate-y-2/4 w-3',
                   iconClasses,
                 )}
+                alt='Icon'
               />
             )}
             {inputProps && (

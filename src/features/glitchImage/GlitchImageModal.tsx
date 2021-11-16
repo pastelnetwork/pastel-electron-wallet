@@ -30,7 +30,10 @@ export default function GlitchImageModal(): JSX.Element | null {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src={`http://localhost:${glitch.staticPort}/`} />
+          <iframe
+            src={`http://localhost:${glitch.staticPort}/`}
+            title='Glitch Image Tool'
+          />
         </div>
       </div>
     </Modal>

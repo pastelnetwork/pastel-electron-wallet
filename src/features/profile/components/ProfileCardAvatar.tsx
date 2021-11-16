@@ -17,7 +17,7 @@ function ProfileCardAvatar({
   return (
     <div className='rounded-full border-4 border-white bg-gray-e6 w-110px h-110px shadow-avatar flex flex-col items-center justify-center overflow-hidden relative'>
       {!isEmpty && <img src={src} className='w-full' />}
-      {isEmpty && <img src={img_avatar_empty} className='w-9' />}
+      {isEmpty && <img src={img_avatar_empty} className='w-9' alt='Empty' />}
       <div
         className={cn(
           isEmpty || editMode ? 'flex' : 'hidden',
@@ -25,7 +25,7 @@ function ProfileCardAvatar({
           editMode && 'bg-opacity-50 bg-gray-1f',
         )}
       >
-        <img src={ico_camera} />
+        <img src={ico_camera} alt='Camera' />
       </div>
     </div>
   )

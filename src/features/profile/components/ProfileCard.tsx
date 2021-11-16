@@ -70,16 +70,19 @@ function ProfileCard({
             <img
               src={svg_copy}
               className='pl-2.5 cursor-pointer filter hover:contrast-200'
+              alt='Copy'
             />
           </div>
           <div className='pt-15px flex justify-center'>
             <img
               src={svg_facebook}
               className='cursor-pointer mr-3 filter hover:contrast-200'
+              alt='Facebook'
             />
             <img
               src={svg_twitter}
               className='cursor-pointer filter hover:contrast-200'
+              alt='Twitter'
             />
           </div>
         </div>
@@ -100,20 +103,21 @@ function ProfileCard({
             <img
               src={svg_location}
               className='cursor-pointer pr-2 filter hover:contrast-200'
+              alt='Location'
             />
             {address}
           </div>
 
           <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-30px h-10 bg-blue-3f text-white hover:bg-blue-500'>
-            <img src={svg_plus} className='mr-9px' />
+            <img src={svg_plus} className='mr-9px' alt='Plus' />
             Follow
           </div>
           <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-2.5 h-10 text-blue-3f border-blue-3f hover:border-blue-600'>
-            <img src={svg_envelope} className='mr-9px' />
+            <img src={svg_envelope} className='mr-9px' alt='Envelope' />
             Message
           </div>
           <div className='cursor-pointer text-sm text-blue-3f pt-8 flex items-center justify-center filter hover:contrast-200'>
-            <img src={svg_flag} className='mr-2 mt-1' />
+            <img src={svg_flag} className='mr-2 mt-1' alt='Flag' />
             report
           </div>
           <div className='text-gray-400 text-sm mt-3 mb-6 text-center'>

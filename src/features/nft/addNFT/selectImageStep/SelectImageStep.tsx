@@ -60,6 +60,7 @@ export default function SelectImageStep({
                 src={imageForPreview.url}
                 style={{ maxWidth: `${imageForPreview.maxWidth}px` }}
                 className='relative z-10 rounded'
+                alt='Pastel Network'
               />
             </div>
           ) : (

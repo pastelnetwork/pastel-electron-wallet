@@ -55,6 +55,7 @@ export default function ApprovedStep({
               src={displayUrl}
               className='rounded max-h-424px relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
+              alt='Pastel'
             />
           </div>
         </div>
@@ -74,6 +75,7 @@ export default function ApprovedStep({
                   <img
                     src={croppedImage.src}
                     className='rounded w-full h-full'
+                    alt='Pastel Network'
                   />
                 )}
               </div>

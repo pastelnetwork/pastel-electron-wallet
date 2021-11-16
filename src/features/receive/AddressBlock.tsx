@@ -45,7 +45,18 @@ export interface IAddressBlockProps {
   transactions?: ITransactionsProps[]
 }
 
-export function AddressBlock(props: IAddressBlockProps): JSX.Element {
+export function AddressBlock({
+  privateKey,
+  hidePrivKey,
+  fetchAndSetSinglePrivKey,
+  currencyName,
+  addressBalance,
+  label,
+  pslPrice,
+  viewKey,
+  fetchAndSetSingleViewKey,
+  transactions,
+}: IAddressBlockProps): JSX.Element {
   const copiedPrivKeyTimerId = useRef(0)
   useEffect(
     () => () => {
@@ -60,23 +71,23 @@ export function AddressBlock(props: IAddressBlockProps): JSX.Element {
     '',
   )
   useEffect(() => {
-    if (copiedPrivKey !== 'loading' || !props.privateKey) {
+    if (copiedPrivKey !== 'loading' || !privateKey) {
       return
     }
-    clipboard.writeText(props.privateKey)
+    clipboard.writeText(privateKey)
     setCopiedPrivKey('done')
-    props.hidePrivKey()
+    hidePrivKey()
     copiedPrivKeyTimerId.current = window.setTimeout(() => {
       setCopiedPrivKey('')
       copiedPrivKeyTimerId.current = 0
     }, 3000)
-  }, [copiedPrivKey, props.privateKey])
+  }, [copiedPrivKey, privateKey])
 
   const onCopyPrivKeyBtnClick = (addr: string): void => {
     if (copiedPrivKey || copiedPrivKeyTimerId.current) {
       return
     }
-    props.fetchAndSetSinglePrivKey(addr)
+    fetchAndSetSinglePrivKey(addr)
     setCopiedPrivKey('loading')
   }
 
@@ -105,27 +116,16 @@ export function AddressBlock(props: IAddressBlockProps): JSX.Element {
   }
 
   const openAddress = (): void => {
-    const {
-      currencyName,
-      addressBalance: { address },
-    } = props
     if (currencyName === 'LSP') {
-      shell.openExternal(`https://chain.so/address/PSLTEST/${address}`)
+      shell.openExternal(
+        `https://chain.so/address/PSLTEST/${addressBalance.address}`,
+      )
     } else {
-      shell.openExternal(`https://explorer.pastel.network/address/${address}`)
+      shell.openExternal(
+        `https://explorer.pastel.network/address/${addressBalance.address}`,
+      )
     }
   }
-
-  const {
-    addressBalance,
-    label,
-    currencyName,
-    pslPrice,
-    fetchAndSetSinglePrivKey,
-    viewKey,
-    fetchAndSetSingleViewKey,
-    transactions,
-  } = props
 
   const { address } = addressBalance
   const balance = addressBalance.balance || 0

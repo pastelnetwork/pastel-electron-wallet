@@ -72,7 +72,11 @@ function MemberStrip({
                 key={`${id}${imgSrc.url}`}
               >
                 <div className='w-28 h-101px'>
-                  <img src={imgSrc.url} className='object-cover rounded-xl' />
+                  <img
+                    src={imgSrc.url}
+                    className='object-cover rounded-xl'
+                    alt='Member'
+                  />
                 </div>
               </div>
             ))}

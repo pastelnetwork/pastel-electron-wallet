@@ -58,7 +58,7 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
       {tab == 'Followers' &&
         (isEmpty ? (
           <div className='bg-gray-e6 opacity-60 opacity mt-4 p-2 flex flex-col text-gray-71 rounded-lg flex-center h-234px'>
-            <img src={ico_users} />
+            <img src={ico_users} alt='Users' />
             <div className='text-gray-71 mt-2'>You have no followers</div>
             <div className='text-gray-a0 mt-1 whitespace-pre text-center'>
               {'No one has subscribed to you yet \nbut you can'}

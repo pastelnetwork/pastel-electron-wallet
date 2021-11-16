@@ -16,7 +16,7 @@ export default function Image({ nft }: TImageProps): JSX.Element {
     <div className='flex-center flex-col md:flex-row md:items-start'>
       <div>
         <div className='relative'>
-          <img src={nft.image} className='object-cover' />
+          <img src={nft.image} className='object-cover' alt='NFT' />
           <div
             className={`absolute -bottom-5 bg-contain ${style.shadow}`}
             style={{

@@ -47,7 +47,7 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
               className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
               onClick={() => onDeleteCategory(index)}
             >
-              <img src={ico_close} className='cursor-pointer' />
+              <img src={ico_close} className='cursor-pointer' alt='Close' />
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
         onClick={startAdd}
         type='button'
       >
-        <img src={ico_add} className='cursor-pointer w-21px' />
+        <img src={ico_add} className='cursor-pointer w-21px' alt='Add' />
       </button>
 
       <div className={isAdding ? 'flex' : 'hidden'}>
@@ -76,7 +76,7 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
             }}
             type='button'
           >
-            <img src={ico_close} className='cursor-pointer' />
+            <img src={ico_close} className='cursor-pointer' alt='Close' />
           </button>
         </div>
       </div>

@@ -54,6 +54,7 @@ export default function FullScreenImage({
               src={image}
               className={style.image}
               onWheel={onWheelImage}
+              alt='Draggable Core'
             />
           </DraggableCore>
         </div>

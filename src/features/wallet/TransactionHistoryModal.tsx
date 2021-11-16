@@ -349,7 +349,11 @@ export default function TransactionHistoryModal(): JSX.Element {
               type='top'
             >
               <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
-                <img className='cursor-pointer' src={commentIcon} />
+                <img
+                  className='cursor-pointer'
+                  src={commentIcon}
+                  alt='Comment'
+                />
               </span>
             </Tooltip>
           ) : null}

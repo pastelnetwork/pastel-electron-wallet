@@ -107,7 +107,7 @@ function DatePicker({
           {label}:
         </span>
       ) : (
-        <img src={CalendarIcon} />
+        <img src={CalendarIcon} alt='calender icon' />
       )
       return (
         <Input
@@ -126,7 +126,11 @@ function DatePicker({
         <Input
           textCenter
           appendOutside={
-            <img src={CalendarIcon} className='w-6 h-6 cursor-pointer' />
+            <img
+              src={CalendarIcon}
+              className='w-6 h-6 cursor-pointer'
+              alt='separated'
+            />
           }
         />
       )

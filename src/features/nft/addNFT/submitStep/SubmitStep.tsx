@@ -72,6 +72,7 @@ export default function SubmitStep({
               src={displayUrl}
               className='rounded max-h-[410px] relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
+              alt='Pastel'
             />
             <button
               className='absolute z-10 bottom-3 px-4 py-[10px] rounded-full bg-rgba-gray-2e flex items-center'
@@ -132,6 +133,7 @@ export default function SubmitStep({
                     <img
                       src={croppedImage.src}
                       className='rounded w-full h-full relative'
+                      alt='Pastel Network'
                     />
                   </>
                 )}

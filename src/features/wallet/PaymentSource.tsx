@@ -78,6 +78,7 @@ export default function PaymentSource({
                 className='cursor-pointer'
                 onClick={() => setCommentOpen(!isCommentOpen)}
                 src={add2Icon}
+                alt='Add'
               />
             </span>
             <CommentModal

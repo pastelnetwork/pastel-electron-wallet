@@ -55,7 +55,7 @@ function DateRangeSelectorContent({
   if (!value) {
     return (
       <div className='flex'>
-        <img src={calendarIcon} className='ml-4 mr-2' />
+        <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
         All
       </div>
     )
@@ -64,7 +64,7 @@ function DateRangeSelectorContent({
   if (!endDate) {
     return (
       <div className='flex'>
-        <img src={calendarIcon} className='ml-4 mr-2' />
+        <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
         {dayjs(startDate).format('MM.DD.YY')}
         {' - '}
       </div>
@@ -73,7 +73,7 @@ function DateRangeSelectorContent({
 
   return (
     <div className='flex'>
-      <img src={calendarIcon} className='ml-4 mr-2' />
+      <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
       {dayjs(startDate).format('MM.DD.YY') +
         ' - ' +
         dayjs(endDate).format('MM.DD.YY')}
@@ -215,6 +215,7 @@ export default function DateRangeSelector({
             'transition duration-200 absolute ml-2 right-3 transform',
             isOpenCalendar && 'rotate-180',
           )}
+          alt='Calendar Icon'
         />
       </div>
       {isOpenCalendar && (

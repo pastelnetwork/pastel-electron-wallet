@@ -148,6 +148,7 @@ export default function Table({
                         ? 'invisible'
                         : (index != sortIndex || sortOrder != 1) && 'hidden',
                     )}
+                    alt='Caret'
                   />
                   <img
                     src={caretUp2Icon}
@@ -155,6 +156,7 @@ export default function Table({
                       'ml-2',
                       (index != sortIndex || sortOrder != -1) && 'hidden',
                     )}
+                    alt='Caret'
                   />
                 </div>
               </td>

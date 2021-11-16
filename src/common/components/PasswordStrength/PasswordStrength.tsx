@@ -19,13 +19,14 @@ type TSegmentsClassesProps = {
   class: string
 }
 
-export default function PasswordStrength(
-  props: TPasswordStrengthProps,
-): JSX.Element {
+export default function PasswordStrength({
+  strength,
+  className,
+}: TPasswordStrengthProps): JSX.Element {
   let colorClass = ''
 
   // colors logic
-  switch (props.strength) {
+  switch (strength) {
     case PasswordStrengths.Weak:
       colorClass = 'bg-red-fe'
       break
@@ -45,7 +46,7 @@ export default function PasswordStrength(
   for (let i = 0; i < 4; i++) {
     segmentsClasses.push({
       id: i,
-      class: i < props.strength ? colorClass : 'bg-gray-a6 opacity-20',
+      class: i < strength ? colorClass : 'bg-gray-a6 opacity-20',
     })
   }
 
@@ -53,7 +54,7 @@ export default function PasswordStrength(
     <div
       className={cn(
         'mt-3 grid grid-cols-4 gap-x-1.5',
-        props.className ? props.className : '',
+        className ? className : '',
       )}
     >
       {segmentsClasses.map(segClass => (

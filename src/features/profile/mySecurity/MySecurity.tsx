@@ -129,6 +129,7 @@ export default function MySecurity(props: TSecurity): JSX.Element {
           id='createVideoIframe'
           src={ffmpegwasm.videoHostURL}
           className='h-1.5px w-1.5px'
+          title='Ffmpegwasm tool'
         />
       </div>
     </div>

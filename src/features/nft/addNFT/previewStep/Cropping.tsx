@@ -79,7 +79,7 @@ export default function Cropping({
     <div className='bg-white rounded-md p-5 text-center'>
       <div className='flex-center'>
         <div>
-          <img ref={imageRef} src={image.url} />
+          <img ref={imageRef} src={image.url} alt='Pastel Network' />
         </div>
       </div>
       <div className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'>

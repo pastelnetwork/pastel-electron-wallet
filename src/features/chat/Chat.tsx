@@ -128,7 +128,7 @@ function Chat(): JSX.Element {
               onClick={onChatEdit}
               className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
             >
-              <img className='w-5 cursor-pointer' src={editIcon} />
+              <img className='w-5 cursor-pointer' src={editIcon} alt='Edit' />
             </i>
           </div>
           <div className='px-5 flex-grow overflow-auto'>
@@ -162,7 +162,7 @@ function Chat(): JSX.Element {
               className='cursor-pointer flex items-center h-4'
               onClick={toggleActiveChatMenu}
             >
-              <img className='cursor-pointer' src={chatMenuIcon} />
+              <img className='cursor-pointer' src={chatMenuIcon} alt='Chat' />
             </div>
 
             <div className='flex items-center ml-4 h-4'>
@@ -210,15 +210,23 @@ function Chat(): JSX.Element {
             </div>
 
             <div className='cursor-pointer mr-4' onClick={onEmoji}>
-              <img className='cursor-pointer' src={msgEmojiIcon} />
+              <img className='cursor-pointer' src={msgEmojiIcon} alt='Emoji' />
             </div>
 
             <div className='cursor-pointer mr-4' onClick={onAttach}>
-              <img className='cursor-pointer' src={msgAttachIcon} />
+              <img
+                className='cursor-pointer'
+                src={msgAttachIcon}
+                alt='Attach'
+              />
             </div>
 
             <div className='cursor-pointer w-10 h-10' onClick={onSendMsg}>
-              <img className='cursor-pointer w-full h-full' src={msgSendIcon} />
+              <img
+                className='cursor-pointer w-full h-full'
+                src={msgSendIcon}
+                alt='Send'
+              />
             </div>
           </div>
         </div>

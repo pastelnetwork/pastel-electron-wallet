@@ -100,12 +100,13 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
       key: 'Copies',
       custom: (value: Array<number>, row: TRow) => (
         <div className='flex leading-tight'>
-          <img src={astronautIcon} />
+          <img src={astronautIcon} alt='Pastel Network' />
           <div className='my-auto ml-30px mr-5'>{`${value[0]} to ${value[1]}`}</div>
           <img
             src={pencilIcon}
             className='cursor-pointer'
             onClick={() => setCellEdit({ row: row.id as number, col: 0 })}
+            alt='Pastel Network'
           />
         </div>
       ),
@@ -123,7 +124,7 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
             onClick={() => setCellEdit({ row: row.id as number, col: 1 })}
             type='button'
           >
-            <img src={pencilIcon} />
+            <img src={pencilIcon} alt='Pastel Network' />
           </button>
         </div>
       ),

@@ -22,7 +22,7 @@ function ForumMembers({ members }: TForumMemberProps): JSX.Element {
           key={`${member.avatar}-${member.name}`}
           className='rounded-full bg-line-default w-8 h-8 relative -mr-2.5 border-2 border-white border-solid'
         >
-          <img src={member.avatar} className='opacity-30' />
+          <img src={member.avatar} className='opacity-30' alt={member.name} />
         </div>
       ))}
       {leftOver > 0 && (

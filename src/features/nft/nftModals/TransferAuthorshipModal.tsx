@@ -33,7 +33,8 @@ function TransferAuthorshipModal({
         <div className='text-gray-2d'>
           <div>Transfer Royalty</div>
           <div className='flex items-center'>
-            Compensation Rights <img src={iconInfo} className='ml-2' />
+            Compensation Rights{' '}
+            <img src={iconInfo} className='ml-2' alt='Pastel Network' />
           </div>
         </div>
       }

@@ -5,13 +5,14 @@ type PastelIDSuccessModalProps = {
   txid: string
 }
 
-export default function PastelIDSuccessModal(
-  props: PastelIDSuccessModalProps,
-): JSX.Element {
+export default function PastelIDSuccessModal({
+  txid,
+  pastelid,
+}: PastelIDSuccessModalProps): JSX.Element {
   return (
     <div>
-      <div>PastelID: {props.pastelid}</div>
-      <div>TXID: {props.txid}</div>
+      <div>PastelID: {pastelid}</div>
+      <div>TXID: {txid}</div>
     </div>
   )
 }

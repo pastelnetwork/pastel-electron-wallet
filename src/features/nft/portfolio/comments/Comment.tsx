@@ -9,7 +9,11 @@ export default function Comment({ comment }: TCommentProps): JSX.Element {
   return (
     <div className='flex space-x-2 md:space-x-3'>
       <div className='w-8 h-8 rounded-full overflow-hidden'>
-        <img src={comment.author.avatar} className='object-cover' />
+        <img
+          src={comment.author.avatar}
+          className='object-cover'
+          alt='Avatar'
+        />
       </div>
       <div className='leading-5'>
         <div className='text-extrabold text-black text-13px'>

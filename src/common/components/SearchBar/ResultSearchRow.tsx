@@ -22,7 +22,11 @@ function ResultSearchRow({
     >
       <div className='flex items-center'>
         {image && (
-          <img src={image} className='w-[34px] h-[34px] rounded-full mr-5' />
+          <img
+            src={image}
+            className='w-[34px] h-[34px] rounded-full mr-5'
+            alt={name}
+          />
         )}
         <div className='text-base font-black text-gray-23'>{name}</div>
       </div>

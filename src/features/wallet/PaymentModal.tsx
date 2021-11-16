@@ -638,7 +638,7 @@ export default function PaymentModal(): JSX.Element {
                     }
                   >
                     <div className='flex items-center px-5 text-white text-h5-heavy'>
-                      <img src={checkIcon} className='py-3.5' />
+                      <img src={checkIcon} className='py-3.5' alt='Check' />
                       <span className='ml-[9px]'>
                         Confirm Payment of {formatPrice(psl, currencyName, 4)}
                       </span>

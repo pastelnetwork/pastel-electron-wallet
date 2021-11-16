@@ -240,7 +240,7 @@ export default function ExportKeysModal(): JSX.Element {
                 className='inline-block w-full h-full absolute top-0 left-0'
               />
             )}
-            <img src={DownloadWhite} className='py-3.5' />
+            <img src={DownloadWhite} className='py-3.5' alt='Download' />
             <div className='ml-2 text-white text-h5-heavy'>
               Download Paper Wallet (PDF)
             </div>

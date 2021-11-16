@@ -25,7 +25,7 @@ function MemberCard({
   return (
     <div className='px-4 py-7 bg-background-main rounded-2xl overflow-visible h-142px'>
       <div className='flex space-x-4 relative'>
-        <img src={avatar} className='w-88px h-88px rounded-full' />
+        <img src={avatar} className='w-88px h-88px rounded-full' alt='Avatar' />
         {isVerified && (
           <DiamondInHexagon className='w-6 h-6 absolute top-63px left-12 text-blue-3f' />
         )}

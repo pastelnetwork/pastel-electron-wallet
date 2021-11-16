@@ -143,6 +143,7 @@ export default function NFTCard({
             <img
               src={fullCardProps.avatarSrc}
               className={cn('rounded-full', imageClassName, avatarClassName)}
+              alt='Avatar'
             />
             <div
               className={cn(
@@ -198,6 +199,7 @@ export default function NFTCard({
                 imageHeightClass,
                 isNSFW && 'filter blur-[10px]',
               )}
+              alt='Detail'
             />
           </div>
         </Link>

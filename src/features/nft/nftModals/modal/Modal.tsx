@@ -54,7 +54,11 @@ function Modal({
       <div className={cn('flex justify-between', headerClassName)}>
         <div className={cn('leading-tight flex items-end', titleClassName)}>
           {title}
-          {infoIcon ? <img src={iconInfo} className='ml-14px mb-6px' /> : ''}
+          {infoIcon ? (
+            <img src={iconInfo} className='ml-14px mb-6px' alt='Info' />
+          ) : (
+            ''
+          )}
           {append}
         </div>
         <ButtonClose className='-mt-4 -mr-4' onClick={handleClose} />

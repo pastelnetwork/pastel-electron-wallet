@@ -119,7 +119,9 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
                 />
               </div>
             )}
-            {isValid === false && <img src={TimesIcon} className='w-3 mr-3' />}
+            {isValid === false && (
+              <img src={TimesIcon} className='w-3 mr-3' alt='Times Icon' />
+            )}
           </div>
           {appendOutside && (
             <div className='ml-4 select-none' onClick={onClick}>

@@ -30,7 +30,10 @@ export default function SquooshToolModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src={`http://localhost:${squoosh.staticPort}/`} />
+          <iframe
+            src={`http://localhost:${squoosh.staticPort}/`}
+            title='Squoosh Tool'
+          />
         </div>
       </div>
     </Modal>

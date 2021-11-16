@@ -34,6 +34,7 @@ function Crypto(props: TCrypto): JSX.Element {
           className='cursor-pointer'
           onClick={copyClipboard}
           src={IconClipboard}
+          alt='Copy'
         />
       </div>
     </div>

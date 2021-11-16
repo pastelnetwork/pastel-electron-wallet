@@ -114,7 +114,11 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
           <Row title='Creator' link='#'>
             <div className='flex-center'>
               <div className='rounded-full overflow-hidden mr-2 w-6 h-6'>
-                <img src={nft.author.avatar} className='object-contain' />
+                <img
+                  src={nft.author.avatar}
+                  className='object-contain'
+                  alt='Avatar'
+                />
               </div>
               {nft.author.name}
             </div>

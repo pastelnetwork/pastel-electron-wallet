@@ -5,16 +5,17 @@ import EyeIcon from '../../assets/icons/ico-eye.svg'
 import EyeIconHidden from '../../assets/icons/ico-eye-hidden.svg'
 
 function InputPassword(props: TInput): JSX.Element {
+  const { showPassword } = props
   const [type, setType] = useState<string>('password')
 
   const toggleType = (): void =>
     setType(type => (type === 'password' ? 'text' : 'password'))
 
   useEffect(() => {
-    if (props.showPassword) {
+    if (showPassword) {
       setType('text')
     }
-  }, [props.showPassword])
+  }, [showPassword])
 
   const otherProps = { ...props }
   if ('showPassword' in otherProps) {

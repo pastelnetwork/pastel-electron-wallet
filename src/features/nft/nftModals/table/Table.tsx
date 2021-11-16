@@ -103,6 +103,7 @@ export default function Table({
                           ? 'invisible'
                           : (index != sortIndex || sortOrder != 1) && 'hidden',
                       )}
+                      alt='Pastel Network'
                     />
                   )}
                   {column.sortable && (
@@ -112,6 +113,7 @@ export default function Table({
                         'ml-2',
                         (index != sortIndex || sortOrder != -1) && 'hidden',
                       )}
+                      alt='Pastel Network'
                     />
                   )}
                 </div>

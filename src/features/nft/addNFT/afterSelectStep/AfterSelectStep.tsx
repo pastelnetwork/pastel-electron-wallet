@@ -62,6 +62,7 @@ export default function UploadStep({
                   src={displayUrl}
                   className='rounded max-h-400px'
                   onWheel={onWheelImage}
+                  alt='Wheel Image'
                 />
               </DraggableCore>
               <div
