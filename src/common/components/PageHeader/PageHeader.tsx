@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Select, { TOption } from '../Select/Select'
 import MultiToggleSwitch, { TMultiToggle } from '../MultiToggleSwitch'
 
@@ -16,14 +16,14 @@ export type TPageHeaderProps = {
   variant?: string
   sortByText?: string
   sortByTextClassName?: string
-  children?: React.ReactNode
+  children?: ReactNode
 }
 
 /**
  * This is a presentational component, meaning it holds no state.
  * State should be handled by parent component.
  */
-const PageHeader = ({
+function PageHeader({
   title,
   routes,
   sortByOptions,
@@ -31,7 +31,7 @@ const PageHeader = ({
   sortByText,
   sortByTextClassName = '',
   children,
-}: TPageHeaderProps): JSX.Element => {
+}: TPageHeaderProps): JSX.Element {
   return (
     <>
       <div className='bg-white text-gray-1a'>

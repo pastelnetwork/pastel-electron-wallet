@@ -9,11 +9,11 @@ export type TDealApprovedModal = {
   handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const DealApprovedModal = ({
+function DealApprovedModal({
   content,
   isOpen,
   handleClose,
-}: TDealApprovedModal): JSX.Element => {
+}: TDealApprovedModal): JSX.Element {
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-md'>
       <div className='text-center'>

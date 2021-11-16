@@ -24,13 +24,13 @@ enum Tabs {
   PrivateNote,
 }
 
-const CommentModal = ({
+export default function CommentModal({
   isOpen,
   onClose,
   address,
   onSavePaymentNote,
   defaultsNote,
-}: TCommentModalProps): JSX.Element => {
+}: TCommentModalProps): JSX.Element {
   const [tab, setTab] = useState(Tabs.NoteToRecipient)
   const [note, setNote] = useState(defaultsNote || '')
   const [privateNote, setPrivateNote] = useState('')
@@ -153,5 +153,3 @@ const CommentModal = ({
     </div>
   )
 }
-
-export default CommentModal

@@ -10,10 +10,10 @@ export type TTransferHistoryModal = {
   handleClose: () => void
 }
 
-const TransferHistoryModal = ({
+function TransferHistoryModal({
   isOpen,
   handleClose,
-}: TTransferHistoryModal): JSX.Element => {
+}: TTransferHistoryModal): JSX.Element {
   return (
     <Modal
       isOpen={isOpen}

@@ -24,7 +24,7 @@ export type TProfileCard = {
   }
 }
 
-const ProfileCard = ({
+function ProfileCard({
   isMyProfile,
   username,
   walletId,
@@ -32,7 +32,7 @@ const ProfileCard = ({
   name,
   description,
   address,
-}: TProfileCard): JSX.Element => {
+}: TProfileCard): JSX.Element {
   return (
     <div className='flex flex-col pb-28px rounded-md shadow-sm bg-white w-315px'>
       <ProfileCardFrame />

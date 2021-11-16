@@ -8,7 +8,7 @@ export type TCategories = {
   onChange(value: Array<string>): void
 }
 
-const Categories = ({ value, onChange }: TCategories): JSX.Element => {
+function Categories({ value, onChange }: TCategories): JSX.Element {
   const [isAdding, setAdding] = useState<boolean>(false)
   const [newText, setNewText] = useState('')
   const customInputRef = useRef<HTMLInputElement>(null)

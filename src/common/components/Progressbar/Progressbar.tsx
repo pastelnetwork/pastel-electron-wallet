@@ -8,11 +8,11 @@ export type TProgressbarProps = {
   width: number
 }
 
-const Progressbar = ({
+function Progressbar({
   className,
   percent = 70,
   width = 336,
-}: TProgressbarProps): JSX.Element => {
+}: TProgressbarProps): JSX.Element {
   const badgeWidth = 31
   const height = 20
   const diffPercentPosition = percent < 10 ? 8 : 5

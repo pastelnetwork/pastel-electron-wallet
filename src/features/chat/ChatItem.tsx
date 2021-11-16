@@ -1,4 +1,4 @@
-import React /*, { CSSProperties }*/ from 'react'
+import React from 'react'
 import cn from 'classnames'
 import { formatTime } from '../../common/utils/format'
 import { TChatMessageProps } from './ChatMessage'
@@ -13,7 +13,7 @@ export type TChatItemProps = {
   isActive?: boolean
 }
 
-export const ChatItem = (props: TChatItemProps): JSX.Element => {
+export function ChatItem(props: TChatItemProps): JSX.Element {
   const onClickMe = () => {
     if (props.onClick) {
       props.onClick(props.id)

@@ -14,14 +14,14 @@ export type TMemberCard = {
   searchText?: string
 }
 
-const MemberCard = ({
+function MemberCard({
   avatar,
   name,
   followers,
   isVerified,
   followedByUser,
   searchText,
-}: TMemberCard): JSX.Element => {
+}: TMemberCard): JSX.Element {
   return (
     <div className='px-4 py-7 bg-background-main rounded-2xl overflow-visible h-142px'>
       <div className='flex space-x-4 relative'>

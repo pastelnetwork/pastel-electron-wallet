@@ -11,12 +11,12 @@ export type TAvatarProps = {
   className?: string
 }
 
-const Avatar = ({
+function Avatar({
   avatarSrc,
   iconType = 'none',
   className = 'w-12 h-12',
   position = 'bottom',
-}: TAvatarProps): JSX.Element => {
+}: TAvatarProps): JSX.Element {
   return (
     <div className={cn(className, 'relative')}>
       <img

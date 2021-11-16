@@ -5,10 +5,10 @@ export type TQuestionLogoProps = {
   className?: string
 }
 
-export const QuestionLogo = ({
+export function QuestionLogo({
   size = 36,
   className = 'text-gray-2d',
-}: TQuestionLogoProps): JSX.Element => {
+}: TQuestionLogoProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -7,11 +7,11 @@ export type TSelectButton = {
   children?: ReactNode | string
 }
 
-const SelectButtons = ({
+function SelectButtons({
   children,
   isActive,
   onClick,
-}: TSelectButton): JSX.Element => {
+}: TSelectButton): JSX.Element {
   return (
     <button
       onClick={onClick}

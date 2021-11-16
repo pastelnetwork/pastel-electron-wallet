@@ -7,13 +7,13 @@ export type TDiamondInHexagonProps = TIconProps & {
   secondStopClassName?: string
 }
 
-export const DiamondInHexagon = ({
+export function DiamondInHexagon({
   size,
   className,
   fill = 'text-white',
   firstStopClassName,
   secondStopClassName,
-}: TDiamondInHexagonProps): JSX.Element => {
+}: TDiamondInHexagonProps): JSX.Element {
   return (
     <svg
       width={size}

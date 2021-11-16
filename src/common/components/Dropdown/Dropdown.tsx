@@ -16,7 +16,7 @@ export type TDropdown = {
   children?: ReactNode
 }
 
-const Dropdown = ({
+function Dropdown({
   children,
   className,
   isOpen,
@@ -27,7 +27,7 @@ const Dropdown = ({
   noPaddings,
   placement = 'bottom-end',
   strategy = 'fixed',
-}: TDropdown): JSX.Element => {
+}: TDropdown): JSX.Element {
   const [dropdownRef, setDropdownRef] = useState<HTMLDivElement | null>(null)
   const [dropdownBoxRef, setDropdownBoxRef] = useState<HTMLDivElement | null>(
     null,

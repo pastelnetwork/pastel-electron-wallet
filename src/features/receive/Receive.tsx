@@ -47,7 +47,7 @@ enum receiveTab {
   transparent,
 }
 
-export const Receive = (props: IReceiveProps): JSX.Element => {
+export function Receive(props: IReceiveProps): JSX.Element {
   const {
     addresses,
     addressesWithBalance,

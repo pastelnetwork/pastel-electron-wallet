@@ -5,10 +5,10 @@ export type TAddNFTProps = {
   className?: string
 }
 
-export const AddNFTIcon = ({
+export function AddNFTIcon({
   size = 21,
   className,
-}: TAddNFTProps): JSX.Element => {
+}: TAddNFTProps): JSX.Element {
   return (
     <svg
       width={size}

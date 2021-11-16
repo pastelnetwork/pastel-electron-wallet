@@ -11,7 +11,7 @@ import ForumUpdatedNumber, {
   TForumUpdatedNumberProps,
 } from './ForumUpdatedNumber'
 
-export const Forum = (): JSX.Element => {
+export function Forum(): JSX.Element {
   const mockCategories: TOption[] = [
     { value: '', label: 'All' },
     { value: 'Bitcoin Talks', label: 'Bitcoin Talks' },

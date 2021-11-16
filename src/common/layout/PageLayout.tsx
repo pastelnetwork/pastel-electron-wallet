@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 import Header from '../components/Header'
 
-const PageLayout: React.FC = ({ children }) => {
+function PageLayout({ children }: { children: ReactNode }): JSX.Element {
   return (
     <div className='w-screen h-screen overflow-y-auto m-0'>
       <Header />

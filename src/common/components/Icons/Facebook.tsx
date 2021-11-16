@@ -5,10 +5,10 @@ export type TFacebookProps = {
   className?: string
 }
 
-export const FacebookIcon = ({
+export function FacebookIcon({
   size = 20,
   className = 'text-gray-88',
-}: TFacebookProps): JSX.Element => {
+}: TFacebookProps): JSX.Element {
   return (
     <svg
       width={size}

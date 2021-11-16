@@ -7,7 +7,7 @@ type CardProps = {
   subTitle?: string
 }
 
-export const Card = (props: CardProps): JSX.Element => {
+export function Card(props: CardProps): JSX.Element {
   const { subTitle, backgroundImage } = props
 
   return (

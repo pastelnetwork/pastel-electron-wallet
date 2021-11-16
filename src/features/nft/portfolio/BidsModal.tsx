@@ -12,7 +12,7 @@ export type TBidsModal = {
   handleClose: () => void
 }
 
-const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
+function BidsModal({ isOpen, handleClose }: TBidsModal): JSX.Element {
   const currencyName = useCurrencyName()
   const comments = [
     {

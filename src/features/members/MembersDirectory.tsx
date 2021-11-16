@@ -42,7 +42,7 @@ const mockBreadcrumbs: TBreadcrumb[] = [
   },
 ]
 
-const MembersDirectory = (): JSX.Element => {
+function MembersDirectory(): JSX.Element {
   const mockMemberStrips: TMemberStripProps[] = [
     {
       id: uuidv4(),

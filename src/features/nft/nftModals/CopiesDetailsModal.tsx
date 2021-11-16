@@ -7,10 +7,10 @@ export type TCopiesDetailsModal = {
   handleClose: () => void
 }
 
-const CopiesDetailsModal = ({
+function CopiesDetailsModal({
   isOpen,
   handleClose,
-}: TCopiesDetailsModal): JSX.Element => {
+}: TCopiesDetailsModal): JSX.Element {
   return (
     <Modal
       isOpen={isOpen}

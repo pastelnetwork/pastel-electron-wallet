@@ -12,10 +12,10 @@ export type TChangeUsernameModal = {
   handleClose: () => void
 }
 
-const ChangeUsernameModal = ({
+function ChangeUsernameModal({
   isOpen,
   handleClose,
-}: TChangeUsernameModal): JSX.Element => {
+}: TChangeUsernameModal): JSX.Element {
   const currencyName = useCurrencyName()
   const [username, setUsername] = useState<string>('')
   const [inputed, setInputed] = useState<boolean>(false)

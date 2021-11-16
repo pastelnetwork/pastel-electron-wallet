@@ -61,11 +61,11 @@ export function QRCodeSlider({
   )
 }
 
-const QR = ({
+export default function QR({
   qrcodeData,
   handleDownloadVideo,
   currentStatus,
-}: TQRProps): JSX.Element => {
+}: TQRProps): JSX.Element {
   const description = (
     <div className='max-w-330px'>
       As a more convenient way to backup your secrets, you can either click the
@@ -106,8 +106,6 @@ const QR = ({
     />
   )
 }
-
-export default QR
 
 QR.defaultProps = {
   currentStatus: '',

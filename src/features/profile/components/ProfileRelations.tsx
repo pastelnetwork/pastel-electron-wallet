@@ -14,7 +14,7 @@ export type TProfileRelations = {
   isEmpty?: boolean
 }
 
-const ProfileRelations = ({ isEmpty }: TProfileRelations): JSX.Element => {
+function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
   const [tab, setTab] = useState('Followers')
 
   return (

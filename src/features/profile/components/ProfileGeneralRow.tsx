@@ -5,10 +5,10 @@ type TProfileGeneralRow = {
   children: string | number | JSX.Element | JSX.Element[]
 }
 
-const ProfileGeneralRow = ({
+function ProfileGeneralRow({
   title,
   children,
-}: TProfileGeneralRow): JSX.Element => {
+}: TProfileGeneralRow): JSX.Element {
   return (
     <div className='flex'>
       <div className='w-[215px] text-gray-71 flex-shrink-0'>{title}</div>

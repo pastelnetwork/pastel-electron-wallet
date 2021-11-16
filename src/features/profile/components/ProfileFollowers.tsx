@@ -22,7 +22,7 @@ export type TFollower = {
 
 export type TFollowers = TFollower[]
 
-const Followers = (): JSX.Element => {
+function Followers(): JSX.Element {
   return (
     <div className='flex flex-col pt-2 max-h-700px overflow-y-auto pr-8 -mt-7'>
       <div className='pt-7' />
@@ -33,13 +33,13 @@ const Followers = (): JSX.Element => {
   )
 }
 
-const Follower = ({
+function Follower({
   name,
   count,
   avatar,
   diamond,
   is_followed,
-}: TFollower): JSX.Element => {
+}: TFollower): JSX.Element {
   return (
     <div className='flex items-center py-2 text-md'>
       <div className='rounded-full bg-pink-300 w-10 h-10 relative'>

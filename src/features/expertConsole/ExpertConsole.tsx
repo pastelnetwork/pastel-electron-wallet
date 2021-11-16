@@ -23,7 +23,7 @@ export interface TExpertProps {
   createNewPastelclassName?(): void
 }
 
-const ExpertConsole = (props: TExpertProps): JSX.Element => {
+function ExpertConsole(props: TExpertProps): JSX.Element {
   const [theme, setTheme] = useState('green')
 
   const consoleProps = () => {

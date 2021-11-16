@@ -9,7 +9,7 @@ export type TInputExportProps = TInput & {
   clickPasteHandler?: () => void
 }
 
-const InputExportKey = (props: TInputExportProps): JSX.Element => {
+function InputExportKey(props: TInputExportProps): JSX.Element {
   const [copied, setCopied] = useState(false)
 
   const onCopy = () => {

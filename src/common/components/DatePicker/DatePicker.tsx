@@ -42,7 +42,7 @@ type TCustomHeader = {
   nextMonthButtonDisabled: boolean
 }
 
-const DatePicker = ({
+function DatePicker({
   positionFixed = true,
   label,
   selected,
@@ -56,7 +56,7 @@ const DatePicker = ({
   closeOnSelect,
   value,
   openToDate,
-}: TDatePicker): JSX.Element => {
+}: TDatePicker): JSX.Element {
   const [isOpened, setIsOpened] = useState(false)
 
   const customHeader = ({

@@ -10,12 +10,12 @@ export type TReviewModal = {
   handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const ReviewModal = ({
+function ReviewModal({
   title,
   content,
   isOpen,
   handleClose,
-}: TReviewModal): JSX.Element => {
+}: TReviewModal): JSX.Element {
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-md'>
       <h2 className='mb-6 text-gray-2d'>“{title}” is in review</h2>

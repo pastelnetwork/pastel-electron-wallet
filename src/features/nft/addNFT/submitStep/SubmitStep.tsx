@@ -13,12 +13,14 @@ import { submit } from './SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PreviewIco } from 'common/components/Icons'
 
-const InfoPair = ({ title, value }: { title: string; value: string }) => (
-  <div className='flex'>
-    <div className='text-gray-71 w-36 font-normal text-sm'>{title}</div>
-    <div className='text-gray-4a font-medium text-sm'>{value}</div>
-  </div>
-)
+function InfoPair({ title, value }: { title: string; value: string }) {
+  return (
+    <div className='flex'>
+      <div className='text-gray-71 w-36 font-normal text-sm'>{title}</div>
+      <div className='text-gray-4a font-medium text-sm'>{value}</div>
+    </div>
+  )
+}
 
 type TSubmitStepProps = {
   state: TAddNFTState

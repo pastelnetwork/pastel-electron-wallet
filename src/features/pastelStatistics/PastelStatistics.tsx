@@ -6,7 +6,7 @@ import { pastelChartFields } from './common/constants'
 import { Card } from './components/card/Card'
 import styles from './PastelStatistics.module.css'
 
-const PastelStatistics = (): JSX.Element => {
+function PastelStatistics(): JSX.Element {
   return (
     <>
       <div

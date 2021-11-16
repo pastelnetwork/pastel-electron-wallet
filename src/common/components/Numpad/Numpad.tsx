@@ -138,7 +138,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
   )
 })
 
-const NumpadButton = ({
+function NumpadButton({
   value,
   onClick,
   className,
@@ -146,7 +146,7 @@ const NumpadButton = ({
   value: number | string
   onClick(): void
   className?: string
-}) => {
+}) {
   return (
     <button
       type='button'

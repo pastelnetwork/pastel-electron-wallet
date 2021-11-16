@@ -17,7 +17,7 @@ export type TButton = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Button = ({
+function Button({
   children,
   secondary,
   variant = secondary ? 'secondary' : 'default',
@@ -29,7 +29,7 @@ const Button = ({
   className,
   childrenClassName,
   ...otherProps
-}: TButton): JSX.Element => {
+}: TButton): JSX.Element {
   const Tag = href ? 'a' : 'button'
 
   const classes = cn(

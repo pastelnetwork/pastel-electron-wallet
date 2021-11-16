@@ -47,11 +47,11 @@ const dateButtons = [
   { value: 'last30days', title: 'Last 30 days' },
 ]
 
-const DateRangeSelectorContent = ({
+function DateRangeSelectorContent({
   value,
   startDate,
   endDate,
-}: TDateRangeSelectorContentProp): JSX.Element => {
+}: TDateRangeSelectorContentProp): JSX.Element {
   if (!value) {
     return (
       <div className='flex'>

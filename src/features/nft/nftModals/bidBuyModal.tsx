@@ -11,11 +11,11 @@ export type TBidBuyModal = {
   handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const BidBuyModal = ({
+function BidBuyModal({
   username,
   isOpen,
   handleClose,
-}: TBidBuyModal): JSX.Element => {
+}: TBidBuyModal): JSX.Element {
   const currencyName = useCurrencyName()
 
   return (

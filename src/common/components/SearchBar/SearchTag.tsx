@@ -10,11 +10,7 @@ export type TSearchTagProps = {
   ) => void
 }
 
-const SearchTag = ({
-  label,
-  type,
-  clickHandle,
-}: TSearchTagProps): JSX.Element => {
+function SearchTag({ label, type, clickHandle }: TSearchTagProps): JSX.Element {
   return (
     <div
       className='flex items-center bg-blue-d9 py-3px px-2 rounded-10px mr-2 cursor-pointer'

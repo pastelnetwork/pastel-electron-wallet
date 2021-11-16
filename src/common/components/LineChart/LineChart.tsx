@@ -51,7 +51,7 @@ const filterData = (
   }
 }
 
-const LineChart = ({
+function LineChart({
   data1,
   height = 300,
   width = 600,
@@ -63,7 +63,7 @@ const LineChart = ({
   type = 'month',
   label1className = 'bg-blue-37',
   label2className = 'bg-red-ff',
-}: TChartProps): JSX.Element => {
+}: TChartProps): JSX.Element {
   useEffect(() => {
     const data: TLineChartRow[] = filterData(data1, type)
     const svg = d3

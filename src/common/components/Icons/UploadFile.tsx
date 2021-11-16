@@ -5,11 +5,11 @@ export type TUploadFileProps = TIconProps & {
   variant?: 'simple' | 'full'
 }
 
-export const UploadFile = ({
+export function UploadFile({
   size,
   className,
   variant = 'simple',
-}: TUploadFileProps): JSX.Element => {
+}: TUploadFileProps): JSX.Element {
   if (variant === 'simple') {
     return (
       <svg

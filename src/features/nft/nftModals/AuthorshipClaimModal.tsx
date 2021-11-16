@@ -7,10 +7,10 @@ export type TAuthorshipClaimModal = {
   handleClose: () => void
 }
 
-const AuthorshipClaimModal = ({
+function AuthorshipClaimModal({
   isOpen,
   handleClose,
-}: TAuthorshipClaimModal): JSX.Element => {
+}: TAuthorshipClaimModal): JSX.Element {
   const data = {
     nftName: 'i.e banksy168',
     pastelId: 'i.e banksy168',

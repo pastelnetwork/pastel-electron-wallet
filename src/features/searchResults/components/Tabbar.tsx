@@ -12,7 +12,11 @@ export type TTabbarProps = {
   active: number
 }
 
-const Tabbar = ({ data, clickHandler, active }: TTabbarProps): JSX.Element => {
+export default function Tabbar({
+  data,
+  clickHandler,
+  active,
+}: TTabbarProps): JSX.Element {
   return (
     <div className='flex text-base font-medium text-gray-71'>
       {data.map((item, index) => (
@@ -33,5 +37,3 @@ const Tabbar = ({ data, clickHandler, active }: TTabbarProps): JSX.Element => {
     </div>
   )
 }
-
-export default Tabbar

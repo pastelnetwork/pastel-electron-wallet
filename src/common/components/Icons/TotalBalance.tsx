@@ -6,11 +6,11 @@ export type TToatalBalanceProps = {
   variant?: 'active' | 'inactive'
 }
 
-export const TotalBalance = ({
+export function TotalBalance({
   size = 69,
   className = 'text-gray-88',
   variant = 'active',
-}: TToatalBalanceProps): JSX.Element => {
+}: TToatalBalanceProps): JSX.Element {
   return (
     <svg
       width={size}

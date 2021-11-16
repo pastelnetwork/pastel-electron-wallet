@@ -7,11 +7,11 @@ export type TSettingIconProps = {
   hasNotification?: boolean
 }
 
-export const SettingIcon = ({
+export function SettingIcon({
   size = 18,
   className = 'text-gray-33',
   hasNotification = false,
-}: TSettingIconProps): JSX.Element => {
+}: TSettingIconProps): JSX.Element {
   return (
     <div className={cn(className, 'relative')} style={{ width: size }}>
       {hasNotification && (

@@ -174,7 +174,7 @@ export default function InputNFTDataStep({
             placeholder='Description of the NFT or artist’s statement.'
           />
         </div>
-        <button className='btn btn-primary w-full' type='button'>
+        <button className='btn btn-primary w-full' type='submit'>
           Go to preview
         </button>
       </form>

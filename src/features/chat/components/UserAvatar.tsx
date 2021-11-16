@@ -9,7 +9,7 @@ export interface ChatUserAvatarProps {
   extraClasses?: string
 }
 
-export const UserAvatar = (props: ChatUserAvatarProps): JSX.Element => {
+export function UserAvatar(props: ChatUserAvatarProps): JSX.Element {
   const size = props.size ? props.size : 12
 
   return (

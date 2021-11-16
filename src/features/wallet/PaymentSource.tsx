@@ -16,12 +16,12 @@ export type TDataType = {
   isMemoDisabled?: boolean
 }
 
-const PaymentSource = ({
+export default function PaymentSource({
   address,
   onSavePaymentNote,
   defaultsNote,
   isMemoDisabled,
-}: TDataType): JSX.Element => {
+}: TDataType): JSX.Element {
   const [isCommentOpen, setCommentOpen] = useState(false)
   const {
     setSelectedAddressesModal,
@@ -98,5 +98,3 @@ const PaymentSource = ({
     </tr>
   )
 }
-
-export default PaymentSource

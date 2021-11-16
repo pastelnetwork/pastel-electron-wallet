@@ -16,14 +16,14 @@ export type TChangeStatusModal = {
   handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const ChangeStatusModal = ({
+function ChangeStatusModal({
   isOpen,
   handleClose,
   title,
   statusOptions,
   listedOptions,
   durationOptions,
-}: TChangeStatusModal): JSX.Element => {
+}: TChangeStatusModal): JSX.Element {
   const [status, setStatus] = useState<TOption | null>(statusOptions[0])
   const [listed, setListed] = useState<TOption | null>(listedOptions[0])
   const [duration, setDuration] = useState<TOption | null>(durationOptions[0])

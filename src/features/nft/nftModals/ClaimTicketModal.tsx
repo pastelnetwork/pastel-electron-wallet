@@ -6,10 +6,10 @@ export type TClaimTicketModal = {
   handleClose: () => void
 }
 
-const ClaimTicketModal = ({
+function ClaimTicketModal({
   isOpen,
   handleClose,
-}: TClaimTicketModal): JSX.Element => {
+}: TClaimTicketModal): JSX.Element {
   const [text, setText] = useState('')
 
   const data = {
@@ -68,13 +68,15 @@ type TSegment = {
   value: string
 }
 
-const Segment = ({ title, value }: TSegment) => (
-  <div className='w-1/2'>
-    <div className='font-extrabold text-base text-gray-4a leading-6'>
-      {title}
+function Segment({ title, value }: TSegment) {
+  return (
+    <div className='w-1/2'>
+      <div className='font-extrabold text-base text-gray-4a leading-6'>
+        {title}
+      </div>
+      <div className='mt-1 text-gray-71'>{value}</div>
     </div>
-    <div className='mt-1 text-gray-71'>{value}</div>
-  </div>
-)
+  )
+}
 
 export default ClaimTicketModal

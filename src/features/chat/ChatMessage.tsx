@@ -17,7 +17,7 @@ export type TChatMessageProps = {
   onSaveAttachment?: (url: string) => void
 }
 
-export const ChatMessage = (props: TChatMessageProps): JSX.Element => {
+export function ChatMessage(props: TChatMessageProps): JSX.Element {
   const prepareFileThumb = (url: string) => {
     // TODO: default icons for non-images?
     return url

@@ -193,21 +193,23 @@ export default function PastelPaperWalletModal({
     return `${title}_${dateTime}.pdf`
   }
 
-  const DownloadButton = () => (
-    <button className={styles.btn_download} id='PDFDownloadBtn' type='button'>
-      <PDFDownloadLink
-        document={
-          <PDFDocument
-            currencyName={currencyName}
-            address={address}
-            privateKey={privateKey}
-            title={generateFileName()}
-          />
-        }
-        fileName={generateFileName()}
-      />
-    </button>
-  )
+  function DownloadButton() {
+    return (
+      <button className={styles.btn_download} id='PDFDownloadBtn' type='button'>
+        <PDFDownloadLink
+          document={
+            <PDFDocument
+              currencyName={currencyName}
+              address={address}
+              privateKey={privateKey}
+              title={generateFileName()}
+            />
+          }
+          fileName={generateFileName()}
+        />
+      </button>
+    )
+  }
 
   return (
     <Modal

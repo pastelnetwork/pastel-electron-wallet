@@ -20,7 +20,7 @@ import {
 } from '../../utils/ChartOptions'
 import styles from './LineChart.module.css'
 
-export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
+export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
   const {
     chartName,
     data,

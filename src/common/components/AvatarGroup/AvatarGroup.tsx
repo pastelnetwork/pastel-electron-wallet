@@ -7,11 +7,11 @@ export type TAvatarGroupProps = {
   className?: string
 }
 
-const AvatarGroup = ({
+function AvatarGroup({
   urlData,
   limitNumber = 4,
   className,
-}: TAvatarGroupProps): JSX.Element => {
+}: TAvatarGroupProps): JSX.Element {
   return (
     <div className={cn('flex', className)}>
       {urlData.slice(0, limitNumber).map(image => (

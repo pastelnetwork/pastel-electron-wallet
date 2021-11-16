@@ -38,11 +38,11 @@ const dateButtons = [
   { title: 'Last 30 days' },
 ]
 
-const NotificationModal = ({
+function NotificationModal({
   notifications,
   isOpen,
   handleClose,
-}: TNotificationModal): JSX.Element => {
+}: TNotificationModal): JSX.Element {
   const [filter, setFilter] = useState<string>('all')
   const [type, setType] = useState<TOption | null>(TTypesOptions[0])
   const [startDate, setStartDate] = useState<Date | null>(new Date())

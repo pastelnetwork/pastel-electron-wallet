@@ -15,12 +15,12 @@ export type TBidAuctionModal = {
   handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const BidAuctionModal = ({
+function BidAuctionModal({
   type,
   username,
   isOpen,
   handleClose,
-}: TBidAuctionModal): JSX.Element => {
+}: TBidAuctionModal): JSX.Element {
   const currencyName = useCurrencyName()
   const [bid, setBid] = React.useState<string>('12950')
   const handleBid = (event: React.ChangeEvent<HTMLInputElement>) =>

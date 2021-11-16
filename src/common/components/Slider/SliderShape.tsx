@@ -23,7 +23,7 @@ const paths = {
 
 export type TWidth = keyof typeof paths
 
-export const SliderShape = ({
+export function SliderShape({
   className,
   width,
   style,
@@ -31,7 +31,7 @@ export const SliderShape = ({
   className: string
   width: TWidth
   style?: CSSProperties
-}): JSX.Element => {
+}): JSX.Element {
   return (
     <svg
       className={className}

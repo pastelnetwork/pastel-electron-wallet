@@ -18,7 +18,7 @@ export default function WebsiteAndVideo({
   )
 }
 
-const ToggleableInput = ({
+function ToggleableInput({
   form,
   name,
   label,
@@ -26,7 +26,7 @@ const ToggleableInput = ({
   form: TForm
   name: 'website' | 'video'
   label: string
-}) => {
+}) {
   const showInputKey = name === 'website' ? 'showSiteInput' : 'showVideoInput'
 
   const showInput = useWatch({

@@ -9,7 +9,7 @@ type TCard = {
   footer: ReactNode
 }
 
-const Card = (props: TCard): JSX.Element => {
+function Card(props: TCard): JSX.Element {
   const { title, description, content, footer } = props
 
   return (

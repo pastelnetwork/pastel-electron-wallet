@@ -45,7 +45,7 @@ export interface IAddressBlockProps {
   transactions?: ITransactionsProps[]
 }
 
-export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
+export function AddressBlock(props: IAddressBlockProps): JSX.Element {
   const copiedPrivKeyTimerId = useRef(0)
   useEffect(
     () => () => {

@@ -14,7 +14,7 @@ export type TComment = {
   className?: string
 }
 
-const Comment = ({
+function Comment({
   avatar,
   name,
   commentedOn,
@@ -22,7 +22,7 @@ const Comment = ({
   comment,
   className,
   likes,
-}: TComment): JSX.Element => {
+}: TComment): JSX.Element {
   const classes = cn('flex flex-wrap', className)
   return (
     <div className={classes}>

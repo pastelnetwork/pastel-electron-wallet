@@ -18,7 +18,7 @@ const profile_data = {
   },
 }
 
-const Profile = (): JSX.Element => {
+function Profile(): JSX.Element {
   const currencyName = useCurrencyName()
   const [tab, setTab] = useState(0)
 

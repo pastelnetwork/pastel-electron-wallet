@@ -11,7 +11,7 @@ export type TPictureModal = {
   handleClose: () => void
 }
 
-const PictureModal = ({ isOpen, handleClose }: TPictureModal): JSX.Element => {
+function PictureModal({ isOpen, handleClose }: TPictureModal): JSX.Element {
   const [zoom, setZoom] = useState<number>(42)
   const imageSize = (1382 * zoom) / 100
   return (

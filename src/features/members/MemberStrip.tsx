@@ -20,14 +20,14 @@ export type TMemberStripProps = {
   searchText?: string
 }
 
-const MemberStrip = ({
+function MemberStrip({
   id,
   memberCard,
   highestSold,
   images,
   totalSold,
   searchText,
-}: TMemberStripProps): JSX.Element => {
+}: TMemberStripProps): JSX.Element {
   const history = useHistory()
   const toMemberProfile = () => {
     history.replace(ROUTES.MEMBERS_PROFILE)

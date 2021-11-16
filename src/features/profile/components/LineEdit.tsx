@@ -11,14 +11,14 @@ export type TLineEdit = {
   className?: string
 }
 
-const LineEdit = ({
+function LineEdit({
   value,
   onChange,
   hideCloseIcon,
   readOnly = false,
   inputClassName,
   className,
-}: TLineEdit): JSX.Element => {
+}: TLineEdit): JSX.Element {
   return (
     <div
       className={cn(

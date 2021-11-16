@@ -20,7 +20,7 @@ import {
   SettingIcon,
 } from '../Icons'
 
-const MenuItem = ({
+function MenuItem({
   to,
   exact,
   children,
@@ -30,7 +30,7 @@ const MenuItem = ({
   exact?: boolean
   children: React.ReactNode
   classes?: string
-}) => {
+}) {
   const location = useLocation()
   return (
     <NavLink
@@ -50,7 +50,7 @@ const MenuItem = ({
   )
 }
 
-const Header = (): JSX.Element | null => {
+function Header(): JSX.Element | null {
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
   const [openAddNFT, toggleAddNFT] = useToggle(false)
 

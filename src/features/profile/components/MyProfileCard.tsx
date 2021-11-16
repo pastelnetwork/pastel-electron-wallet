@@ -25,14 +25,14 @@ export type TProfileCard = {
   onNativeCurrencyChange: (val: TOption | null) => void
 }
 
-const ProfileCard = ({
+function ProfileCard({
   editMode,
   setEditMode,
   isEmpty,
   nativeCurrencyOptions,
   nativeCurrency,
   onNativeCurrencyChange,
-}: TProfileCard): JSX.Element => {
+}: TProfileCard): JSX.Element {
   const currencyName = useCurrencyName()
   const data = {
     name: 'Williams Scottish',

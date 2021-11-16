@@ -13,10 +13,7 @@ export type TPricePlanModal = {
   handleClose: () => void
 }
 
-const PricePlanModal = ({
-  isOpen,
-  handleClose,
-}: TPricePlanModal): JSX.Element => {
+function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
   const currencyName = useCurrencyName()
   const [cellEdit, setCellEdit] = useState<{ row: number; col: number } | null>(
     null,

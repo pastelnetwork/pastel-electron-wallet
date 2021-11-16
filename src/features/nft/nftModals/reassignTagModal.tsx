@@ -15,12 +15,12 @@ export type TReassignTagModal = {
   placeholder?: string
 }
 
-const ReassignTagModal = ({
+function ReassignTagModal({
   title,
   placeholder = 'No tag chosen',
   isOpen,
   handleClose,
-}: TReassignTagModal): JSX.Element => {
+}: TReassignTagModal): JSX.Element {
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false)
   const [tags, setTags] = useState<Array<TOptionType>>([])
   const [selectedTags, setSelectedTags] = useState<

@@ -13,7 +13,7 @@ export type TRadioProps = {
   variant?: string
 }
 
-const Radio = ({
+function Radio({
   children,
   checked,
   onChange,
@@ -22,7 +22,7 @@ const Radio = ({
   labelClassName = 'ml-2 mt-2.5px',
   checkedCircleBackgroundColor = 'bg-blue-e5',
   variant,
-}: TRadioProps): JSX.Element => {
+}: TRadioProps): JSX.Element {
   if (variant === 'secondary') {
     return (
       <label>

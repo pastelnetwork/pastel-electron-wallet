@@ -7,10 +7,10 @@ export type TRarenessProps = {
   classes?: string
 }
 
-const RarenessBar = ({
+function RarenessBar({
   percent,
   classes = 'w-full',
-}: TRarenessProps): JSX.Element => {
+}: TRarenessProps): JSX.Element {
   return (
     <Tooltip
       classnames='text-15px py-1 px-1.5'

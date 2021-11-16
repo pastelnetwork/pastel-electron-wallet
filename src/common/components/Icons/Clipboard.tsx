@@ -3,10 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TClipboardProps = TIconProps
 
-export const Clipboard = ({
-  size,
-  className,
-}: TClipboardProps): JSX.Element => {
+export function Clipboard({ size, className }: TClipboardProps): JSX.Element {
   return (
     <svg
       width={size}

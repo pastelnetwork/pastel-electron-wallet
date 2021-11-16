@@ -18,7 +18,7 @@ export type TMultiToggle = {
   showEmpty?: boolean
 }
 
-const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
+function MultiToggleSwitch(props: TMultiToggle): JSX.Element {
   const {
     data,
     activeIndex,

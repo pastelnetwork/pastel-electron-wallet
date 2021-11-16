@@ -5,10 +5,10 @@ import { Override } from '../../utils/types'
 
 type TInputNumberFormat = Override<TInput, { displayType?: 'text' | 'input' }>
 
-const InputNumberFormat = ({
+function InputNumberFormat({
   displayType = 'input',
   ...props
-}: TInputNumberFormat): JSX.Element => {
+}: TInputNumberFormat): JSX.Element {
   return (
     <NumberFormat
       displayType={displayType}

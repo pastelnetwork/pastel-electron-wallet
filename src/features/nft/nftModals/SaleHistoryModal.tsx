@@ -12,10 +12,10 @@ export type TSaleHistoryModal = {
 
 const rate = 0.004
 
-export const SaleHistoryModal = ({
+export function SaleHistoryModal({
   isOpen,
   handleClose,
-}: TSaleHistoryModal): JSX.Element => {
+}: TSaleHistoryModal): JSX.Element {
   const currencyName = useCurrencyName()
   const Columns = [
     {

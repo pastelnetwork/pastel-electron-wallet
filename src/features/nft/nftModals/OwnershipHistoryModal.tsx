@@ -13,10 +13,10 @@ export type TOwnershipHistoryModal = {
   handleClose: () => void
 }
 
-const OwnershipHistoryModal = ({
+function OwnershipHistoryModal({
   isOpen,
   handleClose,
-}: TOwnershipHistoryModal): JSX.Element => {
+}: TOwnershipHistoryModal): JSX.Element {
   const currencyName = useCurrencyName()
   const Columns = [
     {

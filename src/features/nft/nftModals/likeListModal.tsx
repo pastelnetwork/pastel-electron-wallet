@@ -10,10 +10,7 @@ export type TLikeListModal = {
   handleClose: () => void
 }
 
-const LikeListModal = ({
-  isOpen,
-  handleClose,
-}: TLikeListModal): JSX.Element => {
+function LikeListModal({ isOpen, handleClose }: TLikeListModal): JSX.Element {
   const currencyName = useCurrencyName()
   const tableData = [
     {

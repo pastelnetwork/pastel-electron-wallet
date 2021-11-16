@@ -34,7 +34,7 @@ export default function Copies({ form }: { form: TForm }): JSX.Element {
   )
 }
 
-const Warning = ({ form }: { form: TForm }) => {
+function Warning({ form }: { form: TForm }) {
   const copies = useWatch({
     control: form.control,
     name: 'copies',

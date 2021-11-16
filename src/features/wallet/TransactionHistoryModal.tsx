@@ -230,7 +230,7 @@ export default function TransactionHistoryModal(): JSX.Element {
       headerColClasses: 'ml-15px',
       custom: (value: string | number) => (
         <div className='ml-15px whitespace-nowrap mr-15px'>
-          {dayjs.unix(parseInt(value.toString())).format('DD/MM/YY HH:mm')}
+          {dayjs.unix(parseInt(value?.toString())).format('DD/MM/YY HH:mm')}
         </div>
       ),
     },

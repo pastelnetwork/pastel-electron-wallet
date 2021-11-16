@@ -21,7 +21,7 @@ import {
 } from '../../utils/ChartOptions'
 import { PrevButton } from '../PrevButton'
 
-export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
+export function EChartsLineChart(props: TLineChartProps): JSX.Element {
   const {
     chartName,
     dataX,

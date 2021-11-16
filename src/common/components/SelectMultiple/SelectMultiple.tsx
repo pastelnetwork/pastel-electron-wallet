@@ -50,7 +50,7 @@ export default function SelectMultiple<TForm extends FieldValues>(
   return <SelectMultipleInner {...props} />
 }
 
-const SelectMultipleInner = ({
+function SelectMultipleInner({
   options,
   selected,
   name,
@@ -58,7 +58,7 @@ const SelectMultipleInner = ({
   selectClassName,
   placeholder,
   disabled = false,
-}: TControlledProps) => {
+}: TControlledProps): JSX.Element {
   const [inputValue, setInputValue] = useState('')
 
   const {

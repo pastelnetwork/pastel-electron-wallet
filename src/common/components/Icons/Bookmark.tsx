@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TBookmarkProps = TIconProps
 
-export const Bookmark = ({ size, className }: TBookmarkProps): JSX.Element => {
+export function Bookmark({ size, className }: TBookmarkProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -9,13 +9,13 @@ export type TRadio = {
   value?: string
 }
 
-const Radio = ({
+function Radio({
   label,
   checked,
   onChange,
   className,
   value,
-}: TRadio): JSX.Element => {
+}: TRadio): JSX.Element {
   const classes = cn(
     'relative inline-flex items-center cursor-pointer transition duration-300',
     className,

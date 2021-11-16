@@ -19,11 +19,11 @@ export type TBidHistoryModal = {
   handleClose: () => void
 }
 
-const BidHistoryModal = ({
+function BidHistoryModal({
   history,
   isOpen,
   handleClose,
-}: TBidHistoryModal): JSX.Element => {
+}: TBidHistoryModal): JSX.Element {
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6 text-gray-2d'>Bid History</h2>

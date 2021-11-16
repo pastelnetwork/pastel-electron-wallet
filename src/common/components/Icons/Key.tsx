@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TKeyProps = TIconProps
 
-export const Key = ({ size, className }: TKeyProps): JSX.Element => {
+export function Key({ size, className }: TKeyProps): JSX.Element {
   return (
     <svg
       width={size}

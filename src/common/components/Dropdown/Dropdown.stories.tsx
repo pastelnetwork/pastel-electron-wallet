@@ -2,7 +2,7 @@ import React from 'react'
 import Dropdown from './index'
 import { Button } from '../Buttons'
 
-export const DropdownDefault = (): JSX.Element => {
+export function DropdownDefault(): JSX.Element {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
   const toggleDropdown = () => setIsOpen(isOpen => !isOpen)

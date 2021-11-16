@@ -13,7 +13,9 @@ export type TNFTResultProps = {
   searchKey: string
 }
 
-const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
+export default function NFTsResult({
+  searchKey,
+}: TNFTResultProps): JSX.Element {
   const [categories, setCategories] = useState<TOption | null>(
     categoriesData[0],
   )
@@ -71,5 +73,3 @@ const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
     </div>
   )
 }
-
-export default NFTsResult

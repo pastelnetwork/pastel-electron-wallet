@@ -6,11 +6,11 @@ export type TShieldedBalanceProps = {
   variant?: 'active' | 'inactive'
 }
 
-export const ShieldedBalance = ({
+export function ShieldedBalance({
   size = 70,
   className = 'text-gray-88',
   variant = 'active',
-}: TShieldedBalanceProps): JSX.Element => {
+}: TShieldedBalanceProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -20,12 +20,12 @@ export type TReviewOfferModal = {
   handleClose: () => void
 }
 
-const ReviewOfferModal = ({
+function ReviewOfferModal({
   title,
   offers,
   isOpen,
   handleClose,
-}: TReviewOfferModal): JSX.Element => {
+}: TReviewOfferModal): JSX.Element {
   const currencyName = useCurrencyName()
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-3xl'>

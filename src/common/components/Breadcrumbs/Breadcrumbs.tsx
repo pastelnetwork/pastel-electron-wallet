@@ -13,7 +13,7 @@ export type TBreadcrumbs = {
   className?: string
 }
 
-const Breadcrumbs = (props: TBreadcrumbs): JSX.Element => {
+function Breadcrumbs(props: TBreadcrumbs): JSX.Element {
   const { breadcrumbs, className } = props
 
   return (

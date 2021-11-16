@@ -6,10 +6,10 @@ export type TEditImage = {
   pathColor?: string
 }
 
-export const EditImage = ({
+export function EditImage({
   size = 30,
   className = 'text-gray-33',
-}: TEditImage): JSX.Element => {
+}: TEditImage): JSX.Element {
   return (
     <svg
       width={size}

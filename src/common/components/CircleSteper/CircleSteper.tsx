@@ -49,7 +49,7 @@ const describeArc = (
   return d
 }
 
-const CircleSteper = ({
+function CircleSteper({
   size = 65,
   totalStep = 4,
   spaceAngle = 20,
@@ -57,7 +57,7 @@ const CircleSteper = ({
   stopColor1 = '#6FCF97',
   stopColor2 = '#6FCF97',
   spacing = 10,
-}: TCircleSteperProps): JSX.Element => {
+}: TCircleSteperProps): JSX.Element {
   const [startPoints, setStartPoints] = useState<Array<number>>([])
   useEffect(() => {
     const oneStepAngle = 360 / totalStep

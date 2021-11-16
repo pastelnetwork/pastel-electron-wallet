@@ -9,7 +9,7 @@ type TCrypto = {
   children: string
 }
 
-const Crypto = (props: TCrypto): JSX.Element => {
+function Crypto(props: TCrypto): JSX.Element {
   const { label, children } = props
   const copyClipboard = () => {
     clipboard.writeText(children)

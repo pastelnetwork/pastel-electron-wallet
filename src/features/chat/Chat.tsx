@@ -17,7 +17,7 @@ import styles from './Chat.module.css'
 import { mockChats, curUser } from './mock-data'
 import { TChatUser } from './common'
 
-const Chat = (): JSX.Element => {
+function Chat(): JSX.Element {
   const [newMsgPlaceholder, setNewMsgPlaceholder] = useState(true)
   const [newMsg, setNewMsg] = useState('')
   const [activeChatId, setActiveChatId] = useState<number>(mockChats[0].id)

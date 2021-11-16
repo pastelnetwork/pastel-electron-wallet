@@ -6,10 +6,10 @@ export type TCongratulationProps = {
   className: string
 }
 
-export const Congratulation = ({
+export function Congratulation({
   size,
   className,
-}: TCongratulationProps): JSX.Element => {
+}: TCongratulationProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -5,10 +5,10 @@ export type TQRCodeProps = {
   className?: string
 }
 
-export const QRCode = ({
+export function QRCode({
   size,
   className = 'text-gray-88',
-}: TQRCodeProps): JSX.Element => {
+}: TQRCodeProps): JSX.Element {
   return (
     <svg
       width={size}

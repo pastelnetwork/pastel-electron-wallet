@@ -5,7 +5,7 @@ export type TQuitProps = {
   className: string
 }
 
-export const Quit = ({ size, className }: TQuitProps): JSX.Element => {
+export function Quit({ size, className }: TQuitProps): JSX.Element {
   return (
     <svg
       width={size}

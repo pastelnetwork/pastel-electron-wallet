@@ -11,7 +11,7 @@ export type TBid = {
   className?: string
 }
 
-const Bid = ({ avatar, name, bid, date, className }: TBid): JSX.Element => {
+function Bid({ avatar, name, bid, date, className }: TBid): JSX.Element {
   const classes = cn('flex flex-wrap', className)
 
   return (

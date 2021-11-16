@@ -6,11 +6,11 @@ export type TTransparencyBalanceProps = {
   variant?: 'active' | 'inactive'
 }
 
-export const TransparencyBalance = ({
+export function TransparencyBalance({
   size = 70,
   className = 'text-gray-88',
   variant = 'active',
-}: TTransparencyBalanceProps): JSX.Element => {
+}: TTransparencyBalanceProps): JSX.Element {
   return (
     <svg
       width={size}

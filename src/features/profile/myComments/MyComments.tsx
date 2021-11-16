@@ -182,7 +182,7 @@ const filters = [
   },
 ]
 
-const MyComments = (): JSX.Element => {
+function MyComments(): JSX.Element {
   const [editMode, setEditMode] = useState(false)
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
     nativeCurrencyOptions[0],

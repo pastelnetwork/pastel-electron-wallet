@@ -11,7 +11,7 @@ type TForumMemberProps = {
 
 const DISPLAY_NUMBER = 5
 
-const ForumMembers = ({ members }: TForumMemberProps): JSX.Element => {
+function ForumMembers({ members }: TForumMemberProps): JSX.Element {
   const displayMembers =
     members.length > DISPLAY_NUMBER ? members.slice(0, DISPLAY_NUMBER) : members
   const leftOver = members.length - DISPLAY_NUMBER

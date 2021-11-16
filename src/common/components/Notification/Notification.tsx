@@ -7,7 +7,7 @@ export type TNotification = {
   status: 'read' | 'unread'
 }
 
-const Notification = ({ type, title, status }: TNotification): JSX.Element => {
+function Notification({ type, title, status }: TNotification): JSX.Element {
   const classes = cn(
     'relative flex align-center rounded-lg px-5 py-3 cursor-pointer grid grid-cols-12 border border-gray-ec',
     status === 'read' ? 'bg-gray-f6' : 'bg-white',

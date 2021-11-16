@@ -18,7 +18,7 @@ import Routes from 'common/routes/Routes'
 
 rendererSetup()
 
-const App = () => {
+function App() {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>

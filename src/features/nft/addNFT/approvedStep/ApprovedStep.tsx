@@ -8,12 +8,14 @@ import ImageShadow from '../common/ImageShadow'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 
-const InfoPair = ({ title, value }: { title: string; value: string }) => (
-  <div className='flex'>
-    <div className='text-gray-71 w-48'>{title}</div>
-    <div className='text-green-45 font-extrabold'>{value}</div>
-  </div>
-)
+function InfoPair({ title, value }: { title: string; value: string }) {
+  return (
+    <div className='flex'>
+      <div className='text-gray-71 w-48'>{title}</div>
+      <div className='text-green-45 font-extrabold'>{value}</div>
+    </div>
+  )
+}
 
 type TApprovedStepProps = {
   state: TAddNFTState
