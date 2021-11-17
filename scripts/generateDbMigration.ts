@@ -19,10 +19,8 @@ if (fileNameIndex === -1 || fileNameIndex === process.argv.length - 1) {
 if (!fs.existsSync(migrationsPath)) {
   fs.mkdirSync(migrationsPath)
 }
-
-const migrationName = `${Math.floor(Date.now() / 1000)}-${
-  process.argv[fileNameIndex + 1]
-}.sql`
+const fileName: string = process.argv[fileNameIndex + 1] || ''
+const migrationName = `${Math.floor(Date.now() / 1000)}-${fileName}.sql`
 const migrationPath: string = path.join(migrationsPath, migrationName) || ''
 
 fs.writeFileSync(migrationPath, '')

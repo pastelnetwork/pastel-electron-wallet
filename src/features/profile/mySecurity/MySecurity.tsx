@@ -17,9 +17,9 @@ export default function MySecurity(props: TSecurity): JSX.Element {
   const [videoUrl, setVideoUrl] = useState<string>('')
   const [imagesData, setImagesData] = useState<string[]>([])
   const [currentStatus, setCurrentStatus] = useState<string>('')
-  const fileName = `${currencyName}_QR_Code_Video_${dayjs().format(
-    'MM_DD_YYYY__HH_mm',
-  )}.mp4`
+  const vCurrencyName: string = currencyName || ''
+  const date: string = dayjs().format('MM_DD_YYYY__HH_mm')
+  const fileName = `${vCurrencyName}_QR_Code_Video_${date}.mp4`
 
   const saveFile = async (url: string) => {
     const a = document.createElement('a')

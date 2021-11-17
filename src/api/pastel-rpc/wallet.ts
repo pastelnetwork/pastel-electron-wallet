@@ -211,10 +211,8 @@ export class WalletRPC {
         ])
         return result.address
       } catch (err) {
-        log.error(
-          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
-          err,
-        )
+        const message: string = err.message || ''
+        log.error(`api/pastel-rpc/wallet importPrivKey error: ${message}`, err)
         throw err
       }
     } else if (key.startsWith('zxview')) {
@@ -225,10 +223,8 @@ export class WalletRPC {
         ])
         return result.address
       } catch (err) {
-        log.error(
-          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
-          err,
-        )
+        const message: string = err.message || ''
+        log.error(`api/pastel-rpc/wallet importPrivKey error: ${message}`, err)
         throw err
       }
     } else {
@@ -240,10 +236,8 @@ export class WalletRPC {
         ])
         return result
       } catch (err) {
-        log.error(
-          `api/pastel-rpc/wallet importPrivKey error: ${err.message}`,
-          err,
-        )
+        const message: string = err.message || ''
+        log.error(`api/pastel-rpc/wallet importPrivKey error: ${message}`, err)
         throw err
       }
     }
@@ -259,8 +253,9 @@ export class WalletRPC {
         )
         return result
       } catch (err) {
+        const message: string = err.message || ''
         log.error(
-          `api/pastel-rpc/wallet doImportANIPrivKey error: ${err.message}`,
+          `api/pastel-rpc/wallet doImportANIPrivKey error: ${message}`,
           err,
         )
         throw err

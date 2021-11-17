@@ -12,11 +12,13 @@ export default function PasteldModal(): JSX.Element | null {
     return null
   }
 
-  let height = `${info.latestBlock}`
+  let height: string = info.latestBlock?.toString() || '0'
   if (info.verificationProgress < 0.99) {
-    const progress = (info.verificationProgress * 100).toFixed(1)
+    const progress: string = (info.verificationProgress * 100).toFixed(1)
     height = `${height} (${progress}%)`
   }
+
+  const solps: string = info.solps?.toString() || ''
 
   return (
     <TitleModal
@@ -52,7 +54,7 @@ export default function PasteldModal(): JSX.Element | null {
           </div>
           <div className='flex justify-between'>
             <div>Network Solution Rate:</div>
-            <div>{`${info.solps} Sol/s`}</div>
+            <div>{`${solps} Sol/s`}</div>
           </div>
         </div>
       )}

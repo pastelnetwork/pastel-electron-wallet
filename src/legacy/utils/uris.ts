@@ -127,12 +127,13 @@ export const parsePastelURI = (uri: any) => {
   } // Make sure everyone has at least an amount and address
 
   for (const [key, value] of targets) {
+    const vKey: string = key
     if (typeof value.amount === 'undefined') {
-      return `URI ${key} didn't have an amount`
+      return `URI ${vKey} didn't have an amount`
     }
 
     if (typeof value.address === 'undefined') {
-      return `URI ${key} didn't have an address`
+      return `URI ${vKey} didn't have an address`
     }
   } // Convert to plain array
 

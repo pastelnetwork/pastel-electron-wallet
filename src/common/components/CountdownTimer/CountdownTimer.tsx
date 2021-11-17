@@ -70,9 +70,11 @@ export default function CountdownTimer({
     return null
   }
 
+  const strDays: string = time.days?.toString() || ''
+
   return (
     <span className={className}>
-      {time.days > 0 ? `${time.days}d ` : ''}
+      {time.days > 0 ? `${strDays}d ` : ''}
       {time.hours}h {time.minutes}m {time.seconds}s
     </span>
   )

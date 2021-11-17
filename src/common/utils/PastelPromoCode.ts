@@ -56,8 +56,9 @@ export const readPastelPromoCode = async (): Promise<TPastelPromoCode[]> => {
 
     return []
   } catch (err) {
+    const message: string = err.message || ''
     log.error(
-      `common/utils/PastelPromoCode readPastelPromoCode error: ${err}`,
+      `common/utils/PastelPromoCode readPastelPromoCode error: ${message}`,
       err,
     )
     return []
@@ -94,9 +95,10 @@ export const importPastelPromoCode = async (
     }
     return address
   } catch (err) {
-    toast(err.message, { type: 'error' })
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
     log.error(
-      `common/utils/PastelPromoCode importPastelPromoCode error: ${err.message}`,
+      `common/utils/PastelPromoCode importPastelPromoCode error: ${message}`,
       err,
     )
     return null

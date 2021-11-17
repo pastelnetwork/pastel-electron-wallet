@@ -35,8 +35,8 @@ export const readRpcConfig = async (
   }
 
   const isTestnet = testnet === '1'
-  const server = rpcbind || '127.0.0.1'
-  const port = rpcport || (isTestnet ? '19932' : '9932')
+  const server: string = rpcbind || '127.0.0.1'
+  const port: string = rpcport || (isTestnet ? '19932' : '9932')
   const url = `http://${server}:${port}`
 
   return {

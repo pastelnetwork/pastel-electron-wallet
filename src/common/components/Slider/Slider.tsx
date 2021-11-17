@@ -97,58 +97,67 @@ export default function Slider({
       step={props.step}
       values={values}
       onChange={values => setValues(values)}
-      renderTrack={({ props: trackProps, children }) => (
-        <div
-          className={cn('h-4 rounded relative group', className)}
-          style={{
-            width: `${width}px`,
-          }}
-        >
+      renderTrack={({ props: trackProps, children }) => {
+        const transform: string = trackProps.style.transform || ''
+        return (
           <div
-            {...trackProps}
-            style={
-              stickToBottom
-                ? {
-                    ...trackProps.style,
-                    transform: `${trackProps.style.transform} rotate(-1.3deg)`,
-                  }
-                : trackProps.style
-            }
+            className={cn('h-4 rounded relative group', className)}
+            style={{
+              width: `${width}px`,
+            }}
           >
-            <SliderShape className='w-full h-full text-gray-e6' width={width} />
-            <SliderShape
-              className='w-full h-full text-blue-3f absolute inset-0'
-              width={width}
-              style={{
-                clipPath: `polygon(${startPercent}% 0, ${endPercent}% 0, ${endPercent}% 100%, ${startPercent}% 100%)`,
-              }}
-            />
-            {children}
-          </div>
-          {!hideLabel && (
             <div
-              className={cn('flex-between whitespace-nowrap', valuesClassName)}
+              {...trackProps}
+              style={
+                stickToBottom
+                  ? {
+                      ...trackProps.style,
+                      transform: `${transform} rotate(-1.3deg)`,
+                    }
+                  : trackProps.style
+              }
             >
-              <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
-                <div className={minMaxClassName}>
-                  {min === 0 ? min : formatValue(min)}
+              <SliderShape
+                className='w-full h-full text-gray-e6'
+                width={width}
+              />
+              <SliderShape
+                className='w-full h-full text-blue-3f absolute inset-0'
+                width={width}
+                style={{
+                  clipPath: `polygon(${startPercent}% 0, ${endPercent}% 0, ${endPercent}% 100%, ${startPercent}% 100%)`,
+                }}
+              />
+              {children}
+            </div>
+            {!hideLabel && (
+              <div
+                className={cn(
+                  'flex-between whitespace-nowrap',
+                  valuesClassName,
+                )}
+              >
+                <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
+                  <div className={minMaxClassName}>
+                    {min === 0 ? min : formatValue(min)}
+                  </div>
+                </div>
+                {'steps' in props &&
+                  props.steps.slice(1, props.steps.length - 1).map(step => (
+                    <div key={step} className='w-0 flex-center'>
+                      <div className='text-xs font-medium text-gray-a0'>
+                        {formatValue(step)}
+                      </div>
+                    </div>
+                  ))}
+                <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
+                  <div className={minMaxClassName}>{formatValue(max)}</div>
                 </div>
               </div>
-              {'steps' in props &&
-                props.steps.slice(1, props.steps.length - 1).map(step => (
-                  <div key={step} className='w-0 flex-center'>
-                    <div className='text-xs font-medium text-gray-a0'>
-                      {formatValue(step)}
-                    </div>
-                  </div>
-                ))}
-              <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
-                <div className={minMaxClassName}>{formatValue(max)}</div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )
+      }}
       renderThumb={({ props: thumbProps, value }) => (
         <button
           type='button'

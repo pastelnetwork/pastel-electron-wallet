@@ -173,7 +173,9 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     if (!suggestions?.length || suggestions[0] === typing) {
       return
     }
-    addOutputThenDisplay(`$ ${typing}\n${suggestions.join('\n')}`)
+    const vType: string = typing || ''
+    const vSuggestions: string = suggestions.join('\n') || ''
+    addOutputThenDisplay(`$ ${vType}\n${vSuggestions}`)
       .then(() => {
         // noop
       })
@@ -304,7 +306,8 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
 
     try {
       const data = await rpcApi[commandKey](opts)
-      textConsole = `${data}`
+      const vData: string = String(data) || ''
+      textConsole = `${vData}`
 
       if (typeof data === 'object') {
         const tempArr = Array.isArray(data)
@@ -460,7 +463,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
                 type={out.type}
                 textContent={
                   out.type === OutputType.HEADER_OUTPUT_TYPE
-                    ? `$ ${out.content.command}`
+                    ? `$ ${outCommand}`
                     : out.content
                 }
               />

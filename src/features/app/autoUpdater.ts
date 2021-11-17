@@ -6,9 +6,12 @@ import pkg from '../../../package.json'
 export const setupAutoUpdater = (): void => {
   onMainEvent('rendererStarted', () => {
     if (app.isPackaged) {
-      const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
-        process.arch
-      }/${app.getVersion()}`
+      const version: string = app.getVersion() || ''
+      const hostUrl: string = pkg.hostUrl || ''
+      const repoName: string = pkg.repoName || ''
+      const platform: string = process.platform || ''
+      const arch: string = process.arch || ''
+      const feedURL = `${hostUrl}/${repoName}/${platform}-${arch}/${version}`
 
       autoUpdater.setFeedURL({
         url: feedURL,

@@ -129,9 +129,10 @@ async function fetchAllAddress(): Promise<TAllAddresses | null> {
       tAddresses: tAddresses.result,
     }
   } catch (err) {
-    toast(err.message, { type: 'error' })
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
     log.log(
-      `profile/mySecurity/common/utils fetchAllAddress error: ${err.message}`,
+      `profile/mySecurity/common/utils fetchAllAddress error: ${message}`,
       err,
     )
     return null
@@ -146,9 +147,10 @@ async function getPrivKeyAsString(
     const res = await rpc<TPrivKeyResponse>(method, [address])
     return res.result
   } catch (err) {
-    toast(err.message, { type: 'error' })
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
     log.log(
-      `profile/mySecurity/common/utils getPrivKeyAsString error: ${err.message}`,
+      `profile/mySecurity/common/utils getPrivKeyAsString error: ${message}`,
       err,
     )
     return null
@@ -160,9 +162,10 @@ async function getPastelIDs(): Promise<TPastelID[] | null> {
     const res = await rpc<TPastelIDResponse>('pastelid', ['list'])
     return res.result
   } catch (err) {
-    toast(err.message, { type: 'error' })
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
     log.log(
-      `profile/mySecurity/common/utils getPastelIDs error: ${err.message}`,
+      `profile/mySecurity/common/utils getPastelIDs error: ${message}`,
       err,
     )
     return null
@@ -308,11 +311,12 @@ async function importPrivKey(key: string, rescan: boolean) {
     try {
       await rpc<TPrivKeyResponse>('z_importkey', [key, rescan ? 'yes' : 'no'])
     } catch (err) {
+      const message: string = err.message || ''
       log.log(
-        `profile/mySecurity/common importPrivKey z_importkey error: ${err.message}`,
+        `profile/mySecurity/common importPrivKey z_importkey error: ${message}`,
         err,
       )
-      toast(err.message, { type: 'error' })
+      toast(message, { type: 'error' })
     }
   } else if (key.startsWith('zxview')) {
     try {
@@ -321,21 +325,23 @@ async function importPrivKey(key: string, rescan: boolean) {
         rescan ? 'yes' : 'no',
       ])
     } catch (err) {
+      const message: string = err.message || ''
       log.log(
-        `profile/mySecurity/common importPrivKey z_importviewingkey error: ${err.message}`,
+        `profile/mySecurity/common importPrivKey z_importviewingkey error: ${message}`,
         err,
       )
-      toast(err.message, { type: 'error' })
+      toast(message, { type: 'error' })
     }
   } else {
     try {
       await rpc<TPrivKeyResponse>('importprivkey', [key, 'imported', rescan])
     } catch (err) {
+      const message: string = err.message || ''
       log.log(
-        `profile/mySecurity/common importPrivKey importprivkey error: ${err.message}`,
+        `profile/mySecurity/common importPrivKey importprivkey error: ${message}`,
         err,
       )
-      toast(err.message, { type: 'error' })
+      toast(message, { type: 'error' })
     }
   }
 }

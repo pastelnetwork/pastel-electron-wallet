@@ -70,7 +70,8 @@ export async function getStatisticInfo(): Promise<TStatistic> {
       estimatedSolutions: networkhasps.result,
       difficulty: difficulty.result,
     }
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(
       `pastelDBThread getnetworkhashps or getdifficulty error: ${message}`,
     )
@@ -86,7 +87,8 @@ export async function fetchStatisticInfo(
       solutions: results.estimatedSolutions,
       difficulty: results.difficulty,
     })
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchStatisticInfo error: ${message}`)
   }
 }
@@ -95,7 +97,8 @@ export async function fetchNetworkInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TNetworkInfoResponse>('getnetworkinfo', [])
     insertNetworkInfo(props.pastelDB, result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchNetworkInfo error: ${message}`)
   }
 }
@@ -104,7 +107,8 @@ export async function fetchNettotals(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TNetTotalResponse>('getnettotals', [])
     insertNetTotals(props.pastelDB, result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchNettotals error: ${message}`)
   }
 }
@@ -113,7 +117,8 @@ export async function fetchMempoolInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TMempoolinfoResponse>('getmempoolinfo', [])
     insertMemPoolInfo(props.pastelDB, result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchMempoolInfo error: ${message}`)
   }
 }
@@ -139,7 +144,8 @@ export async function fetchRawMempoolInfo(
       }
       insertRawMempoolinfoToDB(props.pastelDB, data)
     }
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchRawMempoolInfo error: ${message}`)
   }
 }
@@ -148,8 +154,9 @@ export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TMiningInfoResponse>('getmininginfo', [])
     insertMiningInfoToDB(props.pastelDB, result)
-  } catch (error) {
-    throw new Error(`pastelDBThread fetchMiningInfo error: ${error.message}`)
+  } catch (err) {
+    const message: string = err.message || ''
+    throw new Error(`pastelDBThread fetchMiningInfo error: ${message}`)
   }
 }
 
@@ -158,7 +165,8 @@ export async function fetchBlock(props: fetchFuncConfig): Promise<void> {
     const hash = await rpc<TBlockHashResponse>('getbestblockhash', [])
     const blockInfo = await rpc<TBlockResponse>('getblock', [hash.result])
     insertBlockInfoToDB(props.pastelDB, blockInfo.result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchBlock error: ${message}`)
   }
 }
@@ -176,7 +184,8 @@ export async function fetchRawtransaction(
         insertRawtransaction(props.pastelDB, result)
       }
     }
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchRawtransaction error: ${message}`)
   }
 }
@@ -192,7 +201,8 @@ export async function fetchTransaction(props: fetchFuncConfig): Promise<void> {
       const result = await transactionRPC.getTransaction(transaction.txid)
       insertTransaction(props.pastelDB, result)
     }
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchTransaction error: ${message}`)
   }
 }
@@ -201,7 +211,8 @@ export async function fetchTxoutsetInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<types.TGettxoutsetinfo>('gettxoutsetinfo', [])
     insertTxOutSentInfo(props.pastelDB, result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchTxoutsetInfo error: ${message}`)
   }
 }
@@ -213,7 +224,8 @@ export async function fetchChaintips(props: fetchFuncConfig): Promise<void> {
     for (let i = 0; i < chaintips.length; i++) {
       insertChainTips(props.pastelDB, chaintips[i])
     }
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchChaintips error: ${message}`)
   }
 }
@@ -222,7 +234,8 @@ export async function fetchBlocksubsidy(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TBlockSubsidyResponse>('getblocksubsidy', [])
     insertBlockSubsidy(props.pastelDB, result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchBlocksubsidy error: ${message}`)
   }
 }
@@ -231,7 +244,8 @@ export async function fetchWalletInfo(props: fetchFuncConfig): Promise<void> {
   try {
     const { result } = await rpc<TWalletInfoResponse>('getwalletinfo', [])
     insertWalletInfo(props.pastelDB, result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchWalletInfo error: ${message}`)
   }
 }
@@ -262,8 +276,9 @@ export async function fetchTransactions(db: Database): Promise<void> {
         })()
       }
     }
-  } catch (error) {
-    throw new Error(`pastelDBThread fetchTransactions error: ${error.message}`)
+  } catch (err) {
+    const message: string = err.message || ''
+    throw new Error(`pastelDBThread fetchTransactions error: ${message}`)
   }
 }
 
@@ -276,7 +291,8 @@ export async function fetchListunspent(props: fetchFuncConfig): Promise<void> {
       insertListunspent(props.pastelDB, data[i])
     }
     queryClient.setQueryData('listunspent', data)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchListunspent error: ${message}`)
   }
 }
@@ -290,7 +306,8 @@ export async function fetchTotalBalance(props: fetchFuncConfig): Promise<void> {
     insertTotalbalance(props.pastelDB, result)
 
     queryClient.setQueryData('z_gettotalbalance', result)
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchTotalBalance error: ${message}`)
   }
 }
@@ -305,7 +322,8 @@ export async function fetchListaddresses(
     for (let i = 0; i < result.length; i++) {
       insertListAddress(props.pastelDB, { address: result[i] })
     }
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     throw new Error(`pastelDBThread fetchTotalBalance error: ${message}`)
   }
 }
@@ -327,7 +345,8 @@ export async function fetchPastelPrices(props: fetchFuncConfig): Promise<void> {
     if (price) {
       store.dispatch(setPastelPrice({ price, lastFetched: Date.now() }))
     }
-  } catch ({ message }) {
+  } catch (err) {
+    const message: string = err.message || ''
     // TODO log errors to a central logger so we can address them later.
     throw new Error(`pastelDBThread fetchPastelPrice error: ${message}`)
   }
@@ -343,9 +362,8 @@ export async function fetchBlockChainInfo(
     )
     insertBlockChainInfoToDb(props.pastelDB, result)
   } catch (error) {
-    throw new Error(
-      `pastelDBThread fetchBlockChainInfo error: ${error.message}`,
-    )
+    const message: string = error.message || ''
+    throw new Error(`pastelDBThread fetchBlockChainInfo error: ${message}`)
   }
 }
 

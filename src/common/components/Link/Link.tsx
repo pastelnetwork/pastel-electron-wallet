@@ -19,11 +19,12 @@ function Link({
   useATag,
   ...otherProps
 }: TLink): JSX.Element {
+  const strVariant: string = variant || ''
   const classes = cn(
     {
       'link focus:outline-none hover:text-link-hover active:text-link-active transition duration-300': true,
       'cursor-pointer': !to,
-      [`text-${variant}`]: variant,
+      [`text-${strVariant}`]: variant,
     },
     className,
   )

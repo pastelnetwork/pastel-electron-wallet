@@ -163,7 +163,7 @@ export default function ExportKeysModal(): JSX.Element {
     setIsOpen(false)
   }
 
-  const currencyName = useCurrencyName()
+  const currencyName: string = useCurrencyName() || ''
   const [privateKey, setPrivateKey] = useState('')
   const [havePDFLink, setHavePDFLink] = useState(false)
 
@@ -188,8 +188,8 @@ export default function ExportKeysModal(): JSX.Element {
   }, [address])
 
   const getPdfFilename = () => {
-    const key = address.substr(0, 16)
-    const datetime = dayjs().format('MM_DD_YYYY__HH_MM_ss')
+    const key: string = address.substr(0, 16) || ''
+    const datetime: string = dayjs().format('MM_DD_YYYY__HH_MM_ss')
     return `${currencyName}_Paper_Wallet__Address_${key}_${datetime}.pdf`
   }
   return (

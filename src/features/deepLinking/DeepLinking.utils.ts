@@ -40,8 +40,9 @@ const registerFileProtocol = (): void => {
     try {
       return callback(decodedUrl)
     } catch (error) {
+      const message: string = error?.message || ''
       log.error(
-        `feature/deepLinking registerFileProtocol error: Could not get file path: ${error?.message}`,
+        `feature/deepLinking registerFileProtocol error: Could not get file path: ${message}`,
         error,
       )
     }

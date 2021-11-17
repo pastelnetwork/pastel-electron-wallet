@@ -56,7 +56,10 @@ export const useImageZoom = (): {
     const transform = transformRef.current
     progressBar.style.width = `${transform.scale * 100}%`
     const scale = minZoom + (maxZoom - minZoom) * transform.scale
-    image.style.transform = `scale(${scale}) translateX(${transform.x}px) translateY(${transform.y}px)`
+    const strScale = scale?.toString() || ''
+    const transformX = transform.x?.toString() || ''
+    const transformY = transform.y?.toString() || ''
+    image.style.transform = `scale(${strScale}) translateX(${transformX}px) translateY(${transformY}px)`
   }
 
   const applyScale = (delta: number) => {

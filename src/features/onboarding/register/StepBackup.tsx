@@ -42,15 +42,14 @@ export default function StepBackupMethod(): JSX.Element {
   const [backupMethod, setBackupMethod] = useState<BackupMethods>(
     BackupMethods.PDF,
   )
-  const currencyName = useCurrencyName()
+  const currencyName: string = useCurrencyName() || ''
+  const date: string = dayjs(new Date()).format('MM_DD_YYYY__HH_MM')
   const pdfFileName = `${
     currencyName || 'LSP'
   }_Paper_Wallet__Private_Keys_${dayjs(new Date()).format(
     'MM_DD_YYYY__HH_MM_ss',
   )}.pdf`
-  const videoFileName = `${currencyName}_QR_Code_Video_${dayjs().format(
-    'MM_DD_YYYY__HH_mm',
-  )}.mp4`
+  const videoFileName = `${currencyName}_QR_Code_Video_${date}.mp4`
 
   const [loading, setLoading] = useState(true)
   const [pdfPrepareProgress, setPdfPrepareProgress] = useState<number>(0)

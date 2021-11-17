@@ -340,6 +340,8 @@ export default function PaymentModal(): JSX.Element {
   }
 
   const totalBalance = totalBalances.data?.total || 0
+  const paytxfee = info.paytxfee.toString() || '0'
+  const relayfee = info.relayfee.toString() || '0'
 
   return (
     <>
@@ -373,48 +375,52 @@ export default function PaymentModal(): JSX.Element {
                     </tr>
                   </thead>
                   <tbody className='h-220px overflow-y-scroll'>
-                    {paymentResults.map(result => (
-                      <tr
-                        className='h-[60px] border-b border-line text-sm md:text-base'
-                        key={result.id}
-                      >
-                        <td className='py-1'>
-                          <div className='mx-15px'>{result.status}</div>
-                        </td>
-                        <td
-                          className={cn(
-                            'py-1 pl-2 text-left px-2',
-                            result.status === 'Success'
-                              ? 'break-all'
-                              : 'break-words',
-                          )}
+                    {paymentResults.map(result => {
+                      const txId: string = result.txId || ''
+                      const message: string = result.message || ''
+                      return (
+                        <tr
+                          className='h-[60px] border-b border-line text-sm md:text-base'
+                          key={result.id}
                         >
-                          {result.status === 'Success'
-                            ? result.txId
-                            : `Opid ${result.txId} Failed. ${result.message}`}
-                        </td>
-                        <td className='py-1 text-right'>
-                          {result.status === 'Success' ? (
-                            <>
-                              <Button
-                                className='px-0 w-[150px] ml-auto mr-5px'
-                                childrenClassName='w-full'
-                                onClick={() =>
-                                  shell.openExternal(
-                                    `https://explorer.pastel.network/tx/${result.txId}`,
-                                  )
-                                }
-                              >
-                                <div className='flex items-center justify-center px-3 text-white text-h5-heavy'>
-                                  View TXID &nbsp;
-                                  <i className='ml-[5px] fas fa-external-link-square-alt' />
-                                </div>
-                              </Button>
-                            </>
-                          ) : null}
-                        </td>
-                      </tr>
-                    ))}
+                          <td className='py-1'>
+                            <div className='mx-15px'>{result.status}</div>
+                          </td>
+                          <td
+                            className={cn(
+                              'py-1 pl-2 text-left px-2',
+                              result.status === 'Success'
+                                ? 'break-all'
+                                : 'break-words',
+                            )}
+                          >
+                            {result.status === 'Success'
+                              ? result.txId
+                              : `Opid ${txId} Failed. ${message}`}
+                          </td>
+                          <td className='py-1 text-right'>
+                            {result.status === 'Success' ? (
+                              <>
+                                <Button
+                                  className='px-0 w-[150px] ml-auto mr-5px'
+                                  childrenClassName='w-full'
+                                  onClick={() =>
+                                    shell.openExternal(
+                                      `https://explorer.pastel.network/tx/${txId}`,
+                                    )
+                                  }
+                                >
+                                  <div className='flex items-center justify-center px-3 text-white text-h5-heavy'>
+                                    View TXID &nbsp;
+                                    <i className='ml-[5px] fas fa-external-link-square-alt' />
+                                  </div>
+                                </Button>
+                              </>
+                            ) : null}
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -500,7 +506,7 @@ export default function PaymentModal(): JSX.Element {
                       <Tooltip
                         classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs top-[-62px]'
                         content={`The transaction fee you will pay for this ${currencyName} transaction. Most users should stick with the default transaction fee of ${
-                          info.paytxfee || info.relayfee
+                          paytxfee || relayfee
                         } ${currencyName}. The transaction fee is required as an incentive for miners to include your transaction in the next Pastel block; a transaction with a low fee may take longer to be confirmed by the network.`}
                         width={250}
                         type='left'

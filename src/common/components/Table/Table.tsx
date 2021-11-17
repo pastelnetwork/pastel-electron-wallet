@@ -91,7 +91,10 @@ export default function Table({
         {parse(
           reactElementToJSXString(text).replace(
             new RegExp(param, 'gi'),
-            match => `<mark class='bg-blue-9b py-1'>${match}</mark>`,
+            match => {
+              const vMatch: string = match || ''
+              return `<mark class='bg-blue-9b py-1'>${vMatch}</mark>`
+            },
           ),
         )}
       </div>

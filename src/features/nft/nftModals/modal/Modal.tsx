@@ -33,9 +33,10 @@ function Modal({
   bodyClassName = 'px-10',
   append,
 }: TModal): JSX.Element {
+  const vSize: string = size || ''
   const modalClasses = cn({
     'relative bg-white rounded-2xl shadow-xSmall max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
-    [`w-${size}`]: size,
+    [`w-${vSize}`]: size,
   })
 
   return (

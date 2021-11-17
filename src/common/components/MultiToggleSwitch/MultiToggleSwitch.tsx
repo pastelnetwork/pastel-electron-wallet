@@ -29,7 +29,11 @@ function MultiToggleSwitch(props: TMultiToggle): JSX.Element {
     onToggle,
     showEmpty = false,
   } = props
-  const container_className = `inline-flex gap-3 p-3px rounded-full border border-navigation-default ${containerClassName}`
+
+  const container_className = cn(
+    'inline-flex gap-3 p-3px rounded-full border border-navigation-default',
+    containerClassName,
+  )
 
   const getItemClassName = (isActive: boolean) => {
     const activeClass = itemActiveClassName

@@ -27,14 +27,16 @@ async function setupServeStatic(staticPath: string, port: number) {
       servers.push(server)
     }
   } catch (error) {
-    throw new Error(`serveStatic setupServeStatic error: ${error.message}`)
+    const message: string = error.message || ''
+    throw new Error(`serveStatic setupServeStatic error: ${message}`)
   }
 }
 
 export default function initServeStatic(): void {
-  let squooshStaticPath = `${process.cwd()}/node_modules/squoosh/production`
-  let glitchStaticPath = `${process.cwd()}/node_modules/jpg-glitch/production`
-  let ffmpegStaticPath = `${process.cwd()}/node_modules/ffmpegwasm-create-video/production`
+  const sourcePath: string = process.cwd() || ''
+  let squooshStaticPath = `${sourcePath}/node_modules/squoosh/production`
+  let glitchStaticPath = `${sourcePath}/node_modules/jpg-glitch/production`
+  let ffmpegStaticPath = `${sourcePath}/node_modules/ffmpegwasm-create-video/production`
 
   if (app.isPackaged) {
     squooshStaticPath = path.join(
@@ -88,9 +90,8 @@ export function closeServeStatic(): void {
     servers.map(server =>
       server.close(error => {
         if (error) {
-          throw new Error(
-            `serveStatic closeServeStatic error: ${error.message}`,
-          )
+          const message: string = error.message || ''
+          throw new Error(`serveStatic closeServeStatic error: ${message}`)
         }
       }),
     )

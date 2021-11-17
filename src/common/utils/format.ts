@@ -69,7 +69,9 @@ export const formatDatesDistance = (from: Dayjs, to: Dayjs): string => {
     const value = to.diff(from, unit)
     to = to.subtract(value, unit)
     if (value) {
-      result.push(`${value}${unit[0]}`)
+      const val: string = value.toString() || ''
+      const vUnit: string = unit[0] || ''
+      result.push(`${val}${vUnit}`)
     }
   })
 

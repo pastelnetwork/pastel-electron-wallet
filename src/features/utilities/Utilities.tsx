@@ -118,10 +118,16 @@ export default function Utilities(): JSX.Element {
                 .format('MMM DD YYYY hh:mm A'),
             })) || []
 
-          const rows = transactions.map(
-            transaction =>
-              `${transaction.time},"${transaction.normaldate}","${transaction.txid}","${transaction.type}",${transaction.amount},"${transaction.address}","${transaction.escapedMemo}"`,
-          )
+          const rows = transactions.map(transaction => {
+            const time: string = transaction.time?.toString() || ''
+            const normaldate: string = transaction.normaldate || ''
+            const txid: string = transaction.txid || ''
+            const type: string = transaction.type?.toString() || ''
+            const amount: string = transaction.amount?.toString() || ''
+            const address: string = transaction.address || ''
+            const escapedMemo: string = transaction.escapedMemo || ''
+            return `${time},"${normaldate}","${txid}","${type}",${amount},"${address}","${escapedMemo}"`
+          })
           const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
           try {
             await fs.promises.writeFile(
@@ -129,7 +135,8 @@ export default function Utilities(): JSX.Element {
               header.concat(rows).join('\n'),
             )
           } catch (err) {
-            setExportTxnError(`${err}`)
+            const message: string = err.message || ''
+            setExportTxnError(`${message}`)
             setCloseExportTxn(true)
           }
         }

@@ -210,9 +210,11 @@ export default function CryptoKey(props: TCrypto): JSX.Element {
       })
   }, [])
 
-  const fileName = `${currencyName || 'LSP'}_Paper_Wallet__Private_Keys_${dayjs(
-    new Date(),
-  ).format('MM_DD_YYYY__HH_MM_ss')}`
+  const vCurrencyName: string = currencyName || ''
+  const date: string = dayjs(new Date()).format('MM_DD_YYYY__HH_MM_ss')
+  const fileName = `${
+    vCurrencyName || 'LSP'
+  }_Paper_Wallet__Private_Keys_${date}`
 
   const description = (
     <div className='max-w-330px'>

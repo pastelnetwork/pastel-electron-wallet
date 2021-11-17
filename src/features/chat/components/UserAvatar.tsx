@@ -15,11 +15,12 @@ export function UserAvatar({
   user,
   hideOnline,
 }: ChatUserAvatarProps): JSX.Element {
-  const avatarSize = size ? size : 12
-
+  const vSize = size ? size : 12
+  const vExtraClasses = extraClasses || ''
+  const avatarSize: string = vSize.toString() || ''
   return (
     <div
-      className={`relative mr-5 flex-shrink-0 h-${avatarSize} w-${avatarSize} ${extraClasses}`}
+      className={`relative mr-5 flex-shrink-0 h-${avatarSize} w-${avatarSize} ${vExtraClasses}`}
     >
       {user && (
         <i

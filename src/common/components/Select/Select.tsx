@@ -1,5 +1,8 @@
 import React, { ReactNode, useState } from 'react'
-import Downshift, { ControllerStateAndHelpers } from 'downshift'
+import Downshift, {
+  ControllerStateAndHelpers,
+  GetInputPropsOptions,
+} from 'downshift'
 import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
 import SelectRange from './SelectRange'
@@ -132,6 +135,16 @@ export default function Select<TForm extends FieldValues>(
     }
   }
 
+  const getInputValue = (inputProps: GetInputPropsOptions) => {
+    if (!append) {
+      return inputProps.value
+    }
+    const vAppend: string = append?.toString() || ''
+    const vInput: string = inputProps.value?.toString() || ''
+
+    return `${vInput}${vAppend}`
+  }
+
   return (
     <Downshift
       selectedItem={selected ?? null}
@@ -187,9 +200,7 @@ export default function Select<TForm extends FieldValues>(
                   {...inputProps}
                   type='text'
                   disabled={disabled}
-                  value={
-                    append ? `${inputProps.value}${append}` : inputProps.value
-                  }
+                  value={getInputValue(inputProps)}
                 />
                 {label && <span className={labelClasses}>{label}</span>}
               </div>
