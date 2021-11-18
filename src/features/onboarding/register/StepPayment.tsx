@@ -75,17 +75,23 @@ export default function StepPaymentMethod(): JSX.Element {
     store.goBack()
   }
 
+  const renderPaymentIntro = () => {
+    return (
+      <h2 className='text-gray-71 text-base font-normal'>
+        {currencyName} coins are required to create a Pastel identity (these
+        coins are burned <Fire size={18} className='inline-block' />) and to
+        register or purchase NFTs on Pastel
+      </h2>
+    )
+  }
+
   return (
     <div className='flex flex-col h-full'>
       <div className='flex-grow flex flex-col justify-center'>
         <h1 className='text-gray-4a text-xl font-extrabold flex items-center text-h3'>
           Choose Payment Method
         </h1>
-        <h2 className='text-gray-71 text-base font-normal'>
-          {currencyName} coins are required to create a Pastel identity (these
-          coins are burned <Fire size={18} className='inline-block' />) and to
-          register or purchase NFTs on Pastel
-        </h2>
+        {renderPaymentIntro()}
         <div className='mt-6'>
           {methods.map(method => (
             <div className='flex items-center mt-4' key={method.method}>

@@ -61,6 +61,56 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
     }
   }
 
+  const renderImportButton = () => {
+    return (
+      <Button
+        onClick={handleImportPrivateKey}
+        className='w-[120px] px-0 ml-[30px]'
+        childrenClassName='w-full'
+      >
+        <div className='flex items-center justify-center'>
+          <div className='text-white text-h5-heavy'>Import</div>
+        </div>
+      </Button>
+    )
+  }
+
+  const renderCancelButton = () => {
+    return (
+      <Button
+        variant='secondary'
+        className='w-[120px] px-0'
+        childrenClassName='w-full'
+        onClick={() => dispatch(closeImportPrivKeyModal())}
+      >
+        <div className='flex items-center justify-center'>
+          <div className='text-blue-3f text-h5-medium'>Cancel</div>
+        </div>
+      </Button>
+    )
+  }
+
+  const renderSuccessContent = () => {
+    return (
+      <div className='mt-6 text-center'>
+        <div>
+          <img
+            src={congratulations}
+            alt='Congratulations'
+            className='w-54px h-54px mx-auto'
+          />
+        </div>
+        <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
+          The import process for the private keys has started.
+          <br />
+          This will take a long time, up to 1 hour!
+          <br />
+          Please be patient!
+        </div>
+      </div>
+    )
+  }
+
   return (
     <TitleModal
       isOpen={importPrivKeyModalIsOpen}
@@ -70,24 +120,7 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
     >
       <div className='pr-8'>
         {isComplete ? (
-          <>
-            <div className='mt-6 text-center'>
-              <div>
-                <img
-                  src={congratulations}
-                  alt='Congratulations'
-                  className='w-54px h-54px mx-auto'
-                />
-              </div>
-              <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
-                The import process for the private keys has started.
-                <br />
-                This will take a long time, up to 1 hour!
-                <br />
-                Please be patient!
-              </div>
-            </div>
-          </>
+          <>{renderSuccessContent()}</>
         ) : (
           <>
             <div className='mt-6'>
@@ -109,25 +142,8 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
               ) : null}
             </div>
             <div className='mt-4 flex justify-end'>
-              <Button
-                variant='secondary'
-                className='w-[120px] px-0'
-                childrenClassName='w-full'
-                onClick={() => dispatch(closeImportPrivKeyModal())}
-              >
-                <div className='flex items-center justify-center'>
-                  <div className='text-blue-3f text-h5-medium'>Cancel</div>
-                </div>
-              </Button>
-              <Button
-                onClick={handleImportPrivateKey}
-                className='w-[120px] px-0 ml-[30px]'
-                childrenClassName='w-full'
-              >
-                <div className='flex items-center justify-center'>
-                  <div className='text-white text-h5-heavy'>Import</div>
-                </div>
-              </Button>
+              {renderCancelButton()}
+              {renderImportButton()}
             </div>
           </>
         )}

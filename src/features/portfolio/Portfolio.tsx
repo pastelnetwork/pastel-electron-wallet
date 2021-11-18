@@ -295,6 +295,72 @@ export default function Portfolio(): JSX.Element {
     setLikes(val)
   }
 
+  const renderNFTCards = () => (
+    <div className='w-full'>
+      <div
+        className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
+      >
+        <div className='grid grid-cols-3 1200px:grid-cols-4 xl:grid-cols-5 gap-y-[21px] gap-4'>
+          {cards.map(nftItem => (
+            <NFTCard
+              {...nftItem}
+              key={nftItem.id}
+              hideFollow
+              variant={NFTCardVariantSize.M}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderSort = () => (
+    <div className='flex items-center mr-6'>
+      <p className='pr-4 text-h5'>Sort by</p>
+      <div className='flex space-x-6'>
+        <Select
+          placeholder={sortByOptions.placeholder}
+          options={sortByOptions.options}
+          selected={sortByOptions.selected}
+          onChange={handleLikeOptionChange}
+          className='bg-white min-w-118px'
+        />
+      </div>
+    </div>
+  )
+
+  const renderPriceFilter = () => (
+    <div className='flex items-center xl:justify-between mt-30px xl:mt-0 w-full xl:w-auto'>
+      <div className='flex h-full items-center justify-end max-w-278px mr-6'>
+        <p className='text-h6 pr-3 text-gray-2d'>Rareness</p>
+        <Slider
+          min={0}
+          max={1}
+          hideLabel
+          values={rarenessRange}
+          onChange={setRarenessRange}
+          formatValue={formatRarenessValue}
+          formatTooltipValue={formatRarenessValue}
+          step={0.1}
+        />
+      </div>
+      {renderSort()}
+      <div className='flex h-full items-center justify-end max-w-278px'>
+        <p className='text-h6 pr-3 text-gray-2d'>Price:</p>
+        <Slider
+          min={0}
+          max={999}
+          hideLabel
+          values={range}
+          onChange={setRange}
+          formatValue={formatValue}
+          formatTooltipValue={formatValue}
+          step={1}
+        />
+      </div>
+    </div>
+  )
+
   return (
     <div className='flex flex-col w-full min-h-full'>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -316,63 +382,9 @@ export default function Portfolio(): JSX.Element {
                 </div>
               ))}
             </div>
-            <div className='flex items-center xl:justify-between mt-30px xl:mt-0 w-full xl:w-auto'>
-              <div className='flex h-full items-center justify-end max-w-278px mr-6'>
-                <p className='text-h6 pr-3 text-gray-2d'>Rareness</p>
-                <Slider
-                  min={0}
-                  max={1}
-                  hideLabel
-                  values={rarenessRange}
-                  onChange={setRarenessRange}
-                  formatValue={formatRarenessValue}
-                  formatTooltipValue={formatRarenessValue}
-                  step={0.1}
-                />
-              </div>
-              <div className='flex items-center mr-6'>
-                <p className='pr-4 text-h5'>Sort by</p>
-                <div className='flex space-x-6'>
-                  <Select
-                    placeholder={sortByOptions.placeholder}
-                    options={sortByOptions.options}
-                    selected={sortByOptions.selected}
-                    onChange={handleLikeOptionChange}
-                    className='bg-white min-w-118px'
-                  />
-                </div>
-              </div>
-              <div className='flex h-full items-center justify-end max-w-278px'>
-                <p className='text-h6 pr-3 text-gray-2d'>Price:</p>
-                <Slider
-                  min={0}
-                  max={999}
-                  hideLabel
-                  values={range}
-                  onChange={setRange}
-                  formatValue={formatValue}
-                  formatTooltipValue={formatValue}
-                  step={1}
-                />
-              </div>
-            </div>
+            {renderPriceFilter()}
           </div>
-          <div className='w-full'>
-            <div
-              className={`${styles.portfolioContent} overflow-y-auto pl-27px pr-23px pb-30px mt-30px`}
-            >
-              <div className='grid grid-cols-3 1200px:grid-cols-4 xl:grid-cols-5 gap-y-[21px] gap-4'>
-                {cards.map(nftItem => (
-                  <NFTCard
-                    {...nftItem}
-                    key={nftItem.id}
-                    hideFollow
-                    variant={NFTCardVariantSize.M}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          {renderNFTCards()}
         </div>
       ) : (
         <div className='flex flex-grow flex-col items-center justify-center my-40vh'>

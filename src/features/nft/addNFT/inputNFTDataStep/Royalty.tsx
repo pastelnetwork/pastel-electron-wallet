@@ -8,20 +8,28 @@ import ErrorMessage from 'common/components/Form/ErrorMessage'
 export default function Royalty({ form }: { form: TForm }): JSX.Element {
   const roundValue = (value: number) => Math.round(value * 10) / 10
 
+  const renderPerpetualRoyaltyTooltip = () => (
+    <div className='ml-2'>
+      <Tooltip type='top' content='info' width={50}>
+        <Info className='text-gray-8e' size={18} />
+      </Tooltip>
+    </div>
+  )
+
+  const renderPerpetualRoyalty = () => (
+    <div className='text-gray-4a font-medium text-base mb-2'>
+      <CrownInHexagon size={16} className='mr-1.5 text-yellow-c3' />
+      <div className='flex items-center mt-1.5'>
+        <span>Perpetual Royalty</span>
+        {renderPerpetualRoyaltyTooltip()}
+      </div>
+    </div>
+  )
+
   return (
     <div className='bg-gray-f8 rounded-lg h-28 pl-6 pr-[18px] flex justify-between min-h-[117px]'>
       <div className='pt-6'>
-        <div className='text-gray-4a font-medium text-base mb-2'>
-          <CrownInHexagon size={16} className='mr-1.5 text-yellow-c3' />
-          <div className='flex items-center mt-1.5'>
-            <span>Perpetual Royalty</span>
-            <div className='ml-2'>
-              <Tooltip type='top' content='info' width={50}>
-                <Info className='text-gray-8e' size={18} />
-              </Tooltip>
-            </div>
-          </div>
-        </div>
+        {renderPerpetualRoyalty()}
         <ErrorMessage
           form={form}
           name='royalty'

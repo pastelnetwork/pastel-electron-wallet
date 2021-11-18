@@ -126,6 +126,38 @@ function SelectMultipleInner({
     }
   }
 
+  const renderSelectItems = () => (
+    <div className='flex-grow flex flex-wrap'>
+      {selectedItems.map((item, index) => (
+        <div
+          key={item.value}
+          className='bg-gray-71 rounded-full h-6 px-2 mr-1.5 mb-1.5 text-white text-sm leading-6 flex-center'
+          {...getSelectedItemProps({ selectedItem: item, index })}
+        >
+          {item.label}
+          <button
+            type='button'
+            className='ml-2'
+            onClick={() => removeSelectedItem(item)}
+          >
+            <X size={8} />
+          </button>
+        </div>
+      ))}
+      <div
+        {...getComboboxProps()}
+        className='flex-grow relative mb-1.5 h-6 min-w-[80px]'
+      >
+        <input
+          id={id}
+          className='absolute inset-0 w-full pl-2 disabled:bg-gray-f6 disabled:cursor-not-allowed'
+          placeholder={placeholder}
+          {...inputProps}
+        />
+      </div>
+    </div>
+  )
+
   return (
     <label
       htmlFor={id}
@@ -136,35 +168,7 @@ function SelectMultipleInner({
       )}
       {...getLabelProps()}
     >
-      <div className='flex-grow flex flex-wrap'>
-        {selectedItems.map((item, index) => (
-          <div
-            key={item.value}
-            className='bg-gray-71 rounded-full h-6 px-2 mr-1.5 mb-1.5 text-white text-sm leading-6 flex-center'
-            {...getSelectedItemProps({ selectedItem: item, index })}
-          >
-            {item.label}
-            <button
-              type='button'
-              className='ml-2'
-              onClick={() => removeSelectedItem(item)}
-            >
-              <X size={8} />
-            </button>
-          </div>
-        ))}
-        <div
-          {...getComboboxProps()}
-          className='flex-grow relative mb-1.5 h-6 min-w-[80px]'
-        >
-          <input
-            id={id}
-            className='absolute inset-0 w-full pl-2 disabled:bg-gray-f6 disabled:cursor-not-allowed'
-            placeholder={placeholder}
-            {...inputProps}
-          />
-        </div>
-      </div>
+      {renderSelectItems()}
       <button
         type='button'
         {...getToggleButtonProps()}

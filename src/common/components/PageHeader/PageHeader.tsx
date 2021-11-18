@@ -32,6 +32,23 @@ function PageHeader({
   sortByTextClassName = '',
   children,
 }: TPageHeaderProps): JSX.Element {
+  const renderPageTitle = () => (
+    <div className='flex items-center'>
+      {title && (
+        <h1
+          className={`${
+            variant === 'portfolio'
+              ? 'pr-18px md:pr-7 whitespace-nowrap'
+              : 'pr-8'
+          } font-extrabold text-gray-23`}
+        >
+          {title}
+        </h1>
+      )}
+      {routes && <MultiToggleSwitch {...routes} />}
+    </div>
+  )
+
   return (
     <>
       <div className='bg-white text-gray-1a'>
@@ -39,20 +56,7 @@ function PageHeader({
           className={`wrapper ${variant === 'portfolio' ? 'py-18px' : 'py-5'}`}
         >
           <div className='flex justify-between flex-wrap'>
-            <div className='flex items-center'>
-              {title && (
-                <h1
-                  className={`${
-                    variant === 'portfolio'
-                      ? 'pr-18px md:pr-7 whitespace-nowrap'
-                      : 'pr-8'
-                  } font-extrabold text-gray-23`}
-                >
-                  {title}
-                </h1>
-              )}
-              {routes && <MultiToggleSwitch {...routes} />}
-            </div>
+            {renderPageTitle()}
             {sortByOptions?.length && (
               <div className='flex items-center'>
                 <p className={`pr-4 text-h5 ${sortByTextClassName}`}>

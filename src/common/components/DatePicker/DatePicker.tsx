@@ -34,12 +34,15 @@ type TRange = TBaseProps & {
 
 type TDatePicker = TSingle | TRange
 
-type TCustomHeader = {
-  date: Date
+type TCustomCaret = {
   decreaseMonth: () => void
   increaseMonth: () => void
   prevMonthButtonDisabled: boolean
   nextMonthButtonDisabled: boolean
+}
+
+type TCustomHeader = TCustomCaret & {
+  date: Date
 }
 
 function DatePicker({
@@ -58,6 +61,39 @@ function DatePicker({
   openToDate,
 }: TDatePicker): JSX.Element {
   const [isOpened, setIsOpened] = useState(false)
+  const renderCaretIcons = ({
+    decreaseMonth,
+    increaseMonth,
+    prevMonthButtonDisabled,
+    nextMonthButtonDisabled,
+  }: TCustomCaret) => (
+    <div>
+      <button
+        onClick={decreaseMonth}
+        disabled={prevMonthButtonDisabled}
+        className='focus:outline-none p-1 mr-5'
+        type='button'
+      >
+        <Caret
+          to='left'
+          size={12}
+          className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+        />
+      </button>
+      <button
+        onClick={increaseMonth}
+        disabled={nextMonthButtonDisabled}
+        className='focus:outline-none p-1'
+        type='button'
+      >
+        <Caret
+          to='right'
+          size={12}
+          className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+        />
+      </button>
+    </div>
+  )
 
   const customHeader = ({
     date,
@@ -71,32 +107,12 @@ function DatePicker({
         <span className='mr-1'>{dayjs(date).format('MMM')}</span>
         {dayjs(date).year()}
       </h5>
-      <div>
-        <button
-          onClick={decreaseMonth}
-          disabled={prevMonthButtonDisabled}
-          className='focus:outline-none p-1 mr-5'
-          type='button'
-        >
-          <Caret
-            to='left'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-        <button
-          onClick={increaseMonth}
-          disabled={nextMonthButtonDisabled}
-          className='focus:outline-none p-1'
-          type='button'
-        >
-          <Caret
-            to='right'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-      </div>
+      {renderCaretIcons({
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled,
+      })}
     </div>
   )
 

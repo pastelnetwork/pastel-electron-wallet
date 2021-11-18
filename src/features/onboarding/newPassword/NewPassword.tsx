@@ -97,6 +97,30 @@ export default function NewPassword(): JSX.Element {
     }
   }
 
+  const renderGenerateSecurePasswordButton = () => {
+    return (
+      <div className='mt-[18px] mb-66px text-center'>
+        <button
+          type='button'
+          className='text-link font-medium text-base bg-transparent border-none'
+          onClick={handleGeneratePassword}
+        >
+          Generate a Secure Password for Me (recommended!)
+        </button>
+      </div>
+    )
+  }
+
+  const renderLoginButton = () => {
+    return (
+      <div className='mt-6'>
+        <Link className='text-link' to={ROUTES.LOGIN}>
+          <Button className='w-full'>Login</Button>
+        </Link>
+      </div>
+    )
+  }
+
   return (
     <div className='my-9 mx-60px'>
       {isSuccess ? <CloseButton gotoUrl={ROUTES.LOGIN} /> : null}
@@ -106,11 +130,7 @@ export default function NewPassword(): JSX.Element {
           <div className='text-text-77 text-h4'>
             Your password has been reset successfully.
           </div>
-          <div className='mt-6'>
-            <Link className='text-link' to={ROUTES.LOGIN}>
-              <Button className='w-full'>Login</Button>
-            </Link>
-          </div>
+          {renderLoginButton()}
         </div>
       ) : (
         <>
@@ -169,15 +189,7 @@ export default function NewPassword(): JSX.Element {
             >
               Confirm
             </Button>
-            <div className='mt-[18px] mb-66px text-center'>
-              <button
-                type='button'
-                className='text-link font-medium text-base bg-transparent border-none'
-                onClick={handleGeneratePassword}
-              >
-                Generate a Secure Password for Me (recommended!)
-              </button>
-            </div>
+            {renderGenerateSecurePasswordButton()}
           </form>
         </>
       )}

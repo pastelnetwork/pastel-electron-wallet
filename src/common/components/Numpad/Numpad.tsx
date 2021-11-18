@@ -94,6 +94,51 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
 
   const addChar = (char: string) => onChange(value + char)
 
+  const renderNumpadControl = () => (
+    <div className='pt-1 space-y-2'>
+      <input
+        className='input h-8 px-2 mb-1 w-[112px] hidden'
+        value={value}
+        onChange={e => onChange(e.target.value)}
+      />
+      <div className='flex space-x-2'>
+        {[1, 2, 3].map(value => (
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
+        ))}
+      </div>
+      <div className='flex space-x-2'>
+        {[3, 4, 5].map(value => (
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
+        ))}
+      </div>
+      <div className='flex space-x-2'>
+        {[7, 8, 9].map(value => (
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
+        ))}
+      </div>
+      <div className='flex space-x-2'>
+        <NumpadButton value={0} onClick={() => addChar('0')} />
+        <NumpadButton value='clear' onClick={clear} className='flex-grow' />
+      </div>
+      <div className='text-gray-a0 text-xs text-center'>
+        number between
+        <br />1 and {formatNumber(max)}
+      </div>
+    </div>
+  )
+
   return (
     <div
       ref={ref}
@@ -115,48 +160,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
           </span>
         ))}
       </div>
-      <div className='pt-1 space-y-2'>
-        <input
-          className='input h-8 px-2 mb-1 w-[112px] hidden'
-          value={value}
-          onChange={e => onChange(e.target.value)}
-        />
-        <div className='flex space-x-2'>
-          {[1, 2, 3].map(value => (
-            <NumpadButton
-              key={value}
-              value={value}
-              onClick={() => addChar(String(value))}
-            />
-          ))}
-        </div>
-        <div className='flex space-x-2'>
-          {[3, 4, 5].map(value => (
-            <NumpadButton
-              key={value}
-              value={value}
-              onClick={() => addChar(String(value))}
-            />
-          ))}
-        </div>
-        <div className='flex space-x-2'>
-          {[7, 8, 9].map(value => (
-            <NumpadButton
-              key={value}
-              value={value}
-              onClick={() => addChar(String(value))}
-            />
-          ))}
-        </div>
-        <div className='flex space-x-2'>
-          <NumpadButton value={0} onClick={() => addChar('0')} />
-          <NumpadButton value='clear' onClick={clear} className='flex-grow' />
-        </div>
-        <div className='text-gray-a0 text-xs text-center'>
-          number between
-          <br />1 and {formatNumber(max)}
-        </div>
-      </div>
+      {renderNumpadControl()}
     </div>
   )
 })

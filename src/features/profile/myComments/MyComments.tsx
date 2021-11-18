@@ -202,47 +202,57 @@ function MyComments(): JSX.Element {
 
   const isEmpty = false
 
+  const renderFilter = () => (
+    <div className='lg:ml-72px w-full lg:w-137px mb-10 lg:mb-0'>
+      <p className='mb-0 text-base font-medium text-gray-42'>Filter by:</p>
+      <ul className='mt-4 flex lg:block'>
+        {filters.map(filter => (
+          <li className='lg:mb-3 mr-3 lg:mr-0' key={filter.id}>
+            <Checkbox
+              isChecked={filter.isChecked}
+              clickHandler={() => onClickFilter(filter.value)}
+            >
+              <span className='text-sm leading-18px font-medium text-gray-11'>
+                {filter.name}
+              </span>
+            </Checkbox>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+
+  const renderProfileCard = () => (
+    <div className='flex flex-col items-center'>
+      <ProfileCard
+        editMode={editMode}
+        setEditMode={setEditMode}
+        isEmpty={isEmpty}
+        nativeCurrencyOptions={nativeCurrencyOptions}
+        nativeCurrency={nativeCurrency}
+        onNativeCurrencyChange={setNativeCurrency}
+      />
+    </div>
+  )
+
+  const renderCommentContent = () => (
+    <div className='flex pl-50px justify-between flex-col-reverse lg:flex-row flex-grow'>
+      <div className='w-full lg:w-4/5'>
+        <ProfileComments
+          comments={commentsData}
+          onReply={handleOnReply}
+          onLikeClick={handleOnLikeClick}
+        />
+      </div>
+      {renderFilter()}
+    </div>
+  )
+
   return (
     <div className='flex flex-col flex-grow items-center'>
       <div className='wrapper flex px-60px pb-8 justify-center pt-9 w-full'>
-        <div className='flex flex-col items-center'>
-          <ProfileCard
-            editMode={editMode}
-            setEditMode={setEditMode}
-            isEmpty={isEmpty}
-            nativeCurrencyOptions={nativeCurrencyOptions}
-            nativeCurrency={nativeCurrency}
-            onNativeCurrencyChange={setNativeCurrency}
-          />
-        </div>
-        <div className='flex pl-50px justify-between flex-col-reverse lg:flex-row flex-grow'>
-          <div className='w-full lg:w-4/5'>
-            <ProfileComments
-              comments={commentsData}
-              onReply={handleOnReply}
-              onLikeClick={handleOnLikeClick}
-            />
-          </div>
-          <div className='lg:ml-72px w-full lg:w-137px mb-10 lg:mb-0'>
-            <p className='mb-0 text-base font-medium text-gray-42'>
-              Filter by:
-            </p>
-            <ul className='mt-4 flex lg:block'>
-              {filters.map(filter => (
-                <li className='lg:mb-3 mr-3 lg:mr-0' key={filter.id}>
-                  <Checkbox
-                    isChecked={filter.isChecked}
-                    clickHandler={() => onClickFilter(filter.value)}
-                  >
-                    <span className='text-sm leading-18px font-medium text-gray-11'>
-                      {filter.name}
-                    </span>
-                  </Checkbox>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        {renderProfileCard()}
+        {renderCommentContent()}
       </div>
     </div>
   )

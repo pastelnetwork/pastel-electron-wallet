@@ -50,10 +50,52 @@ export default function PayURIModal(): JSX.Element | null {
     dispatch(closePayURIModal())
   }
 
-  let uriIsValid = null
+  let uriIsValid: boolean | null = null
   if (!isValid && message) {
     uriIsValid = false
   }
+
+  const renderCancelButton = () => (
+    <Button
+      variant='secondary'
+      className='w-[120px] px-0'
+      childrenClassName='w-full'
+      onClick={() => dispatch(closePayURIModal())}
+    >
+      <div className='flex items-center justify-center'>
+        <div className='text-blue-3f text-h5-medium'>Cancel</div>
+      </div>
+    </Button>
+  )
+
+  const renderPayURI = () => (
+    <Button
+      onClick={handlePayURI}
+      className='w-[120px] ml-[30px] px-0'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center justify-center'>
+        <div className='text-white text-h5-heavy'>Pay URI</div>
+      </div>
+    </Button>
+  )
+
+  const renderInputControl = (uriIsValid: boolean | null) => (
+    <div className='mt-6'>
+      <Input
+        placeholder='URI'
+        type='text'
+        value={uri}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setUri(e.target.value)
+        }
+        isValid={uriIsValid}
+        errorMessage={message}
+        hint
+        hintAsTooltip={false}
+      />
+    </div>
+  )
 
   return (
     <TitleModal
@@ -63,40 +105,10 @@ export default function PayURIModal(): JSX.Element | null {
       title='Pay URI'
     >
       <div className='pr-8'>
-        <div className='mt-6'>
-          <Input
-            placeholder='URI'
-            type='text'
-            value={uri}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setUri(e.target.value)
-            }
-            isValid={uriIsValid}
-            errorMessage={message}
-            hint
-            hintAsTooltip={false}
-          />
-        </div>
+        {renderInputControl(uriIsValid)}
         <div className='mt-4 flex justify-end'>
-          <Button
-            variant='secondary'
-            className='w-[120px] px-0'
-            childrenClassName='w-full'
-            onClick={() => dispatch(closePayURIModal())}
-          >
-            <div className='flex items-center justify-center'>
-              <div className='text-blue-3f text-h5-medium'>Cancel</div>
-            </div>
-          </Button>
-          <Button
-            onClick={handlePayURI}
-            className='w-[120px] ml-[30px] px-0'
-            childrenClassName='w-full'
-          >
-            <div className='flex items-center justify-center'>
-              <div className='text-white text-h5-heavy'>Pay URI</div>
-            </div>
-          </Button>
+          {renderCancelButton()}
+          {renderPayURI()}
         </div>
       </div>
     </TitleModal>

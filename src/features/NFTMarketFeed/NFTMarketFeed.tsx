@@ -138,6 +138,46 @@ export default function NFTMarketFeed(): JSX.Element {
     onToggle: setSelectedItem,
   }
 
+  const renderNFTCards = () => (
+    <div className='w-full'>
+      <div
+        className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
+      >
+        {mockNFTs.map(nft => (
+          <NFTCard {...nft} key={nft.id} />
+        ))}
+      </div>
+    </div>
+  )
+
+  const renderPriceRangeFilter = () => (
+    <div className='flex'>
+      <div className='flex h-full items-center justify-end'>
+        <p className='text-base font-medium px-22px text-gray-4a'>
+          Price range:
+        </p>
+        <Slider
+          min={0}
+          max={999}
+          values={range}
+          onChange={setRange}
+          formatValue={formatValue}
+          formatTooltipValue={formatValue}
+          step={1}
+          hideLabel
+        />
+      </div>
+    </div>
+  )
+
+  const renderFilters = () => (
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
+      {filterOptions.map(option => (
+        <Select {...option} key={option.label} className='bg-white' />
+      ))}
+    </div>
+  )
+
   return (
     <div className=''>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
@@ -145,38 +185,10 @@ export default function NFTMarketFeed(): JSX.Element {
       <div className='wrapper px-33px py-30px'>
         {/* Filters */}
         <div className='flex justify-between px-27px pb-26px'>
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
-            {filterOptions.map(option => (
-              <Select {...option} key={option.label} className='bg-white' />
-            ))}
-          </div>
-          <div className='flex'>
-            <div className='flex h-full items-center justify-end'>
-              <p className='text-base font-medium px-22px text-gray-4a'>
-                Price range:
-              </p>
-              <Slider
-                min={0}
-                max={999}
-                values={range}
-                onChange={setRange}
-                formatValue={formatValue}
-                formatTooltipValue={formatValue}
-                step={1}
-                hideLabel
-              />
-            </div>
-          </div>
+          {renderFilters()}
+          {renderPriceRangeFilter()}
         </div>
-        <div className='w-full'>
-          <div
-            className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
-          >
-            {mockNFTs.map(nft => (
-              <NFTCard {...nft} key={nft.id} />
-            ))}
-          </div>
-        </div>
+        {renderNFTCards()}
       </div>
     </div>
   )

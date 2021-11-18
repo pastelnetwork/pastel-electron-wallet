@@ -48,59 +48,71 @@ export default function Header({ nft }: HeaderProps): JSX.Element {
     rarenessScore.classList.toggle('mr-10', isWrapping)
   }, [windowSize])
 
+  const renderHeaderIcons = () => (
+    <div className='flex items-center text-gray-8e space-x-4 lg:space-x-8'>
+      <button type='button' className='w-5 flex-center hover:text-gray-a0'>
+        <Bookmark size={18} />
+      </button>
+      <button type='button' className='w-5 flex-center hover:text-gray-a0'>
+        <Instagram size={20} />
+      </button>
+      <button type='button' className='w-5 flex-center hover:text-gray-a0'>
+        <ArrowShare size={19} />
+      </button>
+    </div>
+  )
+
+  const renderRareness = () => (
+    <div
+      ref={rarenessScoreSectionRef}
+      className='flex-grow flex-center px-5 space-x-5 lg:space-x-10'
+    >
+      <RarenessScore
+        title='Pastel Rareness:'
+        color='text-primary'
+        titleClass='mr-17px'
+        percent={65}
+      />
+      <RarenessScore
+        title='Internet Rareness:'
+        color='text-orange-75'
+        titleClass='mr-11px'
+        percent={45}
+      />
+    </div>
+  )
+
+  const renderNFTInfo = () => (
+    <div
+      ref={titleRef}
+      className={`py-2 text-gray-2d text-32px font-extrabold whitespace-nowrap flex items-center ${style.title}`}
+    >
+      <span className='mr-4 '>{formatToTitleCase(nft.title)}</span>
+      <Tooltip
+        type='bottom'
+        content={getTooltip(
+          'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
+        )}
+        width={295}
+        vPosPercent={110}
+      >
+        <FirTreeInHexagon
+          size={30}
+          className='flex-shrink-0 text-green-45 hover:cursor-pointer'
+        />
+      </Tooltip>
+    </div>
+  )
+
   return (
     <div
       ref={headerRef}
       className='page-container bg-white text-gray-71 py-2 flex flex-wrap'
     >
-      <div
-        ref={titleRef}
-        className={`py-2 text-gray-2d text-32px font-extrabold whitespace-nowrap flex items-center ${style.title}`}
-      >
-        <span className='mr-4 '>{formatToTitleCase(nft.title)}</span>
-        <Tooltip
-          type='top'
-          content={getTooltip(
-            'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
-          )}
-          width={295}
-          vPosPercent={110}
-        >
-          <FirTreeInHexagon
-            size={30}
-            className='flex-shrink-0 text-green-45 hover:cursor-pointer'
-          />
-        </Tooltip>
-      </div>
+      {renderNFTInfo()}
       <div ref={wrappingContentRef} className='py-2 flex-grow flex'>
-        <div
-          ref={rarenessScoreSectionRef}
-          className='flex-grow flex-center px-5 space-x-5 lg:space-x-10'
-        >
-          <RarenessScore
-            title='Pastel Rareness:'
-            color='text-primary'
-            titleClass='mr-17px'
-            percent={65}
-          />
-          <RarenessScore
-            title='Internet Rareness:'
-            color='text-orange-75'
-            titleClass='mr-11px'
-            percent={45}
-          />
-        </div>
-        <div className='flex items-center text-gray-8e space-x-4 lg:space-x-8'>
-          <button type='button' className='w-5 flex-center hover:text-gray-a0'>
-            <Bookmark size={18} />
-          </button>
-          <button type='button' className='w-5 flex-center hover:text-gray-a0'>
-            <Instagram size={20} />
-          </button>
-          <button type='button' className='w-5 flex-center hover:text-gray-a0'>
-            <ArrowShare size={19} />
-          </button>
-        </div>
+        {renderRareness()}
+        {renderHeaderIcons()}
       </div>
     </div>
   )

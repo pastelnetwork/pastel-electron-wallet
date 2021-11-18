@@ -9,6 +9,16 @@ export default function PastelPhotopeaModal(): JSX.Element {
   const { modalIsOpen } = useAppSelector(state => state.pastelPhotopeaModal)
   const dispatch = useAppDispatch()
 
+  const renderIframeContent = () => (
+    <div className={styles.iframe}>
+      <iframe
+        id='photopea'
+        src='https://www.photopea.com'
+        title='Photopea tool'
+      />
+    </div>
+  )
+
   return (
     <Modal
       isOpen
@@ -24,13 +34,7 @@ export default function PastelPhotopeaModal(): JSX.Element {
         >
           X
         </button>
-        <div className={styles.iframe}>
-          <iframe
-            id='photopea'
-            src='https://www.photopea.com'
-            title='Photopea tool'
-          />
-        </div>
+        {renderIframeContent()}
       </div>
     </Modal>
   )

@@ -58,6 +58,18 @@ export default function Login(): JSX.Element {
 
   const inValid = !username || !password ? true : false
 
+  const renderRestoreAccountButton = () => {
+    return (
+      <div className='text-gray-71 text-h6 my-5'>
+        Forgot your password?
+        <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
+          {' '}
+          Restore access now
+        </Link>
+      </div>
+    )
+  }
+
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
@@ -81,13 +93,7 @@ export default function Login(): JSX.Element {
           onChange={onPasswordChanged}
           value={password}
         />
-        <div className='text-gray-71 text-h6 my-5'>
-          Forgot your password?
-          <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
-            {' '}
-            Restore access now
-          </Link>
-        </div>
+        {renderRestoreAccountButton()}
         <Button
           className='w-full'
           type='button'

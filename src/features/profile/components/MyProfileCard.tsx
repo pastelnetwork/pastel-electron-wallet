@@ -74,124 +74,134 @@ function ProfileCard({
     },
   ]
 
+  const renderEditForm = () => (
+    <div className='flex flex-col'>
+      <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
+        {data.username}{' '}
+        <SVG
+          onClick={() => setOpenEditUsernameModal(true)}
+          src={ico_pencil}
+          className='ml-7px w-13px fill-blue-3f cursor-pointer'
+        />
+      </div>
+      <div className='pt-2 pb-4 text-gray-71 flex flex-center'>
+        <Tooltip
+          type='top'
+          width={114}
+          content={
+            <p className='mb-0 px-2 py-6px text-white text-sm'>
+              PastelID Identifier
+            </p>
+          }
+        >
+          <span className='cursor-pointer text-gray-b9'>
+            {truncateMiddle(data.walletId, 8, 4, '...')}
+          </span>
+        </Tooltip>
+        <button className='pl-10px' type='button'>
+          <Clipboard size={12} className='text-gray-88' />
+        </button>
+      </div>
+      <div className='space-y-6'>
+        {edits.map(({ value, title, onChange }) => (
+          <div key={value}>
+            <div className='text-gray-71 text-lg mb-2'>{title}</div>
+            <LineEdit value={value} onChange={onChange} />
+          </div>
+        ))}
+      </div>
+      <div className='flex text-gray-71 text-sm mt-9 items-center justify-between'>
+        <span className='text-lg text-gray-71'>Native Currency:</span>
+        <Select
+          className='text-gray-4a flex-grow max-w-118px ml-5px'
+          selected={nativeCurrency}
+          options={nativeCurrencyOptions}
+          onChange={onNativeCurrencyChange}
+        />
+      </div>
+    </div>
+  )
+
+  const renderInfo = () => (
+    <div>
+      <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
+        {data.username}
+      </div>
+      <div className='font-extrabold text-26px leading-9 text-center text-gray-2d'>
+        {name}
+      </div>
+      <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
+        {truncateMiddle(data.walletId, 8, 4, '...')}
+        <button className='ml-10px' type='button'>
+          <Clipboard size={12} className='text-gray-88' />
+        </button>
+      </div>
+      <div className='py-4 flex justify-center space-x-2'>
+        <button type='button'>
+          {facebook.length && (
+            <FacebookIcon size={20} className='text-gray-88' />
+          )}
+        </button>
+        <button type='button'>
+          {twitter.length && <TwitterIcon size={20} className='text-gray-88' />}
+        </button>
+      </div>
+      <Button
+        variant={`${!isEmpty ? 'secondary' : 'default'}`}
+        className={cn(
+          'w-full font-medium mt-10px',
+          isEmpty && 'text-white text-sm leading-4 bg-blue-3f',
+        )}
+        onClick={() => setEditMode(true)}
+      >
+        <span className='flex items-center justify-center'>
+          Edit Profile
+          <SVG
+            src={ico_pencil}
+            className={cn(
+              'ml-2.5 w-13px',
+              isEmpty ? 'fill-white' : 'fill-blue-3f',
+            )}
+          />
+        </span>
+      </Button>
+      <div className='flex text-gray-71 text-sm mt-30px justify-center'>
+        Native Currency: {nativeCurrency?.label}
+      </div>
+      <div className='flex justify-center mt-[184px]'>
+        <Toggle
+          selected={activeCurrency}
+          toggleHandler={param => setActiveCurrency(param)}
+        >
+          Active display currency: {currencyName}
+        </Toggle>
+      </div>
+    </div>
+  )
+
+  const renderProfileAvatar = () => (
+    <div className='-mt-61px px-4 flex relative justify-center'>
+      <ProfileCardAvatar
+        isEmpty={isEmpty}
+        editMode={editMode}
+        src={img_avatar}
+      />
+    </div>
+  )
+
   return (
     <div className='flex flex-col pb-30px rounded-md shadow-44px bg-white w-315px justify-between max-h-672px'>
       <div className='flex flex-col flex-grow'>
         <ProfileCardFrame isEmpty={isEmpty} editMode={isEmpty || editMode} />
-        <div className='-mt-61px px-4 flex relative justify-center'>
-          <ProfileCardAvatar
-            isEmpty={isEmpty}
-            editMode={editMode}
-            src={img_avatar}
-          />
-        </div>
+        {renderProfileAvatar()}
         {!editMode && (
           <div className='flex flex-col px-5 pt-3 flex-grow justify-between'>
-            <div>
-              <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
-                {data.username}
-              </div>
-              <div className='font-extrabold text-26px leading-9 text-center text-gray-2d'>
-                {name}
-              </div>
-              <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
-                {truncateMiddle(data.walletId, 8, 4, '...')}
-                <button className='ml-10px' type='button'>
-                  <Clipboard size={12} className='text-gray-88' />
-                </button>
-              </div>
-              <div className='py-4 flex justify-center space-x-2'>
-                <button type='button'>
-                  {facebook.length && (
-                    <FacebookIcon size={20} className='text-gray-88' />
-                  )}
-                </button>
-                <button type='button'>
-                  {twitter.length && (
-                    <TwitterIcon size={20} className='text-gray-88' />
-                  )}
-                </button>
-              </div>
-              <Button
-                variant={`${!isEmpty ? 'secondary' : 'default'}`}
-                className={cn(
-                  'w-full font-medium mt-10px',
-                  isEmpty && 'text-white text-sm leading-4 bg-blue-3f',
-                )}
-                onClick={() => setEditMode(true)}
-              >
-                <span className='flex items-center justify-center'>
-                  Edit Profile
-                  <SVG
-                    src={ico_pencil}
-                    className={cn(
-                      'ml-2.5 w-13px',
-                      isEmpty ? 'fill-white' : 'fill-blue-3f',
-                    )}
-                  />
-                </span>
-              </Button>
-              <div className='flex text-gray-71 text-sm mt-30px justify-center'>
-                Native Currency: {nativeCurrency?.label}
-              </div>
-              <div className='flex justify-center mt-[184px]'>
-                <Toggle
-                  selected={activeCurrency}
-                  toggleHandler={param => setActiveCurrency(param)}
-                >
-                  Active display currency: {currencyName}
-                </Toggle>
-              </div>
-            </div>
+            {renderInfo()}
           </div>
         )}
         {editMode && (
           <div className='flex flex-grow flex-col px-5 mt-5 justify-between'>
-            <div className='flex flex-col'>
-              <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
-                {data.username}{' '}
-                <SVG
-                  onClick={() => setOpenEditUsernameModal(true)}
-                  src={ico_pencil}
-                  className='ml-7px w-13px fill-blue-3f cursor-pointer'
-                />
-              </div>
-              <div className='pt-2 pb-4 text-gray-71 flex flex-center'>
-                <Tooltip
-                  type='top'
-                  width={114}
-                  content={
-                    <p className='mb-0 px-2 py-6px text-white text-sm'>
-                      PastelID Identifier
-                    </p>
-                  }
-                >
-                  <span className='cursor-pointer text-gray-b9'>
-                    {truncateMiddle(data.walletId, 8, 4, '...')}
-                  </span>
-                </Tooltip>
-                <button className='pl-10px' type='button'>
-                  <Clipboard size={12} className='text-gray-88' />
-                </button>
-              </div>
-              <div className='space-y-6'>
-                {edits.map(({ value, title, onChange }) => (
-                  <div key={value}>
-                    <div className='text-gray-71 text-lg mb-2'>{title}</div>
-                    <LineEdit value={value} onChange={onChange} />
-                  </div>
-                ))}
-              </div>
-              <div className='flex text-gray-71 text-sm mt-9 items-center justify-between'>
-                <span className='text-lg text-gray-71'>Native Currency:</span>
-                <Select
-                  className='text-gray-4a flex-grow max-w-118px ml-5px'
-                  selected={nativeCurrency}
-                  options={nativeCurrencyOptions}
-                  onChange={onNativeCurrencyChange}
-                />
-              </div>
-            </div>
+            {renderEditForm()}
             <button
               className='filter hover:contrast-125 w-full cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-[71px] h-10 text-gray-fc bg-blue-3f border-blue-3f'
               onClick={() => {

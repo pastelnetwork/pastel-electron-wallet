@@ -25,6 +25,95 @@ function ChangeUsernameModal({
     return usernameRegex.test(username)
   }
 
+  const renderSubmitButtonBlock = () => (
+    <div className='mt-7 mb-2'>
+      <Button
+        variant='default'
+        type='submit'
+        className={`w-full bg-blue-3f ${
+          !validateUserName(username) ? 'bg-opacity-50' : ''
+        }`}
+      >
+        <span className='text-white font-medium text-sm'>
+          Submit Username Change Request
+        </span>
+      </Button>
+    </div>
+  )
+
+  const renderCurrentBalance = () => (
+    <div className='flex justify-between items-center'>
+      <div className='text-gray-a0 text-sm'>
+        Your Current {currencyName} Balance
+      </div>
+      <div className='text-gray-a0 text-sm font-extrabold'>
+        <NumberFormat value={25000} displayType='text' thousandSeparator />{' '}
+        {currencyName}
+      </div>
+    </div>
+  )
+
+  const renderUsernameChangeFee = () => (
+    <div className='flex justify-between items-center mt-2.5'>
+      <div className='text-gray-a0 text-sm'>Username Change Fee (burned)</div>
+      <div className='text-gray-a0 text-sm font-extrabold flex items-center'>
+        <div className='mr-[9px]'>
+          <Fire size={18} />
+        </div>
+        <NumberFormat value={5000} displayType='text' thousandSeparator />{' '}
+        {currencyName}
+      </div>
+    </div>
+  )
+
+  const renderRemainingBalance = () => (
+    <div className='flex justify-between items-center mt-2.5'>
+      <div className='text-gray-a0 text-sm'>Remaining Balance after Change</div>
+      <div className='text-gray-a0 text-sm font-extrabold'>
+        <NumberFormat value={20000} displayType='text' thousandSeparator />{' '}
+        {currencyName}
+      </div>
+    </div>
+  )
+
+  const renderNewUsernameInput = () => (
+    <div className='mt-6'>
+      <Input
+        appliedStyleValid={false}
+        value={username}
+        isValid={!inputed || validateUserName(username)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setUsername(e.target.value)
+          setInputed(true)
+        }}
+        placeholder='New Username'
+        hintClassName={cn(`${!inputed ? 'font-normal' : 'font-medium'}`)}
+        hint={
+          !inputed
+            ? 'Only Latin Characters and Numbers Allowed'
+            : validateUserName(username)
+            ? ''
+            : 'Please enter a valid user name'
+        }
+        type='text'
+        label='New Username'
+        labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
+      />
+    </div>
+  )
+
+  const renderCurrentUsernameInput = () => (
+    <div className='mt-6'>
+      <Input
+        placeholder='@MrVanGogh'
+        type='text'
+        disabled
+        label='Current Username'
+        labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
+      />
+    </div>
+  )
+
   return (
     <Modal
       isOpen={isOpen}
@@ -40,90 +129,13 @@ function ChangeUsernameModal({
           allowed to change your Pastel username. The network charges a fee for
           this to prevent abuse.
         </div>
-        <div className='mt-6'>
-          <Input
-            placeholder='@MrVanGogh'
-            type='text'
-            disabled
-            label='Current Username'
-            labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
-          />
-        </div>
-        <div className='mt-6'>
-          <Input
-            appliedStyleValid={false}
-            value={username}
-            isValid={!inputed || validateUserName(username)}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setUsername(e.target.value)
-              setInputed(true)
-            }}
-            placeholder='New Username'
-            hintClassName={cn(`${!inputed ? 'font-normal' : 'font-medium'}`)}
-            hint={
-              !inputed
-                ? 'Only Latin Characters and Numbers Allowed'
-                : validateUserName(username)
-                ? ''
-                : 'Please enter a valid user name'
-            }
-            type='text'
-            label='New Username'
-            labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
-          />
-        </div>
+        {renderCurrentUsernameInput()}
+        {renderNewUsernameInput()}
         <div className='pt-6'>
-          <div className='flex justify-between items-center'>
-            <div className='text-gray-a0 text-sm'>
-              Your Current {currencyName} Balance
-            </div>
-            <div className='text-gray-a0 text-sm font-extrabold'>
-              <NumberFormat
-                value={25000}
-                displayType='text'
-                thousandSeparator
-              />{' '}
-              {currencyName}
-            </div>
-          </div>
-          <div className='flex justify-between items-center mt-2.5'>
-            <div className='text-gray-a0 text-sm'>
-              Username Change Fee (burned)
-            </div>
-            <div className='text-gray-a0 text-sm font-extrabold flex items-center'>
-              <div className='mr-[9px]'>
-                <Fire size={18} />
-              </div>
-              <NumberFormat value={5000} displayType='text' thousandSeparator />{' '}
-              {currencyName}
-            </div>
-          </div>
-          <div className='flex justify-between items-center mt-2.5'>
-            <div className='text-gray-a0 text-sm'>
-              Remaining Balance after Change
-            </div>
-            <div className='text-gray-a0 text-sm font-extrabold'>
-              <NumberFormat
-                value={20000}
-                displayType='text'
-                thousandSeparator
-              />{' '}
-              {currencyName}
-            </div>
-          </div>
-          <div className='mt-7 mb-2'>
-            <Button
-              variant='default'
-              type='submit'
-              className={`w-full bg-blue-3f ${
-                !validateUserName(username) ? 'bg-opacity-50' : ''
-              }`}
-            >
-              <span className='text-white font-medium text-sm'>
-                Submit Username Change Request
-              </span>
-            </Button>
-          </div>
+          {renderCurrentBalance()}
+          {renderUsernameChangeFee()}
+          {renderRemainingBalance()}
+          {renderSubmitButtonBlock()}
         </div>
       </div>
     </Modal>

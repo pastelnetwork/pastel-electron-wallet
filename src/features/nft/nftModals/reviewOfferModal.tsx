@@ -27,6 +27,23 @@ function ReviewOfferModal({
   handleClose,
 }: TReviewOfferModal): JSX.Element {
   const currencyName = useCurrencyName()
+
+  const renderReviewOfferContent = (price: number, user: string) => (
+    <h4 className='font-medium flex items-center'>
+      <span className='text-gray-2d font-extabold'>
+        <NumberFormat
+          value={price / 1000}
+          decimalScale={2}
+          displayType='text'
+          thousandSeparator
+        />
+        k {currencyName}{' '}
+      </span>
+      <span className='text-gray-a0'>was offered by</span>{' '}
+      <span className='text-link'>{user}</span>
+    </h4>
+  )
+
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-3xl'>
       <h2 className='mb-6'>Review an offer for “{title}”</h2>
@@ -39,19 +56,7 @@ function ReviewOfferModal({
               idx !== offers.length - 1 && 'mb-4',
             )}
           >
-            <h4 className='font-medium flex items-center'>
-              <span className='text-gray-2d font-extabold'>
-                <NumberFormat
-                  value={price / 1000}
-                  decimalScale={2}
-                  displayType='text'
-                  thousandSeparator
-                />
-                k {currencyName}{' '}
-              </span>
-              <span className='text-gray-a0'>was offered by</span>{' '}
-              <span className='text-link'>{user}</span>
-            </h4>
+            {renderReviewOfferContent(price, user)}
             <div className='flex'>
               <Button variant='secondary' className='w-24 mr-2'>
                 Decline

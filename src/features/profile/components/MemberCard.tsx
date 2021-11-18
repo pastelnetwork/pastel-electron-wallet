@@ -36,6 +36,38 @@ export default function MemberCard({
     onClick(id)
   }, [])
 
+  const renderCommentContent = () => (
+    <div className='ml-6 font-medium lg:w-372px flex-grow'>
+      <div className='text-gray-11 text-base'>{name}</div>
+      <div className='text-13px'>
+        {behaviour == 'commented' && (
+          <span className='text-gray-80'>Commented on</span>
+        )}
+        <Link to='#'>
+          <span className='text-blue-3f ml-2'>{object}</span>
+        </Link>
+        <span className='text-gray-80 ml-2'>{time}</span>
+      </div>
+      <div className='mt-4 text-gray-80 text-h5 font-normal'>{description}</div>
+      <div className='mt-13px flex'>
+        <textarea
+          placeholder='reply'
+          className='border border-gray-f2 w-full px-4 py-[7px] h-10'
+        />
+      </div>
+    </div>
+  )
+
+  const renderCommentAvatar = () => (
+    <div className='flex-none'>
+      <Avatar
+        iconType={iconType}
+        position={iconPosition}
+        avatarSrc={avatarSrc}
+      />
+    </div>
+  )
+
   return (
     <button
       type='button'
@@ -48,35 +80,9 @@ export default function MemberCard({
       onClick={handleClick}
     >
       <div className='flex flex-grow'>
-        <div className='flex-none'>
-          <Avatar
-            iconType={iconType}
-            position={iconPosition}
-            avatarSrc={avatarSrc}
-          />
-        </div>
+        {renderCommentAvatar()}
 
-        <div className='ml-6 font-medium lg:w-372px flex-grow'>
-          <div className='text-gray-11 text-base'>{name}</div>
-          <div className='text-13px'>
-            {behaviour == 'commented' && (
-              <span className='text-gray-80'>Commented on</span>
-            )}
-            <Link to='#'>
-              <span className='text-blue-3f ml-2'>{object}</span>
-            </Link>
-            <span className='text-gray-80 ml-2'>{time}</span>
-          </div>
-          <div className='mt-4 text-gray-80 text-h5 font-normal'>
-            {description}
-          </div>
-          <div className='mt-13px flex'>
-            <textarea
-              placeholder='reply'
-              className='border border-gray-f2 w-full px-4 py-[7px] h-10'
-            />
-          </div>
-        </div>
+        {renderCommentContent()}
       </div>
       <div className='w-104px h-104px flex-none'>
         <img

@@ -33,6 +33,13 @@ export default function CroppingStep({
   subtitleClassName = 'font-medium text-sm text-gray-33 opacity-50',
   titleClassName = 'text-gray-800 text-2xl font-extrabold mb-3',
 }: TModalLayoutProps): JSX.Element {
+  const renderModalContent = () => (
+    <div>
+      <div className={titleClassName}>{title}</div>
+      <div className={subtitleClassName}>{subtitle}</div>{' '}
+    </div>
+  )
+
   return (
     <div
       className={cn(
@@ -46,10 +53,7 @@ export default function CroppingStep({
           width: `${leftColumnWidth}px`,
         }}
       >
-        <div>
-          <div className={titleClassName}>{title}</div>
-          <div className={subtitleClassName}>{subtitle}</div>{' '}
-        </div>
+        {renderModalContent()}
         {step && (
           <CircleSteper
             size={65}

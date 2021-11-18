@@ -1,5 +1,5 @@
 import React, { useState, KeyboardEvent, useEffect } from 'react'
-import Downshift from 'downshift'
+import Downshift, { GetToggleButtonPropsOptions } from 'downshift'
 import cn from 'classnames'
 
 import { useOptions, validate, formatDisplayNumber } from './SelectAmount.utils'
@@ -69,6 +69,25 @@ export default function SelectAmount({
       onChange && onChange(selection)
     }
   }
+
+  const renderCaretIcon = (
+    isOpen: boolean,
+    getToggleButtonProps: (
+      val?: GetToggleButtonPropsOptions | undefined,
+    ) => void,
+  ) => (
+    <button {...getToggleButtonProps()} className='w-10px mr-4' type='button'>
+      <Caret
+        size={10}
+        to='bottom'
+        className={cn(
+          'text-gray-b0 transition duration-200 transform',
+          isOpen && 'rotate-180',
+          disabled && 'cursor-not-allowed',
+        )}
+      />
+    </button>
+  )
 
   return (
     <Downshift
@@ -144,21 +163,7 @@ export default function SelectAmount({
                   {label}
                 </span>
               ) : null}
-              <button
-                {...getToggleButtonProps()}
-                className='w-10px mr-4'
-                type='button'
-              >
-                <Caret
-                  size={10}
-                  to='bottom'
-                  className={cn(
-                    'text-gray-b0 transition duration-200 transform',
-                    isOpen && 'rotate-180',
-                    disabled && 'cursor-not-allowed',
-                  )}
-                />
-              </button>
+              {renderCaretIcon(isOpen, getToggleButtonProps)}
             </div>
             <ul
               {...getMenuProps()}

@@ -159,21 +159,24 @@ function WalletScreenContent(): JSX.Element {
     })
   }
 
-  return (
-    <div>
-      <Breadcrumbs
-        breadcrumbs={[
-          {
-            label: 'Wallet',
-            route: ROUTES.WALLET,
-          },
-          {
-            label: 'Transparent',
-          },
-        ]}
-      />
+  const renderCreatePaymentButton = () => {
+    return (
+      <Button
+        onClick={() => setPaymentModalOpen(true)}
+        className='ml-30px w-[190px] px-0'
+        childrenClassName='w-full'
+      >
+        <div className='flex items-center ml-5'>
+          <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
+          <div className='ml-2 text-white text-h5-heavy'>Create a payment</div>
+        </div>
+      </Button>
+    )
+  }
 
-      <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
+  const renderWalletHeader = () => {
+    return (
+      <>
         <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
           <div className='mr-8 text-gray-1a text-h1-heavy'>
             {currencyName} Wallet
@@ -200,69 +203,86 @@ function WalletScreenContent(): JSX.Element {
             Transaction history
           </div>
         </div>
+      </>
+    )
+  }
+
+  const renderPastelPromoCodeButton = () => {
+    return (
+      <Button
+        onClick={() => setAddPastelPromoCodeModalOpen(true)}
+        variant='secondary'
+        className='w-[240px] px-0'
+        childrenClassName='w-full'
+      >
+        <div className='flex items-center ml-5'>
+          <div className='text-blue-3f text-h5-medium'>+</div>{' '}
+          <div className='ml-2 text-blue-3f text-h5-medium'>
+            Add Pastel Promo Code
+          </div>
+        </div>
+      </Button>
+    )
+  }
+
+  const renderAddNewAddressButton = () => {
+    return allAddresses.data?.length ? (
+      <Button
+        variant='secondary'
+        className='w-[264px] ml-30px px-0'
+        childrenClassName='w-full'
+        onClick={createNewAddress}
+        disabled={isLoading}
+      >
+        <div className='flex items-center ml-[19px]'>
+          <ElectricityIcon size={11} className='text-blue-3f py-3' />
+          <div className='ml-11px text-blue-3f text-h5-medium'>
+            Generate a new {currencyName} Address
+          </div>
+        </div>
+      </Button>
+    ) : null
+  }
+
+  const renderEmptyContentBlock = () => {
+    return totalBalances.data?.total && totalBalances.data?.total <= 0 ? (
+      <Alert variant='warning' className='mt-7 relative' showClose onShowing>
+        <strong className='font-bold'>Warning! </strong>
+        <span className='block sm:inline'>
+          Your total balance is empty now.
+        </span>
+      </Alert>
+    ) : null
+  }
+
+  return (
+    <div>
+      <Breadcrumbs
+        breadcrumbs={[
+          {
+            label: 'Wallet',
+            route: ROUTES.WALLET,
+          },
+          {
+            label: 'Transparent',
+          },
+        ]}
+      />
+
+      <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
+        {renderWalletHeader()}
       </div>
 
       <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
         <BalanceCards />
-        {totalBalances.data?.total && totalBalances.data?.total <= 0 && (
-          <Alert
-            variant='warning'
-            className='mt-7 relative'
-            showClose
-            onShowing
-          >
-            <strong className='font-bold'>Warning! </strong>
-            <span className='block sm:inline'>
-              Your total balance is empty now.
-            </span>
-          </Alert>
-        )}
+        {renderEmptyContentBlock()}
 
         <WalletAddresses />
 
         <div className='flex justify-end mt-5 pb-[30px]'>
-          <Button
-            onClick={() => setAddPastelPromoCodeModalOpen(true)}
-            variant='secondary'
-            className='w-[240px] px-0'
-            childrenClassName='w-full'
-          >
-            <div className='flex items-center ml-5'>
-              <div className='text-blue-3f text-h5-medium'>+</div>{' '}
-              <div className='ml-2 text-blue-3f text-h5-medium'>
-                Add Pastel Promo Code
-              </div>
-            </div>
-          </Button>
-
-          {allAddresses.data?.length ? (
-            <Button
-              variant='secondary'
-              className='w-[264px] ml-30px px-0'
-              childrenClassName='w-full'
-              onClick={createNewAddress}
-              disabled={isLoading}
-            >
-              <div className='flex items-center ml-[19px]'>
-                <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                <div className='ml-11px text-blue-3f text-h5-medium'>
-                  Generate a new {currencyName} Address
-                </div>
-              </div>
-            </Button>
-          ) : null}
-          <Button
-            onClick={() => setPaymentModalOpen(true)}
-            className='ml-30px w-[190px] px-0'
-            childrenClassName='w-full'
-          >
-            <div className='flex items-center ml-5'>
-              <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
-              <div className='ml-2 text-white text-h5-heavy'>
-                Create a payment
-              </div>
-            </div>
-          </Button>
+          {renderPastelPromoCodeButton()}
+          {renderAddNewAddressButton()}
+          {renderCreatePaymentButton()}
         </div>
       </div>
 

@@ -92,6 +92,24 @@ export default function Magnification({
     }
   }, [imageElement, optimizedUrl])
 
+  const renderOptimizedUrl = () => (
+    <div className='w-1/2 flex flex-col'>
+      <div className='h-6 flex-center bg-white text-gray-a0 text-center z-10 text-xs font-extrabold flex-shrink-0'>
+        After
+      </div>
+      <div
+        ref={afterRef}
+        className='bg-no-repeat flex-grow relative rounded-br-xl'
+        style={{
+          backgroundImage: `url(${optimizedUrl})`,
+          backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
+        }}
+      >
+        <div className='absolute inset-0 backdrop-filter backdrop-blur-[2px] rounded-br-xl' />
+      </div>
+    </div>
+  )
+
   return (
     <div
       ref={rectRef}
@@ -116,21 +134,7 @@ export default function Magnification({
       {optimizedUrl && (
         <>
           <div className='w-[3px] bg-white h-full' />
-          <div className='w-1/2 flex flex-col'>
-            <div className='h-6 flex-center bg-white text-gray-a0 text-center z-10 text-xs font-extrabold flex-shrink-0'>
-              After
-            </div>
-            <div
-              ref={afterRef}
-              className='bg-no-repeat flex-grow relative rounded-br-xl'
-              style={{
-                backgroundImage: `url(${optimizedUrl})`,
-                backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
-              }}
-            >
-              <div className='absolute inset-0 backdrop-filter backdrop-blur-[2px] rounded-br-xl' />
-            </div>
-          </div>
+          {renderOptimizedUrl()}
         </>
       )}
     </div>

@@ -68,6 +68,40 @@ export default function PreviewStepModal({
     state.goBack()
   }
 
+  const renderImageSizePercentOfAvg = () => (
+    <div className='flex-grow'>
+      <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
+        <div
+          className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
+          style={{ width: imageSizePercentOfAvg + '%' }}
+        />
+      </div>
+      <div className='text-xs text-gray-a0 font-normal'>
+        {imageSizePercentOfAvg}% of average Pastel NFT size
+      </div>
+    </div>
+  )
+
+  const renderGoToOverview = () => (
+    <div className='flex-between pt-18px'>
+      <button
+        type='button'
+        className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
+        onClick={handleBack}
+      >
+        <ArrowSlim to='left' size={14} />
+      </button>
+      <button
+        type='button'
+        className='btn btn-primary px-[30px]'
+        onClick={submit}
+        disabled={!submittable}
+      >
+        Go to Overview
+      </button>
+    </div>
+  )
+
   return (
     <ModalLayout
       title='Image Preview'
@@ -119,17 +153,7 @@ export default function PreviewStepModal({
                 state.optimizationService.selectedFile?.size || image.size,
               )}
             </div>
-            <div className='flex-grow'>
-              <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
-                <div
-                  className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
-                  style={{ width: imageSizePercentOfAvg + '%' }}
-                />
-              </div>
-              <div className='text-xs text-gray-a0 font-normal'>
-                {imageSizePercentOfAvg}% of average Pastel NFT size
-              </div>
-            </div>
+            {renderImageSizePercentOfAvg()}
           </div>
           <div className='flex-between mb-5 text-base'>
             <div className='text-gray-4a font-medium'>
@@ -184,23 +208,7 @@ export default function PreviewStepModal({
               </div>
             )}
           </div>
-          <div className='flex-between pt-18px'>
-            <button
-              type='button'
-              className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={handleBack}
-            >
-              <ArrowSlim to='left' size={14} />
-            </button>
-            <button
-              type='button'
-              className='btn btn-primary px-[30px]'
-              onClick={submit}
-              disabled={!submittable}
-            >
-              Go to Overview
-            </button>
-          </div>
+          {renderGoToOverview()}
         </div>
       }
     />

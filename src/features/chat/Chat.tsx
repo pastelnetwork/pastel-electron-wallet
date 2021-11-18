@@ -112,6 +112,123 @@ function Chat(): JSX.Element {
     scroll2End()
   }, [chats, activeChat, activeChat.messages.length])
 
+  const renderChatContent = () => (
+    <div className='flex items-center mx-5 my-4 box-border rounded-lg px-4 py-2 border border-gray-300'>
+      <UserAvatar user={curUser} size={10} hideOnline />
+
+      <div className='flex-grow mr-4 h-full relative'>
+        {newMsgPlaceholder && (
+          <label className='absolute top-0 left-0 right-0 bottom-0 flex items-center z-0 font-medium text-base text-gray-300'>
+            Write your message here...
+          </label>
+        )}
+        <textarea
+          className='w-full h-full border-0 font-medium text-base text-gray-400 relative z-10 resize-none bg-transparent outline-none focus:outline-none'
+          onFocus={onNewMsgFocus}
+          onBlur={onNewMsgBlur}
+          onChange={onNewMsgChange}
+          onKeyPress={onKeypress}
+          value={newMsg}
+        ></textarea>
+      </div>
+
+      <div className='cursor-pointer mr-4' onClick={onEmoji}>
+        <img className='cursor-pointer' src={msgEmojiIcon} alt='Emoji' />
+      </div>
+
+      <div className='cursor-pointer mr-4' onClick={onAttach}>
+        <img className='cursor-pointer' src={msgAttachIcon} alt='Attach' />
+      </div>
+
+      <div className='cursor-pointer w-10 h-10' onClick={onSendMsg}>
+        <img
+          className='cursor-pointer w-full h-full'
+          src={msgSendIcon}
+          alt='Send'
+        />
+      </div>
+    </div>
+  )
+
+  const renderBody = () => (
+    <div className='flex flex-grow flex-col'>
+      <div
+        className={cn(
+          styles.chatHeader,
+          'bg-white flex items-center px-4 h-14',
+        )}
+      >
+        {activeChat && (
+          <UserAvatar user={TChatUser(activeChat)} size={9} hideOnline />
+        )}
+
+        <div className='flex-grow font-extrabold text-lg text-gray-600'>
+          {activeChat ? activeChat.title : ''}
+        </div>
+
+        <div
+          className='cursor-pointer flex items-center h-4'
+          onClick={toggleActiveChatMenu}
+        >
+          <img className='cursor-pointer' src={chatMenuIcon} alt='Chat' />
+        </div>
+
+        <div className='flex items-center ml-4 h-4'>
+          <CloseButton onClick={onCloseChat} />
+        </div>
+      </div>
+
+      <div className='flex-grow px-5 overflow-auto'>
+        {activeChat &&
+          activeChat.messages.map((msg, i) => {
+            const props = {
+              ...msg,
+              isCurUserMessage: msg.sender.id === curUser.id,
+              showAvatar:
+                !i || activeChat.messages[i - 1].sender.id !== msg.sender.id,
+            }
+            return (
+              <ChatMessage
+                key={msg.id}
+                {...props}
+                onSaveAttachment={saveAttachment}
+              />
+            )
+          })}
+        <div ref={endRef}></div>
+      </div>
+      {renderChatContent()}
+    </div>
+  )
+
+  const renderChatEditIcon = () => (
+    <i
+      onClick={onChatEdit}
+      className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
+    >
+      <img className='w-5 cursor-pointer' src={editIcon} alt='Edit' />
+    </i>
+  )
+
+  const renderChatItems = () => (
+    <div className='mr-2 flex flex-col py-5 min-w-20rem w-1/3'>
+      <div className='px-5 flex justify-between'>
+        <h1>Chat</h1>
+        {renderChatEditIcon()}
+      </div>
+      <div className='px-5 flex-grow overflow-auto'>
+        {chats.map(chat => (
+          <ChatItem
+            key={chat.id}
+            {...chat}
+            onClick={onSelectChat}
+            isActive={activeChatId === chat.id}
+          />
+        ))}
+      </div>
+    </div>
+  )
+
   return (
     <div
       className='page-container py-5 flex flex-col h-full'
@@ -121,115 +238,9 @@ function Chat(): JSX.Element {
         className='paper flex flex-grow bg-gray-fc overflow-hidden'
         onClick={ev => ev.stopPropagation()}
       >
-        <div className='mr-2 flex flex-col py-5 min-w-20rem w-1/3'>
-          <div className='px-5 flex justify-between'>
-            <h1>Chat</h1>
-            <i
-              onClick={onChatEdit}
-              className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
-            >
-              <img className='w-5 cursor-pointer' src={editIcon} alt='Edit' />
-            </i>
-          </div>
-          <div className='px-5 flex-grow overflow-auto'>
-            {chats.map(chat => (
-              <ChatItem
-                key={chat.id}
-                {...chat}
-                onClick={onSelectChat}
-                isActive={activeChatId === chat.id}
-              />
-            ))}
-          </div>
-        </div>
+        {renderChatItems()}
 
-        <div className='flex flex-grow flex-col'>
-          <div
-            className={cn(
-              styles.chatHeader,
-              'bg-white flex items-center px-4 h-14',
-            )}
-          >
-            {activeChat && (
-              <UserAvatar user={TChatUser(activeChat)} size={9} hideOnline />
-            )}
-
-            <div className='flex-grow font-extrabold text-lg text-gray-600'>
-              {activeChat ? activeChat.title : ''}
-            </div>
-
-            <div
-              className='cursor-pointer flex items-center h-4'
-              onClick={toggleActiveChatMenu}
-            >
-              <img className='cursor-pointer' src={chatMenuIcon} alt='Chat' />
-            </div>
-
-            <div className='flex items-center ml-4 h-4'>
-              <CloseButton onClick={onCloseChat} />
-            </div>
-          </div>
-
-          <div className='flex-grow px-5 overflow-auto'>
-            {activeChat &&
-              activeChat.messages.map((msg, i) => {
-                const props = {
-                  ...msg,
-                  isCurUserMessage: msg.sender.id === curUser.id,
-                  showAvatar:
-                    !i ||
-                    activeChat.messages[i - 1].sender.id !== msg.sender.id,
-                }
-                return (
-                  <ChatMessage
-                    key={msg.id}
-                    {...props}
-                    onSaveAttachment={saveAttachment}
-                  />
-                )
-              })}
-            <div ref={endRef}></div>
-          </div>
-          <div className='flex items-center mx-5 my-4 box-border rounded-lg px-4 py-2 border border-gray-300'>
-            <UserAvatar user={curUser} size={10} hideOnline />
-
-            <div className='flex-grow mr-4 h-full relative'>
-              {newMsgPlaceholder && (
-                <label className='absolute top-0 left-0 right-0 bottom-0 flex items-center z-0 font-medium text-base text-gray-300'>
-                  Write your message here...
-                </label>
-              )}
-              <textarea
-                className='w-full h-full border-0 font-medium text-base text-gray-400 relative z-10 resize-none bg-transparent outline-none focus:outline-none'
-                onFocus={onNewMsgFocus}
-                onBlur={onNewMsgBlur}
-                onChange={onNewMsgChange}
-                onKeyPress={onKeypress}
-                value={newMsg}
-              ></textarea>
-            </div>
-
-            <div className='cursor-pointer mr-4' onClick={onEmoji}>
-              <img className='cursor-pointer' src={msgEmojiIcon} alt='Emoji' />
-            </div>
-
-            <div className='cursor-pointer mr-4' onClick={onAttach}>
-              <img
-                className='cursor-pointer'
-                src={msgAttachIcon}
-                alt='Attach'
-              />
-            </div>
-
-            <div className='cursor-pointer w-10 h-10' onClick={onSendMsg}>
-              <img
-                className='cursor-pointer w-full h-full'
-                src={msgSendIcon}
-                alt='Send'
-              />
-            </div>
-          </div>
-        </div>
+        {renderBody()}
       </div>
     </div>
   )

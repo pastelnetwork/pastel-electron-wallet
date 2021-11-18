@@ -14,6 +14,35 @@ export function DiamondInHexagon({
   firstStopClassName,
   secondStopClassName,
 }: TDiamondInHexagonProps): JSX.Element {
+  const renderLinearGradientAndClipPath = () => (
+    <defs>
+      <linearGradient
+        id='diamond_in_hexagon_linear'
+        x1='0'
+        y1='1'
+        x2='25.8479'
+        y2='3.19003'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop className={firstStopClassName} stopColor='currentColor' />
+        <stop
+          className={secondStopClassName}
+          offset='1'
+          stopColor='currentColor'
+        />
+      </linearGradient>
+      <clipPath id='clip0'>
+        <rect
+          width='12.8'
+          height='12.8'
+          fill='currentColor'
+          className={fill}
+          transform='translate(5.59961 7.40039)'
+        />
+      </clipPath>
+    </defs>
+  )
+
   return (
     <svg
       width={size}
@@ -34,32 +63,7 @@ export function DiamondInHexagon({
           fill='currentColor'
         />
       </g>
-      <defs>
-        <linearGradient
-          id='diamond_in_hexagon_linear'
-          x1='0'
-          y1='1'
-          x2='25.8479'
-          y2='3.19003'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop className={firstStopClassName} stopColor='currentColor' />
-          <stop
-            className={secondStopClassName}
-            offset='1'
-            stopColor='currentColor'
-          />
-        </linearGradient>
-        <clipPath id='clip0'>
-          <rect
-            width='12.8'
-            height='12.8'
-            fill='currentColor'
-            className={fill}
-            transform='translate(5.59961 7.40039)'
-          />
-        </clipPath>
-      </defs>
+      {renderLinearGradientAndClipPath()}
     </svg>
   )
 }

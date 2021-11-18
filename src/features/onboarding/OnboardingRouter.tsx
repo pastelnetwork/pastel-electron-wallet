@@ -43,29 +43,35 @@ export default function OnboardingRouter(): JSX.Element {
     return <p>Failed to load PastelId: ${error.message}</p>
   }
 
+  const renderRoutes = () => {
+    return (
+      <Switch>
+        <Route exact path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
+        <Route exact path={ROUTES.NEW_PASSWORD} component={NewPassword} />
+        <Route
+          exact
+          path={ROUTES.PASSWORD_RECOVERY}
+          component={PasswordRecoveryPage}
+        />
+        <Route exact path={ROUTES.SIGN_UP}>
+          <RegisterPage />
+        </Route>
+        <Route exact path={ROUTES.LOGIN}>
+          <LoginPage />
+        </Route>
+        <Route
+          exact
+          path={ROUTES.REGISTER_SUCCESSFUL}
+          component={RegistrationSuccessful}
+        />
+      </Switch>
+    )
+  }
+
   return (
     <OnboardingLayout>
       <OnboardingStoreProvider fetchedPastelId={fetchedPastelId}>
-        <Switch>
-          <Route exact path={ROUTES.WELCOME_PAGE} component={WelcomePage} />
-          <Route exact path={ROUTES.NEW_PASSWORD} component={NewPassword} />
-          <Route
-            exact
-            path={ROUTES.PASSWORD_RECOVERY}
-            component={PasswordRecoveryPage}
-          />
-          <Route exact path={ROUTES.SIGN_UP}>
-            <RegisterPage />
-          </Route>
-          <Route exact path={ROUTES.LOGIN}>
-            <LoginPage />
-          </Route>
-          <Route
-            exact
-            path={ROUTES.REGISTER_SUCCESSFUL}
-            component={RegistrationSuccessful}
-          />
-        </Switch>
+        {renderRoutes()}
       </OnboardingStoreProvider>
     </OnboardingLayout>
   )

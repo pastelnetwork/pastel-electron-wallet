@@ -158,6 +158,22 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
     },
   ]
 
+  const renderPricePlanTable = () => (
+    <div>
+      <Table
+        columns={cellEdit ? Columns_edit : Columns}
+        data={tableData}
+        fixedHeader
+        bodyClassName='h-401px'
+        trClassName={cn(
+          'border-b border-gray-f2',
+          cellEdit ? 'h-104px' : 'h-82px',
+        )}
+        className='h-401px pr-[33px]'
+      />
+    </div>
+  )
+
   return (
     <Modal
       isOpen={isOpen}
@@ -174,19 +190,7 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
           For every additional copy sold, the price will be changed according to
           your desired settings.
         </div>
-        <div>
-          <Table
-            columns={cellEdit ? Columns_edit : Columns}
-            data={tableData}
-            fixedHeader
-            bodyClassName='h-401px'
-            trClassName={cn(
-              'border-b border-gray-f2',
-              cellEdit ? 'h-104px' : 'h-82px',
-            )}
-            className='h-401px pr-[33px]'
-          />
-        </div>
+        {renderPricePlanTable()}
 
         {cellEdit && (
           <div className='mt-8 flex justify-between'>

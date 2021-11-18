@@ -17,6 +17,40 @@ export type TProfileRelations = {
 function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
   const [tab, setTab] = useState('Followers')
 
+  const renderStatistics = () => (
+    <div
+      className={`flex justify-between ${
+        !isEmpty ? 'mr-8' : ''
+      } bg-gray-f8 z-10 relative`}
+    >
+      <div className='flex-grow z-10'>
+        <div
+          className={tab == 'Followers' ? cx_tab_active : cx_tab}
+          onClick={() => setTab('Followers')}
+        >
+          Followers ({relationCounts.followers})
+        </div>
+      </div>
+      <div className='flex-grow z-10 flex justify-center'>
+        <div
+          className={tab == 'Friends' ? cx_tab_active : cx_tab}
+          onClick={() => setTab('Friends')}
+        >
+          Friends ({relationCounts.friends})
+        </div>
+      </div>
+      <div className='flex-grow z-10 flex justify-end'>
+        <div
+          className={tab == 'Following' ? cx_tab_active : cx_tab}
+          onClick={() => setTab('Following')}
+        >
+          Following ({relationCounts.following})
+        </div>
+      </div>
+      <div className='absolute left-0 bottom-0 z-0 w-full border-t text-gray-b0' />
+    </div>
+  )
+
   return (
     <div
       className={cn(
@@ -24,37 +58,7 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
         !isEmpty ? 'lg:max-w-398px' : 'lg:max-w-359px',
       )}
     >
-      <div
-        className={`flex justify-between ${
-          !isEmpty ? 'mr-8' : ''
-        } bg-gray-f8 z-10 relative`}
-      >
-        <div className='flex-grow z-10'>
-          <div
-            className={tab == 'Followers' ? cx_tab_active : cx_tab}
-            onClick={() => setTab('Followers')}
-          >
-            Followers ({relationCounts.followers})
-          </div>
-        </div>
-        <div className='flex-grow z-10 flex justify-center'>
-          <div
-            className={tab == 'Friends' ? cx_tab_active : cx_tab}
-            onClick={() => setTab('Friends')}
-          >
-            Friends ({relationCounts.friends})
-          </div>
-        </div>
-        <div className='flex-grow z-10 flex justify-end'>
-          <div
-            className={tab == 'Following' ? cx_tab_active : cx_tab}
-            onClick={() => setTab('Following')}
-          >
-            Following ({relationCounts.following})
-          </div>
-        </div>
-        <div className='absolute left-0 bottom-0 z-0 w-full border-t text-gray-b0' />
-      </div>
+      {renderStatistics()}
       {tab == 'Followers' &&
         (isEmpty ? (
           <div className='bg-gray-e6 opacity-60 opacity mt-4 p-2 flex flex-col text-gray-71 rounded-lg flex-center h-234px'>

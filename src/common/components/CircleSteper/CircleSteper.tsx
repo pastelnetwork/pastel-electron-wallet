@@ -67,6 +67,23 @@ function CircleSteper({
     }
     setStartPoints(temp)
   }, [totalStep])
+
+  const renderLinearGradient = () => (
+    <defs>
+      <linearGradient
+        id='paint0_linear'
+        x1='33'
+        y1='1'
+        x2='33'
+        y2='65'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor={stopColor1} />
+        <stop offset='1' stopColor={stopColor2} />
+      </linearGradient>
+    </defs>
+  )
+
   return (
     <div className='relative'>
       <div className='font-extrabold text-base text-gray-4a absolute top-22px left-5'>
@@ -96,19 +113,7 @@ function CircleSteper({
             strokeLinecap='round'
           />
         ))}
-        <defs>
-          <linearGradient
-            id='paint0_linear'
-            x1='33'
-            y1='1'
-            x2='33'
-            y2='65'
-            gradientUnits='userSpaceOnUse'
-          >
-            <stop stopColor={stopColor1} />
-            <stop offset='1' stopColor={stopColor2} />
-          </linearGradient>
-        </defs>
+        {renderLinearGradient()}
       </svg>
     </div>
   )

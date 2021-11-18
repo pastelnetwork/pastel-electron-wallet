@@ -202,6 +202,43 @@ export default function StepBackupMethod(): JSX.Element {
     finish()
   }
 
+  const renderDownloadButton = () => {
+    return (
+      <button
+        type='button'
+        className='w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa flex justify-center items-center cursor-pointer transition duration-300'
+      >
+        <DownloadArrow size={24} className='text-blue-3f' />
+      </button>
+    )
+  }
+
+  const renderDownloadVideoButton = () => {
+    return (
+      <button
+        type='button'
+        className={cn(
+          'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
+          currentStatus === 'downloading' &&
+            'bg-blue-9b cursor-not-allowed opacity-30',
+        )}
+        onClick={handleDownloadVideo}
+        disabled={currentStatus === 'downloading'}
+      >
+        <DownloadArrow size={24} className='text-blue-3f' />
+      </button>
+    )
+  }
+
+  const renderPdfPrepareProgressButton = () => {
+    return (
+      <button type='button' onClick={() => setPdfPrepareProgress(65)}>
+        <div className='text-base font-medium text-gray-4a'>Crypto Keys</div>
+        <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
+      </button>
+    )
+  }
+
   return (
     <div className='pt-16 flex flex-col h-full'>
       <div>
@@ -237,17 +274,7 @@ export default function StepBackupMethod(): JSX.Element {
                 <PDF size={55} className='text-red-fa' variant='secondary' />
 
                 <div className='ml-4 mr-4'>
-                  <button
-                    type='button'
-                    onClick={() => setPdfPrepareProgress(65)}
-                  >
-                    <div className='text-base font-medium text-gray-4a'>
-                      Crypto Keys
-                    </div>
-                    <div className='text-xs font-medium text-gray-a0'>
-                      0.5mb
-                    </div>
-                  </button>
+                  {renderPdfPrepareProgressButton()}
                 </div>
 
                 {pdfPrepareProgress === 0 && (
@@ -271,12 +298,7 @@ export default function StepBackupMethod(): JSX.Element {
                         fileName={pdfFileName}
                         className='block w-full'
                       >
-                        <button
-                          type='button'
-                          className='w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa flex justify-center items-center cursor-pointer transition duration-300'
-                        >
-                          <DownloadArrow size={24} className='text-blue-3f' />
-                        </button>
+                        {renderDownloadButton()}
                       </PDFDownloadLink>
                     </Tooltip>
                   </div>
@@ -326,18 +348,7 @@ export default function StepBackupMethod(): JSX.Element {
                       vPosPercent={120}
                       classnames='font-extrabold py-2'
                     >
-                      <button
-                        type='button'
-                        className={cn(
-                          'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
-                          currentStatus === 'downloading' &&
-                            'bg-blue-9b cursor-not-allowed opacity-30',
-                        )}
-                        onClick={handleDownloadVideo}
-                        disabled={currentStatus === 'downloading'}
-                      >
-                        <DownloadArrow size={24} className='text-blue-3f' />
-                      </button>
+                      {renderDownloadVideoButton()}
                     </Tooltip>
                   </div>
                 ) : null}

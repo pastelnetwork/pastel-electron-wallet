@@ -55,48 +55,58 @@ function ProfileCard({
   description,
   address,
 }: TProfileCard): JSX.Element {
+  const renderStarRate = () => (
+    <div className='text-xs text-gray-71 pt-5 mb-2'>
+      <div className='flex items-center justify-center w-full'>
+        <StarRate rate={reputation} />
+        <div className='pl-1.5 text-gray-71'>{reputation} Reputation Score</div>
+      </div>
+    </div>
+  )
+
+  const renderUserInfo = () => (
+    <div className='mt-3 pl-2.5 text-center'>
+      <div className='px-1 pt-1 text-gray-71'>{username}</div>
+      <div className='font-bold text-26px'>{name}</div>
+      <div className='px-1 pt-0.5 text-gray-71 flex text-sm'>
+        <div>{truncateMiddle(walletId, 11, 4, '...')}</div>
+        <img
+          src={svg_copy}
+          className='pl-2.5 cursor-pointer filter hover:contrast-200'
+          alt='Copy'
+        />
+      </div>
+      <div className='pt-15px flex justify-center'>
+        <img
+          src={svg_facebook}
+          className='cursor-pointer mr-3 filter hover:contrast-200'
+          alt='Facebook'
+        />
+        <img
+          src={svg_twitter}
+          className='cursor-pointer filter hover:contrast-200'
+          alt='Twitter'
+        />
+      </div>
+    </div>
+  )
+
+  const renderUserAvatar = () => (
+    <div className='rounded-full mx-auto border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
+      <img src={svg_avatar} className='rounded-full w-full h-full' />
+    </div>
+  )
+
   return (
     <div className='flex flex-col pb-28px rounded-md shadow-sm bg-white w-315px'>
       <ProfileCardFrame />
       <div className='-mt-61px px-5 mx-auto pb-2 z-10'>
-        <div className='rounded-full mx-auto border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
-          <img src={svg_avatar} className='rounded-full w-full h-full' />
-        </div>
-        <div className='mt-3 pl-2.5 text-center'>
-          <div className='px-1 pt-1 text-gray-71'>{username}</div>
-          <div className='font-bold text-26px'>{name}</div>
-          <div className='px-1 pt-0.5 text-gray-71 flex text-sm'>
-            <div>{truncateMiddle(walletId, 11, 4, '...')}</div>
-            <img
-              src={svg_copy}
-              className='pl-2.5 cursor-pointer filter hover:contrast-200'
-              alt='Copy'
-            />
-          </div>
-          <div className='pt-15px flex justify-center'>
-            <img
-              src={svg_facebook}
-              className='cursor-pointer mr-3 filter hover:contrast-200'
-              alt='Facebook'
-            />
-            <img
-              src={svg_twitter}
-              className='cursor-pointer filter hover:contrast-200'
-              alt='Twitter'
-            />
-          </div>
-        </div>
+        {renderUserAvatar()}
+        {renderUserInfo()}
       </div>
       {isMyProfile && (
         <div className='flex flex-col px-5'>
-          <div className='text-xs text-gray-71 pt-5 mb-2'>
-            <div className='flex items-center justify-center w-full'>
-              <StarRate rate={reputation} />
-              <div className='pl-1.5 text-gray-71'>
-                {reputation} Reputation Score
-              </div>
-            </div>
-          </div>
+          {renderStarRate()}
 
           <div className='text-sm text-gray-71 text-center'>{description}</div>
           <div className='text-sm text-gray-4a flex pt-3 justify-center'>

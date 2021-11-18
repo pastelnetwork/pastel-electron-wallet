@@ -157,6 +157,37 @@ function MembersDirectory(): JSX.Element {
     setBreadcrumbs(updatedbreadcrumbs)
   }, [selectedItem])
 
+  const renderMemberStripsContent = () => (
+    <div className='space-y-5'>
+      {mockMemberStrips.map(item => (
+        <MemberStrip {...item} key={item.id} />
+      ))}
+    </div>
+  )
+
+  const renderFilter = () => (
+    <div className='flex justify-between pb-25px'>
+      <div className='w-244px'>
+        <Select {...filterOptions} className='w-full' />
+      </div>
+      <div className='flex'>
+        <div className='flex h-full items-center justify-end'>
+          <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
+
+          <Slider
+            min={0}
+            max={999}
+            values={range}
+            onChange={setRange}
+            formatValue={formatValue}
+            formatTooltipValue={formatValue}
+            step={1}
+          />
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -170,31 +201,8 @@ function MembersDirectory(): JSX.Element {
           className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
         >
           <div className='bg-white p-5 rounded-lg mr-[30px]'>
-            <div className='flex justify-between pb-25px'>
-              <div className='w-244px'>
-                <Select {...filterOptions} className='w-full' />
-              </div>
-              <div className='flex'>
-                <div className='flex h-full items-center justify-end'>
-                  <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
-
-                  <Slider
-                    min={0}
-                    max={999}
-                    values={range}
-                    onChange={setRange}
-                    formatValue={formatValue}
-                    formatTooltipValue={formatValue}
-                    step={1}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='space-y-5'>
-              {mockMemberStrips.map(item => (
-                <MemberStrip {...item} key={item.id} />
-              ))}
-            </div>
+            {renderFilter()}
+            {renderMemberStripsContent()}
           </div>
         </div>
       </Scrollbar>

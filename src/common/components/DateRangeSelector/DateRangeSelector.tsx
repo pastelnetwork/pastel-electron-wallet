@@ -113,6 +113,42 @@ export default function DateRangeSelector({
     }
   }
 
+  const renderDecreaseMonthButton = (
+    decreaseMonth: () => void,
+    prevMonthButtonDisabled: boolean,
+  ) => (
+    <button
+      onClick={decreaseMonth}
+      disabled={prevMonthButtonDisabled}
+      className='focus:outline-none p-1 mr-5'
+      type='button'
+    >
+      <Caret
+        to='left'
+        size={12}
+        className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+      />
+    </button>
+  )
+
+  const renderIncreaseMonthMonthButton = (
+    increaseMonth: () => void,
+    nextMonthButtonDisabled: boolean,
+  ) => (
+    <button
+      onClick={increaseMonth}
+      disabled={nextMonthButtonDisabled}
+      className='focus:outline-none p-1'
+      type='button'
+    >
+      <Caret
+        to='right'
+        size={12}
+        className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+      />
+    </button>
+  )
+
   const customHeader = ({
     date,
     decreaseMonth,
@@ -126,30 +162,8 @@ export default function DateRangeSelector({
         {dayjs(date).year()}
       </h5>
       <div>
-        <button
-          onClick={decreaseMonth}
-          disabled={prevMonthButtonDisabled}
-          className='focus:outline-none p-1 mr-5'
-          type='button'
-        >
-          <Caret
-            to='left'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-        <button
-          onClick={increaseMonth}
-          disabled={nextMonthButtonDisabled}
-          className='focus:outline-none p-1'
-          type='button'
-        >
-          <Caret
-            to='right'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
+        {renderDecreaseMonthButton(decreaseMonth, prevMonthButtonDisabled)}
+        {renderIncreaseMonthMonthButton(increaseMonth, nextMonthButtonDisabled)}
       </div>
     </div>
   )

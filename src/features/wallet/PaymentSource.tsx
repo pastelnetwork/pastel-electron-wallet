@@ -50,26 +50,36 @@ export default function PaymentSource({
     }
   }
 
+  const renderSelectPaymentSourceAmount = () => (
+    <div className='flex justify-end pr-4'>
+      <SelectPaymentSourceAmount address={address} isModal />
+    </div>
+  )
+
+  const renderActionIcon = () => {
+    return (
+      <div className='flex items-center'>
+        <Checkbox
+          isChecked
+          clickHandler={() => handleSelectedAddress(address)}
+        />
+        <AddressForm address={address} copyable={false} />
+        <span className='ml-10px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
+          <Eye size={19} className='text-gray-88' />
+        </span>
+        <span
+          className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+          onClick={() => handleSelectedAddress(address, true)}
+        >
+          <Trash size={14} className='text-gray-88' />
+        </span>
+      </div>
+    )
+  }
+
   return (
     <tr className='h-67px border-b border-line-DEFAULT mr-4 justify-between'>
-      <td className='whitespace-nowrap'>
-        <div className='flex items-center'>
-          <Checkbox
-            isChecked
-            clickHandler={() => handleSelectedAddress(address)}
-          />
-          <AddressForm address={address} copyable={false} />
-          <span className='ml-10px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
-            <Eye size={19} className='text-gray-88' />
-          </span>
-          <span
-            className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            onClick={() => handleSelectedAddress(address, true)}
-          >
-            <Trash size={14} className='text-gray-88' />
-          </span>
-        </div>
-      </td>
+      <td className='whitespace-nowrap'>{renderActionIcon()}</td>
       <td className='w-24'>
         {!isMemoDisabled ? (
           <div className='relative'>
@@ -91,11 +101,7 @@ export default function PaymentSource({
           </div>
         ) : null}
       </td>
-      <td>
-        <div className='flex justify-end pr-4'>
-          <SelectPaymentSourceAmount address={address} isModal />
-        </div>
-      </td>
+      <td>{renderSelectPaymentSourceAmount()}</td>
     </tr>
   )
 }

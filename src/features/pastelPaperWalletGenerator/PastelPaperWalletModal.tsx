@@ -125,45 +125,61 @@ function PDFDocument({
   privateKey,
   title,
 }: TPDFDocumentProps) {
+  const renderPrivateKey = () => (
+    <View style={pdfStyles.mainContentWrapper}>
+      <View style={pdfStyles.contentItem}>
+        <Text style={pdfStyles.contentTitle}>Private Key</Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(privateKey)}
+        </Text>
+      </View>
+      <View style={pdfStyles.marginTop20}>
+        <Text style={pdfStyles.contentTitle}>
+          {currencyName} Address (Sapling)
+        </Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(address)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderPrivateKeyQRCode = () => (
+    <View style={pdfStyles.mainMedia}>
+      <QRCodeGEnerator address={address} />
+    </View>
+  )
+
+  const renderAddressSapling = () => (
+    <View style={pdfStyles.contentTop}>
+      <View style={pdfStyles.topMedia}>
+        <QRCodeGEnerator address={address} />
+      </View>
+      <View style={pdfStyles.contentWrapper}>
+        <Text style={pdfStyles.contentTitle}>
+          {currencyName} Address (Sapling)
+        </Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(address)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderPDFContent = () => (
+    <View style={pdfStyles.section}>
+      {renderAddressSapling()}
+      <View style={pdfStyles.mainContent}>
+        {renderPrivateKey()}
+        {renderPrivateKeyQRCode()}
+      </View>
+    </View>
+  )
+
   return (
     <Document title={title}>
       <Page size='A4' style={pdfStyles.page}>
-        <View style={pdfStyles.section}>
-          <View style={pdfStyles.contentTop}>
-            <View style={pdfStyles.topMedia}>
-              <QRCodeGEnerator address={address} />
-            </View>
-            <View style={pdfStyles.contentWrapper}>
-              <Text style={pdfStyles.contentTitle}>
-                {currencyName} Address (Sapling)
-              </Text>
-              <Text style={pdfStyles.contentValue}>
-                {addLineBreakForContent(address)}
-              </Text>
-            </View>
-          </View>
-          <View style={pdfStyles.mainContent}>
-            <View style={pdfStyles.mainContentWrapper}>
-              <View style={pdfStyles.contentItem}>
-                <Text style={pdfStyles.contentTitle}>Private Key</Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakForContent(privateKey)}
-                </Text>
-              </View>
-              <View style={pdfStyles.marginTop20}>
-                <Text style={pdfStyles.contentTitle}>
-                  {currencyName} Address (Sapling)
-                </Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakForContent(address)}
-                </Text>
-              </View>
-            </View>
-            <View style={pdfStyles.mainMedia}>
-              <QRCodeGEnerator address={address} />
-            </View>
-          </View>
-        </View>
+        {renderPDFContent()}
       </Page>
     </Document>
   )
@@ -212,6 +228,17 @@ export default function PastelPaperWalletModal({
     )
   }
 
+  const renderPDFViewer = () => (
+    <PDFViewer style={pdfStyles.viewer}>
+      <PDFDocument
+        currencyName={currencyName}
+        address={address}
+        privateKey={privateKey}
+        title={generateFileName()}
+      />
+    </PDFViewer>
+  )
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -227,14 +254,7 @@ export default function PastelPaperWalletModal({
           X
         </button>
         <DownloadButton />
-        <PDFViewer style={pdfStyles.viewer}>
-          <PDFDocument
-            currencyName={currencyName}
-            address={address}
-            privateKey={privateKey}
-            title={generateFileName()}
-          />
-        </PDFViewer>
+        {renderPDFViewer()}
       </div>
     </Modal>
   )

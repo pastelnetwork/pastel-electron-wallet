@@ -307,35 +307,43 @@ export default function DashboardPage(): JSX.Element {
     </div>
   )
 
+  const renderTrendingNFTsControl = () => (
+    <div className='flex items-center'>
+      <div className='mr-6'>
+        <Radio
+          checked={tab === Tabs.Creators}
+          onChange={() => setTab(0)}
+          labelClassName='text-sm ml-3'
+        >
+          Creators
+        </Radio>
+      </div>
+      <Radio
+        checked={tab === Tabs.NFTs}
+        onChange={() => setTab(1)}
+        labelClassName='text-sm ml-3'
+      >
+        NFTs
+      </Radio>
+    </div>
+  )
+
+  const renderTrendingNFTsInfo = () => (
+    <div className='flex items-center'>
+      <div className='font-extrabold text-gray-2d text-lg leading-6'>
+        Trending NFTs
+      </div>
+      <div className='font-medium text-gray-a0 text-sm ml-2'>
+        312,000 listed
+      </div>
+    </div>
+  )
+
   const renderTrendingNFTs = () => (
     <div className='paper pt-6 flex-grow lg:flex lg:flex-col w-0 mr-5 relative'>
       <div className='flex items-center h-6 mb-30px flex-shrink-0 px-30px justify-between'>
-        <div className='flex items-center'>
-          <div className='font-extrabold text-gray-2d text-lg leading-6'>
-            Trending NFTs
-          </div>
-          <div className='font-medium text-gray-a0 text-sm ml-2'>
-            312,000 listed
-          </div>
-        </div>
-        <div className='flex items-center'>
-          <div className='mr-6'>
-            <Radio
-              checked={tab === Tabs.Creators}
-              onChange={() => setTab(0)}
-              labelClassName='text-sm ml-3'
-            >
-              Creators
-            </Radio>
-          </div>
-          <Radio
-            checked={tab === Tabs.NFTs}
-            onChange={() => setTab(1)}
-            labelClassName='text-sm ml-3'
-          >
-            NFTs
-          </Radio>
-        </div>
+        {renderTrendingNFTsInfo()}
+        {renderTrendingNFTsControl()}
       </div>
       <div className='lg:flex-grow px-30px pb-7'>
         <div

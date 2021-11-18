@@ -77,6 +77,62 @@ export default function RestoreByPdf({
     return <RestoreError />
   }
 
+  const renderRefreshIcon = () => {
+    return (
+      <Tooltip
+        type='top'
+        content={
+          <div className='p-2 text-xs font-medium'>Restore your keys.</div>
+        }
+        width={130}
+        vPosPercent={110}
+      >
+        <span
+          onClick={handleRestoreByUpload}
+          className={cn(fileSelected ? 'cursor-pointer' : 'cursor-not-allowed')}
+        >
+          <Refresh
+            size={44}
+            className={cn(
+              'transition duration-300',
+              !fileSelected
+                ? 'text-blue-9b'
+                : 'text-blue-e7 hover:text-blue-fa',
+            )}
+            pathColor={fileSelected ? '#3F9AF7' : '#fff'}
+          />
+        </span>
+      </Tooltip>
+    )
+  }
+
+  const renderUploadPdfControl = () => {
+    return (
+      <label className='relative overflow-hidden flex'>
+        <div className='w-[55px] cursor-pointer'>
+          <PDF variant='secondary' size={55} />
+        </div>
+        <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
+          <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
+            {fileSelected ? fileSelected.name : 'Select your crypto keys.'}
+          </p>
+          {fileSelected ? (
+            <p className='mb-0 text-xs font-normal text-gray-a0'>
+              {formatFileSize(fileSelected.size)}
+            </p>
+          ) : null}
+        </div>
+        <input
+          type='file'
+          name='upload'
+          accept='application/pdf'
+          onChange={handlePdfChange}
+          className='hidden'
+        />
+      </label>
+    )
+  }
+
   return (
     <div>
       <div className='font-normal text-h5 leading-6 text-gray-71'>
@@ -89,62 +145,8 @@ export default function RestoreByPdf({
             currentStatus === 'restoring' && 'cursor-not-allowed',
           )}
         >
-          <div className='w-3/4'>
-            <label className='relative overflow-hidden flex'>
-              <div className='w-[55px] cursor-pointer'>
-                <PDF variant='secondary' size={55} />
-              </div>
-              <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
-                <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-                  {fileSelected
-                    ? fileSelected.name
-                    : 'Select your crypto keys.'}
-                </p>
-                {fileSelected ? (
-                  <p className='mb-0 text-xs font-normal text-gray-a0'>
-                    {formatFileSize(fileSelected.size)}
-                  </p>
-                ) : null}
-              </div>
-              <input
-                type='file'
-                name='upload'
-                accept='application/pdf'
-                onChange={handlePdfChange}
-                className='hidden'
-              />
-            </label>
-          </div>
-          <div className='w-14'>
-            <Tooltip
-              type='top'
-              content={
-                <div className='p-2 text-xs font-medium'>
-                  Restore your keys.
-                </div>
-              }
-              width={130}
-              vPosPercent={110}
-            >
-              <span
-                onClick={handleRestoreByUpload}
-                className={cn(
-                  fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
-                )}
-              >
-                <Refresh
-                  size={44}
-                  className={cn(
-                    'transition duration-300',
-                    !fileSelected
-                      ? 'text-blue-9b'
-                      : 'text-blue-e7 hover:text-blue-fa',
-                  )}
-                  pathColor={fileSelected ? '#3F9AF7' : '#fff'}
-                />
-              </span>
-            </Tooltip>
-          </div>
+          <div className='w-3/4'>{renderUploadPdfControl()}</div>
+          <div className='w-14'>{renderRefreshIcon()}</div>
         </div>
         {currentStatus === 'restoring' && (
           <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>

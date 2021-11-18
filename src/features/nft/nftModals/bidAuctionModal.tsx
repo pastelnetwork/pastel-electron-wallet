@@ -26,6 +26,40 @@ function BidAuctionModal({
   const handleBid = (event: React.ChangeEvent<HTMLInputElement>) =>
     setBid(event.target.value)
 
+  const renderCurrentBalance = () => (
+    <div className='text-sm mb-[26px]'>
+      <div className='flex justify-between'>
+        <p className='font-normal text-gray-4a'>
+          Your Current {currencyName} Balance
+        </p>
+        <p className='text-right font-extrabold text-h6 text-gray-2d'>
+          21,000 {currencyName}
+        </p>
+      </div>
+      <div className='flex justify-between mt-2.5'>
+        <p className='font-normal text-gray-4a'>Transaction Fee(burned)</p>
+        <p className='text-right font-extrabold text-h6 text-gray-2d flex items-center'>
+          <Fire size={18} />
+          ~500 {currencyName}
+        </p>
+      </div>
+      <div className='flex justify-between mt-2.5'>
+        <p className='font-normal text-gray-4a'>Total NFT Offer with Fee</p>
+        <p className='text-right font-extrabold text-h6 text-gray-2d'>
+          13,450 {currencyName}
+        </p>
+      </div>
+      <div className='flex justify-between mt-2.5'>
+        <p className='font-normal text-gray-4a'>
+          Remaining Balance if Accepted
+        </p>
+        <p className='text-right font-extrabold text-h6 text-gray-2d'>
+          7,550 {currencyName}
+        </p>
+      </div>
+    </div>
+  )
+
   return (
     <Modal
       isOpen={isOpen}
@@ -110,37 +144,7 @@ function BidAuctionModal({
           </p>
         </div>
       )}
-      <div className='text-sm mb-[26px]'>
-        <div className='flex justify-between'>
-          <p className='font-normal text-gray-4a'>
-            Your Current {currencyName} Balance
-          </p>
-          <p className='text-right font-extrabold text-h6 text-gray-2d'>
-            21,000 {currencyName}
-          </p>
-        </div>
-        <div className='flex justify-between mt-2.5'>
-          <p className='font-normal text-gray-4a'>Transaction Fee(burned)</p>
-          <p className='text-right font-extrabold text-h6 text-gray-2d flex items-center'>
-            <Fire size={18} />
-            ~500 {currencyName}
-          </p>
-        </div>
-        <div className='flex justify-between mt-2.5'>
-          <p className='font-normal text-gray-4a'>Total NFT Offer with Fee</p>
-          <p className='text-right font-extrabold text-h6 text-gray-2d'>
-            13,450 {currencyName}
-          </p>
-        </div>
-        <div className='flex justify-between mt-2.5'>
-          <p className='font-normal text-gray-4a'>
-            Remaining Balance if Accepted
-          </p>
-          <p className='text-right font-extrabold text-h6 text-gray-2d'>
-            7,550 {currencyName}
-          </p>
-        </div>
-      </div>
+      {renderCurrentBalance()}
       {type === 'MakeOffer' ? (
         <Button variant='default' className='w-full'>
           Bid now

@@ -7,6 +7,26 @@ import { Card } from './components/card/Card'
 import styles from './PastelStatistics.module.css'
 
 function PastelStatistics(): JSX.Element {
+  const renderPastelChartFields = () => (
+    <div className={`${styles.fullWidth} ${styles.padding16}`}>
+      <div className={styles.cardList}>
+        {pastelChartFields.map(field => (
+          <Link
+            to={field.routeName}
+            className={styles.cardLink}
+            key={field.routeName}
+          >
+            <Card
+              key={field.name}
+              subTitle={field.name}
+              backgroundImage={field.backgroundImage}
+            />
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
+
   return (
     <>
       <div
@@ -14,25 +34,7 @@ function PastelStatistics(): JSX.Element {
       >
         Pastel Statistics
       </div>
-      <div className={styles.container}>
-        <div className={`${styles.fullWidth} ${styles.padding16}`}>
-          <div className={styles.cardList}>
-            {pastelChartFields.map(field => (
-              <Link
-                to={field.routeName}
-                className={styles.cardLink}
-                key={field.routeName}
-              >
-                <Card
-                  key={field.name}
-                  subTitle={field.name}
-                  backgroundImage={field.backgroundImage}
-                />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+      <div className={styles.container}>{renderPastelChartFields()}</div>
     </>
   )
 }

@@ -40,39 +40,46 @@ function Profile(): JSX.Element {
     setTab(index)
   }
 
+  const renderProfileContent = () => (
+    <div className='flex flex-col flex-grow pl-8'>
+      <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
+        <ProfileGeneral {...general_data} />
+        <ProfileRelations />
+      </div>
+    </div>
+  )
+
+  const renderProfileCard = () => (
+    <div className='flex flex-col items-center lg:justify-between'>
+      <ProfileCard {...profile_data} isMyProfile />
+      <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
+        Member Since May 15, 2021
+      </div>
+    </div>
+  )
+
+  const renderProfileHeader = () => (
+    <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
+      <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
+      <MultiToggleSwitch
+        data={[
+          { label: 'General' },
+          { label: 'Portfolio' },
+          { label: 'Board' },
+        ]}
+        activeIndex={tab}
+        onToggle={onTabToggle}
+      />
+    </div>
+  )
+
   return (
-    <div>
-      <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
-        <div className='bg-white'>
-          <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
-            <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
-            <MultiToggleSwitch
-              data={[
-                { label: 'General' },
-                { label: 'Portfolio' },
-                { label: 'Board' },
-              ]}
-              activeIndex={tab}
-              onToggle={onTabToggle}
-            />
-          </div>
-        </div>
-        <div className='wrapper flex py-8 px-60px'>
-          <div className='flex w-full'>
-            <div className='flex flex-col items-center lg:justify-between'>
-              <ProfileCard {...profile_data} isMyProfile />
-              <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
-                Member Since May 15, 2021
-              </div>
-            </div>
-            <div className='flex flex-col flex-grow pl-8'>
-              {/* <ProfileTabs /> */}
-              <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
-                <ProfileGeneral {...general_data} />
-                <ProfileRelations />
-              </div>
-            </div>
-          </div>
+    <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
+      <div className='bg-white'>{renderProfileHeader()}</div>
+      <div className='wrapper flex py-8 px-60px'>
+        <div className='flex w-full'>
+          {renderProfileCard()}
+          {renderProfileContent()}
         </div>
       </div>
     </div>

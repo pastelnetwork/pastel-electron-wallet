@@ -53,40 +53,50 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
     document.getElementById('terminalInput')?.focus()
   }
 
+  const renderTerminalConsole = () => (
+    <div className={styles.screen}>
+      <div className={styles.wrapper}>
+        <div className={styles.interlace} />
+        <div className={styles.scanline} />
+        <div className={styles.envelope}>
+          <TerminalConsole {...consoleProps()} />
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderTheme = () => (
+    <>
+      <div
+        className={cx(styles.greenThemeBtn, {
+          [styles.active]: theme === 'green',
+        })}
+        onClick={() => onThemeBtnClick('green')}
+        title='Select green theme'
+      />
+      <div
+        className={cx(styles.amberThemeBtn, {
+          [styles.active]: theme === 'amber',
+        })}
+        onClick={() => onThemeBtnClick('amber')}
+        title='Select amber theme'
+      />
+      <div
+        className={cx(styles.blackThemeBtn, {
+          [styles.active]: theme === 'black',
+        })}
+        onClick={() => onThemeBtnClick('black')}
+        title='Select black theme'
+      />
+    </>
+  )
+
   return (
     <div className={styles.container}>
       <div className={cstyles.flexspacebetween} />
       <div className={cx(styles.crt, styles[theme])}>
-        <div className={styles.screen}>
-          <div className={styles.wrapper}>
-            <div className={styles.interlace} />
-            <div className={styles.scanline} />
-            <div className={styles.envelope}>
-              <TerminalConsole {...consoleProps()} />
-            </div>
-          </div>
-        </div>
-        <div
-          className={cx(styles.greenThemeBtn, {
-            [styles.active]: theme === 'green',
-          })}
-          onClick={() => onThemeBtnClick('green')}
-          title='Select green theme'
-        />
-        <div
-          className={cx(styles.amberThemeBtn, {
-            [styles.active]: theme === 'amber',
-          })}
-          onClick={() => onThemeBtnClick('amber')}
-          title='Select amber theme'
-        />
-        <div
-          className={cx(styles.blackThemeBtn, {
-            [styles.active]: theme === 'black',
-          })}
-          onClick={() => onThemeBtnClick('black')}
-          title='Select black theme'
-        />
+        {renderTerminalConsole()}
+        {renderTheme()}
       </div>
     </div>
   )

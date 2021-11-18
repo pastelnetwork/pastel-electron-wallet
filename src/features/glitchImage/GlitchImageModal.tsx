@@ -15,6 +15,15 @@ export default function GlitchImageModal(): JSX.Element | null {
     return null
   }
 
+  const renderIframeContent = () => {
+    const port: string = glitch.staticPort?.toString() || ''
+    return (
+      <div className={styles.iframe}>
+        <iframe src={`http://localhost:${port}/`} title='Glitch Image Tool' />
+      </div>
+    )
+  }
+
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -29,12 +38,7 @@ export default function GlitchImageModal(): JSX.Element | null {
         >
           X
         </button>
-        <div className={styles.iframe}>
-          <iframe
-            src={`http://localhost:${glitch.staticPort}/`}
-            title='Glitch Image Tool'
-          />
-        </div>
+        {renderIframeContent()}
       </div>
     </Modal>
   )

@@ -76,6 +76,50 @@ export default function AddressesTable({
   }
   const pastelPromoCodeList = pastelPromoCode.data
 
+  const renderPDFIcon = (value: string) => (
+    <button
+      onClick={() => {
+        setCurrentAddress(value)
+        setExportKeysModalOpen(true)
+      }}
+      className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+      type='button'
+    >
+      <Tooltip
+        autoWidth
+        type='top'
+        width={130}
+        padding={5}
+        content='Open Private Key'
+        classnames='py-2 text-gray-a0'
+      >
+        <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
+      </Tooltip>
+    </button>
+  )
+
+  const renderQRCodeIcon = (row: TRow) => (
+    <button
+      type='button'
+      className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+      onClick={() => {
+        setCurrentAddress(row.address)
+        setIsQRCodeModalOpen(true)
+      }}
+    >
+      <Tooltip
+        autoWidth
+        type='top'
+        width={130}
+        padding={5}
+        content='Open Address QR'
+        classnames='py-2 text-gray-a0'
+      >
+        <QRCode size={20} />
+      </Tooltip>
+    </button>
+  )
+
   const Columns = [
     {
       key: 'address',
@@ -133,26 +177,7 @@ export default function AddressesTable({
         isLoadingAddresses ? (
           loadingCell
         ) : (
-          <div className='flex pl-6'>
-            <span
-              className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-              onClick={() => {
-                setCurrentAddress(row.address)
-                setIsQRCodeModalOpen(true)
-              }}
-            >
-              <Tooltip
-                autoWidth
-                type='top'
-                width={130}
-                padding={5}
-                content='Open Address QR'
-                classnames='py-2 text-gray-a0'
-              >
-                <QRCode size={20} />
-              </Tooltip>
-            </span>
-          </div>
+          <div className='flex pl-6'>{renderQRCodeIcon(row)}</div>
         ),
     },
     {
@@ -166,27 +191,7 @@ export default function AddressesTable({
         ) : (
           <div className='flex items-center'>
             <div className='text-gray-71 text-h5-medium'>private key</div>
-            <span
-              onClick={() => {
-                setCurrentAddress(value)
-                setExportKeysModalOpen(true)
-              }}
-              className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            >
-              <Tooltip
-                autoWidth
-                type='top'
-                width={130}
-                padding={5}
-                content='Open Private Key'
-                classnames='py-2 text-gray-a0'
-              >
-                <FilePDFIcon
-                  size={20}
-                  className='text-gray-88 cursor-pointer'
-                />
-              </Tooltip>
-            </span>
+            {renderPDFIcon(value)}
           </div>
         ),
     },

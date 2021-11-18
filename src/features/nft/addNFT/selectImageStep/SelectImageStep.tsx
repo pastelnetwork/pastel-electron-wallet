@@ -42,6 +42,40 @@ export default function SelectImageStep({
     service.submit()
   }
 
+  const renderImageOptimizationButton = () => (
+    <div className='flex-between'>
+      <button
+        type='button'
+        className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
+        onClick={handleBack}
+      >
+        <ArrowSlim to='left' size={14} />
+      </button>
+      <button
+        className='btn btn-primary px-[30px]'
+        onClick={handleImageOptimizationSubmit}
+        disabled={!imageForPreview}
+        type='button'
+      >
+        Go to Image Optimization
+      </button>
+    </div>
+  )
+
+  const renderImageSize = () => (
+    <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
+      <div className='absolute inset-0 border border-gray-8e opacity-20 rounded font-medium shadow-4px' />
+      {size ? formatFileSize(size) : 'max 100 mb'}
+    </div>
+  )
+
+  const renderSelectImageFile = () => (
+    <div className='flex items-center text-gray-71 font-medium mb-2'>
+      Select Image File
+      <Info size={18} className='ml-3' />
+    </div>
+  )
+
   return (
     <ModalLayout
       title='Select Image'
@@ -91,14 +125,8 @@ export default function SelectImageStep({
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
           <div className='text-sm'>
-            <div className='flex items-center text-gray-71 font-medium mb-2'>
-              Select Image File
-              <Info size={18} className='ml-3' />
-            </div>
-            <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
-              <div className='absolute inset-0 border border-gray-8e opacity-20 rounded font-medium shadow-4px' />
-              {size ? formatFileSize(size) : 'max 100 mb'}
-            </div>
+            {renderSelectImageFile()}
+            {renderImageSize()}
             <div className='text-gray-71 mb-2'>
               Please take into account that image file size affects the
               registration fee.
@@ -147,23 +175,7 @@ export default function SelectImageStep({
               </div>
             )}
           </div>
-          <div className='flex-between'>
-            <button
-              type='button'
-              className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={handleBack}
-            >
-              <ArrowSlim to='left' size={14} />
-            </button>
-            <button
-              className='btn btn-primary px-[30px]'
-              onClick={handleImageOptimizationSubmit}
-              disabled={!imageForPreview}
-              type='button'
-            >
-              Go to Image Optimization
-            </button>
-          </div>
+          {renderImageOptimizationButton()}
         </div>
       }
     />

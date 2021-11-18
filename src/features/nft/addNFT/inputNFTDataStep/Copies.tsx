@@ -25,17 +25,21 @@ function Warning({ form }: { form: TForm }) {
 }
 
 export default function Copies({ form }: { form: TForm }): JSX.Element {
+  const renderCopies = () => (
+    <div className='text-gray-4a font-medium text-base flex items-center mb-2'>
+      Copies
+      <div className='ml-[9px]'>
+        <Tooltip type='top' content='info' width={50}>
+          <Info className='text-gray-8e' size={18} />
+        </Tooltip>
+      </div>
+    </div>
+  )
+
   return (
     <div className='bg-gray-f8 rounded-lg pl-6 pr-[18px] flex justify-between min-h-[117px]'>
       <div className='py-6'>
-        <div className='text-gray-4a font-medium text-base flex items-center mb-2'>
-          Copies
-          <div className='ml-[9px]'>
-            <Tooltip type='top' content='info' width={50}>
-              <Info className='text-gray-8e' size={18} />
-            </Tooltip>
-          </div>
-        </div>
+        {renderCopies()}
         <Warning form={form} />
       </div>
       <div className='mt-3'>

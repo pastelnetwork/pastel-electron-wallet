@@ -11,6 +11,110 @@ export function TotalBalance({
   className = 'text-gray-88',
   variant = 'active',
 }: TToatalBalanceProps): JSX.Element {
+  const renderLinearGradient = () => (
+    <defs>
+      <linearGradient
+        id='paint0_linear'
+        x1='49.5834'
+        y1='28.625'
+        x2='49.5834'
+        y2='63.625'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint1_linear'
+        x1='19.6875'
+        y1='2.375'
+        x2='19.6875'
+        y2='19.875'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint2_linear'
+        x1='19.6875'
+        y1='19.875'
+        x2='19.6875'
+        y2='28.625'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint3_linear'
+        x1='37.6875'
+        y1='11.125'
+        x2='37.6875'
+        y2='24.25'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint4_linear'
+        x1='14.2188'
+        y1='11.125'
+        x2='14.2188'
+        y2='63.625'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint5_linear'
+        x1='14.2188'
+        y1='46.125'
+        x2='14.2188'
+        y2='54.875'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint6_linear'
+        x1='14.2188'
+        y1='37.375'
+        x2='14.2188'
+        y2='46.125'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint7_linear'
+        x1='14.2188'
+        y1='28.625'
+        x2='14.2188'
+        y2='37.375'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <linearGradient
+        id='paint8_linear'
+        x1='50.3125'
+        y1='59.25'
+        x2='50.3125'
+        y2='35.9167'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+    </defs>
+  )
+
   return (
     <svg
       width={size}
@@ -79,107 +183,7 @@ export function TotalBalance({
         d='M51.352 39.221V39.2854C52.5939 39.484 53.5459 40.5649 53.5459 41.8646C53.5459 43.1641 52.5939 44.2451 51.352 44.4436V44.5247H47.2353V55.9424L50.5354 59.25L50.5326 47.813L50.9444 47.8124C54.2145 47.81 56.875 45.1418 56.875 41.8646C56.875 38.6146 54.2369 35.9467 50.9945 35.9172L50.9149 35.9167H43.75L47.0473 39.221H51.352Z'
         fill={variant === 'active' ? 'url(#paint8_linear)' : '#B9BFCB'}
       />
-      <defs>
-        <linearGradient
-          id='paint0_linear'
-          x1='49.5834'
-          y1='28.625'
-          x2='49.5834'
-          y2='63.625'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint1_linear'
-          x1='19.6875'
-          y1='2.375'
-          x2='19.6875'
-          y2='19.875'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint2_linear'
-          x1='19.6875'
-          y1='19.875'
-          x2='19.6875'
-          y2='28.625'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint3_linear'
-          x1='37.6875'
-          y1='11.125'
-          x2='37.6875'
-          y2='24.25'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint4_linear'
-          x1='14.2188'
-          y1='11.125'
-          x2='14.2188'
-          y2='63.625'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint5_linear'
-          x1='14.2188'
-          y1='46.125'
-          x2='14.2188'
-          y2='54.875'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint6_linear'
-          x1='14.2188'
-          y1='37.375'
-          x2='14.2188'
-          y2='46.125'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint7_linear'
-          x1='14.2188'
-          y1='28.625'
-          x2='14.2188'
-          y2='37.375'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <linearGradient
-          id='paint8_linear'
-          x1='50.3125'
-          y1='59.25'
-          x2='50.3125'
-          y2='35.9167'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-      </defs>
+      {renderLinearGradient()}
     </svg>
   )
 }

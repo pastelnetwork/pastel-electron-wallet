@@ -125,6 +125,69 @@ export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
     return ''
   }
 
+  const renderDownloadButton = () => (
+    <div className={styles.lineChartDownloadButtonBar}>
+      <button
+        className={styles.uploadButton}
+        type='button'
+        onClick={downloadPNG}
+      >
+        Download PNG
+      </button>
+      <CSVLink
+        data={csvData}
+        filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
+        headers={csvHeaders[chartName]}
+        separator={';'}
+        ref={downloadRef}
+        className={styles.uploadButton}
+      >
+        Download CSV
+      </CSVLink>
+    </div>
+  )
+
+  const renderThemes = () => (
+    <div className={styles.lineChartThemeSelect}>
+      {themes.map((theme, index) => (
+        <button
+          className={`${styles.themeSelectButton} ${getActiveThemeButtonStyle(
+            index,
+          )}`}
+          onClick={() => handleThemeButtonClick(theme, index)}
+          style={{
+            backgroundColor: `${theme.backgroundColor}`,
+          }}
+          type='button'
+          key={`button-filter-${theme.name}`}
+        ></button>
+      ))}
+    </div>
+  )
+
+  const renderPeriod = () => (
+    <div className={styles.periodSelect}>
+      <span style={{ color: currentTheme?.color }}>period: </span>
+      {periods.map((period, index) => (
+        <button
+          className={`${getActivePriodButtonStyle(index)} ${
+            styles.filterButton
+          }`}
+          onClick={() => {
+            setSelectedPeriodButton(index)
+            if (handlePeriodFilterChange) {
+              handlePeriodFilterChange(period)
+            }
+          }}
+          type='button'
+          key={`button-filter-${period}`}
+        >
+          {period}
+        </button>
+      ))}
+    </div>
+  )
+
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
@@ -135,26 +198,7 @@ export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
         >
           {title}
         </div>
-        <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>period: </span>
-          {periods.map((period, index) => (
-            <button
-              className={`${getActivePriodButtonStyle(index)} ${
-                styles.filterButton
-              }`}
-              onClick={() => {
-                setSelectedPeriodButton(index)
-                if (handlePeriodFilterChange) {
-                  handlePeriodFilterChange(period)
-                }
-              }}
-              type='button'
-              key={`button-filter-${period}`}
-            >
-              {period}
-            </button>
-          ))}
-        </div>
+        {renderPeriod()}
       </div>
       <div className={styles.lineChartWrap}>
         <ReactECharts
@@ -166,40 +210,8 @@ export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
         />
       </div>
       <div className={styles.lineChartFooter}>
-        <div className={styles.lineChartThemeSelect}>
-          {themes.map((theme, index) => (
-            <button
-              className={`${
-                styles.themeSelectButton
-              } ${getActiveThemeButtonStyle(index)}`}
-              onClick={() => handleThemeButtonClick(theme, index)}
-              style={{
-                backgroundColor: `${theme.backgroundColor}`,
-              }}
-              type='button'
-              key={`button-filter-${theme.name}`}
-            ></button>
-          ))}
-        </div>
-        <div className={styles.lineChartDownloadButtonBar}>
-          <button
-            className={styles.uploadButton}
-            type='button'
-            onClick={downloadPNG}
-          >
-            Download PNG
-          </button>
-          <CSVLink
-            data={csvData}
-            filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
-            headers={csvHeaders[chartName]}
-            separator={';'}
-            ref={downloadRef}
-            className={styles.uploadButton}
-          >
-            Download CSV
-          </CSVLink>
-        </div>
+        {renderThemes()}
+        {renderDownloadButton()}
       </div>
     </div>
   )

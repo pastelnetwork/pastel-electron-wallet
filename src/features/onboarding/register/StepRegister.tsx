@@ -125,6 +125,27 @@ export default function StepRegister(): JSX.Element {
     shell.openExternal('https://pastel.network/privacy-policy/')
   }
 
+  const renderCheckboxPrivacyPolicy = () => {
+    return (
+      <Checkbox
+        isChecked={store.termsAgreed}
+        clickHandler={store.setTermsAgreed}
+        className='items-start'
+      >
+        <span className='text-14px text-gray-a0'>
+          I certify that I’m 18 years of age or older, and agree to the{' '}
+          <Link
+            onClick={handleOpenPrivacyPolicy}
+            className='link'
+            type='button'
+          >
+            User Agreement and Privacy Policy
+          </Link>
+        </span>
+      </Checkbox>
+    )
+  }
+
   return (
     <div className='pt-[105px] flex flex-col h-full'>
       <form className='flex-grow'>
@@ -148,24 +169,7 @@ export default function StepRegister(): JSX.Element {
         <div className='mt-6'>{renderPasswordInput()}</div>
         {store.password && <PasswordStrength strength={passwordStrength} />}
 
-        <div className='mt-6'>
-          <Checkbox
-            isChecked={store.termsAgreed}
-            clickHandler={store.setTermsAgreed}
-            className='items-start'
-          >
-            <span className='text-14px text-gray-a0'>
-              I certify that I’m 18 years of age or older, and agree to the{' '}
-              <Link
-                onClick={handleOpenPrivacyPolicy}
-                className='link'
-                type='button'
-              >
-                User Agreement and Privacy Policy
-              </Link>
-            </span>
-          </Checkbox>
-        </div>
+        <div className='mt-6'>{renderCheckboxPrivacyPolicy()}</div>
         {!store.username && (
           <div className='mt-6'>
             <p className='mb-0 text-sm font-normal text-gray-71'>

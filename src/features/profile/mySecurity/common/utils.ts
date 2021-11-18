@@ -31,7 +31,7 @@ type TAllAddresses = {
   tAddresses: string[]
 }
 
-type TPastelID = {
+export type TPastelID = {
   PastelID: string
 }
 

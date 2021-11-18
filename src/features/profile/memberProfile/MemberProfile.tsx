@@ -374,6 +374,41 @@ export default function MemberProfile(): JSX.Element {
     },
   ]
 
+  const renderFilter = () => (
+    <div className='flex items-center'>
+      <div className='flex items-center mr-6'>
+        <p className='mr-4'>Categories</p>
+        <Select
+          options={categoriesOptions}
+          selected={category}
+          onChange={setCategory}
+          className='w-113px bg-white'
+        />
+      </div>
+      <div className='flex items-center'>
+        <p className='mr-4'>Type</p>
+        <Select
+          options={categoriesOptions}
+          selected={type}
+          onChange={setType}
+          className='w-113px bg-white'
+        />
+      </div>
+    </div>
+  )
+
+  const renderSort = () => (
+    <div className='flex items-center mr-8'>
+      <p className='mr-4'>Sorty by</p>
+      <Select
+        options={categoriesOptions}
+        selected={sort}
+        onChange={setSort}
+        className='w-113px bg-white'
+      />
+    </div>
+  )
+
   const renderTabContent = () => (
     <div className='flex flex-col flex-grow pl-8'>
       {tab === 0 && (
@@ -385,35 +420,8 @@ export default function MemberProfile(): JSX.Element {
       {tab === 1 && (
         <div>
           <div className='flex items-center justify-between text-gray-42 text-base flex-wrap gap-2'>
-            <div className='flex items-center'>
-              <div className='flex items-center mr-6'>
-                <p className='mr-4'>Categories</p>
-                <Select
-                  options={categoriesOptions}
-                  selected={category}
-                  onChange={setCategory}
-                  className='w-113px bg-white'
-                />
-              </div>
-              <div className='flex items-center'>
-                <p className='mr-4'>Type</p>
-                <Select
-                  options={categoriesOptions}
-                  selected={type}
-                  onChange={setType}
-                  className='w-113px bg-white'
-                />
-              </div>
-            </div>
-            <div className='flex items-center mr-8'>
-              <p className='mr-4'>Sorty by</p>
-              <Select
-                options={categoriesOptions}
-                selected={sort}
-                onChange={setSort}
-                className='w-113px bg-white'
-              />
-            </div>
+            {renderFilter()}
+            {renderSort()}
           </div>
           <div className='mt-10 grid grid-cols-3 sm:grid-cols-2 1200px:grid-cols-3 text-gray-1a overflow-y-auto pr-33px h-608px gap-y-[12px] gap-x-[15px]'>
             {mockCardProps.map((nftItem, i) => (
@@ -453,35 +461,37 @@ export default function MemberProfile(): JSX.Element {
     </div>
   )
 
-  return (
-    <div>
-      <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
-        <div className='wrapper pt-0 h-35px flex items-center'>
-          <div className='text-sm text-gray-71'>Member Profile / General</div>
-        </div>
-        <div className='bg-white'>
-          <div className='wrapper flex h-20 items-center bg-white pl-60px pt-0'>
-            <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
-            <MultiToggleSwitch
-              data={[
-                { label: 'Info' },
-                { label: 'Portfolio' },
-                { label: 'Board' },
-              ]}
-              activeIndex={tab}
-              onToggle={onTabToggle}
-            />
-          </div>
-        </div>
-        <div className='wrapper flex py-8 pl-60px pr-25px'>
-          <div className='flex w-full'>
-            <div className='flex flex-col items-center lg:justify-between'>
-              <ProfileCard {...profile_data} isMyProfile />
-            </div>
-            {renderTabContent()}
-          </div>
-        </div>
+  const renderMemberProfileInfo = () => (
+    <div className='bg-white'>
+      <div className='wrapper flex h-20 items-center bg-white pl-60px pt-0'>
+        <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
+        <MultiToggleSwitch
+          data={[{ label: 'Info' }, { label: 'Portfolio' }, { label: 'Board' }]}
+          activeIndex={tab}
+          onToggle={onTabToggle}
+        />
       </div>
+    </div>
+  )
+
+  const renderMemverProfileContent = () => (
+    <div className='wrapper flex py-8 pl-60px pr-25px'>
+      <div className='flex w-full'>
+        <div className='flex flex-col items-center lg:justify-between'>
+          <ProfileCard {...profile_data} isMyProfile />
+        </div>
+        {renderTabContent()}
+      </div>
+    </div>
+  )
+
+  return (
+    <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
+      <div className='wrapper pt-0 h-35px flex items-center'>
+        <div className='text-sm text-gray-71'>Member Profile / General</div>
+      </div>
+      {renderMemberProfileInfo()}
+      {renderMemverProfileContent()}
     </div>
   )
 }
