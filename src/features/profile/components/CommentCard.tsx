@@ -58,7 +58,9 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
   const renderCommentContent = () => (
     <div className='pr-82px'>
       <div className='mt-4 text-base font-medium text-gray-4a mb-[17px]'>
-        "{comment}"
+        {'"'}
+        {comment}
+        {'"'}
       </div>
       {children}
       {!hideReply ? (

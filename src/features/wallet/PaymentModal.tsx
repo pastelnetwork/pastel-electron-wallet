@@ -647,61 +647,55 @@ export default function PaymentModal(): JSX.Element {
         hideCloseButton={isLoading}
       >
         {isComplete ? (
-          <>
-            <div className='mt-26px pr-22px'>
-              <table className='w-full text-gray-71 relative table-auto'>
-                {renderPaymentResultHeader()}
-                {renderPaymentResultBody()}
-              </table>
-            </div>
-          </>
+          <div className='mt-26px pr-22px'>
+            <table className='w-full text-gray-71 relative table-auto'>
+              {renderPaymentResultHeader()}
+              {renderPaymentResultBody()}
+            </table>
+          </div>
+        ) : isLoading ? (
+          <div className='text-gray-800 text-2xl font-extrabold text-center pb-5px pr-8'>
+            Please wait...This could take a while
+          </div>
         ) : (
           <>
-            {isLoading ? (
-              <div className='text-gray-800 text-2xl font-extrabold text-center pb-5px pr-8'>
-                Please wait...This could take a while
+            {renderPaymentHeader()}
+            <div className='pt-6px text-gray-a0 text-h6-leading-20'>
+              {formatPrice(
+                totalBalance - psl < 0 ? 0 : totalBalance - psl,
+                currencyName,
+                4,
+              )}{' '}
+              balance remaining after payment
+            </div>
+            <div>
+              <div className='pt-[23px] flex items-center text-gray-4a text-h5-heavy'>
+                Address of Recipient
+                {renderAddressRecipientIntroIcon()}
               </div>
-            ) : (
+              {renderInputRecipientAddress(recipientAddressIsValid)}
+            </div>
+            <div className='mt-9'>
+              <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a text-h5-heavy'>
+                Payment Source
+                {renderPaymentSourceIntroIcon()}
+                {renderAddPaymentSourceIcon()}
+              </div>
+              {renderPaymentSourceList()}
+            </div>
+            {messages.length > 0 ? (
               <>
-                {renderPaymentHeader()}
-                <div className='pt-6px text-gray-a0 text-h6-leading-20'>
-                  {formatPrice(
-                    totalBalance - psl < 0 ? 0 : totalBalance - psl,
-                    currencyName,
-                    4,
-                  )}{' '}
-                  balance remaining after payment
-                </div>
-                <div>
-                  <div className='pt-[23px] flex items-center text-gray-4a text-h5-heavy'>
-                    Address of Recipient
-                    {renderAddressRecipientIntroIcon()}
-                  </div>
-                  {renderInputRecipientAddress(recipientAddressIsValid)}
-                </div>
-                <div className='mt-9'>
-                  <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a text-h5-heavy'>
-                    Payment Source
-                    {renderPaymentSourceIntroIcon()}
-                    {renderAddPaymentSourceIcon()}
-                  </div>
-                  {renderPaymentSourceList()}
-                </div>
-                {messages.length > 0 ? (
-                  <>
-                    {messages.map(err => (
-                      <p key={err} className='pt-2 mb-1 text-red-4a'>
-                        {err}
-                      </p>
-                    ))}
-                  </>
-                ) : null}
-                <div className='flex justify-end mt-[21px]'>
-                  {renderCancelButton()}
-                  {renderConfirmPaymentButton()}
-                </div>
+                {messages.map(err => (
+                  <p key={err} className='pt-2 mb-1 text-red-4a'>
+                    {err}
+                  </p>
+                ))}
               </>
-            )}
+            ) : null}
+            <div className='flex justify-end mt-[21px]'>
+              {renderCancelButton()}
+              {renderConfirmPaymentButton()}
+            </div>
           </>
         )}
       </TitleModal>

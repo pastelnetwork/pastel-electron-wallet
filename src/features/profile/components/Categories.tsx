@@ -38,6 +38,11 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
     setTimeout(() => customInputRef.current?.focus(), 10)
   }
 
+  const handleAddNewText = () => {
+    setAdding(false)
+    setNewText('')
+  }
+
   const renderAddNewForm = () => (
     <div
       className={cn(
@@ -53,9 +58,7 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
       />
       <button
         className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
-        onClick={() => {
-          setAdding(false), setNewText('')
-        }}
+        onClick={handleAddNewText}
         type='button'
       >
         <img src={ico_close} className='cursor-pointer' alt='Close' />

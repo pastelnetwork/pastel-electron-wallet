@@ -76,10 +76,15 @@ function AddNFTContent(props: TUseAddNFTProps & { toggleCloseButton(): void }) {
 export default function AddNFT({ open, ...props }: TAddNFTProps): JSX.Element {
   const [showCloseButton, toggleCloseButton] = useToggle(true)
 
+  const handleCloseModal = () => {
+    if (props.onClose) {
+      props.onClose()
+    }
+  }
   return (
     <Modal
       open={open}
-      onClose={props.onClose}
+      onClose={handleCloseModal}
       closeButton={showCloseButton}
       render={() => (
         <AddNFTContent {...props} toggleCloseButton={toggleCloseButton} />

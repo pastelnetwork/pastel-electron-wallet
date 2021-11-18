@@ -50,39 +50,37 @@ function PageHeader({
   )
 
   return (
-    <>
-      <div className='bg-white text-gray-1a'>
-        <div
-          className={`wrapper ${variant === 'portfolio' ? 'py-18px' : 'py-5'}`}
-        >
-          <div className='flex justify-between flex-wrap'>
-            {renderPageTitle()}
-            {sortByOptions?.length && (
-              <div className='flex items-center'>
-                <p className={`pr-4 text-h5 ${sortByTextClassName}`}>
-                  {sortByText || 'Sort by'}
-                </p>
-                <div className='flex space-x-6'>
-                  {sortByOptions.map(
-                    ({ placeholder, options, selected, onOptionChange }) => (
-                      <Select
-                        placeholder={placeholder}
-                        options={options}
-                        selected={selected}
-                        onChange={onOptionChange}
-                        key={placeholder}
-                        className='min-w-118px'
-                      />
-                    ),
-                  )}
-                </div>
+    <div className='bg-white text-gray-1a'>
+      <div
+        className={`wrapper ${variant === 'portfolio' ? 'py-18px' : 'py-5'}`}
+      >
+        <div className='flex justify-between flex-wrap'>
+          {renderPageTitle()}
+          {sortByOptions?.length && (
+            <div className='flex items-center'>
+              <p className={`pr-4 text-h5 ${sortByTextClassName}`}>
+                {sortByText || 'Sort by'}
+              </p>
+              <div className='flex space-x-6'>
+                {sortByOptions.map(
+                  ({ placeholder, options, selected, onOptionChange }) => (
+                    <Select
+                      placeholder={placeholder}
+                      options={options}
+                      selected={selected}
+                      onChange={onOptionChange}
+                      key={placeholder}
+                      className='min-w-118px'
+                    />
+                  ),
+                )}
               </div>
-            )}
-            {children}
-          </div>
+            </div>
+          )}
+          {children}
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

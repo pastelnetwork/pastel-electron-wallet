@@ -179,17 +179,12 @@ export default function InputNFTDataStep({
   )
 
   return (
-    <>
-      <form
-        className='paper p-10 w-[690px]'
-        onSubmit={form.handleSubmit(submit)}
-      >
-        {renderHeader()}
-        {renderNFTForm()}
-        <button className='btn btn-primary w-full' type='submit'>
-          Go to preview
-        </button>
-      </form>
-    </>
+    <form className='paper p-10 w-[690px]' onSubmit={form.handleSubmit(submit)}>
+      {renderHeader()}
+      {renderNFTForm()}
+      <button className='btn btn-primary w-full' type='submit'>
+        Go to preview
+      </button>
+    </form>
   )
 }

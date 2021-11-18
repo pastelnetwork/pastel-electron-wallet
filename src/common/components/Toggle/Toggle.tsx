@@ -18,6 +18,14 @@ function Toggle({
 }: TToggleProps): JSX.Element {
   const [checked, setChecked] = useState(selected)
 
+  const handleToggleClick = () => {
+    if (toggleHandler) {
+      toggleHandler(!checked)
+    }
+
+    setChecked(!checked)
+  }
+
   const renderToggleButton = () => (
     <div
       className={cn(
@@ -25,10 +33,7 @@ function Toggle({
         classNames,
         checked ? selectedClass : 'bg-gray-a0',
       )}
-      onClick={() => {
-        !!toggleHandler && toggleHandler(!checked)
-        setChecked(!checked)
-      }}
+      onClick={handleToggleClick}
     >
       <div
         className={cn(
