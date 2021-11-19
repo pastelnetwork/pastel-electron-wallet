@@ -11,6 +11,37 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import { useWalletScreenContext } from './walletScreen.context'
 import { walletRPC } from 'api/pastel-rpc'
 
+function AddNewAddressButton({
+  createNewAddress,
+  isLoading,
+}: {
+  createNewAddress: () => void
+  isLoading: boolean
+}): JSX.Element {
+  const currencyName = useCurrencyName()
+
+  const handleClick = useCallback(() => {
+    createNewAddress()
+  }, [])
+
+  return (
+    <Button
+      variant='secondary'
+      className='w-[264px] px-0 mt-3'
+      childrenClassName='w-full'
+      onClick={handleClick}
+      disabled={isLoading}
+    >
+      <div className='flex items-center ml-[19px]'>
+        <ElectricityIcon size={11} className='text-blue-3f py-3' />
+        <div className='ml-11px text-blue-3f text-h5-medium'>
+          Generate a new {currencyName} Address
+        </div>
+      </div>
+    </Button>
+  )
+}
+
 export default function WalletAddresses(): JSX.Element {
   const currencyName = useCurrencyName()
   const {
@@ -44,29 +75,6 @@ export default function WalletAddresses(): JSX.Element {
       setNewAddress(true)
     }
     setLoading(false)
-  }
-
-  const renderAddNewAddressButton = () => {
-    const handleClick = useCallback(() => {
-      createNewAddress()
-    }, [])
-
-    return (
-      <Button
-        variant='secondary'
-        className='w-[264px] px-0 mt-3'
-        childrenClassName='w-full'
-        onClick={handleClick}
-        disabled={isLoading}
-      >
-        <div className='flex items-center ml-[19px]'>
-          <ElectricityIcon size={11} className='text-blue-3f py-3' />
-          <div className='ml-11px text-blue-3f text-h5-medium'>
-            Generate a new {currencyName} Address
-          </div>
-        </div>
-      </Button>
-    )
   }
 
   const renderSelectedTotal = () => {
@@ -167,7 +175,10 @@ export default function WalletAddresses(): JSX.Element {
             <div className='mb-3 text-gray-4a text-h5'>
               You have no Addresses
             </div>
-            {renderAddNewAddressButton()}
+            <AddNewAddressButton
+              isLoading={isLoading}
+              createNewAddress={createNewAddress}
+            />
           </div>
         </div>
       ) : null}

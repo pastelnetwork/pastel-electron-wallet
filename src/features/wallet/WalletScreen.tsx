@@ -45,6 +45,86 @@ export type TSelectionPslProps = {
   date: number
 }
 
+function CreatePaymentButton({
+  setPaymentModalOpen,
+}: {
+  setPaymentModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleClick = useCallback(() => {
+    setPaymentModalOpen(true)
+  }, [])
+
+  return (
+    <Button
+      onClick={handleClick}
+      className='ml-30px w-[190px] px-0'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center ml-5'>
+        <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
+        <div className='ml-2 text-white text-h5-heavy'>Create a payment</div>
+      </div>
+    </Button>
+  )
+}
+
+function PastelPromoCodeButton({
+  setAddPastelPromoCodeModalOpen,
+}: {
+  setAddPastelPromoCodeModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleClick = useCallback(() => {
+    setAddPastelPromoCodeModalOpen(true)
+  }, [])
+
+  return (
+    <Button
+      onClick={handleClick}
+      variant='secondary'
+      className='w-[240px] px-0'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center ml-5'>
+        <div className='text-blue-3f text-h5-medium'>+</div>{' '}
+        <div className='ml-2 text-blue-3f text-h5-medium'>
+          Add Pastel Promo Code
+        </div>
+      </div>
+    </Button>
+  )
+}
+
+function AddNewAddressButton({
+  createNewAddress,
+  isLoading,
+}: {
+  createNewAddress: () => void
+  isLoading: boolean
+}): JSX.Element {
+  const currencyName = useCurrencyName()
+
+  const handleClick = useCallback(() => {
+    createNewAddress()
+  }, [])
+
+  return (
+    <Button
+      variant='secondary'
+      className='w-[264px] ml-30px px-0'
+      childrenClassName='w-full'
+      onClick={handleClick}
+      disabled={isLoading}
+    >
+      <div className='flex items-center ml-[19px]'>
+        <ElectricityIcon size={11} className='text-blue-3f py-3' />
+        <div className='ml-11px text-blue-3f text-h5-medium'>
+          Generate a new {currencyName} Address
+        </div>
+      </div>
+    </Button>
+  )
+}
+
 function WalletScreenContent(): JSX.Element {
   const location = useLocation()
   const currencyName = useCurrencyName()
@@ -159,25 +239,6 @@ function WalletScreenContent(): JSX.Element {
     })
   }
 
-  const renderCreatePaymentButton = () => {
-    const handleClick = useCallback(() => {
-      setPaymentModalOpen(true)
-    }, [])
-
-    return (
-      <Button
-        onClick={handleClick}
-        className='ml-30px w-[190px] px-0'
-        childrenClassName='w-full'
-      >
-        <div className='flex items-center ml-5'>
-          <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
-          <div className='ml-2 text-white text-h5-heavy'>Create a payment</div>
-        </div>
-      </Button>
-    )
-  }
-
   const renderWalletHeader = () => {
     return (
       <>
@@ -211,48 +272,12 @@ function WalletScreenContent(): JSX.Element {
     )
   }
 
-  const renderPastelPromoCodeButton = () => {
-    const handleClick = useCallback(() => {
-      setAddPastelPromoCodeModalOpen(true)
-    }, [])
-
-    return (
-      <Button
-        onClick={handleClick}
-        variant='secondary'
-        className='w-[240px] px-0'
-        childrenClassName='w-full'
-      >
-        <div className='flex items-center ml-5'>
-          <div className='text-blue-3f text-h5-medium'>+</div>{' '}
-          <div className='ml-2 text-blue-3f text-h5-medium'>
-            Add Pastel Promo Code
-          </div>
-        </div>
-      </Button>
-    )
-  }
-
   const renderAddNewAddressButton = () => {
-    const handleClick = useCallback(() => {
-      createNewAddress()
-    }, [])
-
     return allAddresses.data?.length ? (
-      <Button
-        variant='secondary'
-        className='w-[264px] ml-30px px-0'
-        childrenClassName='w-full'
-        onClick={handleClick}
-        disabled={isLoading}
-      >
-        <div className='flex items-center ml-[19px]'>
-          <ElectricityIcon size={11} className='text-blue-3f py-3' />
-          <div className='ml-11px text-blue-3f text-h5-medium'>
-            Generate a new {currencyName} Address
-          </div>
-        </div>
-      </Button>
+      <AddNewAddressButton
+        createNewAddress={createNewAddress}
+        isLoading={isLoading}
+      />
     ) : null
   }
 
@@ -280,21 +305,19 @@ function WalletScreenContent(): JSX.Element {
           },
         ]}
       />
-
       <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
         {renderWalletHeader()}
       </div>
-
       <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
         <BalanceCards />
         {renderEmptyContentBlock()}
-
         <WalletAddresses />
-
         <div className='flex justify-end mt-5 pb-[30px]'>
-          {renderPastelPromoCodeButton()}
+          <PastelPromoCodeButton
+            setAddPastelPromoCodeModalOpen={setAddPastelPromoCodeModalOpen}
+          />
           {renderAddNewAddressButton()}
-          {renderCreatePaymentButton()}
+          <CreatePaymentButton setPaymentModalOpen={setPaymentModalOpen} />
         </div>
       </div>
 
