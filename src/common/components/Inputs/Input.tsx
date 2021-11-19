@@ -87,6 +87,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
         onClick={onClick}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         {prepend && <div className='pl-2 select-none'>{prepend}</div>}
         <input

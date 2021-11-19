@@ -90,6 +90,7 @@ export default function Table({
               onClick={() => column.sortable && setSort(index)}
               role='button'
               tabIndex={0}
+              aria-hidden='true'
             >
               {column.name}
               {column.sortable && (

@@ -137,6 +137,7 @@ function Chat(): JSX.Element {
         onClick={onEmoji}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <img className='cursor-pointer' src={msgEmojiIcon} alt='Emoji' />
       </div>
@@ -146,6 +147,7 @@ function Chat(): JSX.Element {
         onClick={onAttach}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <img className='cursor-pointer' src={msgAttachIcon} alt='Attach' />
       </div>
@@ -155,6 +157,7 @@ function Chat(): JSX.Element {
         onClick={onSendMsg}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <img
           className='cursor-pointer w-full h-full'
@@ -182,6 +185,7 @@ function Chat(): JSX.Element {
         onClick={toggleActiveChatMenu}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <img className='cursor-pointer' src={chatMenuIcon} alt='Chat' />
       </div>
@@ -224,6 +228,7 @@ function Chat(): JSX.Element {
       className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
       role='button'
       tabIndex={0}
+      aria-hidden='true'
     >
       <img className='w-5 cursor-pointer' src={editIcon} alt='Edit' />
     </i>
@@ -254,12 +259,14 @@ function Chat(): JSX.Element {
       onClick={onCloseChat}
       tabIndex={0}
       role='button'
+      aria-hidden='true'
     >
       <div
         className='paper flex flex-grow bg-gray-fc overflow-hidden'
         onClick={ev => ev.stopPropagation()}
         tabIndex={0}
         role='button'
+        aria-hidden='true'
       >
         {renderChatItems()}
         {renderBody()}

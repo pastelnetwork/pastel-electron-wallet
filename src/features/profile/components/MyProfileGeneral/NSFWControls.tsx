@@ -32,6 +32,7 @@ export default function NSFWControls(): JSX.Element {
         onClick={toggleAdvanced}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <Caret to={displayAdvanced ? 'bottom' : 'top'} size={15} />
       </div>

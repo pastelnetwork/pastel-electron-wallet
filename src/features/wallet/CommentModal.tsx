@@ -104,6 +104,7 @@ export default function CommentModal({
         )}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <div
           className={cx(
@@ -124,6 +125,7 @@ export default function CommentModal({
         )}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <div
           className={cx(

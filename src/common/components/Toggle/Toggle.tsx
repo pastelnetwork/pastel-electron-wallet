@@ -36,6 +36,7 @@ function Toggle({
       onClick={handleToggleClick}
       role='button'
       tabIndex={0}
+      aria-hidden='true'
     >
       <div
         className={cn(

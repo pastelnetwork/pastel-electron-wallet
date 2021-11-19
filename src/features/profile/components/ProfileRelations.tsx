@@ -29,6 +29,7 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
           onClick={() => setTab('Followers')}
           role='button'
           tabIndex={0}
+          aria-hidden='true'
         >
           Followers ({relationCounts.followers})
         </div>
@@ -39,6 +40,7 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
           onClick={() => setTab('Friends')}
           role='button'
           tabIndex={0}
+          aria-hidden='true'
         >
           Friends ({relationCounts.friends})
         </div>
@@ -49,6 +51,7 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
           onClick={() => setTab('Following')}
           role='button'
           tabIndex={0}
+          aria-hidden='true'
         >
           Following ({relationCounts.following})
         </div>

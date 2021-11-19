@@ -74,6 +74,7 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
         onClick={() => onDeleteCategory(index)}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <img src={ico_close} className='cursor-pointer' alt='Close' />
       </div>

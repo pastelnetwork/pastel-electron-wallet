@@ -72,6 +72,7 @@ export default function PaymentSource({
           onClick={() => handleSelectedAddress(address, true)}
           role='button'
           tabIndex={0}
+          aria-hidden='true'
         >
           <Trash size={14} className='text-gray-88' />
         </span>

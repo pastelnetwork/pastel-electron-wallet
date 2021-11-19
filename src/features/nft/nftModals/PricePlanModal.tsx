@@ -107,6 +107,7 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
             onClick={() => setCellEdit({ row: row.id as number, col: 0 })}
             role='button'
             tabIndex={0}
+            aria-hidden='true'
           >
             <img
               src={pencilIcon}

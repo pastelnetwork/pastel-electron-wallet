@@ -79,6 +79,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         title='Select green theme'
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       />
       <div
         className={cx(styles.amberThemeBtn, {
@@ -88,6 +89,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         title='Select amber theme'
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       />
       <div
         className={cx(styles.blackThemeBtn, {
@@ -97,6 +99,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         title='Select black theme'
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       />
     </>
   )

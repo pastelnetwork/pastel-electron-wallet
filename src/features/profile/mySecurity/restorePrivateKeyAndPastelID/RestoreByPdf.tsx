@@ -92,6 +92,7 @@ export default function RestoreByPdf({
           className={cn(fileSelected ? 'cursor-pointer' : 'cursor-not-allowed')}
           role='button'
           tabIndex={0}
+          aria-hidden='true'
         >
           <Refresh
             size={44}

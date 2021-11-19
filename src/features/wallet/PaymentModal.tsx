@@ -407,6 +407,7 @@ export default function PaymentModal(): JSX.Element {
         onClick={() => setAddPaymentSourceModalIsOpen(true)}
         role='button'
         tabIndex={0}
+        aria-hidden='true'
       >
         <Tooltip
           classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
