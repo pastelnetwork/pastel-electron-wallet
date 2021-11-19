@@ -59,7 +59,7 @@ export default function WalletAddresses(): JSX.Element {
   } = useWalletScreenContext()
   const [isLoading, setLoading] = useState(false)
 
-  const createNewAddress = async () => {
+  const createNewAddress = useCallback(async () => {
     setLoading(true)
     const isZAddress = activeTab === 2
     const result = await walletRPC.createNewAddress(isZAddress)
@@ -74,7 +74,7 @@ export default function WalletAddresses(): JSX.Element {
       setNewAddress(true)
     }
     setLoading(false)
-  }
+  }, [])
 
   const renderSelectedTotal = () => {
     return (

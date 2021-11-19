@@ -153,7 +153,7 @@ function WalletScreenContent(): JSX.Element {
   })
   const [date, setDate] = useState<Date[]>([])
 
-  const createNewAddress = async () => {
+  const createNewAddress = useCallback(async () => {
     setLoading(true)
     const isZAddress = activeTab === 2
     const result = await walletRPC.createNewAddress(isZAddress)
@@ -168,7 +168,7 @@ function WalletScreenContent(): JSX.Element {
       setNewAddress(true)
     }
     setLoading(false)
-  }
+  }, [])
 
   useEffect(() => {
     if (location.state) {
