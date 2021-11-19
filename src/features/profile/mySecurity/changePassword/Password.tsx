@@ -6,7 +6,7 @@ import Password from '../../components/Password'
 import Card from '../../components/Card'
 import { SecurityPasswordModal } from '../mySecurityModals'
 
-const ChangePassword = (): JSX.Element => {
+export default function ChangePassword(): JSX.Element {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [noMatch, setNoMatch] = useState(false)
@@ -87,5 +87,3 @@ const ChangePassword = (): JSX.Element => {
     </>
   )
 }
-
-export default ChangePassword

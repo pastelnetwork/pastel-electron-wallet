@@ -44,6 +44,15 @@ export default function RestoreByUpload({
     }
     if (qrCodeData.length) {
       doImport()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [qrCodeData])
 
@@ -112,77 +121,86 @@ export default function RestoreByUpload({
     return <RestoreError />
   }
 
+  const renderRefreshIcon = () => {
+    return (
+      <Tooltip
+        type='top'
+        content={
+          <div className='p-2 text-xs font-medium'>Restore your keys.</div>
+        }
+        width={130}
+        vPosPercent={110}
+      >
+        <button
+          onClick={handleRestoreByUpload}
+          className={cn(
+            'inline-block',
+            fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
+          )}
+          type='button'
+          tabIndex={0}
+        >
+          <Refresh
+            size={44}
+            className={cn(
+              'transition duration-300',
+              !fileSelected
+                ? 'text-blue-9b'
+                : 'text-blue-e7 hover:text-blue-fa',
+            )}
+            pathColor={fileSelected ? '#3F9AF7' : '#fff'}
+          />
+        </button>
+      </Tooltip>
+    )
+  }
+
+  const renderUploadVideoControl = () => {
+    return (
+      <label className='relative overflow-hidden flex'>
+        <div className='w-[55px] cursor-pointer'>
+          <Video size={55} />
+        </div>
+        <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
+          <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
+            {fileSelected ? fileSelected.name : 'Select your QR code video.'}
+          </p>
+          {fileSelected ? (
+            <p className='mb-0 text-xs font-normal text-gray-a0'>
+              {formatFileSize(fileSelected.size)}
+            </p>
+          ) : null}
+        </div>
+        <input
+          type='file'
+          name='upload'
+          accept='video/mp4'
+          onChange={handleImageChange}
+          className='hidden'
+        />
+      </label>
+    )
+  }
+
+  const renderRestoreUploadForm = () => (
+    <div
+      className={cn(
+        'flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px',
+        currentStatus === 'restoring' && 'cursor-not-allowed',
+      )}
+    >
+      <div className='w-3/4'>{renderUploadVideoControl()}</div>
+      <div className='w-14'>{renderRefreshIcon()}</div>
+    </div>
+  )
+
   return (
     <div>
       <div className='font-normal text-h5 leading-6 text-gray-71'>
         Please select your QR code video.
       </div>
       <div className='mt-3'>
-        <div
-          className={cn(
-            'flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px',
-            currentStatus === 'restoring' && 'cursor-not-allowed',
-          )}
-        >
-          <div className='w-3/4'>
-            <label className='relative overflow-hidden flex'>
-              <div className='w-[55px] cursor-pointer'>
-                <Video size={55} />
-              </div>
-              <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
-                <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-                  {fileSelected
-                    ? fileSelected.name
-                    : 'Select your QR code video.'}
-                </p>
-                {fileSelected ? (
-                  <p className='mb-0 text-xs font-normal text-gray-a0'>
-                    {formatFileSize(fileSelected.size)}
-                  </p>
-                ) : null}
-              </div>
-              <input
-                type='file'
-                name='upload'
-                accept='video/mp4'
-                onChange={handleImageChange}
-                className='hidden'
-              />
-            </label>
-          </div>
-          <div className='w-14'>
-            <Tooltip
-              type='top'
-              content={
-                <div className='p-2 text-xs font-medium'>
-                  Restore your keys.
-                </div>
-              }
-              width={130}
-              vPosPercent={110}
-            >
-              <button
-                onClick={handleRestoreByUpload}
-                className={cn(
-                  'inline-block',
-                  fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
-                )}
-                type='button'
-              >
-                <Refresh
-                  size={44}
-                  className={cn(
-                    'transition duration-300',
-                    !fileSelected
-                      ? 'text-blue-9b'
-                      : 'text-blue-e7 hover:text-blue-fa',
-                  )}
-                  pathColor={fileSelected ? '#3F9AF7' : '#fff'}
-                />
-              </button>
-            </Tooltip>
-          </div>
-        </div>
+        {renderRestoreUploadForm()}
         {currentStatus === 'restoring' && (
           <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
             Restoring ...

@@ -13,7 +13,9 @@ export type TNFTResultProps = {
   searchKey: string
 }
 
-const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
+export default function NFTsResult({
+  searchKey,
+}: TNFTResultProps): JSX.Element {
   const [categories, setCategories] = useState<TOption | null>(
     categoriesData[0],
   )
@@ -56,9 +58,9 @@ const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
       <div className='flex-grow overflow-y-auto overflow-x-hidden grid grid-cols-3 md:grid-cols-4 xl:grid-cols-5 mt-10 pb-3 gap-y-[30px] gap-x-[18px]'>
         {mockNFTs.map((item, i) => (
           <NFTCard
-            key={i}
-            hideFollow={true}
-            hideLikeButton={true}
+            key={item.id}
+            hideFollow
+            hideLikeButton
             {...item}
             searchText={searchKey}
             isAuctionBid={(i + 1) % 2 === 0}
@@ -71,5 +73,3 @@ const NFTsResult = ({ searchKey }: TNFTResultProps): JSX.Element => {
     </div>
   )
 }
-
-export default NFTsResult

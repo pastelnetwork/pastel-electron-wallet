@@ -5,10 +5,10 @@ export type TFilePDF = {
   className?: string
 }
 
-export const FilePDFIcon = ({
+export function FilePDFIcon({
   size = 20,
   className = 'text-gray-88',
-}: TFilePDF): JSX.Element => {
+}: TFilePDF): JSX.Element {
   return (
     <svg
       width={size}

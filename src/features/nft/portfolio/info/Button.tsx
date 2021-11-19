@@ -25,3 +25,8 @@ export default function Button({
     </button>
   )
 }
+
+Button.defaultProps = {
+  className: '',
+  onClick: undefined,
+}

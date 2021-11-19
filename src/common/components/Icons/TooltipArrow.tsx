@@ -5,10 +5,10 @@ export type TTooltipArrowProps = {
   className?: string
 }
 
-export const TooltipArrow = ({
+export function TooltipArrow({
   size = 8,
   className = 'text-gray-33',
-}: TTooltipArrowProps): JSX.Element => {
+}: TTooltipArrowProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -28,7 +28,7 @@ export default function QRCodeGEnerator(
           <Path
             fill={fills ? fills[idx].replace('fill="', '') : '#000'}
             d={path.replace('d="', '')}
-            key={idx}
+            key={path}
           ></Path>
         ))}
       </Svg>

@@ -109,11 +109,6 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }, 0)
   }
 
-  const focusTerminalInput = () => {
-    inputRef.current?.focus()
-    resetScroll()
-  }
-
   const resetScroll = () => {
     const terminalWrap = document.getElementById('terminalWrap')
     if (terminalWrap) {
@@ -122,6 +117,11 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
         top: terminalWrap.scrollHeight,
       })
     }
+  }
+
+  const focusTerminalInput = () => {
+    inputRef.current?.focus()
+    resetScroll()
   }
 
   const displayOutputs = (result: any[]) => {
@@ -134,6 +134,16 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     setTyping('')
   }
 
+  const addOutputThenDisplay = async (text: string) => {
+    const oldOutputs = emulatorState.getOutputs()
+    const newOutputs = Outputs.addRecord(
+      oldOutputs,
+      OutputFactory.makeTextOutput(text),
+    )
+    emulatorState = await emulatorState.setOutputs(newOutputs)
+    displayOutputs(emulatorState.getOutputs())
+  }
+
   const onEnterKeyDown = () => {
     emulatorState = emulator.execute(emulatorState, typing, terminalPlugins)
     displayOutputs(emulatorState.getOutputs())
@@ -143,6 +153,15 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
   const onTabPress = () => {
     if (!typing) {
       addOutputThenDisplay("$\nType 'help' for a list of available commands.")
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
       return
     }
     const autoCompletionStr = emulator.autocomplete(emulatorState, typing)
@@ -154,7 +173,18 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     if (!suggestions?.length || suggestions[0] === typing) {
       return
     }
-    addOutputThenDisplay(`$ ${typing}\n${suggestions.join('\n')}`)
+    const vType: string = typing || ''
+    const vSuggestions: string = suggestions.join('\n') || ''
+    addOutputThenDisplay(`$ ${vType}\n${vSuggestions}`)
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }
 
   const onArrowDownPress = () => {
@@ -243,48 +273,6 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
   }
 
-  const rpcCommandResponse = (commandKey: string) => async (
-    state: any,
-    opts: string[],
-  ) => {
-    historyCmds.push(commandKey)
-    setExecutingCommand(true)
-    let textConsole = ''
-
-    try {
-      const data = await rpcApi[commandKey](opts)
-      textConsole = `${data}`
-
-      if (typeof data === 'object') {
-        const tempArr = Array.isArray(data)
-          ? data.length > 0
-            ? data.map(formatConsoleData)
-            : ['']
-          : [formatConsoleData(data || {})]
-        textConsole = textAsTable(tempArr)
-      }
-
-      if (data == null || (Array.isArray(data) && data.length == 0)) {
-        textConsole = 'null'
-      }
-    } catch (error) {
-      textConsole = error.message
-    }
-    await addOutputThenDisplay(textConsole)
-    setExecutingCommand(false)
-    inputTerminal?.focus()
-  }
-
-  const addOutputThenDisplay = async (text: string) => {
-    const oldOutputs = emulatorState.getOutputs()
-    const newOutputs = Outputs.addRecord(
-      oldOutputs,
-      OutputFactory.makeTextOutput(text),
-    )
-    emulatorState = await emulatorState.setOutputs(newOutputs)
-    displayOutputs(emulatorState.getOutputs())
-  }
-
   const onKeyDownHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
     switch (e.key) {
       case 'Enter':
@@ -306,6 +294,39 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
       default:
         break
     }
+  }
+
+  const rpcCommandResponse = (commandKey: string) => async (
+    state: any,
+    opts: string[],
+  ) => {
+    historyCmds.push(commandKey)
+    setExecutingCommand(true)
+    let textConsole = ''
+
+    try {
+      const data = await rpcApi[commandKey](opts)
+      const vData: string = String(data) || ''
+      textConsole = `${vData}`
+
+      if (typeof data === 'object') {
+        const tempArr = Array.isArray(data)
+          ? data.length > 0
+            ? data.map(formatConsoleData)
+            : ['']
+          : [formatConsoleData(data || {})]
+        textConsole = textAsTable(tempArr)
+      }
+
+      if (data === null || (Array.isArray(data) && data.length === 0)) {
+        textConsole = 'null'
+      }
+    } catch (error) {
+      textConsole = error.message
+    }
+    await addOutputThenDisplay(textConsole)
+    setExecutingCommand(false)
+    inputTerminal?.focus()
   }
 
   const initTerminal = () => {
@@ -425,23 +446,29 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
         {isReady && (
           <>
             <p>............................................................</p>
-            <p>Type 'help' for a list of available commands.</p>
+            <p>
+              Type {"'"}help{"'"} for a list of available commands.
+            </p>
           </>
         )}
       </div>
       <div className={styles.terminalInputLongArea}>
         <div className={styles.terminalOutput}>
-          {outputs.map((out: any, index: number) => (
-            <ConsoleOutput
-              key={index}
-              type={out.type}
-              textContent={
-                out.type === OutputType.HEADER_OUTPUT_TYPE
-                  ? `$ ${out.content.command}`
-                  : out.content
-              }
-            />
-          ))}
+          {outputs.map((out: any) => {
+            const outCommand: string = out.content.command || ''
+            const outType: string = out.type || ''
+            return (
+              <ConsoleOutput
+                key={`${outCommand}-${outType}`}
+                type={out.type}
+                textContent={
+                  out.type === OutputType.HEADER_OUTPUT_TYPE
+                    ? `$ ${outCommand}`
+                    : out.content
+                }
+              />
+            )
+          })}
         </div>
         <div
           className={styles.terminalInputLongAreaClickable}
@@ -472,3 +499,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
 }
 
 export default TerminalConsole
+
+TerminalConsole.defaultProps = {
+  txDetail: undefined,
+}

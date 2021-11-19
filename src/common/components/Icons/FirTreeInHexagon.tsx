@@ -3,11 +3,25 @@ import { TIconProps } from './iconProps'
 
 export type TFirTreeInHexagonProps = TIconProps & { fill?: string }
 
-export const FirTreeInHexagon = ({
+export function FirTreeInHexagon({
   size,
   className,
   fill = 'text-white',
-}: TFirTreeInHexagonProps): JSX.Element => {
+}: TFirTreeInHexagonProps): JSX.Element {
+  const renderClipPath = () => (
+    <defs>
+      <clipPath id='clip0'>
+        <rect
+          width='16'
+          height='16'
+          className={fill}
+          fill='currentColor'
+          transform='translate(7 9)'
+        />
+      </clipPath>
+    </defs>
+  )
+
   return (
     <svg
       width={size}
@@ -27,17 +41,7 @@ export const FirTreeInHexagon = ({
           fill='currentColor'
         />
       </g>
-      <defs>
-        <clipPath id='clip0'>
-          <rect
-            width='16'
-            height='16'
-            className={fill}
-            fill='currentColor'
-            transform='translate(7 9)'
-          />
-        </clipPath>
-      </defs>
+      {renderClipPath()}
     </svg>
   )
 }

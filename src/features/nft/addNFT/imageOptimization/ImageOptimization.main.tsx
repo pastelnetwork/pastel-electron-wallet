@@ -33,57 +33,6 @@ let currentTask: TTask
 
 const PngquantQualityRangeErrorCode = 99
 
-export const setupOptimizeImageHandler = (): void => {
-  handleMainTask(
-    'optimizeImage',
-    async (file): Promise<TImageOptimizationResult> => {
-      const result: TImageOptimizationResult = { status: 'success', files: [] }
-
-      if (currentTask) {
-        currentTask.cancelled = true
-        currentTask.process?.kill()
-      }
-
-      const task = { cancelled: false }
-      currentTask = task
-
-      try {
-        const inputPath = await writeArrayBufferToTempFile(file.arrayBuffer)
-        if (task.cancelled) {
-          throw new Error('Cancelled')
-        }
-
-        const [processor, command, getArgs] = getOptimizeArgs(
-          file.type,
-          inputPath,
-        )
-
-        for (
-          let quality = minQuality;
-          quality <= maxQuality;
-          quality += qualityStep
-        ) {
-          try {
-            const file = await optimize(task, command, getArgs, quality)
-            result.files.push(file)
-          } catch (error) {
-            if (isCriticalError(processor, error)) {
-              throw error
-            }
-          }
-        }
-      } catch (error) {
-        if (task.cancelled) {
-          return { status: 'cancelled' }
-        }
-        throw error
-      }
-
-      return result
-    },
-  )
-}
-
 const writeArrayBufferToTempFile = async (arrayBuffer: ArrayBuffer) => {
   const filePath = path.join(tmpPath, getRandomFileName())
   await fs.promises.writeFile(filePath, Buffer.from(arrayBuffer))
@@ -163,3 +112,54 @@ const optimize = (
       },
     )
   })
+
+export const setupOptimizeImageHandler = (): void => {
+  handleMainTask(
+    'optimizeImage',
+    async (file): Promise<TImageOptimizationResult> => {
+      const result: TImageOptimizationResult = { status: 'success', files: [] }
+
+      if (currentTask) {
+        currentTask.cancelled = true
+        currentTask.process?.kill()
+      }
+
+      const task = { cancelled: false }
+      currentTask = task
+
+      try {
+        const inputPath = await writeArrayBufferToTempFile(file.arrayBuffer)
+        if (task.cancelled) {
+          throw new Error('Cancelled')
+        }
+
+        const [processor, command, getArgs] = getOptimizeArgs(
+          file.type,
+          inputPath,
+        )
+
+        for (
+          let quality = minQuality;
+          quality <= maxQuality;
+          quality += qualityStep
+        ) {
+          try {
+            const file = await optimize(task, command, getArgs, quality)
+            result.files.push(file)
+          } catch (error) {
+            if (isCriticalError(processor, error)) {
+              throw error
+            }
+          }
+        }
+      } catch (error) {
+        if (task.cancelled) {
+          return { status: 'cancelled' }
+        }
+        throw error
+      }
+
+      return result
+    },
+  )
+}

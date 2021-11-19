@@ -51,22 +51,30 @@ export default function PortfolioPage(): JSX.Element {
 
   nft.description += nft.description // make it longer for "read more"
 
+  const renderPortfolioContent = () => (
+    <div className='flex space-x-5 lg:space-x-10 md:pb-12'>
+      <Info nft={nft} currencyName={currencyName} />
+      <div className='bg-white pt-30px px-5 lg:px-22px rounded-lg flex-grow flex flex-col'>
+        <Description nft={nft} />
+        <hr className='my-30px' />
+        <Comments />
+      </div>
+    </div>
+  )
+
+  const renderPortfolioImage = () => (
+    <div>
+      <Image nft={nft} />
+    </div>
+  )
+
   return (
     <>
       <Breadcrumbs breadcrumbs={breadcrumbs} className='items-center' />
       <Header nft={nft} />
       <div className='page-container py-30px space-y-30px md:space-y-0 md:grid md:grid-cols-2 md:gap-5 lg:gap-10'>
-        <div>
-          <Image nft={nft} />
-        </div>
-        <div className='flex space-x-5 lg:space-x-10 md:pb-12'>
-          <Info nft={nft} currencyName={currencyName} />
-          <div className='bg-white pt-30px px-5 lg:px-22px rounded-lg flex-grow flex flex-col'>
-            <Description nft={nft} />
-            <hr className='my-30px' />
-            <Comments />
-          </div>
-        </div>
+        {renderPortfolioImage()}
+        {renderPortfolioContent()}
       </div>
     </>
   )

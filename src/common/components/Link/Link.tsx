@@ -11,19 +11,20 @@ export type TLink = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Link = ({
+function Link({
   to,
   className,
   children,
   variant,
   useATag,
   ...otherProps
-}: TLink): JSX.Element => {
+}: TLink): JSX.Element {
+  const strVariant: string = variant || ''
   const classes = cn(
     {
       'link focus:outline-none hover:text-link-hover active:text-link-active transition duration-300': true,
       'cursor-pointer': !to,
-      [`text-${variant}`]: variant,
+      [`text-${strVariant}`]: variant,
     },
     className,
   )

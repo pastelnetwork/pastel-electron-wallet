@@ -12,14 +12,36 @@ type TSecurity = {
   qrcodeData: string[]
 }
 
-const MySecurity = (props: TSecurity): JSX.Element => {
+export default function MySecurity(props: TSecurity): JSX.Element {
   const { currencyName, qrcodeData } = props
   const [videoUrl, setVideoUrl] = useState<string>('')
   const [imagesData, setImagesData] = useState<string[]>([])
   const [currentStatus, setCurrentStatus] = useState<string>('')
-  const fileName = `${currencyName}_QR_Code_Video_${dayjs().format(
-    'MM_DD_YYYY__HH_mm',
-  )}.mp4`
+  const vCurrencyName: string = currencyName || ''
+  const date: string = dayjs().format('MM_DD_YYYY__HH_mm')
+  const fileName = `${vCurrencyName}_QR_Code_Video_${date}.mp4`
+
+  const saveFile = (url: string) => {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = fileName
+    a.dispatchEvent(new MouseEvent('click'))
+    setCurrentStatus('downloaded')
+    a.remove()
+  }
+
+  const handleReReceivedMessage = (evt: MessageEvent) => {
+    if (!evt.data.error) {
+      if (evt.data.videoUrl && !videoUrl) {
+        setVideoUrl(evt.data.videoUrl)
+        saveFile(evt.data.videoUrl)
+      } else {
+        setCurrentStatus('error')
+      }
+    } else {
+      setCurrentStatus('error')
+    }
+  }
 
   useEffect(() => {
     if (imagesData.length && !videoUrl) {
@@ -45,28 +67,6 @@ const MySecurity = (props: TSecurity): JSX.Element => {
       window.removeEventListener('message', handleReReceivedMessage, false)
     }
   }, [imagesData])
-
-  const handleReReceivedMessage = (evt: MessageEvent) => {
-    if (!evt.data.error) {
-      if (evt.data.videoUrl && !videoUrl) {
-        setVideoUrl(evt.data.videoUrl)
-        saveFile(evt.data.videoUrl)
-      } else {
-        setCurrentStatus('error')
-      }
-    } else {
-      setCurrentStatus('error')
-    }
-  }
-
-  const saveFile = async (url: string) => {
-    const a = document.createElement('a')
-    a.href = url
-    a.download = fileName
-    a.dispatchEvent(new MouseEvent('click'))
-    setCurrentStatus('downloaded')
-    a.remove()
-  }
 
   const handleDownloadVideo = () => {
     if (videoUrl) {
@@ -111,10 +111,9 @@ const MySecurity = (props: TSecurity): JSX.Element => {
           id='createVideoIframe'
           src={ffmpegwasm.videoHostURL}
           className='h-1.5px w-1.5px'
+          title='Ffmpegwasm tool'
         />
       </div>
     </div>
   )
 }
-
-export default MySecurity

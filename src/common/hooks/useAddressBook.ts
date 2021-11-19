@@ -26,6 +26,15 @@ export const useAddressBook = (): TUseAddressBookResult => {
       setIsAddressBookLoaded(true)
     }
     getAddressBook()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   const updateAddressBook = async ({ address, label }: TAddressBook) => {

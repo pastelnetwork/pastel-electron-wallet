@@ -103,6 +103,87 @@ export default function Register(): JSX.Element {
     }
   }
 
+  const renderRegisterStepTitle = (
+    id: number,
+    label: string,
+    tooltipText: string,
+    tooltipWidth: number,
+  ) => (
+    <div
+      className={cn(
+        'flex-grow flex items-center ml-8 text-lg',
+        step === id
+          ? 'font-extrabold text-gray-2d'
+          : step < id
+          ? 'font-medium text-gray-a0'
+          : 'font-medium text-gray-4a',
+      )}
+    >
+      <span>{label}</span>
+      {step === id && tooltipText && tooltipWidth && (
+        <div className='inline-block mx-2'>
+          <Tooltip
+            classnames='font-medium py-2'
+            content={tooltipText}
+            type='top'
+            width={tooltipWidth}
+            vPosPercent={100}
+          >
+            <Info size={17} />
+          </Tooltip>
+        </div>
+      )}
+    </div>
+  )
+
+  const renderRegisterStep = () => (
+    <div className='mt-7'>
+      {STEPS.map(
+        ({ id, iconActive: Component, label, tooltipText, tooltipWidth }) => (
+          <div
+            key={id}
+            className={cn(
+              'rounded-lg flex items-center px-8 py-3 step',
+              styles.step,
+              step === id ? 'bg-gray-ed' : '',
+            )}
+          >
+            {step <= id ? (
+              <Component
+                size={44}
+                className={step === id ? 'text-gray-33' : 'text-gray-ec'}
+                pathColor={step === id ? '#FFFFFF' : '#8894AA'}
+              />
+            ) : (
+              <CircleCheck size={40} className='text-green-45 ml-1' />
+            )}
+            {renderRegisterStepTitle(id, label, tooltipText, tooltipWidth)}
+            {step === id && <LongArrow size={20} className='text-gray-88' />}
+          </div>
+        ),
+      )}
+    </div>
+  )
+
+  const renderRegisterHeader = () => (
+    <div className='flex justify-between'>
+      <div>
+        <div className='text-gray-800 text-32px font-extrabold'>Onboarding</div>
+        <div className='font-medium text-sm text-gray-93 opacity-50 mt-1'>
+          Getting Started on Pastel Network
+        </div>
+      </div>
+      <div>
+        <CircleSteper
+          size={65}
+          totalStep={stepsCount}
+          spaceAngle={10}
+          currentStep={step}
+        />
+      </div>
+    </div>
+  )
+
   return (
     <>
       <CloseButton
@@ -123,83 +204,8 @@ export default function Register(): JSX.Element {
         )}
       >
         <div className='w-1/2 flex-shrink-0 bg-gray-fc py-10 pl-10 pr-7'>
-          <div className='flex justify-between'>
-            <div>
-              <div className='text-gray-800 text-32px font-extrabold'>
-                Onboarding
-              </div>
-              <div className='font-medium text-sm text-gray-93 opacity-50 mt-1'>
-                Getting Started on Pastel Network
-              </div>
-            </div>
-            <div>
-              <CircleSteper
-                size={65}
-                totalStep={stepsCount}
-                spaceAngle={10}
-                currentStep={step}
-              />
-            </div>
-          </div>
-          <div className='mt-7'>
-            {STEPS.map(
-              ({
-                id,
-                iconActive: Component,
-                label,
-                tooltipText,
-                tooltipWidth,
-              }) => (
-                <div
-                  key={id}
-                  className={cn(
-                    'rounded-lg flex items-center px-8 py-3 step',
-                    styles.step,
-                    step === id ? 'bg-gray-ed' : '',
-                  )}
-                >
-                  {step <= id ? (
-                    <Component
-                      size={44}
-                      className={step === id ? 'text-gray-33' : 'text-gray-ec'}
-                      pathColor={step === id ? '#FFFFFF' : '#8894AA'}
-                    />
-                  ) : (
-                    <CircleCheck size={40} className='text-green-45 ml-1' />
-                  )}
-                  <div
-                    className={cn(
-                      'flex-grow flex items-center ml-8 text-lg',
-                      step === id
-                        ? 'font-extrabold text-gray-2d'
-                        : step < id
-                        ? 'font-medium text-gray-a0'
-                        : 'font-medium text-gray-4a',
-                    )}
-                  >
-                    <span>{label}</span>
-                    {step === id && tooltipText && tooltipWidth && (
-                      <div className='inline-block mx-2'>
-                        <Tooltip
-                          classnames='font-medium py-2'
-                          content={tooltipText}
-                          type='top'
-                          width={tooltipWidth}
-                          vPosPercent={100}
-                        >
-                          <Info size={17} />
-                        </Tooltip>
-                      </div>
-                    )}
-                  </div>
-
-                  {step === id && (
-                    <LongArrow size={20} className='text-gray-88' />
-                  )}
-                </div>
-              ),
-            )}
-          </div>
+          {renderRegisterHeader()}
+          {renderRegisterStep()}
         </div>
 
         <div className='w-1/2 flex-shrink-0 pb-10 pl-10 pr-7 mt-7'>
@@ -226,6 +232,7 @@ export default function Register(): JSX.Element {
             <button
               className='rounded-full text-sm font-medium text-white bg-red-fe inline-block w-[232px] text-center py-6px cursor-pointer'
               onClick={() => confirmClose(true)}
+              type='button'
             >
               Close
             </button>
@@ -234,6 +241,7 @@ export default function Register(): JSX.Element {
             <button
               className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-[232px] text-center py-6px cursor-pointer'
               onClick={() => confirmClose(false)}
+              type='button'
             >
               Back
             </button>

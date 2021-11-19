@@ -64,6 +64,46 @@ export default function PreviewStepModal({
     }
   }
 
+  const handleBack = () => {
+    state.goBack()
+  }
+
+  const strImageSizePercentOfAvg: string = imageSizePercentOfAvg?.toString()
+
+  const renderImageSizePercentOfAvg = () => (
+    <div className='flex-grow'>
+      <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
+        <div
+          className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
+          style={{ width: strImageSizePercentOfAvg + '%' }}
+        />
+      </div>
+      <div className='text-xs text-gray-a0 font-normal'>
+        {imageSizePercentOfAvg}% of average Pastel NFT size
+      </div>
+    </div>
+  )
+
+  const renderGoToOverview = () => (
+    <div className='flex-between pt-18px'>
+      <button
+        type='button'
+        className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
+        onClick={handleBack}
+      >
+        <ArrowSlim to='left' size={14} />
+      </button>
+      <button
+        type='button'
+        className='btn btn-primary px-[30px]'
+        onClick={submit}
+        disabled={!submittable}
+      >
+        Go to Overview
+      </button>
+    </div>
+  )
+
   return (
     <ModalLayout
       title='Image Preview'
@@ -91,12 +131,18 @@ export default function PreviewStepModal({
                   ref={ref}
                   className='absolute z-10 bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
                   onClick={toggleCropping}
+                  type='button'
                 >
                   <Crop size={18} />
                 </button>
               )}
             </Tooltip2>
-            <img ref={setImageElement} src={displayUrl} className='rounded' />
+            <img
+              ref={setImageElement}
+              src={displayUrl}
+              className='rounded'
+              alt='Pastel'
+            />
           </div>
         </div>
       }
@@ -109,20 +155,10 @@ export default function PreviewStepModal({
                 state.optimizationService.selectedFile?.size || image.size,
               )}
             </div>
-            <div className='flex-grow'>
-              <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
-                <div
-                  className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
-                  style={{ width: imageSizePercentOfAvg + '%' }}
-                />
-              </div>
-              <div className='text-xs text-gray-a0 font-normal'>
-                {imageSizePercentOfAvg}% of average Pastel NFT size
-              </div>
-            </div>
+            {renderImageSizePercentOfAvg()}
           </div>
           <div className='flex-between mb-5 text-base'>
-            <div className='font-medium text-gray-4a font-medium'>
+            <div className='text-gray-4a font-medium'>
               Estimated registration fee
             </div>
             <div className='text-gray-2d font-extrabold'>
@@ -163,6 +199,7 @@ export default function PreviewStepModal({
                   <img
                     src={croppedImage.src}
                     className='rounded w-full h-full relative z-10'
+                    alt='Pastel Network'
                   />
                 </>
               )}
@@ -173,23 +210,7 @@ export default function PreviewStepModal({
               </div>
             )}
           </div>
-          <div className='flex-between pt-18px'>
-            <button
-              type='button'
-              className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={state.goBack}
-            >
-              <ArrowSlim to='left' size={14} />
-            </button>
-            <button
-              type='button'
-              className='btn btn-primary px-[30px]'
-              onClick={submit}
-              disabled={!submittable}
-            >
-              Go to Overview
-            </button>
-          </div>
+          {renderGoToOverview()}
         </div>
       }
     />

@@ -10,6 +10,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 import history from 'common/utils/history'
 import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
 import { verifyPastelIdPassword } from 'api/pastel-rpc'
+import { toast } from 'react-toastify'
 
 export default function Login(): JSX.Element {
   const [isLoading, setLoading] = useState(false)
@@ -25,21 +26,26 @@ export default function Login(): JSX.Element {
       u => u.username === username && u.newPassword === md5(password),
     )
     if (user) {
-      const verify = await verifyPastelIdPassword({
-        pastelId: user.pastelId,
-        password: `${user.password}${user.username}`,
-      })
-      if (verify.signature) {
-        setAutoSignIn()
+      try {
+        const verify = await verifyPastelIdPassword({
+          pastelId: user.pastelId,
+          password: `${user.password}${user.username}`,
+        })
+        if (verify.signature) {
+          setAutoSignIn()
+          setLoading(false)
+          history.push(ROUTES.DASHBOARD)
+        } else {
+          setErrorMessage('Username or password is incorrect')
+        }
+      } catch (error) {
+        toast(error.message, { type: 'error' })
         setLoading(false)
-        history.push(ROUTES.DASHBOARD)
-      } else {
-        setErrorMessage('Username or password is incorrect')
       }
     } else {
       setErrorMessage('Username or password is incorrect')
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {
@@ -51,6 +57,18 @@ export default function Login(): JSX.Element {
   }
 
   const inValid = !username || !password ? true : false
+
+  const renderRestoreAccountButton = () => {
+    return (
+      <div className='text-gray-71 text-h6 my-5'>
+        Forgot your password?
+        <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
+          {' '}
+          Restore access now
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className='w-[398px] my-9 mx-60px'>
@@ -75,13 +93,7 @@ export default function Login(): JSX.Element {
           onChange={onPasswordChanged}
           value={password}
         />
-        <div className='text-gray-71 text-h6 my-5'>
-          Forgot your password?
-          <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
-            {' '}
-            Restore access now
-          </Link>
-        </div>
+        {renderRestoreAccountButton()}
         <Button
           className='w-full'
           type='button'

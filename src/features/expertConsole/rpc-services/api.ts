@@ -1,4 +1,5 @@
 import axios, { CancelTokenSource } from 'axios'
+import log from 'electron-log'
 
 import { METHODS } from './utils'
 import { requireRpcConfig } from '../../rpcConfig'
@@ -48,11 +49,11 @@ METHODS.forEach((method: string) => {
           cancelToken: source.token,
         })
           .then(data => {
-            console.log('[RPC CALL SUCCESS] -', method, data?.data?.result)
+            log.log('[RPC CALL SUCCESS] -', method, data?.data?.result)
             resolve(data?.data?.result)
           })
           .catch(error => {
-            console.log('[RPC CALL ERROR] - ', { ...error })
+            log.log('[RPC CALL ERROR] - ', { ...error })
             const { response = {}, status: statusCode = 500 } = { ...error }
             const { message: msg } = response.data?.error || {}
             const message =

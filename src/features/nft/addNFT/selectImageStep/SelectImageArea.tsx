@@ -16,7 +16,17 @@ export default function SelectImageArea({
   useEffect(() => {
     const onDrop = (e: DragEvent) => {
       e.preventDefault()
-      service.selectFile(e.dataTransfer?.files[0])
+      service
+        .selectFile(e.dataTransfer?.files[0])
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
     const preventDefault = (e: DragEvent) => e.preventDefault()
 

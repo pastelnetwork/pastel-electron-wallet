@@ -35,6 +35,7 @@ export function NextButton({
         className ? className : '',
       )}
       disabled={disabled}
+      type='button'
     >
       {text}
       {showIcon && (

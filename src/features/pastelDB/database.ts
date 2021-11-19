@@ -9,6 +9,15 @@ class PastelDB {
   private static getDatabasePromise: Promise<Database> | void
   static init(): void {
     this.getDatabaseInstance()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }
   static getDatabaseInstance(): Promise<Database> {
     if (!this.getDatabasePromise) {

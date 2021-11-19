@@ -1,4 +1,5 @@
 const fs = require('fs')
+const log = require('electron-log')
 const electron_notarize = require('electron-notarize')
 
 module.exports = async function (params) {
@@ -17,7 +18,7 @@ module.exports = async function (params) {
     throw new Error(`Cannot find application at: ${appPath}`)
   }
 
-  console.log(`Notarizing ${appId} found at ${appPath}`)
+  log.log(`Notarizing ${appId} found at ${appPath}`)
 
   try {
     await electron_notarize.notarize({
@@ -27,8 +28,8 @@ module.exports = async function (params) {
       appleIdPassword: process.env.appleIdPassword,
     })
   } catch (error) {
-    console.error(error)
+    log.error(error)
   }
 
-  console.log(`Done notarizing ${appId}`)
+  log.log(`Done notarizing ${appId}`)
 }

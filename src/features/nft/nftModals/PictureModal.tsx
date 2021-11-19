@@ -11,9 +11,22 @@ export type TPictureModal = {
   handleClose: () => void
 }
 
-const PictureModal = ({ isOpen, handleClose }: TPictureModal): JSX.Element => {
+function PictureModal({ isOpen, handleClose }: TPictureModal): JSX.Element {
   const [zoom, setZoom] = useState<number>(42)
   const imageSize = (1382 * zoom) / 100
+
+  const renderPictureButton = () => (
+    <div className='absolute bottom-30px left-1/2 rounded-lg transform -translate-x-1/2 w-180px h-34px bg-gray-1a bg-opacity-60 flex items-center'>
+      <button className='ml-3 mr-6px' type='button'>
+        <img src={ico_minus} alt='Pastel Network' />
+      </button>
+      <Slider value={zoom} setValue={setZoom} />
+      <button className='mr-3 ml-6px' type='button'>
+        <img src={ico_plus} alt='Pastel Network' />
+      </button>
+    </div>
+  )
+
   return (
     <ReactModal
       isOpen={isOpen}
@@ -35,17 +48,10 @@ const PictureModal = ({ isOpen, handleClose }: TPictureModal): JSX.Element => {
             height: `${imageSize}px`,
             maxWidth: 'initial',
           }}
+          alt='Pastel Network'
         />
       </div>
-      <div className='absolute bottom-30px left-1/2 rounded-lg transform -translate-x-1/2 w-180px h-34px bg-gray-1a bg-opacity-60 flex items-center'>
-        <button className='ml-3 mr-6px'>
-          <img src={ico_minus} />
-        </button>
-        <Slider value={zoom} setValue={setZoom} />
-        <button className='mr-3 ml-6px'>
-          <img src={ico_plus} />
-        </button>
-      </div>
+      {renderPictureButton()}
     </ReactModal>
   )
 }

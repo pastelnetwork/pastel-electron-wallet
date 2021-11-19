@@ -11,14 +11,14 @@ export type TCheckboxProps = {
   selectedBackgroundClassName?: string
 }
 
-const Checkbox = ({
+function Checkbox({
   children,
   isChecked,
   clickHandler,
   tickClassName = 'text-gray-e7',
   selectedBackgroundClassName = 'bg-blue-3f',
   className = 'items-center',
-}: TCheckboxProps): JSX.Element => {
+}: TCheckboxProps): JSX.Element {
   const [selected, setSelected] = useState(isChecked)
 
   useEffect(() => {

@@ -65,10 +65,6 @@ export default function TransactionHistoryModal(): JSX.Element {
     recipients[0],
   )
   const [isLoading, setLoading] = useState(false)
-  const onSelectDateRange = (dates: TDateRangeProp) => {
-    setDates(dates)
-    filterTransactionByDate(dates, originTransactions)
-  }
 
   const filterTransactionByDate = (
     dates: TDateRangeProp,
@@ -96,6 +92,11 @@ export default function TransactionHistoryModal(): JSX.Element {
     }
 
     setTransactions(filterTransactions)
+  }
+
+  const onSelectDateRange = (dates: TDateRangeProp) => {
+    setDates(dates)
+    filterTransactionByDate(dates, originTransactions)
   }
 
   const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {
@@ -174,6 +175,15 @@ export default function TransactionHistoryModal(): JSX.Element {
       setLoading(false)
     }
     getTransactions()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   useEffect(() => {
@@ -214,6 +224,31 @@ export default function TransactionHistoryModal(): JSX.Element {
     [transactions, addressBook],
   )
 
+  const renderTransactionCommentIconTooltip = (row?: TRow) => (
+    <Tooltip
+      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+      content={row?.comments}
+      width={150}
+      type='top'
+    >
+      <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+        <img alt='comment' className='cursor-pointer' src={commentIcon} />
+      </span>
+    </Tooltip>
+  )
+
+  const renderTransactionCommentIcon = (row?: TRow) => {
+    if (!row?.comments) {
+      return null
+    }
+
+    return (
+      <div className='inline-block'>
+        {renderTransactionCommentIconTooltip(row)}
+      </div>
+    )
+  }
+
   const Columns = [
     {
       name: 'Date',
@@ -221,7 +256,7 @@ export default function TransactionHistoryModal(): JSX.Element {
       headerColClasses: 'ml-15px',
       custom: (value: string | number) => (
         <div className='ml-15px whitespace-nowrap mr-15px'>
-          {dayjs.unix(parseInt(value.toString())).format('DD/MM/YY HH:mm')}
+          {dayjs.unix(parseInt(value?.toString())).format('DD/MM/YY HH:mm')}
         </div>
       ),
     },
@@ -249,24 +284,7 @@ export default function TransactionHistoryModal(): JSX.Element {
           <div className='ml-46px flex items-center'>
             {!isTransparent(row?.address) ? 'Shielded' : 'Transparent'}
 
-            {row?.comments ? (
-              <div className='inline-block'>
-                <Tooltip
-                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content={row.comments}
-                  width={150}
-                  type='top'
-                >
-                  <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
-                    <img
-                      alt='comment'
-                      className='cursor-pointer'
-                      src={commentIcon}
-                    />
-                  </span>
-                </Tooltip>
-              </div>
-            ) : null}
+            {renderTransactionCommentIcon(row)}
           </div>
         )
       },
@@ -339,7 +357,11 @@ export default function TransactionHistoryModal(): JSX.Element {
               type='top'
             >
               <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
-                <img className='cursor-pointer' src={commentIcon} />
+                <img
+                  className='cursor-pointer'
+                  src={commentIcon}
+                  alt='Comment'
+                />
               </span>
             </Tooltip>
           ) : null}
@@ -469,6 +491,33 @@ export default function TransactionHistoryModal(): JSX.Element {
     </div>
   )
 
+  const renderTransactionFilter = () => {
+    return (
+      <div className='flex text-gray-71 text-sm'>
+        <div className='w-2/3 flex'>
+          {renderDateFilter()}
+          {renderSourceAddressFilter()}
+          {renderRecipientsFilter()}
+        </div>
+        {renderTransactionTypeFilter()}
+      </div>
+    )
+  }
+
+  const renderTransactionBody = () => {
+    return (
+      <div className='h-409px overflow-y-auto mt-3 pr-2'>
+        <Table
+          columns={Columns}
+          data={mappedAddressTransactions}
+          headerTrClasses='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'
+          bodyTrClasses='h-67px border-b border-line text-sm md:text-base'
+          isLoading={isLoading}
+        />
+      </div>
+    )
+  }
+
   return (
     <TitleModal
       isOpen
@@ -477,23 +526,8 @@ export default function TransactionHistoryModal(): JSX.Element {
       classNames='max-w-7xl min-h-[88vh]'
     >
       <div className='bg-white z-50'>
-        <div className='flex text-gray-71 text-sm'>
-          <div className='w-2/3 flex'>
-            {renderDateFilter()}
-            {renderSourceAddressFilter()}
-            {renderRecipientsFilter()}
-          </div>
-          {renderTransactionTypeFilter()}
-        </div>
-        <div className='h-409px overflow-y-auto mt-3 pr-2'>
-          <Table
-            columns={Columns}
-            data={mappedAddressTransactions}
-            headerTrClasses='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'
-            bodyTrClasses='h-67px border-b border-line text-sm md:text-base'
-            isLoading={isLoading}
-          />
-        </div>
+        {renderTransactionFilter()}
+        {renderTransactionBody()}
       </div>
     </TitleModal>
   )

@@ -44,9 +44,24 @@ export default function Routes(): JSX.Element {
 
   useEffect(() => {
     if (sqliteFilePath) {
-      PastelDB.getDatabaseInstance().then(setDb)
+      PastelDB.getDatabaseInstance()
+        .then(setDb)
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [sqliteFilePath])
+
+  const renderRoutesControls = () => {
+    return (
+      <Switch>
+        <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
+      </Switch>
+    )
+  }
 
   return (
     <div className='flex justify-center items-center min-h-screen bg-gray-d1'>
@@ -59,9 +74,7 @@ export default function Routes(): JSX.Element {
             </Switch>
           </AppContext.Provider>
         )}
-        <Switch>
-          <Route exact path={ROUTES.LOADING} component={LoadingScreen} />
-        </Switch>
+        {renderRoutesControls()}
         {db ? <Utilities /> : null}
       </Router>
     </div>

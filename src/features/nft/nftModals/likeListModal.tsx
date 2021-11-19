@@ -10,10 +10,48 @@ export type TLikeListModal = {
   handleClose: () => void
 }
 
-const LikeListModal = ({
-  isOpen,
-  handleClose,
-}: TLikeListModal): JSX.Element => {
+const Columns = [
+  {
+    name: 'Time',
+    key: 'time',
+    className: 'pl-10 w-[250px]',
+    sortable: true,
+    custom: (value: string) => (
+      <div className='flex items-center'>{dayjs(value).fromNow(true)} ago</div>
+    ),
+  },
+  {
+    name: 'Member',
+    key: 'member',
+    className: 'pl-4 w-[200px]',
+    sortable: true,
+  },
+  {
+    name: 'Sold',
+    key: 'sold',
+    className: 'pl-4 w-[200px]',
+    sortable: true,
+  },
+  {
+    name: 'Followers',
+    key: 'followers',
+    className: 'pl-4 w-[200px]',
+    sortable: true,
+    custom: (value: string) => (
+      <div>
+        <NumberFormat
+          value={parseInt(value) / 1000}
+          decimalScale={2}
+          displayType='text'
+          thousandSeparator
+        />
+        k{' '}
+      </div>
+    ),
+  },
+]
+
+function LikeListModal({ isOpen, handleClose }: TLikeListModal): JSX.Element {
   const currencyName = useCurrencyName()
   const tableData = [
     {
@@ -82,52 +120,11 @@ const LikeListModal = ({
           data={tableData}
           className='h-401px pr-[30px]'
           trClassName='border-b border-gray-f2'
-          fixedHeader={true}
+          fixedHeader
         />
       </div>
     </Modal>
   )
 }
-
-const Columns = [
-  {
-    name: 'Time',
-    key: 'time',
-    className: 'pl-10 w-[250px]',
-    sortable: true,
-    custom: (value: string) => (
-      <div className='flex items-center'>{dayjs(value).fromNow(true)} ago</div>
-    ),
-  },
-  {
-    name: 'Member',
-    key: 'member',
-    className: 'pl-4 w-[200px]',
-    sortable: true,
-  },
-  {
-    name: 'Sold',
-    key: 'sold',
-    className: 'pl-4 w-[200px]',
-    sortable: true,
-  },
-  {
-    name: 'Followers',
-    key: 'followers',
-    className: 'pl-4 w-[200px]',
-    sortable: true,
-    custom: (value: string) => (
-      <div>
-        <NumberFormat
-          value={parseInt(value) / 1000}
-          decimalScale={2}
-          displayType='text'
-          thousandSeparator={true}
-        />
-        k{' '}
-      </div>
-    ),
-  },
-]
 
 export default LikeListModal

@@ -29,6 +29,82 @@ export type TSelectImageStepService = {
 
 type TImageToConvert = { name: string; image: HTMLImageElement }
 
+const checkFileSize = (size: number) => {
+  if (size > 100 * Size.MB) {
+    throw new Error(
+      `Selected file exceeds 100 MB limit: ${(size / Size.MB).toFixed(1)} MB`,
+    )
+  }
+}
+
+const checkImageSize = ({
+  width,
+  height,
+}: {
+  width: number
+  height: number
+}) => {
+  if (width < minImageWidth) {
+    throw new Error(
+      `Image width should not be less than ${minImageWidth}px, got ${width}px`,
+    )
+  }
+  if (height < minImageHeight) {
+    throw new Error(
+      `Image height should not be less than ${minImageHeight}px, got ${height}px`,
+    )
+  }
+}
+
+const processingErrorMessage =
+  'Can not process selected file, it is possibly corrupted'
+
+// We need to load image using image-js to check if image file is corrupted
+// In case of corrupted image it will throw error, while standard image's onerror are not triggered
+const processImage = async ({
+  name,
+  type,
+  url,
+}: {
+  name: string
+  type: TImageType
+  url: string
+}): Promise<TImageFile> => {
+  let image = null
+  try {
+    image = await ImageJS.load(url)
+  } catch (error) {
+    log.error('Image loading error', error.message)
+    throw new Error(processingErrorMessage)
+  }
+
+  checkImageSize(image)
+
+  let blob = null
+  let arrayBuffer = null
+  try {
+    blob = await image.toBlob(type, 1)
+    arrayBuffer = await blob.arrayBuffer()
+  } catch (error) {
+    log.error('Image converting to ArrayBuffer error', error.message)
+    throw new Error(processingErrorMessage)
+  }
+
+  const { width, height } = image
+  const orientation = width < height ? 'portrait' : 'landscape'
+
+  return {
+    type,
+    name,
+    size: image.size,
+    url: URL.createObjectURL(blob),
+    arrayBuffer,
+    width,
+    height,
+    maxWidth: maxWidthByOrientation[orientation],
+  }
+}
+
 export const useSelectImageService = (
   state: TAddNFTState,
 ): TSelectImageStepService => {
@@ -134,86 +210,20 @@ export const useSelectImageService = (
       if (imageFile) {
         const { arrayBuffer, ...image } = imageFile
         state.setImage(image)
-        state.optimizationService.optimizeImage(image.type, arrayBuffer)
+        state.optimizationService
+          .optimizeImage(image.type, arrayBuffer)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
       }
 
       state.goToNextStep()
     },
-  }
-}
-
-const checkFileSize = (size: number) => {
-  if (size > 100 * Size.MB) {
-    throw new Error(
-      `Selected file exceeds 100 MB limit: ${(size / Size.MB).toFixed(1)} MB`,
-    )
-  }
-}
-
-const checkImageSize = ({
-  width,
-  height,
-}: {
-  width: number
-  height: number
-}) => {
-  if (width < minImageWidth) {
-    throw new Error(
-      `Image width should not be less than ${minImageWidth}px, got ${width}px`,
-    )
-  }
-  if (height < minImageHeight) {
-    throw new Error(
-      `Image height should not be less than ${minImageHeight}px, got ${height}px`,
-    )
-  }
-}
-
-const processingErrorMessage =
-  'Can not process selected file, it is possibly corrupted'
-
-// We need to load image using image-js to check if image file is corrupted
-// In case of corrupted image it will throw error, while standard image's onerror are not triggered
-const processImage = async ({
-  name,
-  type,
-  url,
-}: {
-  name: string
-  type: TImageType
-  url: string
-}): Promise<TImageFile> => {
-  let image
-  try {
-    image = await ImageJS.load(url)
-  } catch (error) {
-    log.error('Image loading error', error.message)
-    throw new Error(processingErrorMessage)
-  }
-
-  checkImageSize(image)
-
-  let blob
-  let arrayBuffer
-  try {
-    blob = await image.toBlob(type, 1)
-    arrayBuffer = await blob.arrayBuffer()
-  } catch (error) {
-    log.error('Image converting to ArrayBuffer error', error.message)
-    throw new Error(processingErrorMessage)
-  }
-
-  const { width, height } = image
-  const orientation = width < height ? 'portrait' : 'landscape'
-
-  return {
-    type,
-    name,
-    size: image.size,
-    url: URL.createObjectURL(blob),
-    arrayBuffer,
-    width,
-    height,
-    maxWidth: maxWidthByOrientation[orientation],
   }
 }

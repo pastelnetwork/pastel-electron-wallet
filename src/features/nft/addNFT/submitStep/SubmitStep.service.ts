@@ -7,6 +7,30 @@ import { toast } from 'react-toastify'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
 import log from 'electron-log'
 
+const getImageFile = (
+  state: TAddNFTState,
+  image: TImage,
+): Promise<File | Blob> =>
+  new Promise((resolve, reject) => {
+    const optimizedFile = state.optimizationService.selectedFile
+
+    const url =
+      state.isLossLess || !optimizedFile ? image.url : optimizedFile.fileUrl
+
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'blob'
+
+    xhr.onload = () => {
+      if (xhr.status !== 200) {
+        return reject(new Error('Error accessing optimized image'))
+      }
+      resolve(xhr.response)
+    }
+
+    xhr.send()
+  })
+
 export const submit = async ({
   state,
   image,
@@ -72,27 +96,3 @@ export const submit = async ({
     toast('Register new NFT is failed', { type: 'error' })
   }
 }
-
-const getImageFile = (
-  state: TAddNFTState,
-  image: TImage,
-): Promise<File | Blob> =>
-  new Promise((resolve, reject) => {
-    const optimizedFile = state.optimizationService.selectedFile
-
-    const url =
-      state.isLossLess || !optimizedFile ? image.url : optimizedFile.fileUrl
-
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.responseType = 'blob'
-
-    xhr.onload = () => {
-      if (xhr.status !== 200) {
-        return reject(new Error('Error accessing optimized image'))
-      }
-      resolve(xhr.response)
-    }
-
-    xhr.send()
-  })

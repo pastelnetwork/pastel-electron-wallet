@@ -7,11 +7,11 @@ export type TSelectButton = {
   children?: ReactNode | string
 }
 
-const SelectButtons = ({
+function SelectButtons({
   children,
   isActive,
   onClick,
-}: TSelectButton): JSX.Element => {
+}: TSelectButton): JSX.Element {
   return (
     <button
       onClick={onClick}
@@ -19,6 +19,7 @@ const SelectButtons = ({
         'text-h5 font-normal text-gray-71 w-full px-4 py-2 text-left focus:outline-none hover:bg-gray-f7 transition duration-300',
         isActive && 'bg-gray-f7',
       )}
+      type='button'
     >
       {children}
     </button>

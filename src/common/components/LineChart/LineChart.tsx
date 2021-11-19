@@ -51,7 +51,7 @@ const filterData = (
   }
 }
 
-const LineChart = ({
+function LineChart({
   data1,
   height = 300,
   width = 600,
@@ -63,7 +63,7 @@ const LineChart = ({
   type = 'month',
   label1className = 'bg-blue-37',
   label2className = 'bg-red-ff',
-}: TChartProps): JSX.Element => {
+}: TChartProps): JSX.Element {
   useEffect(() => {
     const data: TLineChartRow[] = filterData(data1, type)
     const svg = d3
@@ -249,55 +249,61 @@ const LineChart = ({
     }
   }, [])
 
+  const renderLinearGradient = () => (
+    <defs>
+      <linearGradient
+        id='gradient1'
+        x1='16.5'
+        y1='0'
+        x2='16.5'
+        y2={height}
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop offset='0.29913' stopColor='#D4B9FF' />
+        <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
+      </linearGradient>
+      <linearGradient
+        id='gradient2'
+        x1='16.5'
+        y1='0'
+        x2='16.5'
+        y2={height}
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop offset='0.29913' stopColor='#9FDDFF' />
+        <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
+      </linearGradient>
+    </defs>
+  )
+
+  const renderChartData = () => (
+    <div
+      className='flex justify-center mt-6'
+      style={{ width: width + margin.left + margin.right }}
+    >
+      <div className='text-gray-2d font-medium text-sm flex items-center mr-61px'>
+        <div
+          className={cn('w-2 h-2 rounded-full mr-1.5', label1className)}
+        ></div>
+        {data1Label}
+      </div>
+      {!!data2 && (
+        <div className='text-gray-2d font-medium text-sm flex items-center'>
+          <div
+            className={cn('w-2 h-2 rounded-full mr-1.5', label2className)}
+          ></div>
+          {data2Label}
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <div>
       <div>
-        <svg id='container'>
-          <defs>
-            <linearGradient
-              id='gradient1'
-              x1='16.5'
-              y1='0'
-              x2='16.5'
-              y2={height}
-              gradientUnits='userSpaceOnUse'
-            >
-              <stop offset='0.29913' stopColor='#D4B9FF' />
-              <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
-            </linearGradient>
-            <linearGradient
-              id='gradient2'
-              x1='16.5'
-              y1='0'
-              x2='16.5'
-              y2={height}
-              gradientUnits='userSpaceOnUse'
-            >
-              <stop offset='0.29913' stopColor='#9FDDFF' />
-              <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
-            </linearGradient>
-          </defs>
-        </svg>
+        <svg id='container'>{renderLinearGradient()}</svg>
       </div>
-      <div
-        className='flex justify-center mt-6'
-        style={{ width: width + margin.left + margin.right }}
-      >
-        <div className='text-gray-2d font-medium text-sm flex items-center mr-61px'>
-          <div
-            className={cn('w-2 h-2 rounded-full mr-1.5', label1className)}
-          ></div>
-          {data1Label}
-        </div>
-        {!!data2 && (
-          <div className='text-gray-2d font-medium text-sm flex items-center'>
-            <div
-              className={cn('w-2 h-2 rounded-full mr-1.5', label2className)}
-            ></div>
-            {data2Label}
-          </div>
-        )}
-      </div>
+      {renderChartData()}
     </div>
   )
 }

@@ -16,13 +16,13 @@ export type TModal = {
   overlayClassName?: string
 }
 
-const Modal = ({
+function Modal({
   isOpen,
   handleClose,
   children,
   className,
   overlayClassName,
-}: TModal): JSX.Element => {
+}: TModal): JSX.Element {
   const modalClasses = cn(
     className,
     'relative bg-white rounded-2xl shadow-xSmall w-full max-h-full py-8 px-12 overflow-auto mx-auto',

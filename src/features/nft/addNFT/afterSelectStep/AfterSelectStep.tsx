@@ -33,6 +33,18 @@ export default function UploadStep({
     filledProgressBarRef,
   } = useImageZoom()
 
+  const renderDraggableAreaImage = () => (
+    <DraggableCore onDrag={onDragImage} onStart={e => e.preventDefault()}>
+      <img
+        ref={imageRef}
+        src={displayUrl}
+        className='rounded max-h-400px'
+        onWheel={onWheelImage}
+        alt='Wheel'
+      />
+    </DraggableCore>
+  )
+
   return (
     <ModalLayout
       title='Select Image'
@@ -49,20 +61,11 @@ export default function UploadStep({
               <button
                 className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
                 onClick={goBack}
+                type='button'
               >
                 <Trash size={15} />
               </button>
-              <DraggableCore
-                onDrag={onDragImage}
-                onStart={e => e.preventDefault()}
-              >
-                <img
-                  ref={imageRef}
-                  src={displayUrl}
-                  className='rounded max-h-400px'
-                  onWheel={onWheelImage}
-                />
-              </DraggableCore>
+              {renderDraggableAreaImage()}
               <div
                 className={`absolute bottom-3 h-10 px-3 rounded-full flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
               >

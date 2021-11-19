@@ -7,12 +7,21 @@ import { closeGlitchImageModal } from './GlitchImageModalSlice'
 
 import { glitch } from '../../common/constants/ServeStatic'
 
-export default function glitchImageModal(): JSX.Element | null {
+export default function GlitchImageModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.glitchImageModal)
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen) {
     return null
+  }
+
+  const renderIframeContent = () => {
+    const port: string = glitch.staticPort?.toString() || ''
+    return (
+      <div className={styles.iframe}>
+        <iframe src={`http://localhost:${port}/`} title='Glitch Image Tool' />
+      </div>
+    )
   }
 
   return (
@@ -29,9 +38,7 @@ export default function glitchImageModal(): JSX.Element | null {
         >
           X
         </button>
-        <div className={styles.iframe}>
-          <iframe src={`http://localhost:${glitch.staticPort}/`} />
-        </div>
+        {renderIframeContent()}
       </div>
     </Modal>
   )

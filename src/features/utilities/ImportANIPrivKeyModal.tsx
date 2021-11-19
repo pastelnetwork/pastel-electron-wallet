@@ -50,7 +50,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
 
     for (let i = 0; i < keys.length; i++) {
       try {
-        walletRPC.doImportANIPrivKey(keys[i])
+        await walletRPC.doImportANIPrivKey(keys[i])
         if (i === keys.length - 1) {
           setComplete(true)
         }
@@ -58,6 +58,54 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
         toast(error.message, { type: 'error' })
       }
     }
+  }
+
+  const renderImportButton = () => (
+    <Button
+      onClick={handleImportANIPrivKey}
+      className='w-[120px] px-0 ml-[30px]'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center justify-center'>
+        <div className='text-white text-h5-heavy'>Import</div>
+      </div>
+    </Button>
+  )
+
+  const renderCancelButtons = () => {
+    return (
+      <Button
+        variant='secondary'
+        className='w-[120px] px-0'
+        childrenClassName='w-full'
+        onClick={() => dispatch(closeImportANIPrivKeyModal())}
+      >
+        <div className='flex items-center justify-center'>
+          <div className='text-blue-3f text-h5-medium'>Cancel</div>
+        </div>
+      </Button>
+    )
+  }
+
+  const renderSuccessContent = () => {
+    return (
+      <div className='mt-6 text-center'>
+        <div>
+          <img
+            src={congratulations}
+            alt='Congratulations'
+            className='w-54px h-54px mx-auto'
+          />
+        </div>
+        <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
+          The import process for the private keys has started.
+          <br />
+          This will take a long time, up to 1 hour!
+          <br />
+          Please be patient!
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -69,24 +117,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
     >
       <div className='pr-8'>
         {isComplete ? (
-          <>
-            <div className='mt-6 text-center'>
-              <div>
-                <img
-                  src={congratulations}
-                  alt='Congratulations'
-                  className='w-54px h-54px mx-auto'
-                />
-              </div>
-              <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
-                The import process for the private keys has started.
-                <br />
-                This will take a long time, up to 1 hour!
-                <br />
-                Please be patient!
-              </div>
-            </div>
-          </>
+          <>{renderSuccessContent()}</>
         ) : (
           <>
             <div className='mt-6'>
@@ -109,25 +140,8 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
               ) : null}
             </div>
             <div className='mt-4 flex justify-center'>
-              <Button
-                variant='secondary'
-                className='w-[120px] px-0'
-                childrenClassName='w-full'
-                onClick={() => dispatch(closeImportANIPrivKeyModal())}
-              >
-                <div className='flex items-center justify-center'>
-                  <div className='text-blue-3f text-h5-medium'>Cancel</div>
-                </div>
-              </Button>
-              <Button
-                onClick={handleImportANIPrivKey}
-                className='w-[120px] px-0 ml-[30px]'
-                childrenClassName='w-full'
-              >
-                <div className='flex items-center justify-center'>
-                  <div className='text-white text-h5-heavy'>Import</div>
-                </div>
-              </Button>
+              {renderCancelButtons()}
+              {renderImportButton()}
             </div>
           </>
         )}

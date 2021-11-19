@@ -106,51 +106,71 @@ function PDFDocument({
   privateKey,
   title,
 }: TPDFDocumentProps) {
+  const renderQRCodeGEnerator = () => (
+    <View style={pdfStyles.mainMedia}>
+      <QRCodeGEnerator address={address} />
+    </View>
+  )
+
+  const renderPrivateKey = () => (
+    <View style={pdfStyles.mainContentWrapper}>
+      <View style={pdfStyles.contentItem}>
+        <Text style={pdfStyles.contentTitle}>Private Key</Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(privateKey)}
+        </Text>
+      </View>
+      <View style={pdfStyles.marginTop20}>
+        <Text style={pdfStyles.contentTitle}>
+          {currencyName} Address (Sapling)
+        </Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(address)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderAddressSapling = () => (
+    <View style={pdfStyles.contentWrapper}>
+      <Text style={pdfStyles.contentTitle}>
+        {currencyName} Address (Sapling)
+      </Text>
+      <Text style={pdfStyles.contentValue}>
+        {addLineBreakForContent(address)}
+      </Text>
+    </View>
+  )
+
+  const renderQRCodeGEneratorTop = () => (
+    <View style={pdfStyles.topMedia}>
+      <QRCodeGEnerator address={address} />
+    </View>
+  )
+
+  const renderExportKeyPDFMainView = () => (
+    <View style={pdfStyles.section}>
+      <View style={pdfStyles.contentTop}>
+        {renderQRCodeGEneratorTop()}
+        {renderAddressSapling()}
+      </View>
+      <View style={pdfStyles.mainContent}>
+        {renderPrivateKey()}
+        {renderQRCodeGEnerator()}
+      </View>
+    </View>
+  )
+
   return (
     <Document title={title}>
       <Page size='A4' style={pdfStyles.page}>
-        <View style={pdfStyles.section}>
-          <View style={pdfStyles.contentTop}>
-            <View style={pdfStyles.topMedia}>
-              <QRCodeGEnerator address={address} />
-            </View>
-            <View style={pdfStyles.contentWrapper}>
-              <Text style={pdfStyles.contentTitle}>
-                {currencyName} Address (Sapling)
-              </Text>
-              <Text style={pdfStyles.contentValue}>
-                {addLineBreakForContent(address)}
-              </Text>
-            </View>
-          </View>
-          <View style={pdfStyles.mainContent}>
-            <View style={pdfStyles.mainContentWrapper}>
-              <View style={pdfStyles.contentItem}>
-                <Text style={pdfStyles.contentTitle}>Private Key</Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakForContent(privateKey)}
-                </Text>
-              </View>
-              <View style={pdfStyles.marginTop20}>
-                <Text style={pdfStyles.contentTitle}>
-                  {currencyName} Address (Sapling)
-                </Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakForContent(address)}
-                </Text>
-              </View>
-            </View>
-            <View style={pdfStyles.mainMedia}>
-              <QRCodeGEnerator address={address} />
-            </View>
-          </View>
-        </View>
+        {renderExportKeyPDFMainView()}
       </Page>
     </Document>
   )
 }
 
-const ExportKeysModal = (): JSX.Element => {
+export default function ExportKeysModal(): JSX.Element {
   const {
     currentAddress: address = '',
     setExportKeysModalOpen: setIsOpen,
@@ -163,7 +183,7 @@ const ExportKeysModal = (): JSX.Element => {
     setIsOpen(false)
   }
 
-  const currencyName = useCurrencyName()
+  const currencyName: string = useCurrencyName() || ''
   const [privateKey, setPrivateKey] = useState('')
   const [havePDFLink, setHavePDFLink] = useState(false)
 
@@ -176,13 +196,48 @@ const ExportKeysModal = (): JSX.Element => {
       setHavePDFLink(true)
     }
     getKeys()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [address])
 
   const getPdfFilename = () => {
-    const key = address.substr(0, 16)
-    const datetime = dayjs().format('MM_DD_YYYY__HH_MM_ss')
+    const key: string = address.substr(0, 16) || ''
+    const datetime: string = dayjs().format('MM_DD_YYYY__HH_MM_ss')
     return `${currencyName}_Paper_Wallet__Address_${key}_${datetime}.pdf`
   }
+
+  const renderDownloadPdfButton = () => (
+    <Button className='w-full flex  items-center'>
+      <div className='flex items-center relative w-full justify-center'>
+        {havePDFLink && (
+          <PDFDownloadLink
+            document={
+              <PDFDocument
+                address={address}
+                privateKey={privateKey}
+                currencyName={currencyName}
+                title={getPdfFilename()}
+              />
+            }
+            fileName={getPdfFilename()}
+            className='inline-block w-full h-full absolute top-0 left-0'
+          />
+        )}
+        <img src={DownloadWhite} className='py-3.5' alt='Download' />
+        <div className='ml-2 text-white text-h5-heavy'>
+          Download Paper Wallet (PDF)
+        </div>
+      </div>
+    </Button>
+  )
+
   return (
     <TitleModal
       isOpen
@@ -215,31 +270,8 @@ const ExportKeysModal = (): JSX.Element => {
             //noop
           }}
         />
-        <Button className='w-full flex  items-center'>
-          <div className='flex items-center relative w-full justify-center'>
-            {havePDFLink && (
-              <PDFDownloadLink
-                document={
-                  <PDFDocument
-                    address={address}
-                    privateKey={privateKey}
-                    currencyName={currencyName}
-                    title={getPdfFilename()}
-                  />
-                }
-                fileName={getPdfFilename()}
-                className='inline-block w-full h-full absolute top-0 left-0'
-              />
-            )}
-            <img src={DownloadWhite} className='py-3.5' />
-            <div className='ml-2 text-white text-h5-heavy'>
-              Download Paper Wallet (PDF)
-            </div>
-          </div>
-        </Button>
+        {renderDownloadPdfButton()}
       </div>
     </TitleModal>
   )
 }
-
-export default ExportKeysModal

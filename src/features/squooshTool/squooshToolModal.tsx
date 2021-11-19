@@ -7,12 +7,21 @@ import { closeSquooshToolModal } from './squooshToolModalSlice'
 
 import { squoosh } from '../../common/constants/ServeStatic'
 
-export default function squooshToolModal(): JSX.Element {
+export default function SquooshToolModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.squooshToolModal)
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen) {
-    return <></>
+    return null
+  }
+
+  const renderSquooshToolIframe = () => {
+    const port: string = squoosh.staticPort?.toString() || ''
+    return (
+      <div className={styles.iframe}>
+        <iframe src={`http://localhost:${port}/`} title='Squoosh Tool' />
+      </div>
+    )
   }
 
   return (
@@ -29,9 +38,7 @@ export default function squooshToolModal(): JSX.Element {
         >
           X
         </button>
-        <div className={styles.iframe}>
-          <iframe src={`http://localhost:${squoosh.staticPort}/`} />
-        </div>
+        {renderSquooshToolIframe()}
       </div>
     </Modal>
   )

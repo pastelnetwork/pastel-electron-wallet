@@ -9,10 +9,10 @@ export type TReviewTestModal = {
   handleClose?: () => void
 }
 
-const ReviewTestModal = ({
+function ReviewTestModal({
   isOpen,
   handleClose,
-}: TReviewTestModal): JSX.Element => {
+}: TReviewTestModal): JSX.Element {
   return (
     <Modal
       isOpen={isOpen}

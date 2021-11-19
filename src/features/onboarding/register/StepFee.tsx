@@ -101,7 +101,17 @@ export default function StepFee(): JSX.Element {
     setCopying(true) // animate icon
     setTimeout(() => setCopying(false), 200)
 
-    navigator.clipboard.writeText(store.exchangeAddress)
+    navigator.clipboard
+      .writeText(store.exchangeAddress)
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     setCopied(true)
   }
 
@@ -156,6 +166,30 @@ export default function StepFee(): JSX.Element {
 
   const isLoading = status === 'loading' || store.createPastelIdQuery.isLoading
 
+  const renderInputControl = () => {
+    return (
+      <div
+        className={cn(
+          'w-full flex justify-between items-center border rounded px-4 py-2',
+          showWarn ? 'border-orange-63' : 'border-gray-200',
+        )}
+      >
+        <div className='mr-3 overflow-hidden overflow-ellipsis h-5'>
+          {store.exchangeAddress}
+        </div>
+        <button type='button' onClick={toClipboard}>
+          <Clipboard
+            size={20}
+            className={cn(
+              'cursor-pointer transition-transform duration-100 ease-in-out text-gray-88',
+              copying ? 'transform scale-150' : '',
+            )}
+          />
+        </button>
+      </div>
+    )
+  }
+
   return (
     <div className='flex flex-col h-full'>
       {store.paymentMethod === PaymentMethods.PastelPromoCode ||
@@ -174,25 +208,7 @@ export default function StepFee(): JSX.Element {
                 </h2>
 
                 <div className='mt-7'>
-                  <div
-                    className={cn(
-                      'w-full flex justify-between items-center border rounded px-4 py-2',
-                      showWarn ? 'border-orange-63' : 'border-gray-200',
-                    )}
-                  >
-                    <div className='mr-3 overflow-hidden overflow-ellipsis h-5'>
-                      {store.exchangeAddress}
-                    </div>
-                    <button type='button' onClick={toClipboard}>
-                      <Clipboard
-                        size={20}
-                        className={cn(
-                          'cursor-pointer transition-transform duration-100 ease-in-out text-gray-88',
-                          copying ? 'transform scale-150' : '',
-                        )}
-                      />
-                    </button>
-                  </div>
+                  {renderInputControl()}
                   <div className='text-sm font-medium text-orange-63 h-4'>
                     {showWarn ? 'copy your address first' : ''}
                   </div>
@@ -204,10 +220,9 @@ export default function StepFee(): JSX.Element {
                       Choose platform and pay
                     </div>
 
-                    {centralizedExs.map((item, i) => (
-                      <div className='mt-3' key={i}>
+                    {centralizedExs.map(item => (
+                      <div className='mt-3' key={item.name}>
                         <Radio
-                          key={i}
                           checked={store.centralizedExchangeName === item.name}
                           onChange={val => onChangePayPlatform(item.name, val)}
                         >

@@ -6,11 +6,30 @@ export type TTransparencyBalanceProps = {
   variant?: 'active' | 'inactive'
 }
 
-export const TransparencyBalance = ({
+export function TransparencyBalance({
   size = 70,
   className = 'text-gray-88',
   variant = 'active',
-}: TTransparencyBalanceProps): JSX.Element => {
+}: TTransparencyBalanceProps): JSX.Element {
+  const renderLinearGradientAnfClipPath = () => (
+    <defs>
+      <linearGradient
+        id='paint0_linear'
+        x1='35'
+        y1='0'
+        x2='35'
+        y2='70'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor='#3F9AF7' />
+        <stop offset='1' stopColor='#6C5DD3' />
+      </linearGradient>
+      <clipPath id='clip0'>
+        <rect width='70' height='70' fill='white' />
+      </clipPath>
+    </defs>
+  )
+
   return (
     <svg
       width={size}
@@ -26,22 +45,7 @@ export const TransparencyBalance = ({
           strokeWidth='0.5'
         />
       </g>
-      <defs>
-        <linearGradient
-          id='paint0_linear'
-          x1='35'
-          y1='0'
-          x2='35'
-          y2='70'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop stopColor='#3F9AF7' />
-          <stop offset='1' stopColor='#6C5DD3' />
-        </linearGradient>
-        <clipPath id='clip0'>
-          <rect width='70' height='70' fill='white' />
-        </clipPath>
-      </defs>
+      {renderLinearGradientAnfClipPath()}
     </svg>
   )
 }

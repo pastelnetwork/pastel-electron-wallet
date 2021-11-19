@@ -95,87 +95,96 @@ export default function InputNFTDataStep({
     goToNextStep()
   }
 
-  return (
-    <>
-      <form
-        className='paper p-10 w-[690px]'
-        onSubmit={form.handleSubmit(submit)}
+  const renderGreenNFT = () => (
+    <div className='flex-center h-10'>
+      <Toggle form={form} name='green' />
+      <div className='text-gray-71 font-medium mx-3'>GreenNFT</div>
+      <Tooltip
+        type='top'
+        content={getTooltip(
+          'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
+        )}
+        width={285}
       >
-        <div className='flex'>
-          <div className='mr-7'>
-            <div className='text-gray-800 text-2xl font-extrabold mb-0.5'>
-              Input NFT Data
-            </div>
-            <div className='font-medium text-sm text-gray-33 opacity-50'>
-              The Metadata Fields for your NFT
-            </div>
-          </div>
-          <CircleSteper
-            size={65}
-            totalStep={4}
-            spaceAngle={10}
-            currentStep={1}
-            stopColor1='#6FCF97'
-            stopColor2='#6FCF97'
-          />
+        <Info size={18} />
+      </Tooltip>
+    </div>
+  )
+
+  const renderNFTForm = () => (
+    <div className='mt-2.5 mb-22px space-y-6'>
+      <div className='flex items-end space-x-5'>
+        <Input
+          form={form}
+          labelClass='text-gray-71 font-medium text-base mb-1.5'
+          name='title'
+          label='Title'
+          placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
+          className='w-full text-sm'
+        />
+        {renderGreenNFT()}
+      </div>
+      <div className='flex space-x-8'>
+        <SelectMultiple
+          form={form}
+          label='Keyword Hashtags'
+          labelClass='text-gray-71 font-medium text-base mb-1.5'
+          name='hashtags'
+          options={hashtags}
+          className='w-1/2 text-sm'
+          placeholder='#MotionGraphics, #Abstract'
+        />
+        <Input
+          form={form}
+          name='series'
+          labelClass='text-gray-71 font-medium text-base mb-1.5'
+          label='Series Name'
+          placeholder='(if the NFT is part of a series)'
+          className='w-1/2 text-sm'
+        />
+      </div>
+      <Copies form={form} />
+      <Royalty form={form} />
+      <WebsiteAndVideo form={form} />
+      <TextArea
+        form={form}
+        name='description'
+        label='Description'
+        labelClass='text-gray-71 text-base font-medium mb-1.5'
+        textAreaClassName='input text-sm resize-none py-2 overflow-hidden h-[60px]'
+        placeholder='Description of the NFT or artist’s statement.'
+      />
+    </div>
+  )
+
+  const renderHeader = () => (
+    <div className='flex'>
+      <div className='mr-7'>
+        <div className='text-gray-800 text-2xl font-extrabold mb-0.5'>
+          Input NFT Data
         </div>
-        <div className='mt-2.5 mb-22px space-y-6'>
-          <div className='flex items-end space-x-5'>
-            <Input
-              form={form}
-              labelClass='text-gray-71 font-medium text-base mb-1.5'
-              name='title'
-              label='Title'
-              placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
-              className='w-full text-sm'
-            />
-            <div className='flex-center h-10'>
-              <Toggle form={form} name='green' />
-              <div className='text-gray-71 font-medium mx-3'>GreenNFT</div>
-              <Tooltip
-                type='top'
-                content={getTooltip(
-                  'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
-                )}
-                width={285}
-              >
-                <Info size={18} />
-              </Tooltip>
-            </div>
-          </div>
-          <div className='flex space-x-8'>
-            <SelectMultiple
-              form={form}
-              label='Keyword Hashtags'
-              labelClass='text-gray-71 font-medium text-base mb-1.5'
-              name='hashtags'
-              options={hashtags}
-              className='w-1/2 text-sm'
-              placeholder='#MotionGraphics, #Abstract'
-            />
-            <Input
-              form={form}
-              name='series'
-              labelClass='text-gray-71 font-medium text-base mb-1.5'
-              label='Series Name'
-              placeholder='(if the NFT is part of a series)'
-              className='w-1/2 text-sm'
-            />
-          </div>
-          <Copies form={form} />
-          <Royalty form={form} />
-          <WebsiteAndVideo form={form} />
-          <TextArea
-            form={form}
-            name='description'
-            label='Description'
-            labelClass='text-gray-71 text-base font-medium mb-1.5'
-            textAreaClassName='input text-sm resize-none py-2 overflow-hidden h-[60px]'
-            placeholder='Description of the NFT or artist’s statement.'
-          />
+        <div className='font-medium text-sm text-gray-33 opacity-50'>
+          The Metadata Fields for your NFT
         </div>
-        <button className='btn btn-primary w-full'>Go to preview</button>
-      </form>
-    </>
+      </div>
+      <CircleSteper
+        size={65}
+        totalStep={4}
+        spaceAngle={10}
+        currentStep={1}
+        stopColor1='#6FCF97'
+        stopColor2='#6FCF97'
+      />
+    </div>
+  )
+
+  return (
+    <form className='paper p-10 w-[690px]' onSubmit={form.handleSubmit(submit)}>
+      {renderHeader()}
+      {renderNFTForm()}
+      <button className='btn btn-primary w-full' type='submit'>
+        Go to preview
+      </button>
+    </form>
   )
 }

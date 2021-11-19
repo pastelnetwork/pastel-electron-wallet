@@ -25,9 +25,9 @@ type TTransactionsInBlockOvertimeProps = {
 
 const redrawCycle = 6000
 
-const TransactionsInBlockOvertime = (
+export default function TransactionsInBlockOvertime(
   props: TTransactionsInBlockOvertimeProps,
-): JSX.Element => {
+): JSX.Element {
   const { info } = props
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -56,8 +56,26 @@ const TransactionsInBlockOvertime = (
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -70,7 +88,9 @@ const TransactionsInBlockOvertime = (
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {
@@ -102,5 +122,3 @@ const TransactionsInBlockOvertime = (
     </>
   )
 }
-
-export default TransactionsInBlockOvertime

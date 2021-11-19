@@ -9,23 +9,31 @@ export type TDealApprovedModal = {
   handleClose?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const DealApprovedModal = ({
+function DealApprovedModal({
   content,
   isOpen,
   handleClose,
-}: TDealApprovedModal): JSX.Element => {
+}: TDealApprovedModal): JSX.Element {
+  const renderCongratulationsContent = () => (
+    <h2 className='mb-2 text-gray-2d'>
+      Congratulations! <br /> Your NFT Trade was Finalized!
+    </h2>
+  )
+
+  const renderCongratulationsIcon = () => (
+    <div className='flex justify-center'>
+      <div className='w-[50px] h-[50px] bg-blue-e7 flex items-center justify-center rounded-full'>
+        <Congratulation size={24} className='text-gray-2d' />
+      </div>
+    </div>
+  )
+
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-md'>
       <div className='text-center'>
-        <div className='flex justify-center'>
-          <div className='w-[50px] h-[50px] bg-blue-e7 flex items-center justify-center rounded-full'>
-            <Congratulation size={24} className='text-gray-2d' />
-          </div>
-        </div>
+        {renderCongratulationsIcon()}
 
-        <h2 className='mb-2 text-gray-2d'>
-          Congratulations! <br /> Your NFT Trade was Finalized!
-        </h2>
+        {renderCongratulationsContent()}
         <p className='text-gray-71 text-lg'>{content}</p>
       </div>
     </Modal>

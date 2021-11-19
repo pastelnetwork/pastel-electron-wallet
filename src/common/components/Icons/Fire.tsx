@@ -6,10 +6,10 @@ export type TFireProps = TIconProps & {
   className?: string
 }
 
-export const Fire = ({
+export function Fire({
   className = 'text-black',
   size = 11,
-}: TFireProps): JSX.Element => {
+}: TFireProps): JSX.Element {
   return (
     <svg
       width={size}

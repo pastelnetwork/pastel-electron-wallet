@@ -6,7 +6,7 @@ import {
 } from '../src/common/utils/test-utils'
 
 const app = {
-  getPath: jest.fn(name => `app-path/${name}`),
+  getPath: jest.fn((name: string) => `app-path/${name}`),
   getName: jest.fn(),
   getVersion: jest.fn(),
   getAppPath: jest.fn(() => 'app-path'),

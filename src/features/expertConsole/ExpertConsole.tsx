@@ -23,7 +23,7 @@ export interface TExpertProps {
   createNewPastelclassName?(): void
 }
 
-const ExpertConsole = (props: TExpertProps): JSX.Element => {
+function ExpertConsole(props: TExpertProps): JSX.Element {
   const [theme, setTheme] = useState('green')
 
   const consoleProps = () => {
@@ -53,40 +53,63 @@ const ExpertConsole = (props: TExpertProps): JSX.Element => {
     document.getElementById('terminalInput')?.focus()
   }
 
+  const renderTerminalConsoleForm = () => (
+    <div className={styles.envelope}>
+      <TerminalConsole {...consoleProps()} />
+    </div>
+  )
+
+  const renderTerminalConsoleBlock = () => (
+    <div className={styles.screen}>
+      <div className={styles.wrapper}>
+        <div className={styles.interlace} />
+        <div className={styles.scanline} />
+        {renderTerminalConsoleForm()}
+      </div>
+    </div>
+  )
+
+  const renderTheme = () => (
+    <>
+      <div
+        className={cx(styles.greenThemeBtn, {
+          [styles.active]: theme === 'green',
+        })}
+        onClick={() => onThemeBtnClick('green')}
+        title='Select green theme'
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      />
+      <div
+        className={cx(styles.amberThemeBtn, {
+          [styles.active]: theme === 'amber',
+        })}
+        onClick={() => onThemeBtnClick('amber')}
+        title='Select amber theme'
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      />
+      <div
+        className={cx(styles.blackThemeBtn, {
+          [styles.active]: theme === 'black',
+        })}
+        onClick={() => onThemeBtnClick('black')}
+        title='Select black theme'
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      />
+    </>
+  )
+
   return (
     <div className={styles.container}>
       <div className={cstyles.flexspacebetween} />
       <div className={cx(styles.crt, styles[theme])}>
-        <div className={styles.screen}>
-          <div className={styles.wrapper}>
-            <div className={styles.interlace} />
-            <div className={styles.scanline} />
-            <div className={styles.envelope}>
-              <TerminalConsole {...consoleProps()} />
-            </div>
-          </div>
-        </div>
-        <div
-          className={cx(styles.greenThemeBtn, {
-            [styles.active]: theme === 'green',
-          })}
-          onClick={() => onThemeBtnClick('green')}
-          title='Select green theme'
-        />
-        <div
-          className={cx(styles.amberThemeBtn, {
-            [styles.active]: theme === 'amber',
-          })}
-          onClick={() => onThemeBtnClick('amber')}
-          title='Select amber theme'
-        />
-        <div
-          className={cx(styles.blackThemeBtn, {
-            [styles.active]: theme === 'black',
-          })}
-          onClick={() => onThemeBtnClick('black')}
-          title='Select black theme'
-        />
+        {renderTerminalConsoleBlock()}
+        {renderTheme()}
       </div>
     </div>
   )

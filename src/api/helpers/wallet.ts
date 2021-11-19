@@ -1,4 +1,6 @@
 import fs from 'fs'
+import log from 'electron-log'
+
 import { TAddressBook } from 'types/rpc'
 import store from '../../redux/store'
 
@@ -49,7 +51,7 @@ const readAddressBook = async (): Promise<Promise<TAddressBook[]>> => {
     return JSON.parse(buffer.toString())
   } catch (err) {
     // File probably doesn't exist, so return nothing
-    console.log(err)
+    log.log(err)
     return []
   }
 }

@@ -12,7 +12,9 @@ export type TCreatorResultProps = {
   searchKey: string
 }
 
-const CreatorsResult = ({ searchKey }: TCreatorResultProps): JSX.Element => {
+export default function CreatorsResult({
+  searchKey,
+}: TCreatorResultProps): JSX.Element {
   const [ranking, setRanking] = useState<TOption | null>(rankingData[0])
   const [sold, setSold] = useState<TOption | null>(soldData[0])
   const [followers, setFollowers] = useState<TOption | null>(followersData[0])
@@ -51,5 +53,3 @@ const CreatorsResult = ({ searchKey }: TCreatorResultProps): JSX.Element => {
     </div>
   )
 }
-
-export default CreatorsResult

@@ -1,14 +1,14 @@
 import React from 'react'
 import DatePicker from './index'
 
-export const DatePickerSingle = (): JSX.Element => {
+export function DatePickerSingle(): JSX.Element {
   const [date, setDate] = React.useState<Date | null>(null)
   return (
     <DatePicker selected={date} onChange={setDate} placeholder='Choose date' />
   )
 }
 
-export const DatePickerRange = (): JSX.Element => {
+export function DatePickerRange(): JSX.Element {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date())
   const [endDate, setEndDate] = React.useState<Date | null>(null)
 

@@ -5,7 +5,7 @@ export type TWarningProps = {
   className: string
 }
 
-const Warning = ({ className }: TWarningProps): JSX.Element => {
+function Warning({ className }: TWarningProps): JSX.Element {
   return (
     <div className={cn('w-full bg-red-fe flex justify-center', className)}>
       <span className='text-sm'>

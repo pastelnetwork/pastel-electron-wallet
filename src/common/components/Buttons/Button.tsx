@@ -17,7 +17,7 @@ export type TButton = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-const Button = ({
+function Button({
   children,
   secondary,
   variant = secondary ? 'secondary' : 'default',
@@ -29,7 +29,7 @@ const Button = ({
   className,
   childrenClassName,
   ...otherProps
-}: TButton): JSX.Element => {
+}: TButton): JSX.Element {
   const Tag = href ? 'a' : 'button'
 
   const classes = cn(
@@ -55,25 +55,24 @@ const Button = ({
     'w-10 h-10 flex items-center justify-center bg-gray-f8 rounded-full focus:outline-none': true,
   })
 
+  if (variant === 'navigation') {
+    return (
+      <button
+        className={navButtonClasses}
+        {...otherProps}
+        type={type || 'button'}
+      >
+        {children}
+      </button>
+    )
+  }
+
   return (
-    <>
-      {variant === 'navigation' ? (
-        <button className={navButtonClasses} {...otherProps}>
-          {children}
-        </button>
-      ) : (
-        <Tag
-          type={type}
-          className={classes}
-          disabled={disabled}
-          {...otherProps}
-        >
-          {prepend && <span className='pr-2'>{prepend}</span>}
-          <span className={cn(childrenClassName)}>{children}</span>
-          {append && <span className='pl-2'>{append}</span>}
-        </Tag>
-      )}
-    </>
+    <Tag type={type} className={classes} disabled={disabled} {...otherProps}>
+      {prepend && <span className='pr-2'>{prepend}</span>}
+      <span className={cn(childrenClassName)}>{children}</span>
+      {append && <span className='pl-2'>{append}</span>}
+    </Tag>
   )
 }
 

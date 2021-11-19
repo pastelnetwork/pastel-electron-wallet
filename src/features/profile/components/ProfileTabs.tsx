@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ProfileTabs = (): JSX.Element => {
+function ProfileTabs(): JSX.Element {
   const portfolioCount = 7
   const boardCount = 12
 

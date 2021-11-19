@@ -3,10 +3,10 @@ import { TIconProps } from './iconProps'
 
 export type THeartFilledProps = TIconProps
 
-export const HeartFilled = ({
+export function HeartFilled({
   size,
   className,
-}: THeartFilledProps): JSX.Element => {
+}: THeartFilledProps): JSX.Element {
   return (
     <svg
       width={size}

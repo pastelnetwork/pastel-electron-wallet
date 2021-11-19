@@ -38,11 +38,11 @@ const dateButtons = [
   { title: 'Last 30 days' },
 ]
 
-const NotificationModal = ({
+function NotificationModal({
   notifications,
   isOpen,
   handleClose,
-}: TNotificationModal): JSX.Element => {
+}: TNotificationModal): JSX.Element {
   const [filter, setFilter] = useState<string>('all')
   const [type, setType] = useState<TOption | null>(TTypesOptions[0])
   const [startDate, setStartDate] = useState<Date | null>(new Date())
@@ -103,6 +103,69 @@ const NotificationModal = ({
     }
   }
 
+  const renderFilter = () => (
+    <div className='grid grid-cols-2 gap-4 col-span-2'>
+      <Select
+        selected={type}
+        onChange={handleSelect}
+        options={TTypesOptions}
+        label='Types'
+        className='bg-white'
+      />
+      <DatePicker
+        selected={startDate}
+        startDate={startDate}
+        endDate={endDate}
+        onChange={handleDate}
+        label='Time range'
+        footer={
+          <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
+            {dateButtons.map(({ title }) => (
+              <SelectButton
+                key={title}
+                isActive={title === dateTitle}
+                onClick={() => handleDateSelect(title)}
+              >
+                {title}
+              </SelectButton>
+            ))}
+          </div>
+        }
+        closeOnSelect={false}
+        value={dateTitle}
+        openToDate={startDate || undefined}
+        selectsRange
+      />
+    </div>
+  )
+
+  const renderFilterStatus = () => (
+    <div className='flex'>
+      <div className='mr-6'>
+        <Radio
+          checked={filter === 'all'}
+          onChange={() => setFilter('all')}
+          className='mr-3 z-10 w-5 h-5'
+          checkedCircleBackgroundColor='bg-blue-3f'
+          labelClassName='text-gray-4a z-10'
+          smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
+        >
+          All
+        </Radio>
+      </div>
+      <Radio
+        checked={filter === 'unread'}
+        onChange={() => setFilter('unread')}
+        className='mr-3 z-10 w-5 h-5'
+        checkedCircleBackgroundColor='bg-blue-3f'
+        labelClassName='text-gray-4a z-10'
+        smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
+      >
+        Unread
+      </Radio>
+    </div>
+  )
+
   return (
     <Modal
       isOpen={isOpen}
@@ -114,63 +177,8 @@ const NotificationModal = ({
       <div className='relative py-4 mb-4'>
         <span className='absolute top-0 -left-12 w-screen max-w-4xl h-full bg-background-main'></span>
         <div className='grid grid-cols-3 gap-4 items-center'>
-          <div className='flex'>
-            <div className='mr-6'>
-              <Radio
-                checked={filter === 'all'}
-                onChange={() => setFilter('all')}
-                className='mr-3 z-10 w-5 h-5'
-                checkedCircleBackgroundColor='bg-blue-3f'
-                labelClassName='text-gray-4a z-10'
-                smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
-              >
-                All
-              </Radio>
-            </div>
-            <Radio
-              checked={filter === 'unread'}
-              onChange={() => setFilter('unread')}
-              className='mr-3 z-10 w-5 h-5'
-              checkedCircleBackgroundColor='bg-blue-3f'
-              labelClassName='text-gray-4a z-10'
-              smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
-            >
-              Unread
-            </Radio>
-          </div>
-          <div className='grid grid-cols-2 gap-4 col-span-2'>
-            <Select
-              selected={type}
-              onChange={handleSelect}
-              options={TTypesOptions}
-              label='Types'
-              className='bg-white'
-            />
-            <DatePicker
-              selected={startDate}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={handleDate}
-              label='Time range'
-              footer={
-                <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
-                  {dateButtons.map(({ title }, idx) => (
-                    <SelectButton
-                      key={idx}
-                      isActive={title === dateTitle}
-                      onClick={() => handleDateSelect(title)}
-                    >
-                      {title}
-                    </SelectButton>
-                  ))}
-                </div>
-              }
-              closeOnSelect={false}
-              value={dateTitle}
-              openToDate={startDate || undefined}
-              selectsRange
-            />
-          </div>
+          {renderFilterStatus()}
+          {renderFilter()}
         </div>
       </div>
       <Scrollbar maxHeight='425'>
@@ -179,11 +187,7 @@ const NotificationModal = ({
             key={id}
             className={cn(idx < notifications.length - 1 && 'pb-3')}
           >
-            <Notification
-              type={type}
-              title={title}
-              status={status as TNotification['status']}
-            />
+            <Notification type={type} title={title} status={status} />
           </div>
         ))}
       </Scrollbar>

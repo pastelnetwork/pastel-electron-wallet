@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import log from 'electron-log'
 import store from '../../redux/store'
 
 type TAddressBook = {
@@ -50,8 +51,9 @@ export default class AddressbookImpl {
 
       return []
     } catch (err) {
-      console.log(
-        `common/utils/AddressbookImpl readAddressBook error: ${err}`,
+      const message: string = err.message || ''
+      log.log(
+        `common/utils/AddressbookImpl readAddressBook error: ${message}`,
         err,
       )
       return []

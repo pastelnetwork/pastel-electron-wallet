@@ -19,6 +19,21 @@ export default function PastelAddressBookForm(
   const [currentLabel, setCurrentLabel] = useState('')
   const [currentAddress, setCurrentAddress] = useState('')
 
+  const validate = (label: string, address: string) => {
+    let labelError = props.addressBook.find(
+      (i: AddressBookProps) => i.label === label,
+    )
+      ? 'Duplicate Label'
+      : null
+    labelError = label.length > 150 ? 'Label is too long' : labelError
+    const addressIsValid =
+      address === '' || Utils.isZaddr(address) || Utils.isTransparent(address)
+    return {
+      labelError,
+      addressIsValid,
+    }
+  }
+
   const updateLabel = (value: string) => {
     if (value.length > 152) {
       return
@@ -36,21 +51,6 @@ export default function PastelAddressBookForm(
     setAddButtonEnabled(
       !labelError && addressIsValid && currentLabel !== '' && value !== '',
     )
-  }
-
-  const validate = (label: string, address: string) => {
-    let labelError = props.addressBook.find(
-      (i: AddressBookProps) => i.label === label,
-    )
-      ? 'Duplicate Label'
-      : null
-    labelError = label.length > 150 ? 'Label is too long' : labelError
-    const addressIsValid =
-      address === '' || Utils.isZaddr(address) || Utils.isTransparent(address)
-    return {
-      labelError,
-      addressIsValid,
-    }
   }
 
   const handleAddButtonClicked = () => {

@@ -74,6 +74,53 @@ export default function BalanceCards(): JSX.Element {
     [totalBalances],
   )
 
+  const renderBalanceTab = (
+    index: number,
+    card: TBalanceCard,
+    isActive: boolean,
+  ) => (
+    <div className='pl-42px'>
+      <div
+        className={cn(
+          'pt-9 text-h2-heavy',
+          index === activeTab ? 'text-gray-2d' : 'text-gray-71',
+        )}
+      >
+        {card.psl === undefined
+          ? loaderItem
+          : formatPrice(card.psl, currencyName, 2)}
+      </div>
+      {card.style.type === 'total_balance' ? (
+        <div
+          className={cn(
+            'mt-2 text-h6-leading-20-medium',
+            isActive ? 'text-gray-71' : 'text-gray-a0',
+          )}
+        >
+          Total balance
+        </div>
+      ) : card.style.type === 'transparent' ? (
+        <div
+          className={cn(
+            'mt-2 text-h6-leading-20-medium',
+            isActive ? 'text-gray-71' : 'text-gray-a0',
+          )}
+        >
+          Transparent
+        </div>
+      ) : (
+        <div
+          className={cn(
+            'mt-2 text-h6-leading-20-medium',
+            isActive ? 'text-gray-71' : 'text-gray-a0',
+          )}
+        >
+          Shielded
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <div className='flex justify-between'>
       {balanceCards.map((card, index) => {
@@ -81,7 +128,7 @@ export default function BalanceCards(): JSX.Element {
 
         return (
           <div
-            key={index}
+            key={card.info}
             onClick={() => {
               setActiveTab(index)
             }}
@@ -114,46 +161,7 @@ export default function BalanceCards(): JSX.Element {
               <div className='pl-4 md:pl-4 lg:pl-4 xl:pl-39px flex items-center'>
                 {isActive ? card.activeIcon : card.inactiveIcon}
               </div>
-              <div className='pl-42px'>
-                <div
-                  className={cn(
-                    'pt-9 text-h2-heavy',
-                    index === activeTab ? 'text-gray-2d' : 'text-gray-71',
-                  )}
-                >
-                  {card.psl === undefined
-                    ? loaderItem
-                    : formatPrice(card.psl, currencyName, 2)}
-                </div>
-                {card.style.type === 'total_balance' ? (
-                  <div
-                    className={cn(
-                      'mt-2 text-h6-leading-20-medium',
-                      isActive ? 'text-gray-71' : 'text-gray-a0',
-                    )}
-                  >
-                    Total balance
-                  </div>
-                ) : card.style.type === 'transparent' ? (
-                  <div
-                    className={cn(
-                      'mt-2 text-h6-leading-20-medium',
-                      isActive ? 'text-gray-71' : 'text-gray-a0',
-                    )}
-                  >
-                    Transparent
-                  </div>
-                ) : (
-                  <div
-                    className={cn(
-                      'mt-2 text-h6-leading-20-medium',
-                      isActive ? 'text-gray-71' : 'text-gray-a0',
-                    )}
-                  >
-                    Shielded
-                  </div>
-                )}
-              </div>
+              {renderBalanceTab(index, card, isActive)}
             </div>
           </div>
         )

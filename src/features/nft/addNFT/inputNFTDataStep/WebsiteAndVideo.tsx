@@ -5,20 +5,7 @@ import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import { useWatch } from 'react-hook-form'
 
-export default function WebsiteAndVideo({
-  form,
-}: {
-  form: TForm
-}): JSX.Element {
-  return (
-    <div className='flex space-x-7'>
-      <ToggleableInput form={form} name='website' label="Creator's website" />
-      <ToggleableInput form={form} name='video' label='Creation video' />
-    </div>
-  )
-}
-
-const ToggleableInput = ({
+function ToggleableInput({
   form,
   name,
   label,
@@ -26,7 +13,7 @@ const ToggleableInput = ({
   form: TForm
   name: 'website' | 'video'
   label: string
-}) => {
+}) {
   const showInputKey = name === 'website' ? 'showSiteInput' : 'showVideoInput'
 
   const showInput = useWatch({
@@ -75,5 +62,18 @@ const ToggleableInput = ({
         </div>
       )}
     />
+  )
+}
+
+export default function WebsiteAndVideo({
+  form,
+}: {
+  form: TForm
+}): JSX.Element {
+  return (
+    <div className='flex space-x-7'>
+      <ToggleableInput form={form} name='website' label="Creator's website" />
+      <ToggleableInput form={form} name='video' label='Creation video' />
+    </div>
   )
 }

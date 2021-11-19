@@ -7,6 +7,21 @@ export type TSlider = {
 }
 
 export default function Slider({ value, setValue }: TSlider): JSX.Element {
+  const renderSliderIcon = () => (
+    <svg
+      width='12'
+      height='5'
+      viewBox='0 0 12 5'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        d='M3.17157 3.17157L0 0H12L8.82843 3.17157C7.26633 4.73367 4.73367 4.73367 3.17157 3.17157Z'
+        fill='#141416'
+      />
+    </svg>
+  )
+
   return (
     <Range
       step={0.1}
@@ -32,18 +47,7 @@ export default function Slider({ value, setValue }: TSlider): JSX.Element {
             <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white'>
               {props['aria-valuenow']}%
             </div>
-            <svg
-              width='12'
-              height='5'
-              viewBox='0 0 12 5'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M3.17157 3.17157L0 0H12L8.82843 3.17157C7.26633 4.73367 4.73367 4.73367 3.17157 3.17157Z'
-                fill='#141416'
-              />
-            </svg>
+            {renderSliderIcon()}
           </div>
         </div>
       )}

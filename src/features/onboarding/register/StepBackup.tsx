@@ -42,15 +42,14 @@ export default function StepBackupMethod(): JSX.Element {
   const [backupMethod, setBackupMethod] = useState<BackupMethods>(
     BackupMethods.PDF,
   )
-  const currencyName = useCurrencyName()
+  const currencyName: string = useCurrencyName() || ''
+  const date: string = dayjs(new Date()).format('MM_DD_YYYY__HH_MM')
   const pdfFileName = `${
     currencyName || 'LSP'
   }_Paper_Wallet__Private_Keys_${dayjs(new Date()).format(
     'MM_DD_YYYY__HH_MM_ss',
   )}.pdf`
-  const videoFileName = `${currencyName}_QR_Code_Video_${dayjs().format(
-    'MM_DD_YYYY__HH_mm',
-  )}.mp4`
+  const videoFileName = `${currencyName}_QR_Code_Video_${date}.mp4`
 
   const [loading, setLoading] = useState(true)
   const [pdfPrepareProgress, setPdfPrepareProgress] = useState<number>(0)
@@ -87,10 +86,41 @@ export default function StepBackupMethod(): JSX.Element {
     }
     if (!qrcodeData.length) {
       fetchData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     } else {
       setLoading(false)
     }
   }, [])
+
+  const saveFile = (url: string) => {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = videoFileName
+    a.dispatchEvent(new MouseEvent('click'))
+    setCurrentStatus('downloaded')
+    a.remove()
+  }
+
+  const handleReReceivedMessage = (evt: MessageEvent) => {
+    if (!evt.data.error) {
+      if (evt.data.videoUrl && !videoUrl) {
+        setVideoUrl(evt.data.videoUrl)
+        saveFile(evt.data.videoUrl)
+      } else {
+        setCurrentStatus('error')
+      }
+    } else {
+      setCurrentStatus('error')
+    }
+  }
 
   useEffect(() => {
     if (imagesData.length && !videoUrl) {
@@ -116,28 +146,6 @@ export default function StepBackupMethod(): JSX.Element {
       window.removeEventListener('message', handleReReceivedMessage, false)
     }
   }, [imagesData])
-
-  const handleReReceivedMessage = (evt: MessageEvent) => {
-    if (!evt.data.error) {
-      if (evt.data.videoUrl && !videoUrl) {
-        setVideoUrl(evt.data.videoUrl)
-        saveFile(evt.data.videoUrl)
-      } else {
-        setCurrentStatus('error')
-      }
-    } else {
-      setCurrentStatus('error')
-    }
-  }
-
-  const saveFile = async (url: string) => {
-    const a = document.createElement('a')
-    a.href = url
-    a.download = videoFileName
-    a.dispatchEvent(new MouseEvent('click'))
-    setCurrentStatus('downloaded')
-    a.remove()
-  }
 
   const handleDownloadVideo = () => {
     if (videoUrl) {
@@ -176,6 +184,43 @@ export default function StepBackupMethod(): JSX.Element {
     finish()
   }
 
+  const renderDownloadButton = () => {
+    return (
+      <button
+        type='button'
+        className='w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa flex justify-center items-center cursor-pointer transition duration-300'
+      >
+        <DownloadArrow size={24} className='text-blue-3f' />
+      </button>
+    )
+  }
+
+  const renderDownloadVideoButton = () => {
+    return (
+      <button
+        type='button'
+        className={cn(
+          'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
+          currentStatus === 'downloading' &&
+            'bg-blue-9b cursor-not-allowed opacity-30',
+        )}
+        onClick={handleDownloadVideo}
+        disabled={currentStatus === 'downloading'}
+      >
+        <DownloadArrow size={24} className='text-blue-3f' />
+      </button>
+    )
+  }
+
+  const renderPdfPrepareProgressButton = () => {
+    return (
+      <button type='button' onClick={() => setPdfPrepareProgress(65)}>
+        <div className='text-base font-medium text-gray-4a'>Crypto Keys</div>
+        <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
+      </button>
+    )
+  }
+
   return (
     <div className='pt-16 flex flex-col h-full'>
       <div>
@@ -211,17 +256,7 @@ export default function StepBackupMethod(): JSX.Element {
                 <PDF size={55} className='text-red-fa' variant='secondary' />
 
                 <div className='ml-4 mr-4'>
-                  <button
-                    type='button'
-                    onClick={() => setPdfPrepareProgress(65)}
-                  >
-                    <div className='text-base font-medium text-gray-4a'>
-                      Crypto Keys
-                    </div>
-                    <div className='text-xs font-medium text-gray-a0'>
-                      0.5mb
-                    </div>
-                  </button>
+                  {renderPdfPrepareProgressButton()}
                 </div>
 
                 {pdfPrepareProgress === 0 && (
@@ -245,12 +280,7 @@ export default function StepBackupMethod(): JSX.Element {
                         fileName={pdfFileName}
                         className='block w-full'
                       >
-                        <button
-                          type='button'
-                          className='w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa flex justify-center items-center cursor-pointer transition duration-300'
-                        >
-                          <DownloadArrow size={24} className='text-blue-3f' />
-                        </button>
+                        {renderDownloadButton()}
                       </PDFDownloadLink>
                     </Tooltip>
                   </div>
@@ -300,18 +330,7 @@ export default function StepBackupMethod(): JSX.Element {
                       vPosPercent={120}
                       classnames='font-extrabold py-2'
                     >
-                      <button
-                        type='button'
-                        className={cn(
-                          'w-12 h-12 rounded-full bg-blue-e7 hover:bg-blue-fa transition duration-300 flex justify-center items-center cursor-pointer',
-                          currentStatus === 'downloading' &&
-                            'bg-blue-9b cursor-not-allowed opacity-30',
-                        )}
-                        onClick={handleDownloadVideo}
-                        disabled={currentStatus === 'downloading'}
-                      >
-                        <DownloadArrow size={24} className='text-blue-3f' />
-                      </button>
+                      {renderDownloadVideoButton()}
                     </Tooltip>
                   </div>
                 ) : null}
@@ -334,6 +353,7 @@ export default function StepBackupMethod(): JSX.Element {
             id='createVideoIframe'
             src={ffmpegwasm.videoHostURL}
             className='h-1.5px w-1.5px'
+            title='Ffmpegwasm tool'
           />
           <PDFViewer>
             <PDFDocument

@@ -7,11 +7,11 @@ export type TPencilProps = TIconProps & {
   strokeWidth?: number
 }
 
-export const Pencil = ({
+export function Pencil({
   className = 'text-black',
   strokeWidth = 0.5,
   size = 11,
-}: TPencilProps): JSX.Element => {
+}: TPencilProps): JSX.Element {
   return (
     <svg
       width={size}

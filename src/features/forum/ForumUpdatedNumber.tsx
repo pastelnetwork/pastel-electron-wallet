@@ -9,10 +9,10 @@ export type TForumUpdatedNumberProps = {
   oldValue: string | number
 }
 
-const ForumUpdatedNumber = ({
+function ForumUpdatedNumber({
   value,
   oldValue,
-}: TForumUpdatedNumberProps): JSX.Element => {
+}: TForumUpdatedNumberProps): JSX.Element {
   const iconType = value > oldValue ? 'top' : 'bottom'
   return (
     <div

@@ -6,11 +6,11 @@ export type TCloseProps = {
   circleClassName?: string
 }
 
-export const Close = ({
+export function Close({
   size,
   pathClassName = '#8894AA',
   circleClassName = '#F6F7F9',
-}: TCloseProps): JSX.Element => {
+}: TCloseProps): JSX.Element {
   return (
     <svg
       width={size}

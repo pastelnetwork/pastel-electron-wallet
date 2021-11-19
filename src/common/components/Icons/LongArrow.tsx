@@ -15,11 +15,11 @@ const rotate: Record<TDir, number> = {
   left: 180,
 }
 
-export const LongArrow = ({
+export function LongArrow({
   size = 20,
   className = 'text-gray-88',
   to = 'right',
-}: TLongArrowProps): JSX.Element => {
+}: TLongArrowProps): JSX.Element {
   const style = { transform: `rotate(${rotate[to]}deg)` }
   return (
     <svg

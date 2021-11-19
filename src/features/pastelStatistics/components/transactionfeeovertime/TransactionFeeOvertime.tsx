@@ -19,7 +19,7 @@ import { TDbRawMemPoolInfo } from '../../../pastelDB/blockchain/rawMemPoolInfo.r
 
 const redrawCycle = 6000
 
-const TransactionFeeOvertime = (): JSX.Element => {
+export default function TransactionFeeOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -47,8 +47,26 @@ const TransactionFeeOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -61,7 +79,9 @@ const TransactionFeeOvertime = (): JSX.Element => {
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {
@@ -92,5 +112,3 @@ const TransactionFeeOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default TransactionFeeOvertime

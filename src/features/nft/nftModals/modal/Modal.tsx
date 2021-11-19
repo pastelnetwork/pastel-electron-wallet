@@ -21,7 +21,7 @@ export type TModal = {
   append?: ReactNode
 }
 
-const Modal = ({
+function Modal({
   isOpen,
   handleClose,
   size,
@@ -32,10 +32,11 @@ const Modal = ({
   headerClassName = 'px-10 pb-6',
   bodyClassName = 'px-10',
   append,
-}: TModal): JSX.Element => {
+}: TModal): JSX.Element {
+  const vSize: string = size || ''
   const modalClasses = cn({
     'relative bg-white rounded-2xl shadow-xSmall max-h-full py-8 overflow-auto mx-auto focus:outline-none': true,
-    [`w-${size}`]: size,
+    [`w-${vSize}`]: size,
   })
 
   return (
@@ -54,7 +55,11 @@ const Modal = ({
       <div className={cn('flex justify-between', headerClassName)}>
         <div className={cn('leading-tight flex items-end', titleClassName)}>
           {title}
-          {infoIcon ? <img src={iconInfo} className='ml-14px mb-6px' /> : ''}
+          {infoIcon ? (
+            <img src={iconInfo} className='ml-14px mb-6px' alt='Info' />
+          ) : (
+            ''
+          )}
           {append}
         </div>
         <ButtonClose className='-mt-4 -mr-4' onClick={handleClose} />

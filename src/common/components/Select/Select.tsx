@@ -1,5 +1,8 @@
 import React, { ReactNode, useState } from 'react'
-import Downshift, { ControllerStateAndHelpers } from 'downshift'
+import Downshift, {
+  ControllerStateAndHelpers,
+  GetInputPropsOptions,
+} from 'downshift'
 import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
 import SelectRange from './SelectRange'
@@ -114,8 +117,9 @@ export default function Select<TForm extends FieldValues>(
   } = props
 
   let { onInputChange } = props
-  if (props.debounce && props.onInputChange) {
-    onInputChange = debounce(props.onInputChange, props.debounce)
+  const { debounce: customDebounce } = props
+  if (customDebounce && onInputChange) {
+    onInputChange = debounce(onInputChange, customDebounce)
   }
 
   const onInputValueChange = (
@@ -129,6 +133,16 @@ export default function Select<TForm extends FieldValues>(
     } else {
       setEnableFiltering(false)
     }
+  }
+
+  const getInputValue = (inputProps: GetInputPropsOptions) => {
+    if (!append) {
+      return inputProps.value
+    }
+    const vAppend: string = append?.toString() || ''
+    const vInput: string = inputProps.value?.toString() || ''
+
+    return `${vInput}${vAppend}`
   }
 
   return (
@@ -165,6 +179,7 @@ export default function Select<TForm extends FieldValues>(
                   'absolute top-2/4 left-3 transform -translate-y-2/4 w-3',
                   iconClasses,
                 )}
+                alt='Icon'
               />
             )}
             {inputProps && (
@@ -184,11 +199,8 @@ export default function Select<TForm extends FieldValues>(
                   {...getToggleButtonProps()}
                   {...inputProps}
                   type='text'
-                  role='input'
                   disabled={disabled}
-                  value={
-                    append ? `${inputProps.value}${append}` : inputProps.value
-                  }
+                  value={getInputValue(inputProps)}
                 />
                 {label && <span className={labelClasses}>{label}</span>}
               </div>
@@ -201,6 +213,7 @@ export default function Select<TForm extends FieldValues>(
                   disabled && 'cursor-not-allowed',
                 )}
                 disabled={disabled}
+                type='button'
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}

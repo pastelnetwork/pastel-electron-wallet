@@ -3,10 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TCheckmarkProps = TIconProps
 
-export const Checkmark = ({
-  size,
-  className,
-}: TCheckmarkProps): JSX.Element => {
+export function Checkmark({ size, className }: TCheckmarkProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import hex from 'hex-string'
@@ -39,12 +39,32 @@ type TLocationSate = {
 }
 
 type TPaymentResults = {
+  id: number
   txId?: string
   status: string
   message?: string
 }
 
-const PaymentModal = (): JSX.Element => {
+function ViewTxIDButton({ txId }: { txId: string }): JSX.Element {
+  const handleClick = useCallback(() => {
+    shell.openExternal(`https://explorer.pastel.network/tx/${txId}`)
+  }, [])
+
+  return (
+    <Button
+      className='px-0 w-[150px] ml-auto mr-5px'
+      childrenClassName='w-full'
+      onClick={handleClick}
+    >
+      <div className='flex items-center justify-center px-3 text-white text-h5-heavy'>
+        View TXID &nbsp;
+        <i className='ml-[5px] fas fa-external-link-square-alt' />
+      </div>
+    </Button>
+  )
+}
+
+export default function PaymentModal(): JSX.Element {
   const info = useAppSelector(state => state.appInfo.info)
   const location = useLocation()
   const history = useHistory()
@@ -87,7 +107,7 @@ const PaymentModal = (): JSX.Element => {
   ] = useState<string>('')
   const [paymentResults, setPaymentResults] = useState<TPaymentResults[]>([])
 
-  const close = () => {
+  const handleCloseModal = useCallback(() => {
     if (!isLoading) {
       setComplete(false)
       setLoading(false)
@@ -99,6 +119,32 @@ const PaymentModal = (): JSX.Element => {
         history.push(ROUTES.WALLET)
       }
       setIsOpen(false)
+    }
+  }, [])
+
+  const updatePaymentSources = (amount: number) => {
+    const addressAmounts = allAddressAmounts.data
+    if (addressAmounts) {
+      let total = 0
+      for (const key in addressAmounts) {
+        if (total < amount) {
+          const addressAmount: number = addressAmounts[key] || 0
+          if (total + addressAmount >= amount) {
+            setPaymentSourcesModal(key, amount - total)
+          } else {
+            setPaymentSourcesModal(key, addressAmounts[key])
+          }
+          total += addressAmounts[key]
+
+          setSelectedAddressesModal(addresses => {
+            if (addresses.includes(key)) {
+              return addresses.filter(item => item !== key)
+            } else {
+              return [...addresses, key]
+            }
+          })
+        }
+      }
     }
   }
 
@@ -127,32 +173,72 @@ const PaymentModal = (): JSX.Element => {
     return total
   }
 
-  const updatePaymentSources = (amount: number) => {
-    const addressAmounts = allAddressAmounts.data
-    if (addressAmounts) {
-      let total = 0
-      for (const key in addressAmounts) {
-        if (total < amount) {
-          if (total + addressAmounts[key] >= amount) {
-            setPaymentSourcesModal(key, amount - total)
-          } else {
-            setPaymentSourcesModal(key, addressAmounts[key])
-          }
-          total += addressAmounts[key]
-
-          setSelectedAddressesModal(addresses => {
-            if (addresses.includes(key)) {
-              return addresses.filter(item => item !== key)
-            } else {
-              return [...addresses, key]
-            }
+  const handleGetTransactionResult = async (operationIdList: string[]) => {
+    const {
+      result: transactionResult,
+    } = await transactionRPC.getTransactionStatus(operationIdList)
+    const paymentStatus: TPaymentResults[] = []
+    let isExecuting = false
+    transactionResult.forEach((item, idx) => {
+      if (item.status === 'failed') {
+        paymentStatus.push({
+          txId: item.id,
+          status: 'Failed',
+          message: item.error?.message,
+          id: idx,
+        })
+      } else if (item.status === 'success') {
+        const note = paymentNotes.find(
+          n => n.address === item.params.fromaddress,
+        )
+        paymentStatus.push({
+          txId: item?.result?.txid,
+          status: 'Success',
+          message: '',
+          id: idx,
+        })
+        if (note?.privateNote && item?.result?.txid) {
+          saveTransactionNote({
+            txnId: item.result.txid,
+            privateNote: note.privateNote,
           })
+            .then(() => {
+              // noop
+            })
+            .catch(() => {
+              // noop
+            })
+            .finally(() => {
+              // noop
+            })
         }
+      } else {
+        isExecuting = true
       }
+    })
+
+    if (isExecuting) {
+      setTimeout(() => {
+        handleGetTransactionResult(operationIdList)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
+      }, 2000) // 2 sec
+    } else {
+      setPaymentResults(paymentStatus)
+      setComplete(true)
+      setLoading(false)
+      totalBalances.refetch()
     }
   }
 
-  const handleSendPayment = async () => {
+  const handleSendPayment = useCallback(async () => {
     setValidRecipientAddress(false)
     setRecipientAddressMessage('')
     if (!recipientAddress) {
@@ -231,57 +317,21 @@ const PaymentModal = (): JSX.Element => {
 
     if (operationIdList.length > 0) {
       handleGetTransactionResult(operationIdList)
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     } else {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const handleGetTransactionResult = async (operationIdList: string[]) => {
-    const {
-      result: transactionResult,
-    } = await transactionRPC.getTransactionStatus(operationIdList)
-    const paymentStatus: TPaymentResults[] = []
-    let isExecuting = false
-    transactionResult.forEach(item => {
-      if (item.status === 'failed') {
-        paymentStatus.push({
-          txId: item.id,
-          status: 'Failed',
-          message: item.error?.message,
-        })
-      } else if (item.status === 'success') {
-        const note = paymentNotes.find(
-          n => n.address === item.params.fromaddress,
-        )
-        paymentStatus.push({
-          txId: item?.result?.txid,
-          status: 'Success',
-          message: '',
-        })
-        if (note?.privateNote && item?.result?.txid) {
-          saveTransactionNote({
-            txnId: item.result.txid,
-            privateNote: note.privateNote,
-          })
-        }
-      } else {
-        isExecuting = true
-      }
-    })
-
-    if (isExecuting) {
-      setTimeout(() => {
-        handleGetTransactionResult(operationIdList)
-      }, 2000) // 2 sec
-    } else {
-      setPaymentResults(paymentStatus)
-      setComplete(true)
-      setLoading(false)
-      totalBalances.refetch()
-    }
-  }
-
-  const handleSavePaymentNote = (note: TNote) => {
+  const handleSavePaymentNote = useCallback((note: TNote) => {
     const index = paymentNotes.findIndex(n => n.address === note.address)
     if (index !== -1) {
       const tmp = paymentNotes
@@ -290,9 +340,9 @@ const PaymentModal = (): JSX.Element => {
     } else {
       setPaymentNotes([...paymentNotes, note])
     }
-  }
+  }, [])
 
-  const handleRecipientAddressBlur = () => {
+  const handleRecipientAddressBlur = useCallback(() => {
     setValidRecipientAddress(false)
     setRecipientAddressMessage('')
     if (!recipientAddress) {
@@ -302,14 +352,321 @@ const PaymentModal = (): JSX.Element => {
       setValidRecipientAddress(false)
       setRecipientAddressMessage('Recipient address is invalid')
     }
-  }
+  }, [])
 
-  let recipientAddressIsValid = null
+  let recipientAddressIsValid: boolean | null = null
   if (!isValidRecipientAddress && recipientAddressMessage) {
     recipientAddressIsValid = false
   }
 
   const totalBalance = totalBalances.data?.total || 0
+  const paytxfee: string = info.paytxfee.toString() || '0'
+  const relayfee: string = info.relayfee.toString() || '0'
+
+  const handleQuickSelectAmount = useCallback((value: number | null) => {
+    if (value) {
+      setBalance(balance)
+      if (totalBalance) {
+        const newPsl = (totalBalance * value) / 100
+        setPSL(newPsl)
+        setDefaulSelectedAmount({
+          label: formatPrice(newPsl, '', 4),
+          value: newPsl.toString(),
+        })
+      }
+    }
+  }, [])
+
+  const handleSelectAmount = useCallback((selection: TOption) => {
+    setPSL(parseFloat(selection.value))
+  }, [])
+
+  const handleOnFeePress = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (!/[0-9.]/.test(event.key)) {
+        event.preventDefault()
+      }
+    },
+    [],
+  )
+
+  const handleOnFeeChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFee(e.target.value)
+    },
+    [],
+  )
+
+  const handleRecipientAddressChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setRecipientAddress(e.target.value)
+    },
+    [],
+  )
+
+  const handleShowAddPaymentSourceModal = useCallback(() => {
+    setAddPaymentSourceModalIsOpen(true)
+  }, [])
+
+  const renderConfirmPaymentButton = () => {
+    return (
+      <Button
+        className='ml-[30px] px-0'
+        childrenClassName='w-full'
+        onClick={handleSendPayment}
+        disabled={
+          isLoading ||
+          getTotalPaymentSources() < psl ||
+          !psl ||
+          !recipientAddress
+        }
+      >
+        <div className='flex items-center px-5 text-white text-h5-heavy'>
+          <img src={checkIcon} className='py-3.5' alt='Check' />
+          <span className='ml-[9px]'>
+            Confirm Payment of {formatPrice(psl, currencyName, 4)}
+          </span>
+        </div>
+      </Button>
+    )
+  }
+
+  const renderCancelButton = () => {
+    return (
+      <Button
+        variant='secondary'
+        onClick={handleCloseModal}
+        className='w-[146px]'
+        disabled={isLoading}
+      >
+        <div className='flex items-center px-5 text-blue-3f text-h5-medium'>
+          <span className='text-sm '>Cancel</span>
+        </div>
+      </Button>
+    )
+  }
+
+  const renderPaymentSourceList = () => {
+    return (
+      <table className='w-full'>
+        <tbody>
+          {Object.keys(paymentSourcesModal).map(address => (
+            <PaymentSource
+              key={address}
+              address={address}
+              onSavePaymentNote={handleSavePaymentNote}
+              defaultsNote={memoString}
+              isMemoDisabled={!isZaddr(recipientAddress)}
+            />
+          ))}
+        </tbody>
+      </table>
+    )
+  }
+
+  const renderAddPaymentSourceIcon = () => {
+    return (
+      <span
+        className='flex items-center ml-[8px]'
+        onClick={handleShowAddPaymentSourceModal}
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      >
+        <Tooltip
+          classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+          content='Add Payment Source'
+          width={150}
+          type='top'
+        >
+          <AddIcon
+            size={20}
+            className='text-blue-3f cursor-pointer hover:rounded-full hover:text-gray-88 active:text-gray-55 transition duration-300'
+          />
+        </Tooltip>
+      </span>
+    )
+  }
+
+  const renderPaymentSourceIntroIcon = () => {
+    return (
+      <span className='flex items-center ml-9px'>
+        <Tooltip
+          classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+          content={`The ${currencyName} address or addresses in your Pastel Wallet that you want to send the ${currencyName} from. This can include one or more transparent OR shielded addresses. In order for your transaction to be completely shielded, all source addresses and the address of the recipient must be shielded addresses.`}
+          width={250}
+          type='top'
+        >
+          <EliminationIcon
+            size={13}
+            className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+          />
+        </Tooltip>
+      </span>
+    )
+  }
+
+  const renderInputRecipientAddress = (
+    recipientAddressIsValid: boolean | null,
+  ) => (
+    <div className='mt-[19px] w-[390px]'>
+      <Input
+        placeholder='Input recipient address'
+        type='text'
+        value={recipientAddress}
+        onChange={handleRecipientAddressChange}
+        isValid={recipientAddressIsValid}
+        errorMessage={
+          !recipientAddressIsValid && recipientAddressMessage
+            ? recipientAddressMessage || 'Recipient address is invalid.'
+            : null
+        }
+        hint
+        hintAsTooltip={false}
+        onBlur={handleRecipientAddressBlur}
+      />
+    </div>
+  )
+
+  const renderTaxFeeIntroIcon = () => (
+    <div className='ml-1'>
+      <Tooltip
+        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs top-[-62px]'
+        content={`The transaction fee you will pay for this ${currencyName} transaction. Most users should stick with the default transaction fee of ${
+          paytxfee || relayfee
+        } ${currencyName}. The transaction fee is required as an incentive for miners to include your transaction in the next Pastel block; a transaction with a low fee may take longer to be confirmed by the network.`}
+        width={250}
+        type='left'
+      >
+        <EliminationIcon
+          size={13}
+          className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+        />
+      </Tooltip>
+    </div>
+  )
+
+  const renderAddressRecipientIntroIcon = () => (
+    <div className='ml-9px'>
+      <Tooltip
+        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+        content={`The ${currencyName} address you want to send ${currencyName} coins to. This can either be a transparent address, where anyone can see the transaction in the Pastel Explorer (transparent addresses begin with the letters “Pt”), or it can be a shielded address, where no one will be able to see the amount or the address of the recipient (shielded addresses begin with the letters “ps”).`}
+        width={250}
+        type='top'
+      >
+        <EliminationIcon
+          size={13}
+          className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+        />
+      </Tooltip>
+    </div>
+  )
+
+  const renderFeeInputControl = () => (
+    <div className='w-1/3 h-10 flex items-center text-gray-2d'>
+      <div className='text-gray-4a text-h5-heavy w-[75px]'>
+        <Input
+          placeholder='fee'
+          type='number'
+          pattern='[0-9.]*'
+          value={fee}
+          onChange={handleOnFeeChange}
+          hintAsTooltip={false}
+          onKeyPress={handleOnFeePress}
+        />
+      </div>{' '}
+      &nbsp;
+      <div className='text-gray-71 text-h5-medium'>
+        {currencyName} transaction fee
+      </div>
+      {renderTaxFeeIntroIcon()}
+    </div>
+  )
+
+  const renderPaymentHeader = () => (
+    <div className='flex'>
+      <div className='w-1/3'>
+        <SelectAmount
+          className='text-gray-2d'
+          min={0}
+          max={totalBalance}
+          step={generateStep(totalBalance)}
+          defaultValue={defaulSelectedAmount}
+          onChange={handleSelectAmount}
+          label={currencyName}
+          forceUpdate
+        />
+      </div>
+      <div className='flex w-1/3 pl-3 mr-5'>
+        <Select
+          append='%'
+          label='of your balance'
+          labelClasses='text-base font-normal text-gray-4a mr-2 absolute left-16'
+          className='text-gray-2d w-264px'
+          inputClassName='text-base font-normal text-gray-4a pl-0'
+          inputWrapperClassName='w-full'
+          customListClassName={selectListClassName}
+          autocomplete
+          min={0}
+          max={100}
+          step={1}
+          value={balance}
+          onChange={handleQuickSelectAmount}
+        />
+      </div>
+      {renderFeeInputControl()}
+    </div>
+  )
+
+  const renderTransactionStatusTitle = () => (
+    <th className='text-left sticky bg-white z-30 top-0 whitespace-nowrap pr-3'>
+      <div className='ml-15px'>Transaction Status</div>
+    </th>
+  )
+
+  const renderPaymentResultHeader = () => (
+    <thead>
+      <tr className='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'>
+        {renderTransactionStatusTitle()}
+        <th className='text-left sticky bg-white z-30 top-0 px-2'>TXID</th>
+        <th className='w-[170px] text-left sticky bg-white z-30 top-0'></th>
+      </tr>
+    </thead>
+  )
+
+  const renderPaymentResultBody = () => (
+    <tbody className='h-220px overflow-y-scroll'>
+      {paymentResults.map(result => {
+        const txId: string = result.txId || ''
+        const message: string = result.message || ''
+        return (
+          <tr
+            className='h-[60px] border-b border-line text-sm md:text-base'
+            key={result.id}
+          >
+            <td className='py-1'>
+              <div className='mx-15px'>{result.status}</div>
+            </td>
+            <td
+              className={cn(
+                'py-1 pl-2 text-left px-2',
+                result.status === 'Success' ? 'break-all' : 'break-words',
+              )}
+            >
+              {result.status === 'Success'
+                ? result.txId
+                : `Opid ${txId} Failed. ${message}`}
+            </td>
+            <td className='py-1 text-right'>
+              {result.status === 'Success' ? (
+                <ViewTxIDButton txId={txId} />
+              ) : null}
+            </td>
+          </tr>
+        )
+      })}
+    </tbody>
+  )
 
   return (
     <>
@@ -327,296 +684,55 @@ const PaymentModal = (): JSX.Element => {
         hideCloseButton={isLoading}
       >
         {isComplete ? (
-          <>
-            <div>
-              <div className='mt-26px pr-22px'>
-                <table className='w-full text-gray-71 relative table-auto'>
-                  <thead>
-                    <tr className='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'>
-                      <th className='text-left sticky bg-white z-30 top-0 whitespace-nowrap pr-3'>
-                        <div className='ml-15px'>Transaction Status</div>
-                      </th>
-                      <th className='text-left sticky bg-white z-30 top-0 px-2'>
-                        TXID
-                      </th>
-                      <th className='w-[170px] text-left sticky bg-white z-30 top-0'></th>
-                    </tr>
-                  </thead>
-                  <tbody className='h-220px overflow-y-scroll'>
-                    {paymentResults.map((result, idx) => (
-                      <tr
-                        className='h-[60px] border-b border-line text-sm md:text-base'
-                        key={idx}
-                      >
-                        <td className='py-1'>
-                          <div className='mx-15px'>{result.status}</div>
-                        </td>
-                        <td
-                          className={cn(
-                            'py-1 pl-2 text-left px-2',
-                            result.status === 'Success'
-                              ? 'break-all'
-                              : 'break-words',
-                          )}
-                        >
-                          {result.status === 'Success'
-                            ? result.txId
-                            : `Opid ${result.txId} Failed. ${result.message}`}
-                        </td>
-                        <td className='py-1 text-right'>
-                          {result.status === 'Success' ? (
-                            <>
-                              <Button
-                                className='px-0 w-[150px] ml-auto mr-5px'
-                                childrenClassName='w-full'
-                                onClick={() =>
-                                  shell.openExternal(
-                                    `https://explorer.pastel.network/tx/${result.txId}`,
-                                  )
-                                }
-                              >
-                                <div className='flex items-center justify-center px-3 text-white text-h5-heavy'>
-                                  View TXID &nbsp;
-                                  <i className='ml-[5px] fas fa-external-link-square-alt' />
-                                </div>
-                              </Button>
-                            </>
-                          ) : null}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </>
+          <div className='mt-26px pr-22px'>
+            <table className='w-full text-gray-71 relative table-auto'>
+              {renderPaymentResultHeader()}
+              {renderPaymentResultBody()}
+            </table>
+          </div>
+        ) : isLoading ? (
+          <div className='text-gray-800 text-2xl font-extrabold text-center pb-5px pr-8'>
+            Please wait...This could take a while
+          </div>
         ) : (
           <>
-            {isLoading ? (
-              <div className='text-gray-800 text-2xl font-extrabold text-center pb-5px pr-8'>
-                Please wait...This could take a while
+            {renderPaymentHeader()}
+            <div className='pt-6px text-gray-a0 text-h6-leading-20'>
+              {formatPrice(
+                totalBalance - psl < 0 ? 0 : totalBalance - psl,
+                currencyName,
+                4,
+              )}{' '}
+              balance remaining after payment
+            </div>
+            <div>
+              <div className='pt-[23px] flex items-center text-gray-4a text-h5-heavy'>
+                Address of Recipient
+                {renderAddressRecipientIntroIcon()}
               </div>
-            ) : (
+              {renderInputRecipientAddress(recipientAddressIsValid)}
+            </div>
+            <div className='mt-9'>
+              <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a text-h5-heavy'>
+                Payment Source
+                {renderPaymentSourceIntroIcon()}
+                {renderAddPaymentSourceIcon()}
+              </div>
+              {renderPaymentSourceList()}
+            </div>
+            {messages.length > 0 ? (
               <>
-                <div className='flex'>
-                  <div className='w-1/3'>
-                    <SelectAmount
-                      className='text-gray-2d'
-                      min={0}
-                      max={totalBalance}
-                      step={generateStep(totalBalance)}
-                      defaultValue={defaulSelectedAmount}
-                      onChange={(selection: TOption) => {
-                        setPSL(parseFloat(selection.value))
-                      }}
-                      label={currencyName}
-                      forceUpdate
-                    />
-                  </div>
-                  <div className='flex w-1/3 pl-3 mr-5'>
-                    <Select
-                      append='%'
-                      label='of your balance'
-                      labelClasses='text-base font-normal text-gray-4a mr-2 absolute left-16'
-                      className='text-gray-2d w-264px'
-                      inputClassName='text-base font-normal text-gray-4a pl-0'
-                      inputWrapperClassName='w-full'
-                      customListClassName={selectListClassName}
-                      autocomplete={true}
-                      min={0}
-                      max={100}
-                      step={1}
-                      value={balance}
-                      onChange={(value: number | null) => {
-                        if (value) {
-                          setBalance(balance)
-                          if (totalBalance) {
-                            const newPsl = (totalBalance * value) / 100
-                            setPSL(newPsl)
-                            setDefaulSelectedAmount({
-                              label: formatPrice(newPsl, '', 4),
-                              value: newPsl.toString(),
-                            })
-                          }
-                        }
-                      }}
-                    />
-                  </div>
-                  <div className='w-1/3 h-10 flex items-center text-gray-2d'>
-                    <div className='text-gray-4a text-h5-heavy w-[75px]'>
-                      <Input
-                        placeholder='fee'
-                        type='number'
-                        pattern='[0-9.]*'
-                        value={fee}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setFee(e.target.value)
-                        }
-                        hintAsTooltip={false}
-                        onKeyPress={(
-                          event: React.KeyboardEvent<HTMLInputElement>,
-                        ) => {
-                          if (!/[0-9.]/.test(event.key)) {
-                            event.preventDefault()
-                          }
-                        }}
-                      />
-                    </div>{' '}
-                    &nbsp;
-                    <div className='text-gray-71 text-h5-medium'>
-                      {currencyName} transaction fee
-                    </div>
-                    <div className='ml-1'>
-                      <Tooltip
-                        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs top-[-62px]'
-                        content={`The transaction fee you will pay for this ${currencyName} transaction. Most users should stick with the default transaction fee of ${
-                          info.paytxfee || info.relayfee
-                        } ${currencyName}. The transaction fee is required as an incentive for miners to include your transaction in the next Pastel block; a transaction with a low fee may take longer to be confirmed by the network.`}
-                        width={250}
-                        type='left'
-                      >
-                        <EliminationIcon
-                          size={13}
-                          className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
-                        />
-                      </Tooltip>
-                    </div>
-                  </div>
-                </div>
-                <div className='pt-6px text-gray-a0 text-h6-leading-20'>
-                  {formatPrice(
-                    totalBalance - psl < 0 ? 0 : totalBalance - psl,
-                    currencyName,
-                    4,
-                  )}{' '}
-                  balance remaining after payment
-                </div>
-                <div>
-                  <div className='pt-[23px] flex items-center text-gray-4a text-h5-heavy'>
-                    Address of Recipient
-                    <div className='ml-9px'>
-                      <Tooltip
-                        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                        content={`The ${currencyName} address you want to send ${currencyName} coins to. This can either be a transparent address, where anyone can see the transaction in the Pastel Explorer (transparent addresses begin with the letters “Pt”), or it can be a shielded address, where no one will be able to see the amount or the address of the recipient (shielded addresses begin with the letters “ps”).`}
-                        width={250}
-                        type='top'
-                      >
-                        <EliminationIcon
-                          size={13}
-                          className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
-                        />
-                      </Tooltip>
-                    </div>
-                  </div>
-                  <div className='mt-[19px] w-[390px]'>
-                    <Input
-                      placeholder='Input recipient address'
-                      type='text'
-                      value={recipientAddress}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setRecipientAddress(e.target.value)
-                      }
-                      isValid={recipientAddressIsValid}
-                      errorMessage={
-                        !recipientAddressIsValid && recipientAddressMessage
-                          ? recipientAddressMessage ||
-                            'Recipient address is invalid.'
-                          : null
-                      }
-                      hint
-                      hintAsTooltip={false}
-                      onBlur={handleRecipientAddressBlur}
-                    />
-                  </div>
-                </div>
-                <div className='mt-9'>
-                  <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a text-h5-heavy'>
-                    Payment Source
-                    <span className='flex items-center ml-9px'>
-                      <Tooltip
-                        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                        content={`The ${currencyName} address or addresses in your Pastel Wallet that you want to send the ${currencyName} from. This can include one or more transparent OR shielded addresses. In order for your transaction to be completely shielded, all source addresses and the address of the recipient must be shielded addresses.`}
-                        width={250}
-                        type='top'
-                      >
-                        <EliminationIcon
-                          size={13}
-                          className='text-gray-8e cursor-pointer hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
-                        />
-                      </Tooltip>
-                    </span>
-                    <span
-                      className='flex items-center ml-[8px]'
-                      onClick={() => setAddPaymentSourceModalIsOpen(true)}
-                    >
-                      <Tooltip
-                        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                        content='Add Payment Source'
-                        width={150}
-                        type='top'
-                      >
-                        <AddIcon
-                          size={20}
-                          className='text-blue-3f cursor-pointer hover:rounded-full hover:text-gray-88 active:text-gray-55 transition duration-300'
-                        />
-                      </Tooltip>
-                    </span>
-                  </div>
-                  <table className='w-full'>
-                    <tbody>
-                      {Object.keys(paymentSourcesModal).map(address => (
-                        <PaymentSource
-                          key={address}
-                          address={address}
-                          onSavePaymentNote={handleSavePaymentNote}
-                          defaultsNote={memoString}
-                          isMemoDisabled={!isZaddr(recipientAddress)}
-                        />
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                {messages.length > 0 ? (
-                  <>
-                    {messages.map((err, idx) => (
-                      <p key={idx} className='pt-2 mb-1 text-red-4a'>
-                        {err}
-                      </p>
-                    ))}
-                  </>
-                ) : null}
-                <div className='flex justify-end mt-[21px]'>
-                  <Button
-                    variant='secondary'
-                    onClick={close}
-                    className='w-[146px]'
-                    disabled={isLoading}
-                  >
-                    <div className='flex items-center px-5 text-blue-3f text-h5-medium'>
-                      <span className='text-sm '>Cancel</span>
-                    </div>
-                  </Button>
-                  <Button
-                    className='ml-[30px] px-0'
-                    childrenClassName='w-full'
-                    onClick={handleSendPayment}
-                    disabled={
-                      isLoading ||
-                      getTotalPaymentSources() < psl ||
-                      !psl ||
-                      !recipientAddress
-                    }
-                  >
-                    <div className='flex items-center px-5 text-white text-h5-heavy'>
-                      <img src={checkIcon} className='py-3.5' />
-                      <span className='ml-[9px]'>
-                        Confirm Payment of {formatPrice(psl, currencyName, 4)}
-                      </span>
-                    </div>
-                  </Button>
-                </div>
+                {messages.map(err => (
+                  <p key={err} className='pt-2 mb-1 text-red-4a'>
+                    {err}
+                  </p>
+                ))}
               </>
-            )}
+            ) : null}
+            <div className='flex justify-end mt-[21px]'>
+              {renderCancelButton()}
+              {renderConfirmPaymentButton()}
+            </div>
           </>
         )}
       </TitleModal>
@@ -627,5 +743,3 @@ const PaymentModal = (): JSX.Element => {
     </>
   )
 }
-
-export default PaymentModal

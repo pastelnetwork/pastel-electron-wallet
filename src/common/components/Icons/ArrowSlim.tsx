@@ -14,11 +14,11 @@ const rotate: Record<TDir, number> = {
   left: 0,
 }
 
-export const ArrowSlim = ({
+export function ArrowSlim({
   size,
   to = 'right',
   className,
-}: TArrowSlimProps): JSX.Element => {
+}: TArrowSlimProps): JSX.Element {
   const style = { transform: `rotate(${rotate[to]}deg)` }
 
   return (

@@ -13,12 +13,14 @@ import { submit } from './SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PreviewIco } from 'common/components/Icons'
 
-const InfoPair = ({ title, value }: { title: string; value: string }) => (
-  <div className='flex'>
-    <div className='text-gray-71 w-36 font-normal text-sm'>{title}</div>
-    <div className='text-gray-4a font-medium text-sm'>{value}</div>
-  </div>
-)
+function InfoPair({ title, value }: { title: string; value: string }) {
+  return (
+    <div className='flex'>
+      <div className='text-gray-71 w-36 font-normal text-sm'>{title}</div>
+      <div className='text-gray-4a font-medium text-sm'>{value}</div>
+    </div>
+  )
+}
 
 type TSubmitStepProps = {
   state: TAddNFTState
@@ -50,6 +52,99 @@ export default function SubmitStep({
 
   const onSubmit = () => submit({ state, image, nftData })
 
+  const handleBack = () => {
+    state.goBack()
+  }
+
+  const renderSubmitButton = () => (
+    <div className='flex-between mt-5 flex-shrink-0'>
+      <button
+        type='button'
+        className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
+        onClick={handleBack}
+      >
+        <ArrowSlim to='left' size={14} />
+      </button>
+      <button type='button' className='btn btn-primary px-3' onClick={onSubmit}>
+        Submit and proceed to fee payment
+      </button>
+    </div>
+  )
+
+  const renderImageSize = () => (
+    <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
+      <div className='flex text-gray-71 font-medium text-base'>
+        <div className='pl-5 w-36 text-gray-71'>Image size</div>
+        <div className='text-gray-71'>Estimated registration fee</div>
+      </div>
+      <div className='flex text-gray-2d font-extrabold mt-3'>
+        <div className='pl-5 w-36 text-gray-4a'>
+          {formatFileSize(
+            state.optimizationService.selectedFile?.size || image.size,
+          )}
+        </div>
+        <div className='text-gray-4a font-extrabold'>
+          {state.estimatedFee === undefined
+            ? '0'
+            : `${formatNumber(state.estimatedFee)} ${currencyName}`}
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderThumbnailPreview = () => (
+    <div className='mt-5'>
+      <div className='font-medium text-gray-71 mb-3'>Thumbnail preview</div>
+      <div className='w-48 h-48 relative'>
+        {croppedImage && (
+          <>
+            <ImageShadow url={croppedImage.src} small />
+            <img
+              src={croppedImage.src}
+              className='rounded w-full h-full relative'
+              alt='Pastel Network'
+            />
+          </>
+        )}
+      </div>
+      {croppedImage?.error && (
+        <div className='text-sm text-error font-medium mt-3'>
+          Error text error text
+        </div>
+      )}
+    </div>
+  )
+
+  const renderPreviewBlock = () => (
+    <div className='relative flex-center'>
+      <FullScreenButton onClick={onFullScreenToggle} />
+      <ImageShadow url={image.url} />
+      <img
+        src={displayUrl}
+        className='rounded max-h-[410px] relative'
+        style={{ maxWidth: `${image.maxWidth}px` }}
+        alt='Pastel'
+      />
+      <button
+        className='absolute z-10 bottom-3 px-4 py-[10px] rounded-full bg-rgba-gray-2e flex items-center'
+        onClick={onFullScreenToggle}
+        type='button'
+      >
+        <PreviewIco size={20} className='inline-block mr-4 text-white' />
+        <span className='text-white text-xs font-medium inline-block whitespace-nowrap'>
+          Preview how it will look
+        </span>
+      </button>
+    </div>
+  )
+
+  const renderGreenNFT = () => (
+    <div className='flex items-center'>
+      <div className='text-gray-71 mr-3'>GreenNFT</div>
+      <Toggle selected={nftData.green} />
+    </div>
+  )
+
   return (
     <ModalLayout
       title='Submit NFT'
@@ -58,26 +153,7 @@ export default function SubmitStep({
       step={4}
       leftColumnWidth={image.maxWidth}
       leftColumnContent={
-        <div className='flex-center'>
-          <div className='relative flex-center'>
-            <FullScreenButton onClick={onFullScreenToggle} />
-            <ImageShadow url={image.url} />
-            <img
-              src={displayUrl}
-              className='rounded max-h-[410px] relative'
-              style={{ maxWidth: `${image.maxWidth}px` }}
-            />
-            <button
-              className='absolute z-10 bottom-3 px-4 py-[10px] rounded-full bg-rgba-gray-2e flex items-center'
-              onClick={onFullScreenToggle}
-            >
-              <PreviewIco size={20} className='inline-block mr-4 text-white' />
-              <span className='text-white text-xs font-medium inline-block whitespace-nowrap'>
-                Preview how it will look
-              </span>
-            </button>
-          </div>
-        </div>
+        <div className='flex-center'>{renderPreviewBlock()}</div>
       }
       rightColumnClass='w-[360px] flex flex-col'
       rightColumnContent={
@@ -106,70 +182,15 @@ export default function SubmitStep({
               {nftData.video && (
                 <InfoPair title='Creation video' value={nftData.video} />
               )}
-              <div className='flex items-center'>
-                <div className='text-gray-71 mr-3'>GreenNFT</div>
-                <Toggle selected={nftData.green} />
-              </div>
+              {renderGreenNFT()}
             </div>
             {nftData.description && (
               <div className='mt-4 text-blue-3f'>{nftData.description}</div>
             )}
-            <div className='mt-5'>
-              <div className='font-medium text-gray-71 mb-3'>
-                Thumbnail preview
-              </div>
-              <div className='w-48 h-48 relative'>
-                {croppedImage && (
-                  <>
-                    <ImageShadow url={croppedImage.src} small />
-                    <img
-                      src={croppedImage.src}
-                      className='rounded w-full h-full relative'
-                    />
-                  </>
-                )}
-              </div>
-              {croppedImage?.error && (
-                <div className='text-sm text-error font-medium mt-3'>
-                  Error text error text
-                </div>
-              )}
-            </div>
-            <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
-              <div className='flex text-gray-71 font-medium text-base'>
-                <div className='pl-5 w-36 text-gray-71'>Image size</div>
-                <div className='text-gray-71'>Estimated registration fee</div>
-              </div>
-              <div className='flex text-gray-2d font-extrabold mt-3'>
-                <div className='pl-5 w-36 text-gray-4a'>
-                  {formatFileSize(
-                    state.optimizationService.selectedFile?.size || image.size,
-                  )}
-                </div>
-                <div className='text-gray-4a font-extrabold'>
-                  {state.estimatedFee === undefined
-                    ? '0'
-                    : `${formatNumber(state.estimatedFee)} ${currencyName}`}
-                </div>
-              </div>
-            </div>
+            {renderThumbnailPreview()}
+            {renderImageSize()}
           </div>
-          <div className='flex-between mt-5 flex-shrink-0'>
-            <button
-              type='button'
-              className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={state.goBack}
-            >
-              <ArrowSlim to='left' size={14} />
-            </button>
-            <button
-              type='button'
-              className='btn btn-primary px-3'
-              onClick={onSubmit}
-            >
-              Submit and proceed to fee payment
-            </button>
-          </div>
+          {renderSubmitButton()}
         </>
       }
     />

@@ -5,15 +5,21 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import styles from './PastelSpriteEditorToolModal.module.css'
 import { closePastelSpriteEditorToolModal } from './PastelSpriteEditorToolModalSlice'
 
-export default function PastelSpriteEditorToolModal(): JSX.Element {
+export default function PastelSpriteEditorToolModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(
     state => state.pastelSpriteEditorToolModal,
   )
   const dispatch = useAppDispatch()
 
   if (!modalIsOpen) {
-    return <></>
+    return null
   }
+
+  const renderIframeContent = () => (
+    <div className={styles.iframe}>
+      <iframe src='https://www.spritemate.com/' title='Spritemate tool' />
+    </div>
+  )
 
   return (
     <Modal
@@ -29,9 +35,7 @@ export default function PastelSpriteEditorToolModal(): JSX.Element {
         >
           X
         </button>
-        <div className={styles.iframe}>
-          <iframe src='https://www.spritemate.com/' />
-        </div>
+        {renderIframeContent()}
       </div>
     </Modal>
   )

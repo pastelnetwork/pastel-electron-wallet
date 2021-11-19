@@ -7,11 +7,11 @@ export type TCircleQuestionProps = {
   hasNotification?: boolean
 }
 
-export const CircleQuestion = ({
+export function CircleQuestion({
   size = 18,
   className = 'text-gray-33',
   hasNotification = false,
-}: TCircleQuestionProps): JSX.Element => {
+}: TCircleQuestionProps): JSX.Element {
   return (
     <div className={cn(className, 'relative')}>
       {hasNotification && (

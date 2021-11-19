@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import cn from 'classnames'
 import CSS from 'csstype'
 import { TooltipArrow } from '../Icons/TooltipArrow'
@@ -14,9 +14,10 @@ export type TTooltipProps = {
   marginLeft?: string
   marginTop?: string
   vPosPercent?: number
+  children: ReactNode
 }
 
-const Tooltip: FunctionComponent<TTooltipProps> = ({
+function Tooltip({
   type,
   classnames,
   wrapperClassNames,
@@ -27,7 +28,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   vPosPercent = 150,
   marginLeft = '-5px',
   marginTop = '-5px',
-}) => {
+}: TTooltipProps): JSX.Element {
   const styles = {
     top: {
       width: `${width}px`,

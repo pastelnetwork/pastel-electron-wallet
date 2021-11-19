@@ -11,7 +11,7 @@ import ForumUpdatedNumber, {
   TForumUpdatedNumberProps,
 } from './ForumUpdatedNumber'
 
-export const Forum = (): JSX.Element => {
+export function Forum(): JSX.Element {
   const mockCategories: TOption[] = [
     { value: '', label: 'All' },
     { value: 'Bitcoin Talks', label: 'Bitcoin Talks' },
@@ -110,28 +110,38 @@ export const Forum = (): JSX.Element => {
     bodyClasses: 'overflow-y-scroll',
   }
 
+  const renderForumContent = () => (
+    <Scrollbar hasPageHeader>
+      <div className='bg-white px-7 py-5 rounded-lg'>
+        <Table {...table} />
+      </div>
+    </Scrollbar>
+  )
+
+  const renderMultiToggleSwitch = () => (
+    <div className='flex h-full items-center justify-end'>
+      <MultiToggleSwitch
+        containerClassName='rounded-none border-none'
+        {...routes}
+      />
+    </div>
+  )
+
+  const renderForumHeader = () => (
+    <div className='flex justify-between pt-5'>
+      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
+        {filterOptions.map(option => (
+          <Select {...option} key={option.label} />
+        ))}
+      </div>
+      <div className='flex'>{renderMultiToggleSwitch()}</div>
+    </div>
+  )
+
   return (
     <div className='wrapper content with-page-header pb-5 w-screen'>
-      <div className='flex justify-between pt-5'>
-        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
-          {filterOptions.map(option => (
-            <Select {...option} key={option.label} />
-          ))}
-        </div>
-        <div className='flex'>
-          <div className='flex h-full items-center justify-end'>
-            <MultiToggleSwitch
-              containerClassName='rounded-none border-none'
-              {...routes}
-            />
-          </div>
-        </div>
-      </div>
-      <Scrollbar hasPageHeader={true}>
-        <div className='bg-white px-7 py-5 rounded-lg'>
-          <Table {...table} />
-        </div>
-      </Scrollbar>
+      {renderForumHeader()}
+      {renderForumContent()}
     </div>
   )
 }

@@ -104,9 +104,40 @@ export default function PromoCode(): JSX.Element {
   const errorMessage = error?.message
   const addressBalance = promoCodeQuery.data?.balance || 0
 
-  let promoCodeIsValid = null
+  let promoCodeIsValid: boolean | null = null
   if (promoCodeQuery.error) {
     promoCodeIsValid = false
+  }
+
+  const renderPromoCodeInput = () => {
+    return (
+      <div className='mt-4 airdrop'>
+        <Input
+          className='w-full'
+          type='text'
+          placeholder={
+            isPastelPromoCode
+              ? 'Paste your promo code here'
+              : `${currencyName} Address Private Key here`
+          }
+          onChange={(e: FormEvent<HTMLInputElement>) => {
+            if (isPastelPromoCode) {
+              store.setPromoCode(e.currentTarget.value.trim())
+            } else {
+              store.setPSLAddressPrivateKey(e.currentTarget.value.trim())
+            }
+          }}
+          isValid={promoCodeIsValid}
+          errorMessage={errorMessage}
+          hint
+          hintAsTooltip={false}
+          value={
+            isPastelPromoCode ? store.promoCodeKey : store.pslAddressPrivateKey
+          }
+          disabled={isLoading}
+        />
+      </div>
+    )
   }
 
   return (
@@ -117,34 +148,7 @@ export default function PromoCode(): JSX.Element {
             ? 'Pastel Promo Code'
             : `${currencyName} Address Private Key Import`}
         </h1>
-        <div className='mt-4 airdrop'>
-          <Input
-            className='w-full'
-            type='text'
-            placeholder={
-              isPastelPromoCode
-                ? 'Paste your promo code here'
-                : `${currencyName} Address Private Key here`
-            }
-            onChange={(e: FormEvent<HTMLInputElement>) => {
-              if (isPastelPromoCode) {
-                store.setPromoCode(e.currentTarget.value.trim())
-              } else {
-                store.setPSLAddressPrivateKey(e.currentTarget.value.trim())
-              }
-            }}
-            isValid={promoCodeIsValid}
-            errorMessage={errorMessage}
-            hint
-            hintAsTooltip={false}
-            value={
-              isPastelPromoCode
-                ? store.promoCodeKey
-                : store.pslAddressPrivateKey
-            }
-            disabled={isLoading}
-          />
-        </div>
+        {renderPromoCodeInput()}
         {promoCodeQuery.isSuccess ? (
           <div className='mt-6 text-gray-71 text-base font-normal'>
             Congratulations, your{' '}

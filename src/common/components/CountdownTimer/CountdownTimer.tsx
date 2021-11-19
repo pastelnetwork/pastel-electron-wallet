@@ -16,10 +16,6 @@ export default function CountdownTimer({
   countDownDate,
   className,
 }: TCountdownTimerProps): JSX.Element | null {
-  if (!countDownDate) {
-    return null
-  }
-
   const [time, setTime] = useState<TTimeProps>({
     days: 0,
     hours: 0,
@@ -29,6 +25,10 @@ export default function CountdownTimer({
   let token: NodeJS.Timer
 
   const updateTime = () => {
+    if (!countDownDate) {
+      return
+    }
+
     const now = new Date().getTime()
     const distance = countDownDate - now
     const days = Math.floor(distance / (1000 * 60 * 60 * 24))
@@ -57,16 +57,24 @@ export default function CountdownTimer({
   }
 
   useEffect(() => {
-    token = setInterval(updateTime, 1000)
+    if (countDownDate) {
+      token = setInterval(updateTime, 1000)
+    }
 
     return () => {
       clearInterval(token)
     }
   }, [])
 
+  if (!countDownDate) {
+    return null
+  }
+
+  const strDays: string = time.days?.toString() || ''
+
   return (
     <span className={className}>
-      {time.days > 0 ? `${time.days}d ` : ''}
+      {time.days > 0 ? `${strDays}d ` : ''}
       {time.hours}h {time.minutes}m {time.seconds}s
     </span>
   )

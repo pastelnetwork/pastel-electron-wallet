@@ -1,5 +1,6 @@
 import React from 'react'
 import { Story, Meta } from '@storybook/react'
+import log from 'electron-log'
 
 import SelectAmount, { TSelectAmountProps } from './SelectAmount'
 
@@ -14,7 +15,7 @@ const Template: Story<TSelectAmountProps> = ({ ...args }) => {
       <SelectAmount
         {...args}
         onChange={selection => {
-          console.log(1111111, 'result', selection)
+          log.log(selection)
         }}
       />
     </div>

@@ -47,7 +47,7 @@ enum receiveTab {
   transparent,
 }
 
-export const Receive = (props: IReceiveProps): JSX.Element => {
+export function Receive(props: IReceiveProps): JSX.Element {
   const {
     addresses,
     addressesWithBalance,
@@ -111,75 +111,87 @@ export const Receive = (props: IReceiveProps): JSX.Element => {
     return map
   }, {} as { [addr: string]: string })
 
+  const renderTransparentTabsContent = () => (
+    <TabPanel key={`t${rerenderKey}`}>
+      <ScrollPane offsetHeight={100}>
+        <Accordion preExpanded={[defaultTaddr]}>
+          {taddrs.map(a => (
+            <AddressBlock
+              key={a.address}
+              addressBalance={a}
+              currencyName={info.currencyName}
+              pslPrice={info.pslPrice}
+              privateKey={addressPrivateKeys[a.address]}
+              viewKey={addressViewKeys[a.address]}
+              fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
+              hidePrivKey={hidePrivKey}
+              fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
+              transactions={transactions}
+            />
+          ))}
+        </Accordion>
+        <button
+          className={cx(
+            cstyles.primarybutton,
+            cstyles.margintoplarge,
+            cstyles.marginbottomlarge,
+          )}
+          type='button'
+          onClick={() => createNewAddress(false)}
+        >
+          New Transparent Address
+        </button>
+      </ScrollPane>
+    </TabPanel>
+  )
+
+  const renderShieldedTabContent = () => (
+    <TabPanel key={`z${rerenderKey}`}>
+      <ScrollPane offsetHeight={100}>
+        <Accordion preExpanded={[defaultZaddr]}>
+          {zaddrs.map(a => (
+            <AddressBlock
+              key={a.address}
+              addressBalance={a}
+              currencyName={info.currencyName}
+              label={addressBookMap[a.address]}
+              pslPrice={info.pslPrice}
+              privateKey={addressPrivateKeys[a.address]}
+              viewKey={addressViewKeys[a.address]}
+              fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
+              hidePrivKey={hidePrivKey}
+              fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
+            />
+          ))}
+        </Accordion>
+        <button
+          className={cx(
+            cstyles.primarybutton,
+            cstyles.margintoplarge,
+            cstyles.marginbottomlarge,
+          )}
+          onClick={() => createNewAddress(true)}
+          type='button'
+        >
+          New Shielded Address
+        </button>
+      </ScrollPane>
+    </TabPanel>
+  )
+
+  const renderTabTitle = () => (
+    <TabList>
+      <Tab>Shielded</Tab>
+      <Tab>Transparent</Tab>
+    </TabList>
+  )
+
   return (
     <div className={styles.receivecontainer}>
       <Tabs onSelect={(index: number) => setCurrentTab(index)}>
-        <TabList>
-          <Tab>Shielded</Tab>
-          <Tab>Transparent</Tab>
-        </TabList>
-        <TabPanel key={`z${rerenderKey}`}>
-          <ScrollPane offsetHeight={100}>
-            <Accordion preExpanded={[defaultZaddr]}>
-              {zaddrs.map(a => (
-                <AddressBlock
-                  key={a.address}
-                  addressBalance={a}
-                  currencyName={info.currencyName}
-                  label={addressBookMap[a.address]}
-                  pslPrice={info.pslPrice}
-                  privateKey={addressPrivateKeys[a.address]}
-                  viewKey={addressViewKeys[a.address]}
-                  fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
-                  hidePrivKey={hidePrivKey}
-                  fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
-                />
-              ))}
-            </Accordion>
-            <button
-              className={cx(
-                cstyles.primarybutton,
-                cstyles.margintoplarge,
-                cstyles.marginbottomlarge,
-              )}
-              onClick={() => createNewAddress(true)}
-              type='button'
-            >
-              New Shielded Address
-            </button>
-          </ScrollPane>
-        </TabPanel>
-        <TabPanel key={`t${rerenderKey}`}>
-          <ScrollPane offsetHeight={100}>
-            <Accordion preExpanded={[defaultTaddr]}>
-              {taddrs.map(a => (
-                <AddressBlock
-                  key={a.address}
-                  addressBalance={a}
-                  currencyName={info.currencyName}
-                  pslPrice={info.pslPrice}
-                  privateKey={addressPrivateKeys[a.address]}
-                  viewKey={addressViewKeys[a.address]}
-                  fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
-                  hidePrivKey={hidePrivKey}
-                  fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
-                  transactions={transactions}
-                />
-              ))}
-            </Accordion>
-            <button
-              className={cx(
-                cstyles.primarybutton,
-                cstyles.margintoplarge,
-                cstyles.marginbottomlarge,
-              )}
-              type='button'
-              onClick={() => createNewAddress(false)}
-            >
-              New Transparent Address
-            </button>
-          </ScrollPane>
-        </TabPanel>
+        {renderTabTitle()}
+        {renderShieldedTabContent()}
+        {renderTransparentTabsContent()}
       </Tabs>
       <PastelPaperWalletModal
         currentName={

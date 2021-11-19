@@ -11,14 +11,14 @@ export type TLineEdit = {
   className?: string
 }
 
-const LineEdit = ({
+function LineEdit({
   value,
   onChange,
   hideCloseIcon,
   readOnly = false,
   inputClassName,
   className,
-}: TLineEdit): JSX.Element => {
+}: TLineEdit): JSX.Element {
   return (
     <div
       className={cn(
@@ -38,7 +38,7 @@ const LineEdit = ({
         readOnly={readOnly}
       />
       {!hideCloseIcon ? (
-        <button className='mx-2' onClick={() => onChange('')}>
+        <button className='mx-2' onClick={() => onChange('')} type='button'>
           <CircleCloseIcon size={22} />
         </button>
       ) : null}

@@ -18,7 +18,10 @@ import {
   TDataForPdf,
   addLineBreakForContent,
   addLineBreakFoFullrContent,
+  TPastelID,
+  TPrivateKey,
 } from '../common/utils'
+import { TAddressBook } from 'types/rpc'
 
 type TCrypto = {
   currencyName?: string
@@ -118,66 +121,82 @@ const pdfStyles = StyleSheet.create({
   },
 })
 
-export const PDFDocument = ({
+export function PDFDocument({
   allKeys,
   currencyName,
   title,
   qrcodeData,
-}: TPDFDocumentProps): JSX.Element => {
+}: TPDFDocumentProps): JSX.Element {
+  const renderAddressBookContent = (addressBook: TAddressBook) => (
+    <View style={pdfStyles.mainContentFull}>
+      <View style={pdfStyles.contentItem}>
+        <Text style={pdfStyles.contentTitle}>Label:</Text>
+        <Text style={pdfStyles.contentValue}>{addressBook.label}</Text>
+      </View>
+      <View style={pdfStyles.marginTop20}>
+        <Text style={pdfStyles.contentTitle}>Address:</Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakFoFullrContent(addressBook.address)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderPastelIdContent = (pastelID: TPastelID) => (
+    <View style={pdfStyles.mainContent}>
+      <View style={pdfStyles.contentItem}>
+        <Text style={pdfStyles.contentTitle}>PastelID</Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakFoFullrContent(pastelID.PastelID)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderPrivateKeys = (privateKey: TPrivateKey) => (
+    <View style={pdfStyles.mainContentWrapper}>
+      <View style={pdfStyles.contentItem}>
+        <Text style={pdfStyles.contentTitle}>Private Key</Text>
+        <Text style={pdfStyles.contentValuePrivateKey}>
+          {addLineBreakForContent(privateKey.privateKey)}
+        </Text>
+      </View>
+      <View style={pdfStyles.marginTop20}>
+        <Text style={pdfStyles.contentTitle}>
+          {currencyName} Address (Sapling)
+        </Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(privateKey.address)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderPrivateKeyQRCode = (privateKey: TPrivateKey) => (
+    <View style={pdfStyles.mainMedia}>
+      <QRCodeGEnerator address={privateKey.address} />
+    </View>
+  )
+
   return (
     <Document title={title} keywords={qrcodeData}>
       <Page size='A4' style={pdfStyles.page}>
-        {allKeys.addressKeys?.map((privateKey, idx) => (
-          <View style={pdfStyles.section} key={idx}>
+        {allKeys.addressKeys?.map(privateKey => (
+          <View style={pdfStyles.section} key={privateKey.privateKey}>
             <View style={pdfStyles.mainContent}>
-              <View style={pdfStyles.mainContentWrapper}>
-                <View style={pdfStyles.contentItem}>
-                  <Text style={pdfStyles.contentTitle}>Private Key</Text>
-                  <Text style={pdfStyles.contentValuePrivateKey}>
-                    {addLineBreakForContent(privateKey.privateKey)}
-                  </Text>
-                </View>
-                <View style={pdfStyles.marginTop20}>
-                  <Text style={pdfStyles.contentTitle}>
-                    {currencyName} Address (Sapling)
-                  </Text>
-                  <Text style={pdfStyles.contentValue}>
-                    {addLineBreakForContent(privateKey.address)}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.mainMedia}>
-                <QRCodeGEnerator address={privateKey.address} />
-              </View>
+              {renderPrivateKeys(privateKey)}
+              {renderPrivateKeyQRCode(privateKey)}
             </View>
           </View>
         ))}
-        {allKeys.pastelIDs?.map((pastelID, idx) => (
-          <View style={pdfStyles.section} key={idx}>
-            <View style={pdfStyles.mainContent}>
-              <View style={pdfStyles.contentItem}>
-                <Text style={pdfStyles.contentTitle}>PastelID</Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakFoFullrContent(pastelID.PastelID)}
-                </Text>
-              </View>
-            </View>
+        {allKeys.pastelIDs?.map(pastelID => (
+          <View style={pdfStyles.section} key={pastelID.PastelID}>
+            {renderPastelIdContent(pastelID)}
           </View>
         ))}
-        {allKeys.addressBook?.map((addressBook, idx) => (
-          <View style={pdfStyles.section} key={idx}>
-            <View style={pdfStyles.mainContentFull}>
-              <View style={pdfStyles.contentItem}>
-                <Text style={pdfStyles.contentTitle}>Label:</Text>
-                <Text style={pdfStyles.contentValue}>{addressBook.label}</Text>
-              </View>
-              <View style={pdfStyles.marginTop20}>
-                <Text style={pdfStyles.contentTitle}>Address:</Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakFoFullrContent(addressBook.address)}
-                </Text>
-              </View>
-            </View>
+        {allKeys.addressBook?.map(addressBook => (
+          <View style={pdfStyles.section} key={addressBook.address}>
+            {renderAddressBookContent(addressBook)}
           </View>
         ))}
       </Page>
@@ -185,7 +204,7 @@ export const PDFDocument = ({
   )
 }
 
-const CryptoKey = (props: TCrypto): JSX.Element => {
+export default function CryptoKey(props: TCrypto): JSX.Element {
   const { currencyName, qrcodeData } = props
   const [allKeys, setAllKeys] = useState<TDataForPdf>({
     addressKeys: [],
@@ -199,11 +218,20 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
       setAllKeys(result)
     }
     fetchData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
-  const fileName = `${currencyName || 'LSP'}_Paper_Wallet__Private_Keys_${dayjs(
-    new Date(),
-  ).format('MM_DD_YYYY__HH_MM_ss')}`
+  const vCurrencyName: string = currencyName || 'PSL'
+  const date: string = dayjs(new Date()).format('MM_DD_YYYY__HH_MM_ss')
+  const fileName = `${vCurrencyName}_Paper_Wallet__Private_Keys_${date}`
 
   const description = (
     <div className='max-w-330px'>
@@ -240,6 +268,19 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
     </PDFDownloadLink>
   )
 
+  const renderPDFView = () => (
+    <div className='h-0 w-0 hidden'>
+      <PDFViewer>
+        <PDFDocument
+          allKeys={allKeys}
+          currencyName={currencyName}
+          title={fileName}
+          qrcodeData={qrcodeData}
+        />
+      </PDFViewer>
+    </div>
+  )
+
   return (
     <>
       <Card
@@ -248,18 +289,15 @@ const CryptoKey = (props: TCrypto): JSX.Element => {
         content=''
         footer={footer}
       />
-      <div className='h-0 w-0 hidden'>
-        <PDFViewer>
-          <PDFDocument
-            allKeys={allKeys}
-            currencyName={currencyName}
-            title={fileName}
-            qrcodeData={qrcodeData}
-          />
-        </PDFViewer>
-      </div>
+      {renderPDFView()}
     </>
   )
 }
 
-export default CryptoKey
+PDFDocument.defaultProps = {
+  currencyName: 'PSL',
+}
+
+CryptoKey.defaultProps = {
+  currencyName: 'PSL',
+}

@@ -6,7 +6,7 @@ import KeywordResult from './KeywordResult'
 import CreatorsResult from './CreatorsResult'
 import ForumPost from './ForumPost'
 
-const SearchResults = (): JSX.Element => {
+export default function SearchResults(): JSX.Element {
   const data = [
     {
       label: 'NFTs',
@@ -58,5 +58,3 @@ const SearchResults = (): JSX.Element => {
     </div>
   )
 }
-
-export default SearchResults

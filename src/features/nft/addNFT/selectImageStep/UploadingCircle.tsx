@@ -69,37 +69,45 @@ export default function UploadingCircle({
 
   const initialPercent = isReady ? 100 : 0
 
+  const renderProgress = () => (
+    <div className='absolute inset-0 flex-center flex-col'>
+      {isReady ? (
+        <Checkmark size={27} className='mb-2 text-green-6d' />
+      ) : (
+        <UploadFile size={22} className='mb-2' />
+      )}
+      <div className='text-gray-4a text-lg font-medium mb-px max-w-9/10 px-3 overflow-ellipsis whitespace-nowrap overflow-hidden'>
+        {file?.name}
+      </div>
+      <div className='text-sm'>
+        <span ref={displayPercentRef}>{initialPercent}%</span> ready
+      </div>
+    </div>
+  )
+
+  const renderCircleIcon = () => (
+    <svg
+      viewBox='0 0 100 100'
+      className='transform -rotate-90 w-[200px] h-[200px]'
+    >
+      <Circle
+        ref={circleRef}
+        className='text-blue-3f'
+        radius={circleRadius}
+        strokeWidth={circleBorderWidth}
+        percent={initialPercent}
+      />
+    </svg>
+  )
+
   return (
     <div
       className='pt-16 flex flex-col items-center bg-center'
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
       <div className='rounded-full bg-white p-1 relative text-gray-77 mb-5'>
-        <svg
-          viewBox='0 0 100 100'
-          className='transform -rotate-90 w-[200px] h-[200px]'
-        >
-          <Circle
-            ref={circleRef}
-            className='text-blue-3f'
-            radius={circleRadius}
-            strokeWidth={circleBorderWidth}
-            percent={initialPercent}
-          />
-        </svg>
-        <div className='absolute inset-0 flex-center flex-col'>
-          {isReady ? (
-            <Checkmark size={27} className='mb-2 text-green-6d' />
-          ) : (
-            <UploadFile size={22} className='mb-2' />
-          )}
-          <div className='text-gray-4a text-lg font-medium mb-px max-w-9/10 px-3 overflow-ellipsis whitespace-nowrap overflow-hidden'>
-            {file?.name}
-          </div>
-          <div className='text-sm'>
-            <span ref={displayPercentRef}>{initialPercent}%</span> ready
-          </div>
-        </div>
+        {renderCircleIcon()}
+        {renderProgress()}
       </div>
       {!isReady && (
         <button
@@ -112,4 +120,8 @@ export default function UploadingCircle({
       )}
     </div>
   )
+}
+
+UploadingCircle.defaultProps = {
+  file: undefined,
 }

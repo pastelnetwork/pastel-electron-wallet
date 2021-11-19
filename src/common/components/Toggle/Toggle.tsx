@@ -9,37 +9,48 @@ export type TToggleProps = {
   children?: React.ReactNode
 }
 
-const Toggle = ({
+function Toggle({
   children,
   toggleHandler,
   classNames = 'w-34px h-5 rounded-full',
   selectedClass = 'bg-blue-3f',
   selected = false,
-}: TToggleProps): JSX.Element => {
+}: TToggleProps): JSX.Element {
   const [checked, setChecked] = useState(selected)
+
+  const handleToggleClick = () => {
+    if (toggleHandler) {
+      toggleHandler(!checked)
+    }
+
+    setChecked(!checked)
+  }
+
+  const renderToggleButton = () => (
+    <div
+      className={cn(
+        'flex items-center duration-200 transition: hover:bg-gray-55',
+        classNames,
+        checked ? selectedClass : 'bg-gray-a0',
+      )}
+      onClick={handleToggleClick}
+      role='button'
+      tabIndex={0}
+      aria-hidden='true'
+    >
+      <div
+        className={cn(
+          'dot absolute bg-white w-3 h-3 rounded-full duration-200 transition left-1',
+          checked && 'transform translate-x-4',
+        )}
+      />
+    </div>
+  )
+
   return (
     <div>
       <label className='flex items-center cursor-pointer'>
-        <div className='relative'>
-          <div
-            className={cn(
-              'flex items-center duration-200 transition: hover:bg-gray-55',
-              classNames,
-              checked ? selectedClass : 'bg-gray-a0',
-            )}
-            onClick={() => {
-              !!toggleHandler && toggleHandler(!checked)
-              setChecked(!checked)
-            }}
-          >
-            <div
-              className={cn(
-                'dot absolute bg-white w-3 h-3 rounded-full duration-200 transition left-1',
-                checked && 'transform translate-x-4',
-              )}
-            />
-          </div>
-        </div>
+        <div className='relative'>{renderToggleButton()}</div>
         {children && (
           <div className='text-sm font-normal text-gray-71 ml-3 flex items-center'>
             {children}

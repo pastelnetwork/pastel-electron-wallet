@@ -5,10 +5,10 @@ export type TDownloadArrowProps = {
   className?: string
 }
 
-export const DownloadArrow = ({
+export function DownloadArrow({
   size = 24,
   className = 'text-blue-3f',
-}: TDownloadArrowProps): JSX.Element => {
+}: TDownloadArrowProps): JSX.Element {
   return (
     <svg
       width={size}

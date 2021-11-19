@@ -1,5 +1,7 @@
 import React, { useState, ReactNode, useMemo } from 'react'
 import cx from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
+
 import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
@@ -40,7 +42,7 @@ export type TTableProps = {
   isLoading?: boolean
 }
 
-const Table = ({
+export default function Table({
   columns,
   data,
   haveHeader = true,
@@ -56,7 +58,7 @@ const Table = ({
   stickyTopClassName = 'top-0',
   extendHeaderClassName,
   isLoading,
-}: TTableProps): JSX.Element => {
+}: TTableProps): JSX.Element {
   const [sortIndex, setSortIndex] = useState(0)
   const [sortOrder, setSortOrder] = useState(0)
   const [selectedRows, setSelectedRows] = useState<Array<number>>([])
@@ -89,7 +91,10 @@ const Table = ({
         {parse(
           reactElementToJSXString(text).replace(
             new RegExp(param, 'gi'),
-            match => `<mark class='bg-blue-9b py-1'>${match}</mark>`,
+            match => {
+              const vMatch: string = match || ''
+              return `<mark class='bg-blue-9b py-1'>${vMatch}</mark>`
+            },
           ),
         )}
       </div>
@@ -121,7 +126,7 @@ const Table = ({
             ) : null}
             {columns.map((column, index) => (
               <td
-                key={index}
+                key={`${column.key}${column.name}`}
                 className={cx(
                   column.align ? 'text-' + column.align : 'text-left',
                   'sticky bg-white z-30',
@@ -146,6 +151,7 @@ const Table = ({
                         ? 'invisible'
                         : (index != sortIndex || sortOrder != 1) && 'hidden',
                     )}
+                    alt='Caret'
                   />
                   <img
                     src={caretUp2Icon}
@@ -153,6 +159,7 @@ const Table = ({
                       'ml-2',
                       (index != sortIndex || sortOrder != -1) && 'hidden',
                     )}
+                    alt='Caret'
                   />
                 </div>
               </td>
@@ -168,8 +175,11 @@ const Table = ({
                 <RectangleLoader colorClass='text-gray-dd' />
               </td>
             ) : null}
-            {columns.map((column, index) => (
-              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
+            {columns.map(column => (
+              <td
+                key={column.key}
+                className={cx(column.colClasses, bodyTdClasses)}
+              >
                 <RectangleLoader colorClass='text-gray-dd' />
               </td>
             ))}
@@ -177,7 +187,7 @@ const Table = ({
         ) : null}
         {tableData.map((row: TRow, index: number) => (
           <tr
-            key={index}
+            key={uuidv4()}
             className={cx(
               bodyTrClasses,
               selectedRows.includes(index) && 'bg-blue-fa',
@@ -202,8 +212,11 @@ const Table = ({
                 />
               </td>
             ) : null}
-            {columns.map((column, index) => (
-              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
+            {columns.map(column => (
+              <td
+                key={`${column.key}-${column.name}`}
+                className={cx(column.colClasses, bodyTdClasses)}
+              >
                 {column.custom
                   ? searchKey
                     ? renderSearchKeyDiv(
@@ -222,5 +235,3 @@ const Table = ({
     </table>
   )
 }
-
-export default Table

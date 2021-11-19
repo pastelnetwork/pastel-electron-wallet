@@ -57,6 +57,7 @@ export type TNFTCompactCard = {
 export type TNFTCard = Override<
   TNFTCompactCard,
   {
+    id: string
     author: string
     avatarSrc: string
     price: number
@@ -67,7 +68,7 @@ export type TNFTCard = Override<
   }
 >
 
-const NFTCard = ({
+export default function NFTCard({
   imageSrc,
   title,
   className,
@@ -90,7 +91,7 @@ const NFTCard = ({
   copiesAvailable,
   leftTime,
   ...props
-}: TNFTCompactCard | TNFTCard): JSX.Element => {
+}: TNFTCompactCard | TNFTCard): JSX.Element {
   const isNSFW = useIsNSFW(nsfw)
 
   const fullCardProps = 'author' in props && (props as TNFTCard)
@@ -126,6 +127,302 @@ const NFTCard = ({
     </div>
   )
 
+  const renderBuyItNowButton = () => (
+    <div>
+      <Button
+        variant='transparent'
+        className={cn(
+          'h-32px text-sm font-medium border-2 border-blue-3f',
+          buttonClassName,
+        )}
+      >
+        Buy it Now
+      </Button>
+    </div>
+  )
+
+  const renderFixedPriceButton = (fullCardProps: TNFTCard) => (
+    <>
+      <div className='flex justify-between'>
+        <div
+          className={cn(
+            'text-gray-4a',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-medium'
+              : 'text-h5-medium',
+          )}
+        >
+          Fixed price
+        </div>
+        <div
+          className={cn(
+            'text-gray-2d',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-black'
+              : 'text-h5-heavy',
+          )}
+        >
+          {formatNumber(fullCardProps.price)} {fullCardProps.currencyName}
+        </div>
+      </div>
+      <div
+        className={cn('flex justify-between items-center', buttonFooterWrapper)}
+      >
+        <div
+          className={cn(
+            'nft-text-gradient',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-heavy'
+              : 'text-h5-heavy',
+          )}
+        >
+          {copiesAvailable} Copies Available
+        </div>
+        {renderBuyItNowButton()}
+      </div>
+    </>
+  )
+
+  const renderMakeAnOfferutton = () => (
+    <div>
+      <Button
+        variant='transparent'
+        className={cn(
+          'h-32px text-sm font-medium border-2 border-blue-3f',
+          buttonClassName,
+        )}
+      >
+        Make an Offer
+      </Button>
+    </div>
+  )
+
+  const renderNotForSale = () => (
+    <>
+      <div className='flex justify-between'>
+        <div
+          className={cn(
+            'text-gray-4a',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-medium'
+              : 'text-h5-medium',
+          )}
+        >
+          Not for sale
+        </div>
+      </div>
+      <div className={cn('flex justify-between', buttonFooterWrapper)}>
+        <div>&nbsp;</div>
+        {renderMakeAnOfferutton()}
+      </div>
+    </>
+  )
+
+  const renderPlaceBidButton = () => (
+    <div>
+      <Button
+        variant='transparent'
+        className={cn(
+          'h-32px text-sm font-medium border-2 border-blue-3f',
+          buttonClassName,
+        )}
+      >
+        Place a Bid
+      </Button>
+    </div>
+  )
+
+  const renderCountdownTimerBlock = () => (
+    <div
+      className={cn(
+        'nft-text-gradient',
+        variant === NFTCardVariantSize.M
+          ? 'text-h6-leading-20-heavy'
+          : 'text-h5-heavy',
+      )}
+    >
+      <CountdownTimer countDownDate={leftTime} /> left
+    </div>
+  )
+
+  const renderAuctionBidPrice = (fullCardProps: TNFTCard) => (
+    <div
+      className={cn(
+        'text-gray-2d',
+        variant === NFTCardVariantSize.M
+          ? 'text-h6-leading-20-black'
+          : 'text-h5-heavy',
+      )}
+    >
+      {formatNumber(fullCardProps.price)} {fullCardProps.currencyName}
+    </div>
+  )
+
+  const renderAuctionBid = (fullCardProps: TNFTCard) => (
+    <>
+      <div className='flex justify-between'>
+        <div
+          className={cn(
+            'text-gray-4a',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-medium'
+              : 'text-h5-medium',
+          )}
+        >
+          Last Auction Bid
+        </div>
+        <div className='flex items-center'>
+          {renderAuctionBidPrice(fullCardProps)}
+          {bidPercentage && (
+            <div
+              className={cn(
+                'text-green-00',
+                variant === NFTCardVariantSize.M
+                  ? 'text-[6px] leading-[6px] font-bold'
+                  : 'text-[8px] leading-[6px] font-bold',
+              )}
+            >
+              {bidPercentage}
+            </div>
+          )}
+        </div>
+      </div>
+      <div
+        className={cn('flex justify-between items-center', buttonFooterWrapper)}
+      >
+        {renderCountdownTimerBlock()}
+        {renderPlaceBidButton()}
+      </div>
+    </>
+  )
+
+  const renderCopiesTooltip = () => (
+    <Tooltip
+      type='top'
+      content={getTooltip(
+        'Copies',
+        'This is the number of "limited edition digital prints" that exist for this NFT.  No additional copies can ever be created of this NFT, even by the creator (and if the creator uses a similar image for a new NFT, the new NFT will have a lower Rareness Score"',
+      )}
+      width={208}
+      classnames='ml-8'
+      marginLeft='1.25rem'
+    >
+      <div className='flex items-center'>
+        <Clipboard
+          size={variant === NFTCardVariantSize.M ? 12 : 14}
+          className='cursor-pointer mr-1 text-gray-71'
+        />
+        <div
+          className={cn(
+            'text-gray-71',
+            variant === NFTCardVariantSize.M ? 'text-h6-leading-20' : 'text-h5',
+          )}
+        >
+          {copies}
+        </div>
+      </div>
+    </Tooltip>
+  )
+
+  const renderRarenessScoreTooltip = () => (
+    <Tooltip
+      type='top'
+      content={getTooltip(
+        'Rareness Score',
+        'This number measures how "rare" the NFT is relative to all the NFTS that were previously registered on Pastel. It is based on the pixel patterns of the underlying image, and can see through superficial modifications to an original image, such as cropping, color changes, noise, etc.',
+      )}
+      width={230}
+    >
+      <div className={cn('flex items-center', diamondClassName)}>
+        <Diamond
+          size={variant === NFTCardVariantSize.M ? 12 : 14}
+          className='cursor-pointer mr-1 text-gray-71'
+        />
+        <div
+          className={cn(
+            'text-gray-71',
+            variant === NFTCardVariantSize.M ? 'text-h6-leading-20' : 'text-h5',
+          )}
+        >
+          {diamond}
+        </div>
+      </div>
+    </Tooltip>
+  )
+
+  const renderTitleDetailUrlLink = () => (
+    <div className={cn(contentSpacing, normalSpacingClassName)}>
+      <Link to={detailUrl} className='cursor-pointer w-full'>
+        <div
+          className={cn(
+            'text-gray-1a',
+            variant === NFTCardVariantSize.M
+              ? 'text-h5-heavy'
+              : 'text-h4-heavy',
+          )}
+        >
+          {searchText
+            ? parse(
+                title.replace(
+                  new RegExp(searchText, 'gi'),
+                  match => `<mark class='bg-blue-9b pt-1 pb-1'>${match}</mark>`,
+                ),
+              )
+            : title}
+        </div>
+      </Link>
+    </div>
+  )
+
+  const renderNFTDetailImage = () => (
+    <div className={cn('relative overflow-hidden', imageHeightClass)}>
+      <img
+        src={imageSrc}
+        className={cn(
+          'object-cover h-full w-full cursor-pointer',
+          imageHeightClass,
+          isNSFW && 'filter blur-[10px]',
+        )}
+        alt='Detail'
+      />
+    </div>
+  )
+
+  const renderImageDetailUrlLink = () => (
+    <div className={cn(normalSpacingClassName, percentage && 'mt-0')}>
+      <Link to={detailUrl} className='cursor-pointer w-full'>
+        {renderNFTDetailImage()}
+      </Link>
+    </div>
+  )
+
+  const renderTitleAndImage = (fullCardProps: TNFTCard) => (
+    <div className='flex items-center justify-between'>
+      <img
+        src={fullCardProps.avatarSrc}
+        className={cn('rounded-full', imageClassName, avatarClassName)}
+        alt='Avatar'
+      />
+      <div
+        className={cn(
+          'text-gray-4a',
+          variant === NFTCardVariantSize.M
+            ? 'text-h6-leading-20'
+            : 'h4_18_24_medium',
+        )}
+      >
+        {parse(
+          searchText
+            ? `@${fullCardProps.author}`.replace(
+                new RegExp(searchText, 'gi'),
+                match => `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
+              )
+            : `@${fullCardProps.author}`,
+        )}
+      </div>
+    </div>
+  )
+
   return (
     <div
       className={cn('bg-white rounded-lg flex flex-col shadow-30px', className)}
@@ -138,32 +435,7 @@ const NFTCard = ({
             authorWrapperClassName,
           )}
         >
-          <div className='flex items-center justify-between'>
-            <img
-              src={fullCardProps.avatarSrc}
-              className={cn('rounded-full', imageClassName, avatarClassName)}
-            />
-            <div
-              className={cn(
-                'text-gray-4a',
-                variant === NFTCardVariantSize.M
-                  ? 'text-h6-leading-20'
-                  : 'h4_18_24_medium',
-              )}
-            >
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: searchText
-                    ? `@${fullCardProps.author}`.replace(
-                        new RegExp(searchText, 'gi'),
-                        match =>
-                          `<mark class='bg-yellow-ff pt-1 pb-1'>${match}</mark>`,
-                      )
-                    : `@${fullCardProps.author}`,
-                }}
-              />
-            </div>
-          </div>
+          {renderTitleAndImage(fullCardProps)}
           {!fullCardProps.hideLikeButton ? (
             <div className='flex items-center'>
               <HeartFilled size={18} className='text-pink-46' />
@@ -189,42 +461,8 @@ const NFTCard = ({
           />
         </div>
       ) : null}
-      <div className={cn(normalSpacingClassName, percentage && 'mt-0')}>
-        <Link to={detailUrl} className='cursor-pointer w-full'>
-          <div className={cn('relative overflow-hidden', imageHeightClass)}>
-            <img
-              src={imageSrc}
-              className={cn(
-                'object-cover h-full w-full cursor-pointer',
-                imageHeightClass,
-                isNSFW && 'filter blur-[10px]',
-              )}
-            />
-          </div>
-        </Link>
-      </div>
-      <div className={cn(contentSpacing, normalSpacingClassName)}>
-        <Link to={detailUrl} className='cursor-pointer w-full'>
-          <div
-            className={cn(
-              'text-gray-1a',
-              variant === NFTCardVariantSize.M
-                ? 'text-h5-heavy'
-                : 'text-h4-heavy',
-            )}
-          >
-            {searchText
-              ? parse(
-                  title.replace(
-                    new RegExp(searchText, 'gi'),
-                    match =>
-                      `<mark class='bg-blue-9b pt-1 pb-1'>${match}</mark>`,
-                  ),
-                )
-              : title}
-          </div>
-        </Link>
-      </div>
+      {renderImageDetailUrlLink()}
+      {renderTitleDetailUrlLink()}
       <div
         className={cn(
           'flex items-center justify-between',
@@ -233,58 +471,8 @@ const NFTCard = ({
         )}
       >
         <div className='flex items-center'>
-          <Tooltip
-            type='top'
-            content={getTooltip(
-              'Copies',
-              'This is the number of "limited edition digital prints" that exist for this NFT.  No additional copies can ever be created of this NFT, even by the creator (and if the creator uses a similar image for a new NFT, the new NFT will have a lower Rareness Score"',
-            )}
-            width={208}
-            classnames='ml-8'
-            marginLeft='1.25rem'
-          >
-            <div className='flex items-center'>
-              <Clipboard
-                size={variant === NFTCardVariantSize.M ? 12 : 14}
-                className='cursor-pointer mr-1 text-gray-71'
-              />
-              <div
-                className={cn(
-                  'text-gray-71',
-                  variant === NFTCardVariantSize.M
-                    ? 'text-h6-leading-20'
-                    : 'text-h5',
-                )}
-              >
-                {copies}
-              </div>
-            </div>
-          </Tooltip>
-          <Tooltip
-            type='top'
-            content={getTooltip(
-              'Rareness Score',
-              'This number measures how "rare" the NFT is relative to all the NFTS that were previously registered on Pastel. It is based on the pixel patterns of the underlying image, and can see through superficial modifications to an original image, such as cropping, color changes, noise, etc.',
-            )}
-            width={230}
-          >
-            <div className={cn('flex items-center', diamondClassName)}>
-              <Diamond
-                size={variant === NFTCardVariantSize.M ? 12 : 14}
-                className='cursor-pointer mr-1 text-gray-71'
-              />
-              <div
-                className={cn(
-                  'text-gray-71',
-                  variant === NFTCardVariantSize.M
-                    ? 'text-h6-leading-20'
-                    : 'text-h5',
-                )}
-              >
-                {diamond}
-              </div>
-            </div>
-          </Tooltip>
+          {renderCopiesTooltip()}
+          {renderRarenessScoreTooltip()}
         </div>
         <div className='flex items-center'>
           {!hideGreenNF ? (
@@ -361,170 +549,13 @@ const NFTCard = ({
             footerClassName,
           )}
         >
-          {fullCardProps.isAuctionBid ? (
-            <>
-              <div className='flex justify-between'>
-                <div>
-                  <div
-                    className={cn(
-                      'text-gray-4a',
-                      variant === NFTCardVariantSize.M
-                        ? 'text-h6-leading-20-medium'
-                        : 'text-h5-medium',
-                    )}
-                  >
-                    Last Auction Bid
-                  </div>
-                </div>
-                <div className='flex items-center'>
-                  <div
-                    className={cn(
-                      'text-gray-2d',
-                      variant === NFTCardVariantSize.M
-                        ? 'text-h6-leading-20-black'
-                        : 'text-h5-heavy',
-                    )}
-                  >
-                    {formatNumber(fullCardProps.price)}{' '}
-                    {fullCardProps.currencyName}
-                  </div>
-                  {bidPercentage && (
-                    <div
-                      className={cn(
-                        'text-green-00',
-                        variant === NFTCardVariantSize.M
-                          ? 'text-[6px] leading-[6px] font-bold'
-                          : 'text-[8px] leading-[6px] font-bold',
-                      )}
-                    >
-                      {bidPercentage}
-                    </div>
-                  )}
-                </div>
-              </div>
-              <div
-                className={cn(
-                  'flex justify-between items-center',
-                  buttonFooterWrapper,
-                )}
-              >
-                <div
-                  className={cn(
-                    'nft-text-gradient',
-                    variant === NFTCardVariantSize.M
-                      ? 'text-h6-leading-20-heavy'
-                      : 'text-h5-heavy',
-                  )}
-                >
-                  <CountdownTimer countDownDate={leftTime} /> left
-                </div>
-                <div>
-                  <Button
-                    variant='transparent'
-                    className={cn(
-                      'h-32px text-sm font-medium border-2 border-blue-3f',
-                      buttonClassName,
-                    )}
-                  >
-                    Place a Bid
-                  </Button>
-                </div>
-              </div>
-            </>
-          ) : null}
-          {fullCardProps.isNotForSale ? (
-            <>
-              <div className='flex justify-between'>
-                <div>
-                  <div
-                    className={cn(
-                      'text-gray-4a',
-                      variant === NFTCardVariantSize.M
-                        ? 'text-h6-leading-20-medium'
-                        : 'text-h5-medium',
-                    )}
-                  >
-                    Not for sale
-                  </div>
-                </div>
-              </div>
-              <div className={cn('flex justify-between', buttonFooterWrapper)}>
-                <div>&nbsp;</div>
-                <div>
-                  <Button
-                    variant='transparent'
-                    className={cn(
-                      'h-32px text-sm font-medium border-2 border-blue-3f',
-                      buttonClassName,
-                    )}
-                  >
-                    Make an Offer
-                  </Button>
-                </div>
-              </div>
-            </>
-          ) : null}
-          {fullCardProps.isFixedPrice ? (
-            <>
-              <div className='flex justify-between'>
-                <div
-                  className={cn(
-                    'text-gray-4a',
-                    variant === NFTCardVariantSize.M
-                      ? 'text-h6-leading-20-medium'
-                      : 'text-h5-medium',
-                  )}
-                >
-                  Fixed price
-                </div>
-                <div>
-                  <div
-                    className={cn(
-                      'text-gray-2d',
-                      variant === NFTCardVariantSize.M
-                        ? 'text-h6-leading-20-black'
-                        : 'text-h5-heavy',
-                    )}
-                  >
-                    {formatNumber(fullCardProps.price)}{' '}
-                    {fullCardProps.currencyName}
-                  </div>
-                </div>
-              </div>
-              <div
-                className={cn(
-                  'flex justify-between items-center',
-                  buttonFooterWrapper,
-                )}
-              >
-                <div
-                  className={cn(
-                    'nft-text-gradient',
-                    variant === NFTCardVariantSize.M
-                      ? 'text-h6-leading-20-heavy'
-                      : 'text-h5-heavy',
-                  )}
-                >
-                  {copiesAvailable} Copies Available
-                </div>
-                <div>
-                  <Button
-                    variant='transparent'
-                    className={cn(
-                      'h-32px text-sm font-medium border-2 border-blue-3f',
-                      buttonClassName,
-                    )}
-                  >
-                    Buy it Now
-                  </Button>
-                </div>
-              </div>
-            </>
-          ) : null}
+          {fullCardProps.isAuctionBid ? renderAuctionBid(fullCardProps) : null}
+          {fullCardProps.isNotForSale ? renderNotForSale() : null}
+          {fullCardProps.isFixedPrice
+            ? renderFixedPriceButton(fullCardProps)
+            : null}
         </div>
       ) : null}
     </div>
   )
 }
-
-export default NFTCard

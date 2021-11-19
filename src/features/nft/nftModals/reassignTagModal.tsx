@@ -15,12 +15,12 @@ export type TReassignTagModal = {
   placeholder?: string
 }
 
-const ReassignTagModal = ({
+function ReassignTagModal({
   title,
   placeholder = 'No tag chosen',
   isOpen,
   handleClose,
-}: TReassignTagModal): JSX.Element => {
+}: TReassignTagModal): JSX.Element {
   const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false)
   const [tags, setTags] = useState<Array<TOptionType>>([])
   const [selectedTags, setSelectedTags] = useState<
@@ -35,6 +35,18 @@ const ReassignTagModal = ({
   const handleSelect = (option: readonly TOptionType[]): void =>
     setSelectedTags(option)
 
+  const renderCreateTag = () => (
+    <Dropdown
+      isOpen={isCreateOpen}
+      handleClose={() => setIsCreateOpen(false)}
+      button={<CircleAddButton onClick={handleCreateOpen} />}
+      placement='right-start'
+      noStyles
+    >
+      <CreateTag onSave={handleTagAdd} />
+    </Dropdown>
+  )
+
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-xl'>
       <h2 className='mb-6'>Change tag of “{title}”</h2>
@@ -46,15 +58,7 @@ const ReassignTagModal = ({
           placeholder={placeholder}
           className='mr-4'
         />
-        <Dropdown
-          isOpen={isCreateOpen}
-          handleClose={() => setIsCreateOpen(false)}
-          button={<CircleAddButton onClick={handleCreateOpen} />}
-          placement='right-start'
-          noStyles
-        >
-          <CreateTag onSave={handleTagAdd} />
-        </Dropdown>
+        {renderCreateTag()}
       </div>
       <Button
         variant='default'

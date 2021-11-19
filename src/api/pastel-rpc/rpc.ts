@@ -42,26 +42,22 @@ export async function rpc<T>(
     return response.data
   } catch ({ message, response, request }) {
     if (message) {
+      const strData: string = JSON.stringify(response?.data) || ''
+      const responseStatus: string = JSON.stringify(response?.status) || ''
       log.error(
-        `api/pastel-rpc server error. Response: ${JSON.stringify(
-          response?.data,
-        )}${
-          response?.status
-            ? `. Status code: ${JSON.stringify(response?.status)}`
-            : ''
+        `api/pastel-rpc server error. Response: ${strData}${
+          response?.status ? `. Status code: ${responseStatus}` : ''
         }`,
       )
-      throw new Error(`api/pastel-rpc server error: ${message}`)
+      const strMessage: string = message || ''
+      throw new Error(`api/pastel-rpc server error: ${strMessage}`)
     }
 
     if (request) {
+      const strRequest: string = JSON.stringify(request)
       // The request was made but no response was received
-      log.error(
-        `api/pastel-rpc no response error. Request: ${JSON.stringify(
-          request,
-        )}.`,
-      )
-      throw new Error(`api/pastel-rpc no response error: ${request}`)
+      log.error(`api/pastel-rpc no response error. Request: ${strRequest}.`)
+      throw new Error(`api/pastel-rpc no response error: ${strRequest}`)
     }
 
     log.error('api/pastel-rpc error: Cannot connect to Pasteld.')

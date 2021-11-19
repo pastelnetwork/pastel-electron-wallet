@@ -12,7 +12,7 @@ export default {
 } as Meta
 
 const Template: Story<Props> = ({ ...args }) => {
-  return <MinusCircle {...args} className='text-black' />
+  return <Component {...args} className='text-black' />
 }
 
 export const MinusCircle = Template.bind({})

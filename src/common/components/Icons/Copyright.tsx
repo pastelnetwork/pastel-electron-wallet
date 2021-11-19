@@ -3,10 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TCopyrightProps = TIconProps
 
-export const Copyright = ({
-  size,
-  className,
-}: TCopyrightProps): JSX.Element => {
+export function Copyright({ size, className }: TCopyrightProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -6,7 +6,7 @@ export type TCreateTag = {
   onSave: (tag: string) => void
 }
 
-const CreateTag = ({ onSave }: TCreateTag): JSX.Element => {
+function CreateTag({ onSave }: TCreateTag): JSX.Element {
   const [tag, setTag] = useState<string>('')
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void =>

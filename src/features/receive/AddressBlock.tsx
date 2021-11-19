@@ -45,7 +45,18 @@ export interface IAddressBlockProps {
   transactions?: ITransactionsProps[]
 }
 
-export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
+export function AddressBlock({
+  privateKey,
+  hidePrivKey,
+  fetchAndSetSinglePrivKey,
+  currencyName,
+  addressBalance,
+  label,
+  pslPrice,
+  viewKey,
+  fetchAndSetSingleViewKey,
+  transactions,
+}: IAddressBlockProps): JSX.Element {
   const copiedPrivKeyTimerId = useRef(0)
   useEffect(
     () => () => {
@@ -60,23 +71,23 @@ export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
     '',
   )
   useEffect(() => {
-    if (copiedPrivKey !== 'loading' || !props.privateKey) {
+    if (copiedPrivKey !== 'loading' || !privateKey) {
       return
     }
-    clipboard.writeText(props.privateKey)
+    clipboard.writeText(privateKey)
     setCopiedPrivKey('done')
-    props.hidePrivKey()
+    hidePrivKey()
     copiedPrivKeyTimerId.current = window.setTimeout(() => {
       setCopiedPrivKey('')
       copiedPrivKeyTimerId.current = 0
     }, 3000)
-  }, [copiedPrivKey, props.privateKey])
+  }, [copiedPrivKey, privateKey])
 
   const onCopyPrivKeyBtnClick = (addr: string): void => {
     if (copiedPrivKey || copiedPrivKeyTimerId.current) {
       return
     }
-    props.fetchAndSetSinglePrivKey(addr)
+    fetchAndSetSinglePrivKey(addr)
     setCopiedPrivKey('loading')
   }
 
@@ -105,27 +116,16 @@ export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
   }
 
   const openAddress = (): void => {
-    const {
-      currencyName,
-      addressBalance: { address },
-    } = props
     if (currencyName === 'LSP') {
-      shell.openExternal(`https://chain.so/address/PSLTEST/${address}`)
+      shell.openExternal(
+        `https://chain.so/address/PSLTEST/${addressBalance.address}`,
+      )
     } else {
-      shell.openExternal(`https://explorer.pastel.network/address/${address}`)
+      shell.openExternal(
+        `https://explorer.pastel.network/address/${addressBalance.address}`,
+      )
     }
   }
-
-  const {
-    addressBalance,
-    label,
-    currencyName,
-    pslPrice,
-    fetchAndSetSinglePrivKey,
-    viewKey,
-    fetchAndSetSingleViewKey,
-    transactions,
-  } = props
 
   const { address } = addressBalance
   const balance = addressBalance.balance || 0
@@ -162,118 +162,129 @@ export const AddressBlock = (props: IAddressBlockProps): JSX.Element => {
     return null
   }
 
+  const renderAccordionItemHeading = () => (
+    <AccordionItemHeading>
+      <AccordionItemButton
+        className={cx(
+          cstyles.accordionHeader,
+          styles.flexspacebetween,
+          styles.itemsCenter,
+        )}
+      >
+        <span>{address}</span>
+        {getLastAccessed()}
+      </AccordionItemButton>
+    </AccordionItemHeading>
+  )
+
+  const renderAddressItemButton = () => (
+    <div>
+      <button
+        className={cx(cstyles.primarybutton, cstyles.margintoplarge)}
+        type='button'
+        onClick={() => onCopyAddrBtnClick(address)}
+      >
+        {copiedAddr ? 'Copied!' : 'Copy Address'}
+      </button>
+      <button
+        className={cx(cstyles.primarybutton)}
+        type='button'
+        onClick={() => onCopyPrivKeyBtnClick(address)}
+      >
+        {!copiedPrivKey
+          ? 'Copy Private Key'
+          : copiedPrivKey === 'loading'
+          ? 'Copying'
+          : 'Copied!'}
+      </button>
+
+      {Utils.isZaddr(address) && !viewKey && (
+        <button
+          className={cx(cstyles.primarybutton)}
+          type='button'
+          onClick={() => fetchAndSetSingleViewKey(address)}
+        >
+          Export Viewing Key
+        </button>
+      )}
+
+      {Utils.isTransparent(address) && (
+        <button
+          className={cx(cstyles.primarybutton)}
+          type='button'
+          onClick={openAddress}
+        >
+          View on explorer{' '}
+          <i className={cx('fas', 'fa-external-link-square-alt')} />
+        </button>
+      )}
+
+      <button
+        className={cx(cstyles.primarybutton, styles.buttonMarginTop)}
+        type='button'
+        onClick={() => fetchAndSetSinglePrivKey(address, 'generatePaperWallet')}
+      >
+        Generate paper wallet
+      </button>
+    </div>
+  )
+
+  const renderQRCode = () => (
+    <div>
+      <QRCode value={address} className={cx(styles.receiveQrcode)} />
+    </div>
+  )
+
+  const renderAccordionItemContent = () => (
+    <div className={cx(cstyles.verticalflex, cstyles.marginleft)}>
+      {label && (
+        <div className={cstyles.margintoplarge}>
+          <div className={cx(cstyles.sublight)}>Label</div>
+          <div className={cx(cstyles.padtopsmall, cstyles.fixedfont)}>
+            {label}
+          </div>
+        </div>
+      )}
+
+      <div className={cx(cstyles.sublight, cstyles.margintoplarge)}>Funds</div>
+      <div className={cx(cstyles.padtopsmall)}>
+        {currencyName} {balance}
+      </div>
+      <div className={cx(cstyles.padtopsmall)}>
+        {Utils.getPslToUsdString(pslPrice, balance)}
+      </div>
+
+      <div className={cx(cstyles.margintoplarge, cstyles.breakword)}>
+        {viewKey && (
+          <div>
+            <div className={cx(cstyles.sublight)}>Viewing Key</div>
+            <div
+              className={cx(
+                cstyles.breakword,
+                cstyles.padtopsmall,
+                cstyles.fixedfont,
+                styles.receiveMaxWidth,
+              )}
+            >
+              {viewKey}
+            </div>
+          </div>
+        )}
+      </div>
+      {renderAddressItemButton()}
+    </div>
+  )
+
   return (
     <AccordionItem
       className={cx(cstyles.well, styles.receiveblock)}
       uuid={address}
     >
-      <AccordionItemHeading>
-        <AccordionItemButton
-          className={cx(
-            cstyles.accordionHeader,
-            styles.flexspacebetween,
-            styles.itemsCenter,
-          )}
-        >
-          <span>{address}</span>
-          {getLastAccessed()}
-        </AccordionItemButton>
-      </AccordionItemHeading>
+      {renderAccordionItemHeading()}
       <AccordionItemPanel className={cx(styles.receiveDetail)}>
         <div className={cx(cstyles.flexspacebetween)}>
-          <div className={cx(cstyles.verticalflex, cstyles.marginleft)}>
-            {label && (
-              <div className={cstyles.margintoplarge}>
-                <div className={cx(cstyles.sublight)}>Label</div>
-                <div className={cx(cstyles.padtopsmall, cstyles.fixedfont)}>
-                  {label}
-                </div>
-              </div>
-            )}
-
-            <div className={cx(cstyles.sublight, cstyles.margintoplarge)}>
-              Funds
-            </div>
-            <div className={cx(cstyles.padtopsmall)}>
-              {currencyName} {balance}
-            </div>
-            <div className={cx(cstyles.padtopsmall)}>
-              {Utils.getPslToUsdString(pslPrice, balance)}
-            </div>
-
-            <div className={cx(cstyles.margintoplarge, cstyles.breakword)}>
-              {viewKey && (
-                <div>
-                  <div className={cx(cstyles.sublight)}>Viewing Key</div>
-                  <div
-                    className={cx(
-                      cstyles.breakword,
-                      cstyles.padtopsmall,
-                      cstyles.fixedfont,
-                      styles.receiveMaxWidth,
-                    )}
-                  >
-                    {viewKey}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div>
-              <button
-                className={cx(cstyles.primarybutton, cstyles.margintoplarge)}
-                type='button'
-                onClick={() => onCopyAddrBtnClick(address)}
-              >
-                {copiedAddr ? 'Copied!' : 'Copy Address'}
-              </button>
-              <button
-                className={cx(cstyles.primarybutton)}
-                type='button'
-                onClick={() => onCopyPrivKeyBtnClick(address)}
-              >
-                {!copiedPrivKey
-                  ? 'Copy Private Key'
-                  : copiedPrivKey === 'loading'
-                  ? 'Copying'
-                  : 'Copied!'}
-              </button>
-
-              {Utils.isZaddr(address) && !viewKey && (
-                <button
-                  className={cx(cstyles.primarybutton)}
-                  type='button'
-                  onClick={() => fetchAndSetSingleViewKey(address)}
-                >
-                  Export Viewing Key
-                </button>
-              )}
-
-              {Utils.isTransparent(address) && (
-                <button
-                  className={cx(cstyles.primarybutton)}
-                  type='button'
-                  onClick={openAddress}
-                >
-                  View on explorer{' '}
-                  <i className={cx('fas', 'fa-external-link-square-alt')} />
-                </button>
-              )}
-
-              <button
-                className={cx(cstyles.primarybutton, styles.buttonMarginTop)}
-                type='button'
-                onClick={() =>
-                  fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
-                }
-              >
-                Generate paper wallet
-              </button>
-            </div>
-          </div>
-          <div>
-            <QRCode value={address} className={cx(styles.receiveQrcode)} />
-          </div>
+          {renderAccordionItemContent()}
+          {renderQRCode()}
         </div>
       </AccordionItemPanel>
     </AccordionItem>

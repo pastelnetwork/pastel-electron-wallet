@@ -16,7 +16,7 @@ import { TDbMemPoolInfo } from '../../../pastelDB/blockchain/memPoolInfo.repo'
 
 const redrawCycle = 6000
 
-const MempoolSizeOvertime = (): JSX.Element => {
+export default function MempoolSizeOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -44,8 +44,26 @@ const MempoolSizeOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -58,7 +76,9 @@ const MempoolSizeOvertime = (): JSX.Element => {
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {
@@ -89,5 +109,3 @@ const MempoolSizeOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default MempoolSizeOvertime

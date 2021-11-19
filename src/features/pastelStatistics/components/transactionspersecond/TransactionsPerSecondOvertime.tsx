@@ -18,7 +18,7 @@ import {
 
 const redrawCycle = 6000
 
-const TransactionsPerSecondOvertime = (): JSX.Element => {
+export default function TransactionsPerSecondOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -47,8 +47,26 @@ const TransactionsPerSecondOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -61,7 +79,9 @@ const TransactionsPerSecondOvertime = (): JSX.Element => {
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {
@@ -92,5 +112,3 @@ const TransactionsPerSecondOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default TransactionsPerSecondOvertime

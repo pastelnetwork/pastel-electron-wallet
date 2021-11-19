@@ -12,7 +12,18 @@ export type TBidsModal = {
   handleClose: () => void
 }
 
-const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
+type TCommentProps = {
+  id: number
+  author: {
+    avatar: string
+    name: string
+    username: string
+  }
+  bidPrice: string
+  publishedAt: Date
+}
+
+function BidsModal({ isOpen, handleClose }: TBidsModal): JSX.Element {
   const currencyName = useCurrencyName()
   const comments = [
     {
@@ -67,6 +78,28 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
     },
   ]
 
+  const renderCommentContent = (comment: TCommentProps) => (
+    <div className='leading-5'>
+      <div className='text-extrabold text-black text-h4'>
+        {comment.author.name}{' '}
+        <span className='text-gray-71 text-h5'>{comment.author.username}</span>
+      </div>
+
+      <div className='flex text-sm space-x-18px'>
+        <div className='text-gray-71 leading-5'>
+          make a bid{' '}
+          {dayjs(comment.publishedAt).format('MMM DD, YYYY [at] HH:mm a')}
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderCommentAvatar = (avatar: string) => (
+    <div className='w-8 h-8 rounded-full overflow-hidden'>
+      <img src={avatar} className='object-cover' alt='Avatar' />
+    </div>
+  )
+
   return (
     <Modal
       isOpen={isOpen}
@@ -82,32 +115,14 @@ const BidsModal = ({ isOpen, handleClose }: TBidsModal): JSX.Element => {
       }
       infoIcon={false}
     >
-      {comments.map((comment, index) => (
+      {comments.map(comment => (
         <div
           className='flex py-4 border-t border-gray-f2 justify-between'
-          key={index}
+          key={comment.id}
         >
           <div className='flex space-x-2'>
-            <div className='w-8 h-8 rounded-full overflow-hidden'>
-              <img src={comment.author.avatar} className='object-cover' />
-            </div>
-            <div className='leading-5'>
-              <div className='text-extrabold text-black text-h4'>
-                {comment.author.name}{' '}
-                <span className='text-gray-71 text-h5'>
-                  {comment.author.username}
-                </span>
-              </div>
-
-              <div className='flex text-sm space-x-18px'>
-                <div className='text-gray-71 leading-5'>
-                  make a bid{' '}
-                  {dayjs(comment.publishedAt).format(
-                    'MMM DD, YYYY [at] HH:mm a',
-                  )}
-                </div>
-              </div>
-            </div>
+            {renderCommentAvatar(comment.author.avatar)}
+            {renderCommentContent(comment)}
           </div>
           <div className='text-blue-3f text-j4'>{comment.bidPrice}</div>
         </div>

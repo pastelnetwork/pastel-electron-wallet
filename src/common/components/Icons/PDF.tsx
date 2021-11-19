@@ -6,11 +6,11 @@ export type TPDFProps = {
   variant?: string
 }
 
-export const PDF = ({
+export function PDF({
   size = 24,
   className = 'text-red-fa',
   variant,
-}: TPDFProps): JSX.Element => {
+}: TPDFProps): JSX.Element {
   if (variant === 'secondary') {
     return (
       <svg

@@ -5,10 +5,10 @@ export type TSaveProps = {
   className?: string
 }
 
-export const SaveIcon = ({
+export function SaveIcon({
   size = 20,
   className = 'text-gray-3f',
-}: TSaveProps): JSX.Element => {
+}: TSaveProps): JSX.Element {
   return (
     <svg
       className={className}

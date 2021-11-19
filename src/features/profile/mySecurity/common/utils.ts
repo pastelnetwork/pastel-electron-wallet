@@ -1,5 +1,6 @@
 import LZUTF8 from 'lzutf8'
 import { toast } from 'react-toastify'
+import log from 'electron-log'
 
 import { rpc } from 'api/pastel-rpc/rpc'
 import AddressbookImpl from 'common/utils/AddressbookImpl'
@@ -30,7 +31,7 @@ type TAllAddresses = {
   tAddresses: string[]
 }
 
-type TPastelID = {
+export type TPastelID = {
   PastelID: string
 }
 
@@ -72,6 +73,47 @@ type TPastelWithContentID = {
   content: string
 }
 
+export const addLineBreakForContent = (str: string): string => {
+  const breakChar = '\n'
+  return str.replace(/(.{46})/g, `$1${breakChar}`)
+}
+
+export const addLineBreakFoFullrContent = (str: string): string => {
+  const breakChar = '\n'
+  return str.replace(/(.{74})/g, `$1${breakChar}`)
+}
+
+export const decompressPastelIDAndPrivateKeys = (
+  str: string,
+): TAllAddressesAndPastelID | null => {
+  if (!str) {
+    return null
+  }
+
+  return JSON.parse(
+    LZUTF8.decompress(decodeURIComponent(str), {
+      inputEncoding: 'Base64',
+    }),
+  )
+}
+
+export const parseQRCodeFromString = (str: string): TQRCode | null => {
+  if (!str) {
+    return null
+  }
+
+  const qr = str.split('::')
+  if (qr.length) {
+    return {
+      index: parseInt(qr[0]),
+      total: parseInt(qr[1]),
+      qrCode: qr[2],
+    }
+  }
+
+  return null
+}
+
 async function fetchAllAddress(): Promise<TAllAddresses | null> {
   try {
     const rpcTAddresses = rpc<TAddressesResponse>('z_listaddresses', [])
@@ -87,9 +129,10 @@ async function fetchAllAddress(): Promise<TAllAddresses | null> {
       tAddresses: tAddresses.result,
     }
   } catch (err) {
-    toast(err.message, { type: 'error' })
-    console.log(
-      `profile/mySecurity/common/utils fetchAllAddress error: ${err.message}`,
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
+    log.log(
+      `profile/mySecurity/common/utils fetchAllAddress error: ${message}`,
       err,
     )
     return null
@@ -104,9 +147,10 @@ async function getPrivKeyAsString(
     const res = await rpc<TPrivKeyResponse>(method, [address])
     return res.result
   } catch (err) {
-    toast(err.message, { type: 'error' })
-    console.log(
-      `profile/mySecurity/common/utils getPrivKeyAsString error: ${err.message}`,
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
+    log.log(
+      `profile/mySecurity/common/utils getPrivKeyAsString error: ${message}`,
       err,
     )
     return null
@@ -118,9 +162,10 @@ async function getPastelIDs(): Promise<TPastelID[] | null> {
     const res = await rpc<TPastelIDResponse>('pastelid', ['list'])
     return res.result
   } catch (err) {
-    toast(err.message, { type: 'error' })
-    console.log(
-      `profile/mySecurity/common/utils getPastelIDs error: ${err.message}`,
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
+    log.log(
+      `profile/mySecurity/common/utils getPastelIDs error: ${message}`,
       err,
     )
     return null
@@ -154,10 +199,7 @@ async function getPastelIDsWithContent(): Promise<
   } catch (err) {
     const msg: string = err?.message || ''
     toast(msg, { type: 'error' })
-    console.log(
-      `profile/mySecurity/common/utils getPastelIDs error: ${msg}`,
-      err,
-    )
+    log.log(`profile/mySecurity/common/utils getPastelIDs error: ${msg}`, err)
     return null
   }
 }
@@ -269,11 +311,12 @@ async function importPrivKey(key: string, rescan: boolean) {
     try {
       await rpc<TPrivKeyResponse>('z_importkey', [key, rescan ? 'yes' : 'no'])
     } catch (err) {
-      console.log(
-        `profile/mySecurity/common importPrivKey z_importkey error: ${err.message}`,
+      const message: string = err.message || ''
+      log.log(
+        `profile/mySecurity/common importPrivKey z_importkey error: ${message}`,
         err,
       )
-      toast(err.message, { type: 'error' })
+      toast(message, { type: 'error' })
     }
   } else if (key.startsWith('zxview')) {
     try {
@@ -282,21 +325,23 @@ async function importPrivKey(key: string, rescan: boolean) {
         rescan ? 'yes' : 'no',
       ])
     } catch (err) {
-      console.log(
-        `profile/mySecurity/common importPrivKey z_importviewingkey error: ${err.message}`,
+      const message: string = err.message || ''
+      log.log(
+        `profile/mySecurity/common importPrivKey z_importviewingkey error: ${message}`,
         err,
       )
-      toast(err.message, { type: 'error' })
+      toast(message, { type: 'error' })
     }
   } else {
     try {
       await rpc<TPrivKeyResponse>('importprivkey', [key, 'imported', rescan])
     } catch (err) {
-      console.log(
-        `profile/mySecurity/common importPrivKey importprivkey error: ${err.message}`,
+      const message: string = err.message || ''
+      log.log(
+        `profile/mySecurity/common importPrivKey importprivkey error: ${message}`,
         err,
       )
-      toast(err.message, { type: 'error' })
+      toast(message, { type: 'error' })
     }
   }
 }
@@ -322,7 +367,7 @@ async function importAddressBook(addresses: TAddressBook[]) {
   }
 
   if (addressBooks?.length) {
-    AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
+    await AddressbookImpl.writeAddressBook(addressBook?.concat(newAddressBook))
   }
 }
 
@@ -351,14 +396,14 @@ export async function doImportPrivKeys(
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {
-          importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
+          await importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
         }
       }
 
       const tPrivateKeys = keys.tPrivateKeys
       if (tPrivateKeys?.length) {
         for (let i = 0; i < tPrivateKeys.length; i++) {
-          importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
+          await importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
         }
       }
 
@@ -399,45 +444,4 @@ export const splitStringIntoChunks = (
   }
 
   return chunks
-}
-
-export const addLineBreakForContent = (str: string): string => {
-  const breakChar = '\n'
-  return str.replace(/(.{46})/g, `$1${breakChar}`)
-}
-
-export const addLineBreakFoFullrContent = (str: string): string => {
-  const breakChar = '\n'
-  return str.replace(/(.{74})/g, `$1${breakChar}`)
-}
-
-export const decompressPastelIDAndPrivateKeys = (
-  str: string,
-): TAllAddressesAndPastelID | null => {
-  if (!str) {
-    return null
-  }
-
-  return JSON.parse(
-    LZUTF8.decompress(decodeURIComponent(str), {
-      inputEncoding: 'Base64',
-    }),
-  )
-}
-
-export const parseQRCodeFromString = (str: string): TQRCode | null => {
-  if (!str) {
-    return null
-  }
-
-  const qr = str.split('::')
-  if (qr.length) {
-    return {
-      index: parseInt(qr[0]),
-      total: parseInt(qr[1]),
-      qrCode: qr[2],
-    }
-  }
-
-  return null
 }

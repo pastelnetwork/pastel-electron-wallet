@@ -16,7 +16,7 @@ export type TDropdown = {
   children?: ReactNode
 }
 
-const Dropdown = ({
+function Dropdown({
   children,
   className,
   isOpen,
@@ -27,11 +27,19 @@ const Dropdown = ({
   noPaddings,
   placement = 'bottom-end',
   strategy = 'fixed',
-}: TDropdown): JSX.Element => {
+}: TDropdown): JSX.Element {
   const [dropdownRef, setDropdownRef] = useState<HTMLDivElement | null>(null)
   const [dropdownBoxRef, setDropdownBoxRef] = useState<HTMLDivElement | null>(
     null,
   )
+
+  const clickOutside = (event: MouseEvent) => {
+    if (!dropdownRef || dropdownRef.contains(event.target as Node)) {
+      return
+    }
+    handleClose()
+  }
+
   const { styles, attributes } = usePopper(dropdownRef, dropdownBoxRef, {
     strategy,
     placement,
@@ -51,13 +59,6 @@ const Dropdown = ({
       document.removeEventListener('click', clickOutside)
     }
   }, [dropdownRef])
-
-  const clickOutside = (event: MouseEvent) => {
-    if (!dropdownRef || dropdownRef.contains(event.target as Node)) {
-      return
-    }
-    handleClose()
-  }
 
   const classes = cn('relative inline-flex', className)
 

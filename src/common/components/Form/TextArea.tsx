@@ -31,7 +31,8 @@ export default function TextArea<TForm extends FieldValues>({
     // remove height so textarea will take as many space as it pleased
     el.style.height = ''
     // set height to be a scrollHeight, and no scroll after this
-    el.style.height = `${e.target.scrollHeight}px`
+    const scrollHeight: string = e.target.scrollHeight?.toString() || ''
+    el.style.height = `${scrollHeight}px`
   }
 
   return (

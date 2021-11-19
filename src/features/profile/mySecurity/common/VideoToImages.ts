@@ -28,26 +28,29 @@ export default class VideoToFrames {
         if (context) {
           const video = document.createElement('video')
           video.preload = 'auto'
-          video.addEventListener('loadeddata', async function () {
-            canvas.width = video.videoWidth
-            canvas.height = video.videoHeight
-            duration = video.duration
+          video.addEventListener(
+            'loadeddata',
+            async function (): Promise<void> {
+              canvas.width = video.videoWidth
+              canvas.height = video.videoHeight
+              duration = video.duration
 
-            let totalFrames: number = amount
-            if (type === VideoToFramesMethod.fps) {
-              totalFrames = duration * amount
-            }
-            for (
-              let time = 0;
-              time < duration;
-              time += duration / totalFrames
-            ) {
-              frames.push(
-                await VideoToFrames.getVideoFrame(video, context, time),
-              )
-            }
-            resolve(frames)
-          })
+              let totalFrames: number = amount
+              if (type === VideoToFramesMethod.fps) {
+                totalFrames = duration * amount
+              }
+              for (
+                let time = 0;
+                time < duration;
+                time += duration / totalFrames
+              ) {
+                frames.push(
+                  await VideoToFrames.getVideoFrame(video, context, time),
+                )
+              }
+              resolve(frames)
+            },
+          )
           video.src = videoUrl
           video.load()
         } else {

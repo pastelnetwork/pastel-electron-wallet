@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TExpandProps = TIconProps
 
-export const Expand = ({ size, className }: TExpandProps): JSX.Element => {
+export function Expand({ size, className }: TExpandProps): JSX.Element {
   return (
     <svg
       width={size}

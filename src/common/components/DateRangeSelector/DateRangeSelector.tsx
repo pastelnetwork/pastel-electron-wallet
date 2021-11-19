@@ -47,15 +47,15 @@ const dateButtons = [
   { value: 'last30days', title: 'Last 30 days' },
 ]
 
-const DateRangeSelectorContent = ({
+function DateRangeSelectorContent({
   value,
   startDate,
   endDate,
-}: TDateRangeSelectorContentProp): JSX.Element => {
+}: TDateRangeSelectorContentProp): JSX.Element {
   if (!value) {
     return (
       <div className='flex'>
-        <img src={calendarIcon} className='ml-4 mr-2' />
+        <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
         All
       </div>
     )
@@ -64,7 +64,7 @@ const DateRangeSelectorContent = ({
   if (!endDate) {
     return (
       <div className='flex'>
-        <img src={calendarIcon} className='ml-4 mr-2' />
+        <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
         {dayjs(startDate).format('MM.DD.YY')}
         {' - '}
       </div>
@@ -73,7 +73,7 @@ const DateRangeSelectorContent = ({
 
   return (
     <div className='flex'>
-      <img src={calendarIcon} className='ml-4 mr-2' />
+      <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
       {dayjs(startDate).format('MM.DD.YY') +
         ' - ' +
         dayjs(endDate).format('MM.DD.YY')}
@@ -113,6 +113,42 @@ export default function DateRangeSelector({
     }
   }
 
+  const renderDecreaseMonthButton = (
+    decreaseMonth: () => void,
+    prevMonthButtonDisabled: boolean,
+  ) => (
+    <button
+      onClick={decreaseMonth}
+      disabled={prevMonthButtonDisabled}
+      className='focus:outline-none p-1 mr-5'
+      type='button'
+    >
+      <Caret
+        to='left'
+        size={12}
+        className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+      />
+    </button>
+  )
+
+  const renderIncreaseMonthMonthButton = (
+    increaseMonth: () => void,
+    nextMonthButtonDisabled: boolean,
+  ) => (
+    <button
+      onClick={increaseMonth}
+      disabled={nextMonthButtonDisabled}
+      className='focus:outline-none p-1'
+      type='button'
+    >
+      <Caret
+        to='right'
+        size={12}
+        className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+      />
+    </button>
+  )
+
   const customHeader = ({
     date,
     decreaseMonth,
@@ -126,28 +162,8 @@ export default function DateRangeSelector({
         {dayjs(date).year()}
       </h5>
       <div>
-        <button
-          onClick={decreaseMonth}
-          disabled={prevMonthButtonDisabled}
-          className='focus:outline-none p-1 mr-5'
-        >
-          <Caret
-            to='left'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-        <button
-          onClick={increaseMonth}
-          disabled={nextMonthButtonDisabled}
-          className='focus:outline-none p-1'
-        >
-          <Caret
-            to='right'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
+        {renderDecreaseMonthButton(decreaseMonth, prevMonthButtonDisabled)}
+        {renderIncreaseMonthMonthButton(increaseMonth, nextMonthButtonDisabled)}
       </div>
     </div>
   )
@@ -213,6 +229,7 @@ export default function DateRangeSelector({
             'transition duration-200 absolute ml-2 right-3 transform',
             isOpenCalendar && 'rotate-180',
           )}
+          alt='Calendar Icon'
         />
       </div>
       {isOpenCalendar && (
@@ -250,4 +267,10 @@ export default function DateRangeSelector({
       )}
     </div>
   )
+}
+
+DateRangeSelectorContent.defaultProps = {
+  value: undefined,
+  endDate: undefined,
+  startDate: undefined,
 }

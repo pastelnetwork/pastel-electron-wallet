@@ -12,8 +12,8 @@ export const CreateTagDefault: Story<TCreateTag> = () => {
   return (
     <div>
       <CreateTag onSave={handleTags} />
-      {tags.map((tag, idx) => (
-        <span key={idx}>{tag}, </span>
+      {tags.map(tag => (
+        <span key={tag}>{tag}, </span>
       ))}
     </div>
   )

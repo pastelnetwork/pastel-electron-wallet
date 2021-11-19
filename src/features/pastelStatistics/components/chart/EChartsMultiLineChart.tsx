@@ -13,7 +13,7 @@ import { PrevButton } from '../PrevButton'
 
 import styles from './LineChart.module.css'
 
-export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
+export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
   const {
     chartName,
     dataX,
@@ -282,7 +282,7 @@ export const EChartsMultiLineChart = (props: TLineChartProps): JSX.Element => {
       <div className={styles.lineChartWrap}>
         <ReactECharts
           notMerge={false}
-          lazyUpdate={true}
+          lazyUpdate
           option={options}
           className={styles.reactECharts}
           ref={e => {

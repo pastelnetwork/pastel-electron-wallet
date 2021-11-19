@@ -7,13 +7,33 @@ export type TManInHexagonProps = TIconProps & {
   secondStopClassName?: string
 }
 
-export const ManInHexagon = ({
+export function ManInHexagon({
   size,
   className,
   fill = 'text-white',
   firstStopClassName,
   secondStopClassName,
-}: TManInHexagonProps): JSX.Element => {
+}: TManInHexagonProps): JSX.Element {
+  const renderLinearGradient = () => (
+    <defs>
+      <linearGradient
+        id='man_in_hexagon_linear'
+        x1='5.25751'
+        y1='-9.5454'
+        x2='-15.8333'
+        y2='22.1212'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop className={firstStopClassName} stopColor='currentColor' />
+        <stop
+          className={secondStopClassName}
+          offset='1'
+          stopColor='currentColor'
+        />
+      </linearGradient>
+    </defs>
+  )
+
   return (
     <svg
       width={size}
@@ -37,23 +57,7 @@ export const ManInHexagon = ({
         className={fill}
         fill='currentColor'
       />
-      <defs>
-        <linearGradient
-          id='man_in_hexagon_linear'
-          x1='5.25751'
-          y1='-9.5454'
-          x2='-15.8333'
-          y2='22.1212'
-          gradientUnits='userSpaceOnUse'
-        >
-          <stop className={firstStopClassName} stopColor='currentColor' />
-          <stop
-            className={secondStopClassName}
-            offset='1'
-            stopColor='currentColor'
-          />
-        </linearGradient>
-      </defs>
+      {renderLinearGradient()}
     </svg>
   )
 }

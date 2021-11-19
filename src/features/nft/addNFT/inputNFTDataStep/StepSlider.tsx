@@ -80,3 +80,8 @@ export default function StepSlider({
     />
   )
 }
+
+StepSlider.defaultProps = {
+  formatValue: undefined,
+  formatTooltipValue: undefined,
+}

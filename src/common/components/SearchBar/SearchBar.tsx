@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { CloseButton } from '../../components/Buttons'
 import { Search } from '../Icons'
 import cn from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
 import SearchTag, { TSearchTagProps } from './SearchTag'
 import RecentSearchItem, { TRecentSearchItem } from './RecentSearchItem'
 import Banksy82 from '../../assets/images/banksy82_avatar.png'
@@ -10,7 +11,7 @@ import Banksyyyy from '../../assets/images/banksyyyy_avatar.png'
 import ResultSearchRow from './ResultSearchRow'
 import * as ROUTES from 'common/utils/constants/routes'
 
-const SearchBar = (): JSX.Element => {
+export default function SearchBar(): JSX.Element {
   const history = useHistory()
   const [inputFocused, setInputFocused] = useState<boolean>(false)
   const [selectedCategory, setSelectedCategory] = useState<
@@ -27,22 +28,27 @@ const SearchBar = (): JSX.Element => {
 
   const categories: Array<TSearchTagProps> = [
     {
+      id: uuidv4(),
       label: 'NFTs',
       type: 'nfts',
     },
     {
+      id: uuidv4(),
       label: 'Keywords',
       type: 'keyword',
     },
     {
+      id: uuidv4(),
       label: 'Creators',
       type: 'creators',
     },
     {
+      id: uuidv4(),
       label: 'Users',
       type: 'users',
     },
     {
+      id: uuidv4(),
       label: 'Forum Post',
       type: 'forum',
     },
@@ -50,13 +56,16 @@ const SearchBar = (): JSX.Element => {
 
   const recent_searchs: Array<TRecentSearchItem> = [
     {
+      id: uuidv4(),
       tagType: 'creators',
       label: 'Bansky',
     },
     {
+      id: uuidv4(),
       label: 'End of an Era',
     },
     {
+      id: uuidv4(),
       tagType: 'nfts',
       label: 'End of an Era',
     },
@@ -64,36 +73,43 @@ const SearchBar = (): JSX.Element => {
 
   const search_results = [
     {
+      id: uuidv4(),
       name: 'Banksy82',
       img: Banksy82,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'theRealBanksy',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'Banksyyyy',
       img: Banksy82,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'IheartBanksy',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'banksySuchlol',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'banksySuchlol',
       img: Banksyyyy,
       followers: 161,
     },
     {
+      id: uuidv4(),
       name: 'banksySuchlol',
       img: Banksyyyy,
       followers: 161,
@@ -146,9 +162,13 @@ const SearchBar = (): JSX.Element => {
         {selectedCategory &&
           categories
             .filter(item => item.type === selectedCategory)
-            .map((category, index) => (
-              <div key={index} className='absolute top-2.5 left-[50px]'>
-                <SearchTag type={category.type} label={category.label} />
+            .map(category => (
+              <div key={category.id} className='absolute top-2.5 left-[50px]'>
+                <SearchTag
+                  type={category.type}
+                  label={category.label}
+                  id={category.id}
+                />
               </div>
             ))}
 
@@ -171,25 +191,32 @@ const SearchBar = (): JSX.Element => {
           <div className='z-50 bg-white border border-line rounded-b-10px shadow-xl'>
             {selectedCategory === undefined ? (
               <div className='px-6 pt-4 pb-[46px]'>
-                <div className='text-base'>I'm looking for</div>
+                <div className='text-base'>I{"'"}m looking for</div>
                 <div className='flex text-gray-4a text-medium mt-2'>
-                  {categories.map((category, index) => (
-                    <SearchTag
-                      key={index}
-                      type={category.type}
-                      label={category.label}
-                      clickHandle={param => clickedCategory(param)}
-                    />
-                  ))}
+                  {categories.map(category => {
+                    const label: string = category.label || ''
+                    const type: string = category.type || ''
+                    const id: string = category.id || ''
+                    return (
+                      <SearchTag
+                        key={`${label}${type}${id}`}
+                        type={category.type}
+                        label={category.label}
+                        clickHandle={param => clickedCategory(param)}
+                        id={category.id}
+                      />
+                    )
+                  })}
                 </div>
                 <div className='mt-6'>
                   <div className='text-gray-71 text-base'>Recent searches</div>
                   <div className='mt-3'>
-                    {recent_searchs.map((item, index) => (
+                    {recent_searchs.map(item => (
                       <RecentSearchItem
-                        key={index}
+                        key={item.id}
                         tagType={item.tagType}
                         label={item.label}
+                        id={item.id}
                       />
                     ))}
                   </div>
@@ -206,9 +233,9 @@ const SearchBar = (): JSX.Element => {
                 <div className='px-6 pt-[13px] pb-[29px] h-[292px] overflow-y-auto'>
                   {search_results
                     .filter(item => item.name.includes(inputText))
-                    .map((item, index) => (
+                    .map(item => (
                       <ResultSearchRow
-                        key={index}
+                        key={item.id}
                         name={item.name}
                         image={item.img}
                         followers={item.followers}
@@ -228,5 +255,3 @@ const SearchBar = (): JSX.Element => {
     </div>
   )
 }
-
-export default SearchBar

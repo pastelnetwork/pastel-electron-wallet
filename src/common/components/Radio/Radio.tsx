@@ -13,7 +13,7 @@ export type TRadioProps = {
   variant?: string
 }
 
-const Radio = ({
+function Radio({
   children,
   checked,
   onChange,
@@ -22,7 +22,18 @@ const Radio = ({
   labelClassName = 'ml-2 mt-2.5px',
   checkedCircleBackgroundColor = 'bg-blue-e5',
   variant,
-}: TRadioProps): JSX.Element => {
+}: TRadioProps): JSX.Element {
+  const renderInputControl = () => (
+    <input
+      type='radio'
+      className='absolute opacity-0 cursor-pointer'
+      checked={checked}
+      onChange={() => {
+        onChange(!checked)
+      }}
+    />
+  )
+
   if (variant === 'secondary') {
     return (
       <label>
@@ -36,14 +47,7 @@ const Radio = ({
                 : 'border-2 border-gray-a0 bg-white hover:border-gray-8e',
             )}
           >
-            <input
-              type='radio'
-              className='absolute opacity-0 cursor-pointer'
-              checked={checked}
-              onChange={() => {
-                onChange(!checked)
-              }}
-            />
+            {renderInputControl()}
             {checked && (
               <span
                 className={cn(smallCircleClass, 'rounded-full bg-blue-e7')}
@@ -76,14 +80,7 @@ const Radio = ({
               : 'border-2 border-gray-a0 bg-white hover:border-gray-8e',
           )}
         >
-          <input
-            type='radio'
-            className='absolute opacity-0 cursor-pointer'
-            checked={checked}
-            onChange={() => {
-              onChange(!checked)
-            }}
-          />
+          {renderInputControl()}
           {checked && (
             <span
               className={cn(smallCircleClass, 'rounded-full bg-blue-3f')}

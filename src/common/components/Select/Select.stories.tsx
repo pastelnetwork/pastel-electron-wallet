@@ -125,7 +125,7 @@ export const SelectRangeWithAutocomplete = (): JSX.Element => {
   )
 }
 
-export const FormSelect = (): JSX.Element => {
+export function FormSelect(): JSX.Element {
   const form = useForm({
     defaultValues: {
       select: options[0],
@@ -144,7 +144,9 @@ export const FormSelect = (): JSX.Element => {
         options={options}
         className='w-[220px]'
       />
-      <button className='btn btn-primary mt-4 px-5'>Submit</button>
+      <button className='btn btn-primary mt-4 px-5' type='submit'>
+        Submit
+      </button>
     </form>
   )
 }

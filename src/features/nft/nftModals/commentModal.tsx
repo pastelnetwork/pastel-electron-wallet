@@ -22,11 +22,11 @@ export type TCommentModal = {
   handleClose: () => void
 }
 
-const CommentModal = ({
+export default function CommentModal({
   comments,
   isOpen,
   handleClose,
-}: TCommentModal): JSX.Element => {
+}: TCommentModal): JSX.Element {
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6'>Comments ({comments?.length})</h2>
@@ -55,5 +55,3 @@ const CommentModal = ({
     </Modal>
   )
 }
-
-export default CommentModal

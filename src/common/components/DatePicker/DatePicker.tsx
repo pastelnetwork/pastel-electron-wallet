@@ -34,15 +34,18 @@ type TRange = TBaseProps & {
 
 type TDatePicker = TSingle | TRange
 
-type TCustomHeader = {
-  date: Date
+type TCustomCaret = {
   decreaseMonth: () => void
   increaseMonth: () => void
   prevMonthButtonDisabled: boolean
   nextMonthButtonDisabled: boolean
 }
 
-const DatePicker = ({
+type TCustomHeader = TCustomCaret & {
+  date: Date
+}
+
+function DatePicker({
   positionFixed = true,
   label,
   selected,
@@ -56,8 +59,41 @@ const DatePicker = ({
   closeOnSelect,
   value,
   openToDate,
-}: TDatePicker): JSX.Element => {
+}: TDatePicker): JSX.Element {
   const [isOpened, setIsOpened] = useState(false)
+  const renderCaretIcons = ({
+    decreaseMonth,
+    increaseMonth,
+    prevMonthButtonDisabled,
+    nextMonthButtonDisabled,
+  }: TCustomCaret) => (
+    <div>
+      <button
+        onClick={decreaseMonth}
+        disabled={prevMonthButtonDisabled}
+        className='focus:outline-none p-1 mr-5'
+        type='button'
+      >
+        <Caret
+          to='left'
+          size={12}
+          className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+        />
+      </button>
+      <button
+        onClick={increaseMonth}
+        disabled={nextMonthButtonDisabled}
+        className='focus:outline-none p-1'
+        type='button'
+      >
+        <Caret
+          to='right'
+          size={12}
+          className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+        />
+      </button>
+    </div>
+  )
 
   const customHeader = ({
     date,
@@ -71,30 +107,12 @@ const DatePicker = ({
         <span className='mr-1'>{dayjs(date).format('MMM')}</span>
         {dayjs(date).year()}
       </h5>
-      <div>
-        <button
-          onClick={decreaseMonth}
-          disabled={prevMonthButtonDisabled}
-          className='focus:outline-none p-1 mr-5'
-        >
-          <Caret
-            to='left'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-        <button
-          onClick={increaseMonth}
-          disabled={nextMonthButtonDisabled}
-          className='focus:outline-none p-1'
-        >
-          <Caret
-            to='right'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-      </div>
+      {renderCaretIcons({
+        decreaseMonth,
+        increaseMonth,
+        prevMonthButtonDisabled,
+        nextMonthButtonDisabled,
+      })}
     </div>
   )
 
@@ -105,7 +123,7 @@ const DatePicker = ({
           {label}:
         </span>
       ) : (
-        <img src={CalendarIcon} />
+        <img src={CalendarIcon} alt='calender icon' />
       )
       return (
         <Input
@@ -124,7 +142,11 @@ const DatePicker = ({
         <Input
           textCenter
           appendOutside={
-            <img src={CalendarIcon} className='w-6 h-6 cursor-pointer' />
+            <img
+              src={CalendarIcon}
+              className='w-6 h-6 cursor-pointer'
+              alt='separated'
+            />
           }
         />
       )

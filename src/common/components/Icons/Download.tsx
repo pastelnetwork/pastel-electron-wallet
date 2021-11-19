@@ -6,11 +6,11 @@ export type TDownloadProps = {
   pathColor?: string
 }
 
-export const Download = ({
+export function Download({
   size = 44,
   className = 'text-gray-33',
   pathColor = '#FFFFFF',
-}: TDownloadProps): JSX.Element => {
+}: TDownloadProps): JSX.Element {
   return (
     <svg
       width={size}

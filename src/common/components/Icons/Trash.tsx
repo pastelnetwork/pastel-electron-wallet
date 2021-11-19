@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TTrashProps = TIconProps
 
-export const Trash = ({ size, className }: TTrashProps): JSX.Element => {
+export function Trash({ size, className }: TTrashProps): JSX.Element {
   return (
     <svg
       width={size}

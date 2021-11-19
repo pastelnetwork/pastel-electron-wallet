@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+
 import { TMemberCard } from 'features/members/MemberCard'
 import { TNFTCard } from '../../common/components/NFTCard'
 import mockAvatar from '../../common/assets/images/avatar2-placeholder.png'
@@ -112,6 +113,7 @@ export const mockMembers: TMemberCard[] = [
 ]
 
 const mockCardProps: TNFTCard = {
+  id: '1',
   author: 'zndrson_longname',
   avatarSrc: mockAvatar,
   imageSrc: nftImage,
@@ -128,6 +130,7 @@ const mockCardProps: TNFTCard = {
 export const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {
   return {
     ...mockCardProps,
+    id: uuidv4(),
     author: ['zndrson_longname', 'zndrson_bansname'][
       Math.floor(Math.random() * 2)
     ],

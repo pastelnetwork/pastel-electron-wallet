@@ -22,7 +22,7 @@ type TLineChartData = {
 
 const redrawCycle = 6000
 
-const PriceOvertime = (): JSX.Element => {
+export default function PriceOvertime(): JSX.Element {
   const currencyName = useCurrencyName()
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -52,8 +52,26 @@ const PriceOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -66,7 +84,9 @@ const PriceOvertime = (): JSX.Element => {
 
   const handlePeriodFilterChange = (period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
+    if (ticker) {
+      clearInterval(ticker)
+    }
   }
 
   const handleBgColorChange = (color: string) => {
@@ -98,5 +118,3 @@ const PriceOvertime = (): JSX.Element => {
     </>
   )
 }
-
-export default PriceOvertime

@@ -4,14 +4,22 @@ import { sendEventToRenderer } from './mainEvents'
 import log from 'electron-log'
 import { app } from 'electron'
 
-export const startWalletNode = async (): Promise<void> => {
-  try {
-    await startProcess()
-  } catch (error) {
-    // stop is needed in case if some services started and some failed
-    await stopWalletNode()
-    await installProcess()
-    await startProcess()
+const filterLogKeywords = [
+  'Installing',
+  'Downloading',
+  'Starting',
+  'Checking',
+  'Waiting',
+  'successfully',
+  'Finished',
+]
+
+const handleProcessLogging = (line: string) => {
+  log.info(line)
+  if (filterLogKeywords.some(word => line.includes(word))) {
+    sendEventToRenderer('appLoadingLogProgress', {
+      message: line.split(' INFO ')[1] || line,
+    })
   }
 }
 
@@ -42,21 +50,13 @@ const installProcess = async () => {
   )
 }
 
-const filterLogKeywords = [
-  'Installing',
-  'Downloading',
-  'Starting',
-  'Checking',
-  'Waiting',
-  'successfully',
-  'Finished',
-]
-
-const handleProcessLogging = (line: string) => {
-  log.info(line)
-  if (filterLogKeywords.some(word => line.includes(word))) {
-    sendEventToRenderer('appLoadingLogProgress', {
-      message: line.split(' INFO ')[1] || line,
-    })
+export const startWalletNode = async (): Promise<void> => {
+  try {
+    await startProcess()
+  } catch (error) {
+    // stop is needed in case if some services started and some failed
+    await stopWalletNode()
+    await installProcess()
+    await startProcess()
   }
 }

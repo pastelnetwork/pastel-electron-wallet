@@ -8,12 +8,14 @@ import ImageShadow from '../common/ImageShadow'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 
-const InfoPair = ({ title, value }: { title: string; value: string }) => (
-  <div className='flex'>
-    <div className='text-gray-71 w-48'>{title}</div>
-    <div className='text-green-45 font-extrabold'>{value}</div>
-  </div>
-)
+function InfoPair({ title, value }: { title: string; value: string }) {
+  return (
+    <div className='flex'>
+      <div className='text-gray-71 w-48'>{title}</div>
+      <div className='text-green-45 font-extrabold'>{value}</div>
+    </div>
+  )
+}
 
 type TApprovedStepProps = {
   state: TAddNFTState
@@ -38,6 +40,44 @@ export default function ApprovedStep({
 
   const titleString = `NFT approved: “${nftData.title}”`
 
+  const renderFinalRegistrationFee = () => (
+    <div className='w-full mt-3'>
+      <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
+        <div className='text-gray-71'>Final registration fee</div>
+        <div className='text-gray-45 font-extrabold'>
+          110,000 {currencyName}
+        </div>
+      </div>
+      <button
+        type='button'
+        className='btn btn-primary w-full mt-5'
+        onClick={goToNextStep}
+      >
+        Proceed to final registration fee payment
+      </button>
+    </div>
+  )
+
+  const renderThumbnailPreview = () => (
+    <div className='w-full space-y-4'>
+      <InfoPair title='Patel rareness score' value='67%' />
+      <InfoPair title='Internet rareness score' value='99%' />
+      <InfoPair title='NSFW' value='100%' />
+      <div>
+        <div className='font-medium text-gray-71 mb-3'>Thumbnail preview</div>
+        <div className='w-48 h-48'>
+          {croppedImage && (
+            <img
+              src={croppedImage.src}
+              className='rounded w-full h-full'
+              alt='Pastel Network'
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <ModalLayout
       title={titleString}
@@ -53,45 +93,15 @@ export default function ApprovedStep({
               src={displayUrl}
               className='rounded max-h-424px relative'
               style={{ maxWidth: `${image.maxWidth}px` }}
+              alt='Pastel'
             />
           </div>
         </div>
       }
       rightColumnContent={
         <div className='h-full flex-between flex-col pt-5'>
-          <div className='w-full space-y-4'>
-            <InfoPair title='Patel rareness score' value='67%' />
-            <InfoPair title='Internet rareness score' value='99%' />
-            <InfoPair title='NSFW' value='100%' />
-            <div>
-              <div className='font-medium text-gray-71 mb-3'>
-                Thumbnail preview
-              </div>
-              <div className='w-48 h-48'>
-                {croppedImage && (
-                  <img
-                    src={croppedImage.src}
-                    className='rounded w-full h-full'
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-          <div className='w-full mt-3'>
-            <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
-              <div className='text-gray-71'>Final registration fee</div>
-              <div className='text-gray-45 font-extrabold'>
-                110,000 {currencyName}
-              </div>
-            </div>
-            <button
-              type='button'
-              className='btn btn-primary w-full mt-5'
-              onClick={goToNextStep}
-            >
-              Proceed to final registration fee payment
-            </button>
-          </div>
+          {renderThumbnailPreview()}
+          {renderFinalRegistrationFee()}
         </div>
       }
     />

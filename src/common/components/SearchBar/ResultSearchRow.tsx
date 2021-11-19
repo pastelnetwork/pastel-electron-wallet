@@ -7,12 +7,12 @@ export type TResultShearchProps = {
   handleClick?: (param: string) => void
 }
 
-const ResultSearchRow = ({
+function ResultSearchRow({
   name,
   image,
   followers,
   handleClick,
-}: TResultShearchProps): JSX.Element => {
+}: TResultShearchProps): JSX.Element {
   return (
     <div
       className='cursor-pointer flex items-center mb-4 justify-between'
@@ -22,7 +22,11 @@ const ResultSearchRow = ({
     >
       <div className='flex items-center'>
         {image && (
-          <img src={image} className='w-[34px] h-[34px] rounded-full mr-5' />
+          <img
+            src={image}
+            className='w-[34px] h-[34px] rounded-full mr-5'
+            alt={name}
+          />
         )}
         <div className='text-base font-black text-gray-23'>{name}</div>
       </div>

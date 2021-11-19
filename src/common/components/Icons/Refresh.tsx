@@ -6,11 +6,11 @@ export type TRefreshProps = {
   pathColor?: string
 }
 
-export const Refresh = ({
+export function Refresh({
   size = 44,
   className = 'text-gray-33',
   pathColor = '#FFFFFF',
-}: TRefreshProps): JSX.Element => {
+}: TRefreshProps): JSX.Element {
   return (
     <svg
       width={size}

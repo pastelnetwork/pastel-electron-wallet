@@ -121,6 +121,15 @@ export const useFeePerKb = (): number | undefined => {
 
   useEffect(() => {
     getFee()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   return feePerKb

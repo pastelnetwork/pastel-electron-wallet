@@ -21,12 +21,16 @@ export default {
   title: 'MemberStrip',
 }
 
-export const MemberStrip = (): JSX.Element => (
-  <div className=' text-gray-1a bg-background-main h-full'>
-    <div className='p-2'>
-      <div className='bg-white p-5 rounded-lg'>
-        <MemberStripComponent {...mockMemberStrips} />
-      </div>
+export function MemberStrip(): JSX.Element {
+  const renderMemberStripContent = () => (
+    <div className='bg-white p-5 rounded-lg'>
+      <MemberStripComponent {...mockMemberStrips} />
     </div>
-  </div>
-)
+  )
+
+  return (
+    <div className=' text-gray-1a bg-background-main h-full'>
+      <div className='p-2'>{renderMemberStripContent()}</div>
+    </div>
+  )
+}
