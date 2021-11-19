@@ -2,7 +2,7 @@ import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import eyeIcon from 'common/assets/icons/ico-eye.svg'
 import Tooltip from 'common/components/Tooltip'
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { clipboard } from 'electron'
 import { formatAddress } from 'common/utils/format'
 
@@ -54,13 +54,27 @@ export function AddressForm({
     }, 2000)
   }
 
-  const handleShowFullAddress = () => {
+  const handleShowFullAddress = useCallback(() => {
     setShowFullAddress(!showFullAddress)
-  }
+  }, [])
 
   const promoCode = pastelPromoCode.data?.find(code => code.address === address)
 
   const addressLabel = promoCode ? promoCode.label : addressBookMap[address]
+
+  const handleClose = useCallback(() => {
+    setEdit(null)
+  }, [])
+
+  const handleSave = useCallback(() => {
+    if (edit === address) {
+      updateAddressBook({
+        address: edit,
+        label: editName,
+      })
+      setEdit(null)
+    }
+  }, [])
 
   const renderShowFullAddress = () => (
     <Tooltip
@@ -104,13 +118,7 @@ export function AddressForm({
         <button
           type='button'
           className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-          onClick={() => {
-            updateAddressBook({
-              address: edit,
-              label: editName,
-            })
-            setEdit(null)
-          }}
+          onClick={handleSave}
         >
           <SaveIcon className='text-blue-3f' size={20} />
         </button>
@@ -129,9 +137,7 @@ export function AddressForm({
         <button
           type='button'
           className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-          onClick={() => {
-            setEdit(null)
-          }}
+          onClick={handleClose}
         >
           <Close size={16} />
         </button>

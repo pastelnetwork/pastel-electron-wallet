@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import cx from 'classnames'
 
 import Tooltip from 'common/components/Tooltip'
@@ -45,6 +45,14 @@ export default function CommentModal({
     }
   }, [defaultsNote])
 
+  const handleSetActiveRecipientTab = useCallback(() => {
+    setTab(Tabs.NoteToRecipient)
+  }, [])
+
+  const handleSetActivePrivateNoteTab = useCallback(() => {
+    setTab(Tabs.PrivateNote)
+  }, [])
+
   const handleInputChange = (value: string) => {
     if (tab === Tabs.NoteToRecipient) {
       setNote(value)
@@ -53,14 +61,14 @@ export default function CommentModal({
     }
   }
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     onSavePaymentNote({
       address,
       recipientNote: note,
       privateNote,
     })
     onClose()
-  }
+  }, [])
 
   const renderSaveButton = () => (
     <button
@@ -96,7 +104,7 @@ export default function CommentModal({
   const renderTabHeader = () => (
     <div className='flex items-end pt-8px'>
       <div
-        onClick={() => setTab(Tabs.NoteToRecipient)}
+        onClick={handleSetActiveRecipientTab}
         className={cx(
           'px-4 cursor-pointer transition duration-300 pt-10px',
           Tabs.NoteToRecipient == tab &&
@@ -117,7 +125,7 @@ export default function CommentModal({
         </div>
       </div>
       <div
-        onClick={() => setTab(Tabs.PrivateNote)}
+        onClick={handleSetActivePrivateNoteTab}
         className={cx(
           'px-4 cursor-pointer transition duration-300 pt-10px',
           Tabs.PrivateNote == tab &&

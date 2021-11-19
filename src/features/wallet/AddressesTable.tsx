@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useCallback } from 'react'
 import Table, { TRow } from 'common/components/Table'
 import Checkbox from 'common/components/Checkbox'
 import { AddressForm } from './AddressForm'
@@ -13,6 +13,74 @@ import { formatPrice, timeAgo } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
 
 const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
+
+function PDFIcon({
+  value,
+  setCurrentAddress,
+  setExportKeysModalOpen,
+}: {
+  value: string
+  setCurrentAddress: (val: string) => void
+  setExportKeysModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleShowExportKeyModal = useCallback(() => {
+    setCurrentAddress(value)
+    setExportKeysModalOpen(true)
+  }, [])
+
+  return (
+    <button
+      onClick={handleShowExportKeyModal}
+      className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+      type='button'
+    >
+      <Tooltip
+        autoWidth
+        type='top'
+        width={130}
+        padding={5}
+        content='Open Private Key'
+        classnames='py-2 text-gray-a0'
+      >
+        <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
+      </Tooltip>
+    </button>
+  )
+}
+
+function QRCodeIcon({
+  row,
+  setCurrentAddress,
+  setIsQRCodeModalOpen,
+}: {
+  row: TRow
+  setCurrentAddress: (val: string) => void
+  setIsQRCodeModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleShowQRCodeModal = useCallback(() => {
+    setCurrentAddress(row.address)
+    setIsQRCodeModalOpen(true)
+  }, [])
+
+  return (
+    <button
+      type='button'
+      className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+      onClick={handleShowQRCodeModal}
+    >
+      <Tooltip
+        autoWidth
+        type='top'
+        width={130}
+        padding={5}
+        content='Open Address QR'
+        classnames='py-2 text-gray-a0'
+      >
+        <QRCode size={20} />
+      </Tooltip>
+    </button>
+  )
+}
 
 export default function AddressesTable({
   addresses: { data: addresses, isLoading: isLoadingAddresses },
@@ -76,50 +144,6 @@ export default function AddressesTable({
   }
   const pastelPromoCodeList = pastelPromoCode.data
 
-  const renderPDFIcon = (value: string) => (
-    <button
-      onClick={() => {
-        setCurrentAddress(value)
-        setExportKeysModalOpen(true)
-      }}
-      className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-      type='button'
-    >
-      <Tooltip
-        autoWidth
-        type='top'
-        width={130}
-        padding={5}
-        content='Open Private Key'
-        classnames='py-2 text-gray-a0'
-      >
-        <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
-      </Tooltip>
-    </button>
-  )
-
-  const renderQRCodeIcon = (row: TRow) => (
-    <button
-      type='button'
-      className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-      onClick={() => {
-        setCurrentAddress(row.address)
-        setIsQRCodeModalOpen(true)
-      }}
-    >
-      <Tooltip
-        autoWidth
-        type='top'
-        width={130}
-        padding={5}
-        content='Open Address QR'
-        classnames='py-2 text-gray-a0'
-      >
-        <QRCode size={20} />
-      </Tooltip>
-    </button>
-  )
-
   const Columns = [
     {
       key: 'address',
@@ -177,7 +201,13 @@ export default function AddressesTable({
         isLoadingAddresses ? (
           loadingCell
         ) : (
-          <div className='flex pl-6'>{renderQRCodeIcon(row)}</div>
+          <div className='flex pl-6'>
+            <QRCodeIcon
+              row={row}
+              setCurrentAddress={setCurrentAddress}
+              setIsQRCodeModalOpen={setIsQRCodeModalOpen}
+            />
+          </div>
         ),
     },
     {
@@ -191,7 +221,11 @@ export default function AddressesTable({
         ) : (
           <div className='flex items-center'>
             <div className='text-gray-71 text-h5-medium'>private key</div>
-            {renderPDFIcon(value)}
+            <PDFIcon
+              value={value}
+              setCurrentAddress={setCurrentAddress}
+              setExportKeysModalOpen={setExportKeysModalOpen}
+            />
           </div>
         ),
     },

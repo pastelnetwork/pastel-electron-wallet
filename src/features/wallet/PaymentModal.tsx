@@ -107,7 +107,7 @@ export default function PaymentModal(): JSX.Element {
   ] = useState<string>('')
   const [paymentResults, setPaymentResults] = useState<TPaymentResults[]>([])
 
-  const close = () => {
+  const handleCloseModal = useCallback(() => {
     if (!isLoading) {
       setComplete(false)
       setLoading(false)
@@ -120,7 +120,7 @@ export default function PaymentModal(): JSX.Element {
       }
       setIsOpen(false)
     }
-  }
+  }, [])
 
   const updatePaymentSources = (amount: number) => {
     const addressAmounts = allAddressAmounts.data
@@ -238,7 +238,7 @@ export default function PaymentModal(): JSX.Element {
     }
   }
 
-  const handleSendPayment = async () => {
+  const handleSendPayment = useCallback(async () => {
     setValidRecipientAddress(false)
     setRecipientAddressMessage('')
     if (!recipientAddress) {
@@ -329,9 +329,9 @@ export default function PaymentModal(): JSX.Element {
     } else {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const handleSavePaymentNote = (note: TNote) => {
+  const handleSavePaymentNote = useCallback((note: TNote) => {
     const index = paymentNotes.findIndex(n => n.address === note.address)
     if (index !== -1) {
       const tmp = paymentNotes
@@ -340,9 +340,9 @@ export default function PaymentModal(): JSX.Element {
     } else {
       setPaymentNotes([...paymentNotes, note])
     }
-  }
+  }, [])
 
-  const handleRecipientAddressBlur = () => {
+  const handleRecipientAddressBlur = useCallback(() => {
     setValidRecipientAddress(false)
     setRecipientAddressMessage('')
     if (!recipientAddress) {
@@ -352,7 +352,7 @@ export default function PaymentModal(): JSX.Element {
       setValidRecipientAddress(false)
       setRecipientAddressMessage('Recipient address is invalid')
     }
-  }
+  }, [])
 
   let recipientAddressIsValid: boolean | null = null
   if (!isValidRecipientAddress && recipientAddressMessage) {
@@ -362,6 +362,51 @@ export default function PaymentModal(): JSX.Element {
   const totalBalance = totalBalances.data?.total || 0
   const paytxfee: string = info.paytxfee.toString() || '0'
   const relayfee: string = info.relayfee.toString() || '0'
+
+  const handleQuickSelectAmount = useCallback((value: number | null) => {
+    if (value) {
+      setBalance(balance)
+      if (totalBalance) {
+        const newPsl = (totalBalance * value) / 100
+        setPSL(newPsl)
+        setDefaulSelectedAmount({
+          label: formatPrice(newPsl, '', 4),
+          value: newPsl.toString(),
+        })
+      }
+    }
+  }, [])
+
+  const handleSelectAmount = useCallback((selection: TOption) => {
+    setPSL(parseFloat(selection.value))
+  }, [])
+
+  const handleOnFeePress = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (!/[0-9.]/.test(event.key)) {
+        event.preventDefault()
+      }
+    },
+    [],
+  )
+
+  const handleOnFeeChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFee(e.target.value)
+    },
+    [],
+  )
+
+  const handleRecipientAddressChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setRecipientAddress(e.target.value)
+    },
+    [],
+  )
+
+  const handleShowAddPaymentSourceModal = useCallback(() => {
+    setAddPaymentSourceModalIsOpen(true)
+  }, [])
 
   const renderConfirmPaymentButton = () => {
     return (
@@ -390,7 +435,7 @@ export default function PaymentModal(): JSX.Element {
     return (
       <Button
         variant='secondary'
-        onClick={close}
+        onClick={handleCloseModal}
         className='w-[146px]'
         disabled={isLoading}
       >
@@ -423,7 +468,7 @@ export default function PaymentModal(): JSX.Element {
     return (
       <span
         className='flex items-center ml-[8px]'
-        onClick={() => setAddPaymentSourceModalIsOpen(true)}
+        onClick={handleShowAddPaymentSourceModal}
         role='button'
         tabIndex={0}
         aria-hidden='true'
@@ -469,9 +514,7 @@ export default function PaymentModal(): JSX.Element {
         placeholder='Input recipient address'
         type='text'
         value={recipientAddress}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setRecipientAddress(e.target.value)
-        }
+        onChange={handleRecipientAddressChange}
         isValid={recipientAddressIsValid}
         errorMessage={
           !recipientAddressIsValid && recipientAddressMessage
@@ -527,15 +570,9 @@ export default function PaymentModal(): JSX.Element {
           type='number'
           pattern='[0-9.]*'
           value={fee}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setFee(e.target.value)
-          }
+          onChange={handleOnFeeChange}
           hintAsTooltip={false}
-          onKeyPress={(event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (!/[0-9.]/.test(event.key)) {
-              event.preventDefault()
-            }
-          }}
+          onKeyPress={handleOnFeePress}
         />
       </div>{' '}
       &nbsp;
@@ -555,9 +592,7 @@ export default function PaymentModal(): JSX.Element {
           max={totalBalance}
           step={generateStep(totalBalance)}
           defaultValue={defaulSelectedAmount}
-          onChange={(selection: TOption) => {
-            setPSL(parseFloat(selection.value))
-          }}
+          onChange={handleSelectAmount}
           label={currencyName}
           forceUpdate
         />
@@ -576,19 +611,7 @@ export default function PaymentModal(): JSX.Element {
           max={100}
           step={1}
           value={balance}
-          onChange={(value: number | null) => {
-            if (value) {
-              setBalance(balance)
-              if (totalBalance) {
-                const newPsl = (totalBalance * value) / 100
-                setPSL(newPsl)
-                setDefaulSelectedAmount({
-                  label: formatPrice(newPsl, '', 4),
-                  value: newPsl.toString(),
-                })
-              }
-            }
-          }}
+          onChange={handleQuickSelectAmount}
         />
       </div>
       {renderFeeInputControl()}

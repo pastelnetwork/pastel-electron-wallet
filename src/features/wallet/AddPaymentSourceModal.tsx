@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 
 import { TitleModal } from 'common/components/Modal'
 import Checkbox from 'common/components/Checkbox'
@@ -11,6 +11,29 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 type TAddPaymentSourceModal = {
   isOpen: boolean
   onClose: () => void
+}
+
+function PaymentSourceAddress({
+  address,
+  handleSelected,
+  addressBookMap,
+}: {
+  address: string
+  handleSelected: (val: string) => void
+  addressBookMap: Record<string, string>
+}) {
+  const handleChange = useCallback(() => {
+    handleSelected(address)
+  }, [])
+
+  return (
+    <div className='flex items-center'>
+      <Checkbox isChecked={false} clickHandler={handleChange} />
+      <span className='text-blue-3f ml-5 truncate max-w-[240px]'>
+        {addressBookMap[address] || formatAddress(address)}
+      </span>
+    </div>
+  )
 }
 
 export default function AddPaymentSourceModal({
@@ -28,7 +51,7 @@ export default function AddPaymentSourceModal({
   } = useWalletScreenContext()
   const setPaymentSourcesModal = useSetPaymentSourceModal()
 
-  const handleSelected = (address: string) => {
+  const handleSelected = useCallback((address: string) => {
     let tmp = selected
     if (!selected.includes(address)) {
       tmp.push(address)
@@ -37,9 +60,9 @@ export default function AddPaymentSourceModal({
     }
 
     setSelected(tmp)
-  }
+  }, [])
 
-  const handleAddPaymentSource = () => {
+  const handleAddPaymentSource = useCallback(() => {
     if (selected.length > 0) {
       const selectedAddresses: string[] = []
       selected.forEach(address => {
@@ -58,7 +81,7 @@ export default function AddPaymentSourceModal({
     }
 
     onClose()
-  }
+  }, [])
 
   const renderPaymentSourceHeaderModal = () => (
     <thead>
@@ -93,18 +116,6 @@ export default function AddPaymentSourceModal({
     </Button>
   )
 
-  const renderAddress = (address: string) => (
-    <div className='flex items-center'>
-      <Checkbox
-        isChecked={false}
-        clickHandler={() => handleSelected(address)}
-      />
-      <span className='text-blue-3f ml-5 truncate max-w-[240px]'>
-        {addressBookMap[address] || formatAddress(address)}
-      </span>
-    </div>
-  )
-
   return (
     <TitleModal
       isOpen={isOpen}
@@ -126,7 +137,13 @@ export default function AddPaymentSourceModal({
                     className='text-gray-71 text-sm h-10 bg-white border-b border-line'
                     key={address}
                   >
-                    <td>{renderAddress(address)}</td>
+                    <td>
+                      <PaymentSourceAddress
+                        address={address}
+                        addressBookMap={addressBookMap}
+                        handleSelected={handleSelected}
+                      />
+                    </td>
                     <td>
                       {formatPrice(
                         allAddressAmounts.data?.[address],
