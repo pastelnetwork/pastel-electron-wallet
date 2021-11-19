@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import hex from 'hex-string'
@@ -43,6 +43,25 @@ type TPaymentResults = {
   txId?: string
   status: string
   message?: string
+}
+
+function ViewTxIDButton({ txId }: { txId: string }): JSX.Element {
+  const handleClick = useCallback(() => {
+    shell.openExternal(`https://explorer.pastel.network/tx/${txId}`)
+  }, [])
+
+  return (
+    <Button
+      className='px-0 w-[150px] ml-auto mr-5px'
+      childrenClassName='w-full'
+      onClick={handleClick}
+    >
+      <div className='flex items-center justify-center px-3 text-white text-h5-heavy'>
+        View TXID &nbsp;
+        <i className='ml-[5px] fas fa-external-link-square-alt' />
+      </div>
+    </Button>
+  )
 }
 
 export default function PaymentModal(): JSX.Element {
@@ -617,20 +636,7 @@ export default function PaymentModal(): JSX.Element {
             </td>
             <td className='py-1 text-right'>
               {result.status === 'Success' ? (
-                <Button
-                  className='px-0 w-[150px] ml-auto mr-5px'
-                  childrenClassName='w-full'
-                  onClick={() =>
-                    shell.openExternal(
-                      `https://explorer.pastel.network/tx/${txId}`,
-                    )
-                  }
-                >
-                  <div className='flex items-center justify-center px-3 text-white text-h5-heavy'>
-                    View TXID &nbsp;
-                    <i className='ml-[5px] fas fa-external-link-square-alt' />
-                  </div>
-                </Button>
+                <ViewTxIDButton txId={txId} />
               ) : null}
             </td>
           </tr>

@@ -40,6 +40,41 @@ function AddCommentIcon({
   )
 }
 
+function ActionIcon({
+  onSelectedAddress,
+  address,
+}: {
+  onSelectedAddress: (addr: string, isDelete?: boolean) => void
+  address: string
+}): JSX.Element {
+  const handleSelectedAddressClick = useCallback(() => {
+    onSelectedAddress(address)
+  }, [])
+
+  const handleDeleteAddressClick = useCallback(() => {
+    onSelectedAddress(address, true)
+  }, [])
+
+  return (
+    <div className='flex items-center'>
+      <Checkbox isChecked clickHandler={handleSelectedAddressClick} />
+      <AddressForm address={address} copyable={false} />
+      <span className='ml-10px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
+        <Eye size={19} className='text-gray-88' />
+      </span>
+      <span
+        className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+        onClick={handleDeleteAddressClick}
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      >
+        <Trash size={14} className='text-gray-88' />
+      </span>
+    </div>
+  )
+}
+
 export default function PaymentSource({
   address,
   onSavePaymentNote,
@@ -80,33 +115,14 @@ export default function PaymentSource({
     </div>
   )
 
-  const renderActionIcon = () => {
-    return (
-      <div className='flex items-center'>
-        <Checkbox
-          isChecked
-          clickHandler={() => handleSelectedAddress(address)}
-        />
-        <AddressForm address={address} copyable={false} />
-        <span className='ml-10px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
-          <Eye size={19} className='text-gray-88' />
-        </span>
-        <span
-          className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-          onClick={() => handleSelectedAddress(address, true)}
-          role='button'
-          tabIndex={0}
-          aria-hidden='true'
-        >
-          <Trash size={14} className='text-gray-88' />
-        </span>
-      </div>
-    )
-  }
-
   return (
     <tr className='h-67px border-b border-line-DEFAULT mr-4 justify-between'>
-      <td className='whitespace-nowrap'>{renderActionIcon()}</td>
+      <td className='whitespace-nowrap'>
+        <ActionIcon
+          address={address}
+          onSelectedAddress={handleSelectedAddress}
+        />
+      </td>
       <td className='w-24'>
         {!isMemoDisabled ? (
           <div className='relative'>
