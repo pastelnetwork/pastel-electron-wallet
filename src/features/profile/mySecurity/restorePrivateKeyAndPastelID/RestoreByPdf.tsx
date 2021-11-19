@@ -91,6 +91,7 @@ export default function RestoreByPdf({
           onClick={handleRestoreByUpload}
           className={cn(fileSelected ? 'cursor-pointer' : 'cursor-not-allowed')}
           role='button'
+          tabIndex={0}
         >
           <Refresh
             size={44}

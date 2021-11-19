@@ -50,43 +50,40 @@ export const rendererSetup = (): void => {
     PastelDB.init()
   })
 
-  onRendererEvent(
-    'setRpcConfig',
-    async ({ rpcConfig }): Promise<void> => {
-      setRpcConfig(rpcConfig)
+  onRendererEvent('setRpcConfig', ({ rpcConfig }): void => {
+    setRpcConfig(rpcConfig)
 
-      retryPromise(
-        async () => {
-          const info = await RPC.getInfoObject(rpcConfig)
-          store.dispatch(setPastelInfo({ info: { ...info } }))
+    retryPromise(
+      async () => {
+        const info = await RPC.getInfoObject(rpcConfig)
+        store.dispatch(setPastelInfo({ info: { ...info } }))
+      },
+      {
+        attempts: 10,
+        delay: 1000,
+        onError(error: Error) {
+          log.error(error)
+          store.dispatch(setGetInfoError({ message: error.message }))
         },
-        {
-          attempts: 10,
-          delay: 1000,
-          onError(error: Error) {
-            log.error(error)
-            store.dispatch(setGetInfoError({ message: error.message }))
-          },
-        },
-      )
+      },
+    )
 
-      if (intervals.dbThread) {
-        clearInterval(intervals.dbThread)
-      } else {
-        const period = 1000 * 10
-        PastelDBThread()
-        setInterval(PastelDBThread, period)
-      }
+    if (intervals.dbThread) {
+      clearInterval(intervals.dbThread)
+    } else {
+      const period = 1000 * 10
+      PastelDBThread()
+      setInterval(PastelDBThread, period)
+    }
 
-      if (history.location.pathname === ROUTES.LOADING) {
-        const skipLogin =
-          process.env.NODE_ENV === 'development' &&
-          process.env.AUTO_LOGIN_USERNAME &&
-          process.env.AUTO_LOGIN_PASSWORD
-        history.replace(skipLogin ? ROUTES.DASHBOARD : ROUTES.ONBOARDING)
-      }
-    },
-  )
+    if (history.location.pathname === ROUTES.LOADING) {
+      const skipLogin =
+        process.env.NODE_ENV === 'development' &&
+        process.env.AUTO_LOGIN_USERNAME &&
+        process.env.AUTO_LOGIN_PASSWORD
+      history.replace(skipLogin ? ROUTES.DASHBOARD : ROUTES.ONBOARDING)
+    }
+  })
 
   onRendererEvent(
     'prepareToQuit',

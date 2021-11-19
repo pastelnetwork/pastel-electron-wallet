@@ -35,6 +35,7 @@ function Toggle({
       )}
       onClick={handleToggleClick}
       role='button'
+      tabIndex={0}
     >
       <div
         className={cn(

@@ -405,6 +405,8 @@ export default function PaymentModal(): JSX.Element {
       <span
         className='flex items-center ml-[8px]'
         onClick={() => setAddPaymentSourceModalIsOpen(true)}
+        role='button'
+        tabIndex={0}
       >
         <Tooltip
           classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'

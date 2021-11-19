@@ -55,29 +55,24 @@ function Button({
     'w-10 h-10 flex items-center justify-center bg-gray-f8 rounded-full focus:outline-none': true,
   })
 
+  if (variant === 'navigation') {
+    return (
+      <button
+        className={navButtonClasses}
+        {...otherProps}
+        type={type || 'button'}
+      >
+        {children}
+      </button>
+    )
+  }
+
   return (
-    <>
-      {variant === 'navigation' ? (
-        <button
-          className={navButtonClasses}
-          {...otherProps}
-          type={type || 'button'}
-        >
-          {children}
-        </button>
-      ) : (
-        <Tag
-          type={type}
-          className={classes}
-          disabled={disabled}
-          {...otherProps}
-        >
-          {prepend && <span className='pr-2'>{prepend}</span>}
-          <span className={cn(childrenClassName)}>{children}</span>
-          {append && <span className='pl-2'>{append}</span>}
-        </Tag>
-      )}
-    </>
+    <Tag type={type} className={classes} disabled={disabled} {...otherProps}>
+      {prepend && <span className='pr-2'>{prepend}</span>}
+      <span className={cn(childrenClassName)}>{children}</span>
+      {append && <span className='pl-2'>{append}</span>}
+    </Tag>
   )
 }
 

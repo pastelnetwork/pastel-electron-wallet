@@ -78,6 +78,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         onClick={() => onThemeBtnClick('green')}
         title='Select green theme'
         role='button'
+        tabIndex={0}
       />
       <div
         className={cx(styles.amberThemeBtn, {
@@ -86,6 +87,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         onClick={() => onThemeBtnClick('amber')}
         title='Select amber theme'
         role='button'
+        tabIndex={1}
       />
       <div
         className={cx(styles.blackThemeBtn, {
@@ -94,6 +96,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         onClick={() => onThemeBtnClick('black')}
         title='Select black theme'
         role='button'
+        tabIndex={2}
       />
     </>
   )

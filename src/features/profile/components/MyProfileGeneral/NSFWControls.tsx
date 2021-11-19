@@ -31,6 +31,7 @@ export default function NSFWControls(): JSX.Element {
         className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap cursor-pointer'
         onClick={toggleAdvanced}
         role='button'
+        tabIndex={0}
       >
         <Caret to={displayAdvanced ? 'bottom' : 'top'} size={15} />
       </div>

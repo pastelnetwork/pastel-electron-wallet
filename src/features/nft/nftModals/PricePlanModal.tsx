@@ -106,6 +106,7 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
             className='cursor-pointer'
             onClick={() => setCellEdit({ row: row.id as number, col: 0 })}
             role='button'
+            tabIndex={0}
           >
             <img
               src={pencilIcon}

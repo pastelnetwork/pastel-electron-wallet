@@ -138,6 +138,7 @@ export default function RestoreByUpload({
             fileSelected ? 'cursor-pointer' : 'cursor-not-allowed',
           )}
           type='button'
+          tabIndex={0}
         >
           <Refresh
             size={44}

@@ -89,6 +89,7 @@ export default function Table({
               )}
               onClick={() => column.sortable && setSort(index)}
               role='button'
+              tabIndex={0}
             >
               {column.name}
               {column.sortable && (

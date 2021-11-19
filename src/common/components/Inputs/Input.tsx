@@ -86,6 +86,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
         className='relative flex items-center w-full'
         onClick={onClick}
         role='button'
+        tabIndex={0}
       >
         {prepend && <div className='pl-2 select-none'>{prepend}</div>}
         <input
