@@ -292,6 +292,21 @@ function WalletScreenContent(): JSX.Element {
     ) : null
   }
 
+  const renderWalletScreenBody = () => (
+    <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
+      <BalanceCards />
+      {renderEmptyContentBlock()}
+      <WalletAddresses />
+      <div className='flex justify-end mt-5 pb-[30px]'>
+        <PastelPromoCodeButton
+          setAddPastelPromoCodeModalOpen={setAddPastelPromoCodeModalOpen}
+        />
+        {renderAddNewAddressButton()}
+        <CreatePaymentButton setPaymentModalOpen={setPaymentModalOpen} />
+      </div>
+    </div>
+  )
+
   return (
     <div>
       <Breadcrumbs
@@ -308,19 +323,7 @@ function WalletScreenContent(): JSX.Element {
       <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
         {renderWalletHeader()}
       </div>
-      <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
-        <BalanceCards />
-        {renderEmptyContentBlock()}
-        <WalletAddresses />
-        <div className='flex justify-end mt-5 pb-[30px]'>
-          <PastelPromoCodeButton
-            setAddPastelPromoCodeModalOpen={setAddPastelPromoCodeModalOpen}
-          />
-          {renderAddNewAddressButton()}
-          <CreatePaymentButton setPaymentModalOpen={setPaymentModalOpen} />
-        </div>
-      </div>
-
+      {renderWalletScreenBody()}
       <Modals />
     </div>
   )
