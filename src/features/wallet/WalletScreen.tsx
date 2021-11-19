@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import {
@@ -160,9 +160,13 @@ function WalletScreenContent(): JSX.Element {
   }
 
   const renderCreatePaymentButton = () => {
+    const handleClick = useCallback(() => {
+      setPaymentModalOpen(true)
+    }, [])
+
     return (
       <Button
-        onClick={() => setPaymentModalOpen(true)}
+        onClick={handleClick}
         className='ml-30px w-[190px] px-0'
         childrenClassName='w-full'
       >
@@ -208,9 +212,13 @@ function WalletScreenContent(): JSX.Element {
   }
 
   const renderPastelPromoCodeButton = () => {
+    const handleClick = useCallback(() => {
+      setAddPastelPromoCodeModalOpen(true)
+    }, [])
+
     return (
       <Button
-        onClick={() => setAddPastelPromoCodeModalOpen(true)}
+        onClick={handleClick}
         variant='secondary'
         className='w-[240px] px-0'
         childrenClassName='w-full'
@@ -226,12 +234,16 @@ function WalletScreenContent(): JSX.Element {
   }
 
   const renderAddNewAddressButton = () => {
+    const handleClick = useCallback(() => {
+      createNewAddress()
+    }, [])
+
     return allAddresses.data?.length ? (
       <Button
         variant='secondary'
         className='w-[264px] ml-30px px-0'
         childrenClassName='w-full'
-        onClick={createNewAddress}
+        onClick={handleClick}
         disabled={isLoading}
       >
         <div className='flex items-center ml-[19px]'>

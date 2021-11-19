@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import cn from 'classnames'
 import styles from './WalletScreen.module.css'
 import AddressesTable from './AddressesTable'
@@ -47,12 +47,16 @@ export default function WalletAddresses(): JSX.Element {
   }
 
   const renderAddNewAddressButton = () => {
+    const handleClick = useCallback(() => {
+      createNewAddress()
+    }, [])
+
     return (
       <Button
         variant='secondary'
         className='w-[264px] px-0 mt-3'
         childrenClassName='w-full'
-        onClick={createNewAddress}
+        onClick={handleClick}
         disabled={isLoading}
       >
         <div className='flex items-center ml-[19px]'>
