@@ -87,27 +87,30 @@ export default function PaymentSource({
     setPaymentSourcesModal,
   } = useWalletScreenContext()
 
-  const handleSelectedAddress = (addr: string, isDelete = false) => {
-    setSelectedAddressesModal(addresses => {
-      if (addresses.includes(addr)) {
-        return addresses.filter(item => item !== addr)
-      } else {
-        return [...addresses, addr]
-      }
-    })
-
-    if (isDelete) {
-      setPaymentSourcesModal(sources => {
-        if (sources[address]) {
-          const adr = sources
-          delete adr[address]
-          return { ...sources }
+  const handleSelectedAddress = useCallback(
+    (addr: string, isDelete = false) => {
+      setSelectedAddressesModal(addresses => {
+        if (addresses.includes(addr)) {
+          return addresses.filter(item => item !== addr)
         } else {
-          return { ...sources }
+          return [...addresses, addr]
         }
       })
-    }
-  }
+
+      if (isDelete) {
+        setPaymentSourcesModal(sources => {
+          if (sources[address]) {
+            const adr = sources
+            delete adr[address]
+            return { ...sources }
+          } else {
+            return { ...sources }
+          }
+        })
+      }
+    },
+    [],
+  )
 
   const renderSelectPaymentSourceAmount = () => (
     <div className='flex justify-end pr-4'>
