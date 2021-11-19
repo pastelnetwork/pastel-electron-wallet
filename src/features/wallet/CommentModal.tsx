@@ -123,7 +123,7 @@ export default function CommentModal({
             'text-gray-71 border-b border-gray-71 pb-8px',
         )}
         role='button'
-        tabIndex={1}
+        tabIndex={0}
       >
         <div
           className={cx(

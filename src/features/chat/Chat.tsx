@@ -145,7 +145,7 @@ function Chat(): JSX.Element {
         className='cursor-pointer mr-4'
         onClick={onAttach}
         role='button'
-        tabIndex={1}
+        tabIndex={0}
       >
         <img className='cursor-pointer' src={msgAttachIcon} alt='Attach' />
       </div>
@@ -154,7 +154,7 @@ function Chat(): JSX.Element {
         className='cursor-pointer w-10 h-10'
         onClick={onSendMsg}
         role='button'
-        tabIndex={2}
+        tabIndex={0}
       >
         <img
           className='cursor-pointer w-full h-full'
@@ -181,7 +181,7 @@ function Chat(): JSX.Element {
         className='cursor-pointer flex items-center h-4'
         onClick={toggleActiveChatMenu}
         role='button'
-        tabIndex={3}
+        tabIndex={0}
       >
         <img className='cursor-pointer' src={chatMenuIcon} alt='Chat' />
       </div>
@@ -223,7 +223,7 @@ function Chat(): JSX.Element {
       onClick={onChatEdit}
       className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
       role='button'
-      tabIndex={1}
+      tabIndex={0}
     >
       <img className='w-5 cursor-pointer' src={editIcon} alt='Edit' />
     </i>
@@ -252,15 +252,16 @@ function Chat(): JSX.Element {
     <div
       className='page-container py-5 flex flex-col h-full'
       onClick={onCloseChat}
-      tabIndex={2}
+      tabIndex={0}
+      role='button'
     >
       <div
         className='paper flex flex-grow bg-gray-fc overflow-hidden'
         onClick={ev => ev.stopPropagation()}
         tabIndex={0}
+        role='button'
       >
         {renderChatItems()}
-
         {renderBody()}
       </div>
     </div>

@@ -38,7 +38,7 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
           className={tab == 'Friends' ? cx_tab_active : cx_tab}
           onClick={() => setTab('Friends')}
           role='button'
-          tabIndex={1}
+          tabIndex={0}
         >
           Friends ({relationCounts.friends})
         </div>
@@ -48,7 +48,7 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
           className={tab == 'Following' ? cx_tab_active : cx_tab}
           onClick={() => setTab('Following')}
           role='button'
-          tabIndex={2}
+          tabIndex={0}
         >
           Following ({relationCounts.following})
         </div>

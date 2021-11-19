@@ -90,6 +90,7 @@ export default function PaymentSource({
               onClick={() => setCommentOpen(!isCommentOpen)}
               role='button'
               tabIndex={0}
+              aria-hidden='true'
             >
               <img className='cursor-pointer' src={add2Icon} alt='Add' />
             </span>
