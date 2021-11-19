@@ -76,6 +76,17 @@ export default function WalletAddresses(): JSX.Element {
     )
   }
 
+  const renderToggleEmptyAddressTooltip = () => (
+    <Tooltip
+      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+      content='Hide empty addresses'
+      width={150}
+      type='top'
+    >
+      <EliminationIcon className='text-gray-8e' size={20} />
+    </Tooltip>
+  )
+
   const renderToggleEmptyAddress = () => {
     return (
       <Toggle
@@ -83,16 +94,7 @@ export default function WalletAddresses(): JSX.Element {
         selected={hideEmptyAddresses}
       >
         Hide empty addresses
-        <div className='ml-2'>
-          <Tooltip
-            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-            content='Hide empty addresses'
-            width={150}
-            type='top'
-          >
-            <EliminationIcon className='text-gray-8e' size={20} />
-          </Tooltip>
-        </div>
+        <div className='ml-2'>{renderToggleEmptyAddressTooltip()}</div>
       </Toggle>
     )
   }

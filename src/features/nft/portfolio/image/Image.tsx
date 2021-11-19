@@ -37,16 +37,20 @@ export default function Image({ nft }: TImageProps): JSX.Element {
     </div>
   )
 
+  const renderFlagButtonIcon = () => (
+    <button
+      type='button'
+      className='ml-3 text-gray-a6 relative top-3px opacity-50 duration-200 transition hover:opacity-100'
+    >
+      <Flag variant='stroke' size={16} className='text-gray-71' />
+    </button>
+  )
+
   const renderNFTId = () => (
     <div className='w-full flex-between mt-6 font-medium text-gray-71'>
       <div>
         NFT ID {nft.id}
-        <button
-          type='button'
-          className='ml-3 text-gray-a6 relative top-3px opacity-50 duration-200 transition hover:opacity-100'
-        >
-          <Flag variant='stroke' size={16} className='text-gray-71' />
-        </button>
+        {renderFlagButtonIcon()}
       </div>
     </div>
   )

@@ -11,7 +11,7 @@ const migrationsPath = path.join(
   'migrations',
 )
 
-const fileNameIndex = process.argv.indexOf(__filename)
+const fileNameIndex: number = process.argv.indexOf(__filename)
 if (fileNameIndex === -1 || fileNameIndex === process.argv.length - 1) {
   throw new Error('Can not get migration name')
 }

@@ -88,6 +88,7 @@ export default function Table({
                 column.align === 'center' && 'justify-center',
               )}
               onClick={() => column.sortable && setSort(index)}
+              role='button'
             >
               {column.name}
               {column.sortable && (

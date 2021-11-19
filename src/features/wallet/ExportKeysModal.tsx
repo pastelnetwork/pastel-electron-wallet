@@ -148,19 +148,23 @@ function PDFDocument({
     </View>
   )
 
+  const renderExportKeyPDFMainView = () => (
+    <View style={pdfStyles.section}>
+      <View style={pdfStyles.contentTop}>
+        {renderQRCodeGEneratorTop()}
+        {renderAddressSapling()}
+      </View>
+      <View style={pdfStyles.mainContent}>
+        {renderPrivateKey()}
+        {renderQRCodeGEnerator()}
+      </View>
+    </View>
+  )
+
   return (
     <Document title={title}>
       <Page size='A4' style={pdfStyles.page}>
-        <View style={pdfStyles.section}>
-          <View style={pdfStyles.contentTop}>
-            {renderQRCodeGEneratorTop()}
-            {renderAddressSapling()}
-          </View>
-          <View style={pdfStyles.mainContent}>
-            {renderPrivateKey()}
-            {renderQRCodeGEnerator()}
-          </View>
-        </View>
+        {renderExportKeyPDFMainView()}
       </Page>
     </Document>
   )

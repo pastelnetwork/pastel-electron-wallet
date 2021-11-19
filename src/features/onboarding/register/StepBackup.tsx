@@ -100,7 +100,7 @@ export default function StepBackupMethod(): JSX.Element {
     }
   }, [])
 
-  const saveFile = async (url: string) => {
+  const saveFile = (url: string) => {
     const a = document.createElement('a')
     a.href = url
     a.download = videoFileName
@@ -114,15 +114,6 @@ export default function StepBackupMethod(): JSX.Element {
       if (evt.data.videoUrl && !videoUrl) {
         setVideoUrl(evt.data.videoUrl)
         saveFile(evt.data.videoUrl)
-          .then(() => {
-            // noop
-          })
-          .catch(() => {
-            // noop
-          })
-          .finally(() => {
-            // noop
-          })
       } else {
         setCurrentStatus('error')
       }
@@ -159,15 +150,6 @@ export default function StepBackupMethod(): JSX.Element {
   const handleDownloadVideo = () => {
     if (videoUrl) {
       saveFile(videoUrl)
-        .then(() => {
-          // noop
-        })
-        .catch(() => {
-          // noop
-        })
-        .finally(() => {
-          // noop
-        })
     } else {
       setCurrentStatus('downloading')
       const canvas = document.querySelectorAll('.canvasQRCodeData')

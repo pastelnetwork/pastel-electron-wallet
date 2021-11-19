@@ -56,9 +56,9 @@ export const useImageZoom = (): {
     const transform = transformRef.current
     progressBar.style.width = `${transform.scale * 100}%`
     const scale = minZoom + (maxZoom - minZoom) * transform.scale
-    const strScale = scale?.toString() || ''
-    const transformX = transform.x?.toString() || ''
-    const transformY = transform.y?.toString() || ''
+    const strScale: string = scale?.toString() || ''
+    const transformX: string = transform.x?.toString() || ''
+    const transformY: string = transform.y?.toString() || ''
     image.style.transform = `scale(${strScale}) translateX(${transformX}px) translateY(${transformY}px)`
   }
 
@@ -73,11 +73,17 @@ export const useImageZoom = (): {
     if (!el) {
       return
     }
-    applyScale(transformRef.current.scale + data.deltaX / el.offsetWidth)
+    const scale: number = transformRef.current.scale || 0
+    const deltaX: number = data.deltaX || 0
+    const offsetWidth: number = el.offsetWidth || 0
+    applyScale(scale + deltaX / offsetWidth)
   }
 
-  const onWheelImage = (e: WheelEvent) =>
-    applyScale(transformRef.current.scale + e.deltaY / 1000)
+  const onWheelImage = (e: WheelEvent) => {
+    const scale: number = transformRef.current.scale || 0
+    const deltaY: number = e.deltaY || 0
+    return applyScale(scale + deltaY / 1000)
+  }
 
   const onDragImage = (e: DraggableEvent, data: DraggableData) => {
     setTransform(data.deltaX, data.deltaY)

@@ -127,6 +127,20 @@ export default function NFTCard({
     </div>
   )
 
+  const renderBuyItNowButton = () => (
+    <div>
+      <Button
+        variant='transparent'
+        className={cn(
+          'h-32px text-sm font-medium border-2 border-blue-3f',
+          buttonClassName,
+        )}
+      >
+        Buy it Now
+      </Button>
+    </div>
+  )
+
   const renderFixedPriceButton = (fullCardProps: TNFTCard) => (
     <>
       <div className='flex justify-between'>
@@ -140,17 +154,15 @@ export default function NFTCard({
         >
           Fixed price
         </div>
-        <div>
-          <div
-            className={cn(
-              'text-gray-2d',
-              variant === NFTCardVariantSize.M
-                ? 'text-h6-leading-20-black'
-                : 'text-h5-heavy',
-            )}
-          >
-            {formatNumber(fullCardProps.price)} {fullCardProps.currencyName}
-          </div>
+        <div
+          className={cn(
+            'text-gray-2d',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-black'
+              : 'text-h5-heavy',
+          )}
+        >
+          {formatNumber(fullCardProps.price)} {fullCardProps.currencyName}
         </div>
       </div>
       <div
@@ -166,80 +178,101 @@ export default function NFTCard({
         >
           {copiesAvailable} Copies Available
         </div>
-        <div>
-          <Button
-            variant='transparent'
-            className={cn(
-              'h-32px text-sm font-medium border-2 border-blue-3f',
-              buttonClassName,
-            )}
-          >
-            Buy it Now
-          </Button>
-        </div>
+        {renderBuyItNowButton()}
       </div>
     </>
+  )
+
+  const renderMakeAnOfferutton = () => (
+    <div>
+      <Button
+        variant='transparent'
+        className={cn(
+          'h-32px text-sm font-medium border-2 border-blue-3f',
+          buttonClassName,
+        )}
+      >
+        Make an Offer
+      </Button>
+    </div>
   )
 
   const renderNotForSale = () => (
     <>
       <div className='flex justify-between'>
-        <div>
-          <div
-            className={cn(
-              'text-gray-4a',
-              variant === NFTCardVariantSize.M
-                ? 'text-h6-leading-20-medium'
-                : 'text-h5-medium',
-            )}
-          >
-            Not for sale
-          </div>
+        <div
+          className={cn(
+            'text-gray-4a',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-medium'
+              : 'text-h5-medium',
+          )}
+        >
+          Not for sale
         </div>
       </div>
       <div className={cn('flex justify-between', buttonFooterWrapper)}>
         <div>&nbsp;</div>
-        <div>
-          <Button
-            variant='transparent'
-            className={cn(
-              'h-32px text-sm font-medium border-2 border-blue-3f',
-              buttonClassName,
-            )}
-          >
-            Make an Offer
-          </Button>
-        </div>
+        {renderMakeAnOfferutton()}
       </div>
     </>
+  )
+
+  const renderPlaceBidButton = () => (
+    <div>
+      <Button
+        variant='transparent'
+        className={cn(
+          'h-32px text-sm font-medium border-2 border-blue-3f',
+          buttonClassName,
+        )}
+      >
+        Place a Bid
+      </Button>
+    </div>
+  )
+
+  const renderCountdownTimerBlock = () => (
+    <div
+      className={cn(
+        'nft-text-gradient',
+        variant === NFTCardVariantSize.M
+          ? 'text-h6-leading-20-heavy'
+          : 'text-h5-heavy',
+      )}
+    >
+      <CountdownTimer countDownDate={leftTime} /> left
+    </div>
+  )
+
+  const renderAuctionBidPrice = (fullCardProps: TNFTCard) => (
+    <div
+      className={cn(
+        'text-gray-2d',
+        variant === NFTCardVariantSize.M
+          ? 'text-h6-leading-20-black'
+          : 'text-h5-heavy',
+      )}
+    >
+      {formatNumber(fullCardProps.price)} {fullCardProps.currencyName}
+    </div>
   )
 
   const renderAuctionBid = (fullCardProps: TNFTCard) => (
     <>
       <div className='flex justify-between'>
-        <div>
-          <div
-            className={cn(
-              'text-gray-4a',
-              variant === NFTCardVariantSize.M
-                ? 'text-h6-leading-20-medium'
-                : 'text-h5-medium',
-            )}
-          >
-            Last Auction Bid
-          </div>
+        <div
+          className={cn(
+            'text-gray-4a',
+            variant === NFTCardVariantSize.M
+              ? 'text-h6-leading-20-medium'
+              : 'text-h5-medium',
+          )}
+        >
+          Last Auction Bid
         </div>
         <div className='flex items-center'>
-          <div
-            className={cn(
-              'text-gray-2d',
-              variant === NFTCardVariantSize.M
-                ? 'text-h6-leading-20-black'
-                : 'text-h5-heavy',
-            )}
-          >
-            {formatNumber(fullCardProps.price)} {fullCardProps.currencyName}
-          </div>
+          {renderAuctionBidPrice(fullCardProps)}
           {bidPercentage && (
             <div
               className={cn(
@@ -257,27 +290,8 @@ export default function NFTCard({
       <div
         className={cn('flex justify-between items-center', buttonFooterWrapper)}
       >
-        <div
-          className={cn(
-            'nft-text-gradient',
-            variant === NFTCardVariantSize.M
-              ? 'text-h6-leading-20-heavy'
-              : 'text-h5-heavy',
-          )}
-        >
-          <CountdownTimer countDownDate={leftTime} /> left
-        </div>
-        <div>
-          <Button
-            variant='transparent'
-            className={cn(
-              'h-32px text-sm font-medium border-2 border-blue-3f',
-              buttonClassName,
-            )}
-          >
-            Place a Bid
-          </Button>
-        </div>
+        {renderCountdownTimerBlock()}
+        {renderPlaceBidButton()}
       </div>
     </>
   )
@@ -360,20 +374,24 @@ export default function NFTCard({
     </div>
   )
 
+  const renderNFTDetailImage = () => (
+    <div className={cn('relative overflow-hidden', imageHeightClass)}>
+      <img
+        src={imageSrc}
+        className={cn(
+          'object-cover h-full w-full cursor-pointer',
+          imageHeightClass,
+          isNSFW && 'filter blur-[10px]',
+        )}
+        alt='Detail'
+      />
+    </div>
+  )
+
   const renderImageDetailUrlLink = () => (
     <div className={cn(normalSpacingClassName, percentage && 'mt-0')}>
       <Link to={detailUrl} className='cursor-pointer w-full'>
-        <div className={cn('relative overflow-hidden', imageHeightClass)}>
-          <img
-            src={imageSrc}
-            className={cn(
-              'object-cover h-full w-full cursor-pointer',
-              imageHeightClass,
-              isNSFW && 'filter blur-[10px]',
-            )}
-            alt='Detail'
-          />
-        </div>
+        {renderNFTDetailImage()}
       </Link>
     </div>
   )

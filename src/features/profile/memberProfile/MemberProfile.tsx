@@ -474,12 +474,16 @@ export default function MemberProfile(): JSX.Element {
     </div>
   )
 
+  const renderProfileCard = () => (
+    <div className='flex flex-col items-center lg:justify-between'>
+      <ProfileCard {...profile_data} isMyProfile />
+    </div>
+  )
+
   const renderMemverProfileContent = () => (
     <div className='wrapper flex py-8 pl-60px pr-25px'>
       <div className='flex w-full'>
-        <div className='flex flex-col items-center lg:justify-between'>
-          <ProfileCard {...profile_data} isMyProfile />
-        </div>
+        {renderProfileCard()}
         {renderTabContent()}
       </div>
     </div>

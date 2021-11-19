@@ -152,16 +152,12 @@ export default function ProfileGeneral({
         <span className='text-gray-4a font-medium text-base leading-5'>
           None
         </span>
+      ) : editMode ? (
+        <Categories value={categories} onChange={setCategories} />
       ) : (
-        <>
-          {editMode ? (
-            <Categories value={categories} onChange={setCategories} />
-          ) : (
-            <div className='flex whitespace-pre-wrap text-gray-4a'>
-              {categories.join(', ')}
-            </div>
-          )}
-        </>
+        <div className='flex whitespace-pre-wrap text-gray-4a'>
+          {categories.join(', ')}
+        </div>
       )}
     </ProfileGeneralRow>
   )

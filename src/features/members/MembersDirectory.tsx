@@ -165,25 +165,37 @@ function MembersDirectory(): JSX.Element {
     </div>
   )
 
+  const renderTotalSalesFilter = () => (
+    <div className='flex h-full items-center justify-end'>
+      <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
+      <Slider
+        min={0}
+        max={999}
+        values={range}
+        onChange={setRange}
+        formatValue={formatValue}
+        formatTooltipValue={formatValue}
+        step={1}
+      />
+    </div>
+  )
+
   const renderFilter = () => (
     <div className='flex justify-between pb-25px'>
       <div className='w-244px'>
         <Select {...filterOptions} className='w-full' />
       </div>
-      <div className='flex'>
-        <div className='flex h-full items-center justify-end'>
-          <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
+      <div className='flex'>{renderTotalSalesFilter()}</div>
+    </div>
+  )
 
-          <Slider
-            min={0}
-            max={999}
-            values={range}
-            onChange={setRange}
-            formatValue={formatValue}
-            formatTooltipValue={formatValue}
-            step={1}
-          />
-        </div>
+  const renderMembersDirectoryContent = () => (
+    <div
+      className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
+    >
+      <div className='bg-white p-5 rounded-lg mr-[30px]'>
+        {renderFilter()}
+        {renderMemberStripsContent()}
       </div>
     </div>
   )
@@ -196,16 +208,7 @@ function MembersDirectory(): JSX.Element {
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <Scrollbar hasPageHeader>
-        <div
-          className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
-        >
-          <div className='bg-white p-5 rounded-lg mr-[30px]'>
-            {renderFilter()}
-            {renderMemberStripsContent()}
-          </div>
-        </div>
-      </Scrollbar>
+      <Scrollbar hasPageHeader>{renderMembersDirectoryContent()}</Scrollbar>
     </div>
   )
 }

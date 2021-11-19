@@ -224,6 +224,19 @@ export default function TransactionHistoryModal(): JSX.Element {
     [transactions, addressBook],
   )
 
+  const renderTransactionCommentIconTooltip = (row?: TRow) => (
+    <Tooltip
+      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+      content={row?.comments}
+      width={150}
+      type='top'
+    >
+      <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
+        <img alt='comment' className='cursor-pointer' src={commentIcon} />
+      </span>
+    </Tooltip>
+  )
+
   const renderTransactionCommentIcon = (row?: TRow) => {
     if (!row?.comments) {
       return null
@@ -231,16 +244,7 @@ export default function TransactionHistoryModal(): JSX.Element {
 
     return (
       <div className='inline-block'>
-        <Tooltip
-          classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-          content={row.comments}
-          width={150}
-          type='top'
-        >
-          <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'>
-            <img alt='comment' className='cursor-pointer' src={commentIcon} />
-          </span>
-        </Tooltip>
+        {renderTransactionCommentIconTooltip(row)}
       </div>
     )
   }

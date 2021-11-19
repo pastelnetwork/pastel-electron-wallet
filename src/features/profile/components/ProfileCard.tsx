@@ -93,7 +93,11 @@ function ProfileCard({
 
   const renderUserAvatar = () => (
     <div className='rounded-full mx-auto border-5px border-white bg-pink-200 w-110px h-110px shadow-xs'>
-      <img src={svg_avatar} className='rounded-full w-full h-full' />
+      <img
+        src={svg_avatar}
+        className='rounded-full w-full h-full'
+        alt='Avatar'
+      />
     </div>
   )
 

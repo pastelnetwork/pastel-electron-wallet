@@ -118,9 +118,9 @@ function Chat(): JSX.Element {
 
       <div className='flex-grow mr-4 h-full relative'>
         {newMsgPlaceholder && (
-          <label className='absolute top-0 left-0 right-0 bottom-0 flex items-center z-0 font-medium text-base text-gray-300'>
+          <span className='absolute top-0 left-0 right-0 bottom-0 flex items-center z-0 font-medium text-base text-gray-300'>
             Write your message here...
-          </label>
+          </span>
         )}
         <textarea
           className='w-full h-full border-0 font-medium text-base text-gray-400 relative z-10 resize-none bg-transparent outline-none focus:outline-none'
@@ -132,15 +132,19 @@ function Chat(): JSX.Element {
         ></textarea>
       </div>
 
-      <div className='cursor-pointer mr-4' onClick={onEmoji}>
+      <div className='cursor-pointer mr-4' onClick={onEmoji} role='button'>
         <img className='cursor-pointer' src={msgEmojiIcon} alt='Emoji' />
       </div>
 
-      <div className='cursor-pointer mr-4' onClick={onAttach}>
+      <div className='cursor-pointer mr-4' onClick={onAttach} role='button'>
         <img className='cursor-pointer' src={msgAttachIcon} alt='Attach' />
       </div>
 
-      <div className='cursor-pointer w-10 h-10' onClick={onSendMsg}>
+      <div
+        className='cursor-pointer w-10 h-10'
+        onClick={onSendMsg}
+        role='button'
+      >
         <img
           className='cursor-pointer w-full h-full'
           src={msgSendIcon}
@@ -150,34 +154,35 @@ function Chat(): JSX.Element {
     </div>
   )
 
-  const renderBody = () => (
-    <div className='flex flex-grow flex-col'>
-      <div
-        className={cn(
-          styles.chatHeader,
-          'bg-white flex items-center px-4 h-14',
-        )}
-      >
-        {activeChat && (
-          <UserAvatar user={TChatUser(activeChat)} size={9} hideOnline />
-        )}
+  const renderChatControl = () => (
+    <div
+      className={cn(styles.chatHeader, 'bg-white flex items-center px-4 h-14')}
+    >
+      {activeChat && (
+        <UserAvatar user={TChatUser(activeChat)} size={9} hideOnline />
+      )}
 
-        <div className='flex-grow font-extrabold text-lg text-gray-600'>
-          {activeChat ? activeChat.title : ''}
-        </div>
-
-        <div
-          className='cursor-pointer flex items-center h-4'
-          onClick={toggleActiveChatMenu}
-        >
-          <img className='cursor-pointer' src={chatMenuIcon} alt='Chat' />
-        </div>
-
-        <div className='flex items-center ml-4 h-4'>
-          <CloseButton onClick={onCloseChat} />
-        </div>
+      <div className='flex-grow font-extrabold text-lg text-gray-600'>
+        {activeChat ? activeChat.title : ''}
       </div>
 
+      <div
+        className='cursor-pointer flex items-center h-4'
+        onClick={toggleActiveChatMenu}
+        role='button'
+      >
+        <img className='cursor-pointer' src={chatMenuIcon} alt='Chat' />
+      </div>
+
+      <div className='flex items-center ml-4 h-4'>
+        <CloseButton onClick={onCloseChat} />
+      </div>
+    </div>
+  )
+
+  const renderBody = () => (
+    <div className='flex flex-grow flex-col'>
+      {renderChatControl()}
       <div className='flex-grow px-5 overflow-auto'>
         {activeChat &&
           activeChat.messages.map((msg, i) => {
@@ -205,6 +210,7 @@ function Chat(): JSX.Element {
     <i
       onClick={onChatEdit}
       className='w-8 h-8 inline-flex justify-center bg-white rounded-full cursor-pointer m-0.5 mr-1.5 shadow'
+      role='button'
     >
       <img className='w-5 cursor-pointer' src={editIcon} alt='Edit' />
     </i>

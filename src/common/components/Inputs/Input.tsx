@@ -82,7 +82,11 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     })
 
     const renderInputControl = () => (
-      <div className='relative flex items-center w-full' onClick={onClick}>
+      <div
+        className='relative flex items-center w-full'
+        onClick={onClick}
+        role='button'
+      >
         {prepend && <div className='pl-2 select-none'>{prepend}</div>}
         <input
           id={id}

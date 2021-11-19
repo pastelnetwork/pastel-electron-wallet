@@ -70,6 +70,7 @@ export default function PaymentSource({
         <span
           className='ml-4px flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
           onClick={() => handleSelectedAddress(address, true)}
+          role='button'
         >
           <Trash size={14} className='text-gray-88' />
         </span>
@@ -83,13 +84,12 @@ export default function PaymentSource({
       <td className='w-24'>
         {!isMemoDisabled ? (
           <div className='relative'>
-            <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
-              <img
-                className='cursor-pointer'
-                onClick={() => setCommentOpen(!isCommentOpen)}
-                src={add2Icon}
-                alt='Add'
-              />
+            <span
+              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+              onClick={() => setCommentOpen(!isCommentOpen)}
+              role='button'
+            >
+              <img className='cursor-pointer' src={add2Icon} alt='Add' />
             </span>
             <CommentModal
               isOpen={isCommentOpen}

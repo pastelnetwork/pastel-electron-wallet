@@ -26,6 +26,13 @@ function BidAuctionModal({
   const handleBid = (event: React.ChangeEvent<HTMLInputElement>) =>
     setBid(event.target.value)
 
+  const renderTransactionFeeContent = () => (
+    <p className='text-right font-extrabold text-h6 text-gray-2d flex items-center'>
+      <Fire size={18} />
+      ~500 {currencyName}
+    </p>
+  )
+
   const renderCurrentBalance = () => (
     <div className='text-sm mb-[26px]'>
       <div className='flex justify-between'>
@@ -38,10 +45,7 @@ function BidAuctionModal({
       </div>
       <div className='flex justify-between mt-2.5'>
         <p className='font-normal text-gray-4a'>Transaction Fee(burned)</p>
-        <p className='text-right font-extrabold text-h6 text-gray-2d flex items-center'>
-          <Fire size={18} />
-          ~500 {currencyName}
-        </p>
+        {renderTransactionFeeContent()}
       </div>
       <div className='flex justify-between mt-2.5'>
         <p className='font-normal text-gray-4a'>Total NFT Offer with Fee</p>

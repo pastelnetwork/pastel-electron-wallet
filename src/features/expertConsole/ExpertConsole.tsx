@@ -53,14 +53,18 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
     document.getElementById('terminalInput')?.focus()
   }
 
-  const renderTerminalConsole = () => (
+  const renderTerminalConsoleForm = () => (
+    <div className={styles.envelope}>
+      <TerminalConsole {...consoleProps()} />
+    </div>
+  )
+
+  const renderTerminalConsoleBlock = () => (
     <div className={styles.screen}>
       <div className={styles.wrapper}>
         <div className={styles.interlace} />
         <div className={styles.scanline} />
-        <div className={styles.envelope}>
-          <TerminalConsole {...consoleProps()} />
-        </div>
+        {renderTerminalConsoleForm()}
       </div>
     </div>
   )
@@ -73,6 +77,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         })}
         onClick={() => onThemeBtnClick('green')}
         title='Select green theme'
+        role='button'
       />
       <div
         className={cx(styles.amberThemeBtn, {
@@ -80,6 +85,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         })}
         onClick={() => onThemeBtnClick('amber')}
         title='Select amber theme'
+        role='button'
       />
       <div
         className={cx(styles.blackThemeBtn, {
@@ -87,6 +93,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         })}
         onClick={() => onThemeBtnClick('black')}
         title='Select black theme'
+        role='button'
       />
     </>
   )
@@ -95,7 +102,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
     <div className={styles.container}>
       <div className={cstyles.flexspacebetween} />
       <div className={cx(styles.crt, styles[theme])}>
-        {renderTerminalConsole()}
+        {renderTerminalConsoleBlock()}
         {renderTheme()}
       </div>
     </div>

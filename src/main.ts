@@ -4,12 +4,3 @@ import 'electron-squirrel-startup'
 import { mainSetup } from './features/app/mainSetup'
 
 mainSetup()
-  .then(() => {
-    // noop
-  })
-  .catch(() => {
-    // noop
-  })
-  .finally(() => {
-    // noop
-  })

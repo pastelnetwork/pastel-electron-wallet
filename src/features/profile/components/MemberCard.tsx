@@ -36,6 +36,12 @@ export default function MemberCard({
     onClick(id)
   }, [])
 
+  const renderLinkComment = () => (
+    <Link to='#'>
+      <span className='text-blue-3f ml-2'>{object}</span>
+    </Link>
+  )
+
   const renderCommentContent = () => (
     <div className='ml-6 font-medium lg:w-372px flex-grow'>
       <div className='text-gray-11 text-base'>{name}</div>
@@ -43,9 +49,7 @@ export default function MemberCard({
         {behaviour == 'commented' && (
           <span className='text-gray-80'>Commented on</span>
         )}
-        <Link to='#'>
-          <span className='text-blue-3f ml-2'>{object}</span>
-        </Link>
+        {renderLinkComment()}
         <span className='text-gray-80 ml-2'>{time}</span>
       </div>
       <div className='mt-4 text-gray-80 text-h5 font-normal'>{description}</div>

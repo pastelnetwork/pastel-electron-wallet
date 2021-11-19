@@ -30,17 +30,18 @@ function Crypto(props: TCrypto): JSX.Element {
     </div>
   )
 
+  const renderCopyIcon = () => (
+    <span role='button' className='cursor-pointer' onClick={copyClipboard}>
+      <img className='cursor-pointer' src={IconClipboard} alt='Copy' />
+    </span>
+  )
+
   return (
     <div>
       <Description>{label}</Description>
       <div className='flex gap-4 mt-2.5'>
         {renderContent()}
-        <img
-          className='cursor-pointer'
-          onClick={copyClipboard}
-          src={IconClipboard}
-          alt='Copy'
-        />
+        {renderCopyIcon()}
       </div>
     </div>
   )

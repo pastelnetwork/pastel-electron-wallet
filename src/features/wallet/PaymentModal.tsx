@@ -109,7 +109,8 @@ export default function PaymentModal(): JSX.Element {
       let total = 0
       for (const key in addressAmounts) {
         if (total < amount) {
-          if (total + addressAmounts[key] >= amount) {
+          const addressAmount: number = addressAmounts[key] || 0
+          if (total + addressAmount >= amount) {
             setPaymentSourcesModal(key, amount - total)
           } else {
             setPaymentSourcesModal(key, addressAmounts[key])
@@ -340,8 +341,8 @@ export default function PaymentModal(): JSX.Element {
   }
 
   const totalBalance = totalBalances.data?.total || 0
-  const paytxfee = info.paytxfee.toString() || '0'
-  const relayfee = info.relayfee.toString() || '0'
+  const paytxfee: string = info.paytxfee.toString() || '0'
+  const relayfee: string = info.relayfee.toString() || '0'
 
   const renderConfirmPaymentButton = () => {
     return (
@@ -572,12 +573,16 @@ export default function PaymentModal(): JSX.Element {
     </div>
   )
 
+  const renderTransactionStatusTitle = () => (
+    <th className='text-left sticky bg-white z-30 top-0 whitespace-nowrap pr-3'>
+      <div className='ml-15px'>Transaction Status</div>
+    </th>
+  )
+
   const renderPaymentResultHeader = () => (
     <thead>
       <tr className='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'>
-        <th className='text-left sticky bg-white z-30 top-0 whitespace-nowrap pr-3'>
-          <div className='ml-15px'>Transaction Status</div>
-        </th>
+        {renderTransactionStatusTitle()}
         <th className='text-left sticky bg-white z-30 top-0 px-2'>TXID</th>
         <th className='w-[170px] text-left sticky bg-white z-30 top-0'></th>
       </tr>

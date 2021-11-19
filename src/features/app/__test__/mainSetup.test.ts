@@ -87,7 +87,7 @@ describe('mainSetup', () => {
   test('should send appLoadingFailed event if wallet node fails', async () => {
     asMock(startWalletNode).mockRejectedValueOnce(new Error('failed'))
 
-    await mainSetup()
+    mainSetup()
 
     await resolveAppReadyPromise()
     await emitMainEvent('rendererStarted', null)
@@ -100,7 +100,7 @@ describe('mainSetup', () => {
   test('should send appLoadingFailed event if readRpcConfig fails', async () => {
     asMock(readRpcConfig).mockRejectedValueOnce(new Error('failed'))
 
-    await mainSetup()
+    mainSetup()
 
     await resolveAppReadyPromise()
     await emitMainEvent('rendererStarted', null)

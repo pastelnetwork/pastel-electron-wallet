@@ -60,29 +60,30 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
     }
   }
 
-  const renderButtons = () => {
+  const renderImportButton = () => (
+    <Button
+      onClick={handleImportANIPrivKey}
+      className='w-[120px] px-0 ml-[30px]'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center justify-center'>
+        <div className='text-white text-h5-heavy'>Import</div>
+      </div>
+    </Button>
+  )
+
+  const renderCancelButtons = () => {
     return (
-      <>
-        <Button
-          variant='secondary'
-          className='w-[120px] px-0'
-          childrenClassName='w-full'
-          onClick={() => dispatch(closeImportANIPrivKeyModal())}
-        >
-          <div className='flex items-center justify-center'>
-            <div className='text-blue-3f text-h5-medium'>Cancel</div>
-          </div>
-        </Button>
-        <Button
-          onClick={handleImportANIPrivKey}
-          className='w-[120px] px-0 ml-[30px]'
-          childrenClassName='w-full'
-        >
-          <div className='flex items-center justify-center'>
-            <div className='text-white text-h5-heavy'>Import</div>
-          </div>
-        </Button>
-      </>
+      <Button
+        variant='secondary'
+        className='w-[120px] px-0'
+        childrenClassName='w-full'
+        onClick={() => dispatch(closeImportANIPrivKeyModal())}
+      >
+        <div className='flex items-center justify-center'>
+          <div className='text-blue-3f text-h5-medium'>Cancel</div>
+        </div>
+      </Button>
     )
   }
 
@@ -138,7 +139,10 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
                 <p className='text-red-fe text-xs leading-5 pt-1'>{message}</p>
               ) : null}
             </div>
-            <div className='mt-4 flex justify-center'>{renderButtons()}</div>
+            <div className='mt-4 flex justify-center'>
+              {renderCancelButtons()}
+              {renderImportButton()}
+            </div>
           </>
         )}
       </div>

@@ -53,13 +53,17 @@ function ChangeUsernameModal({
     </div>
   )
 
+  const renderFireIcon = () => (
+    <div className='mr-[9px]'>
+      <Fire size={18} />
+    </div>
+  )
+
   const renderUsernameChangeFee = () => (
     <div className='flex justify-between items-center mt-2.5'>
       <div className='text-gray-a0 text-sm'>Username Change Fee (burned)</div>
       <div className='text-gray-a0 text-sm font-extrabold flex items-center'>
-        <div className='mr-[9px]'>
-          <Fire size={18} />
-        </div>
+        {renderFireIcon()}
         <NumberFormat value={5000} displayType='text' thousandSeparator />{' '}
         {currencyName}
       </div>

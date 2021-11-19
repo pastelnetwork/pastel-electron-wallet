@@ -166,57 +166,64 @@ function PastelID(props: PastelIDProps): JSX.Element {
     return defaultOption.concat(addressesOptions)
   }
 
+  const renderCreateButton = () => (
+    <div className={cstyles.margintoplarge}>
+      <button
+        type='button'
+        disabled={!valid()}
+        className={`${cstyles.primarybutton} ${cstyles.margintoplarge} ${styles.button}`}
+        onClick={onCreate}
+      >
+        Create
+      </button>
+      <p className={[cstyles.sublight, styles.note].join(' ')}>
+        Note: You will need 1,000 {currencyName} coins to write this ticket to
+        the blockchain.
+      </p>
+    </div>
+  )
+
+  const renderSelectAddress = () => (
+    <div className={`${cstyles.verticalflex} ${cstyles.margintoplarge}`}>
+      <div className={`${cstyles.sublight} ${cstyles.padbottomsmall}`}>
+        Select an address to pay for this PastelID. If no address is selected, a
+        new one will be created
+      </div>
+      <Select
+        styles
+        value={selectedAddress}
+        options={generatedAddressesWithBalanceOptions()}
+        onChange={onAddressChange}
+        placeholder='Select an address'
+      />
+    </div>
+  )
+
+  const renderPastelIDInfo = () => (
+    <div className={cstyles.flexspacebetween}>
+      <div className={cstyles.sublight}>
+        Enter a secure passphrase for this PastelID
+      </div>
+      <div className={cstyles.validationerror}>
+        {passphrase && (
+          <span className={passphraseColor}>{passphraseValidation.value}</span>
+        )}
+      </div>
+    </div>
+  )
+
   const renderLoadingOverlay = () => (
     <LoadingOverlay loading={loading}>
       <div className={cstyles.well}>
-        <div className={cstyles.flexspacebetween}>
-          <div className={cstyles.sublight}>
-            Enter a secure passphrase for this PastelID
-          </div>
-          <div className={cstyles.validationerror}>
-            {passphrase && (
-              <span className={passphraseColor}>
-                {passphraseValidation.value}
-              </span>
-            )}
-          </div>
-        </div>
-
+        {renderPastelIDInfo()}
         <input
           type='text'
           className={`${cstyles.inputbox} ${cstyles.margintopsmall}`}
           onChange={onPassphraseChange}
           placeholder='Passphrase'
         />
-
-        <div className={`${cstyles.verticalflex} ${cstyles.margintoplarge}`}>
-          <div className={`${cstyles.sublight} ${cstyles.padbottomsmall}`}>
-            Select an address to pay for this PastelID. If no address is
-            selected, a new one will be created
-          </div>
-          <Select
-            styles
-            value={selectedAddress}
-            options={generatedAddressesWithBalanceOptions()}
-            onChange={onAddressChange}
-            placeholder='Select an address'
-          />
-        </div>
-
-        <div className={cstyles.margintoplarge}>
-          <button
-            type='button'
-            disabled={!valid()}
-            className={`${cstyles.primarybutton} ${cstyles.margintoplarge} ${styles.button}`}
-            onClick={onCreate}
-          >
-            Create
-          </button>
-          <p className={[cstyles.sublight, styles.note].join(' ')}>
-            Note: You will need 1,000 {currencyName} coins to write this ticket
-            to the blockchain.
-          </p>
-        </div>
+        {renderSelectAddress()}
+        {renderCreateButton()}
       </div>
     </LoadingOverlay>
   )

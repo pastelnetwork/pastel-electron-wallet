@@ -24,12 +24,16 @@ export default function Wallet(): JSX.Element {
 
   const transactions = useMemo<TTransactionsProps[]>(
     () =>
-      transactionsRaw?.map((transaction, idx) => ({
-        type: (transaction.type as TTransactionType) || TTransactionType.ALL,
-        amount: transaction.amount || 0,
-        date: dayjs.unix(transaction.time).format('DD/MM/YY'),
-        id: `${transaction.txid}-${idx}`,
-      })) || [],
+      transactionsRaw?.map((transaction, idx) => {
+        const txid: string = transaction.txid || ''
+        const strIndex: string = idx.toString()
+        return {
+          type: (transaction.type as TTransactionType) || TTransactionType.ALL,
+          amount: transaction.amount || 0,
+          date: dayjs.unix(transaction.time).format('DD/MM/YY'),
+          id: `${txid}-${strIndex}`,
+        }
+      }) || [],
     [transactionsRaw],
   )
 

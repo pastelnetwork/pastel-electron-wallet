@@ -25,10 +25,8 @@ export default function TransactionItem({
       </div>
       <div className='flex justify-between'>
         <div className='text-gray-a0 text-sm'>{date}</div>
-        <div>
-          <div className='font-extrabold text-sm text-gray-4a'>
-            {formatNumber(amount)} {currencyName}
-          </div>
+        <div className='font-extrabold text-sm text-gray-4a'>
+          {formatNumber(amount)} {currencyName}
         </div>
       </div>
     </div>

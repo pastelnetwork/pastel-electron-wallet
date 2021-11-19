@@ -72,6 +72,7 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
       <div
         className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
         onClick={() => onDeleteCategory(index)}
+        role='button'
       >
         <img src={ico_close} className='cursor-pointer' alt='Close' />
       </div>

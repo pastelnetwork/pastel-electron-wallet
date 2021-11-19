@@ -68,12 +68,14 @@ export default function PreviewStepModal({
     state.goBack()
   }
 
+  const strImageSizePercentOfAvg: string = imageSizePercentOfAvg?.toString()
+
   const renderImageSizePercentOfAvg = () => (
     <div className='flex-grow'>
       <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
         <div
           className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
-          style={{ width: imageSizePercentOfAvg + '%' }}
+          style={{ width: strImageSizePercentOfAvg + '%' }}
         />
       </div>
       <div className='text-xs text-gray-a0 font-normal'>

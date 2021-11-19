@@ -58,7 +58,11 @@ function Button({
   return (
     <>
       {variant === 'navigation' ? (
-        <button className={navButtonClasses} {...otherProps} type={type}>
+        <button
+          className={navButtonClasses}
+          {...otherProps}
+          type={type || 'button'}
+        >
           {children}
         </button>
       ) : (

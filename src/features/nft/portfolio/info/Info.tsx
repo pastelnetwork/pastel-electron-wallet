@@ -83,17 +83,26 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
     </div>
   )
 
+  const renderCreatorAvatar = () => (
+    <div className='rounded-full overflow-hidden mr-2 w-6 h-6'>
+      <img src={nft.author.avatar} className='object-contain' alt='Avatar' />
+    </div>
+  )
+
   const renderCreator = () => (
     <Row title='Creator' link='#'>
       <div className='flex-center'>
-        <div className='rounded-full overflow-hidden mr-2 w-6 h-6'>
-          <img
-            src={nft.author.avatar}
-            className='object-contain'
-            alt='Avatar'
-          />
-        </div>
+        {renderCreatorAvatar()}
         {nft.author.name}
+      </div>
+    </Row>
+  )
+
+  const renderCopiesRow = () => (
+    <Row title='Copies' link='#'>
+      <div className='flex-center'>
+        {nft.owner}
+        <ChatDots size={13} className='text-blue-3f ml-2 relative -top-0.5' />
       </div>
     </Row>
   )
@@ -103,12 +112,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
       <Row title='Copies' link='#'>
         {nft.copies === 1 ? 'One-of-a-Kind (1 of 1)' : nft.copies}
       </Row>
-      <Row title='Copies' link='#'>
-        <div className='flex-center'>
-          {nft.owner}
-          <ChatDots size={13} className='text-blue-3f ml-2 relative -top-0.5' />
-        </div>
-      </Row>
+      {renderCopiesRow()}
       <Row title='Royalty' link='#'>
         {nft.royalty ? nft.royalty : 'None'}
       </Row>

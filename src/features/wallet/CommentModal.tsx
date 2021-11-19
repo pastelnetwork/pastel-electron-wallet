@@ -63,7 +63,11 @@ export default function CommentModal({
   }
 
   const renderSaveButton = () => (
-    <button onClick={handleSave} className='px-1 pb-4 cursor-pointer'>
+    <button
+      onClick={handleSave}
+      className='px-1 pb-4 cursor-pointer'
+      type='button'
+    >
       <div className='text-blue-3f hover:text-blue-600 text-h6-leading-20'>
         Save
       </div>
@@ -98,6 +102,7 @@ export default function CommentModal({
           Tabs.NoteToRecipient == tab &&
             'text-gray-71 border-b border-gray-71 pb-8px',
         )}
+        role='button'
       >
         <div
           className={cx(
@@ -116,6 +121,7 @@ export default function CommentModal({
           Tabs.PrivateNote == tab &&
             'text-gray-71 border-b border-gray-71 pb-8px',
         )}
+        role='button'
       >
         <div
           className={cx(

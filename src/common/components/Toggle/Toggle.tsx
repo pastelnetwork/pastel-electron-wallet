@@ -34,6 +34,7 @@ function Toggle({
         checked ? selectedClass : 'bg-gray-a0',
       )}
       onClick={handleToggleClick}
+      role='button'
     >
       <div
         className={cn(

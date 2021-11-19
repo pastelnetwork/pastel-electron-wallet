@@ -31,6 +31,17 @@ export default function FullScreenImage({
   const stopImageDrag = () =>
     backgroundRef.current?.classList.remove('pointer-events-none')
 
+  const renderDraggableContentFilledProgressBar = () => (
+    <div className='bg-white bg-opacity-30 h-1 rounded-full'>
+      <div
+        ref={filledProgressBarRef}
+        className='h-full bg-white w-0 rounded-full relative'
+      >
+        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
+      </div>
+    </div>
+  )
+
   const renderFilledProgressBar = () => (
     <div className='relative w-full h-full flex-between text-white'>
       <button type='button' className='h-4 px-1'>
@@ -42,14 +53,7 @@ export default function FullScreenImage({
           onDrag={onDragControl}
           onStop={onDragControl}
         >
-          <div className='bg-white bg-opacity-30 h-1 rounded-full'>
-            <div
-              ref={filledProgressBarRef}
-              className='h-full bg-white w-0 rounded-full relative'
-            >
-              <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
-            </div>
-          </div>
+          {renderDraggableContentFilledProgressBar()}
         </DraggableCore>
       </div>
       <button type='button' className='h-4 px-1'>

@@ -21,7 +21,7 @@ export default function MySecurity(props: TSecurity): JSX.Element {
   const date: string = dayjs().format('MM_DD_YYYY__HH_mm')
   const fileName = `${vCurrencyName}_QR_Code_Video_${date}.mp4`
 
-  const saveFile = async (url: string) => {
+  const saveFile = (url: string) => {
     const a = document.createElement('a')
     a.href = url
     a.download = fileName
@@ -35,15 +35,6 @@ export default function MySecurity(props: TSecurity): JSX.Element {
       if (evt.data.videoUrl && !videoUrl) {
         setVideoUrl(evt.data.videoUrl)
         saveFile(evt.data.videoUrl)
-          .then(() => {
-            // noop
-          })
-          .catch(() => {
-            // noop
-          })
-          .finally(() => {
-            // noop
-          })
       } else {
         setCurrentStatus('error')
       }
@@ -80,15 +71,6 @@ export default function MySecurity(props: TSecurity): JSX.Element {
   const handleDownloadVideo = () => {
     if (videoUrl) {
       saveFile(videoUrl)
-        .then(() => {
-          // noop
-        })
-        .catch(() => {
-          // noop
-        })
-        .finally(() => {
-          // noop
-        })
     } else {
       setCurrentStatus('downloading')
       const canvas = document.querySelectorAll('.canvasQRCodeData')

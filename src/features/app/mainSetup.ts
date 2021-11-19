@@ -154,7 +154,7 @@ export const resetWindowCloseFlags = (): void => {
   waitingForClose = proceedToClose = false
 }
 
-export const mainSetup = async (): Promise<void> => {
+export const mainSetup = (): void => {
   setupDeepLinking()
   enableDevTools()
   enableSourceMapSupport()

@@ -92,6 +92,7 @@ export default function Magnification({
     }
   }, [imageElement, optimizedUrl])
 
+  const strOptimizedUrl: string = optimizedUrl || ''
   const renderOptimizedUrl = () => (
     <div className='w-1/2 flex flex-col'>
       <div className='h-6 flex-center bg-white text-gray-a0 text-center z-10 text-xs font-extrabold flex-shrink-0'>
@@ -101,7 +102,7 @@ export default function Magnification({
         ref={afterRef}
         className='bg-no-repeat flex-grow relative rounded-br-xl'
         style={{
-          backgroundImage: `url(${optimizedUrl})`,
+          backgroundImage: `url(${strOptimizedUrl})`,
           backgroundSize: `${zoomedImageWidth}px ${zoomedImageHeight}px`,
         }}
       >

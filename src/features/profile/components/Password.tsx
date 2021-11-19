@@ -225,6 +225,12 @@ export default function Password(props: TPassword): JSX.Element {
     }`
   }
 
+  const renderGenerateRandomPasswordButton = () => (
+    <button type='button' onClick={handleGenerateRandomPassword}>
+      <RefreshIcon size={18} className='text-blue-3f' />
+    </button>
+  )
+
   const renderRefreshIcon = () => (
     <div className={getIconClassnames(true)}>
       <Tooltip
@@ -233,9 +239,7 @@ export default function Password(props: TPassword): JSX.Element {
         content='Generate a new secure 12-digit password'
         classnames='text-xs leading-4 pt-5px pb-1'
       >
-        <button type='button' onClick={handleGenerateRandomPassword}>
-          <RefreshIcon size={18} className='text-blue-3f' />
-        </button>
+        {renderGenerateRandomPasswordButton()}
       </Tooltip>
     </div>
   )

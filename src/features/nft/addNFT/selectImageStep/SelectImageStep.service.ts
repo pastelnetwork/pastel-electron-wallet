@@ -70,7 +70,7 @@ const processImage = async ({
   type: TImageType
   url: string
 }): Promise<TImageFile> => {
-  let image
+  let image = null
   try {
     image = await ImageJS.load(url)
   } catch (error) {
@@ -80,8 +80,8 @@ const processImage = async ({
 
   checkImageSize(image)
 
-  let blob
-  let arrayBuffer
+  let blob = null
+  let arrayBuffer = null
   try {
     blob = await image.toBlob(type, 1)
     arrayBuffer = await blob.arrayBuffer()

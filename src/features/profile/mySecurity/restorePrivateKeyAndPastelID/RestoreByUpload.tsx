@@ -181,21 +181,25 @@ export default function RestoreByUpload({
     )
   }
 
+  const renderRestoreUploadForm = () => (
+    <div
+      className={cn(
+        'flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px',
+        currentStatus === 'restoring' && 'cursor-not-allowed',
+      )}
+    >
+      <div className='w-3/4'>{renderUploadVideoControl()}</div>
+      <div className='w-14'>{renderRefreshIcon()}</div>
+    </div>
+  )
+
   return (
     <div>
       <div className='font-normal text-h5 leading-6 text-gray-71'>
         Please select your QR code video.
       </div>
       <div className='mt-3'>
-        <div
-          className={cn(
-            'flex items-center justify-between w-full rounded-lg border border-gray-ec py-15px px-20px',
-            currentStatus === 'restoring' && 'cursor-not-allowed',
-          )}
-        >
-          <div className='w-3/4'>{renderUploadVideoControl()}</div>
-          <div className='w-14'>{renderRefreshIcon()}</div>
-        </div>
+        {renderRestoreUploadForm()}
         {currentStatus === 'restoring' && (
           <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
             Restoring ...
