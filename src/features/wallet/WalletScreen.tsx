@@ -95,16 +95,16 @@ function PastelPromoCodeButton({
 }
 
 function AddNewAddressButton({
-  createNewAddress,
+  onCreateNewAddress,
   isLoading,
 }: {
-  createNewAddress: () => void
+  onCreateNewAddress: () => void
   isLoading: boolean
 }): JSX.Element {
   const currencyName = useCurrencyName()
 
   const handleClick = useCallback(() => {
-    createNewAddress()
+    onCreateNewAddress()
   }, [])
 
   return (
@@ -272,15 +272,6 @@ function WalletScreenContent(): JSX.Element {
     )
   }
 
-  const renderAddNewAddressButton = () => {
-    return allAddresses.data?.length ? (
-      <AddNewAddressButton
-        createNewAddress={createNewAddress}
-        isLoading={isLoading}
-      />
-    ) : null
-  }
-
   const renderEmptyContentBlock = () => {
     return totalBalances.data?.total && totalBalances.data?.total <= 0 ? (
       <Alert variant='warning' className='mt-7 relative' showClose onShowing>
@@ -301,7 +292,12 @@ function WalletScreenContent(): JSX.Element {
         <PastelPromoCodeButton
           setAddPastelPromoCodeModalOpen={setAddPastelPromoCodeModalOpen}
         />
-        {renderAddNewAddressButton()}
+        {allAddresses.data?.length ? (
+          <AddNewAddressButton
+            onCreateNewAddress={createNewAddress}
+            isLoading={isLoading}
+          />
+        ) : null}
         <CreatePaymentButton setPaymentModalOpen={setPaymentModalOpen} />
       </div>
     </div>

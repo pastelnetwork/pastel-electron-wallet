@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import CommentModal, { TNote } from './CommentModal'
 
 import Checkbox from '../../common/components/Checkbox/Checkbox'
@@ -14,6 +14,30 @@ export type TDataType = {
   onSavePaymentNote: (note: TNote) => void
   defaultsNote: string
   isMemoDisabled?: boolean
+}
+
+function AddCommentIcon({
+  onSetCommentOpen,
+  isCommentOpen,
+}: {
+  onSetCommentOpen: (val: boolean) => void
+  isCommentOpen: boolean
+}): JSX.Element {
+  const handleClick = useCallback(() => {
+    onSetCommentOpen(!isCommentOpen)
+  }, [])
+
+  return (
+    <span
+      className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+      onClick={handleClick}
+      role='button'
+      tabIndex={0}
+      aria-hidden='true'
+    >
+      <img className='cursor-pointer' src={add2Icon} alt='Add' />
+    </span>
+  )
 }
 
 export default function PaymentSource({
@@ -86,15 +110,10 @@ export default function PaymentSource({
       <td className='w-24'>
         {!isMemoDisabled ? (
           <div className='relative'>
-            <span
-              className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
-              onClick={() => setCommentOpen(!isCommentOpen)}
-              role='button'
-              tabIndex={0}
-              aria-hidden='true'
-            >
-              <img className='cursor-pointer' src={add2Icon} alt='Add' />
-            </span>
+            <AddCommentIcon
+              isCommentOpen={isCommentOpen}
+              onSetCommentOpen={setCommentOpen}
+            />
             <CommentModal
               isOpen={isCommentOpen}
               onClose={() => setCommentOpen(false)}

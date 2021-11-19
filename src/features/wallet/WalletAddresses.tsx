@@ -12,16 +12,15 @@ import { useWalletScreenContext } from './walletScreen.context'
 import { walletRPC } from 'api/pastel-rpc'
 
 function AddNewAddressButton({
-  createNewAddress,
+  onCreateNewAddress,
   isLoading,
 }: {
-  createNewAddress: () => void
+  onCreateNewAddress: () => void
   isLoading: boolean
 }): JSX.Element {
   const currencyName = useCurrencyName()
-
   const handleClick = useCallback(() => {
-    createNewAddress()
+    onCreateNewAddress()
   }, [])
 
   return (
@@ -177,7 +176,7 @@ export default function WalletAddresses(): JSX.Element {
             </div>
             <AddNewAddressButton
               isLoading={isLoading}
-              createNewAddress={createNewAddress}
+              onCreateNewAddress={createNewAddress}
             />
           </div>
         </div>
