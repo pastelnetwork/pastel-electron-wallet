@@ -254,7 +254,7 @@ export async function fetchWalletInfo(props: fetchFuncConfig): Promise<void> {
 const FIRST_TRANSACTIONS_BATCH_SIZE = 5000
 export async function fetchTransactions(db: Database): Promise<void> {
   try {
-    const lastBlock = await getLastBlock(db)
+    const lastBlock = getLastBlock(db)
 
     if (!lastBlock) {
       const transactions = await transactionRPC.listTransactions({

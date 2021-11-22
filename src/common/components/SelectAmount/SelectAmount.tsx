@@ -169,6 +169,8 @@ export default function SelectAmount({
               {...getMenuProps()}
               className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium overflow-y-auto z-100 max-h-[200px]'
               onClick={e => e.stopPropagation()}
+              role='button'
+              aria-hidden
             >
               {isOpen
                 ? filteredOptions.map((item, index) => {

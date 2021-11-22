@@ -164,7 +164,15 @@ export const mainSetup = (): void => {
   setupOptimizeImageHandler()
   setupLogs()
 
-  app.whenReady().then(setupWindow)
+  app
+    .whenReady()
+    .then(setupWindow)
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
 }
 
 let rpcConfig: TRPCConfig | undefined = undefined

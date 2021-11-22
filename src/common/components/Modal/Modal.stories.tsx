@@ -7,7 +7,12 @@ const Template: Story<TModal> = ({ isOpen, ...args }) => {
 
   return (
     <>
-      <p className='cursor-pointer' onClick={() => setShowModal(true)}>
+      <p
+        className='cursor-pointer'
+        onClick={() => setShowModal(true)}
+        role='button'
+        aria-hidden
+      >
         Show modal
       </p>
       <Modal

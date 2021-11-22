@@ -61,7 +61,7 @@ export class TransactionRPC {
       const { result } = await this.getRawTxn(txid)
 
       const inputAddresses: string[] = []
-      await result.vin.map(async (v: TVin) => {
+      result.vin.map(async (v: TVin) => {
         try {
           const result = await this.getTransaction(v.txid)
 

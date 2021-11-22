@@ -65,6 +65,8 @@ export default function SelectList({
       {...getMenuProps()}
       className={cn(customListClassName, listClassName)}
       onClick={e => e.stopPropagation()}
+      role='button'
+      aria-hidden
     >
       {filteredOptions.map((item, index) => {
         const isSelected = selectedItem === item || highlightedIndex === index

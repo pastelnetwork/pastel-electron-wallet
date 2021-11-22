@@ -36,6 +36,7 @@ export default function StepBackupMethod(): JSX.Element {
       setTermsAgreed: state.setTermsAgreed,
       setPSLAddressPrivateKey: state.setPSLAddressPrivateKey,
       setPastelId: state.setPastelId,
+      setSelectedPSLAddress: state.setSelectedPSLAddress,
     }),
     shallow,
   )
@@ -181,6 +182,7 @@ export default function StepBackupMethod(): JSX.Element {
     store.setTermsAgreed(false)
     store.setUsername('')
     store.setStep(Steps.Login)
+    store.setSelectedPSLAddress(null)
     finish()
   }
 
