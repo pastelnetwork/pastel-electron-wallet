@@ -12,6 +12,7 @@ const Template: Story<TModal> = ({ isOpen, ...args }) => {
         onClick={() => setShowModal(true)}
         role='button'
         aria-hidden
+        tabIndex={0}
       >
         Show modal
       </p>

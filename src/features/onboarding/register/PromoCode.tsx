@@ -1,15 +1,14 @@
-import React, { FormEvent, useState, useEffect } from 'react'
+import React, { FormEvent, useState, useCallback } from 'react'
 import { useMutation, UseMutationResult } from 'react-query'
 import md5 from 'md5'
 import cn from 'classnames'
 
-import { TListUnspentResponse, TZListUnspentResponse } from '../../../types/rpc'
 import { Input } from 'common/components/Inputs'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { formatNumber, formatPrice, formatAddress } from 'common/utils/format'
+import { formatNumber } from 'common/utils/format'
 import { PrevButton, NextButton } from './Buttons'
+import AddressList from './AddressList'
 import { isValidPrivateKey } from 'common/utils/wallet'
-import Radio from 'common/components/Radio/Radio'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { walletRPC } from 'api/pastel-rpc'
 import {
@@ -63,45 +62,9 @@ const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
   })
 }
 
-const generateAddresses = (
-  tUnspent: TListUnspentResponse,
-  zUnspent: TZListUnspentResponse,
-): TPromoCode[] => {
-  let balances: TPromoCode[] = []
-  tUnspent.forEach(t => {
-    const balance = balances.find(b => b.address === t.address)
-    if (!balance) {
-      balances.push({
-        address: t.address,
-        balance: t.amount,
-      })
-    } else {
-      balances = balances.map(b =>
-        b.address === t.address ? { ...b, balance: t.amount + b.balance } : b,
-      )
-    }
-  })
-  zUnspent.forEach(z => {
-    const balance = balances.find(b => b.address === z.address)
-    if (!balance) {
-      balances.push({
-        address: z.address,
-        balance: z.amount,
-      })
-    } else {
-      balances = balances.map(b =>
-        b.address === z.address ? { ...b, balance: z.amount + b.balance } : b,
-      )
-    }
-  })
-
-  return balances
-}
-
 export default function PromoCode(): JSX.Element {
   const currencyName = useCurrencyName()
   const [isAddNew, setAddNew] = useState(false)
-  const [addresses, setAddresses] = useState<TPromoCode[]>([])
   const store = useRegisterStore(state => ({
     goBack: state.goBack,
     promoCodeKey: state.promoCode,
@@ -115,28 +78,6 @@ export default function PromoCode(): JSX.Element {
     selectedPSLAddress: state.selectedPSLAddress,
     setSelectedPSLAddress: state.setSelectedPSLAddress,
   }))
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const [tUnspent, zUnspent] = await Promise.all([
-        walletRPC.fetchTListUnspent(),
-        walletRPC.fetchZListUnspent(),
-      ])
-
-      setAddresses(generateAddresses(tUnspent, zUnspent))
-    }
-
-    fetchData()
-      .then(() => {
-        // noop
-      })
-      .catch(() => {
-        // noop
-      })
-      .finally(() => {
-        // noop
-      })
-  })
 
   const isPastelPromoCode =
     store.paymentMethod === PaymentMethods.PastelPromoCode
@@ -174,10 +115,6 @@ export default function PromoCode(): JSX.Element {
     store.goBack()
   }
 
-  const handleChangeAddress = (address: TPromoCode | null) => {
-    store.setSelectedPSLAddress(address)
-  }
-
   const isLoading =
     status === 'loading' ||
     store.createPastelIdQuery.isLoading ||
@@ -191,6 +128,15 @@ export default function PromoCode(): JSX.Element {
     promoCodeIsValid = false
   }
 
+  const handleInputChange = useCallback((e: FormEvent<HTMLInputElement>) => {
+    store.setSelectedPSLAddress(null)
+    if (isPastelPromoCode) {
+      store.setPromoCode(e.currentTarget.value.trim())
+    } else {
+      store.setPSLAddressPrivateKey(e.currentTarget.value.trim())
+    }
+  }, [])
+
   const renderPromoCodeInput = () => {
     return (
       <div className='mt-4 airdrop'>
@@ -202,14 +148,7 @@ export default function PromoCode(): JSX.Element {
               ? 'Paste your promo code here'
               : `${currencyName} Address Private Key here`
           }
-          onChange={(e: FormEvent<HTMLInputElement>) => {
-            store.setSelectedPSLAddress(null)
-            if (isPastelPromoCode) {
-              store.setPromoCode(e.currentTarget.value.trim())
-            } else {
-              store.setPSLAddressPrivateKey(e.currentTarget.value.trim())
-            }
-          }}
+          onChange={handleInputChange}
           isValid={promoCodeIsValid}
           errorMessage={errorMessage}
           hint
@@ -231,51 +170,13 @@ export default function PromoCode(): JSX.Element {
     return (
       <div
         className={cn(
-          'mt-4 overflow-auto',
+          'mt-4 overflow-hidden',
           store.pslAddressPrivateKey && promoCodeQuery.isSuccess
-            ? 'max-h-[150px]'
-            : 'max-h-[220px]',
+            ? 'h-[150px]'
+            : 'h-[220px]',
         )}
       >
-        <div className='flex items-center mt-4'>
-          <Radio
-            checked={!store.selectedPSLAddress?.address}
-            onChange={() => handleChangeAddress(null)}
-            variant='secondary'
-          >
-            <span
-              className={cn(
-                'text-base leading-5',
-                !store.selectedPSLAddress?.address
-                  ? 'text-gray-4a font-extrabold'
-                  : 'text-gray-4a text-opacity-50 font-medium',
-              )}
-            >
-              None
-            </span>
-          </Radio>
-        </div>
-        {addresses.map(address => (
-          <div className='flex items-center mt-4' key={address.address}>
-            <Radio
-              checked={store.selectedPSLAddress?.address === address.address}
-              onChange={() => handleChangeAddress(address)}
-              variant='secondary'
-            >
-              <span
-                className={cn(
-                  'text-base leading-5',
-                  store.selectedPSLAddress?.address === address.address
-                    ? 'text-gray-4a font-extrabold'
-                    : 'text-gray-4a text-opacity-50 font-medium',
-                )}
-              >
-                {formatAddress(address.address, 12, -4)}(
-                {formatPrice(address.balance, currencyName)})
-              </span>
-            </Radio>
-          </div>
-        ))}
+        <AddressList />
       </div>
     )
   }
@@ -291,6 +192,16 @@ export default function PromoCode(): JSX.Element {
       (promoCodeQuery.isSuccess && addressBalance < targetBalance && !isAddNew)
     )
   }
+
+  const handleAddNewPrivateKey = useCallback(() => {
+    if (isPastelPromoCode) {
+      store.setPromoCode('')
+    } else {
+      store.setPSLAddressPrivateKey('')
+    }
+    promoCodeQuery.reset()
+    setAddNew(true)
+  }, [])
 
   return (
     <>
@@ -312,15 +223,7 @@ export default function PromoCode(): JSX.Element {
             <button
               type='button'
               className='link'
-              onClick={() => {
-                if (isPastelPromoCode) {
-                  store.setPromoCode('')
-                } else {
-                  store.setPSLAddressPrivateKey('')
-                }
-                promoCodeQuery.reset()
-                setAddNew(true)
-              }}
+              onClick={handleAddNewPrivateKey}
             >
               {isPastelPromoCode
                 ? 'Add new pastel promo code.'

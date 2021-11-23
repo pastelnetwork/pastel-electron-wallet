@@ -67,6 +67,7 @@ export default function SelectList({
       onClick={e => e.stopPropagation()}
       role='button'
       aria-hidden
+      tabIndex={0}
     >
       {filteredOptions.map((item, index) => {
         const isSelected = selectedItem === item || highlightedIndex === index
