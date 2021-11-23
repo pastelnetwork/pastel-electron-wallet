@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Story, Meta } from '@storybook/react'
 import Modal, { TModal } from './Modal'
 
-const Template: Story<TModal> = ({ isOpen, ...args }) => {
+const Template: Story<TModal> = function ({ isOpen, ...args }) {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   const onClick = useCallback(() => {
