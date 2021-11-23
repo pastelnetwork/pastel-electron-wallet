@@ -1,21 +1,19 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Story, Meta } from '@storybook/react'
 import Modal, { TModal } from './Modal'
 
 const Template: Story<TModal> = ({ isOpen, ...args }) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
+  const onClick = useCallback(() => {
+    setShowModal(true)
+  }, [])
+
   return (
     <>
-      <p
-        className='cursor-pointer'
-        onClick={() => setShowModal(true)}
-        role='button'
-        aria-hidden
-        tabIndex={0}
-      >
+      <button className='cursor-pointer' onClick={onClick} type='button'>
         Show modal
-      </p>
+      </button>
       <Modal
         isOpen={showModal}
         handleClose={() => setShowModal(false)}

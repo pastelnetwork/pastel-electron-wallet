@@ -61,14 +61,7 @@ export default function SelectList({
   }
 
   return (
-    <ul
-      {...getMenuProps()}
-      className={cn(customListClassName, listClassName)}
-      onClick={e => e.stopPropagation()}
-      role='button'
-      aria-hidden
-      tabIndex={0}
-    >
+    <ul {...getMenuProps()} className={cn(customListClassName, listClassName)}>
       {filteredOptions.map((item, index) => {
         const isSelected = selectedItem === item || highlightedIndex === index
 

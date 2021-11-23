@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import cn from 'classnames'
 import styles from './WalletScreen.module.css'
 import AddressesTable from './AddressesTable'
@@ -41,7 +41,7 @@ function AddNewAddressButton({
   )
 }
 
-export default function WalletAddresses(): JSX.Element {
+const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
   const currencyName = useCurrencyName()
   const {
     tAddresses,
@@ -58,7 +58,6 @@ export default function WalletAddresses(): JSX.Element {
     setNewAddress,
   } = useWalletScreenContext()
   const [isLoading, setLoading] = useState(false)
-
   const createNewAddress = useCallback(async () => {
     setLoading(true)
     const isZAddress = activeTab === 2
@@ -183,4 +182,6 @@ export default function WalletAddresses(): JSX.Element {
       ) : null}
     </>
   )
-}
+})
+
+export default WalletAddresses
