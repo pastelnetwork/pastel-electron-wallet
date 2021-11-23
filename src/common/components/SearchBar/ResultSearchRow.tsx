@@ -17,7 +17,9 @@ function ResultSearchRow({
     <div
       className='cursor-pointer flex items-center mb-4 justify-between'
       onClick={() => {
-        handleClick && handleClick(name)
+        if (handleClick) {
+          handleClick(name)
+        }
       }}
     >
       <div className='flex items-center'>

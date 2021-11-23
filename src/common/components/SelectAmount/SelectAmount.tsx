@@ -66,7 +66,9 @@ export default function SelectAmount({
         value: selected.value.slice(0, -1),
       }
       setSelected(selection)
-      onChange && onChange(selection)
+      if (onChange) {
+        onChange(selection)
+      }
     }
   }
 
@@ -93,7 +95,9 @@ export default function SelectAmount({
     <Downshift
       onChange={selection => {
         setSelected(selection)
-        onChange && onChange(selection)
+        if (onChange) {
+          onChange(selection)
+        }
         setTyping(false)
       }}
       onInputValueChange={(inputValue: string, options) => {
@@ -109,7 +113,9 @@ export default function SelectAmount({
           value: inputValue.replaceAll(',', ''),
         }
         setSelected(selection)
-        onChange && onChange(selection)
+        if (onChange) {
+          onChange(selection)
+        }
       }}
       itemToString={item => (item ? item.value : '')}
     >

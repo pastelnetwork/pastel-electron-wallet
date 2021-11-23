@@ -15,7 +15,9 @@ function SearchTag({ label, type, clickHandle }: TSearchTagProps): JSX.Element {
     <div
       className='flex items-center bg-blue-d9 py-3px px-2 rounded-10px mr-2 cursor-pointer'
       onClick={() => {
-        clickHandle && clickHandle(type)
+        if (clickHandle) {
+          clickHandle(type)
+        }
       }}
     >
       {!!type && type === 'nfts' && <NFT className='text-gray-4a' />}
