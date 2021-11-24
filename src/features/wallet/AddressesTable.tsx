@@ -249,15 +249,11 @@ export default function AddressesTable({
       custom: (address: string) =>
         isLoadingAddresses ? (
           loadingCell
-        ) : (
-          <>
-            {!pastelPromoCodeList?.find(
-              promoCode => promoCode.address === address,
-            ) ? (
-              <SelectPaymentSourceAmount address={address} />
-            ) : null}
-          </>
-        ),
+        ) : !pastelPromoCodeList?.find(
+            promoCode => promoCode.address === address,
+          ) ? (
+          <SelectPaymentSourceAmount address={address} />
+        ) : null,
     },
   ]
 

@@ -120,6 +120,10 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
     </div>
   )
 
+  const renderCommentDate = () => (
+    <span className='text-gray-71 pl-1'>{dayjs(time).fromNow()}</span>
+  )
+
   return (
     <div
       className={cn(
@@ -140,7 +144,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
               </Link>{' '}
             </p>
           ) : null}
-          <span className='text-gray-71 pl-1'>{dayjs(time).fromNow()}</span>
+          {renderCommentDate()}
         </div>
         {renderCommentContent()}
       </div>

@@ -87,27 +87,25 @@ export default function NetworkTotalsOvertime(): JSX.Element {
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='networktotals'
-              dataX={transformLineChartData?.dataX}
-              dataY1={transformLineChartData?.dataY1}
-              dataY2={transformLineChartData?.dataY2}
-              title='Network Total'
-              offset={0}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='networktotals'
+            dataX={transformLineChartData?.dataX}
+            dataY1={transformLineChartData?.dataY1}
+            dataY2={transformLineChartData?.dataY2}
+            title='Network Total'
+            offset={0}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

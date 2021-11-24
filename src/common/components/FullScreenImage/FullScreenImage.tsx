@@ -81,22 +81,30 @@ export default function FullScreenImage({
     </div>
   )
 
+  const renderFilledProgressBarBlock = () => (
+    <div className='absolute bottom-30px h-34px w-180px rounded-md px-2'>
+      <div className='absolute inset-0 bg-gray-71 mix-blend-multiply rounded-md' />
+      {renderFilledProgressBar()}
+    </div>
+  )
+
+  const renderCloseButton = () => (
+    <button
+      className='absolute top-0 -right-10 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-f8 hover:text-white border border-gray-f8 border-opacity-50 hover:border-opacity-100'
+      onClick={onClose}
+      type='button'
+    >
+      <X size={8} />
+    </button>
+  )
+
   return (
     <>
       <div ref={backgroundRef} className='fixed inset-0' onClick={onClose} />
       <div className='relative flex-center'>
-        <button
-          className='absolute top-0 -right-10 flex-center w-7 h-7 rounded-md transition duration-200 text-gray-f8 hover:text-white border border-gray-f8 border-opacity-50 hover:border-opacity-100'
-          onClick={onClose}
-          type='button'
-        >
-          <X size={8} />
-        </button>
+        {renderCloseButton()}
         {renderPreviewImage()}
-        <div className='absolute bottom-30px h-34px w-180px rounded-md px-2'>
-          <div className='absolute inset-0 bg-gray-71 mix-blend-multiply rounded-md' />
-          {renderFilledProgressBar()}
-        </div>
+        {renderFilledProgressBarBlock()}
       </div>
     </>
   )

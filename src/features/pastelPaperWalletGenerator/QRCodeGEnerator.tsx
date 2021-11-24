@@ -9,7 +9,7 @@ type QRCodeGEneratorProps = {
 
 export default function QRCodeGEnerator(
   props: QRCodeGEneratorProps,
-): JSX.Element {
+): JSX.Element | null {
   try {
     const qrcodeValue = ReactDOMServer.renderToString(
       <QRCode value={props.address} renderAs='svg' />,
@@ -34,6 +34,6 @@ export default function QRCodeGEnerator(
       </Svg>
     )
   } catch {
-    return <></>
+    return null
   }
 }

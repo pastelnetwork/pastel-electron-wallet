@@ -145,6 +145,29 @@ export default function SubmitStep({
     </div>
   )
 
+  const renderSubmitStepBody = () => (
+    <div className='space-y-14px'>
+      <InfoPair title='Title' value={nftData.title} />
+      {nftData.hashtags.length > 0 && (
+        <InfoPair
+          title='Keyword Hashtags'
+          value={nftData.hashtags.join(', ')}
+        />
+      )}
+      {nftData.series && <InfoPair title='Series' value={nftData.series} />}
+      {/* TODO: figure out what to display in Copies */}
+      <InfoPair title='Copies' value={`1 of ${nftData.copies}`} />
+      <InfoPair title='Perpetual Royalty' value={`${nftData.royalty}%`} />
+      {nftData.website && (
+        <InfoPair title="Creator's website" value={nftData.website} />
+      )}
+      {nftData.video && (
+        <InfoPair title='Creation video' value={nftData.video} />
+      )}
+      {renderGreenNFT()}
+    </div>
+  )
+
   return (
     <ModalLayout
       title='Submit NFT'
@@ -159,31 +182,7 @@ export default function SubmitStep({
       rightColumnContent={
         <>
           <div className='flex-grow w-full text-sm flex flex-col justify-between'>
-            <div className='space-y-14px'>
-              <InfoPair title='Title' value={nftData.title} />
-              {nftData.hashtags.length > 0 && (
-                <InfoPair
-                  title='Keyword Hashtags'
-                  value={nftData.hashtags.join(', ')}
-                />
-              )}
-              {nftData.series && (
-                <InfoPair title='Series' value={nftData.series} />
-              )}
-              {/* TODO: figure out what to display in Copies */}
-              <InfoPair title='Copies' value={`1 of ${nftData.copies}`} />
-              <InfoPair
-                title='Perpetual Royalty'
-                value={`${nftData.royalty}%`}
-              />
-              {nftData.website && (
-                <InfoPair title="Creator's website" value={nftData.website} />
-              )}
-              {nftData.video && (
-                <InfoPair title='Creation video' value={nftData.video} />
-              )}
-              {renderGreenNFT()}
-            </div>
+            {renderSubmitStepBody()}
             {nftData.description && (
               <div className='mt-4 text-blue-3f'>{nftData.description}</div>
             )}

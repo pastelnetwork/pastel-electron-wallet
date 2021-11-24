@@ -59,7 +59,9 @@ function TableCheckBox({
     const temp = selectedRows
     if (selectedRows.includes(index)) {
       for (let i = 0; i < temp.length; i++) {
-        index === temp[i] && temp.splice(i, 1)
+        if (index === temp[i]) {
+          temp.splice(i, 1)
+        }
       }
     } else {
       temp.push(index)

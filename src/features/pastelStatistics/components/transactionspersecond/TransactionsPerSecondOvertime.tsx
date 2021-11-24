@@ -89,26 +89,24 @@ export default function TransactionsPerSecondOvertime(): JSX.Element {
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='transactionspersecond'
-              dataY={transformLineChartData?.dataY}
-              dataX={transformLineChartData?.dataX}
-              title='Transactions Per Second'
-              offset={0.01}
-              periods={periods[1]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='transactionspersecond'
+            dataY={transformLineChartData?.dataY}
+            dataX={transformLineChartData?.dataX}
+            title='Transactions Per Second'
+            offset={0.01}
+            periods={periods[1]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

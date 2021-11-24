@@ -81,12 +81,12 @@ export default function CroppingStep({
 }
 
 CroppingStep.defaultProps = {
-  titleClassName: '',
+  titleClassName: 'text-gray-800 text-2xl font-extrabold mb-3',
   rightColumnClass: '',
   contentClass: '',
   fixedHeight: undefined,
   step: undefined,
-  subtitleClassName: '',
+  subtitleClassName: 'font-medium text-sm text-gray-33 opacity-50',
   subtitle: '',
   titleClass: '',
 }

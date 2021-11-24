@@ -148,15 +148,13 @@ export function AddressForm({
   return (
     <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
       {edit === address ? (
-        <>
-          <input
-            value={editName}
-            onChange={e => {
-              setEditName(e.target.value)
-            }}
-            className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
-          />
-        </>
+        <input
+          value={editName}
+          onChange={e => {
+            setEditName(e.target.value)
+          }}
+          className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
+        />
       ) : addressLabel ? (
         <div className='w-220px md:w-[270px] pl-[10px]'>
           <span

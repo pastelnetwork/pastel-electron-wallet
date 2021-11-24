@@ -100,28 +100,26 @@ export default function AverageBlockSizeOvertime(): JSX.Element {
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='averageblocksize'
-              dataX={transformLineChartData?.dataX}
-              dataY={transformLineChartData?.dataY}
-              title='Average Block Size(KB)'
-              offset={1}
-              granularities={granularities[0]}
-              periods={periods[1]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-              handleGranularityFilterChange={handleGranularityFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='averageblocksize'
+            dataX={transformLineChartData?.dataX}
+            dataY={transformLineChartData?.dataY}
+            title='Average Block Size(KB)'
+            offset={1}
+            granularities={granularities[0]}
+            periods={periods[1]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+            handleGranularityFilterChange={handleGranularityFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }
