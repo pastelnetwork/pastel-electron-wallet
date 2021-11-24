@@ -22,7 +22,7 @@ export default function CountdownTimer({
     minutes: 0,
     seconds: 0,
   })
-  let token: NodeJS.Timer
+  let token: NodeJS.Timer | null = null
 
   const updateTime = () => {
     if (!countDownDate) {
@@ -52,7 +52,9 @@ export default function CountdownTimer({
         minutes: 0,
         seconds: 0,
       })
-      clearInterval(token)
+      if (token) {
+        clearInterval(token)
+      }
     }
   }
 
@@ -62,7 +64,9 @@ export default function CountdownTimer({
     }
 
     return () => {
-      clearInterval(token)
+      if (token) {
+        clearInterval(token)
+      }
     }
   }, [])
 

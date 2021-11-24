@@ -40,7 +40,7 @@ describe('mainSetup', () => {
 
   test('successful setup', async () => {
     const rpcConfig = 'rpcConfig'
-    let resolveRpcConfig: ((value: unknown) => void) | undefined
+    let resolveRpcConfig: ((value: unknown) => void) | undefined = undefined
     asMock(readRpcConfig).mockReturnValueOnce(
       new Promise(res => (resolveRpcConfig = res)),
     )

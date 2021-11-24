@@ -67,7 +67,7 @@ export default function RestoreByUpload({
           12,
           VideoToFramesMethod.totalFrames,
         )
-          .then(async frames => {
+          .then(frames => {
             let totalQRCode = 0
             for (let i = 0; i < frames.length; i++) {
               const frame = frames[i]

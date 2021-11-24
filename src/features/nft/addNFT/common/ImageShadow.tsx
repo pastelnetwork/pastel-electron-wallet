@@ -18,3 +18,7 @@ export default function ImageShadow({
     />
   )
 }
+
+ImageShadow.defaultProps = {
+  small: false,
+}

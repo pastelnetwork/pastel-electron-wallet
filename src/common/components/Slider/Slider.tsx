@@ -65,10 +65,12 @@ export default function Slider({
       ? [props.steps[0], props.steps[props.steps.length - 1]]
       : [props.min, props.max]
 
-  let values: number[]
-  let setValues: (values: number[]) => void
-  let startPercent: number
-  let endPercent: number
+  let values: number[] = []
+  let setValues: (values: number[]) => void = () => {
+    //noop
+  }
+  let startPercent = 0
+  let endPercent = 100
 
   if ('value' in props) {
     values = [valueToFraction(props, props.value)]

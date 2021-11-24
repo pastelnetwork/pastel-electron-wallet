@@ -71,8 +71,8 @@ export const onWindowClose = async (event: Event): Promise<void> => {
   app.quit()
 }
 
-const setupWindow = async () => {
-  await createWindow(onWindowClose)
+const setupWindow = () => {
+  createWindow(onWindowClose)
 }
 
 const setupEventListeners = () => {
@@ -81,15 +81,6 @@ const setupEventListeners = () => {
     // dock icon is clicked and there are no other windows open.
     if (!browserWindow.current) {
       setupWindow()
-        .then(() => {
-          // noop
-        })
-        .catch(() => {
-          // noop
-        })
-        .finally(() => {
-          // noop
-        })
     }
   })
 

@@ -29,7 +29,7 @@ type TTask = {
   cancelled: boolean
 }
 
-let currentTask: TTask
+let currentTask: TTask | null = null
 
 const PngquantQualityRangeErrorCode = 99
 

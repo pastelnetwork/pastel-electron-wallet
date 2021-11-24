@@ -46,7 +46,7 @@ function Link({
   }
 
   return (
-    <button className={classes} {...otherProps}>
+    <button className={classes} {...otherProps} type='button'>
       {children}
     </button>
   )
