@@ -172,6 +172,7 @@ export default function StepBackupMethod(): JSX.Element {
   }
 
   const handleNext = () => {
+    finish()
     store.setExchangeAddress('')
     store.setPSLAddressPrivateKey('')
     store.setPassword('')
@@ -181,7 +182,6 @@ export default function StepBackupMethod(): JSX.Element {
     store.setUsername('')
     store.setStep(Steps.Login)
     store.setSelectedPSLAddress(null)
-    finish()
   }
 
   const renderDownloadButton = () => {

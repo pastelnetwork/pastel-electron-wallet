@@ -56,7 +56,7 @@ export async function rpc<T>(
           response?.status ? `. Status code: ${responseStatus}` : ''
         }`,
       )
-      const strMessage: string = message?.toString() || ''
+      const strMessage: string = message?.toString()
       throw new Error(`api/pastel-rpc server error: ${strMessage}`)
     }
 

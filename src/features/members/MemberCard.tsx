@@ -28,13 +28,11 @@ function MemberCard({
         {searchText ? (
           <div>
             {parse(
-              searchText
-                ? name.replace(
-                    new RegExp(searchText, 'gi'),
-                    (match: string) =>
-                      `<mark class='bg-blue-9b py-1'>${match}</mark>`,
-                  )
-                : name,
+              name.replace(
+                new RegExp(searchText, 'gi'),
+                (match: string) =>
+                  `<mark class='bg-blue-9b py-1'>${match}</mark>`,
+              ),
             )}
           </div>
         ) : (

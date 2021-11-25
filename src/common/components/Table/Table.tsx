@@ -58,7 +58,7 @@ function TableCheckBox({
   const handleOnCheckChange = useCallback(() => {
     const temp = selectedRows
     if (selectedRows.includes(index)) {
-      for (let i = 0; i < temp.length; i++) {
+      for (let i = 0; i < selectedRows.length; i++) {
         if (index === temp[i]) {
           temp.splice(i, 1)
         }

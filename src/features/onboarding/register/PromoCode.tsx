@@ -1,6 +1,5 @@
 import React, { FormEvent, useState, useCallback } from 'react'
 import { useMutation, UseMutationResult } from 'react-query'
-import md5 from 'md5'
 import cn from 'classnames'
 
 import { Input } from 'common/components/Inputs'
@@ -10,6 +9,7 @@ import { PrevButton, NextButton } from './Buttons'
 import AddressList from './AddressList'
 import { isValidPrivateKey } from 'common/utils/wallet'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
+import { encode } from 'common/utils/encryption'
 import { walletRPC } from 'api/pastel-rpc'
 import {
   useRegisterStore,
@@ -86,7 +86,7 @@ export default function PromoCode(): JSX.Element {
   const handleNextClick = () => {
     setAddNew(false)
     if (store.selectedPSLAddress) {
-      const password: string = md5(store.password) || ''
+      const password: string = encode(store.password) || ''
       const username: string = store.username || ''
       store.createPastelIdQuery.mutate({
         password: `${password}${username}`,
@@ -96,7 +96,7 @@ export default function PromoCode(): JSX.Element {
     } else {
       const promoCode = promoCodeQuery.data
       if (promoCode) {
-        const password: string = md5(store.password) || ''
+        const password: string = encode(store.password) || ''
         const username: string = store.username || ''
         store.createPastelIdQuery.mutate({
           password: `${password}${username}`,

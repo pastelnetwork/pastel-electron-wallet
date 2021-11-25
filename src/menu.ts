@@ -78,7 +78,6 @@ export default class MenuBuilder {
   }
 
   buildDarwinTemplate() {
-    const { mainWindow } = this
     const subMenuAbout = {
       label: 'Pastelwallet Fullnode',
       submenu: [

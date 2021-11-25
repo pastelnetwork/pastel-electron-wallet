@@ -23,8 +23,7 @@ function Chat(): JSX.Element {
   const [activeChatId, setActiveChatId] = useState<number>(mockChats[0].id)
   const [activeChat, setActiveChat] = useState<TChatItemProps>(mockChats[0])
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [chats, setChats] = useState<TChatItemProps[]>(mockChats) // DEBUG: init state
+  const [chats, setChats] = useState<TChatItemProps[]>(mockChats)
 
   const endRef = useRef<HTMLDivElement>(null)
   const scroll2End = () => {
@@ -67,8 +66,8 @@ function Chat(): JSX.Element {
       return
     }
 
+    setChats(mockChats)
     // send message code here
-
     setNewMsg('')
   }
 

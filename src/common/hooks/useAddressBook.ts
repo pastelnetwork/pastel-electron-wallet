@@ -39,7 +39,7 @@ export const useAddressBook = (): TUseAddressBookResult => {
 
   const updateAddressBook = async ({ address, label }: TAddressBook) => {
     const [book] = addressBook.filter(b => b.address === address) || []
-    let newAddressBook = addressBook
+    let newAddressBook = []
     if (book) {
       newAddressBook = addressBook.map(b => {
         return {

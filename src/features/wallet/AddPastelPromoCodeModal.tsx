@@ -106,11 +106,7 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
                   setPastelPromoCode(e.currentTarget.value.trim())
                 }
                 isValid={promoCodeIsValid}
-                errorMessage={
-                  !promoCodeIsValid && message
-                    ? message || 'Promo Code is invalid.'
-                    : null
-                }
+                errorMessage={!promoCodeIsValid && message ? message : null}
                 hint
                 hintAsTooltip={false}
               />
