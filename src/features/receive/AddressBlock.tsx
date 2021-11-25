@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { clipboard, shell } from 'electron'
 import QRCode from 'qrcode.react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import {
   AccordionItem,
   AccordionItemButton,
@@ -43,6 +43,119 @@ export interface IAddressBlockProps {
   pslPrice: number
 
   transactions?: ITransactionsProps[]
+}
+
+function GeneratePaperWalletButton({
+  fetchAndSetSinglePrivKey,
+  address,
+}: {
+  fetchAndSetSinglePrivKey: (add: string, type?: string | undefined) => void
+  address: string
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    fetchAndSetSinglePrivKey(address, 'generatePaperWallet')
+  }, [])
+
+  return (
+    <button
+      className={cx(cstyles.primarybutton, styles.buttonMarginTop)}
+      type='button'
+      onClick={onClick}
+    >
+      Generate paper wallet
+    </button>
+  )
+}
+
+function ViewExplorerButton({
+  openAddress,
+}: {
+  openAddress: () => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    openAddress()
+  }, [])
+
+  return (
+    <button
+      className={cx(cstyles.primarybutton)}
+      type='button'
+      onClick={onClick}
+    >
+      View on explorer{' '}
+      <i className={cx('fas', 'fa-external-link-square-alt')} />
+    </button>
+  )
+}
+
+function ExportViewingKeyButton({
+  address,
+  fetchAndSetSingleViewKey,
+}: {
+  address: string
+  fetchAndSetSingleViewKey: (val: string) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    fetchAndSetSingleViewKey(address)
+  }, [])
+
+  return (
+    <button
+      className={cx(cstyles.primarybutton)}
+      type='button'
+      onClick={onClick}
+    >
+      Export Viewing Key
+    </button>
+  )
+}
+
+function CopyPrivKeyButton({
+  copiedPrivKey,
+  onCopyPrivKeyBtnClick,
+  address,
+}: {
+  copiedPrivKey: string
+  onCopyPrivKeyBtnClick: (val: string) => void
+  address: string
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    onCopyPrivKeyBtnClick(address)
+  }, [])
+
+  return (
+    <button
+      className={cx(cstyles.primarybutton)}
+      type='button'
+      onClick={onClick}
+    >
+      {!copiedPrivKey
+        ? 'Copy Private Key'
+        : copiedPrivKey === 'loading'
+        ? 'Copying'
+        : 'Copied!'}
+    </button>
+  )
+}
+
+function CopyAddressButton({
+  address,
+  onCopyAddrBtnClick,
+  copiedAddr,
+}: {
+  address: string
+  onCopyAddrBtnClick: (val: string) => void
+  copiedAddr: boolean
+}): JSX.Element {
+  return (
+    <button
+      className={cx(cstyles.primarybutton, cstyles.margintoplarge)}
+      type='button'
+      onClick={() => onCopyAddrBtnClick(address)}
+    >
+      {copiedAddr ? 'Copied!' : 'Copy Address'}
+    </button>
+  )
 }
 
 export function AddressBlock({
@@ -179,53 +292,31 @@ export function AddressBlock({
 
   const renderAddressItemButton = () => (
     <div>
-      <button
-        className={cx(cstyles.primarybutton, cstyles.margintoplarge)}
-        type='button'
-        onClick={() => onCopyAddrBtnClick(address)}
-      >
-        {copiedAddr ? 'Copied!' : 'Copy Address'}
-      </button>
-      <button
-        className={cx(cstyles.primarybutton)}
-        type='button'
-        onClick={() => onCopyPrivKeyBtnClick(address)}
-      >
-        {!copiedPrivKey
-          ? 'Copy Private Key'
-          : copiedPrivKey === 'loading'
-          ? 'Copying'
-          : 'Copied!'}
-      </button>
+      <CopyAddressButton
+        copiedAddr={copiedAddr}
+        address={address}
+        onCopyAddrBtnClick={onCopyAddrBtnClick}
+      />
+      <CopyPrivKeyButton
+        copiedPrivKey={copiedPrivKey}
+        address={address}
+        onCopyPrivKeyBtnClick={onCopyPrivKeyBtnClick}
+      />
 
       {Utils.isZaddr(address) && !viewKey && (
-        <button
-          className={cx(cstyles.primarybutton)}
-          type='button'
-          onClick={() => fetchAndSetSingleViewKey(address)}
-        >
-          Export Viewing Key
-        </button>
+        <ExportViewingKeyButton
+          address={address}
+          fetchAndSetSingleViewKey={fetchAndSetSingleViewKey}
+        />
       )}
 
       {Utils.isTransparent(address) && (
-        <button
-          className={cx(cstyles.primarybutton)}
-          type='button'
-          onClick={openAddress}
-        >
-          View on explorer{' '}
-          <i className={cx('fas', 'fa-external-link-square-alt')} />
-        </button>
+        <ViewExplorerButton openAddress={openAddress} />
       )}
-
-      <button
-        className={cx(cstyles.primarybutton, styles.buttonMarginTop)}
-        type='button'
-        onClick={() => fetchAndSetSinglePrivKey(address, 'generatePaperWallet')}
-      >
-        Generate paper wallet
-      </button>
+      <GeneratePaperWalletButton
+        fetchAndSetSinglePrivKey={fetchAndSetSinglePrivKey}
+        address={address}
+      />
     </div>
   )
 
