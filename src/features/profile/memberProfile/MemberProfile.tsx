@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -50,6 +50,31 @@ const filterData = [
   { label: 'Mention', value: 'Mention', checked: false },
   { label: 'Followers', value: 'Followers', checked: false },
 ]
+
+function MemberProfileInfo({
+  tab,
+  onTabToggle,
+}: {
+  tab: number
+  onTabToggle: (val: number) => void
+}): JSX.Element {
+  const onToggle = useCallback((index: number) => {
+    onTabToggle(index)
+  }, [])
+
+  return (
+    <div className='bg-white'>
+      <div className='wrapper flex h-20 items-center bg-white pl-60px pt-0'>
+        <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
+        <MultiToggleSwitch
+          data={[{ label: 'Info' }, { label: 'Portfolio' }, { label: 'Board' }]}
+          activeIndex={tab}
+          onToggle={onToggle}
+        />
+      </div>
+    </div>
+  )
+}
 
 export default function MemberProfile(): JSX.Element {
   const currencyName = useCurrencyName()
@@ -461,19 +486,6 @@ export default function MemberProfile(): JSX.Element {
     </div>
   )
 
-  const renderMemberProfileInfo = () => (
-    <div className='bg-white'>
-      <div className='wrapper flex h-20 items-center bg-white pl-60px pt-0'>
-        <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
-        <MultiToggleSwitch
-          data={[{ label: 'Info' }, { label: 'Portfolio' }, { label: 'Board' }]}
-          activeIndex={tab}
-          onToggle={onTabToggle}
-        />
-      </div>
-    </div>
-  )
-
   const renderProfileCard = () => (
     <div className='flex flex-col items-center lg:justify-between'>
       <ProfileCard {...profile_data} isMyProfile />
@@ -494,7 +506,7 @@ export default function MemberProfile(): JSX.Element {
       <div className='wrapper pt-0 h-35px flex items-center'>
         <div className='text-sm text-gray-71'>Member Profile / General</div>
       </div>
-      {renderMemberProfileInfo()}
+      <MemberProfileInfo tab={tab} onTabToggle={onTabToggle} />
       {renderMemverProfileContent()}
     </div>
   )

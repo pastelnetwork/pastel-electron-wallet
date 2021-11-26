@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
@@ -16,6 +16,33 @@ const profile_data = {
     facebook: 'www.facebook.com/dirk_jaison',
     twitter: 'www.twitter.com/@dirk_jaison',
   },
+}
+
+function ProfileHeader({
+  tab,
+  onTabToggle,
+}: {
+  tab: number
+  onTabToggle: (val: number) => void
+}): JSX.Element {
+  const onToggle = useCallback((index: number) => {
+    onTabToggle(index)
+  }, [])
+
+  return (
+    <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
+      <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
+      <MultiToggleSwitch
+        data={[
+          { label: 'General' },
+          { label: 'Portfolio' },
+          { label: 'Board' },
+        ]}
+        activeIndex={tab}
+        onToggle={onToggle}
+      />
+    </div>
+  )
 }
 
 function Profile(): JSX.Element {
@@ -58,24 +85,11 @@ function Profile(): JSX.Element {
     </div>
   )
 
-  const renderProfileHeader = () => (
-    <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
-      <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
-      <MultiToggleSwitch
-        data={[
-          { label: 'General' },
-          { label: 'Portfolio' },
-          { label: 'Board' },
-        ]}
-        activeIndex={tab}
-        onToggle={onTabToggle}
-      />
-    </div>
-  )
-
   return (
     <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
-      <div className='bg-white'>{renderProfileHeader()}</div>
+      <div className='bg-white'>
+        <ProfileHeader tab={tab} onTabToggle={onTabToggle} />
+      </div>
       <div className='wrapper flex py-8 px-60px'>
         <div className='flex w-full'>
           {renderProfileCard()}

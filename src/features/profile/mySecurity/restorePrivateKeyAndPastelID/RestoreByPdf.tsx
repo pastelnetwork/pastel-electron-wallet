@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, ChangeEvent, useCallback } from 'react'
 import path from 'path'
 import pdfjs from 'pdfjs-dist'
 import cn from 'classnames'
@@ -14,6 +14,66 @@ type TRestoreByPdfProps = {
   onHideHeader?: (status: boolean) => void
   setPastelId?: (pastelId: string) => void
   callback?: () => void
+}
+
+function InputControl({
+  handlePdfChange,
+}: {
+  handlePdfChange: (val: ChangeEvent<HTMLInputElement>) => void
+}): JSX.Element {
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    handlePdfChange(e)
+  }, [])
+
+  return (
+    <input
+      type='file'
+      name='upload'
+      accept='application/pdf'
+      onChange={onChange}
+      className='hidden'
+    />
+  )
+}
+
+function RestoreYourKeysButton({
+  handleRestoreByUpload,
+  fileSelected,
+}: {
+  handleRestoreByUpload: (val: File) => void
+  fileSelected?: File
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    if (fileSelected) {
+      handleRestoreByUpload(fileSelected)
+    }
+  }, [fileSelected])
+
+  return (
+    <Tooltip
+      type='top'
+      content={
+        <div className='p-2 text-xs font-medium'>Restore your keys.</div>
+      }
+      width={130}
+      vPosPercent={110}
+    >
+      <button
+        onClick={onClick}
+        className={cn(fileSelected ? 'cursor-pointer' : 'cursor-not-allowed')}
+        type='button'
+      >
+        <Refresh
+          size={44}
+          className={cn(
+            'transition duration-300',
+            !fileSelected ? 'text-blue-9b' : 'text-blue-e7 hover:text-blue-fa',
+          )}
+          pathColor={fileSelected ? '#3F9AF7' : '#fff'}
+        />
+      </button>
+    </Tooltip>
+  )
 }
 
 export default function RestoreByPdf({
@@ -40,11 +100,11 @@ export default function RestoreByPdf({
     }
   }
 
-  const handleRestoreByUpload = async () => {
-    if (fileSelected) {
+  const handleRestoreByUpload = async (file: File) => {
+    if (file) {
       try {
         setCurrentStatus('restoring')
-        const pdfPath = path.join(fileSelected.path)
+        const pdfPath = path.join(file.path)
         if (pdfPath) {
           pdfjs.GlobalWorkerOptions.workerSrc =
             '//mozilla.github.io/pdf.js/build/pdf.worker.js'
@@ -61,7 +121,7 @@ export default function RestoreByPdf({
     }
   }
 
-  const handlePdfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePdfChange = (e: ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files
 
     if (fileList) {
@@ -75,38 +135,6 @@ export default function RestoreByPdf({
 
   if (currentStatus === 'error') {
     return <RestoreError />
-  }
-
-  const renderRefreshIcon = () => {
-    return (
-      <Tooltip
-        type='top'
-        content={
-          <div className='p-2 text-xs font-medium'>Restore your keys.</div>
-        }
-        width={130}
-        vPosPercent={110}
-      >
-        <span
-          onClick={handleRestoreByUpload}
-          className={cn(fileSelected ? 'cursor-pointer' : 'cursor-not-allowed')}
-          role='button'
-          tabIndex={0}
-          aria-hidden='true'
-        >
-          <Refresh
-            size={44}
-            className={cn(
-              'transition duration-300',
-              !fileSelected
-                ? 'text-blue-9b'
-                : 'text-blue-e7 hover:text-blue-fa',
-            )}
-            pathColor={fileSelected ? '#3F9AF7' : '#fff'}
-          />
-        </span>
-      </Tooltip>
-    )
   }
 
   const renderUploadPdfControl = () => {
@@ -125,13 +153,7 @@ export default function RestoreByPdf({
             </p>
           ) : null}
         </div>
-        <input
-          type='file'
-          name='upload'
-          accept='application/pdf'
-          onChange={handlePdfChange}
-          className='hidden'
-        />
+        <InputControl handlePdfChange={handlePdfChange} />
       </label>
     )
   }
@@ -144,7 +166,12 @@ export default function RestoreByPdf({
       )}
     >
       <div className='w-3/4'>{renderUploadPdfControl()}</div>
-      <div className='w-14'>{renderRefreshIcon()}</div>
+      <div className='w-14'>
+        <RestoreYourKeysButton
+          handleRestoreByUpload={handleRestoreByUpload}
+          fileSelected={fileSelected}
+        />
+      </div>
     </div>
   )
 

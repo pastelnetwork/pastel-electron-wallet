@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import cn from 'classnames'
 import Followers from './ProfileFollowers'
 import ico_users from 'common/assets/icons/ico-users.svg'
@@ -14,6 +14,34 @@ export type TProfileRelations = {
   isEmpty?: boolean
 }
 
+function ProfileRelationButton({
+  setTab,
+  tab,
+  text,
+  value,
+}: {
+  setTab: (val: string) => void
+  tab: string
+  text: string
+  value: string
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    setTab(value)
+  }, [value])
+
+  return (
+    <div
+      className={tab == value ? cx_tab_active : cx_tab}
+      onClick={onClick}
+      role='button'
+      tabIndex={0}
+      aria-hidden='true'
+    >
+      {text}Following ({relationCounts.following})
+    </div>
+  )
+}
+
 function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
   const [tab, setTab] = useState('Followers')
 
@@ -24,37 +52,28 @@ function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
       } bg-gray-f8 z-10 relative`}
     >
       <div className='flex-grow z-10'>
-        <div
-          className={tab == 'Followers' ? cx_tab_active : cx_tab}
-          onClick={() => setTab('Followers')}
-          role='button'
-          tabIndex={0}
-          aria-hidden='true'
-        >
-          Followers ({relationCounts.followers})
-        </div>
+        <ProfileRelationButton
+          tab={tab}
+          setTab={setTab}
+          text={`Followers (${relationCounts.followers})`}
+          value='Followers'
+        />
       </div>
       <div className='flex-grow z-10 flex justify-center'>
-        <div
-          className={tab == 'Friends' ? cx_tab_active : cx_tab}
-          onClick={() => setTab('Friends')}
-          role='button'
-          tabIndex={0}
-          aria-hidden='true'
-        >
-          Friends ({relationCounts.friends})
-        </div>
+        <ProfileRelationButton
+          tab={tab}
+          setTab={setTab}
+          text={`Friends (${relationCounts.friends})`}
+          value='Friends'
+        />
       </div>
       <div className='flex-grow z-10 flex justify-end'>
-        <div
-          className={tab == 'Following' ? cx_tab_active : cx_tab}
-          onClick={() => setTab('Following')}
-          role='button'
-          tabIndex={0}
-          aria-hidden='true'
-        >
-          Following ({relationCounts.following})
-        </div>
+        <ProfileRelationButton
+          tab={tab}
+          setTab={setTab}
+          text={`Following (${relationCounts.following})`}
+          value='Following'
+        />
       </div>
       <div className='absolute left-0 bottom-0 z-0 w-full border-t text-gray-b0' />
     </div>

@@ -33,12 +33,14 @@ function CancelButton(): JSX.Element {
 
 function ImportButton({
   handleImportPrivateKey,
+  privateKey,
 }: {
-  handleImportPrivateKey: () => void
+  handleImportPrivateKey: (val: string) => void
+  privateKey: string
 }): JSX.Element {
   const onClick = useCallback(() => {
-    handleImportPrivateKey()
-  }, [])
+    handleImportPrivateKey(privateKey)
+  }, [privateKey])
 
   return (
     <Button
@@ -97,14 +99,14 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
     return null
   }
 
-  const handleImportPrivateKey = async () => {
+  const handleImportPrivateKey = async (key: string) => {
     setMessage('')
     setComplete(false)
-    if (!privateKey) {
+    if (!key) {
       setMessage('Private Keys is required.')
       return
     }
-    let keys = privateKey.replace(/\n/g, ' ').split(' ')
+    let keys = key.replace(/\n/g, ' ').split(' ')
     if (!keys || keys.length === 0) {
       setMessage('No keys were specified, so none were imported')
       return
@@ -179,7 +181,10 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
             </div>
             <div className='mt-4 flex justify-end'>
               <CancelButton />
-              <ImportButton handleImportPrivateKey={handleImportPrivateKey} />
+              <ImportButton
+                handleImportPrivateKey={handleImportPrivateKey}
+                privateKey={privateKey}
+              />
             </div>
           </>
         )}

@@ -63,12 +63,14 @@ function CancelButton(): JSX.Element {
 
 function PayURIButton({
   handlePayURI,
+  uri,
 }: {
-  handlePayURI: () => void
+  handlePayURI: (val: string) => void
+  uri: string
 }): JSX.Element {
   const onClick = useCallback(() => {
-    handlePayURI()
-  }, [])
+    handlePayURI(uri)
+  }, [uri])
 
   return (
     <Button
@@ -102,15 +104,15 @@ export default function PayURIModal(): JSX.Element | null {
     return null
   }
 
-  const handlePayURI = () => {
+  const handlePayURI = (strUri: string) => {
     setMessage('')
-    if (!uri) {
+    if (!strUri) {
       setValid(false)
       setMessage('URI was not found or invalid')
       return
     }
 
-    const parsedUri = parsePastelURI(uri)
+    const parsedUri = parsePastelURI(strUri)
 
     if (typeof parsedUri === 'string') {
       setMessage(parsedUri)
@@ -145,7 +147,7 @@ export default function PayURIModal(): JSX.Element | null {
         />
         <div className='mt-4 flex justify-end'>
           <CancelButton />
-          <PayURIButton handlePayURI={handlePayURI} />
+          <PayURIButton handlePayURI={handlePayURI} uri={uri} />
         </div>
       </div>
     </TitleModal>

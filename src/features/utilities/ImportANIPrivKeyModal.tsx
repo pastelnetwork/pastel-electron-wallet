@@ -12,12 +12,14 @@ import congratulations from 'common/assets/icons/ico-congratulations.svg'
 
 function ImportButton({
   handleImportANIPrivKey,
+  privateKey,
 }: {
-  handleImportANIPrivKey: () => void
+  handleImportANIPrivKey: (val: string) => void
+  privateKey: string
 }): JSX.Element {
   const onClick = useCallback(() => {
-    handleImportANIPrivKey()
-  }, [])
+    handleImportANIPrivKey(privateKey)
+  }, [privateKey])
 
   return (
     <Button
@@ -98,16 +100,16 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
     return null
   }
 
-  const handleImportANIPrivKey = async () => {
+  const handleImportANIPrivKey = async (key: string) => {
     setMessage('')
     setComplete(false)
 
-    if (!privateKey) {
+    if (!key) {
       setMessage('ANI Private Keys is required.')
       return
     }
 
-    let keys = privateKey.replace(/\n/g, ' ').split(' ')
+    let keys = key.replace(/\n/g, ' ').split(' ')
     if (!keys || keys.length === 0) {
       setMessage('No ANI keys were specified, so none were imported')
       return
@@ -179,7 +181,10 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
             </div>
             <div className='mt-4 flex justify-center'>
               <CancelButton />
-              <ImportButton handleImportANIPrivKey={handleImportANIPrivKey} />
+              <ImportButton
+                handleImportANIPrivKey={handleImportANIPrivKey}
+                privateKey={privateKey}
+              />
             </div>
           </>
         )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 import ProfileCard from '../components/MyProfileCard'
@@ -182,6 +182,56 @@ const filters = [
   },
 ]
 
+function ProfileCommentList({
+  handleOnReply,
+  handleOnLikeClick,
+}: {
+  handleOnLikeClick: (val: number) => void
+  handleOnReply: (replyId: number, reply: string) => void
+}): JSX.Element {
+  const onLikeClick = useCallback((commentId: number) => {
+    handleOnLikeClick(commentId)
+  }, [])
+
+  const onReply = useCallback((replyId: number, reply: string) => {
+    handleOnReply(replyId, reply)
+  }, [])
+
+  return (
+    <div className='w-full lg:w-4/5'>
+      <ProfileComments
+        comments={commentsData}
+        onReply={onReply}
+        onLikeClick={onLikeClick}
+      />
+    </div>
+  )
+}
+
+function FilterCheckbox({
+  isChecked,
+  value,
+  onClickFilter,
+  name,
+}: {
+  isChecked: boolean
+  value: string
+  onClickFilter: (val: string) => void
+  name: string
+}): JSX.Element {
+  const onChange = useCallback(() => {
+    onClickFilter(value)
+  }, [value])
+
+  return (
+    <Checkbox isChecked={isChecked} clickHandler={onChange}>
+      <span className='text-sm leading-18px font-medium text-gray-11'>
+        {name}
+      </span>
+    </Checkbox>
+  )
+}
+
 function MyComments(): JSX.Element {
   const [editMode, setEditMode] = useState(false)
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
@@ -208,14 +258,12 @@ function MyComments(): JSX.Element {
       <ul className='mt-4 flex lg:block'>
         {filters.map(filter => (
           <li className='lg:mb-3 mr-3 lg:mr-0' key={filter.id}>
-            <Checkbox
+            <FilterCheckbox
+              onClickFilter={onClickFilter}
               isChecked={filter.isChecked}
-              clickHandler={() => onClickFilter(filter.value)}
-            >
-              <span className='text-sm leading-18px font-medium text-gray-11'>
-                {filter.name}
-              </span>
-            </Checkbox>
+              name={filter.name}
+              value={filter.value}
+            />
           </li>
         ))}
       </ul>
@@ -237,13 +285,10 @@ function MyComments(): JSX.Element {
 
   const renderCommentContent = () => (
     <div className='flex pl-50px justify-between flex-col-reverse lg:flex-row flex-grow'>
-      <div className='w-full lg:w-4/5'>
-        <ProfileComments
-          comments={commentsData}
-          onReply={handleOnReply}
-          onLikeClick={handleOnLikeClick}
-        />
-      </div>
+      <ProfileCommentList
+        handleOnLikeClick={handleOnLikeClick}
+        handleOnReply={handleOnReply}
+      />
       {renderFilter()}
     </div>
   )
