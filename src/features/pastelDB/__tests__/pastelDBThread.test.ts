@@ -32,7 +32,7 @@ describe('PastelDBThread', () => {
   let db: Database
   useTestDb(value => (db = value))
 
-  beforeAll(async () => {
+  beforeAll(() => {
     setRpcConfig(mockConfig)
   })
 

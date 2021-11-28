@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -8,6 +8,82 @@ import Input from 'common/components/Inputs/Input'
 import { Button } from 'common/components/Buttons'
 import { parsePastelURI } from 'common/utils/uris'
 import * as ROUTES from 'common/utils/constants/routes'
+
+function InputControl({
+  uriIsValid,
+  uri,
+  setUri,
+  message,
+}: {
+  uriIsValid: boolean | null
+  uri: string
+  setUri: (val: string) => void
+  message: string
+}): JSX.Element {
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setUri(e.target.value)
+  }, [])
+
+  return (
+    <div className='mt-6'>
+      <Input
+        placeholder='URI'
+        type='text'
+        value={uri}
+        onChange={onChange}
+        isValid={uriIsValid}
+        errorMessage={message}
+        hint
+        hintAsTooltip={false}
+      />
+    </div>
+  )
+}
+
+function CancelButton(): JSX.Element {
+  const dispatch = useAppDispatch()
+
+  const onClick = useCallback(() => {
+    dispatch(closePayURIModal())
+  }, [])
+
+  return (
+    <Button
+      variant='secondary'
+      className='w-[120px] px-0'
+      childrenClassName='w-full'
+      onClick={onClick}
+    >
+      <div className='flex items-center justify-center'>
+        <div className='text-blue-3f text-h5-medium'>Cancel</div>
+      </div>
+    </Button>
+  )
+}
+
+function PayURIButton({
+  handlePayURI,
+  uri,
+}: {
+  handlePayURI: (val: string) => void
+  uri: string
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handlePayURI(uri)
+  }, [uri])
+
+  return (
+    <Button
+      onClick={onClick}
+      className='w-[120px] ml-[30px] px-0'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center justify-center'>
+        <div className='text-white text-h5-heavy'>Pay URI</div>
+      </div>
+    </Button>
+  )
+}
 
 export default function PayURIModal(): JSX.Element | null {
   const { payURIModalIsOpen } = useAppSelector(state => state.utilities)
@@ -28,15 +104,15 @@ export default function PayURIModal(): JSX.Element | null {
     return null
   }
 
-  const handlePayURI = () => {
+  const handlePayURI = (strUri: string) => {
     setMessage('')
-    if (!uri) {
+    if (!strUri) {
       setValid(false)
       setMessage('URI was not found or invalid')
       return
     }
 
-    const parsedUri = parsePastelURI(uri)
+    const parsedUri = parsePastelURI(strUri)
 
     if (typeof parsedUri === 'string') {
       setMessage(parsedUri)
@@ -55,48 +131,6 @@ export default function PayURIModal(): JSX.Element | null {
     uriIsValid = false
   }
 
-  const renderCancelButton = () => (
-    <Button
-      variant='secondary'
-      className='w-[120px] px-0'
-      childrenClassName='w-full'
-      onClick={() => dispatch(closePayURIModal())}
-    >
-      <div className='flex items-center justify-center'>
-        <div className='text-blue-3f text-h5-medium'>Cancel</div>
-      </div>
-    </Button>
-  )
-
-  const renderPayURI = () => (
-    <Button
-      onClick={handlePayURI}
-      className='w-[120px] ml-[30px] px-0'
-      childrenClassName='w-full'
-    >
-      <div className='flex items-center justify-center'>
-        <div className='text-white text-h5-heavy'>Pay URI</div>
-      </div>
-    </Button>
-  )
-
-  const renderInputControl = (uriIsValid: boolean | null) => (
-    <div className='mt-6'>
-      <Input
-        placeholder='URI'
-        type='text'
-        value={uri}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setUri(e.target.value)
-        }
-        isValid={uriIsValid}
-        errorMessage={message}
-        hint
-        hintAsTooltip={false}
-      />
-    </div>
-  )
-
   return (
     <TitleModal
       isOpen={payURIModalIsOpen}
@@ -105,10 +139,15 @@ export default function PayURIModal(): JSX.Element | null {
       title='Pay URI'
     >
       <div className='pr-8'>
-        {renderInputControl(uriIsValid)}
+        <InputControl
+          uriIsValid={uriIsValid}
+          message={message}
+          uri={uri}
+          setUri={setUri}
+        />
         <div className='mt-4 flex justify-end'>
-          {renderCancelButton()}
-          {renderPayURI()}
+          <CancelButton />
+          <PayURIButton handlePayURI={handlePayURI} uri={uri} />
         </div>
       </div>
     </TitleModal>

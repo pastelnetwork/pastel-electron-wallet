@@ -1,4 +1,4 @@
-import React, { useState, ReactNode, useMemo } from 'react'
+import React, { useState, ReactNode, useMemo, useCallback } from 'react'
 import cx from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -40,6 +40,39 @@ export type TTableProps = {
   stickyTopClassName?: string
   extendHeaderClassName?: string
   isLoading?: boolean
+}
+
+function TableCheckBox({
+  index,
+  row,
+  selectedRows,
+  setSelectedRows,
+  selectedRow,
+}: {
+  index: number
+  row: TRow
+  selectedRows: Array<number>
+  setSelectedRows: (val: Array<number>) => void
+  selectedRow?: (row: TRow) => void
+}): JSX.Element {
+  const handleOnCheckChange = useCallback(() => {
+    const temp = selectedRows
+    if (selectedRows.includes(index)) {
+      for (let i = 0; i < selectedRows.length; i++) {
+        if (index === temp[i]) {
+          temp.splice(i, 1)
+        }
+      }
+    } else {
+      temp.push(index)
+    }
+    setSelectedRows([...temp])
+    if (selectedRow) {
+      selectedRow(row)
+    }
+  }, [])
+
+  return <Checkbox isChecked={false} clickHandler={handleOnCheckChange} />
 }
 
 export default function Table({
@@ -195,20 +228,12 @@ export default function Table({
           >
             {showCheckbox ? (
               <td className='pl-4 md:pl-30px w-5'>
-                <Checkbox
-                  isChecked={false}
-                  clickHandler={() => {
-                    const temp = selectedRows
-                    if (selectedRows.includes(index)) {
-                      for (let i = 0; i < temp.length; i++) {
-                        index === temp[i] && temp.splice(i, 1)
-                      }
-                    } else {
-                      temp.push(index)
-                    }
-                    setSelectedRows([...temp])
-                    selectedRow && selectedRow(row)
-                  }}
+                <TableCheckBox
+                  index={index}
+                  row={row}
+                  selectedRows={selectedRows}
+                  setSelectedRows={setSelectedRows}
+                  selectedRow={selectedRow}
                 />
               </td>
             ) : null}

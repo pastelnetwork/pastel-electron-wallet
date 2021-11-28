@@ -38,5 +38,5 @@ export default function LinkSection({
 LinkSection.defaultProps = {
   absolute: false,
   gradient: false,
-  className: '',
+  className: 'pt-22px pb-5',
 }

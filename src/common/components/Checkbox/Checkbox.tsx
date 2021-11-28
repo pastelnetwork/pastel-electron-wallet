@@ -30,7 +30,9 @@ function Checkbox({
       className={cn('cursor-pointer select-none flex', className)}
       onClick={() => {
         setSelected(!selected)
-        clickHandler && clickHandler(!selected)
+        if (clickHandler) {
+          clickHandler(!selected)
+        }
       }}
     >
       <div

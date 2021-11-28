@@ -119,14 +119,24 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
     </>
   )
 
+  const renderMinimumPriceMeetTooltip = () => (
+    <Tooltip type='top' content={getTooltip('Minimum Price Meet')} width={142}>
+      <Checkmark size={14} className='text-green-6d' />
+    </Tooltip>
+  )
+
+  const renderSaleTypeRow = () => (
+    <Row title='Sale Type' link='#'>
+      {nft.type ? nft.type : 'None'}
+    </Row>
+  )
+
   return (
     <div className='flex-shrink-0 w-1/3 md:w-auto'>
       <div className='space-y-30px'>
         {renderStatistics()}
         <div className='space-y-3'>
-          <Row title='Sale Type' link='#'>
-            {nft.type ? nft.type : 'None'}
-          </Row>
+          {renderSaleTypeRow()}
           {nft.type ? (
             <>
               <Row title='Status' link='#'>
@@ -143,13 +153,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
                 <span className='flex mr-3 text-gradient'>
                   {formatNumber(nft.bids)} {currencyName}
                 </span>
-                <Tooltip
-                  type='top'
-                  content={getTooltip('Minimum Price Meet')}
-                  width={142}
-                >
-                  <Checkmark size={14} className='text-green-6d' />
-                </Tooltip>
+                {renderMinimumPriceMeetTooltip()}
               </Row>
             </>
           ) : (

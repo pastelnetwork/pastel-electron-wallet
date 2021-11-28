@@ -48,9 +48,7 @@ export default function QRCodeModal(): JSX.Element {
         {loading ? (
           <Spinner className='w-8 h-8 text-blue-3f' />
         ) : (
-          <>
-            <QRCode value={privateKey} renderAs='svg' size={480} />
-          </>
+          <QRCode value={privateKey} renderAs='svg' size={480} />
         )}
       </div>
     </TitleModal>

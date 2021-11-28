@@ -91,7 +91,7 @@ export async function fetchTandZTransactions(
           )
 
           const inputAddresses: string[] = []
-          await result.vin.map(async (v: TVin) => {
+          result.vin.map(async (v: TVin) => {
             try {
               const { result } = await rpc<TRawTransactionResponse>(
                 'gettransaction',
@@ -188,7 +188,7 @@ export async function fetchTandZTransactions(
     }),
   ) // Get transactions from the sent tx store
 
-  const sentTxns = await senttxstorePromise // Now concat the t and z transactions, and call the update function again
+  const sentTxns = senttxstorePromise // Now concat the t and z transactions, and call the update function again
   const alltxlist: TTransaction[] = ttxlist
     .concat(ztxlist)
     .concat(sentTxns)

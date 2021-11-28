@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect, createRef, useCallback } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 import cn from 'classnames'
 
@@ -44,6 +44,22 @@ const passOptions: IPasswordOption[] = [
 type TPassStrengthProps = {
   key: string
   value: string
+}
+
+function GenerateRandomPasswordButton({
+  handleGenerateRandomPassword,
+}: {
+  handleGenerateRandomPassword: () => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handleGenerateRandomPassword()
+  }, [])
+
+  return (
+    <button type='button' onClick={onClick}>
+      <RefreshIcon size={18} className='text-blue-3f' />
+    </button>
+  )
 }
 
 export default function Password(props: TPassword): JSX.Element {
@@ -225,12 +241,6 @@ export default function Password(props: TPassword): JSX.Element {
     }`
   }
 
-  const renderGenerateRandomPasswordButton = () => (
-    <button type='button' onClick={handleGenerateRandomPassword}>
-      <RefreshIcon size={18} className='text-blue-3f' />
-    </button>
-  )
-
   const renderRefreshIcon = () => (
     <div className={getIconClassnames(true)}>
       <Tooltip
@@ -239,7 +249,9 @@ export default function Password(props: TPassword): JSX.Element {
         content='Generate a new secure 12-digit password'
         classnames='text-xs leading-4 pt-5px pb-1'
       >
-        {renderGenerateRandomPasswordButton()}
+        <GenerateRandomPasswordButton
+          handleGenerateRandomPassword={handleGenerateRandomPassword}
+        />
       </Tooltip>
     </div>
   )

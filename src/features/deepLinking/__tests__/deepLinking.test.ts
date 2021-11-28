@@ -10,7 +10,7 @@ describe('deepLinking/redirectDeepLinkingUrl', () => {
     jest.clearAllMocks()
   })
 
-  test("protocolSchema isn't existing on redirectDeepLinkingUrl", async () => {
+  test("protocolSchema isn't existing on redirectDeepLinkingUrl", () => {
     expect.hasAssertions()
     try {
       setDeepLinkingUrl('protocolSchemes://creator?content=test')
@@ -22,7 +22,7 @@ describe('deepLinking/redirectDeepLinkingUrl', () => {
     }
   })
 
-  test('App opening correct screen based on redirectDeepLinkingUrl', async () => {
+  test('App opening correct screen based on redirectDeepLinkingUrl', () => {
     setDeepLinkingUrl('pastel://creator?content=test')
     redirectDeepLinkingUrl()
 

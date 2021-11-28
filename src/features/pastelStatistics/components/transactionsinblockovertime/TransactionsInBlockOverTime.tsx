@@ -98,27 +98,25 @@ export default function TransactionsInBlockOvertime(
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsScatterChart
-              chartName='transactionsinblock'
-              data={transformLineChartData?.data}
-              dataX={transformLineChartData?.dataX}
-              title='Transactions In Block'
-              info={info}
-              offset={1}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsScatterChart
+            chartName='transactionsinblock'
+            data={transformLineChartData?.data}
+            dataX={transformLineChartData?.dataX}
+            title='Transactions In Block'
+            info={info}
+            offset={1}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

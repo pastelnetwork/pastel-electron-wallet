@@ -78,7 +78,26 @@ function Tooltip({
       marginTop,
     },
   }
-  let style: CSS.Properties, arrowStyle: CSS.Properties
+  let style: CSS.Properties = {
+      width: '',
+      right: '',
+      top: '',
+      bottom: '',
+      left: '',
+      transform: '',
+      marginTop: '',
+      marginLeft: '',
+    },
+    arrowStyle: CSS.Properties = {
+      width: '',
+      right: '',
+      top: '',
+      bottom: '',
+      left: '',
+      transform: '',
+      marginTop: '',
+      marginLeft: '',
+    }
   if (type === 'top') {
     style = styles.top
     arrowStyle = arrow_styles.bottom

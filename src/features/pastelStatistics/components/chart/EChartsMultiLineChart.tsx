@@ -249,6 +249,50 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
     return ''
   }
 
+  const rendertDownloadButtonBar = () => (
+    <div className={styles.lineChartDownloadButtonBar}>
+      <button
+        className={styles.uploadButton}
+        type='button'
+        onClick={downloadPNG}
+      >
+        Download PNG
+      </button>
+      <CSVLink
+        data={csvData}
+        filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
+        headers={pricesCSVHeaders}
+        separator={';'}
+        ref={downloadRef}
+        className={styles.uploadButton}
+      >
+        Download CSV
+      </CSVLink>
+    </div>
+  )
+
+  const renderPeriodSelect = () => (
+    <div className={styles.periodSelect}>
+      <span style={{ color: currentTheme?.color }}>Period: </span>
+      {periods.map((period, index) => (
+        <button
+          className={`${getActivePriodButtonStyle(index)} 
+              ${styles.filterButton}`}
+          onClick={() => {
+            setSelectedPeriodButton(index)
+            if (handlePeriodFilterChange) {
+              handlePeriodFilterChange(period)
+            }
+          }}
+          type='button'
+          key={`button-filter-${period}`}
+        >
+          {period}
+        </button>
+      ))}
+    </div>
+  )
+
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
@@ -259,25 +303,7 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
         >
           {title}
         </div>
-        <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>Period: </span>
-          {periods.map((period, index) => (
-            <button
-              className={`${getActivePriodButtonStyle(index)} 
-                  ${styles.filterButton}`}
-              onClick={() => {
-                setSelectedPeriodButton(index)
-                if (handlePeriodFilterChange) {
-                  handlePeriodFilterChange(period)
-                }
-              }}
-              type='button'
-              key={`button-filter-${period}`}
-            >
-              {period}
-            </button>
-          ))}
-        </div>
+        {renderPeriodSelect()}
       </div>
       <div className={styles.lineChartWrap}>
         <ReactECharts
@@ -304,25 +330,7 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
             ></button>
           ))}
         </div>
-        <div className={styles.lineChartDownloadButtonBar}>
-          <button
-            className={styles.uploadButton}
-            type='button'
-            onClick={downloadPNG}
-          >
-            Download PNG
-          </button>
-          <CSVLink
-            data={csvData}
-            filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
-            headers={pricesCSVHeaders}
-            separator={';'}
-            ref={downloadRef}
-            className={styles.uploadButton}
-          >
-            Download CSV
-          </CSVLink>
-        </div>
+        {rendertDownloadButtonBar()}
       </div>
     </div>
   )

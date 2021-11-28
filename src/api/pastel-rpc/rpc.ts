@@ -15,7 +15,14 @@ export async function rpc<T>(
   options?: { throw?: boolean },
 ): Promise<T> {
   const { url, username, password } = requireRpcConfig()
-  let response: AxiosResponse
+  let response: AxiosResponse = {
+    data: {},
+    status: 0,
+    statusText: '',
+    headers: {},
+    config: {},
+    request: null,
+  }
   try {
     response = await axios(url, {
       data: {
@@ -49,7 +56,7 @@ export async function rpc<T>(
           response?.status ? `. Status code: ${responseStatus}` : ''
         }`,
       )
-      const strMessage: string = message || ''
+      const strMessage: string = message?.toString()
       throw new Error(`api/pastel-rpc server error: ${strMessage}`)
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, memo } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import {
@@ -125,7 +125,7 @@ function AddNewAddressButton({
   )
 }
 
-function WalletScreenContent(): JSX.Element {
+const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
   const location = useLocation()
   const currencyName = useCurrencyName()
   const {
@@ -323,7 +323,7 @@ function WalletScreenContent(): JSX.Element {
       <Modals />
     </div>
   )
-}
+})
 
 export default function WalletScreen(): JSX.Element {
   const tAddressesOriginal = useTAddresses()

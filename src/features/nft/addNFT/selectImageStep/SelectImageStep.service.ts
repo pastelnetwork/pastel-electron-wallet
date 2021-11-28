@@ -189,13 +189,14 @@ export const useSelectImageService = (
         context.drawImage(image, 0, 0)
 
         const blob = await new Promise<Blob>((resolve, reject) => {
-          canvas.toBlob(
-            blob => {
-              blob ? resolve(blob) : reject(new Error('Can not convert image'))
-            },
-            type,
-            1,
-          )
+          const onBlod = (val: Blob | null) => {
+            if (val) {
+              resolve(val)
+            } else {
+              reject(new Error('Can not convert image'))
+            }
+          }
+          canvas.toBlob(blob => onBlod(blob), type, 1)
         })
 
         const url = URL.createObjectURL(blob)

@@ -1,6 +1,5 @@
 import React, { useState, FormEvent } from 'react'
 import shallow from 'zustand/shallow'
-import md5 from 'md5'
 
 import { InputPassword, Input } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
@@ -10,6 +9,7 @@ import PasswordStrength, {
 } from 'common/components/PasswordStrength/PasswordStrength'
 import Link from 'common/components/Link'
 import * as ROUTES from 'common/utils/constants/routes'
+import { encode } from 'common/utils/encryption'
 import { calcPasswordStrength, randomPassword } from 'common/utils/passwords'
 import { readUsersInfo, writeUsersInfo } from 'common/utils/User'
 import { useRegisterStore } from '../register/Register.store'
@@ -84,7 +84,7 @@ export default function NewPassword(): JSX.Element {
     if (user) {
       const password: string = user.password
       const username: string = user.username
-      const vNewPassword: string = md5(newPassword.value) || ''
+      const vNewPassword: string = encode(newPassword.value) || ''
       await changePastelIdPassword({
         pastelId: user.pastelId,
         oldPassphrase: `${password}${username}`,

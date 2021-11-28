@@ -67,7 +67,7 @@ SelectWithAutocompleteHighlight.args = {
   },
 }
 
-export const AutocompleteByQuery = (): JSX.Element => {
+export function AutocompleteByQuery(): JSX.Element {
   const [query, setQuery] = useState('')
   const [selectedItem, setSelected] = useState<TOption | null>()
 
@@ -94,7 +94,7 @@ export const AutocompleteByQuery = (): JSX.Element => {
   )
 }
 
-export const SelectRange = (): JSX.Element => {
+export function SelectRange(): JSX.Element {
   const [value, setValue] = useState<number | null>(10000)
 
   return (
@@ -109,7 +109,7 @@ export const SelectRange = (): JSX.Element => {
   )
 }
 
-export const SelectRangeWithAutocomplete = (): JSX.Element => {
+export function SelectRangeWithAutocomplete(): JSX.Element {
   const [value, setValue] = useState<number | null>(10000)
 
   return (

@@ -366,17 +366,27 @@ export default function DashboardPage(): JSX.Element {
     </div>
   )
 
+  const renderShowMorePortfolioLink = () => (
+    <LinkSection className='' to={ROUTES.PORTFOLIO}>
+      Show more
+    </LinkSection>
+  )
+
+  const renderPortfolioHeader = () => (
+    <div className='md:flex-shrink-0 flex items-center h-6 px-[30px] mb-5'>
+      <div className='font-extrabold text-lg text-gray-2d'>Portfolio</div>
+      <div className='font-medium text-gray-a0 text-sm ml-2 mt-px'>
+        23 items
+      </div>
+    </div>
+  )
+
   return (
     <div className='wrapper content with-page-header h-full w-screen py-5 max-w-screen-2xl'>
       <div className='flex mb-5'>
         <Wallet />
         <div className='paper flex-grow w-0 ml-5 pt-6 relative md:flex md:flex-col'>
-          <div className='md:flex-shrink-0 flex items-center h-6 px-[30px] mb-5'>
-            <div className='font-extrabold text-lg text-gray-2d'>Portfolio</div>
-            <div className='font-medium text-gray-a0 text-sm ml-2 mt-px'>
-              23 items
-            </div>
-          </div>
+          {renderPortfolioHeader()}
           {followers.length > 0 && (
             <div className='grid md:grid-cols-3 gap-[26px] md:flex pl-[30px] pr-14px h-[282px] overflow-auto mr-18px'>
               <PortfolioColumn title='Sales in progress (2)'>
@@ -417,9 +427,7 @@ export default function DashboardPage(): JSX.Element {
               </div>
             </div>
           )}
-          <LinkSection className='' to={ROUTES.PORTFOLIO}>
-            Show more
-          </LinkSection>
+          {renderShowMorePortfolioLink()}
         </div>
       </div>
       <div className='flex'>

@@ -36,6 +36,7 @@ export default function StepBackupMethod(): JSX.Element {
       setTermsAgreed: state.setTermsAgreed,
       setPSLAddressPrivateKey: state.setPSLAddressPrivateKey,
       setPastelId: state.setPastelId,
+      setSelectedPSLAddress: state.setSelectedPSLAddress,
     }),
     shallow,
   )
@@ -46,9 +47,7 @@ export default function StepBackupMethod(): JSX.Element {
   const date: string = dayjs(new Date()).format('MM_DD_YYYY__HH_MM')
   const pdfFileName = `${
     currencyName || 'LSP'
-  }_Paper_Wallet__Private_Keys_${dayjs(new Date()).format(
-    'MM_DD_YYYY__HH_MM_ss',
-  )}.pdf`
+  }_Paper_Wallet__Private_Keys_${date}.pdf`
   const videoFileName = `${currencyName}_QR_Code_Video_${date}.mp4`
 
   const [loading, setLoading] = useState(true)
@@ -173,6 +172,7 @@ export default function StepBackupMethod(): JSX.Element {
   }
 
   const handleNext = () => {
+    finish()
     store.setExchangeAddress('')
     store.setPSLAddressPrivateKey('')
     store.setPassword('')
@@ -181,7 +181,7 @@ export default function StepBackupMethod(): JSX.Element {
     store.setTermsAgreed(false)
     store.setUsername('')
     store.setStep(Steps.Login)
-    finish()
+    store.setSelectedPSLAddress(null)
   }
 
   const renderDownloadButton = () => {

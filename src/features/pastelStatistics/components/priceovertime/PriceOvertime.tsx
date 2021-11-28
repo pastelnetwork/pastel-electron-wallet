@@ -94,27 +94,25 @@ export default function PriceOvertime(): JSX.Element {
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsMultiLineChart
-              chartName='prices'
-              dataX={transformLineChartData?.dataX}
-              dataY1={transformLineChartData?.dataY1}
-              dataY2={transformLineChartData?.dataY2}
-              title={`${currencyName} Prices`}
-              offset={0.0001}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsMultiLineChart
+            chartName='prices'
+            dataX={transformLineChartData?.dataX}
+            dataY1={transformLineChartData?.dataY1}
+            dataY2={transformLineChartData?.dataY2}
+            title={`${currencyName} Prices`}
+            offset={0.0001}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

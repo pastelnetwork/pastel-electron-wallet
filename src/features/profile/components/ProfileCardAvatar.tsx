@@ -16,7 +16,7 @@ function ProfileCardAvatar({
 }: TProfileCardAvatar): JSX.Element {
   return (
     <div className='rounded-full border-4 border-white bg-gray-e6 w-110px h-110px shadow-avatar flex flex-col items-center justify-center overflow-hidden relative'>
-      {!isEmpty && <img src={src} className='w-full' />}
+      {!isEmpty && <img src={src} className='w-full' alt='Profile avatar' />}
       {isEmpty && <img src={img_avatar_empty} className='w-9' alt='Empty' />}
       <div
         className={cn(

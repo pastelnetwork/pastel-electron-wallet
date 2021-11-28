@@ -93,7 +93,7 @@ describe('managePastelDatabase', () => {
     }),
   ]
 
-  test('getStartPoint function works correctly', async () => {
+  test('getStartPoint function works correctly', () => {
     // Arrange
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
 
@@ -105,7 +105,7 @@ describe('managePastelDatabase', () => {
     expect(time).toEqual(1621518133257)
   })
 
-  test('transformDifficultyInfo function works correctly', async () => {
+  test('transformDifficultyInfo function works correctly', () => {
     // Arrange
     timezone_mock.register('US/Pacific')
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -127,7 +127,7 @@ describe('managePastelDatabase', () => {
     })
   })
 
-  test('transformPriceInfo function works correctly', async () => {
+  test('transformPriceInfo function works correctly', () => {
     // Arrange
     timezone_mock.register('US/Pacific')
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -147,7 +147,7 @@ describe('managePastelDatabase', () => {
     })
   })
 
-  test('transformHashrateInfo function works correctly', async () => {
+  test('transformHashrateInfo function works correctly', () => {
     // Arrange
     timezone_mock.register('US/Pacific')
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -169,7 +169,7 @@ describe('managePastelDatabase', () => {
     })
   })
 
-  test('transformNetTotals function works correctly', async () => {
+  test('transformNetTotals function works correctly', () => {
     // Arrange
     timezone_mock.register('US/Pacific')
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -189,7 +189,7 @@ describe('managePastelDatabase', () => {
     })
   })
 
-  test('transformMempoolInfo function works correctly', async () => {
+  test('transformMempoolInfo function works correctly', () => {
     // Arrange
     timezone_mock.register('US/Pacific')
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)
@@ -211,7 +211,7 @@ describe('managePastelDatabase', () => {
     })
   })
 
-  test('transformBlockSizeInfo function works correctly', async () => {
+  test('transformBlockSizeInfo function works correctly', () => {
     const result = pastelStatisticsLib.transformBlockSizeInfo(mockBlockSizes)
 
     expect(result).toEqual({
@@ -220,7 +220,7 @@ describe('managePastelDatabase', () => {
     })
   })
 
-  test('transformTransactionInBlock function works correctly', async () => {
+  test('transformTransactionInBlock function works correctly', () => {
     // Arrange
     timezone_mock.register('US/Pacific')
 
@@ -243,7 +243,7 @@ describe('managePastelDatabase', () => {
     })
   })
 
-  test('transformTransactionFee function works correctly', async () => {
+  test('transformTransactionFee function works correctly', () => {
     // Arrange
     timezone_mock.register('US/Pacific')
     const dateSpy = jest.spyOn(Date, 'now').mockImplementation(() => mockTime)

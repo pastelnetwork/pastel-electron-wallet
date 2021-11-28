@@ -34,7 +34,8 @@ export default forwardRef<SVGCircleElement, TCircleProps>(function Circle(
   },
   ref,
 ) {
-  let dashArray, dashOffset
+  let dashArray = '',
+    dashOffset = 0
   if (percent !== undefined) {
     dashArray = String(getCircleLength(radius, strokeWidth))
     dashOffset = getStrokeDashOffsetForPercent(radius, strokeWidth, percent)

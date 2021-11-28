@@ -1,10 +1,10 @@
 import React, { useState, FormEvent } from 'react'
-import md5 from 'md5'
 
 import Input from 'common/components/Inputs/Input'
 import { Button } from 'common/components/Buttons'
 import CloseButton from '../common/closeButton'
 import Link from 'common/components/Link'
+import { encode } from 'common/utils/encryption'
 
 import * as ROUTES from 'common/utils/constants/routes'
 import history from 'common/utils/history'
@@ -23,7 +23,7 @@ export default function Login(): JSX.Element {
     setErrorMessage('')
     const users = await readUsersInfo()
     const user = users.find(
-      u => u.username === username && u.newPassword === md5(password),
+      u => u.username === username && u.newPassword === encode(password),
     )
     if (user) {
       try {

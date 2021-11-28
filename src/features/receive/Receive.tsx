@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Accordion } from 'react-accessible-accordion'
 import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 
@@ -45,6 +45,38 @@ export interface IReceiveProps {
 enum receiveTab {
   shielded,
   transparent,
+}
+
+function NewAddressButton({
+  createNewAddress,
+  currentTab,
+}: {
+  createNewAddress: (val: boolean) => void
+  currentTab: number
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    if (currentTab === receiveTab.shielded) {
+      createNewAddress(true)
+    } else {
+      createNewAddress(false)
+    }
+  }, [])
+
+  return (
+    <button
+      className={cx(
+        cstyles.primarybutton,
+        cstyles.margintoplarge,
+        cstyles.marginbottomlarge,
+      )}
+      onClick={onClick}
+      type='button'
+    >
+      {currentTab === receiveTab.shielded
+        ? 'New Shielded Address'
+        : 'New Transparent Address'}
+    </button>
+  )
 }
 
 export function Receive(props: IReceiveProps): JSX.Element {
@@ -130,17 +162,10 @@ export function Receive(props: IReceiveProps): JSX.Element {
             />
           ))}
         </Accordion>
-        <button
-          className={cx(
-            cstyles.primarybutton,
-            cstyles.margintoplarge,
-            cstyles.marginbottomlarge,
-          )}
-          type='button'
-          onClick={() => createNewAddress(false)}
-        >
-          New Transparent Address
-        </button>
+        <NewAddressButton
+          createNewAddress={createNewAddress}
+          currentTab={receiveTab.transparent}
+        />
       </ScrollPane>
     </TabPanel>
   )
@@ -164,17 +189,10 @@ export function Receive(props: IReceiveProps): JSX.Element {
             />
           ))}
         </Accordion>
-        <button
-          className={cx(
-            cstyles.primarybutton,
-            cstyles.margintoplarge,
-            cstyles.marginbottomlarge,
-          )}
-          onClick={() => createNewAddress(true)}
-          type='button'
-        >
-          New Shielded Address
-        </button>
+        <NewAddressButton
+          createNewAddress={createNewAddress}
+          currentTab={receiveTab.shielded}
+        />
       </ScrollPane>
     </TabPanel>
   )

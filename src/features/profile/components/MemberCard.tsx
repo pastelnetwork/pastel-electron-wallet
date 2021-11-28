@@ -92,7 +92,7 @@ export default function MemberCard({
         <img
           className='object-fill w-104px h-104px rounded-xl shadow-lg'
           src={productURL}
-          alt='Product Image'
+          alt='Product'
         />
       </div>
     </button>

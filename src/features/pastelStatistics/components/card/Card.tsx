@@ -3,7 +3,6 @@ import styles from './Card.module.css'
 
 type CardProps = {
   backgroundImage?: string
-  title?: string
   subTitle?: string
 }
 
@@ -25,6 +24,5 @@ export function Card(props: CardProps): JSX.Element {
 
 Card.defaultProps = {
   backgroundImage: '',
-  title: '',
   subTitle: '',
 }

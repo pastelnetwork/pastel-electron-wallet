@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, ChangeEvent, useCallback } from 'react'
 import path from 'path'
 import jsQR from 'jsqr'
 import cn from 'classnames'
@@ -15,6 +15,43 @@ type TRestoreByUploadProps = {
   onHideHeader?: (status: boolean) => void
   setPastelId?: (pastelId: string) => void
   callback?: () => void
+}
+
+function UploadVideoControl({
+  fileSelected,
+  handleImageChange,
+}: {
+  fileSelected?: File
+  handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void
+}): JSX.Element {
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    handleImageChange(e)
+  }, [])
+
+  return (
+    <label className='relative overflow-hidden flex'>
+      <div className='w-[55px] cursor-pointer'>
+        <Video size={55} />
+      </div>
+      <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
+        <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
+          {fileSelected ? fileSelected.name : 'Select your QR code video.'}
+        </p>
+        {fileSelected ? (
+          <p className='mb-0 text-xs font-normal text-gray-a0'>
+            {formatFileSize(fileSelected.size)}
+          </p>
+        ) : null}
+      </div>
+      <input
+        type='file'
+        name='upload'
+        accept='video/mp4'
+        onChange={onChange}
+        className='hidden'
+      />
+    </label>
+  )
 }
 
 export default function RestoreByUpload({
@@ -67,7 +104,7 @@ export default function RestoreByUpload({
           12,
           VideoToFramesMethod.totalFrames,
         )
-          .then(async frames => {
+          .then(frames => {
             let totalQRCode = 0
             for (let i = 0; i < frames.length; i++) {
               const frame = frames[i]
@@ -155,33 +192,6 @@ export default function RestoreByUpload({
     )
   }
 
-  const renderUploadVideoControl = () => {
-    return (
-      <label className='relative overflow-hidden flex'>
-        <div className='w-[55px] cursor-pointer'>
-          <Video size={55} />
-        </div>
-        <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
-          <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-            {fileSelected ? fileSelected.name : 'Select your QR code video.'}
-          </p>
-          {fileSelected ? (
-            <p className='mb-0 text-xs font-normal text-gray-a0'>
-              {formatFileSize(fileSelected.size)}
-            </p>
-          ) : null}
-        </div>
-        <input
-          type='file'
-          name='upload'
-          accept='video/mp4'
-          onChange={handleImageChange}
-          className='hidden'
-        />
-      </label>
-    )
-  }
-
   const renderRestoreUploadForm = () => (
     <div
       className={cn(
@@ -189,7 +199,12 @@ export default function RestoreByUpload({
         currentStatus === 'restoring' && 'cursor-not-allowed',
       )}
     >
-      <div className='w-3/4'>{renderUploadVideoControl()}</div>
+      <div className='w-3/4'>
+        <UploadVideoControl
+          fileSelected={fileSelected}
+          handleImageChange={handleImageChange}
+        />
+      </div>
       <div className='w-14'>{renderRefreshIcon()}</div>
     </div>
   )

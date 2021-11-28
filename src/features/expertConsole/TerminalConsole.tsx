@@ -70,7 +70,7 @@ let isRendered = false
 const historyCmds: string[] = []
 
 function TerminalConsole(props: TConsoleProps): JSX.Element {
-  const [typing, setTyping] = useState('')
+  const [typing, setTyping] = useState<string>('')
   const [executingCommand, setExecutingCommand] = useState(false)
   const [outputs, setOutputs] = useState<any[]>([])
   const [isReady, setIsReady] = useState(isRendered)
@@ -173,9 +173,8 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     if (!suggestions?.length || suggestions[0] === typing) {
       return
     }
-    const vType: string = typing || ''
     const vSuggestions: string = suggestions.join('\n') || ''
-    addOutputThenDisplay(`$ ${vType}\n${vSuggestions}`)
+    addOutputThenDisplay(`$ ${typing}\n${vSuggestions}`)
       .then(() => {
         // noop
       })

@@ -41,7 +41,7 @@ function MultiSelect({
       name={name}
       isClearable={false}
       closeMenuOnSelect={false}
-      TisMulti
+      isMulti
     />
   )
 }

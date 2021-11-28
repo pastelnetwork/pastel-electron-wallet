@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo } from 'react'
+import React, { ReactNode, useMemo, memo } from 'react'
 import {
   EliminationIcon,
   ShieldedBalance,
@@ -23,10 +23,9 @@ type TBalanceCard = {
   info: string
 }
 
-export default function BalanceCards(): JSX.Element {
+const BalanceCards = memo(function BalanceCards(): JSX.Element {
   const { activeTab, setActiveTab, totalBalances } = useWalletScreenContext()
   const currencyName = useCurrencyName()
-
   const loaderItem = (
     <div className='h-8 flex items-center'>
       <RectangleLoader
@@ -168,4 +167,6 @@ export default function BalanceCards(): JSX.Element {
       })}
     </div>
   )
-}
+})
+
+export default BalanceCards

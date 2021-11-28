@@ -89,26 +89,24 @@ export default function TransactionFeeOvertime(): JSX.Element {
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='transactionfee'
-              dataY={transformLineChartData?.dataY}
-              dataX={transformLineChartData?.dataX}
-              title='Transaction Fee(usd)'
-              offset={0.01}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='transactionfee'
+            dataY={transformLineChartData?.dataY}
+            dataX={transformLineChartData?.dataX}
+            title='Transaction Fee(usd)'
+            offset={0.01}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

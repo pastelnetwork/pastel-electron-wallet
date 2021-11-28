@@ -87,13 +87,13 @@ export default function initServeStatic(): void {
 
 export function closeServeStatic(): void {
   if (servers && servers.length > 0) {
-    servers.map(server =>
+    servers.forEach(server => {
       server.close(error => {
         if (error) {
           const message: string = error.message || ''
           throw new Error(`serveStatic closeServeStatic error: ${message}`)
         }
-      }),
-    )
+      })
+    })
   }
 }

@@ -19,7 +19,7 @@ function Alert({
   children,
   onShowing = true,
   showClose = false,
-}: TAlert): JSX.Element {
+}: TAlert): JSX.Element | null {
   const [isShowing, setIsShowing] = useState<boolean>(onShowing)
   const classes = cn(
     'border-l-4 px-4 py-3 rounded',
@@ -51,7 +51,8 @@ function Alert({
       </div>
     )
   }
-  return <></>
+
+  return null
 }
 
 Alert.defaultProps = {

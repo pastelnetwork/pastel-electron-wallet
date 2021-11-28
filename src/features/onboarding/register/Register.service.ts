@@ -2,7 +2,6 @@ import { useMutation } from 'react-query'
 import shallow from 'zustand/shallow'
 import { UseStore } from 'zustand'
 import { useEffect, useMemo } from 'react'
-import md5 from 'md5'
 
 import {
   createNewPastelID,
@@ -21,6 +20,7 @@ import {
 import history from '../../../common/utils/history'
 import { ROUTES } from '../../../common/constants/routes'
 import { writeUsersInfo } from 'common/utils/User'
+import { encode } from 'common/utils/encryption'
 
 const CHECK_PASTELID_CONFIRMATIONS_INTERVAL = 1000
 
@@ -90,8 +90,8 @@ export const useInitializeRegister = ({
       [
         {
           username,
-          password: md5(password),
-          newPassword: md5(password),
+          password: encode(password),
+          newPassword: encode(password),
           pastelId: pastelid,
           pastelIds: [pastelid],
           addresses,
@@ -117,7 +117,7 @@ export const useInitializeRegister = ({
           .finally(() => {
             // noop
           })
-        const vPassword: string = md5(password) || ''
+        const vPassword: string = encode(password) || ''
         const vUsername: string = username || ''
         walletNodeApi.userData
           .create({

@@ -21,7 +21,7 @@ function Avatar({
     <div className={cn(className, 'relative')}>
       <img
         src={avatarSrc}
-        alt='avatar image'
+        alt='Avatar'
         className={cn(className, 'rounded-full')}
       />
       {iconType === 'comment' && (

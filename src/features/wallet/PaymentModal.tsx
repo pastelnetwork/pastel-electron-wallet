@@ -518,7 +518,7 @@ export default function PaymentModal(): JSX.Element {
         isValid={recipientAddressIsValid}
         errorMessage={
           !recipientAddressIsValid && recipientAddressMessage
-            ? recipientAddressMessage || 'Recipient address is invalid.'
+            ? recipientAddressMessage
             : null
         }
         hint

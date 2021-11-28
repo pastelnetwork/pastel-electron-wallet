@@ -86,26 +86,24 @@ export default function HashrateOvertime(): JSX.Element {
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='hashrate'
-              dataX={transformLineChartData?.dataX}
-              dataY={transformLineChartData?.dataY}
-              title='Hashrate(MH/s)'
-              offset={1}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='hashrate'
+            dataX={transformLineChartData?.dataX}
+            dataY={transformLineChartData?.dataY}
+            title='Hashrate(MH/s)'
+            offset={1}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

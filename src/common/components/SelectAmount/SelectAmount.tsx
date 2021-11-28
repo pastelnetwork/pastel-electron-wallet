@@ -66,7 +66,9 @@ export default function SelectAmount({
         value: selected.value.slice(0, -1),
       }
       setSelected(selection)
-      onChange && onChange(selection)
+      if (onChange) {
+        onChange(selection)
+      }
     }
   }
 
@@ -93,7 +95,9 @@ export default function SelectAmount({
     <Downshift
       onChange={selection => {
         setSelected(selection)
-        onChange && onChange(selection)
+        if (onChange) {
+          onChange(selection)
+        }
         setTyping(false)
       }}
       onInputValueChange={(inputValue: string, options) => {
@@ -109,7 +113,9 @@ export default function SelectAmount({
           value: inputValue.replaceAll(',', ''),
         }
         setSelected(selection)
-        onChange && onChange(selection)
+        if (onChange) {
+          onChange(selection)
+        }
       }}
       itemToString={item => (item ? item.value : '')}
     >
@@ -168,7 +174,6 @@ export default function SelectAmount({
             <ul
               {...getMenuProps()}
               className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium overflow-y-auto z-100 max-h-[200px]'
-              onClick={e => e.stopPropagation()}
             >
               {isOpen
                 ? filteredOptions.map((item, index) => {

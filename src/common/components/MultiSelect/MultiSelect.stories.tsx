@@ -7,7 +7,7 @@ const options = [
   { value: 'vanilla', label: 'Vanilla' },
 ]
 
-export const MultiSelectDefault = (): JSX.Element => {
+export function MultiSelectDefault(): JSX.Element {
   const [selected, setSelected] = useState<readonly TOptionType[] | null>(null)
 
   const handleSelect = (option: readonly TOptionType[]): void =>

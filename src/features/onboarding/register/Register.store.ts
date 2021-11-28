@@ -18,6 +18,11 @@ export enum Steps {
   ProcessingFee,
 }
 
+export type TPromoCode = {
+  address: string
+  balance: number
+}
+
 const firstStep = Steps.Login
 const lastStep = Steps.ProcessingFee
 export const stepsCount = Steps.Backup
@@ -57,6 +62,8 @@ export type TRegisterStore = {
   setTermsAgreed(termsAgreed: boolean): void
   pastelId: string
   setPastelId(pastelId: string): void
+  selectedPSLAddress: TPromoCode | null
+  setSelectedPSLAddress(val: TPromoCode | null): void
 }
 
 export type TCreatePastelIdQuery = UseMutationResult<
@@ -112,5 +119,7 @@ export const createRegisterStore = ({
     setTermsAgreed: termsAgreed => set({ termsAgreed }),
     pastelId: '',
     setPastelId: pastelId => set({ pastelId }),
+    selectedPSLAddress: null,
+    setSelectedPSLAddress: selectedPSLAddress => set({ selectedPSLAddress }),
   }))
 }

@@ -23,7 +23,7 @@ export default class VideoToFrames {
         const frames: ImageData[] = []
         const canvas: HTMLCanvasElement = document.createElement('canvas')
         const context: CanvasRenderingContext2D | null = canvas.getContext('2d')
-        let duration: number
+        let duration = 0
 
         if (context) {
           const video = document.createElement('video')

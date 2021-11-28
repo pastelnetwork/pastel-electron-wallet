@@ -86,26 +86,24 @@ export default function MempoolSizeOvertime(): JSX.Element {
   }
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='mempoolsize'
-              dataX={transformLineChartData?.dataX}
-              dataY={transformLineChartData?.dataY}
-              title='Mempool Size(KByte)'
-              offset={0.5}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='mempoolsize'
+            dataX={transformLineChartData?.dataX}
+            dataY={transformLineChartData?.dataY}
+            title='Mempool Size(KByte)'
+            offset={0.5}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

@@ -6,7 +6,7 @@ import { browserWindow } from '../app/window'
 import { sendEventToRenderer } from '../app/mainEvents'
 
 // Deep linked url
-let deepLinkingUrl: string[] | string | undefined
+let deepLinkingUrl: string[] | string | undefined = undefined
 
 export const setDeepLinkingUrl = (url: string[] | string): void => {
   deepLinkingUrl = url
