@@ -7,12 +7,9 @@ import Radio from 'common/components/Radio/Radio'
 import { formatPrice, formatAddress } from 'common/utils/format'
 import { walletRPC } from 'api/pastel-rpc'
 import { useRegisterStore, TPromoCode } from './Register.store'
-import { TListUnspentResponse, TZListUnspentResponse } from '../../../types/rpc'
+import { TListUnspentResponse } from '../../../types/rpc'
 
-const generateAddresses = (
-  tUnspent: TListUnspentResponse,
-  zUnspent: TZListUnspentResponse,
-): TPromoCode[] => {
+const generateAddresses = (tUnspent: TListUnspentResponse): TPromoCode[] => {
   let balances: TPromoCode[] = []
   tUnspent.forEach(t => {
     const balance = balances.find(b => b.address === t.address)
@@ -24,19 +21,6 @@ const generateAddresses = (
     } else {
       balances = balances.map(b =>
         b.address === t.address ? { ...b, balance: t.amount + b.balance } : b,
-      )
-    }
-  })
-  zUnspent.forEach(z => {
-    const balance = balances.find(b => b.address === z.address)
-    if (!balance) {
-      balances.push({
-        address: z.address,
-        balance: z.amount,
-      })
-    } else {
-      balances = balances.map(b =>
-        b.address === z.address ? { ...b, balance: z.amount + b.balance } : b,
       )
     }
   })
@@ -91,12 +75,9 @@ export default function AddressList(): JSX.Element {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [tUnspent, zUnspent] = await Promise.all([
-        walletRPC.fetchTListUnspent(),
-        walletRPC.fetchZListUnspent(),
-      ])
+      const [tUnspent] = await Promise.all([walletRPC.fetchTListUnspent()])
 
-      setAddresses(generateAddresses(tUnspent, zUnspent))
+      setAddresses(generateAddresses(tUnspent))
     }
 
     fetchData()
@@ -109,7 +90,7 @@ export default function AddressList(): JSX.Element {
       .finally(() => {
         // noop
       })
-  })
+  }, [])
 
   const handleChangeAddress = useCallback(() => {
     store.setSelectedPSLAddress(null)

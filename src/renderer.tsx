@@ -25,7 +25,7 @@ function App() {
         <RendererSetupHooks />
         <Routes />
       </QueryClientProvider>
-      <ToastContainer hideProgressBar autoClose={5000} />
+      <ToastContainer hideProgressBar autoClose={5000} className='break-all' />
       <PastelModal />
       <UpdateToast />
     </Provider>

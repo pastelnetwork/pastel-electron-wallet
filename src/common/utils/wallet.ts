@@ -47,3 +47,7 @@ export const isValidPrivateKey = (key: string): boolean => {
 
   return key.length === 52
 }
+
+export const isValidTPrivateKey = (key: string): boolean => {
+  return !key.startsWith('p-secret-extended-key') && key.length === 52
+}

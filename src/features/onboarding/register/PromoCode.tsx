@@ -7,7 +7,7 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatNumber } from 'common/utils/format'
 import { PrevButton, NextButton } from './Buttons'
 import AddressList from './AddressList'
-import { isValidPrivateKey } from 'common/utils/wallet'
+import { isValidTPrivateKey } from 'common/utils/wallet'
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { encode } from 'common/utils/encryption'
 import { walletRPC } from 'api/pastel-rpc'
@@ -30,12 +30,12 @@ const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
         balance: selectedPSLAddress.balance,
       }
     }
-
-    if (!isValidPrivateKey(promoCode)) {
+    console.log()
+    if (!isValidTPrivateKey(promoCode)) {
       throw new Error(
         isPastelPromoCode
-          ? 'Promo Code is invalid.'
-          : `${currencyName} Address Private Key is invalid.`,
+          ? 'Promo Code is invalid. Support only transparent address for now.'
+          : `${currencyName} Address Private Key is invalid. Support only transparent address for now.`,
       )
     }
     const address = await importPastelPromoCode(promoCode, !!isPastelPromoCode)
@@ -171,7 +171,9 @@ export default function PromoCode(): JSX.Element {
       <div
         className={cn(
           'mt-4 overflow-hidden',
-          store.pslAddressPrivateKey && promoCodeQuery.isSuccess
+          store.pslAddressPrivateKey &&
+            promoCodeQuery.isSuccess &&
+            !store.selectedPSLAddress
             ? 'h-[150px]'
             : 'h-[220px]',
         )}
