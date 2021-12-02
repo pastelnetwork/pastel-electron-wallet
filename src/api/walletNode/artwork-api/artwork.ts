@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 import log from 'electron-log'
+import querystring from 'query-string'
 import {
   TArtworkTicket,
   IRegisterResult,
@@ -7,8 +8,12 @@ import {
   IRegisterTaskResponseBody,
   ITaskState,
   IArtworkImage,
+  TArtworkSearchParams,
+  TArtworkSearchResponseProps,
+  TArtworksDetailProps,
 } from './interfaces'
 import { walletNodeApiURL } from '../../../common/constants/urls'
+import { readUsersInfo } from 'common/utils/User'
 
 const baseUrl: string = walletNodeApiURL + '/artworks'
 
@@ -17,6 +22,13 @@ async function makeRequest<T>(
   goodResponseCodes?: number[],
 ): Promise<T> {
   params.url = baseUrl + params.url
+  const users = await readUsersInfo()
+  if (users.length) {
+    params.headers = {
+      user_pastelid: users[0].pastelId,
+      user_passphrase: `${users[0].password}${users[0].username}`,
+    }
+  }
   const res = await axios.request(params)
   if (!goodResponseCodes) {
     goodResponseCodes = [200]
@@ -81,4 +93,34 @@ export const artworkGetTaskState = (taskId: string): Promise<ITaskState> => {
     method: 'get',
     url: `/register/${taskId}/state`,
   })
+}
+
+export const artworkGetDetail = async (
+  taskId: string,
+): Promise<TArtworksDetailProps> => {
+  return makeRequest<TArtworksDetailProps>({
+    method: 'get',
+    url: taskId,
+  })
+}
+
+export const artworkSearch = async (
+  params: TArtworkSearchParams,
+): Promise<TArtworksDetailProps[]> => {
+  const response = await makeRequest<TArtworkSearchResponseProps>({
+    method: 'get',
+    url: `/search?${querystring.stringify(params)}`,
+  })
+  const results: TArtworksDetailProps[] = []
+  if (response) {
+    const arts = response.artwork
+    for (let i = 0; i < arts.length; i++) {
+      const detail = await artworkGetDetail(arts[i].txid)
+      if (detail) {
+        results.push(detail)
+      }
+    }
+  }
+
+  return results
 }

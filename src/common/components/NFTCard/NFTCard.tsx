@@ -52,6 +52,7 @@ export type TNFTCompactCard = {
   hideDirectFromArtist?: boolean
   copiesAvailable?: number
   leftTime?: number
+  royalty?: number
 }
 
 export type TNFTCard = Override<
@@ -90,6 +91,7 @@ export default function NFTCard({
   hideDirectFromArtist,
   copiesAvailable,
   leftTime,
+  royalty,
   ...props
 }: TNFTCompactCard | TNFTCard): JSX.Element {
   const isNSFW = useIsNSFW(nsfw)
@@ -495,7 +497,7 @@ export default function NFTCard({
               type='top'
               content={getTooltip(
                 'Perpetual Royalty',
-                'N% of all resale proceeds are paid to the creator forever',
+                `${royalty}% of all resale proceeds are paid to the creator forever`,
               )}
               width={145}
             >

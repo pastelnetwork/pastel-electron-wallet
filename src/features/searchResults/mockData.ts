@@ -112,7 +112,7 @@ export const mockMembers: TMemberCard[] = [
   },
 ]
 
-const mockCardProps: TNFTCard = {
+export const mockCardProps: TNFTCard = {
   id: '1',
   author: 'zndrson_longname',
   avatarSrc: mockAvatar,
