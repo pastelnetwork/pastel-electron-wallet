@@ -1,17 +1,125 @@
-import React, { useState, useEffect, useRef, memo } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  memo,
+  useCallback,
+  MutableRefObject,
+} from 'react'
 import ReactECharts from 'echarts-for-react'
 import * as htmlToImage from 'html-to-image'
 import * as echarts from 'echarts'
 import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { saveAs } from 'file-saver'
-import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
+import { makeDownloadFileName, TPeriod } from '../../utils/PastelStatisticsLib'
 import { TLineChartProps, TThemeColor } from '../../common/types'
 import { pricesCSVHeaders, themes } from '../../common/constants'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PrevButton } from '../PrevButton'
 
 import styles from './LineChart.module.css'
+
+const PeriodButton = memo(function PeriodButton({
+  period,
+  index,
+  getActivePriodButtonStyle,
+  setSelectedPeriodButton,
+  handlePeriodFilterChange,
+}: {
+  period: TPeriod
+  index: number
+  getActivePriodButtonStyle: (val: number) => void
+  setSelectedPeriodButton: (val: number) => void
+  handlePeriodFilterChange?: (val: TPeriod) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    setSelectedPeriodButton(index)
+    if (handlePeriodFilterChange) {
+      handlePeriodFilterChange(period)
+    }
+  }, [])
+
+  return (
+    <button
+      className={`${getActivePriodButtonStyle(index)} 
+          ${styles.filterButton}`}
+      onClick={onClick}
+      type='button'
+      key={`button-filter-${period}`}
+    >
+      {period}
+    </button>
+  )
+})
+
+const PeriodSelect = memo(function PeriodSelect({
+  currentTheme,
+  periods,
+  getActivePriodButtonStyle,
+  setSelectedPeriodButton,
+  handlePeriodFilterChange,
+}: {
+  currentTheme?: TThemeColor | null
+  periods: TPeriod[]
+  getActivePriodButtonStyle: (val: number) => void
+  setSelectedPeriodButton: (val: number) => void
+  handlePeriodFilterChange?: (val: TPeriod) => void
+}): JSX.Element {
+  return (
+    <div className={styles.periodSelect}>
+      <span style={{ color: currentTheme?.color }}>Period: </span>
+      {periods.map((period, index) => (
+        <PeriodButton
+          period={period}
+          index={index}
+          getActivePriodButtonStyle={getActivePriodButtonStyle}
+          setSelectedPeriodButton={setSelectedPeriodButton}
+          handlePeriodFilterChange={handlePeriodFilterChange}
+        />
+      ))}
+    </div>
+  )
+})
+
+const DownloadButtonBar = memo(function DownloadButtonBar({
+  downloadPNG,
+  downloadRef,
+  chartName,
+  csvData,
+}: {
+  downloadPNG: () => void
+  downloadRef: MutableRefObject<null>
+  chartName: string
+  csvData: string | Data
+}): JSX.Element {
+  const currencyName = useCurrencyName()
+  const downloadPNGClick = useCallback(() => {
+    downloadPNG()
+  }, [])
+
+  return (
+    <div className={styles.lineChartDownloadButtonBar}>
+      <button
+        className={styles.uploadButton}
+        type='button'
+        onClick={downloadPNGClick}
+      >
+        Download PNG
+      </button>
+      <CSVLink
+        data={csvData}
+        filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
+        headers={pricesCSVHeaders}
+        separator={';'}
+        ref={downloadRef}
+        className={styles.uploadButton}
+      >
+        Download CSV
+      </CSVLink>
+    </div>
+  )
+})
 
 export const EChartsMultiLineChart = memo(function EChartsMultiLineChart(
   props: TLineChartProps,
@@ -251,50 +359,6 @@ export const EChartsMultiLineChart = memo(function EChartsMultiLineChart(
     return ''
   }
 
-  const rendertDownloadButtonBar = () => (
-    <div className={styles.lineChartDownloadButtonBar}>
-      <button
-        className={styles.uploadButton}
-        type='button'
-        onClick={downloadPNG}
-      >
-        Download PNG
-      </button>
-      <CSVLink
-        data={csvData}
-        filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
-        headers={pricesCSVHeaders}
-        separator={';'}
-        ref={downloadRef}
-        className={styles.uploadButton}
-      >
-        Download CSV
-      </CSVLink>
-    </div>
-  )
-
-  const renderPeriodSelect = () => (
-    <div className={styles.periodSelect}>
-      <span style={{ color: currentTheme?.color }}>Period: </span>
-      {periods.map((period, index) => (
-        <button
-          className={`${getActivePriodButtonStyle(index)} 
-              ${styles.filterButton}`}
-          onClick={() => {
-            setSelectedPeriodButton(index)
-            if (handlePeriodFilterChange) {
-              handlePeriodFilterChange(period)
-            }
-          }}
-          type='button'
-          key={`button-filter-${period}`}
-        >
-          {period}
-        </button>
-      ))}
-    </div>
-  )
-
   return (
     <div className={styles.container}>
       <div className={styles.lineChartHeader}>
@@ -305,7 +369,13 @@ export const EChartsMultiLineChart = memo(function EChartsMultiLineChart(
         >
           {title}
         </div>
-        {renderPeriodSelect()}
+        <PeriodSelect
+          currentTheme={currentTheme}
+          periods={periods}
+          getActivePriodButtonStyle={getActivePriodButtonStyle}
+          setSelectedPeriodButton={setSelectedPeriodButton}
+          handlePeriodFilterChange={handlePeriodFilterChange}
+        />
       </div>
       <div className={styles.lineChartWrap}>
         <ReactECharts
@@ -332,7 +402,12 @@ export const EChartsMultiLineChart = memo(function EChartsMultiLineChart(
             ></button>
           ))}
         </div>
-        {rendertDownloadButtonBar()}
+        <DownloadButtonBar
+          downloadPNG={downloadPNG}
+          downloadRef={downloadRef}
+          chartName={chartName}
+          csvData={csvData}
+        />
       </div>
     </div>
   )
