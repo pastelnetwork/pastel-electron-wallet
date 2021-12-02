@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  memo,
+} from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
 import { closeExportPrivKeyModal } from './index'
 import { walletRPC } from 'api/pastel-rpc'
 
-function TextareaControl({
+const TextareaControl = memo(function TextareaControl({
   exportedPrivKeys,
   setExportedPrivKeys,
 }: {
@@ -29,7 +35,7 @@ function TextareaControl({
       />
     </div>
   )
-}
+})
 
 export default function ExportPrivKeyModal(): JSX.Element | null {
   const dispatch = useAppDispatch()

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -21,7 +21,9 @@ import {
 } from '../../utils/ChartOptions'
 import { PrevButton } from '../PrevButton'
 
-export function EChartsLineChart(props: TLineChartProps): JSX.Element {
+export const EChartsLineChart = memo(function EChartsLineChart(
+  props: TLineChartProps,
+): JSX.Element {
   const {
     chartName,
     dataX,
@@ -275,4 +277,4 @@ export function EChartsLineChart(props: TLineChartProps): JSX.Element {
       </div>
     </div>
   )
-}
+})

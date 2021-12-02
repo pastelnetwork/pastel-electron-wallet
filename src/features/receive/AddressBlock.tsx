@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { clipboard, shell } from 'electron'
 import QRCode from 'qrcode.react'
-import React, { useEffect, useRef, useState, useCallback } from 'react'
+import React, { useEffect, useRef, useState, useCallback, memo } from 'react'
 import {
   AccordionItem,
   AccordionItemButton,
@@ -45,7 +45,7 @@ export interface IAddressBlockProps {
   transactions?: ITransactionsProps[]
 }
 
-function GeneratePaperWalletButton({
+const GeneratePaperWalletButton = memo(function GeneratePaperWalletButton({
   fetchAndSetSinglePrivKey,
   address,
 }: {
@@ -65,9 +65,9 @@ function GeneratePaperWalletButton({
       Generate paper wallet
     </button>
   )
-}
+})
 
-function ViewExplorerButton({
+const ViewExplorerButton = memo(function ViewExplorerButton({
   openAddress,
 }: {
   openAddress: () => void
@@ -86,9 +86,9 @@ function ViewExplorerButton({
       <i className={cx('fas', 'fa-external-link-square-alt')} />
     </button>
   )
-}
+})
 
-function ExportViewingKeyButton({
+const ExportViewingKeyButton = memo(function ExportViewingKeyButton({
   address,
   fetchAndSetSingleViewKey,
 }: {
@@ -108,9 +108,9 @@ function ExportViewingKeyButton({
       Export Viewing Key
     </button>
   )
-}
+})
 
-function CopyPrivKeyButton({
+const CopyPrivKeyButton = memo(function CopyPrivKeyButton({
   copiedPrivKey,
   onCopyPrivKeyBtnClick,
   address,
@@ -136,9 +136,9 @@ function CopyPrivKeyButton({
         : 'Copied!'}
     </button>
   )
-}
+})
 
-function CopyAddressButton({
+const CopyAddressButton = memo(function CopyAddressButton({
   address,
   onCopyAddrBtnClick,
   copiedAddr,
@@ -156,7 +156,7 @@ function CopyAddressButton({
       {copiedAddr ? 'Copied!' : 'Copy Address'}
     </button>
   )
-}
+})
 
 export function AddressBlock({
   privateKey,

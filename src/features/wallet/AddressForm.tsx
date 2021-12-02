@@ -2,7 +2,7 @@ import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import eyeIcon from 'common/assets/icons/ico-eye.svg'
 import Tooltip from 'common/components/Tooltip'
-import React, { useState, useCallback, ChangeEvent } from 'react'
+import React, { useState, useCallback, ChangeEvent, memo } from 'react'
 import { clipboard } from 'electron'
 import { formatAddress } from 'common/utils/format'
 
@@ -25,7 +25,7 @@ type TAddressFormProps = {
   endLength?: number
 }
 
-function InputEdit({
+const InputEdit = memo(function InputEdit({
   editName,
   setEditName,
 }: {
@@ -43,7 +43,7 @@ function InputEdit({
       className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
     />
   )
-}
+})
 
 export function AddressForm({
   address,

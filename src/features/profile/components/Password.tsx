@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef, useCallback } from 'react'
+import React, { useState, useEffect, createRef, useCallback, memo } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 import cn from 'classnames'
 
@@ -46,21 +46,23 @@ type TPassStrengthProps = {
   value: string
 }
 
-function GenerateRandomPasswordButton({
-  handleGenerateRandomPassword,
-}: {
-  handleGenerateRandomPassword: () => void
-}): JSX.Element {
-  const onClick = useCallback(() => {
-    handleGenerateRandomPassword()
-  }, [])
+const GenerateRandomPasswordButton = memo(
+  function GenerateRandomPasswordButton({
+    handleGenerateRandomPassword,
+  }: {
+    handleGenerateRandomPassword: () => void
+  }): JSX.Element {
+    const onClick = useCallback(() => {
+      handleGenerateRandomPassword()
+    }, [])
 
-  return (
-    <button type='button' onClick={onClick}>
-      <RefreshIcon size={18} className='text-blue-3f' />
-    </button>
-  )
-}
+    return (
+      <button type='button' onClick={onClick}>
+        <RefreshIcon size={18} className='text-blue-3f' />
+      </button>
+    )
+  },
+)
 
 export default function Password(props: TPassword): JSX.Element {
   const {

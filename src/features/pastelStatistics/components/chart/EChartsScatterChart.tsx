@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -20,7 +20,9 @@ import {
 } from '../../utils/ChartOptions'
 import styles from './LineChart.module.css'
 
-export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
+export const EChartsScatterChart = memo(function EChartsScatterChart(
+  props: TScatterChartProps,
+): JSX.Element {
   const {
     chartName,
     data,
@@ -215,4 +217,4 @@ export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
       </div>
     </div>
   )
-}
+})

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useCallback } from 'react'
+import React, { useState, ChangeEvent, useCallback, memo } from 'react'
 import path from 'path'
 import pdfjs from 'pdfjs-dist'
 import cn from 'classnames'
@@ -16,7 +16,7 @@ type TRestoreByPdfProps = {
   callback?: () => void
 }
 
-function InputControl({
+const InputControl = memo(function InputControl({
   handlePdfChange,
 }: {
   handlePdfChange: (val: ChangeEvent<HTMLInputElement>) => void
@@ -34,9 +34,9 @@ function InputControl({
       className='hidden'
     />
   )
-}
+})
 
-function RestoreYourKeysButton({
+const RestoreYourKeysButton = memo(function RestoreYourKeysButton({
   handleRestoreByUpload,
   fileSelected,
 }: {
@@ -74,7 +74,7 @@ function RestoreYourKeysButton({
       </button>
     </Tooltip>
   )
-}
+})
 
 export default function RestoreByPdf({
   onHideHeader,

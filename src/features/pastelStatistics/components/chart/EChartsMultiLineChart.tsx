@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, memo } from 'react'
 import ReactECharts from 'echarts-for-react'
 import * as htmlToImage from 'html-to-image'
 import * as echarts from 'echarts'
@@ -13,7 +13,9 @@ import { PrevButton } from '../PrevButton'
 
 import styles from './LineChart.module.css'
 
-export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
+export const EChartsMultiLineChart = memo(function EChartsMultiLineChart(
+  props: TLineChartProps,
+): JSX.Element {
   const {
     chartName,
     dataX,
@@ -334,4 +336,4 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
       </div>
     </div>
   )
-}
+})

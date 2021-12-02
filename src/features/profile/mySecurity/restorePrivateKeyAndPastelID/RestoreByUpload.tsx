@@ -1,4 +1,10 @@
-import React, { useState, useEffect, ChangeEvent, useCallback } from 'react'
+import React, {
+  useState,
+  useEffect,
+  ChangeEvent,
+  useCallback,
+  memo,
+} from 'react'
 import path from 'path'
 import jsQR from 'jsqr'
 import cn from 'classnames'
@@ -17,7 +23,7 @@ type TRestoreByUploadProps = {
   callback?: () => void
 }
 
-function UploadVideoControl({
+const UploadVideoControl = memo(function UploadVideoControl({
   fileSelected,
   handleImageChange,
 }: {
@@ -52,7 +58,7 @@ function UploadVideoControl({
       />
     </label>
   )
-}
+})
 
 export default function RestoreByUpload({
   onHideHeader,

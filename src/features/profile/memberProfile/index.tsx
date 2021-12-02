@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
@@ -18,7 +18,7 @@ const profile_data = {
   },
 }
 
-function ProfileHeader({
+const ProfileHeader = memo(function ProfileHeader({
   tab,
   onTabToggle,
 }: {
@@ -43,7 +43,7 @@ function ProfileHeader({
       />
     </div>
   )
-}
+})
 
 function Profile(): JSX.Element {
   const currencyName = useCurrencyName()

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -51,7 +51,7 @@ const filterData = [
   { label: 'Followers', value: 'Followers', checked: false },
 ]
 
-function MemberProfileInfo({
+const MemberProfileInfo = memo(function MemberProfileInfo({
   tab,
   onTabToggle,
 }: {
@@ -74,7 +74,7 @@ function MemberProfileInfo({
       </div>
     </div>
   )
-}
+})
 
 export default function MemberProfile(): JSX.Element {
   const currencyName = useCurrencyName()
