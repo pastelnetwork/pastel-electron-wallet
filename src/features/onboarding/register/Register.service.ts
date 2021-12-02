@@ -111,7 +111,7 @@ export const useInitializeRegister = ({
           })
           const vPassword: string = encode(password) || ''
           const vUsername: string = username || ''
-          walletNodeApi.userData.create({
+          await walletNodeApi.userData.create({
             artist_pastelid: createPastelIdQuery.data.pastelid,
             artist_pastelid_passphrase: `${vPassword}${vUsername}`,
           })

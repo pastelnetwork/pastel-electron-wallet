@@ -107,9 +107,10 @@ export const artworkGetDetail = async (
 export const artworkSearch = async (
   params: TArtworkSearchParams,
 ): Promise<TArtworksDetailProps[]> => {
+  const searchParams: string = querystring.stringify(params)
   const response = await makeRequest<TArtworkSearchResponseProps>({
     method: 'get',
-    url: `/search?${querystring.stringify(params)}`,
+    url: `/search?${searchParams}`,
   })
   const results: TArtworksDetailProps[] = []
   if (response) {

@@ -30,7 +30,7 @@ const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
         balance: selectedPSLAddress.balance,
       }
     }
-    console.log()
+
     if (!isValidTPrivateKey(promoCode)) {
       throw new Error(
         isPastelPromoCode

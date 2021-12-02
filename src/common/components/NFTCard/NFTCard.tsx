@@ -97,6 +97,7 @@ export default function NFTCard({
   const isNSFW = useIsNSFW(nsfw)
 
   const fullCardProps = 'author' in props && (props as TNFTCard)
+  const vRoyalty: number = royalty || 0
 
   let imageClassName = 'w-9 h-9 mr-2'
   let imageHeightClass = 'h-[300px]'
@@ -497,7 +498,7 @@ export default function NFTCard({
               type='top'
               content={getTooltip(
                 'Perpetual Royalty',
-                `${royalty}% of all resale proceeds are paid to the creator forever`,
+                `${vRoyalty}% of all resale proceeds are paid to the creator forever`,
               )}
               width={145}
             >

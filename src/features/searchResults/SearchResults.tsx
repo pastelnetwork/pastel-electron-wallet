@@ -57,6 +57,7 @@ export default function SearchResults(): JSX.Element {
 
   useEffect(() => {
     if (history.location.state) {
+      const state = history.location.state as TSearchOptionsProps
       const fetchData = async () => {
         const artworks = await artworkSearch({
           query: state.keyword,
@@ -72,20 +73,29 @@ export default function SearchResults(): JSX.Element {
           setArtworks(artworks)
         }
       }
-      const state = history.location.state as TSearchOptionsProps
       setSearchOptions({
         keyword: state.keyword,
         selectedCategory: state?.selectedCategory,
       })
       fetchData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [history.location.state])
 
-  console.log(history.location)
   return (
     <div className='pt-[29px] px-[60px] min-h-98vh'>
       <div className='font-extrabold text-2xl'>
-        Search result "{searchOptions.keyword}"
+        Search result {'"'}
+        {searchOptions.keyword}
+        {'"'}
       </div>
       <div className='mt-2.5'>
         <Tabbar
