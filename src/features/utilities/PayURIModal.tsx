@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  memo,
+} from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -9,7 +15,7 @@ import { Button } from 'common/components/Buttons'
 import { parsePastelURI } from 'common/utils/uris'
 import * as ROUTES from 'common/utils/constants/routes'
 
-function InputControl({
+const InputControl = memo(function InputControl({
   uriIsValid,
   uri,
   setUri,
@@ -38,7 +44,7 @@ function InputControl({
       />
     </div>
   )
-}
+})
 
 function CancelButton(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -61,7 +67,7 @@ function CancelButton(): JSX.Element {
   )
 }
 
-function PayURIButton({
+const PayURIButton = memo(function PayURIButton({
   handlePayURI,
   uri,
 }: {
@@ -83,7 +89,7 @@ function PayURIButton({
       </div>
     </Button>
   )
-}
+})
 
 export default function PayURIModal(): JSX.Element | null {
   const { payURIModalIsOpen } = useAppSelector(state => state.utilities)

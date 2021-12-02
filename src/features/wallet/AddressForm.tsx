@@ -2,7 +2,7 @@ import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import eyeIcon from 'common/assets/icons/ico-eye.svg'
 import Tooltip from 'common/components/Tooltip'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, ChangeEvent } from 'react'
 import { clipboard } from 'electron'
 import { formatAddress } from 'common/utils/format'
 
@@ -23,6 +23,26 @@ type TAddressFormProps = {
   hidePromoCodeEmpty?: boolean
   startLength?: number
   endLength?: number
+}
+
+function InputEdit({
+  editName,
+  setEditName,
+}: {
+  editName: string
+  setEditName: (val: string) => void
+}): JSX.Element {
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setEditName(e.target.value)
+  }, [])
+
+  return (
+    <input
+      value={editName}
+      onChange={onChange}
+      className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
+    />
+  )
 }
 
 export function AddressForm({
@@ -148,13 +168,7 @@ export function AddressForm({
   return (
     <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
       {edit === address ? (
-        <input
-          value={editName}
-          onChange={e => {
-            setEditName(e.target.value)
-          }}
-          className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
-        />
+        <InputEdit editName={editName} setEditName={setEditName} />
       ) : addressLabel ? (
         <div className='w-220px md:w-[270px] pl-[10px]'>
           <span
