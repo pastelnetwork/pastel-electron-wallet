@@ -169,7 +169,8 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
           }
         })
         .catch(function (error) {
-          throw new Error('PNG download error: ' + error)
+          const message: string = error?.message || ''
+          throw new Error('PNG download error: ' + message)
         })
     }
   }

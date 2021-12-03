@@ -14,13 +14,14 @@ function ResultSearchRow({
   handleClick,
 }: TResultShearchProps): JSX.Element {
   return (
-    <div
+    <button
       className='cursor-pointer flex items-center mb-4 justify-between'
       onClick={() => {
         if (handleClick) {
           handleClick(name)
         }
       }}
+      type='button'
     >
       <div className='flex items-center'>
         {image && (
@@ -35,7 +36,7 @@ function ResultSearchRow({
       <div className='text-gray-a0 text-sm font-medium pr-[42px]'>
         {followers} followers
       </div>
-    </div>
+    </button>
   )
 }
 

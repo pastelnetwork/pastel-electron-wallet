@@ -34,17 +34,18 @@ function TabbarItem({
   }, [])
 
   return (
-    <div
+    <button
       className={cn(
         'mr-6 pb-2 cursor-pointer',
         isActive && 'text-gray-4a border-b-2 border-gray-33',
       )}
       key={label}
       onClick={onClick}
+      type='button'
     >
       <span>{label}</span>
       <span className='ml-1'>{noSearch}</span>
-    </div>
+    </button>
   )
 }
 
@@ -67,4 +68,8 @@ export default function Tabbar({
       ))}
     </div>
   )
+}
+
+TabbarItem.defaultProps = {
+  clickHandler: undefined,
 }

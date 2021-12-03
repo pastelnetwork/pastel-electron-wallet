@@ -72,6 +72,9 @@ function MultiToggleSwitch(props: TMultiToggle): JSX.Element {
                 className={getItemClassName(index === activeIndex)}
                 key={`${label}${countItem}`}
                 onClick={() => handleClick(index)}
+                role='button'
+                aria-hidden
+                tabIndex={0}
               >
                 <span>{item.label}</span>
                 {(item?.count && item.count > 0) || showEmpty ? (

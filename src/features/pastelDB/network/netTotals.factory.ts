@@ -9,13 +9,14 @@ export const netTotalsFactory = Factory.define<TDbNetTotals>(
       insertNetTotals(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       totalbytesrecv: 0,
       totalbytessent: 0,
       timemillis: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

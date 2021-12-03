@@ -9,7 +9,8 @@ export const miningInfoFactory = Factory.define<TDbMiningInfo>(
       insertMiningInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       blocks: 10,
@@ -25,7 +26,7 @@ export const miningInfoFactory = Factory.define<TDbMiningInfo>(
       testnet: 0,
       chain: '',
       generate: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

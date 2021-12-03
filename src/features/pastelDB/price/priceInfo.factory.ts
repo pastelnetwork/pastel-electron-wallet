@@ -9,11 +9,12 @@ export const priceInfoFactory = Factory.define<TDbPriceInfo>(
       insertPriceInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       priceUsd: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

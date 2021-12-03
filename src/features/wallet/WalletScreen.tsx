@@ -262,6 +262,9 @@ const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
         <div
           className='flex cursor-pointer'
           onClick={() => setTransactionHistoryModalOpen(true)}
+          role='button'
+          aria-hidden
+          tabIndex={0}
         >
           <Clock size={18} className='text-blue-3f' />
           <div className='ml-3.5 text-blue-3f text-h4-leading-22'>

@@ -80,7 +80,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [isLossLess, setIsLossLess] = useState(true)
   const [estimatedFee, setEstimatedFee] = useState<number>()
   const optimizationService = useImageOptimizationService()
-
+  const vStep: number = step || 0
   return {
     step,
     stepsCount,
@@ -98,14 +98,14 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     setIsLossLess,
     goBack() {
       if (step > firstStep) {
-        setStep(step - 1)
+        setStep(vStep - 1)
       } else {
         onClose()
       }
     },
     goToNextStep() {
       if (step < lastStep) {
-        setStep(step + 1)
+        setStep(vStep + 1)
       } else {
         onClose()
       }

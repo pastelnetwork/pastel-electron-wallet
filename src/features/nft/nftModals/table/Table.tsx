@@ -38,8 +38,8 @@ export default function Table({
   bodyClassName,
   trClassName,
 }: TTable): JSX.Element {
-  const [sortIndex, setSortIndex] = useState(0)
-  const [sortOrder, setSortOrder] = useState(0)
+  const [sortIndex, setSortIndex] = useState<number>(0)
+  const [sortOrder, setSortOrder] = useState<number>(0)
   const [tableData, setTableData] = useState(Array<TRow>())
 
   useEffect(() => {

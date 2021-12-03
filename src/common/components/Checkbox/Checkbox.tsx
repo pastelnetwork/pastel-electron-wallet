@@ -34,6 +34,9 @@ function Checkbox({
           clickHandler(!selected)
         }
       }}
+      role='button'
+      aria-hidden
+      tabIndex={0}
     >
       <div
         className={cn(

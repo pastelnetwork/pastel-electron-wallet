@@ -137,6 +137,13 @@ export default function PayURIModal(): JSX.Element | null {
     uriIsValid = false
   }
 
+  const renderPayButtons = () => (
+    <div className='mt-4 flex justify-end'>
+      <CancelButton />
+      <PayURIButton handlePayURI={handlePayURI} uri={uri} />
+    </div>
+  )
+
   return (
     <TitleModal
       isOpen={payURIModalIsOpen}
@@ -151,10 +158,7 @@ export default function PayURIModal(): JSX.Element | null {
           uri={uri}
           setUri={setUri}
         />
-        <div className='mt-4 flex justify-end'>
-          <CancelButton />
-          <PayURIButton handlePayURI={handlePayURI} uri={uri} />
-        </div>
+        {renderPayButtons()}
       </div>
     </TitleModal>
   )

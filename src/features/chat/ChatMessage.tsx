@@ -69,7 +69,10 @@ export function ChatMessage({
                 )}
                 style={{ backgroundImage: `url(${prepareFileThumb(att)})` }}
                 onClick={() => saveAttachment(att)}
-              ></div>
+                role='button'
+                aria-hidden
+                tabIndex={0}
+              />
             ))}
           </div>
         )}

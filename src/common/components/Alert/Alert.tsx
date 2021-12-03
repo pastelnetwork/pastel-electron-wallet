@@ -35,6 +35,9 @@ function Alert({
             <span
               className='absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer'
               onClick={() => setIsShowing(false)}
+              role='button'
+              aria-hidden
+              tabIndex={0}
             >
               <svg
                 className={`fill-current h-6 w-6 text-${variant}`}

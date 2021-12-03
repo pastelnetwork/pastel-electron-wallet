@@ -9,14 +9,15 @@ export const chainTipsFactory = Factory.define<TDbChainTips>(
       insertChainTips(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       height: 1,
       hash: '',
       branchlen: 0,
       status: '',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

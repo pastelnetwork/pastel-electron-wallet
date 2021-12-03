@@ -131,7 +131,13 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
         <div className={classes}>
           {renderInputControl()}
           {appendOutside && (
-            <div className='ml-4 select-none' onClick={onClick}>
+            <div
+              className='ml-4 select-none'
+              onClick={onClick}
+              role='button'
+              aria-hidden
+              tabIndex={0}
+            >
               {appendOutside}
             </div>
           )}

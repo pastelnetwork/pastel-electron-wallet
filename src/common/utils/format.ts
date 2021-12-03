@@ -97,7 +97,7 @@ export const formatFileSize = (size: number, fractionDigits = 1): string => {
   } while (size > 1024)
 
   if (!i) {
-    return Math.round(size) + units[i]
+    return Math.round(size).toString() + units[i].toString()
   }
 
   return Math.max(size, 0.1).toFixed(fractionDigits) + units[i]

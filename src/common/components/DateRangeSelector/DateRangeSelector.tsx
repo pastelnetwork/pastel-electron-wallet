@@ -74,9 +74,9 @@ function DateRangeSelectorContent({
   return (
     <div className='flex'>
       <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
-      {dayjs(startDate).format('MM.DD.YY') +
+      {dayjs(startDate).format('MM.DD.YY').toString() +
         ' - ' +
-        dayjs(endDate).format('MM.DD.YY')}
+        dayjs(endDate).format('MM.DD.YY').toString()}
     </div>
   )
 }
@@ -217,6 +217,9 @@ export default function DateRangeSelector({
       <div
         onClick={() => setOpenCalendar(!isOpenCalendar)}
         className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between cursor-pointer border border-gray-200 border-solid rounded hover:border-blue-3f active:border-blue-3f'
+        role='button'
+        aria-hidden
+        tabIndex={0}
       >
         <DateRangeSelectorContent
           value={value}

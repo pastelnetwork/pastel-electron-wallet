@@ -228,12 +228,13 @@ export function AddressForm({
                   width={70}
                   type='top'
                 >
-                  <span
+                  <button
                     onClick={() => copyAddress(address)}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                    type='button'
                   >
                     <CheckIcon className='text-green-45' size={14} />
-                  </span>
+                  </button>
                 </Tooltip>
               ) : (
                 <Tooltip
@@ -242,12 +243,13 @@ export function AddressForm({
                   width={130}
                   type='top'
                 >
-                  <span
+                  <button
                     onClick={() => copyAddress(address)}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                    type='button'
                   >
                     <Clipboard className='cursor-pointer' size={14} />
-                  </span>
+                  </button>
                 </Tooltip>
               )}
             </div>
@@ -266,6 +268,9 @@ export function AddressForm({
                     setEdit(address)
                   }}
                   className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                  role='button'
+                  aria-hidden
+                  tabIndex={0}
                 >
                   <Pencil
                     strokeWidth={0.2}

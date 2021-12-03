@@ -32,6 +32,9 @@ function InputExportKey(props: TInputExportProps): JSX.Element {
           <span
             className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-2 transition duration-300'
             onClick={onCopy}
+            role='button'
+            aria-hidden
+            tabIndex={0}
           >
             {copied ? (
               <Tooltip

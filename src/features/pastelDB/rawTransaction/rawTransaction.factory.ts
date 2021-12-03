@@ -9,7 +9,8 @@ export const rawTransactionFactory = Factory.define<TDbRawTransaction>(
       insertRawTransaction(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       hex: 'hex',
@@ -26,7 +27,7 @@ export const rawTransactionFactory = Factory.define<TDbRawTransaction>(
       confirmations: 0,
       time: 0,
       blocktime: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

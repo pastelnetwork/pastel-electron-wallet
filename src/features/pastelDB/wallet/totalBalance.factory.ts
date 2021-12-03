@@ -9,13 +9,14 @@ export const totalBalanceFactory = Factory.define<TDbTotalBalance>(
       insertTotalBalance(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       transparent: 'transparent',
       private: 'private',
       total: 'total',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

@@ -156,7 +156,7 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
       custom: (value: number) => (
         <div className='text-gray-a0 flex justify-between rounded shadow-2px h-40px text-lg py-1 px-4 w-200px'>
           <input
-            value={value + 'k'}
+            value={value?.toString() + 'k'}
             className='outline-none border-none flex-grow min-w-0 text-gray-2d'
           />
           <span>{currencyName}</span>

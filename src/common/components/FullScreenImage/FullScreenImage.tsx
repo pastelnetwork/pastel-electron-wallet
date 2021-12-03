@@ -100,7 +100,14 @@ export default function FullScreenImage({
 
   return (
     <>
-      <div ref={backgroundRef} className='fixed inset-0' onClick={onClose} />
+      <div
+        ref={backgroundRef}
+        className='fixed inset-0'
+        onClick={onClose}
+        role='button'
+        aria-hidden
+        tabIndex={0}
+      />
       <div className='relative flex-center'>
         {renderCloseButton()}
         {renderPreviewImage()}

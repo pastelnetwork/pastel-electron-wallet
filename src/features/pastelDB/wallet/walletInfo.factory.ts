@@ -9,7 +9,8 @@ export const walletInfoFactory = Factory.define<TDbWalletInfo>(
       insertWalletInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       walletversion: 1,
@@ -21,7 +22,7 @@ export const walletInfoFactory = Factory.define<TDbWalletInfo>(
       keypoolsize: 0,
       paytxfee: 0,
       seedfp: '',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

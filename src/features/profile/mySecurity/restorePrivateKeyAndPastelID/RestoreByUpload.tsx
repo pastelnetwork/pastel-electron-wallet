@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  ChangeEvent,
-  useCallback,
-  memo,
-} from 'react'
+import React, { useState, useEffect, ChangeEvent, useCallback } from 'react'
 import path from 'path'
 import jsQR from 'jsqr'
 import cn from 'classnames'
@@ -23,7 +17,7 @@ type TRestoreByUploadProps = {
   callback?: () => void
 }
 
-const UploadVideoControl = memo(function UploadVideoControl({
+function UploadVideoControl({
   fileSelected,
   handleImageChange,
 }: {
@@ -58,7 +52,7 @@ const UploadVideoControl = memo(function UploadVideoControl({
       />
     </label>
   )
-})
+}
 
 export default function RestoreByUpload({
   onHideHeader,
@@ -104,7 +98,7 @@ export default function RestoreByUpload({
       try {
         setCurrentStatus('restoring')
         const qrCode: string[] = []
-        const videoPath = path.join(fileSelected.path)
+        const videoPath: string = path.join(fileSelected.path).toString()
         VideoToImages.getFrames(
           'file://' + videoPath,
           12,
@@ -236,4 +230,8 @@ RestoreByUpload.defaultProps = {
   onHideHeader: undefined,
   setPastelId: undefined,
   callback: undefined,
+}
+
+UploadVideoControl.defaultProps = {
+  fileSelected: undefined,
 }

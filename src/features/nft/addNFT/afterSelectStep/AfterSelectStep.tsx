@@ -71,9 +71,13 @@ export default function UploadStep({
   )
 
   const renderMinusCircleButton = () => (
-    <button type='button'>
-      <MinusCircle size={13} />
-    </button>
+    <div
+      className={`h-1 rounded-full bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
+    >
+      <button type='button'>
+        <MinusCircle size={13} />
+      </button>
+    </div>
   )
 
   const renderLeftColumnContentControl = () => (
@@ -96,11 +100,7 @@ export default function UploadStep({
             onDrag={onDragControl}
             onStop={onDragControl}
           >
-            <div
-              className={`h-1 rounded-full bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
-            >
-              {renderFilledProgressBar()}
-            </div>
+            {renderFilledProgressBar()}
           </DraggableCore>
         </div>
         {renderPlusCircleButton()}

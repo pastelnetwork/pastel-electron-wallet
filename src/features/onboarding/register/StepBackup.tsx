@@ -291,7 +291,7 @@ export default function StepBackupMethod(): JSX.Element {
                     <div className='h-5px w-[108px] rounded-full bg-green-e4 mr-3 overflow-hidden'>
                       <div
                         className='h-5px rounded-full bg-green-77'
-                        style={{ width: pdfPrepareProgress + '%' }}
+                        style={{ width: `${pdfPrepareProgress.toString()}%` }}
                       />
                     </div>
                     <span className='font-extrabold text-sm'>

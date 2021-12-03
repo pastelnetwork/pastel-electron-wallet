@@ -170,7 +170,7 @@ export default function PreviewStepModal({
           <div className='font-medium text-gray-4a mb-5'>
             Image Size and Fee Optimization
           </div>
-          <label className='flex items-center mb-10'>
+          <div className='flex items-center mb-10'>
             <div className='font-medium text-gray-71 mr-3'>
               Lossless Image Quality
             </div>
@@ -179,7 +179,7 @@ export default function PreviewStepModal({
               toggleHandler={state.setIsLossLess}
               selectedClass='bg-blue-3f'
             />
-          </label>
+          </div>
           <div
             className={cn(
               'pb-5 mb-6 duration-200 transition',

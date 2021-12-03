@@ -9,7 +9,8 @@ export const txOutSetInfoFactory = Factory.define<TDbTxOutSetInfo>(
       insertTxOutSentInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       height: 1,
@@ -19,7 +20,7 @@ export const txOutSetInfoFactory = Factory.define<TDbTxOutSetInfo>(
       bytes_serialized: 0,
       hash_serialized: '',
       total_amount: 10,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

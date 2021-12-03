@@ -36,7 +36,7 @@ const InputControl = memo(function InputControl({
   )
 })
 
-const RestoreYourKeysButton = memo(function RestoreYourKeysButton({
+function RestoreYourKeysButton({
   handleRestoreByUpload,
   fileSelected,
 }: {
@@ -74,7 +74,7 @@ const RestoreYourKeysButton = memo(function RestoreYourKeysButton({
       </button>
     </Tooltip>
   )
-})
+}
 
 export default function RestoreByPdf({
   onHideHeader,
@@ -104,7 +104,7 @@ export default function RestoreByPdf({
     if (file) {
       try {
         setCurrentStatus('restoring')
-        const pdfPath = path.join(file.path)
+        const pdfPath: string = path.join(file.path).toString()
         if (pdfPath) {
           pdfjs.GlobalWorkerOptions.workerSrc =
             '//mozilla.github.io/pdf.js/build/pdf.worker.js'
@@ -196,4 +196,8 @@ RestoreByPdf.defaultProps = {
   onHideHeader: undefined,
   setPastelId: undefined,
   callback: undefined,
+}
+
+RestoreYourKeysButton.defaultProps = {
+  fileSelected: undefined,
 }
