@@ -160,4 +160,6 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
   },
 )
 
+Input.displayName = 'Input'
+
 export default Input
