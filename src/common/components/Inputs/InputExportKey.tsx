@@ -11,10 +11,11 @@ export type TInputExportProps = TInput & {
 
 function InputExportKey(props: TInputExportProps): JSX.Element {
   const [copied, setCopied] = useState(false)
+  const { value } = props
 
   const onCopy = () => {
-    if (props.value) {
-      clipboard.writeText(props.value)
+    if (value) {
+      clipboard.writeText(value)
       setCopied(true)
 
       setTimeout(() => {

@@ -101,7 +101,7 @@ function CircleSteper({
       >
         <circle cx='33' cy='33' r='32' fill='#ECEFF3' />
         <circle cx='33' cy='33' r='26' fill='#FFFFFF' />
-        {startPoints.slice(0, currentStep).map(item => (
+        {startPoints.slice(0, currentStep).map((item: number) => (
           <path
             key={item}
             d={describeArc(

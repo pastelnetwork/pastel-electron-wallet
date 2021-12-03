@@ -106,11 +106,7 @@ export default function PayURIModal(): JSX.Element | null {
     setValid(false)
   }, [payURIModalIsOpen])
 
-  if (!payURIModalIsOpen) {
-    return null
-  }
-
-  const handlePayURI = (strUri: string) => {
+  const handlePayURI = useCallback((strUri: string) => {
     setMessage('')
     if (!strUri) {
       setValid(false)
@@ -130,6 +126,10 @@ export default function PayURIModal(): JSX.Element | null {
       state: { ...parsedUri[0] },
     })
     dispatch(closePayURIModal())
+  }, [])
+
+  if (!payURIModalIsOpen) {
+    return null
   }
 
   let uriIsValid: boolean | null = null

@@ -220,6 +220,7 @@ export default function StepBackupMethod(): JSX.Element {
       </button>
     )
   }
+  const vPdfPrepareProgress: string = pdfPrepareProgress?.toString() || ''
 
   return (
     <div className='pt-16 flex flex-col h-full'>
@@ -291,7 +292,7 @@ export default function StepBackupMethod(): JSX.Element {
                     <div className='h-5px w-[108px] rounded-full bg-green-e4 mr-3 overflow-hidden'>
                       <div
                         className='h-5px rounded-full bg-green-77'
-                        style={{ width: `${pdfPrepareProgress.toString()}%` }}
+                        style={{ width: `${vPdfPrepareProgress}%` }}
                       />
                     </div>
                     <span className='font-extrabold text-sm'>

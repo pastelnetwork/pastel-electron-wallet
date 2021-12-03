@@ -70,13 +70,12 @@ function DateRangeSelectorContent({
       </div>
     )
   }
-
+  const vStartDate: string = dayjs(startDate).format('MM.DD.YY') || ''
+  const vEndDate: string = dayjs(endDate).format('MM.DD.YY') || ''
   return (
     <div className='flex'>
       <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
-      {dayjs(startDate).format('MM.DD.YY').toString() +
-        ' - ' +
-        dayjs(endDate).format('MM.DD.YY').toString()}
+      {vStartDate + ' - ' + vEndDate}
     </div>
   )
 }

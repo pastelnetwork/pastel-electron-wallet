@@ -21,7 +21,8 @@ async function makeRequest<T>(
   params: AxiosRequestConfig,
   goodResponseCodes?: number[],
 ): Promise<T> {
-  params.url = baseUrl + (params.url || '')
+  const paramUrl: string = params.url || ''
+  params.url = baseUrl + paramUrl
   const users = await readUsersInfo()
   if (users.length) {
     params.headers = {

@@ -62,12 +62,18 @@ export default function UploadStep({
   )
 
   const renderFilledProgressBar = () => (
-    <div
-      ref={filledProgressBarRef}
-      className='h-full bg-white w-0 rounded-full relative'
+    <DraggableCore
+      onStart={onDragControl}
+      onDrag={onDragControl}
+      onStop={onDragControl}
     >
-      <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
-    </div>
+      <div
+        ref={filledProgressBarRef}
+        className='h-full bg-white w-0 rounded-full relative'
+      >
+        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
+      </div>
+    </DraggableCore>
   )
 
   const renderMinusCircleButton = () => (
@@ -95,13 +101,7 @@ export default function UploadStep({
       >
         {renderMinusCircleButton()}
         <div className='flex-grow mx-3 py-2 relative' ref={controlRef}>
-          <DraggableCore
-            onStart={onDragControl}
-            onDrag={onDragControl}
-            onStop={onDragControl}
-          >
-            {renderFilledProgressBar()}
-          </DraggableCore>
+          {renderFilledProgressBar()}
         </div>
         {renderPlusCircleButton()}
       </div>
