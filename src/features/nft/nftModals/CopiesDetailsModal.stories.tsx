@@ -3,7 +3,9 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import CopiesDetailsModal, { TCopiesDetailsModal } from './CopiesDetailsModal'
 
-const Template: Story<TCopiesDetailsModal> = ({ isOpen }) => {
+const Template: Story<TCopiesDetailsModal> = ({
+  isOpen,
+}: TCopiesDetailsModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

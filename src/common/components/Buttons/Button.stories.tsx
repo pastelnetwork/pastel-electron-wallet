@@ -9,7 +9,7 @@ const Template: Story<TButton> = ({
   disabled,
   className,
   ...args
-}) => {
+}: TButton) => {
   return (
     <Button
       variant={variant}

@@ -5,7 +5,9 @@ import TransferAuthorshipModal, {
   TTransferAuthorshipModal,
 } from './TransferAuthorshipModal'
 
-const Template: Story<TTransferAuthorshipModal> = ({ isOpen }) => {
+const Template: Story<TTransferAuthorshipModal> = ({
+  isOpen,
+}: TTransferAuthorshipModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

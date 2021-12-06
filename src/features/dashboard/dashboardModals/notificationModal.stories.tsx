@@ -4,7 +4,10 @@ import { Button } from '../../../common/components/Buttons'
 import NotificationModal, { TNotificationModal } from './notificationModal'
 import notificationData from './notificationModal.data'
 
-const Template: Story<TNotificationModal> = ({ notifications, isOpen }) => {
+const Template: Story<TNotificationModal> = ({
+  notifications,
+  isOpen,
+}: TNotificationModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

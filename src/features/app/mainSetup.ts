@@ -23,6 +23,7 @@ import {
   sentTxStorePath,
   sqliteFilePath,
   pastelKeysPath,
+  tempPath,
 } from './paths'
 import initServeStatic, { closeServeStatic } from '../serveStatic'
 import { setupOptimizeImageHandler } from '../nft/addNFT/imageOptimization/ImageOptimization.main'
@@ -195,6 +196,7 @@ onMainEvent('rendererStarted', () => {
     sqliteFilePath,
     migrationsPath,
     pastelKeysPath,
+    tempPath,
   })
 
   // in case of page reload we already have rpcConfig and no need to launch wallet node again

@@ -11,7 +11,10 @@ export default {
   component: Select,
 } as Meta
 
-const TemplateOptions: Story<TSelectOptionsProps> = ({ selected, ...args }) => {
+const TemplateOptions: Story<TSelectOptionsProps> = ({
+  selected,
+  ...args
+}: TSelectOptionsProps) => {
   const [selectedItem, setSelected] = useState(selected)
 
   return (

@@ -5,7 +5,9 @@ import TransferHistoryModal, {
   TTransferHistoryModal,
 } from './TransferHistoryModal'
 
-const Template: Story<TTransferHistoryModal> = ({ isOpen }) => {
+const Template: Story<TTransferHistoryModal> = ({
+  isOpen,
+}: TTransferHistoryModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

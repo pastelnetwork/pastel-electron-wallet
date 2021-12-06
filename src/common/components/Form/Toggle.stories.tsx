@@ -9,7 +9,9 @@ export default {
   component: Component,
 } as Meta
 
-const Template: Story<TProps<Record<string, string>>> = ({ name }) => {
+const Template: Story<TProps<Record<string, string>>> = ({
+  name,
+}: TProps<Record<string, string>>) => {
   const form = useForm()
 
   return <Component form={form} name={name} />

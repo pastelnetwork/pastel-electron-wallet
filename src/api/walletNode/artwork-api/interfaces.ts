@@ -12,6 +12,8 @@ export interface TArtworkTicket {
   series_name?: string
   spendable_address: string
   youtube_url?: string
+  green: boolean
+  royalty: number
 }
 
 export interface IArtworkCollectionItem {

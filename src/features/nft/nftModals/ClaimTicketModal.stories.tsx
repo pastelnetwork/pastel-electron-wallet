@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import ClaimTicketModal, { TClaimTicketModal } from './ClaimTicketModal'
 
-const Template: Story<TClaimTicketModal> = ({ isOpen }) => {
+const Template: Story<TClaimTicketModal> = ({ isOpen }: TClaimTicketModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

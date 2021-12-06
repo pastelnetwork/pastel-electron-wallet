@@ -3,7 +3,10 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import DealApprovedModal, { TDealApprovedModal } from './dealApprovedModal'
 
-const Template: Story<TDealApprovedModal> = ({ content, isOpen }) => {
+const Template: Story<TDealApprovedModal> = ({
+  content,
+  isOpen,
+}: TDealApprovedModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

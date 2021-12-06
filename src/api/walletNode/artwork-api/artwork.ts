@@ -24,8 +24,12 @@ async function makeRequest<T>(
   const paramUrl: string = params.url || ''
   params.url = baseUrl + paramUrl
   const users = await readUsersInfo()
+  params.headers = {
+    accept: 'application/json',
+  }
   if (users.length) {
     params.headers = {
+      ...params.headers,
       user_pastelid: users[0].pastelId,
       user_passphrase: `${users[0].password}${users[0].username}`,
     }
@@ -75,6 +79,9 @@ export const artworkUploadImage = (form: FormData): Promise<IArtworkImage> => {
       method: 'post',
       url: '/register/upload',
       data: form,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     },
     [200, 201], // usually this API respond with 201 if success
   )

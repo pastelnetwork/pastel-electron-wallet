@@ -52,7 +52,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       appliedStyleValid = true,
       inputClassName,
       ...otherProps
-    },
+    }: TInput,
     ref,
   ) => {
     const classes = cn('relative flex items-center w-full', className)

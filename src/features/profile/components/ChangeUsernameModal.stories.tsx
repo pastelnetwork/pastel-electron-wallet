@@ -5,7 +5,9 @@ import ChangeUsernameModal, {
   TChangeUsernameModal,
 } from './ChangeUsernameModal'
 
-const Template: Story<TChangeUsernameModal> = ({ isOpen }) => {
+const Template: Story<TChangeUsernameModal> = ({
+  isOpen,
+}: TChangeUsernameModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

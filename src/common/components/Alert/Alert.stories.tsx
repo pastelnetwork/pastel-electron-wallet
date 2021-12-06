@@ -2,7 +2,7 @@ import React from 'react'
 import { Story, Meta } from '@storybook/react'
 import Alert, { TAlert } from './Alert'
 
-const Template: Story<TAlert> = ({ variant, children, className }) => {
+const Template: Story<TAlert> = ({ variant, children, className }: TAlert) => {
   return (
     <Alert variant={variant} className={className}>
       {children}

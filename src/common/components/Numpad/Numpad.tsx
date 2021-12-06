@@ -43,7 +43,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
     min = -Infinity,
     max = Infinity,
     className,
-  },
+  }: TProps,
   ref,
 ) {
   const [value, setValue] = useState<string>('')

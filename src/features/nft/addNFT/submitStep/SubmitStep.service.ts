@@ -1,11 +1,16 @@
+import log from 'electron-log'
+import { toast } from 'react-toastify'
+import path from 'path'
+import fs from 'fs'
+
 import {
   artworkRegister,
   artworkUploadImage,
 } from 'api/walletNode/artwork-api/artwork'
 import { TArtworkTicket } from 'api/walletNode/artwork-api/interfaces'
-import { toast } from 'react-toastify'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
-import log from 'electron-log'
+import { readUsersInfo } from 'common/utils/User'
+import store from '../../../../redux/store'
 
 const getImageFile = (
   state: TAddNFTState,
@@ -16,7 +21,6 @@ const getImageFile = (
 
     const url =
       state.isLossLess || !optimizedFile ? image.url : optimizedFile.fileUrl
-
     const xhr = new XMLHttpRequest()
     xhr.open('GET', url, true)
     xhr.responseType = 'blob'
@@ -25,7 +29,16 @@ const getImageFile = (
       if (xhr.status !== 200) {
         return reject(new Error('Error accessing optimized image'))
       }
-      resolve(xhr.response)
+      const metadata = {
+        type: image.type,
+      }
+      const tempPath = store.getState().appInfo.tempPath
+      const file = new File(
+        [xhr.response],
+        path.join(tempPath, image.name),
+        metadata,
+      )
+      resolve(file)
     }
 
     xhr.send()
@@ -41,20 +54,19 @@ export const submit = async ({
   nftData: TNFTData
 }): Promise<void> => {
   try {
-    // TODO: apply real data when user auth/register will be ready
-    // it's mock data for local API in debug mode
-    const pastelid =
-        'jXYJud3rmrR1Sk2scvR47N4E4J5Vv48uCC6se2nzHrBRdjaKj3ybPoi1Y2VVoRqi1GnQrYKjSxQAC7NBtvtEdS',
-      pass = 'test',
-      spendableAddr = 'PtiqRXn2VQwBjp1K8QXR2uW2w2oZ3Ns7N6j',
-      userName = 'John Doe'
+    const tempPath = store.getState().appInfo.tempPath
+    const users = await readUsersInfo()
+    const pastelid = users[0].pastelId,
+      pass = `${users[0].password}${users[0].username}`,
+      spendableAddr = users[0].address || '',
+      userName = users[0].username
 
     const form = new FormData()
     const file = await getImageFile(state, image)
     form.append('file', file)
     form.append('filename', image.name)
     const responseUpload = await artworkUploadImage(form)
-
+    fs.promises.unlink(path.join(tempPath, image.name))
     const regParams: TArtworkTicket = {
       artist_name: userName,
       artist_pastelid: pastelid,
@@ -64,6 +76,8 @@ export const submit = async ({
       maximum_fee: 0.01, // not sure how to get/calc this value, so TODO:
       name: nftData.title,
       spendable_address: spendableAddr,
+      green: nftData.green,
+      royalty: nftData.royalty,
     }
 
     if (nftData.website) {

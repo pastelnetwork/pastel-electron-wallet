@@ -2,7 +2,11 @@ import React from 'react'
 import { Story, Meta } from '@storybook/react'
 import CloseButton, { TCloseButton } from './CloseButton'
 
-const Template: Story<TCloseButton> = ({ disabled, className, ...args }) => {
+const Template: Story<TCloseButton> = ({
+  disabled,
+  className,
+  ...args
+}: TCloseButton) => {
   return (
     <CloseButton
       disabled={disabled}

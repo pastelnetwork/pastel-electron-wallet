@@ -95,6 +95,7 @@ export const useInitializeRegister = ({
           pastelId: pastelid,
           pastelIds: [pastelid],
           addresses,
+          address: createPastelIdQuery.data?.address,
         },
       ],
       true,

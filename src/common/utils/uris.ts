@@ -5,11 +5,13 @@ import { isTransparent, isZaddr } from './wallet'
 
 export class PastelURITarget {
   // A default constructor that creates a basic Target
-  constructor(
-    public address?: string,
-    public amount?: number,
-    public memoString?: string,
-  ) {}
+  public address?: string
+  public amount?: number
+  public memoString?: string
+
+  constructor() {
+    // noop
+  }
 }
 
 type TParsePastelURI = {

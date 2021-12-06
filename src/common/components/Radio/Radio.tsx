@@ -27,6 +27,7 @@ function Radio({
   variant,
   id,
 }: TRadioProps): JSX.Element {
+  const vId = id || uuidv4()
   const renderInputControl = () => (
     <input
       type='radio'
@@ -35,13 +36,13 @@ function Radio({
       onChange={() => {
         onChange(!checked)
       }}
-      id={id}
+      id={vId}
     />
   )
 
   if (variant === 'secondary') {
     return (
-      <label htmlFor={id}>
+      <label htmlFor={vId}>
         <div className='flex items-center'>
           <div
             className={cn(
@@ -74,7 +75,7 @@ function Radio({
   }
 
   return (
-    <label htmlFor={id}>
+    <label htmlFor={vId}>
       <div className='flex items-center'>
         <div
           className={cn(
@@ -109,7 +110,7 @@ function Radio({
 export default Radio
 
 Radio.defaultProps = {
-  id: uuidv4(),
+  id: undefined,
   className: 'w-5 h-5',
   smallCircleClass: 'w-2 h-2',
   labelClassName: 'ml-2 mt-2.5px',

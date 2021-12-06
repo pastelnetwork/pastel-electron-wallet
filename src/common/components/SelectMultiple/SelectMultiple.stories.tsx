@@ -8,7 +8,7 @@ export default {
   component: Component,
 } as Meta
 
-const Template: Story<TProps> = ({ selected, ...args }) => {
+const Template: Story<TProps> = ({ selected, ...args }: TProps) => {
   const [selectedItems, setSelected] = useState(selected)
 
   return <Component {...args} selected={selectedItems} onChange={setSelected} />

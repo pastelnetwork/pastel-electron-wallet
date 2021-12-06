@@ -4,7 +4,10 @@ import { Button } from '../../../common/components/Buttons'
 import BidHistoryModal, { TBidHistoryModal } from './bidHistoryModal'
 import history from './bidHistoryModal.data'
 
-const Template: Story<TBidHistoryModal> = ({ history, isOpen }) => {
+const Template: Story<TBidHistoryModal> = ({
+  history,
+  isOpen,
+}: TBidHistoryModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

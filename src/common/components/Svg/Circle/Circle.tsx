@@ -7,6 +7,8 @@ export type TCircleProps = Omit<
   strokeWidth?: number
   radius?: number
   percent?: number
+  strokeDasharray?: number | string
+  strokeDashoffset?: number | string
 }
 
 const defaultStrokeWidth = 6
@@ -31,7 +33,7 @@ export default forwardRef<SVGCircleElement, TCircleProps>(function Circle(
     radius = defaultRadius,
     percent,
     ...props
-  },
+  }: TCircleProps,
   ref,
 ) {
   let dashArray = '',
