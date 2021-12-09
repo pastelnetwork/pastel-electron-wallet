@@ -8,10 +8,6 @@ export class PastelURITarget {
   public address?: string
   public amount?: number
   public memoString?: string
-
-  constructor() {
-    // noop
-  }
 }
 
 type TParsePastelURI = {
