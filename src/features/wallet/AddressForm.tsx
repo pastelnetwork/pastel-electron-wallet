@@ -96,6 +96,15 @@ export function AddressForm({
     }
   }, [])
 
+  const handleEdit = useCallback(() => {
+    setEditName(addressLabel || '')
+    setEdit(address)
+  }, [])
+
+  const handleCopyAddress = useCallback(() => {
+    copyAddress(address)
+  }, [])
+
   const renderShowFullAddress = () => (
     <Tooltip
       classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
@@ -229,7 +238,7 @@ export function AddressForm({
                   type='top'
                 >
                   <button
-                    onClick={() => copyAddress(address)}
+                    onClick={handleCopyAddress}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
                     type='button'
                   >
@@ -244,7 +253,7 @@ export function AddressForm({
                   type='top'
                 >
                   <button
-                    onClick={() => copyAddress(address)}
+                    onClick={handleCopyAddress}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
                     type='button'
                   >
@@ -263,10 +272,7 @@ export function AddressForm({
                 type='top'
               >
                 <span
-                  onClick={() => {
-                    setEditName(addressLabel || '')
-                    setEdit(address)
-                  }}
+                  onClick={handleEdit}
                   className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
                   role='button'
                   aria-hidden

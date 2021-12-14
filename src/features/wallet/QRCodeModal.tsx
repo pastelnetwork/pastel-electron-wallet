@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import QRCode from 'qrcode.react'
 
 import { WalletRPC } from 'api/pastel-rpc'
@@ -12,7 +12,7 @@ export default function QRCodeModal(): JSX.Element {
     setIsQRCodeModalOpen: setIsOpen,
   } = useWalletScreenContext()
 
-  const handleClose = () => setIsOpen(false)
+  const handleClose = useCallback(() => setIsOpen(false), [])
 
   const [privateKey, setPrivateKey] = useState('')
   const [loading, setLoading] = useState(true)
@@ -40,7 +40,7 @@ export default function QRCodeModal(): JSX.Element {
   return (
     <TitleModal
       isOpen
-      handleClose={() => handleClose()}
+      handleClose={handleClose}
       title='Address QR'
       classNames='w-[598px]'
     >

@@ -101,11 +101,11 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
     setComplete(false)
   }, [importPrivKeyModalIsOpen])
 
-  if (!importPrivKeyModalIsOpen) {
-    return null
-  }
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeImportPrivKeyModal())
+  }, [])
 
-  const handleImportPrivateKey = async (key: string) => {
+  const handleImportPrivateKey = useCallback(async (key: string) => {
     setMessage('')
     setComplete(false)
     if (!key) {
@@ -136,6 +136,10 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
         toast(error.message, { type: 'error' })
       }
     }
+  }, [])
+
+  if (!importPrivKeyModalIsOpen) {
+    return null
   }
 
   const renderSuccessContent = () => {
@@ -162,7 +166,7 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={importPrivKeyModalIsOpen}
-      handleClose={() => dispatch(closeImportPrivKeyModal())}
+      handleClose={handleCloseModal}
       classNames='max-w-[700px]'
       title={!isComplete ? 'Import Private Keys' : ''}
     >

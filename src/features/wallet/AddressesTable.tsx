@@ -82,6 +82,29 @@ function QRCodeIcon({
   )
 }
 
+function SelectedAddressesCheckbox({
+  selectedAddresses,
+  address,
+  selectAddress,
+  row,
+}: {
+  selectedAddresses: string[]
+  address: string
+  selectAddress: (address: string, amount: number) => void
+  row: TRow
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    selectAddress(address, row.amount)
+  }, [selectedAddresses, address])
+
+  return (
+    <Checkbox
+      isChecked={Boolean(selectedAddresses.includes(address))}
+      clickHandler={onClick}
+    />
+  )
+}
+
 export default function AddressesTable({
   addresses: { data: addresses, isLoading: isLoadingAddresses },
   amounts: { data: amounts, isLoading: isLoadingAmounts },
@@ -108,7 +131,7 @@ export default function AddressesTable({
     setSelectedAddressesModal,
   } = useWalletScreenContext()
 
-  const selectAddress = (address: string, amount: number) => {
+  const selectAddress = useCallback((address: string, amount: number) => {
     setSelectedAddresses(addresses => {
       if (addresses.includes(address)) {
         return addresses.filter(item => item !== address)
@@ -141,7 +164,8 @@ export default function AddressesTable({
         return { ...sources, [address]: amount }
       }
     })
-  }
+  }, [])
+
   const pastelPromoCodeList = pastelPromoCode.data
 
   const Columns = [
@@ -159,9 +183,11 @@ export default function AddressesTable({
               {!pastelPromoCodeList?.find(
                 promoCode => promoCode.address === address,
               ) ? (
-                <Checkbox
-                  isChecked={Boolean(selectedAddresses.includes(address))}
-                  clickHandler={() => selectAddress(address, row.amount)}
+                <SelectedAddressesCheckbox
+                  selectedAddresses={selectedAddresses}
+                  address={address}
+                  selectAddress={selectAddress}
+                  row={row}
                 />
               ) : (
                 <div className='w-5 h-5'></div>

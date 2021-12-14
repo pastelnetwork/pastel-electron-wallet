@@ -102,11 +102,11 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
     setComplete(false)
   }, [importANIPrivKeyModalIsOpen])
 
-  if (!importANIPrivKeyModalIsOpen) {
-    return null
-  }
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeImportANIPrivKeyModal())
+  }, [])
 
-  const handleImportANIPrivKey = async (key: string) => {
+  const handleImportANIPrivKey = useCallback(async (key: string) => {
     setMessage('')
     setComplete(false)
 
@@ -135,6 +135,10 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
         toast(error.message, { type: 'error' })
       }
     }
+  }, [])
+
+  if (!importANIPrivKeyModalIsOpen) {
+    return null
   }
 
   const renderSuccessContent = () => {
@@ -161,7 +165,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={importANIPrivKeyModalIsOpen}
-      handleClose={() => dispatch(closeImportANIPrivKeyModal())}
+      handleClose={handleCloseModal}
       classNames='max-w-[700px]'
       title={!isComplete ? 'Import ANI (Animecoin) Private Keys' : ''}
     >

@@ -67,6 +67,10 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
       })
   }, [exportPrivKeyModalIsOpen])
 
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeExportPrivKeyModal())
+  }, [])
+
   if (!exportPrivKeyModalIsOpen) {
     return null
   }
@@ -74,7 +78,7 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={exportPrivKeyModalIsOpen}
-      handleClose={() => dispatch(closeExportPrivKeyModal())}
+      handleClose={handleCloseModal}
       classNames='max-w-[700px]'
       title='Your Wallet Private Keys'
     >

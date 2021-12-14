@@ -171,7 +171,7 @@ export default function StepBackupMethod(): JSX.Element {
     }
   }, [videoUrl])
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     finish()
     store.setExchangeAddress('')
     store.setPSLAddressPrivateKey('')
@@ -182,7 +182,7 @@ export default function StepBackupMethod(): JSX.Element {
     store.setUsername('')
     store.setStep(Steps.Login)
     store.setSelectedPSLAddress(null)
-  }
+  }, [])
 
   const handlePdfPrepareProgress = useCallback(() => {
     setPdfPrepareProgress(65)

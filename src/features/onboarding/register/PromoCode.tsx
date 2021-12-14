@@ -83,7 +83,7 @@ export default function PromoCode(): JSX.Element {
     store.paymentMethod === PaymentMethods.PastelPromoCode
   const promoCodeQuery = useImportPromoCode()
 
-  const handleNextClick = () => {
+  const handleNextClick = useCallback(() => {
     setAddNew(false)
     if (store.selectedPSLAddress) {
       const password: string = encode(store.password) || ''
@@ -109,11 +109,11 @@ export default function PromoCode(): JSX.Element {
         )
       }
     }
-  }
+  }, [])
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     store.goBack()
-  }
+  }, [])
 
   const isLoading =
     status === 'loading' ||

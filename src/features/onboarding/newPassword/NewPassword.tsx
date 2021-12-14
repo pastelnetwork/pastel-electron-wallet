@@ -78,7 +78,7 @@ export default function NewPassword(): JSX.Element {
     setShowPassword(true)
   }, [])
 
-  const handleChangePassword = async () => {
+  const handleChangePassword = useCallback(async () => {
     const uers = await readUsersInfo()
     const user = uers.find(u => u.pastelId === store.pastelId)
     if (user) {
@@ -95,7 +95,32 @@ export default function NewPassword(): JSX.Element {
       await writeUsersInfo([user], true)
       setSuccess(true)
     }
-  }
+  }, [])
+
+  const handleNewPasswordChange = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      setShowPassword(false)
+      setNewPassword({
+        ...newPassword,
+        value: event.currentTarget.value,
+      })
+    },
+    [],
+  )
+
+  const handleRepeatNewPasswordChange = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      setRepeatPassword({
+        ...repeatPassword,
+        value: event.currentTarget.value,
+      })
+    },
+    [],
+  )
+
+  const onSubmit = useCallback((event: FormEvent<HTMLFormElement>) => {
+    handleFormSubmit(event)
+  }, [])
 
   const renderGenerateSecurePasswordButton = () => {
     return (
@@ -139,24 +164,13 @@ export default function NewPassword(): JSX.Element {
               Make sure to save your password in a password manager!
             </div>
           </div>
-          <form
-            className='mt-7'
-            onSubmit={(event: FormEvent<HTMLFormElement>) =>
-              handleFormSubmit(event)
-            }
-          >
+          <form className='mt-7' onSubmit={onSubmit}>
             <InputPassword
               type='password'
               label='New Password'
               labelClassName='text-lg font-medium text-gray-71 pb-1.5'
               value={newPassword.value}
-              onChange={(event: FormEvent<HTMLInputElement>) => {
-                setShowPassword(false)
-                setNewPassword({
-                  ...newPassword,
-                  value: event.currentTarget.value,
-                })
-              }}
+              onChange={handleNewPasswordChange}
               showPassword={showPassword}
               ref={null}
               errorMessage={
@@ -171,12 +185,7 @@ export default function NewPassword(): JSX.Element {
               label='Repeat New Password'
               labelClassName='text-lg font-medium text-gray-71 pb-1.5 mt-[25px]'
               value={repeatPassword.value}
-              onChange={(event: FormEvent<HTMLInputElement>) =>
-                setRepeatPassword({
-                  ...repeatPassword,
-                  value: event.currentTarget.value,
-                })
-              }
+              onChange={handleRepeatNewPasswordChange}
               ref={null}
               errorMessage={
                 repeatPassword.hasError ? 'Please enter a valid password' : null
