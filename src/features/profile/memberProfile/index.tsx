@@ -63,9 +63,9 @@ function Profile(): JSX.Element {
       'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',
   }
 
-  const onTabToggle = (index: number) => {
+  const onTabToggle = useCallback((index: number) => {
     setTab(index)
-  }
+  }, [])
 
   const renderProfileContent = () => (
     <div className='flex flex-col flex-grow pl-8'>

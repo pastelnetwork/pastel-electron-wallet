@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useCallback } from 'react'
 import shallow from 'zustand/shallow'
 
 import { InputPassword, Input } from 'common/components/Inputs'
@@ -64,7 +64,7 @@ export default function NewPassword(): JSX.Element {
     return 'At least 8 characters and at least 2 numbers'
   }
 
-  const handleGeneratePassword = () => {
+  const handleGeneratePassword = useCallback(() => {
     const password = randomPassword()
     setNewPassword({
       ...newPassword,
@@ -76,7 +76,7 @@ export default function NewPassword(): JSX.Element {
     })
 
     setShowPassword(true)
-  }
+  }, [])
 
   const handleChangePassword = async () => {
     const uers = await readUsersInfo()

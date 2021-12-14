@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import PastelDB from '../../../pastelDB/database'
 import { EChartsMultiLineChart } from '../chart/EChartsMultiLineChart'
@@ -82,16 +82,16 @@ export default function PriceOvertime(): JSX.Element {
     }
   }, [period])
 
-  const handlePeriodFilterChange = (period: TPeriod) => {
+  const handlePeriodFilterChange = useCallback((period: TPeriod) => {
     setPeriod(period)
     if (ticker) {
       clearInterval(ticker)
     }
-  }
+  }, [])
 
-  const handleBgColorChange = (color: string) => {
+  const handleBgColorChange = useCallback((color: string) => {
     setCurrentBgColor(color)
-  }
+  }, [])
 
   return (
     <div className={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from 'react'
+import React, { useState, ReactNode, useCallback } from 'react'
 import cn from 'classnames'
 import SVG from 'react-inlinesvg'
 import dayjs from 'dayjs'
@@ -55,6 +55,26 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
   const [reply, setReply] = useState('')
   const [isFocus, setIsFocus] = useState(false)
 
+  const onChange = useCallback(e => {
+    setReply(e.target.value)
+  }, [])
+
+  const onFocus = useCallback(() => {
+    setIsFocus(true)
+  }, [])
+
+  const onBlur = useCallback(() => {
+    setIsFocus(false)
+  }, [])
+
+  const handleOnReply = useCallback(() => {
+    onReply(id, reply)
+  }, [])
+
+  const handleOnLikeClick = useCallback(() => {
+    onLikeClick(id)
+  }, [])
+
   const renderCommentContent = () => (
     <div className='pr-82px'>
       <div className='mt-4 text-base font-medium text-gray-4a mb-[17px]'>
@@ -69,16 +89,16 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
             <textarea
               className='w-full rounded outline-none h-22px resize-none overflow-hidden'
               value={reply}
-              onChange={e => setReply(e.target.value)}
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
               placeholder='Reply'
             />
           </div>
           {isFocus || !!reply ? (
             <div className='mt-4'>
               <Button
-                onClick={() => onReply(id, reply)}
+                onClick={handleOnReply}
                 disabled={!reply}
                 className='py-3 px-33px font-medium'
               >
@@ -103,7 +123,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
         <div className='text-sm leading-18px font-medium text-gray-71 flex items-center'>
           {liked ? liked : null}
           <SVG
-            onClick={() => onLikeClick(id)}
+            onClick={handleOnLikeClick}
             src={liked ? ico_heart : ico_heart_empty}
             className={cn('cursor-pointer w-4 h-13px', liked && 'ml-9px')}
           />

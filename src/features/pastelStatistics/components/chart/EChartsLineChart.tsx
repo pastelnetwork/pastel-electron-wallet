@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, memo } from 'react'
+import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -11,7 +11,7 @@ import {
   TThemeColor,
   TThemeInitOption,
 } from '../../common/types'
-import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
+import { makeDownloadFileName, TPeriod } from '../../utils/PastelStatisticsLib'
 import { useCurrencyName } from 'common/hooks/appInfo'
 
 import styles from './LineChart.module.css'
@@ -20,6 +20,32 @@ import {
   getThemeUpdateOption,
 } from '../../utils/ChartOptions'
 import { PrevButton } from '../PrevButton'
+
+function PeriodSelect({
+  index,
+  handlePeriodSelect,
+  getActivePriodButtonStyle,
+  period,
+}: {
+  index: number
+  getActivePriodButtonStyle: (val: number) => void
+  handlePeriodSelect: (index: number, period: TPeriod) => void
+  period: TPeriod
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handlePeriodSelect(index, period)
+  }, [])
+
+  return (
+    <button
+      className={`${getActivePriodButtonStyle(index)} ${styles.filterButton}`}
+      onClick={onClick}
+      type='button'
+    >
+      {period}
+    </button>
+  )
+}
 
 export const EChartsLineChart = memo(function EChartsLineChart(
   props: TLineChartProps,
@@ -112,7 +138,7 @@ export const EChartsLineChart = memo(function EChartsLineChart(
   }
   const options = getThemeInitOption(params)
 
-  const downloadPNG = () => {
+  const downloadPNG = useCallback(() => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef.ele)
@@ -126,7 +152,7 @@ export const EChartsLineChart = memo(function EChartsLineChart(
           throw new Error('PNG download error: ' + message)
         })
     }
-  }
+  }, [])
 
   const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
     setCurrentTheme(theme)
@@ -166,6 +192,13 @@ export const EChartsLineChart = memo(function EChartsLineChart(
     return ''
   }
 
+  const handlePeriodSelect = useCallback((index: number, period: TPeriod) => {
+    setSelectedPeriodButton(index)
+    if (handlePeriodFilterChange) {
+      handlePeriodFilterChange(period)
+    }
+  }, [])
+
   const renderDownloadButtonBar = () => (
     <div className={styles.lineChartDownloadButtonBar}>
       <button
@@ -192,21 +225,13 @@ export const EChartsLineChart = memo(function EChartsLineChart(
     <div className={styles.periodSelect}>
       <span style={{ color: currentTheme?.color }}>Period: </span>
       {periods.map((period, index) => (
-        <button
-          className={`${getActivePriodButtonStyle(index)} ${
-            styles.filterButton
-          }`}
-          onClick={() => {
-            setSelectedPeriodButton(index)
-            if (handlePeriodFilterChange) {
-              handlePeriodFilterChange(period)
-            }
-          }}
-          type='button'
+        <PeriodSelect
           key={`button-filter-${period}`}
-        >
-          {period}
-        </button>
+          getActivePriodButtonStyle={getActivePriodButtonStyle}
+          index={index}
+          period={period}
+          handlePeriodSelect={handlePeriodSelect}
+        />
       ))}
     </div>
   )

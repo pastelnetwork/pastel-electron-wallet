@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
@@ -146,7 +146,7 @@ export default function StepBackupMethod(): JSX.Element {
     }
   }, [imagesData])
 
-  const handleDownloadVideo = () => {
+  const handleDownloadVideo = useCallback(() => {
     if (videoUrl) {
       saveFile(videoUrl)
     } else {
@@ -169,7 +169,7 @@ export default function StepBackupMethod(): JSX.Element {
         setCurrentStatus('error')
       }
     }
-  }
+  }, [videoUrl])
 
   const handleNext = () => {
     finish()
@@ -183,6 +183,10 @@ export default function StepBackupMethod(): JSX.Element {
     store.setStep(Steps.Login)
     store.setSelectedPSLAddress(null)
   }
+
+  const handlePdfPrepareProgress = useCallback(() => {
+    setPdfPrepareProgress(65)
+  }, [])
 
   const renderDownloadButton = () => {
     return (
@@ -214,7 +218,7 @@ export default function StepBackupMethod(): JSX.Element {
 
   const renderPdfPrepareProgressButton = () => {
     return (
-      <button type='button' onClick={() => setPdfPrepareProgress(65)}>
+      <button type='button' onClick={handlePdfPrepareProgress}>
         <div className='text-base font-medium text-gray-4a'>Crypto Keys</div>
         <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
       </button>

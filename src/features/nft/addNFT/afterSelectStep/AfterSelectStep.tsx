@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import {
@@ -7,7 +7,7 @@ import {
   PlusCircle,
   Trash,
 } from 'common/components/Icons'
-import { DraggableCore } from 'react-draggable'
+import { DraggableCore, DraggableEvent } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
 
@@ -33,8 +33,12 @@ export default function UploadStep({
     filledProgressBarRef,
   } = useImageZoom()
 
+  const onStart = useCallback((e: DraggableEvent) => {
+    e.preventDefault()
+  }, [])
+
   const renderDraggableAreaImage = () => (
-    <DraggableCore onDrag={onDragImage} onStart={e => e.preventDefault()}>
+    <DraggableCore onDrag={onDragImage} onStart={onStart}>
       <img
         ref={imageRef}
         src={displayUrl}

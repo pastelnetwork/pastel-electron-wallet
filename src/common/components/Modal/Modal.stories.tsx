@@ -7,18 +7,18 @@ const Template: Story<TModal> = ({ isOpen, ...args }) => {
 
   const onClick = useCallback(() => {
     setShowModal(true)
-  }, [])
+  }, [showModal])
+
+  const handleClose = useCallback(() => {
+    setShowModal(false)
+  }, [showModal])
 
   return (
     <>
       <button className='cursor-pointer' onClick={onClick} type='button'>
         Show modal
       </button>
-      <Modal
-        isOpen={showModal}
-        handleClose={() => setShowModal(false)}
-        {...args}
-      >
+      <Modal isOpen={showModal} handleClose={handleClose} {...args}>
         <p>
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque
           rerum, sequi voluptatibus, repellendus, laboriosam ut deserunt fugit

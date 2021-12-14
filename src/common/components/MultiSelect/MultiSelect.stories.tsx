@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import MultiSelect, { TOptionType } from './MultiSelect'
 
 const options = [
@@ -10,8 +10,9 @@ const options = [
 export function MultiSelectDefault(): JSX.Element {
   const [selected, setSelected] = useState<readonly TOptionType[] | null>(null)
 
-  const handleSelect = (option: readonly TOptionType[]): void =>
+  const handleSelect = useCallback((option: readonly TOptionType[]): void => {
     setSelected(option)
+  }, [])
 
   return (
     <div className='max-w-xs'>

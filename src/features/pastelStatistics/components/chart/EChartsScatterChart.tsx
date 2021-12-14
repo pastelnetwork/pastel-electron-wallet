@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, memo } from 'react'
+import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -82,7 +82,7 @@ export const EChartsScatterChart = memo(function EChartsScatterChart(
   }
   const options = getThemeInitOption(params)
 
-  const downloadPNG = () => {
+  const downloadPNG = useCallback(() => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef.ele)
@@ -96,7 +96,7 @@ export const EChartsScatterChart = memo(function EChartsScatterChart(
           throw new Error('PNG download error: ' + message)
         })
     }
-  }
+  }, [])
 
   const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
     setCurrentTheme(theme)

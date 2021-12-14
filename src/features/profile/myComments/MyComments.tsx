@@ -238,17 +238,17 @@ function MyComments(): JSX.Element {
     nativeCurrencyOptions[0],
   )
 
-  const handleOnReply = (replyId: number, reply: string) => {
+  const handleOnReply = useCallback((replyId: number, reply: string) => {
     log.log(replyId, reply)
-  }
+  }, [])
 
-  const handleOnLikeClick = (commentId: number) => {
+  const handleOnLikeClick = useCallback((commentId: number) => {
     log.log(commentId)
-  }
+  }, [])
 
-  const onClickFilter = (value: string) => {
+  const onClickFilter = useCallback((value: string) => {
     log.log(value)
-  }
+  }, [])
 
   const isEmpty = false
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { NFT, Keyword, Creator, User, Forum } from '../Icons'
 
 export type TSearchTagProps = {
@@ -11,14 +11,16 @@ export type TSearchTagProps = {
 }
 
 function SearchTag({ label, type, clickHandle }: TSearchTagProps): JSX.Element {
+  const onClick = useCallback(() => {
+    if (clickHandle) {
+      clickHandle(type)
+    }
+  }, [type])
+
   return (
     <button
       className='flex items-center bg-blue-d9 py-3px px-2 rounded-10px mr-2 cursor-pointer'
-      onClick={() => {
-        if (clickHandle) {
-          clickHandle(type)
-        }
-      }}
+      onClick={onClick}
       type='button'
     >
       {!!type && type === 'nfts' && <NFT className='text-gray-4a' />}

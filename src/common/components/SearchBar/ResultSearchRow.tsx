@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 export type TResultShearchProps = {
   name: string
@@ -13,14 +13,16 @@ function ResultSearchRow({
   followers,
   handleClick,
 }: TResultShearchProps): JSX.Element {
+  const onClick = useCallback(() => {
+    if (handleClick) {
+      handleClick(name)
+    }
+  }, [name])
+
   return (
     <button
       className='cursor-pointer flex items-center mb-4 justify-between'
-      onClick={() => {
-        if (handleClick) {
-          handleClick(name)
-        }
-      }}
+      onClick={onClick}
       type='button'
     >
       <div className='flex items-center'>

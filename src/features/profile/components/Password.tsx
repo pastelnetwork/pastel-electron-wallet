@@ -201,7 +201,7 @@ export default function Password(props: TPassword): JSX.Element {
     setConfirmPassword(confirmPass)
   }
 
-  const handleGenerateRandomPassword = () => {
+  const handleGenerateRandomPassword = useCallback(() => {
     const newPass = randomPassword()
     setNewPassword(newPass)
 
@@ -226,7 +226,7 @@ export default function Password(props: TPassword): JSX.Element {
       setNativeValue(element, newPass)
       element.dispatchEvent(event)
     }
-  }
+  }, [])
 
   const getIconClassnames = (isRefresh: boolean) => {
     return `absolute top-3.5 cursor-pointer w-5 h-5 object-none flex justify-center items-center ${

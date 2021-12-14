@@ -93,7 +93,7 @@ export default function RestoreByUpload({
     }
   }, [qrCodeData])
 
-  const handleRestoreByUpload = () => {
+  const handleRestoreByUpload = useCallback(() => {
     if (fileSelected) {
       try {
         setCurrentStatus('restoring')
@@ -140,15 +140,18 @@ export default function RestoreByUpload({
         }
       }
     }
-  }
+  }, [fileSelected])
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const fileList = e.target.files
 
-    if (fileList) {
-      setFileSelected(fileList[0])
-    }
-  }
+      if (fileList) {
+        setFileSelected(fileList[0])
+      }
+    },
+    [],
+  )
 
   if (currentStatus === 'done') {
     return <RestoreSuccess />

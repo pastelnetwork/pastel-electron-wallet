@@ -242,9 +242,9 @@ export default function MemberProfile(): JSX.Element {
   const [sort, setSort] = useState<TOption | null>(sortOptions[0])
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const onTabToggle = (index: number) => {
+  const onTabToggle = useCallback((index: number) => {
     setTab(index)
-  }
+  }, [])
 
   const mockComments: TMemberBoardProps[] = [
     {

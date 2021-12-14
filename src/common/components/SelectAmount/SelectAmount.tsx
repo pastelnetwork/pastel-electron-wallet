@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent, useEffect } from 'react'
+import React, { useState, KeyboardEvent, useEffect, useCallback } from 'react'
 import Downshift, { GetToggleButtonPropsOptions } from 'downshift'
 import cn from 'classnames'
 
@@ -93,14 +93,14 @@ export default function SelectAmount({
 
   return (
     <Downshift
-      onChange={selection => {
+      onChange={useCallback(selection => {
         setSelected(selection)
         if (onChange) {
           onChange(selection)
         }
         setTyping(false)
-      }}
-      onInputValueChange={(inputValue: string, options) => {
+      }, [])}
+      onInputValueChange={useCallback((inputValue: string, options) => {
         const { type } = (options as unknown) as { type: string }
         if (inputEventTypesToIgnore.includes(type)) {
           return
@@ -116,7 +116,7 @@ export default function SelectAmount({
         if (onChange) {
           onChange(selection)
         }
-      }}
+      }, [])}
       itemToString={item => (item ? item.value : '')}
     >
       {({

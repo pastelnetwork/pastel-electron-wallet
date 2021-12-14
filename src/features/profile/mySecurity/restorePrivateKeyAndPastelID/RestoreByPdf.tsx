@@ -100,7 +100,7 @@ export default function RestoreByPdf({
     }
   }
 
-  const handleRestoreByUpload = async (file: File) => {
+  const handleRestoreByUpload = useCallback(async (file: File) => {
     if (file) {
       try {
         setCurrentStatus('restoring')
@@ -119,15 +119,15 @@ export default function RestoreByPdf({
         }
       }
     }
-  }
+  }, [])
 
-  const handlePdfChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handlePdfChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files
 
     if (fileList) {
       setFileSelected(fileList[0])
     }
-  }
+  }, [])
 
   if (currentStatus === 'done') {
     return <RestoreSuccess />

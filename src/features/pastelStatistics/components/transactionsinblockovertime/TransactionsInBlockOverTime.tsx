@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
@@ -86,16 +86,16 @@ export default function TransactionsInBlockOvertime(
     }
   }, [period])
 
-  const handlePeriodFilterChange = (period: TPeriod) => {
+  const handlePeriodFilterChange = useCallback((period: TPeriod) => {
     setPeriod(period)
     if (ticker) {
       clearInterval(ticker)
     }
-  }
+  }, [])
 
-  const handleBgColorChange = (color: string) => {
+  const handleBgColorChange = useCallback((color: string) => {
     setCurrentBgColor(color)
-  }
+  }, [])
 
   return (
     <div className={styles.container}>
