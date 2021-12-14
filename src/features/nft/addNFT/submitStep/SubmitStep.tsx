@@ -46,9 +46,9 @@ export default function SubmitStep({
     toggleFullScreen()
   }, [])
 
-  if (fullScreen) {
-    return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
-  }
+  const handleBack = useCallback(() => {
+    state.goBack()
+  }, [])
 
   const onSubmit = useCallback(() => submit({ state, image, nftData }), [
     state,
@@ -56,9 +56,9 @@ export default function SubmitStep({
     nftData,
   ])
 
-  const handleBack = useCallback(() => {
-    state.goBack()
-  }, [])
+  if (fullScreen) {
+    return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
+  }
 
   const renderSubmitButton = () => (
     <div className='flex-between mt-5 flex-shrink-0'>

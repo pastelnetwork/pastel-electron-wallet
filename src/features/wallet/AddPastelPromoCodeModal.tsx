@@ -65,6 +65,10 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
     }
   }, [pastelPromoCode])
 
+  const handleOnChange = useCallback((e: FormEvent<HTMLInputElement>) => {
+    setPastelPromoCode(e.currentTarget.value.trim())
+  }, [])
+
   let promoCodeIsValid = null
   if (!isValidPromoCode && message) {
     promoCodeIsValid = false
@@ -101,9 +105,7 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
                 className='w-full'
                 type='text'
                 placeholder='Paste your promo code here'
-                onChange={useCallback((e: FormEvent<HTMLInputElement>) => {
-                  setPastelPromoCode(e.currentTarget.value.trim())
-                }, [])}
+                onChange={handleOnChange}
                 isValid={promoCodeIsValid}
                 errorMessage={!promoCodeIsValid && message ? message : null}
                 hint

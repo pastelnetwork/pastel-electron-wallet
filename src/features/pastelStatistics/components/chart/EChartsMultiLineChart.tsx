@@ -19,13 +19,14 @@ function PeriodSelect({
   period,
 }: {
   index: number
-  getActivePriodButtonStyle: (val: number) => void
+  getActivePriodButtonStyle: (val: number) => string
   handlePeriodSelect: (index: number, period: TPeriod) => void
   period: TPeriod
 }): JSX.Element {
   const onClick = useCallback(() => {
     handlePeriodSelect(index, period)
   }, [])
+
   return (
     <button
       className={`${getActivePriodButtonStyle(index)} 
@@ -184,6 +185,16 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
     },
   }
 
+  const handlePeriodSelect = useCallback(
+    () => (index: number, period: TPeriod) => {
+      setSelectedPeriodButton(index)
+      if (handlePeriodFilterChange) {
+        handlePeriodFilterChange(period)
+      }
+    },
+    [],
+  )
+
   const downloadPNG = useCallback(() => {
     if (eChartRef?.ele) {
       htmlToImage
@@ -261,20 +272,12 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
     eChartInstance?.setOption(option)
   }
 
-  const handlePeriodSelect = () =>
-    useCallback((index: number, period: TPeriod) => {
-      setSelectedPeriodButton(index)
-      if (handlePeriodFilterChange) {
-        handlePeriodFilterChange(period)
-      }
-    }, [])
-
-  const getActivePriodButtonStyle = (index: number): string => {
+  const getActivePriodButtonStyle = useCallback((index: number): string => {
     if (selectedPeriodButton === index) {
       return styles.activeButton
     }
     return ''
-  }
+  }, [])
 
   const getActiveThemeButtonStyle = (index: number): string => {
     if (selectedThemeButton === index) {

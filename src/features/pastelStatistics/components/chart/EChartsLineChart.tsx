@@ -28,7 +28,7 @@ function PeriodSelect({
   period,
 }: {
   index: number
-  getActivePriodButtonStyle: (val: number) => void
+  getActivePriodButtonStyle: (val: number) => string
   handlePeriodSelect: (index: number, period: TPeriod) => void
   period: TPeriod
 }): JSX.Element {
@@ -171,12 +171,12 @@ export const EChartsLineChart = memo(function EChartsLineChart(
     eChartInstance?.setOption(option)
   }
 
-  const getActivePriodButtonStyle = (index: number): string => {
+  const getActivePriodButtonStyle = useCallback((index: number): string => {
     if (selectedPeriodButton === index) {
       return styles.activeButton
     }
     return ''
-  }
+  }, [])
 
   const getActiveGranularityButtonStyle = (index: number): string => {
     if (selectedGranularityButton === index) {
