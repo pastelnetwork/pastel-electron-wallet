@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode, useEffect } from 'react'
+import React, { ChangeEvent, ReactNode, useCallback, useEffect } from 'react'
 import { TSelectImageStepService } from './SelectImageStep.service'
 
 type TProps = {
@@ -10,8 +10,11 @@ export default function SelectImageArea({
   service,
   children,
 }: TProps): JSX.Element {
-  const onChangeFile = (e: ChangeEvent<HTMLInputElement>) =>
-    service.selectFile(e.target.files?.[0])
+  const onChangeFile = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) =>
+      service.selectFile(e.target.files?.[0]),
+    [],
+  )
 
   useEffect(() => {
     const onDrop = (e: DragEvent) => {

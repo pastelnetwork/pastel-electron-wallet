@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from '../nftModals/modal'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 import avatar2 from 'common/assets/images/mock/avatar-2.png'
@@ -78,6 +78,10 @@ function BidsModal({ isOpen, handleClose }: TBidsModal): JSX.Element {
     },
   ]
 
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
+
   const renderCommentContent = (comment: TCommentProps) => (
     <div className='leading-5'>
       <div className='text-extrabold text-black text-h4'>
@@ -103,7 +107,7 @@ function BidsModal({ isOpen, handleClose }: TBidsModal): JSX.Element {
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='564px'
       title={
         <div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -8,6 +8,10 @@ import { closePastelPhotopeaModal } from './PastelPhotopeaModalSlice'
 export default function PastelPhotopeaModal(): JSX.Element {
   const { modalIsOpen } = useAppSelector(state => state.pastelPhotopeaModal)
   const dispatch = useAppDispatch()
+
+  const onCloseModal = useCallback(() => {
+    dispatch(closePastelPhotopeaModal())
+  }, [])
 
   const renderIframeContent = () => (
     <div className={styles.iframe}>
@@ -22,7 +26,7 @@ export default function PastelPhotopeaModal(): JSX.Element {
   return (
     <Modal
       isOpen
-      onRequestClose={() => dispatch(closePastelPhotopeaModal())}
+      onRequestClose={onCloseModal}
       className={styles.modalWrapper}
       overlayClassName={`${styles.overlay} ${modalIsOpen ? styles.open : ''}`}
     >
@@ -30,7 +34,7 @@ export default function PastelPhotopeaModal(): JSX.Element {
         <button
           type='button'
           className={styles.btn_close}
-          onClick={() => dispatch(closePastelPhotopeaModal())}
+          onClick={onCloseModal}
         >
           X
         </button>

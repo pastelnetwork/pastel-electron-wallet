@@ -1,5 +1,6 @@
 import React, { useEffect, useState, forwardRef, useRef } from 'react'
 import cn from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
 
 import { formatNumber } from 'common/utils/format'
 
@@ -77,6 +78,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       numpadList.push({
         value: 0,
         type: 'default',
+        index: uuidv4(),
       })
     }
 
@@ -84,6 +86,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       numpadList.push({
         value: item,
         type: 'value',
+        index: uuidv4(),
       })
     })
 
@@ -154,7 +157,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
               'text-base font-medium',
               item.type === 'default' ? 'text-gray-a0' : 'text-gray-4a',
             )}
-            key={`${item.value}${item.type}`}
+            key={`${item.value}${item.type}${item.index}`}
           >
             {item.value}
           </span>

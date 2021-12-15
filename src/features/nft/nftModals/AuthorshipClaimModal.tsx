@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Modal from './modal'
 import Button from 'common/components/Buttons/Button'
 
@@ -17,12 +17,23 @@ function AuthorshipClaimModal({
   }
   const [text, setText] = useState('')
 
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
+
   const renderOkButton = () => (
     <Button variant='default' className='w-full mt-[30px] mb-2'>
       <div className='flex items-center justify-center ml-6'>
         <span className='font-bold'>Ok</span>
       </div>
     </Button>
+  )
+
+  const onClaimChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setText(e.target.value)
+    },
+    [text],
   )
 
   const renderClaimDetailsForm = () => (
@@ -37,7 +48,7 @@ function AuthorshipClaimModal({
         <textarea
           className='w-full h-full py-2 border-none rounded outline-none text-gray-a0 px-4 resize-none'
           value={text}
-          onChange={e => setText(e.target.value)}
+          onChange={onClaimChange}
           maxLength={200}
         />
       </div>
@@ -62,7 +73,7 @@ function AuthorshipClaimModal({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='690px'
       title={'Claim Petition'}
       titleClassName='font-extrabold text-3xl text-gray-2d'

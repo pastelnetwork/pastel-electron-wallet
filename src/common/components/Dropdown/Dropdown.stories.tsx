@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Dropdown from './index'
 import { Button } from '../Buttons'
 
 export function DropdownDefault(): JSX.Element {
   const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
-  const toggleDropdown = () => setIsOpen(isOpen => !isOpen)
+  const toggleDropdown = useCallback(() => setIsOpen(isOpen => !isOpen), [])
+
+  const onClose = useCallback(() => {
+    setIsOpen(false)
+  }, [])
 
   return (
     <Dropdown
       isOpen={isOpen}
-      handleClose={() => setIsOpen(false)}
+      handleClose={onClose}
       button={
         <Button variant='default' onClick={toggleDropdown}>
           Show

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Input from 'common/components/Form/Input'
 import { TForm } from './InputNFTDataStep'
 import Toggle from 'common/components/Toggle'
@@ -28,7 +28,7 @@ function ToggleableInput({
   const [value, setValue] = useState('')
 
   // stash input value while input is hidden
-  const toggleInput = () => {
+  const toggleInput = useCallback(() => {
     if (showInput) {
       setValue(form.getValues(name) || '')
       form.setValue(name, undefined)
@@ -36,7 +36,7 @@ function ToggleableInput({
       form.setValue(name, value)
     }
     setShowInput(!showInput)
-  }
+  }, [value])
 
   return (
     <Input

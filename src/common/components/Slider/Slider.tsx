@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Range } from 'react-range'
 import cn from 'classnames'
 import { SliderShape, TWidth } from './SliderShape'
@@ -92,97 +92,106 @@ export default function Slider({
     endPercent = sliderValueToPercent(values[1])
   }
 
+  const onChange = useCallback(
+    (values: number[]) => {
+      setValues(values)
+    },
+    [values],
+  )
+
+  const renderTrack = useCallback(
+    ({ props: trackProps, children }) => {
+      const transform: string = trackProps.style.transform || ''
+      return (
+        <div
+          className={cn('h-4 rounded relative group', className)}
+          style={{
+            width: `${width}px`,
+          }}
+        >
+          <div
+            {...trackProps}
+            style={
+              stickToBottom
+                ? {
+                    ...trackProps.style,
+                    transform: `${transform} rotate(-1.3deg)`,
+                  }
+                : trackProps.style
+            }
+          >
+            <SliderShape className='w-full h-full text-gray-e6' width={width} />
+            <SliderShape
+              className='w-full h-full text-blue-3f absolute inset-0'
+              width={width}
+              style={{
+                clipPath: `polygon(${startPercent}% 0, ${endPercent}% 0, ${endPercent}% 100%, ${startPercent}% 100%)`,
+              }}
+            />
+            {children}
+          </div>
+          {!hideLabel && (
+            <div
+              className={cn('flex-between whitespace-nowrap', valuesClassName)}
+            >
+              <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
+                <div className={minMaxClassName}>
+                  {min === 0 ? min : formatValue(min)}
+                </div>
+              </div>
+              {'steps' in props &&
+                props.steps.slice(1, props.steps.length - 1).map(step => (
+                  <div key={step} className='w-0 flex-center'>
+                    <div className='text-xs font-medium text-gray-a0'>
+                      {formatValue(step)}
+                    </div>
+                  </div>
+                ))}
+              <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
+                <div className={minMaxClassName}>{formatValue(max)}</div>
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    },
+    [minMaxAlignCenter, startPercent, endPercent],
+  )
+
+  const renderThumb = useCallback(
+    ({ props: thumbProps, value }) => (
+      <button
+        type='button'
+        className={cn(
+          'absolute top-0 -ml-3 w-6 h-6 bg-white rounded-full shadow-depth-1 flex-center focus:outline-none',
+          stickToBottom && '-top-1',
+        )}
+        {...thumbProps}
+      >
+        <Tooltip2
+          text={formatTooltipValue(fractionToValue(props, value))}
+          show
+          className={cn(
+            'whitespace-nowrap duration-200 transition',
+            !alwaysShowTooltip && 'opacity-0 group-hover:opacity-100',
+          )}
+        >
+          {ref => <div ref={ref} className='w-4 h-4 bg-blue-3f rounded-full' />}
+        </Tooltip2>
+      </button>
+    ),
+    [values],
+  )
+
   return (
     <Range
       min={0}
       max={sliderMax}
       step={props.step}
       values={values}
-      onChange={values => setValues(values)}
-      renderTrack={({ props: trackProps, children }) => {
-        const transform: string = trackProps.style.transform || ''
-        return (
-          <div
-            className={cn('h-4 rounded relative group', className)}
-            style={{
-              width: `${width}px`,
-            }}
-          >
-            <div
-              {...trackProps}
-              style={
-                stickToBottom
-                  ? {
-                      ...trackProps.style,
-                      transform: `${transform} rotate(-1.3deg)`,
-                    }
-                  : trackProps.style
-              }
-            >
-              <SliderShape
-                className='w-full h-full text-gray-e6'
-                width={width}
-              />
-              <SliderShape
-                className='w-full h-full text-blue-3f absolute inset-0'
-                width={width}
-                style={{
-                  clipPath: `polygon(${startPercent}% 0, ${endPercent}% 0, ${endPercent}% 100%, ${startPercent}% 100%)`,
-                }}
-              />
-              {children}
-            </div>
-            {!hideLabel && (
-              <div
-                className={cn(
-                  'flex-between whitespace-nowrap',
-                  valuesClassName,
-                )}
-              >
-                <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
-                  <div className={minMaxClassName}>
-                    {min === 0 ? min : formatValue(min)}
-                  </div>
-                </div>
-                {'steps' in props &&
-                  props.steps.slice(1, props.steps.length - 1).map(step => (
-                    <div key={step} className='w-0 flex-center'>
-                      <div className='text-xs font-medium text-gray-a0'>
-                        {formatValue(step)}
-                      </div>
-                    </div>
-                  ))}
-                <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
-                  <div className={minMaxClassName}>{formatValue(max)}</div>
-                </div>
-              </div>
-            )}
-          </div>
-        )
-      }}
-      renderThumb={({ props: thumbProps, value }) => (
-        <button
-          type='button'
-          className={cn(
-            'absolute top-0 -ml-3 w-6 h-6 bg-white rounded-full shadow-depth-1 flex-center focus:outline-none',
-            stickToBottom && '-top-1',
-          )}
-          {...thumbProps}
-        >
-          <Tooltip2
-            text={formatTooltipValue(fractionToValue(props, value))}
-            show
-            className={cn(
-              'whitespace-nowrap duration-200 transition',
-              !alwaysShowTooltip && 'opacity-0 group-hover:opacity-100',
-            )}
-          >
-            {ref => (
-              <div ref={ref} className='w-4 h-4 bg-blue-3f rounded-full' />
-            )}
-          </Tooltip2>
-        </button>
-      )}
+      onChange={onChange}
+      renderTrack={renderTrack}
+      renderThumb={renderThumb}
     />
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
@@ -8,6 +8,11 @@ export default function PasteldModal(): JSX.Element | null {
   const dispatch = useAppDispatch()
   const { pasteldModalIsOpen } = useAppSelector(state => state.utilities)
   const { info } = useAppSelector(state => state.appInfo)
+
+  const onCloseModal = useCallback(() => {
+    dispatch(closePasteldModal())
+  }, [])
+
   if (!pasteldModalIsOpen) {
     return null
   }
@@ -23,7 +28,7 @@ export default function PasteldModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={pasteldModalIsOpen}
-      handleClose={() => dispatch(closePasteldModal())}
+      handleClose={onCloseModal}
       classNames='max-w-[700px]'
       title='Pasteld Info'
     >

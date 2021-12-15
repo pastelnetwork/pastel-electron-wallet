@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 import ReactDatePicker from 'react-datepicker'
 // Components
 import { Input } from '../Inputs'
@@ -61,6 +61,15 @@ function DatePicker({
   openToDate,
 }: TDatePicker): JSX.Element {
   const [isOpened, setIsOpened] = useState(false)
+
+  const onCalendarClose = useCallback(() => {
+    setIsOpened(false)
+  }, [])
+
+  const onCalendarOpen = useCallback(() => {
+    setIsOpened(true)
+  }, [])
+
   const renderCaretIcons = ({
     decreaseMonth,
     increaseMonth,
@@ -95,25 +104,28 @@ function DatePicker({
     </div>
   )
 
-  const customHeader = ({
-    date,
-    decreaseMonth,
-    increaseMonth,
-    prevMonthButtonDisabled,
-    nextMonthButtonDisabled,
-  }: TCustomHeader) => (
-    <div className='flex justify-between px-4 pt-5 pb-1'>
-      <h5 className='font-extrabold text-base text-gray-4a'>
-        <span className='mr-1'>{dayjs(date).format('MMM')}</span>
-        {dayjs(date).year()}
-      </h5>
-      {renderCaretIcons({
-        decreaseMonth,
-        increaseMonth,
-        prevMonthButtonDisabled,
-        nextMonthButtonDisabled,
-      })}
-    </div>
+  const customHeader = useCallback(
+    ({
+      date,
+      decreaseMonth,
+      increaseMonth,
+      prevMonthButtonDisabled,
+      nextMonthButtonDisabled,
+    }: TCustomHeader) => (
+      <div className='flex justify-between px-4 pt-5 pb-1'>
+        <h5 className='font-extrabold text-base text-gray-4a'>
+          <span className='mr-1'>{dayjs(date).format('MMM')}</span>
+          {dayjs(date).year()}
+        </h5>
+        {renderCaretIcons({
+          decreaseMonth,
+          increaseMonth,
+          prevMonthButtonDisabled,
+          nextMonthButtonDisabled,
+        })}
+      </div>
+    ),
+    [],
   )
 
   const customInput = (): JSX.Element | null => {
@@ -161,8 +173,8 @@ function DatePicker({
       renderCustomHeader={customHeader}
       calendarClassName='date-picker'
       showPopperArrow={false}
-      onCalendarOpen={() => setIsOpened(true)}
-      onCalendarClose={() => setIsOpened(false)}
+      onCalendarOpen={onCalendarOpen}
+      onCalendarClose={onCalendarClose}
       selected={selected}
       onChange={onChange}
       placeholderText={placeholder}

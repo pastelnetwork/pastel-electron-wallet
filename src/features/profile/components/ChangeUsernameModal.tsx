@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Modal from '../../nft/nftModals/modal'
 import Input from '../../../common/components/Inputs/Input'
 import NumberFormat from 'react-number-format'
@@ -24,6 +24,18 @@ function ChangeUsernameModal({
     const usernameRegex = /^[a-zA-Z0-9]+$/
     return usernameRegex.test(username)
   }
+
+  const handleNewUsernameChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setUsername(e.target.value)
+      setInputed(true)
+    },
+    [username],
+  )
+
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
 
   const renderSubmitButtonBlock = () => (
     <div className='mt-7 mb-2'>
@@ -86,10 +98,7 @@ function ChangeUsernameModal({
         appliedStyleValid={false}
         value={username}
         isValid={!inputed || validateUserName(username)}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setUsername(e.target.value)
-          setInputed(true)
-        }}
+        onChange={handleNewUsernameChange}
         placeholder='New Username'
         hintClassName={cn(`${!inputed ? 'font-normal' : 'font-medium'}`)}
         hint={
@@ -121,7 +130,7 @@ function ChangeUsernameModal({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='492px'
       title={'Change your Pastel Username'}
       titleClassName='text-2xl mt-2 font-extrabold text-gray-2d'

@@ -2,7 +2,7 @@ import {
   passwordStrength,
   TPasswordStrengthResult,
 } from 'check-password-strength'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { v4 as uid } from 'uuid'
 import log from 'electron-log'
 
@@ -72,17 +72,23 @@ function PastelID(props: PastelIDProps): JSX.Element {
     dispatch(fetchPastelIDs())
   }, [])
 
-  function onPassphraseChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    const passphrase = e.target.value
-    const validation = passwordStrength(passphrase)
+  const onPassphraseChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passphrase = e.target.value
+      const validation = passwordStrength(passphrase)
 
-    setPassphrase(passphrase)
-    setPassphraseValidation(validation)
-  }
+      setPassphrase(passphrase)
+      setPassphraseValidation(validation)
+    },
+    [passphrase, passphraseValidation],
+  )
 
-  function onAddressChange(selectedAddress: TSelectedAddress): void {
-    setSelectedAddress(selectedAddress)
-  }
+  const onAddressChange = useCallback(
+    (selectedAddress: TSelectedAddress) => {
+      setSelectedAddress(selectedAddress)
+    },
+    [selectedAddress],
+  )
 
   function valid(): boolean {
     return (
@@ -90,7 +96,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
     )
   }
 
-  async function onCreate(): Promise<void> {
+  const onCreate = useCallback(async () => {
     try {
       if (!valid()) {
         return
@@ -120,7 +126,7 @@ function PastelID(props: PastelIDProps): JSX.Element {
       // TODO log errors to a central logger so we can address them later.
       log.warn(error)
     }
-  }
+  }, [])
 
   const passphraseColor = passphraseStatusColor(
     passphraseValidation as TPasswordStrengthResult,

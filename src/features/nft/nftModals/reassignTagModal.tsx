@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 // Components
 import { Modal } from '../../../common/components/Modal'
 import MultiSelect, {
@@ -27,18 +27,29 @@ function ReassignTagModal({
     readonly TOptionType[] | null
   >(null)
 
-  const handleCreateOpen = () => setIsCreateOpen(isCreateOpen => !isCreateOpen)
+  const handleCreateOpen = useCallback(
+    () => setIsCreateOpen(isCreateOpen => !isCreateOpen),
+    [isCreateOpen],
+  )
 
-  const handleTagAdd = (tag: string) =>
-    setTags(tags => [...tags, { label: tag, value: tag }])
+  const handleTagAdd = useCallback(
+    (tag: string) => setTags(tags => [...tags, { label: tag, value: tag }]),
+    [tags],
+  )
 
-  const handleSelect = (option: readonly TOptionType[]): void =>
-    setSelectedTags(option)
+  const handleSelect = useCallback(
+    (option: readonly TOptionType[]): void => setSelectedTags(option),
+    [selectedTags],
+  )
+
+  const handleDropdownClose = useCallback(() => {
+    setIsCreateOpen(false)
+  }, [isCreateOpen])
 
   const renderCreateTag = () => (
     <Dropdown
       isOpen={isCreateOpen}
-      handleClose={() => setIsCreateOpen(false)}
+      handleClose={handleDropdownClose}
       button={<CircleAddButton onClick={handleCreateOpen} />}
       placement='right-start'
       noStyles

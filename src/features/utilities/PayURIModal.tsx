@@ -128,6 +128,10 @@ export default function PayURIModal(): JSX.Element | null {
     dispatch(closePayURIModal())
   }, [])
 
+  const onClose = useCallback(() => {
+    dispatch(closePayURIModal())
+  }, [])
+
   if (!payURIModalIsOpen) {
     return null
   }
@@ -147,7 +151,7 @@ export default function PayURIModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={payURIModalIsOpen}
-      handleClose={() => dispatch(closePayURIModal())}
+      handleClose={onClose}
       classNames='max-w-[700px]'
       title='Pay URI'
     >

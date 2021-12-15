@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 
@@ -167,10 +167,14 @@ function OwnershipHistoryModal({
     },
   ]
 
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
+
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='1224px'
       title={'“Diamonds in the sky”: copy #1 ownership history'}
       infoIcon

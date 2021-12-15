@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import Circle, {
   getStrokeDashOffsetForPercent,
 } from 'common/components/Svg/Circle'
@@ -69,6 +69,10 @@ export default function UploadingCircle({
 
   const initialPercent = isReady ? 100 : 0
 
+  const onCancel = useCallback(() => {
+    setFile(undefined)
+  }, [])
+
   const renderProgress = () => (
     <div className='absolute inset-0 flex-center flex-col'>
       {isReady ? (
@@ -113,7 +117,7 @@ export default function UploadingCircle({
         <button
           type='button'
           className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0'
-          onClick={() => setFile(undefined)}
+          onClick={onCancel}
         >
           Cancel
         </button>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { clipboard } from 'electron'
 
 import { Description } from './Typography'
@@ -11,9 +11,9 @@ type TCrypto = {
 
 function Crypto(props: TCrypto): JSX.Element {
   const { label, children } = props
-  const copyClipboard = () => {
+  const copyClipboard = useCallback(() => {
     clipboard.writeText(children)
-  }
+  }, [])
 
   const ellipsIndex = children?.length - 6
   const firstPart =

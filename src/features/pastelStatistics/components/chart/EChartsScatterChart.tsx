@@ -12,6 +12,7 @@ import {
   TScatterChartProps,
   TThemeColor,
   TThemeInitOption,
+  TThemeButton,
 } from '../../common/types'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 import {
@@ -19,6 +20,36 @@ import {
   getThemeUpdateOption,
 } from '../../utils/ChartOptions'
 import styles from './LineChart.module.css'
+
+function ThemeButton({
+  theme,
+  getActiveThemeButtonStyle,
+  index,
+  handleThemeButtonClick,
+}: {
+  theme: TThemeButton
+  getActiveThemeButtonStyle: (val: number) => string
+  index: number
+  handleThemeButtonClick: (theme: TThemeButton, index: number) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handleThemeButtonClick(theme, index)
+  }, [])
+
+  return (
+    <button
+      className={`${styles.themeSelectButton} ${getActiveThemeButtonStyle(
+        index,
+      )}`}
+      onClick={onClick}
+      style={{
+        backgroundColor: `${theme.backgroundColor}`,
+      }}
+      type='button'
+      key={`button-filter-${theme.name}`}
+    />
+  )
+}
 
 export const EChartsScatterChart = memo(function EChartsScatterChart(
   props: TScatterChartProps,
@@ -153,17 +184,13 @@ export const EChartsScatterChart = memo(function EChartsScatterChart(
   const renderThemes = () => (
     <div className={styles.lineChartThemeSelect}>
       {themes.map((theme, index) => (
-        <button
-          className={`${styles.themeSelectButton} ${getActiveThemeButtonStyle(
-            index,
-          )}`}
-          onClick={() => handleThemeButtonClick(theme, index)}
-          style={{
-            backgroundColor: `${theme.backgroundColor}`,
-          }}
-          type='button'
+        <ThemeButton
           key={`button-filter-${theme.name}`}
-        ></button>
+          getActiveThemeButtonStyle={getActiveThemeButtonStyle}
+          index={index}
+          theme={theme}
+          handleThemeButtonClick={handleThemeButtonClick}
+        />
       ))}
     </div>
   )

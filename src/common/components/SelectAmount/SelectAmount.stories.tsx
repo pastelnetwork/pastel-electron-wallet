@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Story, Meta } from '@storybook/react'
 import log from 'electron-log'
 
-import SelectAmount, { TSelectAmountProps } from './SelectAmount'
+import SelectAmount, { TSelectAmountProps, TOption } from './SelectAmount'
 
 export default {
   title: 'SelectAmount',
@@ -10,14 +10,13 @@ export default {
 } as Meta
 
 const Template: Story<TSelectAmountProps> = ({ ...args }) => {
+  const onChange = useCallback((selection: TOption) => {
+    log.log(selection)
+  }, [])
+
   return (
     <div>
-      <SelectAmount
-        {...args}
-        onChange={selection => {
-          log.log(selection)
-        }}
-      />
+      <SelectAmount {...args} onChange={onChange} />
     </div>
   )
 }

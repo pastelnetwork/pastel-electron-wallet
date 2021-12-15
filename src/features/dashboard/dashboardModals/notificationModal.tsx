@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import cn from 'classnames'
 // Components
 import { Modal } from '../../../common/components/Modal'
@@ -38,6 +38,26 @@ const dateButtons = [
   { title: 'Last 30 days' },
 ]
 
+function SelectDateButton({
+  title,
+  dateTitle,
+  handleDateSelect,
+}: {
+  title: string
+  dateTitle: string
+  handleDateSelect: (val: string) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handleDateSelect(title)
+  }, [])
+
+  return (
+    <SelectButton key={title} isActive={title === dateTitle} onClick={onClick}>
+      {title}
+    </SelectButton>
+  )
+}
+
 function NotificationModal({
   notifications,
   isOpen,
@@ -49,20 +69,28 @@ function NotificationModal({
   const [endDate, setEndDate] = useState<Date | null>(null)
   const [dateTitle, setDateTitle] = useState<string>('Today')
 
-  const handleSelect = (option: TOption | null): void => setType(option)
+  const handleSelect = useCallback(
+    (option: TOption | null): void => setType(option),
+    [type],
+  )
 
-  const handleDate = (dates: [Date, Date] | null): void => {
-    if (dates) {
-      const [start, end] = dates
-      setStartDate(start)
-      setEndDate(end)
-      if (start && !end) {
-        setDateTitle(formatDate(dayjs(start)))
-      } else if (start && end) {
-        setDateTitle(`${formatDate(dayjs(start))} - ${formatDate(dayjs(end))}`)
+  const handleDate = useCallback(
+    (dates: [Date, Date] | null): void => {
+      if (dates) {
+        const [start, end] = dates
+        setStartDate(start)
+        setEndDate(end)
+        if (start && !end) {
+          setDateTitle(formatDate(dayjs(start)))
+        } else if (start && end) {
+          setDateTitle(
+            `${formatDate(dayjs(start))} - ${formatDate(dayjs(end))}`,
+          )
+        }
       }
-    }
-  }
+    },
+    [startDate, endDate, dateTitle],
+  )
 
   const filteredData = notifications.filter(({ status }) =>
     filter === 'unread' ? status !== 'read' : true,
@@ -103,6 +131,14 @@ function NotificationModal({
     }
   }
 
+  const onUnreadChange = useCallback(() => {
+    setFilter('unread')
+  }, [])
+
+  const onFilterAllChange = useCallback(() => {
+    setFilter('all')
+  }, [])
+
   const renderFilter = () => (
     <div className='grid grid-cols-2 gap-4 col-span-2'>
       <Select
@@ -121,13 +157,12 @@ function NotificationModal({
         footer={
           <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
             {dateButtons.map(({ title }) => (
-              <SelectButton
+              <SelectDateButton
                 key={title}
-                isActive={title === dateTitle}
-                onClick={() => handleDateSelect(title)}
-              >
-                {title}
-              </SelectButton>
+                dateTitle={dateTitle}
+                title={title}
+                handleDateSelect={handleDateSelect}
+              />
             ))}
           </div>
         }
@@ -144,7 +179,7 @@ function NotificationModal({
       <div className='mr-6'>
         <Radio
           checked={filter === 'all'}
-          onChange={() => setFilter('all')}
+          onChange={onFilterAllChange}
           className='mr-3 z-10 w-5 h-5'
           checkedCircleBackgroundColor='bg-blue-3f'
           labelClassName='text-gray-4a z-10'
@@ -155,7 +190,7 @@ function NotificationModal({
       </div>
       <Radio
         checked={filter === 'unread'}
-        onChange={() => setFilter('unread')}
+        onChange={onUnreadChange}
         className='mr-3 z-10 w-5 h-5'
         checkedCircleBackgroundColor='bg-blue-3f'
         labelClassName='text-gray-4a z-10'

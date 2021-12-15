@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { TForm } from './InputNFTDataStep'
 import { Controller } from 'react-hook-form'
 import Slider from 'common/components/Slider'
@@ -38,6 +38,14 @@ export default function StepSlider({
       name={name}
       control={form.control}
       render={({ field: { value, onChange } }) => {
+        const onSliderChange = useCallback((value: number) => {
+          onChange(roundValue(value))
+        }, [])
+
+        const onNumpadChange = useCallback((value: number) => {
+          form.setValue(name, value)
+        }, [])
+
         return (
           <div className='pt-12 space-x-7 relative pr-[34px]'>
             <Slider
@@ -45,7 +53,7 @@ export default function StepSlider({
               width={311}
               steps={steps}
               value={value}
-              onChange={(value: number) => onChange(roundValue(value))}
+              onChange={onSliderChange}
               formatValue={formatValue}
               formatTooltipValue={formatTooltipValue}
             />
@@ -66,7 +74,7 @@ export default function StepSlider({
                     <Numpad
                       value={value}
                       default={defaultValue}
-                      onChange={value => form.setValue(name, value)}
+                      onChange={onNumpadChange}
                       min={steps[0]}
                       max={steps[steps.length - 1]}
                     />

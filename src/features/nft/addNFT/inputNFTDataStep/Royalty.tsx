@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TForm } from './InputNFTDataStep'
 import Tooltip from 'common/components/Tooltip'
 import { CrownInHexagon, Info } from 'common/components/Icons'
@@ -6,7 +6,10 @@ import StepSlider from './StepSlider'
 import ErrorMessage from 'common/components/Form/ErrorMessage'
 
 export default function Royalty({ form }: { form: TForm }): JSX.Element {
-  const roundValue = (value: number) => Math.round(value * 10) / 10
+  const roundValue = useCallback(
+    (value: number) => Math.round(value * 10) / 10,
+    [],
+  )
 
   const renderPerpetualRoyaltyTooltip = () => (
     <div className='ml-2'>
@@ -26,6 +29,13 @@ export default function Royalty({ form }: { form: TForm }): JSX.Element {
     </div>
   )
 
+  const formatTooltipValue = useCallback(
+    (value: number) => `${roundValue(value)}%`,
+    [],
+  )
+
+  const formatValue = useCallback((value: number) => `${value}%`, [])
+
   return (
     <div className='bg-gray-f8 rounded-lg h-28 pl-6 pr-[18px] flex justify-between min-h-[117px]'>
       <div className='pt-6'>
@@ -43,8 +53,8 @@ export default function Royalty({ form }: { form: TForm }): JSX.Element {
           steps={[0, 1, 2, 5, 7.5, 10, 15, 20]}
           defaultValue={0}
           roundValue={roundValue}
-          formatValue={value => `${value}%`}
-          formatTooltipValue={value => `${roundValue(value)}%`}
+          formatValue={formatValue}
+          formatTooltipValue={formatTooltipValue}
         />
       </div>
     </div>

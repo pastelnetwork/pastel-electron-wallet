@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -10,6 +10,10 @@ export default function PastelSpriteEditorToolModal(): JSX.Element | null {
     state => state.pastelSpriteEditorToolModal,
   )
   const dispatch = useAppDispatch()
+
+  const onCloseModal = useCallback(() => {
+    dispatch(closePastelSpriteEditorToolModal())
+  }, [])
 
   if (!modalIsOpen) {
     return null
@@ -24,7 +28,7 @@ export default function PastelSpriteEditorToolModal(): JSX.Element | null {
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={() => dispatch(closePastelSpriteEditorToolModal())}
+      onRequestClose={onCloseModal}
       className={styles.modalWrapper}
     >
       <div className={styles.modalContent}>

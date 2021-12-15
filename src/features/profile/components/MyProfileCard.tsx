@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import SVG from 'react-inlinesvg'
 import cn from 'classnames'
 import LineEdit from './LineEdit'
@@ -74,6 +74,29 @@ function ProfileCard({
     },
   ]
 
+  const handleToggleHandler = useCallback(
+    (param: boolean) => {
+      setActiveCurrency(param)
+    },
+    [activeCurrency],
+  )
+
+  const handleSaveChanges = useCallback(() => {
+    setEditMode(false)
+  }, [editMode])
+
+  const handleOpenEditUsernameModal = useCallback(() => {
+    setOpenEditUsernameModal(true)
+  }, [openEditUsernameModal])
+
+  const handleEditMode = useCallback(() => {
+    setEditMode(true)
+  }, [editMode])
+
+  const onCloseChangeUsernameModal = useCallback(() => {
+    setOpenEditUsernameModal(false)
+  }, [])
+
   const renderPastelIDIdentifierAndCopyButton = () => (
     <div className='pt-2 pb-4 text-gray-71 flex flex-center'>
       <Tooltip
@@ -100,7 +123,7 @@ function ProfileCard({
       <div className='px-1 text-gray-71 text-center flex items-center justify-center'>
         {data.username}{' '}
         <SVG
-          onClick={() => setOpenEditUsernameModal(true)}
+          onClick={handleOpenEditUsernameModal}
           src={ico_pencil}
           className='ml-7px w-13px fill-blue-3f cursor-pointer'
         />
@@ -133,7 +156,7 @@ function ProfileCard({
         'w-full font-medium mt-10px',
         isEmpty && 'text-white text-sm leading-4 bg-blue-3f',
       )}
-      onClick={() => setEditMode(true)}
+      onClick={handleEditMode}
     >
       <span className='flex items-center justify-center'>
         Edit Profile
@@ -181,10 +204,7 @@ function ProfileCard({
         Native Currency: {nativeCurrency?.label}
       </div>
       <div className='flex justify-center mt-[184px]'>
-        <Toggle
-          selected={activeCurrency}
-          toggleHandler={param => setActiveCurrency(param)}
-        >
+        <Toggle selected={activeCurrency} toggleHandler={handleToggleHandler}>
           Active display currency: {currencyName}
         </Toggle>
       </div>
@@ -216,9 +236,7 @@ function ProfileCard({
             {renderEditForm()}
             <button
               className='filter hover:contrast-125 w-full cursor-pointer border text-center rounded-2xl flex items-center justify-center mt-[71px] h-10 text-gray-fc bg-blue-3f border-blue-3f'
-              onClick={() => {
-                setEditMode(false)
-              }}
+              onClick={handleSaveChanges}
               type='button'
             >
               Save Changes
@@ -228,7 +246,7 @@ function ProfileCard({
       </div>
       <ChangeUsernameModal
         isOpen={openEditUsernameModal}
-        handleClose={() => setOpenEditUsernameModal(false)}
+        handleClose={onCloseChangeUsernameModal}
       />
     </div>
   )

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import Link from '../../../../common/components/Link'
 import { Button } from '../../../../common/components/Buttons'
@@ -12,16 +12,20 @@ export default function ChangePassword(): JSX.Element {
   const [noMatch, setNoMatch] = useState(false)
   const [securityPassword, setSecurityPassword] = useState(false)
 
-  const submitPassword = () => {
+  const submitPassword = useCallback(() => {
     setNoMatch(newPassword !== confirmPassword)
     setSecurityPassword(true)
-  }
+  }, [noMatch, securityPassword])
 
   useEffect(() => {
     if (newPassword === confirmPassword && !newPassword && !confirmPassword) {
       setNoMatch(false)
     }
   }, [newPassword, confirmPassword, setNoMatch])
+
+  const onCloseSecurityPasswordModal = useCallback(() => {
+    setSecurityPassword(false)
+  }, [])
 
   const content = (
     <>
@@ -82,7 +86,7 @@ export default function ChangePassword(): JSX.Element {
       />
       <SecurityPasswordModal
         isOpen={securityPassword}
-        handleClose={() => setSecurityPassword(false)}
+        handleClose={onCloseSecurityPasswordModal}
       ></SecurityPasswordModal>
     </>
   )

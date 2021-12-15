@@ -91,6 +91,11 @@ export default function SelectAmount({
     </button>
   )
 
+  const itemToString = useCallback(
+    (item: TOption | null) => (item ? item.value : ''),
+    [],
+  )
+
   return (
     <Downshift
       onChange={useCallback(selection => {
@@ -117,7 +122,7 @@ export default function SelectAmount({
           onChange(selection)
         }
       }, [])}
-      itemToString={item => (item ? item.value : '')}
+      itemToString={itemToString}
     >
       {({
         getInputProps,

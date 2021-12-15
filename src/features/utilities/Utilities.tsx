@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import fs from 'fs'
 
@@ -144,6 +144,10 @@ export default function Utilities(): JSX.Element {
     )
   }, [])
 
+  const onErrorModalClose = useCallback(() => {
+    setCloseExportTxn(false)
+  }, [])
+
   return (
     <>
       <PastelPhotopeaModal />
@@ -158,7 +162,7 @@ export default function Utilities(): JSX.Element {
       <ErrorModal
         message={exportTxnError}
         isOpen={closeExportTxn}
-        closeModal={() => setCloseExportTxn(false)}
+        closeModal={onErrorModalClose}
       />
       <PasteldModal />
     </>

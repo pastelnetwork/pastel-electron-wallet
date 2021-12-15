@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { ArrowSlim, Info, UploadFile } from 'common/components/Icons'
@@ -34,13 +34,25 @@ export default function SelectImageStep({
   const size = imageForPreview?.size || selectedFile?.size
   const currencyName = useCurrencyName()
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     state.goBack()
-  }
+  }, [])
 
-  const handleImageOptimizationSubmit = () => {
+  const handleImageOptimizationSubmit = useCallback(() => {
     service.submit()
-  }
+  }, [])
+
+  const handleConvertToJPG = useCallback(() => {
+    if (imageToConvert) {
+      service.convertImage(imageToConvert, ImageType.JPG)
+    }
+  }, [])
+
+  const handleConvertToPNG = useCallback(() => {
+    if (imageToConvert) {
+      service.convertImage(imageToConvert, ImageType.PNG)
+    }
+  }, [])
 
   const renderImageOptimizationButton = () => (
     <div className='flex-between'>
@@ -151,18 +163,14 @@ export default function SelectImageStep({
                   <button
                     type='button'
                     className='btn btn-primary px-4 mr-2'
-                    onClick={() =>
-                      service.convertImage(imageToConvert, ImageType.PNG)
-                    }
+                    onClick={handleConvertToPNG}
                   >
                     Convert to PNG
                   </button>
                   <button
                     type='button'
                     className='btn btn-primary px-4'
-                    onClick={() =>
-                      service.convertImage(imageToConvert, ImageType.JPG)
-                    }
+                    onClick={handleConvertToJPG}
                   >
                     Convert to JPG
                   </button>

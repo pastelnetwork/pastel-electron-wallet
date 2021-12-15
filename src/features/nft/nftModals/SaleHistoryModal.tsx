@@ -1,5 +1,5 @@
 import Link from 'common/components/Link'
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 import NumberFormat from 'react-number-format'
@@ -121,10 +121,14 @@ export function SaleHistoryModal({
     },
   ]
 
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
+
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='1142px'
       title={'"Diamonds in the sky" Sale History'}
       titleClassName='text-2xl font-black text-gray-2d'

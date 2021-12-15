@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react'
+import React, { useState, KeyboardEvent, useCallback } from 'react'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import { X, Caret } from 'common/components/Icons'
 import cn from 'classnames'
@@ -25,6 +25,24 @@ export type TControlledProps = TBaseProps & {
 
 export type TFormProps<TForm> = TBaseProps &
   Omit<TFormControlProps<TForm>, 'children'>
+
+function Removeutton({
+  item,
+  removeSelectedItem,
+}: {
+  item: TOption
+  removeSelectedItem: (val: TOption) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    removeSelectedItem(item)
+  }, [])
+
+  return (
+    <button type='button' className='ml-2' onClick={onClick}>
+      <X size={8} />
+    </button>
+  )
+}
 
 function SelectMultipleInner({
   options,
@@ -126,6 +144,10 @@ function SelectMultipleInner({
     }
   }
 
+  const handleRemoveSelectedItem = useCallback((item: TOption) => {
+    removeSelectedItem(item)
+  }, [])
+
   const renderSelectItems = () => (
     <div className='flex-grow flex flex-wrap'>
       {selectedItems.map((item, index) => (
@@ -135,13 +157,10 @@ function SelectMultipleInner({
           {...getSelectedItemProps({ selectedItem: item, index })}
         >
           {item.label}
-          <button
-            type='button'
-            className='ml-2'
-            onClick={() => removeSelectedItem(item)}
-          >
-            <X size={8} />
-          </button>
+          <Removeutton
+            item={item}
+            removeSelectedItem={handleRemoveSelectedItem}
+          />
         </div>
       ))}
       <div

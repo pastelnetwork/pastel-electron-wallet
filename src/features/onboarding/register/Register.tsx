@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import shallow from 'zustand/shallow'
@@ -79,6 +79,32 @@ export default function Register(): JSX.Element {
 
   const step = useRegisterStore(state => state.step)
 
+  const onCloseButtonClick = useCallback(() => {
+    if (closeRequested) {
+      resetStore()
+      history.push(ROUTES.WELCOME_PAGE)
+    } else {
+      setCloseRequested(true)
+    }
+  }, [closeRequested])
+
+  const confirmClose = (val: boolean) => {
+    if (val) {
+      resetStore()
+      history.push(ROUTES.WELCOME_PAGE)
+    } else {
+      setCloseRequested(false)
+    }
+  }
+
+  const onClose = useCallback(() => {
+    confirmClose(true)
+  }, [])
+
+  const onBack = useCallback(() => {
+    confirmClose(false)
+  }, [])
+
   if (step === Steps.ProcessingFee) {
     return <RegistrationPending />
   }
@@ -92,15 +118,6 @@ export default function Register(): JSX.Element {
     store.setPromoCode('')
     store.setTermsAgreed(false)
     store.setUsername('')
-  }
-
-  const confirmClose = (val: boolean) => {
-    if (val) {
-      resetStore()
-      history.push(ROUTES.WELCOME_PAGE)
-    } else {
-      setCloseRequested(false)
-    }
   }
 
   const renderRegisterStepTitle = (
@@ -188,14 +205,7 @@ export default function Register(): JSX.Element {
     <>
       <CloseButton
         className='absolute top-6 right-6 w-7 h-7'
-        onClick={() => {
-          if (closeRequested) {
-            resetStore()
-            history.push(ROUTES.WELCOME_PAGE)
-          } else {
-            setCloseRequested(true)
-          }
-        }}
+        onClick={onCloseButtonClick}
       />
       <div
         className={cn(
@@ -231,7 +241,7 @@ export default function Register(): JSX.Element {
           <div className='mt-4 text-center'>
             <button
               className='rounded-full text-sm font-medium text-white bg-red-fe inline-block w-[232px] text-center py-6px cursor-pointer'
-              onClick={() => confirmClose(true)}
+              onClick={onClose}
               type='button'
             >
               Close
@@ -240,7 +250,7 @@ export default function Register(): JSX.Element {
           <div className='mt-4 text-center'>
             <button
               className='rounded-full text-sm text-gray-a6 font-medium border border-gray-a6 inline-block w-[232px] text-center py-6px cursor-pointer'
-              onClick={() => confirmClose(false)}
+              onClick={onBack}
               type='button'
             >
               Back

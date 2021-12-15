@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useCallback } from 'react'
 import shallow from 'zustand/shallow'
 import { shell } from 'electron'
 
@@ -47,15 +47,21 @@ export default function StepRegister(): JSX.Element {
     setUsernameInvalid(!validateUserName(val))
   }
 
-  const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {
-    updateUserName(event.currentTarget.value)
-  }
+  const onUsernameChanged = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      updateUserName(event.currentTarget.value)
+    },
+    [usernameInvalid, store],
+  )
 
-  const onPasswordChanged = (event: FormEvent<HTMLInputElement>) => {
-    const val = event.currentTarget.value
-    store.setPassword(val)
-    setPasswordStrength(calcPasswordStrength(val))
-  }
+  const onPasswordChanged = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      const val = event.currentTarget.value
+      store.setPassword(val)
+      setPasswordStrength(calcPasswordStrength(val))
+    },
+    [passwordStrength, store],
+  )
 
   const getPasswordHint = (): string => {
     if (!store.password) {
@@ -85,7 +91,7 @@ export default function StepRegister(): JSX.Element {
     usernameIsValid = false
   }
 
-  const hanleNextStep = async () => {
+  const hanleNextStep = useCallback(async () => {
     setErrorMsg('')
     setUsernameInvalid(false)
     const validation = await checkPastelIdUsername({ username: store.username })
@@ -95,7 +101,7 @@ export default function StepRegister(): JSX.Element {
       return
     }
     store.goToNextStep()
-  }
+  }, [store])
 
   const renderPasswordInput = () => (
     <InputPassword
@@ -120,10 +126,10 @@ export default function StepRegister(): JSX.Element {
     />
   )
 
-  const handleOpenPrivacyPolicy = (e: MouseEvent) => {
+  const handleOpenPrivacyPolicy = useCallback((e: MouseEvent) => {
     e.stopPropagation()
     shell.openExternal('https://pastel.network/privacy-policy/')
-  }
+  }, [])
 
   const renderCheckboxPrivacyPolicy = () => {
     return (

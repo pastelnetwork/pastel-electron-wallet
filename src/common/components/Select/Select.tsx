@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 import Downshift, {
   ControllerStateAndHelpers,
   GetInputPropsOptions,
@@ -122,18 +122,18 @@ export default function Select<TForm extends FieldValues>(
     onInputChange = debounce(onInputChange, customDebounce)
   }
 
-  const onInputValueChange = (
-    value: string,
-    event: ControllerStateAndHelpers<TOption>,
-  ) => {
-    const { type } = (event as unknown) as { type: string }
-    if (type === Downshift.stateChangeTypes.changeInput) {
-      setEnableFiltering(true)
-      onInputChange?.(value, event)
-    } else {
-      setEnableFiltering(false)
-    }
-  }
+  const onInputValueChange = useCallback(
+    (value: string, event: ControllerStateAndHelpers<TOption>) => {
+      const { type } = (event as unknown) as { type: string }
+      if (type === Downshift.stateChangeTypes.changeInput) {
+        setEnableFiltering(true)
+        onInputChange?.(value, event)
+      } else {
+        setEnableFiltering(false)
+      }
+    },
+    [enableFiltering],
+  )
 
   const getInputValue = (inputProps: GetInputPropsOptions) => {
     if (!append) {
@@ -145,11 +145,16 @@ export default function Select<TForm extends FieldValues>(
     return `${vInput}${vAppend}`
   }
 
+  const itemToString = useCallback(
+    (item: TOption | null) => (item ? item.value : ''),
+    [],
+  )
+
   return (
     <Downshift
       selectedItem={selected ?? null}
       onChange={onChange}
-      itemToString={item => (item ? item.value : '')}
+      itemToString={itemToString}
       onInputValueChange={onInputValueChange}
     >
       {({

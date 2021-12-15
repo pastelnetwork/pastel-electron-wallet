@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from 'react-modal'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -10,6 +10,10 @@ import { squoosh } from '../../common/constants/ServeStatic'
 export default function SquooshToolModal(): JSX.Element | null {
   const { modalIsOpen } = useAppSelector(state => state.squooshToolModal)
   const dispatch = useAppDispatch()
+
+  const onRequestClose = useCallback(() => {
+    dispatch(closeSquooshToolModal())
+  }, [])
 
   if (!modalIsOpen) {
     return null
@@ -27,14 +31,14 @@ export default function SquooshToolModal(): JSX.Element | null {
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={() => dispatch(closeSquooshToolModal())}
+      onRequestClose={onRequestClose}
       className={styles.modalWrapper}
     >
       <div className={styles.modalContent}>
         <button
           type='button'
           className={styles.btn_close}
-          onClick={() => dispatch(closeSquooshToolModal())}
+          onClick={onRequestClose}
         >
           X
         </button>

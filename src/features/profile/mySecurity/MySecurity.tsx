@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import dayjs from 'dayjs'
 
 import ChangePassword from './changePassword/Password'
@@ -68,7 +68,7 @@ export default function MySecurity(props: TSecurity): JSX.Element {
     }
   }, [imagesData])
 
-  const handleDownloadVideo = () => {
+  const handleDownloadVideo = useCallback(() => {
     if (videoUrl) {
       saveFile(videoUrl)
     } else {
@@ -90,7 +90,7 @@ export default function MySecurity(props: TSecurity): JSX.Element {
         setCurrentStatus('error')
       }
     }
-  }
+  }, [videoUrl, imagesData, currentStatus])
 
   return (
     <div className='w-full flex justify-center py-30px px-60px bg-background-main'>

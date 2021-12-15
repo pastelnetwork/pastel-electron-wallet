@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.min.css'
 import { TCroppedImage, getCroppedImage } from './PreviewStep.service'
@@ -63,7 +63,7 @@ export default function Cropping({
     }
   }, [])
 
-  const submit = async () => {
+  const submit = useCallback(async () => {
     const cropper = cropperRef.current
     if (!cropper) {
       return
@@ -73,7 +73,7 @@ export default function Cropping({
     const crop = cropper.getData()
     setCroppedImage(getCroppedImage(img, crop))
     onClose()
-  }
+  }, [])
 
   return (
     <div className='bg-white rounded-md p-5 text-center'>

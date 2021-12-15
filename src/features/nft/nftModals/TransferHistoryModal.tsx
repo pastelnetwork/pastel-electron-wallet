@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 import { Quit } from 'common/components/Icons'
@@ -104,10 +104,14 @@ function TransferHistoryModal({
     </div>
   )
 
+  const handleModalClose = useCallback(() => {
+    handleClose()
+  }, [])
+
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={handleModalClose}
       size='874px'
       title={'Royalty rights transfer history'}
       titleClassName='text-2xl font-black text-gray-2d'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import dayjs from 'dayjs'
 
 import * as ROUTES from 'common/utils/constants/routes'
@@ -118,7 +118,9 @@ export default function NFTMarketFeed(): JSX.Element {
   ]
 
   const [range, setRange] = useState<[number, number]>([500, 700])
-  const formatValue = (value: number) => `${value.toFixed(0)}k`
+  const formatValue = useCallback((value: number) => `${value.toFixed(0)}k`, [
+    range,
+  ])
 
   const data = [{ label: 'Feed' }, { label: 'Statistics' }]
 

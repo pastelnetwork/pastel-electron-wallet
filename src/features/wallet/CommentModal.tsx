@@ -47,19 +47,23 @@ export default function CommentModal({
 
   const handleSetActiveRecipientTab = useCallback(() => {
     setTab(Tabs.NoteToRecipient)
-  }, [])
+  }, [tab])
 
   const handleSetActivePrivateNoteTab = useCallback(() => {
     setTab(Tabs.PrivateNote)
-  }, [])
+  }, [tab])
 
-  const handleInputChange = (value: string) => {
-    if (tab === Tabs.NoteToRecipient) {
-      setNote(value)
-    } else {
-      setPrivateNote(value)
-    }
-  }
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = e.target.value
+      if (tab === Tabs.NoteToRecipient) {
+        setNote(value)
+      } else {
+        setPrivateNote(value)
+      }
+    },
+    [note, privateNote],
+  )
 
   const handleSave = useCallback(() => {
     onSavePaymentNote({
@@ -166,7 +170,7 @@ export default function CommentModal({
           placeholder='Type something ...'
           className='resize-none w-full focus:outline-none bg-gray-e4 bg-opacity-[0.2] text-sm font-normal h-[103px] px-12px pt-11px'
           value={tab === Tabs.NoteToRecipient ? note : privateNote}
-          onChange={e => handleInputChange(e.target.value)}
+          onChange={handleInputChange}
         />
       </div>
       <div className='flex justify-end px-7'>{renderSaveButton()}</div>

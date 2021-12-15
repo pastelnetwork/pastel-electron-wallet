@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 import cn from 'classnames'
 
 export type TAlert = {
@@ -26,6 +26,10 @@ function Alert({
     classesByCase[variant],
     className,
   )
+  const onClick = useCallback(() => {
+    setIsShowing(false)
+  }, [isShowing])
+
   if (isShowing) {
     return (
       <div className={classes}>
@@ -34,7 +38,7 @@ function Alert({
           {showClose && (
             <span
               className='absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer'
-              onClick={() => setIsShowing(false)}
+              onClick={onClick}
               role='button'
               aria-hidden
               tabIndex={0}

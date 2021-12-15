@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import {
   TNFTData,
   Step,
@@ -76,11 +76,12 @@ function AddNFTContent(props: TUseAddNFTProps & { toggleCloseButton(): void }) {
 export default function AddNFT({ open, ...props }: TAddNFTProps): JSX.Element {
   const [showCloseButton, toggleCloseButton] = useToggle(true)
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     if (props.onClose) {
       props.onClose()
     }
-  }
+  }, [])
+
   return (
     <Modal
       open={open}
