@@ -309,12 +309,12 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
     return ''
   }, [])
 
-  const getActiveThemeButtonStyle = (index: number): string => {
+  const getActiveThemeButtonStyle = useCallback((index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
     }
     return ''
-  }
+  }, [])
 
   const onEChartRef = useCallback(
     (e: React.SetStateAction<ReactECharts | null | undefined>) => {

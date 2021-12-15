@@ -129,21 +129,24 @@ export const EChartsScatterChart = memo(function EChartsScatterChart(
     }
   }, [])
 
-  const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
-    setCurrentTheme(theme)
-    setSelectedThemeButton(index)
-    handleBgColorChange(theme.backgroundColor)
+  const handleThemeButtonClick = useCallback(
+    (theme: TThemeColor, index: number) => {
+      setCurrentTheme(theme)
+      setSelectedThemeButton(index)
+      handleBgColorChange(theme.backgroundColor)
 
-    const params: TThemeInitOption = {
-      theme: theme,
-      data,
-      minY,
-      maxY,
-      chartName: chartName,
-    }
-    const option = getThemeUpdateOption(params)
-    eChartInstance?.setOption(option)
-  }
+      const params: TThemeInitOption = {
+        theme: theme,
+        data,
+        minY,
+        maxY,
+        chartName: chartName,
+      }
+      const option = getThemeUpdateOption(params)
+      eChartInstance?.setOption(option)
+    },
+    [currentTheme, selectedThemeButton],
+  )
 
   const getActivePriodButtonStyle = (index: number): string => {
     if (selectedPeriodButton === index) {
@@ -152,12 +155,12 @@ export const EChartsScatterChart = memo(function EChartsScatterChart(
     return ''
   }
 
-  const getActiveThemeButtonStyle = (index: number): string => {
+  const getActiveThemeButtonStyle = useCallback((index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
     }
     return ''
-  }
+  }, [])
 
   const renderDownloadButton = () => (
     <div className={styles.lineChartDownloadButtonBar}>

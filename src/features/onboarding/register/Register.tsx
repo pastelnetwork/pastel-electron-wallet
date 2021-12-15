@@ -79,6 +79,17 @@ export default function Register(): JSX.Element {
 
   const step = useRegisterStore(state => state.step)
 
+  const resetStore = () => {
+    store.setStep(Steps.Login)
+    store.setExchangeAddress('')
+    store.setPSLAddressPrivateKey('')
+    store.setPassword('')
+    store.setPastelId('')
+    store.setPromoCode('')
+    store.setTermsAgreed(false)
+    store.setUsername('')
+  }
+
   const onCloseButtonClick = useCallback(() => {
     if (closeRequested) {
       resetStore()
@@ -107,17 +118,6 @@ export default function Register(): JSX.Element {
 
   if (step === Steps.ProcessingFee) {
     return <RegistrationPending />
-  }
-
-  const resetStore = () => {
-    store.setStep(Steps.Login)
-    store.setExchangeAddress('')
-    store.setPSLAddressPrivateKey('')
-    store.setPassword('')
-    store.setPastelId('')
-    store.setPromoCode('')
-    store.setTermsAgreed(false)
-    store.setUsername('')
   }
 
   const renderRegisterStepTitle = (

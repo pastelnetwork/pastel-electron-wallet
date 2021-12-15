@@ -222,22 +222,25 @@ export const EChartsLineChart = memo(function EChartsLineChart(
     }
   }, [])
 
-  const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
-    setCurrentTheme(theme)
-    setSelectedThemeButton(index)
-    handleBgColorChange(theme.backgroundColor)
+  const handleThemeButtonClick = useCallback(
+    (theme: TThemeColor, index: number) => {
+      setCurrentTheme(theme)
+      setSelectedThemeButton(index)
+      handleBgColorChange(theme.backgroundColor)
 
-    const params: TThemeInitOption = {
-      theme: theme,
-      dataX,
-      dataY,
-      chartName: chartName,
-      minY,
-      maxY,
-    }
-    const option = getThemeUpdateOption(params)
-    eChartInstance?.setOption(option)
-  }
+      const params: TThemeInitOption = {
+        theme: theme,
+        dataX,
+        dataY,
+        chartName: chartName,
+        minY,
+        maxY,
+      }
+      const option = getThemeUpdateOption(params)
+      eChartInstance?.setOption(option)
+    },
+    [currentTheme, selectedThemeButton],
+  )
 
   const getActivePriodButtonStyle = useCallback((index: number): string => {
     if (selectedPeriodButton === index) {
@@ -246,19 +249,22 @@ export const EChartsLineChart = memo(function EChartsLineChart(
     return ''
   }, [])
 
-  const getActiveGranularityButtonStyle = (index: number): string => {
-    if (selectedGranularityButton === index) {
-      return styles.activeButton
-    }
-    return ''
-  }
+  const getActiveGranularityButtonStyle = useCallback(
+    (index: number): string => {
+      if (selectedGranularityButton === index) {
+        return styles.activeButton
+      }
+      return ''
+    },
+    [],
+  )
 
-  const getActiveThemeButtonStyle = (index: number): string => {
+  const getActiveThemeButtonStyle = useCallback((index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
     }
     return ''
-  }
+  }, [])
 
   const handlePeriodSelect = useCallback((index: number, period: TPeriod) => {
     setSelectedPeriodButton(index)

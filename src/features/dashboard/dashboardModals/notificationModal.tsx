@@ -96,40 +96,43 @@ function NotificationModal({
     filter === 'unread' ? status !== 'read' : true,
   )
 
-  const handleDateSelect = (date: string): void => {
-    if (dateTitle === date) {
-      return
-    }
-    setDateTitle(date)
-    switch (date) {
-      case 'Today':
-        setStartDate(new Date())
-        setEndDate(null)
-        break
-      case 'Yesterday':
-        setStartDate(dayjs(new Date()).add(-1, 'days').toDate())
-        setEndDate(null)
-        break
-      case 'Last 7 days':
-        setStartDate(dayjs(new Date()).add(-1, 'weeks').toDate())
-        setEndDate(new Date())
-        break
-      case 'Last 30 days':
-        setStartDate(dayjs(new Date()).add(-30, 'days').toDate())
-        setEndDate(new Date())
-        break
-      case 'Last 3 month':
-        setStartDate(dayjs(new Date()).add(-3, 'months').toDate())
-        setEndDate(new Date())
-        break
-      case 'Last 12 month':
-        setStartDate(dayjs(new Date()).add(-1, 'years').toDate())
-        setEndDate(new Date())
-        break
-      default:
-        break
-    }
-  }
+  const handleDateSelect = useCallback(
+    (date: string): void => {
+      if (dateTitle === date) {
+        return
+      }
+      setDateTitle(date)
+      switch (date) {
+        case 'Today':
+          setStartDate(new Date())
+          setEndDate(null)
+          break
+        case 'Yesterday':
+          setStartDate(dayjs(new Date()).add(-1, 'days').toDate())
+          setEndDate(null)
+          break
+        case 'Last 7 days':
+          setStartDate(dayjs(new Date()).add(-1, 'weeks').toDate())
+          setEndDate(new Date())
+          break
+        case 'Last 30 days':
+          setStartDate(dayjs(new Date()).add(-30, 'days').toDate())
+          setEndDate(new Date())
+          break
+        case 'Last 3 month':
+          setStartDate(dayjs(new Date()).add(-3, 'months').toDate())
+          setEndDate(new Date())
+          break
+        case 'Last 12 month':
+          setStartDate(dayjs(new Date()).add(-1, 'years').toDate())
+          setEndDate(new Date())
+          break
+        default:
+          break
+      }
+    },
+    [dateTitle, startDate, endDate],
+  )
 
   const onUnreadChange = useCallback(() => {
     setFilter('unread')

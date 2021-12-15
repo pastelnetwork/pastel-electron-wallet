@@ -35,6 +35,41 @@ export default function TextArea<TForm extends FieldValues>({
     el.style.height = `${scrollHeight}px`
   }
 
+  const onRender = useCallback(
+    ({ field }) => {
+      const onChange = useCallback(
+        (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+          field.onChange(e)
+          adjustTextAreaHeight(e)
+        },
+        [],
+      )
+
+      const value = (field.value || '') as string
+      const length = value.length
+      return (
+        <div className='relative'>
+          <textarea
+            {...textAreaProps}
+            {...field}
+            value={value}
+            onChange={onChange}
+          />
+          {maxLength && (
+            <div
+              className={`absolute right-4 bottom-3 text-xs font-medium ${
+                length > maxLength ? 'text-error' : 'text-gray-a0'
+              }`}
+            >
+              {length}/{maxLength}
+            </div>
+          )}
+        </div>
+      )
+    },
+    [maxLength],
+  )
+
   return (
     <FormControl
       form={form}
@@ -44,41 +79,7 @@ export default function TextArea<TForm extends FieldValues>({
       labelClass={labelClass}
       style={style}
     >
-      <Controller
-        control={form.control}
-        name={name}
-        render={({ field }) => {
-          const onChange = useCallback(
-            (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-              field.onChange(e)
-              adjustTextAreaHeight(e)
-            },
-            [],
-          )
-
-          const value = (field.value || '') as string
-          const length = value.length
-          return (
-            <div className='relative'>
-              <textarea
-                {...textAreaProps}
-                {...field}
-                value={value}
-                onChange={onChange}
-              />
-              {maxLength && (
-                <div
-                  className={`absolute right-4 bottom-3 text-xs font-medium ${
-                    length > maxLength ? 'text-error' : 'text-gray-a0'
-                  }`}
-                >
-                  {length}/{maxLength}
-                </div>
-              )}
-            </div>
-          )
-        }}
-      />
+      <Controller control={form.control} name={name} render={onRender} />
     </FormControl>
   )
 }
