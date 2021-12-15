@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import BidBuyModal, { TBidBuyModal } from './bidBuyModal'
 
-const Template: Story<TBidBuyModal> = ({ username, isOpen }) => {
+const Template: Story<TBidBuyModal> = ({ username, isOpen }: TBidBuyModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react'
+import React, { useState, FormEvent, useCallback } from 'react'
 
 import Input from 'common/components/Inputs/Input'
 import { Button } from 'common/components/Buttons'
@@ -18,7 +18,7 @@ export default function Login(): JSX.Element {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
 
-  const onSubmit = async () => {
+  const onSubmit = useCallback(async () => {
     setLoading(true)
     setErrorMessage('')
     const users = await readUsersInfo()
@@ -46,15 +46,21 @@ export default function Login(): JSX.Element {
       setErrorMessage('Username or password is incorrect')
       setLoading(false)
     }
-  }
+  }, [])
 
-  const onUsernameChanged = (event: FormEvent<HTMLInputElement>) => {
-    setUsername(event.currentTarget.value)
-  }
+  const onUsernameChanged = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      setUsername(event.currentTarget.value)
+    },
+    [],
+  )
 
-  const onPasswordChanged = (event: FormEvent<HTMLInputElement>) => {
-    setPassword(event.currentTarget.value)
-  }
+  const onPasswordChanged = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      setPassword(event.currentTarget.value)
+    },
+    [],
+  )
 
   const inValid = !username || !password ? true : false
 

@@ -95,6 +95,7 @@ export const useInitializeRegister = ({
           pastelId: pastelid,
           pastelIds: [pastelid],
           addresses,
+          address: createPastelIdQuery.data?.address,
         },
       ],
       true,
@@ -102,40 +103,34 @@ export const useInitializeRegister = ({
   }
 
   useEffect(() => {
-    if (createPastelIdQuery.isSuccess) {
-      if (createPastelIdQuery.data?.pastelid) {
-        setPastelId(createPastelIdQuery.data.pastelid)
-        addUserInfo({
-          pastelid: createPastelIdQuery.data.pastelid,
-        })
-          .then(() => {
-            // noop
+    const saveData = async () => {
+      if (createPastelIdQuery.isSuccess) {
+        if (createPastelIdQuery.data?.pastelid) {
+          setPastelId(createPastelIdQuery.data.pastelid)
+          await addUserInfo({
+            pastelid: createPastelIdQuery.data.pastelid,
           })
-          .catch(() => {
-            // noop
-          })
-          .finally(() => {
-            // noop
-          })
-        const vPassword: string = encode(password) || ''
-        const vUsername: string = username || ''
-        walletNodeApi.userData
-          .create({
+          const vPassword: string = encode(password) || ''
+          const vUsername: string = username || ''
+          await walletNodeApi.userData.create({
             artist_pastelid: createPastelIdQuery.data.pastelid,
             artist_pastelid_passphrase: `${vPassword}${vUsername}`,
           })
-          .then(() => {
-            // noop
-          })
-          .catch(() => {
-            // noop
-          })
-          .finally(() => {
-            // noop
-          })
+        }
+        setStep(Steps.Backup)
       }
-      setStep(Steps.Backup)
     }
+
+    saveData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [createPastelIdQuery.status])
 
   useCheckPastelIdConfirmationsInterval({

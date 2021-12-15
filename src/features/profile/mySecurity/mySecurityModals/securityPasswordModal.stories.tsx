@@ -7,7 +7,7 @@ import SecurityPasswordModal, {
 
 export const ReviewModalDefault: Story<TSecurityPasswordModal> = ({
   isOpen,
-}) => {
+}: TSecurityPasswordModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

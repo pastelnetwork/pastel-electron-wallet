@@ -36,6 +36,9 @@ export function ChatItem({
         isActive ? styles.chatActive : '',
       )}
       onClick={onClickMe}
+      role='button'
+      aria-hidden
+      tabIndex={0}
     >
       <div className='flex items-center'>
         <UserAvatar user={lastMessage?.sender} />

@@ -82,3 +82,5 @@ export const pastelUtilityBinPath = getBinPath({
 })
 
 export const pastelKeysPath = path.join(configDirPath, 'pastelkeys')
+
+export const tempPath = app.getPath('temp')

@@ -408,6 +408,10 @@ export default function PaymentModal(): JSX.Element {
     setAddPaymentSourceModalIsOpen(true)
   }, [])
 
+  const handleCloseAddPaymentSourceModal = useCallback(() => {
+    setAddPaymentSourceModalIsOpen(false)
+  }, [])
+
   const renderConfirmPaymentButton = () => {
     return (
       <Button
@@ -738,7 +742,7 @@ export default function PaymentModal(): JSX.Element {
       </TitleModal>
       <AddPaymentSourceModal
         isOpen={addPaymentSourceModalIsOpen}
-        onClose={() => setAddPaymentSourceModalIsOpen(false)}
+        onClose={handleCloseAddPaymentSourceModal}
       />
     </>
   )

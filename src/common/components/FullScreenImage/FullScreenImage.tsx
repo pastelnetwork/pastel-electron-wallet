@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useRef, DragEvent } from 'react'
 import style from './FullScreenImage.module.css'
 import { Minus, Plus, X } from '../Icons'
 import { DraggableCore } from 'react-draggable'
@@ -24,12 +24,20 @@ export default function FullScreenImage({
     filledProgressBarRef,
   } = useImageZoom()
 
-  // Prevent accidentally closing modal by clicking on background when dragging image
-  const startImageDrag = () =>
-    backgroundRef.current?.classList.add('pointer-events-none')
+  const onDragStart = useCallback((e: DragEvent<HTMLImageElement>) => {
+    e.preventDefault()
+  }, [])
 
-  const stopImageDrag = () =>
-    backgroundRef.current?.classList.remove('pointer-events-none')
+  // Prevent accidentally closing modal by clicking on background when dragging image
+  const startImageDrag = useCallback(
+    () => backgroundRef.current?.classList.add('pointer-events-none'),
+    [],
+  )
+
+  const stopImageDrag = useCallback(
+    () => backgroundRef.current?.classList.remove('pointer-events-none'),
+    [],
+  )
 
   const renderDraggableContentFilledProgressBar = () => (
     <div className='bg-white bg-opacity-30 h-1 rounded-full'>
@@ -70,7 +78,7 @@ export default function FullScreenImage({
         onStop={stopImageDrag}
       >
         <img
-          onDragStart={e => e.preventDefault()}
+          onDragStart={onDragStart}
           ref={imageRef}
           src={image}
           className={style.image}
@@ -100,7 +108,14 @@ export default function FullScreenImage({
 
   return (
     <>
-      <div ref={backgroundRef} className='fixed inset-0' onClick={onClose} />
+      <div
+        ref={backgroundRef}
+        className='fixed inset-0'
+        onClick={onClose}
+        role='button'
+        aria-hidden
+        tabIndex={0}
+      />
       <div className='relative flex-center'>
         {renderCloseButton()}
         {renderPreviewImage()}

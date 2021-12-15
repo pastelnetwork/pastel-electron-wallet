@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import shallow from 'zustand/shallow'
 
 import { PrevButton } from './Buttons'
@@ -14,9 +14,9 @@ export default function StepFee(): JSX.Element {
     shallow,
   )
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     store.goBack()
-  }
+  }, [])
 
   return (
     <div className='flex flex-col h-full'>

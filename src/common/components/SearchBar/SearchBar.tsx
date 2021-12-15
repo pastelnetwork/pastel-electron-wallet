@@ -20,9 +20,14 @@ export default function SearchBar(): JSX.Element {
   const [inputText, setInputText] = useState<string>('')
   const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
     if (['Enter', 'NumpadEnter'].includes(e.key)) {
-      setSelectedCategory(undefined)
-      setInputFocused(false)
-      history.push(ROUTES.SEARCH_RESULT)
+      if (inputText) {
+        setSelectedCategory(undefined)
+        setInputFocused(false)
+        history.push(ROUTES.SEARCH_RESULT, {
+          keyword: inputText,
+          selectedCategory,
+        })
+      }
     }
   }
 
@@ -184,7 +189,7 @@ export default function SearchBar(): JSX.Element {
               setInputFocused(false)
               setSelectedCategory(undefined)
             }}
-            className='absolute md:right-5 right-3 top-3 w-7 h-7'
+            className='absolute md:right-5 right-3 top-[6px] w-7 h-7'
           />
         )}
         {inputFocused && (

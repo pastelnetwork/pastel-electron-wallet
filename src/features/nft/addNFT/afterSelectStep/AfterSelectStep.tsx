@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import {
@@ -7,7 +7,7 @@ import {
   PlusCircle,
   Trash,
 } from 'common/components/Icons'
-import { DraggableCore } from 'react-draggable'
+import { DraggableCore, DraggableEvent } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
 
@@ -33,8 +33,12 @@ export default function UploadStep({
     filledProgressBarRef,
   } = useImageZoom()
 
+  const onStart = useCallback((e: DraggableEvent) => {
+    e.preventDefault()
+  }, [])
+
   const renderDraggableAreaImage = () => (
-    <DraggableCore onDrag={onDragImage} onStart={e => e.preventDefault()}>
+    <DraggableCore onDrag={onDragImage} onStart={onStart}>
       <img
         ref={imageRef}
         src={displayUrl}
@@ -62,18 +66,28 @@ export default function UploadStep({
   )
 
   const renderFilledProgressBar = () => (
-    <div
-      ref={filledProgressBarRef}
-      className='h-full bg-white w-0 rounded-full relative'
+    <DraggableCore
+      onStart={onDragControl}
+      onDrag={onDragControl}
+      onStop={onDragControl}
     >
-      <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
-    </div>
+      <div
+        ref={filledProgressBarRef}
+        className='h-full bg-white w-0 rounded-full relative'
+      >
+        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
+      </div>
+    </DraggableCore>
   )
 
   const renderMinusCircleButton = () => (
-    <button type='button'>
-      <MinusCircle size={13} />
-    </button>
+    <div
+      className={`h-1 rounded-full bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
+    >
+      <button type='button'>
+        <MinusCircle size={13} />
+      </button>
+    </div>
   )
 
   const renderLeftColumnContentControl = () => (
@@ -91,17 +105,7 @@ export default function UploadStep({
       >
         {renderMinusCircleButton()}
         <div className='flex-grow mx-3 py-2 relative' ref={controlRef}>
-          <DraggableCore
-            onStart={onDragControl}
-            onDrag={onDragControl}
-            onStop={onDragControl}
-          >
-            <div
-              className={`h-1 rounded-full bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
-            >
-              {renderFilledProgressBar()}
-            </div>
-          </DraggableCore>
+          {renderFilledProgressBar()}
         </div>
         {renderPlusCircleButton()}
       </div>

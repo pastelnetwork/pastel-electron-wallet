@@ -231,13 +231,17 @@ const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
       })
   }, [])
 
-  const onTabToggle = (index: number) => {
+  const onTabToggle = useCallback((index: number) => {
     setActivePeriod(index)
     setSelectedDate({
       ...selectedDate,
       start: date[index],
     })
-  }
+  }, [])
+
+  const handleShowTransactionHistoryModal = useCallback(() => {
+    setTransactionHistoryModalOpen(true)
+  }, [])
 
   const renderWalletHeader = () => {
     return (
@@ -261,7 +265,10 @@ const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
         </div>
         <div
           className='flex cursor-pointer'
-          onClick={() => setTransactionHistoryModalOpen(true)}
+          onClick={handleShowTransactionHistoryModal}
+          role='button'
+          aria-hidden
+          tabIndex={0}
         >
           <Clock size={18} className='text-blue-3f' />
           <div className='ml-3.5 text-blue-3f text-h4-leading-22'>

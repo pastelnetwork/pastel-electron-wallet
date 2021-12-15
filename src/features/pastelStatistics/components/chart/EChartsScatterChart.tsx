@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -20,7 +20,9 @@ import {
 } from '../../utils/ChartOptions'
 import styles from './LineChart.module.css'
 
-export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
+export const EChartsScatterChart = memo(function EChartsScatterChart(
+  props: TScatterChartProps,
+): JSX.Element {
   const {
     chartName,
     data,
@@ -80,7 +82,7 @@ export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
   }
   const options = getThemeInitOption(params)
 
-  const downloadPNG = () => {
+  const downloadPNG = useCallback(() => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef.ele)
@@ -90,10 +92,11 @@ export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
           }
         })
         .catch(function (error) {
-          throw new Error('PNG download error: ' + error)
+          const message: string = error?.message || ''
+          throw new Error('PNG download error: ' + message)
         })
     }
-  }
+  }, [])
 
   const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
     setCurrentTheme(theme)
@@ -215,4 +218,4 @@ export function EChartsScatterChart(props: TScatterChartProps): JSX.Element {
       </div>
     </div>
   )
-}
+})

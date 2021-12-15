@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  memo,
+} from 'react'
 import { toast } from 'react-toastify'
 import cn from 'classnames'
 
@@ -31,7 +37,7 @@ function CancelButton(): JSX.Element {
   )
 }
 
-function ImportButton({
+const ImportButton = memo(function ImportButton({
   handleImportPrivateKey,
   privateKey,
 }: {
@@ -53,9 +59,9 @@ function ImportButton({
       </div>
     </Button>
   )
-}
+})
 
-function InputControl({
+const InputControl = memo(function InputControl({
   message,
   privateKey,
   setPrivateKey,
@@ -79,7 +85,7 @@ function InputControl({
       onChange={onChange}
     />
   )
-}
+})
 
 export default function ImportPrivKeyModal(): JSX.Element | null {
   const { importPrivKeyModalIsOpen } = useAppSelector(state => state.utilities)
@@ -95,11 +101,11 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
     setComplete(false)
   }, [importPrivKeyModalIsOpen])
 
-  if (!importPrivKeyModalIsOpen) {
-    return null
-  }
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeImportPrivKeyModal())
+  }, [])
 
-  const handleImportPrivateKey = async (key: string) => {
+  const handleImportPrivateKey = useCallback(async (key: string) => {
     setMessage('')
     setComplete(false)
     if (!key) {
@@ -130,6 +136,10 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
         toast(error.message, { type: 'error' })
       }
     }
+  }, [])
+
+  if (!importPrivKeyModalIsOpen) {
+    return null
   }
 
   const renderSuccessContent = () => {
@@ -156,7 +166,7 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={importPrivKeyModalIsOpen}
-      handleClose={() => dispatch(closeImportPrivKeyModal())}
+      handleClose={handleCloseModal}
       classNames='max-w-[700px]'
       title={!isComplete ? 'Import Private Keys' : ''}
     >

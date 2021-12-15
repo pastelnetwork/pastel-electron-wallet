@@ -4,6 +4,12 @@ import { DraggableData, DraggableEvent } from 'react-draggable'
 const minZoom = 1
 const maxZoom = 3
 
+type TTransformProps = {
+  scale: number
+  x: number
+  y: number
+}
+
 export const useImageZoom = (): {
   onDragImage(e: DraggableEvent, data: DraggableData): void
   imageRef: RefObject<HTMLImageElement>
@@ -33,7 +39,7 @@ export const useImageZoom = (): {
       return
     }
 
-    const transform = transformRef.current
+    const transform: TTransformProps = transformRef.current
     const scale = minZoom + (maxZoom - minZoom) * transform.scale
 
     const x = transform.x + deltaX / scale

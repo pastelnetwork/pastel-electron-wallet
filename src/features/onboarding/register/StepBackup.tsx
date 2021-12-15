@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import cn from 'classnames'
 import dayjs from 'dayjs'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
@@ -146,7 +146,7 @@ export default function StepBackupMethod(): JSX.Element {
     }
   }, [imagesData])
 
-  const handleDownloadVideo = () => {
+  const handleDownloadVideo = useCallback(() => {
     if (videoUrl) {
       saveFile(videoUrl)
     } else {
@@ -169,9 +169,9 @@ export default function StepBackupMethod(): JSX.Element {
         setCurrentStatus('error')
       }
     }
-  }
+  }, [videoUrl])
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     finish()
     store.setExchangeAddress('')
     store.setPSLAddressPrivateKey('')
@@ -182,7 +182,11 @@ export default function StepBackupMethod(): JSX.Element {
     store.setUsername('')
     store.setStep(Steps.Login)
     store.setSelectedPSLAddress(null)
-  }
+  }, [])
+
+  const handlePdfPrepareProgress = useCallback(() => {
+    setPdfPrepareProgress(65)
+  }, [])
 
   const renderDownloadButton = () => {
     return (
@@ -214,12 +218,13 @@ export default function StepBackupMethod(): JSX.Element {
 
   const renderPdfPrepareProgressButton = () => {
     return (
-      <button type='button' onClick={() => setPdfPrepareProgress(65)}>
+      <button type='button' onClick={handlePdfPrepareProgress}>
         <div className='text-base font-medium text-gray-4a'>Crypto Keys</div>
         <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
       </button>
     )
   }
+  const vPdfPrepareProgress: string = pdfPrepareProgress?.toString() || ''
 
   return (
     <div className='pt-16 flex flex-col h-full'>
@@ -291,7 +296,7 @@ export default function StepBackupMethod(): JSX.Element {
                     <div className='h-5px w-[108px] rounded-full bg-green-e4 mr-3 overflow-hidden'>
                       <div
                         className='h-5px rounded-full bg-green-77'
-                        style={{ width: pdfPrepareProgress + '%' }}
+                        style={{ width: `${vPdfPrepareProgress}%` }}
                       />
                     </div>
                     <span className='font-extrabold text-sm'>

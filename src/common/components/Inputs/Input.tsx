@@ -52,7 +52,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       appliedStyleValid = true,
       inputClassName,
       ...otherProps
-    },
+    }: TInput,
     ref,
   ) => {
     const classes = cn('relative flex items-center w-full', className)
@@ -131,7 +131,13 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
         <div className={classes}>
           {renderInputControl()}
           {appendOutside && (
-            <div className='ml-4 select-none' onClick={onClick}>
+            <div
+              className='ml-4 select-none'
+              onClick={onClick}
+              role='button'
+              aria-hidden
+              tabIndex={0}
+            >
               {appendOutside}
             </div>
           )}
@@ -153,5 +159,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     )
   },
 )
+
+Input.displayName = 'Input'
 
 export default Input

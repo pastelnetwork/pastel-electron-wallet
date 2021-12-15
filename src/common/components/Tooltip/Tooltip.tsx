@@ -41,11 +41,11 @@ function Tooltip({
       left: `calc(50% - ${width / 2}px)`,
     },
     right: {
-      width: `${autoWidth ? 'auto' : width + 'px'}`,
+      width: `${autoWidth ? 'auto' : width.toString() + 'px'}`,
       left: 'calc(100% + 10px)',
     },
     left: {
-      width: `${autoWidth ? 'auto' : width + 'px'}`,
+      width: `${autoWidth ? 'auto' : width.toString() + 'px'}`,
       right: 'calc(100% + 10px)',
     },
   }

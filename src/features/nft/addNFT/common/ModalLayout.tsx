@@ -54,7 +54,7 @@ export default function CroppingStep({
         }}
       >
         {renderModalContent()}
-        {step && (
+        {step ? (
           <CircleSteper
             size={65}
             totalStep={stepsCount}
@@ -63,7 +63,7 @@ export default function CroppingStep({
             stopColor1='#6FCF97'
             stopColor2='#6FCF97'
           />
-        )}
+        ) : null}
       </div>
       <div className={cn('flex space-x-7 flex-grow', contentClass)}>
         <div

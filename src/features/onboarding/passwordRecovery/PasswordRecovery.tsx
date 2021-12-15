@@ -11,7 +11,6 @@ import RestoreSuccess from '../../profile/mySecurity/restorePrivateKeyAndPastelI
 import { useRegisterStore } from '../register/Register.store'
 import history from 'common/utils/history'
 import { Button } from 'common/components/Buttons'
-import { readUsersInfo, TUserInfo } from 'common/utils/User'
 import Link from 'common/components/Link'
 
 enum Tabs {
@@ -37,28 +36,11 @@ export default function PasswordRecovery(): JSX.Element {
   const [isRestore, setRestore] = useState(false)
   const [isSuccess, setSuccess] = useState(false)
   const [tab, setTab] = useState(Tabs.selectPDF)
-  const [users, setUsers] = useState<TUserInfo[]>([])
-
-  const getUsers = async () => {
-    const users = await readUsersInfo()
-    setUsers(users)
-  }
 
   useEffect(() => {
     if (history.location.search.indexOf('isRestore=true') !== -1) {
       setRestore(true)
     }
-
-    getUsers()
-      .then(() => {
-        // noop
-      })
-      .catch(() => {
-        // noop
-      })
-      .finally(() => {
-        // noop
-      })
   }, [])
 
   const onTabToggle = (index: number) => {
@@ -71,16 +53,6 @@ export default function PasswordRecovery(): JSX.Element {
 
   const handleRedirect = () => {
     if (isRestore) {
-      getUsers()
-        .then(() => {
-          // noop
-        })
-        .catch(() => {
-          // noop
-        })
-        .finally(() => {
-          // noop
-        })
       setSuccess(true)
     } else {
       history.push(ROUTES.NEW_PASSWORD)
@@ -147,7 +119,7 @@ export default function PasswordRecovery(): JSX.Element {
           </Link>
         </div>
       ) : null}
-      {isRestore && users.length && !isSuccess ? (
+      {isRestore && !isSuccess ? (
         <div className='mt-9 text-center text-base font-normal text-gray-a0'>
           Already have an account? <Link to={ROUTES.LOGIN}>Login</Link>
         </div>

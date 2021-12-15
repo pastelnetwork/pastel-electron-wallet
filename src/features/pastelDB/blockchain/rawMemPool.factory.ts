@@ -9,7 +9,8 @@ export const rawMemPoolFactory = Factory.define<TDbRawMemPoolInfo>(
       insertRawMemPoolInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       transactionid: 'transactionid',
@@ -20,7 +21,7 @@ export const rawMemPoolFactory = Factory.define<TDbRawMemPoolInfo>(
       startingpriority: 1,
       currentpriority: 1,
       depends: '',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

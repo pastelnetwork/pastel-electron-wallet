@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 
 import PortfolioColumn from './PortfolioColumn'
@@ -268,6 +268,18 @@ export default function DashboardPage(): JSX.Element {
     },
   ]
 
+  const handleNFTChange = useCallback(() => {
+    setTab(1)
+  }, [])
+
+  const handleCreatorsChange = useCallback(() => {
+    setTab(0)
+  }, [])
+
+  const handleShowNotificationModal = useCallback(() => {
+    setOpenNotificationModal(true)
+  }, [])
+
   const renderNofications = () => (
     <div className='paper pt-6 w-419px min-h-[458px] flex-shrink-0 flex flex-col relative md:w-[451px]'>
       <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
@@ -298,7 +310,7 @@ export default function DashboardPage(): JSX.Element {
       </div>
       <div className='pt-4 pb-4 text-center rounded-b-md leading-none absolute bottom-0 w-full'>
         <Link
-          onClick={() => setOpenNotificationModal(true)}
+          onClick={handleShowNotificationModal}
           className='text-blue-3f text-sm font-medium inline-block h-3'
         >
           Check All Notifications
@@ -312,7 +324,7 @@ export default function DashboardPage(): JSX.Element {
       <div className='mr-6'>
         <Radio
           checked={tab === Tabs.Creators}
-          onChange={() => setTab(0)}
+          onChange={handleCreatorsChange}
           labelClassName='text-sm ml-3'
         >
           Creators
@@ -320,7 +332,7 @@ export default function DashboardPage(): JSX.Element {
       </div>
       <Radio
         checked={tab === Tabs.NFTs}
-        onChange={() => setTab(1)}
+        onChange={handleNFTChange}
         labelClassName='text-sm ml-3'
       >
         NFTs

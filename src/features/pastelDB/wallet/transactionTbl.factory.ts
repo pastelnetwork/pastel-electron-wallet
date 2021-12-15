@@ -9,7 +9,8 @@ export const transactionTblFactory = Factory.define<TDbTransactionTbl>(
       insertTransactionTbl(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       amount: 1,
@@ -25,7 +26,7 @@ export const transactionTblFactory = Factory.define<TDbTransactionTbl>(
       txid: 'txid',
       vjoinsplit: '',
       walletconflicts: '',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

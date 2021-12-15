@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -11,7 +11,7 @@ import {
   TThemeColor,
   TThemeInitOption,
 } from '../../common/types'
-import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
+import { makeDownloadFileName, TPeriod } from '../../utils/PastelStatisticsLib'
 import { useCurrencyName } from 'common/hooks/appInfo'
 
 import styles from './LineChart.module.css'
@@ -21,7 +21,35 @@ import {
 } from '../../utils/ChartOptions'
 import { PrevButton } from '../PrevButton'
 
-export function EChartsLineChart(props: TLineChartProps): JSX.Element {
+function PeriodSelect({
+  index,
+  handlePeriodSelect,
+  getActivePriodButtonStyle,
+  period,
+}: {
+  index: number
+  getActivePriodButtonStyle: (val: number) => string
+  handlePeriodSelect: (index: number, period: TPeriod) => void
+  period: TPeriod
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handlePeriodSelect(index, period)
+  }, [])
+
+  return (
+    <button
+      className={`${getActivePriodButtonStyle(index)} ${styles.filterButton}`}
+      onClick={onClick}
+      type='button'
+    >
+      {period}
+    </button>
+  )
+}
+
+export const EChartsLineChart = memo(function EChartsLineChart(
+  props: TLineChartProps,
+): JSX.Element {
   const {
     chartName,
     dataX,
@@ -110,7 +138,7 @@ export function EChartsLineChart(props: TLineChartProps): JSX.Element {
   }
   const options = getThemeInitOption(params)
 
-  const downloadPNG = () => {
+  const downloadPNG = useCallback(() => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef.ele)
@@ -120,10 +148,11 @@ export function EChartsLineChart(props: TLineChartProps): JSX.Element {
           }
         })
         .catch(function (error) {
-          throw new Error('PNG download error: ' + error)
+          const message: string = error?.message || ''
+          throw new Error('PNG download error: ' + message)
         })
     }
-  }
+  }, [])
 
   const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
     setCurrentTheme(theme)
@@ -142,12 +171,12 @@ export function EChartsLineChart(props: TLineChartProps): JSX.Element {
     eChartInstance?.setOption(option)
   }
 
-  const getActivePriodButtonStyle = (index: number): string => {
+  const getActivePriodButtonStyle = useCallback((index: number): string => {
     if (selectedPeriodButton === index) {
       return styles.activeButton
     }
     return ''
-  }
+  }, [])
 
   const getActiveGranularityButtonStyle = (index: number): string => {
     if (selectedGranularityButton === index) {
@@ -162,6 +191,13 @@ export function EChartsLineChart(props: TLineChartProps): JSX.Element {
     }
     return ''
   }
+
+  const handlePeriodSelect = useCallback((index: number, period: TPeriod) => {
+    setSelectedPeriodButton(index)
+    if (handlePeriodFilterChange) {
+      handlePeriodFilterChange(period)
+    }
+  }, [])
 
   const renderDownloadButtonBar = () => (
     <div className={styles.lineChartDownloadButtonBar}>
@@ -189,21 +225,13 @@ export function EChartsLineChart(props: TLineChartProps): JSX.Element {
     <div className={styles.periodSelect}>
       <span style={{ color: currentTheme?.color }}>Period: </span>
       {periods.map((period, index) => (
-        <button
-          className={`${getActivePriodButtonStyle(index)} ${
-            styles.filterButton
-          }`}
-          onClick={() => {
-            setSelectedPeriodButton(index)
-            if (handlePeriodFilterChange) {
-              handlePeriodFilterChange(period)
-            }
-          }}
-          type='button'
+        <PeriodSelect
           key={`button-filter-${period}`}
-        >
-          {period}
-        </button>
+          getActivePriodButtonStyle={getActivePriodButtonStyle}
+          index={index}
+          period={period}
+          handlePeriodSelect={handlePeriodSelect}
+        />
       ))}
     </div>
   )
@@ -275,4 +303,4 @@ export function EChartsLineChart(props: TLineChartProps): JSX.Element {
       </div>
     </div>
   )
-}
+})

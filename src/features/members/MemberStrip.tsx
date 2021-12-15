@@ -82,6 +82,9 @@ function MemberStrip({
       <div
         className='min-w-[244px] h-142px cursor-pointer'
         onClick={toMemberProfile}
+        role='button'
+        aria-hidden
+        tabIndex={0}
       >
         <MemberCard {...memberCard} searchText={searchText} />
       </div>

@@ -11,6 +11,7 @@ export type TUserInfo = {
   pastelId: string
   addresses?: string[]
   pastelIds?: string[]
+  address?: string
 }
 
 export const getFileName = async (): Promise<string | null> => {

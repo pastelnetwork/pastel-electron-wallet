@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useRef, KeyboardEvent } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  KeyboardEvent,
+  useCallback,
+} from 'react'
 import cn from 'classnames'
 import log from 'electron-log'
 
@@ -30,35 +36,38 @@ function Chat(): JSX.Element {
     endRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const onNewMsgFocus = () => {
+  const onNewMsgFocus = useCallback(() => {
     setNewMsgPlaceholder(false)
-  }
+  }, [newMsgPlaceholder])
 
-  const onNewMsgBlur = () => {
+  const onNewMsgBlur = useCallback(() => {
     setNewMsgPlaceholder(newMsg.length > 0 ? false : true)
-  }
+  }, [newMsgPlaceholder])
 
-  const onNewMsgChange = (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewMsg(ev.currentTarget.value)
-  }
+  const onNewMsgChange = useCallback(
+    (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setNewMsg(ev.currentTarget.value)
+    },
+    [],
+  )
 
-  const toggleActiveChatMenu = () => {
+  const toggleActiveChatMenu = useCallback(() => {
+    // TODO
+  }, [])
+
+  const onChatEdit = useCallback(() => {
     //
-  }
+  }, [])
 
-  const onChatEdit = () => {
-    //
-  }
-
-  const onSelectChat = (id: number) => {
+  const onSelectChat = useCallback((id: number) => {
     const active = chats.find(item => item.id === id)
     if (active) {
       setActiveChatId(id)
       setActiveChat(active)
     }
-  }
+  }, [])
 
-  const onSendMsg = () => {
+  const onSendMsg = useCallback(() => {
     const val = newMsg.trimEnd() // strip ending whitespaces
     if (val.length === 0) {
       // don't send empty messages
@@ -69,25 +78,25 @@ function Chat(): JSX.Element {
     setChats(mockChats)
     // send message code here
     setNewMsg('')
-  }
+  }, [])
 
-  const onEmoji = () => {
+  const onEmoji = useCallback(() => {
     log.log('show/hide emoji panel')
-  }
+  }, [])
 
-  const onAttach = () => {
+  const onAttach = useCallback(() => {
     log.log('show/hide attachment panel')
-  }
+  }, [])
 
-  const saveAttachment = (url: string) => {
+  const saveAttachment = useCallback((url: string) => {
     log.log('save attached file', url)
-  }
+  }, [])
 
   const history = useHistory()
 
-  const onCloseChat = () => {
+  const onCloseChat = useCallback(() => {
     history.push(ROUTES.DASHBOARD)
-  }
+  }, [])
 
   const TChatUser = (chat: TChatItemProps): TChatUser | undefined => {
     const recv = chat.messages.filter(item => item.sender.id !== curUser.id)
@@ -98,14 +107,14 @@ function Chat(): JSX.Element {
     return undefined
   }
 
-  const onKeypress = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeypress = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (['Enter', 'NumpadEnter'].includes(e.code) && !e.shiftKey) {
       e.preventDefault()
       e.stopPropagation()
 
       onSendMsg()
     }
-  }
+  }, [])
 
   useEffect(() => {
     scroll2End()

@@ -506,10 +506,10 @@ export function getThemeInitOption(args: TThemeInitOption): EChartsOption {
             formatter: function (params: TTxInBlock) {
               return (
                 'block id: ' +
-                params.value[0] +
+                params.value[0].toString() +
                 '<br/>' +
                 'count: ' +
-                params.value[1] +
+                params.value[1].toString() +
                 ' '
               )
             },

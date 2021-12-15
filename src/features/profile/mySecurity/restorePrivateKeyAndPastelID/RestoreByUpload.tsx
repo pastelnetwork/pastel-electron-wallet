@@ -93,12 +93,12 @@ export default function RestoreByUpload({
     }
   }, [qrCodeData])
 
-  const handleRestoreByUpload = () => {
+  const handleRestoreByUpload = useCallback(() => {
     if (fileSelected) {
       try {
         setCurrentStatus('restoring')
         const qrCode: string[] = []
-        const videoPath = path.join(fileSelected.path)
+        const videoPath: string = path.join(fileSelected.path).toString()
         VideoToImages.getFrames(
           'file://' + videoPath,
           12,
@@ -140,15 +140,18 @@ export default function RestoreByUpload({
         }
       }
     }
-  }
+  }, [fileSelected])
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files
+  const handleImageChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const fileList = e.target.files
 
-    if (fileList) {
-      setFileSelected(fileList[0])
-    }
-  }
+      if (fileList) {
+        setFileSelected(fileList[0])
+      }
+    },
+    [],
+  )
 
   if (currentStatus === 'done') {
     return <RestoreSuccess />
@@ -230,4 +233,8 @@ RestoreByUpload.defaultProps = {
   onHideHeader: undefined,
   setPastelId: undefined,
   callback: undefined,
+}
+
+UploadVideoControl.defaultProps = {
+  fileSelected: undefined,
 }

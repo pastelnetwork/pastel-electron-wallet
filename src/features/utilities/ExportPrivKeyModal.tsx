@@ -1,11 +1,17 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  memo,
+} from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
 import { closeExportPrivKeyModal } from './index'
 import { walletRPC } from 'api/pastel-rpc'
 
-function TextareaControl({
+const TextareaControl = memo(function TextareaControl({
   exportedPrivKeys,
   setExportedPrivKeys,
 }: {
@@ -29,7 +35,7 @@ function TextareaControl({
       />
     </div>
   )
-}
+})
 
 export default function ExportPrivKeyModal(): JSX.Element | null {
   const dispatch = useAppDispatch()
@@ -61,6 +67,10 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
       })
   }, [exportPrivKeyModalIsOpen])
 
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeExportPrivKeyModal())
+  }, [])
+
   if (!exportPrivKeyModalIsOpen) {
     return null
   }
@@ -68,7 +78,7 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={exportPrivKeyModalIsOpen}
-      handleClose={() => dispatch(closeExportPrivKeyModal())}
+      handleClose={handleCloseModal}
       classNames='max-w-[700px]'
       title='Your Wallet Private Keys'
     >

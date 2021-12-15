@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 import ProfileCard from '../components/MyProfileCard'
@@ -182,7 +182,7 @@ const filters = [
   },
 ]
 
-function ProfileCommentList({
+const ProfileCommentList = memo(function ProfileCommentList({
   handleOnReply,
   handleOnLikeClick,
 }: {
@@ -206,9 +206,9 @@ function ProfileCommentList({
       />
     </div>
   )
-}
+})
 
-function FilterCheckbox({
+const FilterCheckbox = memo(function FilterCheckbox({
   isChecked,
   value,
   onClickFilter,
@@ -230,7 +230,7 @@ function FilterCheckbox({
       </span>
     </Checkbox>
   )
-}
+})
 
 function MyComments(): JSX.Element {
   const [editMode, setEditMode] = useState(false)
@@ -238,17 +238,17 @@ function MyComments(): JSX.Element {
     nativeCurrencyOptions[0],
   )
 
-  const handleOnReply = (replyId: number, reply: string) => {
+  const handleOnReply = useCallback((replyId: number, reply: string) => {
     log.log(replyId, reply)
-  }
+  }, [])
 
-  const handleOnLikeClick = (commentId: number) => {
+  const handleOnLikeClick = useCallback((commentId: number) => {
     log.log(commentId)
-  }
+  }, [])
 
-  const onClickFilter = (value: string) => {
+  const onClickFilter = useCallback((value: string) => {
     log.log(value)
-  }
+  }, [])
 
   const isEmpty = false
 

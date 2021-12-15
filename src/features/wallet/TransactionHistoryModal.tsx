@@ -336,6 +336,9 @@ export default function TransactionHistoryModal(): JSX.Element {
                   `https://explorer.pastel.network/tx/${value}`,
                 )
               }
+              role='button'
+              aria-hidden
+              tabIndex={0}
             >
               {value}
             </span>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef, useCallback } from 'react'
+import React, { useState, useEffect, createRef, useCallback, memo } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 import cn from 'classnames'
 
@@ -46,21 +46,23 @@ type TPassStrengthProps = {
   value: string
 }
 
-function GenerateRandomPasswordButton({
-  handleGenerateRandomPassword,
-}: {
-  handleGenerateRandomPassword: () => void
-}): JSX.Element {
-  const onClick = useCallback(() => {
-    handleGenerateRandomPassword()
-  }, [])
+const GenerateRandomPasswordButton = memo(
+  function GenerateRandomPasswordButton({
+    handleGenerateRandomPassword,
+  }: {
+    handleGenerateRandomPassword: () => void
+  }): JSX.Element {
+    const onClick = useCallback(() => {
+      handleGenerateRandomPassword()
+    }, [])
 
-  return (
-    <button type='button' onClick={onClick}>
-      <RefreshIcon size={18} className='text-blue-3f' />
-    </button>
-  )
-}
+    return (
+      <button type='button' onClick={onClick}>
+        <RefreshIcon size={18} className='text-blue-3f' />
+      </button>
+    )
+  },
+)
 
 export default function Password(props: TPassword): JSX.Element {
   const {
@@ -199,7 +201,7 @@ export default function Password(props: TPassword): JSX.Element {
     setConfirmPassword(confirmPass)
   }
 
-  const handleGenerateRandomPassword = () => {
+  const handleGenerateRandomPassword = useCallback(() => {
     const newPass = randomPassword()
     setNewPassword(newPass)
 
@@ -224,7 +226,7 @@ export default function Password(props: TPassword): JSX.Element {
       setNativeValue(element, newPass)
       element.dispatchEvent(event)
     }
-  }
+  }, [])
 
   const getIconClassnames = (isRefresh: boolean) => {
     return `absolute top-3.5 cursor-pointer w-5 h-5 object-none flex justify-center items-center ${

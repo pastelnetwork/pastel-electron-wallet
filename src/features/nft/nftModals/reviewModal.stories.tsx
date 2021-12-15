@@ -3,7 +3,12 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import ReviewModal, { TReviewModal } from './reviewModal'
 
-const Template: Story<TReviewModal> = ({ title, content, isOpen, ...args }) => {
+const Template: Story<TReviewModal> = ({
+  title,
+  content,
+  isOpen,
+  ...args
+}: TReviewModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

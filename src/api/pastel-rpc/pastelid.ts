@@ -93,6 +93,7 @@ export async function createNewPastelID(
       pastelid: resp.result.pastelid,
       txid: resRP.result.txid,
       uTxid: resRU?.result.txid,
+      address,
     }
     return res
   } catch (error) {

@@ -9,7 +9,8 @@ export const blockChainInfoFactory = Factory.define<TDbBlockChainInfo>(
       insertBlockChainInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       bestblockhash: '',
@@ -25,7 +26,7 @@ export const blockChainInfoFactory = Factory.define<TDbBlockChainInfo>(
       upgrades: '',
       valuePools: '',
       verificationprogress: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

@@ -74,13 +74,11 @@ export const writeFileContent = async (
   dir: string,
   file: string,
 ): Promise<void> => {
-  if (content) {
-    const fileName = await getFileName(dir, file)
+  const fileName = await getFileName(dir, file)
 
-    if (fileName) {
-      await fs.promises.writeFile(path.join(dir, file), content, {
-        encoding: 'binary',
-      })
-    }
+  if (fileName) {
+    await fs.promises.writeFile(fileName, content, {
+      encoding: 'binary',
+    })
   }
 }

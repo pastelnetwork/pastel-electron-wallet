@@ -141,7 +141,14 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
             <>
               <Row title='Status' link='#'>
                 <span className='text-black-12 mr-1'>Currently Listed</span>
-                <span onClick={toggleBidsModal}>({nft.status} bids)</span>
+                <span
+                  onClick={toggleBidsModal}
+                  role='button'
+                  aria-hidden
+                  tabIndex={0}
+                >
+                  ({nft.status} bids)
+                </span>
               </Row>
               <Row title='Remaining'>
                 {formatDatesDistance(dayjs(), nft.time)} left

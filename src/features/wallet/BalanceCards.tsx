@@ -135,6 +135,9 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
               'relative cursor-pointer w-1/3',
               index < balanceCards.length - 1 && 'mr-17px',
             )}
+            role='button'
+            aria-hidden
+            tabIndex={0}
           >
             <div className='absolute top-15px right-15px'>
               {card.style.info ? (

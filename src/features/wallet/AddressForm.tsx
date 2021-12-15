@@ -2,7 +2,7 @@ import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
 import eyeIcon from 'common/assets/icons/ico-eye.svg'
 import Tooltip from 'common/components/Tooltip'
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, ChangeEvent, memo } from 'react'
 import { clipboard } from 'electron'
 import { formatAddress } from 'common/utils/format'
 
@@ -24,6 +24,26 @@ type TAddressFormProps = {
   startLength?: number
   endLength?: number
 }
+
+const InputEdit = memo(function InputEdit({
+  editName,
+  setEditName,
+}: {
+  editName: string
+  setEditName: (val: string) => void
+}): JSX.Element {
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setEditName(e.target.value)
+  }, [])
+
+  return (
+    <input
+      value={editName}
+      onChange={onChange}
+      className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
+    />
+  )
+})
 
 export function AddressForm({
   address,
@@ -74,6 +94,15 @@ export function AddressForm({
       })
       setEdit(null)
     }
+  }, [])
+
+  const handleEdit = useCallback(() => {
+    setEditName(addressLabel || '')
+    setEdit(address)
+  }, [])
+
+  const handleCopyAddress = useCallback(() => {
+    copyAddress(address)
   }, [])
 
   const renderShowFullAddress = () => (
@@ -148,13 +177,7 @@ export function AddressForm({
   return (
     <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
       {edit === address ? (
-        <input
-          value={editName}
-          onChange={e => {
-            setEditName(e.target.value)
-          }}
-          className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
-        />
+        <InputEdit editName={editName} setEditName={setEditName} />
       ) : addressLabel ? (
         <div className='w-220px md:w-[270px] pl-[10px]'>
           <span
@@ -214,12 +237,13 @@ export function AddressForm({
                   width={70}
                   type='top'
                 >
-                  <span
-                    onClick={() => copyAddress(address)}
+                  <button
+                    onClick={handleCopyAddress}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                    type='button'
                   >
                     <CheckIcon className='text-green-45' size={14} />
-                  </span>
+                  </button>
                 </Tooltip>
               ) : (
                 <Tooltip
@@ -228,12 +252,13 @@ export function AddressForm({
                   width={130}
                   type='top'
                 >
-                  <span
-                    onClick={() => copyAddress(address)}
+                  <button
+                    onClick={handleCopyAddress}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                    type='button'
                   >
                     <Clipboard className='cursor-pointer' size={14} />
-                  </span>
+                  </button>
                 </Tooltip>
               )}
             </div>
@@ -247,11 +272,11 @@ export function AddressForm({
                 type='top'
               >
                 <span
-                  onClick={() => {
-                    setEditName(addressLabel || '')
-                    setEdit(address)
-                  }}
+                  onClick={handleEdit}
                   className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                  role='button'
+                  aria-hidden
+                  tabIndex={0}
                 >
                   <Pencil
                     strokeWidth={0.2}

@@ -71,7 +71,14 @@ function LineChart({
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+      .attr(
+        'transform',
+        'translate(' +
+          margin.left.toString() +
+          ',' +
+          margin.top.toString() +
+          ')',
+      )
     const extent = []
     if (type === 'week') {
       extent.push(
@@ -101,7 +108,7 @@ function LineChart({
 
       svg
         .append('g')
-        .attr('transform', 'translate(0,' + height + ')')
+        .attr('transform', 'translate(0,' + height.toString() + ')')
         .call(g => {
           g.call(xAxis)
           g.select('.domain').remove()
@@ -112,9 +119,10 @@ function LineChart({
             .attr('dy', 15)
             .attr('class', 'text-gray-71 text-13px')
         })
-      const maxValue = d3.max(data, function (d) {
-        return +d.value
-      })
+      const maxValue: number =
+        d3.max(data, function (d) {
+          return +d.value
+        }) || 0
       if (maxValue) {
         const y = d3
           .scaleLinear()
@@ -239,9 +247,11 @@ function LineChart({
             const d0 = data[i - 1]
             const d1 = data[i]
             const d = +x0 - +d0.date > +d1.date - +x0 ? d1 : d0
+            const translateX: string = x(d.date).toString() || ''
+            const translateY: string = y(d.value).toString() || ''
             tooltipContainer.attr(
               'transform',
-              'translate(' + x(d.date) + ',' + y(d.value) + ')',
+              'translate(' + translateX + ',' + translateY + ')',
             )
             tooltipContainer.select('.tooltip-value').text(d.value)
           })

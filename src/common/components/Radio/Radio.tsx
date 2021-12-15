@@ -1,5 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
+
 import './Radio.css'
 
 export type TRadioProps = {
@@ -11,6 +13,7 @@ export type TRadioProps = {
   labelClassName?: string
   checkedCircleBackgroundColor?: string
   variant?: string
+  id?: string
 }
 
 function Radio({
@@ -22,7 +25,9 @@ function Radio({
   labelClassName = 'ml-2 mt-2.5px',
   checkedCircleBackgroundColor = 'bg-blue-e5',
   variant,
+  id,
 }: TRadioProps): JSX.Element {
+  const vId = id || uuidv4()
   const renderInputControl = () => (
     <input
       type='radio'
@@ -31,12 +36,13 @@ function Radio({
       onChange={() => {
         onChange(!checked)
       }}
+      id={vId}
     />
   )
 
   if (variant === 'secondary') {
     return (
-      <label>
+      <label htmlFor={vId}>
         <div className='flex items-center'>
           <div
             className={cn(
@@ -69,7 +75,7 @@ function Radio({
   }
 
   return (
-    <label>
+    <label htmlFor={vId}>
       <div className='flex items-center'>
         <div
           className={cn(
@@ -102,3 +108,12 @@ function Radio({
 }
 
 export default Radio
+
+Radio.defaultProps = {
+  id: undefined,
+  className: 'w-5 h-5',
+  smallCircleClass: 'w-2 h-2',
+  labelClassName: 'ml-2 mt-2.5px',
+  checkedCircleBackgroundColor: 'bg-blue-e5',
+  variant: undefined,
+}

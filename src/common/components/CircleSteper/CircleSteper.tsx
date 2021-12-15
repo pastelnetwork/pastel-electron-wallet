@@ -58,6 +58,9 @@ function CircleSteper({
   stopColor2 = '#6FCF97',
   spacing = 10,
 }: TCircleSteperProps): JSX.Element {
+  const vTotalStep: number = totalStep || 4
+  const vSpaceAngle: number = spaceAngle || 20
+  const vSpacing: number = spacing || 10
   const [startPoints, setStartPoints] = useState<Array<number>>([])
   useEffect(() => {
     const oneStepAngle = 360 / totalStep
@@ -98,7 +101,7 @@ function CircleSteper({
       >
         <circle cx='33' cy='33' r='32' fill='#ECEFF3' />
         <circle cx='33' cy='33' r='26' fill='#FFFFFF' />
-        {startPoints.slice(0, currentStep).map(item => (
+        {startPoints.slice(0, currentStep).map((item: number) => (
           <path
             key={item}
             d={describeArc(
@@ -106,7 +109,7 @@ function CircleSteper({
               33,
               28,
               item,
-              item + 360 / totalStep - spaceAngle - spacing,
+              item + 360 / vTotalStep - vSpaceAngle - vSpacing,
             )}
             stroke='url(#paint0_linear)'
             strokeWidth={6}

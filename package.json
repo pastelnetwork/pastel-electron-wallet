@@ -95,6 +95,7 @@
     "postcss-loader": "4.2.0",
     "progress-stream": "2.0.0",
     "qrcode.react": "1.0.0",
+    "query-string": "7.0.1",
     "react": "16.14.0",
     "react-accessible-accordion": "3.3.4",
     "react-circular-progressbar": "2.0.4",

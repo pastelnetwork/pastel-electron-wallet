@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  memo,
+} from 'react'
 import { useHistory } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
@@ -9,7 +15,7 @@ import { Button } from 'common/components/Buttons'
 import { parsePastelURI } from 'common/utils/uris'
 import * as ROUTES from 'common/utils/constants/routes'
 
-function InputControl({
+const InputControl = memo(function InputControl({
   uriIsValid,
   uri,
   setUri,
@@ -38,7 +44,7 @@ function InputControl({
       />
     </div>
   )
-}
+})
 
 function CancelButton(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -61,7 +67,7 @@ function CancelButton(): JSX.Element {
   )
 }
 
-function PayURIButton({
+const PayURIButton = memo(function PayURIButton({
   handlePayURI,
   uri,
 }: {
@@ -83,7 +89,7 @@ function PayURIButton({
       </div>
     </Button>
   )
-}
+})
 
 export default function PayURIModal(): JSX.Element | null {
   const { payURIModalIsOpen } = useAppSelector(state => state.utilities)
@@ -100,11 +106,7 @@ export default function PayURIModal(): JSX.Element | null {
     setValid(false)
   }, [payURIModalIsOpen])
 
-  if (!payURIModalIsOpen) {
-    return null
-  }
-
-  const handlePayURI = (strUri: string) => {
+  const handlePayURI = useCallback((strUri: string) => {
     setMessage('')
     if (!strUri) {
       setValid(false)
@@ -124,12 +126,23 @@ export default function PayURIModal(): JSX.Element | null {
       state: { ...parsedUri[0] },
     })
     dispatch(closePayURIModal())
+  }, [])
+
+  if (!payURIModalIsOpen) {
+    return null
   }
 
   let uriIsValid: boolean | null = null
   if (!isValid && message) {
     uriIsValid = false
   }
+
+  const renderPayButtons = () => (
+    <div className='mt-4 flex justify-end'>
+      <CancelButton />
+      <PayURIButton handlePayURI={handlePayURI} uri={uri} />
+    </div>
+  )
 
   return (
     <TitleModal
@@ -145,10 +158,7 @@ export default function PayURIModal(): JSX.Element | null {
           uri={uri}
           setUri={setUri}
         />
-        <div className='mt-4 flex justify-end'>
-          <CancelButton />
-          <PayURIButton handlePayURI={handlePayURI} uri={uri} />
-        </div>
+        {renderPayButtons()}
       </div>
     </TitleModal>
   )

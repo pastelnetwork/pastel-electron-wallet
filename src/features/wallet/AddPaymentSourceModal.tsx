@@ -7,6 +7,7 @@ import { Button } from 'common/components/Buttons'
 import { useWalletScreenContext } from './walletScreen.context'
 import { useSetPaymentSourceModal } from './walletScreen.hooks'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import Scrollbar from 'common/components/Scrollbar'
 
 type TAddPaymentSourceModal = {
   isOpen: boolean
@@ -116,6 +117,41 @@ export default function AddPaymentSourceModal({
     </Button>
   )
 
+  const renderPaymentSourceBody = () => (
+    <tbody>
+      {allAddressAmounts?.data &&
+        Object.keys(allAddressAmounts.data).map((address: string) => {
+          const promoCode = pastelPromoCode.data?.find(
+            code => code.address === address,
+          )
+          if (!selectedAddressesModal.includes(address) && !promoCode) {
+            return (
+              <tr
+                className='text-gray-71 text-sm h-10 bg-white border-b border-line'
+                key={address}
+              >
+                <td>
+                  <PaymentSourceAddress
+                    address={address}
+                    addressBookMap={addressBookMap}
+                    handleSelected={handleSelected}
+                  />
+                </td>
+                <td>
+                  {formatPrice(
+                    allAddressAmounts.data?.[address],
+                    currencyName,
+                    4,
+                  )}
+                </td>
+              </tr>
+            )
+          }
+          return null
+        })}
+    </tbody>
+  )
+
   return (
     <TitleModal
       isOpen={isOpen}
@@ -123,41 +159,12 @@ export default function AddPaymentSourceModal({
       title='Add Payment Source'
       classNames='max-w-[650px]'
     >
-      <table className='w-full text-gray-71 relative table-auto'>
-        {renderPaymentSourceHeaderModal()}
-        <tbody>
-          {allAddressAmounts?.data &&
-            Object.keys(allAddressAmounts.data).map((address: string) => {
-              const promoCode = pastelPromoCode.data?.find(
-                code => code.address === address,
-              )
-              if (!selectedAddressesModal.includes(address) && !promoCode) {
-                return (
-                  <tr
-                    className='text-gray-71 text-sm h-10 bg-white border-b border-line'
-                    key={address}
-                  >
-                    <td>
-                      <PaymentSourceAddress
-                        address={address}
-                        addressBookMap={addressBookMap}
-                        handleSelected={handleSelected}
-                      />
-                    </td>
-                    <td>
-                      {formatPrice(
-                        allAddressAmounts.data?.[address],
-                        currencyName,
-                        4,
-                      )}
-                    </td>
-                  </tr>
-                )
-              }
-              return null
-            })}
-        </tbody>
-      </table>
+      <Scrollbar maxHeight='425'>
+        <table className='w-full text-gray-71 relative table-auto'>
+          {renderPaymentSourceHeaderModal()}
+          {renderPaymentSourceBody()}
+        </table>
+      </Scrollbar>
       <div className='flex justify-end mt-[21px]'>
         {renderCloseButton()}
         {renderAddPaymentSourceButton()}

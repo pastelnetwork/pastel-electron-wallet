@@ -92,8 +92,8 @@ export default function Table({
   extendHeaderClassName,
   isLoading,
 }: TTableProps): JSX.Element {
-  const [sortIndex, setSortIndex] = useState(0)
-  const [sortOrder, setSortOrder] = useState(0)
+  const [sortIndex, setSortIndex] = useState<number>(0)
+  const [sortOrder, setSortOrder] = useState<number>(0)
   const [selectedRows, setSelectedRows] = useState<Array<number>>([])
   const tableData = useMemo<TRow[]>(() => {
     if (sortOrder === 0) {
@@ -174,6 +174,9 @@ export default function Table({
                     column.headerColClasses,
                   )}
                   onClick={() => setSort(index)}
+                  role='button'
+                  aria-hidden
+                  tabIndex={0}
                 >
                   {column.name}
                   <img
@@ -259,4 +262,8 @@ export default function Table({
       </tbody>
     </table>
   )
+}
+
+TableCheckBox.defaultProps = {
+  selectedRow: undefined,
 }

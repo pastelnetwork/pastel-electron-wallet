@@ -173,7 +173,7 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     if (!suggestions?.length || suggestions[0] === typing) {
       return
     }
-    const vSuggestions: string = suggestions.join('\n') || ''
+    const vSuggestions: string = suggestions.join('\n').toString() || ''
     addOutputThenDisplay(`$ ${typing}\n${vSuggestions}`)
       .then(() => {
         // noop
@@ -472,6 +472,9 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
         <div
           className={styles.terminalInputLongAreaClickable}
           onClick={focusTerminalInput}
+          role='button'
+          aria-hidden
+          tabIndex={0}
         />
       </div>
       {executingCommand && <div className={styles.loading} />}
@@ -480,6 +483,9 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
           [styles.isReady]: isReady && !executingCommand,
         })}
         onClick={focusTerminalInput}
+        role='button'
+        aria-hidden
+        tabIndex={0}
       >
         <span>$&nbsp;</span>
         <input

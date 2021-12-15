@@ -9,6 +9,7 @@ export type TRegisterPastelID = {
   pastelid: string
   txid: string
   uTxid?: string
+  address?: string
 }
 
 export type TPastelID = {

@@ -80,6 +80,9 @@ function AnimatedModalInner({
       ref={setModalRef}
       className='fixed inset-0 z-[110] bg-gray-1a bg-opacity-60 transition duration-200 opacity-0'
       onClick={onClickBackground}
+      role='button'
+      aria-hidden
+      tabIndex={0}
     >
       <div className='overflow-auto relative h-full w-full z-10'>
         <div className='min-h-full py-10 flex-center'>

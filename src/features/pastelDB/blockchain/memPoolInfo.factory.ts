@@ -9,13 +9,14 @@ export const memPoolInfoFactory = Factory.define<TDbMemPoolInfo>(
       insertMemPoolInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       size: 0,
       bytes: 0,
       usage: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

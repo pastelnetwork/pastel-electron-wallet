@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { getFilteredDataFromDBByPeriod } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
@@ -81,23 +81,26 @@ export default function AverageBlockSizeOvertime(): JSX.Element {
     }
   }, [granularity, period])
 
-  const handlePeriodFilterChange = (period: TPeriod) => {
+  const handlePeriodFilterChange = useCallback((period: TPeriod) => {
     setPeriod(period)
     if (ticker) {
       clearInterval(ticker)
     }
-  }
+  }, [])
 
-  const handleGranularityFilterChange = (granularity: TGranularity) => {
-    setGranularity(granularity)
-    if (ticker) {
-      clearInterval(ticker)
-    }
-  }
+  const handleGranularityFilterChange = useCallback(
+    (granularity: TGranularity) => {
+      setGranularity(granularity)
+      if (ticker) {
+        clearInterval(ticker)
+      }
+    },
+    [],
+  )
 
-  const handleBgColorChange = (color: string) => {
+  const handleBgColorChange = useCallback((color: string) => {
     setCurrentBgColor(color)
-  }
+  }, [])
 
   return (
     <div className={styles.container}>

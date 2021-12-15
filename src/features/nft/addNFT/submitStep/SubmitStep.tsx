@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
@@ -41,19 +41,23 @@ export default function SubmitStep({
   const [croppedImage] = useImagePreview({ image })
   const currencyName = useCurrencyName()
 
-  const onFullScreenToggle = () => {
+  const onFullScreenToggle = useCallback(() => {
     toggleCloseButton()
     toggleFullScreen()
-  }
+  }, [])
+
+  const handleBack = useCallback(() => {
+    state.goBack()
+  }, [])
+
+  const onSubmit = useCallback(() => submit({ state, image, nftData }), [
+    state,
+    image,
+    nftData,
+  ])
 
   if (fullScreen) {
     return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
-  }
-
-  const onSubmit = () => submit({ state, image, nftData })
-
-  const handleBack = () => {
-    state.goBack()
   }
 
   const renderSubmitButton = () => (

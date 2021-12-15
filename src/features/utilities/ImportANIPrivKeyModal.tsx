@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  memo,
+} from 'react'
 import cn from 'classnames'
 import { toast } from 'react-toastify'
 
@@ -10,7 +16,7 @@ import { Button } from 'common/components/Buttons'
 
 import congratulations from 'common/assets/icons/ico-congratulations.svg'
 
-function ImportButton({
+const ImportButton = memo(function ImportButton({
   handleImportANIPrivKey,
   privateKey,
 }: {
@@ -32,7 +38,7 @@ function ImportButton({
       </div>
     </Button>
   )
-}
+})
 
 function CancelButton(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -55,7 +61,7 @@ function CancelButton(): JSX.Element {
   )
 }
 
-function InputControl({
+const InputControl = memo(function InputControl({
   message,
   privateKey,
   setPrivateKey,
@@ -79,7 +85,7 @@ function InputControl({
       onChange={onChange}
     />
   )
-}
+})
 
 export default function ImportANIPrivKeyModal(): JSX.Element | null {
   const { importANIPrivKeyModalIsOpen } = useAppSelector(
@@ -96,11 +102,11 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
     setComplete(false)
   }, [importANIPrivKeyModalIsOpen])
 
-  if (!importANIPrivKeyModalIsOpen) {
-    return null
-  }
+  const handleCloseModal = useCallback(() => {
+    dispatch(closeImportANIPrivKeyModal())
+  }, [])
 
-  const handleImportANIPrivKey = async (key: string) => {
+  const handleImportANIPrivKey = useCallback(async (key: string) => {
     setMessage('')
     setComplete(false)
 
@@ -129,6 +135,10 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
         toast(error.message, { type: 'error' })
       }
     }
+  }, [])
+
+  if (!importANIPrivKeyModalIsOpen) {
+    return null
   }
 
   const renderSuccessContent = () => {
@@ -155,7 +165,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={importANIPrivKeyModalIsOpen}
-      handleClose={() => dispatch(closeImportANIPrivKeyModal())}
+      handleClose={handleCloseModal}
       classNames='max-w-[700px]'
       title={!isComplete ? 'Import ANI (Animecoin) Private Keys' : ''}
     >

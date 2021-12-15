@@ -9,11 +9,12 @@ export const listAddressFactory = Factory.define<TDbListAddress>(
       insertListAddress(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       address: 'address',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

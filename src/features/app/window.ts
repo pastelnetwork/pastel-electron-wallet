@@ -42,6 +42,7 @@ export const createWindow = (onWindowClose: (event: Event) => void): void => {
 
   w.webContents.on('did-frame-finish-load', () => {
     // Open the DevTools.
+    w.webContents.openDevTools()
     if (!app.isPackaged || process.env.DEBUG_PROD === 'true') {
       w.webContents.openDevTools()
     }

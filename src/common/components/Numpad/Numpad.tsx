@@ -43,10 +43,10 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
     min = -Infinity,
     max = Infinity,
     className,
-  },
+  }: TProps,
   ref,
 ) {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState<string>('')
 
   // when input gets empty, default it passed to onChange, valueProp updates and we need to ignore it to keep input empty
   const skipSetValueRef = useRef(false)

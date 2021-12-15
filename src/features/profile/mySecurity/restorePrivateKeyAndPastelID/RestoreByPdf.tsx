@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useCallback } from 'react'
+import React, { useState, ChangeEvent, useCallback, memo } from 'react'
 import path from 'path'
 import pdfjs from 'pdfjs-dist'
 import cn from 'classnames'
@@ -16,7 +16,7 @@ type TRestoreByPdfProps = {
   callback?: () => void
 }
 
-function InputControl({
+const InputControl = memo(function InputControl({
   handlePdfChange,
 }: {
   handlePdfChange: (val: ChangeEvent<HTMLInputElement>) => void
@@ -34,7 +34,7 @@ function InputControl({
       className='hidden'
     />
   )
-}
+})
 
 function RestoreYourKeysButton({
   handleRestoreByUpload,
@@ -100,11 +100,11 @@ export default function RestoreByPdf({
     }
   }
 
-  const handleRestoreByUpload = async (file: File) => {
+  const handleRestoreByUpload = useCallback(async (file: File) => {
     if (file) {
       try {
         setCurrentStatus('restoring')
-        const pdfPath = path.join(file.path)
+        const pdfPath: string = path.join(file.path).toString()
         if (pdfPath) {
           pdfjs.GlobalWorkerOptions.workerSrc =
             '//mozilla.github.io/pdf.js/build/pdf.worker.js'
@@ -119,15 +119,15 @@ export default function RestoreByPdf({
         }
       }
     }
-  }
+  }, [])
 
-  const handlePdfChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handlePdfChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files
 
     if (fileList) {
       setFileSelected(fileList[0])
     }
-  }
+  }, [])
 
   if (currentStatus === 'done') {
     return <RestoreSuccess />
@@ -196,4 +196,8 @@ RestoreByPdf.defaultProps = {
   onHideHeader: undefined,
   setPastelId: undefined,
   callback: undefined,
+}
+
+RestoreYourKeysButton.defaultProps = {
+  fileSelected: undefined,
 }

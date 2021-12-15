@@ -4,7 +4,10 @@ import { Button } from '../../../common/components/Buttons'
 import CommentModal, { TCommentModal } from './commentModal'
 import comments from './commentModal.data'
 
-const Template: Story<TCommentModal> = ({ comments, isOpen }) => {
+const Template: Story<TCommentModal> = ({
+  comments,
+  isOpen,
+}: TCommentModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

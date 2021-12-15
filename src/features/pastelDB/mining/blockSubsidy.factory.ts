@@ -9,13 +9,14 @@ export const blockSubsidyFactory = Factory.define<TDbBlockSubsidy>(
       insertBlockSubsidy(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       miner: 0,
       masternode: 0,
       governance: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

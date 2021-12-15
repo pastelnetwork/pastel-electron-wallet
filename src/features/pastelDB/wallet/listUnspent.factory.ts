@@ -9,7 +9,8 @@ export const listUnspentFactory = Factory.define<TDbListUnspent>(
       insertListUnspent(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       txid: 'txid',
@@ -21,7 +22,7 @@ export const listUnspentFactory = Factory.define<TDbListUnspent>(
       amount: 0,
       confirmations: 0,
       spendable: 0,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

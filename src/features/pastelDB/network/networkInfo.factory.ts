@@ -9,7 +9,8 @@ export const networkInfoFactory = Factory.define<TDbNetworkInfo>(
       insertNetworkInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       version: 1.0,
@@ -22,7 +23,7 @@ export const networkInfoFactory = Factory.define<TDbNetworkInfo>(
       relayfee: 0,
       localaddresses: 'localaddresses',
       warnings: 'warnings',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )
