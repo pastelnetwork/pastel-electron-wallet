@@ -226,11 +226,12 @@ export default function SelectMultiple<TForm extends FieldValues>(
   props: TControlledProps | TFormProps<TForm>,
 ): JSX.Element {
   if ('form' in props) {
+    const { name, form } = props
     return (
       <FormControl {...props}>
         <Controller
-          name={props.name}
-          control={props.form.control}
+          name={name}
+          control={form.control}
           render={({ field: { value, onChange } }) => (
             <SelectMultipleInner
               {...props}

@@ -5,8 +5,8 @@ module.exports = [
     use: 'node-loader',
   },
   {
-    test: /(<id>\.jsx?|\.tsx?)$/,
-    exclude: /(<id>node_modules|\.webpack)/,
+    test: /(?<id>\.jsx?|\.tsx?)$/,
+    exclude: /(?<id>node_modules|\.webpack)/,
     use: {
       loader: 'babel-loader',
       options: {

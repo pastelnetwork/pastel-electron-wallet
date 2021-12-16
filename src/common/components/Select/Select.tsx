@@ -81,6 +81,24 @@ export default function Select<TForm extends FieldValues>(
 ): JSX.Element {
   const [enableFiltering, setEnableFiltering] = useState(false)
 
+  const onInputValueChange = useCallback(
+    (value: string, event: ControllerStateAndHelpers<TOption>) => {
+      const { type } = (event as unknown) as { type: string }
+      if (type === Downshift.stateChangeTypes.changeInput) {
+        setEnableFiltering(true)
+        onInputChange?.(value, event)
+      } else {
+        setEnableFiltering(false)
+      }
+    },
+    [enableFiltering],
+  )
+
+  const itemToString = useCallback(
+    (item: TOption | null) => (item ? item.value : ''),
+    [],
+  )
+
   if ('form' in props) {
     return <FormSelect {...props} />
   }
@@ -122,19 +140,6 @@ export default function Select<TForm extends FieldValues>(
     onInputChange = debounce(onInputChange, customDebounce)
   }
 
-  const onInputValueChange = useCallback(
-    (value: string, event: ControllerStateAndHelpers<TOption>) => {
-      const { type } = (event as unknown) as { type: string }
-      if (type === Downshift.stateChangeTypes.changeInput) {
-        setEnableFiltering(true)
-        onInputChange?.(value, event)
-      } else {
-        setEnableFiltering(false)
-      }
-    },
-    [enableFiltering],
-  )
-
   const getInputValue = (inputProps: GetInputPropsOptions) => {
     if (!append) {
       return inputProps.value
@@ -144,11 +149,6 @@ export default function Select<TForm extends FieldValues>(
 
     return `${vInput}${vAppend}`
   }
-
-  const itemToString = useCallback(
-    (item: TOption | null) => (item ? item.value : ''),
-    [],
-  )
 
   return (
     <Downshift

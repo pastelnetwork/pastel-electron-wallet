@@ -95,7 +95,10 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
 
   const clear = () => onChange('')
 
-  const addChar = (char: string) => onChange(`${value}${char}`)
+  const addChar = (char: string) => {
+    const val: string = value || ''
+    onChange(`${val}${char}`)
+  }
 
   const renderNumpadControl = () => (
     <div className='pt-1 space-y-2'>
@@ -157,7 +160,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
               'text-base font-medium',
               item.type === 'default' ? 'text-gray-a0' : 'text-gray-4a',
             )}
-            key={`${item.value}${item.type}${item.index}`}
+            key={`${item.type}${item.index}`}
           >
             {item.value}
           </span>

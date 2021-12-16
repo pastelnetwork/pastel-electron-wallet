@@ -37,13 +37,10 @@ export default function TextArea<TForm extends FieldValues>({
 
   const onRender = useCallback(
     ({ field }) => {
-      const onChange = useCallback(
-        (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-          field.onChange(e)
-          adjustTextAreaHeight(e)
-        },
-        [],
-      )
+      const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        field.onChange(e)
+        adjustTextAreaHeight(e)
+      }
 
       const value = (field.value || '') as string
       const length = value.length

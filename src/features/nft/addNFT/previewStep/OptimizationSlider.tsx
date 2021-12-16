@@ -21,6 +21,33 @@ export default function OptimizationSlider({
 }: TOptimizationSliderProps): JSX.Element | null {
   const currencyName = useCurrencyName()
 
+  const formatValue = useCallback((value: number) => {
+    if (files) {
+      const index = Math.round(value)
+      const file = files[index] || image
+      return formatFileSize(file.size, 2)
+    }
+    return ''
+  }, [])
+
+  const formatTooltipValue = useCallback((value: number) => {
+    const size: string = formatValue(value) || ''
+
+    if (fee === undefined) {
+      return size
+    } else {
+      return `${size} - ${formatPrice(fee, currencyName)}`
+    }
+  }, [])
+
+  const onChange = useCallback((value: number) => {
+    if (files) {
+      const index = Math.round(value)
+      const file = files[index]
+      state.optimizationService.setSelectedFile(file && { ...file, index })
+    }
+  }, [])
+
   if (state.optimizationService.status === 'processing') {
     return (
       <div className='flex items-center text-gray-71'>
@@ -34,31 +61,8 @@ export default function OptimizationSlider({
   if (!files?.length) {
     return null
   }
-
-  const formatValue = useCallback((value: number) => {
-    const index = Math.round(value)
-    const file = files[index] || image
-    return formatFileSize(file.size, 2)
-  }, [])
-
-  const formatTooltipValue = useCallback((value: number) => {
-    const size = formatValue(value)
-
-    if (fee === undefined) {
-      return size
-    } else {
-      return `${size} - ${formatPrice(fee, currencyName)}`
-    }
-  }, [])
-
   const selectedIndex =
     state.optimizationService.selectedFile?.index ?? files.length
-
-  const onChange = useCallback((value: number) => {
-    const index = Math.round(value)
-    const file = files[index]
-    state.optimizationService.setSelectedFile(file && { ...file, index })
-  }, [])
 
   return (
     <Slider

@@ -374,3 +374,7 @@ export const EChartsLineChart = memo(function EChartsLineChart(
     </div>
   )
 })
+
+GranularityButton.defaultProps = {
+  handleGranularityFilterChange: undefined,
+}

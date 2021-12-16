@@ -29,10 +29,11 @@ export default function Royalty({ form }: { form: TForm }): JSX.Element {
     </div>
   )
 
-  const formatTooltipValue = useCallback(
-    (value: number) => `${roundValue(value)}%`,
-    [],
-  )
+  const formatTooltipValue = useCallback((value: number) => {
+    const text: string = roundValue(value).toString()
+
+    return `${text}%`
+  }, [])
 
   const formatValue = useCallback((value: number) => `${value}%`, [])
 

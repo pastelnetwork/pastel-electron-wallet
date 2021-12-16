@@ -35,14 +35,12 @@ export default function StepSlider({
 
   const onRender = useCallback(
     ({ field: { value, onChange } }) => {
-      const onSliderChange = useCallback((value: number) => {
+      const onSliderChange = (value: number) => {
         onChange(roundValue(value))
-      }, [])
-
-      const onNumpadChange = useCallback((value: number) => {
+      }
+      const onNumpadChange = (value: number) => {
         form.setValue(name, value)
-      }, [])
-
+      }
       return (
         <div className='pt-12 space-x-7 relative pr-[34px]'>
           <Slider

@@ -44,13 +44,33 @@ export default function SelectImageStep({
 
   const handleConvertToJPG = useCallback(() => {
     if (imageToConvert) {
-      service.convertImage(imageToConvert, ImageType.JPG)
+      service
+        .convertImage(imageToConvert, ImageType.JPG)
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [])
 
   const handleConvertToPNG = useCallback(() => {
     if (imageToConvert) {
-      service.convertImage(imageToConvert, ImageType.PNG)
+      service
+        .convertImage(imageToConvert, ImageType.PNG)
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [])
 

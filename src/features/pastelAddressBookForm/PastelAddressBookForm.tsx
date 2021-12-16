@@ -12,15 +12,16 @@ type PastelAddressBookFormProps = {
   addressBook: AddressBookProps[]
 }
 
-export default function PastelAddressBookForm(
-  props: PastelAddressBookFormProps,
-): JSX.Element {
+export default function PastelAddressBookForm({
+  addAddressBookEntry,
+  addressBook,
+}: PastelAddressBookFormProps): JSX.Element {
   const [addButtonEnabled, setAddButtonEnabled] = useState(false)
   const [currentLabel, setCurrentLabel] = useState('')
   const [currentAddress, setCurrentAddress] = useState('')
 
   const validate = (label: string, address: string) => {
-    let labelError = props.addressBook.find(
+    let labelError = addressBook.find(
       (i: AddressBookProps) => i.label === label,
     )
       ? 'Duplicate Label'
@@ -63,7 +64,7 @@ export default function PastelAddressBookForm(
 
   const handleAddButtonClicked = useCallback(() => {
     if (currentLabel && currentAddress) {
-      props.addAddressBookEntry(currentLabel, currentAddress)
+      addAddressBookEntry(currentLabel, currentAddress)
       setCurrentLabel('')
       setCurrentAddress('')
       setAddButtonEnabled(false)
