@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import Toggle, { TToggleProps } from './index'
@@ -10,13 +10,12 @@ export default {
 
 const Template: Story<TToggleProps> = ({ selected, ...args }: TToggleProps) => {
   const [select, setSelect] = useState(selected)
-  return (
-    <Toggle
-      {...args}
-      selected={select}
-      toggleHandler={checked => setSelect(checked)}
-    />
-  )
+
+  const toggleHandler = useCallback((checked: boolean) => {
+    setSelect(checked)
+  }, [])
+
+  return <Toggle {...args} selected={select} toggleHandler={toggleHandler} />
 }
 
 export const SimpleToggle = Template.bind({})

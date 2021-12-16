@@ -63,7 +63,7 @@ export default function Table({
 
   const setSort = (index: number) => {
     if (index === sortIndex) {
-      setSortOrder(((sortOrder + 2) % 3) - 1)
+      setSortOrder(((parseInt(sortOrder.toString(), 10) + 2) % 3) - 1)
     } else {
       setSortIndex(index)
       setSortOrder(1)

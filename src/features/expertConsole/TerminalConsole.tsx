@@ -174,7 +174,8 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
       return
     }
     const vSuggestions: string = suggestions.join('\n').toString() || ''
-    addOutputThenDisplay(`$ ${typing}\n${vSuggestions}`)
+    const vTyping: string = typing || ''
+    addOutputThenDisplay(`$ ${vTyping}\n${vSuggestions}`)
       .then(() => {
         // noop
       })

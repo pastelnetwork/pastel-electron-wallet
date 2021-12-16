@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { TPastelIdWithTxIdAndConfirmed } from 'api/pastel-rpc'
 import { useInitializeRegister } from './register/Register.service'
@@ -15,8 +15,10 @@ export default function OnboardingStoreProvider({
 }: TOnboardingStoreProvider): JSX.Element {
   const store = useInitializeRegister({ fetchedPastelId })
 
+  const createStore = useCallback(() => store, [])
+
   return (
-    <RegisterStoreProvider createStore={() => store}>
+    <RegisterStoreProvider createStore={createStore}>
       {children}
     </RegisterStoreProvider>
   )

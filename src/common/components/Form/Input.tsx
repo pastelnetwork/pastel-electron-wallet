@@ -1,4 +1,9 @@
-import React, { InputHTMLAttributes, ReactNode, useState } from 'react'
+import React, {
+  InputHTMLAttributes,
+  ReactNode,
+  useCallback,
+  useState,
+} from 'react'
 import FormControl, { TFormControlProps } from './FormControl'
 import { FieldValues } from 'react-hook-form'
 import { Eye } from '../Icons'
@@ -26,8 +31,10 @@ export default function Input<TForm extends FieldValues>({
   }
 
   const [type, setType] = useState(inputProps.type)
-  const togglePasswordType = () =>
-    setType(type === 'password' ? 'text' : 'password')
+  const togglePasswordType = useCallback(
+    () => setType(type === 'password' ? 'text' : 'password'),
+    [type],
+  )
 
   return (
     <FormControl

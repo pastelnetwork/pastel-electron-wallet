@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { useImagePreview } from './PreviewStep.service'
 import { useToggle } from 'react-use'
@@ -23,15 +23,15 @@ export default function PreviewStep({
   const [cropping, toggleCropping] = useToggle(false)
   const [fullScreen, toggleFullScreen] = useToggle(false)
 
-  const onCroppingToggle = () => {
+  const onCroppingToggle = useCallback(() => {
     toggleCloseButton()
     toggleCropping()
-  }
+  }, [])
 
-  const onFullScreenToggle = () => {
+  const onFullScreenToggle = useCallback(() => {
     toggleCloseButton()
     toggleFullScreen()
-  }
+  }, [])
 
   if (cropping && croppedImage) {
     return (

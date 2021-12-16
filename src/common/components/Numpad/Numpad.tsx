@@ -95,7 +95,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
 
   const clear = () => onChange('')
 
-  const addChar = (char: string) => onChange(value + char)
+  const addChar = (char: string) => onChange(`${value}${char}`)
 
   const renderNumpadControl = () => (
     <div className='pt-1 space-y-2'>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Story, Meta } from '@storybook/react'
 import AnimatedModal from '../AnimatedModal'
 import Component, { TFullScreenImageProps as Props } from './FullScreenImage'
@@ -14,6 +14,11 @@ export default {
 const Template: Story<Props> = args => {
   const [open, toggle] = useToggle(true)
 
+  const renderContent = useCallback(
+    () => <Component {...args} onClose={toggle} />,
+    [],
+  )
+
   return (
     <>
       <Button onClick={toggle}>Open full screen image</Button>
@@ -22,7 +27,7 @@ const Template: Story<Props> = args => {
         onClose={toggle}
         easyToClose
         closeButton
-        render={() => <Component {...args} onClose={toggle} />}
+        render={renderContent}
       />
     </>
   )

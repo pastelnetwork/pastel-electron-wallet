@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Input } from '../Inputs'
 import { Button } from '../Buttons'
 
@@ -9,15 +9,22 @@ export type TCreateTag = {
 function CreateTag({ onSave }: TCreateTag): JSX.Element {
   const [tag, setTag] = useState<string>('')
 
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void =>
-    setTag(event.target.value)
-  const handleSubmit = (event: React.SyntheticEvent): void => {
-    event.preventDefault()
-    if (tag !== '') {
-      onSave(tag)
-      setTag('')
-    }
-  }
+  const handleInput = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>): void =>
+      setTag(event.target.value),
+    [tag],
+  )
+
+  const handleSubmit = useCallback(
+    (event: React.SyntheticEvent): void => {
+      event.preventDefault()
+      if (tag !== '') {
+        onSave(tag)
+        setTag('')
+      }
+    },
+    [tag],
+  )
 
   return (
     <form

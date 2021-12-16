@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { UseFormReturn, FieldValues, Path, Controller } from 'react-hook-form'
 import Toggle from 'common/components/Toggle'
 
@@ -11,16 +11,15 @@ export default function FormToggle<TForm extends FieldValues>({
   form,
   name,
 }: TToggleProps<TForm>): JSX.Element {
-  return (
-    <Controller
-      control={form.control}
-      name={name}
-      render={({ field }) => (
-        <Toggle
-          selected={field.value as boolean}
-          toggleHandler={field.onChange}
-        />
-      )}
-    />
+  const renderToggle = useCallback(
+    ({ field }) => (
+      <Toggle
+        selected={field.value as boolean}
+        toggleHandler={field.onChange}
+      />
+    ),
+    [],
   )
+
+  return <Controller control={form.control} name={name} render={renderToggle} />
 }

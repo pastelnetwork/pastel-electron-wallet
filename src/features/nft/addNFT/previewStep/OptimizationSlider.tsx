@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Slider from 'common/components/Slider/Slider'
 import { formatFileSize, formatPrice } from 'common/utils/format'
 import { TAddNFTState, TImage } from '../AddNFT.state'
@@ -35,13 +35,13 @@ export default function OptimizationSlider({
     return null
   }
 
-  const formatValue = (value: number) => {
+  const formatValue = useCallback((value: number) => {
     const index = Math.round(value)
     const file = files[index] || image
     return formatFileSize(file.size, 2)
-  }
+  }, [])
 
-  const formatTooltipValue = (value: number) => {
+  const formatTooltipValue = useCallback((value: number) => {
     const size = formatValue(value)
 
     if (fee === undefined) {
@@ -49,16 +49,16 @@ export default function OptimizationSlider({
     } else {
       return `${size} - ${formatPrice(fee, currencyName)}`
     }
-  }
+  }, [])
 
   const selectedIndex =
     state.optimizationService.selectedFile?.index ?? files.length
 
-  const onChange = (value: number) => {
+  const onChange = useCallback((value: number) => {
     const index = Math.round(value)
     const file = files[index]
     state.optimizationService.setSelectedFile(file && { ...file, index })
-  }
+  }, [])
 
   return (
     <Slider
