@@ -79,6 +79,7 @@ export type TSelectProps<TForm> =
 export default function Select<TForm extends FieldValues>(
   props: TSelectProps<TForm>,
 ): JSX.Element {
+  let { onInputChange } = props
   const [enableFiltering, setEnableFiltering] = useState(false)
 
   const onInputValueChange = useCallback(
@@ -134,7 +135,6 @@ export default function Select<TForm extends FieldValues>(
     listClassName,
   } = props
 
-  let { onInputChange } = props
   const { debounce: customDebounce } = props
   if (customDebounce && onInputChange) {
     onInputChange = debounce(onInputChange, customDebounce)

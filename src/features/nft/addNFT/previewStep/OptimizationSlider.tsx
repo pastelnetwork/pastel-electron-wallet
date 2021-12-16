@@ -20,6 +20,7 @@ export default function OptimizationSlider({
   fee,
 }: TOptimizationSliderProps): JSX.Element | null {
   const currencyName = useCurrencyName()
+  const { files } = state.optimizationService
 
   const formatValue = useCallback((value: number) => {
     if (files) {
@@ -57,7 +58,6 @@ export default function OptimizationSlider({
     )
   }
 
-  const { files } = state.optimizationService
   if (!files?.length) {
     return null
   }
