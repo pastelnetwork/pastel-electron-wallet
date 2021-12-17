@@ -76,10 +76,10 @@ export type TSelectProps<TForm> =
   | TControlledSelectProps
   | TFormSelectProps<TForm>
 
-export default function Select<TForm extends FieldValues>(
-  props: TSelectProps<TForm>,
-): JSX.Element {
-  let { onInputChange } = props
+export default function Select<TForm extends FieldValues>({
+  onInputChange,
+  ...props
+}: TSelectProps<TForm>): JSX.Element {
   const [enableFiltering, setEnableFiltering] = useState(false)
 
   const onInputValueChange = useCallback(

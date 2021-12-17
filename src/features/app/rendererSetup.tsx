@@ -53,10 +53,35 @@ export const rendererSetup = (): void => {
   onRendererEvent('setRpcConfig', ({ rpcConfig }): void => {
     setRpcConfig(rpcConfig)
 
+    const fetchInfo = async () => {
+      const info = await RPC.getInfoObject(rpcConfig)
+      store.dispatch(setPastelInfo({ info: { ...info } }))
+    }
+
     retryPromise(
       async () => {
-        const info = await RPC.getInfoObject(rpcConfig)
-        store.dispatch(setPastelInfo({ info: { ...info } }))
+        fetchInfo()
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
+        setInterval(async () => {
+          fetchInfo()
+            .then(() => {
+              // noop
+            })
+            .catch(() => {
+              // noop
+            })
+            .finally(() => {
+              // noop
+            })
+        }, 4000)
       },
       {
         attempts: 10,

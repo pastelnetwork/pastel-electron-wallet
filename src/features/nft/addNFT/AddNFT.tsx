@@ -17,8 +17,10 @@ import { useToggle } from 'react-use'
 
 export type TAddNFTProps = { open: boolean } & TUseAddNFTProps
 
-function AddNFTContent(props: TUseAddNFTProps & { toggleCloseButton(): void }) {
-  const { toggleCloseButton } = props
+function AddNFTContent({
+  toggleCloseButton,
+  ...props
+}: TUseAddNFTProps & { toggleCloseButton(): void }) {
   const state = useAddNFTState(props)
   const { step } = state
 
@@ -74,8 +76,11 @@ function AddNFTContent(props: TUseAddNFTProps & { toggleCloseButton(): void }) {
   return null
 }
 
-export default function AddNFT({ open, ...props }: TAddNFTProps): JSX.Element {
-  const { onClose } = props
+export default function AddNFT({
+  open,
+  onClose,
+  ...props
+}: TAddNFTProps): JSX.Element {
   const [showCloseButton, toggleCloseButton] = useToggle(true)
 
   const handleCloseModal = useCallback(() => {
@@ -90,7 +95,11 @@ export default function AddNFT({ open, ...props }: TAddNFTProps): JSX.Element {
       onClose={handleCloseModal}
       closeButton={showCloseButton}
       render={() => (
-        <AddNFTContent {...props} toggleCloseButton={toggleCloseButton} />
+        <AddNFTContent
+          {...props}
+          onClose={onClose}
+          toggleCloseButton={toggleCloseButton}
+        />
       )}
     />
   )
