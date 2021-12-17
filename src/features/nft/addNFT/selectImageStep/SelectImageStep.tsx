@@ -56,7 +56,7 @@ export default function SelectImageStep({
           // noop
         })
     }
-  }, [])
+  }, [imageToConvert])
 
   const handleConvertToPNG = useCallback(() => {
     if (imageToConvert) {
@@ -72,7 +72,7 @@ export default function SelectImageStep({
           // noop
         })
     }
-  }, [])
+  }, [imageToConvert])
 
   const renderImageOptimizationButton = () => (
     <div className='flex-between'>

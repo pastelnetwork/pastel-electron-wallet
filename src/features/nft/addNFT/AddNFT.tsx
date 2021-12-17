@@ -89,18 +89,23 @@ export default function AddNFT({
     }
   }, [])
 
+  const renderModalContent = useCallback(
+    () => (
+      <AddNFTContent
+        {...props}
+        onClose={onClose}
+        toggleCloseButton={toggleCloseButton}
+      />
+    ),
+    [props],
+  )
+
   return (
     <Modal
       open={open}
       onClose={handleCloseModal}
       closeButton={showCloseButton}
-      render={() => (
-        <AddNFTContent
-          {...props}
-          onClose={onClose}
-          toggleCloseButton={toggleCloseButton}
-        />
-      )}
+      render={renderModalContent}
     />
   )
 }
