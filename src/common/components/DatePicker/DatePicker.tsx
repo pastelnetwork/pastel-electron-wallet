@@ -200,18 +200,3 @@ function DatePicker({
 }
 
 export default DatePicker
-
-DatePicker.defaultProps = {
-  positionFixed: undefined,
-  selected: undefined,
-  label: undefined,
-  placeholder: undefined,
-  selectsRange: undefined,
-  startDate: undefined,
-  endDate: undefined,
-  variant: undefined,
-  footer: undefined,
-  closeOnSelect: undefined,
-  value: undefined,
-  openToDate: undefined,
-}
