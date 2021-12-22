@@ -87,10 +87,10 @@ export default function AddPaymentSourceModal({
   const renderPaymentSourceHeaderModal = () => (
     <thead>
       <tr className='text-gray-71 text-sm h-10 bg-white border-b border-line'>
-        <th className='text-left sticky bg-white z-30 text-h6 leading-5 font-normal top-[23px]'>
+        <th className='text-left sticky bg-white z-30 text-h6 leading-5 font-normal top-0'>
           Address name
         </th>
-        <th className='text-left w-[20%] sticky bg-white z-30 text-h6 leading-5 font-normal top-[23px]'>
+        <th className='text-left w-[20%] sticky bg-white z-30 text-h6 leading-5 font-normal top-0'>
           Balance
         </th>
       </tr>
@@ -159,11 +159,13 @@ export default function AddPaymentSourceModal({
       title='Add Payment Source'
       classNames='max-w-[650px]'
     >
-      <Scrollbar maxHeight='425' className='min-h-[200px]'>
-        <table className='w-full text-gray-71 relative table-auto'>
-          {renderPaymentSourceHeaderModal()}
-          {renderPaymentSourceBody()}
-        </table>
+      <Scrollbar maxHeight='425'>
+        <div className='min-h-[250px]'>
+          <table className='w-full text-gray-71 relative table-auto'>
+            {renderPaymentSourceHeaderModal()}
+            {renderPaymentSourceBody()}
+          </table>
+        </div>
       </Scrollbar>
       <div className='flex justify-end mt-[21px]'>
         {renderCloseButton()}

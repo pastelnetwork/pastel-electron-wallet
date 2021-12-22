@@ -352,7 +352,7 @@ export default function PaymentModal(): JSX.Element {
       setValidRecipientAddress(false)
       setRecipientAddressMessage('Recipient address is invalid')
     }
-  }, [])
+  }, [recipientAddress])
 
   let recipientAddressIsValid: boolean | null = null
   if (!isValidRecipientAddress && recipientAddressMessage) {
@@ -676,7 +676,7 @@ export default function PaymentModal(): JSX.Element {
     <>
       <TitleModal
         isOpen
-        handleClose={close}
+        handleClose={handleCloseModal}
         title={
           !isComplete && !isLoading
             ? 'Payment'

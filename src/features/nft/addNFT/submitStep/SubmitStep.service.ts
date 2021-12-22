@@ -7,7 +7,7 @@ import {
   artworkRegister,
   artworkUploadImage,
 } from 'api/walletNode/artwork-api/artwork'
-import { walletRPC, getPastelIdTickets } from 'api/pastel-rpc'
+import { getPastelIdTickets } from 'api/pastel-rpc'
 import { TArtworkTicket } from 'api/walletNode/artwork-api/interfaces'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
 import { readUsersInfo } from 'common/utils/User'
@@ -49,21 +49,22 @@ export const submit = async ({
   state,
   image,
   nftData,
+  spendableAddr,
 }: {
   state: TAddNFTState
   image: TImage
   nftData: TNFTData
+  spendableAddr?: string
 }): Promise<void> => {
   try {
     const tempPath = store.getState().appInfo.tempPath
-    const addressAmount = await walletRPC.getListAddressAmounts()
     const tickets = await getPastelIdTickets()
     if (!tickets) {
       toast("PastelID isn't exists", { type: 'error' })
       return
     }
 
-    if (!addressAmount) {
+    if (!spendableAddr) {
       toast("The address isn't exists", { type: 'error' })
       return
     }
@@ -71,7 +72,6 @@ export const submit = async ({
     const users = await readUsersInfo()
     const pastelid = tickets[0].ticket.pastelID,
       pass = `${users[0].password}${users[0].username}`,
-      spendableAddr = addressAmount,
       userName = users[0].username
 
     const form = new FormData()

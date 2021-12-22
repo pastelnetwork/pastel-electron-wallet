@@ -14,7 +14,7 @@ import {
   TAddressList,
   TZListUnspent,
   TListUnspent,
-  TListAddressAmountsResponse,
+  TListAddressAmounts,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -268,15 +268,22 @@ export class WalletRPC {
     }
   }
 
-  async getListAddressAmounts(): Promise<string> {
+  async getListAddressAmounts(): Promise<TListAddressAmounts[]> {
     try {
-      const res = await rpc<TListAddressAmountsResponse>(
+      const listAddressAmounts = await rpc<Record<string, string>>(
         'listaddressamounts',
         [false, 'spendableOnly'],
         { throw: true },
       )
-      const result = Object.keys(res)
-      return result[0]
+      const results: TListAddressAmounts[] = []
+      for (const property in listAddressAmounts) {
+        results.push({
+          address: property,
+          amount: parseFloat(listAddressAmounts[property]),
+        })
+      }
+
+      return results.sort((a, b) => b.amount - a.amount)
     } catch (err) {
       const message: string = err.message || ''
       log.error(

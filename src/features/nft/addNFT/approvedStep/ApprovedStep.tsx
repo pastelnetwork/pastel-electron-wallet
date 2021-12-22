@@ -1,9 +1,11 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useToggle } from 'react-use'
+
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
-import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
+import Select, { TOption } from 'common/components/Select'
 import ImageShadow from '../common/ImageShadow'
 import {
   useImagePreview,
@@ -13,6 +15,9 @@ import {
 import { submit } from '../submitStep/SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { Size } from 'common/utils/file'
+import { walletRPC } from 'api/pastel-rpc'
+import { formatPrice } from 'common/utils/format'
+import { TListAddressAmounts } from 'types/rpc'
 
 function InfoPair({ title, value }: { title: string; value: string }) {
   return (
@@ -40,27 +45,84 @@ export default function ApprovedStep({
   const currencyName = useCurrencyName()
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
+  const [selectedItem, setSelected] = useState<TOption | null>()
+  const [options, setOptions] = useState<TOption[]>([])
+  const [listAddressAmounts, setListAddressAmounts] = useState<
+    TListAddressAmounts[]
+  >([])
 
-  const fileSizeKb = Math.round(image.size / Size.MB)
+  useEffect(() => {
+    const fetchListAddressAmounts = async () => {
+      const results = await walletRPC.getListAddressAmounts()
+      setListAddressAmounts(results)
+      const items = results.map(item => ({
+        value: item.address,
+        label: `${item.address} ${formatPrice(item.amount, currencyName, 2)}`,
+      }))
+
+      setOptions(items)
+    }
+    fetchListAddressAmounts()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  }, [])
+
+  const fileSizeKb = Math.ceil(image.size / Size.MB)
   const quality = state.optimizationService.selectedFile?.quality || 100
-
+  console.log(11111, 'fileSizeKb', fileSizeKb)
   const fee = calculateFee({
     networkfee,
     quality,
     fileSizeKb,
   })
 
-  const onSubmit = useCallback(() => submit({ state, image, nftData }), [
-    state,
-    image,
-    nftData,
-  ])
+  const onSubmit = useCallback(
+    () => submit({ state, image, nftData, spendableAddr: selectedItem?.value }),
+    [state, image, nftData],
+  )
+
+  const isInValid = useCallback(() => {
+    if (!selectedItem || !fee) {
+      return true
+    }
+    const addressAmount = listAddressAmounts.find(
+      a => a.address === selectedItem.value,
+    )
+    if (!addressAmount || addressAmount?.amount < fee) {
+      return true
+    }
+
+    return false
+  }, [selectedItem])
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
   const titleString = `NFT approved: “${nftData.title}”`
+
+  const renderListAddressAmounts = () => (
+    <div className='mt-2'>
+      <div className='font-medium text-gray-71 mb-2'>
+        Select address to payment
+      </div>
+      <div>
+        <Select
+          options={options}
+          selected={selectedItem}
+          onChange={setSelected}
+          autocomplete
+        />
+      </div>
+    </div>
+  )
 
   const renderFinalRegistrationFee = () => (
     <div className='w-full mt-3'>
@@ -70,10 +132,12 @@ export default function ApprovedStep({
           {fee} {currencyName}
         </div>
       </div>
+      {renderListAddressAmounts()}
       <button
         type='button'
         className='btn btn-primary w-full mt-5'
         onClick={onSubmit}
+        disabled={isInValid()}
       >
         Proceed to final registration fee payment
       </button>
@@ -121,7 +185,7 @@ export default function ApprovedStep({
         </div>
       }
       rightColumnContent={
-        <div className='h-full flex-between flex-col pt-5'>
+        <div className='h-full flex-between flex-col'>
           {renderThumbnailPreview()}
           {renderFinalRegistrationFee()}
         </div>

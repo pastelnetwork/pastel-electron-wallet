@@ -163,8 +163,9 @@ type TImportKey = {
   address: string
 }
 
-type TListAddressAmountsResponse = {
-  string: string
+type TListAddressAmounts = {
+  address: string
+  amount: number
 }
 
 type TAddressTxIdResponse = TResponse<string[]>
@@ -217,5 +218,5 @@ export type {
   TCreateAddressResponse,
   TPrivKeyResponse,
   TZPrivKeyResponse,
-  TListAddressAmountsResponse,
+  TListAddressAmounts,
 }
