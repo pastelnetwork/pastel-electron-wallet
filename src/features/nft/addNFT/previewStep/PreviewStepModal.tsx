@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react'
 import {
   calculateFee,
   CroppedValidatedImage,
-  useFeePerKb,
+  useStorageFee,
 } from './PreviewStep.service'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { useCurrencyName } from 'common/hooks/appInfo'
@@ -38,18 +38,17 @@ export default function PreviewStepModal({
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
     null,
   )
-  const fileSizeKb = Math.round(image.size / Size.KB)
+  const fileSizeKb = Math.round(image.size / Size.MB)
   const imageSizePercentOfAvg = 65
-  const feePerKb = useFeePerKb()
+  const networkfee = useStorageFee()
   const currencyName = useCurrencyName()
 
   const quality = state.optimizationService.selectedFile?.quality || 100
   const lossLess = quality === 100 || state.isLossLess
 
   const fee = calculateFee({
-    feePerKb,
+    networkfee,
     quality,
-    isLossLess: state.isLossLess,
     fileSizeKb,
   })
 

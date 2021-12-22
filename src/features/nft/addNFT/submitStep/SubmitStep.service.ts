@@ -7,6 +7,7 @@ import {
   artworkRegister,
   artworkUploadImage,
 } from 'api/walletNode/artwork-api/artwork'
+import { walletRPC, getPastelIdTickets } from 'api/pastel-rpc'
 import { TArtworkTicket } from 'api/walletNode/artwork-api/interfaces'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
 import { readUsersInfo } from 'common/utils/User'
@@ -55,10 +56,22 @@ export const submit = async ({
 }): Promise<void> => {
   try {
     const tempPath = store.getState().appInfo.tempPath
+    const addressAmount = await walletRPC.getListAddressAmounts()
+    const tickets = await getPastelIdTickets()
+    if (!tickets) {
+      toast("PastelID isn't exists", { type: 'error' })
+      return
+    }
+
+    if (!addressAmount) {
+      toast("The address isn't exists", { type: 'error' })
+      return
+    }
+
     const users = await readUsersInfo()
-    const pastelid = users[0].pastelId,
+    const pastelid = tickets[0].ticket.pastelID,
       pass = `${users[0].password}${users[0].username}`,
-      spendableAddr = users[0].address || '',
+      spendableAddr = addressAmount,
       userName = users[0].username
 
     const form = new FormData()
@@ -66,7 +79,6 @@ export const submit = async ({
     form.append('file', file)
     form.append('filename', image.name)
     const responseUpload = await artworkUploadImage(form)
-    fs.promises.unlink(path.join(tempPath, image.name))
     const regParams: TArtworkTicket = {
       artist_name: userName,
       artist_pastelid: pastelid,
@@ -101,12 +113,17 @@ export const submit = async ({
     }
 
     await artworkRegister(regParams)
-
     toast('Successfully registered new NFT', { type: 'success' })
-
+    if (responseUpload.image_id) {
+      fs.promises.unlink(path.join(tempPath, image.name))
+    }
     state.goToNextStep()
   } catch (err) {
-    log.error('Error on register new NFT', err)
+    const message: string = err.message || ''
+    log.error(
+      `features nft addNFT submitStep SubmitStep.service submit error: ${message}`,
+      err,
+    )
     toast('Register new NFT is failed', { type: 'error' })
   }
 }

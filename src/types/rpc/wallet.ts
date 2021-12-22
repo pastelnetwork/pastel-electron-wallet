@@ -163,6 +163,10 @@ type TImportKey = {
   address: string
 }
 
+type TListAddressAmountsResponse = {
+  string: string
+}
+
 type TAddressTxIdResponse = TResponse<string[]>
 type TWalletInfoResponse = TResponse<TWalletInfo>
 type TListAddressesResponse = string[]
@@ -213,4 +217,5 @@ export type {
   TCreateAddressResponse,
   TPrivKeyResponse,
   TZPrivKeyResponse,
+  TListAddressAmountsResponse,
 }

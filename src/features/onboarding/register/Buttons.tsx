@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import cn from 'classnames'
 import { LongArrow } from 'common/components/Icons'
 
@@ -22,13 +22,9 @@ export function NextButton({
   className,
   showIcon = true,
 }: TNextBtnProps): JSX.Element {
-  const handleOnClick = useCallback(() => {
-    onClick()
-  }, [])
-
   return (
     <button
-      onClick={handleOnClick}
+      onClick={onClick}
       className={cn(
         'flex items-center justify-center font-medium text-base rounded-2xl h-10 px-3 cursor-pointer',
         !disabled
@@ -48,17 +44,13 @@ export function NextButton({
 }
 
 export function PrevButton({ disabled, onClick }: TPrevBtnProps): JSX.Element {
-  const onPrevButtonClick = useCallback(() => {
-    onClick()
-  }, [])
-
   return (
     <button
       className={cn(
         'w-10 h-10 flex items-center justify-center rounded-full border border-gray-88 cursor-pointer hover:border-gray-8e hover:bg-gray-f6 active:bg-gray-f6 active:border-gray-55 active:text-border-gray-55',
         !disabled && 'opacity-50',
       )}
-      onClick={onPrevButtonClick}
+      onClick={onClick}
       disabled={disabled}
       type='button'
     >

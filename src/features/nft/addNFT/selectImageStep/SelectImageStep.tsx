@@ -40,7 +40,7 @@ export default function SelectImageStep({
 
   const handleImageOptimizationSubmit = useCallback(() => {
     service.submit()
-  }, [])
+  }, [service])
 
   const handleConvertToJPG = useCallback(() => {
     if (imageToConvert) {
@@ -56,7 +56,7 @@ export default function SelectImageStep({
           // noop
         })
     }
-  }, [imageToConvert])
+  }, [imageToConvert, service])
 
   const handleConvertToPNG = useCallback(() => {
     if (imageToConvert) {
@@ -72,7 +72,7 @@ export default function SelectImageStep({
           // noop
         })
     }
-  }, [imageToConvert])
+  }, [imageToConvert, service])
 
   const renderImageOptimizationButton = () => (
     <div className='flex-between'>

@@ -9,7 +9,6 @@ import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import ImageShadow from '../common/ImageShadow'
-import { submit } from './SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PreviewIco } from 'common/components/Icons'
 
@@ -50,11 +49,16 @@ export default function SubmitStep({
     state.goBack()
   }, [])
 
-  const onSubmit = useCallback(() => submit({ state, image, nftData }), [
-    state,
-    image,
-    nftData,
-  ])
+  const onSubmit = useCallback(() => state.goToNextStep(), [])
+
+  const handleGreenNFTChange = useCallback((val: boolean) => {
+    if (state.nftData) {
+      state.setNftData({
+        ...state.nftData,
+        green: val,
+      })
+    }
+  }, [])
 
   if (fullScreen) {
     return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
@@ -145,7 +149,7 @@ export default function SubmitStep({
   const renderGreenNFT = () => (
     <div className='flex items-center'>
       <div className='text-gray-71 mr-3'>GreenNFT</div>
-      <Toggle selected={nftData.green} />
+      <Toggle selected={nftData.green} toggleHandler={handleGreenNFTChange} />
     </div>
   )
 

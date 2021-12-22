@@ -101,7 +101,7 @@ export default function RestoreByUpload({
         const videoPath: string = path.join(fileSelected.path).toString()
         VideoToImages.getFrames(
           'file://' + videoPath,
-          12,
+          24,
           VideoToFramesMethod.totalFrames,
         )
           .then(frames => {

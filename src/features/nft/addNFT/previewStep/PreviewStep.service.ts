@@ -2,7 +2,7 @@ import smartcrop from 'smartcrop'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { TCrop, TImage } from '../AddNFT.state'
-import { getEstimateFee } from 'api/estimate-fee'
+import { getEstimateFee, getStorageFee } from 'api/estimate-fee'
 import { loadImageElement } from 'common/utils/image'
 
 const previewSize = 320
@@ -135,19 +135,44 @@ export const useFeePerKb = (): number | undefined => {
   return feePerKb
 }
 
+export const useStorageFee = (): number | undefined => {
+  const [fee, setFee] = useState<number>()
+
+  const getFee = async () => {
+    const res = await getStorageFee()
+    if (res.networkfee) {
+      setFee(res.networkfee)
+    }
+  }
+
+  useEffect(() => {
+    getFee()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  }, [])
+
+  return fee
+}
+
 export const calculateFee = ({
-  feePerKb,
+  networkfee,
   quality,
-  isLossLess,
   fileSizeKb,
 }: {
-  feePerKb: number | undefined
+  networkfee: number | undefined
   quality: number
-  isLossLess: boolean
   fileSizeKb: number
 }): number | undefined => {
-  if (feePerKb === undefined) {
+  if (networkfee === undefined) {
     return undefined
   }
-  return Math.round((isLossLess ? 100 : quality) * fileSizeKb * feePerKb)
+  const fileSize = Math.round((quality * fileSizeKb) / 100) || 1
+  return fileSize * networkfee
 }

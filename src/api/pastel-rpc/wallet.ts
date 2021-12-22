@@ -14,6 +14,7 @@ import {
   TAddressList,
   TZListUnspent,
   TListUnspent,
+  TListAddressAmountsResponse,
 } from '../../types/rpc'
 import { isTransparent, isZaddr } from '../helpers'
 import { rpc } from './rpc'
@@ -264,6 +265,25 @@ export class WalletRPC {
       throw new Error(
         'Error: The entered ANI private key was the wrong length or did not start with the character "p"!',
       )
+    }
+  }
+
+  async getListAddressAmounts(): Promise<string> {
+    try {
+      const res = await rpc<TListAddressAmountsResponse>(
+        'listaddressamounts',
+        [false, 'spendableOnly'],
+        { throw: true },
+      )
+      const result = Object.keys(res)
+      return result[0]
+    } catch (err) {
+      const message: string = err.message || ''
+      log.error(
+        `api/pastel-rpc/wallet getListAddressAmounts error: ${message}`,
+        err,
+      )
+      throw err
     }
   }
 }

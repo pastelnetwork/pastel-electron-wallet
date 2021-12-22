@@ -159,7 +159,7 @@ export default function AddPaymentSourceModal({
       title='Add Payment Source'
       classNames='max-w-[650px]'
     >
-      <Scrollbar maxHeight='425'>
+      <Scrollbar maxHeight='425' className='min-h-[200px]'>
         <table className='w-full text-gray-71 relative table-auto'>
           {renderPaymentSourceHeaderModal()}
           {renderPaymentSourceBody()}

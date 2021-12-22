@@ -22,32 +22,41 @@ export default function OptimizationSlider({
   const currencyName = useCurrencyName()
   const { files } = state.optimizationService
 
-  const formatValue = useCallback((value: number) => {
-    if (files) {
-      const index = Math.round(value)
-      const file = files[index] || image
-      return formatFileSize(file.size, 2)
-    }
-    return ''
-  }, [])
+  const formatValue = useCallback(
+    (value: number) => {
+      if (files) {
+        const index = Math.round(value)
+        const file = files[index] || image
+        return formatFileSize(file.size, 2)
+      }
+      return ''
+    },
+    [files],
+  )
 
-  const formatTooltipValue = useCallback((value: number) => {
-    const size: string = formatValue(value) || ''
+  const formatTooltipValue = useCallback(
+    (value: number) => {
+      const size: string = formatValue(value) || ''
 
-    if (fee === undefined) {
-      return size
-    } else {
-      return `${size} - ${formatPrice(fee, currencyName)}`
-    }
-  }, [])
+      if (fee === undefined) {
+        return size
+      } else {
+        return `${size} - ${formatPrice(fee, currencyName)}`
+      }
+    },
+    [fee, state],
+  )
 
-  const onChange = useCallback((value: number) => {
-    if (files) {
-      const index = Math.round(value)
-      const file = files[index]
-      state.optimizationService.setSelectedFile(file && { ...file, index })
-    }
-  }, [])
+  const onChange = useCallback(
+    (value: number) => {
+      if (files) {
+        const index = Math.round(value)
+        const file = files[index]
+        state.optimizationService.setSelectedFile(file && { ...file, index })
+      }
+    },
+    [state, files],
+  )
 
   if (state.optimizationService.status === 'processing') {
     return (

@@ -46,7 +46,7 @@ export default function Login(): JSX.Element {
       setErrorMessage('Username or password is incorrect')
       setLoading(false)
     }
-  }, [])
+  }, [username, password])
 
   const onUsernameChanged = useCallback(
     (event: FormEvent<HTMLInputElement>) => {

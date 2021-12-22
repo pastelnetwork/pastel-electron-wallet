@@ -1,12 +1,18 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import ImageShadow from '../common/ImageShadow'
-import { useImagePreview } from '../previewStep/PreviewStep.service'
+import {
+  useImagePreview,
+  useStorageFee,
+  calculateFee,
+} from '../previewStep/PreviewStep.service'
+import { submit } from '../submitStep/SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { Size } from 'common/utils/file'
 
 function InfoPair({ title, value }: { title: string; value: string }) {
   return (
@@ -25,14 +31,24 @@ type TApprovedStepProps = {
 }
 
 export default function ApprovedStep({
-  state: { goToNextStep },
+  state,
   image,
   displayUrl,
   nftData,
 }: TApprovedStepProps): JSX.Element {
+  const networkfee = useStorageFee()
   const currencyName = useCurrencyName()
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
+
+  const fileSizeKb = Math.round(image.size / Size.MB)
+  const quality = state.optimizationService.selectedFile?.quality || 100
+
+  const fee = calculateFee({
+    networkfee,
+    quality,
+    fileSizeKb,
+  })
 
   if (fullScreen) {
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
@@ -40,18 +56,24 @@ export default function ApprovedStep({
 
   const titleString = `NFT approved: “${nftData.title}”`
 
+  const onSubmit = useCallback(() => submit({ state, image, nftData }), [
+    state,
+    image,
+    nftData,
+  ])
+
   const renderFinalRegistrationFee = () => (
     <div className='w-full mt-3'>
       <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
         <div className='text-gray-71'>Final registration fee</div>
         <div className='text-gray-45 font-extrabold'>
-          110,000 {currencyName}
+          {fee} {currencyName}
         </div>
       </div>
       <button
         type='button'
         className='btn btn-primary w-full mt-5'
-        onClick={goToNextStep}
+        onClick={onSubmit}
       >
         Proceed to final registration fee payment
       </button>
