@@ -12,7 +12,17 @@ export default function SelectImageArea({
 }: TProps): JSX.Element {
   const onChangeFile = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      service.selectFile(e.target.files?.[0])
+      service
+        .selectFile(e.target.files?.[0])
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     },
     [service],
   )

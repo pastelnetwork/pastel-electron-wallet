@@ -50,17 +50,17 @@ export default function ApprovedStep({
     fileSizeKb,
   })
 
-  if (fullScreen) {
-    return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
-  }
-
-  const titleString = `NFT approved: “${nftData.title}”`
-
   const onSubmit = useCallback(() => submit({ state, image, nftData }), [
     state,
     image,
     nftData,
   ])
+
+  if (fullScreen) {
+    return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
+  }
+
+  const titleString = `NFT approved: “${nftData.title}”`
 
   const renderFinalRegistrationFee = () => (
     <div className='w-full mt-3'>
