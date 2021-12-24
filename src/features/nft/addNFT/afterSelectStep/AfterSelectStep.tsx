@@ -75,19 +75,15 @@ export default function UploadStep({
         ref={filledProgressBarRef}
         className='h-full bg-white w-0 rounded-full relative'
       >
-        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
+        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-[5px]' />
       </div>
     </DraggableCore>
   )
 
   const renderMinusCircleButton = () => (
-    <div
-      className={`h-1 rounded-full bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
-    >
-      <button type='button'>
-        <MinusCircle size={13} />
-      </button>
-    </div>
+    <button type='button'>
+      <MinusCircle size={13} />
+    </button>
   )
 
   const renderLeftColumnContentControl = () => (

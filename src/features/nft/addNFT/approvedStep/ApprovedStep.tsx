@@ -76,7 +76,6 @@ export default function ApprovedStep({
 
   const fileSizeKb = Math.ceil(image.size / Size.MB)
   const quality = state.optimizationService.selectedFile?.quality || 100
-  console.log(11111, 'fileSizeKb', fileSizeKb)
   const fee = calculateFee({
     networkfee,
     quality,

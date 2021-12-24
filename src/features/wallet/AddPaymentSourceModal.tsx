@@ -152,6 +152,15 @@ export default function AddPaymentSourceModal({
     </tbody>
   )
 
+  const renderModalContent = () => (
+    <div className='min-h-[250px]'>
+      <table className='w-full text-gray-71 relative table-auto'>
+        {renderPaymentSourceHeaderModal()}
+        {renderPaymentSourceBody()}
+      </table>
+    </div>
+  )
+
   return (
     <TitleModal
       isOpen={isOpen}
@@ -159,14 +168,7 @@ export default function AddPaymentSourceModal({
       title='Add Payment Source'
       classNames='max-w-[650px]'
     >
-      <Scrollbar maxHeight='425'>
-        <div className='min-h-[250px]'>
-          <table className='w-full text-gray-71 relative table-auto'>
-            {renderPaymentSourceHeaderModal()}
-            {renderPaymentSourceBody()}
-          </table>
-        </div>
-      </Scrollbar>
+      <Scrollbar maxHeight='425'>{renderModalContent()}</Scrollbar>
       <div className='flex justify-end mt-[21px]'>
         {renderCloseButton()}
         {renderAddPaymentSourceButton()}
