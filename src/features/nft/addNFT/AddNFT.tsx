@@ -26,7 +26,9 @@ function AddNFTContent({
 
   if (step === Step.inputData) {
     return <InputNFTDataStep state={state} />
-  } else if (step === Step.select) {
+  }
+
+  if (step === Step.select) {
     return <SelectImageStep state={state} />
   }
 
@@ -41,7 +43,9 @@ function AddNFTContent({
     return (
       <AfterUploadStep state={state} image={image} displayUrl={displayUrl} />
     )
-  } else if (step === Step.preview && state.image) {
+  }
+
+  if (step === Step.preview && state.image) {
     return (
       <PreviewStep
         state={state}
@@ -62,7 +66,9 @@ function AddNFTContent({
         toggleCloseButton={toggleCloseButton}
       />
     )
-  } else if (step === Step.approved) {
+  }
+
+  if (step === Step.approved) {
     return (
       <ApprovedStep
         state={state}

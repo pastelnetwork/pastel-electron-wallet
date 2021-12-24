@@ -75,7 +75,7 @@ export default function UploadStep({
         ref={filledProgressBarRef}
         className='h-full bg-white w-0 rounded-full relative'
       >
-        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-[5px]' />
+        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-5px' />
       </div>
     </DraggableCore>
   )

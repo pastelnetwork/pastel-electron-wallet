@@ -83,7 +83,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
 
     const renderInputControl = () => (
       <div
-        className='relative flex items-center w-full'
+        className='relative flex items-center w-full cursor-default'
         onClick={onClick}
         role='button'
         tabIndex={0}
@@ -132,7 +132,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
           {renderInputControl()}
           {appendOutside && (
             <div
-              className='ml-4 select-none'
+              className='ml-4 select-none cursor-default'
               onClick={onClick}
               role='button'
               aria-hidden

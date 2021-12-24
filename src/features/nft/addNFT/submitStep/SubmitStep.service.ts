@@ -10,7 +10,9 @@ import {
 import { getPastelIdTickets } from 'api/pastel-rpc'
 import { TArtworkTicket } from 'api/walletNode/artwork-api/interfaces'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
+import { getStorageFee, TGetStorageFee } from 'api/estimate-fee'
 import { readUsersInfo } from 'common/utils/User'
+import { calcFileSize } from 'common/utils/file'
 import store from '../../../../redux/store'
 
 const getImageFile = (
@@ -59,6 +61,12 @@ export const submit = async ({
   try {
     const tempPath = store.getState().appInfo.tempPath
     const tickets = await getPastelIdTickets()
+    const storageFee: TGetStorageFee = await getStorageFee()
+    if (!storageFee) {
+      toast('Register new NFT is failed', { type: 'error' })
+      return
+    }
+
     if (!tickets) {
       toast("PastelID isn't exists", { type: 'error' })
       return
@@ -79,13 +87,18 @@ export const submit = async ({
     form.append('file', file)
     form.append('filename', image.name)
     const responseUpload = await artworkUploadImage(form)
+    const fileSize =
+      calcFileSize(
+        state.optimizationService.selectedFile?.size || state.image?.size,
+      ) || 0
     const regParams: TArtworkTicket = {
       artist_name: userName,
       artist_pastelid: pastelid,
       artist_pastelid_passphrase: pass,
       image_id: responseUpload.image_id,
       issued_copies: nftData.copies,
-      maximum_fee: 0.01, // not sure how to get/calc this value, so TODO:
+      maximum_fee:
+        storageFee.networkFee * fileSize + storageFee.nftTicketFee * 5,
       name: nftData.title,
       spendable_address: spendableAddr,
       green: nftData.green,
@@ -114,7 +127,7 @@ export const submit = async ({
 
     await artworkRegister(regParams)
     toast('Successfully registered new NFT', { type: 'success' })
-    if (responseUpload.image_id) {
+    if (fs.existsSync(path.join(tempPath, image.name))) {
       fs.promises.unlink(path.join(tempPath, image.name))
     }
     state.goToNextStep()

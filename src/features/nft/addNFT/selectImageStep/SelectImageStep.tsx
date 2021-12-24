@@ -9,6 +9,7 @@ import { allowedTypeNames, ImageType } from '../AddNft.constants'
 import ImageShadow from '../common/ImageShadow'
 import Spinner from 'common/components/Spinner'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import Tooltip from 'common/components/Tooltip'
 
 export type TSelectStepProps = {
   state: TAddNFTState
@@ -97,14 +98,16 @@ export default function SelectImageStep({
   const renderImageSize = () => (
     <div className='relative h-10 text-gray-a0 flex items-center px-4 mb-4'>
       <div className='absolute inset-0 border border-gray-8e opacity-20 rounded font-medium shadow-4px' />
-      {size ? formatFileSize(size) : 'max 100 mb'}
+      {size && !isProcessing ? formatFileSize(size) : 'max 100 mb'}
     </div>
   )
 
   const renderSelectImageFile = () => (
     <div className='flex items-center text-gray-71 font-medium mb-2'>
-      Select Image File
-      <Info size={18} className='ml-3' />
+      <span className='mr-3'>Select Image File</span>
+      <Tooltip type='top' content='info' width={50}>
+        <Info size={18} className='cursor-pointer' />
+      </Tooltip>
     </div>
   )
 

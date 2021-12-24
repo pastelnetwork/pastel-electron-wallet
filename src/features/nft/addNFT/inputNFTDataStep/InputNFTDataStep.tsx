@@ -106,7 +106,7 @@ export default function InputNFTDataStep({
         )}
         width={285}
       >
-        <Info size={18} />
+        <Info size={18} className='cursor-pointer' />
       </Tooltip>
     </div>
   )

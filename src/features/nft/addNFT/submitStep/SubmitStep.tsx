@@ -37,9 +37,13 @@ export default function SubmitStep({
   toggleCloseButton,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
-  const [croppedImage] = useImagePreview({ image })
+  const [croppedImage] = useImagePreview({
+    image: {
+      ...image,
+      url: state.optimizationService.selectedFile?.fileUrl || image.url,
+    },
+  })
   const currencyName = useCurrencyName()
-
   const onFullScreenToggle = useCallback(() => {
     toggleCloseButton()
     toggleFullScreen()

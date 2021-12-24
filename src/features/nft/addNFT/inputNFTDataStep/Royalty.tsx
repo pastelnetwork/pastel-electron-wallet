@@ -14,7 +14,7 @@ export default function Royalty({ form }: { form: TForm }): JSX.Element {
   const renderPerpetualRoyaltyTooltip = () => (
     <div className='ml-2'>
       <Tooltip type='top' content='info' width={50}>
-        <Info className='text-gray-8e' size={18} />
+        <Info className='text-gray-8e cursor-pointer' size={18} />
       </Tooltip>
     </div>
   )

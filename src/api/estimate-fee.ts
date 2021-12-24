@@ -12,9 +12,16 @@ type TGetNetworkFee = {
     networkfee: number
   }
 }
+type TGetNftTicketFee = {
+  id: string
+  result: {
+    nftticketfee: number
+  }
+}
 
-type TGetStoragefee = {
-  networkfee: number
+export type TGetStorageFee = {
+  networkFee: number
+  nftTicketFee: number
 }
 
 export async function getEstimateFee(blocks: number): Promise<number> {
@@ -26,14 +33,17 @@ export async function getEstimateFee(blocks: number): Promise<number> {
   }
 }
 
-export async function getStorageFee(): Promise<TGetStoragefee> {
+export async function getStorageFee(): Promise<TGetStorageFee> {
   try {
     const {
       result: { networkfee },
     } = await rpc<TGetNetworkFee>('storagefee', ['getnetworkfee'])
-
+    const {
+      result: { nftticketfee },
+    } = await rpc<TGetNftTicketFee>('storagefee', ['getnftticketfee'])
     return {
-      networkfee,
+      networkFee: networkfee,
+      nftTicketFee: nftticketfee,
     }
   } catch (error) {
     const message: string = error.message || ''

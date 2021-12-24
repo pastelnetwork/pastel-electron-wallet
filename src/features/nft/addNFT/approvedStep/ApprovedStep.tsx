@@ -14,7 +14,6 @@ import {
 } from '../previewStep/PreviewStep.service'
 import { submit } from '../submitStep/SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { Size } from 'common/utils/file'
 import { walletRPC } from 'api/pastel-rpc'
 import { formatPrice } from 'common/utils/format'
 import { TListAddressAmounts } from 'types/rpc'
@@ -41,7 +40,7 @@ export default function ApprovedStep({
   displayUrl,
   nftData,
 }: TApprovedStepProps): JSX.Element {
-  const networkfee = useStorageFee()
+  const storageFee = useStorageFee()
   const currencyName = useCurrencyName()
   const [fullScreen, toggleFullScreen] = useToggle(false)
   const [croppedImage] = useImagePreview({ image })
@@ -57,7 +56,7 @@ export default function ApprovedStep({
       setListAddressAmounts(results)
       const items = results.map(item => ({
         value: item.address,
-        label: `${item.address} ${formatPrice(item.amount, currencyName, 2)}`,
+        label: `${item.address} - ${formatPrice(item.amount, currencyName, 2)}`,
       }))
 
       setOptions(items)
@@ -74,17 +73,14 @@ export default function ApprovedStep({
       })
   }, [])
 
-  const fileSizeKb = Math.ceil(image.size / Size.MB)
-  const quality = state.optimizationService.selectedFile?.quality || 100
   const fee = calculateFee({
-    networkfee,
-    quality,
-    fileSizeKb,
+    networkFee: storageFee?.networkFee,
+    fileSizeKb: state.optimizationService.selectedFile?.size || image.size,
   })
 
   const onSubmit = useCallback(
     () => submit({ state, image, nftData, spendableAddr: selectedItem?.value }),
-    [state, image, nftData],
+    [state, image, nftData, selectedItem],
   )
 
   const isInValid = useCallback(() => {

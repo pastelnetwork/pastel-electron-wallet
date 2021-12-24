@@ -55,12 +55,14 @@ export type TAddNFTState = {
   nftData?: TNFTData
   image?: TImage
   crop?: TCrop
+  isImageCrop?: boolean
   isLossLess: boolean
   estimatedFee: number | undefined
   optimizationService: TImageOptimizationService
   setStep(step: Step): void
   setNftData(data: TNFTData): void
   setCrop(crop: TCrop): void
+  setImageCrop(status: boolean): void
   setImage(image: TImage): void
   goBack(): void
   goToNextStep(): void
@@ -76,6 +78,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [step, setStep] = useState<Step>(Step.inputData)
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
+  const [isImageCrop, setImageCrop] = useState<boolean>(false)
   const [image, setImage] = useState<TImage>()
   const [isLossLess, setIsLossLess] = useState(true)
   const [estimatedFee, setEstimatedFee] = useState<number>()
@@ -89,10 +92,12 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     image,
     setImage,
     crop,
+    isImageCrop,
     isLossLess,
     estimatedFee,
     setStep,
     setCrop,
+    setImageCrop,
     setEstimatedFee,
     optimizationService,
     setIsLossLess,

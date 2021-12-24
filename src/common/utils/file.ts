@@ -82,3 +82,10 @@ export const writeFileContent = async (
     })
   }
 }
+
+export const calcFileSize = (size?: number): number => {
+  if (!size) {
+    return 0
+  }
+  return parseFloat(Math.max(size / MB, 0.1).toFixed(1))
+}

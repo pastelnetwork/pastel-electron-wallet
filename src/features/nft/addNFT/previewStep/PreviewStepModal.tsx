@@ -16,7 +16,6 @@ import {
 } from './PreviewStep.service'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { Size } from 'common/utils/file'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
@@ -38,18 +37,14 @@ export default function PreviewStepModal({
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
     null,
   )
-  const fileSizeKb = Math.round(image.size / Size.MB)
   const imageSizePercentOfAvg = 65
-  const networkfee = useStorageFee()
+  const storageFee = useStorageFee()
   const currencyName = useCurrencyName()
-
   const quality = state.optimizationService.selectedFile?.quality || 100
   const lossLess = quality === 100 || state.isLossLess
-
   const fee = calculateFee({
-    networkfee,
-    quality,
-    fileSizeKb,
+    networkFee: storageFee?.networkFee,
+    fileSizeKb: state.optimizationService.selectedFile?.size || image.size,
   })
 
   useEffect(() => state.setEstimatedFee(fee), [fee])
