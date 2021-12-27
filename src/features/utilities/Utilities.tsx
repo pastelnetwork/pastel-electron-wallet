@@ -91,57 +91,67 @@ export default function Utilities(): JSX.Element {
       dispatch(openExportPrivKeyModal())
     })
 
-    onRendererEvent(
-      'exportalltx',
-      async (): Promise<void> => {
-        const save = await invokeMainTask(
-          'showSaveTransactionsAsCSVDialog',
-          undefined,
-        )
+    const exportAllTx = async (): Promise<void> => {
+      const save = await invokeMainTask(
+        'showSaveTransactionsAsCSVDialog',
+        undefined,
+      )
 
-        if (save.filePath) {
-          const transactionsRaw = await transactionRPC.fetchTAndZTransactions()
+      if (save.filePath) {
+        const transactionsRaw = await transactionRPC.fetchTAndZTransactions()
 
-          const transactions =
-            transactionsRaw?.map(transaction => ({
-              type:
-                (transaction.type as TTransactionType) || TTransactionType.ALL,
-              amount: transaction.amount || 0,
-              txid: transaction.txid,
-              time: transaction.time,
-              address: transaction.address,
-              escapedMemo: transaction.memo
-                ? `'${transaction.memo.replace(/"/g, '""')}'`
-                : '',
-              normaldate: dayjs
-                .unix(transaction.time)
-                .format('MMM DD YYYY hh:mm A'),
-            })) || []
+        const transactions =
+          transactionsRaw?.map(transaction => ({
+            type:
+              (transaction.type as TTransactionType) || TTransactionType.ALL,
+            amount: transaction.amount || 0,
+            txid: transaction.txid,
+            time: transaction.time,
+            address: transaction.address,
+            escapedMemo: transaction.memo
+              ? `'${transaction.memo.replace(/"/g, '""')}'`
+              : '',
+            normaldate: dayjs
+              .unix(transaction.time)
+              .format('MMM DD YYYY hh:mm A'),
+          })) || []
 
-          const rows = transactions.map(transaction => {
-            const time: string = transaction.time?.toString() || ''
-            const normaldate: string = transaction.normaldate || ''
-            const txid: string = transaction.txid || ''
-            const type: string = transaction.type?.toString() || ''
-            const amount: string = transaction.amount?.toString() || ''
-            const address: string = transaction.address || ''
-            const escapedMemo: string = transaction.escapedMemo || ''
-            return `${time},"${normaldate}","${txid}","${type}",${amount},"${address}","${escapedMemo}"`
-          })
-          const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
-          try {
-            await fs.promises.writeFile(
-              save.filePath,
-              header.concat(rows).join('\n'),
-            )
-          } catch (err) {
-            const message: string = err.message || ''
-            setExportTxnError(`${message}`)
-            setCloseExportTxn(true)
-          }
+        const rows = transactions.map(transaction => {
+          const time: string = transaction.time?.toString() || ''
+          const normaldate: string = transaction.normaldate || ''
+          const txid: string = transaction.txid || ''
+          const type: string = transaction.type?.toString() || ''
+          const amount: string = transaction.amount?.toString() || ''
+          const address: string = transaction.address || ''
+          const escapedMemo: string = transaction.escapedMemo || ''
+          return `${time},"${normaldate}","${txid}","${type}",${amount},"${address}","${escapedMemo}"`
+        })
+        const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
+        try {
+          await fs.promises.writeFile(
+            save.filePath,
+            header.concat(rows).join('\n'),
+          )
+        } catch (err) {
+          const message: string = err.message || ''
+          setExportTxnError(`${message}`)
+          setCloseExportTxn(true)
         }
-      },
-    )
+      }
+    }
+
+    onRendererEvent('exportalltx', () => {
+      exportAllTx()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
+    })
   }, [])
 
   const onErrorModalClose = useCallback(() => {

@@ -89,14 +89,24 @@ export const rendererSetup = (): void => {
     }
   })
 
-  onRendererEvent(
-    'prepareToQuit',
-    async (): Promise<void> => {
-      await Promise.all([PastelDB.waitTillValid(), stopRpc()])
+  const prepareToQuit = async (): Promise<void> => {
+    await Promise.all([PastelDB.waitTillValid(), stopRpc()])
 
-      sendEventToMain('rendererIsReadyForQuit', null)
-    },
-  )
+    sendEventToMain('rendererIsReadyForQuit', null)
+  }
+
+  onRendererEvent('prepareToQuit', () => {
+    prepareToQuit()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  })
 }
 
 export function RendererSetupHooks(): null {
