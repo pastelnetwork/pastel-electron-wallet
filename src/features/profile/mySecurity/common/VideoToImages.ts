@@ -48,21 +48,18 @@ export default class VideoToFrames {
             }
             resolve(frames)
           }
-          video.addEventListener(
-            'loadeddata',
-            async function (): Promise<void> {
-              calcFrames()
-                .then(() => {
-                  // noop
-                })
-                .catch(() => {
-                  // noop
-                })
-                .finally(() => {
-                  // noop
-                })
-            },
-          )
+          video.addEventListener('loadeddata', () => {
+            calcFrames()
+              .then(() => {
+                // noop
+              })
+              .catch(() => {
+                // noop
+              })
+              .finally(() => {
+                // noop
+              })
+          })
           video.src = videoUrl
           video.load()
         } else {

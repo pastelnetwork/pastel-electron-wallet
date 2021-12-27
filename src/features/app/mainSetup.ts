@@ -73,7 +73,7 @@ export const onWindowClose = async (event: Event): Promise<void> => {
 }
 
 const setupWindow = () => {
-  const onClose = (event: Event) =>
+  const windowClose = (event: Event) => {
     onWindowClose(event)
       .then(() => {
         // noop
@@ -84,7 +84,9 @@ const setupWindow = () => {
       .finally(() => {
         // noop
       })
-  createWindow(onClose)
+  }
+
+  createWindow(windowClose)
 }
 
 const setupEventListeners = () => {
@@ -231,7 +233,7 @@ onMainEvent('rendererStarted', () => {
     })
 })
 
-const onRetriableAppSetup = () =>
+const onRetriableAppSetup = () => {
   retriableAppSetup()
     .then(() => {
       // noop
@@ -242,5 +244,6 @@ const onRetriableAppSetup = () =>
     .finally(() => {
       // noop
     })
+}
 
 onMainEvent('retryInitializingApp', onRetriableAppSetup)
