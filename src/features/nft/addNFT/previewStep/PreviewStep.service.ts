@@ -140,5 +140,5 @@ export const calculateFee = ({
     return undefined
   }
   const fileSize = calcFileSize(fileSizeKb) || 1
-  return fileSize * networkFee
+  return parseFloat((fileSize * networkFee).toFixed(2))
 }

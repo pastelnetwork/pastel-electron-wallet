@@ -36,6 +36,7 @@ export default function PreviewStep({
   if (cropping && croppedImage) {
     return (
       <Cropping
+        state={state}
         image={image}
         croppedImage={croppedImage}
         setCroppedImage={setCroppedImage}
