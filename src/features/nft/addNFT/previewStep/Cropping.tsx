@@ -85,7 +85,9 @@ export default function Cropping({
 
     const dataURLtoFile = (dataUrl: string, filename: string) => {
       const arr = dataUrl.split(',')
-      const mime = arr[0]?.match(/:(.*?);/)
+      const search = /:(.*?);/
+      const mime = search.exec(arr[0])
+      console.log('mime', mime)
       const bstr = atob(arr[1])
       let n = bstr.length
       const u8arr = new Uint8Array(n)
@@ -95,7 +97,7 @@ export default function Cropping({
       return new File([u8arr], filename, { type: mime ? mime[1] : '' })
     }
     const fileData = dataURLtoFile(croppedImage.src, image.name)
-    service.selectFile({
+    await service.selectFile({
       ...fileData,
       path: croppedImage.src,
     })
@@ -118,7 +120,7 @@ export default function Cropping({
       maxWidth: image.maxWidth,
     })
     const arrayBuffer = await (await cropImage.toBlob()).arrayBuffer()
-    state.optimizationService.optimizeImage(imageType, arrayBuffer)
+    await state.optimizationService.optimizeImage(imageType, arrayBuffer)
     onClose()
   }, [])
 
