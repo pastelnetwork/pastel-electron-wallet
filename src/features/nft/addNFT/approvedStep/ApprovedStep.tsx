@@ -15,7 +15,7 @@ import {
 import { submit } from '../submitStep/SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { walletRPC } from 'api/pastel-rpc'
-import { formatPrice } from 'common/utils/format'
+import { formatPrice, formatAddress } from 'common/utils/format'
 import { TListAddressAmounts } from 'types/rpc'
 
 function InfoPair({ title, value }: { title: string; value: string }) {
@@ -56,7 +56,11 @@ export default function ApprovedStep({
       setListAddressAmounts(results)
       const items = results.map(item => ({
         value: item.address,
-        label: `${item.address} - ${formatPrice(item.amount, currencyName, 2)}`,
+        label: `${formatAddress(item.address, 14, -4)} - ${formatPrice(
+          item.amount,
+          currencyName,
+          2,
+        )}`,
       }))
 
       setOptions(items)
@@ -149,7 +153,7 @@ export default function ApprovedStep({
         <div className='w-48 h-48'>
           {croppedImage && (
             <img
-              src={croppedImage.src}
+              src={state.thumbnail || croppedImage.src}
               className='rounded w-full h-full'
               alt='Pastel Network'
             />

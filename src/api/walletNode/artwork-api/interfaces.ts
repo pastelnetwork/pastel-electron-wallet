@@ -14,6 +14,12 @@ export interface TArtworkTicket {
   youtube_url?: string
   green: boolean
   royalty: number
+  thumbnail_coordinate?: {
+    bottom_right_x: number
+    bottom_right_y: number
+    top_left_x: number
+    top_left_y: number
+  }
 }
 
 export interface IArtworkCollectionItem {

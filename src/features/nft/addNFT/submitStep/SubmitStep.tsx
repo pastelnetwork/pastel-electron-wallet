@@ -110,9 +110,9 @@ export default function SubmitStep({
       <div className='w-48 h-48 relative'>
         {croppedImage && (
           <>
-            <ImageShadow url={croppedImage.src} small />
+            <ImageShadow url={state.thumbnail || croppedImage.src} small />
             <img
-              src={croppedImage.src}
+              src={state.thumbnail || croppedImage.src}
               className='rounded w-full h-full relative'
               alt='Pastel Network'
             />

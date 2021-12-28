@@ -125,6 +125,15 @@ export const submit = async ({
       regParams.youtube_url = nftData.video
     }
 
+    if (state.isImageCrop && state.crop) {
+      regParams.thumbnail_coordinate = {
+        bottom_right_x: state.crop.x + state.crop.width,
+        bottom_right_y: state.crop.y,
+        top_left_x: state.crop.x,
+        top_left_y: state.crop.y + state.crop.height,
+      }
+    }
+
     await artworkRegister(regParams)
     toast('Successfully registered new NFT', { type: 'success' })
     if (fs.existsSync(path.join(tempPath, image.name))) {

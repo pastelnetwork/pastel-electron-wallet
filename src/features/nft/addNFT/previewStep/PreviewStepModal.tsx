@@ -48,12 +48,10 @@ export default function PreviewStepModal({
   })
 
   useEffect(() => state.setEstimatedFee(fee), [fee])
-
   const submittable = croppedImage && !croppedImage.error
 
   const submit = () => {
     if (croppedImage && submittable) {
-      state.setCrop(croppedImage.crop)
       state.goToNextStep()
     }
   }
@@ -189,9 +187,9 @@ export default function PreviewStepModal({
             <div className='w-48 h-48 relative'>
               {croppedImage && (
                 <>
-                  <ImageShadow url={croppedImage.src} />
+                  <ImageShadow url={state.thumbnail || croppedImage.src} />
                   <img
-                    src={croppedImage.src}
+                    src={state.thumbnail || croppedImage.src}
                     className='rounded w-full h-full relative z-10'
                     alt='Pastel Network'
                   />
