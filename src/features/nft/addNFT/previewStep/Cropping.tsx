@@ -85,9 +85,8 @@ export default function Cropping({
 
     const dataURLtoFile = (dataUrl: string, filename: string) => {
       const arr = dataUrl.split(',')
-      const search = /:(.*?);/
+      const search = new RegExp(/:(.*?);/)
       const mime = search.exec(arr[0])
-      console.log('mime', mime)
       const bstr = atob(arr[1])
       let n = bstr.length
       const u8arr = new Uint8Array(n)
