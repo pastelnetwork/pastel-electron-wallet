@@ -16,6 +16,7 @@ type TBaseProps = {
   selectClassName?: string
   placeholder?: string
   disabled?: boolean
+  canCustomInput?: boolean
 }
 
 export type TControlledProps = TBaseProps & {
@@ -52,8 +53,10 @@ function SelectMultipleInner({
   selectClassName,
   placeholder,
   disabled = false,
+  canCustomInput = false,
 }: TControlledProps): JSX.Element {
   const [inputValue, setInputValue] = useState('')
+  const [customValue, setCustomValue] = useState('')
 
   const {
     getSelectedItemProps,
@@ -111,11 +114,25 @@ function SelectMultipleInner({
       switch (type) {
         case useCombobox.stateChangeTypes.InputChange:
           setInputValue(inputValue)
+          setCustomValue(inputValue)
           break
-        case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
           if (selectedItem) {
             setInputValue('')
+            setCustomValue('')
+            addSelectedItem(selectedItem)
+          }
+          break
+        case useCombobox.stateChangeTypes.InputKeyDownEnter:
+          if (canCustomInput) {
+            addSelectedItem({
+              value: customValue,
+              label: customValue,
+            })
+          }
+          setInputValue('')
+          setCustomValue('')
+          if (selectedItem) {
             addSelectedItem(selectedItem)
           }
           break

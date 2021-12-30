@@ -52,11 +52,13 @@ export const submit = async ({
   image,
   nftData,
   spendableAddr,
+  setTaskId,
 }: {
   state: TAddNFTState
   image: TImage
   nftData: TNFTData
   spendableAddr?: string
+  setTaskId: (val: string) => void
 }): Promise<void> => {
   try {
     const tempPath = store.getState().appInfo.tempPath
@@ -134,7 +136,10 @@ export const submit = async ({
       }
     }
 
-    await artworkRegister(regParams)
+    const { task_id } = await artworkRegister(regParams)
+    if (task_id) {
+      setTaskId(task_id)
+    }
     toast('Successfully registered new NFT', { type: 'success' })
     if (fs.existsSync(path.join(tempPath, image.name))) {
       fs.promises.unlink(path.join(tempPath, image.name))

@@ -1,4 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
+import { useToggle } from 'react-use'
+
 import {
   TNFTData,
   Step,
@@ -13,14 +15,17 @@ import PreviewStep from './previewStep/PreviewStep'
 import SubmitStep from './submitStep/SubmitStep'
 import ApprovedStep from './approvedStep/ApprovedStep'
 import InputNFTDataStep from './inputNFTDataStep/InputNFTDataStep'
-import { useToggle } from 'react-use'
 
 export type TAddNFTProps = { open: boolean } & TUseAddNFTProps
 
 function AddNFTContent({
   toggleCloseButton,
+  setTaskId,
   ...props
-}: TUseAddNFTProps & { toggleCloseButton(): void }) {
+}: TUseAddNFTProps & {
+  toggleCloseButton(): void
+  setTaskId: (val: string) => void
+}) {
   const state = useAddNFTState(props)
   const { step } = state
 
@@ -75,6 +80,7 @@ function AddNFTContent({
         image={image}
         displayUrl={displayUrl}
         nftData={nftData}
+        setTaskId={setTaskId}
       />
     )
   }
@@ -88,6 +94,13 @@ export default function AddNFT({
   ...props
 }: TAddNFTProps): JSX.Element {
   const [showCloseButton, toggleCloseButton] = useToggle(true)
+  const [taskId, setTaskId] = useState<string>('iSpUUmoc')
+
+  useEffect(() => {
+    if (taskId) {
+      // TODO: Connect websocket
+    }
+  }, [taskId])
 
   const handleCloseModal = useCallback(() => {
     if (onClose) {
@@ -101,6 +114,7 @@ export default function AddNFT({
         {...props}
         onClose={onClose}
         toggleCloseButton={toggleCloseButton}
+        setTaskId={setTaskId}
       />
     ),
     [props],

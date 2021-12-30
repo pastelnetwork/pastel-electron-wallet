@@ -32,6 +32,7 @@ type TApprovedStepProps = {
   image: TImage
   displayUrl: string
   nftData: TNFTData
+  setTaskId: (val: string) => void
 }
 
 export default function ApprovedStep({
@@ -39,6 +40,7 @@ export default function ApprovedStep({
   image,
   displayUrl,
   nftData,
+  setTaskId,
 }: TApprovedStepProps): JSX.Element {
   const storageFee = useStorageFee()
   const currencyName = useCurrencyName()
@@ -83,7 +85,14 @@ export default function ApprovedStep({
   })
 
   const onSubmit = useCallback(
-    () => submit({ state, image, nftData, spendableAddr: selectedItem?.value }),
+    () =>
+      submit({
+        state,
+        image,
+        nftData,
+        spendableAddr: selectedItem?.value,
+        setTaskId,
+      }),
     [state, image, nftData, selectedItem],
   )
 

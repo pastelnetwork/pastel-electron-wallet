@@ -70,6 +70,8 @@ export type TAddNFTState = {
   setIsLossLess(value: boolean): void
   setEstimatedFee(value: number | undefined): void
   setThumbnail(val: string): void
+  percentage: number
+  setPercentage(val: number): void
 }
 
 export type TUseAddNFTProps = {
@@ -85,6 +87,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [isLossLess, setIsLossLess] = useState(true)
   const [estimatedFee, setEstimatedFee] = useState<number>()
   const [thumbnail, setThumbnail] = useState<string>('')
+  const [percentage, setPercentage] = useState<number>(0)
   const optimizationService = useImageOptimizationService()
   const vStep: number = step || 0
   return {
@@ -120,5 +123,7 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
         onClose()
       }
     },
+    percentage,
+    setPercentage,
   }
 }
