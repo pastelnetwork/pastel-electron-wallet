@@ -283,3 +283,7 @@ export default function SelectImageStep({
     />
   )
 }
+
+UploadProgress.defaultProps = {
+  imageFile: undefined,
+}

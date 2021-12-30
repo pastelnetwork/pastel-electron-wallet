@@ -65,6 +65,15 @@ export default function UploadStep({
     </button>
   )
 
+  const renderFilledProgressBarContent = () => (
+    <div
+      ref={filledProgressBarRef}
+      className='h-full bg-white w-0 rounded-full relative z-40'
+    >
+      <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-5px' />
+    </div>
+  )
+
   const renderFilledProgressBar = () => (
     <div className='relative z-40'>
       <DraggableCore
@@ -72,12 +81,7 @@ export default function UploadStep({
         onDrag={onDragControl}
         onStop={onDragControl}
       >
-        <div
-          ref={filledProgressBarRef}
-          className='h-full bg-white w-0 rounded-full relative z-40'
-        >
-          <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-5px' />
-        </div>
+        {renderFilledProgressBarContent()}
       </DraggableCore>
     </div>
   )
@@ -86,6 +90,10 @@ export default function UploadStep({
     <button type='button'>
       <MinusCircle size={13} />
     </button>
+  )
+
+  const renderZoomLineBar = () => (
+    <div className='absolute top-1/2 left-0 right-0 block h-1 z-10 -translate-y-1/2 rounded-[20px] bg-rgba-white-[0.33]'></div>
   )
 
   const renderLeftColumnContentControl = () => (
@@ -104,7 +112,7 @@ export default function UploadStep({
         {renderMinusCircleButton()}
         <div className='flex-grow mx-3 py-2 relative' ref={controlRef}>
           {renderFilledProgressBar()}
-          <div className='absolute top-1/2 left-0 right-0 block h-1 z-10 -translate-y-1/2 rounded-[20px] bg-rgba-white-[0.33]'></div>
+          {renderZoomLineBar()}
         </div>
         {renderPlusCircleButton()}
       </div>
