@@ -128,12 +128,13 @@ export const submit = async ({
     }
 
     if (state.isImageCrop && state.crop) {
-      regParams.thumbnail_coordinate = {
-        bottom_right_x: state.crop.x + state.crop.width,
-        bottom_right_y: state.crop.y,
-        top_left_x: state.crop.x,
-        top_left_y: state.crop.y + state.crop.height,
-      }
+      // TODO: calc crop position
+      // regParams.thumbnail_coordinate = {
+      //   bottom_right_x: state.crop.x + state.crop.width,
+      //   bottom_right_y: state.crop.y,
+      //   top_left_x: state.crop.x,
+      //   top_left_y: state.crop.y + state.crop.height,
+      // }
     }
 
     const { task_id } = await artworkRegister(regParams)

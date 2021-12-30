@@ -22,10 +22,10 @@ export type TSelectImageStepService = {
   isAnimated: boolean
   imageToConvert?: TImageToConvert
   imageForPreview?: { url: string; maxWidth: number; size: number }
-  selectFile(file?: File): Promise<void>
-  convertImage(data: TImageToConvert, type: TImageType): Promise<void>
-  submit(): void
-  resetImageState(): void
+  selectFile: (file?: File) => Promise<void>
+  convertImage: (data: TImageToConvert, type: TImageType) => Promise<void>
+  submit: () => void
+  resetImageState: () => void
 }
 
 type TImageToConvert = { name: string; image: HTMLImageElement }
