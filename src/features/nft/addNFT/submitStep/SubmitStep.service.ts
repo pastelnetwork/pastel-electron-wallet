@@ -126,7 +126,7 @@ export const submit = async ({
     if (nftData.video) {
       regParams.youtube_url = nftData.video
     }
-    console.log(state)
+
     let bottomRightX: number = state.crop?.width || 0,
       bottomRightY: number = state.crop?.height || 0,
       topLeftX: number = state.crop?.x || 0,
