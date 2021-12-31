@@ -11,6 +11,7 @@ import {
   TArtworkSearchParams,
   TArtworkSearchResponseProps,
   TArtworksDetailProps,
+  TTArtworksTaskDetailProps,
 } from './interfaces'
 import { walletNodeApiURL } from '../../../common/constants/urls'
 import { readUsersInfo } from 'common/utils/User'
@@ -108,7 +109,7 @@ export const artworkGetDetail = async (
 ): Promise<TArtworksDetailProps> => {
   return makeRequest<TArtworksDetailProps>({
     method: 'get',
-    url: taskId,
+    url: `/${taskId}`,
   })
 }
 
@@ -132,4 +133,13 @@ export const artworkSearch = async (
   }
 
   return results
+}
+
+export const artworkGetTaskDetail = async (
+  taskId: string,
+): Promise<TTArtworksTaskDetailProps> => {
+  return makeRequest<TTArtworksTaskDetailProps>({
+    method: 'get',
+    url: `/register/${taskId}`,
+  })
 }

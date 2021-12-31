@@ -150,7 +150,6 @@ export const submit = async ({
     if (task_id) {
       setTaskId(task_id)
     }
-    toast('Successfully registered new NFT', { type: 'success' })
     if (fs.existsSync(path.join(tempPath, image.name))) {
       fs.promises.unlink(path.join(tempPath, image.name))
     }

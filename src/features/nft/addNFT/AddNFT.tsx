@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { useToggle } from 'react-use'
+import { toast } from 'react-toastify'
 
 import {
   TNFTData,
@@ -15,6 +16,8 @@ import PreviewStep from './previewStep/PreviewStep'
 import SubmitStep from './submitStep/SubmitStep'
 import ApprovedStep from './approvedStep/ApprovedStep'
 import InputNFTDataStep from './inputNFTDataStep/InputNFTDataStep'
+import { walletWebSocketURL } from 'common/constants/urls'
+import { artworkGetTaskDetail } from 'api/walletNode/artwork-api/artwork'
 
 export type TAddNFTProps = { open: boolean } & TUseAddNFTProps
 
@@ -94,11 +97,47 @@ export default function AddNFT({
   ...props
 }: TAddNFTProps): JSX.Element {
   const [showCloseButton, toggleCloseButton] = useToggle(true)
-  const [taskId, setTaskId] = useState<string>('iSpUUmoc')
+  const [taskId, setTaskId] = useState<string>('')
+
+  const getTaskState = () => {
+    try {
+      const generateTaskMessage = async (webSocketUrl: string) => {
+        try {
+          const url = webSocketUrl.split('artworks/register/')[1]
+          const result = await artworkGetTaskDetail(url.split('/')[0])
+          toast(`${result.ticket.name}: ${result.status}`, { type: 'success' })
+        } catch (error) {
+          toast(error.message, { type: 'error' })
+        }
+      }
+
+      const connection = new WebSocket(
+        `${walletWebSocketURL}/artworks/register/${taskId}/state`,
+      )
+      connection.addEventListener('message', () => {
+        generateTaskMessage(connection.url)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
+      })
+
+      connection.addEventListener('error', () => {
+        toast('Internal Server Error response.', { type: 'error' })
+      })
+    } catch (error) {
+      toast(error.message, { type: 'error' })
+    }
+  }
 
   useEffect(() => {
     if (taskId) {
-      // TODO: Connect websocket
+      getTaskState()
     }
   }, [taskId])
 
