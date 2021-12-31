@@ -126,15 +126,24 @@ export const submit = async ({
     if (nftData.video) {
       regParams.youtube_url = nftData.video
     }
+    console.log(state)
+    let bottomRightX: number = state.crop?.width || 0,
+      bottomRightY: number = state.crop?.height || 0,
+      topLeftX: number = state.crop?.x || 0,
+      topLeftY: number = state.crop?.y || 0
 
-    if (state.isImageCrop && state.crop) {
-      // TODO: calc crop position
-      // regParams.thumbnail_coordinate = {
-      //   bottom_right_x: state.crop.x + state.crop.width,
-      //   bottom_right_y: state.crop.y,
-      //   top_left_x: state.crop.x,
-      //   top_left_y: state.crop.y + state.crop.height,
-      // }
+    if (!state.crop && state.image) {
+      bottomRightX = state.image.width
+      bottomRightY = state.image.height
+      topLeftX = 0
+      topLeftY = 0
+    }
+
+    regParams.thumbnail_coordinate = {
+      bottom_right_x: parseInt(bottomRightX.toFixed(0), 10),
+      bottom_right_y: parseInt(bottomRightY.toFixed(0), 10),
+      top_left_x: parseInt(topLeftX.toFixed(0), 10),
+      top_left_y: parseInt(topLeftY.toFixed(0), 10),
     }
 
     const { task_id } = await artworkRegister(regParams)

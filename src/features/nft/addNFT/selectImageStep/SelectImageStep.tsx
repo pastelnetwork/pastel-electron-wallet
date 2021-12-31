@@ -53,7 +53,7 @@ function UploadProgress({
   }
 
   useEffect(() => {
-    if (startProcessing) {
+    if (startProcessing && state.percentage < 100) {
       currentPercentage = 0
       percentageTime = setInterval(() => {
         randomPercentage()
@@ -74,8 +74,12 @@ function UploadProgress({
   }, [progressPoint])
 
   return (
-    <ProgressCircle percentage={percentage} onCallback={setProgressPoint}>
-      {percentage === 100 && progressPoint === 100 ? (
+    <ProgressCircle
+      percentage={state.percentage !== 100 ? percentage : state.percentage}
+      onCallback={setProgressPoint}
+    >
+      {(percentage === 100 && progressPoint === 100) ||
+      state.percentage === 100 ? (
         <div className='mb-[20px] flex-center flex-col'>
           <Checkmark size={35} className='text-success' />
         </div>
@@ -86,10 +90,10 @@ function UploadProgress({
           title={imageFile?.name}
           className='mb-1 text-lg leading-6 font-medium text-gray-4a truncate max-w-[160px]'
         >
-          {imageFile?.name}
+          {state.image?.name || imageFile?.name}
         </div>
         <div className='text-gray-77 text-sm font-normal'>
-          {percentage}% ready
+          {state.percentage !== 100 ? progressPoint : state.percentage}% ready
         </div>
       </div>
     </ProgressCircle>
@@ -154,6 +158,7 @@ export default function SelectImageStep({
   const handlCancelUpload = useCallback(() => {
     resetImageState()
     state.setPercentage(0)
+    currentPercentage = 0
   }, [])
 
   const renderImageOptimizationButton = () => (
@@ -168,7 +173,7 @@ export default function SelectImageStep({
       <button
         className='btn btn-primary px-[30px]'
         onClick={handleImageOptimizationSubmit}
-        disabled={!imageForPreview && state.percentage === 100}
+        disabled={!imageForPreview || state.percentage !== 100}
         type='button'
       >
         Go to Image Optimization
