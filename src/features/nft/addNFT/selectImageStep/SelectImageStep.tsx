@@ -198,7 +198,7 @@ export default function SelectImageStep({
       step={2}
       fixedHeight
       contentClass='pt-2'
-      leftColumnWidth={imageForPreview?.maxWidth || 320}
+      leftColumnWidth={imageForPreview?.maxWidth || 463}
       leftColumnContent={
         <SelectImageArea service={service}>
           <div className='h-full text-gray-77 text-xs'>
