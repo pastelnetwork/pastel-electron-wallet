@@ -110,9 +110,8 @@ export default function AddNFT({
           toast(error.message, { type: 'error' })
         }
       }
-      const socket = new WebSocket(
-        `${walletWebSocketURL}/artworks/register/${taskId}/state`,
-      )
+      const wsUrl: string = walletWebSocketURL
+      const socket = new WebSocket(`${wsUrl}/artworks/register/${taskId}/state`)
 
       socket.addEventListener('message', () => {
         generateTaskMessage(socket.url)
