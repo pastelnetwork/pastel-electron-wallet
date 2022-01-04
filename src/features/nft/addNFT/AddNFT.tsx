@@ -99,7 +99,7 @@ export default function AddNFT({
   const [showCloseButton, toggleCloseButton] = useToggle(true)
   const [taskId, setTaskId] = useState<string>('')
 
-  const getTaskState = async () => {
+  const getTaskState = () => {
     try {
       const generateTaskMessage = async (webSocketUrl: string) => {
         try {
