@@ -111,7 +111,10 @@ export default function AddNFT({
         }
       }
       const wsUrl: string = walletWebSocketURL
-      const socket = new WebSocket(`${wsUrl}/artworks/register/${taskId}/state`)
+      const vTaskId: string = taskId
+      const socket = new WebSocket(
+        `${wsUrl}/artworks/register/${vTaskId}/state`,
+      )
 
       socket.addEventListener('message', () => {
         generateTaskMessage(socket.url)
