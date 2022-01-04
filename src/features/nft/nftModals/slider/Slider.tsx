@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Range } from 'react-range'
 
 export type TSlider = {
@@ -22,35 +22,51 @@ export default function Slider({ value, setValue }: TSlider): JSX.Element {
     </svg>
   )
 
+  const renderThumb = useCallback(({ props }) => {
+    return (
+      <div {...props} className='bg-white rounded-full h-3 w-3 outline-none'>
+        <div className='absolute -top-9 flex flex-col items-center w-48px transform -translate-x-18px'>
+          <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white'>
+            {props['aria-valuenow']}%
+          </div>
+          {renderSliderIcon()}
+        </div>
+      </div>
+    )
+  }, [])
+
+  const renderTrack = useCallback(
+    ({ props, children }) => (
+      <div
+        {...props}
+        className='bg-white bg-opacity-20 w-full rounded-full h-1 relative'
+      >
+        {children}
+        <div
+          className='absolute bg-white h-1 rounded-full'
+          style={{ width: `${value}%` }}
+        />
+      </div>
+    ),
+    [value],
+  )
+
+  const onChange = useCallback(
+    (values: number[]) => {
+      setValue(values[0])
+    },
+    [value],
+  )
+
   return (
     <Range
       step={0.1}
       min={0}
       max={100}
       values={[value]}
-      onChange={values => setValue(values[0])}
-      renderTrack={({ props, children }) => (
-        <div
-          {...props}
-          className='bg-white bg-opacity-20 w-full rounded-full h-1 relative'
-        >
-          {children}
-          <div
-            className='absolute bg-white h-1 rounded-full'
-            style={{ width: `${value}%` }}
-          />
-        </div>
-      )}
-      renderThumb={({ props }) => (
-        <div {...props} className='bg-white rounded-full h-3 w-3 outline-none'>
-          <div className='absolute -top-9 flex flex-col items-center w-48px transform -translate-x-18px'>
-            <div className='bg-gray-14 rounded-md h-7 px-2 flex-center text-xs whitespace-nowrap text-white'>
-              {props['aria-valuenow']}%
-            </div>
-            {renderSliderIcon()}
-          </div>
-        </div>
-      )}
+      onChange={onChange}
+      renderTrack={renderTrack}
+      renderThumb={renderThumb}
     />
   )
 }

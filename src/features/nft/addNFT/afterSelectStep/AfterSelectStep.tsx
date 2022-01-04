@@ -65,29 +65,35 @@ export default function UploadStep({
     </button>
   )
 
-  const renderFilledProgressBar = () => (
-    <DraggableCore
-      onStart={onDragControl}
-      onDrag={onDragControl}
-      onStop={onDragControl}
+  const renderFilledProgressBarContent = () => (
+    <div
+      ref={filledProgressBarRef}
+      className='h-full bg-white w-0 rounded-full relative z-40'
     >
-      <div
-        ref={filledProgressBarRef}
-        className='h-full bg-white w-0 rounded-full relative'
+      <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-5px' />
+    </div>
+  )
+
+  const renderFilledProgressBar = () => (
+    <div className='relative z-40'>
+      <DraggableCore
+        onStart={onDragControl}
+        onDrag={onDragControl}
+        onStop={onDragControl}
       >
-        <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-1' />
-      </div>
-    </DraggableCore>
+        {renderFilledProgressBarContent()}
+      </DraggableCore>
+    </div>
   )
 
   const renderMinusCircleButton = () => (
-    <div
-      className={`h-1 rounded-full bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
-    >
-      <button type='button'>
-        <MinusCircle size={13} />
-      </button>
-    </div>
+    <button type='button'>
+      <MinusCircle size={13} />
+    </button>
+  )
+
+  const renderZoomLineBar = () => (
+    <div className='absolute top-1/2 left-0 right-0 block h-1 z-10 -translate-y-1/2 rounded-[20px] bg-rgba-white-[0.33]'></div>
   )
 
   const renderLeftColumnContentControl = () => (
@@ -106,6 +112,7 @@ export default function UploadStep({
         {renderMinusCircleButton()}
         <div className='flex-grow mx-3 py-2 relative' ref={controlRef}>
           {renderFilledProgressBar()}
+          {renderZoomLineBar()}
         </div>
         {renderPlusCircleButton()}
       </div>
@@ -116,7 +123,7 @@ export default function UploadStep({
     <ModalLayout
       title='Select Image'
       titleClass='mb-3'
-      subtitle='Description'
+      subtitle='The Image File for your NFT'
       step={2}
       fixedHeight
       leftColumnWidth={image.maxWidth}
@@ -131,9 +138,13 @@ export default function UploadStep({
       rightColumnClass='w-[355px]'
       rightColumnContent={
         <div className='h-full flex justify-between flex-col'>
-          <div className='text-gray-71 font-medium pt-1'>
-            File selected successfully, you can continue to configure your
-            incredible NFT
+          <div>
+            <div className='text-gray-4a text-lg leading-6 font-medium pt-1'>
+              File uploaded successfully!
+            </div>
+            <div className='text-gray-71 text-base font-medium pt-1'>
+              You can continue to configure your NFT.
+            </div>
           </div>
           <div className='flex-between'>
             {renderGoBackButton()}
@@ -142,7 +153,7 @@ export default function UploadStep({
               className='btn btn-primary px-[30px]'
               onClick={goToNextStep}
             >
-              Go to Optimization
+              Go to Image Optimization
             </button>
           </div>
         </div>

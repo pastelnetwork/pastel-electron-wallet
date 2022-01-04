@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useCallback } from 'react'
 
 export type TCustomInput = {
   value: string
@@ -11,11 +11,18 @@ function CustomInput(
   ref: React.Ref<HTMLInputElement>,
 ) {
   const size = Math.max(value.length, 1)
-  const onKeyPress = (e: React.KeyboardEvent) => {
+  const onKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       onEnter()
     }
-  }
+  }, [])
+
+  const onInutChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(e.target.value)
+    },
+    [value],
+  )
 
   return (
     <div>
@@ -23,7 +30,7 @@ function CustomInput(
         ref={ref}
         className='min-w-16px outline-none h-6 text-gray-4a'
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={onInutChange}
         onKeyPress={onKeyPress}
         size={size}
       />

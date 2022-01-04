@@ -1,3 +1,5 @@
+import log from 'electron-log'
+
 import { rpc } from '../api/pastel-rpc/rpc'
 
 type TEstimateFee = {
@@ -10,19 +12,16 @@ type TGetNetworkFee = {
     networkfee: number
   }
 }
-
-type TGetArtTicketFee = {
+type TGetNftTicketFee = {
   id: string
   result: {
-    artticketfee: number
+    nftticketfee: number
   }
 }
 
-type TgGetLocalFee = {
-  id: string
-  result: {
-    localfee: number
-  }
+export type TGetStorageFee = {
+  networkFee: number
+  nftTicketFee: number
 }
 
 export async function getEstimateFee(blocks: number): Promise<number> {
@@ -34,20 +33,24 @@ export async function getEstimateFee(blocks: number): Promise<number> {
   }
 }
 
-export async function calculateFee(fileSize: number): Promise<number> {
+export async function getStorageFee(): Promise<TGetStorageFee> {
   try {
     const {
       result: { networkfee },
     } = await rpc<TGetNetworkFee>('storagefee', ['getnetworkfee'])
     const {
-      result: { artticketfee },
-    } = await rpc<TGetArtTicketFee>('storagefee', ['getartticketfee'])
-    const {
-      result: { localfee },
-    } = await rpc<TgGetLocalFee>('storagefee', ['getlocalfee'])
-
-    return fileSize * networkfee + artticketfee * 2 * localfee
+      result: { nftticketfee },
+    } = await rpc<TGetNftTicketFee>('storagefee', ['getnftticketfee'])
+    return {
+      networkFee: networkfee,
+      nftTicketFee: nftticketfee,
+    }
   } catch (error) {
-    return -1
+    const message: string = error.message || ''
+    log.error(
+      `api/pastel-rpc/estimate-fee getStoragefee error: ${message}`,
+      error,
+    )
+    throw new Error(message)
   }
 }

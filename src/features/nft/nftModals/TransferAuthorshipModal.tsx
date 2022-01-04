@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Modal from './modal'
 import Button from 'common/components/Buttons/Button'
 import Checkbox from 'common/components/Checkbox/Checkbox'
@@ -24,6 +24,21 @@ function TransferAuthorshipModal({
   const [pastelID, setPastelID] = useState(data.pastelID)
   const [showTransferHistory, toggleShowTransferHistory] = useToggle(false)
 
+  const onCheckboxChange = useCallback(() => {
+    setChecked(!isChecked)
+  }, [isChecked])
+
+  const onPastelIDChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPastelID(e.target.value)
+    },
+    [pastelID],
+  )
+
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
+
   const renderModalTitle = () => (
     <div className='text-gray-2d'>
       <div>Transfer Royalty</div>
@@ -43,14 +58,11 @@ function TransferAuthorshipModal({
         <input
           className='w-full border-none outline-none rounded text-gray-2d px-4'
           value={pastelID}
-          onChange={e => setPastelID(e.target.value)}
+          onChange={onPastelIDChange}
         />
       </div>
       <div className='mt-5 mb-5 flex text-gray-a0 text-sm leading-tight'>
-        <Checkbox
-          isChecked={isChecked}
-          clickHandler={() => setChecked(!isChecked)}
-        />
+        <Checkbox isChecked={isChecked} clickHandler={onCheckboxChange} />
         <span className='ml-1 mt-px'>
           Yes, I confirm the transfer of royalty compensation rights
         </span>
@@ -82,7 +94,7 @@ function TransferAuthorshipModal({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='478px'
       title={renderModalTitle()}
       titleClassName='text-h2 font-extrabold'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Modal from './modal'
 import LineChart, { TLineChartRow } from 'common/components/LineChart'
 import Select, { TOption } from 'common/components/Select/Select'
@@ -51,9 +51,16 @@ function ViewsStatsModal({
   const viewData = data1
   const likesData = data2
 
-  const onTabToggle = (index: number) => {
-    setActive(index)
-  }
+  const onTabToggle = useCallback(
+    (index: number) => {
+      setActive(index)
+    },
+    [active],
+  )
+
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
 
   const renderHeader = () => (
     <div className='mt-[20px] flex justify-between items-center'>
@@ -104,7 +111,7 @@ function ViewsStatsModal({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='738px'
       title={title}
       infoIcon={false}

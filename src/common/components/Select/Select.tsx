@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 import Downshift, {
   ControllerStateAndHelpers,
   GetInputPropsOptions,
@@ -76,10 +76,29 @@ export type TSelectProps<TForm> =
   | TControlledSelectProps
   | TFormSelectProps<TForm>
 
-export default function Select<TForm extends FieldValues>(
-  props: TSelectProps<TForm>,
-): JSX.Element {
+export default function Select<TForm extends FieldValues>({
+  onInputChange,
+  ...props
+}: TSelectProps<TForm>): JSX.Element {
   const [enableFiltering, setEnableFiltering] = useState(false)
+
+  const onInputValueChange = useCallback(
+    (value: string, event: ControllerStateAndHelpers<TOption>) => {
+      const { type } = (event as unknown) as { type: string }
+      if (type === Downshift.stateChangeTypes.changeInput) {
+        setEnableFiltering(true)
+        onInputChange?.(value, event)
+      } else {
+        setEnableFiltering(false)
+      }
+    },
+    [enableFiltering],
+  )
+
+  const itemToString = useCallback(
+    (item: TOption | null) => (item ? item.value : ''),
+    [],
+  )
 
   if ('form' in props) {
     return <FormSelect {...props} />
@@ -116,23 +135,9 @@ export default function Select<TForm extends FieldValues>(
     listClassName,
   } = props
 
-  let { onInputChange } = props
   const { debounce: customDebounce } = props
   if (customDebounce && onInputChange) {
     onInputChange = debounce(onInputChange, customDebounce)
-  }
-
-  const onInputValueChange = (
-    value: string,
-    event: ControllerStateAndHelpers<TOption>,
-  ) => {
-    const { type } = (event as unknown) as { type: string }
-    if (type === Downshift.stateChangeTypes.changeInput) {
-      setEnableFiltering(true)
-      onInputChange?.(value, event)
-    } else {
-      setEnableFiltering(false)
-    }
   }
 
   const getInputValue = (inputProps: GetInputPropsOptions) => {
@@ -149,7 +154,7 @@ export default function Select<TForm extends FieldValues>(
     <Downshift
       selectedItem={selected ?? null}
       onChange={onChange}
-      itemToString={item => (item ? item.value : '')}
+      itemToString={itemToString}
       onInputValueChange={onInputValueChange}
     >
       {({

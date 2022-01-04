@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 import dayjs from 'common/utils/initDayjs'
@@ -105,10 +105,14 @@ function LikeListModal({ isOpen, handleClose }: TLikeListModal): JSX.Element {
     },
   ]
 
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
+
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='874px'
       title={'"Diamonds in the sky" Likes'}
       titleClassName='text-2xl font-black text-gray-2d'

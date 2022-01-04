@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { closeAboutModal } from './AboutModalSlice'
@@ -10,6 +10,10 @@ export default function AboutModal(): JSX.Element | null {
   const dispatch = useAppDispatch()
 
   const txYear = new Date().getFullYear()
+
+  const onCloseModal = useCallback(() => {
+    dispatch(closeAboutModal())
+  }, [])
 
   if (!modalIsOpen) {
     return null
@@ -52,7 +56,7 @@ export default function AboutModal(): JSX.Element | null {
   return (
     <TitleModal
       isOpen={modalIsOpen}
-      handleClose={() => dispatch(closeAboutModal())}
+      handleClose={onCloseModal}
       classNames='max-w-4xl'
       title='Pastel Wallet Fullnode'
     >

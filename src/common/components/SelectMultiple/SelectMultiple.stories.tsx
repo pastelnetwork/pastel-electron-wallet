@@ -33,3 +33,14 @@ SelectMultiple.args = {
   placeholder: 'Placeholder',
   disabled: false,
 }
+
+export const SelectMultipleAndCustomInput = Template.bind({})
+SelectMultipleAndCustomInput.args = {
+  options,
+  selected: [],
+  selectClassName: 'w-56',
+  name: 'fruits',
+  placeholder: 'Placeholder',
+  disabled: false,
+  canCustomInput: true,
+}

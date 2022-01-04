@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 // Components
 import { Modal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
@@ -23,8 +23,10 @@ function BidAuctionModal({
 }: TBidAuctionModal): JSX.Element {
   const currencyName = useCurrencyName()
   const [bid, setBid] = React.useState<string>('12950')
-  const handleBid = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setBid(event.target.value)
+  const handleBid = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => setBid(event.target.value),
+    [bid],
+  )
 
   const renderTransactionFeeContent = () => (
     <p className='text-right font-extrabold text-h6 text-gray-2d flex items-center'>

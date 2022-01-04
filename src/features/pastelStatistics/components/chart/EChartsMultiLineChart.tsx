@@ -6,7 +6,7 @@ import { CSVLink } from 'react-csv'
 import { Data } from 'react-csv/components/CommonPropTypes'
 import { saveAs } from 'file-saver'
 import { makeDownloadFileName, TPeriod } from '../../utils/PastelStatisticsLib'
-import { TLineChartProps, TThemeColor } from '../../common/types'
+import { TLineChartProps, TThemeColor, TThemeButton } from '../../common/types'
 import { pricesCSVHeaders, themes } from '../../common/constants'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PrevButton } from '../PrevButton'
@@ -36,6 +36,33 @@ function PeriodSelect({
     >
       {period}
     </button>
+  )
+}
+
+function ThemeButton({
+  theme,
+  getActiveThemeButtonStyle,
+  index,
+  handleThemeButtonClick,
+}: {
+  theme: TThemeButton
+  getActiveThemeButtonStyle: (val: number) => string
+  index: number
+  handleThemeButtonClick: (theme: TThemeButton, index: number) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handleThemeButtonClick(theme, index)
+  }, [])
+
+  return (
+    <button
+      className={`${styles.themeSelectButton} ${getActiveThemeButtonStyle(
+        index,
+      )}`}
+      onClick={onClick}
+      style={{ backgroundColor: `${theme.backgroundColor}` }}
+      type='button'
+    />
   )
 }
 
@@ -211,66 +238,69 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
     }
   }, [])
 
-  const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
-    setCurrentTheme(theme)
-    setSelectedThemeButton(index)
-    handleBgColorChange(theme.backgroundColor)
-    const option = {
-      backgroundColor: theme.backgroundColor,
-      textStyle: {
-        color: theme.color,
-      },
-      yAxis: [
-        {
-          type: 'value',
-          position: 'left',
-          name: 'USD:',
-          splitLine: {
-            lineStyle: {
-              color: theme.splitLineColor,
+  const handleThemeButtonClick = useCallback(
+    (theme: TThemeColor, index: number) => {
+      setCurrentTheme(theme)
+      setSelectedThemeButton(index)
+      handleBgColorChange(theme.backgroundColor)
+      const option = {
+        backgroundColor: theme.backgroundColor,
+        textStyle: {
+          color: theme.color,
+        },
+        yAxis: [
+          {
+            type: 'value',
+            position: 'left',
+            name: 'USD:',
+            splitLine: {
+              lineStyle: {
+                color: theme.splitLineColor,
+              },
+            },
+            axisLine: {
+              show: true,
             },
           },
-          axisLine: {
-            show: true,
-          },
-        },
-        {
-          type: 'value',
-          name: 'BTC price:',
-          position: 'right',
-          splitLine: {
-            lineStyle: {
-              color: theme.splitLineColor,
+          {
+            type: 'value',
+            name: 'BTC price:',
+            position: 'right',
+            splitLine: {
+              lineStyle: {
+                color: theme.splitLineColor,
+              },
+            },
+            axisLine: {
+              show: true,
             },
           },
-          axisLine: {
-            show: true,
+        ],
+        series: [
+          {
+            type: 'line',
+            showSymbol: false,
+            data: dataY1,
+            smooth: theme.smooth,
+            lineStyle: {
+              width: 3,
+              shadowColor: 'rgba(0,0,0,0.5)',
+              shadowBlur: 10,
+              shadowOffsetY: 8,
+            },
           },
-        },
-      ],
-      series: [
-        {
-          type: 'line',
-          showSymbol: false,
-          data: dataY1,
-          smooth: theme.smooth,
-          lineStyle: {
-            width: 3,
-            shadowColor: 'rgba(0,0,0,0.5)',
-            shadowBlur: 10,
-            shadowOffsetY: 8,
+          {
+            type: 'bar',
+            yAxisIndex: 1,
+            showSymbol: false,
+            data: dataY2,
           },
-        },
-        {
-          type: 'bar',
-          yAxisIndex: 1,
-          showSymbol: false,
-          data: dataY2,
-        },
-      ],
-    }
-    eChartInstance?.setOption(option)
-  }
+        ],
+      }
+      eChartInstance?.setOption(option)
+    },
+    [currentTheme],
+  )
 
   const getActivePriodButtonStyle = useCallback((index: number): string => {
     if (selectedPeriodButton === index) {
@@ -279,12 +309,19 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
     return ''
   }, [])
 
-  const getActiveThemeButtonStyle = (index: number): string => {
+  const getActiveThemeButtonStyle = useCallback((index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
     }
     return ''
-  }
+  }, [])
+
+  const onEChartRef = useCallback(
+    (e: React.SetStateAction<ReactECharts | null | undefined>) => {
+      setEChartRef(e)
+    },
+    [],
+  )
 
   const rendertDownloadButtonBar = () => (
     <div className={styles.lineChartDownloadButtonBar}>
@@ -341,23 +378,19 @@ export function EChartsMultiLineChart(props: TLineChartProps): JSX.Element {
           lazyUpdate
           option={options}
           className={styles.reactECharts}
-          ref={e => {
-            setEChartRef(e)
-          }}
+          ref={onEChartRef}
         />
       </div>
       <div className={styles.lineChartFooter}>
         <div className={styles.lineChartThemeSelect}>
           {themes.map((theme, index) => (
-            <button
-              className={`${
-                styles.themeSelectButton
-              } ${getActiveThemeButtonStyle(index)}`}
-              onClick={() => handleThemeButtonClick(theme, index)}
-              style={{ backgroundColor: `${theme.backgroundColor}` }}
-              type='button'
+            <ThemeButton
               key={`button-filter-${theme.name}`}
-            ></button>
+              theme={theme}
+              index={index}
+              getActiveThemeButtonStyle={getActiveThemeButtonStyle}
+              handleThemeButtonClick={handleThemeButtonClick}
+            />
           ))}
         </div>
         {rendertDownloadButtonBar()}

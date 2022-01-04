@@ -280,6 +280,10 @@ export default function DashboardPage(): JSX.Element {
     setOpenNotificationModal(true)
   }, [])
 
+  const handleCloseNotificationModal = useCallback(() => {
+    setOpenNotificationModal(false)
+  }, [])
+
   const renderNofications = () => (
     <div className='paper pt-6 w-419px min-h-[458px] flex-shrink-0 flex flex-col relative md:w-[451px]'>
       <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
@@ -449,7 +453,7 @@ export default function DashboardPage(): JSX.Element {
       <NotificationModal
         isOpen={openNotificationModal}
         notifications={notificationData}
-        handleClose={() => setOpenNotificationModal(false)}
+        handleClose={handleCloseNotificationModal}
       />
     </div>
   )

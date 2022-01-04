@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Modal from './modal'
 
 export type TClaimTicketModal = {
@@ -37,6 +37,17 @@ function ClaimTicketModal({
       "I'm baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kicktstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pintrest mumblecore tousled occupy brunch whatever ugh",
   }
 
+  const handleReplyChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setText(e.target.value)
+    },
+    [text],
+  )
+
+  const onCloseModal = useCallback(() => {
+    handleClose()
+  }, [])
+
   const renderReplyForm = () => (
     <div>
       <div className='mt-[26px] text-gray-71 leading-tight'>
@@ -46,7 +57,7 @@ function ClaimTicketModal({
         <textarea
           className='w-full h-full py-2 border-none rounded outline-none text-gray-a0 px-4 resize-none'
           value={text}
-          onChange={e => setText(e.target.value)}
+          onChange={handleReplyChange}
           maxLength={200}
         />
       </div>
@@ -74,7 +85,7 @@ function ClaimTicketModal({
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onCloseModal}
       size='874px'
       title={'Authorship Claim Ticket'}
       infoIcon

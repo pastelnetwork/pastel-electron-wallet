@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import cstyles from '../../legacy/components/Common.module.css'
 import styles from './ExpertConsole.module.css'
@@ -53,6 +53,18 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
     document.getElementById('terminalInput')?.focus()
   }
 
+  const onSelectBlackTheme = useCallback(() => {
+    onThemeBtnClick('black')
+  }, [])
+
+  const onSelectAmberTheme = useCallback(() => {
+    onThemeBtnClick('amber')
+  }, [])
+
+  const onSelectGreenTheme = useCallback(() => {
+    onThemeBtnClick('green')
+  }, [])
+
   const renderTerminalConsoleForm = () => (
     <div className={styles.envelope}>
       <TerminalConsole {...consoleProps()} />
@@ -75,7 +87,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         className={cx(styles.greenThemeBtn, {
           [styles.active]: theme === 'green',
         })}
-        onClick={() => onThemeBtnClick('green')}
+        onClick={onSelectGreenTheme}
         title='Select green theme'
         role='button'
         tabIndex={0}
@@ -85,7 +97,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         className={cx(styles.amberThemeBtn, {
           [styles.active]: theme === 'amber',
         })}
-        onClick={() => onThemeBtnClick('amber')}
+        onClick={onSelectAmberTheme}
         title='Select amber theme'
         role='button'
         tabIndex={0}
@@ -95,7 +107,7 @@ function ExpertConsole(props: TExpertProps): JSX.Element {
         className={cx(styles.blackThemeBtn, {
           [styles.active]: theme === 'black',
         })}
-        onClick={() => onThemeBtnClick('black')}
+        onClick={onSelectBlackTheme}
         title='Select black theme'
         role='button'
         tabIndex={0}

@@ -2,8 +2,9 @@ import smartcrop from 'smartcrop'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { TCrop, TImage } from '../AddNFT.state'
-import { getEstimateFee } from 'api/estimate-fee'
+import { getStorageFee, TGetStorageFee } from 'api/estimate-fee'
 import { loadImageElement } from 'common/utils/image'
+import { calcFileSize } from 'common/utils/file'
 
 const previewSize = 320
 
@@ -102,20 +103,13 @@ export const useImagePreview = ({
   return [croppedImage, updateCroppedImage]
 }
 
-export const useFeePerKb = (): number | undefined => {
-  const [feePerKb, setFeePerKb] = useState<number>()
+export const useStorageFee = (): TGetStorageFee | undefined => {
+  const [fee, setFee] = useState<TGetStorageFee>()
 
   const getFee = async () => {
-    const fee = await getEstimateFee(1)
-    if (fee > 0) {
-      setFeePerKb(fee)
-    } else {
-      // -1.0 is returned if not enough transactions and blocks
-      // have been observed to make an estimate
-      toast('Not enough transactions to make an estimate', {
-        type: 'warning',
-        autoClose: 3000,
-      })
+    const storageFee = await getStorageFee()
+    if (storageFee.networkFee && storageFee.nftTicketFee) {
+      setFee(storageFee)
     }
   }
 
@@ -132,22 +126,19 @@ export const useFeePerKb = (): number | undefined => {
       })
   }, [])
 
-  return feePerKb
+  return fee
 }
 
 export const calculateFee = ({
-  feePerKb,
-  quality,
-  isLossLess,
+  networkFee,
   fileSizeKb,
 }: {
-  feePerKb: number | undefined
-  quality: number
-  isLossLess: boolean
+  networkFee: number | undefined
   fileSizeKb: number
 }): number | undefined => {
-  if (feePerKb === undefined) {
+  if (!networkFee) {
     return undefined
   }
-  return Math.round((isLossLess ? 100 : quality) * fileSizeKb * feePerKb)
+  const fileSize = calcFileSize(fileSizeKb) || 1
+  return parseFloat((fileSize * networkFee).toFixed(2))
 }

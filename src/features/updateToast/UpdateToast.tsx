@@ -1,5 +1,5 @@
 import { shell } from 'electron'
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import pkg from '../../../package.json'
 import { CloseButton, Button } from '../../common/components/Buttons'
@@ -11,14 +11,18 @@ export default function UpdateToast(): JSX.Element | null {
   const { opened } = useAppSelector(state => state.updateToast)
   const dispatch = useAppDispatch()
 
-  const openLearnMore = () => {
+  const openLearnMore = useCallback(() => {
     shell.openExternal(`https://github.com/${pkg.repoName}/releases`)
-  }
+  }, [])
 
-  const handleUpdate = () => {
+  const handleUpdate = useCallback(() => {
     dispatch(closeUpdateToast())
     sendEventToMain('restartApp', null)
-  }
+  }, [])
+
+  const onClose = useCallback(() => {
+    dispatch(closeUpdateToast())
+  }, [])
 
   if (!opened) {
     return null
@@ -29,10 +33,7 @@ export default function UpdateToast(): JSX.Element | null {
       id='updateToast'
       className='fixed bottom-3 right-3 z-100 paper pt-10 px-6 pb-6 w-96'
     >
-      <CloseButton
-        className='absolute right-4 top-4'
-        onClick={() => dispatch(closeUpdateToast())}
-      />
+      <CloseButton className='absolute right-4 top-4' onClick={onClose} />
       <div className='text-base font-medium text-gray-4a mb-25px mt-6'>
         Would you like to update to the new version of Wallet? Recommended!
       </div>

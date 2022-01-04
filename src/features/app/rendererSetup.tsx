@@ -57,6 +57,10 @@ export const rendererSetup = (): void => {
       async () => {
         const info = await RPC.getInfoObject(rpcConfig)
         store.dispatch(setPastelInfo({ info: { ...info } }))
+        setInterval(async () => {
+          const info = await RPC.getInfoObject(rpcConfig)
+          store.dispatch(setPastelInfo({ info: { ...info } }))
+        }, 4000)
       },
       {
         attempts: 10,
@@ -85,14 +89,24 @@ export const rendererSetup = (): void => {
     }
   })
 
-  onRendererEvent(
-    'prepareToQuit',
-    async (): Promise<void> => {
-      await Promise.all([PastelDB.waitTillValid(), stopRpc()])
+  const prepareToQuit = async (): Promise<void> => {
+    await Promise.all([PastelDB.waitTillValid(), stopRpc()])
 
-      sendEventToMain('rendererIsReadyForQuit', null)
-    },
-  )
+    sendEventToMain('rendererIsReadyForQuit', null)
+  }
+
+  onRendererEvent('prepareToQuit', () => {
+    prepareToQuit()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  })
 }
 
 export function RendererSetupHooks(): null {

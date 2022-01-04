@@ -112,6 +112,10 @@ export default function PaymentSource({
     [],
   )
 
+  const onCloseComment = useCallback(() => {
+    setCommentOpen(false)
+  }, [])
+
   const renderSelectPaymentSourceAmount = () => (
     <div className='flex justify-end pr-4'>
       <SelectPaymentSourceAmount address={address} isModal />
@@ -135,7 +139,7 @@ export default function PaymentSource({
             />
             <CommentModal
               isOpen={isCommentOpen}
-              onClose={() => setCommentOpen(false)}
+              onClose={onCloseComment}
               address={address}
               onSavePaymentNote={onSavePaymentNote}
               defaultsNote={defaultsNote}

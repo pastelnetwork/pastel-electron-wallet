@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import MemberStrip, { TMemberStripProps } from './MemberStrip'
@@ -102,7 +102,9 @@ function MembersDirectory(): JSX.Element {
   const [category, setCategory] = useState<TOption | null>(mockCategories[0])
   const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
   const [range, setRange] = useState<[number, number]>([400, 700])
-  const formatValue = (value: number) => `${value.toFixed(0)}k`
+  const formatValue = useCallback((value: number) => `${value.toFixed(0)}k`, [
+    range,
+  ])
 
   const filterOptions = {
     label: 'Categories',

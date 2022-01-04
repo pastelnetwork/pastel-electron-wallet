@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import cn from 'classnames'
 
 import RestoreByUpload from './RestoreByUpload'
@@ -55,45 +55,54 @@ export default function RestoreModal({
     onToggle: onTabToggle,
   }
 
+  const renderContentModal = useCallback(
+    () => (
+      <div className='paper p-10 w-[556px]'>
+        <div className='pt-5'>
+          {!hideHeader && (
+            <div>
+              <div className='text-gray-2d text-32px leading-10 font-extrabold mb-4'>
+                Restore your account
+              </div>
+              <div className='font-normal text-h5 leading-6 text-gray-71'>
+                Choose your restore method
+              </div>
+              <div className='mt-20px'>
+                <MultiToggleSwitch {...routes} />
+              </div>
+            </div>
+          )}
+
+          <div className={cn(!hideHeader ? 'mt-28px' : '')}>
+            {tab === Tabs.selectQRCodeVideo ? (
+              <RestoreByUpload onHideHeader={setHideHeader} />
+            ) : null}
+            {tab === Tabs.scanQRCodeVideo ? (
+              <RestoreByCamera
+                turnOffCamera={turnOffCamera}
+                onHideHeader={setHideHeader}
+              />
+            ) : null}
+            {tab === Tabs.selectPDF ? (
+              <RestoreByPdf onHideHeader={setHideHeader} />
+            ) : null}
+          </div>
+        </div>
+      </div>
+    ),
+    [tab, turnOffCamera, hideHeader],
+  )
+
+  const onClose = useCallback(() => {
+    handleCloseModal(false)
+  }, [])
+
   return (
     <Modal
       open={modalIsOpen}
-      onClose={() => handleCloseModal(false)}
+      onClose={onClose}
       closeButton
-      render={() => (
-        <div className='paper p-10 w-[556px]'>
-          <div className='pt-5'>
-            {!hideHeader && (
-              <div>
-                <div className='text-gray-2d text-32px leading-10 font-extrabold mb-4'>
-                  Restore your account
-                </div>
-                <div className='font-normal text-h5 leading-6 text-gray-71'>
-                  Choose your restore method
-                </div>
-                <div className='mt-20px'>
-                  <MultiToggleSwitch {...routes} />
-                </div>
-              </div>
-            )}
-
-            <div className={cn(!hideHeader ? 'mt-28px' : '')}>
-              {tab === Tabs.selectQRCodeVideo ? (
-                <RestoreByUpload onHideHeader={setHideHeader} />
-              ) : null}
-              {tab === Tabs.scanQRCodeVideo ? (
-                <RestoreByCamera
-                  turnOffCamera={turnOffCamera}
-                  onHideHeader={setHideHeader}
-                />
-              ) : null}
-              {tab === Tabs.selectPDF ? (
-                <RestoreByPdf onHideHeader={setHideHeader} />
-              ) : null}
-            </div>
-          </div>
-        </div>
-      )}
+      render={renderContentModal}
     />
   )
 }

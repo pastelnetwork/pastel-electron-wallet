@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import cn from 'classnames'
 import CustomInput from './CustomInput'
 import ico_add from 'common/assets/icons/ico-add.svg'
@@ -9,12 +9,41 @@ export type TCategories = {
   onChange(value: Array<string>): void
 }
 
+function CategoryItem({
+  category,
+  index,
+  onDeleteCategory,
+}: {
+  category: string
+  index: number
+  onDeleteCategory: (val: number) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    onDeleteCategory(index)
+  }, [])
+
+  return (
+    <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center mb-2'>
+      <div className='h-6 text-gray-4a flex items-center'>{category}</div>
+      <div
+        className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
+        onClick={onClick}
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      >
+        <img src={ico_close} className='cursor-pointer' alt='Close' />
+      </div>
+    </div>
+  )
+}
+
 function Categories({ value, onChange }: TCategories): JSX.Element {
   const [isAdding, setAdding] = useState<boolean>(false)
   const [newText, setNewText] = useState('')
   const customInputRef = useRef<HTMLInputElement>(null)
 
-  const onAdd = () => {
+  const onAdd = useCallback(() => {
     if (!newText) {
       return
     }
@@ -22,26 +51,29 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
     onChange(newValue)
     setAdding(false)
     setNewText('')
-  }
+  }, [newText, value])
 
-  const onDeleteCategory = (index: number) => {
-    const newValue = [...value]
-    newValue.splice(index, 1)
-    onChange(newValue)
-  }
+  const onDeleteCategory = useCallback(
+    (index: number) => {
+      const newValue = [...value]
+      newValue.splice(index, 1)
+      onChange(newValue)
+    },
+    [value],
+  )
 
-  const startAdd = () => {
+  const startAdd = useCallback(() => {
     if (!customInputRef.current) {
       return
     }
     setAdding(true)
     setTimeout(() => customInputRef.current?.focus(), 10)
-  }
+  }, [isAdding])
 
-  const handleAddNewText = () => {
+  const handleAddNewText = useCallback(() => {
     setAdding(false)
     setNewText('')
-  }
+  }, [isAdding, newText])
 
   const renderAddNewForm = () => (
     <div
@@ -66,26 +98,15 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
     </div>
   )
 
-  const renderCategoryItem = (category: string, index: number) => (
-    <div className='px-2 mx-2 rounded-full text-gray-dd border border-gray-dd flex text-sm items-center mb-2'>
-      <div className='h-6 text-gray-4a flex items-center'>{category}</div>
-      <div
-        className='bg-gray-e6 ml-1 rounded-full h-4 w-4 flex justify-center items-center'
-        onClick={() => onDeleteCategory(index)}
-        role='button'
-        tabIndex={0}
-        aria-hidden='true'
-      >
-        <img src={ico_close} className='cursor-pointer' alt='Close' />
-      </div>
-    </div>
-  )
-
   return (
     <div className='bg-white rounded flex flex-grow shadow-4px flex-wrap p-2 items-center transition duration-300 border border-gray-ec hover:border-blue-3f active:border-blue-3f'>
       {value.map((category: string, index: number) => (
         <div className='flex' key={category}>
-          {renderCategoryItem(category, index)}
+          <CategoryItem
+            category={category}
+            index={index}
+            onDeleteCategory={onDeleteCategory}
+          />
         </div>
       ))}
       <button

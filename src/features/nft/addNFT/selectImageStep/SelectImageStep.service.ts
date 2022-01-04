@@ -22,9 +22,10 @@ export type TSelectImageStepService = {
   isAnimated: boolean
   imageToConvert?: TImageToConvert
   imageForPreview?: { url: string; maxWidth: number; size: number }
-  selectFile(file?: File): Promise<void>
-  convertImage(data: TImageToConvert, type: TImageType): Promise<void>
-  submit(): void
+  selectFile: (file?: File) => Promise<void>
+  convertImage: (data: TImageToConvert, type: TImageType) => Promise<void>
+  submit: () => void
+  resetImageState: () => void
 }
 
 type TImageToConvert = { name: string; image: HTMLImageElement }
@@ -131,6 +132,7 @@ export const useSelectImageService = (
     isProcessing,
     imageToConvert,
     isAnimated,
+    resetImageState,
     async selectFile(file) {
       if (!file) {
         return
@@ -168,7 +170,6 @@ export const useSelectImageService = (
       try {
         checkFileSize(file.size)
         setIsProcessing(true)
-
         const url = URL.createObjectURL(file)
         setFile(await processImage({ name: file.name, type, url }))
       } catch (error) {
@@ -204,7 +205,7 @@ export const useSelectImageService = (
       } catch (error) {
         setError(error.message)
       } finally {
-        setIsProcessing(false)
+        // setIsProcessing(false)
       }
     },
     submit() {

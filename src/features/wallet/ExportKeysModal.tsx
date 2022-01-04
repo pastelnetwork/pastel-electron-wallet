@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Document,
   Page,
@@ -178,10 +178,10 @@ export default function ExportKeysModal(): JSX.Element {
     setNewAddress,
   } = useWalletScreenContext()
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setNewAddress(false)
     setIsOpen(false)
-  }
+  }, [])
 
   const currencyName: string = useCurrencyName() || ''
   const [privateKey, setPrivateKey] = useState('')
@@ -206,6 +206,10 @@ export default function ExportKeysModal(): JSX.Element {
         // noop
       })
   }, [address])
+
+  const onChange = useCallback(() => {
+    // noop
+  }, [])
 
   const getPdfFilename = () => {
     const key: string = address.substr(0, 16) || ''
@@ -241,7 +245,7 @@ export default function ExportKeysModal(): JSX.Element {
   return (
     <TitleModal
       isOpen
-      handleClose={() => handleClose()}
+      handleClose={handleClose}
       title={
         !isNewAddress
           ? 'Generate Paper Wallet for Address'
@@ -256,9 +260,7 @@ export default function ExportKeysModal(): JSX.Element {
           className='mb-42px'
           labelClassName='text-h4 leading-6 font-medium text-gray-71 mb-6px'
           type='text'
-          onChange={() => {
-            //noop
-          }}
+          onChange={onChange}
         />
         <InputExportKey
           value={privateKey}
@@ -266,9 +268,7 @@ export default function ExportKeysModal(): JSX.Element {
           className='mb-[27px]'
           labelClassName='text-h4 leading-6 font-medium text-gray-71 mb-6px'
           type='password'
-          onChange={() => {
-            //noop
-          }}
+          onChange={onChange}
         />
         {renderDownloadPdfButton()}
       </div>

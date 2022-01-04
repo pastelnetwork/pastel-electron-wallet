@@ -12,11 +12,10 @@ import React, { useEffect, useState } from 'react'
 import {
   calculateFee,
   CroppedValidatedImage,
-  useFeePerKb,
+  useStorageFee,
 } from './PreviewStep.service'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { Size } from 'common/utils/file'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
@@ -38,28 +37,21 @@ export default function PreviewStepModal({
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
     null,
   )
-  const fileSizeKb = Math.round(image.size / Size.KB)
   const imageSizePercentOfAvg = 65
-  const feePerKb = useFeePerKb()
+  const storageFee = useStorageFee()
   const currencyName = useCurrencyName()
-
   const quality = state.optimizationService.selectedFile?.quality || 100
   const lossLess = quality === 100 || state.isLossLess
-
   const fee = calculateFee({
-    feePerKb,
-    quality,
-    isLossLess: state.isLossLess,
-    fileSizeKb,
+    networkFee: storageFee?.networkFee,
+    fileSizeKb: state.optimizationService.selectedFile?.size || image.size,
   })
 
   useEffect(() => state.setEstimatedFee(fee), [fee])
-
   const submittable = croppedImage && !croppedImage.error
 
   const submit = () => {
     if (croppedImage && submittable) {
-      state.setCrop(croppedImage.crop)
       state.goToNextStep()
     }
   }
@@ -195,9 +187,9 @@ export default function PreviewStepModal({
             <div className='w-48 h-48 relative'>
               {croppedImage && (
                 <>
-                  <ImageShadow url={croppedImage.src} />
+                  <ImageShadow url={state.thumbnail || croppedImage.src} />
                   <img
-                    src={croppedImage.src}
+                    src={state.thumbnail || croppedImage.src}
                     className='rounded w-full h-full relative z-10'
                     alt='Pastel Network'
                   />

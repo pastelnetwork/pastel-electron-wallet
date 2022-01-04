@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Caret } from 'common/components/Icons'
 import {
   useDisplayAdvancedFeatures,
@@ -18,7 +18,24 @@ export default function NSFWControls(): JSX.Element {
   ] = useNSFWHentaiProbability()
   const [NSFWPornProbability, setNSFWPornProbability] = useNSFWPornProbability()
 
-  const formatValue = (value: number) => `${Math.round(value)}%`
+  const formatValue = useCallback((value: number) => `${Math.round(value)}%`, [
+    NSFWPornProbability,
+    NSFWHentaiProbability,
+  ])
+
+  const onPornProbabilityChange = useCallback(
+    (value: number) => {
+      setNSFWPornProbability(Math.round(value))
+    },
+    [NSFWPornProbability],
+  )
+
+  const onHentaiProbabilityChange = useCallback(
+    (value: number) => {
+      setNSFWHentaiProbability(Math.round(value))
+    },
+    [NSFWHentaiProbability],
+  )
 
   const renderNFTControl = () => (
     <div className='flex pt-3'>
@@ -48,9 +65,7 @@ export default function NSFWControls(): JSX.Element {
         className='relative z-10'
         min={0}
         max={100}
-        onChange={(value: number) =>
-          setNSFWHentaiProbability(Math.round(value))
-        }
+        onChange={onHentaiProbabilityChange}
         value={NSFWHentaiProbability}
         step={1}
         formatValue={formatValue}
@@ -68,7 +83,7 @@ export default function NSFWControls(): JSX.Element {
         className='relative z-10'
         min={0}
         max={100}
-        onChange={(value: number) => setNSFWPornProbability(Math.round(value))}
+        onChange={onPornProbabilityChange}
         value={NSFWPornProbability}
         step={1}
         formatValue={formatValue}

@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer'
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from 'react-modal'
 
 import { useCurrencyName } from '../../common/hooks/appInfo'
@@ -194,6 +194,10 @@ export default function PastelPaperWalletModal({
   )
   const dispatch = useAppDispatch()
 
+  const onCloseModal = useCallback(() => {
+    dispatch(closePastelPaperWalletModal())
+  }, [])
+
   if (!modalIsOpen || !privateKey) {
     return null
   }
@@ -242,14 +246,14 @@ export default function PastelPaperWalletModal({
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={() => dispatch(closePastelPaperWalletModal())}
+      onRequestClose={onCloseModal}
       className={styles.modal_content_wrapper}
     >
       <div className={styles.modal_content}>
         <button
           type='button'
           className={styles.btn_close}
-          onClick={() => dispatch(closePastelPaperWalletModal())}
+          onClick={onCloseModal}
         >
           X
         </button>

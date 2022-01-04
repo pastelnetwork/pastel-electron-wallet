@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import DatePicker from './index'
 
 export function DatePickerSingle(): JSX.Element {
@@ -12,13 +12,16 @@ export function DatePickerRange(): JSX.Element {
   const [startDate, setStartDate] = React.useState<Date | null>(new Date())
   const [endDate, setEndDate] = React.useState<Date | null>(null)
 
-  const handleDate = (dates: [Date, Date] | null): void => {
-    if (dates) {
-      const [start, end] = dates
-      setStartDate(start)
-      setEndDate(end)
-    }
-  }
+  const handleDate = useCallback(
+    (dates: [Date, Date] | null): void => {
+      if (dates) {
+        const [start, end] = dates
+        setStartDate(start)
+        setEndDate(end)
+      }
+    },
+    [startDate, endDate],
+  )
 
   return (
     <DatePicker

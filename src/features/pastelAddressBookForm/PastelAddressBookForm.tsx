@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import Utils from '../../legacy/utils/utils'
 import styles from './PastelAddressBookForm.module.css'
@@ -12,15 +12,16 @@ type PastelAddressBookFormProps = {
   addressBook: AddressBookProps[]
 }
 
-export default function PastelAddressBookForm(
-  props: PastelAddressBookFormProps,
-): JSX.Element {
+export default function PastelAddressBookForm({
+  addAddressBookEntry,
+  addressBook,
+}: PastelAddressBookFormProps): JSX.Element {
   const [addButtonEnabled, setAddButtonEnabled] = useState(false)
   const [currentLabel, setCurrentLabel] = useState('')
   const [currentAddress, setCurrentAddress] = useState('')
 
   const validate = (label: string, address: string) => {
-    let labelError = props.addressBook.find(
+    let labelError = addressBook.find(
       (i: AddressBookProps) => i.label === label,
     )
       ? 'Duplicate Label'
@@ -34,33 +35,41 @@ export default function PastelAddressBookForm(
     }
   }
 
-  const updateLabel = (value: string) => {
-    if (value.length > 152) {
-      return
-    }
-    setCurrentLabel(value)
-    const { labelError, addressIsValid } = validate(value, currentAddress)
-    setAddButtonEnabled(
-      !labelError && addressIsValid && value !== '' && currentAddress !== '',
-    )
-  }
+  const updateLabel = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      if (value.length > 152) {
+        return
+      }
+      setCurrentLabel(value)
+      const { labelError, addressIsValid } = validate(value, currentAddress)
+      setAddButtonEnabled(
+        !labelError && addressIsValid && value !== '' && currentAddress !== '',
+      )
+    },
+    [addButtonEnabled, currentAddress],
+  )
 
-  const updateAddress = (value: string) => {
-    setCurrentAddress(value)
-    const { labelError, addressIsValid } = validate(currentLabel, value)
-    setAddButtonEnabled(
-      !labelError && addressIsValid && currentLabel !== '' && value !== '',
-    )
-  }
+  const updateAddress = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setCurrentAddress(value)
+      const { labelError, addressIsValid } = validate(currentLabel, value)
+      setAddButtonEnabled(
+        !labelError && addressIsValid && currentLabel !== '' && value !== '',
+      )
+    },
+    [addButtonEnabled, currentAddress],
+  )
 
-  const handleAddButtonClicked = () => {
+  const handleAddButtonClicked = useCallback(() => {
     if (currentLabel && currentAddress) {
-      props.addAddressBookEntry(currentLabel, currentAddress)
+      addAddressBookEntry(currentLabel, currentAddress)
       setCurrentLabel('')
       setCurrentAddress('')
       setAddButtonEnabled(false)
     }
-  }
+  }, [currentLabel, currentAddress, addButtonEnabled])
 
   const { labelError, addressIsValid } = validate(currentLabel, currentAddress)
 
@@ -80,7 +89,7 @@ export default function PastelAddressBookForm(
         type='text'
         value={currentLabel}
         className={[styles.inputbox, styles.margintopsmall].join(' ')}
-        onChange={e => updateLabel(e.target.value)}
+        onChange={updateLabel}
       />
 
       <div className={styles.margintoplarge} />
@@ -99,7 +108,7 @@ export default function PastelAddressBookForm(
         type='text'
         value={currentAddress}
         className={[styles.inputbox, styles.margintopsmall].join(' ')}
-        onChange={e => updateAddress(e.target.value)}
+        onChange={updateAddress}
       />
 
       <div className={styles.margintoplarge} />

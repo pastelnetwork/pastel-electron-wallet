@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import {
@@ -9,7 +9,7 @@ import {
   Trash,
 } from 'common/components/Icons'
 import { Button } from 'common/components/Buttons'
-import { DraggableCore } from 'react-draggable'
+import { DraggableCore, DraggableEvent } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
 
@@ -34,6 +34,10 @@ export default function UploadStep({
     onDragControl,
     filledProgressBarRef,
   } = useImageZoom()
+
+  const handleOnStart = useCallback((e: DraggableEvent) => {
+    e.preventDefault()
+  }, [])
 
   const renderImageOptimization = () => (
     <div className='flex-between'>
@@ -109,7 +113,7 @@ export default function UploadStep({
       >
         <EditImage size={30} />
       </button>
-      <DraggableCore onDrag={onDragImage} onStart={e => e.preventDefault()}>
+      <DraggableCore onDrag={onDragImage} onStart={handleOnStart}>
         <img
           ref={imageRef}
           src={displayUrl}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Convert } from 'easy-currencies'
 import getSymbolFromCurrency from 'currency-symbol-map'
 
@@ -101,6 +101,13 @@ export default function ProfileGeneral({
       })
   }, [nativeCurrency])
 
+  const onBioChange = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setBio(e.target.value)
+    },
+    [bio],
+  )
+
   const renderBioAndEditButton = () => (
     <div className='w-full mt-20 1200px:mb-0'>
       <div className='flex'>
@@ -113,7 +120,7 @@ export default function ProfileGeneral({
               <textarea
                 className='w-full rounded outline-none h-full resize-none text-base text-gray-4a font-normal leading-6'
                 value={bio}
-                onChange={e => setBio(e.target.value)}
+                onChange={onBioChange}
               />
             </div>
           ) : (

@@ -35,6 +35,7 @@ export const hashtags = [
   '#modern',
   '#spaceart',
   '#paintworks',
+  '#paintworks_art',
 ].map(value => ({ value, label: value }))
 
 const schema = yup.object().shape({
@@ -106,7 +107,7 @@ export default function InputNFTDataStep({
         )}
         width={285}
       >
-        <Info size={18} />
+        <Info size={18} className='cursor-pointer' />
       </Tooltip>
     </div>
   )
@@ -133,6 +134,7 @@ export default function InputNFTDataStep({
           options={hashtags}
           className='w-1/2 text-sm'
           placeholder='#MotionGraphics, #Abstract'
+          canCustomInput
         />
         <Input
           form={form}

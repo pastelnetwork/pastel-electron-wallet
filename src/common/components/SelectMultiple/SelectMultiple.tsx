@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react'
+import React, { useState, KeyboardEvent, useCallback } from 'react'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import { X, Caret } from 'common/components/Icons'
 import cn from 'classnames'
@@ -16,6 +16,7 @@ type TBaseProps = {
   selectClassName?: string
   placeholder?: string
   disabled?: boolean
+  canCustomInput?: boolean
 }
 
 export type TControlledProps = TBaseProps & {
@@ -26,6 +27,24 @@ export type TControlledProps = TBaseProps & {
 export type TFormProps<TForm> = TBaseProps &
   Omit<TFormControlProps<TForm>, 'children'>
 
+function Removeutton({
+  item,
+  removeSelectedItem,
+}: {
+  item: TOption
+  removeSelectedItem: (val: TOption) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    removeSelectedItem(item)
+  }, [])
+
+  return (
+    <button type='button' className='ml-2' onClick={onClick}>
+      <X size={8} />
+    </button>
+  )
+}
+
 function SelectMultipleInner({
   options,
   selected,
@@ -34,8 +53,10 @@ function SelectMultipleInner({
   selectClassName,
   placeholder,
   disabled = false,
+  canCustomInput = false,
 }: TControlledProps): JSX.Element {
   const [inputValue, setInputValue] = useState('')
+  const [customValue, setCustomValue] = useState('')
 
   const {
     getSelectedItemProps,
@@ -93,11 +114,25 @@ function SelectMultipleInner({
       switch (type) {
         case useCombobox.stateChangeTypes.InputChange:
           setInputValue(inputValue)
+          setCustomValue(inputValue)
           break
-        case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
           if (selectedItem) {
             setInputValue('')
+            setCustomValue('')
+            addSelectedItem(selectedItem)
+          }
+          break
+        case useCombobox.stateChangeTypes.InputKeyDownEnter:
+          if (canCustomInput) {
+            addSelectedItem({
+              value: customValue,
+              label: customValue,
+            })
+          }
+          setInputValue('')
+          setCustomValue('')
+          if (selectedItem) {
             addSelectedItem(selectedItem)
           }
           break
@@ -126,6 +161,10 @@ function SelectMultipleInner({
     }
   }
 
+  const handleRemoveSelectedItem = useCallback((item: TOption) => {
+    removeSelectedItem(item)
+  }, [])
+
   const renderSelectItems = () => (
     <div className='flex-grow flex flex-wrap'>
       {selectedItems.map((item, index) => (
@@ -135,13 +174,10 @@ function SelectMultipleInner({
           {...getSelectedItemProps({ selectedItem: item, index })}
         >
           {item.label}
-          <button
-            type='button'
-            className='ml-2'
-            onClick={() => removeSelectedItem(item)}
-          >
-            <X size={8} />
-          </button>
+          <Removeutton
+            item={item}
+            removeSelectedItem={handleRemoveSelectedItem}
+          />
         </div>
       ))}
       <div
@@ -207,11 +243,12 @@ export default function SelectMultiple<TForm extends FieldValues>(
   props: TControlledProps | TFormProps<TForm>,
 ): JSX.Element {
   if ('form' in props) {
+    const { name, form } = props
     return (
       <FormControl {...props}>
         <Controller
-          name={props.name}
-          control={props.form.control}
+          name={name}
+          control={form.control}
           render={({ field: { value, onChange } }) => (
             <SelectMultipleInner
               {...props}

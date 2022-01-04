@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 
@@ -74,10 +74,14 @@ function CopiesDetailsModal({
   isOpen,
   handleClose,
 }: TCopiesDetailsModal): JSX.Element {
+  const onClose = useCallback(() => {
+    handleClose()
+  }, [])
+
   return (
     <Modal
       isOpen={isOpen}
-      handleClose={() => handleClose()}
+      handleClose={onClose}
       size='432px'
       title={'List of NFT copies'}
       titleClassName='font-black text-2xl text-gray-2d mt-2'

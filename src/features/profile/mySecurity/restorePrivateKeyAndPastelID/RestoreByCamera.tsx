@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import QrReader from 'react-qr-reader'
 
 import RestoreSuccess from './RestoreSuccess'
@@ -28,47 +28,50 @@ export default function RestoreByCamera({
   const [showQrReader, setShowQrReader] = useState(true)
   const [currentStatus, setCurrentStatus] = useState<string>('')
 
-  const handleScan = async (result: string | null) => {
-    if (result) {
-      const qr = parseQRCodeFromString(result)
-      const qrExist = results.filter(item => item.qrCode === qr?.qrCode)
-      if (!qrExist.length && qr) {
-        let data: TQRReader[] = results
-        data.push({
-          index: qr.index,
-          total: qr.total,
-          qrCode: qr.qrCode,
-        })
-        data = data.sort((a, b) => a.index - b.index)
-        setResults([...data])
-        if (data.length === data[0]?.total) {
-          try {
-            setShowQrReader(false)
-            const finalData = data.map(q => q.qrCode).join('')
-            const result = await doImportPrivKeys(finalData, setPastelId)
-            if (result) {
-              if (callback) {
-                callback()
-                return
+  const handleScan = useCallback(
+    async (result: string | null) => {
+      if (result) {
+        const qr = parseQRCodeFromString(result)
+        const qrExist = results.filter(item => item.qrCode === qr?.qrCode)
+        if (!qrExist.length && qr) {
+          let data: TQRReader[] = results
+          data.push({
+            index: qr.index,
+            total: qr.total,
+            qrCode: qr.qrCode,
+          })
+          data = data.sort((a, b) => a.index - b.index)
+          setResults([...data])
+          if (data.length === data[0]?.total) {
+            try {
+              setShowQrReader(false)
+              const finalData = data.map(q => q.qrCode).join('')
+              const result = await doImportPrivKeys(finalData, setPastelId)
+              if (result) {
+                if (callback) {
+                  callback()
+                  return
+                }
+                setCurrentStatus('done')
+              } else {
+                setCurrentStatus('error')
               }
-              setCurrentStatus('done')
-            } else {
+            } catch (err) {
               setCurrentStatus('error')
             }
-          } catch (err) {
-            setCurrentStatus('error')
-          }
-          if (onHideHeader) {
-            onHideHeader(true)
+            if (onHideHeader) {
+              onHideHeader(true)
+            }
           }
         }
       }
-    }
-  }
+    },
+    [results, currentStatus],
+  )
 
-  const handleError = () => {
+  const handleError = useCallback(() => {
     setCurrentStatus('error')
-  }
+  }, [currentStatus])
 
   if (currentStatus === 'done') {
     return <RestoreSuccess />

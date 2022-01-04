@@ -14,6 +14,12 @@ export interface TArtworkTicket {
   youtube_url?: string
   green: boolean
   royalty: number
+  thumbnail_coordinate?: {
+    bottom_right_x: number
+    bottom_right_y: number
+    top_left_x: number
+    top_left_y: number
+  }
 }
 
 export interface IArtworkCollectionItem {
@@ -122,4 +128,38 @@ export type TArtworksDetailProps = {
   txid: string
   version: number
   youtube_url: string
+}
+
+type TTaskStates = {
+  date: string
+  status: string
+}
+
+export type TTArtworksTaskDetailProps = {
+  id: string
+  states: TTaskStates[]
+  status: string
+  ticket: {
+    artist_name: string
+    artist_pastelid: string
+    artist_pastelid_passphrase: string
+    artist_website_url: string
+    description: string
+    green: boolean
+    issued_copies: number
+    keywords: string
+    maximum_fee: number
+    name: string
+    royalty: number
+    series_name: string
+    spendable_address: string
+    thumbnail_coordinate: {
+      bottom_right_x: number
+      bottom_right_y: number
+      top_left_x: number
+      top_left_y: number
+    }
+    youtube_url: string
+  }
+  txid: string
 }

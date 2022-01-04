@@ -12,7 +12,7 @@ import {
   Outputs,
   OutputType,
 } from 'javascript-terminal'
-import React, { createRef, useEffect, useState } from 'react'
+import React, { createRef, useCallback, useEffect, useState } from 'react'
 
 import { apiRequests } from '../../features/expertConsole/rpc-services/api'
 import ConsoleOutput from './ConsoleOutput'
@@ -174,7 +174,8 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
       return
     }
     const vSuggestions: string = suggestions.join('\n').toString() || ''
-    addOutputThenDisplay(`$ ${typing}\n${vSuggestions}`)
+    const vTyping: string = typing || ''
+    addOutputThenDisplay(`$ ${vTyping}\n${vSuggestions}`)
       .then(() => {
         // noop
       })
@@ -272,28 +273,31 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
   }
 
-  const onKeyDownHandle = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    switch (e.key) {
-      case 'Enter':
-        e.preventDefault()
-        onEnterKeyDown()
-        break
-      case 'ArrowUp':
-        e.preventDefault()
-        onArrowUpPress()
-        break
-      case 'ArrowDown':
-        e.preventDefault()
-        onArrowDownPress()
-        break
-      case 'Tab':
-        e.preventDefault()
-        onTabPress()
-        break
-      default:
-        break
-    }
-  }
+  const onKeyDownHandle = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      switch (e.key) {
+        case 'Enter':
+          e.preventDefault()
+          onEnterKeyDown()
+          break
+        case 'ArrowUp':
+          e.preventDefault()
+          onArrowUpPress()
+          break
+        case 'ArrowDown':
+          e.preventDefault()
+          onArrowDownPress()
+          break
+        case 'Tab':
+          e.preventDefault()
+          onTabPress()
+          break
+        default:
+          break
+      }
+    },
+    [],
+  )
 
   const rpcCommandResponse = (commandKey: string) => async (
     state: any,
@@ -408,10 +412,13 @@ function TerminalConsole(props: TConsoleProps): JSX.Element {
     }
   }
 
-  const onChangeTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetScroll()
-    setTyping(e.target.value)
-  }
+  const onChangeTyping = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      resetScroll()
+      setTyping(e.target.value)
+    },
+    [],
+  )
 
   useEffect(() => {
     if (!isRendered) {

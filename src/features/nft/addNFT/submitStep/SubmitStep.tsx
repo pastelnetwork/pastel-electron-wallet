@@ -9,7 +9,6 @@ import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
 import { formatFileSize, formatNumber } from 'common/utils/format'
 import ImageShadow from '../common/ImageShadow'
-import { submit } from './SubmitStep.service'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PreviewIco } from 'common/components/Icons'
 
@@ -38,9 +37,13 @@ export default function SubmitStep({
   toggleCloseButton,
 }: TSubmitStepProps): JSX.Element {
   const [fullScreen, toggleFullScreen] = useToggle(false)
-  const [croppedImage] = useImagePreview({ image })
+  const [croppedImage] = useImagePreview({
+    image: {
+      ...image,
+      url: state.optimizationService.selectedFile?.fileUrl || image.url,
+    },
+  })
   const currencyName = useCurrencyName()
-
   const onFullScreenToggle = useCallback(() => {
     toggleCloseButton()
     toggleFullScreen()
@@ -50,11 +53,16 @@ export default function SubmitStep({
     state.goBack()
   }, [])
 
-  const onSubmit = useCallback(() => submit({ state, image, nftData }), [
-    state,
-    image,
-    nftData,
-  ])
+  const onSubmit = useCallback(() => state.goToNextStep(), [])
+
+  const handleGreenNFTChange = useCallback((val: boolean) => {
+    if (state.nftData) {
+      state.setNftData({
+        ...state.nftData,
+        green: val,
+      })
+    }
+  }, [])
 
   if (fullScreen) {
     return <FullScreenImage image={displayUrl} onClose={onFullScreenToggle} />
@@ -102,9 +110,9 @@ export default function SubmitStep({
       <div className='w-48 h-48 relative'>
         {croppedImage && (
           <>
-            <ImageShadow url={croppedImage.src} small />
+            <ImageShadow url={state.thumbnail || croppedImage.src} small />
             <img
-              src={croppedImage.src}
+              src={state.thumbnail || croppedImage.src}
               className='rounded w-full h-full relative'
               alt='Pastel Network'
             />
@@ -145,7 +153,7 @@ export default function SubmitStep({
   const renderGreenNFT = () => (
     <div className='flex items-center'>
       <div className='text-gray-71 mr-3'>GreenNFT</div>
-      <Toggle selected={nftData.green} />
+      <Toggle selected={nftData.green} toggleHandler={handleGreenNFTChange} />
     </div>
   )
 

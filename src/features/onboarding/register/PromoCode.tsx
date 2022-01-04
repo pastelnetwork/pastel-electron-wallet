@@ -109,7 +109,7 @@ export default function PromoCode(): JSX.Element {
         )
       }
     }
-  }, [])
+  }, [store])
 
   const handleBack = useCallback(() => {
     store.goBack()
@@ -128,14 +128,17 @@ export default function PromoCode(): JSX.Element {
     promoCodeIsValid = false
   }
 
-  const handleInputChange = useCallback((e: FormEvent<HTMLInputElement>) => {
-    store.setSelectedPSLAddress(null)
-    if (isPastelPromoCode) {
-      store.setPromoCode(e.currentTarget.value.trim())
-    } else {
-      store.setPSLAddressPrivateKey(e.currentTarget.value.trim())
-    }
-  }, [])
+  const handleInputChange = useCallback(
+    (e: FormEvent<HTMLInputElement>) => {
+      store.setSelectedPSLAddress(null)
+      if (isPastelPromoCode) {
+        store.setPromoCode(e.currentTarget.value.trim())
+      } else {
+        store.setPSLAddressPrivateKey(e.currentTarget.value.trim())
+      }
+    },
+    [store],
+  )
 
   const renderPromoCodeInput = () => {
     return (

@@ -84,42 +84,24 @@ export default function Password(props: TPassword): JSX.Element {
     }
   }, [newPassword, setPassStrength])
 
-  const handleNewVisibility = () => {
+  const handleNewVisibility = useCallback(() => {
     setNewPasswordVisible(!newPasswordVisible)
-  }
+  }, [newPasswordVisible])
 
-  const handleConfirmVisibility = () => {
+  const handleConfirmVisibility = useCallback(() => {
     setConfirmPasswordVisible(!confirmPasswordVisible)
-  }
+  }, [confirmPasswordVisible])
 
-  const checkPasswordStrength = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPass = e.target.value
-    setNewPassword(newPass)
-    const validation = passwordStrength(newPass, passOptions)
+  const checkPasswordStrength = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newPass = e.target.value
+      setNewPassword(newPass)
+      const validation = passwordStrength(newPass, passOptions)
 
-    let status = [
-      {
-        key: 'line-1',
-        value: 'bg-navigation opacity-20',
-      },
-      {
-        key: 'line-2',
-        value: 'bg-navigation opacity-20',
-      },
-      {
-        key: 'line-3',
-        value: 'bg-navigation opacity-20',
-      },
-      {
-        key: 'line-4',
-        value: 'bg-navigation opacity-20',
-      },
-    ]
-    if (validation.id === 0) {
-      status = [
+      let status = [
         {
           key: 'line-1',
-          value: 'bg-red-fe',
+          value: 'bg-navigation opacity-20',
         },
         {
           key: 'line-2',
@@ -134,72 +116,96 @@ export default function Password(props: TPassword): JSX.Element {
           value: 'bg-navigation opacity-20',
         },
       ]
-    } else if (validation.id === 1) {
-      status = [
-        {
-          key: 'line-1',
-          value: 'bg-yellow-ff',
-        },
-        {
-          key: 'line-2',
-          value: 'bg-yellow-ff',
-        },
-        {
-          key: 'line-3',
-          value: 'bg-navigation opacity-20',
-        },
-        {
-          key: 'line-4',
-          value: 'bg-navigation opacity-20',
-        },
-      ]
-    } else if (validation.id === 2) {
-      status = [
-        {
-          key: 'line-1',
-          value: 'bg-yellow-ff',
-        },
-        {
-          key: 'line-2',
-          value: 'bg-yellow-ff',
-        },
-        {
-          key: 'line-3',
-          value: 'bg-yellow-ff',
-        },
-        {
-          key: 'line-4',
-          value: 'bg-navigation opacity-20',
-        },
-      ]
-    } else if (validation.id === 3) {
-      status = [
-        {
-          key: 'line-1',
-          value: 'bg-success',
-        },
-        {
-          key: 'line-2',
-          value: 'bg-success',
-        },
-        {
-          key: 'line-3',
-          value: 'bg-success',
-        },
-        {
-          key: 'line-4',
-          value: 'bg-success',
-        },
-      ]
-    }
+      if (validation.id === 0) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-red-fe',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-navigation opacity-20',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-navigation opacity-20',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-navigation opacity-20',
+          },
+        ]
+      } else if (validation.id === 1) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-navigation opacity-20',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-navigation opacity-20',
+          },
+        ]
+      } else if (validation.id === 2) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-navigation opacity-20',
+          },
+        ]
+      } else if (validation.id === 3) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-success',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-success',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-success',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-success',
+          },
+        ]
+      }
 
-    setPassStrength(status)
-  }
+      setPassStrength(status)
+    },
+    [passStrength],
+  )
 
-  const handleConfirmPass = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const confirmPass = e.target.value
-    setConfirmPassword(confirmPass)
-  }
+  const handleConfirmPass = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const confirmPass = e.target.value
+      setConfirmPassword(confirmPass)
+    },
+    [confirmPassword],
+  )
 
   const handleGenerateRandomPassword = useCallback(() => {
     const newPass = randomPassword()

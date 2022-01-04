@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { useToggle } from 'react-use'
 
@@ -54,6 +54,10 @@ function Header(): JSX.Element | null {
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
   const [openAddNFT, toggleAddNFT] = useToggle(false)
 
+  const handleOpenNotificationModal = useCallback(() => {
+    setOpenNotificationModal(true)
+  }, [])
+
   const location = useLocation()
   if (location.pathname === ROUTES.CHAT) {
     return null
@@ -62,7 +66,7 @@ function Header(): JSX.Element | null {
   const renderLinkIcons = () => (
     <div className='flex items-center h-full'>
       <CircleQuestion size={18} className='text-gray-33' />
-      <ButtonTag onClick={() => setOpenNotificationModal(true)}>
+      <ButtonTag onClick={handleOpenNotificationModal}>
         <BellIcon
           size={16}
           hasNotification

@@ -143,6 +143,13 @@ export function Receive(props: IReceiveProps): JSX.Element {
     return map
   }, {} as { [addr: string]: string })
 
+  const onSelect = useCallback(
+    (index: number) => {
+      setCurrentTab(index)
+    },
+    [currentTab],
+  )
+
   const renderTransparentTabsContent = () => (
     <TabPanel key={`t${rerenderKey}`}>
       <ScrollPane offsetHeight={100}>
@@ -206,7 +213,7 @@ export function Receive(props: IReceiveProps): JSX.Element {
 
   return (
     <div className={styles.receivecontainer}>
-      <Tabs onSelect={(index: number) => setCurrentTab(index)}>
+      <Tabs onSelect={onSelect}>
         {renderTabTitle()}
         {renderShieldedTabContent()}
         {renderTransparentTabsContent()}

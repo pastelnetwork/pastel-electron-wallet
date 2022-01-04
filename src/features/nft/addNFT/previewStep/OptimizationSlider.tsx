@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Slider from 'common/components/Slider/Slider'
 import { formatFileSize, formatPrice } from 'common/utils/format'
 import { TAddNFTState, TImage } from '../AddNFT.state'
@@ -20,6 +20,43 @@ export default function OptimizationSlider({
   fee,
 }: TOptimizationSliderProps): JSX.Element | null {
   const currencyName = useCurrencyName()
+  const { files } = state.optimizationService
+
+  const formatValue = useCallback(
+    (value: number) => {
+      if (files) {
+        const index = Math.round(value)
+        const file = files[index] || image
+        return formatFileSize(file.size, 2)
+      }
+      return ''
+    },
+    [files],
+  )
+
+  const formatTooltipValue = useCallback(
+    (value: number) => {
+      const size: string = formatValue(value) || ''
+
+      if (fee === undefined) {
+        return size
+      } else {
+        return `${size} - ${formatPrice(fee, currencyName)}`
+      }
+    },
+    [fee, state],
+  )
+
+  const onChange = useCallback(
+    (value: number) => {
+      if (files) {
+        const index = Math.round(value)
+        const file = files[index]
+        state.optimizationService.setSelectedFile(file && { ...file, index })
+      }
+    },
+    [state, files],
+  )
 
   if (state.optimizationService.status === 'processing') {
     return (
@@ -30,35 +67,11 @@ export default function OptimizationSlider({
     )
   }
 
-  const { files } = state.optimizationService
   if (!files?.length) {
     return null
   }
-
-  const formatValue = (value: number) => {
-    const index = Math.round(value)
-    const file = files[index] || image
-    return formatFileSize(file.size, 2)
-  }
-
-  const formatTooltipValue = (value: number) => {
-    const size = formatValue(value)
-
-    if (fee === undefined) {
-      return size
-    } else {
-      return `${size} - ${formatPrice(fee, currencyName)}`
-    }
-  }
-
   const selectedIndex =
     state.optimizationService.selectedFile?.index ?? files.length
-
-  const onChange = (value: number) => {
-    const index = Math.round(value)
-    const file = files[index]
-    state.optimizationService.setSelectedFile(file && { ...file, index })
-  }
 
   return (
     <Slider

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -288,12 +288,21 @@ export default function Portfolio(): JSX.Element {
 
   const [range, setRange] = useState<[number, number]>([400, 700])
   const [rarenessRange, setRarenessRange] = useState<[number, number]>([0, 1])
-  const formatValue = (value: number) => `${value.toFixed(0)}k`
-  const formatRarenessValue = (value: number) => `${value.toFixed(1)}`
+  const formatValue = useCallback((value: number) => `${value.toFixed(0)}k`, [
+    range,
+    rarenessRange,
+  ])
+  const formatRarenessValue = useCallback(
+    (value: number) => `${value.toFixed(1)}`,
+    [rarenessRange],
+  )
 
-  const handleLikeOptionChange = (val: TOption | null) => {
-    setLikes(val)
-  }
+  const handleLikeOptionChange = useCallback(
+    (val: TOption | null) => {
+      setLikes(val)
+    },
+    [likes],
+  )
 
   const renderNFTCards = () => (
     <div className='w-full'>

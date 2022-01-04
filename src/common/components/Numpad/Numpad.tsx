@@ -1,5 +1,6 @@
 import React, { useEffect, useState, forwardRef, useRef } from 'react'
 import cn from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
 
 import { formatNumber } from 'common/utils/format'
 
@@ -77,6 +78,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       numpadList.push({
         value: 0,
         type: 'default',
+        index: uuidv4(),
       })
     }
 
@@ -84,6 +86,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       numpadList.push({
         value: item,
         type: 'value',
+        index: uuidv4(),
       })
     })
 
@@ -92,7 +95,10 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
 
   const clear = () => onChange('')
 
-  const addChar = (char: string) => onChange(value + char)
+  const addChar = (char: string) => {
+    const val: string = value || ''
+    onChange(`${val}${char}`)
+  }
 
   const renderNumpadControl = () => (
     <div className='pt-1 space-y-2'>
@@ -148,17 +154,21 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       )}
     >
       <div className='input h-8 px-2 mb-1 w-[112px] flex justify-between items-center text-gray-a0 font-medium'>
-        {getNumPadList().map(item => (
-          <span
-            className={cn(
-              'text-base font-medium',
-              item.type === 'default' ? 'text-gray-a0' : 'text-gray-4a',
-            )}
-            key={`${item.value}${item.type}`}
-          >
-            {item.value}
-          </span>
-        ))}
+        {getNumPadList().map(item => {
+          const type: string = item.type || ''
+          const index: string = item.index || ''
+          return (
+            <span
+              className={cn(
+                'text-base font-medium',
+                item.type === 'default' ? 'text-gray-a0' : 'text-gray-4a',
+              )}
+              key={`${type}${index}`}
+            >
+              {item.value}
+            </span>
+          )
+        })}
       </div>
       {renderNumpadControl()}
     </div>
