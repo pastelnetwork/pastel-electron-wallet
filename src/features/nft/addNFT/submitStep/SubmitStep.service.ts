@@ -7,12 +7,13 @@ import {
   artworkRegister,
   artworkUploadImage,
 } from 'api/walletNode/artwork-api/artwork'
-import { getPastelIdTickets } from 'api/pastel-rpc'
+import { getPastelIdTickets, walletRPC } from 'api/pastel-rpc'
 import { TArtworkTicket } from 'api/walletNode/artwork-api/interfaces'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
 import { getStorageFee, TGetStorageFee } from 'api/estimate-fee'
 import { readUsersInfo } from 'common/utils/User'
 import { calcFileSize } from 'common/utils/file'
+import { burnAddress, percentOfFee } from 'common/constants/fee'
 import store from '../../../../redux/store'
 
 const getImageFile = (
@@ -149,6 +150,8 @@ export const submit = async ({
     const { task_id } = await artworkRegister(regParams)
     if (task_id) {
       setTaskId(task_id)
+      const fee = storageFee.networkFee * fileSize * percentOfFee
+      await walletRPC.sendToAddress(burnAddress, fee)
     }
     if (fs.existsSync(path.join(tempPath, image.name))) {
       fs.promises.unlink(path.join(tempPath, image.name))

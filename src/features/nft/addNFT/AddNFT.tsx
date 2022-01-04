@@ -99,7 +99,7 @@ export default function AddNFT({
   const [showCloseButton, toggleCloseButton] = useToggle(true)
   const [taskId, setTaskId] = useState<string>('')
 
-  const getTaskState = () => {
+  const getTaskState = async () => {
     try {
       const generateTaskMessage = async (webSocketUrl: string) => {
         try {
@@ -110,12 +110,12 @@ export default function AddNFT({
           toast(error.message, { type: 'error' })
         }
       }
-
-      const connection = new WebSocket(
+      const socket = new WebSocket(
         `${walletWebSocketURL}/artworks/register/${taskId}/state`,
       )
-      connection.addEventListener('message', () => {
-        generateTaskMessage(connection.url)
+
+      socket.addEventListener('message', () => {
+        generateTaskMessage(socket.url)
           .then(() => {
             // noop
           })
@@ -127,8 +127,9 @@ export default function AddNFT({
           })
       })
 
-      connection.addEventListener('error', () => {
+      socket.addEventListener('error', () => {
         toast('Internal Server Error response.', { type: 'error' })
+        socket.close()
       })
     } catch (error) {
       toast(error.message, { type: 'error' })
