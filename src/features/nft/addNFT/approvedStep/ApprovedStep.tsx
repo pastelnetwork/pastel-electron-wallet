@@ -21,8 +21,8 @@ import { TListAddressAmounts } from 'types/rpc'
 function InfoPair({ title, value }: { title: string; value: string }) {
   return (
     <div className='flex'>
-      <div className='text-gray-71 w-48'>{title}</div>
-      <div className='text-green-45 font-extrabold'>{value}</div>
+      <div className='text-gray-71 w-48 text-sm font-medium'>{title}</div>
+      <div className='text-green-45 font-extrabold text-sm'>{value}</div>
     </div>
   )
 }
@@ -118,8 +118,8 @@ export default function ApprovedStep({
 
   const renderListAddressAmounts = () => (
     <div className='mt-2'>
-      <div className='font-medium text-gray-71 mb-2'>
-        Select address to payment
+      <div className='font-medium text-gray-71 mb-2 text-sm'>
+        Select {currencyName} Address to Payment
       </div>
       <div>
         <Select
@@ -135,7 +135,9 @@ export default function ApprovedStep({
   const renderFinalRegistrationFee = () => (
     <div className='w-full mt-3'>
       <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
-        <div className='text-gray-71'>Final registration fee</div>
+        <div className='font-medium text-gray-71 text-sm'>
+          Final registration fee
+        </div>
         <div className='text-gray-45 font-extrabold'>
           {fee} {currencyName}
         </div>
@@ -154,11 +156,13 @@ export default function ApprovedStep({
 
   const renderThumbnailPreview = () => (
     <div className='w-full space-y-4'>
-      <InfoPair title='Patel rareness score' value='67%' />
+      <InfoPair title='Pastel rareness score' value='67%' />
       <InfoPair title='Internet rareness score' value='99%' />
       <InfoPair title='NSFW' value='100%' />
       <div>
-        <div className='font-medium text-gray-71 mb-3'>Thumbnail preview</div>
+        <div className='font-medium text-gray-71 mb-3 text-sm'>
+          Thumbnail preview
+        </div>
         <div className='w-48 h-48'>
           {croppedImage && (
             <img
@@ -178,6 +182,7 @@ export default function ApprovedStep({
       titleClass='mb-3'
       fixedHeight
       leftColumnWidth={image.maxWidth}
+      titleWidth={image.maxWidth + 320}
       leftColumnContent={
         <div className='flex-center'>
           <div className='relative flex-center'>

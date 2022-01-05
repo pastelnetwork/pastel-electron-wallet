@@ -8,7 +8,7 @@ import { formatFileSize, formatNumber } from 'common/utils/format'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import OptimizationSlider from './OptimizationSlider'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   calculateFee,
   CroppedValidatedImage,
@@ -96,6 +96,21 @@ export default function PreviewStepModal({
     </div>
   )
 
+  const handleToggleHandler = useCallback(
+    (val: boolean) => {
+      if (val) {
+        const { files } = state.optimizationService
+        if (files) {
+          const index = files.length
+          const file = files[index]
+          state.optimizationService.setSelectedFile(file && { ...file, index })
+        }
+      }
+      state.setIsLossLess(val)
+    },
+    [state.isLossLess],
+  )
+
   return (
     <ModalLayout
       title='Image Preview'
@@ -168,7 +183,7 @@ export default function PreviewStepModal({
             </div>
             <Toggle
               selected={state.isLossLess}
-              toggleHandler={state.setIsLossLess}
+              toggleHandler={handleToggleHandler}
               selectedClass='bg-blue-3f'
             />
           </div>

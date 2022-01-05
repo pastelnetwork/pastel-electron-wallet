@@ -24,6 +24,7 @@ export type TSliderProps = {
   minMaxAlignCenter?: boolean
   step?: number | undefined
   alwaysShowTooltip?: boolean
+  customStartValue?: string
 } & (
   | {
       value: number
@@ -57,6 +58,7 @@ export default function Slider({
   minMaxClassName = 'top-5 text-gray-2d font-medium text-sm',
   minMaxAlignCenter = false,
   alwaysShowTooltip,
+  customStartValue,
   ...props
 }: TSliderProps): JSX.Element {
   const stickToBottom = variant === 'stickToBottom'
@@ -136,7 +138,7 @@ export default function Slider({
             >
               <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
                 <div className={minMaxClassName}>
-                  {min === 0 ? min : formatValue(min)}
+                  {min === 0 ? customStartValue || min : formatValue(min)}
                 </div>
               </div>
               {'steps' in props &&

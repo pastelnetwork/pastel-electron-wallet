@@ -226,7 +226,7 @@ export default function SelectImageStep({
                 </div>
               </div>
             ) : (
-              <div className='flex-center flex-col bg-gray-f4 rounded-md h-full w-full'>
+              <div className='flex-center flex-col bg-gray-f4 rounded-md h-full w-full cursor-pointer'>
                 <UploadFile size={26} className='mb-3' />
                 <div className='mb-2'>
                   {allowedTypeNames.join(', ')} Max 100Mb.

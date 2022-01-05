@@ -15,6 +15,7 @@ type TModalLayoutProps = {
   leftColumnWidth: number
   leftColumnContent: React.ReactNode
   rightColumnContent: React.ReactNode
+  titleWidth?: number
 }
 
 const stepsCount = 4
@@ -32,6 +33,7 @@ export default function CroppingStep({
   rightColumnContent,
   subtitleClassName = 'font-medium text-sm text-gray-33 opacity-50',
   titleClassName = 'text-gray-800 text-2xl font-extrabold mb-3',
+  titleWidth,
 }: TModalLayoutProps): JSX.Element {
   const renderModalContent = () => (
     <div>
@@ -50,7 +52,7 @@ export default function CroppingStep({
       <div
         className={cn('flex-between', titleClass)}
         style={{
-          width: `${leftColumnWidth}px`,
+          width: `${titleWidth || leftColumnWidth}px`,
         }}
       >
         {renderModalContent()}
