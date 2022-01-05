@@ -96,14 +96,14 @@ export default function InputNFTDataStep({
     if (values.website && !validURL(values.website)) {
       form.setError('website', {
         type: 'required',
-        message: 'Not a valid url.',
+        message: 'Not a valid URL format.',
       })
       isValid = false
     }
     if (values.video && !validURL(values.video)) {
       form.setError('video', {
         type: 'required',
-        message: 'Not a valid url.',
+        message: 'Not a valid URL format.',
       })
       isValid = false
     }
