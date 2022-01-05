@@ -2,6 +2,8 @@ import React from 'react'
 import * as yup from 'yup'
 import { useForm, UseFormReturn } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import cn from 'classnames'
+
 import Input from 'common/components/Form/Input'
 import { TAddNFTState, TNFTData } from '../AddNFT.state'
 import { TOption } from 'common/components/Select/Select'
@@ -14,6 +16,8 @@ import Royalty from './Royalty'
 import WebsiteAndVideo from './WebsiteAndVideo'
 import TextArea from 'common/components/Form/TextArea'
 import CircleSteper from 'common/components/CircleSteper'
+import TimesIcon from 'common/assets/icons/ico-times.svg'
+import { validURL } from 'common/utils/validation'
 import {
   copiesMax,
   copiesMin,
@@ -88,6 +92,24 @@ export default function InputNFTDataStep({
 
   const submit = () => {
     const values = form.getValues()
+    let isValid = true
+    if (values.website && !validURL(values.website)) {
+      form.setError('website', {
+        type: 'required',
+        message: 'Not a valid URL format.',
+      })
+      isValid = false
+    }
+    if (values.video && !validURL(values.video)) {
+      form.setError('video', {
+        type: 'required',
+        message: 'Not a valid URL format.',
+      })
+      isValid = false
+    }
+    if (!isValid) {
+      return
+    }
     setNftData({
       ...values,
       hashtags: values.hashtags.map(option => option.value),
@@ -97,7 +119,7 @@ export default function InputNFTDataStep({
   }
 
   const renderGreenNFT = () => (
-    <div className='flex-center h-10'>
+    <div className='flex-center h-10 mt-30px'>
       <Toggle form={form} name='green' />
       <div className='text-gray-71 font-medium mx-3'>GreenNFT</div>
       <Tooltip
@@ -114,15 +136,28 @@ export default function InputNFTDataStep({
 
   const renderNFTForm = () => (
     <div className='mt-2.5 mb-22px space-y-6'>
-      <div className='flex items-end space-x-5'>
-        <Input
-          form={form}
-          labelClass='text-gray-71 font-medium text-base mb-1.5'
-          name='title'
-          label='Title'
-          placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
-          className='w-full text-sm'
-        />
+      <div className='flex items-start space-x-5'>
+        <div className='relative w-full'>
+          <Input
+            form={form}
+            labelClass='text-gray-71 font-medium text-base mb-1.5'
+            name='title'
+            label='Title'
+            placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
+            className='w-full text-sm'
+            inputClassName={cn(
+              'input pr-[40px]',
+              form.formState.errors.title?.message && 'border border-red-fe',
+            )}
+          />
+          {form.formState.errors.title?.message ? (
+            <img
+              src={TimesIcon}
+              className='w-3 absolute top-[45px] right-3'
+              alt='Times Icon'
+            />
+          ) : null}
+        </div>
         {renderGreenNFT()}
       </div>
       <div className='flex space-x-8'>

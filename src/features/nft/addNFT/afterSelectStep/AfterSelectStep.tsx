@@ -1,15 +1,12 @@
 import React, { useCallback } from 'react'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
-import {
-  ArrowSlim,
-  MinusCircle,
-  PlusCircle,
-  Trash,
-} from 'common/components/Icons'
+import { ArrowSlim, Minus, Plus, Trash } from 'common/components/Icons'
+import Tooltip from 'common/components/Tooltip'
 import { DraggableCore, DraggableEvent } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
+import { useSelectImageService } from '../selectImageStep/SelectImageStep.service'
 
 type TAfterSelectStepProps = {
   state: TAddNFTState
@@ -20,10 +17,13 @@ type TAfterSelectStepProps = {
 const backdropBlurClass = 'backdrop-filter backdrop-blur-[55px]'
 
 export default function UploadStep({
-  state: { goBack, goToNextStep },
+  state,
   image,
   displayUrl,
 }: TAfterSelectStepProps): JSX.Element {
+  const service = useSelectImageService(state)
+  const { goBack, goToNextStep, setPercentage } = state
+  const { resetImageState } = service
   const {
     onDragImage,
     imageRef,
@@ -37,6 +37,12 @@ export default function UploadStep({
     e.preventDefault()
   }, [])
 
+  const handleDeleteImage = useCallback(() => {
+    resetImageState()
+    setPercentage(0)
+    goBack()
+  }, [])
+
   const renderDraggableAreaImage = () => (
     <DraggableCore onDrag={onDragImage} onStart={onStart}>
       <img
@@ -47,12 +53,6 @@ export default function UploadStep({
         alt='Wheel'
       />
     </DraggableCore>
-  )
-
-  const renderPlusCircleButton = () => (
-    <button type='button'>
-      <PlusCircle size={13} />
-    </button>
   )
 
   const renderGoBackButton = () => (
@@ -68,27 +68,35 @@ export default function UploadStep({
   const renderFilledProgressBarContent = () => (
     <div
       ref={filledProgressBarRef}
-      className='h-full bg-white w-0 rounded-full relative z-40'
+      className='h-full bg-white w-0 rounded-full relative z-40 cursor-pointer'
     >
       <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-5px' />
     </div>
   )
 
   const renderFilledProgressBar = () => (
-    <div className='relative z-40'>
-      <DraggableCore
-        onStart={onDragControl}
-        onDrag={onDragControl}
-        onStop={onDragControl}
-      >
-        {renderFilledProgressBarContent()}
-      </DraggableCore>
+    <div className='bg-white w-full h-1 bg-opacity-30 rounded-[20px]'>
+      <div className='relative z-40'>
+        <DraggableCore
+          onStart={onDragControl}
+          onDrag={onDragControl}
+          onStop={onDragControl}
+        >
+          {renderFilledProgressBarContent()}
+        </DraggableCore>
+      </div>
     </div>
   )
 
   const renderMinusCircleButton = () => (
     <button type='button'>
-      <MinusCircle size={13} />
+      <Minus size={13} />
+    </button>
+  )
+
+  const renderPlusCircleButton = () => (
+    <button type='button'>
+      <Plus size={13} />
     </button>
   )
 
@@ -96,25 +104,43 @@ export default function UploadStep({
     <div className='absolute top-1/2 left-0 right-0 block h-1 z-10 -translate-y-1/2 rounded-[20px] bg-rgba-white-[0.33]'></div>
   )
 
+  const renderTrashButton = () => (
+    <div className='absolute z-10 top-3 right-3 w-10 h-10'>
+      <Tooltip
+        type='top'
+        content={<div className='py-1'>Delete image</div>}
+        width={100}
+      >
+        <button
+          className=' w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
+          onClick={handleDeleteImage}
+          type='button'
+        >
+          <Trash size={15} />
+        </button>
+      </Tooltip>
+    </div>
+  )
+
+  const renderZoomImageControl = () => (
+    <div
+      className={`absolute bottom-3 h-10 px-3 rounded-full flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
+    >
+      {renderMinusCircleButton()}
+      <div className='flex-grow mx-3 py-2 relative' ref={controlRef}>
+        {renderFilledProgressBar()}
+        {renderZoomLineBar()}
+      </div>
+      {renderPlusCircleButton()}
+    </div>
+  )
+
   const renderLeftColumnContentControl = () => (
-    <div className='relative flex-center overflow-hidden'>
-      <button
-        className='absolute z-10 top-3 right-3 w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
-        onClick={goBack}
-        type='button'
-      >
-        <Trash size={15} />
-      </button>
-      {renderDraggableAreaImage()}
-      <div
-        className={`absolute bottom-3 h-10 px-3 rounded-full flex-center text-white w-[165px] bg-gray-2d bg-opacity-50 ${backdropBlurClass}`}
-      >
-        {renderMinusCircleButton()}
-        <div className='flex-grow mx-3 py-2 relative' ref={controlRef}>
-          {renderFilledProgressBar()}
-          {renderZoomLineBar()}
-        </div>
-        {renderPlusCircleButton()}
+    <div className='relative flex-center'>
+      {renderTrashButton()}
+      <div className='w-full overflow-hidden flex-center'>
+        {renderDraggableAreaImage()}
+        {renderZoomImageControl()}
       </div>
     </div>
   )

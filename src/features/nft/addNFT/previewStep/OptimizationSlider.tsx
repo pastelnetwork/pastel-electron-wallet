@@ -88,6 +88,7 @@ export default function OptimizationSlider({
       minMaxAlignCenter
       width={349}
       alwaysShowTooltip
+      customStartValue={formatFileSize(files[0].size, 2)}
     />
   )
 }

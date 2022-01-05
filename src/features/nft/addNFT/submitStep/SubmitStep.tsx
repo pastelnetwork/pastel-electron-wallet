@@ -15,7 +15,9 @@ import { PreviewIco } from 'common/components/Icons'
 function InfoPair({ title, value }: { title: string; value: string }) {
   return (
     <div className='flex'>
-      <div className='text-gray-71 w-36 font-normal text-sm'>{title}</div>
+      <div className='text-gray-71 min-w-[144px] w-36 font-normal text-sm'>
+        {title}
+      </div>
       <div className='text-gray-4a font-medium text-sm'>{value}</div>
     </div>
   )
@@ -167,7 +169,6 @@ export default function SubmitStep({
         />
       )}
       {nftData.series && <InfoPair title='Series' value={nftData.series} />}
-      {/* TODO: figure out what to display in Copies */}
       <InfoPair title='Copies' value={`1 of ${nftData.copies}`} />
       <InfoPair title='Perpetual Royalty' value={`${nftData.royalty}%`} />
       {nftData.website && (
@@ -196,7 +197,14 @@ export default function SubmitStep({
           <div className='flex-grow w-full text-sm flex flex-col justify-between'>
             {renderSubmitStepBody()}
             {nftData.description && (
-              <div className='mt-4 text-blue-3f'>{nftData.description}</div>
+              <div>
+                <div className='text-gray-71 font-normal text-sm mt-4'>
+                  Description
+                </div>
+                <div className='text-gray-4a font-medium text-sm overflow-auto max-h-[60px]'>
+                  {nftData.description}
+                </div>
+              </div>
             )}
             {renderThumbnailPreview()}
             {renderImageSize()}
