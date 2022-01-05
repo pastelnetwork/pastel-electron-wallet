@@ -184,7 +184,6 @@ type TCreateAddressResponse = TResponse<string>
 export type TAddressBalancesResponse = Record<TAddress, TBalance>
 type TPrivKeyResponse = TResponse<string>
 type TZPrivKeyResponse = TResponse<TImportKey>
-type TSendToAddressResponse = TResponse<string>
 
 export type {
   TUtxo,
@@ -220,5 +219,4 @@ export type {
   TPrivKeyResponse,
   TZPrivKeyResponse,
   TListAddressAmounts,
-  TSendToAddressResponse,
 }

@@ -115,6 +115,12 @@ export default function SelectImageStep({
   } = service
   const currencyName = useCurrencyName()
 
+  useEffect(() => {
+    if (!imageForPreview) {
+      state.setPercentage(0)
+    }
+  }, [imageForPreview])
+
   const handleBack = useCallback(() => {
     state.goBack()
   }, [])
@@ -155,7 +161,7 @@ export default function SelectImageStep({
     }
   }, [imageToConvert, service])
 
-  const handlCancelUpload = useCallback(() => {
+  const handleCancelUpload = useCallback(() => {
     resetImageState()
     state.setPercentage(0)
     currentPercentage = 0
@@ -212,7 +218,7 @@ export default function SelectImageStep({
                 <div className='mt-[15px] text-center'>
                   <button
                     type='button'
-                    onClick={handlCancelUpload}
+                    onClick={handleCancelUpload}
                     className='cursor-pointer text-sm font-medium text-gray-71'
                   >
                     Cancel
