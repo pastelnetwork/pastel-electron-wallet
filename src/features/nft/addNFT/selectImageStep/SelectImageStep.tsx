@@ -112,6 +112,7 @@ export default function SelectImageStep({
     isAnimated,
     imageFile,
     resetImageState,
+    selectFile,
   } = service
   const currencyName = useCurrencyName()
 
@@ -163,6 +164,7 @@ export default function SelectImageStep({
 
   const handleCancelUpload = useCallback(() => {
     resetImageState()
+    selectFile(undefined)
     state.setPercentage(0)
     currentPercentage = 0
   }, [])

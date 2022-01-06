@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
+import { DraggableCore, DraggableEvent } from 'react-draggable'
+
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { ArrowSlim, Minus, Plus, Trash } from 'common/components/Icons'
 import Tooltip from 'common/components/Tooltip'
-import { DraggableCore, DraggableEvent } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
 import { useSelectImageService } from '../selectImageStep/SelectImageStep.service'
@@ -31,6 +32,8 @@ export default function UploadStep({
     controlRef,
     onDragControl,
     filledProgressBarRef,
+    onMinus,
+    onPlus,
   } = useImageZoom()
 
   const onStart = useCallback((e: DraggableEvent) => {
@@ -70,7 +73,7 @@ export default function UploadStep({
       ref={filledProgressBarRef}
       className='h-full bg-white w-0 rounded-full relative z-40 cursor-pointer'
     >
-      <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-5px' />
+      <div className='h-3 w-3 rounded-full bg-white absolute -right-1.5 -top-3px' />
     </div>
   )
 
@@ -89,13 +92,13 @@ export default function UploadStep({
   )
 
   const renderMinusCircleButton = () => (
-    <button type='button'>
+    <button type='button' className='cursor-pointer' onClick={onMinus}>
       <Minus size={13} />
     </button>
   )
 
   const renderPlusCircleButton = () => (
-    <button type='button'>
+    <button type='button' className='cursor-pointer' onClick={onPlus}>
       <Plus size={13} />
     </button>
   )

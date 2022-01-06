@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, WheelEvent } from 'react'
+import { RefObject, useEffect, useRef, useState, WheelEvent } from 'react'
 import { DraggableData, DraggableEvent } from 'react-draggable'
 
 const minZoom = 1
@@ -17,6 +17,8 @@ export const useImageZoom = (): {
   controlRef: RefObject<HTMLDivElement>
   onDragControl(e: DraggableEvent, data: DraggableData): void
   filledProgressBarRef: RefObject<HTMLDivElement>
+  onMinus: () => void
+  onPlus: () => void
 } => {
   const controlRef = useRef<HTMLDivElement>(null)
   const filledProgressBarRef = useRef<HTMLDivElement>(null)
@@ -26,6 +28,7 @@ export const useImageZoom = (): {
     x: 0,
     y: 0,
   })
+  const [currentDelta, setCurrentDelta] = useState<number>(0)
 
   // reset values for the case of reopening modal
   useEffect(() => {
@@ -70,6 +73,7 @@ export const useImageZoom = (): {
 
   const applyScale = (delta: number) => {
     transformRef.current.scale = Math.max(0, Math.min(1, delta))
+    setCurrentDelta(delta)
     setTransform()
     applyTransform()
   }
@@ -96,6 +100,18 @@ export const useImageZoom = (): {
     applyTransform()
   }
 
+  const onPlus = () => {
+    if (currentDelta < 1) {
+      applyScale(currentDelta + 0.05)
+    }
+  }
+
+  const onMinus = () => {
+    if (currentDelta > 0) {
+      applyScale(currentDelta - 0.05)
+    }
+  }
+
   return {
     onDragImage,
     imageRef,
@@ -103,5 +119,7 @@ export const useImageZoom = (): {
     controlRef,
     onDragControl,
     filledProgressBarRef,
+    onMinus,
+    onPlus,
   }
 }
