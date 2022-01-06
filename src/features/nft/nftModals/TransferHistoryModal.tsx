@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 import { Quit } from 'common/components/Icons'
@@ -8,34 +8,6 @@ import SampleAvatar from 'common/assets/images/avatar-placeholder.png'
 export type TTransferHistoryModal = {
   isOpen: boolean
   handleClose: () => void
-}
-
-const TransferHistoryModal = ({
-  isOpen,
-  handleClose,
-}: TTransferHistoryModal): JSX.Element => {
-  return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={() => handleClose()}
-      size='874px'
-      title={'Royalty rights transfer history'}
-      titleClassName='text-2xl font-black text-gray-2d'
-      infoIcon={true}
-      bodyClassName='px-0'
-    >
-      <div className='ml-10 mr-9 mb-6 w- overflow-auto w-[798px]'>
-        <div className='mr-8'>
-          <Table
-            columns={Columns}
-            data={tableData}
-            className='h-401px'
-            trClassName='border-b border-gray-f2'
-          />
-        </div>
-      </div>
-    </Modal>
-  )
 }
 
 const getTooltip = () => {
@@ -116,5 +88,41 @@ const tableData = [
     Recipient: 'Harber',
   },
 ]
+
+function TransferHistoryModal({
+  isOpen,
+  handleClose,
+}: TTransferHistoryModal): JSX.Element {
+  const renderTransferHistoryTable = () => (
+    <div className='mr-8'>
+      <Table
+        columns={Columns}
+        data={tableData}
+        className='h-401px'
+        trClassName='border-b border-gray-f2'
+      />
+    </div>
+  )
+
+  const handleModalClose = useCallback(() => {
+    handleClose()
+  }, [])
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      handleClose={handleModalClose}
+      size='874px'
+      title={'Royalty rights transfer history'}
+      titleClassName='text-2xl font-black text-gray-2d'
+      infoIcon
+      bodyClassName='px-0'
+    >
+      <div className='ml-10 mr-9 mb-6 w- overflow-auto w-[798px]'>
+        {renderTransferHistoryTable()}
+      </div>
+    </Modal>
+  )
+}
 
 export default TransferHistoryModal

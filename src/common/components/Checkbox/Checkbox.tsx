@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import cn from 'classnames'
 import { CheckIcon } from 'common/components/Icons'
 
@@ -11,27 +11,34 @@ export type TCheckboxProps = {
   selectedBackgroundClassName?: string
 }
 
-const Checkbox = ({
+function Checkbox({
   children,
   isChecked,
   clickHandler,
   tickClassName = 'text-gray-e7',
   selectedBackgroundClassName = 'bg-blue-3f',
   className = 'items-center',
-}: TCheckboxProps): JSX.Element => {
+}: TCheckboxProps): JSX.Element {
   const [selected, setSelected] = useState(isChecked)
 
   useEffect(() => {
     setSelected(isChecked)
   }, [isChecked])
 
+  const onClick = useCallback(() => {
+    setSelected(!selected)
+    if (clickHandler) {
+      clickHandler(!selected)
+    }
+  }, [selected])
+
   return (
     <div
       className={cn('cursor-pointer select-none flex', className)}
-      onClick={() => {
-        setSelected(!selected)
-        clickHandler && clickHandler(!selected)
-      }}
+      onClick={onClick}
+      role='button'
+      aria-hidden
+      tabIndex={0}
     >
       <div
         className={cn(

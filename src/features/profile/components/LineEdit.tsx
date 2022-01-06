@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import cn from 'classnames'
 import { CircleCloseIcon } from 'common/components/Icons'
 
@@ -11,14 +11,25 @@ export type TLineEdit = {
   className?: string
 }
 
-const LineEdit = ({
+function LineEdit({
   value,
   onChange,
   hideCloseIcon,
   readOnly = false,
   inputClassName,
   className,
-}: TLineEdit): JSX.Element => {
+}: TLineEdit): JSX.Element {
+  const onClose = useCallback(() => {
+    onChange('')
+  }, [])
+
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      onChange(e.target.value)
+    },
+    [value],
+  )
+
   return (
     <div
       className={cn(
@@ -34,11 +45,11 @@ const LineEdit = ({
           inputClassName,
         )}
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={onInputChange}
         readOnly={readOnly}
       />
       {!hideCloseIcon ? (
-        <button className='mx-2' onClick={() => onChange('')}>
+        <button className='mx-2' onClick={onClose} type='button'>
           <CircleCloseIcon size={22} />
         </button>
       ) : null}

@@ -8,15 +8,14 @@ import { formatFileSize, formatNumber } from 'common/utils/format'
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import OptimizationSlider from './OptimizationSlider'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   calculateFee,
   CroppedValidatedImage,
-  useFeePerKb,
+  useStorageFee,
 } from './PreviewStep.service'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import { Size } from 'common/utils/file'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
@@ -38,31 +37,79 @@ export default function PreviewStepModal({
   const [imageElement, setImageElement] = useState<HTMLImageElement | null>(
     null,
   )
-  const fileSizeKb = Math.round(image.size / Size.KB)
   const imageSizePercentOfAvg = 65
-  const feePerKb = useFeePerKb()
+  const storageFee = useStorageFee()
   const currencyName = useCurrencyName()
-
   const quality = state.optimizationService.selectedFile?.quality || 100
   const lossLess = quality === 100 || state.isLossLess
-
   const fee = calculateFee({
-    feePerKb,
-    quality,
-    isLossLess: state.isLossLess,
-    fileSizeKb,
+    networkFee: storageFee?.networkFee,
+    fileSizeKb: state.optimizationService.selectedFile?.size || image.size,
   })
 
   useEffect(() => state.setEstimatedFee(fee), [fee])
-
   const submittable = croppedImage && !croppedImage.error
 
   const submit = () => {
     if (croppedImage && submittable) {
-      state.setCrop(croppedImage.crop)
       state.goToNextStep()
     }
   }
+
+  const handleBack = () => {
+    state.goBack()
+  }
+
+  const strImageSizePercentOfAvg: string = imageSizePercentOfAvg?.toString()
+
+  const renderImageSizePercentOfAvg = () => (
+    <div className='flex-grow'>
+      <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
+        <div
+          className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
+          style={{ width: strImageSizePercentOfAvg + '%' }}
+        />
+      </div>
+      <div className='text-xs text-gray-a0 font-normal'>
+        {imageSizePercentOfAvg}% of average Pastel NFT size
+      </div>
+    </div>
+  )
+
+  const renderGoToOverview = () => (
+    <div className='flex-between pt-18px'>
+      <button
+        type='button'
+        className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
+        onClick={handleBack}
+      >
+        <ArrowSlim to='left' size={14} />
+      </button>
+      <button
+        type='button'
+        className='btn btn-primary px-[30px]'
+        onClick={submit}
+        disabled={!submittable}
+      >
+        Go to Overview
+      </button>
+    </div>
+  )
+
+  const handleToggleHandler = useCallback(
+    (val: boolean) => {
+      if (val) {
+        const { files } = state.optimizationService
+        if (files) {
+          const index = files.length
+          const file = files[index]
+          state.optimizationService.setSelectedFile(file && { ...file, index })
+        }
+      }
+      state.setIsLossLess(val)
+    },
+    [state.isLossLess],
+  )
 
   return (
     <ModalLayout
@@ -91,12 +138,18 @@ export default function PreviewStepModal({
                   ref={ref}
                   className='absolute z-10 bottom-3.5 left-3.5 w-10 h-10 text-white flex-center rounded-full bg-gray-2d bg-opacity-50'
                   onClick={toggleCropping}
+                  type='button'
                 >
                   <Crop size={18} />
                 </button>
               )}
             </Tooltip2>
-            <img ref={setImageElement} src={displayUrl} className='rounded' />
+            <img
+              ref={setImageElement}
+              src={displayUrl}
+              className='rounded'
+              alt='Pastel'
+            />
           </div>
         </div>
       }
@@ -109,20 +162,10 @@ export default function PreviewStepModal({
                 state.optimizationService.selectedFile?.size || image.size,
               )}
             </div>
-            <div className='flex-grow'>
-              <div className='bg-gray-e4 bg-opacity-50 rounded h-2 relative my-2'>
-                <div
-                  className='absolute top-0 left-0 bottom-0 rounded bg-green-62'
-                  style={{ width: imageSizePercentOfAvg + '%' }}
-                />
-              </div>
-              <div className='text-xs text-gray-a0 font-normal'>
-                {imageSizePercentOfAvg}% of average Pastel NFT size
-              </div>
-            </div>
+            {renderImageSizePercentOfAvg()}
           </div>
           <div className='flex-between mb-5 text-base'>
-            <div className='font-medium text-gray-4a font-medium'>
+            <div className='text-gray-4a font-medium'>
               Estimated registration fee
             </div>
             <div className='text-gray-2d font-extrabold'>
@@ -134,16 +177,16 @@ export default function PreviewStepModal({
           <div className='font-medium text-gray-4a mb-5'>
             Image Size and Fee Optimization
           </div>
-          <label className='flex items-center mb-10'>
+          <div className='flex items-center mb-10'>
             <div className='font-medium text-gray-71 mr-3'>
               Lossless Image Quality
             </div>
             <Toggle
               selected={state.isLossLess}
-              toggleHandler={state.setIsLossLess}
+              toggleHandler={handleToggleHandler}
               selectedClass='bg-blue-3f'
             />
-          </label>
+          </div>
           <div
             className={cn(
               'pb-5 mb-6 duration-200 transition',
@@ -159,10 +202,11 @@ export default function PreviewStepModal({
             <div className='w-48 h-48 relative'>
               {croppedImage && (
                 <>
-                  <ImageShadow url={croppedImage.src} />
+                  <ImageShadow url={state.thumbnail || croppedImage.src} />
                   <img
-                    src={croppedImage.src}
+                    src={state.thumbnail || croppedImage.src}
                     className='rounded w-full h-full relative z-10'
+                    alt='Pastel Network'
                   />
                 </>
               )}
@@ -173,23 +217,7 @@ export default function PreviewStepModal({
               </div>
             )}
           </div>
-          <div className='flex-between pt-18px'>
-            <button
-              type='button'
-              className='rounded-full w-10 h-10 flex-center text-gray-b0 border border-gray-b0 transition duration-200 hover:text-gray-a0 hover:border-gray-a0'
-              onClick={state.goBack}
-            >
-              <ArrowSlim to='left' size={14} />
-            </button>
-            <button
-              type='button'
-              className='btn btn-primary px-[30px]'
-              onClick={submit}
-              disabled={!submittable}
-            >
-              Go to Overview
-            </button>
-          </div>
+          {renderGoToOverview()}
         </div>
       }
     />

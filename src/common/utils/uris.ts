@@ -5,11 +5,9 @@ import { isTransparent, isZaddr } from './wallet'
 
 export class PastelURITarget {
   // A default constructor that creates a basic Target
-  constructor(
-    public address?: string,
-    public amount?: number,
-    public memoString?: string,
-  ) {}
+  public address?: string
+  public amount?: number
+  public memoString?: string
 }
 
 type TParsePastelURI = {
@@ -31,10 +29,10 @@ export const parsePastelURI = (uri: string): string | TParsePastelURI[] => {
 
   const targets = new Map() // The first address is special, it can be the "host" part of the URI
 
-  const address = parsedUri.host
+  const address: string = parsedUri.host || ''
 
   if (address && !(isTransparent(address) || isZaddr(address))) {
-    return `"${address || ''}" was not a valid pastel address`
+    return `"${address}" was not a valid pastel address`
   } // Has to have at least 1 element
 
   const t = new PastelURITarget()
@@ -132,12 +130,13 @@ export const parsePastelURI = (uri: string): string | TParsePastelURI[] => {
   } // Make sure everyone has at least an amount and address
 
   for (const [key, value] of targets) {
+    const vKey: string = key
     if (typeof value.amount === 'undefined') {
-      return `URI ${key} didn't have an amount`
+      return `URI ${vKey} didn't have an amount`
     }
 
     if (typeof value.address === 'undefined') {
-      return `URI ${key} didn't have an address`
+      return `URI ${vKey} didn't have an address`
     }
   } // Convert to plain array
 

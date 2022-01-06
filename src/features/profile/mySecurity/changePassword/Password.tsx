@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import Link from '../../../../common/components/Link'
 import { Button } from '../../../../common/components/Buttons'
@@ -6,22 +6,26 @@ import Password from '../../components/Password'
 import Card from '../../components/Card'
 import { SecurityPasswordModal } from '../mySecurityModals'
 
-const ChangePassword = (): JSX.Element => {
+export default function ChangePassword(): JSX.Element {
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [noMatch, setNoMatch] = useState(false)
   const [securityPassword, setSecurityPassword] = useState(false)
 
-  const submitPassword = () => {
+  const submitPassword = useCallback(() => {
     setNoMatch(newPassword !== confirmPassword)
     setSecurityPassword(true)
-  }
+  }, [noMatch, securityPassword])
 
   useEffect(() => {
     if (newPassword === confirmPassword && !newPassword && !confirmPassword) {
       setNoMatch(false)
     }
   }, [newPassword, confirmPassword, setNoMatch])
+
+  const onCloseSecurityPasswordModal = useCallback(() => {
+    setSecurityPassword(false)
+  }, [])
 
   const content = (
     <>
@@ -82,10 +86,8 @@ const ChangePassword = (): JSX.Element => {
       />
       <SecurityPasswordModal
         isOpen={securityPassword}
-        handleClose={() => setSecurityPassword(false)}
+        handleClose={onCloseSecurityPasswordModal}
       ></SecurityPasswordModal>
     </>
   )
 }
-
-export default ChangePassword

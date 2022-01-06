@@ -1,5 +1,8 @@
-import React, { ReactNode, useState } from 'react'
-import Downshift, { ControllerStateAndHelpers } from 'downshift'
+import React, { ReactNode, useCallback, useState } from 'react'
+import Downshift, {
+  ControllerStateAndHelpers,
+  GetInputPropsOptions,
+} from 'downshift'
 import caretDownIcon from 'common/assets/icons/ico-caret-down.svg'
 import cn from 'classnames'
 import SelectRange from './SelectRange'
@@ -73,10 +76,29 @@ export type TSelectProps<TForm> =
   | TControlledSelectProps
   | TFormSelectProps<TForm>
 
-export default function Select<TForm extends FieldValues>(
-  props: TSelectProps<TForm>,
-): JSX.Element {
+export default function Select<TForm extends FieldValues>({
+  onInputChange,
+  ...props
+}: TSelectProps<TForm>): JSX.Element {
   const [enableFiltering, setEnableFiltering] = useState(false)
+
+  const onInputValueChange = useCallback(
+    (value: string, event: ControllerStateAndHelpers<TOption>) => {
+      const { type } = (event as unknown) as { type: string }
+      if (type === Downshift.stateChangeTypes.changeInput) {
+        setEnableFiltering(true)
+        onInputChange?.(value, event)
+      } else {
+        setEnableFiltering(false)
+      }
+    },
+    [enableFiltering],
+  )
+
+  const itemToString = useCallback(
+    (item: TOption | null) => (item ? item.value : ''),
+    [],
+  )
 
   if ('form' in props) {
     return <FormSelect {...props} />
@@ -113,29 +135,26 @@ export default function Select<TForm extends FieldValues>(
     listClassName,
   } = props
 
-  let { onInputChange } = props
-  if (props.debounce && props.onInputChange) {
-    onInputChange = debounce(props.onInputChange, props.debounce)
+  const { debounce: customDebounce } = props
+  if (customDebounce && onInputChange) {
+    onInputChange = debounce(onInputChange, customDebounce)
   }
 
-  const onInputValueChange = (
-    value: string,
-    event: ControllerStateAndHelpers<TOption>,
-  ) => {
-    const { type } = (event as unknown) as { type: string }
-    if (type === Downshift.stateChangeTypes.changeInput) {
-      setEnableFiltering(true)
-      onInputChange?.(value, event)
-    } else {
-      setEnableFiltering(false)
+  const getInputValue = (inputProps: GetInputPropsOptions) => {
+    if (!append) {
+      return inputProps.value
     }
+    const vAppend: string = append?.toString() || ''
+    const vInput: string = inputProps.value?.toString() || ''
+
+    return `${vInput}${vAppend}`
   }
 
   return (
     <Downshift
       selectedItem={selected ?? null}
       onChange={onChange}
-      itemToString={item => (item ? item.value : '')}
+      itemToString={itemToString}
       onInputValueChange={onInputValueChange}
     >
       {({
@@ -165,6 +184,7 @@ export default function Select<TForm extends FieldValues>(
                   'absolute top-2/4 left-3 transform -translate-y-2/4 w-3',
                   iconClasses,
                 )}
+                alt='Icon'
               />
             )}
             {inputProps && (
@@ -184,11 +204,8 @@ export default function Select<TForm extends FieldValues>(
                   {...getToggleButtonProps()}
                   {...inputProps}
                   type='text'
-                  role='input'
                   disabled={disabled}
-                  value={
-                    append ? `${inputProps.value}${append}` : inputProps.value
-                  }
+                  value={getInputValue(inputProps)}
                 />
                 {label && <span className={labelClasses}>{label}</span>}
               </div>
@@ -201,6 +218,7 @@ export default function Select<TForm extends FieldValues>(
                   disabled && 'cursor-not-allowed',
                 )}
                 disabled={disabled}
+                type='button'
                 {...getToggleButtonProps()}
               >
                 {label && <span className='text-gray-b0 mr-2'>{label}</span>}

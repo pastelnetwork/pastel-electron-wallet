@@ -5,10 +5,10 @@ export type TElectricityIcon = {
   className?: string
 }
 
-export const ElectricityIcon = ({
+export function ElectricityIcon({
   size = 20,
   className = 'text-gray-3f',
-}: TElectricityIcon): JSX.Element => {
+}: TElectricityIcon): JSX.Element {
   return (
     <svg
       width={size}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -12,6 +12,7 @@ import {
   TScatterChartProps,
   TThemeColor,
   TThemeInitOption,
+  TThemeButton,
 } from '../../common/types'
 import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
 import {
@@ -20,7 +21,39 @@ import {
 } from '../../utils/ChartOptions'
 import styles from './LineChart.module.css'
 
-export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
+function ThemeButton({
+  theme,
+  getActiveThemeButtonStyle,
+  index,
+  handleThemeButtonClick,
+}: {
+  theme: TThemeButton
+  getActiveThemeButtonStyle: (val: number) => string
+  index: number
+  handleThemeButtonClick: (theme: TThemeButton, index: number) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handleThemeButtonClick(theme, index)
+  }, [])
+
+  return (
+    <button
+      className={`${styles.themeSelectButton} ${getActiveThemeButtonStyle(
+        index,
+      )}`}
+      onClick={onClick}
+      style={{
+        backgroundColor: `${theme.backgroundColor}`,
+      }}
+      type='button'
+      key={`button-filter-${theme.name}`}
+    />
+  )
+}
+
+export const EChartsScatterChart = memo(function EChartsScatterChart(
+  props: TScatterChartProps,
+): JSX.Element {
   const {
     chartName,
     data,
@@ -80,7 +113,7 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
   }
   const options = getThemeInitOption(params)
 
-  const downloadPNG = () => {
+  const downloadPNG = useCallback(() => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef.ele)
@@ -90,26 +123,30 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
           }
         })
         .catch(function (error) {
-          throw new Error('PNG download error: ' + error)
+          const message: string = error?.message || ''
+          throw new Error('PNG download error: ' + message)
         })
     }
-  }
+  }, [])
 
-  const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
-    setCurrentTheme(theme)
-    setSelectedThemeButton(index)
-    handleBgColorChange(theme.backgroundColor)
+  const handleThemeButtonClick = useCallback(
+    (theme: TThemeColor, index: number) => {
+      setCurrentTheme(theme)
+      setSelectedThemeButton(index)
+      handleBgColorChange(theme.backgroundColor)
 
-    const params: TThemeInitOption = {
-      theme: theme,
-      data,
-      minY,
-      maxY,
-      chartName: chartName,
-    }
-    const option = getThemeUpdateOption(params)
-    eChartInstance?.setOption(option)
-  }
+      const params: TThemeInitOption = {
+        theme: theme,
+        data,
+        minY,
+        maxY,
+        chartName: chartName,
+      }
+      const option = getThemeUpdateOption(params)
+      eChartInstance?.setOption(option)
+    },
+    [currentTheme, selectedThemeButton],
+  )
 
   const getActivePriodButtonStyle = (index: number): string => {
     if (selectedPeriodButton === index) {
@@ -118,12 +155,71 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
     return ''
   }
 
-  const getActiveThemeButtonStyle = (index: number): string => {
+  const getActiveThemeButtonStyle = useCallback((index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
     }
     return ''
-  }
+  }, [])
+
+  const renderDownloadButton = () => (
+    <div className={styles.lineChartDownloadButtonBar}>
+      <button
+        className={styles.uploadButton}
+        type='button'
+        onClick={downloadPNG}
+      >
+        Download PNG
+      </button>
+      <CSVLink
+        data={csvData}
+        filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
+        headers={csvHeaders[chartName]}
+        separator={';'}
+        ref={downloadRef}
+        className={styles.uploadButton}
+      >
+        Download CSV
+      </CSVLink>
+    </div>
+  )
+
+  const renderThemes = () => (
+    <div className={styles.lineChartThemeSelect}>
+      {themes.map((theme, index) => (
+        <ThemeButton
+          key={`button-filter-${theme.name}`}
+          getActiveThemeButtonStyle={getActiveThemeButtonStyle}
+          index={index}
+          theme={theme}
+          handleThemeButtonClick={handleThemeButtonClick}
+        />
+      ))}
+    </div>
+  )
+
+  const renderPeriod = () => (
+    <div className={styles.periodSelect}>
+      <span style={{ color: currentTheme?.color }}>period: </span>
+      {periods.map((period, index) => (
+        <button
+          className={`${getActivePriodButtonStyle(index)} ${
+            styles.filterButton
+          }`}
+          onClick={() => {
+            setSelectedPeriodButton(index)
+            if (handlePeriodFilterChange) {
+              handlePeriodFilterChange(period)
+            }
+          }}
+          type='button'
+          key={`button-filter-${period}`}
+        >
+          {period}
+        </button>
+      ))}
+    </div>
+  )
 
   return (
     <div className={styles.container}>
@@ -135,72 +231,21 @@ export const EChartsScatterChart = (props: TScatterChartProps): JSX.Element => {
         >
           {title}
         </div>
-        <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>period: </span>
-          {periods.map((period, index) => (
-            <button
-              className={`${getActivePriodButtonStyle(index)} ${
-                styles.filterButton
-              }`}
-              onClick={() => {
-                setSelectedPeriodButton(index)
-                if (handlePeriodFilterChange) {
-                  handlePeriodFilterChange(period)
-                }
-              }}
-              type='button'
-              key={`button-filter-${period}`}
-            >
-              {period}
-            </button>
-          ))}
-        </div>
+        {renderPeriod()}
       </div>
       <div className={styles.lineChartWrap}>
         <ReactECharts
           notMerge={false}
-          lazyUpdate={true}
+          lazyUpdate
           option={options}
           className={styles.reactECharts}
           ref={e => setEChartRef(e)}
         />
       </div>
       <div className={styles.lineChartFooter}>
-        <div className={styles.lineChartThemeSelect}>
-          {themes.map((theme, index) => (
-            <button
-              className={`${
-                styles.themeSelectButton
-              } ${getActiveThemeButtonStyle(index)}`}
-              onClick={() => handleThemeButtonClick(theme, index)}
-              style={{
-                backgroundColor: `${theme.backgroundColor}`,
-              }}
-              type='button'
-              key={`button-filter-${theme.name}`}
-            ></button>
-          ))}
-        </div>
-        <div className={styles.lineChartDownloadButtonBar}>
-          <button
-            className={styles.uploadButton}
-            type='button'
-            onClick={downloadPNG}
-          >
-            Download PNG
-          </button>
-          <CSVLink
-            data={csvData}
-            filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
-            headers={csvHeaders[chartName]}
-            separator={';'}
-            ref={downloadRef}
-            className={styles.uploadButton}
-          >
-            Download CSV
-          </CSVLink>
-        </div>
+        {renderThemes()}
+        {renderDownloadButton()}
       </div>
     </div>
   )
-}
+})

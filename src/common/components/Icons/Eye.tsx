@@ -6,11 +6,11 @@ export type TEyeProps = {
   className?: string
 }
 
-export const Eye = ({
+export function Eye({
   size,
   className,
   variant = 'type1',
-}: TEyeProps): JSX.Element => {
+}: TEyeProps): JSX.Element {
   return (
     <div>
       {variant === 'type1' && (

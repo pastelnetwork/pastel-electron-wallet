@@ -18,10 +18,10 @@ module.exports = opts => {
     return __non_webpack_require__(
       path.join(process.resourcesPath, 'better_sqlite3.node'),
     )
-  } else {
-    // eslint-disable-next-line no-undef
-    return __non_webpack_require__(
-      'better-sqlite3/build/Release/better_sqlite3.node',
-    )
   }
+
+  // eslint-disable-next-line no-undef
+  return __non_webpack_require__(
+    'better-sqlite3/build/Release/better_sqlite3.node',
+  )
 }

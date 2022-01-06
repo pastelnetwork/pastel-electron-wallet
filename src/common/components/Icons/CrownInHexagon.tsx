@@ -3,11 +3,11 @@ import { TIconProps } from './iconProps'
 
 export type TCrownInHexagonProps = TIconProps & { fill?: string }
 
-export const CrownInHexagon = ({
+export function CrownInHexagon({
   size,
   className,
   fill = 'text-white',
-}: TCrownInHexagonProps): JSX.Element => {
+}: TCrownInHexagonProps): JSX.Element {
   return (
     <svg
       width={size}

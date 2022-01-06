@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer'
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from 'react-modal'
 
 import { useCurrencyName } from '../../common/hooks/appInfo'
@@ -42,6 +42,8 @@ const splitStringIntoChunks = (str: string, chunkQuantity: number) => {
   chunks.push(str.substr((chunkQuantity - 1) * chunkSize))
   return chunks
 }
+
+const breakChar = '\u00ad'
 
 const addLineBreakForContent = (str: string) => {
   return str.replace(/(.{40})/g, `$1${breakChar}`)
@@ -116,7 +118,6 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
   },
 })
-const breakChar = '\u00ad'
 
 function PDFDocument({
   address,
@@ -124,45 +125,61 @@ function PDFDocument({
   privateKey,
   title,
 }: TPDFDocumentProps) {
+  const renderPrivateKey = () => (
+    <View style={pdfStyles.mainContentWrapper}>
+      <View style={pdfStyles.contentItem}>
+        <Text style={pdfStyles.contentTitle}>Private Key</Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(privateKey)}
+        </Text>
+      </View>
+      <View style={pdfStyles.marginTop20}>
+        <Text style={pdfStyles.contentTitle}>
+          {currencyName} Address (Sapling)
+        </Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(address)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderPrivateKeyQRCode = () => (
+    <View style={pdfStyles.mainMedia}>
+      <QRCodeGEnerator address={address} />
+    </View>
+  )
+
+  const renderAddressSapling = () => (
+    <View style={pdfStyles.contentTop}>
+      <View style={pdfStyles.topMedia}>
+        <QRCodeGEnerator address={address} />
+      </View>
+      <View style={pdfStyles.contentWrapper}>
+        <Text style={pdfStyles.contentTitle}>
+          {currencyName} Address (Sapling)
+        </Text>
+        <Text style={pdfStyles.contentValue}>
+          {addLineBreakForContent(address)}
+        </Text>
+      </View>
+    </View>
+  )
+
+  const renderPDFContent = () => (
+    <View style={pdfStyles.section}>
+      {renderAddressSapling()}
+      <View style={pdfStyles.mainContent}>
+        {renderPrivateKey()}
+        {renderPrivateKeyQRCode()}
+      </View>
+    </View>
+  )
+
   return (
     <Document title={title}>
       <Page size='A4' style={pdfStyles.page}>
-        <View style={pdfStyles.section}>
-          <View style={pdfStyles.contentTop}>
-            <View style={pdfStyles.topMedia}>
-              <QRCodeGEnerator address={address} />
-            </View>
-            <View style={pdfStyles.contentWrapper}>
-              <Text style={pdfStyles.contentTitle}>
-                {currencyName} Address (Sapling)
-              </Text>
-              <Text style={pdfStyles.contentValue}>
-                {addLineBreakForContent(address)}
-              </Text>
-            </View>
-          </View>
-          <View style={pdfStyles.mainContent}>
-            <View style={pdfStyles.mainContentWrapper}>
-              <View style={pdfStyles.contentItem}>
-                <Text style={pdfStyles.contentTitle}>Private Key</Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakForContent(privateKey)}
-                </Text>
-              </View>
-              <View style={pdfStyles.marginTop20}>
-                <Text style={pdfStyles.contentTitle}>
-                  {currencyName} Address (Sapling)
-                </Text>
-                <Text style={pdfStyles.contentValue}>
-                  {addLineBreakForContent(address)}
-                </Text>
-              </View>
-            </View>
-            <View style={pdfStyles.mainMedia}>
-              <QRCodeGEnerator address={address} />
-            </View>
-          </View>
-        </View>
+        {renderPDFContent()}
       </Page>
     </Document>
   )
@@ -176,6 +193,10 @@ export default function PastelPaperWalletModal({
     state => state.pastelPaperWalletModal,
   )
   const dispatch = useAppDispatch()
+
+  const onCloseModal = useCallback(() => {
+    dispatch(closePastelPaperWalletModal())
+  }, [])
 
   if (!modalIsOpen || !privateKey) {
     return null
@@ -193,45 +214,51 @@ export default function PastelPaperWalletModal({
     return `${title}_${dateTime}.pdf`
   }
 
-  const DownloadButton = () => (
-    <button className={styles.btn_download} id='PDFDownloadBtn'>
-      <PDFDownloadLink
-        document={
-          <PDFDocument
-            currencyName={currencyName}
-            address={address}
-            privateKey={privateKey}
-            title={generateFileName()}
-          />
-        }
-        fileName={generateFileName()}
+  function DownloadButton() {
+    return (
+      <button className={styles.btn_download} id='PDFDownloadBtn' type='button'>
+        <PDFDownloadLink
+          document={
+            <PDFDocument
+              currencyName={currencyName}
+              address={address}
+              privateKey={privateKey}
+              title={generateFileName()}
+            />
+          }
+          fileName={generateFileName()}
+        />
+      </button>
+    )
+  }
+
+  const renderPDFViewer = () => (
+    <PDFViewer style={pdfStyles.viewer}>
+      <PDFDocument
+        currencyName={currencyName}
+        address={address}
+        privateKey={privateKey}
+        title={generateFileName()}
       />
-    </button>
+    </PDFViewer>
   )
 
   return (
     <Modal
       isOpen={modalIsOpen}
-      onRequestClose={() => dispatch(closePastelPaperWalletModal())}
+      onRequestClose={onCloseModal}
       className={styles.modal_content_wrapper}
     >
       <div className={styles.modal_content}>
         <button
           type='button'
           className={styles.btn_close}
-          onClick={() => dispatch(closePastelPaperWalletModal())}
+          onClick={onCloseModal}
         >
           X
         </button>
         <DownloadButton />
-        <PDFViewer style={pdfStyles.viewer}>
-          <PDFDocument
-            currencyName={currencyName}
-            address={address}
-            privateKey={privateKey}
-            title={generateFileName()}
-          />
-        </PDFViewer>
+        {renderPDFViewer()}
       </div>
     </Modal>
   )

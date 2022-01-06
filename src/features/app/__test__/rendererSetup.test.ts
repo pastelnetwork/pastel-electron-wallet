@@ -72,6 +72,8 @@ describe('rendererSetup', () => {
       pastelWalletDirPath: 'path',
       sqliteFilePath: 'path',
       migrationsPath: 'path',
+      pastelKeysPath: 'path',
+      tempPath: 'path',
     }
     await emitRendererEvent('setAppInfo', info)
 
@@ -130,7 +132,7 @@ describe('rendererSetup', () => {
     it('should redirect to welcome page', async () => {
       await emitRendererEvent('setRpcConfig', { rpcConfig })
 
-      expect(history.replace).toHaveBeenCalledWith(ROUTES.WELCOME_PAGE)
+      expect(history.replace).toHaveBeenCalledWith(ROUTES.ONBOARDING)
     })
   })
 

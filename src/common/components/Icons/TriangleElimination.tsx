@@ -5,10 +5,10 @@ export type TTriangleEliminationProps = {
   className?: string
 }
 
-export const TriangleElimination = ({
+export function TriangleElimination({
   size = 44,
   className = 'text-red-fe',
-}: TTriangleEliminationProps): JSX.Element => {
+}: TTriangleEliminationProps): JSX.Element {
   return (
     <svg
       width={size}

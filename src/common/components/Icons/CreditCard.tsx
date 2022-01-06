@@ -6,11 +6,11 @@ export type TCreditCardProps = {
   pathColor?: string
 }
 
-export const CreditCard = ({
+export function CreditCard({
   size = 44,
   className = 'text-gray-33',
   pathColor = '#FFFFFF',
-}: TCreditCardProps): JSX.Element => {
+}: TCreditCardProps): JSX.Element {
   return (
     <svg
       width={size}

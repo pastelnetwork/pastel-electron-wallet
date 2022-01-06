@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
 import MemberStrip, { TMemberStripProps } from './MemberStrip'
@@ -42,7 +42,7 @@ const mockBreadcrumbs: TBreadcrumb[] = [
   },
 ]
 
-const MembersDirectory = (): JSX.Element => {
+function MembersDirectory(): JSX.Element {
   const mockMemberStrips: TMemberStripProps[] = [
     {
       id: uuidv4(),
@@ -102,7 +102,9 @@ const MembersDirectory = (): JSX.Element => {
   const [category, setCategory] = useState<TOption | null>(mockCategories[0])
   const [breadcrumbs, setBreadcrumbs] = useState(mockBreadcrumbs)
   const [range, setRange] = useState<[number, number]>([400, 700])
-  const formatValue = (value: number) => `${value.toFixed(0)}k`
+  const formatValue = useCallback((value: number) => `${value.toFixed(0)}k`, [
+    range,
+  ])
 
   const filterOptions = {
     label: 'Categories',
@@ -157,6 +159,49 @@ const MembersDirectory = (): JSX.Element => {
     setBreadcrumbs(updatedbreadcrumbs)
   }, [selectedItem])
 
+  const renderMemberStripsContent = () => (
+    <div className='space-y-5'>
+      {mockMemberStrips.map(item => (
+        <MemberStrip {...item} key={item.id} />
+      ))}
+    </div>
+  )
+
+  const renderTotalSalesFilter = () => (
+    <div className='flex h-full items-center justify-end'>
+      <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
+      <Slider
+        min={0}
+        max={999}
+        values={range}
+        onChange={setRange}
+        formatValue={formatValue}
+        formatTooltipValue={formatValue}
+        step={1}
+      />
+    </div>
+  )
+
+  const renderFilter = () => (
+    <div className='flex justify-between pb-25px'>
+      <div className='w-244px'>
+        <Select {...filterOptions} className='w-full' />
+      </div>
+      <div className='flex'>{renderTotalSalesFilter()}</div>
+    </div>
+  )
+
+  const renderMembersDirectoryContent = () => (
+    <div
+      className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
+    >
+      <div className='bg-white p-5 rounded-lg mr-[30px]'>
+        {renderFilter()}
+        {renderMemberStripsContent()}
+      </div>
+    </div>
+  )
+
   return (
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
@@ -165,39 +210,7 @@ const MembersDirectory = (): JSX.Element => {
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />
-      <Scrollbar hasPageHeader={true}>
-        <div
-          className={`${styles.content} content with-page-header pb-5 mt-2.5 ml-[60px] mr-[27px]`}
-        >
-          <div className='bg-white p-5 rounded-lg mr-[30px]'>
-            <div className='flex justify-between pb-25px'>
-              <div className='w-244px'>
-                <Select {...filterOptions} className='w-full' />
-              </div>
-              <div className='flex'>
-                <div className='flex h-full items-center justify-end'>
-                  <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
-
-                  <Slider
-                    min={0}
-                    max={999}
-                    values={range}
-                    onChange={setRange}
-                    formatValue={formatValue}
-                    formatTooltipValue={formatValue}
-                    step={1}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className='space-y-5'>
-              {mockMemberStrips.map(item => (
-                <MemberStrip {...item} key={item.id} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </Scrollbar>
+      <Scrollbar hasPageHeader>{renderMembersDirectoryContent()}</Scrollbar>
     </div>
   )
 }

@@ -6,11 +6,11 @@ export type TStarProps = {
   filled?: boolean
 }
 
-export const Star: React.FC<TStarProps> = ({
+export function Star({
   size = 18,
   className = 'text-yello-ffd',
   filled = false,
-}: TStarProps): JSX.Element => {
+}: TStarProps): JSX.Element {
   return (
     <svg
       width={size}

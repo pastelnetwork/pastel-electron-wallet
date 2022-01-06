@@ -1,93 +1,116 @@
-import * as React from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useState, FormEvent, useCallback } from 'react'
 
-import { Input, InputPassword } from 'common/components/Inputs'
+import Input from 'common/components/Inputs/Input'
 import { Button } from 'common/components/Buttons'
 import CloseButton from '../common/closeButton'
 import Link from 'common/components/Link'
+import { encode } from 'common/utils/encryption'
 
 import * as ROUTES from 'common/utils/constants/routes'
+import history from 'common/utils/history'
+import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
+import { verifyPastelIdPassword } from 'api/pastel-rpc'
+import { toast } from 'react-toastify'
 
-interface ILoginFormInput {
-  value: string
-  hasError: boolean
-  isTouched: boolean
-}
+export default function Login(): JSX.Element {
+  const [isLoading, setLoading] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-const initialInputState = {
-  value: '',
-  hasError: false,
-  isTouched: false,
-}
+  const onSubmit = useCallback(async () => {
+    setLoading(true)
+    setErrorMessage('')
+    const users = await readUsersInfo()
+    const user = users.find(
+      u => u.username === username && u.newPassword === encode(password),
+    )
+    if (user) {
+      try {
+        const verify = await verifyPastelIdPassword({
+          pastelId: user.pastelId,
+          password: `${user.password}${user.username}`,
+        })
+        if (verify.signature) {
+          setAutoSignIn()
+          setLoading(false)
+          history.push(ROUTES.DASHBOARD)
+        } else {
+          setErrorMessage('Username or password is incorrect')
+        }
+      } catch (error) {
+        toast(error.message, { type: 'error' })
+        setLoading(false)
+      }
+    } else {
+      setErrorMessage('Username or password is incorrect')
+      setLoading(false)
+    }
+  }, [username, password])
 
-const Login = (): JSX.Element => {
-  const history = useHistory()
-
-  const [username, setUsername] = React.useState<ILoginFormInput>(
-    initialInputState,
+  const onUsernameChanged = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      setUsername(event.currentTarget.value)
+    },
+    [],
   )
-  const [password, setPassword] = React.useState<ILoginFormInput>(
-    initialInputState,
+
+  const onPasswordChanged = useCallback(
+    (event: FormEvent<HTMLInputElement>) => {
+      setPassword(event.currentTarget.value)
+    },
+    [],
   )
+
+  const inValid = !username || !password ? true : false
+
+  const renderRestoreAccountButton = () => {
+    return (
+      <div className='text-gray-71 text-h6 my-5'>
+        Forgot your password?
+        <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
+          {' '}
+          Restore access now
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <div className='text-h1-heavy text-gray-2d'>Login</div>
+      <div className='text-h1-heavy text-gray-2d mb-3'>Login</div>
       <form className='flex flex-col mt-30px'>
+        {errorMessage ? (
+          <div className='text-red-fe mb-2'>{errorMessage}</div>
+        ) : null}
         <Input
-          type='text'
+          name='username'
           label='Username'
           placeholder='i.e banksy168'
-          value={username.value}
-          labelClassName='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
-          onChange={(event: React.FormEvent<HTMLInputElement>) =>
-            setUsername({
-              ...username,
-              value: event.currentTarget.value,
-            })
-          }
-          ref={null}
-          errorMessage={
-            username.hasError ? 'Please enter a valid username' : null
-          }
-          className='mb-6'
+          className='mt-4 mb-6'
+          onChange={onUsernameChanged}
+          value={username}
         />
-        <InputPassword
+        <Input
           type='password'
+          name='password'
           label='Password'
-          labelClassName='inline-block text-gray-71 text-h4 pb-2.5 font-medium'
-          value={password.value}
-          onChange={(event: React.FormEvent<HTMLInputElement>) =>
-            setPassword({
-              ...password,
-              value: event.currentTarget.value,
-            })
-          }
-          ref={null}
-          errorMessage={
-            password.hasError ? 'Please enter a valid password' : null
-          }
+          onChange={onPasswordChanged}
+          value={password}
         />
-        <div className='text-gray-71 text-h6 my-5'>
-          Forgot your password?
-          <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
-            {' '}
-            Restore access now
-          </Link>
-        </div>
+        {renderRestoreAccountButton()}
         <Button
           className='w-full'
-          type='submit'
-          onClick={() => {
-            history.push(ROUTES.DASHBOARD)
-          }}
+          type='button'
+          onClick={onSubmit}
+          disabled={isLoading || inValid}
         >
           Login
         </Button>
       </form>
       <div className='flex justify-center text-gray-a0 font-medium text-h6 mt-30px'>
-        <span className='mr-1'>Don't have an account?</span>
+        <span className='mr-1'>Don{"'"}t have an account?</span>
         <Link className='text-link' to={ROUTES.SIGN_UP}>
           Register on Pastel
         </Link>
@@ -96,4 +119,6 @@ const Login = (): JSX.Element => {
   )
 }
 
-export default Login
+Login.defaultProps = {
+  pastelId: undefined,
+}

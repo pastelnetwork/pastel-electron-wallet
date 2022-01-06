@@ -3,16 +3,15 @@ import MenuBuilder from '../../menu'
 
 export const browserWindow: { current?: BrowserWindow } = {}
 
-export const createWindow = async (
-  onWindowClose: (event: Event) => void,
-): Promise<void> => {
+export const createWindow = (onWindowClose: (event: Event) => void): void => {
   const {
     width: screenWidth,
     height: screenHeight,
   } = screen.getPrimaryDisplay().workAreaSize
 
   const aspectRatio = 4 / 3
-  let width, height
+  let width = 0,
+    height = 0
   if (screenHeight * aspectRatio > screenWidth) {
     width = screenWidth
     height = Math.round(screenWidth / aspectRatio)
@@ -43,6 +42,7 @@ export const createWindow = async (
 
   w.webContents.on('did-frame-finish-load', () => {
     // Open the DevTools.
+    w.webContents.openDevTools()
     if (!app.isPackaged || process.env.DEBUG_PROD === 'true') {
       w.webContents.openDevTools()
     }

@@ -20,7 +20,7 @@ export type TMultiSelect = {
   value?: readonly TOptionType[] | null
 }
 
-const MultiSelect = ({
+function MultiSelect({
   options,
   menuPosition = 'fixed',
   placeholder,
@@ -28,20 +28,22 @@ const MultiSelect = ({
   name,
   onChange,
   value,
-}: TMultiSelect): JSX.Element => (
-  <ReactSelect
-    value={value}
-    styles={selectStyles}
-    options={options}
-    menuPosition={menuPosition}
-    placeholder={placeholder}
-    className={className}
-    onChange={onChange}
-    name={name}
-    isClearable={false}
-    closeMenuOnSelect={false}
-    TisMulti
-  />
-)
+}: TMultiSelect): JSX.Element {
+  return (
+    <ReactSelect
+      value={value}
+      styles={selectStyles}
+      options={options}
+      menuPosition={menuPosition}
+      placeholder={placeholder}
+      className={className}
+      onChange={onChange}
+      name={name}
+      isClearable={false}
+      closeMenuOnSelect={false}
+      isMulti
+    />
+  )
+}
 
 export default MultiSelect

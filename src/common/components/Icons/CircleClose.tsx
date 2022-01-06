@@ -6,11 +6,11 @@ export type TCircleCloseProps = {
   circleColor?: string
 }
 
-export const CircleCloseIcon = ({
+export function CircleCloseIcon({
   size = 22,
   className = 'text-gray-88',
   circleColor = '#F6F7F9',
-}: TCircleCloseProps): JSX.Element => {
+}: TCircleCloseProps): JSX.Element {
   return (
     <svg
       width={size}

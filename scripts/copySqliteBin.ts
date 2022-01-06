@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import log from 'electron-log'
 
 // to run in electron better_sqlite3.node is recompiled with electron-rebuild
 // bot to run in tests we still need a version compiled for current node
@@ -20,7 +21,7 @@ if (!fs.existsSync(forJestPath)) {
     path.join(path.dirname(sqlitePath), 'better_sqlite3.for-jest.node'),
     err => {
       if (err) {
-        console.error(err)
+        log.error(err)
       }
     },
   )

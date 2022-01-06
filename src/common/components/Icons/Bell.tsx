@@ -7,11 +7,11 @@ export type TBellIconProps = {
   hasNotification?: boolean
 }
 
-export const BellIcon = ({
+export function BellIcon({
   size = 16,
   className = 'text-gray-33',
   hasNotification = false,
-}: TBellIconProps): JSX.Element => {
+}: TBellIconProps): JSX.Element {
   return (
     <div className={cn(className, 'relative')} style={{ width: size }}>
       {hasNotification && (

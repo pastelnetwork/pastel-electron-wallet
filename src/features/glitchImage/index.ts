@@ -1,4 +1,4 @@
-import glitchImageModal from './GlitchImageModal'
+import GlitchImageModal from './GlitchImageModal'
 
 export type { IGlitchImageModalState } from './GlitchImageModalSlice'
 export {
@@ -7,4 +7,4 @@ export {
   glitchImageModalReducer,
 } from './GlitchImageModalSlice'
 
-export default glitchImageModal
+export default GlitchImageModal

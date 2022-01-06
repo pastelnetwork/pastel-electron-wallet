@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 import cn from 'classnames'
 
 export type TAlert = {
@@ -13,19 +13,23 @@ const classesByCase = {
   warning: 'border-warning bg-warning-background',
   error: 'border-error bg-error-background',
 }
-const Alert = ({
+function Alert({
   variant,
   className,
   children,
   onShowing = true,
   showClose = false,
-}: TAlert): JSX.Element => {
+}: TAlert): JSX.Element | null {
   const [isShowing, setIsShowing] = useState<boolean>(onShowing)
   const classes = cn(
     'border-l-4 px-4 py-3 rounded',
     classesByCase[variant],
     className,
   )
+  const onClick = useCallback(() => {
+    setIsShowing(false)
+  }, [isShowing])
+
   if (isShowing) {
     return (
       <div className={classes}>
@@ -34,7 +38,10 @@ const Alert = ({
           {showClose && (
             <span
               className='absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer'
-              onClick={() => setIsShowing(false)}
+              onClick={onClick}
+              role='button'
+              aria-hidden
+              tabIndex={0}
             >
               <svg
                 className={`fill-current h-6 w-6 text-${variant}`}
@@ -51,7 +58,8 @@ const Alert = ({
       </div>
     )
   }
-  return <></>
+
+  return null
 }
 
 Alert.defaultProps = {

@@ -22,125 +22,13 @@ export type TSelectImageStepService = {
   isAnimated: boolean
   imageToConvert?: TImageToConvert
   imageForPreview?: { url: string; maxWidth: number; size: number }
-  selectFile(file?: File): Promise<void>
-  convertImage(data: TImageToConvert, type: TImageType): Promise<void>
-  submit(): void
+  selectFile: (file?: File) => Promise<void>
+  convertImage: (data: TImageToConvert, type: TImageType) => Promise<void>
+  submit: () => void
+  resetImageState: () => void
 }
 
 type TImageToConvert = { name: string; image: HTMLImageElement }
-
-export const useSelectImageService = (
-  state: TAddNFTState,
-): TSelectImageStepService => {
-  const [imageFile, setFile] = useState<TImageFile>()
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [error, setError] = useState<string>()
-  const [imageToConvert, setImageToConvert] = useState<TImageToConvert>()
-  const [selectedFile, setSelectedFile] = useState<File>()
-  const [isAnimated, setIsAnimated] = useState(false)
-
-  const resetImageState = () => {
-    setFile(undefined)
-    setImageToConvert(undefined)
-    setIsAnimated(false)
-    setError(undefined)
-    setIsProcessing(false)
-  }
-
-  return {
-    imageForPreview: imageFile || state.image,
-    selectedFile,
-    imageFile,
-    error,
-    isProcessing,
-    imageToConvert,
-    isAnimated,
-    async selectFile(file) {
-      if (!file) {
-        return
-      }
-
-      setSelectedFile(file)
-      resetImageState()
-
-      const { type } = file
-      if (
-        type === ConvertableImageType.gif ||
-        type === ConvertableImageType.bmp
-      ) {
-        try {
-          const url = URL.createObjectURL(file)
-          const image = await loadImageElement(url)
-
-          checkImageSize(image)
-
-          if (type === ConvertableImageType.gif) {
-            setIsAnimated(await isGifAnimated(file))
-          }
-
-          setImageToConvert({ name: file.name, image })
-        } catch (error) {
-          setError(error.message)
-        }
-        return
-      }
-
-      if (type !== ImageType.PNG && type !== ImageType.JPG) {
-        return setError(`Selected file has unsupported format: ${type}`)
-      }
-
-      try {
-        checkFileSize(file.size)
-        setIsProcessing(true)
-
-        const url = URL.createObjectURL(file)
-        setFile(await processImage({ name: file.name, type, url }))
-      } catch (error) {
-        setError(error.message)
-      } finally {
-        setIsProcessing(false)
-      }
-    },
-    async convertImage({ name, image }, type) {
-      resetImageState()
-      setIsProcessing(true)
-
-      try {
-        const canvas = document.createElement('canvas')
-        canvas.width = image.width
-        canvas.height = image.height
-        const context = canvas.getContext('2d') as CanvasRenderingContext2D
-        context.drawImage(image, 0, 0)
-
-        const blob = await new Promise<Blob>((resolve, reject) => {
-          canvas.toBlob(
-            blob => {
-              blob ? resolve(blob) : reject(new Error('Can not convert image'))
-            },
-            type,
-            1,
-          )
-        })
-
-        const url = URL.createObjectURL(blob)
-        setFile(await processImage({ name, type, url }))
-      } catch (error) {
-        setError(error.message)
-      } finally {
-        setIsProcessing(false)
-      }
-    },
-    submit() {
-      if (imageFile) {
-        const { arrayBuffer, ...image } = imageFile
-        state.setImage(image)
-        state.optimizationService.optimizeImage(image.type, arrayBuffer)
-      }
-
-      state.goToNextStep()
-    },
-  }
-}
 
 const checkFileSize = (size: number) => {
   if (size > 100 * Size.MB) {
@@ -183,7 +71,7 @@ const processImage = async ({
   type: TImageType
   url: string
 }): Promise<TImageFile> => {
-  let image
+  let image = null
   try {
     image = await ImageJS.load(url)
   } catch (error) {
@@ -193,8 +81,8 @@ const processImage = async ({
 
   checkImageSize(image)
 
-  let blob
-  let arrayBuffer
+  let blob = null
+  let arrayBuffer = null
   try {
     blob = await image.toBlob(type, 1)
     arrayBuffer = await blob.arrayBuffer()
@@ -215,5 +103,129 @@ const processImage = async ({
     width,
     height,
     maxWidth: maxWidthByOrientation[orientation],
+  }
+}
+
+export const useSelectImageService = (
+  state: TAddNFTState,
+): TSelectImageStepService => {
+  const [imageFile, setFile] = useState<TImageFile>()
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [error, setError] = useState<string>()
+  const [imageToConvert, setImageToConvert] = useState<TImageToConvert>()
+  const [selectedFile, setSelectedFile] = useState<File>()
+  const [isAnimated, setIsAnimated] = useState(false)
+
+  const resetImageState = () => {
+    setFile(undefined)
+    setImageToConvert(undefined)
+    setIsAnimated(false)
+    setError(undefined)
+    setIsProcessing(false)
+  }
+
+  return {
+    imageForPreview: imageFile || state.image,
+    selectedFile,
+    imageFile,
+    error,
+    isProcessing,
+    imageToConvert,
+    isAnimated,
+    resetImageState,
+    async selectFile(file) {
+      if (!file) {
+        return
+      }
+
+      setSelectedFile(file)
+      resetImageState()
+
+      const { type } = file
+      if (
+        type === ConvertableImageType.gif ||
+        type === ConvertableImageType.bmp
+      ) {
+        try {
+          const url = URL.createObjectURL(file)
+          const image = await loadImageElement(url)
+
+          checkImageSize(image)
+
+          if (type === ConvertableImageType.gif) {
+            setIsAnimated(await isGifAnimated(file))
+          }
+
+          setImageToConvert({ name: file.name, image })
+        } catch (error) {
+          setError(error.message)
+        }
+        return
+      }
+
+      if (type !== ImageType.PNG && type !== ImageType.JPG) {
+        return setError(`Selected file has unsupported format: ${type}`)
+      }
+
+      try {
+        checkFileSize(file.size)
+        setIsProcessing(true)
+        const url = URL.createObjectURL(file)
+        setFile(await processImage({ name: file.name, type, url }))
+      } catch (error) {
+        setError(error.message)
+      } finally {
+        setIsProcessing(false)
+      }
+    },
+    async convertImage({ name, image }, type) {
+      resetImageState()
+      setIsProcessing(true)
+
+      try {
+        const canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        const context = canvas.getContext('2d') as CanvasRenderingContext2D
+        context.drawImage(image, 0, 0)
+
+        const blob = await new Promise<Blob>((resolve, reject) => {
+          const onBlod = (val: Blob | null) => {
+            if (val) {
+              resolve(val)
+            } else {
+              reject(new Error('Can not convert image'))
+            }
+          }
+          canvas.toBlob(blob => onBlod(blob), type, 1)
+        })
+
+        const url = URL.createObjectURL(blob)
+        setFile(await processImage({ name, type, url }))
+      } catch (error) {
+        setError(error.message)
+      } finally {
+        // setIsProcessing(false)
+      }
+    },
+    submit() {
+      if (imageFile) {
+        const { arrayBuffer, ...image } = imageFile
+        state.setImage(image)
+        state.optimizationService
+          .optimizeImage(image.type, arrayBuffer)
+          .then(() => {
+            // noop
+          })
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
+      }
+
+      state.goToNextStep()
+    },
   }
 }

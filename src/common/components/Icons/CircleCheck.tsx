@@ -6,10 +6,10 @@ export type TCircleCheckProps = {
   pathColor?: string
 }
 
-export const CircleCheck = ({
+export function CircleCheck({
   size = 40,
   className = 'text-green-45',
-}: TCircleCheckProps): JSX.Element => {
+}: TCircleCheckProps): JSX.Element {
   return (
     <svg
       width={size}

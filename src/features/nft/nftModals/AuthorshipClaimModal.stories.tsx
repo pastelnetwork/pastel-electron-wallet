@@ -5,7 +5,9 @@ import AuthorshipClaimModal, {
   TAuthorshipClaimModal,
 } from './AuthorshipClaimModal'
 
-const Template: Story<TAuthorshipClaimModal> = ({ isOpen }) => {
+const Template: Story<TAuthorshipClaimModal> = ({
+  isOpen,
+}: TAuthorshipClaimModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

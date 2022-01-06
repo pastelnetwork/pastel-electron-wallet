@@ -1,4 +1,4 @@
-import React, { FormEvent, useState, useEffect } from 'react'
+import React, { FormEvent, useState, useEffect, useCallback } from 'react'
 
 import { importPastelPromoCode } from 'common/utils/PastelPromoCode'
 import { TitleModal } from 'common/components/Modal'
@@ -19,7 +19,6 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
     zAddressAmounts,
     pastelPromoCode: pastelPromoCodeQuery,
   } = useWalletScreenContext()
-  const handleClose = () => setIsOpen(false)
 
   const currencyName = useCurrencyName()
   const [isValidPromoCode, setValidPromoCode] = useState<boolean>(false)
@@ -33,7 +32,7 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
     setLoading(false)
   }, [])
 
-  const handleAddPromoCode = async () => {
+  const handleAddPromoCode = useCallback(async () => {
     setMessage('')
     if (isValidPrivateKey(pastelPromoCode)) {
       setLoading(true)
@@ -64,7 +63,11 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
       setValidPromoCode(false)
       setMessage('Promo Code is invalid.')
     }
-  }
+  }, [pastelPromoCode])
+
+  const handleOnChange = useCallback((e: FormEvent<HTMLInputElement>) => {
+    setPastelPromoCode(e.currentTarget.value.trim())
+  }, [])
 
   let promoCodeIsValid = null
   if (!isValidPromoCode && message) {
@@ -74,7 +77,7 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
   return (
     <TitleModal
       isOpen
-      handleClose={() => handleClose()}
+      handleClose={useCallback(() => setIsOpen(false), [])}
       title={isValidPromoCode && message ? '' : 'Add Pastel Promo Code'}
       classNames='w-[598px]'
     >
@@ -102,15 +105,9 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
                 className='w-full'
                 type='text'
                 placeholder='Paste your promo code here'
-                onChange={(e: FormEvent<HTMLInputElement>) =>
-                  setPastelPromoCode(e.currentTarget.value.trim())
-                }
+                onChange={handleOnChange}
                 isValid={promoCodeIsValid}
-                errorMessage={
-                  !promoCodeIsValid && message
-                    ? message || 'Promo Code is invalid.'
-                    : null
-                }
+                errorMessage={!promoCodeIsValid && message ? message : null}
                 hint
                 hintAsTooltip={false}
               />

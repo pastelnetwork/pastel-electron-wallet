@@ -6,17 +6,14 @@ export type TButtonCloseProps = {
   className?: string
 }
 
-const ButtonClose = ({
-  onClick,
-  className,
-}: TButtonCloseProps): JSX.Element => {
+function ButtonClose({ onClick, className }: TButtonCloseProps): JSX.Element {
   const classes = cn(
     'border flex items-center justify-center border-button-text w-7 h-7 rounded-lg focus:outline-none hover:border-gray-8e hover:bg-gray-f6 active:bg-gray-f6 active:border-gray-55 active:text-border-gray-55',
     className,
   )
 
   return (
-    <button onClick={onClick} className={classes}>
+    <button onClick={onClick} className={classes} type='button'>
       <svg
         width='8'
         height='9'

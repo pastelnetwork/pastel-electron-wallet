@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import log from 'electron-log'
 
 import { createNewPastelID, getPastelIDs } from '../../api/pastel-rpc'
 import type { AppThunk } from '../../redux/store'
@@ -7,6 +8,8 @@ import { openPastelModal } from '../pastelModal'
 export type TRegisterPastelID = {
   pastelid: string
   txid: string
+  uTxid?: string
+  address?: string
 }
 
 export type TPastelID = {
@@ -92,7 +95,7 @@ export function fetchPastelIDs(): AppThunk {
       )
 
       // TODO log errors to a central logger so we can address them later.
-      console.warn(err)
+      log.warn(err)
     }
   }
 }
@@ -126,7 +129,7 @@ export function createPastelID(passphrase: string, address: string): AppThunk {
       )
 
       // TODO log errors to a central logger so we can address them later.
-      console.warn(err)
+      log.warn(err)
     }
   }
 }

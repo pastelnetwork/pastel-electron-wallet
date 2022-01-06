@@ -5,10 +5,58 @@ export type TAddNFTProps = {
   className?: string
 }
 
-export const AddNFTIcon = ({
+export function AddNFTIcon({
   size = 21,
   className,
-}: TAddNFTProps): JSX.Element => {
+}: TAddNFTProps): JSX.Element {
+  const renderRadialGradientAndFilter = () => (
+    <defs>
+      <filter
+        id='filter0_i'
+        x='0.5'
+        y='-2'
+        width='20'
+        height='22'
+        filterUnits='userSpaceOnUse'
+        colorInterpolationFilters='sRGB'
+      >
+        <feFlood floodOpacity='0' result='BackgroundImageFix' />
+        <feBlend
+          mode='normal'
+          in='SourceGraphic'
+          in2='BackgroundImageFix'
+          result='shape'
+        />
+        <feColorMatrix
+          in='SourceAlpha'
+          type='matrix'
+          values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
+          result='hardAlpha'
+        />
+        <feOffset dy='-2' />
+        <feGaussianBlur stdDeviation='2.5' />
+        <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
+        <feColorMatrix
+          type='matrix'
+          values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'
+        />
+        <feBlend mode='normal' in2='shape' result='effect1_innerShadow' />
+      </filter>
+      <radialGradient
+        id='paint0_radial'
+        cx='0'
+        cy='0'
+        r='1'
+        gradientUnits='userSpaceOnUse'
+        gradientTransform='translate(21.9667 -1.8) rotate(136.111) scale(34.0418)'
+      >
+        <stop offset='0.0782458' stopColor='#FFCE12' />
+        <stop offset='0.507247' stopColor='#E02DFF' />
+        <stop offset='0.949356' stopColor='#17D9FF' />
+      </radialGradient>
+    </defs>
+  )
+
   return (
     <svg
       width={size}
@@ -27,51 +75,7 @@ export const AddNFTIcon = ({
         />
       </g>
 
-      <defs>
-        <filter
-          id='filter0_i'
-          x='0.5'
-          y='-2'
-          width='20'
-          height='22'
-          filterUnits='userSpaceOnUse'
-          colorInterpolationFilters='sRGB'
-        >
-          <feFlood floodOpacity='0' result='BackgroundImageFix' />
-          <feBlend
-            mode='normal'
-            in='SourceGraphic'
-            in2='BackgroundImageFix'
-            result='shape'
-          />
-          <feColorMatrix
-            in='SourceAlpha'
-            type='matrix'
-            values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0'
-            result='hardAlpha'
-          />
-          <feOffset dy='-2' />
-          <feGaussianBlur stdDeviation='2.5' />
-          <feComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1' />
-          <feColorMatrix
-            type='matrix'
-            values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'
-          />
-          <feBlend mode='normal' in2='shape' result='effect1_innerShadow' />
-        </filter>
-        <radialGradient
-          id='paint0_radial'
-          cx='0'
-          cy='0'
-          r='1'
-          gradientUnits='userSpaceOnUse'
-          gradientTransform='translate(21.9667 -1.8) rotate(136.111) scale(34.0418)'
-        >
-          <stop offset='0.0782458' stopColor='#FFCE12' />
-          <stop offset='0.507247' stopColor='#E02DFF' />
-          <stop offset='0.949356' stopColor='#17D9FF' />
-        </radialGradient>
-      </defs>
+      {renderRadialGradientAndFilter()}
     </svg>
   )
 }

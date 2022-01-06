@@ -1,5 +1,6 @@
 import React, { useEffect, useState, forwardRef, useRef } from 'react'
 import cn from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
 
 import { formatNumber } from 'common/utils/format'
 
@@ -12,6 +13,29 @@ export type TProps = {
   className?: string
 }
 
+function NumpadButton({
+  value,
+  onClick,
+  className,
+}: {
+  value: number | string
+  onClick(): void
+  className?: string
+}) {
+  return (
+    <button
+      type='button'
+      className={cn(
+        'shadow-sm text-blue-3f border border-blue-3f w-8 h-8 flex-center rounded-lg duration-200 transition hover:bg-blue-e1 flex-shrink-0',
+        className,
+      )}
+      onClick={onClick}
+    >
+      {value}
+    </button>
+  )
+}
+
 export default forwardRef<HTMLDivElement, TProps>(function Numpad(
   {
     value: valueProp,
@@ -20,10 +44,10 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
     min = -Infinity,
     max = Infinity,
     className,
-  },
+  }: TProps,
   ref,
 ) {
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState<string>('')
 
   // when input gets empty, default it passed to onChange, valueProp updates and we need to ignore it to keep input empty
   const skipSetValueRef = useRef(false)
@@ -54,6 +78,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       numpadList.push({
         value: 0,
         type: 'default',
+        index: uuidv4(),
       })
     }
 
@@ -61,6 +86,7 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       numpadList.push({
         value: item,
         type: 'value',
+        index: uuidv4(),
       })
     })
 
@@ -69,7 +95,55 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
 
   const clear = () => onChange('')
 
-  const addChar = (char: string) => onChange(value + char)
+  const addChar = (char: string) => {
+    const val: string = value || ''
+    onChange(`${val}${char}`)
+  }
+
+  const renderNumpadControl = () => (
+    <div className='pt-1 space-y-2'>
+      <input
+        className='input h-8 px-2 mb-1 w-[112px] hidden'
+        value={value}
+        onChange={e => onChange(e.target.value)}
+      />
+      <div className='flex space-x-2'>
+        {[1, 2, 3].map(value => (
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
+        ))}
+      </div>
+      <div className='flex space-x-2'>
+        {[3, 4, 5].map(value => (
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
+        ))}
+      </div>
+      <div className='flex space-x-2'>
+        {[7, 8, 9].map(value => (
+          <NumpadButton
+            key={value}
+            value={value}
+            onClick={() => addChar(String(value))}
+          />
+        ))}
+      </div>
+      <div className='flex space-x-2'>
+        <NumpadButton value={0} onClick={() => addChar('0')} />
+        <NumpadButton value='clear' onClick={clear} className='flex-grow' />
+      </div>
+      <div className='text-gray-a0 text-xs text-center'>
+        number between
+        <br />1 and {formatNumber(max)}
+      </div>
+    </div>
+  )
 
   return (
     <div
@@ -80,83 +154,27 @@ export default forwardRef<HTMLDivElement, TProps>(function Numpad(
       )}
     >
       <div className='input h-8 px-2 mb-1 w-[112px] flex justify-between items-center text-gray-a0 font-medium'>
-        {getNumPadList().map((item, index) => (
-          <span
-            className={cn(
-              'text-base font-medium',
-              item.type === 'default' ? 'text-gray-a0' : 'text-gray-4a',
-            )}
-            key={index}
-          >
-            {item.value}
-          </span>
-        ))}
+        {getNumPadList().map(item => {
+          const type: string = item.type || ''
+          const index: string = item.index || ''
+          return (
+            <span
+              className={cn(
+                'text-base font-medium',
+                item.type === 'default' ? 'text-gray-a0' : 'text-gray-4a',
+              )}
+              key={`${type}${index}`}
+            >
+              {item.value}
+            </span>
+          )
+        })}
       </div>
-      <div className='pt-1 space-y-2'>
-        <input
-          className='input h-8 px-2 mb-1 w-[112px] hidden'
-          value={value}
-          onChange={e => onChange(e.target.value)}
-        />
-        <div className='flex space-x-2'>
-          {[1, 2, 3].map(value => (
-            <NumpadButton
-              key={value}
-              value={value}
-              onClick={() => addChar(String(value))}
-            />
-          ))}
-        </div>
-        <div className='flex space-x-2'>
-          {[3, 4, 5].map(value => (
-            <NumpadButton
-              key={value}
-              value={value}
-              onClick={() => addChar(String(value))}
-            />
-          ))}
-        </div>
-        <div className='flex space-x-2'>
-          {[7, 8, 9].map(value => (
-            <NumpadButton
-              key={value}
-              value={value}
-              onClick={() => addChar(String(value))}
-            />
-          ))}
-        </div>
-        <div className='flex space-x-2'>
-          <NumpadButton value={0} onClick={() => addChar('0')} />
-          <NumpadButton value='clear' onClick={clear} className='flex-grow' />
-        </div>
-        <div className='text-gray-a0 text-xs text-center'>
-          number between
-          <br />1 and {formatNumber(max)}
-        </div>
-      </div>
+      {renderNumpadControl()}
     </div>
   )
 })
 
-const NumpadButton = ({
-  value,
-  onClick,
-  className,
-}: {
-  value: number | string
-  onClick(): void
-  className?: string
-}) => {
-  return (
-    <button
-      type='button'
-      className={cn(
-        'shadow-sm text-blue-3f border border-blue-3f w-8 h-8 flex-center rounded-lg duration-200 transition hover:bg-blue-e1 flex-shrink-0',
-        className,
-      )}
-      onClick={onClick}
-    >
-      {value}
-    </button>
-  )
+NumpadButton.defaultProps = {
+  className: '',
 }

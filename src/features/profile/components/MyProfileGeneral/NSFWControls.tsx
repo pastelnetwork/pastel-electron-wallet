@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Caret } from 'common/components/Icons'
 import {
   useDisplayAdvancedFeatures,
@@ -18,63 +18,91 @@ export default function NSFWControls(): JSX.Element {
   ] = useNSFWHentaiProbability()
   const [NSFWPornProbability, setNSFWPornProbability] = useNSFWPornProbability()
 
-  const formatValue = (value: number) => `${Math.round(value)}%`
+  const formatValue = useCallback((value: number) => `${Math.round(value)}%`, [
+    NSFWPornProbability,
+    NSFWHentaiProbability,
+  ])
+
+  const onPornProbabilityChange = useCallback(
+    (value: number) => {
+      setNSFWPornProbability(Math.round(value))
+    },
+    [NSFWPornProbability],
+  )
+
+  const onHentaiProbabilityChange = useCallback(
+    (value: number) => {
+      setNSFWHentaiProbability(Math.round(value))
+    },
+    [NSFWHentaiProbability],
+  )
+
+  const renderNFTControl = () => (
+    <div className='flex pt-3'>
+      <div className='text-gray-71 mr-4'>Hide Not Safe For Work NFTs</div>
+      <div className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap'>
+        <Toggle selected={!displayNSFW} toggleHandler={toggleNSFW} />
+      </div>
+      <div className='text-gray-71 mr-4'>Show Advanced Features</div>
+      <div
+        className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap cursor-pointer'
+        onClick={toggleAdvanced}
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      >
+        <Caret to={displayAdvanced ? 'bottom' : 'top'} size={15} />
+      </div>
+    </div>
+  )
+
+  const renderHentaiProbability = () => (
+    <div className='flex items-center pt-10 pb-7'>
+      <div className='text-gray-71 mr-3 w-[180px]'>
+        Hentai probability {NSFWHentaiProbability}%
+      </div>
+      <Slider
+        className='relative z-10'
+        min={0}
+        max={100}
+        onChange={onHentaiProbabilityChange}
+        value={NSFWHentaiProbability}
+        step={1}
+        formatValue={formatValue}
+        width={349}
+      />
+    </div>
+  )
+
+  const renderPornProbability = () => (
+    <div className='flex items-center pt-3 pb-7'>
+      <div className='text-gray-71 mr-3 w-[180px]'>
+        Porn probability {NSFWPornProbability}%
+      </div>
+      <Slider
+        className='relative z-10'
+        min={0}
+        max={100}
+        onChange={onPornProbabilityChange}
+        value={NSFWPornProbability}
+        step={1}
+        formatValue={formatValue}
+        width={349}
+      />
+    </div>
+  )
 
   return (
     <div className='w-full mt-20 mb-50px'>
-      <div className='flex pt-3'>
-        <div className='text-gray-71 mr-4'>Hide Not Safe For Work NFTs</div>
-        <div className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap'>
-          <Toggle selected={!displayNSFW} toggleHandler={toggleNSFW} />
-        </div>
-        <div className='text-gray-71 mr-4'>Show Advanced Features</div>
-        <div
-          className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap cursor-pointer'
-          onClick={toggleAdvanced}
-        >
-          <Caret to={displayAdvanced ? 'bottom' : 'top'} size={15} />
-        </div>
-      </div>
+      {renderNFTControl()}
       <div
         className={cn(
           'transition-all duration-300 overflow-hidden',
           displayAdvanced ? 'opacity-0 h-0' : 'opacity-100 h-[156px]',
         )}
       >
-        <div className='flex items-center pt-10 pb-7'>
-          <div className='text-gray-71 mr-3 w-[180px]'>
-            Hentai probability {NSFWHentaiProbability}%
-          </div>
-          <Slider
-            className='relative z-10'
-            min={0}
-            max={100}
-            onChange={(value: number) =>
-              setNSFWHentaiProbability(Math.round(value))
-            }
-            value={NSFWHentaiProbability}
-            step={1}
-            formatValue={formatValue}
-            width={349}
-          />
-        </div>
-        <div className='flex items-center pt-3 pb-7'>
-          <div className='text-gray-71 mr-3 w-[180px]'>
-            Porn probability {NSFWPornProbability}%
-          </div>
-          <Slider
-            className='relative z-10'
-            min={0}
-            max={100}
-            onChange={(value: number) =>
-              setNSFWPornProbability(Math.round(value))
-            }
-            value={NSFWPornProbability}
-            step={1}
-            formatValue={formatValue}
-            width={349}
-          />
-        </div>
+        {renderHentaiProbability()}
+        {renderPornProbability()}
       </div>
     </div>
   )

@@ -9,20 +9,26 @@ export interface ChatUserAvatarProps {
   extraClasses?: string
 }
 
-export const UserAvatar = (props: ChatUserAvatarProps): JSX.Element => {
-  const size = props.size ? props.size : 12
-
+export function UserAvatar({
+  size,
+  extraClasses,
+  user,
+  hideOnline,
+}: ChatUserAvatarProps): JSX.Element {
+  const vSize = size ? size : 12
+  const vExtraClasses = extraClasses || ''
+  const avatarSize: string = vSize.toString() || ''
   return (
     <div
-      className={`relative mr-5 flex-shrink-0 h-${size} w-${size} ${props.extraClasses}`}
+      className={`relative mr-5 flex-shrink-0 h-${avatarSize} w-${avatarSize} ${vExtraClasses}`}
     >
-      {props.user && (
+      {user && (
         <i
           className='inline-block rounded-full overflow-hidden w-full h-full border border-gray-200 bg-cover bg-center'
-          style={{ backgroundImage: `url(${props.user.avatar})` }}
+          style={{ backgroundImage: `url(${user.avatar})` }}
         ></i>
       )}
-      {props.user && props.user.isOnline && !props.hideOnline && (
+      {user && user.isOnline && !hideOnline && (
         <span className='inline-block rounded-full bg-green-500 w-1.5 h-1.5 absolute z-10 right-1 bottom-1'></span>
       )}
     </div>

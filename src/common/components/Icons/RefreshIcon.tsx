@@ -5,10 +5,10 @@ export type TRefreshIconProps = {
   className?: string
 }
 
-export const RefreshIcon = ({
+export function RefreshIcon({
   size = 16,
   className = 'text-blue-3f',
-}: TRefreshIconProps): JSX.Element => {
+}: TRefreshIconProps): JSX.Element {
   return (
     <svg
       width={size}

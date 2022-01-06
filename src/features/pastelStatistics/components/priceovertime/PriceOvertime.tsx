@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import PastelDB from '../../../pastelDB/database'
 import { EChartsMultiLineChart } from '../chart/EChartsMultiLineChart'
@@ -22,7 +22,7 @@ type TLineChartData = {
 
 const redrawCycle = 6000
 
-const PriceOvertime = (): JSX.Element => {
+export default function PriceOvertime(): JSX.Element {
   const currencyName = useCurrencyName()
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
@@ -52,8 +52,26 @@ const PriceOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -64,39 +82,37 @@ const PriceOvertime = (): JSX.Element => {
     }
   }, [period])
 
-  const handlePeriodFilterChange = (period: TPeriod) => {
+  const handlePeriodFilterChange = useCallback((period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
-  }
+    if (ticker) {
+      clearInterval(ticker)
+    }
+  }, [])
 
-  const handleBgColorChange = (color: string) => {
+  const handleBgColorChange = useCallback((color: string) => {
     setCurrentBgColor(color)
-  }
+  }, [])
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsMultiLineChart
-              chartName='prices'
-              dataX={transformLineChartData?.dataX}
-              dataY1={transformLineChartData?.dataY1}
-              dataY2={transformLineChartData?.dataY2}
-              title={`${currencyName} Prices`}
-              offset={0.0001}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsMultiLineChart
+            chartName='prices'
+            dataX={transformLineChartData?.dataX}
+            dataY1={transformLineChartData?.dataY1}
+            dataY2={transformLineChartData?.dataY2}
+            title={`${currencyName} Prices`}
+            offset={0.0001}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }
-
-export default PriceOvertime

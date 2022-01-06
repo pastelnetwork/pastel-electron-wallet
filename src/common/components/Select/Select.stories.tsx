@@ -11,7 +11,10 @@ export default {
   component: Select,
 } as Meta
 
-const TemplateOptions: Story<TSelectOptionsProps> = ({ selected, ...args }) => {
+const TemplateOptions: Story<TSelectOptionsProps> = ({
+  selected,
+  ...args
+}: TSelectOptionsProps) => {
   const [selectedItem, setSelected] = useState(selected)
 
   return (
@@ -67,7 +70,7 @@ SelectWithAutocompleteHighlight.args = {
   },
 }
 
-export const AutocompleteByQuery = (): JSX.Element => {
+export function AutocompleteByQuery(): JSX.Element {
   const [query, setQuery] = useState('')
   const [selectedItem, setSelected] = useState<TOption | null>()
 
@@ -94,7 +97,7 @@ export const AutocompleteByQuery = (): JSX.Element => {
   )
 }
 
-export const SelectRange = (): JSX.Element => {
+export function SelectRange(): JSX.Element {
   const [value, setValue] = useState<number | null>(10000)
 
   return (
@@ -109,7 +112,7 @@ export const SelectRange = (): JSX.Element => {
   )
 }
 
-export const SelectRangeWithAutocomplete = (): JSX.Element => {
+export function SelectRangeWithAutocomplete(): JSX.Element {
   const [value, setValue] = useState<number | null>(10000)
 
   return (
@@ -125,7 +128,7 @@ export const SelectRangeWithAutocomplete = (): JSX.Element => {
   )
 }
 
-export const FormSelect = (): JSX.Element => {
+export function FormSelect(): JSX.Element {
   const form = useForm({
     defaultValues: {
       select: options[0],
@@ -144,7 +147,9 @@ export const FormSelect = (): JSX.Element => {
         options={options}
         className='w-[220px]'
       />
-      <button className='btn btn-primary mt-4 px-5'>Submit</button>
+      <button className='btn btn-primary mt-4 px-5' type='submit'>
+        Submit
+      </button>
     </form>
   )
 }

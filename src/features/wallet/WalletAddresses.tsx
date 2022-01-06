@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import cn from 'classnames'
 import styles from './WalletScreen.module.css'
 import AddressesTable from './AddressesTable'
@@ -11,7 +11,37 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import { useWalletScreenContext } from './walletScreen.context'
 import { walletRPC } from 'api/pastel-rpc'
 
-export default function WalletAddresses(): JSX.Element {
+function AddNewAddressButton({
+  onCreateNewAddress,
+  isLoading,
+}: {
+  onCreateNewAddress: () => void
+  isLoading: boolean
+}): JSX.Element {
+  const currencyName = useCurrencyName()
+  const handleClick = useCallback(() => {
+    onCreateNewAddress()
+  }, [])
+
+  return (
+    <Button
+      variant='secondary'
+      className='w-[264px] px-0 mt-3'
+      childrenClassName='w-full'
+      onClick={handleClick}
+      disabled={isLoading}
+    >
+      <div className='flex items-center ml-[19px]'>
+        <ElectricityIcon size={11} className='text-blue-3f py-3' />
+        <div className='ml-11px text-blue-3f text-h5-medium'>
+          Generate a new {currencyName} Address
+        </div>
+      </div>
+    </Button>
+  )
+}
+
+const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
   const currencyName = useCurrencyName()
   const {
     tAddresses,
@@ -20,7 +50,7 @@ export default function WalletAddresses(): JSX.Element {
     zAddressAmounts,
     allAddresses,
     activeTab,
-    totalBalances,
+    hideEmptyAddresses,
     toggleHideEmptyAddresses,
     selectedAmount,
     setCurrentAddress,
@@ -28,8 +58,7 @@ export default function WalletAddresses(): JSX.Element {
     setNewAddress,
   } = useWalletScreenContext()
   const [isLoading, setLoading] = useState(false)
-
-  const createNewAddress = async () => {
+  const createNewAddress = useCallback(async () => {
     setLoading(true)
     const isZAddress = activeTab === 2
     const result = await walletRPC.createNewAddress(isZAddress)
@@ -44,6 +73,40 @@ export default function WalletAddresses(): JSX.Element {
       setNewAddress(true)
     }
     setLoading(false)
+  }, [])
+
+  const renderSelectedTotal = () => {
+    return (
+      <div className='flex items-center'>
+        <div className='text-gray-71 text-h4'>Selected total:</div>
+        <div className='ml-3 text-gray-2d text-h3-heavy'>
+          {formatPrice(selectedAmount, currencyName, 4)}
+        </div>
+      </div>
+    )
+  }
+
+  const renderToggleEmptyAddressTooltip = () => (
+    <Tooltip
+      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+      content='Hide empty addresses'
+      width={150}
+      type='top'
+    >
+      <EliminationIcon className='text-gray-8e' size={20} />
+    </Tooltip>
+  )
+
+  const renderToggleEmptyAddress = () => {
+    return (
+      <Toggle
+        toggleHandler={toggleHideEmptyAddresses}
+        selected={hideEmptyAddresses}
+      >
+        Hide empty addresses
+        <div className='ml-2'>{renderToggleEmptyAddressTooltip()}</div>
+      </Toggle>
+    )
   }
 
   return (
@@ -92,33 +155,9 @@ export default function WalletAddresses(): JSX.Element {
 
           <div className='border-t border-gray-e7 flex items-center h-72px justify-between pl-38px pr-30px'>
             <div className='flex items-center text-h6-leading-20'>
-              <Toggle
-                toggleHandler={toggleHideEmptyAddresses}
-                selected={
-                  totalBalances.data && totalBalances.data.total > 0
-                    ? true
-                    : false
-                }
-              >
-                Hide empty addresses
-                <div className='ml-2'>
-                  <Tooltip
-                    classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                    content='Hide empty addresses'
-                    width={150}
-                    type='top'
-                  >
-                    <EliminationIcon className='text-gray-8e' size={20} />
-                  </Tooltip>
-                </div>
-              </Toggle>
+              {renderToggleEmptyAddress()}
             </div>
-            <div className='flex items-center'>
-              <div className='text-gray-71 text-h4'>Selected total:</div>
-              <div className='ml-3 text-gray-2d text-h3-heavy'>
-                {formatPrice(selectedAmount, currencyName, 4)}
-              </div>
-            </div>
+            {renderSelectedTotal()}
           </div>
         </div>
       ) : null}
@@ -134,23 +173,15 @@ export default function WalletAddresses(): JSX.Element {
             <div className='mb-3 text-gray-4a text-h5'>
               You have no Addresses
             </div>
-            <Button
-              variant='secondary'
-              className='w-[264px] px-0 mt-3'
-              childrenClassName='w-full'
-              onClick={createNewAddress}
-              disabled={isLoading}
-            >
-              <div className='flex items-center ml-[19px]'>
-                <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                <div className='ml-11px text-blue-3f text-h5-medium'>
-                  Generate a new {currencyName} Address
-                </div>
-              </div>
-            </Button>
+            <AddNewAddressButton
+              isLoading={isLoading}
+              onCreateNewAddress={createNewAddress}
+            />
           </div>
         </div>
       ) : null}
     </>
   )
-}
+})
+
+export default WalletAddresses

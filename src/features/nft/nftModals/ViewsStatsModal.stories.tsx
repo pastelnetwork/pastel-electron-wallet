@@ -5,7 +5,10 @@ import ViewsStatsModal, { TViewsStatsModal } from './ViewsStatsModal'
 
 import dayjs from 'dayjs'
 
-const Template: Story<TViewsStatsModal> = ({ isOpen, ...args }) => {
+const Template: Story<TViewsStatsModal> = ({
+  isOpen,
+  ...args
+}: TViewsStatsModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

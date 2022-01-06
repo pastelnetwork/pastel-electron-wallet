@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import dayjs from 'dayjs'
 
 import * as ROUTES from 'common/utils/constants/routes'
@@ -21,9 +21,10 @@ enum Tabs {
   statistics,
 }
 
-const NFTMarketFeed = (): JSX.Element => {
+export default function NFTMarketFeed(): JSX.Element {
   const currencyName = useCurrencyName()
   const mockCardProps: TNFTCard = {
+    id: '1',
     author: 'zndrson',
     avatarSrc: mockAvatarImagesList[0],
     imageSrc: mockDataImagesList[0].url,
@@ -67,6 +68,7 @@ const NFTMarketFeed = (): JSX.Element => {
 
     return {
       ...mockCardProps,
+      id: i.toString(),
       nsfw: { porn: nsfw, hentai: nsfw },
       imageSrc: mockDataImagesList[i].url,
       avatarSrc: mockAvatarImagesList[i],
@@ -116,7 +118,9 @@ const NFTMarketFeed = (): JSX.Element => {
   ]
 
   const [range, setRange] = useState<[number, number]>([500, 700])
-  const formatValue = (value: number) => `${value.toFixed(0)}k`
+  const formatValue = useCallback((value: number) => `${value.toFixed(0)}k`, [
+    range,
+  ])
 
   const data = [{ label: 'Feed' }, { label: 'Statistics' }]
 
@@ -136,6 +140,46 @@ const NFTMarketFeed = (): JSX.Element => {
     onToggle: setSelectedItem,
   }
 
+  const renderNFTCards = () => (
+    <div className='w-full'>
+      <div
+        className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
+      >
+        {mockNFTs.map(nft => (
+          <NFTCard {...nft} key={nft.id} />
+        ))}
+      </div>
+    </div>
+  )
+
+  const renderPriceRangeFilter = () => (
+    <div className='flex'>
+      <div className='flex h-full items-center justify-end'>
+        <p className='text-base font-medium px-22px text-gray-4a'>
+          Price range:
+        </p>
+        <Slider
+          min={0}
+          max={999}
+          values={range}
+          onChange={setRange}
+          formatValue={formatValue}
+          formatTooltipValue={formatValue}
+          step={1}
+          hideLabel
+        />
+      </div>
+    </div>
+  )
+
+  const renderFilters = () => (
+    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
+      {filterOptions.map(option => (
+        <Select {...option} key={option.label} className='bg-white' />
+      ))}
+    </div>
+  )
+
   return (
     <div className=''>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
@@ -143,41 +187,11 @@ const NFTMarketFeed = (): JSX.Element => {
       <div className='wrapper px-33px py-30px'>
         {/* Filters */}
         <div className='flex justify-between px-27px pb-26px'>
-          <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3.5'>
-            {filterOptions.map(option => (
-              <Select {...option} key={option.label} className='bg-white' />
-            ))}
-          </div>
-          <div className='flex'>
-            <div className='flex h-full items-center justify-end'>
-              <p className='text-base font-medium px-22px text-gray-4a'>
-                Price range:
-              </p>
-              <Slider
-                min={0}
-                max={999}
-                values={range}
-                onChange={setRange}
-                formatValue={formatValue}
-                formatTooltipValue={formatValue}
-                step={1}
-                hideLabel
-              />
-            </div>
-          </div>
+          {renderFilters()}
+          {renderPriceRangeFilter()}
         </div>
-        <div className='w-full'>
-          <div
-            className={`${styles.nftContent} overflow-y-auto overflow-x-hidden pl-27px pr-23px pb-26px grid grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-[24px] text-gray-1a`}
-          >
-            {mockNFTs.map((nft, i) => (
-              <NFTCard {...nft} key={i} />
-            ))}
-          </div>
-        </div>
+        {renderNFTCards()}
       </div>
     </div>
   )
 }
-
-export default NFTMarketFeed

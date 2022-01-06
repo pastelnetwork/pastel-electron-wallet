@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import Radio, { TRadioProps } from './index'
@@ -10,13 +10,13 @@ export default {
 
 const Template: Story<TRadioProps> = ({ ...args }: TRadioProps) => {
   const [isChecked, setIsChecked] = useState<boolean>(false)
+  const onChange = useCallback((param: boolean) => {
+    setIsChecked(param)
+  }, [])
+
   return (
     <div>
-      <Radio
-        {...args}
-        checked={isChecked}
-        onChange={param => setIsChecked(param)}
-      >
+      <Radio {...args} checked={isChecked} onChange={onChange}>
         All
       </Radio>
     </div>

@@ -91,9 +91,10 @@ export const createDatabase = async (
 
   const migrationFiles = await fs.promises.readdir(migrationsPath)
   for (const file of migrationFiles) {
+    const vFIle: string = file || ''
     const version = parseInt(file.split('-')[0])
     if (isNaN(version)) {
-      throw new Error(`Incorrect migration file name: ${file}`)
+      throw new Error(`Incorrect migration file name: ${vFIle}`)
     }
 
     if (migratedVersions.includes(version)) {
@@ -108,7 +109,7 @@ export const createDatabase = async (
     db.prepare('INSERT INTO migrations (version) VALUES ($version)').run({
       version,
     })
-    log.info(`Migration ${file} was applied`)
+    log.info(`Migration ${vFIle} was applied`)
   }
 
   return db

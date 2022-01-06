@@ -7,16 +7,18 @@ export type TProfileCardFrame = {
   editMode?: boolean
 }
 
-const ProfileCardFrame = ({
+function ProfileCardFrame({
   isEmpty,
   editMode,
-}: TProfileCardFrame): JSX.Element => {
+}: TProfileCardFrame): JSX.Element {
   return (
     <div className='bg-blue-3f h-139px rounded-t-lg relative'>
-      {!isEmpty && <img src={img_card} className='rounded-t-lg w-315px' />}
+      {!isEmpty && (
+        <img src={img_card} className='rounded-t-lg w-315px' alt='Card' />
+      )}
       {editMode && (
         <div className='flex items-center justify-center w-30px h-30px absolute right-4 top-4 bg-gray-1f opacity-50 rounded-full cursor-pointer'>
-          <img src={ico_camera} />
+          <img src={ico_camera} alt='Camera' />
         </div>
       )}
       {editMode && (

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import Component, { TSelectStepProps } from './SelectImageStep'
@@ -17,15 +17,16 @@ const Template: Story<TSelectStepProps> = () => {
     },
   })
 
+  const onClose = useCallback(() => {
+    // noop
+  }, [])
+
+  const renderContentModal = useCallback(() => <Component state={state} />, [
+    state,
+  ])
+
   return (
-    <Modal
-      open
-      onClose={() => {
-        // noop
-      }}
-      closeButton
-      render={() => <Component state={state} />}
-    />
+    <Modal open onClose={onClose} closeButton render={renderContentModal} />
   )
 }
 

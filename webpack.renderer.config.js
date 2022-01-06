@@ -1,6 +1,9 @@
 const path = require('path')
 const rules = require('./webpack.rules')
 const plugins = require('./webpack.plugins')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
 rules.push({
   test: /\.css$/,
@@ -51,10 +54,22 @@ rules.push({
 })
 
 module.exports = {
+  devServer: {
+    hot: true,
+    client: {
+      overlay: false,
+    },
+  },
   module: {
     rules,
   },
-  plugins: plugins,
+  plugins: isDevelopment
+    ? plugins.concat([
+        new ReactRefreshWebpackPlugin({
+          overlay: false,
+        }),
+      ])
+    : plugins,
   resolve: {
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css'],
     alias: {

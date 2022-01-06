@@ -3,22 +3,26 @@ import styles from './Card.module.css'
 
 type CardProps = {
   backgroundImage?: string
-  title?: string
   subTitle?: string
 }
 
-export const Card = (props: CardProps): JSX.Element => {
+export function Card(props: CardProps): JSX.Element {
   const { subTitle, backgroundImage } = props
-
+  const vBackgroundImage: string = backgroundImage || ''
   return (
     <div className={styles.cardWrap}>
       <div
         className={styles.cardContainer}
         style={{
-          backgroundImage: `url(${backgroundImage})`,
+          backgroundImage: `url(${vBackgroundImage})`,
         }}
       ></div>
       <div className={styles.cardTitle}>{subTitle}</div>
     </div>
   )
+}
+
+Card.defaultProps = {
+  backgroundImage: '',
+  subTitle: '',
 }

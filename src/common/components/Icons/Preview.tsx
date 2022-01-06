@@ -5,10 +5,10 @@ export type TPreviewIcoProps = {
   className?: string
 }
 
-export const PreviewIco = ({
+export function PreviewIco({
   size = 18,
   className = 'text-white',
-}: TPreviewIcoProps): JSX.Element => {
+}: TPreviewIcoProps): JSX.Element {
   return (
     <svg
       width={size}

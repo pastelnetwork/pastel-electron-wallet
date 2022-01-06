@@ -10,14 +10,14 @@ export type TScrollBar = {
   [x: string]: ReactNode | string | undefined
 }
 
-const Scrollbar = ({
+function Scrollbar({
   children,
   maxHeight,
   className,
   autoHide = false,
   hasPageHeader,
   ...otherProps
-}: TScrollBar): JSX.Element => {
+}: TScrollBar): JSX.Element {
   const classes = cn(
     {
       'custom-scroll': true,

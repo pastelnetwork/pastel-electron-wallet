@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import QrReader from 'react-qr-reader'
 
 import RestoreSuccess from './RestoreSuccess'
@@ -13,52 +13,65 @@ type TQRReader = {
 
 type TRestoreByCameraProps = {
   turnOffCamera?: boolean
-  onHideHeader: (status: boolean) => void
+  onHideHeader?: (status: boolean) => void
+  setPastelId?: (pastelId: string) => void
+  callback?: () => void
 }
 
 export default function RestoreByCamera({
   turnOffCamera,
   onHideHeader,
-}: TRestoreByCameraProps): JSX.Element {
+  setPastelId,
+  callback,
+}: TRestoreByCameraProps): JSX.Element | null {
   const [results, setResults] = useState<TQRReader[]>([])
   const [showQrReader, setShowQrReader] = useState(true)
   const [currentStatus, setCurrentStatus] = useState<string>('')
 
-  const handleScan = async (result: string | null) => {
-    if (result) {
-      const qr = parseQRCodeFromString(result)
-      const qrExist = results.filter(item => item.qrCode === qr?.qrCode)
-      if (!qrExist.length && qr) {
-        let data: TQRReader[] = results
-        data.push({
-          index: qr.index,
-          total: qr.total,
-          qrCode: qr.qrCode,
-        })
-        data = data.sort((a, b) => a.index - b.index)
-        setResults([...data])
-        if (data.length === data[0]?.total) {
-          try {
-            setShowQrReader(false)
-            const finalData = data.map(q => q.qrCode).join('')
-            const result = await doImportPrivKeys(finalData)
-            if (result) {
-              setCurrentStatus('done')
-            } else {
+  const handleScan = useCallback(
+    async (result: string | null) => {
+      if (result) {
+        const qr = parseQRCodeFromString(result)
+        const qrExist = results.filter(item => item.qrCode === qr?.qrCode)
+        if (!qrExist.length && qr) {
+          let data: TQRReader[] = results
+          data.push({
+            index: qr.index,
+            total: qr.total,
+            qrCode: qr.qrCode,
+          })
+          data = data.sort((a, b) => a.index - b.index)
+          setResults([...data])
+          if (data.length === data[0]?.total) {
+            try {
+              setShowQrReader(false)
+              const finalData = data.map(q => q.qrCode).join('')
+              const result = await doImportPrivKeys(finalData, setPastelId)
+              if (result) {
+                if (callback) {
+                  callback()
+                  return
+                }
+                setCurrentStatus('done')
+              } else {
+                setCurrentStatus('error')
+              }
+            } catch (err) {
               setCurrentStatus('error')
             }
-          } catch (err) {
-            setCurrentStatus('error')
+            if (onHideHeader) {
+              onHideHeader(true)
+            }
           }
-          onHideHeader(true)
         }
       }
-    }
-  }
+    },
+    [results, currentStatus],
+  )
 
-  const handleError = () => {
+  const handleError = useCallback(() => {
     setCurrentStatus('error')
-  }
+  }, [currentStatus])
 
   if (currentStatus === 'done') {
     return <RestoreSuccess />
@@ -90,7 +103,7 @@ export default function RestoreByCamera({
         </div>
       </div>
       <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
-        Holding your phone up to your computer's webcam.{' '}
+        Holding your phone up to your computer{"'"}s webcam.{' '}
         {results.length ? (
           <span>
             Restoring ... {results.length}/{results[0].total}
@@ -99,4 +112,11 @@ export default function RestoreByCamera({
       </div>
     </div>
   )
+}
+
+RestoreByCamera.defaultProps = {
+  onHideHeader: undefined,
+  setPastelId: undefined,
+  callback: undefined,
+  turnOffCamera: false,
 }

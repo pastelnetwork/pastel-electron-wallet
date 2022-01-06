@@ -5,10 +5,10 @@ export type TEliminationIcon = {
   className?: string
 }
 
-export const EliminationIcon = ({
+export function EliminationIcon({
   size = 20,
   className = 'text-gray-8e',
-}: TEliminationIcon): JSX.Element => {
+}: TEliminationIcon): JSX.Element {
   return (
     <svg
       width={size}

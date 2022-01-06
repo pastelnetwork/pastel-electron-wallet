@@ -1,5 +1,5 @@
-import React, { useState, KeyboardEvent, useEffect } from 'react'
-import Downshift from 'downshift'
+import React, { useState, KeyboardEvent, useEffect, useCallback } from 'react'
+import Downshift, { GetToggleButtonPropsOptions } from 'downshift'
 import cn from 'classnames'
 
 import { useOptions, validate, formatDisplayNumber } from './SelectAmount.utils'
@@ -66,18 +66,46 @@ export default function SelectAmount({
         value: selected.value.slice(0, -1),
       }
       setSelected(selection)
-      onChange && onChange(selection)
+      if (onChange) {
+        onChange(selection)
+      }
     }
   }
 
+  const renderCaretIcon = (
+    isOpen: boolean,
+    getToggleButtonProps: (
+      val?: GetToggleButtonPropsOptions | undefined,
+    ) => void,
+  ) => (
+    <button {...getToggleButtonProps()} className='w-10px mr-4' type='button'>
+      <Caret
+        size={10}
+        to='bottom'
+        className={cn(
+          'text-gray-b0 transition duration-200 transform',
+          isOpen && 'rotate-180',
+          disabled && 'cursor-not-allowed',
+        )}
+      />
+    </button>
+  )
+
+  const itemToString = useCallback(
+    (item: TOption | null) => (item ? item.value : ''),
+    [],
+  )
+
   return (
     <Downshift
-      onChange={selection => {
+      onChange={useCallback(selection => {
         setSelected(selection)
-        onChange && onChange(selection)
+        if (onChange) {
+          onChange(selection)
+        }
         setTyping(false)
-      }}
-      onInputValueChange={(inputValue: string, options) => {
+      }, [])}
+      onInputValueChange={useCallback((inputValue: string, options) => {
         const { type } = (options as unknown) as { type: string }
         if (inputEventTypesToIgnore.includes(type)) {
           return
@@ -90,9 +118,11 @@ export default function SelectAmount({
           value: inputValue.replaceAll(',', ''),
         }
         setSelected(selection)
-        onChange && onChange(selection)
-      }}
-      itemToString={item => (item ? item.value : '')}
+        if (onChange) {
+          onChange(selection)
+        }
+      }, [])}
+      itemToString={itemToString}
     >
       {({
         getInputProps,
@@ -128,7 +158,6 @@ export default function SelectAmount({
                 {...getToggleButtonProps()}
                 {...getInputProps()}
                 type='text'
-                role='input'
                 value={formatDisplayNumber(selected?.label).trim()}
                 onKeyUp={handleOnKeyUp}
                 className={cn(
@@ -145,22 +174,11 @@ export default function SelectAmount({
                   {label}
                 </span>
               ) : null}
-              <button {...getToggleButtonProps()} className='w-10px mr-4'>
-                <Caret
-                  size={10}
-                  to='bottom'
-                  className={cn(
-                    'text-gray-b0 transition duration-200 transform',
-                    isOpen && 'rotate-180',
-                    disabled && 'cursor-not-allowed',
-                  )}
-                />
-              </button>
+              {renderCaretIcon(isOpen, getToggleButtonProps)}
             </div>
             <ul
               {...getMenuProps()}
               className='absolute top-full left-0 min-w-full mt-px rounded-md overflow-hidden bg-white border-gray-e6 shadow-16px text-gray-35 font-medium overflow-y-auto z-100 max-h-[200px]'
-              onClick={e => e.stopPropagation()}
             >
               {isOpen
                 ? filteredOptions.map((item, index) => {
@@ -169,7 +187,7 @@ export default function SelectAmount({
 
                     return (
                       <li
-                        key={index}
+                        key={item.value}
                         {...getItemProps({
                           key: item.label,
                           item,

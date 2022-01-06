@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
@@ -8,20 +8,27 @@ export default function PasteldModal(): JSX.Element | null {
   const dispatch = useAppDispatch()
   const { pasteldModalIsOpen } = useAppSelector(state => state.utilities)
   const { info } = useAppSelector(state => state.appInfo)
+
+  const onCloseModal = useCallback(() => {
+    dispatch(closePasteldModal())
+  }, [])
+
   if (!pasteldModalIsOpen) {
     return null
   }
 
-  let height = `${info.latestBlock}`
+  let height: string = info.latestBlock?.toString() || '0'
   if (info.verificationProgress < 0.99) {
-    const progress = (info.verificationProgress * 100).toFixed(1)
+    const progress: string = (info.verificationProgress * 100).toFixed(1)
     height = `${height} (${progress}%)`
   }
+
+  const solps: string = info.solps?.toString() || ''
 
   return (
     <TitleModal
       isOpen={pasteldModalIsOpen}
-      handleClose={() => dispatch(closePasteldModal())}
+      handleClose={onCloseModal}
       classNames='max-w-[700px]'
       title='Pasteld Info'
     >
@@ -52,7 +59,7 @@ export default function PasteldModal(): JSX.Element | null {
           </div>
           <div className='flex justify-between'>
             <div>Network Solution Rate:</div>
-            <div>{`${info.solps} Sol/s`}</div>
+            <div>{`${solps} Sol/s`}</div>
           </div>
         </div>
       )}

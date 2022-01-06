@@ -1,4 +1,5 @@
 import { Database } from 'better-sqlite3'
+import '../../../common/utils/initDayjs'
 
 import { selectAllQuery } from '../constants'
 
@@ -55,7 +56,7 @@ describe('managePastelDatabase', () => {
     jest.clearAllMocks()
   })
 
-  test('the data should be added correctly to staticinfo table', async () => {
+  test('the data should be added correctly to staticinfo table', () => {
     const values = statisticInfoFactory.build()
     insertStatisticInfo(db, values)
 
@@ -64,7 +65,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to networkinfo table', async () => {
+  test('the data should be added correctly to networkinfo table', () => {
     const values = networkInfoFactory.build()
     insertNetworkInfo(db, values)
 
@@ -73,7 +74,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to nettotals table', async () => {
+  test('the data should be added correctly to nettotals table', () => {
     const values = netTotalsFactory.build()
     insertNetTotals(db, values)
 
@@ -82,7 +83,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to mempoolinfo table', async () => {
+  test('the data should be added correctly to mempoolinfo table', () => {
     const values = memPoolInfoFactory.build()
     insertMemPoolInfo(db, values)
 
@@ -91,7 +92,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to rawmempoolinfo table', async () => {
+  test('the data should be added correctly to rawmempoolinfo table', () => {
     const values = rawMemPoolFactory.build()
     insertRawMemPoolInfo(db, values)
 
@@ -100,7 +101,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to mininginfo table', async () => {
+  test('the data should be added correctly to mininginfo table', () => {
     const values = miningInfoFactory.build()
     insertMiningInfo(db, values)
 
@@ -109,7 +110,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to blockinfo table', async () => {
+  test('the data should be added correctly to blockinfo table', () => {
     const values = blockInfoFactory.build()
     insertBlockInfo(db, values)
 
@@ -118,7 +119,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to rawtransaction table', async () => {
+  test('the data should be added correctly to rawtransaction table', () => {
     const values = rawTransactionFactory.build()
     insertRawTransaction(db, values)
 
@@ -127,7 +128,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to transaction table', async () => {
+  test('the data should be added correctly to transaction table', () => {
     const values = transactionTblFactory.build()
     insertTransactionTbl(db, values)
 
@@ -136,7 +137,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to txoutsetinfo table', async () => {
+  test('the data should be added correctly to txoutsetinfo table', () => {
     const values = txOutSetInfoFactory.build()
     insertTxOutSentInfo(db, values)
 
@@ -145,7 +146,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to chaintips table', async () => {
+  test('the data should be added correctly to chaintips table', () => {
     const values = chainTipsFactory.build()
     insertChainTips(db, values)
 
@@ -154,7 +155,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to blocksubsidy table', async () => {
+  test('the data should be added correctly to blocksubsidy table', () => {
     const values = blockSubsidyFactory.build()
     insertBlockSubsidy(db, values)
 
@@ -163,7 +164,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to walletinfo table', async () => {
+  test('the data should be added correctly to walletinfo table', () => {
     const values = walletInfoFactory.build()
     insertWalletInfo(db, values)
 
@@ -172,7 +173,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to listtransactions table', async () => {
+  test('the data should be added correctly to listtransactions table', () => {
     const values = transactionsFactory.build()
     insertTransaction(db, {
       ...values,
@@ -193,7 +194,7 @@ describe('managePastelDatabase', () => {
     ])
   })
 
-  test('the data should be added correctly to listunspent table', async () => {
+  test('the data should be added correctly to listunspent table', () => {
     const values = listUnspentFactory.build()
     insertListUnspent(db, values)
 
@@ -202,7 +203,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to totalbalance table', async () => {
+  test('the data should be added correctly to totalbalance table', () => {
     const values = totalBalanceFactory.build()
     insertTotalBalance(db, values)
 
@@ -211,7 +212,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([{ ...values }])
   })
 
-  test('the data should be added correctly to listaddresses table', async () => {
+  test('the data should be added correctly to listaddresses table', () => {
     const values = listAddressFactory.build()
     insertListAddress(db, values)
 
@@ -634,7 +635,7 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([
       {
         averageSize: blockInfo.size,
-        date: dayjs(blockInfo.createdAt).format('MM/DD/YYYY'),
+        date: dayjs(blockInfo.createdAt).utc().format('MM/DD/YYYY'),
       },
     ])
 
@@ -671,12 +672,12 @@ describe('managePastelDatabase', () => {
     expect(result).toEqual([
       {
         count: 2,
-        date: dayjs().format('MM/DD/YYYY'),
+        date: dayjs().utc().format('MM/DD/YYYY'),
       },
     ])
   })
 
-  test('getTransactionsDataFromDBByPeriod should return error when table is invalid', async () => {
+  test('getTransactionsDataFromDBByPeriod should return error when table is invalid', () => {
     try {
       pastelDBLib.getTransactionsDataFromDBByPeriod(
         db,

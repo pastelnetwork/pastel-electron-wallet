@@ -13,7 +13,7 @@ const getBinPath = (fileNames: {
   darwin: string
   windows: string
 }): string => {
-  let binPath: string
+  let binPath = ''
   if (app.isPackaged) {
     binPath = process.resourcesPath
   } else {
@@ -80,3 +80,7 @@ export const pastelUtilityBinPath = getBinPath({
   darwin: 'pastel-utility-darwin-amd64',
   windows: 'pastel-utility-windows-amd64.exe',
 })
+
+export const pastelKeysPath = path.join(configDirPath, 'pastelkeys')
+
+export const tempPath = app.getPath('temp')

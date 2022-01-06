@@ -4,7 +4,7 @@ type TTextProps = {
   children: ReactNode
 }
 
-export const Title = (props: TTextProps): JSX.Element => {
+export function Title(props: TTextProps): JSX.Element {
   const { children } = props
 
   return (
@@ -14,7 +14,7 @@ export const Title = (props: TTextProps): JSX.Element => {
   )
 }
 
-export const Description = (props: TTextProps): JSX.Element => {
+export function Description(props: TTextProps): JSX.Element {
   const { children } = props
 
   return (

@@ -1,5 +1,7 @@
-import React, { useState, ReactNode, useMemo } from 'react'
+import React, { useState, ReactNode, useMemo, useCallback } from 'react'
 import cx from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
+
 import caretDown2Icon from '../../assets/icons/ico-caret-down2.svg'
 import caretUp2Icon from '../../assets/icons/ico-caret-up2.svg'
 import Checkbox from '../Checkbox/Checkbox'
@@ -40,7 +42,40 @@ export type TTableProps = {
   isLoading?: boolean
 }
 
-const Table = ({
+function TableCheckBox({
+  index,
+  row,
+  selectedRows,
+  setSelectedRows,
+  selectedRow,
+}: {
+  index: number
+  row: TRow
+  selectedRows: Array<number>
+  setSelectedRows: (val: Array<number>) => void
+  selectedRow?: (row: TRow) => void
+}): JSX.Element {
+  const handleOnCheckChange = useCallback(() => {
+    const temp = selectedRows
+    if (selectedRows.includes(index)) {
+      for (let i = 0; i < selectedRows.length; i++) {
+        if (index === temp[i]) {
+          temp.splice(i, 1)
+        }
+      }
+    } else {
+      temp.push(index)
+    }
+    setSelectedRows([...temp])
+    if (selectedRow) {
+      selectedRow(row)
+    }
+  }, [])
+
+  return <Checkbox isChecked={false} clickHandler={handleOnCheckChange} />
+}
+
+export default function Table({
   columns,
   data,
   haveHeader = true,
@@ -56,9 +91,9 @@ const Table = ({
   stickyTopClassName = 'top-0',
   extendHeaderClassName,
   isLoading,
-}: TTableProps): JSX.Element => {
-  const [sortIndex, setSortIndex] = useState(0)
-  const [sortOrder, setSortOrder] = useState(0)
+}: TTableProps): JSX.Element {
+  const [sortIndex, setSortIndex] = useState<number>(0)
+  const [sortOrder, setSortOrder] = useState<number>(0)
   const [selectedRows, setSelectedRows] = useState<Array<number>>([])
   const tableData = useMemo<TRow[]>(() => {
     if (sortOrder === 0) {
@@ -76,7 +111,7 @@ const Table = ({
 
   const setSort = (index: number) => {
     if (index === sortIndex) {
-      setSortOrder(((sortOrder + 2) % 3) - 1)
+      setSortOrder(((parseInt(sortOrder.toString(), 10) + 2) % 3) - 1)
     } else {
       setSortIndex(index)
       setSortOrder(1)
@@ -89,7 +124,10 @@ const Table = ({
         {parse(
           reactElementToJSXString(text).replace(
             new RegExp(param, 'gi'),
-            match => `<mark class='bg-blue-9b py-1'>${match}</mark>`,
+            match => {
+              const vMatch: string = match || ''
+              return `<mark class='bg-blue-9b py-1'>${vMatch}</mark>`
+            },
           ),
         )}
       </div>
@@ -121,7 +159,7 @@ const Table = ({
             ) : null}
             {columns.map((column, index) => (
               <td
-                key={index}
+                key={`${column.key}${column.name}`}
                 className={cx(
                   column.align ? 'text-' + column.align : 'text-left',
                   'sticky bg-white z-30',
@@ -136,6 +174,9 @@ const Table = ({
                     column.headerColClasses,
                   )}
                   onClick={() => setSort(index)}
+                  role='button'
+                  aria-hidden
+                  tabIndex={0}
                 >
                   {column.name}
                   <img
@@ -146,6 +187,7 @@ const Table = ({
                         ? 'invisible'
                         : (index != sortIndex || sortOrder != 1) && 'hidden',
                     )}
+                    alt='Caret'
                   />
                   <img
                     src={caretUp2Icon}
@@ -153,6 +195,7 @@ const Table = ({
                       'ml-2',
                       (index != sortIndex || sortOrder != -1) && 'hidden',
                     )}
+                    alt='Caret'
                   />
                 </div>
               </td>
@@ -168,8 +211,11 @@ const Table = ({
                 <RectangleLoader colorClass='text-gray-dd' />
               </td>
             ) : null}
-            {columns.map((column, index) => (
-              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
+            {columns.map(column => (
+              <td
+                key={column.key}
+                className={cx(column.colClasses, bodyTdClasses)}
+              >
                 <RectangleLoader colorClass='text-gray-dd' />
               </td>
             ))}
@@ -177,7 +223,7 @@ const Table = ({
         ) : null}
         {tableData.map((row: TRow, index: number) => (
           <tr
-            key={index}
+            key={uuidv4()}
             className={cx(
               bodyTrClasses,
               selectedRows.includes(index) && 'bg-blue-fa',
@@ -185,25 +231,20 @@ const Table = ({
           >
             {showCheckbox ? (
               <td className='pl-4 md:pl-30px w-5'>
-                <Checkbox
-                  isChecked={false}
-                  clickHandler={() => {
-                    const temp = selectedRows
-                    if (selectedRows.includes(index)) {
-                      for (let i = 0; i < temp.length; i++) {
-                        index === temp[i] && temp.splice(i, 1)
-                      }
-                    } else {
-                      temp.push(index)
-                    }
-                    setSelectedRows([...temp])
-                    selectedRow && selectedRow(row)
-                  }}
+                <TableCheckBox
+                  index={index}
+                  row={row}
+                  selectedRows={selectedRows}
+                  setSelectedRows={setSelectedRows}
+                  selectedRow={selectedRow}
                 />
               </td>
             ) : null}
-            {columns.map((column, index) => (
-              <td key={index} className={cx(column.colClasses, bodyTdClasses)}>
+            {columns.map(column => (
+              <td
+                key={`${column.key}-${column.name}`}
+                className={cx(column.colClasses, bodyTdClasses)}
+              >
                 {column.custom
                   ? searchKey
                     ? renderSearchKeyDiv(
@@ -223,4 +264,6 @@ const Table = ({
   )
 }
 
-export default Table
+TableCheckBox.defaultProps = {
+  selectedRow: undefined,
+}

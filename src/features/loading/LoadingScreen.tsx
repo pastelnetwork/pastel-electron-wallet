@@ -7,7 +7,17 @@ import {
 } from './LoadingScreen.service'
 import { useAppSelector } from '../../redux/hooks'
 
-export default function LoadingScreen(): JSX.Element | null {
+function LoadingMessage({ customMessage }: { customMessage?: string }) {
+  const message = useLoadingMessage()
+
+  return <span>{customMessage || message}</span>
+}
+
+export default function LoadingScreen({
+  message,
+}: {
+  message?: string
+}): JSX.Element | null {
   const error = useLoadingErrorMessage()
   const debugLogPath = useAppSelector(state => state.appInfo.debugLogPath)
 
@@ -17,7 +27,7 @@ export default function LoadingScreen(): JSX.Element | null {
         <div className={styles.loader} />
       </div>
       <div className='pt-[120px] text-center'>
-        {!error && <LoadingMessage />}
+        {!error && <LoadingMessage customMessage={message} />}
         {error && (
           <>
             <span>
@@ -45,8 +55,10 @@ export default function LoadingScreen(): JSX.Element | null {
   )
 }
 
-const LoadingMessage = () => {
-  const message = useLoadingMessage()
+LoadingScreen.defaultProps = {
+  message: '',
+}
 
-  return <span>{message}</span>
+LoadingMessage.defaultProps = {
+  customMessage: '',
 }

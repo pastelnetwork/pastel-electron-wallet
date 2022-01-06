@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from 'react-modal'
 
 import cstyles from '../../legacy/components/Common.module.css'
@@ -13,10 +13,14 @@ export default function PastelModal(): JSX.Element {
   )
   const dispatch = useAppDispatch()
 
+  const onCloseModal = useCallback(() => {
+    dispatch(closePastelModal())
+  }, [])
+
   function renderModalContent() {
     if (body && body.length > 0) {
-      return body.map((content: string, idx: number) => (
-        <p className={styles.content} key={idx}>
+      return body.map((content: string) => (
+        <p className={styles.content} key={content}>
           {content}
         </p>
       ))
@@ -28,7 +32,7 @@ export default function PastelModal(): JSX.Element {
   return (
     <Modal
       isOpen={opened}
-      onRequestClose={() => dispatch(closePastelModal())}
+      onRequestClose={onCloseModal}
       className={cstyles.modal}
       overlayClassName={cstyles.modalOverlay}
     >

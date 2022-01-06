@@ -46,7 +46,7 @@ export function QRCodeSlider({
       fadeEffect={{ crossFade: true }}
     >
       {qrcodeData.map((item, idx) => (
-        <SwiperSlide key={idx} className='d-block h-205px'>
+        <SwiperSlide key={item} className='d-block h-205px'>
           <div className='flex items-center h-205px w-205px max-w-205px mx-auto'>
             <QRCode
               value={`${idx}::${qrcodeData.length}::${item}`}
@@ -61,11 +61,11 @@ export function QRCodeSlider({
   )
 }
 
-const QR = ({
+export default function QR({
   qrcodeData,
   handleDownloadVideo,
   currentStatus,
-}: TQRProps): JSX.Element => {
+}: TQRProps): JSX.Element {
   const description = (
     <div className='max-w-330px'>
       As a more convenient way to backup your secrets, you can either click the
@@ -107,4 +107,6 @@ const QR = ({
   )
 }
 
-export default QR
+QR.defaultProps = {
+  currentStatus: '',
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 
 import Checkbox, { TCheckboxProps } from './index'
@@ -14,23 +14,15 @@ const Template: Story<TCheckboxProps> = ({
 }: TCheckboxProps) => {
   const [checked, setChecked] = useState(isChecked)
 
+  const onClickHandler = useCallback((param: boolean) => {
+    setChecked(param)
+  }, [])
+
   return (
     <div>
-      <Checkbox
-        {...args}
-        isChecked={checked}
-        clickHandler={param => {
-          setChecked(param)
-        }}
-      />
+      <Checkbox {...args} isChecked={checked} clickHandler={onClickHandler} />
       <br />
-      <Checkbox
-        {...args}
-        isChecked={checked}
-        clickHandler={param => {
-          setChecked(param)
-        }}
-      />
+      <Checkbox {...args} isChecked={checked} clickHandler={onClickHandler} />
     </div>
   )
 }

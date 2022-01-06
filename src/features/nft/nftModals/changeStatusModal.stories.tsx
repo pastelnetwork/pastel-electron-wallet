@@ -9,7 +9,7 @@ const Template: Story<TChangeStatusModal> = ({
   listedOptions,
   durationOptions,
   isOpen,
-}) => {
+}: TChangeStatusModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

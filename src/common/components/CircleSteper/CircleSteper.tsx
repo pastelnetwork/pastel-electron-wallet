@@ -49,7 +49,7 @@ const describeArc = (
   return d
 }
 
-const CircleSteper = ({
+function CircleSteper({
   size = 65,
   totalStep = 4,
   spaceAngle = 20,
@@ -57,7 +57,10 @@ const CircleSteper = ({
   stopColor1 = '#6FCF97',
   stopColor2 = '#6FCF97',
   spacing = 10,
-}: TCircleSteperProps): JSX.Element => {
+}: TCircleSteperProps): JSX.Element {
+  const vTotalStep: number = totalStep || 4
+  const vSpaceAngle: number = spaceAngle || 20
+  const vSpacing: number = spacing || 10
   const [startPoints, setStartPoints] = useState<Array<number>>([])
   useEffect(() => {
     const oneStepAngle = 360 / totalStep
@@ -67,6 +70,23 @@ const CircleSteper = ({
     }
     setStartPoints(temp)
   }, [totalStep])
+
+  const renderLinearGradient = () => (
+    <defs>
+      <linearGradient
+        id='paint0_linear'
+        x1='33'
+        y1='1'
+        x2='33'
+        y2='65'
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop stopColor={stopColor1} />
+        <stop offset='1' stopColor={stopColor2} />
+      </linearGradient>
+    </defs>
+  )
+
   return (
     <div className='relative'>
       <div className='font-extrabold text-base text-gray-4a absolute top-22px left-5'>
@@ -81,34 +101,22 @@ const CircleSteper = ({
       >
         <circle cx='33' cy='33' r='32' fill='#ECEFF3' />
         <circle cx='33' cy='33' r='26' fill='#FFFFFF' />
-        {startPoints.slice(0, currentStep).map((item, index) => (
+        {startPoints.slice(0, currentStep).map((item: number) => (
           <path
-            key={index}
+            key={item}
             d={describeArc(
               33,
               33,
               28,
               item,
-              item + 360 / totalStep - spaceAngle - spacing,
+              item + 360 / vTotalStep - vSpaceAngle - vSpacing,
             )}
             stroke='url(#paint0_linear)'
             strokeWidth={6}
             strokeLinecap='round'
           />
         ))}
-        <defs>
-          <linearGradient
-            id='paint0_linear'
-            x1='33'
-            y1='1'
-            x2='33'
-            y2='65'
-            gradientUnits='userSpaceOnUse'
-          >
-            <stop stopColor={stopColor1} />
-            <stop offset='1' stopColor={stopColor2} />
-          </linearGradient>
-        </defs>
+        {renderLinearGradient()}
       </svg>
     </div>
   )

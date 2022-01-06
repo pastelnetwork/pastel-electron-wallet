@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 import ReactDatePicker from 'react-datepicker'
 // Components
 import { Input } from '../Inputs'
@@ -34,15 +34,18 @@ type TRange = TBaseProps & {
 
 type TDatePicker = TSingle | TRange
 
-type TCustomHeader = {
-  date: Date
+type TCustomCaret = {
   decreaseMonth: () => void
   increaseMonth: () => void
   prevMonthButtonDisabled: boolean
   nextMonthButtonDisabled: boolean
 }
 
-const DatePicker = ({
+type TCustomHeader = TCustomCaret & {
+  date: Date
+}
+
+function DatePicker({
   positionFixed = true,
   label,
   selected,
@@ -56,46 +59,73 @@ const DatePicker = ({
   closeOnSelect,
   value,
   openToDate,
-}: TDatePicker): JSX.Element => {
+}: TDatePicker): JSX.Element {
   const [isOpened, setIsOpened] = useState(false)
 
-  const customHeader = ({
-    date,
+  const onCalendarClose = useCallback(() => {
+    setIsOpened(false)
+  }, [])
+
+  const onCalendarOpen = useCallback(() => {
+    setIsOpened(true)
+  }, [])
+
+  const renderCaretIcons = ({
     decreaseMonth,
     increaseMonth,
     prevMonthButtonDisabled,
     nextMonthButtonDisabled,
-  }: TCustomHeader) => (
-    <div className='flex justify-between px-4 pt-5 pb-1'>
-      <h5 className='font-extrabold text-base text-gray-4a'>
-        <span className='mr-1'>{dayjs(date).format('MMM')}</span>
-        {dayjs(date).year()}
-      </h5>
-      <div>
-        <button
-          onClick={decreaseMonth}
-          disabled={prevMonthButtonDisabled}
-          className='focus:outline-none p-1 mr-5'
-        >
-          <Caret
-            to='left'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-        <button
-          onClick={increaseMonth}
-          disabled={nextMonthButtonDisabled}
-          className='focus:outline-none p-1'
-        >
-          <Caret
-            to='right'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-      </div>
+  }: TCustomCaret) => (
+    <div>
+      <button
+        onClick={decreaseMonth}
+        disabled={prevMonthButtonDisabled}
+        className='focus:outline-none p-1 mr-5'
+        type='button'
+      >
+        <Caret
+          to='left'
+          size={12}
+          className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+        />
+      </button>
+      <button
+        onClick={increaseMonth}
+        disabled={nextMonthButtonDisabled}
+        className='focus:outline-none p-1'
+        type='button'
+      >
+        <Caret
+          to='right'
+          size={12}
+          className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+        />
+      </button>
     </div>
+  )
+
+  const customHeader = useCallback(
+    ({
+      date,
+      decreaseMonth,
+      increaseMonth,
+      prevMonthButtonDisabled,
+      nextMonthButtonDisabled,
+    }: TCustomHeader) => (
+      <div className='flex justify-between px-4 pt-5 pb-1'>
+        <h5 className='font-extrabold text-base text-gray-4a'>
+          <span className='mr-1'>{dayjs(date).format('MMM')}</span>
+          {dayjs(date).year()}
+        </h5>
+        {renderCaretIcons({
+          decreaseMonth,
+          increaseMonth,
+          prevMonthButtonDisabled,
+          nextMonthButtonDisabled,
+        })}
+      </div>
+    ),
+    [],
   )
 
   const customInput = (): JSX.Element | null => {
@@ -105,7 +135,7 @@ const DatePicker = ({
           {label}:
         </span>
       ) : (
-        <img src={CalendarIcon} />
+        <img src={CalendarIcon} alt='calender icon' />
       )
       return (
         <Input
@@ -124,7 +154,11 @@ const DatePicker = ({
         <Input
           textCenter
           appendOutside={
-            <img src={CalendarIcon} className='w-6 h-6 cursor-pointer' />
+            <img
+              src={CalendarIcon}
+              className='w-6 h-6 cursor-pointer'
+              alt='separated'
+            />
           }
         />
       )
@@ -139,8 +173,8 @@ const DatePicker = ({
       renderCustomHeader={customHeader}
       calendarClassName='date-picker'
       showPopperArrow={false}
-      onCalendarOpen={() => setIsOpened(true)}
-      onCalendarClose={() => setIsOpened(false)}
+      onCalendarOpen={onCalendarOpen}
+      onCalendarClose={onCalendarClose}
       selected={selected}
       onChange={onChange}
       placeholderText={placeholder}

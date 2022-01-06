@@ -6,16 +6,16 @@ export type TCircleAddButton = {
   className?: string
 }
 
-const CircleAddButton = ({
+function CircleAddButton({
   onClick,
   className,
-}: TCircleAddButton): JSX.Element => {
+}: TCircleAddButton): JSX.Element {
   const classes = cn(className, {
     'button-add transition duration-300 border-2 flex items-center justify-center border-button w-7 h-7 rounded-full focus:outline-none hover:border-button-hover group': true,
   })
 
   return (
-    <button onClick={onClick} className={classes}>
+    <button onClick={onClick} className={classes} type='button'>
       <svg
         className='transition duration-300 button-add-icon fill-current text-blue-3f'
         width='12'

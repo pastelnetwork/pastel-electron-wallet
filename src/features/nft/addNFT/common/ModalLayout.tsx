@@ -15,6 +15,7 @@ type TModalLayoutProps = {
   leftColumnWidth: number
   leftColumnContent: React.ReactNode
   rightColumnContent: React.ReactNode
+  titleWidth?: number
 }
 
 const stepsCount = 4
@@ -32,7 +33,15 @@ export default function CroppingStep({
   rightColumnContent,
   subtitleClassName = 'font-medium text-sm text-gray-33 opacity-50',
   titleClassName = 'text-gray-800 text-2xl font-extrabold mb-3',
+  titleWidth,
 }: TModalLayoutProps): JSX.Element {
+  const renderModalContent = () => (
+    <div>
+      <div className={titleClassName}>{title}</div>
+      <div className={subtitleClassName}>{subtitle}</div>{' '}
+    </div>
+  )
+
   return (
     <div
       className={cn(
@@ -43,14 +52,11 @@ export default function CroppingStep({
       <div
         className={cn('flex-between', titleClass)}
         style={{
-          width: `${leftColumnWidth}px`,
+          width: `${titleWidth || leftColumnWidth}px`,
         }}
       >
-        <div>
-          <div className={titleClassName}>{title}</div>
-          <div className={subtitleClassName}>{subtitle}</div>{' '}
-        </div>
-        {step && (
+        {renderModalContent()}
+        {step ? (
           <CircleSteper
             size={65}
             totalStep={stepsCount}
@@ -59,7 +65,7 @@ export default function CroppingStep({
             stopColor1='#6FCF97'
             stopColor2='#6FCF97'
           />
-        )}
+        ) : null}
       </div>
       <div className={cn('flex space-x-7 flex-grow', contentClass)}>
         <div
@@ -74,4 +80,15 @@ export default function CroppingStep({
       </div>
     </div>
   )
+}
+
+CroppingStep.defaultProps = {
+  titleClass: '',
+  titleClassName: 'text-gray-800 text-2xl font-extrabold mb-3',
+  subtitle: '',
+  subtitleClassName: 'font-medium text-sm text-gray-33 opacity-50',
+  step: 0,
+  fixedHeight: false,
+  contentClass: '',
+  rightColumnClass: '',
 }

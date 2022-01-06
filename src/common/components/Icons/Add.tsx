@@ -6,11 +6,11 @@ export type TAddIconProps = {
   strokeWidth?: number
 }
 
-export const AddIcon = ({
+export function AddIcon({
   size = 29,
   className = 'text-blue-3f',
   strokeWidth = 1.4,
-}: TAddIconProps): JSX.Element => {
+}: TAddIconProps): JSX.Element {
   return (
     <svg
       width={size}

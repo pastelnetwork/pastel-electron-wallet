@@ -1,4 +1,4 @@
-import React /*, { CSSProperties }*/ from 'react'
+import React from 'react'
 import cn from 'classnames'
 import { formatTime } from '../../common/utils/format'
 import { TChatMessageProps } from './ChatMessage'
@@ -13,25 +13,32 @@ export type TChatItemProps = {
   isActive?: boolean
 }
 
-export const ChatItem = (props: TChatItemProps): JSX.Element => {
+export function ChatItem({
+  onClick,
+  id,
+  messages,
+  isActive,
+  title,
+}: TChatItemProps): JSX.Element {
   const onClickMe = () => {
-    if (props.onClick) {
-      props.onClick(props.id)
+    if (onClick) {
+      onClick(id)
     }
   }
 
-  const lastMessage = props.messages.length
-    ? props.messages[props.messages.length - 1]
-    : null
+  const lastMessage = messages.length ? messages[messages.length - 1] : null
 
   return (
     <div
       className={cn(
         'bg-white rounded-lg my-3 py-2 px-4 flex cursor-pointer',
         styles.chatItem,
-        props.isActive ? styles.chatActive : '',
+        isActive ? styles.chatActive : '',
       )}
       onClick={onClickMe}
+      role='button'
+      aria-hidden
+      tabIndex={0}
     >
       <div className='flex items-center'>
         <UserAvatar user={lastMessage?.sender} />
@@ -41,7 +48,7 @@ export const ChatItem = (props: TChatItemProps): JSX.Element => {
           {lastMessage ? formatTime(lastMessage.date) : ''}
         </div>
         <div className='text-base text-gray-600 font-extrabold overflow-hidden overflow-ellipsis whitespace-nowrap'>
-          {props.title}
+          {title}
         </div>
         <div className='overflow-hidden overflow-ellipsis whitespace-nowrap text-sm text-gray-400 font-medium'>
           {lastMessage ? lastMessage.text : ''}

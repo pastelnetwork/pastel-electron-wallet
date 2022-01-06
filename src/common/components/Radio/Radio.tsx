@@ -1,5 +1,7 @@
 import React from 'react'
 import cn from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
+
 import './Radio.css'
 
 export type TRadioProps = {
@@ -11,9 +13,10 @@ export type TRadioProps = {
   labelClassName?: string
   checkedCircleBackgroundColor?: string
   variant?: string
+  id?: string
 }
 
-const Radio = ({
+function Radio({
   children,
   checked,
   onChange,
@@ -22,10 +25,24 @@ const Radio = ({
   labelClassName = 'ml-2 mt-2.5px',
   checkedCircleBackgroundColor = 'bg-blue-e5',
   variant,
-}: TRadioProps): JSX.Element => {
+  id,
+}: TRadioProps): JSX.Element {
+  const vId = id || uuidv4()
+  const renderInputControl = () => (
+    <input
+      type='radio'
+      className='absolute opacity-0 cursor-pointer'
+      checked={checked}
+      onChange={() => {
+        onChange(!checked)
+      }}
+      id={vId}
+    />
+  )
+
   if (variant === 'secondary') {
     return (
-      <label>
+      <label htmlFor={vId}>
         <div className='flex items-center'>
           <div
             className={cn(
@@ -36,14 +53,7 @@ const Radio = ({
                 : 'border-2 border-gray-a0 bg-white hover:border-gray-8e',
             )}
           >
-            <input
-              type='radio'
-              className='absolute opacity-0 cursor-pointer'
-              checked={checked}
-              onChange={() => {
-                onChange(!checked)
-              }}
-            />
+            {renderInputControl()}
             {checked && (
               <span
                 className={cn(smallCircleClass, 'rounded-full bg-blue-e7')}
@@ -65,7 +75,7 @@ const Radio = ({
   }
 
   return (
-    <label>
+    <label htmlFor={vId}>
       <div className='flex items-center'>
         <div
           className={cn(
@@ -76,14 +86,7 @@ const Radio = ({
               : 'border-2 border-gray-a0 bg-white hover:border-gray-8e',
           )}
         >
-          <input
-            type='radio'
-            className='absolute opacity-0 cursor-pointer'
-            checked={checked}
-            onChange={() => {
-              onChange(!checked)
-            }}
-          />
+          {renderInputControl()}
           {checked && (
             <span
               className={cn(smallCircleClass, 'rounded-full bg-blue-3f')}
@@ -105,3 +108,12 @@ const Radio = ({
 }
 
 export default Radio
+
+Radio.defaultProps = {
+  id: undefined,
+  className: 'w-5 h-5',
+  smallCircleClass: 'w-2 h-2',
+  labelClassName: 'ml-2 mt-2.5px',
+  checkedCircleBackgroundColor: 'bg-blue-e5',
+  variant: undefined,
+}

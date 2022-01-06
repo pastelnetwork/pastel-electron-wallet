@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 import Slider, { TSliderProps } from './Slider'
 
@@ -42,9 +42,11 @@ export const RangeSlider: Story<TSliderProps> = () => {
 export const FormatValues: Story<TSliderProps> = () => {
   const [value, setValue] = useState(100)
 
-  const formatValue = (value: number) => `${value}K`
-  const formatTooltipValue = (value: number) =>
-    `${Math.round(value)}k - 5000 PSL`
+  const formatValue = useCallback((value: number) => `${value}K`, [value])
+  const formatTooltipValue = useCallback(
+    (value: number) => `${Math.round(value)}k - 5000 PSL`,
+    [value],
+  )
 
   return (
     <div className='mt-10'>

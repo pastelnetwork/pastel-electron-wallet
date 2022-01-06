@@ -51,7 +51,7 @@ const filterData = (
   }
 }
 
-const LineChart = ({
+function LineChart({
   data1,
   height = 300,
   width = 600,
@@ -63,7 +63,7 @@ const LineChart = ({
   type = 'month',
   label1className = 'bg-blue-37',
   label2className = 'bg-red-ff',
-}: TChartProps): JSX.Element => {
+}: TChartProps): JSX.Element {
   useEffect(() => {
     const data: TLineChartRow[] = filterData(data1, type)
     const svg = d3
@@ -71,7 +71,14 @@ const LineChart = ({
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+      .attr(
+        'transform',
+        'translate(' +
+          margin.left.toString() +
+          ',' +
+          margin.top.toString() +
+          ')',
+      )
     const extent = []
     if (type === 'week') {
       extent.push(
@@ -101,7 +108,7 @@ const LineChart = ({
 
       svg
         .append('g')
-        .attr('transform', 'translate(0,' + height + ')')
+        .attr('transform', 'translate(0,' + height.toString() + ')')
         .call(g => {
           g.call(xAxis)
           g.select('.domain').remove()
@@ -112,9 +119,10 @@ const LineChart = ({
             .attr('dy', 15)
             .attr('class', 'text-gray-71 text-13px')
         })
-      const maxValue = d3.max(data, function (d) {
-        return +d.value
-      })
+      const maxValue: number =
+        d3.max(data, function (d) {
+          return +d.value
+        }) || 0
       if (maxValue) {
         const y = d3
           .scaleLinear()
@@ -239,9 +247,11 @@ const LineChart = ({
             const d0 = data[i - 1]
             const d1 = data[i]
             const d = +x0 - +d0.date > +d1.date - +x0 ? d1 : d0
+            const translateX: string = x(d.date).toString() || ''
+            const translateY: string = y(d.value).toString() || ''
             tooltipContainer.attr(
               'transform',
-              'translate(' + x(d.date) + ',' + y(d.value) + ')',
+              'translate(' + translateX + ',' + translateY + ')',
             )
             tooltipContainer.select('.tooltip-value').text(d.value)
           })
@@ -249,55 +259,61 @@ const LineChart = ({
     }
   }, [])
 
+  const renderLinearGradient = () => (
+    <defs>
+      <linearGradient
+        id='gradient1'
+        x1='16.5'
+        y1='0'
+        x2='16.5'
+        y2={height}
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop offset='0.29913' stopColor='#D4B9FF' />
+        <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
+      </linearGradient>
+      <linearGradient
+        id='gradient2'
+        x1='16.5'
+        y1='0'
+        x2='16.5'
+        y2={height}
+        gradientUnits='userSpaceOnUse'
+      >
+        <stop offset='0.29913' stopColor='#9FDDFF' />
+        <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
+      </linearGradient>
+    </defs>
+  )
+
+  const renderChartData = () => (
+    <div
+      className='flex justify-center mt-6'
+      style={{ width: width + margin.left + margin.right }}
+    >
+      <div className='text-gray-2d font-medium text-sm flex items-center mr-61px'>
+        <div
+          className={cn('w-2 h-2 rounded-full mr-1.5', label1className)}
+        ></div>
+        {data1Label}
+      </div>
+      {!!data2 && (
+        <div className='text-gray-2d font-medium text-sm flex items-center'>
+          <div
+            className={cn('w-2 h-2 rounded-full mr-1.5', label2className)}
+          ></div>
+          {data2Label}
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <div>
       <div>
-        <svg id='container'>
-          <defs>
-            <linearGradient
-              id='gradient1'
-              x1='16.5'
-              y1='0'
-              x2='16.5'
-              y2={height}
-              gradientUnits='userSpaceOnUse'
-            >
-              <stop offset='0.29913' stopColor='#D4B9FF' />
-              <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
-            </linearGradient>
-            <linearGradient
-              id='gradient2'
-              x1='16.5'
-              y1='0'
-              x2='16.5'
-              y2={height}
-              gradientUnits='userSpaceOnUse'
-            >
-              <stop offset='0.29913' stopColor='#9FDDFF' />
-              <stop offset='1' stopColor='#FF82AC' stopOpacity='0' />
-            </linearGradient>
-          </defs>
-        </svg>
+        <svg id='container'>{renderLinearGradient()}</svg>
       </div>
-      <div
-        className='flex justify-center mt-6'
-        style={{ width: width + margin.left + margin.right }}
-      >
-        <div className='text-gray-2d font-medium text-sm flex items-center mr-61px'>
-          <div
-            className={cn('w-2 h-2 rounded-full mr-1.5', label1className)}
-          ></div>
-          {data1Label}
-        </div>
-        {!!data2 && (
-          <div className='text-gray-2d font-medium text-sm flex items-center'>
-            <div
-              className={cn('w-2 h-2 rounded-full mr-1.5', label2className)}
-            ></div>
-            {data2Label}
-          </div>
-        )}
-      </div>
+      {renderChartData()}
     </div>
   )
 }

@@ -5,10 +5,10 @@ export type TUserProps = {
   className?: string
 }
 
-export const User: React.FC<TUserProps> = ({
+export function User({
   size = 14,
   className = 'text-gray-4a',
-}: TUserProps): JSX.Element => {
+}: TUserProps): JSX.Element {
   return (
     <svg
       width={size}

@@ -9,12 +9,13 @@ export const statisticInfoFactory = Factory.define<TDbStatisticInfo>(
       insertStatisticInfo(db, params)
       return params
     })
-
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       solutions: 1,
       difficulty: 1.2345678,
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

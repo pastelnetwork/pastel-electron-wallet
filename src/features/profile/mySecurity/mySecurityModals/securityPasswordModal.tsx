@@ -9,10 +9,10 @@ export type TSecurityPasswordModal = {
   handleClose: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const SecurityPasswordModal = ({
+export default function SecurityPasswordModal({
   isOpen,
   handleClose,
-}: TSecurityPasswordModal): JSX.Element => {
+}: TSecurityPasswordModal): JSX.Element {
   return (
     <Modal
       isOpen={isOpen}
@@ -36,5 +36,3 @@ const SecurityPasswordModal = ({
     </Modal>
   )
 }
-
-export default SecurityPasswordModal

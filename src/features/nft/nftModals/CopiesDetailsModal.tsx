@@ -1,36 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 
 export type TCopiesDetailsModal = {
   isOpen: boolean
   handleClose: () => void
-}
-
-const CopiesDetailsModal = ({
-  isOpen,
-  handleClose,
-}: TCopiesDetailsModal): JSX.Element => {
-  return (
-    <Modal
-      isOpen={isOpen}
-      handleClose={() => handleClose()}
-      size='432px'
-      title={'List of NFT copies'}
-      titleClassName='font-black text-2xl text-gray-2d mt-2'
-      infoIcon={true}
-    >
-      <div className='w-[350px]'>
-        <Table
-          columns={Columns}
-          data={tableData}
-          fixedHeader={true}
-          bodyClassName='h-401px'
-          trClassName='border-b border-gray-f2'
-        />
-      </div>
-    </Modal>
-  )
 }
 
 const Columns = [
@@ -95,5 +69,35 @@ const tableData = [
     Owner: 'Banksy123',
   },
 ]
+
+function CopiesDetailsModal({
+  isOpen,
+  handleClose,
+}: TCopiesDetailsModal): JSX.Element {
+  const onClose = useCallback(() => {
+    handleClose()
+  }, [])
+
+  return (
+    <Modal
+      isOpen={isOpen}
+      handleClose={onClose}
+      size='432px'
+      title={'List of NFT copies'}
+      titleClassName='font-black text-2xl text-gray-2d mt-2'
+      infoIcon
+    >
+      <div className='w-[350px]'>
+        <Table
+          columns={Columns}
+          data={tableData}
+          fixedHeader
+          bodyClassName='h-401px'
+          trClassName='border-b border-gray-f2'
+        />
+      </div>
+    </Modal>
+  )
+}
 
 export default CopiesDetailsModal

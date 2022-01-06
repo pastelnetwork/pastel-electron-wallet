@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react'
+import React, { useState, useEffect, createRef, useCallback, memo } from 'react'
 import { passwordStrength, IPasswordOption } from 'check-password-strength'
 import cn from 'classnames'
 
@@ -41,7 +41,30 @@ const passOptions: IPasswordOption[] = [
   },
 ]
 
-const Password = (props: TPassword): JSX.Element => {
+type TPassStrengthProps = {
+  key: string
+  value: string
+}
+
+const GenerateRandomPasswordButton = memo(
+  function GenerateRandomPasswordButton({
+    handleGenerateRandomPassword,
+  }: {
+    handleGenerateRandomPassword: () => void
+  }): JSX.Element {
+    const onClick = useCallback(() => {
+      handleGenerateRandomPassword()
+    }, [])
+
+    return (
+      <button type='button' onClick={onClick}>
+        <RefreshIcon size={18} className='text-blue-3f' />
+      </button>
+    )
+  },
+)
+
+export default function Password(props: TPassword): JSX.Element {
   const {
     newPassword,
     confirmPassword,
@@ -52,7 +75,7 @@ const Password = (props: TPassword): JSX.Element => {
 
   const [newPasswordVisible, setNewPasswordVisible] = useState(false)
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
-  const [passStrength, setPassStrength] = useState<string[]>([])
+  const [passStrength, setPassStrength] = useState<TPassStrengthProps[]>([])
   const inputRef = createRef<HTMLInputElement>()
 
   useEffect(() => {
@@ -61,59 +84,130 @@ const Password = (props: TPassword): JSX.Element => {
     }
   }, [newPassword, setPassStrength])
 
-  const handleNewVisibility = () => {
+  const handleNewVisibility = useCallback(() => {
     setNewPasswordVisible(!newPasswordVisible)
-  }
+  }, [newPasswordVisible])
 
-  const handleConfirmVisibility = () => {
+  const handleConfirmVisibility = useCallback(() => {
     setConfirmPasswordVisible(!confirmPasswordVisible)
-  }
+  }, [confirmPasswordVisible])
 
-  const checkPasswordStrength = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPass = e.target.value
-    setNewPassword(newPass)
-    const validation = passwordStrength(newPass, passOptions)
+  const checkPasswordStrength = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newPass = e.target.value
+      setNewPassword(newPass)
+      const validation = passwordStrength(newPass, passOptions)
 
-    let status = [
-      'bg-navigation opacity-20',
-      'bg-navigation opacity-20',
-      'bg-navigation opacity-20',
-      'bg-navigation opacity-20',
-    ]
-    if (validation.id === 0) {
-      status = [
-        'bg-red-fe',
-        'bg-navigation opacity-20',
-        'bg-navigation opacity-20',
-        'bg-navigation opacity-20',
+      let status = [
+        {
+          key: 'line-1',
+          value: 'bg-navigation opacity-20',
+        },
+        {
+          key: 'line-2',
+          value: 'bg-navigation opacity-20',
+        },
+        {
+          key: 'line-3',
+          value: 'bg-navigation opacity-20',
+        },
+        {
+          key: 'line-4',
+          value: 'bg-navigation opacity-20',
+        },
       ]
-    } else if (validation.id === 1) {
-      status = [
-        'bg-yellow-ff',
-        'bg-yellow-ff',
-        'bg-navigation opacity-20',
-        'bg-navigation opacity-20',
-      ]
-    } else if (validation.id === 2) {
-      status = [
-        'bg-yellow-ff',
-        'bg-yellow-ff',
-        'bg-yellow-ff',
-        'bg-navigation opacity-20',
-      ]
-    } else if (validation.id === 3) {
-      status = ['bg-success', 'bg-success', 'bg-success', 'bg-success']
-    }
+      if (validation.id === 0) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-red-fe',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-navigation opacity-20',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-navigation opacity-20',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-navigation opacity-20',
+          },
+        ]
+      } else if (validation.id === 1) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-navigation opacity-20',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-navigation opacity-20',
+          },
+        ]
+      } else if (validation.id === 2) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-yellow-ff',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-navigation opacity-20',
+          },
+        ]
+      } else if (validation.id === 3) {
+        status = [
+          {
+            key: 'line-1',
+            value: 'bg-success',
+          },
+          {
+            key: 'line-2',
+            value: 'bg-success',
+          },
+          {
+            key: 'line-3',
+            value: 'bg-success',
+          },
+          {
+            key: 'line-4',
+            value: 'bg-success',
+          },
+        ]
+      }
 
-    setPassStrength(status)
-  }
+      setPassStrength(status)
+    },
+    [passStrength],
+  )
 
-  const handleConfirmPass = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const confirmPass = e.target.value
-    setConfirmPassword(confirmPass)
-  }
+  const handleConfirmPass = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const confirmPass = e.target.value
+      setConfirmPassword(confirmPass)
+    },
+    [confirmPassword],
+  )
 
-  const handleGenerateRandomPassword = () => {
+  const handleGenerateRandomPassword = useCallback(() => {
     const newPass = randomPassword()
     setNewPassword(newPass)
 
@@ -138,7 +232,7 @@ const Password = (props: TPassword): JSX.Element => {
       setNativeValue(element, newPass)
       element.dispatchEvent(event)
     }
-  }
+  }, [])
 
   const getIconClassnames = (isRefresh: boolean) => {
     return `absolute top-3.5 cursor-pointer w-5 h-5 object-none flex justify-center items-center ${
@@ -154,6 +248,21 @@ const Password = (props: TPassword): JSX.Element => {
       hasRefresh ? 'pr-20' : 'pr-10'
     }`
   }
+
+  const renderRefreshIcon = () => (
+    <div className={getIconClassnames(true)}>
+      <Tooltip
+        width={145}
+        type='top'
+        content='Generate a new secure 12-digit password'
+        classnames='text-xs leading-4 pt-5px pb-1'
+      >
+        <GenerateRandomPasswordButton
+          handleGenerateRandomPassword={handleGenerateRandomPassword}
+        />
+      </Tooltip>
+    </div>
+  )
 
   return (
     <>
@@ -175,18 +284,7 @@ const Password = (props: TPassword): JSX.Element => {
                 className={cn('text-gray-88', getIconClassnames(false))}
               />
             </button>
-            <div className={getIconClassnames(true)}>
-              <Tooltip
-                width={145}
-                type='top'
-                content='Generate a new secure 12-digit password'
-                classnames='text-xs leading-4 pt-5px pb-1'
-              >
-                <button type='button' onClick={handleGenerateRandomPassword}>
-                  <RefreshIcon size={18} className='text-blue-3f' />
-                </button>
-              </Tooltip>
-            </div>
+            {renderRefreshIcon()}
           </>
         )}
       </div>
@@ -212,13 +310,16 @@ const Password = (props: TPassword): JSX.Element => {
       </div>
       {passStrength && (
         <div className='grid grid-cols-4 gap-1 mt-5 mb-6'>
-          {passStrength?.map((status: string, index: number) => {
-            return <div className={`${status} h-1.5 rounded`} key={index} />
+          {passStrength?.map((status: TPassStrengthProps) => {
+            return (
+              <div
+                className={`${status.value} h-1.5 rounded`}
+                key={status.key}
+              />
+            )
           })}
         </div>
       )}
     </>
   )
 }
-
-export default Password

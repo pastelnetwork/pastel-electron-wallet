@@ -69,7 +69,9 @@ export const formatDatesDistance = (from: Dayjs, to: Dayjs): string => {
     const value = to.diff(from, unit)
     to = to.subtract(value, unit)
     if (value) {
-      result.push(`${value}${unit[0]}`)
+      const val: string = value.toString() || ''
+      const vUnit: string = unit[0] || ''
+      result.push(`${val}${vUnit}`)
     }
   })
 
@@ -95,14 +97,18 @@ export const formatFileSize = (size: number, fractionDigits = 1): string => {
   } while (size > 1024)
 
   if (!i) {
-    return Math.round(size) + units[i]
+    return Math.round(size).toString() + units[i].toString()
   }
 
   return Math.max(size, 0.1).toFixed(fractionDigits) + units[i]
 }
 
-export const formatAddress = (address: string, length = 20): string => {
-  return address.substr(0, length) + '...' + address.substr(-6)
+export const formatAddress = (
+  address: string,
+  length = 20,
+  endLength = -6,
+): string => {
+  return address.substr(0, length) + '...' + address.substr(endLength)
 }
 
 export function timeAgo(date: number): string {

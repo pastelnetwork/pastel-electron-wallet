@@ -61,11 +61,7 @@ export default function SelectList({
   }
 
   return (
-    <ul
-      {...getMenuProps()}
-      className={cn(customListClassName, listClassName)}
-      onClick={e => e.stopPropagation()}
-    >
+    <ul {...getMenuProps()} className={cn(customListClassName, listClassName)}>
       {filteredOptions.map((item, index) => {
         const isSelected = selectedItem === item || highlightedIndex === index
 
@@ -87,7 +83,7 @@ export default function SelectList({
                   pos += part.length + inputValue.length
 
                   return (
-                    <React.Fragment key={i}>
+                    <React.Fragment key={`${item.value}${item.value}`}>
                       {matched && (
                         <span className={highlightClassName}>{matched}</span>
                       )}
@@ -103,6 +99,7 @@ export default function SelectList({
               index,
               item,
             })}
+            key={item.value}
             className={cn(
               'w-full py-2 px-4 text-gray-71 cursor-pointer',
               isSelected && 'bg-gray-f7',
@@ -121,4 +118,18 @@ export default function SelectList({
       )}
     </ul>
   )
+}
+
+SelectList.defaultProps = {
+  highlight: false,
+  highlightClassName: 'text-link',
+  inputValue: '',
+  append: null,
+  noOptionsText: null,
+  isLoading: false,
+  filterOptions: defaultFilterOptions,
+  customListClassName:
+    'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-96 overflow-y-auto z-40 whitespace-normal',
+  listClassName: '',
+  listItemClassName: '',
 }

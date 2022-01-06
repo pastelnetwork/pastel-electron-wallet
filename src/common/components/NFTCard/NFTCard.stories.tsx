@@ -7,6 +7,7 @@ import image from '../../../common/assets/images/nft-card-placeholder.png'
 import NFTCardComponent, { TNFTCard, NFTCardVariantSize } from './NFTCard'
 
 const mockCardProps: TNFTCard = {
+  id: '1',
   author: 'zndrson',
   avatarSrc: avatar,
   imageSrc: image,

@@ -10,28 +10,30 @@ export type TIconButton = {
   [x: string]: React.MouseEventHandler<Element> | ReactNode | string | undefined
 }
 
-export const IconButton = ({
+export function IconButton({
   children,
   className,
   type,
   hoverColor,
   activeColor,
   ...otherProps
-}: TIconButton): JSX.Element => {
+}: TIconButton): JSX.Element {
+  const strActiveColor: string = activeColor || ''
+  const strHoverColor: string = hoverColor || ''
   const classes = cn(
     {
       'flex items-center justify-center rounded-full transition text-button-text duration-300 focus:outline-none focus:shadow-btnOutline': true,
       'w-12 h-12 border-2 border-blue-3f-text hover:border-gray-300':
         type === 'border',
       'w-11 h-11 bg-white shadow-md': type === 'shadow',
-      [`hover:text-${hoverColor}`]: hoverColor,
-      [`active:text-${activeColor}`]: activeColor,
+      [`hover:text-${strHoverColor}`]: hoverColor,
+      [`active:text-${strActiveColor}`]: activeColor,
     },
     className,
   )
 
   return (
-    <button className={classes} {...otherProps}>
+    <button className={classes} {...otherProps} type='button'>
       {React.cloneElement(children as React.ReactElement, {
         className: 'fill-current w-6',
       })}

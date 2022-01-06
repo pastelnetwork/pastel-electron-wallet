@@ -20,7 +20,7 @@ enum Tabs {
   security,
 }
 
-const Profile = (): JSX.Element => {
+export default function Profile(): JSX.Element {
   const currencyName = useCurrencyName()
   const [tab, setTab] = useState(Tabs.general)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
@@ -56,6 +56,15 @@ const Profile = (): JSX.Element => {
     }
     if (!qrcodeData.length) {
       fetchData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }
   }, [])
 
@@ -103,5 +112,3 @@ const Profile = (): JSX.Element => {
     </div>
   )
 }
-
-export default Profile

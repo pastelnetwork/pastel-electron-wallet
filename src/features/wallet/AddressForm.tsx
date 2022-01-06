@@ -1,7 +1,8 @@
 import cn from 'classnames'
 import passEyeIcon from 'common/assets/icons/ico-pass-eye.svg'
+import eyeIcon from 'common/assets/icons/ico-eye.svg'
 import Tooltip from 'common/components/Tooltip'
-import React, { useState } from 'react'
+import React, { useState, useCallback, ChangeEvent, memo } from 'react'
 import { clipboard } from 'electron'
 import { formatAddress } from 'common/utils/format'
 
@@ -20,18 +21,43 @@ type TAddressFormProps = {
   hidable?: boolean
   className?: string
   hidePromoCodeEmpty?: boolean
+  startLength?: number
+  endLength?: number
 }
 
-export const AddressForm = ({
+const InputEdit = memo(function InputEdit({
+  editName,
+  setEditName,
+}: {
+  editName: string
+  setEditName: (val: string) => void
+}): JSX.Element {
+  const onChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setEditName(e.target.value)
+  }, [])
+
+  return (
+    <input
+      value={editName}
+      onChange={onChange}
+      className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
+    />
+  )
+})
+
+export function AddressForm({
   address,
-  copyable = true,
-  hidable = false,
-  hidePromoCodeEmpty = false,
+  copyable,
+  hidable,
+  hidePromoCodeEmpty,
   className,
-}: TAddressFormProps): JSX.Element => {
+  startLength,
+  endLength,
+}: TAddressFormProps): JSX.Element {
   const [edit, setEdit] = useState<string | null>(null)
   const [editName, setEditName] = useState<string>('')
   const [copyStatus, setCopyStatus] = useState<boolean>(false)
+  const [showFullAddress, setShowFullAddress] = useState<boolean>(false)
   const {
     addressBook: { addressBookMap, updateAddressBook },
     pastelPromoCode,
@@ -48,40 +74,144 @@ export const AddressForm = ({
     }, 2000)
   }
 
+  const handleShowFullAddress = useCallback(() => {
+    setShowFullAddress(!showFullAddress)
+  }, [])
+
   const promoCode = pastelPromoCode.data?.find(code => code.address === address)
 
   const addressLabel = promoCode ? promoCode.label : addressBookMap[address]
 
+  const handleClose = useCallback(() => {
+    setEdit(null)
+  }, [])
+
+  const handleSave = useCallback(() => {
+    if (edit === address) {
+      updateAddressBook({
+        address: edit,
+        label: editName,
+      })
+      setEdit(null)
+    }
+  }, [])
+
+  const handleEdit = useCallback(() => {
+    setEditName(addressLabel || '')
+    setEdit(address)
+  }, [])
+
+  const handleCopyAddress = useCallback(() => {
+    copyAddress(address)
+  }, [])
+
+  const renderShowFullAddress = () => (
+    <Tooltip
+      classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+      content={
+        !showFullAddress ? 'Show Recipient Address' : 'Hide Recipient Address'
+      }
+      width={160}
+      type='top'
+    >
+      <button
+        type='button'
+        className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+        onClick={handleShowFullAddress}
+      >
+        <img
+          alt={
+            !showFullAddress
+              ? 'Show Recipient Address'
+              : 'Hide Recipient Address'
+          }
+          className='cursor-pointer'
+          src={!showFullAddress ? eyeIcon : passEyeIcon}
+        />
+      </button>
+    </Tooltip>
+  )
+
+  const renderSaveIcon = () => {
+    if (edit !== address) {
+      return null
+    }
+
+    return (
+      <Tooltip
+        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+        content='Save Label'
+        width={130}
+        type='top'
+      >
+        <button
+          type='button'
+          className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+          onClick={handleSave}
+        >
+          <SaveIcon className='text-blue-3f' size={20} />
+        </button>
+      </Tooltip>
+    )
+  }
+
+  const renderCloseIcon = () => {
+    return (
+      <Tooltip
+        classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+        content='Close'
+        width={130}
+        type='top'
+      >
+        <button
+          type='button'
+          className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+          onClick={handleClose}
+        >
+          <Close size={16} />
+        </button>
+      </Tooltip>
+    )
+  }
+
   return (
     <div className={cn('flex xl:ml-21px items-center mr-2 md:mr-0', className)}>
       {edit === address ? (
-        <>
-          <input
-            value={editName}
-            onChange={e => {
-              setEditName(e.target.value)
-            }}
-            className='h-10 border border-link text-sm font-medium rounded px-4 ml-10px'
-          />
-        </>
+        <InputEdit editName={editName} setEditName={setEditName} />
       ) : addressLabel ? (
         <div className='w-220px md:w-[270px] pl-[10px]'>
-          <span className='text-blue-3f cursor-pointer inline-block'>
+          <span
+            className={cn(
+              'text-blue-3f cursor-pointer inline-block',
+              showFullAddress && 'break-all',
+            )}
+          >
             <Tooltip
-              autoWidth={true}
+              autoWidth
               type='top'
               width={211}
               padding={5}
-              content={address ? formatAddress(address, 24) : ''}
+              content={
+                address ? formatAddress(address, startLength, endLength) : ''
+              }
               classnames='py-2 text-gray-a0'
             >
-              {addressLabel}
+              {!showFullAddress ? addressLabel : address}
             </Tooltip>
           </span>
         </div>
       ) : (
-        <span className='w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]'>
-          {address ? formatAddress(address, 24) : ''}
+        <span
+          className={cn(
+            'w-220px md:w-[270px] text-blue-3f cursor-pointer overflow-ellipsis overflow-hidden pl-[10px]',
+            showFullAddress && 'break-all',
+          )}
+        >
+          {address
+            ? !showFullAddress
+              ? formatAddress(address, startLength, endLength)
+              : address
+            : ''}
         </span>
       )}
       {promoCode && !hidePromoCodeEmpty && (
@@ -90,44 +220,10 @@ export const AddressForm = ({
       {edit === address ? (
         <>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-25px'>
-            <Tooltip
-              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-              content='Close'
-              width={130}
-              type='top'
-            >
-              <button
-                type='button'
-                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-                onClick={() => {
-                  setEdit(null)
-                }}
-              >
-                <Close size={16} />
-              </button>
-            </Tooltip>
+            {renderCloseIcon()}
           </div>
           <div className='w-5 h-5 flex items-center ml-3 xl:ml-22px'>
-            <Tooltip
-              classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-              content='Save Label'
-              width={130}
-              type='top'
-            >
-              <button
-                type='button'
-                className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-                onClick={() => {
-                  updateAddressBook({
-                    address: edit,
-                    label: editName,
-                  })
-                  setEdit(null)
-                }}
-              >
-                <SaveIcon className='text-blue-3f' size={20} />
-              </button>
-            </Tooltip>
+            {renderSaveIcon()}
           </div>
         </>
       ) : (
@@ -141,12 +237,13 @@ export const AddressForm = ({
                   width={70}
                   type='top'
                 >
-                  <span
-                    onClick={() => copyAddress(address)}
+                  <button
+                    onClick={handleCopyAddress}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                    type='button'
                   >
                     <CheckIcon className='text-green-45' size={14} />
-                  </span>
+                  </button>
                 </Tooltip>
               ) : (
                 <Tooltip
@@ -155,12 +252,13 @@ export const AddressForm = ({
                   width={130}
                   type='top'
                 >
-                  <span
-                    onClick={() => copyAddress(address)}
+                  <button
+                    onClick={handleCopyAddress}
                     className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                    type='button'
                   >
                     <Clipboard className='cursor-pointer' size={14} />
-                  </span>
+                  </button>
                 </Tooltip>
               )}
             </div>
@@ -174,11 +272,11 @@ export const AddressForm = ({
                 type='top'
               >
                 <span
-                  onClick={() => {
-                    setEditName(addressLabel || '')
-                    setEdit(address)
-                  }}
+                  onClick={handleEdit}
                   className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'
+                  role='button'
+                  aria-hidden
+                  tabIndex={0}
                 >
                   <Pencil
                     strokeWidth={0.2}
@@ -189,22 +287,22 @@ export const AddressForm = ({
               </Tooltip>
             )}
           </div>
-          {hidable && (
+          {hidable ? (
             <div className='flex items-center ml-13px'>
-              <Tooltip
-                classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                content='Info'
-                width={100}
-                type='top'
-              >
-                <span className='inline-flex items-center cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec py-2 px-7px transition duration-300'>
-                  <img className='cursor-pointer' src={passEyeIcon} />
-                </span>
-              </Tooltip>
+              {renderShowFullAddress()}
             </div>
-          )}
+          ) : null}
         </>
       )}
     </div>
   )
+}
+
+AddressForm.defaultProps = {
+  copyable: true,
+  hidable: false,
+  hidePromoCodeEmpty: false,
+  startLength: 24,
+  endLength: -6,
+  className: '',
 }

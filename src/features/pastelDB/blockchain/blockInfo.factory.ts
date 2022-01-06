@@ -10,6 +10,8 @@ export const blockInfoFactory = Factory.define<TDbBlockInfo>(
       return params
     })
 
+    const now: number = Date.now()
+    const vSequence: number = sequence
     return {
       id: sequence,
       hash: '',
@@ -30,7 +32,7 @@ export const blockInfoFactory = Factory.define<TDbBlockInfo>(
       valuePools: '',
       previousblockhash: '',
       nextblockhash: '',
-      createdAt: Date.now() + sequence,
+      createdAt: now + vSequence,
     }
   },
 )

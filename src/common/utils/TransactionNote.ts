@@ -52,7 +52,8 @@ export const readTransaction = async (): Promise<TTransactionNote[]> => {
 
     return []
   } catch (err) {
-    log.error(`common/utils/transaction readTransaction error: ${err}`, err)
+    const message: string = err.message || ''
+    log.error(`common/utils/transaction readTransaction error: ${message}`, err)
     return []
   }
 }
@@ -66,8 +67,9 @@ export const saveTransactionNote = async (
     await writeTransaction(newTransactionList)
     return newTransactionList
   } catch (err) {
+    const message: string = err.message || ''
     log.error(
-      `common/utils/transaction importTransaction error: ${err.message}`,
+      `common/utils/transaction importTransaction error: ${message}`,
       err,
     )
     throw err

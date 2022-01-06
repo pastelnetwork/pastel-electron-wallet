@@ -34,20 +34,6 @@ type TRpcTransaction = Omit<
   'address'
 > & { address?: string }
 
-export function insertTransactions(
-  db: Database,
-  transactions: TRpcTransaction[],
-): void {
-  const stmt = db.prepare(insertQuery)
-  for (let i = 0; i < transactions.length; i++) {
-    const transaction = transactions[i]
-    if (transaction.blockhash === undefined) {
-      transaction.blockhash = ''
-    }
-    insertTransaction(db, transaction, stmt)
-  }
-}
-
 // ignoring duplicates for txid and vout
 const insertQuery = `INSERT OR IGNORE INTO transactions(
   account,
@@ -89,6 +75,8 @@ const insertQuery = `INSERT OR IGNORE INTO transactions(
   $createdAt
 )`
 
+type TAddressesLastActivityTime = Record<TAddress, number>
+
 export function insertTransaction(
   db: Database,
   transaction: TRpcTransaction,
@@ -96,9 +84,11 @@ export function insertTransaction(
 ): void {
   stmt.run({
     ...transaction,
-    fee: transaction.blockindex ?? 0,
-    blockindex: transaction.blockindex ?? 0,
-    blockhash: transaction.blockhash ?? '',
+    blockhash: transaction.blockhash ?? null,
+    blockindex: transaction.blockindex ?? null,
+    blocktime: transaction.blocktime ?? null,
+    expiryheight: transaction.expiryheight ?? null,
+    fee: transaction.fee ?? null,
     address: transaction.address ?? null,
     walletconflicts: JSON.stringify(transaction.walletconflicts),
     vjoinsplit: JSON.stringify(transaction.vjoinsplit),
@@ -106,7 +96,19 @@ export function insertTransaction(
   })
 }
 
-type TAddressesLastActivityTime = Record<TAddress, number>
+export function insertTransactions(
+  db: Database,
+  transactions: TRpcTransaction[],
+): void {
+  const stmt = db.prepare(insertQuery)
+  for (let i = 0; i < transactions.length; i++) {
+    const transaction = transactions[i]
+    if (transaction.blockhash === undefined) {
+      transaction.blockhash = ''
+    }
+    insertTransaction(db, transaction, stmt)
+  }
+}
 
 export const getAddressesLastActivityTime = (
   db: Database,

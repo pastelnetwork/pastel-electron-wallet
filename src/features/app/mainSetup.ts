@@ -22,6 +22,8 @@ import {
   pastelWalletDirPath,
   sentTxStorePath,
   sqliteFilePath,
+  pastelKeysPath,
+  tempPath,
 } from './paths'
 import initServeStatic, { closeServeStatic } from '../serveStatic'
 import { setupOptimizeImageHandler } from '../nft/addNFT/imageOptimization/ImageOptimization.main'
@@ -30,97 +32,61 @@ import { readRpcConfig } from '../rpcConfig'
 import { ignorePromiseError } from '../../common/utils/promises'
 import { TRPCConfig } from '../../api/pastel-rpc'
 
-export const mainSetup = async (): Promise<void> => {
-  setupDeepLinking()
-  enableDevTools()
-  enableSourceMapSupport()
-  enableElectronDebug()
-  setupEventListeners()
-  setupAutoUpdater()
-  setupOptimizeImageHandler()
-  setupLogs()
+let waitingForClose = false
+let proceedToClose = false
 
-  app.whenReady().then(setupWindow)
-}
-
-const setupWindow = async () => {
-  createWindow(onWindowClose)
-}
-
-let rpcConfig: TRPCConfig | undefined
-
-onMainEvent('rendererStarted', () => {
-  // We have to pass isPackaged and app paths via IPC because electron `remote` api is deprecated
-  sendEventToRenderer('setAppInfo', {
-    isPackaged: app.isPackaged,
-    appVersion: app.getVersion(),
-    sentTxStorePath,
-    debugLogPath,
-    pastelWalletDirPath,
-    sqliteFilePath,
-    migrationsPath,
-  })
-
-  // in case of page reload we already have rpcConfig and no need to launch wallet node again
-  if (rpcConfig) {
-    sendEventToRenderer('setRpcConfig', {
-      rpcConfig,
-    })
+export const onWindowClose = async (event: Event): Promise<void> => {
+  // If we are clear to close, then return and allow everything to close
+  if (proceedToClose) {
+    log.warn('proceed to close, so closing')
     return
   }
 
-  initServeStatic()
-  retriableAppSetup()
-})
-
-export const retriableAppSetup = async (): Promise<void> => {
-  try {
-    await startWalletNode()
-    rpcConfig = await readRpcConfig(pastelConfigFilePath)
-
-    sendEventToRenderer('setRpcConfig', {
-      rpcConfig,
-    })
-    redirectDeepLinkingUrl()
-  } catch (error) {
-    sendEventToRenderer('appLoadingFailed', { error: error.message })
-    log.error(error)
+  // If we're already waiting for close, then don't allow another close event to actually close the window
+  if (waitingForClose) {
+    log.warn('Waiting for close... Timeout in 10s')
+    event.preventDefault()
+    return
   }
+
+  waitingForClose = true
+  event.preventDefault()
+
+  closeServeStatic()
+
+  sendEventToRenderer('prepareToQuit', null)
+
+  // Failsafe, timeout after 10 seconds
+  setTimeout(() => {
+    waitingForClose = false
+    proceedToClose = true
+    log.warn('Timeout, quitting')
+    app.quit()
+  }, 10 * 1000)
+
+  await mainEventPromise('rendererIsReadyForQuit')
+  await ignorePromiseError(stopWalletNode())
+
+  waitingForClose = false
+  proceedToClose = true
+  app.quit()
 }
 
-onMainEvent('retryInitializingApp', retriableAppSetup)
-
-const setupLogs = () => {
-  if (app.isPackaged) {
-    log.transports.file.level = 'info'
-    log.transports.console.level = false
+const setupWindow = () => {
+  const windowClose = (event: Event) => {
+    onWindowClose(event)
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }
-}
 
-const enableDevTools = () => {
-  // Enable dev tools
-  if (!app.isPackaged) {
-    app.whenReady().then(() => {
-      installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-        .then((name: string) => console.warn(`Added Extension:  ${name}`))
-        .catch((err: Error) => console.warn('An error occurred: ', err))
-    })
-  }
-}
-
-const enableSourceMapSupport = () => {
-  if (process.env.NODE_ENV === 'production') {
-    sourceMapSupport.install()
-  }
-}
-
-const enableElectronDebug = () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
-    electronDebug()
-  }
+  createWindow(windowClose)
 }
 
 const setupEventListeners = () => {
@@ -156,46 +122,128 @@ const setupEventListeners = () => {
   })
 }
 
-let waitingForClose = false
-let proceedToClose = false
+const setupLogs = () => {
+  if (app.isPackaged) {
+    log.transports.file.level = 'info'
+    log.transports.console.level = false
+  }
+}
+
+const enableDevTools = () => {
+  // Enable dev tools
+  if (!app.isPackaged) {
+    app.whenReady().then(() => {
+      installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
+        .then((name: string) => log.warn(`Added Extension:  ${name}`))
+        .catch((err: Error) => log.warn('An error occurred: ', err))
+    })
+  }
+}
+
+const enableSourceMapSupport = () => {
+  if (process.env.NODE_ENV === 'production') {
+    sourceMapSupport.install()
+  }
+}
+
+const enableElectronDebug = () => {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.DEBUG_PROD === 'true'
+  ) {
+    electronDebug()
+  }
+}
 
 export const resetWindowCloseFlags = (): void => {
   waitingForClose = proceedToClose = false
 }
 
-export const onWindowClose = async (event: Event): Promise<void> => {
-  // If we are clear to close, then return and allow everything to close
-  if (proceedToClose) {
-    console.warn('proceed to close, so closing')
-    return
-  }
+export const mainSetup = (): void => {
+  setupDeepLinking()
+  enableDevTools()
+  enableSourceMapSupport()
+  enableElectronDebug()
+  setupEventListeners()
+  setupAutoUpdater()
+  setupOptimizeImageHandler()
+  setupLogs()
 
-  // If we're already waiting for close, then don't allow another close event to actually close the window
-  if (waitingForClose) {
-    console.warn('Waiting for close... Timeout in 10s')
-    event.preventDefault()
-    return
-  }
-
-  waitingForClose = true
-  event.preventDefault()
-
-  closeServeStatic()
-
-  sendEventToRenderer('prepareToQuit', null)
-
-  // Failsafe, timeout after 10 seconds
-  setTimeout(() => {
-    waitingForClose = false
-    proceedToClose = true
-    console.warn('Timeout, quitting')
-    app.quit()
-  }, 10 * 1000)
-
-  await mainEventPromise('rendererIsReadyForQuit')
-  await ignorePromiseError(stopWalletNode())
-
-  waitingForClose = false
-  proceedToClose = true
-  app.quit()
+  app
+    .whenReady()
+    .then(setupWindow)
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
 }
+
+let rpcConfig: TRPCConfig | undefined = undefined
+
+export const retriableAppSetup = async (): Promise<void> => {
+  try {
+    sendEventToRenderer('appLoadingFailed', { error: '' })
+    await startWalletNode()
+    rpcConfig = await readRpcConfig(pastelConfigFilePath)
+
+    sendEventToRenderer('setRpcConfig', {
+      rpcConfig,
+    })
+    redirectDeepLinkingUrl()
+  } catch (error) {
+    sendEventToRenderer('appLoadingFailed', { error: error.message })
+    log.error(error)
+  }
+}
+
+onMainEvent('rendererStarted', () => {
+  // We have to pass isPackaged and app paths via IPC because electron `remote` api is deprecated
+  sendEventToRenderer('setAppInfo', {
+    isPackaged: app.isPackaged,
+    appVersion: app.getVersion(),
+    sentTxStorePath,
+    debugLogPath,
+    pastelWalletDirPath,
+    sqliteFilePath,
+    migrationsPath,
+    pastelKeysPath,
+    tempPath,
+  })
+
+  // in case of page reload we already have rpcConfig and no need to launch wallet node again
+  if (rpcConfig) {
+    sendEventToRenderer('setRpcConfig', {
+      rpcConfig,
+    })
+    return
+  }
+
+  initServeStatic()
+  retriableAppSetup()
+    .then(() => {
+      // noop
+    })
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
+})
+
+const onRetriableAppSetup = () => {
+  retriableAppSetup()
+    .then(() => {
+      // noop
+    })
+    .catch(() => {
+      // noop
+    })
+    .finally(() => {
+      // noop
+    })
+}
+
+onMainEvent('retryInitializingApp', onRetriableAppSetup)

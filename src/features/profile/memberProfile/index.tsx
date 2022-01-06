@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, memo } from 'react'
 import ProfileCard from '../components/ProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
 import ProfileGeneral from '../components/ProfileGeneral'
@@ -18,7 +18,34 @@ const profile_data = {
   },
 }
 
-const Profile = (): JSX.Element => {
+const ProfileHeader = memo(function ProfileHeader({
+  tab,
+  onTabToggle,
+}: {
+  tab: number
+  onTabToggle: (val: number) => void
+}): JSX.Element {
+  const onToggle = useCallback((index: number) => {
+    onTabToggle(index)
+  }, [])
+
+  return (
+    <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
+      <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
+      <MultiToggleSwitch
+        data={[
+          { label: 'General' },
+          { label: 'Portfolio' },
+          { label: 'Board' },
+        ]}
+        activeIndex={tab}
+        onToggle={onToggle}
+      />
+    </div>
+  )
+})
+
+function Profile(): JSX.Element {
   const currencyName = useCurrencyName()
   const [tab, setTab] = useState(0)
 
@@ -36,43 +63,37 @@ const Profile = (): JSX.Element => {
       'I’m baby readymade mikshk tatooed actually activated charcoal godard listicle. Mumblecore cronut kickstarter, bushwick wolf copper mug woke chia put a bird on it viral gentrify keytar synth. Twee chartreuse etsy, +1 dreamcatcher lumbersexual before they sold out drinking vinegar pinterest mumblecore tousled occupy brunch whatever ugh.',
   }
 
-  const onTabToggle = (index: number) => {
+  const onTabToggle = useCallback((index: number) => {
     setTab(index)
-  }
+  }, [])
+
+  const renderProfileContent = () => (
+    <div className='flex flex-col flex-grow pl-8'>
+      <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
+        <ProfileGeneral {...general_data} />
+        <ProfileRelations />
+      </div>
+    </div>
+  )
+
+  const renderProfileCard = () => (
+    <div className='flex flex-col items-center lg:justify-between'>
+      <ProfileCard {...profile_data} isMyProfile />
+      <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
+        Member Since May 15, 2021
+      </div>
+    </div>
+  )
 
   return (
-    <div>
-      <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
-        <div className='bg-white'>
-          <div className='wrapper flex h-100px items-center bg-white px-60px pt-0'>
-            <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
-            <MultiToggleSwitch
-              data={[
-                { label: 'General' },
-                { label: 'Portfolio' },
-                { label: 'Board' },
-              ]}
-              activeIndex={tab}
-              onToggle={onTabToggle}
-            />
-          </div>
-        </div>
-        <div className='wrapper flex py-8 px-60px'>
-          <div className='flex w-full'>
-            <div className='flex flex-col items-center lg:justify-between'>
-              <ProfileCard {...profile_data} isMyProfile={true} />
-              <div className='text-gray-400 text-sm mt-24 lg:mt-0'>
-                Member Since May 15, 2021
-              </div>
-            </div>
-            <div className='flex flex-col flex-grow pl-8'>
-              {/* <ProfileTabs /> */}
-              <div className='flex justify-between flex-col lg:flex-col xl:flex-row'>
-                <ProfileGeneral {...general_data} />
-                <ProfileRelations />
-              </div>
-            </div>
-          </div>
+    <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
+      <div className='bg-white'>
+        <ProfileHeader tab={tab} onTabToggle={onTabToggle} />
+      </div>
+      <div className='wrapper flex py-8 px-60px'>
+        <div className='flex w-full'>
+          {renderProfileCard()}
+          {renderProfileContent()}
         </div>
       </div>
     </div>

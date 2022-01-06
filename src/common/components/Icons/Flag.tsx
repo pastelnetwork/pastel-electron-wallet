@@ -5,11 +5,11 @@ export type TFlagProps = TIconProps & {
   variant?: 'fill' | 'stroke'
 }
 
-export const Flag = ({
+export function Flag({
   size,
   className,
   variant = 'fill',
-}: TFlagProps): JSX.Element => {
+}: TFlagProps): JSX.Element {
   return (
     <div className={className}>
       {variant === 'fill' ? (

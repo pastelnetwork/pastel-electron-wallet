@@ -56,8 +56,9 @@ export const readPastelPromoCode = async (): Promise<TPastelPromoCode[]> => {
 
     return []
   } catch (err) {
+    const message: string = err.message || ''
     log.error(
-      `common/utils/PastelPromoCode readPastelPromoCode error: ${err}`,
+      `common/utils/PastelPromoCode readPastelPromoCode error: ${message}`,
       err,
     )
     return []
@@ -72,25 +73,32 @@ export const useReadPastelPromoCode = (): UseQueryResult<
 
 export const importPastelPromoCode = async (
   pastelPromoCode: string,
+  isNotSave?: boolean,
 ): Promise<string | null> => {
   try {
     const walletRPC = new WalletRPC()
     const address = await walletRPC.importPrivKey(pastelPromoCode, true)
-    const currentPromoCodeList = await readPastelPromoCode()
-    const promoCode = currentPromoCodeList.filter(pc => pc.address === address)
+    if (!isNotSave) {
+      const currentPromoCodeList = await readPastelPromoCode()
+      const alreadySaved = currentPromoCodeList.some(
+        pc => pc.address === address,
+      )
 
-    if (promoCode.length < 1) {
-      const newPromoCode = currentPromoCodeList.concat({
-        label: `Pastel Promo Code ${dayjs().format('MM/DD/YYYY-HH:mm')}`,
-        address,
-      })
-      await writePastelPromoCode(newPromoCode)
+      if (!alreadySaved) {
+        const newDate: string = dayjs().format('MM/DD/YYYY-HH:mm') || ''
+        const newPromoCode = currentPromoCodeList.concat({
+          label: `Pastel Promo Code ${newDate}`,
+          address,
+        })
+        await writePastelPromoCode(newPromoCode)
+      }
     }
     return address
   } catch (err) {
-    toast(err.message, { type: 'error' })
+    const message: string = err.message || ''
+    toast(message, { type: 'error' })
     log.error(
-      `common/utils/PastelPromoCode importPastelPromoCode error: ${err.message}`,
+      `common/utils/PastelPromoCode importPastelPromoCode error: ${message}`,
       err,
     )
     return null

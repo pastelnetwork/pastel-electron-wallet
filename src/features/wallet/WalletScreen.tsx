@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, memo } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { walletRPC, transactionRPC } from 'api/pastel-rpc'
+import {
+  useTAddresses,
+  useTAddressBalances,
+  useZAddresses,
+  useZAddressBalances,
+  useTotalBalance,
+  walletRPC,
+  transactionRPC,
+} from 'api/pastel-rpc'
 import { TPaymentSources, TDate } from './walletScreen.types'
 import { useAddressBook } from 'common/hooks'
 import Alert from 'common/components/Alert'
@@ -37,12 +45,299 @@ export type TSelectionPslProps = {
   date: number
 }
 
+function CreatePaymentButton({
+  setPaymentModalOpen,
+}: {
+  setPaymentModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleClick = useCallback(() => {
+    setPaymentModalOpen(true)
+  }, [])
+
+  return (
+    <Button
+      onClick={handleClick}
+      className='ml-30px w-[190px] px-0'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center ml-5'>
+        <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
+        <div className='ml-2 text-white text-h5-heavy'>Create a payment</div>
+      </div>
+    </Button>
+  )
+}
+
+function PastelPromoCodeButton({
+  setAddPastelPromoCodeModalOpen,
+}: {
+  setAddPastelPromoCodeModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleClick = useCallback(() => {
+    setAddPastelPromoCodeModalOpen(true)
+  }, [])
+
+  return (
+    <Button
+      onClick={handleClick}
+      variant='secondary'
+      className='w-[240px] px-0'
+      childrenClassName='w-full'
+    >
+      <div className='flex items-center ml-5'>
+        <div className='text-blue-3f text-h5-medium'>+</div>{' '}
+        <div className='ml-2 text-blue-3f text-h5-medium'>
+          Add Pastel Promo Code
+        </div>
+      </div>
+    </Button>
+  )
+}
+
+function AddNewAddressButton({
+  onCreateNewAddress,
+  isLoading,
+}: {
+  onCreateNewAddress: () => void
+  isLoading: boolean
+}): JSX.Element {
+  const currencyName = useCurrencyName()
+
+  const handleClick = useCallback(() => {
+    onCreateNewAddress()
+  }, [])
+
+  return (
+    <Button
+      variant='secondary'
+      className='w-[264px] ml-30px px-0'
+      childrenClassName='w-full'
+      onClick={handleClick}
+      disabled={isLoading}
+    >
+      <div className='flex items-center ml-[19px]'>
+        <ElectricityIcon size={11} className='text-blue-3f py-3' />
+        <div className='ml-11px text-blue-3f text-h5-medium'>
+          Generate a new {currencyName} Address
+        </div>
+      </div>
+    </Button>
+  )
+}
+
+const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
+  const location = useLocation()
+  const currencyName = useCurrencyName()
+  const {
+    activePeriod,
+    setActivePeriod,
+    setTransactionHistoryModalOpen,
+    totalBalances,
+    allAddresses,
+    setPaymentModalOpen,
+    setAddPastelPromoCodeModalOpen,
+    activeTab,
+    tAddresses,
+    zAddresses,
+    setExportKeysModalOpen,
+    setCurrentAddress,
+    setNewAddress,
+    selectedDate,
+    setSelectedDate,
+  } = useWalletScreenContext()
+  const [isLoading, setLoading] = useState(false)
+  const [filterTransactions, setFilterTransactions] = useState({
+    week: 0,
+    month: 0,
+    year: 0,
+  })
+  const [date, setDate] = useState<Date[]>([])
+
+  const createNewAddress = useCallback(async () => {
+    setLoading(true)
+    const isZAddress = activeTab === 2
+    const result = await walletRPC.createNewAddress(isZAddress)
+    if (result) {
+      if (isZAddress) {
+        zAddresses.refetch()
+      } else {
+        tAddresses.refetch()
+      }
+      setCurrentAddress(result)
+      setExportKeysModalOpen(true)
+      setNewAddress(true)
+    }
+    setLoading(false)
+  }, [])
+
+  useEffect(() => {
+    if (location.state) {
+      setPaymentModalOpen(true)
+    }
+  }, [location])
+
+  useEffect(() => {
+    const getTransaction = async () => {
+      const trans = await transactionRPC.fetchTAndZTransactions()
+      const dayOfWeek = dayjs()
+        .add(-7, 'day')
+        .set('hour', 0)
+        .set('minute', 0)
+        .set('second', 0)
+      const dayOfMonth = dayjs()
+        .add(-30, 'day')
+        .set('hour', 0)
+        .set('minute', 0)
+        .set('second', 0)
+      const dayOfYear = dayjs()
+        .add(-365, 'day')
+        .set('hour', 0)
+        .set('minute', 0)
+        .set('second', 0)
+      setDate([dayOfWeek.toDate(), dayOfMonth.toDate(), dayOfYear.toDate()])
+      setFilterTransactions({
+        week: trans.filter(
+          t =>
+            dayjs.unix(parseInt(t.time?.toString())).valueOf() >=
+            dayOfWeek.valueOf(),
+        ).length,
+        month: trans.filter(
+          t =>
+            dayjs.unix(parseInt(t.time?.toString())).valueOf() >=
+            dayOfMonth.valueOf(),
+        ).length,
+        year: trans.filter(
+          t =>
+            dayjs.unix(parseInt(t.time?.toString())).valueOf() >=
+            dayOfYear.valueOf(),
+        ).length,
+      })
+
+      setSelectedDate({
+        ...selectedDate,
+        start: dayOfWeek.toDate(),
+      })
+    }
+
+    getTransaction()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  }, [])
+
+  const onTabToggle = useCallback((index: number) => {
+    setActivePeriod(index)
+    setSelectedDate({
+      ...selectedDate,
+      start: date[index],
+    })
+  }, [])
+
+  const handleShowTransactionHistoryModal = useCallback(() => {
+    setTransactionHistoryModalOpen(true)
+  }, [])
+
+  const renderWalletHeader = () => {
+    return (
+      <>
+        <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
+          <div className='mr-8 text-gray-1a text-h1-heavy'>
+            {currencyName} Wallet
+          </div>
+          <MultiToggleSwitch
+            data={[
+              { label: 'Week', count: filterTransactions.week },
+              { label: 'Month', count: filterTransactions.month },
+              { label: 'Year', count: filterTransactions.year },
+            ]}
+            activeIndex={activePeriod}
+            onToggle={onTabToggle}
+            itemActiveClassName='bg-gray-4a rounded-full text-white'
+            countInactiveClassName='bg-warning-hover font-extrabold'
+            showEmpty
+          />
+        </div>
+        <div
+          className='flex cursor-pointer'
+          onClick={handleShowTransactionHistoryModal}
+          role='button'
+          aria-hidden
+          tabIndex={0}
+        >
+          <Clock size={18} className='text-blue-3f' />
+          <div className='ml-3.5 text-blue-3f text-h4-leading-22'>
+            Transaction history
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  const renderEmptyContentBlock = () => {
+    return totalBalances.data?.total && totalBalances.data?.total <= 0 ? (
+      <Alert variant='warning' className='mt-7 relative' showClose onShowing>
+        <strong className='font-bold'>Warning! </strong>
+        <span className='block sm:inline'>
+          Your total balance is empty now.
+        </span>
+      </Alert>
+    ) : null
+  }
+
+  const renderWalletScreenBody = () => (
+    <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
+      <BalanceCards />
+      {renderEmptyContentBlock()}
+      <WalletAddresses />
+      <div className='flex justify-end mt-5 pb-[30px]'>
+        <PastelPromoCodeButton
+          setAddPastelPromoCodeModalOpen={setAddPastelPromoCodeModalOpen}
+        />
+        {allAddresses.data?.length ? (
+          <AddNewAddressButton
+            onCreateNewAddress={createNewAddress}
+            isLoading={isLoading}
+          />
+        ) : null}
+        <CreatePaymentButton setPaymentModalOpen={setPaymentModalOpen} />
+      </div>
+    </div>
+  )
+
+  return (
+    <div>
+      <Breadcrumbs
+        breadcrumbs={[
+          {
+            label: 'Wallet',
+            route: ROUTES.WALLET,
+          },
+          {
+            label: 'Transparent',
+          },
+        ]}
+      />
+      <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
+        {renderWalletHeader()}
+      </div>
+      {renderWalletScreenBody()}
+      <Modals />
+    </div>
+  )
+})
+
 export default function WalletScreen(): JSX.Element {
-  const tAddressesOriginal = walletRPC.useTAddresses()
-  const tAddressAmounts = walletRPC.useTAddressBalances()
-  const zAddressesOriginal = walletRPC.useZAddresses()
-  const zAddressAmounts = walletRPC.useZAddressBalances()
-  const totalBalances = walletRPC.useTotalBalance()
+  const tAddressesOriginal = useTAddresses()
+  const tAddressAmounts = useTAddressBalances()
+  const zAddressesOriginal = useZAddresses()
+  const zAddressAmounts = useZAddressBalances()
+  const totalBalances = useTotalBalance()
   const addressBook = useAddressBook()
   const lastActivityTimes = useAddressesLastActivityTime()
   const [isNewAddress, setNewAddress] = useToggle(false)
@@ -149,222 +444,5 @@ export default function WalletScreen(): JSX.Element {
     <WalletScreenContext.Provider value={values}>
       <WalletScreenContent />
     </WalletScreenContext.Provider>
-  )
-}
-
-const WalletScreenContent = (): JSX.Element => {
-  const location = useLocation()
-  const currencyName = useCurrencyName()
-  const {
-    activePeriod,
-    setActivePeriod,
-    setTransactionHistoryModalOpen,
-    totalBalances,
-    allAddresses,
-    setPaymentModalOpen,
-    setAddPastelPromoCodeModalOpen,
-    activeTab,
-    tAddresses,
-    zAddresses,
-    setExportKeysModalOpen,
-    setCurrentAddress,
-    setNewAddress,
-    selectedDate,
-    setSelectedDate,
-  } = useWalletScreenContext()
-  const [isLoading, setLoading] = useState(false)
-  const [filterTransactions, setFilterTransactions] = useState({
-    week: 0,
-    month: 0,
-    year: 0,
-  })
-  const [date, setDate] = useState<Date[]>([])
-
-  const createNewAddress = async () => {
-    setLoading(true)
-    const isZAddress = activeTab === 2
-    const result = await walletRPC.createNewAddress(isZAddress)
-    if (result) {
-      if (isZAddress) {
-        zAddresses.refetch()
-      } else {
-        tAddresses.refetch()
-      }
-      setCurrentAddress(result)
-      setExportKeysModalOpen(true)
-      setNewAddress(true)
-    }
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    if (location.state) {
-      setPaymentModalOpen(true)
-    }
-  }, [location])
-
-  useEffect(() => {
-    const getTransaction = async () => {
-      const trans = await transactionRPC.fetchTAndZTransactions()
-      const dayOfWeek = dayjs()
-        .add(-7, 'day')
-        .set('hour', 0)
-        .set('minute', 0)
-        .set('second', 0)
-      const dayOfMonth = dayjs()
-        .add(-30, 'day')
-        .set('hour', 0)
-        .set('minute', 0)
-        .set('second', 0)
-      const dayOfYear = dayjs()
-        .add(-365, 'day')
-        .set('hour', 0)
-        .set('minute', 0)
-        .set('second', 0)
-      setDate([dayOfWeek.toDate(), dayOfMonth.toDate(), dayOfYear.toDate()])
-      setFilterTransactions({
-        week: trans.filter(
-          t =>
-            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
-            dayOfWeek.valueOf(),
-        ).length,
-        month: trans.filter(
-          t =>
-            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
-            dayOfMonth.valueOf(),
-        ).length,
-        year: trans.filter(
-          t =>
-            dayjs.unix(parseInt(t.time.toString())).valueOf() >=
-            dayOfYear.valueOf(),
-        ).length,
-      })
-
-      setSelectedDate({
-        ...selectedDate,
-        start: dayOfWeek.toDate(),
-      })
-    }
-
-    getTransaction()
-  }, [])
-
-  const onTabToggle = (index: number) => {
-    setActivePeriod(index)
-    setSelectedDate({
-      ...selectedDate,
-      start: date[index],
-    })
-  }
-
-  return (
-    <div>
-      <Breadcrumbs
-        breadcrumbs={[
-          {
-            label: 'Wallet',
-            route: ROUTES.WALLET,
-          },
-          {
-            label: 'Transparent',
-          },
-        ]}
-      />
-
-      <div className='w-full h-20 flex justify-between items-center bg-white px-60px'>
-        <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
-          <div className='mr-8 text-gray-1a text-h1-heavy'>
-            {currencyName} Wallet
-          </div>
-          <MultiToggleSwitch
-            data={[
-              { label: 'Week', count: filterTransactions.week },
-              { label: 'Month', count: filterTransactions.month },
-              { label: 'Year', count: filterTransactions.year },
-            ]}
-            activeIndex={activePeriod}
-            onToggle={onTabToggle}
-            itemActiveClassName='bg-gray-4a rounded-full text-white'
-            countInactiveClassName='bg-warning-hover font-extrabold'
-            showEmpty
-          />
-        </div>
-        <div
-          className='flex cursor-pointer'
-          onClick={() => setTransactionHistoryModalOpen(true)}
-        >
-          <Clock size={18} className='text-blue-3f' />
-          <div className='ml-3.5 text-blue-3f text-h4-leading-22'>
-            Transaction history
-          </div>
-        </div>
-      </div>
-
-      <div className='bg-gray-f8 pt-6 sm:px-10 md:px-60px'>
-        <BalanceCards />
-        {totalBalances.data?.total && totalBalances.data?.total <= 0 && (
-          <Alert
-            variant='warning'
-            className='mt-7 relative'
-            showClose={true}
-            onShowing={true}
-          >
-            <strong className='font-bold'>Warning! </strong>
-            <span className='block sm:inline'>
-              Your total balance is empty now.
-            </span>
-          </Alert>
-        )}
-
-        <WalletAddresses />
-
-        <div className='flex justify-end mt-5 pb-[30px]'>
-          <Button
-            onClick={() => setAddPastelPromoCodeModalOpen(true)}
-            variant='secondary'
-            className='w-[240px] px-0'
-            childrenClassName='w-full'
-          >
-            <div className='flex items-center ml-5'>
-              <div className='text-blue-3f text-h5-medium'>+</div>{' '}
-              <div className='ml-2 text-blue-3f text-h5-medium'>
-                Add Pastel Promo Code
-              </div>
-            </div>
-          </Button>
-
-          {allAddresses.data?.length ? (
-            <Button
-              variant='secondary'
-              className='w-[264px] ml-30px px-0'
-              childrenClassName='w-full'
-              onClick={createNewAddress}
-              disabled={isLoading}
-            >
-              <div className='flex items-center ml-[19px]'>
-                <ElectricityIcon size={11} className='text-blue-3f py-3' />
-                <div className='ml-11px text-blue-3f text-h5-medium'>
-                  Generate a new {currencyName} Address
-                </div>
-              </div>
-            </Button>
-          ) : null}
-          <Button
-            onClick={() => setPaymentModalOpen(true)}
-            className='ml-30px w-[190px] px-0'
-            childrenClassName='w-full'
-          >
-            <div className='flex items-center ml-5'>
-              <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
-              <div className='ml-2 text-white text-h5-heavy'>
-                Create a payment
-              </div>
-            </div>
-          </Button>
-        </div>
-      </div>
-
-      <Modals />
-    </div>
   )
 }

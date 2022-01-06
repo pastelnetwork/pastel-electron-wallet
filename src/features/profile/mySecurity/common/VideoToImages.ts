@@ -23,12 +23,12 @@ export default class VideoToFrames {
         const frames: ImageData[] = []
         const canvas: HTMLCanvasElement = document.createElement('canvas')
         const context: CanvasRenderingContext2D | null = canvas.getContext('2d')
-        let duration: number
+        let duration = 0
 
         if (context) {
           const video = document.createElement('video')
           video.preload = 'auto'
-          video.addEventListener('loadeddata', async function () {
+          const calcFrames = async (): Promise<void> => {
             canvas.width = video.videoWidth
             canvas.height = video.videoHeight
             duration = video.duration
@@ -47,6 +47,18 @@ export default class VideoToFrames {
               )
             }
             resolve(frames)
+          }
+          video.addEventListener('loadeddata', () => {
+            calcFrames()
+              .then(() => {
+                // noop
+              })
+              .catch(() => {
+                // noop
+              })
+              .finally(() => {
+                // noop
+              })
           })
           video.src = videoUrl
           video.load()

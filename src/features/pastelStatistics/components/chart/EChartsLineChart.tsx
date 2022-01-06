@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, memo, useCallback } from 'react'
 import * as echarts from 'echarts'
 import ReactECharts from 'echarts-for-react'
 import { saveAs } from 'file-saver'
@@ -10,8 +10,13 @@ import {
   TLineChartProps,
   TThemeColor,
   TThemeInitOption,
+  TThemeButton,
 } from '../../common/types'
-import { makeDownloadFileName } from '../../utils/PastelStatisticsLib'
+import {
+  makeDownloadFileName,
+  TPeriod,
+  TGranularity,
+} from '../../utils/PastelStatisticsLib'
 import { useCurrencyName } from 'common/hooks/appInfo'
 
 import styles from './LineChart.module.css'
@@ -21,7 +26,98 @@ import {
 } from '../../utils/ChartOptions'
 import { PrevButton } from '../PrevButton'
 
-export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
+function PeriodSelect({
+  index,
+  handlePeriodSelect,
+  getActivePriodButtonStyle,
+  period,
+}: {
+  index: number
+  getActivePriodButtonStyle: (val: number) => string
+  handlePeriodSelect: (index: number, period: TPeriod) => void
+  period: TPeriod
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handlePeriodSelect(index, period)
+  }, [])
+
+  return (
+    <button
+      className={`${getActivePriodButtonStyle(index)} ${styles.filterButton}`}
+      onClick={onClick}
+      type='button'
+    >
+      {period}
+    </button>
+  )
+}
+
+function ThemeButton({
+  theme,
+  getActiveThemeButtonStyle,
+  index,
+  handleThemeButtonClick,
+}: {
+  theme: TThemeButton
+  getActiveThemeButtonStyle: (val: number) => string
+  index: number
+  handleThemeButtonClick: (theme: TThemeButton, index: number) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    handleThemeButtonClick(theme, index)
+  }, [])
+
+  return (
+    <button
+      className={`${styles.themeSelectButton} ${getActiveThemeButtonStyle(
+        index,
+      )}`}
+      onClick={onClick}
+      style={{
+        backgroundColor: `${theme.backgroundColor}`,
+      }}
+      type='button'
+    />
+  )
+}
+
+function GranularityButton({
+  index,
+  getActiveGranularityButtonStyle,
+  granularity,
+  setSelectedGranularityButton,
+  handleGranularityFilterChange,
+}: {
+  index: number
+  getActiveGranularityButtonStyle: (val: number) => string
+  setSelectedGranularityButton: (val: number) => void
+  granularity: TGranularity
+  handleGranularityFilterChange?: (val: TGranularity) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    setSelectedGranularityButton(index)
+    if (handleGranularityFilterChange) {
+      handleGranularityFilterChange(granularity)
+    }
+  }, [])
+
+  return (
+    <button
+      className={`${getActiveGranularityButtonStyle(index)} ${
+        styles.filterButton
+      }`}
+      onClick={onClick}
+      type='button'
+      key={`button-filter-${granularity}`}
+    >
+      {granularity}
+    </button>
+  )
+}
+
+export const EChartsLineChart = memo(function EChartsLineChart(
+  props: TLineChartProps,
+): JSX.Element {
   const {
     chartName,
     dataX,
@@ -110,7 +206,7 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
   }
   const options = getThemeInitOption(params)
 
-  const downloadPNG = () => {
+  const downloadPNG = useCallback(() => {
     if (eChartRef?.ele) {
       htmlToImage
         .toBlob(eChartRef.ele)
@@ -120,48 +216,106 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
           }
         })
         .catch(function (error) {
-          throw new Error('PNG download error: ' + error)
+          const message: string = error?.message || ''
+          throw new Error('PNG download error: ' + message)
         })
     }
-  }
+  }, [])
 
-  const handleThemeButtonClick = (theme: TThemeColor, index: number) => {
-    setCurrentTheme(theme)
-    setSelectedThemeButton(index)
-    handleBgColorChange(theme.backgroundColor)
+  const handleThemeButtonClick = useCallback(
+    (theme: TThemeColor, index: number) => {
+      setCurrentTheme(theme)
+      setSelectedThemeButton(index)
+      handleBgColorChange(theme.backgroundColor)
 
-    const params: TThemeInitOption = {
-      theme: theme,
-      dataX,
-      dataY,
-      chartName: chartName,
-      minY,
-      maxY,
-    }
-    const option = getThemeUpdateOption(params)
-    eChartInstance?.setOption(option)
-  }
+      const params: TThemeInitOption = {
+        theme: theme,
+        dataX,
+        dataY,
+        chartName: chartName,
+        minY,
+        maxY,
+      }
+      const option = getThemeUpdateOption(params)
+      eChartInstance?.setOption(option)
+    },
+    [currentTheme, selectedThemeButton],
+  )
 
-  const getActivePriodButtonStyle = (index: number): string => {
+  const getActivePriodButtonStyle = useCallback((index: number): string => {
     if (selectedPeriodButton === index) {
       return styles.activeButton
     }
     return ''
-  }
+  }, [])
 
-  const getActiveGranularityButtonStyle = (index: number): string => {
-    if (selectedGranularityButton === index) {
-      return styles.activeButton
-    }
-    return ''
-  }
+  const getActiveGranularityButtonStyle = useCallback(
+    (index: number): string => {
+      if (selectedGranularityButton === index) {
+        return styles.activeButton
+      }
+      return ''
+    },
+    [],
+  )
 
-  const getActiveThemeButtonStyle = (index: number): string => {
+  const getActiveThemeButtonStyle = useCallback((index: number): string => {
     if (selectedThemeButton === index) {
       return styles.activeThemeButton
     }
     return ''
-  }
+  }, [])
+
+  const handlePeriodSelect = useCallback((index: number, period: TPeriod) => {
+    setSelectedPeriodButton(index)
+    if (handlePeriodFilterChange) {
+      handlePeriodFilterChange(period)
+    }
+  }, [])
+
+  const onEChartRef = useCallback(
+    (e: React.SetStateAction<ReactECharts | null | undefined>) => {
+      setEChartRef(e)
+    },
+    [],
+  )
+
+  const renderDownloadButtonBar = () => (
+    <div className={styles.lineChartDownloadButtonBar}>
+      <button
+        className={styles.uploadButton}
+        type='button'
+        onClick={downloadPNG}
+      >
+        Download PNG
+      </button>
+      <CSVLink
+        data={csvData}
+        filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
+        headers={csvHeaders[chartName]}
+        separator={';'}
+        ref={downloadRef}
+        className={styles.uploadButton}
+      >
+        Download CSV
+      </CSVLink>
+    </div>
+  )
+
+  const renderPeriodSelect = () => (
+    <div className={styles.periodSelect}>
+      <span style={{ color: currentTheme?.color }}>Period: </span>
+      {periods.map((period, index) => (
+        <PeriodSelect
+          key={`button-filter-${period}`}
+          getActivePriodButtonStyle={getActivePriodButtonStyle}
+          index={index}
+          period={period}
+          handlePeriodSelect={handlePeriodSelect}
+        />
+      ))}
+    </div>
+  )
 
   return (
     <div className={styles.container}>
@@ -178,93 +332,49 @@ export const EChartsLineChart = (props: TLineChartProps): JSX.Element => {
             <span style={{ color: currentTheme?.color }}>Granularity: </span>
             {granularities?.map((granularity, index) => {
               return (
-                <button
-                  className={`${getActiveGranularityButtonStyle(index)} ${
-                    styles.filterButton
-                  }`}
-                  onClick={() => {
-                    setSelectedGranularityButton(index)
-                    if (handleGranularityFilterChange) {
-                      handleGranularityFilterChange(granularity)
-                    }
-                  }}
-                  type='button'
+                <GranularityButton
                   key={`button-filter-${granularity}`}
-                >
-                  {granularity}
-                </button>
+                  granularity={granularity}
+                  index={index}
+                  getActiveGranularityButtonStyle={
+                    getActiveGranularityButtonStyle
+                  }
+                  setSelectedGranularityButton={setSelectedGranularityButton}
+                  handleGranularityFilterChange={handleGranularityFilterChange}
+                />
               )
             })}
           </div>
         )}
-        <div className={styles.periodSelect}>
-          <span style={{ color: currentTheme?.color }}>Period: </span>
-          {periods.map((period, index) => (
-            <button
-              className={`${getActivePriodButtonStyle(index)} ${
-                styles.filterButton
-              }`}
-              onClick={() => {
-                setSelectedPeriodButton(index)
-                if (handlePeriodFilterChange) {
-                  handlePeriodFilterChange(period)
-                }
-              }}
-              type='button'
-              key={`button-filter-${period}`}
-            >
-              {period}
-            </button>
-          ))}
-        </div>
+        {renderPeriodSelect()}
       </div>
       <div className={styles.lineChartWrap}>
         <ReactECharts
           notMerge={false}
-          lazyUpdate={true}
+          lazyUpdate
           option={options}
           className={styles.reactECharts}
-          ref={e => {
-            setEChartRef(e)
-          }}
+          ref={onEChartRef}
         />
       </div>
       <div className={styles.lineChartFooter}>
         <div className={styles.lineChartThemeSelect}>
           {themes.map((theme, index) => (
-            <button
-              className={`${
-                styles.themeSelectButton
-              } ${getActiveThemeButtonStyle(index)}`}
-              onClick={() => handleThemeButtonClick(theme, index)}
-              style={{
-                backgroundColor: `${theme.backgroundColor}`,
-              }}
-              type='button'
+            <ThemeButton
               key={`button-filter-${theme.name}`}
-            ></button>
+              theme={theme}
+              index={index}
+              getActiveThemeButtonStyle={getActiveThemeButtonStyle}
+              handleThemeButtonClick={handleThemeButtonClick}
+            />
           ))}
         </div>
-        <div className={styles.lineChartDownloadButtonBar}>
-          <button
-            className={styles.uploadButton}
-            type='button'
-            onClick={downloadPNG}
-          >
-            Download PNG
-          </button>
-          <CSVLink
-            data={csvData}
-            filename={makeDownloadFileName(currencyName, chartName) + '.csv'}
-            headers={csvHeaders[chartName]}
-            separator={';'}
-            ref={downloadRef}
-            className={styles.uploadButton}
-          >
-            Download CSV
-          </CSVLink>
-        </div>
+        {renderDownloadButtonBar()}
       </div>
     </div>
   )
+})
+
+GranularityButton.defaultProps = {
+  handleGranularityFilterChange: undefined,
 }

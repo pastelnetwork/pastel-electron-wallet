@@ -6,6 +6,7 @@ import { TChatUser } from './common'
 import { UserAvatar } from './components/UserAvatar'
 
 export type TChatMessageProps = {
+  id: string
   text?: string
   sender: TChatUser
   date: Date
@@ -16,51 +17,62 @@ export type TChatMessageProps = {
   onSaveAttachment?: (url: string) => void
 }
 
-export const ChatMessage = (props: TChatMessageProps): JSX.Element => {
+export function ChatMessage({
+  onSaveAttachment,
+  isCurUserMessage,
+  sender,
+  showAvatar,
+  text,
+  attachments,
+  date,
+}: TChatMessageProps): JSX.Element {
   const prepareFileThumb = (url: string) => {
     // TODO: default icons for non-images?
     return url
   }
 
   const saveAttachment = (url: string) => {
-    if (props.onSaveAttachment) {
-      props.onSaveAttachment(url)
+    if (onSaveAttachment) {
+      onSaveAttachment(url)
     }
   }
 
   return (
-    <div className={cn('flex', props.isCurUserMessage ? 'justify-end' : '')}>
+    <div className={cn('flex', isCurUserMessage ? 'justify-end' : '')}>
       <UserAvatar
-        extraClasses={props.isCurUserMessage ? 'order-3 ml-5 mr-0' : ''}
+        extraClasses={isCurUserMessage ? 'order-3 ml-5 mr-0' : ''}
         size={9}
-        user={props.sender}
-        hideAvatar={!props.showAvatar}
-        hideOnline={true}
+        user={sender}
+        hideAvatar={!showAvatar}
+        hideOnline
       />
       <div>
-        {props.text && (
+        {text && (
           <div
             className={cn(
               'text-gray-35 rounded-lg font-medium text-xs p-4',
-              props.isCurUserMessage ? styles.msgSent : styles.msgRecv,
+              isCurUserMessage ? styles.msgSent : styles.msgRecv,
             )}
           >
-            {props.text}
+            {text}
           </div>
         )}
 
-        {props.attachments && (
+        {attachments && (
           <div className='flex flex-wrap mt-3'>
-            {props.attachments.map((att, i) => (
+            {attachments.map(att => (
               <div
-                key={i}
+                key={att}
                 className={cn(
                   'inline-block bg-gray-300 rounded-2xl bg-cover bg-center cursor-pointer mr-3 mb-3 w-48 h-44',
                   styles.oneAttachment,
                 )}
                 style={{ backgroundImage: `url(${prepareFileThumb(att)})` }}
                 onClick={() => saveAttachment(att)}
-              ></div>
+                role='button'
+                aria-hidden
+                tabIndex={0}
+              />
             ))}
           </div>
         )}
@@ -69,10 +81,10 @@ export const ChatMessage = (props: TChatMessageProps): JSX.Element => {
           className={cn(
             'mt-1 font-medium text-gray-400',
             styles.chatMessageTime,
-            props.isCurUserMessage ? 'text-right' : '',
+            isCurUserMessage ? 'text-right' : '',
           )}
         >
-          {formatTime(props.date)}
+          {formatTime(date)}
         </div>
       </div>
     </div>

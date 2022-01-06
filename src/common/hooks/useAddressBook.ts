@@ -26,11 +26,20 @@ export const useAddressBook = (): TUseAddressBookResult => {
       setIsAddressBookLoaded(true)
     }
     getAddressBook()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   const updateAddressBook = async ({ address, label }: TAddressBook) => {
     const [book] = addressBook.filter(b => b.address === address) || []
-    let newAddressBook = addressBook
+    let newAddressBook = []
     if (book) {
       newAddressBook = addressBook.map(b => {
         return {

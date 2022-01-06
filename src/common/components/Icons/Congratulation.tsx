@@ -6,10 +6,21 @@ export type TCongratulationProps = {
   className: string
 }
 
-export const Congratulation = ({
+export function Congratulation({
   size,
   className,
-}: TCongratulationProps): JSX.Element => {
+}: TCongratulationProps): JSX.Element {
+  const renderPattern = () => (
+    <pattern
+      id='pattern0'
+      patternContentUnits='objectBoundingBox'
+      width='1'
+      height='1'
+    >
+      <use xlinkHref='#image0' transform='scale(0.015625)' />
+    </pattern>
+  )
+
   return (
     <svg
       width={size}
@@ -21,14 +32,7 @@ export const Congratulation = ({
     >
       <path d='M0 24.68H24V0.68H0V24.68Z' fill='url(#pattern0)' />
       <defs>
-        <pattern
-          id='pattern0'
-          patternContentUnits='objectBoundingBox'
-          width='1'
-          height='1'
-        >
-          <use xlinkHref='#image0' transform='scale(0.015625)' />
-        </pattern>
+        {renderPattern()}
         <image
           id='image0'
           width='64'

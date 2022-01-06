@@ -9,7 +9,7 @@ type QRCodeGEneratorProps = {
 
 export default function QRCodeGEnerator(
   props: QRCodeGEneratorProps,
-): JSX.Element {
+): JSX.Element | null {
   try {
     const qrcodeValue = ReactDOMServer.renderToString(
       <QRCode value={props.address} renderAs='svg' />,
@@ -28,12 +28,12 @@ export default function QRCodeGEnerator(
           <Path
             fill={fills ? fills[idx].replace('fill="', '') : '#000'}
             d={path.replace('d="', '')}
-            key={idx}
+            key={path}
           ></Path>
         ))}
       </Svg>
     )
   } catch {
-    return <></>
+    return null
   }
 }

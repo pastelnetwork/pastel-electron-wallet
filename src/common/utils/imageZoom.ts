@@ -4,6 +4,12 @@ import { DraggableData, DraggableEvent } from 'react-draggable'
 const minZoom = 1
 const maxZoom = 3
 
+type TTransformProps = {
+  scale: number
+  x: number
+  y: number
+}
+
 export const useImageZoom = (): {
   onDragImage(e: DraggableEvent, data: DraggableData): void
   imageRef: RefObject<HTMLImageElement>
@@ -27,35 +33,13 @@ export const useImageZoom = (): {
     transform.scale = transform.x = transform.y = 0
   }, [])
 
-  const onDragControl = (e: DraggableEvent, data: DraggableData) => {
-    const el = controlRef.current
-    if (!el) {
-      return
-    }
-    applyScale(transformRef.current.scale + data.deltaX / el.offsetWidth)
-  }
-
-  const onWheelImage = (e: WheelEvent) =>
-    applyScale(transformRef.current.scale + e.deltaY / 1000)
-
-  const applyScale = (delta: number) => {
-    transformRef.current.scale = Math.max(0, Math.min(1, delta))
-    setTransform()
-    applyTransform()
-  }
-
-  const onDragImage = (e: DraggableEvent, data: DraggableData) => {
-    setTransform(data.deltaX, data.deltaY)
-    applyTransform()
-  }
-
   const setTransform = (deltaX = 0, deltaY = 0) => {
     const image = imageRef.current
     if (!image) {
       return
     }
 
-    const transform = transformRef.current
+    const transform: TTransformProps = transformRef.current
     const scale = minZoom + (maxZoom - minZoom) * transform.scale
 
     const x = transform.x + deltaX / scale
@@ -78,7 +62,38 @@ export const useImageZoom = (): {
     const transform = transformRef.current
     progressBar.style.width = `${transform.scale * 100}%`
     const scale = minZoom + (maxZoom - minZoom) * transform.scale
-    image.style.transform = `scale(${scale}) translateX(${transform.x}px) translateY(${transform.y}px)`
+    const strScale: string = scale?.toString() || ''
+    const transformX: string = transform.x?.toString() || ''
+    const transformY: string = transform.y?.toString() || ''
+    image.style.transform = `scale(${strScale}) translateX(${transformX}px) translateY(${transformY}px)`
+  }
+
+  const applyScale = (delta: number) => {
+    transformRef.current.scale = Math.max(0, Math.min(1, delta))
+    setTransform()
+    applyTransform()
+  }
+
+  const onDragControl = (e: DraggableEvent, data: DraggableData) => {
+    const el = controlRef.current
+    if (!el) {
+      return
+    }
+    const scale: number = transformRef.current.scale || 0
+    const deltaX: number = data.deltaX || 0
+    const offsetWidth: number = el.offsetWidth || 0
+    applyScale(scale + deltaX / offsetWidth)
+  }
+
+  const onWheelImage = (e: WheelEvent) => {
+    const scale: number = transformRef.current.scale || 0
+    const deltaY: number = e.deltaY || 0
+    return applyScale(scale + deltaY / 1000)
+  }
+
+  const onDragImage = (e: DraggableEvent, data: DraggableData) => {
+    setTransform(data.deltaX, data.deltaY)
+    applyTransform()
   }
 
   return {

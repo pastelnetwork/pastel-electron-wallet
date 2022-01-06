@@ -11,11 +11,11 @@ export type TForumPostProps = {
   searchKey: string
 }
 
-const ForumPost = (): JSX.Element => {
+export default function ForumPost(): JSX.Element {
   const kFormatter = (num: number) => {
-    return Math.abs(num) > 999
-      ? Math.sign(num) + (Math.abs(num) / 1000).toFixed(1) + 'k'
-      : Math.sign(num) * Math.abs(num)
+    const value: string =
+      Math.sign(num).toString() + (Math.abs(num) / 1000).toFixed(1)
+    return Math.abs(num) > 999 ? value + 'k' : Math.sign(num) * Math.abs(num)
   }
 
   const columns = [
@@ -27,7 +27,7 @@ const ForumPost = (): JSX.Element => {
           <div>{value}</div>
           <div className='flex items-center'>
             {row && row.favourite && (
-              <Star className='text-yellow-ffd' filled={true} />
+              <Star className='text-yellow-ffd' filled />
             )}
             {row && row.favourite === false && (
               <Star className='text-gray-8e' filled={false} />
@@ -167,5 +167,3 @@ const ForumPost = (): JSX.Element => {
     </div>
   )
 }
-
-export default ForumPost

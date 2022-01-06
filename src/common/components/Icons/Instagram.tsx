@@ -3,10 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TInstagramProps = TIconProps
 
-export const Instagram = ({
-  size,
-  className,
-}: TInstagramProps): JSX.Element => {
+export function Instagram({ size, className }: TInstagramProps): JSX.Element {
   return (
     <svg
       width={size}

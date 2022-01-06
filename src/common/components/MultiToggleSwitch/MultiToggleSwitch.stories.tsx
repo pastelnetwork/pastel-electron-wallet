@@ -24,7 +24,10 @@ const data: TMultiToggleDataItem[] = [
   },
 ]
 
-const Template: Story<TMultiToggle> = ({ activeIndex, ...args }) => {
+const Template: Story<TMultiToggle> = ({
+  activeIndex,
+  ...args
+}: TMultiToggle) => {
   const [selectedItem, setSelected] = useState(activeIndex)
 
   return (

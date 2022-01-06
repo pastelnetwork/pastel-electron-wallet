@@ -9,7 +9,7 @@ type TOutputProps = {
   textContent: string
 }
 
-const ConsoleOutput = (props: TOutputProps): JSX.Element => {
+function ConsoleOutput(props: TOutputProps): JSX.Element {
   const { type, textContent } = props
   return (
     <div

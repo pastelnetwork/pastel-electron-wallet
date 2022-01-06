@@ -1,13 +1,17 @@
 import { onMainEvent, sendEventToRenderer } from './mainEvents'
 import { app, autoUpdater } from 'electron'
+import log from 'electron-log'
 import pkg from '../../../package.json'
 
 export const setupAutoUpdater = (): void => {
   onMainEvent('rendererStarted', () => {
     if (app.isPackaged) {
-      const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
-        process.arch
-      }/${app.getVersion()}`
+      const version: string = app.getVersion() || ''
+      const hostUrl: string = pkg.hostUrl || ''
+      const repoName: string = pkg.repoName || ''
+      const platform: string = process.platform || ''
+      const arch: string = process.arch || ''
+      const feedURL = `${hostUrl}/${repoName}/${platform}-${arch}/${version}`
 
       autoUpdater.setFeedURL({
         url: feedURL,
@@ -30,7 +34,7 @@ export const setupAutoUpdater = (): void => {
     'update-downloaded',
     (event, releaseNotes, releaseName, updateURL) => {
       sendEventToRenderer('updateDownloaded', null)
-      console.info('updateDownloaded', {
+      log.info('updateDownloaded', {
         event,
         releaseNotes,
         releaseName,
@@ -40,6 +44,7 @@ export const setupAutoUpdater = (): void => {
   )
 
   autoUpdater.on('error', err => {
-    console.warn(`autoUpdater error: ${err.message}`, err)
+    const message: string = err.message || ''
+    log.warn(`autoUpdater error: ${message}`, err)
   })
 }

@@ -3,10 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TBoxArrowUpProps = TIconProps
 
-export const BoxArrowUp = ({
-  size,
-  className,
-}: TBoxArrowUpProps): JSX.Element => {
+export function BoxArrowUp({ size, className }: TBoxArrowUpProps): JSX.Element {
   return (
     <svg
       width={size}

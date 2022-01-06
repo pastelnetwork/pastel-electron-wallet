@@ -3,7 +3,7 @@ import { TIconProps } from './iconProps'
 
 export type TXProps = TIconProps
 
-export const X = ({ size, className }: TXProps): JSX.Element => {
+export function X({ size, className }: TXProps): JSX.Element {
   return (
     <svg
       width={size}

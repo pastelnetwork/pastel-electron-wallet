@@ -7,11 +7,11 @@ export type TMessageIconProps = {
   hasNotification?: boolean
 }
 
-export const MessageIcon = ({
+export function MessageIcon({
   size = 18,
   className = 'text-gray-33',
   hasNotification = false,
-}: TMessageIconProps): JSX.Element => {
+}: TMessageIconProps): JSX.Element {
   return (
     <div className={cn(className, 'relative')} style={{ width: size }}>
       {hasNotification && (

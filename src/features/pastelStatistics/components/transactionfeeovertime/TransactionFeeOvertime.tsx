@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { getDatasFromDB } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
@@ -19,7 +19,7 @@ import { TDbRawMemPoolInfo } from '../../../pastelDB/blockchain/rawMemPoolInfo.r
 
 const redrawCycle = 6000
 
-const TransactionFeeOvertime = (): JSX.Element => {
+export default function TransactionFeeOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -47,8 +47,26 @@ const TransactionFeeOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -59,38 +77,36 @@ const TransactionFeeOvertime = (): JSX.Element => {
     }
   }, [period])
 
-  const handlePeriodFilterChange = (period: TPeriod) => {
+  const handlePeriodFilterChange = useCallback((period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
-  }
+    if (ticker) {
+      clearInterval(ticker)
+    }
+  }, [])
 
-  const handleBgColorChange = (color: string) => {
+  const handleBgColorChange = useCallback((color: string) => {
     setCurrentBgColor(color)
-  }
+  }, [])
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='transactionfee'
-              dataY={transformLineChartData?.dataY}
-              dataX={transformLineChartData?.dataX}
-              title='Transaction Fee(usd)'
-              offset={0.01}
-              periods={periods[0]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='transactionfee'
+            dataY={transformLineChartData?.dataY}
+            dataX={transformLineChartData?.dataX}
+            title='Transaction Fee(usd)'
+            offset={0.01}
+            periods={periods[0]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }
-
-export default TransactionFeeOvertime

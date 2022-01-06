@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react'
+import React, { useState, KeyboardEvent, useCallback } from 'react'
 import { useCombobox, useMultipleSelection } from 'downshift'
 import { X, Caret } from 'common/components/Icons'
 import cn from 'classnames'
@@ -16,6 +16,7 @@ type TBaseProps = {
   selectClassName?: string
   placeholder?: string
   disabled?: boolean
+  canCustomInput?: boolean
 }
 
 export type TControlledProps = TBaseProps & {
@@ -26,31 +27,25 @@ export type TControlledProps = TBaseProps & {
 export type TFormProps<TForm> = TBaseProps &
   Omit<TFormControlProps<TForm>, 'children'>
 
-export default function SelectMultiple<TForm extends FieldValues>(
-  props: TControlledProps | TFormProps<TForm>,
-): JSX.Element {
-  if ('form' in props) {
-    return (
-      <FormControl {...props}>
-        <Controller
-          name={props.name}
-          control={props.form.control}
-          render={({ field: { value, onChange } }) => (
-            <SelectMultipleInner
-              {...props}
-              selected={value}
-              onChange={onChange}
-            />
-          )}
-        />
-      </FormControl>
-    )
-  }
+function Removeutton({
+  item,
+  removeSelectedItem,
+}: {
+  item: TOption
+  removeSelectedItem: (val: TOption) => void
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    removeSelectedItem(item)
+  }, [])
 
-  return <SelectMultipleInner {...props} />
+  return (
+    <button type='button' className='ml-2' onClick={onClick}>
+      <X size={8} />
+    </button>
+  )
 }
 
-const SelectMultipleInner = ({
+function SelectMultipleInner({
   options,
   selected,
   name,
@@ -58,8 +53,10 @@ const SelectMultipleInner = ({
   selectClassName,
   placeholder,
   disabled = false,
-}: TControlledProps) => {
+  canCustomInput = false,
+}: TControlledProps): JSX.Element {
   const [inputValue, setInputValue] = useState('')
+  const [customValue, setCustomValue] = useState('')
 
   const {
     getSelectedItemProps,
@@ -117,11 +114,25 @@ const SelectMultipleInner = ({
       switch (type) {
         case useCombobox.stateChangeTypes.InputChange:
           setInputValue(inputValue)
+          setCustomValue(inputValue)
           break
-        case useCombobox.stateChangeTypes.InputKeyDownEnter:
         case useCombobox.stateChangeTypes.ItemClick:
           if (selectedItem) {
             setInputValue('')
+            setCustomValue('')
+            addSelectedItem(selectedItem)
+          }
+          break
+        case useCombobox.stateChangeTypes.InputKeyDownEnter:
+          if (canCustomInput) {
+            addSelectedItem({
+              value: customValue,
+              label: customValue,
+            })
+          }
+          setInputValue('')
+          setCustomValue('')
+          if (selectedItem) {
             addSelectedItem(selectedItem)
           }
           break
@@ -150,6 +161,39 @@ const SelectMultipleInner = ({
     }
   }
 
+  const handleRemoveSelectedItem = useCallback((item: TOption) => {
+    removeSelectedItem(item)
+  }, [])
+
+  const renderSelectItems = () => (
+    <div className='flex-grow flex flex-wrap'>
+      {selectedItems.map((item, index) => (
+        <div
+          key={item.value}
+          className='bg-gray-71 rounded-full h-6 px-2 mr-1.5 mb-1.5 text-white text-sm leading-6 flex-center'
+          {...getSelectedItemProps({ selectedItem: item, index })}
+        >
+          {item.label}
+          <Removeutton
+            item={item}
+            removeSelectedItem={handleRemoveSelectedItem}
+          />
+        </div>
+      ))}
+      <div
+        {...getComboboxProps()}
+        className='flex-grow relative mb-1.5 h-6 min-w-[80px]'
+      >
+        <input
+          id={id}
+          className='absolute inset-0 w-full pl-2 disabled:bg-gray-f6 disabled:cursor-not-allowed'
+          placeholder={placeholder}
+          {...inputProps}
+        />
+      </div>
+    </div>
+  )
+
   return (
     <label
       htmlFor={id}
@@ -160,35 +204,7 @@ const SelectMultipleInner = ({
       )}
       {...getLabelProps()}
     >
-      <div className='flex-grow flex flex-wrap'>
-        {selectedItems.map((item, index) => (
-          <div
-            key={item.value}
-            className='bg-gray-71 rounded-full h-6 px-2 mr-1.5 mb-1.5 text-white text-sm leading-6 flex-center'
-            {...getSelectedItemProps({ selectedItem: item, index })}
-          >
-            {item.label}
-            <button
-              type='button'
-              className='ml-2'
-              onClick={() => removeSelectedItem(item)}
-            >
-              <X size={8} />
-            </button>
-          </div>
-        ))}
-        <div
-          {...getComboboxProps()}
-          className='flex-grow relative mb-1.5 h-6 min-w-[80px]'
-        >
-          <input
-            id={id}
-            className='absolute inset-0 w-full pl-2 disabled:bg-gray-f6 disabled:cursor-not-allowed'
-            placeholder={placeholder}
-            {...inputProps}
-          />
-        </div>
-      </div>
+      {renderSelectItems()}
       <button
         type='button'
         {...getToggleButtonProps()}
@@ -221,4 +237,29 @@ const SelectMultipleInner = ({
       </div>
     </label>
   )
+}
+
+export default function SelectMultiple<TForm extends FieldValues>(
+  props: TControlledProps | TFormProps<TForm>,
+): JSX.Element {
+  if ('form' in props) {
+    const { name, form } = props
+    return (
+      <FormControl {...props}>
+        <Controller
+          name={name}
+          control={form.control}
+          render={({ field: { value, onChange } }) => (
+            <SelectMultipleInner
+              {...props}
+              selected={value}
+              onChange={onChange}
+            />
+          )}
+        />
+      </FormControl>
+    )
+  }
+
+  return <SelectMultipleInner {...props} />
 }

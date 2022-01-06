@@ -4,6 +4,20 @@ export const sliderMin = 0
 export const sliderMax = 1000
 export const sliderValueToPercent = (value: number): number => value / 10
 
+/**
+ * Round value (to avoid Range component warn "The `values` property is in conflict with the current `step`, `min`, and `max` properties")
+ * @param val
+ * @param step
+ * @returns Rounded value
+ */
+export const roundToStep = (val: number, step: number | undefined): number => {
+  if (!step) {
+    return val
+  }
+
+  return Math.round(val / step) * step
+}
+
 // Convert value from range like 50..150 to slider value from strict range 0..1000
 // Example for steps [1, 5, 15]:
 // 1 -> 0,
@@ -43,20 +57,6 @@ export const valueToFraction = (props: TSliderProps, value: number): number => {
     (upperValue - lowerValue)
 
   return roundToStep((lowerOffset + stepOffset) * sliderMax, props.step)
-}
-
-/**
- * Round value (to avoid Range component warn "The `values` property is in conflict with the current `step`, `min`, and `max` properties")
- * @param val
- * @param step
- * @returns Rounded value
- */
-export const roundToStep = (val: number, step: number | undefined): number => {
-  if (!step) {
-    return val
-  }
-
-  return Math.round(val / step) * step
 }
 
 // Convert slider value 0..1000 back to range min..max

@@ -18,14 +18,14 @@ export type TModalProps = {
   hideCloseButton?: boolean
 }
 
-const TitleModal = ({
+function TitleModal({
   isOpen,
   handleClose,
   children,
   title,
   classNames,
   hideCloseButton = false,
-}: TModalProps): JSX.Element => {
+}: TModalProps): JSX.Element {
   const modalClasses = cn(
     'z-50 relative bg-white rounded-2xl shadow-xSmall w-full max-h-full pt-10 pb-30px overflow-auto mx-auto focus:outline-none',
     classNames,

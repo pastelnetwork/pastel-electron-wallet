@@ -18,7 +18,7 @@ export type TMultiToggle = {
   showEmpty?: boolean
 }
 
-const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
+function MultiToggleSwitch(props: TMultiToggle): JSX.Element {
   const {
     data,
     activeIndex,
@@ -29,7 +29,11 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
     onToggle,
     showEmpty = false,
   } = props
-  const container_className = `inline-flex gap-3 p-3px rounded-full border border-navigation-default ${containerClassName}`
+
+  const container_className = cn(
+    'inline-flex gap-3 p-3px rounded-full border border-navigation-default',
+    containerClassName,
+  )
 
   const getItemClassName = (isActive: boolean) => {
     const activeClass = itemActiveClassName
@@ -57,15 +61,20 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
   }
 
   return (
-    <>
+    <div>
       {data?.length && (
         <div className={container_className}>
           {data.map((item: TMultiToggleDataItem, index: number) => {
+            const label: string = item.label || ''
+            const countItem: string = item.count?.toString() || ''
             return (
               <div
                 className={getItemClassName(index === activeIndex)}
-                key={index}
+                key={`${label}${countItem}`}
                 onClick={() => handleClick(index)}
+                role='button'
+                aria-hidden
+                tabIndex={0}
               >
                 <span>{item.label}</span>
                 {(item?.count && item.count > 0) || showEmpty ? (
@@ -83,7 +92,7 @@ const MultiToggleSwitch = (props: TMultiToggle): JSX.Element => {
           })}
         </div>
       )}
-    </>
+    </div>
   )
 }
 

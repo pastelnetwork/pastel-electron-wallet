@@ -5,10 +5,10 @@ export type TTwitterProps = {
   className?: string
 }
 
-export const TwitterIcon = ({
+export function TwitterIcon({
   size = 20,
   className = 'text-gray-88',
-}: TTwitterProps): JSX.Element => {
+}: TTwitterProps): JSX.Element {
   return (
     <svg
       width={size}

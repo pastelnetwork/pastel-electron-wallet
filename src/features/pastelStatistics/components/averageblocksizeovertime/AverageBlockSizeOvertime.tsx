@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { getFilteredDataFromDBByPeriod } from '../../../pastelDB'
 import { pastelTableNames } from '../../../pastelDB/constants'
@@ -21,7 +21,7 @@ import {
 
 const redrawCycle = 60000
 
-const AverageBlockSizeOvertime = (): JSX.Element => {
+export default function AverageBlockSizeOvertime(): JSX.Element {
   const [currentBgColor, setCurrentBgColor] = useState(
     CHART_THEME_BACKGROUND_DEFAULT_COLOR,
   )
@@ -51,8 +51,26 @@ const AverageBlockSizeOvertime = (): JSX.Element => {
     }
 
     loadLineChartData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     const newTicker = setInterval(() => {
       loadLineChartData()
+        .then(() => {
+          // noop
+        })
+        .catch(() => {
+          // noop
+        })
+        .finally(() => {
+          // noop
+        })
     }, redrawCycle)
     setTicker(newTicker)
 
@@ -63,45 +81,48 @@ const AverageBlockSizeOvertime = (): JSX.Element => {
     }
   }, [granularity, period])
 
-  const handlePeriodFilterChange = (period: TPeriod) => {
+  const handlePeriodFilterChange = useCallback((period: TPeriod) => {
     setPeriod(period)
-    clearInterval(ticker as NodeJS.Timeout)
-  }
+    if (ticker) {
+      clearInterval(ticker)
+    }
+  }, [])
 
-  const handleGranularityFilterChange = (granularity: TGranularity) => {
-    setGranularity(granularity)
-    clearInterval(ticker as NodeJS.Timeout)
-  }
+  const handleGranularityFilterChange = useCallback(
+    (granularity: TGranularity) => {
+      setGranularity(granularity)
+      if (ticker) {
+        clearInterval(ticker)
+      }
+    },
+    [],
+  )
 
-  const handleBgColorChange = (color: string) => {
+  const handleBgColorChange = useCallback((color: string) => {
     setCurrentBgColor(color)
-  }
+  }, [])
 
   return (
-    <>
-      <div className={styles.container}>
-        <div
-          className={`${styles.content}`}
-          style={{ backgroundColor: currentBgColor }}
-        >
-          {transformLineChartData && (
-            <EChartsLineChart
-              chartName='averageblocksize'
-              dataX={transformLineChartData?.dataX}
-              dataY={transformLineChartData?.dataY}
-              title='Average Block Size(KB)'
-              offset={1}
-              granularities={granularities[0]}
-              periods={periods[1]}
-              handleBgColorChange={handleBgColorChange}
-              handlePeriodFilterChange={handlePeriodFilterChange}
-              handleGranularityFilterChange={handleGranularityFilterChange}
-            />
-          )}
-        </div>
+    <div className={styles.container}>
+      <div
+        className={`${styles.content}`}
+        style={{ backgroundColor: currentBgColor }}
+      >
+        {transformLineChartData && (
+          <EChartsLineChart
+            chartName='averageblocksize'
+            dataX={transformLineChartData?.dataX}
+            dataY={transformLineChartData?.dataY}
+            title='Average Block Size(KB)'
+            offset={1}
+            granularities={granularities[0]}
+            periods={periods[1]}
+            handleBgColorChange={handleBgColorChange}
+            handlePeriodFilterChange={handlePeriodFilterChange}
+            handleGranularityFilterChange={handleGranularityFilterChange}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }
-
-export default AverageBlockSizeOvertime

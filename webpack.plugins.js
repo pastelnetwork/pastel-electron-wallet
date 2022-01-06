@@ -1,6 +1,7 @@
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const webpack = require('webpack')
 const CopyPlugin = require('copy-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 
 module.exports = [
   new ForkTsCheckerWebpackPlugin(),
@@ -25,5 +26,8 @@ module.exports = [
         to: 'static/ffmpeg',
       },
     ],
+  }),
+  new Dotenv({
+    path: './.env', // Path to .env file (this is the default)
   }),
 ]

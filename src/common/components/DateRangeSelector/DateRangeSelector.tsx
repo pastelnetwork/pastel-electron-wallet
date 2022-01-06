@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker'
 
 import dayjs from 'common/utils/initDayjs'
 import { Caret } from 'common/components/Icons'
+import { SelectButton } from '../../../common/components/Buttons'
 import caretDownIcon from '../../assets/icons/ico-caret-down.svg'
 import calendarIcon from '../../assets/icons/ico-calendar.svg'
 import './DateRangeSelector.css'
@@ -24,6 +25,8 @@ export type TDateRangeProp = {
 export type DateRangeSelectorProp = {
   value?: TDateRangeProp
   onSelect: (value: TDateRangeProp) => void
+  showFooter?: boolean
+  defaultSelected?: boolean
 }
 
 type TDateRangeSelectorContentProp = {
@@ -32,15 +35,27 @@ type TDateRangeSelectorContentProp = {
   endDate?: Date
 }
 
-const DateRangeSelectorContent = ({
+type TDateFooter = {
+  value: string
+  title: string
+}
+
+const dateButtons = [
+  { value: 'today', title: 'Today' },
+  { value: 'yesterday', title: 'Yesterday' },
+  { value: 'last7days', title: 'Last 7 days' },
+  { value: 'last30days', title: 'Last 30 days' },
+]
+
+function DateRangeSelectorContent({
   value,
   startDate,
   endDate,
-}: TDateRangeSelectorContentProp): JSX.Element => {
+}: TDateRangeSelectorContentProp): JSX.Element {
   if (!value) {
     return (
       <div className='flex'>
-        <img src={calendarIcon} className='ml-4 mr-2' />
+        <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
         All
       </div>
     )
@@ -49,33 +64,37 @@ const DateRangeSelectorContent = ({
   if (!endDate) {
     return (
       <div className='flex'>
-        <img src={calendarIcon} className='ml-4 mr-2' />
+        <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
         {dayjs(startDate).format('MM.DD.YY')}
         {' - '}
       </div>
     )
   }
-
+  const vStartDate: string = dayjs(startDate).format('MM.DD.YY') || ''
+  const vEndDate: string = dayjs(endDate).format('MM.DD.YY') || ''
   return (
     <div className='flex'>
-      <img src={calendarIcon} className='ml-4 mr-2' />
-      {dayjs(startDate).format('MM.DD.YY') +
-        ' - ' +
-        dayjs(endDate).format('MM.DD.YY')}
+      <img src={calendarIcon} className='ml-4 mr-2' alt='Calendar Icon' />
+      {vStartDate + ' - ' + vEndDate}
     </div>
   )
 }
 
-const DateRangeSelector = ({
+export default function DateRangeSelector({
   value,
   onSelect,
-}: DateRangeSelectorProp): JSX.Element => {
+  showFooter = false,
+  defaultSelected = false,
+}: DateRangeSelectorProp): JSX.Element {
   const [startDate, setStartDate] = React.useState<Date>(
     value?.start || new Date(),
   )
   const [endDate, setEndDate] = React.useState<Date>(value?.end || new Date())
 
   const [isOpenCalendar, setOpenCalendar] = useState(false)
+  const [dateTitle, setDateTitle] = useState<TDateFooter | null>(
+    defaultSelected ? dateButtons[0] : null,
+  )
 
   const handleOnChange = (dates: [Date, Date] | null): void => {
     if (dates) {
@@ -93,6 +112,42 @@ const DateRangeSelector = ({
     }
   }
 
+  const renderDecreaseMonthButton = (
+    decreaseMonth: () => void,
+    prevMonthButtonDisabled: boolean,
+  ) => (
+    <button
+      onClick={decreaseMonth}
+      disabled={prevMonthButtonDisabled}
+      className='focus:outline-none p-1 mr-5'
+      type='button'
+    >
+      <Caret
+        to='left'
+        size={12}
+        className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+      />
+    </button>
+  )
+
+  const renderIncreaseMonthMonthButton = (
+    increaseMonth: () => void,
+    nextMonthButtonDisabled: boolean,
+  ) => (
+    <button
+      onClick={increaseMonth}
+      disabled={nextMonthButtonDisabled}
+      className='focus:outline-none p-1'
+      type='button'
+    >
+      <Caret
+        to='right'
+        size={12}
+        className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
+      />
+    </button>
+  )
+
   const customHeader = ({
     date,
     decreaseMonth,
@@ -106,37 +161,64 @@ const DateRangeSelector = ({
         {dayjs(date).year()}
       </h5>
       <div>
-        <button
-          onClick={decreaseMonth}
-          disabled={prevMonthButtonDisabled}
-          className='focus:outline-none p-1 mr-5'
-        >
-          <Caret
-            to='left'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
-        <button
-          onClick={increaseMonth}
-          disabled={nextMonthButtonDisabled}
-          className='focus:outline-none p-1'
-        >
-          <Caret
-            to='right'
-            size={12}
-            className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400'
-          />
-        </button>
+        {renderDecreaseMonthButton(decreaseMonth, prevMonthButtonDisabled)}
+        {renderIncreaseMonthMonthButton(increaseMonth, nextMonthButtonDisabled)}
       </div>
     </div>
   )
+
+  const handleDateSelect = (date: TDateFooter): void => {
+    if (dateTitle?.value === date.value) {
+      return
+    }
+    setDateTitle(date)
+    const now = new Date()
+    switch (date.value) {
+      case 'today':
+        setStartDate(now)
+        setEndDate(now)
+        onSelect({
+          start: new Date(),
+          end: new Date(),
+        })
+        break
+      case 'yesterday':
+        setStartDate(dayjs(new Date()).add(-1, 'days').toDate())
+        setEndDate(now)
+        onSelect({
+          start: dayjs(new Date()).add(-1, 'days').toDate(),
+          end: new Date(),
+        })
+        break
+      case 'last7days':
+        setStartDate(dayjs(new Date()).add(-1, 'weeks').toDate())
+        setEndDate(now)
+        onSelect({
+          start: dayjs(new Date()).add(-1, 'weeks').toDate(),
+          end: new Date(),
+        })
+        break
+      case 'last30days':
+        setStartDate(dayjs(new Date()).add(-30, 'days').toDate())
+        setEndDate(now)
+        onSelect({
+          start: dayjs(new Date()).add(-30, 'days').toDate(),
+          end: new Date(),
+        })
+        break
+      default:
+        break
+    }
+  }
 
   return (
     <div className='relative'>
       <div
         onClick={() => setOpenCalendar(!isOpenCalendar)}
         className='shadow-input flex my-1 h-9 items-center text-gray-2d justify-between cursor-pointer border border-gray-200 border-solid rounded hover:border-blue-3f active:border-blue-3f'
+        role='button'
+        aria-hidden
+        tabIndex={0}
       >
         <DateRangeSelectorContent
           value={value}
@@ -149,6 +231,7 @@ const DateRangeSelector = ({
             'transition duration-200 absolute ml-2 right-3 transform',
             isOpenCalendar && 'rotate-180',
           )}
+          alt='Calendar Icon'
         />
       </div>
       {isOpenCalendar && (
@@ -165,11 +248,31 @@ const DateRangeSelector = ({
             endDate={endDate}
             selectsRange
             inline
-          />
+          >
+            {showFooter ? (
+              <div className='p-3 pb-5'>
+                <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
+                  {dateButtons.map(date => (
+                    <SelectButton
+                      key={date.value}
+                      isActive={date.value === dateTitle?.value}
+                      onClick={() => handleDateSelect(date)}
+                    >
+                      {date.title}
+                    </SelectButton>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </DatePicker>
         </div>
       )}
     </div>
   )
 }
 
-export default DateRangeSelector
+DateRangeSelectorContent.defaultProps = {
+  value: undefined,
+  endDate: undefined,
+  startDate: undefined,
+}

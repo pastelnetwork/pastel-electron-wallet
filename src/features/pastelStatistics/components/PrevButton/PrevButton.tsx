@@ -7,7 +7,7 @@ type TPrevButton = {
   color: string
 }
 
-const PrevButton = ({ color }: TPrevButton): JSX.Element => {
+export default function PrevButton({ color }: TPrevButton): JSX.Element {
   return (
     <Link to={ROUTES.STATISTICS} className={styles.backButtonLink}>
       <i
@@ -17,5 +17,3 @@ const PrevButton = ({ color }: TPrevButton): JSX.Element => {
     </Link>
   )
 }
-
-export default PrevButton

@@ -5,11 +5,11 @@ export type TCheckIconProps = TIconProps & {
   strokeWidth?: number
 }
 
-export const CheckIcon = ({
+export function CheckIcon({
   size,
   className,
   strokeWidth = 2,
-}: TCheckIconProps): JSX.Element => {
+}: TCheckIconProps): JSX.Element {
   return (
     <svg
       width={size}

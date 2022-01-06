@@ -3,7 +3,10 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import ReassignTagModal, { TReassignTagModal } from './reassignTagModal'
 
-const Template: Story<TReassignTagModal> = ({ title, isOpen }) => {
+const Template: Story<TReassignTagModal> = ({
+  title,
+  isOpen,
+}: TReassignTagModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

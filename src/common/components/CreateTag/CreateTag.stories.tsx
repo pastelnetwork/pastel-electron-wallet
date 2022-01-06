@@ -1,19 +1,22 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Story, Meta } from '@storybook/react'
 import CreateTag, { TCreateTag } from './CreateTag'
 
 export const CreateTagDefault: Story<TCreateTag> = () => {
   const [tags, setTags] = React.useState<Array<string>>([])
 
-  const handleTags = (tag: string) => {
-    setTags(tags => [...tags, tag])
-  }
+  const handleTags = useCallback(
+    (tag: string) => {
+      setTags(tags => [...tags, tag])
+    },
+    [tags],
+  )
 
   return (
     <div>
       <CreateTag onSave={handleTags} />
-      {tags.map((tag, idx) => (
-        <span key={idx}>{tag}, </span>
+      {tags.map(tag => (
+        <span key={tag}>{tag}, </span>
       ))}
     </div>
   )

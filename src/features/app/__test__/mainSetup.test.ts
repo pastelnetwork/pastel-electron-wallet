@@ -1,3 +1,5 @@
+import log from 'electron-log'
+
 import { redirectDeepLinkingUrl, setupDeepLinking } from '../../deepLinking'
 import { setupAutoUpdater } from '../autoUpdater'
 import { setupOptimizeImageHandler } from '../../nft/addNFT/imageOptimization/ImageOptimization.main'
@@ -53,7 +55,7 @@ describe('mainSetup', () => {
 
     expect(createWindow).toHaveBeenCalled()
 
-    emitMainEvent('rendererStarted', null)
+    await emitMainEvent('rendererStarted', null)
 
     expect(sendEventToRenderer).toHaveBeenCalledWith(
       'setAppInfo',
@@ -75,7 +77,7 @@ describe('mainSetup', () => {
   })
 
   test('retryInitializingApp event should start wallet node, send rpc config and redirect deep linking', async () => {
-    emitMainEvent('retryInitializingApp', null)
+    await emitMainEvent('retryInitializingApp', null)
     expect(startWalletNode).toHaveBeenCalled()
     await nextTickPromise()
     expect(sendEventToRenderer).toHaveBeenCalled()
@@ -113,7 +115,7 @@ describe('mainSetup', () => {
 
     const event = new Event('close')
     event.preventDefault = jest.fn()
-    onWindowClose(event)
+    await onWindowClose(event)
 
     await nextTickPromise()
 
@@ -128,7 +130,7 @@ describe('mainSetup', () => {
   test('should quit after 10 seconds if renderer hangs', async () => {
     jest.useFakeTimers()
     resetWindowCloseFlags()
-    console.warn = jest.fn()
+    log.warn = jest.fn()
 
     asMock(mainEventPromise).mockReturnValueOnce(
       new Promise(() => {
@@ -137,11 +139,20 @@ describe('mainSetup', () => {
     )
 
     onWindowClose(new Event('close'))
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     await nextTickPromise()
     expect(app.quit).not.toHaveBeenCalled()
 
     jest.advanceTimersByTime(10000)
-    expect(console.warn).toHaveBeenCalledWith('Timeout, quitting')
+    expect(log.warn).toHaveBeenCalledWith('Timeout, quitting')
     expect(app.quit).toHaveBeenCalled()
   })
 })

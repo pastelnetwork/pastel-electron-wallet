@@ -52,7 +52,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       appliedStyleValid = true,
       inputClassName,
       ...otherProps
-    },
+    }: TInput,
     ref,
   ) => {
     const classes = cn('relative flex items-center w-full', className)
@@ -81,48 +81,63 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       'bg-line -z-20': disabled,
     })
 
+    const renderInputControl = () => (
+      <div
+        className='relative flex items-center w-full cursor-default'
+        onClick={onClick}
+        role='button'
+        tabIndex={0}
+        aria-hidden='true'
+      >
+        {prepend && <div className='pl-2 select-none'>{prepend}</div>}
+        <input
+          id={id}
+          ref={ref}
+          value={value}
+          className={inputClasses}
+          onChange={onChange}
+          type={type}
+          placeholder={placeholder}
+          {...otherProps}
+          disabled={disabled}
+        />
+        <fieldset className={fieldsetClasses} />
+        {hint && hintAsTooltip && (
+          <div
+            className={cn(
+              'absolute bg-gray-33 text-white rounded-lg z-10 text-xs font-medium p-2 right-0 hintAsTooltip',
+              styles.hintAsTooltip,
+            )}
+          >
+            {hint}
+          </div>
+        )}
+
+        {append && <div className='pr-2'>{append}</div>}
+        {isValid === true && (
+          <div className='pr-2'>
+            <SVG src={CheckIcon} className='flex justify-center items-center' />
+          </div>
+        )}
+        {isValid === false && (
+          <img src={TimesIcon} className='w-3 mr-3' alt='Times Icon' />
+        )}
+      </div>
+    )
+
     return (
       <div className={wrapperClasses}>
         {label && <div className={labelClassName}>{label}</div>}
         <div className={classes}>
-          <div className='relative flex items-center w-full' onClick={onClick}>
-            {prepend && <div className='pl-2 select-none'>{prepend}</div>}
-            <input
-              id={id}
-              ref={ref}
-              value={value}
-              className={inputClasses}
-              onChange={onChange}
-              type={type}
-              placeholder={placeholder}
-              {...otherProps}
-              disabled={disabled}
-            />
-            <fieldset className={fieldsetClasses} />
-            {hint && hintAsTooltip && (
-              <div
-                className={cn(
-                  'absolute bg-gray-33 text-white rounded-lg z-10 text-xs font-medium p-2 right-0 hintAsTooltip',
-                  styles.hintAsTooltip,
-                )}
-              >
-                {hint}
-              </div>
-            )}
-
-            {append && <div className='pr-2'>{append}</div>}
-            {isValid === true && (
-              <div className='pr-2'>
-                <SVG
-                  src={CheckIcon}
-                  className='flex justify-center items-center'
-                />
-              </div>
-            )}
-            {isValid === false && <img src={TimesIcon} className='w-3 mr-3' />}
-          </div>
+          {renderInputControl()}
           {appendOutside && (
-            <div className='ml-4 select-none' onClick={onClick}>
+            <div
+              className='ml-4 select-none cursor-default'
+              onClick={onClick}
+              role='button'
+              aria-hidden
+              tabIndex={0}
+            >
               {appendOutside}
             </div>
           )}
@@ -144,5 +159,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
     )
   },
 )
+
+Input.displayName = 'Input'
 
 export default Input

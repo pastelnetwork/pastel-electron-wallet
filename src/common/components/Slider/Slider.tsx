@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { Range } from 'react-range'
 import cn from 'classnames'
 import { SliderShape, TWidth } from './SliderShape'
@@ -24,6 +24,7 @@ export type TSliderProps = {
   minMaxAlignCenter?: boolean
   step?: number | undefined
   alwaysShowTooltip?: boolean
+  customStartValue?: string
 } & (
   | {
       value: number
@@ -57,6 +58,7 @@ export default function Slider({
   minMaxClassName = 'top-5 text-gray-2d font-medium text-sm',
   minMaxAlignCenter = false,
   alwaysShowTooltip,
+  customStartValue,
   ...props
 }: TSliderProps): JSX.Element {
   const stickToBottom = variant === 'stickToBottom'
@@ -65,10 +67,12 @@ export default function Slider({
       ? [props.steps[0], props.steps[props.steps.length - 1]]
       : [props.min, props.max]
 
-  let values: number[]
-  let setValues: (values: number[]) => void
-  let startPercent: number
-  let endPercent: number
+  let values: number[] = []
+  let setValues: (values: number[]) => void = () => {
+    //noop
+  }
+  let startPercent = 0
+  let endPercent = 100
 
   if ('value' in props) {
     values = [valueToFraction(props, props.value)]
@@ -90,14 +94,17 @@ export default function Slider({
     endPercent = sliderValueToPercent(values[1])
   }
 
-  return (
-    <Range
-      min={0}
-      max={sliderMax}
-      step={props.step}
-      values={values}
-      onChange={values => setValues(values)}
-      renderTrack={({ props: trackProps, children }) => (
+  const onChange = useCallback(
+    (values: number[]) => {
+      setValues(values)
+    },
+    [values],
+  )
+
+  const renderTrack = useCallback(
+    ({ props: trackProps, children }) => {
+      const transform: string = trackProps.style.transform || ''
+      return (
         <div
           className={cn('h-4 rounded relative group', className)}
           style={{
@@ -110,7 +117,7 @@ export default function Slider({
               stickToBottom
                 ? {
                     ...trackProps.style,
-                    transform: `${trackProps.style.transform} rotate(-1.3deg)`,
+                    transform: `${transform} rotate(-1.3deg)`,
                   }
                 : trackProps.style
             }
@@ -131,7 +138,7 @@ export default function Slider({
             >
               <div className={cn('flex-center', minMaxAlignCenter && 'w-0')}>
                 <div className={minMaxClassName}>
-                  {min === 0 ? min : formatValue(min)}
+                  {min === 0 ? customStartValue || min : formatValue(min)}
                 </div>
               </div>
               {'steps' in props &&
@@ -148,30 +155,45 @@ export default function Slider({
             </div>
           )}
         </div>
-      )}
-      renderThumb={({ props: thumbProps, value }) => (
-        <button
-          type='button'
+      )
+    },
+    [minMaxAlignCenter, startPercent, endPercent],
+  )
+
+  const renderThumb = useCallback(
+    ({ props: thumbProps, value }) => (
+      <button
+        type='button'
+        className={cn(
+          'absolute top-0 -ml-3 w-6 h-6 bg-white rounded-full shadow-depth-1 flex-center focus:outline-none',
+          stickToBottom && '-top-1',
+        )}
+        {...thumbProps}
+      >
+        <Tooltip2
+          text={formatTooltipValue(fractionToValue(props, value))}
+          show
           className={cn(
-            'absolute top-0 -ml-3 w-6 h-6 bg-white rounded-full shadow-depth-1 flex-center focus:outline-none',
-            stickToBottom && '-top-1',
+            'whitespace-nowrap duration-200 transition',
+            !alwaysShowTooltip && 'opacity-0 group-hover:opacity-100',
           )}
-          {...thumbProps}
         >
-          <Tooltip2
-            text={formatTooltipValue(fractionToValue(props, value))}
-            show
-            className={cn(
-              'whitespace-nowrap duration-200 transition',
-              !alwaysShowTooltip && 'opacity-0 group-hover:opacity-100',
-            )}
-          >
-            {ref => (
-              <div ref={ref} className='w-4 h-4 bg-blue-3f rounded-full' />
-            )}
-          </Tooltip2>
-        </button>
-      )}
+          {ref => <div ref={ref} className='w-4 h-4 bg-blue-3f rounded-full' />}
+        </Tooltip2>
+      </button>
+    ),
+    [values],
+  )
+
+  return (
+    <Range
+      min={0}
+      max={sliderMax}
+      step={props.step}
+      values={values}
+      onChange={onChange}
+      renderTrack={renderTrack}
+      renderThumb={renderThumb}
     />
   )
 }

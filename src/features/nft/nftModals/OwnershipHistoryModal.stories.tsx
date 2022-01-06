@@ -5,7 +5,9 @@ import OwnershipHistoryModal, {
   TOwnershipHistoryModal,
 } from './OwnershipHistoryModal'
 
-const Template: Story<TOwnershipHistoryModal> = ({ isOpen }) => {
+const Template: Story<TOwnershipHistoryModal> = ({
+  isOpen,
+}: TOwnershipHistoryModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (

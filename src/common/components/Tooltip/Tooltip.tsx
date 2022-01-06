@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import cn from 'classnames'
 import CSS from 'csstype'
 import { TooltipArrow } from '../Icons/TooltipArrow'
@@ -14,9 +14,10 @@ export type TTooltipProps = {
   marginLeft?: string
   marginTop?: string
   vPosPercent?: number
+  children: ReactNode
 }
 
-const Tooltip: FunctionComponent<TTooltipProps> = ({
+function Tooltip({
   type,
   classnames,
   wrapperClassNames,
@@ -27,7 +28,7 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
   vPosPercent = 150,
   marginLeft = '-5px',
   marginTop = '-5px',
-}) => {
+}: TTooltipProps): JSX.Element {
   const styles = {
     top: {
       width: `${width}px`,
@@ -40,11 +41,11 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       left: `calc(50% - ${width / 2}px)`,
     },
     right: {
-      width: `${autoWidth ? 'auto' : width + 'px'}`,
+      width: `${autoWidth ? 'auto' : width.toString() + 'px'}`,
       left: 'calc(100% + 10px)',
     },
     left: {
-      width: `${autoWidth ? 'auto' : width + 'px'}`,
+      width: `${autoWidth ? 'auto' : width.toString() + 'px'}`,
       right: 'calc(100% + 10px)',
     },
   }
@@ -77,7 +78,26 @@ const Tooltip: FunctionComponent<TTooltipProps> = ({
       marginTop,
     },
   }
-  let style: CSS.Properties, arrowStyle: CSS.Properties
+  let style: CSS.Properties = {
+      width: '',
+      right: '',
+      top: '',
+      bottom: '',
+      left: '',
+      transform: '',
+      marginTop: '',
+      marginLeft: '',
+    },
+    arrowStyle: CSS.Properties = {
+      width: '',
+      right: '',
+      top: '',
+      bottom: '',
+      left: '',
+      transform: '',
+      marginTop: '',
+      marginLeft: '',
+    }
   if (type === 'top') {
     style = styles.top
     arrowStyle = arrow_styles.bottom

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useCallback } from 'react'
 import Table, { TRow } from 'common/components/Table'
 import Checkbox from 'common/components/Checkbox'
 import { AddressForm } from './AddressForm'
@@ -13,6 +13,97 @@ import { formatPrice, timeAgo } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
 
 const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
+
+function PDFIcon({
+  value,
+  setCurrentAddress,
+  setExportKeysModalOpen,
+}: {
+  value: string
+  setCurrentAddress: (val: string) => void
+  setExportKeysModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleShowExportKeyModal = useCallback(() => {
+    setCurrentAddress(value)
+    setExportKeysModalOpen(true)
+  }, [])
+
+  return (
+    <button
+      onClick={handleShowExportKeyModal}
+      className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+      type='button'
+    >
+      <Tooltip
+        autoWidth
+        type='top'
+        width={130}
+        padding={5}
+        content='Open Private Key'
+        classnames='py-2 text-gray-a0'
+      >
+        <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
+      </Tooltip>
+    </button>
+  )
+}
+
+function QRCodeIcon({
+  row,
+  setCurrentAddress,
+  setIsQRCodeModalOpen,
+}: {
+  row: TRow
+  setCurrentAddress: (val: string) => void
+  setIsQRCodeModalOpen: (val: boolean) => void
+}): JSX.Element {
+  const handleShowQRCodeModal = useCallback(() => {
+    setCurrentAddress(row.address)
+    setIsQRCodeModalOpen(true)
+  }, [])
+
+  return (
+    <button
+      type='button'
+      className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
+      onClick={handleShowQRCodeModal}
+    >
+      <Tooltip
+        autoWidth
+        type='top'
+        width={130}
+        padding={5}
+        content='Open Address QR'
+        classnames='py-2 text-gray-a0'
+      >
+        <QRCode size={20} />
+      </Tooltip>
+    </button>
+  )
+}
+
+function SelectedAddressesCheckbox({
+  selectedAddresses,
+  address,
+  selectAddress,
+  row,
+}: {
+  selectedAddresses: string[]
+  address: string
+  selectAddress: (address: string, amount: number) => void
+  row: TRow
+}): JSX.Element {
+  const onClick = useCallback(() => {
+    selectAddress(address, row.amount)
+  }, [selectedAddresses, address])
+
+  return (
+    <Checkbox
+      isChecked={Boolean(selectedAddresses.includes(address))}
+      clickHandler={onClick}
+    />
+  )
+}
 
 export default function AddressesTable({
   addresses: { data: addresses, isLoading: isLoadingAddresses },
@@ -40,7 +131,7 @@ export default function AddressesTable({
     setSelectedAddressesModal,
   } = useWalletScreenContext()
 
-  const selectAddress = (address: string, amount: number) => {
+  const selectAddress = useCallback((address: string, amount: number) => {
     setSelectedAddresses(addresses => {
       if (addresses.includes(address)) {
         return addresses.filter(item => item !== address)
@@ -73,7 +164,8 @@ export default function AddressesTable({
         return { ...sources, [address]: amount }
       }
     })
-  }
+  }, [])
+
   const pastelPromoCodeList = pastelPromoCode.data
 
   const Columns = [
@@ -91,9 +183,11 @@ export default function AddressesTable({
               {!pastelPromoCodeList?.find(
                 promoCode => promoCode.address === address,
               ) ? (
-                <Checkbox
-                  isChecked={Boolean(selectedAddresses.includes(address))}
-                  clickHandler={() => selectAddress(address, row.amount)}
+                <SelectedAddressesCheckbox
+                  selectedAddresses={selectedAddresses}
+                  address={address}
+                  selectAddress={selectAddress}
+                  row={row}
                 />
               ) : (
                 <div className='w-5 h-5'></div>
@@ -134,24 +228,11 @@ export default function AddressesTable({
           loadingCell
         ) : (
           <div className='flex pl-6'>
-            <span
-              className='cursor-pointer rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-              onClick={() => {
-                setCurrentAddress(row.address)
-                setIsQRCodeModalOpen(true)
-              }}
-            >
-              <Tooltip
-                autoWidth={true}
-                type='top'
-                width={130}
-                padding={5}
-                content='Open Address QR'
-                classnames='py-2 text-gray-a0'
-              >
-                <QRCode size={20} />
-              </Tooltip>
-            </span>
+            <QRCodeIcon
+              row={row}
+              setCurrentAddress={setCurrentAddress}
+              setIsQRCodeModalOpen={setIsQRCodeModalOpen}
+            />
           </div>
         ),
     },
@@ -166,27 +247,11 @@ export default function AddressesTable({
         ) : (
           <div className='flex items-center'>
             <div className='text-gray-71 text-h5-medium'>private key</div>
-            <span
-              onClick={() => {
-                setCurrentAddress(value)
-                setExportKeysModalOpen(true)
-              }}
-              className='ml-9px rounded-full hover:bg-gray-f6 active:bg-gray-ec p-7px transition duration-300'
-            >
-              <Tooltip
-                autoWidth={true}
-                type='top'
-                width={130}
-                padding={5}
-                content='Open Private Key'
-                classnames='py-2 text-gray-a0'
-              >
-                <FilePDFIcon
-                  size={20}
-                  className='text-gray-88 cursor-pointer'
-                />
-              </Tooltip>
-            </span>
+            <PDFIcon
+              value={value}
+              setCurrentAddress={setCurrentAddress}
+              setExportKeysModalOpen={setExportKeysModalOpen}
+            />
           </div>
         ),
     },
@@ -210,15 +275,11 @@ export default function AddressesTable({
       custom: (address: string) =>
         isLoadingAddresses ? (
           loadingCell
-        ) : (
-          <>
-            {!pastelPromoCodeList?.find(
-              promoCode => promoCode.address === address,
-            ) ? (
-              <SelectPaymentSourceAmount address={address} />
-            ) : null}
-          </>
-        ),
+        ) : !pastelPromoCodeList?.find(
+            promoCode => promoCode.address === address,
+          ) ? (
+          <SelectPaymentSourceAmount address={address} />
+        ) : null,
     },
   ]
 
@@ -241,4 +302,10 @@ export default function AddressesTable({
       stickyTopClassName={stickyTopClassName}
     />
   )
+}
+
+AddressesTable.defaultProps = {
+  extendHeader: undefined,
+  extendHeaderClassName: '',
+  stickyTopClassName: '',
 }

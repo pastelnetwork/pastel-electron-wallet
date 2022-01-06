@@ -43,6 +43,25 @@ export const resetInstallExtensionsPromise = installExtensions.reset
 const ipcRendererEvents = new EventEmitter()
 const ipcMainEvents = new EventEmitter()
 
+export const ipcMain = {
+  on: jest.fn(
+    (channel: string, callback: (event: Event, payload: unknown) => void) =>
+      ipcMainEvents.on(channel, payload =>
+        callback(new Event(channel), payload),
+      ),
+  ),
+  once: jest.fn((channel: string, callback: () => void) =>
+    ipcMainEvents.once(channel, callback),
+  ),
+  handlers: {} as Record<string, (arg: unknown) => unknown>,
+  send: jest.fn((channel: string, payload: unknown) => {
+    ipcRendererEvents.emit(channel, payload)
+  }),
+  handle: jest.fn((channel: string, callback: () => unknown) => {
+    ipcMain.handlers[channel] = callback
+  }),
+}
+
 export const ipcRenderer = {
   removeAllListeners(channel: string): void {
     ipcRendererEvents.removeAllListeners(channel)
@@ -64,24 +83,8 @@ export const ipcRenderer = {
   }),
 }
 
-export const ipcMain = {
-  on: jest.fn(
-    (channel: string, callback: (event: Event, payload: unknown) => void) =>
-      ipcMainEvents.on(channel, payload =>
-        callback(new Event(channel), payload),
-      ),
-  ),
-  once: jest.fn((channel: string, callback: () => void) =>
-    ipcMainEvents.once(channel, callback),
-  ),
-  handlers: {} as Record<string, (arg: unknown) => unknown>,
-  send: jest.fn((channel: string, payload: unknown) => {
-    ipcRendererEvents.emit(channel, payload)
-  }),
-  handle: jest.fn((channel: string, callback: () => unknown) => {
-    ipcMain.handlers[channel] = callback
-  }),
-}
+export const nextTickPromise = (): Promise<void> =>
+  new Promise(resolve => process.nextTick(resolve))
 
 export const emitMainEvent = <Channel extends keyof TMainEvents>(
   channel: Channel,
@@ -101,9 +104,6 @@ export const emitRendererEvent = <Channel extends keyof TRendererEvents>(
 
 // eslint-disable-next-line
 export const asMock = (object: any): jest.Mock => object as jest.Mock
-
-export const nextTickPromise = (): Promise<void> =>
-  new Promise(resolve => process.nextTick(resolve))
 
 export const useTestDb = (callback: (db: Database) => void): void => {
   let db: Database

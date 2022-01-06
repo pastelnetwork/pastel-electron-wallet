@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 export type TResultShearchProps = {
   name: string
@@ -7,29 +7,38 @@ export type TResultShearchProps = {
   handleClick?: (param: string) => void
 }
 
-const ResultSearchRow = ({
+function ResultSearchRow({
   name,
   image,
   followers,
   handleClick,
-}: TResultShearchProps): JSX.Element => {
+}: TResultShearchProps): JSX.Element {
+  const onClick = useCallback(() => {
+    if (handleClick) {
+      handleClick(name)
+    }
+  }, [name])
+
   return (
-    <div
+    <button
       className='cursor-pointer flex items-center mb-4 justify-between'
-      onClick={() => {
-        handleClick && handleClick(name)
-      }}
+      onClick={onClick}
+      type='button'
     >
       <div className='flex items-center'>
         {image && (
-          <img src={image} className='w-[34px] h-[34px] rounded-full mr-5' />
+          <img
+            src={image}
+            className='w-[34px] h-[34px] rounded-full mr-5'
+            alt={name}
+          />
         )}
         <div className='text-base font-black text-gray-23'>{name}</div>
       </div>
       <div className='text-gray-a0 text-sm font-medium pr-[42px]'>
         {followers} followers
       </div>
-    </div>
+    </button>
   )
 }
 

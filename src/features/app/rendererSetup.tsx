@@ -19,10 +19,17 @@ import history from '../../common/utils/history'
 import * as ROUTES from '../../common/utils/constants/routes'
 import { ignorePromiseError, retryPromise } from '../../common/utils/promises'
 import { useEffect, useState } from 'react'
-import { WalletRPC } from '../../api/pastel-rpc'
+import { useZListUnspent, useTListUnspent } from '../../api/pastel-rpc'
 
 // workaround for Hot Module Replacement behavior to not start the same intervals twice
 const intervals: Record<string, ReturnType<typeof setInterval>> = {}
+
+const stopRpc = async () => {
+  const rpcConfig = getRpcConfig()
+  if (rpcConfig) {
+    await ignorePromiseError(RPC.doRPC('stop', [], rpcConfig))
+  }
+}
 
 export const rendererSetup = (): void => {
   const oneHour = 1000 * 60 * 60
@@ -43,13 +50,17 @@ export const rendererSetup = (): void => {
     PastelDB.init()
   })
 
-  onRendererEvent('setRpcConfig', async ({ rpcConfig }) => {
+  onRendererEvent('setRpcConfig', ({ rpcConfig }): void => {
     setRpcConfig(rpcConfig)
 
     retryPromise(
       async () => {
         const info = await RPC.getInfoObject(rpcConfig)
         store.dispatch(setPastelInfo({ info: { ...info } }))
+        setInterval(async () => {
+          const info = await RPC.getInfoObject(rpcConfig)
+          store.dispatch(setPastelInfo({ info: { ...info } }))
+        }, 4000)
       },
       {
         attempts: 10,
@@ -70,32 +81,41 @@ export const rendererSetup = (): void => {
     }
 
     if (history.location.pathname === ROUTES.LOADING) {
-      history.replace(ROUTES.WELCOME_PAGE)
+      const skipLogin =
+        process.env.NODE_ENV === 'development' &&
+        process.env.AUTO_LOGIN_USERNAME &&
+        process.env.AUTO_LOGIN_PASSWORD
+      history.replace(skipLogin ? ROUTES.DASHBOARD : ROUTES.ONBOARDING)
     }
   })
 
-  onRendererEvent('prepareToQuit', async () => {
+  const prepareToQuit = async (): Promise<void> => {
     await Promise.all([PastelDB.waitTillValid(), stopRpc()])
 
     sendEventToMain('rendererIsReadyForQuit', null)
+  }
+
+  onRendererEvent('prepareToQuit', () => {
+    prepareToQuit()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   })
 }
 
-const stopRpc = async () => {
-  const rpcConfig = getRpcConfig()
-  if (rpcConfig) {
-    await ignorePromiseError(RPC.doRPC('stop', [], rpcConfig))
-  }
-}
-
-export const RendererSetupHooks = (): null => {
+export function RendererSetupHooks(): null {
   const [hasRpcConfig, setHasRpcConfig] = useState(Boolean(getRpcConfig()))
 
   // Pre-load queries for Wallet screen for the list of addresses
   // Wallet balances, pastel prices are fetched by PastelDBThread
-  const walletRPC = new WalletRPC()
-  walletRPC.useZListUnspent({ enabled: hasRpcConfig })
-  walletRPC.useTListUnspent({ enabled: hasRpcConfig })
+  useZListUnspent({ enabled: hasRpcConfig })
+  useTListUnspent({ enabled: hasRpcConfig })
 
   useEffect(() => {
     sendEventToMain('rendererStarted', null)

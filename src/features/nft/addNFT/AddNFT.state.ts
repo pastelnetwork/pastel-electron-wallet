@@ -55,17 +55,23 @@ export type TAddNFTState = {
   nftData?: TNFTData
   image?: TImage
   crop?: TCrop
+  isImageCrop?: boolean
   isLossLess: boolean
   estimatedFee: number | undefined
   optimizationService: TImageOptimizationService
+  thumbnail: string
   setStep(step: Step): void
   setNftData(data: TNFTData): void
   setCrop(crop: TCrop): void
+  setImageCrop(status: boolean): void
   setImage(image: TImage): void
   goBack(): void
   goToNextStep(): void
   setIsLossLess(value: boolean): void
   setEstimatedFee(value: number | undefined): void
+  setThumbnail(val: string): void
+  percentage: number
+  setPercentage(val: number): void
 }
 
 export type TUseAddNFTProps = {
@@ -76,11 +82,14 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [step, setStep] = useState<Step>(Step.inputData)
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
+  const [isImageCrop, setImageCrop] = useState<boolean>(false)
   const [image, setImage] = useState<TImage>()
   const [isLossLess, setIsLossLess] = useState(true)
   const [estimatedFee, setEstimatedFee] = useState<number>()
+  const [thumbnail, setThumbnail] = useState<string>('')
+  const [percentage, setPercentage] = useState<number>(0)
   const optimizationService = useImageOptimizationService()
-
+  const vStep: number = step || 0
   return {
     step,
     stepsCount,
@@ -89,26 +98,32 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
     image,
     setImage,
     crop,
+    isImageCrop,
+    thumbnail,
+    setThumbnail,
     isLossLess,
     estimatedFee,
     setStep,
     setCrop,
+    setImageCrop,
     setEstimatedFee,
     optimizationService,
     setIsLossLess,
     goBack() {
       if (step > firstStep) {
-        setStep(step - 1)
+        setStep(vStep - 1)
       } else {
         onClose()
       }
     },
     goToNextStep() {
       if (step < lastStep) {
-        setStep(step + 1)
+        setStep(vStep + 1)
       } else {
         onClose()
       }
     },
+    percentage,
+    setPercentage,
   }
 }

@@ -91,7 +91,7 @@ export async function fetchTandZTransactions(
           )
 
           const inputAddresses: string[] = []
-          await result.vin.map(async (v: TVin) => {
+          result.vin.map(async (v: TVin) => {
             try {
               const { result } = await rpc<TRawTransactionResponse>(
                 'gettransaction',
@@ -140,9 +140,11 @@ export async function fetchTandZTransactions(
   const alltxns: TBaseTransaction[] = (await Promise.all(alltxnsPromise)).flat() // Now, for each tx in the array, call gettransaction
   const ztxlist = await Promise.all(
     alltxns.map(async tx => {
-      const txresponse = await rpc<TTransactionInfoResponse>('gettransaction', [
-        tx.txid,
-      ])
+      const txresponse = await rpc<TTransactionInfoResponse>(
+        'gettransaction',
+        [tx.txid],
+        { throw: true },
+      )
       const transaction: TTransaction = {
         account: '',
         address: '',
@@ -165,9 +167,9 @@ export async function fetchTandZTransactions(
       transaction.address = tx.address
       transaction.type = 'receive'
       transaction.amount = tx.amount
-      transaction.confirmations = txresponse.result.confirmations
+      transaction.confirmations = txresponse.confirmations
       transaction.txid = tx.txid
-      transaction.time = txresponse.result.time
+      transaction.time = txresponse.time
       transaction.index = tx.index || 0
       transaction.detailedTxns = [
         {
@@ -186,7 +188,7 @@ export async function fetchTandZTransactions(
     }),
   ) // Get transactions from the sent tx store
 
-  const sentTxns = await senttxstorePromise // Now concat the t and z transactions, and call the update function again
+  const sentTxns = senttxstorePromise // Now concat the t and z transactions, and call the update function again
   const alltxlist: TTransaction[] = ttxlist
     .concat(ztxlist)
     .concat(sentTxns)

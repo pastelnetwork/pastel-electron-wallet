@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import SVG from 'react-inlinesvg'
 import Input, { TInput } from './Input'
 import EyeIcon from '../../assets/icons/ico-eye.svg'
 import EyeIconHidden from '../../assets/icons/ico-eye-hidden.svg'
 
-const InputPassword = (props: TInput): JSX.Element => {
+function InputPassword(props: TInput): JSX.Element {
+  const { showPassword } = props
   const [type, setType] = useState<string>('password')
 
-  const toggleType = (): void =>
-    setType(type => (type === 'password' ? 'text' : 'password'))
+  const toggleType = useCallback(
+    (): void => setType(type => (type === 'password' ? 'text' : 'password')),
+    [type],
+  )
 
   useEffect(() => {
-    if (props.showPassword) {
+    if (showPassword) {
       setType('text')
     }
-  }, [props.showPassword])
+  }, [showPassword])
 
   const otherProps = { ...props }
   if ('showPassword' in otherProps) {

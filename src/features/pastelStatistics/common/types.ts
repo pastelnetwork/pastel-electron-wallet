@@ -56,3 +56,10 @@ export type TThemeInitOption = {
 export type TCsvHeaderType = {
   [key: string]: LabelKeyObject[]
 }
+
+export type TThemeButton = {
+  name: string
+  backgroundColor: string
+  splitLineColor: string
+  color: string
+}

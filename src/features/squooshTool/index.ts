@@ -1,4 +1,4 @@
-import squooshToolModal from './squooshToolModal'
+import SquooshToolModal from './squooshToolModal'
 
 export type { ISquooshToolModalState } from './squooshToolModalSlice'
 export {
@@ -7,4 +7,4 @@ export {
   squooshToolModalReducer,
 } from './squooshToolModalSlice'
 
-export default squooshToolModal
+export default SquooshToolModal

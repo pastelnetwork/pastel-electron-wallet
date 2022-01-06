@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useWalletScreenContext } from './walletScreen.context'
 import {
   useSetPaymentSource,
@@ -32,6 +32,17 @@ export default function SelectPaymentSourceAmount({
   const amount = allAddressAmounts.data?.[address] || 0
   const value = selected ?? amount
 
+  const handleOnChange = useCallback(
+    (selection: TOption) => {
+      const value = parseFormattedNumber(selection.value)
+      setPaymentSourcesModal(address, value)
+      if (!isModal) {
+        setPaymentSource(address, value)
+      }
+    },
+    [paymentSourcesModal, paymentSources],
+  )
+
   return (
     <SelectAmount
       className='text-gray-2d w-28'
@@ -42,13 +53,11 @@ export default function SelectPaymentSourceAmount({
         label: formatPrice(value, '', 4),
         value: String(value),
       }}
-      onChange={(selection: TOption) => {
-        const value = parseFormattedNumber(selection.value)
-        setPaymentSourcesModal(address, value)
-        if (!isModal) {
-          setPaymentSource(address, value)
-        }
-      }}
+      onChange={handleOnChange}
     />
   )
+}
+
+SelectPaymentSourceAmount.defaultProps = {
+  isModal: undefined,
 }

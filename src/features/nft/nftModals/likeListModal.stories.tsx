@@ -3,7 +3,7 @@ import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../common/components/Buttons'
 import LikeListModal, { TLikeListModal } from './likeListModal'
 
-const Template: Story<TLikeListModal> = ({ isOpen }) => {
+const Template: Story<TLikeListModal> = ({ isOpen }: TLikeListModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
 
   return (
