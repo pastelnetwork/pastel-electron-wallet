@@ -60,18 +60,18 @@ export type TAddNFTState = {
   estimatedFee: number | undefined
   optimizationService: TImageOptimizationService
   thumbnail: string
-  setStep(step: Step): void
-  setNftData(data: TNFTData): void
-  setCrop(crop: TCrop): void
-  setImageCrop(status: boolean): void
-  setImage(image: TImage): void
-  goBack(): void
-  goToNextStep(): void
-  setIsLossLess(value: boolean): void
-  setEstimatedFee(value: number | undefined): void
-  setThumbnail(val: string): void
+  setStep: (step: Step) => void
+  setNftData: (data: TNFTData) => void
+  setCrop: (crop: TCrop) => void
+  setImageCrop: (status: boolean) => void
+  setImage: (image: TImage) => void
+  goBack: () => void
+  goToNextStep: () => void
+  setIsLossLess: (value: boolean) => void
+  setEstimatedFee: (value: number | undefined) => void
+  setThumbnail: (val: string) => void
   percentage: number
-  setPercentage(val: number): void
+  setPercentage: (val: number) => void
 }
 
 export type TUseAddNFTProps = {

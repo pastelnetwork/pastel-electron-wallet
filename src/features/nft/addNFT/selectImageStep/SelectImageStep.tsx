@@ -165,6 +165,15 @@ export default function SelectImageStep({
   const handleCancelUpload = useCallback(() => {
     resetImageState()
     selectFile(undefined)
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     state.setPercentage(0)
     currentPercentage = 0
   }, [])

@@ -11,11 +11,11 @@ type TTransformProps = {
 }
 
 export const useImageZoom = (): {
-  onDragImage(e: DraggableEvent, data: DraggableData): void
+  onDragImage: (e: DraggableEvent, data: DraggableData) => void
   imageRef: RefObject<HTMLImageElement>
-  onWheelImage(e: WheelEvent): void
+  onWheelImage: (e: WheelEvent) => void
   controlRef: RefObject<HTMLDivElement>
-  onDragControl(e: DraggableEvent, data: DraggableData): void
+  onDragControl: (e: DraggableEvent, data: DraggableData) => void
   filledProgressBarRef: RefObject<HTMLDivElement>
   onMinus: () => void
   onPlus: () => void
