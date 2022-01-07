@@ -13,6 +13,7 @@ import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
 import { getStorageFee, TGetStorageFee } from 'api/estimate-fee'
 import { readUsersInfo } from 'common/utils/User'
 import { calcFileSize } from 'common/utils/file'
+import { removeNFTData } from '../AddNFT.store'
 import store from '../../../../redux/store'
 
 const getImageFile = (
@@ -149,6 +150,7 @@ export const submit = async ({
     const { task_id } = await artworkRegister(regParams)
     if (task_id) {
       setTaskId(task_id)
+      removeNFTData()
     }
     if (fs.existsSync(path.join(tempPath, image.name))) {
       fs.promises.unlink(path.join(tempPath, image.name))

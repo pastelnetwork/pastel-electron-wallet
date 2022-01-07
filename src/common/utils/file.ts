@@ -2,6 +2,8 @@ import fs from 'fs'
 import path from 'path'
 import log from 'electron-log'
 
+import store from '../../redux/store'
+
 export const readFileAsArrayBuffer = (file: File): Promise<ArrayBuffer> => {
   return new Promise<ArrayBuffer>((resolve, reject) => {
     const reader = new FileReader()
@@ -88,4 +90,22 @@ export const calcFileSize = (size?: number): number => {
     return 0
   }
   return parseFloat(Math.max(size / MB, 0.1).toFixed(1))
+}
+
+export const copyFile = async (
+  source: string,
+  destination: string,
+): Promise<string> => {
+  const dir = store.getState().appInfo.pastelWalletDirPath
+  if (!dir) {
+    throw new Error("Can't get path of User store")
+  }
+
+  if (!fs.existsSync(dir)) {
+    await fs.promises.mkdir(dir)
+  }
+
+  await fs.promises.copyFile(source, path.join(dir, destination))
+
+  return path.join(dir, destination)
 }
