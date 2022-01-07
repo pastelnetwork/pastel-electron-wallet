@@ -220,6 +220,17 @@ export default function AddNFT({
     [props],
   )
 
+  const renderConfirmModalControls = () => (
+    <div className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'>
+      <Button secondary className='w-1/2' onClick={handleCloseConfirmModal}>
+        No
+      </Button>
+      <Button className='w-1/2' onClick={handleRemoveNftData}>
+        Yes
+      </Button>
+    </div>
+  )
+
   const renderConfirmContentModal = useCallback(() => {
     return (
       <div className='paper p-5 w-[350px]'>
@@ -227,18 +238,7 @@ export default function AddNFT({
           <div className='text-lg font-medium text-center mt-5'>
             Are you sure you want to leave?
           </div>
-          <div className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'>
-            <Button
-              secondary
-              className='w-1/2'
-              onClick={handleCloseConfirmModal}
-            >
-              No
-            </Button>
-            <Button className='w-1/2' onClick={handleRemoveNftData}>
-              Yes
-            </Button>
-          </div>
+          {renderConfirmModalControls()}
         </div>
       </div>
     )
