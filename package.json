@@ -25,7 +25,7 @@
     "test": "jest",
     "format": "eslint --ignore-path=.gitignore --ext .ts,.tsx --fix . && prettier --ignore-path=.gitignore --loglevel=error --write .",
     "check-eslint": "eslint --ignore-path=.gitignore --ext .ts,.tsx --max-warnings=0 .",
-    "check-prettier": "prettier --ignore-path=.gitignore --list-different .",
+    "check-prettier": "prettier --ignore-path=.prettierignore --list-different .",
     "check-typescript": "tsc",
     "check-type-coverage": "type-coverage --strict --ignoreCatch --atLeast=100",
     "check-all": "yarn check-prettier && yarn check-eslint && yarn check-typescript",
