@@ -171,7 +171,9 @@ export const mainSetup = (): void => {
 
   app
     .whenReady()
-    .then(setupWindow)
+    .then(() => {
+      setupWindow()
+    })
     .catch(() => {
       // noop
     })

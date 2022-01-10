@@ -22,6 +22,8 @@ export default function FullScreenImage({
     controlRef,
     onDragControl,
     filledProgressBarRef,
+    onMinus,
+    onPlus,
   } = useImageZoom()
 
   const onDragStart = useCallback((e: DragEvent<HTMLImageElement>) => {
@@ -52,7 +54,11 @@ export default function FullScreenImage({
 
   const renderFilledProgressBar = () => (
     <div className='relative w-full h-full flex-between text-white'>
-      <button type='button' className='h-4 px-1'>
+      <button
+        type='button'
+        className='h-4 px-1 cursor-pointer'
+        onClick={onMinus}
+      >
         <Minus size={12} />
       </button>
       <div className='flex-grow mx-2 py-2 relative' ref={controlRef}>
@@ -64,7 +70,11 @@ export default function FullScreenImage({
           {renderDraggableContentFilledProgressBar()}
         </DraggableCore>
       </div>
-      <button type='button' className='h-4 px-1'>
+      <button
+        type='button'
+        className='h-4 px-1 cursor-pointer'
+        onClick={onPlus}
+      >
         <Plus size={12} />
       </button>
     </div>

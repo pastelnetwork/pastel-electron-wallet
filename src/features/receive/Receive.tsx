@@ -34,10 +34,10 @@ export interface IReceiveProps {
   receivePageState?: {
     newAddress: string
   }
-  fetchAndSetSinglePrivKey(addr: string): void
-  hidePrivKey(): void
-  fetchAndSetSingleViewKey(addr: string): void
-  createNewAddress(isZaddr: boolean): void
+  fetchAndSetSinglePrivKey: (addr: string) => void
+  hidePrivKey: () => void
+  fetchAndSetSingleViewKey: (addr: string) => void
+  createNewAddress: (isZaddr: boolean) => void
   rerenderKey: string
   transactions?: ITransactionsProps[]
 }

@@ -1,9 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
 import {
   TImageOptimizationService,
   useImageOptimizationService,
 } from './imageOptimization/ImageOptimization.service'
 import { TImageType } from './AddNft.constants'
+import {
+  saveNFTDataStore,
+  getNFTDataStore,
+  setFilesOptimization,
+} from './AddNFT.store'
 
 export enum Step {
   inputData,
@@ -60,18 +66,18 @@ export type TAddNFTState = {
   estimatedFee: number | undefined
   optimizationService: TImageOptimizationService
   thumbnail: string
-  setStep(step: Step): void
-  setNftData(data: TNFTData): void
-  setCrop(crop: TCrop): void
-  setImageCrop(status: boolean): void
-  setImage(image: TImage): void
-  goBack(): void
-  goToNextStep(): void
-  setIsLossLess(value: boolean): void
-  setEstimatedFee(value: number | undefined): void
-  setThumbnail(val: string): void
+  setStep: (step: Step) => void
+  setNftData: (data: TNFTData) => void
+  setCrop: (crop: TCrop) => void
+  setImageCrop: (status: boolean) => void
+  setImage: (image: TImage) => void
+  goBack: () => void
+  goToNextStep: () => void
+  setIsLossLess: (value: boolean) => void
+  setEstimatedFee: (value: number | undefined) => void
+  setThumbnail: (val: string) => void
   percentage: number
-  setPercentage(val: number): void
+  setPercentage: (val: number) => void
 }
 
 export type TUseAddNFTProps = {
@@ -79,6 +85,7 @@ export type TUseAddNFTProps = {
 }
 
 export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
+  const nftStore = getNFTDataStore()
   const [step, setStep] = useState<Step>(Step.inputData)
   const [nftData, setNftData] = useState<TNFTData>()
   const [crop, setCrop] = useState<TCrop>()
@@ -90,6 +97,38 @@ export const useAddNFTState = ({ onClose }: TUseAddNFTProps): TAddNFTState => {
   const [percentage, setPercentage] = useState<number>(0)
   const optimizationService = useImageOptimizationService()
   const vStep: number = step || 0
+
+  useEffect(() => {
+    if (step) {
+      saveNFTDataStore({
+        ...nftStore,
+        step,
+        nftData,
+        crop,
+        isImageCrop,
+        image,
+        isLossLess,
+        estimatedFee,
+        thumbnail,
+        percentage,
+      })
+
+      if (optimizationService.files?.length) {
+        setFilesOptimization(optimizationService.files)
+      }
+    }
+  }, [
+    step,
+    nftData,
+    crop,
+    isImageCrop,
+    image,
+    isLossLess,
+    estimatedFee,
+    thumbnail,
+    percentage,
+  ])
+
   return {
     step,
     stepsCount,

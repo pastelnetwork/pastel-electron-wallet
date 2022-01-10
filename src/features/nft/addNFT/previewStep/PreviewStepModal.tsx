@@ -16,6 +16,7 @@ import {
 } from './PreviewStep.service'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { setSelectedFile } from '../AddNFT.store'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
@@ -52,6 +53,7 @@ export default function PreviewStepModal({
 
   const submit = () => {
     if (croppedImage && submittable) {
+      setSelectedFile(state.optimizationService.selectedFile)
       state.goToNextStep()
     }
   }
@@ -108,7 +110,7 @@ export default function PreviewStepModal({
       }
       state.setIsLossLess(val)
     },
-    [state.isLossLess],
+    [state.isLossLess, state.optimizationService],
   )
 
   return (

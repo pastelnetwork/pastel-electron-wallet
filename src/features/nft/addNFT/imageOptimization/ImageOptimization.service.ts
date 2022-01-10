@@ -20,6 +20,7 @@ export type TImageOptimizationService = {
   selectedFile?: TOptimizedFileWithIndex
   setSelectedFile(file?: TOptimizedFileWithIndex): void
   optimizeImage(type: TImageType, arrayBuffer: ArrayBuffer): Promise<void>
+  setFiles(files?: TOptimizedFile[]): void
 }
 
 export const useImageOptimizationService = (): TImageOptimizationService => {
@@ -34,6 +35,7 @@ export const useImageOptimizationService = (): TImageOptimizationService => {
     files,
     selectedFile,
     setSelectedFile,
+    setFiles,
     optimizeImage: async (type: TImageType, arrayBuffer: ArrayBuffer) => {
       setStatus(OptimizationStatus.processing)
       setFiles(undefined)

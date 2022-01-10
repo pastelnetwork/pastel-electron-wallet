@@ -9,6 +9,8 @@ import { allowedTypeNames, ImageType } from '../AddNft.constants'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import Tooltip from 'common/components/Tooltip'
 import ProgressCircle from 'common/components/ProgressCircle'
+import { copyFile } from 'common/utils/file'
+import { setSelectedFile, setFileUploaded } from '../AddNFT.store'
 
 export type TSelectStepProps = {
   state: TAddNFTState
@@ -112,6 +114,7 @@ export default function SelectImageStep({
     isAnimated,
     imageFile,
     resetImageState,
+    selectFile,
   } = service
   const currencyName = useCurrencyName()
 
@@ -124,8 +127,32 @@ export default function SelectImageStep({
   const handleBack = useCallback(() => {
     state.goBack()
   }, [])
-
   const handleImageOptimizationSubmit = useCallback(() => {
+    const saveNftDataStore = async () => {
+      if (service.selectedFile) {
+        setSelectedFile({
+          size: service.selectedFile.size,
+          fileUrl: service.selectedFile.path,
+          quality: 100,
+          index: 6,
+        })
+        const file = await copyFile(
+          service.selectedFile.path,
+          service.selectedFile.name,
+        )
+        setFileUploaded(file)
+      }
+    }
+    saveNftDataStore()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     service.submit()
   }, [service])
 
@@ -163,6 +190,16 @@ export default function SelectImageStep({
 
   const handleCancelUpload = useCallback(() => {
     resetImageState()
+    selectFile(undefined)
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
     state.setPercentage(0)
     currentPercentage = 0
   }, [])

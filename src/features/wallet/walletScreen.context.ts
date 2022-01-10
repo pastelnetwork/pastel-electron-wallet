@@ -16,7 +16,7 @@ export type TWalletScreenContextValues = {
   addressBook: TUseAddressBookResult
   lastActivityTimes: UseQueryResult<Record<TAddress, number>>
   hideEmptyAddresses: boolean
-  toggleHideEmptyAddresses(hide: boolean): void
+  toggleHideEmptyAddresses: (hide: boolean) => void
   selectedAddresses: TAddress[]
   setSelectedAddresses: Dispatch<SetStateAction<TAddress[]>>
   paymentSources: TPaymentSources
@@ -36,7 +36,7 @@ export type TWalletScreenContextValues = {
   isAddPastelPromoCodeModalOpen: boolean
   setAddPastelPromoCodeModalOpen: Dispatch<SetStateAction<boolean>>
   currentAddress?: string
-  setCurrentAddress(address?: string): void
+  setCurrentAddress: (address?: string) => void
   selectedAmount: number
   pastelPromoCode: UseQueryResult<TPastelPromoCode[]>
   paymentSourcesModal: TPaymentSources
@@ -46,7 +46,7 @@ export type TWalletScreenContextValues = {
   isNewAddress: boolean
   setNewAddress: Dispatch<SetStateAction<boolean>>
   selectedDate: TDate
-  setSelectedDate(dates: TDate): void
+  setSelectedDate: (dates: TDate) => void
 }
 
 export const WalletScreenContext = createContext(

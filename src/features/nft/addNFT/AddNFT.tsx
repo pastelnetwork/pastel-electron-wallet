@@ -17,7 +17,9 @@ import SubmitStep from './submitStep/SubmitStep'
 import ApprovedStep from './approvedStep/ApprovedStep'
 import InputNFTDataStep from './inputNFTDataStep/InputNFTDataStep'
 import { walletWebSocketURL } from 'common/constants/urls'
+import { Button } from 'common/components/Buttons'
 import { artworkGetTaskDetail } from 'api/walletNode/artwork-api/artwork'
+import { getNFTDataStore, removeNFTData } from './AddNFT.store'
 
 export type TAddNFTProps = { open: boolean } & TUseAddNFTProps
 
@@ -29,8 +31,48 @@ function AddNFTContent({
   toggleCloseButton(): void
   setTaskId: (val: string) => void
 }) {
+  const nftStore = getNFTDataStore()
   const state = useAddNFTState(props)
   const { step } = state
+
+  useEffect(() => {
+    if (nftStore.step) {
+      state.setStep(nftStore.step)
+    }
+    if (nftStore.nftData) {
+      state.setNftData(nftStore.nftData)
+    }
+    if (nftStore.crop) {
+      state.setCrop(nftStore.crop)
+    }
+    if (nftStore.isImageCrop) {
+      state.setImageCrop(nftStore.isImageCrop)
+    }
+    if (nftStore.image) {
+      state.setImage({
+        ...nftStore.image,
+        url: nftStore.fileUploaded || nftStore.image.url,
+      })
+    }
+    if (nftStore.isLossLess) {
+      state.setIsLossLess(nftStore.isLossLess)
+    }
+    if (nftStore.estimatedFee) {
+      state.setEstimatedFee(nftStore.estimatedFee)
+    }
+    if (nftStore.thumbnail) {
+      state.setThumbnail(nftStore.thumbnail)
+    }
+    if (nftStore.percentage && nftStore.percentage === 100) {
+      state.setPercentage(nftStore.percentage)
+    }
+    if (nftStore.files) {
+      state.optimizationService.setFiles(nftStore.files)
+    }
+    if (nftStore.selectedFile) {
+      state.optimizationService.setSelectedFile(nftStore.selectedFile)
+    }
+  }, [])
 
   if (step === Step.inputData) {
     return <InputNFTDataStep state={state} />
@@ -97,6 +139,7 @@ export default function AddNFT({
   ...props
 }: TAddNFTProps): JSX.Element {
   const [showCloseButton, toggleCloseButton] = useToggle(true)
+  const [showConfirmModal, setShowConfirmModal] = useState<boolean>(false)
   const [taskId, setTaskId] = useState<string>('')
 
   const getTaskState = () => {
@@ -146,8 +189,23 @@ export default function AddNFT({
 
   const handleCloseModal = useCallback(() => {
     if (onClose) {
-      onClose()
+      const nftStore = getNFTDataStore()
+      if (nftStore.step === Step.approved) {
+        setShowConfirmModal(true)
+      } else {
+        onClose()
+      }
     }
+  }, [])
+
+  const handleCloseConfirmModal = useCallback(() => {
+    setShowConfirmModal(false)
+  }, [])
+
+  const handleRemoveNftData = useCallback(() => {
+    removeNFTData()
+    setShowConfirmModal(false)
+    onClose()
   }, [])
 
   const renderModalContent = useCallback(
@@ -162,12 +220,44 @@ export default function AddNFT({
     [props],
   )
 
+  const renderConfirmModalControls = () => (
+    <div className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'>
+      <Button secondary className='w-1/2' onClick={handleCloseConfirmModal}>
+        No
+      </Button>
+      <Button className='w-1/2' onClick={handleRemoveNftData}>
+        Yes
+      </Button>
+    </div>
+  )
+
+  const renderConfirmContentModal = useCallback(() => {
+    return (
+      <div className='paper p-5 w-[350px]'>
+        <div className='pt-5'>
+          <div className='text-lg font-medium text-center mt-5'>
+            Are you sure you want to leave?
+          </div>
+          {renderConfirmModalControls()}
+        </div>
+      </div>
+    )
+  }, [])
+
   return (
-    <Modal
-      open={open}
-      onClose={handleCloseModal}
-      closeButton={showCloseButton}
-      render={renderModalContent}
-    />
+    <>
+      <Modal
+        open={open}
+        onClose={handleCloseModal}
+        closeButton={showCloseButton}
+        render={renderModalContent}
+      />
+      <Modal
+        open={showConfirmModal}
+        onClose={handleCloseConfirmModal}
+        closeButton
+        render={renderConfirmContentModal}
+      />
+    </>
   )
 }
