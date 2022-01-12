@@ -95,7 +95,7 @@ export default function NewPassword(): JSX.Element {
       await writeUsersInfo([user], true)
       setSuccess(true)
     }
-  }, [])
+  }, [newPassword, repeatPassword])
 
   const handleNewPasswordChange = useCallback(
     (event: FormEvent<HTMLInputElement>) => {

@@ -121,7 +121,8 @@ export default function PasswordRecovery(): JSX.Element {
       ) : null}
       {isRestore && !isSuccess ? (
         <div className='mt-9 text-center text-base font-normal text-gray-a0'>
-          Already have an account? <Link to={ROUTES.LOGIN}>Login</Link>
+          Already restored account from backup?{' '}
+          <Link to={ROUTES.LOGIN}>Login</Link>
         </div>
       ) : null}
     </div>

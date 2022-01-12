@@ -373,6 +373,8 @@ async function importAddressBook(addresses: TAddressBook[]) {
 
 async function importPastelId(pastelIds: TPastelWithContentID[]) {
   const pastelKeysPath = store.getState().appInfo.pastelKeysPath
+  const pastelKeysWithoutAppDataPath = store.getState().appInfo
+    .pastelKeysWithoutAppDataPath
   if (pastelKeysPath) {
     for (let i = 0; i < pastelIds.length; i++) {
       const pastelId = pastelIds[i]
@@ -382,6 +384,13 @@ async function importPastelId(pastelIds: TPastelWithContentID[]) {
         }),
       )
       await writeFileContent(content, pastelKeysPath, pastelId.pastelId)
+      if (pastelKeysWithoutAppDataPath) {
+        await writeFileContent(
+          content,
+          pastelKeysWithoutAppDataPath,
+          pastelId.pastelId,
+        )
+      }
     }
   }
 }

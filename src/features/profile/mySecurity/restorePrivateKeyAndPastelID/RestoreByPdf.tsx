@@ -39,9 +39,11 @@ const InputControl = memo(function InputControl({
 function RestoreYourKeysButton({
   handleRestoreByUpload,
   fileSelected,
+  disabled,
 }: {
   handleRestoreByUpload: (val: File) => void
   fileSelected?: File
+  disabled?: boolean
 }): JSX.Element {
   const onClick = useCallback(() => {
     if (fileSelected) {
@@ -60,8 +62,11 @@ function RestoreYourKeysButton({
     >
       <button
         onClick={onClick}
-        className={cn(fileSelected ? 'cursor-pointer' : 'cursor-not-allowed')}
+        className={cn(
+          fileSelected && !disabled ? 'cursor-pointer' : 'cursor-not-allowed',
+        )}
         type='button'
+        disabled={!fileSelected || disabled}
       >
         <Refresh
           size={44}
@@ -170,6 +175,7 @@ export default function RestoreByPdf({
         <RestoreYourKeysButton
           handleRestoreByUpload={handleRestoreByUpload}
           fileSelected={fileSelected}
+          disabled={currentStatus === 'restoring'}
         />
       </div>
     </div>

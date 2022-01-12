@@ -22,29 +22,34 @@ export default function Login(): JSX.Element {
     setLoading(true)
     setErrorMessage('')
     const users = await readUsersInfo()
-    const user = users.find(
-      u => u.username === username && u.newPassword === encode(password),
-    )
-    if (user) {
-      try {
-        const verify = await verifyPastelIdPassword({
-          pastelId: user.pastelId,
-          password: `${user.password}${user.username}`,
-        })
-        if (verify.signature) {
-          setAutoSignIn()
+    if (!users.length) {
+      setErrorMessage('Please restore your account from backup')
+      setLoading(false)
+    } else {
+      const user = users.find(
+        u => u.username === username && u.newPassword === encode(password),
+      )
+      if (user) {
+        try {
+          const verify = await verifyPastelIdPassword({
+            pastelId: user.pastelId,
+            password: `${user.password}${user.username}`,
+          })
+          if (verify.signature) {
+            setAutoSignIn()
+            setLoading(false)
+            history.push(ROUTES.DASHBOARD)
+          } else {
+            setErrorMessage('Username or password is incorrect')
+          }
+        } catch (error) {
+          toast(error.message, { type: 'error' })
           setLoading(false)
-          history.push(ROUTES.DASHBOARD)
-        } else {
-          setErrorMessage('Username or password is incorrect')
         }
-      } catch (error) {
-        toast(error.message, { type: 'error' })
+      } else {
+        setErrorMessage('Username or password is incorrect')
         setLoading(false)
       }
-    } else {
-      setErrorMessage('Username or password is incorrect')
-      setLoading(false)
     }
   }, [username, password])
 
