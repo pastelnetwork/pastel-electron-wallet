@@ -21,7 +21,7 @@ import {
   TWalletInfoResponse,
 } from 'types/rpc'
 
-import PastelDB from '../../features/pastelDB/database'
+// import PastelDB from '../../features/pastelDB/database'
 import coinGeckoClient from '../pastelPrice/coingecko'
 import {
   insertBlockChainInfoToDb,
@@ -35,7 +35,7 @@ import {
   insertTransaction,
 } from './pastelDBLib'
 import * as types from './type'
-import { getRpcConfig } from '../rpcConfig'
+// import { getRpcConfig } from '../rpcConfig'
 import { setPastelPrice } from '../pastelPrice/pastelPriceSlice'
 import store from '../../redux/store'
 import { queryClient } from '../../common/utils/queryClient'
@@ -368,30 +368,32 @@ export async function fetchBlockChainInfo(
 }
 
 export async function PastelDBThread(): Promise<void> {
-  PastelDB.setValid(false)
-  const db = await PastelDB.getDatabaseInstance()
-  const rpcConfig = getRpcConfig()
-  if (db && rpcConfig?.username) {
-    // fetch whole data from RPC and save to pastel DB.
-    const pastelConfig: fetchFuncConfig = {
-      pastelDB: db,
-    }
-    await Promise.all([
-      fetchStatisticInfo(pastelConfig),
-      fetchNettotals(pastelConfig),
-      fetchMempoolInfo(pastelConfig),
-      fetchRawMempoolInfo(pastelConfig),
-      fetchMiningInfo(pastelConfig),
-      fetchBlock(pastelConfig),
-      fetchTxoutsetInfo(pastelConfig),
-      fetchBlocksubsidy(pastelConfig),
-      fetchWalletInfo(pastelConfig),
-      fetchTotalBalance(pastelConfig),
-      fetchPastelPrices(pastelConfig),
-      fetchBlockChainInfo(pastelConfig),
-      fetchTransactions(db),
-    ])
-    PastelDB.setValid(true)
-  }
+  //disabled statistics in the new wallet app
+
+  // PastelDB.setValid(false)
+  // const db = await PastelDB.getDatabaseInstance()
+  // const rpcConfig = getRpcConfig()
+  // if (db && rpcConfig?.username) {
+  //   // fetch whole data from RPC and save to pastel DB.
+  //   const pastelConfig: fetchFuncConfig = {
+  //     pastelDB: db,
+  //   }
+  //   await Promise.all([
+  //     fetchStatisticInfo(pastelConfig),
+  //     fetchNettotals(pastelConfig),
+  //     fetchMempoolInfo(pastelConfig),
+  //     fetchRawMempoolInfo(pastelConfig),
+  //     fetchMiningInfo(pastelConfig),
+  //     fetchBlock(pastelConfig),
+  //     fetchTxoutsetInfo(pastelConfig),
+  //     fetchBlocksubsidy(pastelConfig),
+  //     fetchWalletInfo(pastelConfig),
+  //     fetchTotalBalance(pastelConfig),
+  //     fetchPastelPrices(pastelConfig),
+  //     fetchBlockChainInfo(pastelConfig),
+  //     fetchTransactions(db),
+  //   ])
+  //   PastelDB.setValid(true)
+  // }
   return
 }

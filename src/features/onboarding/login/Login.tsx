@@ -14,17 +14,20 @@ import { toast } from 'react-toastify'
 
 export default function Login(): JSX.Element {
   const [isLoading, setLoading] = useState(false)
+  const [isRestore, setRestore] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
 
   const onSubmit = useCallback(async () => {
     setLoading(true)
+    setRestore(false)
     setErrorMessage('')
     const users = await readUsersInfo()
     if (!users.length) {
       setErrorMessage('Please restore your account from backup')
       setLoading(false)
+      setRestore(true)
     } else {
       const user = users.find(
         u => u.username === username && u.newPassword === encode(password),
@@ -81,14 +84,32 @@ export default function Login(): JSX.Element {
     )
   }
 
+  const renderErrorMessage = () => {
+    if (isRestore) {
+      return (
+        <div className='link mb-2'>
+          Please&nbsp;
+          <Link to={`${ROUTES.PASSWORD_RECOVERY}?isRestore=true`}>
+            restore account from backup
+          </Link>
+          &nbsp; before login.
+        </div>
+      )
+    }
+
+    if (errorMessage) {
+      return <div className='text-red-fe mb-2'>{errorMessage}</div>
+    }
+
+    return null
+  }
+
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
       <div className='text-h1-heavy text-gray-2d mb-3'>Login</div>
       <form className='flex flex-col mt-30px'>
-        {errorMessage ? (
-          <div className='text-red-fe mb-2'>{errorMessage}</div>
-        ) : null}
+        {renderErrorMessage()}
         <Input
           name='username'
           label='Username'
