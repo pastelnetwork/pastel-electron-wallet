@@ -367,7 +367,7 @@ export async function fetchBlockChainInfo(
   }
 }
 
-export async function PastelDBThread(): Promise<void> {
+export function PastelDBThread(): void {
   //disabled statistics in the new wallet app
 
   // PastelDB.setValid(false)

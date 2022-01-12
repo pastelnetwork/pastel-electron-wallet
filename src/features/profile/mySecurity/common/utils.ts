@@ -405,14 +405,14 @@ export async function doImportPrivKeys(
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {
-          await importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
+          importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
         }
       }
 
       const tPrivateKeys = keys.tPrivateKeys
       if (tPrivateKeys?.length) {
         for (let i = 0; i < tPrivateKeys.length; i++) {
-          await importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
+          importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
         }
       }
 

@@ -72,9 +72,11 @@ function RestoreYourKeysButton({
           size={44}
           className={cn(
             'transition duration-300',
-            !fileSelected ? 'text-blue-9b' : 'text-blue-e7 hover:text-blue-fa',
+            !fileSelected || disabled
+              ? 'text-blue-9b'
+              : 'text-blue-e7 hover:text-blue-fa',
           )}
-          pathColor={fileSelected ? '#3F9AF7' : '#fff'}
+          pathColor={fileSelected && !disabled ? '#3F9AF7' : '#fff'}
         />
       </button>
     </Tooltip>
@@ -206,4 +208,5 @@ RestoreByPdf.defaultProps = {
 
 RestoreYourKeysButton.defaultProps = {
   fileSelected: undefined,
+  disabled: false,
 }

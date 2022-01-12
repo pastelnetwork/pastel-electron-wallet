@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import shallow from 'zustand/shallow'
 
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
@@ -33,15 +33,9 @@ export default function PasswordRecovery(): JSX.Element {
     shallow,
   )
   const [turnOffCamera, setTurnOffCamera] = useState(false)
-  const [isRestore, setRestore] = useState(false)
   const [isSuccess, setSuccess] = useState(false)
   const [tab, setTab] = useState(Tabs.selectPDF)
-
-  useEffect(() => {
-    if (history.location.search.indexOf('isRestore=true') !== -1) {
-      setRestore(true)
-    }
-  }, [])
+  const isRestore = history.location.search.indexOf('isRestore=true') !== -1
 
   const onTabToggle = (index: number) => {
     setTurnOffCamera(false)
