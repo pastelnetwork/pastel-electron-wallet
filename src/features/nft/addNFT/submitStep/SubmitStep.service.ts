@@ -81,7 +81,7 @@ export const submit = async ({
     }
 
     const users = await readUsersInfo()
-    const currentUser = await getCurrentAccount()
+    const currentUser = getCurrentAccount()
     if (!currentUser) {
       toast("PastelID isn't exists", { type: 'error' })
       return
