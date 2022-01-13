@@ -406,6 +406,15 @@ export async function doImportPrivKeys(
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {
           importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
+            .then(() => {
+              // noop
+            })
+            .catch(() => {
+              // noop
+            })
+            .finally(() => {
+              // noop
+            })
         }
       }
 
@@ -413,6 +422,15 @@ export async function doImportPrivKeys(
       if (tPrivateKeys?.length) {
         for (let i = 0; i < tPrivateKeys.length; i++) {
           importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
+            .then(() => {
+              // noop
+            })
+            .catch(() => {
+              // noop
+            })
+            .finally(() => {
+              // noop
+            })
         }
       }
 
