@@ -39,7 +39,10 @@ export default function Login(): JSX.Element {
             password: `${user.password}${user.username}`,
           })
           if (verify.signature) {
-            setAutoSignIn()
+            setAutoSignIn({
+              username: user.username,
+              pastelId: user.pastelId,
+            })
             setLoading(false)
             history.push(ROUTES.DASHBOARD)
           } else {

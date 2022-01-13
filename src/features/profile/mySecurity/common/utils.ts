@@ -41,8 +41,8 @@ type TAddressBook = {
 }
 
 type TAllAddressesAndPastelID = {
-  zPrivateKeys: string[]
-  tPrivateKeys: string[]
+  zPrivateKeys: TPrivateKey[]
+  tPrivateKeys: TPrivateKey[]
   pastelIDs: TPastelWithContentID[]
   addressBook: TAddressBook[]
   profile: {
@@ -212,8 +212,8 @@ async function getAddressBook(): Promise<TAddressBook[] | null> {
 
 export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
   const addresses = await fetchAllAddress()
-  const zPrivateKeys: string[] = []
-  const tPrivateKeys: string[] = []
+  const zPrivateKeys: TPrivateKey[] = []
+  const tPrivateKeys: TPrivateKey[] = []
 
   if (addresses) {
     const zAddresses = addresses.zAddresses
@@ -222,7 +222,10 @@ export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
 
       const privKey = await getPrivKeyAsString(address, 'z_exportkey')
       if (privKey) {
-        zPrivateKeys.push(privKey)
+        zPrivateKeys.push({
+          address,
+          privateKey: privKey,
+        })
       }
     }
 
@@ -232,7 +235,10 @@ export async function fetchPastelIDAndPrivateKeys(): Promise<string | null> {
 
       const privKey = await getPrivKeyAsString(address, 'dumpprivkey')
       if (privKey) {
-        tPrivateKeys.push(privKey)
+        tPrivateKeys.push({
+          address,
+          privateKey: privKey,
+        })
       }
     }
   }
@@ -402,35 +408,62 @@ export async function doImportPrivKeys(
   if (privateKeys) {
     const keys = decompressPastelIDAndPrivateKeys(privateKeys)
     if (keys) {
+      const addresses = await fetchAllAddress()
       const zPrivateKeys = keys.zPrivateKeys
       if (zPrivateKeys?.length) {
         for (let i = 0; i < zPrivateKeys.length; i++) {
-          importPrivKey(zPrivateKeys[i], i === zPrivateKeys.length - 1)
-            .then(() => {
-              // noop
-            })
-            .catch(() => {
-              // noop
-            })
-            .finally(() => {
-              // noop
-            })
+          let isExist = false
+          if (addresses) {
+            const zAddresses = addresses.zAddresses
+            isExist =
+              zAddresses.find(
+                address => address === zPrivateKeys[i].address,
+              ) !== undefined
+          }
+          if (!isExist) {
+            importPrivKey(
+              zPrivateKeys[i].privateKey,
+              i === zPrivateKeys.length - 1,
+            )
+              .then(() => {
+                // noop
+              })
+              .catch(() => {
+                // noop
+              })
+              .finally(() => {
+                // noop
+              })
+          }
         }
       }
 
       const tPrivateKeys = keys.tPrivateKeys
       if (tPrivateKeys?.length) {
         for (let i = 0; i < tPrivateKeys.length; i++) {
-          importPrivKey(tPrivateKeys[i], i === tPrivateKeys.length - 1)
-            .then(() => {
-              // noop
-            })
-            .catch(() => {
-              // noop
-            })
-            .finally(() => {
-              // noop
-            })
+          let isExist = false
+          if (addresses) {
+            const zAddresses = addresses.zAddresses
+            isExist =
+              zAddresses.find(
+                address => address === zPrivateKeys[i].address,
+              ) !== undefined
+          }
+          if (!isExist) {
+            importPrivKey(
+              tPrivateKeys[i].privateKey,
+              i === tPrivateKeys.length - 1,
+            )
+              .then(() => {
+                // noop
+              })
+              .catch(() => {
+                // noop
+              })
+              .finally(() => {
+                // noop
+              })
+          }
         }
       }
 
@@ -441,7 +474,13 @@ export async function doImportPrivKeys(
 
       const userInfo = keys.userInfo
       if (userInfo.length) {
-        await writeUsersInfo(userInfo, true)
+        const currentUsers = await readUsersInfo()
+        const ids = new Set(currentUsers.map(u => u.username))
+        const newUsers = [
+          ...currentUsers,
+          ...userInfo.filter(u => !ids.has(u.username)),
+        ]
+        await writeUsersInfo(newUsers, false)
         if (setPastelId) {
           setPastelId(userInfo[0].pastelId)
         }

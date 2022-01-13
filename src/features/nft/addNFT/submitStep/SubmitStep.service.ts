@@ -11,7 +11,7 @@ import { getPastelIdTickets } from 'api/pastel-rpc'
 import { TArtworkTicket } from 'api/walletNode/artwork-api/interfaces'
 import { TAddNFTState, TImage, TNFTData } from '../AddNFT.state'
 import { getStorageFee, TGetStorageFee } from 'api/estimate-fee'
-import { readUsersInfo } from 'common/utils/User'
+import { readUsersInfo, getCurrentAccount } from 'common/utils/User'
 import { calcFileSize } from 'common/utils/file'
 import { removeNFTData } from '../AddNFT.store'
 import store from '../../../../redux/store'
@@ -81,9 +81,24 @@ export const submit = async ({
     }
 
     const users = await readUsersInfo()
+    const currentUser = await getCurrentAccount()
+    if (!currentUser) {
+      toast("PastelID isn't exists", { type: 'error' })
+      return
+    }
+    const user = users.find(
+      u =>
+        u.username === currentUser.username &&
+        u.pastelId === currentUser.pastelId,
+    )
+    if (!user) {
+      toast("PastelID isn't exists", { type: 'error' })
+      return
+    }
+
     const pastelid = tickets[0].ticket.pastelID,
-      pass = `${users[0].password}${users[0].username}`,
-      userName = users[0].username
+      pass = `${user.password}${user.username}`,
+      userName = user.username
 
     const form = new FormData()
     const file = await getImageFile(state, image)

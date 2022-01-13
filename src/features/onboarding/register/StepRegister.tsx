@@ -15,6 +15,7 @@ import Tooltip from 'common/components/Tooltip'
 import { Info } from 'common/components/Icons'
 import { useRegisterStore } from './Register.store'
 import { checkPastelIdUsername } from 'api/pastel-rpc'
+import { readUsersInfo } from 'common/utils/User'
 
 function validateUserName(val: string): boolean {
   const validationRe = /^[0-9a-z_]{3,}$/i
@@ -97,6 +98,13 @@ export default function StepRegister(): JSX.Element {
     const validation = await checkPastelIdUsername({ username: store.username })
     if (validation.isBad) {
       setErrorMsg(validation.validationError)
+      setUsernameInvalid(true)
+      return
+    }
+    const users = await readUsersInfo()
+    const user = users.find(u => u.username === store.username)
+    if (user) {
+      setErrorMsg('Username already in use')
       setUsernameInvalid(true)
       return
     }

@@ -1,5 +1,4 @@
 import React, { useState, FormEvent, useCallback } from 'react'
-import shallow from 'zustand/shallow'
 
 import { InputPassword } from 'common/components/Inputs'
 import { Button } from 'common/components/Buttons'
@@ -12,7 +11,6 @@ import * as ROUTES from 'common/utils/constants/routes'
 import { encode } from 'common/utils/encryption'
 import { calcPasswordStrength, randomPassword } from 'common/utils/passwords'
 import { readUsersInfo, writeUsersInfo } from 'common/utils/User'
-import { useRegisterStore } from '../register/Register.store'
 import { changePastelIdPassword } from 'api/pastel-rpc'
 
 interface NewPasswordFormInput {
@@ -28,12 +26,6 @@ const initialInputState = {
 }
 
 export default function NewPassword(): JSX.Element {
-  const store = useRegisterStore(
-    state => ({
-      pastelId: state.pastelId,
-    }),
-    shallow,
-  )
   const [newPassword, setNewPassword] = useState<NewPasswordFormInput>(
     initialInputState,
   )
@@ -42,6 +34,7 @@ export default function NewPassword(): JSX.Element {
   )
   const [showPassword, setShowPassword] = useState(false)
   const [isSuccess, setSuccess] = useState(false)
+  const [isLoading, setLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -85,10 +78,10 @@ export default function NewPassword(): JSX.Element {
       setErrorMessage("The passwords don't match.")
       return
     }
-
+    setLoading(true)
     const users = await readUsersInfo()
-    const user = users.find(u => u.pastelId === store.pastelId)
-    if (user) {
+    const newUsers = []
+    for (const user of users) {
       const password: string = user.password
       const username: string = user.username
       const vNewPassword: string = encode(newPassword.value) || ''
@@ -99,9 +92,12 @@ export default function NewPassword(): JSX.Element {
       })
       user.newPassword = vNewPassword
       user.password = vNewPassword
-      await writeUsersInfo([user], true)
-      setSuccess(true)
+
+      newUsers.push(user)
     }
+    await writeUsersInfo(newUsers, false)
+    setSuccess(true)
+    setLoading(false)
   }, [newPassword, repeatPassword])
 
   const handleNewPasswordChange = useCallback(
@@ -206,7 +202,10 @@ export default function NewPassword(): JSX.Element {
               onClick={handleChangePassword}
               type='button'
               disabled={
-                !newPassword.value || !repeatPassword.value || pwdStrength < 2
+                !newPassword.value ||
+                !repeatPassword.value ||
+                pwdStrength < 2 ||
+                isLoading
               }
             >
               Confirm
