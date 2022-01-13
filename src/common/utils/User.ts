@@ -14,6 +14,11 @@ export type TUserInfo = {
   address?: string
 }
 
+type TUserStoreProps = {
+  username: string
+  pastelId: string
+}
+
 export const getFileName = async (): Promise<string | null> => {
   const dir = store.getState().appInfo.pastelWalletDirPath
   if (!dir) {
@@ -57,14 +62,14 @@ export const readUsersInfo = async (): Promise<TUserInfo[]> => {
 
 export const writeUsersInfo = async (
   users: TUserInfo[],
-  isNews?: boolean,
+  isMulti?: boolean,
 ): Promise<void> => {
   if (users.length) {
     const fileName = await getFileName()
 
     if (fileName) {
       let currentUsers: TUserInfo[] = []
-      if (!isNews) {
+      if (isMulti) {
         currentUsers = await readUsersInfo()
       }
       await fs.promises.writeFile(
@@ -75,10 +80,31 @@ export const writeUsersInfo = async (
   }
 }
 
-export const setAutoSignIn = (): void => {
+export const setAutoSignIn = (user: TUserStoreProps): void => {
   localStorage.setItem('pastelAutoSignIn', 'true')
+  localStorage.setItem(
+    'pastelCurrentAccount',
+    JSON.stringify({
+      username: user.username,
+      pastelId: user.pastelId,
+    }),
+  )
 }
 
 export const getAutoSignIn = (): boolean => {
   return localStorage.getItem('pastelAutoSignIn') === 'true'
+}
+
+export const getCurrentAccount = (): TUserStoreProps | null => {
+  const account = localStorage.getItem('pastelCurrentAccount')
+  if (account) {
+    const user = JSON.parse(account)
+
+    return {
+      username: user.username,
+      pastelId: user.pastelId,
+    }
+  }
+
+  return null
 }

@@ -14,37 +14,48 @@ import { toast } from 'react-toastify'
 
 export default function Login(): JSX.Element {
   const [isLoading, setLoading] = useState(false)
+  const [isRestore, setRestore] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
 
   const onSubmit = useCallback(async () => {
     setLoading(true)
+    setRestore(false)
     setErrorMessage('')
     const users = await readUsersInfo()
-    const user = users.find(
-      u => u.username === username && u.newPassword === encode(password),
-    )
-    if (user) {
-      try {
-        const verify = await verifyPastelIdPassword({
-          pastelId: user.pastelId,
-          password: `${user.password}${user.username}`,
-        })
-        if (verify.signature) {
-          setAutoSignIn()
+    if (!users.length) {
+      setErrorMessage('Please restore your account from backup')
+      setLoading(false)
+      setRestore(true)
+    } else {
+      const user = users.find(
+        u => u.username === username && u.newPassword === encode(password),
+      )
+      if (user) {
+        try {
+          const verify = await verifyPastelIdPassword({
+            pastelId: user.pastelId,
+            password: `${user.password}${user.username}`,
+          })
+          if (verify.signature) {
+            setAutoSignIn({
+              username: user.username,
+              pastelId: user.pastelId,
+            })
+            setLoading(false)
+            history.push(ROUTES.DASHBOARD)
+          } else {
+            setErrorMessage('Username or password is incorrect')
+          }
+        } catch (error) {
+          toast(error.message, { type: 'error' })
           setLoading(false)
-          history.push(ROUTES.DASHBOARD)
-        } else {
-          setErrorMessage('Username or password is incorrect')
         }
-      } catch (error) {
-        toast(error.message, { type: 'error' })
+      } else {
+        setErrorMessage('Username or password is incorrect')
         setLoading(false)
       }
-    } else {
-      setErrorMessage('Username or password is incorrect')
-      setLoading(false)
     }
   }, [username, password])
 
@@ -76,14 +87,32 @@ export default function Login(): JSX.Element {
     )
   }
 
+  const renderErrorMessage = () => {
+    if (isRestore) {
+      return (
+        <div className='link mb-2'>
+          Please&nbsp;
+          <Link to={`${ROUTES.PASSWORD_RECOVERY}?isRestore=true`}>
+            restore account from backup
+          </Link>
+          &nbsp; before login.
+        </div>
+      )
+    }
+
+    if (errorMessage) {
+      return <div className='text-red-fe mb-2'>{errorMessage}</div>
+    }
+
+    return null
+  }
+
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
       <div className='text-h1-heavy text-gray-2d mb-3'>Login</div>
       <form className='flex flex-col mt-30px'>
-        {errorMessage ? (
-          <div className='text-red-fe mb-2'>{errorMessage}</div>
-        ) : null}
+        {renderErrorMessage()}
         <Input
           name='username'
           label='Username'

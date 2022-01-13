@@ -39,9 +39,11 @@ const InputControl = memo(function InputControl({
 function RestoreYourKeysButton({
   handleRestoreByUpload,
   fileSelected,
+  disabled,
 }: {
   handleRestoreByUpload: (val: File) => void
   fileSelected?: File
+  disabled?: boolean
 }): JSX.Element {
   const onClick = useCallback(() => {
     if (fileSelected) {
@@ -60,16 +62,21 @@ function RestoreYourKeysButton({
     >
       <button
         onClick={onClick}
-        className={cn(fileSelected ? 'cursor-pointer' : 'cursor-not-allowed')}
+        className={cn(
+          fileSelected && !disabled ? 'cursor-pointer' : 'cursor-not-allowed',
+        )}
         type='button'
+        disabled={!fileSelected || disabled}
       >
         <Refresh
           size={44}
           className={cn(
             'transition duration-300',
-            !fileSelected ? 'text-blue-9b' : 'text-blue-e7 hover:text-blue-fa',
+            !fileSelected || disabled
+              ? 'text-blue-9b'
+              : 'text-blue-e7 hover:text-blue-fa',
           )}
-          pathColor={fileSelected ? '#3F9AF7' : '#fff'}
+          pathColor={fileSelected && !disabled ? '#3F9AF7' : '#fff'}
         />
       </button>
     </Tooltip>
@@ -170,6 +177,7 @@ export default function RestoreByPdf({
         <RestoreYourKeysButton
           handleRestoreByUpload={handleRestoreByUpload}
           fileSelected={fileSelected}
+          disabled={currentStatus === 'restoring'}
         />
       </div>
     </div>
@@ -200,4 +208,5 @@ RestoreByPdf.defaultProps = {
 
 RestoreYourKeysButton.defaultProps = {
   fileSelected: undefined,
+  disabled: false,
 }

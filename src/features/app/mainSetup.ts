@@ -23,6 +23,7 @@ import {
   sentTxStorePath,
   sqliteFilePath,
   pastelKeysPath,
+  pastelKeysWithoutAppDataPath,
   tempPath,
 } from './paths'
 import initServeStatic, { closeServeStatic } from '../serveStatic'
@@ -211,6 +212,7 @@ onMainEvent('rendererStarted', () => {
     sqliteFilePath,
     migrationsPath,
     pastelKeysPath,
+    pastelKeysWithoutAppDataPath,
     tempPath,
   })
 
