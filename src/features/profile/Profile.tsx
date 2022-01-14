@@ -11,6 +11,8 @@ import RestoreModal from './mySecurity/restorePrivateKeyAndPastelID/RestoreModal
 import PageHeader from '../../common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 import { Button } from 'common/components/Buttons'
+import { getUserData, TGetResponse } from 'api/walletNode/userData'
+import { getCurrentAccount } from 'common/utils/User'
 
 import { useCurrencyName } from '../../common/hooks/appInfo'
 
@@ -25,6 +27,7 @@ export default function Profile(): JSX.Element {
   const [tab, setTab] = useState(Tabs.general)
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [user, setUser] = useState<TGetResponse>()
 
   const tabs = [
     { label: 'General', count: 1122 },
@@ -44,6 +47,16 @@ export default function Profile(): JSX.Element {
       label: tabs[tab].label,
     },
   ]
+
+  const fetchUserData = async () => {
+    const currentUser = getCurrentAccount()
+    if (currentUser) {
+      const userDetail = await getUserData({ pastelId: currentUser.pastelId })
+      if (userDetail) {
+        setUser(userDetail)
+      }
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +79,17 @@ export default function Profile(): JSX.Element {
           // noop
         })
     }
+
+    fetchUserData()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
   }, [])
 
   const onTabToggle = (index: number) => {
@@ -103,7 +127,9 @@ export default function Profile(): JSX.Element {
           </div>
         ) : null}
       </PageHeader>
-      {tab === Tabs.general && <ProfileGeneral />}
+      {tab === Tabs.general && (
+        <ProfileGeneral user={user} updateUserData={fetchUserData} />
+      )}
       {tab === Tabs.board && <MyComments />}
       {tab === Tabs.security && (
         <MySecurity currencyName={currencyName} qrcodeData={qrcodeData} />

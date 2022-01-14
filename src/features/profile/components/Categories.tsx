@@ -42,7 +42,6 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
   const [isAdding, setAdding] = useState<boolean>(false)
   const [newText, setNewText] = useState('')
   const customInputRef = useRef<HTMLInputElement>(null)
-
   const onAdd = useCallback(() => {
     if (!newText) {
       return
@@ -51,7 +50,7 @@ function Categories({ value, onChange }: TCategories): JSX.Element {
     onChange(newValue)
     setAdding(false)
     setNewText('')
-  }, [newText, value])
+  }, [newText])
 
   const onDeleteCategory = useCallback(
     (index: number) => {

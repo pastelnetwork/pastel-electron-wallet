@@ -133,6 +133,7 @@ export default function Select<TForm extends FieldValues>({
     inputClassName,
     listItemClassName,
     listClassName,
+    options,
   } = props
 
   const { debounce: customDebounce } = props
@@ -141,11 +142,12 @@ export default function Select<TForm extends FieldValues>({
   }
 
   const getInputValue = (inputProps: GetInputPropsOptions) => {
+    const option = options.find(o => o.value === inputProps.value)
     if (!append) {
-      return inputProps.value
+      return option?.label
     }
     const vAppend: string = append?.toString() || ''
-    const vInput: string = inputProps.value?.toString() || ''
+    const vInput: string = option?.label?.toString() || ''
 
     return `${vInput}${vAppend}`
   }

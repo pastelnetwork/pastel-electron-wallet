@@ -1,11 +1,14 @@
 import React, { useCallback, useState } from 'react'
-import Modal from '../../nft/nftModals/modal'
-import Input from '../../../common/components/Inputs/Input'
+import cn from 'classnames'
 import NumberFormat from 'react-number-format'
+
+import { getCurrentAccount } from 'common/utils/User'
 import { Button } from 'common/components/Buttons'
 import { Fire } from 'common/components/Icons/Fire'
-import cn from 'classnames'
 import { useCurrencyName } from 'common/hooks/appInfo'
+
+import Modal from '../../nft/nftModals/modal'
+import Input from '../../../common/components/Inputs/Input'
 
 export type TChangeUsernameModal = {
   isOpen: boolean
@@ -16,6 +19,7 @@ function ChangeUsernameModal({
   isOpen,
   handleClose,
 }: TChangeUsernameModal): JSX.Element {
+  const currentUsername = getCurrentAccount()
   const currencyName = useCurrencyName()
   const [username, setUsername] = useState<string>('')
   const [inputed, setInputed] = useState<boolean>(false)
@@ -118,7 +122,7 @@ function ChangeUsernameModal({
   const renderCurrentUsernameInput = () => (
     <div className='mt-6'>
       <Input
-        placeholder='@MrVanGogh'
+        placeholder={`@${currentUsername?.username}`}
         type='text'
         disabled
         label='Current Username'

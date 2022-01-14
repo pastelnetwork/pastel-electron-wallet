@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import cn from 'classnames'
+
 import Followers from './ProfileFollowers'
 import ico_users from 'common/assets/icons/ico-users.svg'
 
@@ -9,10 +10,6 @@ const cx_tab_active =
   'text-sm w-fit border-b font-bold pt-1 pb-3 text-gray-33 border-gray-33 cursor-pointer'
 
 const relationCounts = { followers: 235, friends: 0, following: 162 }
-
-export type TProfileRelations = {
-  isEmpty?: boolean
-}
 
 function ProfileRelationButton({
   setTab,
@@ -37,13 +34,14 @@ function ProfileRelationButton({
       tabIndex={0}
       aria-hidden='true'
     >
-      {text}Following ({relationCounts.following})
+      {text}
     </div>
   )
 }
 
-function ProfileRelations({ isEmpty }: TProfileRelations): JSX.Element {
+function ProfileRelations(): JSX.Element {
   const [tab, setTab] = useState('Followers')
+  const isEmpty = false
 
   const renderStatistics = () => (
     <div

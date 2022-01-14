@@ -273,6 +273,7 @@ module.exports = {
           d6: '#D1D6E0',
           d1d: '#D1D1D1',
           55: '#556177',
+          21: 'rgba(33, 50, 71, 0.3)',
         },
         // For red, pink and orange first two chars can overlap, so identifying by middle pair
         red: {
