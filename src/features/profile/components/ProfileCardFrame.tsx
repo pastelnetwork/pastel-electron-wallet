@@ -1,5 +1,8 @@
 import React, { useState, ChangeEvent, useCallback } from 'react'
+import { toast } from 'react-toastify'
+import cn from 'classnames'
 
+import { walletNodeApi } from 'api/walletNode/walletNode.api'
 import { imageDimensions } from 'common/utils/image'
 import { calcFileSize } from 'common/utils/file'
 import { TGetResponse } from 'api/walletNode/userData'
@@ -11,20 +14,38 @@ const LIMIT_WIDTH = 1200
 const LIMIT_HEIGHT = 1000
 
 export type TProfileCardFrame = {
-  editMode?: boolean
   userData?: TGetResponse
   user?: TGetResponse
-  setUserData?: (data?: TGetResponse) => void
+  handleUpdateUserData: () => void
 }
 
 function ProfileCardFrame({
-  editMode,
   userData,
   user,
-  setUserData,
+  handleUpdateUserData,
 }: TProfileCardFrame): JSX.Element {
   const [coverPhoto, setCoverPhoto] = useState<File>()
   const [error, setError] = useState('')
+  const [isLoading, setLoading] = useState(false)
+
+  const handleSaveUserCover = async (fileData: string, fileName: string) => {
+    if (userData) {
+      try {
+        await walletNodeApi.userData.update({
+          ...userData,
+          categories: userData.categories.join(','),
+          cover_photo: {
+            filename: fileName,
+            content: fileData,
+          },
+        })
+        handleUpdateUserData()
+      } catch (error) {
+        toast.error(error.message)
+      }
+      setLoading(false)
+    }
+  }
 
   const handleUploadChange = useCallback(
     async (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,14 +69,17 @@ function ProfileCardFrame({
           const reader = new FileReader()
           reader.onloadend = function () {
             const fileData = reader.result?.toString()
-            if (userData && fileData && setUserData) {
-              setUserData({
-                ...userData,
-                cover_photo: {
-                  filename: file.name,
-                  content: fileData,
-                },
-              })
+            if (fileData) {
+              handleSaveUserCover(fileData, file.name)
+                .then(() => {
+                  // noop
+                })
+                .catch(() => {
+                  // noop
+                })
+                .finally(() => {
+                  // noop
+                })
             }
           }
           reader.readAsDataURL(file)
@@ -79,23 +103,21 @@ function ProfileCardFrame({
           {error}
         </div>
       ) : null}
-      {!editMode ? (
-        <div className='flex items-center justify-center w-30px h-30px absolute right-4 top-4 bg-gray-1f opacity-50 rounded-full overflow-hidden z-50'>
-          <img src={ico_camera} alt='Camera' />
-        </div>
-      ) : null}
 
-      {editMode ? (
-        <label className='flex items-center justify-center w-30px h-30px absolute right-4 top-4 bg-gray-1f opacity-50 rounded-full cursor-pointer overflow-hidden z-50'>
-          <img src={ico_camera} alt='Camera' />
-          <input
-            type='file'
-            accept='image/png, image/jpeg'
-            className='absolute -top-48 w-1 h-1'
-            onChange={handleUploadChange}
-          />
-        </label>
-      ) : null}
+      <label
+        className={cn(
+          'flex items-center justify-center w-30px h-30px absolute right-4 top-4 bg-gray-1f opacity-50 rounded-full cursor-pointer overflow-hidden z-50',
+          isLoading && 'cursor-not-allowed',
+        )}
+      >
+        <img src={ico_camera} alt='Camera' />
+        <input
+          type='file'
+          accept='image/png, image/jpeg'
+          className='absolute -top-48 w-1 h-1'
+          onChange={handleUploadChange}
+        />
+      </label>
       {!user?.cover_photo?.filename ? (
         <div className='text-right w-88px absolute right-4 top-54px text-white text-12px'>
           max {LIMIT_SIZE} mb /<br />

@@ -2,11 +2,11 @@
   <img height="150px" src="src/common/assets/images/logo.svg"/>
 </p>
 <p align=center>
-  <b>Pastel Fullnode Wallet</b>
+  <h1 style="text-align: center; border: 0;margin-bottom: 0;padding-bottom: 0">Pastel Fullnode Wallet</h1>
 </p>
 <br>
 <p align=center>
-  [![CircleCI](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master.svg?style=svg)](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master)
+<a href="https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master"><img alt="docs" src="https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master.svg?style=svg"></a>
 </p>
 
 ---

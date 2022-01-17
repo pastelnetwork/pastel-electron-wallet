@@ -57,7 +57,7 @@ const GenerateRandomPasswordButton = memo(
     }, [])
 
     return (
-      <button type='button' onClick={onClick}>
+      <button type='button' onClick={onClick} className='mt-2'>
         <RefreshIcon size={18} className='text-blue-3f' />
       </button>
     )
@@ -308,7 +308,7 @@ export default function Password(props: TPassword): JSX.Element {
           </button>
         )}
       </div>
-      {passStrength && (
+      {passStrength.length && (
         <div className='grid grid-cols-4 gap-1 mt-5 mb-6'>
           {passStrength?.map((status: TPassStrengthProps) => {
             return (

@@ -105,7 +105,7 @@ export default function ProfileGeneral({
         })
       }
     },
-    [bio],
+    [userData],
   )
 
   const handleLocationChange = useCallback(

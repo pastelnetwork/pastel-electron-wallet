@@ -1,12 +1,14 @@
-import React, { useState, useCallback, memo } from 'react'
+import React, { useState, useCallback, memo, useEffect } from 'react'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
+
 import ProfileCard from '../components/MyProfileCard'
 import ProfileComments from '../components/ProfileComments'
 import { nativeCurrencyOptions } from '../myProfile/MyProfile'
 import Checkbox from 'common/components/Checkbox'
 import { TComment } from '../components/CommentCard'
 import * as ROUTES from 'common/utils/constants/routes'
+import { TGetResponse } from 'api/walletNode/userData'
 
 import avatar1 from 'common/assets/images/avatars/oval-1.svg'
 import avatar2 from 'common/assets/images/avatars/oval-2.svg'
@@ -232,19 +234,23 @@ const FilterCheckbox = memo(function FilterCheckbox({
   )
 })
 
-function MyComments(): JSX.Element {
+function MyComments({
+  user,
+  updateUserData,
+}: {
+  user?: TGetResponse
+  updateUserData: () => void
+}): JSX.Element {
   const [editMode, setEditMode] = useState(false)
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
     nativeCurrencyOptions[0],
   )
-  const isLoading = false
+  const [userData, setUserData] = useState<TGetResponse | undefined>()
 
-  const setUserData = useCallback(() => {
-    // TODO
-  }, [])
-
-  const handleUpdateUserData = useCallback(() => {
-    // TODO
+  useEffect(() => {
+    if (user && !userData) {
+      setUserData(user)
+    }
   }, [])
 
   const handleOnReply = useCallback((replyId: number, reply: string) => {
@@ -285,9 +291,10 @@ function MyComments(): JSX.Element {
         nativeCurrencyOptions={nativeCurrencyOptions}
         nativeCurrency={nativeCurrency}
         onNativeCurrencyChange={setNativeCurrency}
-        isLoading={isLoading}
+        user={user}
+        userData={userData}
         setUserData={setUserData}
-        handleUpdateUserData={handleUpdateUserData}
+        handleUpdateUserData={updateUserData}
       />
     </div>
   )

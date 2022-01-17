@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import SVG from 'react-inlinesvg'
+import { toast } from 'react-toastify'
 
 import LineEdit from './LineEdit'
 import ProfileCardFrame from './ProfileCardFrame'
@@ -15,6 +16,13 @@ import Toggle from 'common/components/Toggle'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import Select, { TOption } from 'common/components/Select'
 import { TGetResponse } from 'api/walletNode/userData'
+import { validFacebookUrl, validTwitterUrl } from 'common/utils/validation'
+import { walletNodeApi } from 'api/walletNode/walletNode.api'
+
+export type TErrorMessageProps = {
+  control: string
+  message: string
+}
 
 export type TProfileCard = {
   editMode: boolean
@@ -24,9 +32,7 @@ export type TProfileCard = {
   onNativeCurrencyChange: (val: TOption | null) => void
   user?: TGetResponse
   userData?: TGetResponse
-  setUserData: (data?: TGetResponse) => void
   handleUpdateUserData: () => void
-  isLoading: boolean
 }
 
 function ProfileCard({
@@ -38,8 +44,6 @@ function ProfileCard({
   handleUpdateUserData,
   user,
   userData,
-  setUserData,
-  isLoading,
 }: TProfileCard): JSX.Element {
   const currencyName = useCurrencyName()
   const username: string = user?.username || ''
@@ -60,52 +64,24 @@ function ProfileCard({
   const [openEditUsernameModal, setOpenEditUsernameModal] = useState<boolean>(
     false,
   )
-
-  const handleNameChange = (val: string) => {
-    setName(val)
-    if (userData) {
-      setUserData({
-        ...userData,
-        realname: val,
-      })
-    }
-  }
-
-  const handleFacebookChange = (val: string) => {
-    setFacebook(val)
-    if (userData) {
-      setUserData({
-        ...userData,
-        facebook_link: val,
-      })
-    }
-  }
-
-  const handleTwitterChange = (val: string) => {
-    setTwitter(val)
-    if (userData) {
-      setUserData({
-        ...userData,
-        twitter_link: val,
-      })
-    }
-  }
+  const [errorMsg, setErrorMsg] = useState<TErrorMessageProps[]>([])
+  const [isLoading, setLoading] = useState(false)
 
   const edits = [
     {
       title: 'Name',
       value: 'name',
-      onChange: handleNameChange,
+      onChange: setName,
     },
     {
       title: 'Facebook',
       value: 'facebook',
-      onChange: handleFacebookChange,
+      onChange: setFacebook,
     },
     {
       title: 'Twitter',
       value: 'twitter',
-      onChange: handleTwitterChange,
+      onChange: setTwitter,
     },
   ]
 
@@ -116,10 +92,51 @@ function ProfileCard({
     [activeCurrency],
   )
 
-  const handleSaveChanges = useCallback(() => {
-    handleUpdateUserData()
-    setEditMode(false)
-  }, [editMode, userData])
+  const handleSaveChanges = useCallback(async () => {
+    setErrorMsg([])
+    if (userData) {
+      const errors = []
+      if (facebook) {
+        if (!validFacebookUrl(facebook)) {
+          errors.push({
+            control: 'facebook',
+            message: 'Not a valid URL format.',
+          })
+        }
+      }
+
+      if (twitter) {
+        if (!validTwitterUrl(twitter)) {
+          errors.push({
+            control: 'twitter',
+            message: 'Not a valid URL format.',
+          })
+        }
+      }
+      if (errors.length) {
+        setErrorMsg(errors)
+        return
+      }
+
+      setLoading(true)
+      delete userData['username']
+      try {
+        await walletNodeApi.userData.update({
+          ...userData,
+          categories: userData.categories.join(','),
+          realname: name,
+          twitter_link: twitter,
+          facebook_link: facebook,
+        })
+        handleUpdateUserData()
+        setLoading(false)
+        setEditMode(false)
+      } catch (error) {
+        toast.error(error.message)
+        setLoading(false)
+      }
+    }
+  }, [editMode, userData, facebook, twitter, name])
 
   const handleOpenEditUsernameModal = useCallback(() => {
     setOpenEditUsernameModal(true)
@@ -137,7 +154,7 @@ function ProfileCard({
     <div className='pt-2 pb-4 text-gray-71 flex flex-center'>
       <Tooltip
         type='top'
-        width={114}
+        width={140}
         content={
           <p className='mb-0 px-2 py-6px text-white text-sm'>
             PastelID Identifier
@@ -169,7 +186,10 @@ function ProfileCard({
         {edits.map(({ value, title, onChange }) => (
           <div key={`${value}${title}`}>
             <div className='text-gray-71 text-lg mb-2'>{title}</div>
-            <LineEdit onChange={onChange} />
+            <LineEdit
+              onChange={onChange}
+              error={errorMsg.find(e => e.control === value)}
+            />
           </div>
         ))}
       </div>
@@ -212,10 +232,20 @@ function ProfileCard({
       <div className='font-extrabold text-26px leading-9 text-center text-gray-2d'>
         {name}
       </div>
-      <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
-        {truncateMiddle(data.walletId, 8, 4, '...')}
-        {renderCopyButton()}
-      </div>
+      <Tooltip
+        type='top'
+        width={140}
+        content={
+          <p className='mb-0 px-2 py-6px text-white text-sm'>
+            PastelID Identifier
+          </p>
+        }
+      >
+        <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
+          {truncateMiddle(data.walletId, 8, 4, '...')}
+          {renderCopyButton()}
+        </div>
+      </Tooltip>
       <div className='py-4 flex justify-center space-x-2'>
         <button type='button'>
           {facebook.length ? (
@@ -243,10 +273,9 @@ function ProfileCard({
   const renderProfileAvatar = () => (
     <div className='-mt-61px px-4 flex relative justify-center'>
       <ProfileCardAvatar
-        editMode={editMode}
         src={user?.avatar_image?.content}
         userData={userData}
-        setUserData={setUserData}
+        handleUpdateUserData={handleUpdateUserData}
       />
     </div>
   )
@@ -255,10 +284,9 @@ function ProfileCard({
     <div className='flex flex-col pb-30px rounded-md shadow-44px bg-white w-315px justify-between max-h-672px'>
       <div className='flex flex-col flex-grow'>
         <ProfileCardFrame
-          editMode={editMode}
           userData={userData}
           user={user}
-          setUserData={setUserData}
+          handleUpdateUserData={handleUpdateUserData}
         />
         {renderProfileAvatar()}
         {!editMode && (

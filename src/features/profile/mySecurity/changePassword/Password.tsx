@@ -13,9 +13,13 @@ export default function ChangePassword(): JSX.Element {
   const [securityPassword, setSecurityPassword] = useState(false)
 
   const submitPassword = useCallback(() => {
-    setNoMatch(newPassword !== confirmPassword)
+    if (newPassword !== confirmPassword) {
+      setNoMatch(newPassword !== confirmPassword)
+      return
+    }
+
     setSecurityPassword(true)
-  }, [noMatch, securityPassword])
+  }, [noMatch, securityPassword, newPassword, confirmPassword])
 
   useEffect(() => {
     if (newPassword === confirmPassword && !newPassword && !confirmPassword) {
@@ -36,8 +40,8 @@ export default function ChangePassword(): JSX.Element {
         setConfirmPassword={setConfirmPassword}
         isMatch={!noMatch}
       />
+      {noMatch && <div className='text-red-fe'>Passwords must match</div>}
       <div className='text-gray-a0 text-h6 leading-relaxed'>
-        {noMatch && <div className='text-red-fe'>Passwords must match</div>}
         <span>
           We strongly suggest that you save your password in a password manager
           such as{' '}

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { toast } from 'react-toastify'
 
 import ProfileCard from '../components/MyProfileCard'
 import ProfileRelations from '../components/ProfileRelations'
@@ -8,7 +7,6 @@ import ProfileGeneral, {
 } from '../components/MyProfileGeneral/MyProfileGeneral'
 import { TOption } from '../../../common/components/Select'
 import { TGetResponse } from 'api/walletNode/userData'
-import { walletNodeApi } from 'api/walletNode/walletNode.api'
 
 export const nativeCurrencyOptions: TOption[] = [
   {
@@ -53,7 +51,6 @@ function Profile({
   updateUserData: () => void
 }): JSX.Element {
   const [editMode, setEditMode] = useState(false)
-  const [isLoading, setLoading] = useState(false)
   const userCurrency = nativeCurrencyOptions.find(
     c => c.value === user?.native_currency,
   )
@@ -69,24 +66,6 @@ function Profile({
     }
   }, [user])
 
-  const handleUpdateUserData = useCallback(async () => {
-    if (userData) {
-      setLoading(true)
-      delete userData['username']
-      try {
-        await walletNodeApi.userData.update({
-          ...userData,
-          categories: userData.categories.join(','),
-        })
-        updateUserData()
-        setLoading(false)
-      } catch (error) {
-        toast.error(error.message)
-        setLoading(false)
-      }
-    }
-  }, [userData])
-
   const handleNativeCurrencyChange = useCallback(
     (option: TOption | null) => {
       setNativeCurrency(option)
@@ -97,7 +76,7 @@ function Profile({
         })
       }
     },
-    [userData, nativeCurrency],
+    [userData],
   )
 
   const renderProfileContent = () => (
@@ -121,11 +100,9 @@ function Profile({
         nativeCurrencyOptions={nativeCurrencyOptions}
         nativeCurrency={nativeCurrency}
         onNativeCurrencyChange={handleNativeCurrencyChange}
-        handleUpdateUserData={handleUpdateUserData}
-        setUserData={setUserData}
+        handleUpdateUserData={updateUserData}
         user={user}
         userData={userData}
-        isLoading={isLoading}
       />
     </div>
   )

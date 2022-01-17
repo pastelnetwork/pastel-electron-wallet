@@ -130,7 +130,9 @@ export default function Profile(): JSX.Element {
       {tab === Tabs.general && (
         <ProfileGeneral user={user} updateUserData={fetchUserData} />
       )}
-      {tab === Tabs.board && <MyComments />}
+      {tab === Tabs.board && (
+        <MyComments user={user} updateUserData={fetchUserData} />
+      )}
       {tab === Tabs.security && (
         <MySecurity currencyName={currencyName} qrcodeData={qrcodeData} />
       )}
