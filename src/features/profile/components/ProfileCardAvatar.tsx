@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState, ChangeEvent, useCallback } from 'react'
 import cn from 'classnames'
 
 import { TGetResponse } from 'api/walletNode/userData'
@@ -21,26 +21,29 @@ function ProfileCardAvatar({
 }: TProfileCardAvatar): JSX.Element {
   const [avatar, setAvatar] = useState<File>()
 
-  const handleUploadChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    setAvatar(file)
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = function () {
-        const fileData = reader.result?.toString()
-        if (userData && fileData) {
-          setUserData({
-            ...userData,
-            avatar_image: {
-              filename: file.name,
-              content: fileData,
-            },
-          })
+  const handleUploadChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0]
+      setAvatar(file)
+      if (file) {
+        const reader = new FileReader()
+        reader.onloadend = function () {
+          const fileData = reader.result?.toString()
+          if (userData && fileData) {
+            setUserData({
+              ...userData,
+              avatar_image: {
+                filename: file.name,
+                content: fileData,
+              },
+            })
+          }
         }
+        reader.readAsDataURL(file)
       }
-      reader.readAsDataURL(file)
-    }
-  }
+    },
+    [userData],
+  )
 
   return (
     <div className='rounded-full border-4 border-white bg-gray-e6 w-110px h-110px shadow-avatar flex flex-col items-center justify-center overflow-hidden relative'>

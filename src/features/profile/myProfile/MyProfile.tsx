@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { toast } from 'react-toastify'
 
 import ProfileCard from '../components/MyProfileCard'
@@ -69,7 +69,7 @@ function Profile({
     }
   }, [user])
 
-  const handleUpdateUserData = async () => {
+  const handleUpdateUserData = useCallback(async () => {
     if (userData) {
       setLoading(true)
       delete userData['username']
@@ -85,17 +85,20 @@ function Profile({
         setLoading(false)
       }
     }
-  }
+  }, [userData])
 
-  const handleNativeCurrencyChange = (option: TOption | null) => {
-    setNativeCurrency(option)
-    if (userData) {
-      setUserData({
-        ...userData,
-        native_currency: option?.value || '',
-      })
-    }
-  }
+  const handleNativeCurrencyChange = useCallback(
+    (option: TOption | null) => {
+      setNativeCurrency(option)
+      if (userData) {
+        setUserData({
+          ...userData,
+          native_currency: option?.value || '',
+        })
+      }
+    },
+    [userData, nativeCurrency],
+  )
 
   const renderProfileContent = () => (
     <div className='flex pl-80px justify-between flex-col lg:flex-row flex-grow'>
@@ -138,3 +141,7 @@ function Profile({
 }
 
 export default Profile
+
+Profile.defaultProps = {
+  user: undefined,
+}

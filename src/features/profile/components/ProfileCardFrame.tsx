@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react'
+import React, { useState, ChangeEvent, useCallback } from 'react'
 
 import { imageDimensions } from 'common/utils/image'
 import { calcFileSize } from 'common/utils/file'
@@ -14,7 +14,7 @@ export type TProfileCardFrame = {
   editMode?: boolean
   userData?: TGetResponse
   user?: TGetResponse
-  setUserData: (data?: TGetResponse) => void
+  setUserData?: (data?: TGetResponse) => void
 }
 
 function ProfileCardFrame({
@@ -26,41 +26,44 @@ function ProfileCardFrame({
   const [coverPhoto, setCoverPhoto] = useState<File>()
   const [error, setError] = useState('')
 
-  const handleUploadChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
-    setError('')
-    const file = e.target.files?.[0]
-    if (file) {
-      const dimensions = await imageDimensions(file)
-      const fileSize = calcFileSize(file.size)
-      if (fileSize > LIMIT_SIZE) {
-        setError(`File size exceeds ${LIMIT_SIZE} mb`)
-      } else if (
-        dimensions.height < LIMIT_HEIGHT ||
-        dimensions.width < LIMIT_WIDTH
-      ) {
-        setError(
-          `At least you can upload a ${LIMIT_WIDTH}x${LIMIT_HEIGHT} photo size`,
-        )
-      } else {
-        setCoverPhoto(file)
-        const reader = new FileReader()
-        reader.onloadend = function () {
-          const fileData = reader.result?.toString()
-          if (userData && fileData) {
-            setUserData({
-              ...userData,
-              cover_photo: {
-                filename: file.name,
-                content: fileData,
-              },
-            })
+  const handleUploadChange = useCallback(
+    async (e: ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault()
+      setError('')
+      const file = e.target.files?.[0]
+      if (file) {
+        const dimensions = await imageDimensions(file)
+        const fileSize = calcFileSize(file.size)
+        if (fileSize > LIMIT_SIZE) {
+          setError(`File size exceeds ${LIMIT_SIZE} mb`)
+        } else if (
+          dimensions.height < LIMIT_HEIGHT ||
+          dimensions.width < LIMIT_WIDTH
+        ) {
+          setError(
+            `At least you can upload a ${LIMIT_WIDTH}x${LIMIT_HEIGHT} photo size`,
+          )
+        } else {
+          setCoverPhoto(file)
+          const reader = new FileReader()
+          reader.onloadend = function () {
+            const fileData = reader.result?.toString()
+            if (userData && fileData && setUserData) {
+              setUserData({
+                ...userData,
+                cover_photo: {
+                  filename: file.name,
+                  content: fileData,
+                },
+              })
+            }
           }
+          reader.readAsDataURL(file)
         }
-        reader.readAsDataURL(file)
       }
-    }
-  }
+    },
+    [userData],
+  )
 
   return (
     <div className='bg-gray-21 h-139px rounded-t-lg relative'>
@@ -68,7 +71,7 @@ function ProfileCardFrame({
         <img
           src={user?.cover_photo?.filename || coverPhoto?.path}
           className='rounded-t-lg w-315px'
-          alt='Cover photo'
+          alt='Cover'
         />
       ) : null}
       {error ? (

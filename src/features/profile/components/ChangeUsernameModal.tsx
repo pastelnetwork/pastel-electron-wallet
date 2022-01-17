@@ -119,17 +119,22 @@ function ChangeUsernameModal({
     </div>
   )
 
-  const renderCurrentUsernameInput = () => (
-    <div className='mt-6'>
-      <Input
-        placeholder={`@${currentUsername?.username}`}
-        type='text'
-        disabled
-        label='Current Username'
-        labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
-      />
-    </div>
-  )
+  const renderCurrentUsernameInput = () => {
+    const username: string = currentUsername?.username
+      ? `@${currentUsername?.username}`
+      : ''
+    return (
+      <div className='mt-6'>
+        <Input
+          placeholder={username}
+          type='text'
+          disabled
+          label='Current Username'
+          labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
+        />
+      </div>
+    )
+  }
 
   return (
     <Modal

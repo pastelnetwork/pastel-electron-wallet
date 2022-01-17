@@ -237,6 +237,15 @@ function MyComments(): JSX.Element {
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
     nativeCurrencyOptions[0],
   )
+  const isLoading = false
+
+  const setUserData = useCallback(() => {
+    // TODO
+  }, [])
+
+  const handleUpdateUserData = useCallback(() => {
+    // TODO
+  }, [])
 
   const handleOnReply = useCallback((replyId: number, reply: string) => {
     log.log(replyId, reply)
@@ -249,8 +258,6 @@ function MyComments(): JSX.Element {
   const onClickFilter = useCallback((value: string) => {
     log.log(value)
   }, [])
-
-  const isEmpty = false
 
   const renderFilter = () => (
     <div className='lg:ml-72px w-full lg:w-137px mb-10 lg:mb-0'>
@@ -275,10 +282,12 @@ function MyComments(): JSX.Element {
       <ProfileCard
         editMode={editMode}
         setEditMode={setEditMode}
-        isEmpty={isEmpty}
         nativeCurrencyOptions={nativeCurrencyOptions}
         nativeCurrency={nativeCurrency}
         onNativeCurrencyChange={setNativeCurrency}
+        isLoading={isLoading}
+        setUserData={setUserData}
+        handleUpdateUserData={handleUpdateUserData}
       />
     </div>
   )

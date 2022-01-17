@@ -108,35 +108,44 @@ export default function ProfileGeneral({
     [bio],
   )
 
-  const handleLocationChange = (option: TOption | null) => {
-    setLocation(option)
-    if (userData) {
-      setUserData({
-        ...userData,
-        location: option?.value,
-      })
-    }
-  }
+  const handleLocationChange = useCallback(
+    (option: TOption | null) => {
+      setLocation(option)
+      if (userData) {
+        setUserData({
+          ...userData,
+          location: option?.value,
+        })
+      }
+    },
+    [userData],
+  )
 
-  const handleLanguageChange = (option: TOption | null) => {
-    setLanguage(option)
-    if (userData) {
-      setUserData({
-        ...userData,
-        primary_language: option?.value,
-      })
-    }
-  }
+  const handleLanguageChange = useCallback(
+    (option: TOption | null) => {
+      setLanguage(option)
+      if (userData) {
+        setUserData({
+          ...userData,
+          primary_language: option?.value,
+        })
+      }
+    },
+    [userData],
+  )
 
-  const handleCategoriesChange = (option: string[]) => {
-    setCategories(option)
-    if (userData) {
-      setUserData({
-        ...userData,
-        categories: option,
-      })
-    }
-  }
+  const handleCategoriesChange = useCallback(
+    (option: string[]) => {
+      setCategories(option)
+      if (userData) {
+        setUserData({
+          ...userData,
+          categories: option,
+        })
+      }
+    },
+    [userData],
+  )
 
   const renderBioAndEditButton = () => (
     <div className='w-full mt-20 1200px:mb-0'>

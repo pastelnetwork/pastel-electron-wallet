@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 
 import ProfileGeneral from './myProfile/MyProfile'
 import MySecurity from './mySecurity/MySecurity'
@@ -48,7 +48,7 @@ export default function Profile(): JSX.Element {
     },
   ]
 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     const currentUser = getCurrentAccount()
     if (currentUser) {
       const userDetail = await getUserData({ pastelId: currentUser.pastelId })
@@ -56,7 +56,7 @@ export default function Profile(): JSX.Element {
         setUser(userDetail)
       }
     }
-  }
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
