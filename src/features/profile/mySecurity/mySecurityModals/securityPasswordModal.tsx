@@ -270,6 +270,27 @@ export default function SecurityPasswordModal({
     </div>
   )
 
+  const renderDownloadPDFButton = () => (
+    <div className='mt-[26px]'>
+      <PDFDownloadLink
+        document={
+          <PDFDocument
+            allKeys={allKeys}
+            currencyName={currencyName}
+            title={fileName}
+            qrcodeData={qrcodeData}
+          />
+        }
+        fileName={fileName}
+        className='block w-full'
+      >
+        <Button variant='default' className='w-full relative'>
+          Download PDF with All Your Keys
+        </Button>
+      </PDFDownloadLink>
+    </div>
+  )
+
   return (
     <Modal
       isOpen={isOpen}
@@ -286,24 +307,7 @@ export default function SecurityPasswordModal({
             access to this file will be able to control your Pastel account and
             take your PSL coins.
           </div>
-          <div className='mt-[26px]'>
-            <PDFDownloadLink
-              document={
-                <PDFDocument
-                  allKeys={allKeys}
-                  currencyName={currencyName}
-                  title={fileName}
-                  qrcodeData={qrcodeData}
-                />
-              }
-              fileName={fileName}
-              className='block w-full'
-            >
-              <Button variant='default' className='w-full relative'>
-                Download PDF with All Your Keys
-              </Button>
-            </PDFDownloadLink>
-          </div>
+          {renderDownloadPDFButton()}
         </div>
       ) : (
         <div>

@@ -91,6 +91,35 @@ export default function ChangePassword({
     setStatus('')
   }, [])
 
+  const renderSuggestPasswordContent = () => (
+    <div className='text-gray-a0 text-h6 leading-relaxed'>
+      <span>
+        We strongly suggest that you save your password in a password manager
+        such as{' '}
+      </span>
+      <Link
+        to='https://www.lastpass.com/'
+        target='_blank'
+        className='underline italic'
+        variant='gray-a0'
+        useATag
+      >
+        LastPass
+      </Link>
+      <span> or </span>
+      <Link
+        to='https://1password.com/'
+        target='_blank'
+        className='underline italic'
+        variant='gray-a0'
+        useATag
+      >
+        1Password
+      </Link>
+      <span>.</span>
+    </div>
+  )
+
   const content = (
     <>
       <Password
@@ -102,32 +131,7 @@ export default function ChangePassword({
       />
       <div className='mt-[20px]'>
         {noMatch && <div className='text-red-fe'>Passwords must match</div>}
-        <div className='text-gray-a0 text-h6 leading-relaxed'>
-          <span>
-            We strongly suggest that you save your password in a password
-            manager such as{' '}
-          </span>
-          <Link
-            to='https://www.lastpass.com/'
-            target='_blank'
-            className='underline italic'
-            variant='gray-a0'
-            useATag
-          >
-            LastPass
-          </Link>
-          <span> or </span>
-          <Link
-            to='https://1password.com/'
-            target='_blank'
-            className='underline italic'
-            variant='gray-a0'
-            useATag
-          >
-            1Password
-          </Link>
-          <span>.</span>
-        </div>
+        {renderSuggestPasswordContent()}
       </div>
     </>
   )
