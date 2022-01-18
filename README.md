@@ -1,13 +1,18 @@
+<div align=center>
+  
+  [<img height="100px" src="src/common/assets/images/logo.svg"/>](https://pastel.network/)
+  
+</div>
+
 <p align=center>
-  <img height="150px" src="src/common/assets/images/logo.svg"/>
+  <b>Pastel Fullnode Wallet</b>
 </p>
-<p align=center>
-  <h1 style="text-align: center; border: 0;margin-bottom: 0;padding-bottom: 0">Pastel Fullnode Wallet</h1>
-</p>
-<br>
-<p align=center>
-<a href="https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master"><img alt="docs" src="https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master.svg?style=svg"></a>
-</p>
+
+<div align=center>
+  
+  [![CircleCI](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master.svg?style=svg)](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master)
+  
+</div>
 
 ---
 
