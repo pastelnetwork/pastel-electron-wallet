@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Story, Meta } from '@storybook/react'
 import { Button } from '../../../../common/components/Buttons'
 import SecurityPasswordModal, {
@@ -9,6 +9,16 @@ export const ReviewModalDefault: Story<TSecurityPasswordModal> = ({
   isOpen,
 }: TSecurityPasswordModal) => {
   const [showModal, setShowModal] = React.useState(isOpen)
+  const [status, setStatus] = useState('')
+  const qrcodeData = ['']
+
+  const handleConfirmChangePassword = () => {
+    setStatus('success')
+  }
+
+  const setCurrentPassword = () => {
+    // noop
+  }
 
   return (
     <>
@@ -18,7 +28,11 @@ export const ReviewModalDefault: Story<TSecurityPasswordModal> = ({
         handleClose={() => {
           setShowModal(false)
         }}
-      ></SecurityPasswordModal>
+        handleConfirm={handleConfirmChangePassword}
+        setCurrentPassword={setCurrentPassword}
+        status={status}
+        qrcodeData={qrcodeData.join('')}
+      />
     </>
   )
 }
