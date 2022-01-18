@@ -1,13 +1,16 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { NavLink, Link, useLocation } from 'react-router-dom'
 import { useToggle } from 'react-use'
 
 import SearchBar from '../SearchBar'
 import ButtonTag from '../Link'
 import * as ROUTES from 'common/utils/constants/routes'
-import AvatarImage from 'common/assets/images/profile-avatar.png'
+import img_avatar_empty from 'common/assets/images/avatar-placeholder.svg'
 import cn from 'classnames'
 import AddNFT from 'features/nft/addNFT'
+import { getUserData } from 'api/walletNode/userData'
+import { getCurrentAccount } from 'common/utils/User'
+
 import NotificationModal from 'features/dashboard/dashboardModals/notificationModal'
 import notificationData from 'features/dashboard/dashboardModals/notificationModal.data'
 
@@ -53,6 +56,30 @@ function MenuItem({
 function Header(): JSX.Element | null {
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
   const [openAddNFT, toggleAddNFT] = useToggle(false)
+  const [avatar, setAvatar] = useState('')
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = getCurrentAccount()
+      if (currentUser) {
+        const userDetail = await getUserData({ pastelId: currentUser.pastelId })
+        if (userDetail && userDetail.avatar_image?.content) {
+          setAvatar(userDetail.avatar_image.content)
+        }
+      }
+    }
+
+    fetchUser()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  }, [])
 
   const handleOpenNotificationModal = useCallback(() => {
     setOpenNotificationModal(true)
@@ -84,11 +111,21 @@ function Header(): JSX.Element | null {
         <SettingIcon size={18} className='ml-4 md:ml-6 lg:ml-27px w-18px' />
       </Link>
       <Link to={ROUTES.MY_PROFILE}>
-        <img
-          src={AvatarImage}
-          className='w-9 h-9 ml-4 md:ml-6 lg:ml-22px cursor-pointer'
-          alt='Profile Avatar'
-        />
+        {!avatar ? (
+          <div className='rounded-full border-4 border-white bg-gray-e6 w-9 h-9 shadow-avatar flex flex-col items-center justify-center overflow-hidden relative ml-4 md:ml-6 lg:ml-22px'>
+            <img
+              src={img_avatar_empty}
+              className='w-full'
+              alt='Profile avatar'
+            />
+          </div>
+        ) : (
+          <img
+            src={avatar}
+            className='w-9 h-9 ml-4 md:ml-6 lg:ml-22px cursor-pointer'
+            alt='Profile Avatar'
+          />
+        )}
       </Link>
     </div>
   )

@@ -1,37 +1,61 @@
 import React, { useCallback, useState } from 'react'
-import Modal from '../../nft/nftModals/modal'
-import Input from '../../../common/components/Inputs/Input'
+import cn from 'classnames'
 import NumberFormat from 'react-number-format'
+
+import { getCurrentAccount } from 'common/utils/User'
 import { Button } from 'common/components/Buttons'
 import { Fire } from 'common/components/Icons/Fire'
-import cn from 'classnames'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { useTotalBalance, checkPastelIdUsername } from 'api/pastel-rpc'
+
+import Modal from '../../nft/nftModals/modal'
+import Input from '../../../common/components/Inputs/Input'
 
 export type TChangeUsernameModal = {
   isOpen: boolean
   handleClose: () => void
 }
 
+const FEE = 5000
+
 function ChangeUsernameModal({
   isOpen,
   handleClose,
 }: TChangeUsernameModal): JSX.Element {
+  const currentUsername = getCurrentAccount()
   const currencyName = useCurrencyName()
   const [username, setUsername] = useState<string>('')
   const [inputed, setInputed] = useState<boolean>(false)
+  const { data: balance } = useTotalBalance()
+  const [errorMsg, setErrorMsg] = useState('')
+  const [usernameInvalid, setUsernameInvalid] = useState<boolean>(false)
 
   const validateUserName = (username: string) => {
-    const usernameRegex = /^[a-zA-Z0-9]+$/
-    return usernameRegex.test(username)
+    const validationRe = /^[0-9a-z_]{3,}$/i
+    return validationRe.test(username)
   }
 
   const handleNewUsernameChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setUsername(e.target.value)
       setInputed(true)
+      setUsernameInvalid(!validateUserName(e.target.value))
     },
     [username],
   )
+
+  const handleChangeUsername = useCallback(async () => {
+    setErrorMsg('')
+    setUsernameInvalid(false)
+    const validation = await checkPastelIdUsername({ username: username })
+    if (validation.isBad) {
+      setErrorMsg(validation.validationError)
+      setUsernameInvalid(true)
+      return
+    }
+
+    // TODO: call API save data
+  }, [username])
 
   const onCloseModal = useCallback(() => {
     handleClose()
@@ -45,6 +69,8 @@ function ChangeUsernameModal({
         className={`w-full bg-blue-3f ${
           !validateUserName(username) ? 'bg-opacity-50' : ''
         }`}
+        disabled={!balance || balance.total < FEE || !username}
+        onClick={handleChangeUsername}
       >
         <span className='text-white font-medium text-sm'>
           Submit Username Change Request
@@ -59,7 +85,13 @@ function ChangeUsernameModal({
         Your Current {currencyName} Balance
       </div>
       <div className='text-gray-a0 text-sm font-extrabold'>
-        <NumberFormat value={25000} displayType='text' thousandSeparator />{' '}
+        <NumberFormat
+          value={
+            balance ? parseFloat(balance.total.toString()).toFixed(0) : '0'
+          }
+          displayType='text'
+          thousandSeparator
+        />{' '}
         {currencyName}
       </div>
     </div>
@@ -76,56 +108,83 @@ function ChangeUsernameModal({
       <div className='text-gray-a0 text-sm'>Username Change Fee (burned)</div>
       <div className='text-gray-a0 text-sm font-extrabold flex items-center'>
         {renderFireIcon()}
-        <NumberFormat value={5000} displayType='text' thousandSeparator />{' '}
+        <NumberFormat value={FEE} displayType='text' thousandSeparator />{' '}
         {currencyName}
       </div>
     </div>
   )
 
-  const renderRemainingBalance = () => (
-    <div className='flex justify-between items-center mt-2.5'>
-      <div className='text-gray-a0 text-sm'>Remaining Balance after Change</div>
-      <div className='text-gray-a0 text-sm font-extrabold'>
-        <NumberFormat value={20000} displayType='text' thousandSeparator />{' '}
-        {currencyName}
+  const renderRemainingBalance = () => {
+    const remainingBalance = balance ? (balance.total - FEE).toFixed(0) : 0
+    return (
+      <div className='flex justify-between items-center mt-2.5'>
+        <div className='text-gray-a0 text-sm'>
+          Remaining Balance after Change
+        </div>
+        <div className='text-gray-a0 text-sm font-extrabold'>
+          <NumberFormat
+            value={remainingBalance}
+            displayType='text'
+            thousandSeparator
+          />{' '}
+          {currencyName}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
-  const renderNewUsernameInput = () => (
-    <div className='mt-6'>
-      <Input
-        appliedStyleValid={false}
-        value={username}
-        isValid={!inputed || validateUserName(username)}
-        onChange={handleNewUsernameChange}
-        placeholder='New Username'
-        hintClassName={cn(`${!inputed ? 'font-normal' : 'font-medium'}`)}
-        hint={
-          !inputed
-            ? 'Only Latin Characters and Numbers Allowed'
-            : validateUserName(username)
-            ? ''
-            : 'Please enter a valid user name'
-        }
-        type='text'
-        label='New Username'
-        labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
-      />
-    </div>
-  )
+  const renderNewUsernameInput = () => {
+    let usernameIsValid = null
+    if (username.length > 0 && usernameInvalid) {
+      usernameIsValid = false
+    }
 
-  const renderCurrentUsernameInput = () => (
-    <div className='mt-6'>
-      <Input
-        placeholder='@MrVanGogh'
-        type='text'
-        disabled
-        label='Current Username'
-        labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
-      />
-    </div>
-  )
+    return (
+      <div className='mt-6'>
+        <Input
+          appliedStyleValid={false}
+          value={username}
+          onChange={handleNewUsernameChange}
+          placeholder='New Username'
+          hintClassName={cn(`${!inputed ? 'font-normal' : 'font-medium'}`)}
+          hint={
+            !inputed
+              ? 'Only Latin Characters and Numbers Allowed'
+              : validateUserName(username)
+              ? ''
+              : 'Please enter a valid user name'
+          }
+          type='text'
+          label='New Username'
+          labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
+          isValid={usernameIsValid}
+          errorMessage={
+            usernameInvalid && username
+              ? errorMsg || 'Please enter a valid username'
+              : null
+          }
+          hintAsTooltip
+        />
+      </div>
+    )
+  }
+
+  const renderCurrentUsernameInput = () => {
+    const username: string = currentUsername?.username
+      ? `@${currentUsername?.username}`
+      : ''
+    return (
+      <div className='mt-6'>
+        <Input
+          placeholder={username}
+          type='text'
+          disabled
+          label='Current Username'
+          labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
+        />
+      </div>
+    )
+  }
 
   return (
     <Modal

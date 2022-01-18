@@ -11,11 +11,9 @@ import NSFWControls from './NSFWControls'
 import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import Select, { TOption } from 'common/components/Select'
-import {
-  DEFAULT_LANGUAGE,
-  LANGUAGES,
-} from '../../../../common/constants/languages'
-import { useSuggestLocations } from '../../../../api/locations'
+import { DEFAULT_LANGUAGE, LANGUAGES } from 'common/constants/languages'
+import { useSuggestLocations } from 'api/locations'
+import { TGetResponse } from 'api/walletNode/userData'
 
 export type TCurrency =
   | 'EUR'
@@ -29,42 +27,40 @@ export type TCurrency =
 
 export type TProfileGeneral = {
   editMode: boolean
-  isEmpty: boolean
   nativeCurrency: TCurrency
+  user?: TGetResponse
+  userData?: TGetResponse
+  setUserData: (data?: TGetResponse) => void
 }
 
 export default function ProfileGeneral({
   editMode,
-  isEmpty,
   nativeCurrency,
+  user,
+  userData,
+  setUserData,
 }: TProfileGeneral): JSX.Element {
-  const data = {
-    location: 'New York, US',
-    language: 'English',
-    categories: ['Motion Graphics', 'Illustration', 'Abstract'],
-    reputation: 4.89,
-    highestFeeRecieved: { value: 136200, comment: 632 },
-    totalSalesAmount: { value: 560600, comment: 211 },
-    totalItemsSold: '124 Copies across 5 NFTs',
-    bio:
-      'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
+  let defaultLanguage = DEFAULT_LANGUAGE
+  if (user?.primary_language) {
+    defaultLanguage =
+      LANGUAGES.find(l => l.value === user.primary_language) || DEFAULT_LANGUAGE
   }
-
-  if (isEmpty) {
-    Object.assign(data, {
-      categories: [],
-      reputation: 0,
-      highestFeeRecieved: { value: 0 },
-      totalSalesAmount: { value: 0 },
-      totalItemsSold: 0,
-    })
+  const data = {
+    location: user?.location || 'None',
+    language: defaultLanguage.label,
+    categories: user?.categories || [],
+    reputation: 0,
+    highestFeeRecieved: { value: 0, comment: 0 },
+    totalSalesAmount: { value: 0, comment: 0 },
+    totalItemsSold: '0 Copies across 0 NFTs',
+    bio: user?.biography || 'None',
   }
 
   const price = 15
   const [categories, setCategories] = useState<Array<string>>(data.categories)
   const [bio, setBio] = useState<string>(data.bio)
   const [location, setLocation] = useState<TOption | null>(null)
-  const [language, setLanguage] = useState<TOption | null>(DEFAULT_LANGUAGE)
+  const [language, setLanguage] = useState<TOption | null>(defaultLanguage)
   const [currentPrice, setCurrentPrice] = useState(0)
   const currencyName = useCurrencyName()
 
@@ -77,16 +73,14 @@ export default function ProfileGeneral({
   })
 
   useEffect(() => {
-    setBio(isEmpty ? 'None' : data.bio)
-  }, [isEmpty])
-
-  useEffect(() => {
     const getNativeCurrency = async (): Promise<void> => {
       if (!nativeCurrency) {
         return
       }
 
-      const result = await Convert(price).from('USD').to(nativeCurrency)
+      const result = await Convert(price)
+        .from('USD')
+        .to(user?.native_currency || nativeCurrency)
       setCurrentPrice(result)
     }
     getNativeCurrency()
@@ -104,8 +98,53 @@ export default function ProfileGeneral({
   const onBioChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setBio(e.target.value)
+      if (userData) {
+        setUserData({
+          ...userData,
+          biography: e.target.value,
+        })
+      }
     },
-    [bio],
+    [userData],
+  )
+
+  const handleLocationChange = useCallback(
+    (option: TOption | null) => {
+      setLocation(option)
+      if (userData) {
+        setUserData({
+          ...userData,
+          location: option?.value,
+        })
+      }
+    },
+    [userData],
+  )
+
+  const handleLanguageChange = useCallback(
+    (option: TOption | null) => {
+      setLanguage(option)
+      if (userData) {
+        setUserData({
+          ...userData,
+          primary_language: option?.value,
+        })
+      }
+    },
+    [userData],
+  )
+
+  const handleCategoriesChange = useCallback(
+    (option: string[]) => {
+      setCategories(option)
+      if (userData) {
+        setUserData({
+          ...userData,
+          categories: option,
+        })
+      }
+    },
+    [userData],
   )
 
   const renderBioAndEditButton = () => (
@@ -145,13 +184,15 @@ export default function ProfileGeneral({
               value: location,
               label: location,
             }))}
-            onChange={setLocation}
+            onChange={handleLocationChange}
             autocomplete
             highlight
             isLoading={isLoadingLocations}
           />
         ) : (
-          <div className='flex flex-grow text-gray-4a'>{location?.label}</div>
+          <div className='flex flex-grow text-gray-4a'>
+            {location?.label || data.location}
+          </div>
         )}
       </ProfileGeneralRow>
       <ProfileGeneralRow title='Language'>
@@ -160,7 +201,7 @@ export default function ProfileGeneral({
             className='text-gray-4a flex-grow shadow-4px'
             selected={language}
             options={LANGUAGES}
-            onChange={setLanguage}
+            onChange={handleLanguageChange}
             autocomplete
             highlight
           />
@@ -169,12 +210,12 @@ export default function ProfileGeneral({
         )}
       </ProfileGeneralRow>
       <ProfileGeneralRow title='Categories'>
-        {isEmpty ? (
+        {!categories.length && !editMode ? (
           <span className='text-gray-4a font-medium text-base leading-5'>
             None
           </span>
         ) : editMode ? (
-          <Categories value={categories} onChange={setCategories} />
+          <Categories value={categories} onChange={handleCategoriesChange} />
         ) : (
           <div className='flex whitespace-pre-wrap text-gray-4a'>
             {categories.join(', ')}
@@ -191,7 +232,7 @@ export default function ProfileGeneral({
   const renderHighestSalePriceReceived = () => (
     <ProfileGeneralRow title='Highest Sale Price Received'>
       <div className='flex items-center'>
-        {isEmpty ? (
+        {!data.highestFeeRecieved.value ? (
           <span className='cursor-pointer text-gray-4a text-base leading-5'>
             0 {currencyName}
           </span>
@@ -248,7 +289,7 @@ export default function ProfileGeneral({
   const renderTotalCombinedSales = () => (
     <ProfileGeneralRow title='Total Combined Sales'>
       <div className='flex items-center'>
-        {isEmpty ? (
+        {!data.totalSalesAmount.comment ? (
           <span className='cursor-pointer text-gray-4a text-base leading-5'>
             0 {currencyName}
           </span>
@@ -268,11 +309,7 @@ export default function ProfileGeneral({
 
   const renderTotalNFTsSold = () => (
     <ProfileGeneralRow title='Total NFTs Sold'>
-      {isEmpty ? (
-        <span className='text-base leading-5'>0 Copies across 0 NFTs</span>
-      ) : (
-        <span className='text-base leading-5'>{data.totalItemsSold}</span>
-      )}
+      <span className='text-base leading-5'>{data.totalItemsSold}</span>
     </ProfileGeneralRow>
   )
 
