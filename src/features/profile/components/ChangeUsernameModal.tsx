@@ -44,7 +44,7 @@ function ChangeUsernameModal({
     [username],
   )
 
-  const handleChangeUsername = async () => {
+  const handleChangeUsername = useCallback(async () => {
     setErrorMsg('')
     setUsernameInvalid(false)
     const validation = await checkPastelIdUsername({ username: username })
@@ -55,7 +55,7 @@ function ChangeUsernameModal({
     }
 
     // TODO: call API save data
-  }
+  }, [username])
 
   const onCloseModal = useCallback(() => {
     handleClose()

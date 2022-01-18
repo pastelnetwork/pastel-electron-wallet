@@ -16,7 +16,7 @@ const LIMIT_HEIGHT = 1000
 export type TProfileCardFrame = {
   userData?: TGetResponse
   user?: TGetResponse
-  handleUpdateUserData: () => void
+  handleUpdateUserData?: () => void
 }
 
 function ProfileCardFrame({
@@ -39,7 +39,9 @@ function ProfileCardFrame({
             content: fileData,
           },
         })
-        handleUpdateUserData()
+        if (handleUpdateUserData) {
+          handleUpdateUserData()
+        }
       } catch (error) {
         toast.error(error.message)
       }

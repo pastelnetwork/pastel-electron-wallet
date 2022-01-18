@@ -293,7 +293,6 @@ function MyComments({
         onNativeCurrencyChange={setNativeCurrency}
         user={user}
         userData={userData}
-        setUserData={setUserData}
         handleUpdateUserData={updateUserData}
       />
     </div>
@@ -320,3 +319,7 @@ function MyComments({
 }
 
 export default MyComments
+
+MyComments.defaultProps = {
+  user: undefined,
+}
