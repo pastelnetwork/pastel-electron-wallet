@@ -1,10 +1,10 @@
-import React, { useState, useEffect, createRef, useCallback, memo } from 'react'
-import { passwordStrength, IPasswordOption } from 'check-password-strength'
+import React, { useState, createRef, useCallback, memo } from 'react'
 import cn from 'classnames'
 
 import Tooltip from '../../../common/components/Tooltip'
-import { randomPassword } from 'common/utils/passwords'
+import { randomPassword, calcPasswordStrength } from 'common/utils/passwords'
 import { RefreshIcon, Eye } from 'common/components/Icons'
+import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
 
 type TPassword = {
   newPassword: string
@@ -12,38 +12,6 @@ type TPassword = {
   setNewPassword: (pass: string) => void
   setConfirmPassword: (pass: string) => void
   isMatch: boolean
-}
-
-const passOptions: IPasswordOption[] = [
-  {
-    id: 0,
-    value: 'Too weak',
-    minDiversity: 0,
-    minLength: 1,
-  },
-  {
-    id: 1,
-    value: 'Weak',
-    minDiversity: 2,
-    minLength: 6,
-  },
-  {
-    id: 2,
-    value: 'Medium',
-    minDiversity: 3,
-    minLength: 10,
-  },
-  {
-    id: 3,
-    value: 'Strong',
-    minDiversity: 4,
-    minLength: 12,
-  },
-]
-
-type TPassStrengthProps = {
-  key: string
-  value: string
 }
 
 const GenerateRandomPasswordButton = memo(
@@ -75,14 +43,10 @@ export default function Password(props: TPassword): JSX.Element {
 
   const [newPasswordVisible, setNewPasswordVisible] = useState(false)
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
-  const [passStrength, setPassStrength] = useState<TPassStrengthProps[]>([])
   const inputRef = createRef<HTMLInputElement>()
-
-  useEffect(() => {
-    if (!newPassword) {
-      setPassStrength([])
-    }
-  }, [newPassword, setPassStrength])
+  const [passwordStrength, setPasswordStrength] = useState<number>(
+    calcPasswordStrength(newPassword),
+  )
 
   const handleNewVisibility = useCallback(() => {
     setNewPasswordVisible(!newPasswordVisible)
@@ -96,107 +60,9 @@ export default function Password(props: TPassword): JSX.Element {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newPass = e.target.value
       setNewPassword(newPass)
-      const validation = passwordStrength(newPass, passOptions)
-
-      let status = [
-        {
-          key: 'line-1',
-          value: 'bg-navigation opacity-20',
-        },
-        {
-          key: 'line-2',
-          value: 'bg-navigation opacity-20',
-        },
-        {
-          key: 'line-3',
-          value: 'bg-navigation opacity-20',
-        },
-        {
-          key: 'line-4',
-          value: 'bg-navigation opacity-20',
-        },
-      ]
-      if (validation.id === 0) {
-        status = [
-          {
-            key: 'line-1',
-            value: 'bg-red-fe',
-          },
-          {
-            key: 'line-2',
-            value: 'bg-navigation opacity-20',
-          },
-          {
-            key: 'line-3',
-            value: 'bg-navigation opacity-20',
-          },
-          {
-            key: 'line-4',
-            value: 'bg-navigation opacity-20',
-          },
-        ]
-      } else if (validation.id === 1) {
-        status = [
-          {
-            key: 'line-1',
-            value: 'bg-yellow-ff',
-          },
-          {
-            key: 'line-2',
-            value: 'bg-yellow-ff',
-          },
-          {
-            key: 'line-3',
-            value: 'bg-navigation opacity-20',
-          },
-          {
-            key: 'line-4',
-            value: 'bg-navigation opacity-20',
-          },
-        ]
-      } else if (validation.id === 2) {
-        status = [
-          {
-            key: 'line-1',
-            value: 'bg-yellow-ff',
-          },
-          {
-            key: 'line-2',
-            value: 'bg-yellow-ff',
-          },
-          {
-            key: 'line-3',
-            value: 'bg-yellow-ff',
-          },
-          {
-            key: 'line-4',
-            value: 'bg-navigation opacity-20',
-          },
-        ]
-      } else if (validation.id === 3) {
-        status = [
-          {
-            key: 'line-1',
-            value: 'bg-success',
-          },
-          {
-            key: 'line-2',
-            value: 'bg-success',
-          },
-          {
-            key: 'line-3',
-            value: 'bg-success',
-          },
-          {
-            key: 'line-4',
-            value: 'bg-success',
-          },
-        ]
-      }
-
-      setPassStrength(status)
+      setPasswordStrength(calcPasswordStrength(newPass))
     },
-    [passStrength],
+    [passwordStrength],
   )
 
   const handleConfirmPass = useCallback(
@@ -308,18 +174,11 @@ export default function Password(props: TPassword): JSX.Element {
           </button>
         )}
       </div>
-      {passStrength.length && (
-        <div className='grid grid-cols-4 gap-1 mt-5 mb-6'>
-          {passStrength?.map((status: TPassStrengthProps) => {
-            return (
-              <div
-                className={`${status.value} h-1.5 rounded`}
-                key={status.key}
-              />
-            )
-          })}
+      {newPassword ? (
+        <div className='mt-[20px]'>
+          <PasswordStrength strength={passwordStrength} />
         </div>
-      )}
+      ) : null}
     </>
   )
 }

@@ -210,6 +210,7 @@ function ProfileCard({
       variant='secondary'
       className='w-full font-medium mt-10px  text-sm leading-4'
       onClick={handleEditMode}
+      disabled={!user}
     >
       <span className='flex items-center justify-center'>
         Edit Profile
