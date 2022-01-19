@@ -34,6 +34,10 @@ const getResources = async () => {
 
 const getDefaultLang = () => {
   const lang = localStorage.getItem('pastelLang')
+  if (!lang) {
+    return defaultLang
+  }
+
   const url = `/static/locales/${lang}/messages.json`
   if (!checkExistLang(url)) {
     return defaultLang
