@@ -1,22 +1,26 @@
 {
-  "welcome": {
-    "title": {
-      "message": "Welcome to Pastel NFT"
-    },
-    "subTitle": {
-      "message": "Let’s start!"
-    },
-    "registerAccountButton": {
-      "message": "Register Account"
-    },
-    "takeATourFirstButton": {
-      "message": "Take a Tour First"
-    },
-    "alreadyHaveAnAccount": {
-      "message": "Already have an account?"
-    },
-    "restoreAccountFromBackup": {
-      "message": "Restore account from backup"
-    }
+  "welcomeTitle": {
+    "message": "Welcome to Pastel NFT",
+    "description": "Used for the welcome screen"
+  },
+  "welcomeSubTitle": {
+    "message": "Let’s start!",
+    "description": "Used for the welcome screen"
+  },
+  "registerAccountButton": {
+    "message": "Register Account",
+    "description": "Used for the welcome screen"
+  },
+  "takeATourFirstButton": {
+    "message": "Take a Tour First",
+    "description": "Used for the welcome screen"
+  },
+  "alreadyHaveAnAccount": {
+    "message": "Already have an account?",
+    "description": "Used for the welcome screen"
+  },
+  "restoreAccountFromBackup": {
+    "message": "Restore account from backup",
+    "description": "Used for the welcome screen"
   }
 }
