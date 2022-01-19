@@ -1,3 +1,5 @@
+export const defaultLang = 'en'
+
 const english = { value: 'en', label: 'English' }
 
 export const DEFAULT_LANGUAGE = english

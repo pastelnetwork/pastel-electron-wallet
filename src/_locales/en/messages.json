@@ -1,0 +1,22 @@
+{
+  "welcome": {
+    "title": {
+      "message": "Welcome to Pastel NFT"
+    },
+    "subTitle": {
+      "message": "Let’s start!"
+    },
+    "registerAccountButton": {
+      "message": "Register Account"
+    },
+    "takeATourFirstButton": {
+      "message": "Take a Tour First"
+    },
+    "alreadyHaveAnAccount": {
+      "message": "Already have an account?"
+    },
+    "restoreAccountFromBackup": {
+      "message": "Restore account from backup"
+    }
+  }
+}
