@@ -28,7 +28,7 @@ type TCrypto = {
   qrcodeData: string
 }
 
-type TPDFDocumentProps = {
+export type TPDFDocumentProps = {
   allKeys: TDataForPdf
   currencyName?: string
   title: string

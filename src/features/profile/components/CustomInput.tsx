@@ -11,17 +11,20 @@ function CustomInput(
   ref: React.Ref<HTMLInputElement>,
 ) {
   const size = Math.max(value.length, 1)
-  const onKeyPress = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      onEnter()
-    }
-  }, [])
+  const onKeyPress = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        onEnter()
+      }
+    },
+    [value],
+  )
 
-  const onInutChange = useCallback(
+  const onInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       onChange(e.target.value)
     },
-    [value],
+    [],
   )
 
   return (
@@ -30,7 +33,7 @@ function CustomInput(
         ref={ref}
         className='min-w-16px outline-none h-6 text-gray-4a'
         value={value}
-        onChange={onInutChange}
+        onChange={onInputChange}
         onKeyPress={onKeyPress}
         size={size}
       />

@@ -35,3 +35,20 @@ export const isGifAnimated = async (file: File): Promise<boolean> => {
 
   return false
 }
+
+type TImageDimensions = {
+  width: number
+  height: number
+}
+export const imageDimensions = async (file: File): Promise<TImageDimensions> =>
+  new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => {
+      const { naturalWidth: width, naturalHeight: height } = img
+      resolve({ width, height })
+    }
+    img.onerror = () => {
+      reject('There was some problem with the image.')
+    }
+    img.src = URL.createObjectURL(file)
+  })
