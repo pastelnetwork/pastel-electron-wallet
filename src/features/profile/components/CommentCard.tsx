@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 
 import { Button } from 'common/components/Buttons'
 import Link from 'common/components/Link'
+import { translate } from 'features/app/translations'
 
 import ico_heart from 'common/assets/icons/ico-heart.svg'
 import ico_heart_empty from 'common/assets/icons/ico-heart-empty.svg'
@@ -92,7 +93,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
               onChange={onChange}
               onFocus={onFocus}
               onBlur={onBlur}
-              placeholder='Reply'
+              placeholder={translate('reply')}
             />
           </div>
           {isFocus || !!reply ? (
@@ -102,7 +103,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
                 disabled={!reply}
                 className='py-3 px-33px font-medium'
               >
-                Post
+                {translate('post')}
               </Button>
             </div>
           ) : null}
@@ -158,7 +159,7 @@ export default function CommentCard(props: TCommentCardProps): JSX.Element {
         <div className='flex text-sm leading-18px font-medium mt-6px'>
           {author ? (
             <p className='text-gray-71'>
-              Commented on{' '}
+              {translate('commentedOn')}{' '}
               <Link to={portfolioUrl} className='pl-1'>
                 {author}.
               </Link>{' '}

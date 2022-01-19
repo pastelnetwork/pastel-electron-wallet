@@ -10,6 +10,7 @@ import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
 import { Video, Refresh } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
+import { translate } from 'features/app/translations'
 
 type TRestoreByUploadProps = {
   onHideHeader?: (status: boolean) => void
@@ -166,7 +167,9 @@ export default function RestoreByUpload({
       <Tooltip
         type='top'
         content={
-          <div className='p-2 text-xs font-medium'>Restore your keys.</div>
+          <div className='p-2 text-xs font-medium'>
+            {translate('restoreYourKeys')}
+          </div>
         }
         width={130}
         vPosPercent={110}
@@ -215,13 +218,13 @@ export default function RestoreByUpload({
   return (
     <div>
       <div className='font-normal text-h5 leading-6 text-gray-71'>
-        Please select your QR code video.
+        {translate('pleaseSelectYourQRCodeVideo')}
       </div>
       <div className='mt-3'>
         {renderRestoreUploadForm()}
         {currentStatus === 'restoring' && (
           <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
-            Restoring ...
+            {translate('restoring')} ...
           </div>
         )}
       </div>

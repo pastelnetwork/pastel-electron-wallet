@@ -14,6 +14,7 @@ import { encode } from 'common/utils/encryption'
 import Password from '../../components/Password'
 import Card from '../../components/Card'
 import { SecurityPasswordModal } from '../mySecurityModals'
+import { translate } from 'features/app/translations'
 
 export default function ChangePassword({
   qrcodeData,
@@ -57,7 +58,7 @@ export default function ChangePassword({
     if (user) {
       const newPassword = encode(currentPassword)
       if (newPassword !== user.password) {
-        setError('Password is incorrect')
+        setError(translate('passwordIsIncorrect'))
         setStatus('')
         return
       }
@@ -93,10 +94,7 @@ export default function ChangePassword({
 
   const renderSuggestPasswordContent = () => (
     <div className='text-gray-a0 text-h6 leading-relaxed'>
-      <span>
-        We strongly suggest that you save your password in a password manager
-        such as{' '}
-      </span>
+      <span>{translate('WeStronglySuggestThatYouSaveYourPassword')} </span>
       <Link
         to='https://www.lastpass.com/'
         target='_blank'
@@ -104,9 +102,9 @@ export default function ChangePassword({
         variant='gray-a0'
         useATag
       >
-        LastPass
+        {translate('lastPass')}
       </Link>
-      <span> or </span>
+      <span> {translate('or')} </span>
       <Link
         to='https://1password.com/'
         target='_blank'
@@ -114,7 +112,7 @@ export default function ChangePassword({
         variant='gray-a0'
         useATag
       >
-        1Password
+        {translate('1Password')}
       </Link>
       <span>.</span>
     </div>
@@ -130,7 +128,9 @@ export default function ChangePassword({
         isMatch={!noMatch}
       />
       <div className='mt-[20px]'>
-        {noMatch && <div className='text-red-fe'>Passwords must match</div>}
+        {noMatch && (
+          <div className='text-red-fe'>{translate('passwordsMustMatch')}</div>
+        )}
         {renderSuggestPasswordContent()}
       </div>
     </>
@@ -143,15 +143,15 @@ export default function ChangePassword({
       onClick={submitPassword}
       disabled={!newPassword || calcPasswordStrength(newPassword) < 2}
     >
-      Submit New Password
+      {translate('submitNewPassword')}
     </Button>
   )
 
   return (
     <>
       <Card
-        title='Change Password'
-        description='Password must contain at least 1 letter, 1 number, and 1 symbol. Minimum length is 12 characters.'
+        title={translate('changePassword')}
+        description={translate('changePasswordDescription')}
         content={content}
         footer={footer}
       />

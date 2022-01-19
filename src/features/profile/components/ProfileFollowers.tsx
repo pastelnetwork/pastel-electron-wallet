@@ -1,5 +1,6 @@
 import React from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { translate } from 'features/app/translations'
 
 import svg_diamond from 'common/assets/icons/ico-diamond.svg'
 import svg_oval_1 from 'common/assets/images/avatars/oval-1.svg'
@@ -512,11 +513,11 @@ function Follower({
             disabled
             className='py-1.5 px-[13px] text-blue-9b'
           >
-            Unfollow
+            {translate('unfollow')}
           </Button>
         ) : (
           <Button variant='secondary' className='py-1.5 px-[13px]'>
-            Follow
+            {translate('follow')}
           </Button>
         )}
       </div>

@@ -52,7 +52,7 @@
   { "code": "th", "name": "ไทย", "active": false },
   { "code": "tr", "name": "Türkçe", "active": false },
   { "code": "uk", "name": "Українська мова", "active": false },
-  { "code": "vi", "name": "Tiếng Việt", "active": true },
+  { "code": "vi", "name": "Tiếng Việt", "active": false },
   { "code": "zh_CN", "name": "中文(简体)", "active": false },
   { "code": "zh_TW", "name": "中文(繁體)", "active": false }
 ]

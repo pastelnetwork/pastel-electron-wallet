@@ -1,11 +1,12 @@
 import i18next, { TOptions, StringMap } from 'i18next'
+import log from 'electron-log'
 
 import { defaultLang } from 'common/constants/languages'
 import locales from '_locales/index.json'
 
 const checkExistLang = (url: string) => {
   const http = new XMLHttpRequest()
-  http.open('HEAD', url, true)
+  http.open('HEAD', url, false)
   http.send()
   return http.status !== 404
 }
@@ -20,12 +21,16 @@ const getResources = async () => {
   let resources = {}
   for (const lang of langs) {
     const code = lang.code
-    const result = await fetchLang(`/static/locales/${code}/messages.json`)
-    resources = {
-      ...resources,
-      [code]: {
-        translation: JSON.parse(result),
-      },
+    try {
+      const result = await fetchLang(`/static/locales/${code}/messages.json`)
+      resources = {
+        ...resources,
+        [code]: {
+          translation: JSON.parse(result),
+        },
+      }
+    } catch (error) {
+      log.error(error.message)
     }
   }
 
@@ -60,7 +65,7 @@ export const initTranslation = async (): Promise<void> => {
 export const changeLanguage = (lang: string): void => {
   const url = `/static/locales/${lang}/messages.json`
   if (!checkExistLang(url)) {
-    i18next.changeLanguage(getDefaultLang())
+    i18next.changeLanguage(defaultLang)
   } else {
     i18next.changeLanguage(lang)
     localStorage.setItem('pastelLang', lang)

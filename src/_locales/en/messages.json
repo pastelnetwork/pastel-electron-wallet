@@ -22,5 +22,389 @@
   "restoreAccountFromBackup": {
     "message": "Restore account from backup",
     "description": "Used for the welcome screen"
+  },
+  "myAccount": {
+    "message": "My Account",
+    "description": "Used for my profile screen"
+  },
+  "general": {
+    "message": "General",
+    "description": "Used for my profile screen"
+  },
+  "messageBoard": {
+    "message": "Message Board",
+    "description": "Used for my profile screen"
+  },
+  "mySecurity": {
+    "message": "My Security",
+    "description": "Used for my profile screen"
+  },
+  "nativeCurrency": {
+    "message": "Native Currency",
+    "description": "Used for my profile screen"
+  },
+  "activeDisplayCurrency": {
+    "message": "Active display currency",
+    "description": "Used for my profile screen"
+  },
+  "editProfile": {
+    "message": "Edit Profile",
+    "description": "Used for my profile screen"
+  },
+  "pastelIDIdentifier": {
+    "message": "PastelID Identifier",
+    "description": "Used for my profile screen"
+  },
+  "max": {
+    "message": "max",
+    "description": "Used for my profile screen"
+  },
+  "min": {
+    "message": "min",
+    "description": "Used for my profile screen"
+  },
+  "name": {
+    "message": "Name",
+    "description": "Used for my profile screen"
+  },
+  "facebook": {
+    "message": "Facebook",
+    "description": "Used for my profile screen"
+  },
+  "twitter": {
+    "message": "Twitter",
+    "description": "Used for my profile screen"
+  },
+  "notAValidURLFormat": {
+    "message": "Not a valid URL format.",
+    "description": "Used for my profile screen"
+  },
+  "location": {
+    "message": "Location",
+    "description": "Used for my profile screen"
+  },
+  "language": {
+    "message": "Language",
+    "description": "Used for my profile screen"
+  },
+  "categories": {
+    "message": "Categories",
+    "description": "Used for my profile screen"
+  },
+  "pastelReputationScore": {
+    "message": "Pastel Reputation Score",
+    "description": "Used for my profile screen"
+  },
+  "none": {
+    "message": "None",
+    "description": "Used for my profile screen"
+  },
+  "highestSalePriceReceived": {
+    "message": "Highest Sale Price Received",
+    "description": "Used for my profile screen"
+  },
+  "totalCombinedSales": {
+    "message": "Total Combined Sales",
+    "description": "Used for my profile screen"
+  },
+  "totalNFTsSold": {
+    "message": "Total NFTs Sold",
+    "description": "Used for my profile screen"
+  },
+  "totalNFTsSoldCopies": {
+    "message": "{{copies}} Copies across {{total}} NFTs",
+    "description": "Used for my profile screen"
+  },
+  "bio": {
+    "message": "Bio",
+    "description": "Used for my profile screen"
+  },
+  "hideNotSafeForWorkNFTs": {
+    "message": "Hide Not Safe For Work NFTs",
+    "description": "Used for my profile screen"
+  },
+  "showAdvancedFeatures": {
+    "message": "Show Advanced Features",
+    "description": "Used for my profile screen"
+  },
+  "hentaiProbability": {
+    "message": "Hentai probability",
+    "description": "Used for my profile screen"
+  },
+  "pornProbability": {
+    "message": "Porn probability",
+    "description": "Used for my profile screen"
+  },
+  "noLocationsFound": {
+    "message": "No locations found",
+    "description": "Used for my profile screen"
+  },
+  "basedOnCurrentPSLPrice": {
+    "message": "based on current {{currencyName}} price",
+    "description": "Used for my profile screen"
+  },
+  "top": {
+    "message": "Top",
+    "description": "Used for my profile screen"
+  },
+  "saveChanges": {
+    "message": "Save Changes",
+    "description": "Used for my profile screen"
+  },
+  "errorLimitFileSize": {
+    "message": "File size exceeds {{size}} mb",
+    "description": "Used for my profile screen"
+  },
+  "errorLimitDimensions": {
+    "message": "At least you can upload a {{width}}x{{height}} photo size",
+    "description": "Used for my profile screen"
+  },
+  "english": {
+    "message": "English",
+    "description": "Used for my profile screen"
+  },
+  "followers": {
+    "message": "Followers",
+    "description": "Used for my profile screen"
+  },
+  "friends": {
+    "message": "Friends",
+    "description": "Used for my profile screen"
+  },
+  "following": {
+    "message": "Following",
+    "description": "Used for my profile screen"
+  },
+  "youHaveNoFollowers": {
+    "message": "You have no followers",
+    "description": "Used for my profile screen"
+  },
+  "placeholderForFriendsView": {
+    "message": "This is placeholder for friends View.",
+    "description": "Used for my profile screen"
+  },
+  "placeholderForFollowingView": {
+    "message": "This is placeholder for Following View.",
+    "description": "Used for my profile screen"
+  },
+  "NoOneHasSubscribed": {
+    "message": "No one has subscribed to you yet but you can",
+    "description": "Used for my profile screen"
+  },
+  "unfollow": {
+    "message": "Unfollow",
+    "description": "Used for my profile screen"
+  },
+  "follow": {
+    "message": "Follow",
+    "description": "Used for my profile screen"
+  },
+  "alreadyHaveAPastelID": {
+    "message": "Already have a PastelID?",
+    "description": "Used for my profile screen"
+  },
+  "restoreYourAccount": {
+    "message": "Restore your account and {{currencyName}} addresses from a backup",
+    "description": "Used for my profile screen"
+  },
+  "restore": {
+    "message": "Restore",
+    "description": "Used for my profile screen"
+  },
+  "all": {
+    "message": "All",
+    "description": "Used for my profile screen"
+  },
+  "others": {
+    "message": "Others",
+    "description": "Used for my profile screen"
+  },
+  "filterBy": {
+    "message": "Filter by",
+    "description": "Used for my profile screen"
+  },
+  "reply": {
+    "message": "Reply",
+    "description": "Used for my profile screen"
+  },
+  "post": {
+    "message": "Post",
+    "description": "Used for my profile screen"
+  },
+  "commentedOn": {
+    "message": "Commented on",
+    "description": "Used for my profile screen"
+  },
+  "restoreYourAccountButton": {
+    "message": "Restore your account",
+    "description": "Used for my profile screen"
+  },
+  "chooseYourRestoreMethod": {
+    "message": "Choose your restore method",
+    "description": "Used for my profile screen"
+  },
+  "cryptoKeys": {
+    "message": "Crypto Keys",
+    "description": "Used for my profile screen"
+  },
+  "qrCode": {
+    "message": "QR-Code",
+    "description": "Used for my profile screen"
+  },
+  "qrCodeVideo": {
+    "message": "QR Code Video",
+    "description": "Used for my profile screen"
+  },
+  "PleaseSelectYourCryptoKeys": {
+    "message": "Please select your crypto keys.",
+    "description": "Used for my profile screen"
+  },
+  "selectYourCryptoKeys.": {
+    "message": "Select your crypto keys.",
+    "description": "Used for my profile screen"
+  },
+  "restoreYourKeys.": {
+    "message": "Restore your keys.",
+    "description": "Used for my profile screen"
+  },
+  "pleaseSelectYourQRCodeVideo": {
+    "message": "Please select your QR code video.",
+    "description": "Used for my profile screen"
+  },
+  "restoring": {
+    "message": "Restoring",
+    "description": "Used for my profile screen"
+  },
+  "holdingYourPhoneUpToYourComputersWebcam": {
+    "message": "Holding your phone up to your computer's webcam.",
+    "description": "Used for my profile screen"
+  },
+  "restoreFailed": {
+    "message": "Restore failed",
+    "description": "Used for my profile screen"
+  },
+  "congratulations": {
+    "message": "Congratulations",
+    "description": "Used for my profile screen"
+  },
+  "yourKeysHaveBeenRestored": {
+    "message": "Your keys have been restored",
+    "description": "Used for my profile screen"
+  },
+  "label": {
+    "message": "Label",
+    "description": "Used for my profile screen"
+  },
+  "address": {
+    "message": "Address",
+    "description": "Used for my profile screen"
+  },
+  "pastelID": {
+    "message": "PastelID",
+    "description": "Used for my profile screen"
+  },
+  "privateKey": {
+    "message": "Private Key",
+    "description": "Used for my profile screen"
+  },
+  "sapling": {
+    "message": "Sapling",
+    "description": "Used for my profile screen"
+  },
+  "downloadPDFWithAllYourKeys": {
+    "message": "Download PDF with All Your Keys",
+    "description": "Used for my profile screen"
+  },
+  "backupYourCryptoKeys": {
+    "message": "Backup Your Crypto Keys",
+    "description": "Used for my profile screen"
+  },
+  "note": {
+    "message": "Note",
+    "description": "Used for my profile screen"
+  },
+  "makeSureYouKeepThisFileSafe": {
+    "message": "Make sure you keep this file safe, since anyone with access to this file will be able to control your Pastel account and take your {{currencyName}} coins.",
+    "description": "Used for my profile screen"
+  },
+  "clickingTheButtonBelowWillGenerateAPDFPaperWallet": {
+    "message": "Clicking the button below will generate a PDF “paper wallet,” which is a single file that contains all your Pastel secret information that gives control over your PastelID (idenity on the Pastel Network) and your {{currencyName}} coins stored in this wallet. This file can be used to restore your account information on a new computer.",
+    "description": "Used for my profile screen"
+  },
+  "passwordIsIncorrect": {
+    "message": "Password is incorrect",
+    "description": "Used for my profile screen"
+  },
+  "WeStronglySuggestThatYouSaveYourPassword": {
+    "message": "We strongly suggest that you save your password in a password manager such as",
+    "description": "Used for my profile screen"
+  },
+  "lastPass": {
+    "message": "LastPass",
+    "description": "Used for my profile screen"
+  },
+  "or": {
+    "message": "or",
+    "description": "Used for my profile screen"
+  },
+  "1Password": {
+    "message": "1Password",
+    "description": "Used for my profile screen"
+  },
+  "passwordsMustMatch": {
+    "message": "Passwords must match",
+    "description": "Used for my profile screen"
+  },
+  "submitNewPassword": {
+    "message": "Submit New Password",
+    "description": "Used for my profile screen"
+  },
+  "changePassword": {
+    "message": "Change Password",
+    "description": "Used for my profile screen"
+  },
+  "changePasswordDescription": {
+    "message": "Password must contain at least 1 letter, 1 number, and 1 symbol. Minimum length is 12 characters.",
+    "description": "Used for my profile screen"
+  },
+  "yourPasswordHasBeenChanged": {
+    "message": "Your password has been changed",
+    "description": "Used for my profile screen"
+  },
+  "youCanDownloadTheNewBackupOfYourCryptoKeys": {
+    "message": "You can download the new backup of your crypto keys included the new password and make sure you keep this file safe, since anyone with access to this file will be able to control your Pastel account and take your PSL coins.",
+    "description": "Used for my profile screen"
+  },
+  "reEnterYourPassword": {
+    "message": "Re-enter your password",
+    "description": "Used for my profile screen"
+  },
+  "toGetAccessToSecuritySettings": {
+    "message": "To get access to security settings",
+    "description": "Used for my profile screen"
+  },
+  "yourPassword": {
+    "message": "Your Password",
+    "description": "Used for my profile screen"
+  },
+  "confirm": {
+    "message": "Confirm",
+    "description": "Used for my profile screen"
+  },
+  "asAMoreConvenientWayToBackupYourSecrets": {
+    "message": "As a more convenient way to backup your secrets, you can either click the button below to download a QR Code video, or make a video of the code on your smartphone camera. Then to restore, you can play the video on your phone and hold the phone screen up to your webcam. You can test that it worked by clicking here.",
+    "description": "Used for my profile screen"
+  },
+  "creatingQRCodeVideo": {
+    "message": "Creating QR Code Video",
+    "description": "Used for my profile screen"
+  },
+  "downloadQRCodeVideo": {
+    "message": "Download QR Code Video",
+    "description": "Used for my profile screen"
+  },
+  "generateAQRCodeVideo": {
+    "message": "Generate a QR Code Video",
+    "description": "Used for my profile screen"
   }
 }

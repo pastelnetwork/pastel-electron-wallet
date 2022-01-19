@@ -6,6 +6,7 @@ import RestoreByCamera from './RestoreByCamera'
 import RestoreByPdf from './RestoreByPdf'
 import Modal from 'common/components/AnimatedModal'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
+import { translate } from 'features/app/translations'
 
 type TRestoreModalProps = {
   modalIsOpen: boolean
@@ -19,9 +20,9 @@ enum Tabs {
 }
 
 const tabs = [
-  { label: 'Crypto Keys' },
-  { label: 'QR-Code' },
-  { label: 'QR Code Video' },
+  { label: translate('cryptoKeys') },
+  { label: translate('qrCode') },
+  { label: translate('qrCodeVideo') },
 ]
 
 export default function RestoreModal({
@@ -62,10 +63,10 @@ export default function RestoreModal({
           {!hideHeader && (
             <div>
               <div className='text-gray-2d text-32px leading-10 font-extrabold mb-4'>
-                Restore your account
+                {translate('restoreYourAccountButton')}
               </div>
               <div className='font-normal text-h5 leading-6 text-gray-71'>
-                Choose your restore method
+                {translate('chooseYourRestoreMethod')}
               </div>
               <div className='mt-20px'>
                 <MultiToggleSwitch {...routes} />

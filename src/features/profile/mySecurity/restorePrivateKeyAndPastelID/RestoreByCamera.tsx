@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import QrReader from 'react-qr-reader'
 
+import { translate } from 'features/app/translations'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
@@ -103,10 +104,10 @@ export default function RestoreByCamera({
         </div>
       </div>
       <div className='font-normal text-h5 leading-6 text-gray-71 mt-28px text-center'>
-        Holding your phone up to your computer{"'"}s webcam.{' '}
+        {translate('holdingYourPhoneUpToYourComputersWebcam')}{' '}
         {results.length ? (
           <span>
-            Restoring ... {results.length}/{results[0].total}
+            {translate('restoring')} ... {results.length}/{results[0].total}
           </span>
         ) : null}
       </div>

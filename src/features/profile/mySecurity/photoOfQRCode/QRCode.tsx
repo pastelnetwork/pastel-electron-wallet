@@ -5,6 +5,7 @@ import SwiperCore, { Autoplay, EffectFade } from 'swiper/core'
 
 import { Button } from '../../../../common/components/Buttons'
 import Card from '../../components/Card'
+import { translate } from 'features/app/translations'
 
 import 'swiper/swiper.min.css'
 
@@ -68,11 +69,7 @@ export default function QR({
 }: TQRProps): JSX.Element {
   const description = (
     <div className='max-w-330px'>
-      As a more convenient way to backup your secrets, you can either click the
-      button below to download a QR Code video, or make a video of the code on
-      your smartphone camera. Then to restore, you can play the video on your
-      phone and hold the phone screen up to your webcam. You can test that it
-      worked by clicking here.
+      {translate('asAMoreConvenientWayToBackupYourSecrets')}
     </div>
   )
 
@@ -92,14 +89,14 @@ export default function QR({
       disabled={currentStatus === 'downloading'}
     >
       {currentStatus === 'downloading'
-        ? 'Creating QR Code Video'
-        : 'Download QR Code Video'}
+        ? translate('creatingQRCodeVideo')
+        : translate('downloadQRCodeVideo')}
     </Button>
   )
 
   return (
     <Card
-      title='Generate a QR Code Video'
+      title={translate('generateAQRCodeVideo')}
       description={description}
       content={content}
       footer={footer}

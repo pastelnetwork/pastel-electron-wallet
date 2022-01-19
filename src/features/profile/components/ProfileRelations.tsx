@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react'
 import cn from 'classnames'
 
 import Followers from './ProfileFollowers'
+import { translate } from 'features/app/translations'
 import ico_users from 'common/assets/icons/ico-users.svg'
 
 const cx_tab =
@@ -53,7 +54,7 @@ function ProfileRelations(): JSX.Element {
         <ProfileRelationButton
           tab={tab}
           setTab={setTab}
-          text={`Followers (${relationCounts.followers})`}
+          text={`${translate('followers')} (${relationCounts.followers})`}
           value='Followers'
         />
       </div>
@@ -61,7 +62,7 @@ function ProfileRelations(): JSX.Element {
         <ProfileRelationButton
           tab={tab}
           setTab={setTab}
-          text={`Friends (${relationCounts.friends})`}
+          text={`${translate('friends')} (${relationCounts.friends})`}
           value='Friends'
         />
       </div>
@@ -69,7 +70,7 @@ function ProfileRelations(): JSX.Element {
         <ProfileRelationButton
           tab={tab}
           setTab={setTab}
-          text={`Following (${relationCounts.following})`}
+          text={`${translate('following')} (${relationCounts.following})`}
           value='Following'
         />
       </div>
@@ -89,9 +90,11 @@ function ProfileRelations(): JSX.Element {
         (isEmpty ? (
           <div className='bg-gray-e6 opacity-60 opacity mt-4 p-2 flex flex-col text-gray-71 rounded-lg flex-center h-234px'>
             <img src={ico_users} alt='Users' />
-            <div className='text-gray-71 mt-2'>You have no followers</div>
+            <div className='text-gray-71 mt-2'>
+              {translate('youHaveNoFollowers')}
+            </div>
             <div className='text-gray-a0 mt-1 whitespace-pre text-center'>
-              {'No one has subscribed to you yet \nbut you can'}
+              {translate('NoOneHasSubscribed')}
             </div>
           </div>
         ) : (
@@ -99,12 +102,12 @@ function ProfileRelations(): JSX.Element {
         ))}
       {tab == 'Friends' && (
         <div className='text-center pt-8'>
-          This is placeholder for friends View.
+          {translate('placeholderForFriendsView')}
         </div>
       )}
       {tab == 'Following' && (
         <div className='text-center pt-8'>
-          This is placeholder for Following View.
+          {translate('placeholderForFollowingView')}
         </div>
       )}
     </div>
