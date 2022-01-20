@@ -21,7 +21,7 @@
   },
   "restoreAccountFromBackup": {
     "message": "Restore account from backup",
-    "description": "Used for the welcome screen"
+    "description": "Used for the welcome screen, the login screen"
   },
   "myAccount": {
     "message": "My Account",
@@ -97,7 +97,7 @@
   },
   "none": {
     "message": "None",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the register screen"
   },
   "highestSalePriceReceived": {
     "message": "Highest Sale Price Received",
@@ -245,15 +245,15 @@
   },
   "cryptoKeys": {
     "message": "Crypto Keys",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the password recovery screen, the register screen"
   },
   "qrCode": {
     "message": "QR-Code",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the password recovery screen, the register screen"
   },
   "qrCodeVideo": {
     "message": "QR Code Video",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the password recovery screen"
   },
   "pleaseSelectYourCryptoKeys": {
     "message": "Please select your crypto keys.",
@@ -263,7 +263,7 @@
     "message": "Select your crypto keys.",
     "description": "Used for my profile screen"
   },
-  "restoreYourKeys.": {
+  "restoreYourKeys": {
     "message": "Restore your keys.",
     "description": "Used for my profile screen"
   },
@@ -393,7 +393,7 @@
   },
   "confirm": {
     "message": "Confirm",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the new password screen"
   },
   "asAMoreConvenientWayToBackupYourSecrets": {
     "message": "As a more convenient way to backup your secrets, you can either click the button below to download a QR Code video, or make a video of the code on your smartphone camera. Then to restore, you can play the video on your phone and hold the phone screen up to your webcam. You can test that it worked by clicking here.",
@@ -405,7 +405,7 @@
   },
   "downloadQRCodeVideo": {
     "message": "Download QR Code Video",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the register screen"
   },
   "generateAQRCodeVideo": {
     "message": "Generate a QR Code Video",
@@ -445,11 +445,11 @@
   },
   "onlyLatinCharactersAndNumbersAllowed": {
     "message": "Only Latin Characters and Numbers Allowed",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the register screen"
   },
   "pleaseEnterAValidUserName": {
     "message": "Please enter a valid username",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the register screen"
   },
   "currentUsername": {
     "message": "Current Username",
@@ -462,5 +462,413 @@
   "yourPastelIDIdentifierWillAlwaysStayTheSame": {
     "message": "Your PastelID Identifier will always stay the same, but you are allowed to change your Pastel username. The network charges a fee for this to prevent abuse.",
     "description": "Used for my profile screen"
+  },
+  "dashboard": {
+    "message": "Dashboard",
+    "description": "Used for header"
+  },
+  "NFTs": {
+    "message": "NFTs",
+    "description": "Used for header, SearchBar"
+  },
+  "members": {
+    "message": "Members",
+    "description": "Used for header"
+  },
+  "wallet": {
+    "message": "Wallet",
+    "description": "Used for header"
+  },
+  "portfolio": {
+    "message": "Portfolio",
+    "description": "Used for header"
+  },
+  "newNFT": {
+    "message": "new NFT",
+    "description": "Used for header"
+  },
+  "keywords": {
+    "message": "Keywords",
+    "description": "Used for SearchBar"
+  },
+  "creators": {
+    "message": "Creators",
+    "description": "Used for SearchBar"
+  },
+  "users": {
+    "message": "Users",
+    "description": "Used for SearchBar"
+  },
+  "forumPost": {
+    "message": "Forum Post",
+    "description": "Used for SearchBar"
+  },
+  "searchNFTCreatorUser": {
+    "message": "Search NFT, Creator, User, etc",
+    "description": "Used for SearchBar"
+  },
+  "searchCreatorOrNFT": {
+    "message": "Search creator or NFT",
+    "description": "Used for SearchBar"
+  },
+  "imLookingFor": {
+    "message": "I'm looking for",
+    "description": "Used for SearchBar"
+  },
+  "recentSearches": {
+    "message": "Recent searches",
+    "description": "Used for SearchBar"
+  },
+  "searchCreators": {
+    "message": "Search Creators",
+    "description": "Used for SearchBar"
+  },
+  "pleaseRestoreYourAccountFromBackup": {
+    "message": "Please restore your account from backup",
+    "description": "Used for the login screen"
+  },
+  "usernameOrPasswordIsIncorrect": {
+    "message": "Username or password is incorrect",
+    "description": "Used for the login screen"
+  },
+  "forgotYourPassword": {
+    "message": "Forgot your password?",
+    "description": "Used for the login screen"
+  },
+  "restoreAccessNow": {
+    "message": "Restore access now",
+    "description": "Used for the login screen"
+  },
+  "please": {
+    "message": "Please",
+    "description": "Used for the login screen"
+  },
+  "beforeLogin": {
+    "message": "before login",
+    "description": "Used for the login screen"
+  },
+  "login": {
+    "message": "Login",
+    "description": "Used for the login screen, the new password screen, the password recovery screen"
+  },
+  "username": {
+    "message": "Username",
+    "description": "Used for the login screen"
+  },
+  "password": {
+    "message": "Password",
+    "description": "Used for the login screen"
+  },
+  "dontHaveAnAccount": {
+    "message": "Don't have an account?",
+    "description": "Used for the login screen"
+  },
+  "registerOnPastel": {
+    "message": "Register on Pastel",
+    "description": "Used for the login screen"
+  },
+  "usernamePlaceholder": {
+    "message": "i.e banksy168",
+    "description": "Used for the login screen"
+  },
+  "superSecurePassword": {
+    "message": "Super secure password",
+    "description": "Used for the new password screen, the register screen"
+  },
+  "atLeast8CharactersAndAtLeast2numbers": {
+    "message": "At least 8 characters and at least 2 numbers",
+    "description": "Used for the new password screen, the register screen"
+  },
+  "thePasswordsDontMatch": {
+    "message": "The passwords don't match",
+    "description": "Used for the new password screen"
+  },
+  "generateASecurePasswordForMe": {
+    "message": "Generate a Secure Password for Me (recommended!)",
+    "description": "Used for the new password screen"
+  },
+  "setNewPassword": {
+    "message": "Set New Password",
+    "description": "Used for the new password screen"
+  },
+  "yourPasswordHasBeenResetSuccessfully": {
+    "message": "Your password has been reset successfully.",
+    "description": "Used for the new password screen"
+  },
+  "makeSureToSaveYourPasswordInAPasswordManager": {
+    "message": "Make sure to save your password in a password manager!",
+    "description": "Used for the new password screen"
+  },
+  "newPassword": {
+    "message": "New Password",
+    "description": "Used for the new password screen"
+  },
+  "pleaseEnterAValidPassword": {
+    "message": "Please enter a valid password",
+    "description": "Used for the new password screen"
+  },
+  "repeatNewPassword": {
+    "message": "Repeat New Password",
+    "description": "Used for the new password screen"
+  },
+  "chooseYourRecoveryMethod": {
+    "message": "Choose your recovery method",
+    "description": "Used for the password recovery screen"
+  },
+  "alreadyRestoredAccountFromBackup": {
+    "message": "Already restored account from backup?",
+    "description": "Used for the password recovery screen"
+  },
+  "notStrongEnough": {
+    "message": "Not strong enough",
+    "description": "Used for the register screen"
+  },
+  "usernameAlreadyInUse": {
+    "message": "Username already in use",
+    "description": "Used for the register screen"
+  },
+  "setYourWalletPassword": {
+    "message": "Set your wallet password",
+    "description": "Used for the register screen"
+  },
+  "setYourWalletPasswordTooltip": {
+    "message": "This password is to the secure container that stores your PSL coins and NFTs on your own machine and is never sent over the network. Please keep this password secure and be sure to backup your secret data in the next step.",
+    "description": "Used for the register screen"
+  },
+  "iCertifyThatIm18YearsOfAge": {
+    "message": "I certify that I’m 18 years of age or older, and agree to the",
+    "description": "Used for the register screen"
+  },
+  "userAgreementAndPrivacyPolicy": {
+    "message": "User Agreement and Privacy Policy",
+    "description": "Used for the register screen"
+  },
+  "chooseYourUsernameToUseOnThePastelNetwork": {
+    "message": "Choose your username to use on the Pastel Network",
+    "description": "Used for the register screen"
+  },
+  "stepRegisterNote": {
+    "message": "Note: Your Pastel username is a user-friendly way to identify you to other users on Pastel Network, similar to a Twitter handle.",
+    "description": "Used for the register screen"
+  },
+  "example": {
+    "message": "Example",
+    "description": "Used for the register screen"
+  },
+  "nextStep": {
+    "message": "Next step",
+    "description": "Used for the register screen"
+  },
+  "failedToLoadPastelId": {
+    "message": "Failed to load PastelId",
+    "description": "Used for the register screen"
+  },
+  "loading": {
+    "message": "Loading",
+    "description": "Used for the register screen"
+  },
+  "primaryLogin": {
+    "message": "Primary login",
+    "description": "Used for the register screen"
+  },
+  "primaryLoginToolTip": {
+    "message": "Primary login",
+    "description": "Used for the register screen"
+  },
+  "primaryLoginStep": {
+    "message": "primary login step",
+    "description": "Used for the register screen"
+  },
+  "paymentMethod": {
+    "message": "Payment method",
+    "description": "Used for the register screen"
+  },
+  "paymentMethodTooltip": {
+    "message": "Payment method",
+    "description": "Used for the register screen"
+  },
+  "paymentMethodStep": {
+    "message": "Payment method step",
+    "description": "Used for the register screen"
+  },
+  "registrationFee": {
+    "message": "Registration fee",
+    "description": "Used for the register screen"
+  },
+  "registrationFeeTooltip": {
+    "message": "Registration fee",
+    "description": "Used for the register screen"
+  },
+  "registrationFeeStep": {
+    "message": "Registration fee step",
+    "description": "Used for the register screen"
+  },
+  "backupAccessMethod": {
+    "message": "Backup access method",
+    "description": "Used for the register screen"
+  },
+  "backupAccessMethodTooltip": {
+    "message": "Backup access method",
+    "description": "Used for the register screen"
+  },
+  "backupAccessMethodStep": {
+    "message": "Backup access method step",
+    "description": "Used for the register screen"
+  },
+  "onboarding": {
+    "message": "Onboarding",
+    "description": "Used for the register screen"
+  },
+  "gettingStartedOnPastelNetwork": {
+    "message": "Getting Started on Pastel Network",
+    "description": "Used for the register screen"
+  },
+  "areYouSureYouWantToCloseTheOnboarding": {
+    "message": "Are you sure you want to close the onboarding<br />and return to the home screen?",
+    "description": "Used for the register screen"
+  },
+  "close": {
+    "message": "Close",
+    "description": "Used for the register screen"
+  },
+  "back": {
+    "message": "Back",
+    "description": "Used for the register screen"
+  },
+  "centralizedExchange": {
+    "message": "Centralized Exchange (Gemini, Binance, etc.)",
+    "description": "Used for the register screen"
+  },
+  "decentralizedExchange": {
+    "message": "Decentralized Exchange (Uniwap)",
+    "description": "Used for the register screen"
+  },
+  "pslAddressPrivateKeyImport": {
+    "message": "{{currencyName}} Address Private Key Import",
+    "description": "Used for the register screen"
+  },
+  "airdropPromoCode": {
+    "message": "Airdrop “Promo Code”",
+    "description": "Used for the register screen"
+  },
+  "pastelPromoCode": {
+    "message": "Pastel “Promo Code”",
+    "description": "Used for the register screen"
+  },
+  "pslCoinsAreRequiredToCreateAPastelIdentity": {
+    "message": "{{currencyName}} coins are required to create a Pastel identity (these coins are burned",
+    "description": "Used for the register screen"
+  },
+  "andToRegisterOrPurchaseNFTsOnPastel": {
+    "message": "and to register or purchase NFTs on Pastel",
+    "description": "Used for the register screen"
+  },
+  "choosePaymentMethod": {
+    "message": "Choose Payment Method",
+    "description": "Used for the register screen"
+  },
+  "proceedToThePaymentMethod": {
+    "message": "Proceed to the Payment Method",
+    "description": "Used for the register screen"
+  },
+  "comingSoon": {
+    "message": "Coming Soon",
+    "description": "Used for the register screen"
+  },
+  "downloadPDF": {
+    "message": "Download PDF",
+    "description": "Used for the register screen"
+  },
+  "cryptoKeysBackupMethod": {
+    "message": "Crypto Keys Backup Method",
+    "description": "Used for the register screen"
+  },
+  "downloadAPDFPaperWalletFileWithKeysForYourPastelID": {
+    "message": "Download a PDF “paper wallet” file with keys for your PastelID",
+    "description": "Used for the register screen"
+  },
+  "qrCodeBackupMethod": {
+    "message": "QR-Code Backup Method",
+    "description": "Used for the register screen"
+  },
+  "saveQRCodeVideoToASecurePlace": {
+    "message": "Save QR Code Video to a Secure Place, or Take a Video <br /> of Changing Code with your Smartphone:",
+    "description": "Used for the register screen"
+  },
+  "downloadingQRCodeVideo": {
+    "message": "Downloading QR Code Video",
+    "description": "Used for the register screen"
+  },
+  "finish": {
+    "message": "Finish",
+    "description": "Used for the register screen"
+  },
+  "registrationFeePending": {
+    "message": "Registration Fee Pending",
+    "description": "Used for the register screen"
+  },
+  "registrationFeePendingDescription": {
+    "message": "It can take up to 10 minutes after you've made <br /> the payment for this process to be completed",
+    "description": "Used for the register screen"
+  },
+  "checkPaymentStatusManually": {
+    "message": "Check payment status manually",
+    "description": "Used for the register screen"
+  },
+  "promoCodeIsInvalidSupportOnlyTransparentAddressForNow": {
+    "message": "Promo Code is invalid. Support only transparent address for now.",
+    "description": "Used for the register screen"
+  },
+  "pslAddressPrivateKeyIsInvalidSupportOnlyTransparentAddressForNow": {
+    "message": "{{currencyName}} Address Private Key is invalid. Support only transparent address for now.",
+    "description": "Used for the register screen"
+  },
+  "promoCodeIsInvalid": {
+    "message": "Promo Code is invalid.",
+    "description": "Used for the register screen"
+  },
+  "pslAddressPrivateKeyIsInvalid": {
+    "message": "{{currencyName}} Address Private Key is invalid.",
+    "description": "Used for the register screen"
+  },
+  "pasteYourPromoCodeHere": {
+    "message": "Paste your promo code here",
+    "description": "Used for the register screen"
+  },
+  "pslAddressPrivateKeyHere": {
+    "message": "{{currencyName}} Address Private Key here",
+    "description": "Used for the register screen"
+  },
+  "pastelPromoCodeTitle": {
+    "message": "Pastel Promo Code",
+    "description": "Used for the register screen"
+  },
+  "congratulationsImportPastelPromoCode": {
+    "message": "Congratulations, your personalized promotional code has been accepted! You now have {{addressBalance}} {{currencyName}} in your wallet.",
+    "description": "Used for the register screen"
+  },
+  "congratulationsImportPastelPSLPrivateKey": {
+    "message": "Congratulations, your {{currencyName}} Address Private Key has been accepted! You now have {{addressBalance}} {{currencyName}} in your wallet.",
+    "description": "Used for the register screen"
+  },
+  "addNewPastelPromoCode": {
+    "message": "Add new pastel promo code.",
+    "description": "Used for the register screen"
+  },
+  "addNewPSLAddressPrivateKey": {
+    "message": "Add new {{currencyName}} Address Private Key.",
+    "description": "Used for the register screen"
+  },
+  "applying": {
+    "message": "Applying",
+    "description": "Used for the register screen"
+  },
+  "apply": {
+    "message": "Apply",
+    "description": "Used for the register screen"
+  },
+  "proceedPayment": {
+    "message": "Proceed to {{targetBalance}} {{currencyName}} Payment",
+    "description": "Used for the register screen"
   }
 }

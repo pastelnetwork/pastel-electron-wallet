@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import cn from 'classnames'
 import shallow from 'zustand/shallow'
+import parse from 'html-react-parser'
 
 import Tooltip from 'common/components/Tooltip'
 import { CloseButton } from 'common/components/Buttons'
@@ -22,45 +23,46 @@ import StepBackup from './StepBackup'
 import StepPayment from './StepPayment'
 import StepFee from './StepFee'
 import RegistrationPending from './RegistrationPending'
+import { translate } from 'features/app/translations'
 
 import styles from './Register.module.css'
 
-const STEPS = [
-  {
-    id: Steps.Login,
-    iconActive: Download,
-    label: 'Primary login',
-    stepIconLabel: 'primary login step',
-    tooltipText: 'Primary login',
-    tooltipWidth: 88,
-  },
-  {
-    id: Steps.Payment,
-    iconActive: CreditCard,
-    label: 'Payment method',
-    stepIconLabel: 'Payment method step',
-    tooltipText: 'Payment method',
-    tooltipWidth: 150,
-  },
-  {
-    id: Steps.Fee,
-    iconActive: Refresh,
-    label: 'Registration fee',
-    stepIconLabel: 'Registration fee step',
-    tooltipText: 'Registration fee',
-    tooltipWidth: 150,
-  },
-  {
-    id: Steps.Backup,
-    iconActive: Download,
-    label: 'Backup access method',
-    stepIconLabel: 'Backup access method step',
-    tooltipText: 'Backup access method',
-    tooltipWidth: 150,
-  },
-]
-
 export default function Register(): JSX.Element {
+  const STEPS = [
+    {
+      id: Steps.Login,
+      iconActive: Download,
+      label: translate('primaryLogin'),
+      stepIconLabel: translate('primaryLoginStep'),
+      tooltipText: translate('primaryLoginToolTip'),
+      tooltipWidth: 88,
+    },
+    {
+      id: Steps.Payment,
+      iconActive: CreditCard,
+      label: translate('paymentMethod'),
+      stepIconLabel: translate('paymentMethodStep'),
+      tooltipText: translate('paymentMethod'),
+      tooltipWidth: 150,
+    },
+    {
+      id: Steps.Fee,
+      iconActive: Refresh,
+      label: translate('registrationFee'),
+      stepIconLabel: translate('registrationFeeStep'),
+      tooltipText: translate('registrationFeeTooltip'),
+      tooltipWidth: 150,
+    },
+    {
+      id: Steps.Backup,
+      iconActive: Download,
+      label: translate('backupAccessMethod'),
+      stepIconLabel: translate('backupAccessMethodStep'),
+      tooltipText: translate('backupAccessMethodTooltip'),
+      tooltipWidth: 150,
+    },
+  ]
+
   const history = useHistory()
   const [closeRequested, setCloseRequested] = useState(false)
   const store = useRegisterStore(
@@ -185,9 +187,11 @@ export default function Register(): JSX.Element {
   const renderRegisterHeader = () => (
     <div className='flex justify-between'>
       <div>
-        <div className='text-gray-800 text-32px font-extrabold'>Onboarding</div>
+        <div className='text-gray-800 text-32px font-extrabold'>
+          {translate('onboarding')}
+        </div>
         <div className='font-medium text-sm text-gray-93 opacity-50 mt-1'>
-          Getting Started on Pastel Network
+          {translate('gettingStartedOnPastelNetwork')}
         </div>
       </div>
       <div>
@@ -235,8 +239,7 @@ export default function Register(): JSX.Element {
             />
           </div>
           <div className='mt-27px text-center text-h5 leading-6 font-medium text-gray-4a'>
-            Are you sure you want to close the onboarding
-            <br /> and return to the home screen?
+            {parse(translate('areYouSureYouWantToCloseTheOnboarding'))}
           </div>
           <div className='mt-4 text-center'>
             <button
@@ -244,7 +247,7 @@ export default function Register(): JSX.Element {
               onClick={onClose}
               type='button'
             >
-              Close
+              {translate('close')}
             </button>
           </div>
           <div className='mt-4 text-center'>
@@ -253,7 +256,7 @@ export default function Register(): JSX.Element {
               onClick={onBack}
               type='button'
             >
-              Back
+              {translate('back')}
             </button>
           </div>
         </div>

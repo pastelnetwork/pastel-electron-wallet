@@ -1,11 +1,13 @@
 import * as React from 'react'
 import cn from 'classnames'
+import shallow from 'zustand/shallow'
+
 import Radio from 'common/components/Radio/Radio'
 import { Fire } from 'common/components/Icons/Fire'
 import { PrevButton, NextButton } from './Buttons'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PaymentMethods, useRegisterStore } from './Register.store'
-import shallow from 'zustand/shallow'
+import { translate } from 'features/app/translations'
 
 function PaymentMethodItem({
   method,
@@ -66,23 +68,23 @@ export default function StepPaymentMethod(): JSX.Element {
   const currencyName = useCurrencyName()
   const methods = [
     {
-      name: 'Centralized Exchange (Gemini, Binance, etc.)',
+      name: translate('centralizedExchange'),
       method: PaymentMethods.CentralizedExchange,
     },
     {
-      name: 'Decentralized Exchange (Uniwap)',
+      name: translate('decentralizedExchange'),
       method: PaymentMethods.DecentralizedExchange,
     },
     {
-      name: `${currencyName} Address Private Key Import`,
+      name: translate('pslAddressPrivateKeyImport', { currencyName }),
       method: PaymentMethods.PslAddress,
     },
     {
-      name: 'Airdrop “Promo Code”',
+      name: translate('airdropPromoCode'),
       method: PaymentMethods.AirdropPromoCode,
     },
     {
-      name: 'Pastel “Promo Code”',
+      name: translate('pastelPromoCode'),
       method: PaymentMethods.PastelPromoCode,
     },
   ]
@@ -124,9 +126,13 @@ export default function StepPaymentMethod(): JSX.Element {
   const renderPaymentIntro = () => {
     return (
       <h2 className='text-gray-71 text-base font-normal'>
-        {currencyName} coins are required to create a Pastel identity (these
-        coins are burned <Fire size={18} className='inline-block' />) and to
-        register or purchase NFTs on Pastel
+        {translate('pslCoinsAreRequiredToCreateAPastelIdentity', {
+          currencyName,
+        })}
+        &nbsp;
+        <Fire size={18} className='inline-block' />
+        )&nbsp;
+        {translate('andToRegisterOrPurchaseNFTsOnPastel')}
       </h2>
     )
   }
@@ -135,7 +141,7 @@ export default function StepPaymentMethod(): JSX.Element {
     <div className='flex flex-col h-full'>
       <div className='flex-grow flex flex-col justify-center'>
         <h1 className='text-gray-4a text-xl font-extrabold flex items-center text-h3'>
-          Choose Payment Method
+          {translate('choosePaymentMethod')}
         </h1>
         {renderPaymentIntro()}
         <div className='mt-6'>
@@ -150,7 +156,10 @@ export default function StepPaymentMethod(): JSX.Element {
       </div>
       <div className='mt-7 flex justify-between'>
         <PrevButton onClick={handleBack} />
-        <NextButton onClick={handleNext} text='Proceed to the Payment Method' />
+        <NextButton
+          onClick={handleNext}
+          text={translate('proceedToThePaymentMethod')}
+        />
       </div>
     </div>
   )

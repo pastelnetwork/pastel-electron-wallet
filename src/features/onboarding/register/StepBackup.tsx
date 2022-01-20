@@ -3,6 +3,7 @@ import cn from 'classnames'
 import dayjs from 'dayjs'
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer'
 import shallow from 'zustand/shallow'
+import parse from 'html-react-parser'
 
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { NextButton } from './Buttons'
@@ -19,6 +20,7 @@ import {
 import { QRCodeSlider, PDFDocument } from '../../profile'
 import { finish } from './Register.service'
 import { Steps, useRegisterStore } from './Register.store'
+import { translate } from 'features/app/translations'
 
 enum BackupMethods {
   PDF,
@@ -63,7 +65,10 @@ export default function StepBackupMethod(): JSX.Element {
   })
 
   const nextActive = true
-  const methods = [{ label: 'Download PDF' }, { label: 'QR-code' }]
+  const methods = [
+    { label: translate('downloadPDF') },
+    { label: translate('qrCode') },
+  ]
 
   useEffect(() => {
     const fetchData = async () => {
@@ -219,7 +224,9 @@ export default function StepBackupMethod(): JSX.Element {
   const renderPdfPrepareProgressButton = () => {
     return (
       <button type='button' onClick={handlePdfPrepareProgress}>
-        <div className='text-base font-medium text-gray-4a'>Crypto Keys</div>
+        <div className='text-base font-medium text-gray-4a'>
+          {translate('cryptoKeys')}
+        </div>
         <div className='text-xs font-medium text-gray-a0'>0.5mb</div>
       </button>
     )
@@ -246,10 +253,12 @@ export default function StepBackupMethod(): JSX.Element {
           {backupMethod === BackupMethods.PDF && (
             <div className='mt-42px'>
               <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
-                Crypto Keys Backup Method
+                {translate('cryptoKeysBackupMethod')}
               </h1>
               <h2 className='text-gray-71 text-sm font-normal'>
-                Download a PDF “paper wallet” file with keys for your PastelID
+                {translate(
+                  'downloadAPDFPaperWalletFileWithKeysForYourPastelID',
+                )}
               </h2>
 
               <div
@@ -269,7 +278,7 @@ export default function StepBackupMethod(): JSX.Element {
                     <Tooltip
                       type='bottom'
                       width={98}
-                      content='Download PDF'
+                      content={translate('downloadPDF')}
                       vPosPercent={120}
                       classnames='font-extrabold py-2'
                     >
@@ -311,12 +320,10 @@ export default function StepBackupMethod(): JSX.Element {
           {backupMethod === BackupMethods.QR && (
             <div className='mt-42px'>
               <h1 className='text-gray-4a text-h3 leading-30px font-extrabold'>
-                QR-Code Backup Method
+                {translate('qrCodeBackupMethod')}
               </h1>
               <h2 className='text-gray-77 text-sm font-normal'>
-                Save QR Code Video to a Secure Place, or Take a Video
-                <br />
-                of Changing Code with your Smartphone:
+                {parse(translate('saveQRCodeVideoToASecurePlace'))}
               </h2>
 
               <div className='relative mt-4 p-5 border bg-gray-f8 flex rounded-md justify-center shadow-textbox'>
@@ -329,8 +336,8 @@ export default function StepBackupMethod(): JSX.Element {
                       width={98}
                       content={
                         currentStatus === 'downloading'
-                          ? 'Downloading QR Code Video'
-                          : 'Download QR Code Video'
+                          ? translate('downloadingQRCodeVideo')
+                          : translate('downloadQRCodeVideo')
                       }
                       vPosPercent={120}
                       classnames='font-extrabold py-2'
@@ -347,7 +354,7 @@ export default function StepBackupMethod(): JSX.Element {
       <div className='mt-7 flex justify-end'>
         <NextButton
           onClick={handleNext}
-          text='Finish'
+          text={translate('finish')}
           disabled={!nextActive}
           className='min-w-[120px]'
         />

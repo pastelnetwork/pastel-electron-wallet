@@ -10,6 +10,7 @@ import cn from 'classnames'
 import AddNFT from 'features/nft/addNFT'
 import { getUserData } from 'api/walletNode/userData'
 import { getCurrentAccount } from 'common/utils/User'
+import { translate } from 'features/app/translations'
 
 import NotificationModal from 'features/dashboard/dashboardModals/notificationModal'
 import notificationData from 'features/dashboard/dashboardModals/notificationModal.data'
@@ -140,31 +141,31 @@ function Header(): JSX.Element | null {
         exact
         to={ROUTES.DASHBOARD}
       >
-        Dashboard
+        {translate('dashboard')}
       </MenuItem>
       <MenuItem
         classes='ml-4 1200px:ml-7 xl:ml-9 xl:w-[32px]'
         to={ROUTES.MARKET}
       >
-        NFTs
+        {translate('NFTs')}
       </MenuItem>
       <MenuItem
         classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[62px]'
         to={ROUTES.MEMBERS}
       >
-        Members
+        {translate('members')}
       </MenuItem>
       <MenuItem
         classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[42px]'
         to={ROUTES.WALLET}
       >
-        Wallet
+        {translate('wallet')}
       </MenuItem>
       <MenuItem
         classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-[58px]'
         to={ROUTES.PORTFOLIO}
       >
-        Portfolio
+        {translate('portfolio')}
       </MenuItem>
       <button
         className='flex items-center ml-4 1200px:ml-8 xl:ml-50px xl:w-95px'
@@ -173,7 +174,7 @@ function Header(): JSX.Element | null {
       >
         <AddNFTIcon size={21} className='mr-2' />
         <span className='text-blue-3f whitespace-nowrap font-extrabold'>
-          new NFT
+          {translate('newNFT')}
         </span>
       </button>
       <SearchBar />

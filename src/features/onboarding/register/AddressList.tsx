@@ -8,6 +8,7 @@ import { formatPrice, formatAddress } from 'common/utils/format'
 import { walletRPC } from 'api/pastel-rpc'
 import { useRegisterStore, TPromoCode } from './Register.store'
 import { TListUnspentResponse } from '../../../types/rpc'
+import { translate } from 'features/app/translations'
 
 const generateAddresses = (tUnspent: TListUnspentResponse): TPromoCode[] => {
   let balances: TPromoCode[] = []
@@ -111,7 +112,7 @@ export default function AddressList(): JSX.Element {
               : 'text-gray-4a text-opacity-50 font-medium',
           )}
         >
-          None
+          {translate('none')}
         </span>
       </Radio>
     </div>
