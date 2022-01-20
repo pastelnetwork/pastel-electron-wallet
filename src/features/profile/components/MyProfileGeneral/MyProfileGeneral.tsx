@@ -78,7 +78,7 @@ export default function ProfileGeneral({
     reputation: 0,
     highestFeeRecieved: { value: 0, comment: 0 },
     totalSalesAmount: { value: 0, comment: 0 },
-    totalItemsSold: translate('totalNFTsSoldCopies', { copies: 10, total: 0 }),
+    totalItemsSold: translate('totalNFTsSoldCopies', { copies: 0, total: 0 }),
     bio: user?.biography || translate('none'),
   }
 
