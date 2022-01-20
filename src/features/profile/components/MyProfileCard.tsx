@@ -122,10 +122,6 @@ function ProfileCard({
       setLoading(true)
       delete userData['username']
       try {
-        if (userData?.primary_language) {
-          changeLanguage(userData.primary_language)
-          setEditMode(false)
-        }
         await walletNodeApi.userData.update({
           ...userData,
           categories: userData.categories.join(','),

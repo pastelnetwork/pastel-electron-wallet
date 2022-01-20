@@ -315,7 +315,7 @@ export default function ProfileGeneral({
   )
 
   const renderTotalCombinedSales = () => (
-    <ProfileGeneralRow title='Total Combined Sales'>
+    <ProfileGeneralRow title={translate('totalCombinedSales')}>
       <div className='flex items-center'>
         {!data.totalSalesAmount.comment ? (
           <span className='cursor-pointer text-gray-4a text-base leading-5'>

@@ -255,11 +255,11 @@
     "message": "QR Code Video",
     "description": "Used for my profile screen"
   },
-  "PleaseSelectYourCryptoKeys": {
+  "pleaseSelectYourCryptoKeys": {
     "message": "Please select your crypto keys.",
     "description": "Used for my profile screen"
   },
-  "selectYourCryptoKeys.": {
+  "selectYourCryptoKeys": {
     "message": "Select your crypto keys.",
     "description": "Used for my profile screen"
   },
@@ -269,6 +269,10 @@
   },
   "pleaseSelectYourQRCodeVideo": {
     "message": "Please select your QR code video.",
+    "description": "Used for my profile screen"
+  },
+  "selectYourQRCodeVideo": {
+    "message": "Select your QR code video.",
     "description": "Used for my profile screen"
   },
   "restoring": {
@@ -405,6 +409,58 @@
   },
   "generateAQRCodeVideo": {
     "message": "Generate a QR Code Video",
+    "description": "Used for my profile screen"
+  },
+  "newpassword": {
+    "message": "New password",
+    "description": "Used for my profile screen"
+  },
+  "confirmPassword": {
+    "message": "Confirm password",
+    "description": "Used for my profile screen"
+  },
+  "generateANewSecure12DigitPassword": {
+    "message": "Generate a new secure 12-digit password",
+    "description": "Used for my profile screen"
+  },
+  "submitUsernameChangeRequest": {
+    "message": "Submit Username Change Request",
+    "description": "Used for my profile screen"
+  },
+  "yourCurrentPSLBalance": {
+    "message": "Your Current {{currencyName}} Balance",
+    "description": "Used for my profile screen"
+  },
+  "usernameChangeFee": {
+    "message": "Username Change Fee (burned)",
+    "description": "Used for my profile screen"
+  },
+  "remainingBalanceAfterChange": {
+    "message": "Remaining Balance after Change",
+    "description": "Used for my profile screen"
+  },
+  "newUsername": {
+    "message": "New Username",
+    "description": "Used for my profile screen"
+  },
+  "onlyLatinCharactersAndNumbersAllowed": {
+    "message": "Only Latin Characters and Numbers Allowed",
+    "description": "Used for my profile screen"
+  },
+  "pleaseEnterAValidUserName": {
+    "message": "Please enter a valid username",
+    "description": "Used for my profile screen"
+  },
+  "currentUsername": {
+    "message": "Current Username",
+    "description": "Used for my profile screen"
+  },
+  "changeYourPastelUsername": {
+    "message": "Change your Pastel Username",
+    "description": "Used for my profile screen"
+  },
+  "yourPastelIDIdentifierWillAlwaysStayTheSame": {
+    "message": "Your PastelID Identifier will always stay the same, but you are allowed to change your Pastel username. The network charges a fee for this to prevent abuse.",
     "description": "Used for my profile screen"
   }
 }

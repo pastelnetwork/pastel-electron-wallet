@@ -19,16 +19,15 @@ enum Tabs {
   selectQRCodeVideo,
 }
 
-const tabs = [
-  { label: translate('cryptoKeys') },
-  { label: translate('qrCode') },
-  { label: translate('qrCodeVideo') },
-]
-
 export default function RestoreModal({
   modalIsOpen,
   onCloseModal,
 }: TRestoreModalProps): JSX.Element | null {
+  const tabs = [
+    { label: translate('cryptoKeys') },
+    { label: translate('qrCode') },
+    { label: translate('qrCodeVideo') },
+  ]
   const [turnOffCamera, setTurnOffCamera] = useState(false)
   const [tab, setTab] = useState(Tabs.selectPDF)
   const [hideHeader, setHideHeader] = useState(false)

@@ -158,33 +158,6 @@ const commentsData: TComment[] = [
   },
 ]
 
-const filters = [
-  {
-    id: uuidv4(),
-    name: translate('all'),
-    isChecked: false,
-    value: '',
-  },
-  {
-    id: uuidv4(),
-    name: translate('friends'),
-    isChecked: true,
-    value: 'friends',
-  },
-  {
-    id: uuidv4(),
-    name: translate('followers'),
-    isChecked: true,
-    value: 'followers',
-  },
-  {
-    id: uuidv4(),
-    name: translate('others'),
-    isChecked: false,
-    value: 'others',
-  },
-]
-
 const ProfileCommentList = memo(function ProfileCommentList({
   handleOnReply,
   handleOnLikeClick,
@@ -242,6 +215,32 @@ function MyComments({
   user?: TGetResponse
   updateUserData: () => void
 }): JSX.Element {
+  const filters = [
+    {
+      id: uuidv4(),
+      name: translate('all'),
+      isChecked: false,
+      value: '',
+    },
+    {
+      id: uuidv4(),
+      name: translate('friends'),
+      isChecked: true,
+      value: 'friends',
+    },
+    {
+      id: uuidv4(),
+      name: translate('followers'),
+      isChecked: true,
+      value: 'followers',
+    },
+    {
+      id: uuidv4(),
+      name: translate('others'),
+      isChecked: false,
+      value: 'others',
+    },
+  ]
   const [editMode, setEditMode] = useState(false)
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
     nativeCurrencyOptions[0],

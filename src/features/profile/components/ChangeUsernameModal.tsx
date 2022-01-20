@@ -7,6 +7,7 @@ import { Button } from 'common/components/Buttons'
 import { Fire } from 'common/components/Icons/Fire'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { useTotalBalance, checkPastelIdUsername } from 'api/pastel-rpc'
+import { translate } from 'features/app/translations'
 
 import Modal from '../../nft/nftModals/modal'
 import Input from '../../../common/components/Inputs/Input'
@@ -73,7 +74,7 @@ function ChangeUsernameModal({
         onClick={handleChangeUsername}
       >
         <span className='text-white font-medium text-sm'>
-          Submit Username Change Request
+          {translate('submitUsernameChangeRequest')}
         </span>
       </Button>
     </div>
@@ -82,7 +83,7 @@ function ChangeUsernameModal({
   const renderCurrentBalance = () => (
     <div className='flex justify-between items-center'>
       <div className='text-gray-a0 text-sm'>
-        Your Current {currencyName} Balance
+        {translate('yourCurrentPSLBalance')}
       </div>
       <div className='text-gray-a0 text-sm font-extrabold'>
         <NumberFormat
@@ -105,7 +106,9 @@ function ChangeUsernameModal({
 
   const renderUsernameChangeFee = () => (
     <div className='flex justify-between items-center mt-2.5'>
-      <div className='text-gray-a0 text-sm'>Username Change Fee (burned)</div>
+      <div className='text-gray-a0 text-sm'>
+        {translate('usernameChangeFee')}
+      </div>
       <div className='text-gray-a0 text-sm font-extrabold flex items-center'>
         {renderFireIcon()}
         <NumberFormat value={FEE} displayType='text' thousandSeparator />{' '}
@@ -119,7 +122,7 @@ function ChangeUsernameModal({
     return (
       <div className='flex justify-between items-center mt-2.5'>
         <div className='text-gray-a0 text-sm'>
-          Remaining Balance after Change
+          {translate('remainingBalanceAfterChange')}
         </div>
         <div className='text-gray-a0 text-sm font-extrabold'>
           <NumberFormat
@@ -145,22 +148,22 @@ function ChangeUsernameModal({
           appliedStyleValid={false}
           value={username}
           onChange={handleNewUsernameChange}
-          placeholder='New Username'
+          placeholder={translate('newUsername')}
           hintClassName={cn(`${!inputed ? 'font-normal' : 'font-medium'}`)}
           hint={
             !inputed
-              ? 'Only Latin Characters and Numbers Allowed'
+              ? translate('onlyLatinCharactersAndNumbersAllowed')
               : validateUserName(username)
               ? ''
-              : 'Please enter a valid user name'
+              : translate('pleaseEnterAValidUserName')
           }
           type='text'
-          label='New Username'
+          label={translate('newUsername')}
           labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
           isValid={usernameIsValid}
           errorMessage={
             usernameInvalid && username
-              ? errorMsg || 'Please enter a valid username'
+              ? errorMsg || translate('pleaseEnterAValidUserName')
               : null
           }
           hintAsTooltip
@@ -179,7 +182,7 @@ function ChangeUsernameModal({
           placeholder={username}
           type='text'
           disabled
-          label='Current Username'
+          label={translate('currentUsername')}
           labelClassName='inline-block text-gray-71 text-base font-medium pb-1.5'
         />
       </div>
@@ -191,15 +194,13 @@ function ChangeUsernameModal({
       isOpen={isOpen}
       handleClose={onCloseModal}
       size='492px'
-      title={'Change your Pastel Username'}
+      title={translate('changeYourPastelUsername')}
       titleClassName='text-2xl mt-2 font-extrabold text-gray-2d'
       infoIcon={false}
     >
       <div className='w-[412px]'>
         <div className='text-base font-normal text-gray-4a pr-[7px]'>
-          Your PastelID Identifier will always stay the same, but you are
-          allowed to change your Pastel username. The network charges a fee for
-          this to prevent abuse.
+          {translate('yourPastelIDIdentifierWillAlwaysStayTheSame')}
         </div>
         {renderCurrentUsernameInput()}
         {renderNewUsernameInput()}

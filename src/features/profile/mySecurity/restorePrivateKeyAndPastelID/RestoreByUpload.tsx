@@ -36,7 +36,9 @@ function UploadVideoControl({
       </div>
       <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
         <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-          {fileSelected ? fileSelected.name : 'Select your QR code video.'}
+          {fileSelected
+            ? fileSelected.name
+            : translate('selectYourQRCodeVideo')}
         </p>
         {fileSelected ? (
           <p className='mb-0 text-xs font-normal text-gray-a0'>

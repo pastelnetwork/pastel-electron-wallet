@@ -503,7 +503,7 @@ function Follower({
       <div className='flex-grow font-bold pl-4 text-gray-23'>
         <div className='text-lg font-extrabold text-gray-4a'>{name}</div>
         <div className='text-gray-a0 text-sm font-normal'>
-          {count} followers
+          {count} {translate('followers').toLowerCase()}1
         </div>
       </div>
       <div className='text-gray-a0 text-sm'>

@@ -5,6 +5,7 @@ import Tooltip from '../../../common/components/Tooltip'
 import { randomPassword, calcPasswordStrength } from 'common/utils/passwords'
 import { RefreshIcon, Eye } from 'common/components/Icons'
 import PasswordStrength from 'common/components/PasswordStrength/PasswordStrength'
+import { translate } from 'features/app/translations'
 
 type TPassword = {
   newPassword: string
@@ -120,7 +121,7 @@ export default function Password(props: TPassword): JSX.Element {
       <Tooltip
         width={145}
         type='top'
-        content='Generate a new secure 12-digit password'
+        content={translate('generateANewSecure12DigitPassword')}
         classnames='text-xs leading-4 pt-5px pb-1'
       >
         <GenerateRandomPasswordButton
@@ -132,7 +133,9 @@ export default function Password(props: TPassword): JSX.Element {
 
   return (
     <>
-      <div className='text-gray-71 font-medium text-lg'>New password</div>
+      <div className='text-gray-71 font-medium text-lg'>
+        {translate('newpassword')}
+      </div>
       <div className='relative mb-6'>
         <input
           type={newPasswordVisible ? 'text' : 'password'}
@@ -155,7 +158,9 @@ export default function Password(props: TPassword): JSX.Element {
         )}
       </div>
 
-      <div className='text-gray-71 font-medium text-lg'>Confirm password</div>
+      <div className='text-gray-71 font-medium text-lg'>
+        {translate('confirmPassword')}
+      </div>
 
       <div className='relative'>
         <input

@@ -155,7 +155,9 @@ export default function RestoreByPdf({
         </div>
         <div className='flex flex-col justify-center max-w-278px cursor-pointer'>
           <p className='text-base font-medium text-gray-4a mb-0 truncate max-w-full'>
-            {fileSelected ? fileSelected.name : 'Select your crypto keys.'}
+            {fileSelected
+              ? fileSelected.name
+              : translate('selectYourCryptoKeys')}
           </p>
           {fileSelected ? (
             <p className='mb-0 text-xs font-normal text-gray-a0'>
@@ -189,7 +191,7 @@ export default function RestoreByPdf({
   return (
     <div>
       <div className='font-normal text-h5 leading-6 text-gray-71'>
-        {translate('PleaseSelectYourCryptoKeys')}
+        {translate('pleaseSelectYourCryptoKeys')}
       </div>
       <div className='mt-3'>
         {renderRestoreByPDFForm()}
