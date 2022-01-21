@@ -12,6 +12,7 @@ import { Button } from 'common/components/Buttons'
 import { DraggableCore, DraggableEvent } from 'react-draggable'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
+import { translate } from 'features/app/translations'
 
 type TUploadStepProps = {
   state: TAddNFTState
@@ -49,16 +50,18 @@ export default function UploadStep({
         <ArrowSlim to='left' size={18} />
       </button>
       <Button className='font-medium px-6' onClick={goToNextStep}>
-        Go to Image Optimization
+        {translate('goToImageOptimization')}
       </Button>
     </div>
   )
 
   const renderFileUploadedSuccessfully = () => (
     <div className='text-gray-71 font-medium'>
-      <p className='text-lg text-gray-4a'>File uploaded successfully!</p>
+      <p className='text-lg text-gray-4a'>
+        {translate('fileUploadedSuccessfully')}
+      </p>
       <p className='text-base text-gray-71 mt-3'>
-        You can continue to configure your NFT.
+        {translate('youCanContinueToConfigureYourNFT')}
       </p>
     </div>
   )
@@ -128,9 +131,9 @@ export default function UploadStep({
 
   return (
     <ModalLayout
-      title='Select Image'
+      title={translate('selectImage')}
       titleClass='mb-3'
-      subtitle='Description'
+      subtitle={translate('afterUploadStepDescription')}
       step={2}
       fixedHeight
       leftColumnWidth={image.maxWidth}

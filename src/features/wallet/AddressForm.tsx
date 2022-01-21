@@ -14,6 +14,7 @@ import {
   Close,
 } from 'common/components/Icons'
 import { useWalletScreenContext } from './walletScreen.context'
+import { translate } from 'features/app/translations'
 
 type TAddressFormProps = {
   address: string
@@ -109,7 +110,9 @@ export function AddressForm({
     <Tooltip
       classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
       content={
-        !showFullAddress ? 'Show Recipient Address' : 'Hide Recipient Address'
+        !showFullAddress
+          ? translate('showRecipientAddress')
+          : translate('hideRecipientAddress')
       }
       width={160}
       type='top'
@@ -122,8 +125,8 @@ export function AddressForm({
         <img
           alt={
             !showFullAddress
-              ? 'Show Recipient Address'
-              : 'Hide Recipient Address'
+              ? translate('showRecipientAddress')
+              : translate('hideRecipientAddress')
           }
           className='cursor-pointer'
           src={!showFullAddress ? eyeIcon : passEyeIcon}
@@ -140,7 +143,7 @@ export function AddressForm({
     return (
       <Tooltip
         classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-        content='Save Label'
+        content={translate('saveLabel')}
         width={130}
         type='top'
       >
@@ -159,7 +162,7 @@ export function AddressForm({
     return (
       <Tooltip
         classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-        content='Close'
+        content={translate('close')}
         width={130}
         type='top'
       >
@@ -233,7 +236,7 @@ export function AddressForm({
               {copyStatus ? (
                 <Tooltip
                   classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content='Copied'
+                  content={translate('copied')}
                   width={70}
                   type='top'
                 >
@@ -248,7 +251,7 @@ export function AddressForm({
               ) : (
                 <Tooltip
                   classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content='Copy address to clipboard'
+                  content={translate('copyAddressToClipboard')}
                   width={130}
                   type='top'
                 >
@@ -267,7 +270,7 @@ export function AddressForm({
             {!promoCode && (
               <Tooltip
                 classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                content='Edit Label'
+                content={translate('editLabel')}
                 width={100}
                 type='top'
               >

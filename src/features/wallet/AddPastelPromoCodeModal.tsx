@@ -10,6 +10,7 @@ import { formatNumber } from 'common/utils/format'
 import congratulations from 'common/assets/icons/ico-congratulations.svg'
 import { useWalletScreenContext } from './walletScreen.context'
 import { walletRPC } from '../../api/pastel-rpc'
+import { translate } from 'features/app/translations'
 
 export default function AddPastelPromoCodeModal(): JSX.Element {
   const {
@@ -56,12 +57,12 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
         pastelPromoCodeQuery.refetch()
       } else {
         setValidPromoCode(false)
-        setMessage('Promo Code is invalid.')
+        setMessage(translate('promoCodeIsInvalid'))
       }
       setLoading(false)
     } else {
       setValidPromoCode(false)
-      setMessage('Promo Code is invalid.')
+      setMessage(translate('promoCodeIsInvalid'))
     }
   }, [pastelPromoCode])
 
@@ -78,7 +79,7 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
     <TitleModal
       isOpen
       handleClose={useCallback(() => setIsOpen(false), [])}
-      title={isValidPromoCode && message ? '' : 'Add Pastel Promo Code'}
+      title={isValidPromoCode && message ? '' : translate('addPastelPromoCode')}
       classNames='w-[598px]'
     >
       <div className='mt-[11px] pr-22px'>
@@ -92,10 +93,12 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
               />
             </div>
             <div className='text-gray-800 text-lg font-extrabold mt-26px mb-6'>
-              Congratulations!
+              {translate('congratulations')}!
               <br />
-              Your personalized promotional code has been accepted! You now have{' '}
-              {message} {currencyName} in your wallet
+              {translate('addPastelPromoCodeSuccessMessage', {
+                message,
+                currencyName,
+              })}
             </div>
           </div>
         ) : (
@@ -104,7 +107,7 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
               <Input
                 className='w-full'
                 type='text'
-                placeholder='Paste your promo code here'
+                placeholder={translate('pasteYourPromoCodeHere')}
                 onChange={handleOnChange}
                 isValid={promoCodeIsValid}
                 errorMessage={!promoCodeIsValid && message ? message : null}
@@ -118,7 +121,7 @@ export default function AddPastelPromoCodeModal(): JSX.Element {
                 disabled={!pastelPromoCode || isLoading}
                 onClick={handleAddPromoCode}
               >
-                {isLoading ? 'Applying' : 'Apply'}
+                {isLoading ? translate('applying') : translate('apply')}
               </Button>
             </div>
           </>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { TImage } from '../AddNFT.state'
 import cn from 'classnames'
 import { TOptimizedFile } from '../imageOptimization/ImageOptimization.types'
+import { translate } from 'features/app/translations'
 
 // to make higher zoom for larger images, zoom is relative to image size
 const zoomRelativeToSize = 18
@@ -96,7 +97,7 @@ export default function Magnification({
   const renderOptimizedUrl = () => (
     <div className='w-1/2 flex flex-col'>
       <div className='h-6 flex-center bg-white text-gray-a0 text-center z-10 text-xs font-extrabold flex-shrink-0'>
-        After
+        {translate('after')}
       </div>
       <div
         ref={afterRef}
@@ -120,7 +121,7 @@ export default function Magnification({
       <div className={cn('flex flex-col', optimizedUrl ? 'w-1/2' : 'w-full')}>
         {optimizedUrl && (
           <div className='h-6 flex-center bg-white text-gray-a0 text-center z-10 text-xs font-extrabold flex-shrink-0'>
-            Before
+            {translate('before')}
           </div>
         )}
         <div

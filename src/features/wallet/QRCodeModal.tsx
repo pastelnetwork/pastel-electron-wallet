@@ -5,6 +5,7 @@ import { WalletRPC } from 'api/pastel-rpc'
 import { TitleModal } from 'common/components/Modal'
 import Spinner from 'common/components/Spinner'
 import { useWalletScreenContext } from './walletScreen.context'
+import { translate } from 'features/app/translations'
 
 export default function QRCodeModal(): JSX.Element {
   const {
@@ -41,7 +42,7 @@ export default function QRCodeModal(): JSX.Element {
     <TitleModal
       isOpen
       handleClose={handleClose}
-      title='Address QR'
+      title={translate('addressQR')}
       classNames='w-[598px]'
     >
       <div className='flex items-center justify-center pt-6 pb-4 pr-22px'>

@@ -5,6 +5,7 @@ import { TCrop, TImage } from '../AddNFT.state'
 import { getStorageFee, TGetStorageFee } from 'api/estimate-fee'
 import { loadImageElement } from 'common/utils/image'
 import { calcFileSize } from 'common/utils/file'
+import { translate } from 'features/app/translations'
 
 const previewSize = 320
 
@@ -90,7 +91,7 @@ export const useImagePreview = ({
       ...croppedImage,
       error: hasDifferentPixels(croppedImage.ctx)
         ? undefined
-        : 'Please select more colorful image region',
+        : translate('pleaseSelectMoreColorfulImageRegion'),
     })
   }
 

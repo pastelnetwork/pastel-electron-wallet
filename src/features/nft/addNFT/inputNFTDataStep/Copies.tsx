@@ -5,6 +5,7 @@ import { Info } from 'common/components/Icons'
 import StepSlider from './StepSlider'
 import { useWatch } from 'react-hook-form'
 import { copiesAmountToShowWarning } from '../AddNft.constants'
+import { translate } from 'features/app/translations'
 
 function Warning({ form }: { form: TForm }) {
   const copies = useWatch({
@@ -18,22 +19,21 @@ function Warning({ form }: { form: TForm }) {
 
   return (
     <div className='text-red-fe text-xs font-italic font-medium w-[190px] mt-2'>
-      Warning: the higher the number of copies you create, the less valuable
-      each copy is likely to be!
+      {translate('copiesWarning')}
     </div>
   )
 }
 
 export default function Copies({ form }: { form: TForm }): JSX.Element {
   const renderCopiesTooltip = () => (
-    <Tooltip type='top' content='info' width={50}>
+    <Tooltip type='top' content={translate('copiesTooltip')} width={50}>
       <Info className='text-gray-8e cursor-pointer' size={18} />
     </Tooltip>
   )
 
   const renderCopies = () => (
     <div className='text-gray-4a font-medium text-base flex items-center mb-2'>
-      Copies
+      {translate('copies')}
       <div className='ml-[9px]'>{renderCopiesTooltip()}</div>
     </div>
   )

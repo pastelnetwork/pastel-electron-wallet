@@ -8,6 +8,7 @@ import { useWalletScreenContext } from './walletScreen.context'
 import { useSetPaymentSourceModal } from './walletScreen.hooks'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import Scrollbar from 'common/components/Scrollbar'
+import { translate } from 'features/app/translations'
 
 type TAddPaymentSourceModal = {
   isOpen: boolean
@@ -88,10 +89,10 @@ export default function AddPaymentSourceModal({
     <thead>
       <tr className='text-gray-71 text-sm h-10 bg-white border-b border-line'>
         <th className='text-left sticky bg-white z-30 text-h6 leading-5 font-normal top-0'>
-          Address name
+          {translate('addressName')}
         </th>
         <th className='text-left w-[20%] sticky bg-white z-30 text-h6 leading-5 font-normal top-0'>
-          Balance
+          {translate('balance')}
         </th>
       </tr>
     </thead>
@@ -100,7 +101,7 @@ export default function AddPaymentSourceModal({
   const renderCloseButton = () => (
     <Button variant='secondary' onClick={onClose} className='w-[146px]'>
       <div className='flex items-center px-5 text-blue-3f text-h5-medium'>
-        <span className='text-sm'>Close</span>
+        <span className='text-sm'>{translate('close')}</span>
       </div>
     </Button>
   )
@@ -112,7 +113,7 @@ export default function AddPaymentSourceModal({
       onClick={handleAddPaymentSource}
     >
       <div className='flex items-center px-5 text-white text-h5-heavy'>
-        Add Payment Source
+        {translate('addPaymentSource')}
       </div>
     </Button>
   )
@@ -165,7 +166,7 @@ export default function AddPaymentSourceModal({
     <TitleModal
       isOpen={isOpen}
       handleClose={onClose}
-      title='Add Payment Source'
+      title={translate('addPaymentSource')}
       classNames='max-w-[650px]'
     >
       <Scrollbar maxHeight='425'>{renderModalContent()}</Scrollbar>

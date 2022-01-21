@@ -10,6 +10,7 @@ import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { useWalletScreenContext } from './walletScreen.context'
 import { walletRPC } from 'api/pastel-rpc'
+import { translate } from 'features/app/translations'
 
 function AddNewAddressButton({
   onCreateNewAddress,
@@ -34,7 +35,7 @@ function AddNewAddressButton({
       <div className='flex items-center ml-[19px]'>
         <ElectricityIcon size={11} className='text-blue-3f py-3' />
         <div className='ml-11px text-blue-3f text-h5-medium'>
-          Generate a new {currencyName} Address
+          {translate('addNewAddressButton', { currencyName })}
         </div>
       </div>
     </Button>
@@ -78,7 +79,9 @@ const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
   const renderSelectedTotal = () => {
     return (
       <div className='flex items-center'>
-        <div className='text-gray-71 text-h4'>Selected total:</div>
+        <div className='text-gray-71 text-h4'>
+          {translate('selectedTotal')}:
+        </div>
         <div className='ml-3 text-gray-2d text-h3-heavy'>
           {formatPrice(selectedAmount, currencyName, 4)}
         </div>
@@ -89,7 +92,7 @@ const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
   const renderToggleEmptyAddressTooltip = () => (
     <Tooltip
       classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-      content='Hide empty addresses'
+      content={translate('hideEmptyAddresses')}
       width={150}
       type='top'
     >
@@ -103,7 +106,7 @@ const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
         toggleHandler={toggleHideEmptyAddresses}
         selected={hideEmptyAddresses}
       >
-        Hide empty addresses
+        {translate('hideEmptyAddresses')}
         <div className='ml-2'>{renderToggleEmptyAddressTooltip()}</div>
       </Toggle>
     )
@@ -132,7 +135,7 @@ const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
                   amounts={tAddressAmounts}
                   extendHeader={
                     <div className='mb-2.5 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
-                      Transparent
+                      {translate('transparent')}
                     </div>
                   }
                   extendHeaderClassName='h-6 top-[-1px]'
@@ -143,7 +146,7 @@ const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
                   amounts={zAddressAmounts}
                   extendHeader={
                     <div className='mb-2.5 mt-7 ml-[30px] sticky top-0 text-gray-2d text-h5-medium'>
-                      Shielded
+                      {translate('shielded')}
                     </div>
                   }
                   extendHeaderClassName='h-6 top-[-30px]'
@@ -171,7 +174,7 @@ const WalletAddresses = memo(function WalletAddresses(): JSX.Element {
         >
           <div className='text-center'>
             <div className='mb-3 text-gray-4a text-h5'>
-              You have no Addresses
+              {translate('youHaveNoAddresses')}
             </div>
             <AddNewAddressButton
               isLoading={isLoading}

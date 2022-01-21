@@ -6,6 +6,7 @@ import { TCroppedImage, getCroppedImage } from './PreviewStep.service'
 import { Button } from 'common/components/Buttons'
 import { TImage, TAddNFTState } from '../AddNFT.state'
 import { loadImageElement } from 'common/utils/image'
+import { translate } from 'features/app/translations'
 
 type TCropperModalProps = {
   image: TImage
@@ -98,10 +99,10 @@ export default function Cropping({
           onClick={handleOnClose}
           disabled={isLoading}
         >
-          Cancel
+          {translate('cancel')}
         </Button>
         <Button className='w-1/2' onClick={submit} disabled={isLoading}>
-          {isLoading ? 'Cropping' : 'Accept'}
+          {isLoading ? translate('cropping') : translate('accept')}
         </Button>
       </div>
     </div>

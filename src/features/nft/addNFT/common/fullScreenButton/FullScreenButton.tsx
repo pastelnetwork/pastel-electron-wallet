@@ -3,6 +3,7 @@ import cn from 'classnames'
 
 import { Expand } from 'common/components/Icons'
 import Tooltip from 'common/components/Tooltip'
+import { translate } from 'features/app/translations'
 
 type TProps = {
   onClick(): void
@@ -17,7 +18,7 @@ export default function FullScreenButton({
     <div className='absolute top-3.5 left-3.5 w-8 h-8 transition duration-200 z-40'>
       <Tooltip
         type='top'
-        content={<div className='py-1'>View Full Image</div>}
+        content={<div className='py-1'>{translate('viewFullImage')}</div>}
         width={120}
       >
         <button

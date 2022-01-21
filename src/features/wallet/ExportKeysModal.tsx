@@ -18,6 +18,7 @@ import DownloadWhite from 'common/assets/icons/ico-download-white.svg'
 import { WalletRPC } from '../../api/pastel-rpc'
 import dayjs from 'dayjs'
 import { useWalletScreenContext } from './walletScreen.context'
+import { translate } from 'features/app/translations'
 
 type TPDFDocumentProps = {
   address: string
@@ -115,14 +116,14 @@ function PDFDocument({
   const renderPrivateKey = () => (
     <View style={pdfStyles.mainContentWrapper}>
       <View style={pdfStyles.contentItem}>
-        <Text style={pdfStyles.contentTitle}>Private Key</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('privateKey')}</Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakForContent(privateKey)}
         </Text>
       </View>
       <View style={pdfStyles.marginTop20}>
         <Text style={pdfStyles.contentTitle}>
-          {currencyName} Address (Sapling)
+          {currencyName} {translate('address')} ({translate('sapling')})
         </Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakForContent(address)}
@@ -134,7 +135,7 @@ function PDFDocument({
   const renderAddressSapling = () => (
     <View style={pdfStyles.contentWrapper}>
       <Text style={pdfStyles.contentTitle}>
-        {currencyName} Address (Sapling)
+        {currencyName} {translate('address')} ({translate('sapling')})
       </Text>
       <Text style={pdfStyles.contentValue}>
         {addLineBreakForContent(address)}
@@ -236,7 +237,7 @@ export default function ExportKeysModal(): JSX.Element {
         )}
         <img src={DownloadWhite} className='py-3.5' alt='Download' />
         <div className='ml-2 text-white text-h5-heavy'>
-          Download Paper Wallet (PDF)
+          {translate('downloadPaperWalletPDF')}
         </div>
       </div>
     </Button>
@@ -248,15 +249,15 @@ export default function ExportKeysModal(): JSX.Element {
       handleClose={handleClose}
       title={
         !isNewAddress
-          ? 'Generate Paper Wallet for Address'
-          : 'New Pastel Address'
+          ? translate('generatePaperWalletForAddress')
+          : translate('newPastelAddress')
       }
       classNames='w-[598px]'
     >
       <div className='mt-[11px] pr-22px'>
         <InputExportKey
           value={address}
-          label='Address'
+          label={translate('address')}
           className='mb-42px'
           labelClassName='text-h4 leading-6 font-medium text-gray-71 mb-6px'
           type='text'
@@ -264,7 +265,7 @@ export default function ExportKeysModal(): JSX.Element {
         />
         <InputExportKey
           value={privateKey}
-          label='Private Key for Address'
+          label={translate('privateKeyForAddress')}
           className='mb-[27px]'
           labelClassName='text-h4 leading-6 font-medium text-gray-71 mb-6px'
           type='password'

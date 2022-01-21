@@ -17,6 +17,7 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import { walletRPC } from 'api/pastel-rpc'
 import { formatPrice, formatAddress } from 'common/utils/format'
 import { TListAddressAmounts } from 'types/rpc'
+import { translate } from 'features/app/translations'
 
 function InfoPair({ title, value }: { title: string; value: string }) {
   return (
@@ -114,12 +115,12 @@ export default function ApprovedStep({
     return <FullScreenImage image={image.url} onClose={toggleFullScreen} />
   }
 
-  const titleString = `NFT approved: “${nftData.title}”`
+  const titleString = translate('NFTApprovedTitle', { nftTitle: nftData.title })
 
   const renderListAddressAmounts = () => (
     <div className='mt-2'>
       <div className='font-medium text-gray-71 mb-2 text-sm'>
-        Select {currencyName} Address to Payment
+        {translate('selectPSLAddressToPayment', { currencyName })}
       </div>
       <div>
         <Select
@@ -136,7 +137,7 @@ export default function ApprovedStep({
     <div className='w-full mt-3'>
       <div className='bg-gray-f8 rounded-lg py-22px px-18px flex-between text-sm'>
         <div className='font-medium text-gray-71 text-sm'>
-          Final registration fee
+          {translate('finalRegistrationFee')}
         </div>
         <div className='text-gray-45 font-extrabold'>
           {fee} {currencyName}
@@ -149,19 +150,19 @@ export default function ApprovedStep({
         onClick={onSubmit}
         disabled={isInValid()}
       >
-        Proceed to final registration fee payment
+        {translate('proceedToFinalRegistrationFeePayment')}
       </button>
     </div>
   )
 
   const renderThumbnailPreview = () => (
     <div className='w-full space-y-4'>
-      <InfoPair title='Pastel rareness score' value='67%' />
-      <InfoPair title='Internet rareness score' value='99%' />
-      <InfoPair title='NSFW' value='100%' />
+      <InfoPair title={translate('pastelRarenessScore')} value='67%' />
+      <InfoPair title={translate('internetRarenessScore')} value='99%' />
+      <InfoPair title={translate('NSFW')} value='100%' />
       <div>
         <div className='font-medium text-gray-71 mb-3 text-sm'>
-          Thumbnail preview
+          {translate('thumbnailPreview')}
         </div>
         <div className='w-48 h-48'>
           {croppedImage && (

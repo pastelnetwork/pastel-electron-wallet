@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { TOptimizedFile } from './ImageOptimization.types'
-import { TImageType } from '../AddNft.constants'
 import { ipcRenderer } from 'electron'
 import log from 'electron-log'
 import { toast } from 'react-toastify'
+
+import { TOptimizedFile } from './ImageOptimization.types'
+import { TImageType } from '../AddNft.constants'
+import { translate } from 'features/app/translations'
 
 export enum OptimizationStatus {
   initial = 'initial',
@@ -56,7 +58,7 @@ export const useImageOptimizationService = (): TImageOptimizationService => {
       } catch (error) {
         setStatus(OptimizationStatus.failed)
         log.error('Error optimizing image', error)
-        toast.error('Error optimizing image')
+        toast.error(translate('errorOptimizingImage'))
       }
     },
   }

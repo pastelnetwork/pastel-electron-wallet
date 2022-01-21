@@ -13,6 +13,7 @@ import {
 } from '../AddNft.constants'
 import { isGifAnimated, loadImageElement } from 'common/utils/image'
 import { Size } from 'common/utils/file'
+import { translate } from 'features/app/translations'
 
 export type TSelectImageStepService = {
   selectedFile?: File
@@ -33,7 +34,9 @@ type TImageToConvert = { name: string; image: HTMLImageElement }
 const checkFileSize = (size: number) => {
   if (size > 100 * Size.MB) {
     throw new Error(
-      `Selected file exceeds 100 MB limit: ${(size / Size.MB).toFixed(1)} MB`,
+      translate('selectedFileExceedsLimit', {
+        size: (size / Size.MB).toFixed(1),
+      }),
     )
   }
 }
@@ -46,19 +49,14 @@ const checkImageSize = ({
   height: number
 }) => {
   if (width < minImageWidth) {
-    throw new Error(
-      `Image width should not be less than ${minImageWidth}px, got ${width}px`,
-    )
+    throw new Error(translate('checkImageSizeWidth', { minImageWidth, width }))
   }
   if (height < minImageHeight) {
     throw new Error(
-      `Image height should not be less than ${minImageHeight}px, got ${height}px`,
+      translate('checkImageSizeHeight', { minImageHeight, height }),
     )
   }
 }
-
-const processingErrorMessage =
-  'Can not process selected file, it is possibly corrupted'
 
 // We need to load image using image-js to check if image file is corrupted
 // In case of corrupted image it will throw error, while standard image's onerror are not triggered
@@ -76,7 +74,7 @@ const processImage = async ({
     image = await ImageJS.load(url)
   } catch (error) {
     log.error('Image loading error', error.message)
-    throw new Error(processingErrorMessage)
+    throw new Error(translate('processingErrorMessage'))
   }
 
   checkImageSize(image)
@@ -88,7 +86,7 @@ const processImage = async ({
     arrayBuffer = await blob.arrayBuffer()
   } catch (error) {
     log.error('Image converting to ArrayBuffer error', error.message)
-    throw new Error(processingErrorMessage)
+    throw new Error(translate('processingErrorMessage'))
   }
 
   const { width, height } = image
@@ -164,7 +162,7 @@ export const useSelectImageService = (
       }
 
       if (type !== ImageType.PNG && type !== ImageType.JPG) {
-        return setError(`Selected file has unsupported format: ${type}`)
+        return setError(translate('checkFileType', { type }))
       }
 
       try {
@@ -194,7 +192,7 @@ export const useSelectImageService = (
             if (val) {
               resolve(val)
             } else {
-              reject(new Error('Can not convert image'))
+              reject(new Error(translate('canNotConvertImage')))
             }
           }
           canvas.toBlob(blob => onBlod(blob), type, 1)
