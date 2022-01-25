@@ -75,39 +75,44 @@ function ProfileCard({
     </div>
   )
 
+  const renderPastelIDIdentifier = () => (
+    <div className='px-1 pt-0.5 text-gray-71 flex text-sm'>
+      <Tooltip
+        type='top'
+        width={140}
+        content={
+          <p className='mb-0 px-2 py-6px text-white text-sm'>
+            {translate('pastelIDIdentifier')}
+          </p>
+        }
+      >
+        <div>{truncateMiddle(walletId, 11, 4, '...')}</div>
+      </Tooltip>
+      <Tooltip
+        type='top'
+        width={160}
+        content={
+          <p className='mb-0 px-2 py-6px text-white text-sm'>
+            {translate('copyToClipboard')}
+          </p>
+        }
+      >
+        <button type='button' onClick={handleCopy} className='cursor-pointer'>
+          <img
+            src={svg_copy}
+            className='pl-2.5 filter hover:contrast-200'
+            alt='Copy'
+          />
+        </button>
+      </Tooltip>
+    </div>
+  )
+
   const renderUserInfo = () => (
     <div className='mt-3 pl-2.5 text-center'>
       <div className='px-1 pt-1 text-gray-71'>{username}</div>
       <div className='font-bold text-26px'>{name}</div>
-      <div className='px-1 pt-0.5 text-gray-71 flex text-sm'>
-        <Tooltip
-          type='top'
-          width={140}
-          content={
-            <p className='mb-0 px-2 py-6px text-white text-sm'>
-              {translate('pastelIDIdentifier')}
-            </p>
-          }
-        >
-          <div>{truncateMiddle(walletId, 11, 4, '...')}</div>
-        </Tooltip>
-        <Tooltip
-          type='top'
-          width={160}
-          content={
-            <p className='mb-0 px-2 py-6px text-white text-sm'>
-              {translate('copyToClipboard')}
-            </p>
-          }
-        >
-          <img
-            src={svg_copy}
-            className='pl-2.5 cursor-pointer filter hover:contrast-200'
-            alt='Copy'
-            onClick={handleCopy}
-          />
-        </Tooltip>
-      </div>
+      {renderPastelIDIdentifier()}
       <div className='pt-15px flex justify-center'>
         <img
           src={svg_facebook}
