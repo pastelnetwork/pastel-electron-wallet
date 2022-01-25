@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import cn from 'classnames'
+import dayjs from 'dayjs'
 // Components
 import { Modal } from '../../../common/components/Modal'
 import Notification from '../../../common/components/Notification'
@@ -9,7 +10,7 @@ import Select, { TOption } from '../../../common/components/Select/Select'
 import DatePicker from '../../../common/components/DatePicker'
 import { SelectButton } from '../../../common/components/Buttons'
 import { formatDate } from 'common/utils/format'
-import dayjs from 'dayjs'
+import { translate } from 'features/app/translations'
 
 export type TNotification = {
   id: number
@@ -23,20 +24,6 @@ export type TNotificationModal = {
   isOpen: boolean
   handleClose?: React.MouseEventHandler
 }
-
-const TTypesOptions = [
-  { value: 'all', label: 'All' },
-  { value: 'bidding', label: 'Bidding' },
-  { value: 'system', label: 'System' },
-  { value: 'wallet', label: 'Wallet' },
-]
-
-const dateButtons = [
-  { title: 'Today' },
-  { title: 'Yesterday' },
-  { title: 'Last 7 days' },
-  { title: 'Last 30 days' },
-]
 
 function SelectDateButton({
   title,
@@ -63,11 +50,25 @@ function NotificationModal({
   isOpen,
   handleClose,
 }: TNotificationModal): JSX.Element {
+  const TTypesOptions = [
+    { value: 'all', label: translate('all') },
+    { value: 'bidding', label: translate('bidding') },
+    { value: 'system', label: translate('system') },
+    { value: 'wallet', label: translate('wallet') },
+  ]
+
+  const dateButtons = [
+    { title: translate('today') },
+    { title: translate('yesterday') },
+    { title: translate('lastOfDays', { days: 7 }) },
+    { title: translate('lastOfDays', { days: 30 }) },
+  ]
+
   const [filter, setFilter] = useState<string>('all')
   const [type, setType] = useState<TOption | null>(TTypesOptions[0])
   const [startDate, setStartDate] = useState<Date | null>(new Date())
   const [endDate, setEndDate] = useState<Date | null>(null)
-  const [dateTitle, setDateTitle] = useState<string>('Today')
+  const [dateTitle, setDateTitle] = useState<string>(translate('today'))
 
   const handleSelect = useCallback(
     (option: TOption | null): void => setType(option),
@@ -103,27 +104,27 @@ function NotificationModal({
       }
       setDateTitle(date)
       switch (date) {
-        case 'Today':
+        case translate('today'):
           setStartDate(new Date())
           setEndDate(null)
           break
-        case 'Yesterday':
+        case translate('yesterday'):
           setStartDate(dayjs(new Date()).add(-1, 'days').toDate())
           setEndDate(null)
           break
-        case 'Last 7 days':
+        case translate('lastOfDays', { days: 7 }):
           setStartDate(dayjs(new Date()).add(-1, 'weeks').toDate())
           setEndDate(new Date())
           break
-        case 'Last 30 days':
+        case translate('lastOfDays', { days: 30 }):
           setStartDate(dayjs(new Date()).add(-30, 'days').toDate())
           setEndDate(new Date())
           break
-        case 'Last 3 month':
+        case translate('lastOfMonth', { days: 3 }):
           setStartDate(dayjs(new Date()).add(-3, 'months').toDate())
           setEndDate(new Date())
           break
-        case 'Last 12 month':
+        case translate('lastOfMonth', { days: 12 }):
           setStartDate(dayjs(new Date()).add(-1, 'years').toDate())
           setEndDate(new Date())
           break
@@ -148,7 +149,7 @@ function NotificationModal({
         selected={type}
         onChange={handleSelect}
         options={TTypesOptions}
-        label='Types'
+        label={translate('types')}
         className='bg-white'
       />
       <DatePicker
@@ -156,7 +157,7 @@ function NotificationModal({
         startDate={startDate}
         endDate={endDate}
         onChange={handleDate}
-        label='Time range'
+        label={translate('timeRange')}
         footer={
           <div className='flex flex-col border border-gray-e6 rounded-md py-1'>
             {dateButtons.map(({ title }) => (
@@ -188,7 +189,7 @@ function NotificationModal({
           labelClassName='text-gray-4a z-10'
           smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
         >
-          All
+          {translate('all')}
         </Radio>
       </div>
       <Radio
@@ -199,7 +200,7 @@ function NotificationModal({
         labelClassName='text-gray-4a z-10'
         smallCircleClass='z-10 w-2 h-2 bg-blue-e7'
       >
-        Unread
+        {translate('unread')}
       </Radio>
     </div>
   )
@@ -211,7 +212,7 @@ function NotificationModal({
       className='max-w-4xl'
       overlayClassName='bg-background-modal bg-opacity-60'
     >
-      <h2 className='mb-6'>Notifications</h2>
+      <h2 className='mb-6'>{translate('notifications')}</h2>
       <div className='relative py-4 mb-4'>
         <span className='absolute top-0 -left-12 w-screen max-w-4xl h-full bg-background-main'></span>
         <div className='grid grid-cols-3 gap-4 items-center'>

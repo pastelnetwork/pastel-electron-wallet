@@ -9,6 +9,7 @@ import { TTransactionType } from '../../types/rpc'
 import dayjs from 'dayjs'
 import ContentLoader from 'react-content-loader'
 import RectangleLoader from '../../common/components/Loader'
+import { translate } from 'features/app/translations'
 
 type TTransactionsProps = TTransactionItemProps & { id: string }
 
@@ -66,7 +67,7 @@ export default function Wallet(): JSX.Element {
     <div className='paper pt-6 pb-5 w-335px flex flex-col relative h-[388px]'>
       <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
         <div className='font-extrabold text-gray-2d text-lg'>
-          Wallet balance
+          {translate('walletBalance')}
         </div>
         {!isBalanceLoading && balance && (
           <div className='font-extrabold text-gray-2d text-sm'>
@@ -83,13 +84,13 @@ export default function Wallet(): JSX.Element {
         {!isTransactionsLoading && transactions.length === 0 && (
           <div className='flex justify-center mt-[111px]'>
             <span className='text-base text-gray-a0'>
-              You have no {currencyName}
+              {translate('youHaveNoPSL', currencyName)}
             </span>
           </div>
         )}
       </div>
       <LinkSection to={ROUTES.WALLET} absolute gradient>
-        Wallet Details
+        {translate('walletDetails')}
       </LinkSection>
     </div>
   )

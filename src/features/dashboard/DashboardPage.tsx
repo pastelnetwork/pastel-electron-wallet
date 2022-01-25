@@ -21,6 +21,7 @@ import {
   mockNamesList,
 } from 'features/members/data'
 import Wallet from './Wallet'
+import { translate } from 'features/app/translations'
 
 const date = dayjs('2021-04-04')
 
@@ -36,153 +37,6 @@ type TNotification = {
   read: boolean
 }
 
-const notifications: Array<TNotification> = [
-  {
-    id: '1',
-    message: '1 new listing',
-    date,
-    read: false,
-  },
-  {
-    id: '2',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '3',
-    message: '1 new transfer',
-    date,
-    read: true,
-  },
-  {
-    id: '4',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '5',
-    message: '1 new listing',
-    date,
-    read: false,
-  },
-  {
-    id: '6',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '7',
-    message: '1 new transfer',
-    date,
-    read: true,
-  },
-  {
-    id: '8',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '9',
-    message: '1 new listing',
-    date,
-    read: false,
-  },
-  {
-    id: '10',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '11',
-    message: '1 new transfer',
-    date,
-    read: true,
-  },
-  {
-    id: '12',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '13',
-    message: '1 new listing',
-    date,
-    read: false,
-  },
-  {
-    id: '14',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '15',
-    message: '1 new transfer',
-    date,
-    read: true,
-  },
-  {
-    id: '16',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '17',
-    message: '1 new listing',
-    date,
-    read: false,
-  },
-  {
-    id: '18',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '19',
-    message: '1 new transfer',
-    date,
-    read: true,
-  },
-  {
-    id: '20',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '21',
-    message: '1 new listing',
-    date,
-    read: false,
-  },
-  {
-    id: '22',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-  {
-    id: '23',
-    message: '1 new transfer',
-    date,
-    read: true,
-  },
-  {
-    id: '24',
-    message: '1 new sale',
-    date,
-    read: true,
-  },
-]
-
 const mockNFTImagesList = [
   'https://lh3.googleusercontent.com/Y7jfdFlKEjQ2PfuGb9vFAgzvXqyynJjx2RbetMBfrHDiRg8cSPhWOf9JQOkkZzTkA86rkHpeNmfQoT5zLhqYlWj3izIfgxMWqOk3Oz4=w526',
   'https://lh3.googleusercontent.com/7QfQI8BYm_8_VMyCsBQo8vl7m4YwcAS66IpsGVtzy-hLp0Zej0vYca4eospy7HDVUbxJS-Hh2e4K_Mi91fpTUqaPT1I5-UspbtDKEw=w526',
@@ -190,6 +44,153 @@ const mockNFTImagesList = [
 ]
 
 export default function DashboardPage(): JSX.Element {
+  const notifications: Array<TNotification> = [
+    {
+      id: '1',
+      message: translate('notificationNewListing', { number: 1 }),
+      date,
+      read: false,
+    },
+    {
+      id: '2',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '3',
+      message: translate('notificationNewTransfer', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '4',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '5',
+      message: translate('notificationNewListing', { number: 1 }),
+      date,
+      read: false,
+    },
+    {
+      id: '6',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '7',
+      message: translate('notificationNewTransfer', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '8',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '9',
+      message: translate('notificationNewListing', { number: 1 }),
+      date,
+      read: false,
+    },
+    {
+      id: '10',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '11',
+      message: translate('notificationNewTransfer', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '12',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '13',
+      message: translate('notificationNewListing', { number: 1 }),
+      date,
+      read: false,
+    },
+    {
+      id: '14',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '15',
+      message: translate('notificationNewTransfer', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '16',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '17',
+      message: translate('notificationNewListing', { number: 1 }),
+      date,
+      read: false,
+    },
+    {
+      id: '18',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '19',
+      message: translate('notificationNewTransfer', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '20',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '21',
+      message: translate('notificationNewListing', { number: 1 }),
+      date,
+      read: false,
+    },
+    {
+      id: '22',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '23',
+      message: translate('notificationNewTransfer', { number: 1 }),
+      date,
+      read: true,
+    },
+    {
+      id: '24',
+      message: translate('notificationNewSale', { number: 1 }),
+      date,
+      read: true,
+    },
+  ]
+
   const currencyName = useCurrencyName()
 
   const [tab, setTab] = useState<number>(0)
@@ -208,7 +209,7 @@ export default function DashboardPage(): JSX.Element {
         currencyName,
         detailUrl: ROUTES.PORTFOLIO_DETAIL,
         nsfw: { porn: 0, hentai: 0 },
-        copies: `${index + 1} of 3`,
+        copies: translate('copiesValue', { number: index + 1, total: 3 }),
         diamond: `${Math.floor(Math.random() * 100)}%`,
         hideGreenNF: index !== 0,
         hidePerpetualRoyalty: index !== 0,
@@ -288,9 +289,11 @@ export default function DashboardPage(): JSX.Element {
     <div className='paper pt-6 w-419px min-h-[458px] flex-shrink-0 flex flex-col relative md:w-[451px]'>
       <div className='flex items-center justify-between h-6 mb-4 flex-shrink-0 px-8'>
         <div className='font-extrabold text-lg text-gray-2d'>
-          Latest Notifications
+          {translate('latestNotifications')}
         </div>
-        <div className='font-medium text-gray-a0 text-sm'>1 unread</div>
+        <div className='font-medium text-gray-a0 text-sm'>
+          1 {translate('unread')}
+        </div>
       </div>
       <div
         className={
@@ -308,7 +311,7 @@ export default function DashboardPage(): JSX.Element {
         ))}
         {notifications.length === 0 && (
           <div className='text-gray-a0 text-base mt-[146px]'>
-            You have no Notifications
+            {translate('youHaveNoNotifications')}
           </div>
         )}
       </div>
@@ -317,7 +320,7 @@ export default function DashboardPage(): JSX.Element {
           onClick={handleShowNotificationModal}
           className='text-blue-3f text-sm font-medium inline-block h-3'
         >
-          Check All Notifications
+          {translate('checkAllNotifications')}
         </Link>
       </div>
     </div>
@@ -331,7 +334,7 @@ export default function DashboardPage(): JSX.Element {
           onChange={handleCreatorsChange}
           labelClassName='text-sm ml-3'
         >
-          Creators
+          {translate('creators')}
         </Radio>
       </div>
       <Radio
@@ -339,7 +342,7 @@ export default function DashboardPage(): JSX.Element {
         onChange={handleNFTChange}
         labelClassName='text-sm ml-3'
       >
-        NFTs
+        {translate('NFTs')}
       </Radio>
     </div>
   )
@@ -347,10 +350,10 @@ export default function DashboardPage(): JSX.Element {
   const renderTrendingNFTsInfo = () => (
     <div className='flex items-center'>
       <div className='font-extrabold text-gray-2d text-lg leading-6'>
-        Trending NFTs
+        {translate('trendingNFTs')}
       </div>
       <div className='font-medium text-gray-a0 text-sm ml-2'>
-        312,000 listed
+        312,000 {translate('listed')}
       </div>
     </div>
   )
@@ -374,7 +377,7 @@ export default function DashboardPage(): JSX.Element {
           ))}
           {cards.length === 0 && (
             <div className='text-gray-a0 text-base mt-[146px]'>
-              You have no NFTs
+              {translate('youHaveNoNFTs')}
             </div>
           )}
         </div>
@@ -384,15 +387,17 @@ export default function DashboardPage(): JSX.Element {
 
   const renderShowMorePortfolioLink = () => (
     <LinkSection className='' to={ROUTES.PORTFOLIO}>
-      Show more
+      {translate('showMore')}
     </LinkSection>
   )
 
   const renderPortfolioHeader = () => (
     <div className='md:flex-shrink-0 flex items-center h-6 px-[30px] mb-5'>
-      <div className='font-extrabold text-lg text-gray-2d'>Portfolio</div>
+      <div className='font-extrabold text-lg text-gray-2d'>
+        {translate('portfolio')}
+      </div>
       <div className='font-medium text-gray-a0 text-sm ml-2 mt-px'>
-        23 items
+        23 {translate('items')}
       </div>
     </div>
   )
@@ -405,7 +410,7 @@ export default function DashboardPage(): JSX.Element {
           {renderPortfolioHeader()}
           {followers.length > 0 && (
             <div className='grid md:grid-cols-3 gap-[26px] md:flex pl-[30px] pr-14px h-[282px] overflow-auto mr-18px'>
-              <PortfolioColumn title='Sales in progress (2)'>
+              <PortfolioColumn title={`${translate('salesInProgress')} (2)`}>
                 {followers
                   .filter(item => item.type == 'progress')
                   .map(item => {
@@ -414,7 +419,7 @@ export default function DashboardPage(): JSX.Element {
                     return <PortfolioItem key={`${title}-${type}`} {...item} />
                   })}
               </PortfolioColumn>
-              <PortfolioColumn title='In review (1)'>
+              <PortfolioColumn title={`${translate('items')} (1)`}>
                 {followers
                   .filter(item => item.type == 'review')
                   .map(item => {
@@ -423,7 +428,7 @@ export default function DashboardPage(): JSX.Element {
                     return <PortfolioItem key={`${title}-${type}`} {...item} />
                   })}
               </PortfolioColumn>
-              <PortfolioColumn title='On Sale (2)'>
+              <PortfolioColumn title={`${translate('salesInProgress')} (2)`}>
                 {followers
                   .filter(item => item.type == 'sale')
                   .map(item => {
@@ -438,7 +443,7 @@ export default function DashboardPage(): JSX.Element {
             <div className='h-[282px]'>
               <div className='flex justify-center mt-[111px]'>
                 <span className='text-base text-gray-a0'>
-                  You have no Followers
+                  {translate('youHaveNoFollowers')}
                 </span>
               </div>
             </div>

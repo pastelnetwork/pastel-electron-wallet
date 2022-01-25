@@ -13,6 +13,7 @@ import image from '../../../common/assets/images/nft-card-placeholder.png'
 import avatar from '../../../common/assets/images/avatar-placeholder.png'
 import MemberCard, { TMemberBoardProps } from '../components/MemberCard'
 import Checkbox from '../../../common/components/Checkbox'
+import { translate } from 'features/app/translations'
 
 const profile_data = {
   username: '@zndrson',
@@ -26,30 +27,6 @@ const profile_data = {
     twitter: 'www.twitter.com/@dirk_jaison',
   },
 }
-
-const categoriesOptions: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'illustration', label: 'Illustration' },
-]
-
-const typeOptions: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'auctions', label: 'Auction' },
-  { value: 'makeAnOffers', label: 'Make-an-Offers' },
-  { value: 'fixedPrice', label: 'Fixed-Price' },
-]
-
-const sortOptions: TOption[] = [
-  { value: 'Bid', label: 'Bid' },
-  { value: 'Likes', label: 'Likes' },
-]
-
-const filterData = [
-  { label: 'Likes', value: 'Likes', checked: false },
-  { label: 'Comments', value: 'Comments', checked: false },
-  { label: 'Mention', value: 'Mention', checked: false },
-  { label: 'Followers', value: 'Followers', checked: false },
-]
 
 const MemberProfileInfo = memo(function MemberProfileInfo({
   tab,
@@ -67,7 +44,11 @@ const MemberProfileInfo = memo(function MemberProfileInfo({
       <div className='wrapper flex h-20 items-center bg-white pl-60px pt-0'>
         <div className='font-bold pr-8 text-32px'>Katy Jailson Profile</div>
         <MultiToggleSwitch
-          data={[{ label: 'Info' }, { label: 'Portfolio' }, { label: 'Board' }]}
+          data={[
+            { label: translate('info') },
+            { label: translate('portfolio') },
+            { label: translate('board') },
+          ]}
           activeIndex={tab}
           onToggle={onToggle}
         />
@@ -77,6 +58,29 @@ const MemberProfileInfo = memo(function MemberProfileInfo({
 })
 
 export default function MemberProfile(): JSX.Element {
+  const categoriesOptions: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'illustration', label: translate('illustration') },
+  ]
+
+  const typeOptions: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'auctions', label: translate('auction') },
+    { value: 'makeAnOffers', label: translate('makeAnOffer') },
+    { value: 'fixedPrice', label: translate('fixedPrice') },
+  ]
+
+  const sortOptions: TOption[] = [
+    { value: 'Bid', label: translate('bid') },
+    { value: 'Likes', label: translate('likes') },
+  ]
+
+  const filterData = [
+    { label: translate('likes'), value: 'likes', checked: false },
+    { label: translate('comments'), value: 'comments', checked: false },
+    { label: translate('mention'), value: 'mention', checked: false },
+    { label: translate('followers'), value: 'followers', checked: false },
+  ]
   const currencyName = useCurrencyName()
 
   const general_data = {
@@ -87,7 +91,7 @@ export default function MemberProfile(): JSX.Element {
     buyerBans: 3,
     highestFeeRecieved: `136,200 ${currencyName}`,
     totalSalesAmount: `560,600 ${currencyName}`,
-    totalItemsSold: '124 Copies across 5 NFTs',
+    totalItemsSold: translate('totalItemsSold', { copies: 124, nfts: 5 }),
     topCategoryPercentage: 'motion graphics 30%',
     bio:
       'I am a digital artist based in Paris, France. My work has been featured in various galleries in Paris and New York City. I love playing with the characteristics of light in all its forms, and I like to challenge the way color is normally perceived in nature. I use various tools to create my work, including Rhino for 3D modeling and and Maxwell for rendering, with other work done in Photoshop and Illustrator.',
@@ -256,7 +260,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -271,7 +275,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -286,7 +290,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -301,7 +305,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -316,7 +320,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -331,7 +335,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -346,7 +350,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -361,7 +365,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -376,7 +380,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -391,7 +395,7 @@ export default function MemberProfile(): JSX.Element {
       behaviour: 'commented',
       object: 'Collab.',
       avatarSrc: avatar,
-      time: '12h ago',
+      time: `12h ${translate('ago')}`,
       description:
         'Love this so much! What tools do you use to create your 3d illustrations?',
       productURL: image,
@@ -402,7 +406,7 @@ export default function MemberProfile(): JSX.Element {
   const renderFilter = () => (
     <div className='flex items-center'>
       <div className='flex items-center mr-6'>
-        <p className='mr-4'>Categories</p>
+        <p className='mr-4'>{translate('categories')}</p>
         <Select
           options={categoriesOptions}
           selected={category}
@@ -411,7 +415,7 @@ export default function MemberProfile(): JSX.Element {
         />
       </div>
       <div className='flex items-center'>
-        <p className='mr-4'>Type</p>
+        <p className='mr-4'>{translate('type')}</p>
         <Select
           options={categoriesOptions}
           selected={type}
@@ -424,7 +428,7 @@ export default function MemberProfile(): JSX.Element {
 
   const renderSort = () => (
     <div className='flex items-center mr-8'>
-      <p className='mr-4'>Sorty by</p>
+      <p className='mr-4'>{translate('sortyBy')}</p>
       <Select
         options={categoriesOptions}
         selected={sort}
@@ -504,7 +508,9 @@ export default function MemberProfile(): JSX.Element {
   return (
     <div className='mx-auto w-full flex flex-col text-gray-23 justify-center bg-gray-f8'>
       <div className='wrapper pt-0 h-35px flex items-center'>
-        <div className='text-sm text-gray-71'>Member Profile / General</div>
+        <div className='text-sm text-gray-71'>
+          {translate('memberProfile')} / {translate('general')}
+        </div>
       </div>
       <MemberProfileInfo tab={tab} onTabToggle={onTabToggle} />
       {renderMemverProfileContent()}

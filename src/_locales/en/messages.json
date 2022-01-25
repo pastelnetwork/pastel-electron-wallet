@@ -29,7 +29,7 @@
   },
   "general": {
     "message": "General",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members screen"
   },
   "messageBoard": {
     "message": "Message Board",
@@ -81,19 +81,19 @@
   },
   "location": {
     "message": "Location",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, them members page"
   },
   "language": {
     "message": "Language",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, them members page"
   },
   "categories": {
     "message": "Categories",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the Portfolio screen, the members page"
   },
   "pastelReputationScore": {
     "message": "Pastel Reputation Score",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members page"
   },
   "none": {
     "message": "None",
@@ -101,15 +101,15 @@
   },
   "highestSalePriceReceived": {
     "message": "Highest Sale Price Received",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members page"
   },
   "totalCombinedSales": {
     "message": "Total Combined Sales",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members page"
   },
   "totalNFTsSold": {
     "message": "Total NFTs Sold",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members page"
   },
   "totalNFTsSoldCopies": {
     "message": "{{copies}} Copies across {{total}} NFTs",
@@ -117,7 +117,7 @@
   },
   "bio": {
     "message": "Bio",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members screen"
   },
   "hideNotSafeForWorkNFTs": {
     "message": "Hide Not Safe For Work NFTs",
@@ -165,7 +165,7 @@
   },
   "followers": {
     "message": "Followers",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members screen"
   },
   "friends": {
     "message": "Friends",
@@ -177,7 +177,7 @@
   },
   "youHaveNoFollowers": {
     "message": "You have no followers",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the dashboard screen"
   },
   "placeholderForFriendsView": {
     "message": "This is placeholder for friends View.",
@@ -193,11 +193,11 @@
   },
   "unfollow": {
     "message": "Unfollow",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members screen"
   },
   "follow": {
     "message": "Follow",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members screen"
   },
   "alreadyHaveAPastelID": {
     "message": "Already have a PastelID?",
@@ -213,7 +213,7 @@
   },
   "all": {
     "message": "All",
-    "description": "Used for my profile screen, the wallet screen"
+    "description": "Used for my profile screen, the wallet screen, the Portfolio screen, the members screen, the dashboard screen"
   },
   "others": {
     "message": "Others",
@@ -221,11 +221,11 @@
   },
   "filterBy": {
     "message": "Filter by",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the Portfolio screen"
   },
   "reply": {
     "message": "Reply",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members screen"
   },
   "post": {
     "message": "Post",
@@ -233,7 +233,7 @@
   },
   "commentedOn": {
     "message": "Commented on",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the members screen"
   },
   "restoreYourAccountButton": {
     "message": "Restore your account",
@@ -469,19 +469,19 @@
   },
   "NFTs": {
     "message": "NFTs",
-    "description": "Used for header, SearchBar"
+    "description": "Used for header, SearchBar, the dashboard screen"
   },
   "members": {
     "message": "Members",
-    "description": "Used for header"
+    "description": "Used for header, them members screen"
   },
   "wallet": {
     "message": "Wallet",
-    "description": "Used for header, the wallet page"
+    "description": "Used for header, the wallet page, the dashboard screen"
   },
   "portfolio": {
     "message": "Portfolio",
-    "description": "Used for header"
+    "description": "Used for header, the Portfolio screen, the dashboard screen, the member page"
   },
   "newNFT": {
     "message": "new NFT",
@@ -493,7 +493,7 @@
   },
   "creators": {
     "message": "Creators",
-    "description": "Used for SearchBar"
+    "description": "Used for SearchBar, the members screen, the dashboard screen"
   },
   "users": {
     "message": "Users",
@@ -1485,7 +1485,7 @@
   },
   "timeRange": {
     "message": "Time range",
-    "description": "Used for the wallet screen"
+    "description": "Used for the wallet screen, the dashboard screen"
   },
   "sourceAddress": {
     "message": "Source address",
@@ -1553,31 +1553,31 @@
   },
   "illustration": {
     "message": "Illustration",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
   },
   "auction": {
     "message": "Auction",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
   },
   "makeAnOffer": {
     "message": "Make-an-Offer",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
   },
   "fixedPrice": {
     "message": "Fixed-Price",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
   },
   "future": {
     "message": "Future",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen"
   },
   "present": {
     "message": "Present",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen"
   },
   "past": {
     "message": "Past",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen"
   },
   "high": {
     "message": "High",
@@ -1593,7 +1593,7 @@
   },
   "time": {
     "message": "Time",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the Portfolio screen"
   },
   "rareness": {
     "message": "Rareness",
@@ -1682,5 +1682,241 @@
   "directFromArtistNFTCardTooltip": {
     "message": "the NFT copy is being sold by the creator, rather than another buyer of the NFT who is reselling it",
     "description": "Used for the NFTs screen"
+  },
+  "likes": {
+    "message": "Likes",
+    "description": "Used for the Portfolio screen, the members screen"
+  },
+  "myNFTPortfolio": {
+    "message": "My NFT Portfolio",
+    "description": "Used for the Portfolio screen"
+  },
+  "inReview": {
+    "message": "In review",
+    "description": "Used for the Portfolio screen, the dashboard screen"
+  },
+  "type": {
+    "message": "Type",
+    "description": "Used for the Portfolio screen, the members screen"
+  },
+  "creator": {
+    "message": "Creator",
+    "description": "Used for the Portfolio screen"
+  },
+  "sold": {
+    "message": "Sold",
+    "description": "Used for the Portfolio screen, the members screen"
+  },
+  "owned": {
+    "message": "Owned",
+    "description": "Used for the Portfolio screen"
+  },
+  "liked": {
+    "message": "Liked",
+    "description": "Used for the Portfolio screen"
+  },
+  "price": {
+    "message": "Price",
+    "description": "Used for the Portfolio screen"
+  },
+  "youHaveNotCreatedAnyNFTs": {
+    "message": "You have not created any NFTs",
+    "description": "Used for the Portfolio screen"
+  },
+  "toCreateANewNFTDescription": {
+    "message": "To create a new NFT, click the \"new NFT\" <br /> button at the top of the screen",
+    "description": "Used for the Portfolio screen"
+  },
+  "sortBy": {
+    "message": "Sort by",
+    "description": "Used for the Portfolio screen, the PageHeader component"
+  },
+  "ranking": {
+    "message": "Ranking",
+    "description": "Used for the Members screen"
+  },
+  "sellers": {
+    "message": "Sellers",
+    "description": "Used for the Members screen"
+  },
+  "buyers": {
+    "message": "Buyers",
+    "description": "Used for the Members screen"
+  },
+  "totalSales": {
+    "message": "Total Sales",
+    "description": "Used for the Members screen"
+  },
+  "highestSold": {
+    "message": "Highest sold",
+    "description": "Used for the Members screen"
+  },
+  "totalSold": {
+    "message": "Total sold",
+    "description": "Used for the Members screen"
+  },
+  "walletBalance": {
+    "message": "Wallet balance",
+    "description": "Used for the dashboard screen"
+  },
+  "youHaveNoPSL": {
+    "message": "You have no {{currencyName}}",
+    "description": "Used for the dashboard screen"
+  },
+  "walletDetails": {
+    "message": "Wallet Details",
+    "description": "Used for the dashboard screen"
+  },
+  "lastReceived": {
+    "message": "Last Received",
+    "description": "Used for the dashboard screen"
+  },
+  "lastSent": {
+    "message": "Last Sent",
+    "description": "Used for the dashboard screen"
+  },
+  "notificationNewListing": {
+    "message": "{{number}} new listing",
+    "description": "Used for the dashboard screen"
+  },
+  "notificationNewSale": {
+    "message": "{{number}} new sale",
+    "description": "Used for the dashboard screen"
+  },
+  "notificationNewTransfer": {
+    "message": "{{number}} new transfer",
+    "description": "Used for the dashboard screen"
+  },
+  "latestNotifications": {
+    "message": "Latest Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "unread": {
+    "message": "unread",
+    "description": "Used for the dashboard screen"
+  },
+  "youHaveNoNotifications": {
+    "message": "You have no Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "checkAllNotifications": {
+    "message": "Check All Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "trendingNFTs": {
+    "message": "Trending NFTs",
+    "description": "Used for the dashboard screen"
+  },
+  "listed": {
+    "message": "listed",
+    "description": "Used for the dashboard screen"
+  },
+  "youHaveNoNFTs": {
+    "message": "You have no NFTs",
+    "description": "Used for the dashboard screen"
+  },
+  "showMore": {
+    "message": "Show more",
+    "description": "Used for the dashboard screen"
+  },
+  "items": {
+    "message": "items",
+    "description": "Used for the dashboard screen"
+  },
+  "salesInProgress": {
+    "message": "Sales in progress",
+    "description": "Used for the dashboard screen"
+  },
+  "onSale": {
+    "message": "On Sale",
+    "description": "Used for the dashboard screen"
+  },
+  "bidding": {
+    "message": "Bidding",
+    "description": "Used for the dashboard screen"
+  },
+  "system": {
+    "message": "System",
+    "description": "Used for the dashboard screen"
+  },
+  "today": {
+    "message": "Today",
+    "description": "Used for the dashboard screen"
+  },
+  "yesterday": {
+    "message": "Yesterday",
+    "description": "Used for the dashboard screen"
+  },
+  "lastOfDays": {
+    "message": "Last {{days}} days",
+    "description": "Used for the dashboard screen"
+  },
+  "lastOfMonth": {
+    "message": "Last 3 month",
+    "description": "Used for the dashboard screen"
+  },
+  "types": {
+    "message": "Types",
+    "description": "Used for the dashboard screen"
+  },
+  "notifications": {
+    "message": "Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "info": {
+    "message": "Info",
+    "description": "Used for the members screen"
+  },
+  "board": {
+    "message": "Board",
+    "description": "Used for the members screen"
+  },
+  "bid": {
+    "message": "Bid",
+    "description": "Used for the members screen"
+  },
+  "comments": {
+    "message": "Comments",
+    "description": "Used for the members screen"
+  },
+  "mention": {
+    "message": "Mention",
+    "description": "Used for the members screen"
+  },
+  "totalItemsSold": {
+    "message": "{{copies}} Copies across {{nfts}} NFTs",
+    "description": "Used for the members screen"
+  },
+  "ago": {
+    "message": "ago",
+    "description": "Used for the members screen"
+  },
+  "sortyBy": {
+    "message": "Sorty by",
+    "description": "Used for the members screen"
+  },
+  "memberProfile": {
+    "message": "Member Profile",
+    "description": "Used for the members screen"
+  },
+  "reputationScore": {
+    "message": "Reputation Score",
+    "description": "Used for the members screen"
+  },
+  "copyToClipboard": {
+    "message": "Copy to clipboard",
+    "description": "Used for the members screen"
+  },
+  "message": {
+    "message": "Message",
+    "description": "Used for the members screen"
+  },
+  "report": {
+    "message": "report",
+    "description": "Used for the members screen"
+  },
+  "memberSince": {
+    "message": "Member since",
+    "description": "Used for the members screen"
   }
 }

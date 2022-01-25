@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react'
-import Avatar from '../../../common/components/Avatar'
 import { Link } from 'react-router-dom'
 import cn from 'classnames'
+
+import { translate } from 'features/app/translations'
+import Avatar from '../../../common/components/Avatar'
 
 export type TMemberBoardProps = {
   id: number
@@ -47,7 +49,7 @@ export default function MemberCard({
       <div className='text-gray-11 text-base'>{name}</div>
       <div className='text-13px'>
         {behaviour == 'commented' && (
-          <span className='text-gray-80'>Commented on</span>
+          <span className='text-gray-80'>{translate('commentedOn')}</span>
         )}
         {renderLinkComment()}
         <span className='text-gray-80 ml-2'>{time}</span>
@@ -55,7 +57,7 @@ export default function MemberCard({
       <div className='mt-4 text-gray-80 text-h5 font-normal'>{description}</div>
       <div className='mt-13px flex'>
         <textarea
-          placeholder='reply'
+          placeholder={translate('reply').toLowerCase()}
           className='border border-gray-f2 w-full px-4 py-[7px] h-10'
         />
       </div>

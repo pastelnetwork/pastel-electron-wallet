@@ -1,6 +1,11 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import { clipboard } from 'electron'
+
 import StarRate from './StarRate'
 import ProfileCardFrame from './ProfileCardFrame'
+import { translate } from 'features/app/translations'
+import Tooltip from 'common/components/Tooltip/Tooltip'
+
 import svg_avatar from 'common/assets/images/avatar.svg'
 import svg_copy from 'common/assets/icons/ico-copy2.svg'
 import svg_plus from 'common/assets/icons/ico-plus-white.svg'
@@ -55,11 +60,17 @@ function ProfileCard({
   description,
   address,
 }: TProfileCard): JSX.Element {
+  const handleCopy = useCallback(() => {
+    clipboard.writeText(walletId)
+  }, [walletId])
+
   const renderStarRate = () => (
     <div className='text-xs text-gray-71 pt-5 mb-2'>
       <div className='flex items-center justify-center w-full'>
         <StarRate rate={reputation} />
-        <div className='pl-1.5 text-gray-71'>{reputation} Reputation Score</div>
+        <div className='pl-1.5 text-gray-71'>
+          {reputation} {translate('reputationScore')}
+        </div>
       </div>
     </div>
   )
@@ -69,12 +80,33 @@ function ProfileCard({
       <div className='px-1 pt-1 text-gray-71'>{username}</div>
       <div className='font-bold text-26px'>{name}</div>
       <div className='px-1 pt-0.5 text-gray-71 flex text-sm'>
-        <div>{truncateMiddle(walletId, 11, 4, '...')}</div>
-        <img
-          src={svg_copy}
-          className='pl-2.5 cursor-pointer filter hover:contrast-200'
-          alt='Copy'
-        />
+        <Tooltip
+          type='top'
+          width={140}
+          content={
+            <p className='mb-0 px-2 py-6px text-white text-sm'>
+              {translate('pastelIDIdentifier')}
+            </p>
+          }
+        >
+          <div>{truncateMiddle(walletId, 11, 4, '...')}</div>
+        </Tooltip>
+        <Tooltip
+          type='top'
+          width={160}
+          content={
+            <p className='mb-0 px-2 py-6px text-white text-sm'>
+              {translate('copyToClipboard')}
+            </p>
+          }
+        >
+          <img
+            src={svg_copy}
+            className='pl-2.5 cursor-pointer filter hover:contrast-200'
+            alt='Copy'
+            onClick={handleCopy}
+          />
+        </Tooltip>
       </div>
       <div className='pt-15px flex justify-center'>
         <img
@@ -124,18 +156,18 @@ function ProfileCard({
 
           <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-30px h-10 bg-blue-3f text-white hover:bg-blue-500'>
             <img src={svg_plus} className='mr-9px' alt='Plus' />
-            Follow
+            {translate('follow')}
           </div>
           <div className='cursor-pointer border text-center text-sm rounded-2xl flex items-center justify-center mt-2.5 h-10 text-blue-3f border-blue-3f hover:border-blue-600'>
             <img src={svg_envelope} className='mr-9px' alt='Envelope' />
-            Message
+            {translate('message')}
           </div>
           <div className='cursor-pointer text-sm text-blue-3f pt-8 flex items-center justify-center filter hover:contrast-200'>
             <img src={svg_flag} className='mr-2 mt-1' alt='Flag' />
-            report
+            {translate('report')}
           </div>
           <div className='text-gray-400 text-sm mt-3 mb-6 text-center'>
-            Member since May 15, 2021
+            {translate('memberSince')} May 15, 2021
           </div>
         </div>
       )}

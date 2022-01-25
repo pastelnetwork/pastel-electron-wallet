@@ -2,6 +2,7 @@ import React from 'react'
 import cn from 'classnames'
 import parse from 'html-react-parser'
 
+import { translate } from 'features/app/translations'
 import { DiamondInHexagon } from 'common/components/Icons/DiamondInHexagon'
 
 export type TMemberCard = {
@@ -39,7 +40,9 @@ function MemberCard({
           name
         )}
       </h5>
-      <h6 className='text-gray-a0 text-12px pb-3'>{followers} followers</h6>
+      <h6 className='text-gray-a0 text-12px pb-3'>
+        {followers} {translate('followers').toLowerCase()}
+      </h6>
 
       <button
         className={cn('rounded-3xl border py-3px px-3 w-max font-medium', {
@@ -48,7 +51,7 @@ function MemberCard({
         })}
         type='button'
       >
-        {followedByUser ? 'Unfollow' : 'Follow'}
+        {followedByUser ? translate('unfollow') : translate('follow')}
       </button>
     </div>
   )

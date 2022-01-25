@@ -5,6 +5,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 import MemberCard, { TMemberCard } from './MemberCard'
 import { useCurrencyName } from '../../common/hooks/appInfo'
 import { formatPrice } from '../../common/utils/format'
+import { translate } from 'features/app/translations'
 
 export type TImageProps = {
   url: string
@@ -46,12 +47,16 @@ function MemberStrip({
 
   const renderSaleData = () => (
     <div className='flex flex-col justify-center h-full min-w-120px pr-21px'>
-      <h6 className='text-gray-77 pb-1 text-12px'>Highest sold</h6>
+      <h6 className='text-gray-77 pb-1 text-12px'>
+        {translate('highestSold')}
+      </h6>
       <div className='w-max text-12px font-semibold border pt-2 pb-1.5 px-2 rounded border-success-pressed text-green-45'>
         {formatPrice(highestSold, currency)}
       </div>
       <div className='text-gray-1a font-semibold pt-3 text-12px whitespace-nowrap overflow-x-hidden'>
-        <span className='text-tab-active font-extrabold'>Total sold </span>
+        <span className='text-tab-active font-extrabold'>
+          {translate('totalSold')}
+        </span>
         {renderTotalSold()}
       </div>
     </div>
