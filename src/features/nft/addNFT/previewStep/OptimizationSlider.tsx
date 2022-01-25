@@ -4,6 +4,7 @@ import { formatFileSize, formatPrice } from 'common/utils/format'
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import Spinner from 'common/components/Spinner'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
 
 export type TOptimizationSliderProps = {
   state: TAddNFTState
@@ -61,7 +62,7 @@ export default function OptimizationSlider({
   if (state.optimizationService.status === 'processing') {
     return (
       <div className='flex items-center text-gray-71'>
-        <div className='mr-3'>Loading optimized images</div>
+        <div className='mr-3'>{translate('loadingOptimizedImages')}</div>
         <Spinner className='w-6 h-6' />
       </div>
     )

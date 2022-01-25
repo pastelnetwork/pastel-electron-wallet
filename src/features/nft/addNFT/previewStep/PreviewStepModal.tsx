@@ -17,6 +17,7 @@ import {
 import { TAddNFTState, TImage } from '../AddNFT.state'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { setSelectedFile } from '../AddNFT.store'
+import { translate } from 'features/app/translations'
 
 type TPreviewStepModalProps = {
   state: TAddNFTState
@@ -73,7 +74,7 @@ export default function PreviewStepModal({
         />
       </div>
       <div className='text-xs text-gray-a0 font-normal'>
-        {imageSizePercentOfAvg}% of average Pastel NFT size
+        {translate('imageSizePercentOfAvg', { imageSizePercentOfAvg })}
       </div>
     </div>
   )
@@ -93,7 +94,7 @@ export default function PreviewStepModal({
         onClick={submit}
         disabled={!submittable}
       >
-        Go to Overview
+        {translate('goToOverview')}
       </button>
     </div>
   )
@@ -115,9 +116,9 @@ export default function PreviewStepModal({
 
   return (
     <ModalLayout
-      title='Image Preview'
+      title={translate('imagePreview')}
       titleClassName='text-gray-2d font-extrabold text-2xl mb-3'
-      subtitle='Description'
+      subtitle={translate('previewStepModalDescription')}
       subtitleClassName='text-gray-71 text-sm font-medium mb-3'
       step={3}
       leftColumnWidth={image.maxWidth}
@@ -134,7 +135,7 @@ export default function PreviewStepModal({
               />
             )}
             <FullScreenButton onClick={toggleFullScreen} />
-            <Tooltip2 text='Crop thumbnail'>
+            <Tooltip2 text={translate('cropThumbnail')}>
               {ref => (
                 <button
                   ref={ref}
@@ -158,7 +159,9 @@ export default function PreviewStepModal({
       rightColumnContent={
         <div>
           <div className='flex items-start mb-8'>
-            <div className='font-medium text-gray-4a mr-5'>Image size</div>
+            <div className='font-medium text-gray-4a mr-5'>
+              {translate('cropThumbnail')}
+            </div>
             <div className='text-gray-2d text-sm font-extrabold mr-3 relative top-[3px]'>
               {formatFileSize(
                 state.optimizationService.selectedFile?.size || image.size,
@@ -168,20 +171,20 @@ export default function PreviewStepModal({
           </div>
           <div className='flex-between mb-5 text-base'>
             <div className='text-gray-4a font-medium'>
-              Estimated registration fee
+              {translate('estimatedRegistrationFee')}
             </div>
             <div className='text-gray-2d font-extrabold'>
               {state.estimatedFee === undefined
-                ? 'unknown'
+                ? translate('unknown')
                 : `${formatNumber(state.estimatedFee)} ${currencyName}`}
             </div>
           </div>
           <div className='font-medium text-gray-4a mb-5'>
-            Image Size and Fee Optimization
+            {translate('imageSizeAndFeeOptimization')}
           </div>
           <div className='flex items-center mb-10'>
             <div className='font-medium text-gray-71 mr-3'>
-              Lossless Image Quality
+              {translate('losslessImageQuality')}
             </div>
             <Toggle
               selected={state.isLossLess}
@@ -199,7 +202,7 @@ export default function PreviewStepModal({
           </div>
           <div>
             <div className='font-medium text-gray-71 mb-3'>
-              Thumbnail preview
+              {translate('thumbnailPreview')}
             </div>
             <div className='w-48 h-48 relative'>
               {croppedImage && (
@@ -215,7 +218,7 @@ export default function PreviewStepModal({
             </div>
             {croppedImage?.error && (
               <div className='text-sm text-error font-medium mt-3'>
-                Error text error text
+                {croppedImage?.error}
               </div>
             )}
           </div>

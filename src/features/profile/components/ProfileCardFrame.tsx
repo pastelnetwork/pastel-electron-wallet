@@ -6,10 +6,11 @@ import { walletNodeApi } from 'api/walletNode/walletNode.api'
 import { imageDimensions } from 'common/utils/image'
 import { calcFileSize } from 'common/utils/file'
 import { TGetResponse } from 'api/walletNode/userData'
+import { translate } from 'features/app/translations'
 
 import ico_camera from 'common/assets/icons/ico-camera.svg'
 
-const LIMIT_SIZE = 5
+const LIMIT_SIZE = 1
 const LIMIT_WIDTH = 1200
 const LIMIT_HEIGHT = 1000
 
@@ -58,13 +59,16 @@ function ProfileCardFrame({
         const dimensions = await imageDimensions(file)
         const fileSize = calcFileSize(file.size)
         if (fileSize > LIMIT_SIZE) {
-          setError(`File size exceeds ${LIMIT_SIZE} mb`)
+          setError(translate('errorLimitFileSize', { size: LIMIT_SIZE }))
         } else if (
           dimensions.height < LIMIT_HEIGHT ||
           dimensions.width < LIMIT_WIDTH
         ) {
           setError(
-            `At least you can upload a ${LIMIT_WIDTH}x${LIMIT_HEIGHT} photo size`,
+            translate('errorLimitDimensions', {
+              width: LIMIT_WIDTH,
+              height: LIMIT_HEIGHT,
+            }),
           )
         } else {
           setCoverPhoto(file)
@@ -122,8 +126,8 @@ function ProfileCardFrame({
       </label>
       {!user?.cover_photo?.filename ? (
         <div className='text-right w-88px absolute right-4 top-54px text-white text-12px'>
-          max {LIMIT_SIZE} mb /<br />
-          min {LIMIT_WIDTH}x{LIMIT_HEIGHT}
+          {translate('max')} {LIMIT_SIZE} mb /<br />
+          {translate('min')} {LIMIT_WIDTH}x{LIMIT_HEIGHT}
         </div>
       ) : null}
     </div>

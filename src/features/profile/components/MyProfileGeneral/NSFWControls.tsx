@@ -8,6 +8,7 @@ import {
 import Toggle from 'common/components/Toggle'
 import cn from 'classnames'
 import Slider from 'common/components/Slider'
+import { translate } from 'features/app/translations'
 
 export default function NSFWControls(): JSX.Element {
   const [displayAdvanced, toggleAdvanced] = useDisplayAdvancedFeatures()
@@ -39,11 +40,15 @@ export default function NSFWControls(): JSX.Element {
 
   const renderNFTControl = () => (
     <div className='flex pt-3'>
-      <div className='text-gray-71 mr-4'>Hide Not Safe For Work NFTs</div>
+      <div className='text-gray-71 mr-4'>
+        {translate('hideNotSafeForWorkNFTs')}
+      </div>
       <div className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap'>
         <Toggle selected={!displayNSFW} toggleHandler={toggleNSFW} />
       </div>
-      <div className='text-gray-71 mr-4'>Show Advanced Features</div>
+      <div className='text-gray-71 mr-4'>
+        {translate('showAdvancedFeatures')}
+      </div>
       <div
         className='flex flex-grow font-medium text-gray-4a whitespace-pre flex-wrap cursor-pointer'
         onClick={toggleAdvanced}
@@ -59,7 +64,7 @@ export default function NSFWControls(): JSX.Element {
   const renderHentaiProbability = () => (
     <div className='flex items-center pt-10 pb-7'>
       <div className='text-gray-71 mr-3 w-[180px]'>
-        Hentai probability {NSFWHentaiProbability}%
+        {translate('hentaiProbability')} {NSFWHentaiProbability}%
       </div>
       <Slider
         className='relative z-10'
@@ -77,7 +82,7 @@ export default function NSFWControls(): JSX.Element {
   const renderPornProbability = () => (
     <div className='flex items-center pt-3 pb-7'>
       <div className='text-gray-71 mr-3 w-[180px]'>
-        Porn probability {NSFWPornProbability}%
+        {translate('pornProbability')} {NSFWPornProbability}%
       </div>
       <Slider
         className='relative z-10'

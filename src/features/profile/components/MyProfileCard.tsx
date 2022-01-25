@@ -18,6 +18,7 @@ import Select, { TOption } from 'common/components/Select'
 import { TGetResponse } from 'api/walletNode/userData'
 import { validFacebookUrl, validTwitterUrl } from 'common/utils/validation'
 import { walletNodeApi } from 'api/walletNode/walletNode.api'
+import { changeLanguage, translate } from 'features/app/translations'
 
 export type TErrorMessageProps = {
   control: string
@@ -69,17 +70,17 @@ function ProfileCard({
 
   const edits = [
     {
-      title: 'Name',
+      title: translate('name'),
       value: 'name',
       onChange: setName,
     },
     {
-      title: 'Facebook',
+      title: translate('facebook'),
       value: 'facebook',
       onChange: setFacebook,
     },
     {
-      title: 'Twitter',
+      title: translate('twitter'),
       value: 'twitter',
       onChange: setTwitter,
     },
@@ -100,7 +101,7 @@ function ProfileCard({
         if (!validFacebookUrl(facebook)) {
           errors.push({
             control: 'facebook',
-            message: 'Not a valid URL format.',
+            message: translate('notAValidURLFormat'),
           })
         }
       }
@@ -109,7 +110,7 @@ function ProfileCard({
         if (!validTwitterUrl(twitter)) {
           errors.push({
             control: 'twitter',
-            message: 'Not a valid URL format.',
+            message: translate('notAValidURLFormat'),
           })
         }
       }
@@ -131,6 +132,9 @@ function ProfileCard({
         handleUpdateUserData()
         setLoading(false)
         setEditMode(false)
+        if (userData?.primary_language) {
+          changeLanguage(userData.primary_language)
+        }
       } catch (error) {
         toast.error(error.message)
         setLoading(false)
@@ -157,7 +161,7 @@ function ProfileCard({
         width={140}
         content={
           <p className='mb-0 px-2 py-6px text-white text-sm'>
-            PastelID Identifier
+            {translate('pastelIDIdentifier')}
           </p>
         }
       >
@@ -194,7 +198,9 @@ function ProfileCard({
         ))}
       </div>
       <div className='flex text-gray-71 text-sm mt-9 items-center justify-between'>
-        <span className='text-lg text-gray-71'>Native Currency:</span>
+        <span className='text-lg text-gray-71'>
+          {translate('nativeCurrency')}:
+        </span>
         <Select
           className='text-gray-4a flex-grow max-w-118px ml-5px'
           selected={nativeCurrency}
@@ -213,7 +219,7 @@ function ProfileCard({
       disabled={!user}
     >
       <span className='flex items-center justify-center'>
-        Edit Profile
+        {translate('editProfile')}
         <SVG src={ico_pencil} className='ml-2.5 w-13px fill-blue-3f' />
       </span>
     </Button>
@@ -238,7 +244,7 @@ function ProfileCard({
         width={140}
         content={
           <p className='mb-0 px-2 py-6px text-white text-sm'>
-            PastelID Identifier
+            {translate('pastelIDIdentifier')}
           </p>
         }
       >
@@ -261,11 +267,11 @@ function ProfileCard({
       </div>
       {renderEditProfileButton()}
       <div className='flex text-gray-71 text-sm mt-30px justify-center'>
-        Native Currency: {nativeCurrency?.label}
+        {translate('nativeCurrency')}: {nativeCurrency?.label}
       </div>
       <div className='flex justify-center mt-[184px]'>
         <Toggle selected={activeCurrency} toggleHandler={handleToggleHandler}>
-          Active display currency: {currencyName}
+          {translate('activeDisplayCurrency')}: {currencyName}
         </Toggle>
       </div>
     </div>
@@ -304,7 +310,7 @@ function ProfileCard({
               type='button'
               disabled={isLoading}
             >
-              Save Changes
+              {translate('saveChanges')}
             </button>
           </div>
         )}

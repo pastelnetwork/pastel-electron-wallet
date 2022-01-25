@@ -26,6 +26,7 @@ import { AddressForm } from './AddressForm'
 import { isTransparent } from 'common/utils/wallet'
 import { useWalletScreenContext } from './walletScreen.context'
 import { readTransaction } from 'common/utils/TransactionNote'
+import { translate } from 'features/app/translations'
 
 const BLOCK_CONFIRMED_NUMBER = 6
 
@@ -47,13 +48,13 @@ export default function TransactionHistoryModal(): JSX.Element {
   >([])
   const [sourceAddresses, setSourceAddresses] = useState<TOption[]>([
     {
-      label: 'All',
+      label: translate('all'),
       value: '',
     },
   ])
   const [recipients, setRecipients] = useState<TOption[]>([
     {
-      label: 'All',
+      label: translate('all'),
       value: '',
     },
   ])
@@ -120,7 +121,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     })
     return [
       {
-        label: 'All',
+        label: translate('all'),
         value: '',
       },
     ].concat(newFiltered)
@@ -251,7 +252,7 @@ export default function TransactionHistoryModal(): JSX.Element {
 
   const Columns = [
     {
-      name: 'Date',
+      name: translate('date'),
       key: 'date',
       headerColClasses: 'ml-15px',
       custom: (value: string | number) => (
@@ -262,7 +263,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     },
     {
       key: 'address',
-      name: 'Recipient address',
+      name: translate('recipientAddress'),
       headerColClasses: 'mr-15px',
       custom: (value: string) => (
         <AddressForm
@@ -278,7 +279,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     {
       key: 'type',
       headerColClasses: 'whitespace-nowrap mr-15px ml-46px',
-      name: 'Source type',
+      name: translate('sourceType'),
       custom: (value: string | number, row?: TRow) => {
         return (
           <div className='ml-46px flex items-center'>
@@ -291,7 +292,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     },
     {
       key: 'status',
-      name: 'Status',
+      name: translate('status'),
       headerColClasses: 'mr-15px',
       custom: (value: string | number) => {
         return (
@@ -299,7 +300,9 @@ export default function TransactionHistoryModal(): JSX.Element {
             <Tooltip
               classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
               content={
-                value.toString() === 'confirmed' ? 'Confirmed' : 'Unconfirmed'
+                value.toString() === 'confirmed'
+                  ? translate('confirmed')
+                  : translate('unConfirmed')
               }
               width={110}
               type='top'
@@ -311,7 +314,7 @@ export default function TransactionHistoryModal(): JSX.Element {
                     : clockYellowIcon
                 }
                 className='inline-block'
-                alt='Status'
+                alt={translate('status')}
               />
             </Tooltip>
           </div>
@@ -320,7 +323,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     },
     {
       key: 'id',
-      name: 'ID',
+      name: translate('id'),
       custom: (value: string | number) => (
         <Tooltip
           classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
@@ -348,7 +351,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     },
     {
       key: 'privateNote',
-      name: 'Private Notes',
+      name: translate('privateNotes'),
       headerColClasses: 'whitespace-nowrap mr-15px',
       custom: (value: string | number) => (
         <div className='ml-8 inline-block'>
@@ -373,7 +376,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     },
     {
       key: 'fee',
-      name: 'Fee',
+      name: translate('fee'),
       headerColClasses: 'mr-15px',
       custom: (value: string | number) => (
         <div className='whitespace-nowrap mr-15px'>{value}</div>
@@ -381,13 +384,15 @@ export default function TransactionHistoryModal(): JSX.Element {
     },
     {
       key: 'amount',
-      name: 'Amount',
+      name: translate('amount'),
     },
   ]
 
   const renderDateFilter = () => (
     <div className='w-[264px] pr-6'>
-      <div className='text-gray-71 text-h6-leading-20-medium'>Time range</div>
+      <div className='text-gray-71 text-h6-leading-20-medium'>
+        {translate('timeRange')}
+      </div>
       <div className='w-[208px]'>
         <DateRangeSelector
           value={dates}
@@ -401,12 +406,16 @@ export default function TransactionHistoryModal(): JSX.Element {
   const renderSourceAddressFilter = () => (
     <div className='w-[264px] pr-6'>
       <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
-        Source address
+        {translate('sourceAddress')}
       </div>
       <div className='w-[208px]'>
         <Select
           label={
-            <img src={addressbookIcon} className='mr-2' alt='Source address' />
+            <img
+              src={addressbookIcon}
+              className='mr-2'
+              alt={translate('sourceAddress')}
+            />
           }
           className='text-gray-2d w-full'
           selected={sourceAddress}
@@ -422,11 +431,17 @@ export default function TransactionHistoryModal(): JSX.Element {
   const renderRecipientsFilter = () => (
     <div className='w-[264px] pr-6'>
       <div className='mb-1 text-gray-71 text-h6-leading-20-medium'>
-        Recipients
+        {translate('recipients')}
       </div>
       <div className='w-[208px]'>
         <Select
-          label={<img src={user2Icon} className='mr-2' alt='Recipients' />}
+          label={
+            <img
+              src={user2Icon}
+              className='mr-2'
+              alt={translate('recipients')}
+            />
+          }
           className='text-gray-2d w-full'
           selected={recipientAddress}
           options={recipients}
@@ -454,7 +469,7 @@ export default function TransactionHistoryModal(): JSX.Element {
               : 'text-gray-71 text-h5-medium',
           )}
         >
-          All
+          {translate('all')}
         </div>
       </Radio>
       <Radio
@@ -471,7 +486,7 @@ export default function TransactionHistoryModal(): JSX.Element {
               : 'text-gray-71 text-h5-medium',
           )}
         >
-          Received
+          {translate('received')}
         </div>
       </Radio>
       <Radio
@@ -488,7 +503,7 @@ export default function TransactionHistoryModal(): JSX.Element {
               : 'text-gray-71 text-h5-medium'
           }
         >
-          Sent
+          {translate('sent')}
         </div>
       </Radio>
     </div>
@@ -525,7 +540,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     <TitleModal
       isOpen
       handleClose={handleClose}
-      title='Transaction history'
+      title={translate('transactionHistory')}
       classNames='max-w-7xl min-h-[88vh]'
     >
       <div className='bg-white z-50'>

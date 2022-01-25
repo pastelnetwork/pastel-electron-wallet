@@ -25,6 +25,7 @@ import {
   TPastelID,
   TPrivateKey,
 } from '../common/utils'
+import { translate } from 'features/app/translations'
 
 export type TSecurityPasswordModal = {
   isOpen: boolean
@@ -131,11 +132,11 @@ export function PDFDocument({
   const renderAddressBookContent = (addressBook: TAddressBook) => (
     <View style={pdfStyles.mainContentFull}>
       <View style={pdfStyles.contentItem}>
-        <Text style={pdfStyles.contentTitle}>Label:</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('label')}:</Text>
         <Text style={pdfStyles.contentValue}>{addressBook.label}</Text>
       </View>
       <View style={pdfStyles.marginTop20}>
-        <Text style={pdfStyles.contentTitle}>Address:</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('address')}:</Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakFoFullrContent(addressBook.address)}
         </Text>
@@ -146,7 +147,7 @@ export function PDFDocument({
   const renderPastelIdContent = (pastelID: TPastelID) => (
     <View style={pdfStyles.mainContent}>
       <View style={pdfStyles.contentItem}>
-        <Text style={pdfStyles.contentTitle}>PastelID</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('pastelID')}</Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakFoFullrContent(pastelID.PastelID)}
         </Text>
@@ -157,14 +158,14 @@ export function PDFDocument({
   const renderPrivateKeys = (privateKey: TPrivateKey) => (
     <View style={pdfStyles.mainContentWrapper}>
       <View style={pdfStyles.contentItem}>
-        <Text style={pdfStyles.contentTitle}>Private Key</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('privateKey')}</Text>
         <Text style={pdfStyles.contentValuePrivateKey}>
           {addLineBreakForContent(privateKey.privateKey)}
         </Text>
       </View>
       <View style={pdfStyles.marginTop20}>
         <Text style={pdfStyles.contentTitle}>
-          {currencyName} Address (Sapling)
+          {currencyName} {translate('address')} ({translate('sapling')})
         </Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakForContent(privateKey.address)}
@@ -285,7 +286,7 @@ export default function SecurityPasswordModal({
         className='block w-full'
       >
         <Button variant='default' className='w-full relative'>
-          Download PDF with All Your Keys
+          {translate('downloadPDFWithAllYourKeys')}
         </Button>
       </PDFDownloadLink>
     </div>
@@ -300,25 +301,22 @@ export default function SecurityPasswordModal({
     >
       {status === 'success' ? (
         <div>
-          <h2 className='mb-2'>Your password has been changed</h2>
+          <h2 className='mb-2'>{translate('yourPasswordHasBeenChanged')}</h2>
           <div className='text-gray-77 inline-block mb-4 text-h4 mt-3'>
-            You can download the new backup of your crypto keys included the new
-            password and make sure you keep this file safe, since anyone with
-            access to this file will be able to control your Pastel account and
-            take your PSL coins.
+            {translate('youCanDownloadTheNewBackupOfYourCryptoKeys')}
           </div>
           {renderDownloadPDFButton()}
         </div>
       ) : (
         <div>
-          <h2 className='mb-2'>Re-enter your password</h2>
+          <h2 className='mb-2'>{translate('reEnterYourPassword')}</h2>
           <span className='text-gray-77 inline-block mb-4 text-h4'>
-            To get access to security settings
+            {translate('toGetAccessToSecuritySettings')}
           </span>
           <div className='mb-[26px]'>
             <InputPassword
               labelClassName='text-gray-71 font-medium text-lg mb-1.5'
-              label='Your Password'
+              label={translate('yourPassword')}
               value={password}
               onChange={handlePasswordChange}
               readOnly={status === 'loading'}
@@ -333,7 +331,7 @@ export default function SecurityPasswordModal({
             className='w-full'
             disabled={!password || status === 'loading'}
           >
-            Confirm
+            {translate('confirm')}
           </Button>
         </div>
       )}

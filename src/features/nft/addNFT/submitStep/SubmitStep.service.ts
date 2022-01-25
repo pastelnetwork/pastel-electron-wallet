@@ -15,6 +15,7 @@ import { readUsersInfo, getCurrentAccount } from 'common/utils/User'
 import { calcFileSize } from 'common/utils/file'
 import { removeNFTData } from '../AddNFT.store'
 import store from '../../../../redux/store'
+import { translate } from 'features/app/translations'
 
 const getImageFile = (
   state: TAddNFTState,
@@ -31,7 +32,7 @@ const getImageFile = (
 
     xhr.onload = () => {
       if (xhr.status !== 200) {
-        return reject(new Error('Error accessing optimized image'))
+        return reject(new Error(translate('errorAccessingOptimizedImage')))
       }
       const metadata = {
         type: image.type,
@@ -66,24 +67,24 @@ export const submit = async ({
     const tickets = await getPastelIdTickets()
     const storageFee: TGetStorageFee = await getStorageFee()
     if (!storageFee) {
-      toast('Register new NFT is failed', { type: 'error' })
+      toast(translate('registerNewNFTIsFailed'), { type: 'error' })
       return
     }
 
     if (!tickets) {
-      toast("PastelID isn't exists", { type: 'error' })
+      toast(translate('pastelIDIsNotExists'), { type: 'error' })
       return
     }
 
     if (!spendableAddr) {
-      toast("The address isn't exists", { type: 'error' })
+      toast(translate('theAddressIsNotExists'), { type: 'error' })
       return
     }
 
     const users = await readUsersInfo()
     const currentUser = getCurrentAccount()
     if (!currentUser) {
-      toast("PastelID isn't exists", { type: 'error' })
+      toast(translate('pastelIDIsNotExists'), { type: 'error' })
       return
     }
     const user = users.find(
@@ -92,7 +93,7 @@ export const submit = async ({
         u.pastelId === currentUser.pastelId,
     )
     if (!user) {
-      toast("PastelID isn't exists", { type: 'error' })
+      toast(translate('pastelIDIsNotExists'), { type: 'error' })
       return
     }
 
@@ -177,6 +178,6 @@ export const submit = async ({
       `features nft addNFT submitStep SubmitStep.service submit error: ${message}`,
       err,
     )
-    toast('Register new NFT is failed', { type: 'error' })
+    toast(translate('registerNewNFTIsFailed'), { type: 'error' })
   }
 }

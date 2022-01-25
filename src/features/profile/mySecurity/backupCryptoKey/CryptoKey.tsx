@@ -22,6 +22,7 @@ import {
   TPrivateKey,
 } from '../common/utils'
 import { TAddressBook } from 'types/rpc'
+import { translate } from 'features/app/translations'
 
 type TCrypto = {
   currencyName?: string
@@ -130,11 +131,11 @@ export function PDFDocument({
   const renderAddressBookContent = (addressBook: TAddressBook) => (
     <View style={pdfStyles.mainContentFull}>
       <View style={pdfStyles.contentItem}>
-        <Text style={pdfStyles.contentTitle}>Label:</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('label')}:</Text>
         <Text style={pdfStyles.contentValue}>{addressBook.label}</Text>
       </View>
       <View style={pdfStyles.marginTop20}>
-        <Text style={pdfStyles.contentTitle}>Address:</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('address')}:</Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakFoFullrContent(addressBook.address)}
         </Text>
@@ -145,7 +146,7 @@ export function PDFDocument({
   const renderPastelIdContent = (pastelID: TPastelID) => (
     <View style={pdfStyles.mainContent}>
       <View style={pdfStyles.contentItem}>
-        <Text style={pdfStyles.contentTitle}>PastelID</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('pastelID')}</Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakFoFullrContent(pastelID.PastelID)}
         </Text>
@@ -156,14 +157,14 @@ export function PDFDocument({
   const renderPrivateKeys = (privateKey: TPrivateKey) => (
     <View style={pdfStyles.mainContentWrapper}>
       <View style={pdfStyles.contentItem}>
-        <Text style={pdfStyles.contentTitle}>Private Key</Text>
+        <Text style={pdfStyles.contentTitle}>{translate('privateKey')}</Text>
         <Text style={pdfStyles.contentValuePrivateKey}>
           {addLineBreakForContent(privateKey.privateKey)}
         </Text>
       </View>
       <View style={pdfStyles.marginTop20}>
         <Text style={pdfStyles.contentTitle}>
-          {currencyName} Address (Sapling)
+          {currencyName} {translate('address')} ({translate('sapling')})
         </Text>
         <Text style={pdfStyles.contentValue}>
           {addLineBreakForContent(privateKey.address)}
@@ -235,17 +236,13 @@ export default function CryptoKey(props: TCrypto): JSX.Element {
 
   const description = (
     <div className='max-w-330px'>
-      Clicking the button below will generate a PDF “paper wallet,” which is a
-      single file that contains all your Pastel secret information that gives
-      control over your PastelID (idenity on the Pastel Network) and your{' '}
-      {currencyName}
-      coins stored in this wallet. This file can be used to restore your account
-      information on a new computer.
+      {translate('clickingTheButtonBelowWillGenerateAPDFPaperWallet', {
+        currencyName,
+      })}
       <br />
       <br />
-      <i className='font-normal'>Note:</i> Make sure you keep this file safe,
-      since anyone with access to this file will be able to control your Pastel
-      account and take your {currencyName} coins.
+      <i className='font-normal'>{translate('note')}:</i>{' '}
+      {translate('makeSureYouKeepThisFileSafe', { currencyName })}
     </div>
   )
 
@@ -263,7 +260,7 @@ export default function CryptoKey(props: TCrypto): JSX.Element {
       className='block w-full'
     >
       <Button variant='secondary' className='w-full font-extrabold relative'>
-        Download PDF with All Your Keys
+        {translate('downloadPDFWithAllYourKeys')}
       </Button>
     </PDFDownloadLink>
   )
@@ -284,7 +281,7 @@ export default function CryptoKey(props: TCrypto): JSX.Element {
   return (
     <>
       <Card
-        title='Backup Your Crypto Keys'
+        title={translate('backupYourCryptoKeys')}
         description={description}
         content=''
         footer={footer}

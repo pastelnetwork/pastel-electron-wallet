@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { translate } from 'features/app/translations'
 import congratulations from '../../../../common/assets/icons/ico-congratulations.svg'
 
 export default function RestoreSuccess(): JSX.Element {
@@ -8,14 +9,14 @@ export default function RestoreSuccess(): JSX.Element {
       <div>
         <img
           src={congratulations}
-          alt='Congratulations'
+          alt={translate('congratulations')}
           className='w-54px h-54px mx-auto'
         />
       </div>
       <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
-        Congratulations!
+        {translate('congratulations')}!
         <br />
-        Your keys have been restored!
+        {translate('yourKeysHaveBeenRestored')}!
       </div>
     </div>
   )

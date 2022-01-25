@@ -20,6 +20,7 @@ import {
 import { Override } from '../../utils/types'
 import styles from './NFTCard.module.css'
 import { useIsNSFW } from 'features/NSFW/NSFW.service'
+import { translate } from 'features/app/translations'
 
 export enum NFTCardVariantSize {
   XL,
@@ -80,7 +81,7 @@ export default function NFTCard({
   buttonClassName = 'bg-transparent',
   avatarClassName,
   searchText,
-  copies = '1 of 1,000',
+  copies = translate('copiesValue', { number: 1, total: '1,000' }),
   diamond = '10%',
   bidPercentage = '+100%',
   detailUrl = '#',
@@ -139,7 +140,7 @@ export default function NFTCard({
           buttonClassName,
         )}
       >
-        Buy it Now
+        {translate('buyItNowButton')}
       </Button>
     </div>
   )
@@ -155,7 +156,7 @@ export default function NFTCard({
               : 'text-h5-medium',
           )}
         >
-          Fixed price
+          {translate('nftFixedPrice')}
         </div>
         <div
           className={cn(
@@ -179,7 +180,7 @@ export default function NFTCard({
               : 'text-h5-heavy',
           )}
         >
-          {copiesAvailable} Copies Available
+          {translate('copiesAvailable', { copiesAvailable })}
         </div>
         {renderBuyItNowButton()}
       </div>
@@ -195,7 +196,7 @@ export default function NFTCard({
           buttonClassName,
         )}
       >
-        Make an Offer
+        {translate('makeAnOfferButton')}
       </Button>
     </div>
   )
@@ -211,7 +212,7 @@ export default function NFTCard({
               : 'text-h5-medium',
           )}
         >
-          Not for sale
+          {translate('notForSale')}
         </div>
       </div>
       <div className={cn('flex justify-between', buttonFooterWrapper)}>
@@ -230,7 +231,7 @@ export default function NFTCard({
           buttonClassName,
         )}
       >
-        Place a Bid
+        {translate('placeABid')}
       </Button>
     </div>
   )
@@ -244,7 +245,7 @@ export default function NFTCard({
           : 'text-h5-heavy',
       )}
     >
-      <CountdownTimer countDownDate={leftTime} /> left
+      <CountdownTimer countDownDate={leftTime} /> {translate('leftTime')}
     </div>
   )
 
@@ -272,7 +273,7 @@ export default function NFTCard({
               : 'text-h5-medium',
           )}
         >
-          Last Auction Bid
+          {translate('lastAuctionBid')}
         </div>
         <div className='flex items-center'>
           {renderAuctionBidPrice(fullCardProps)}
@@ -303,8 +304,8 @@ export default function NFTCard({
     <Tooltip
       type='top'
       content={getTooltip(
-        'Copies',
-        'This is the number of "limited edition digital prints" that exist for this NFT.  No additional copies can ever be created of this NFT, even by the creator (and if the creator uses a similar image for a new NFT, the new NFT will have a lower Rareness Score"',
+        translate('copies'),
+        translate('copiesNFTCardTooltip'),
       )}
       width={208}
       classnames='ml-8'
@@ -331,8 +332,8 @@ export default function NFTCard({
     <Tooltip
       type='top'
       content={getTooltip(
-        'Rareness Score',
-        'This number measures how "rare" the NFT is relative to all the NFTS that were previously registered on Pastel. It is based on the pixel patterns of the underlying image, and can see through superficial modifications to an original image, such as cropping, color changes, noise, etc.',
+        translate('rarenessScore'),
+        translate('rarenessScoreNFTCardTooltip'),
       )}
       width={230}
     >
@@ -482,8 +483,8 @@ export default function NFTCard({
             <Tooltip
               type='top'
               content={getTooltip(
-                'GreenNFT',
-                '2% of sale proceeds go to plant trees',
+                translate('greenNFT'),
+                translate('greenNFTNFTCardTooltip'),
               )}
               width={140}
             >
@@ -497,8 +498,10 @@ export default function NFTCard({
             <Tooltip
               type='top'
               content={getTooltip(
-                'Perpetual Royalty',
-                `${vRoyalty}% of all resale proceeds are paid to the creator forever`,
+                translate('perpetualRoyalty'),
+                translate('perpetualRoyaltyNFTCardTooltip', {
+                  royalty: vRoyalty,
+                }),
               )}
               width={145}
             >
@@ -512,8 +515,8 @@ export default function NFTCard({
             <Tooltip
               type='top'
               content={getTooltip(
-                'Certified Rare on Pastel',
-                'NFT is sufficiently different from all previously registered NFTs on Pastel at the time of registration',
+                translate('certifiedRareOnPastel'),
+                translate('certifiedRareOnPastelNFTCardTooltip'),
               )}
               width={185}
             >
@@ -529,8 +532,8 @@ export default function NFTCard({
             <Tooltip
               type='top'
               content={getTooltip(
-                'Direct from Artist',
-                'the NFT copy is being sold by the creator, rather than another buyer of the NFT who is reselling it',
+                translate('directFromArtist'),
+                translate('directFromArtistNFTCardTooltip'),
               )}
               width={180}
             >

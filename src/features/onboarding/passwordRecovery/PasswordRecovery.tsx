@@ -12,6 +12,7 @@ import { useRegisterStore } from '../register/Register.store'
 import history from 'common/utils/history'
 import { Button } from 'common/components/Buttons'
 import Link from 'common/components/Link'
+import { translate } from 'features/app/translations'
 
 enum Tabs {
   selectPDF,
@@ -19,13 +20,13 @@ enum Tabs {
   selectQRCodeVideo,
 }
 
-const tabs = [
-  { label: 'Crypto Keys' },
-  { label: 'QR-Code' },
-  { label: 'QR Code Video' },
-]
-
 export default function PasswordRecovery(): JSX.Element {
+  const tabs = [
+    { label: translate('cryptoKeys') },
+    { label: translate('qrCode') },
+    { label: translate('qrCodeVideo') },
+  ]
+
   const store = useRegisterStore(
     state => ({
       setPastelId: state.setPastelId,
@@ -62,7 +63,7 @@ export default function PasswordRecovery(): JSX.Element {
       {!isSuccess ? (
         <>
           <div className='text-gray-71 text-h5'>
-            Choose your recovery method
+            {translate('chooseYourRecoveryMethod')}
           </div>
           <div className='mt-[19px]'>
             <MultiToggleSwitch
@@ -108,15 +109,15 @@ export default function PasswordRecovery(): JSX.Element {
         <div className='mt-9'>
           <Link to={ROUTES.LOGIN}>
             <Button className='w-full' type='button'>
-              Login
+              {translate('login')}
             </Button>
           </Link>
         </div>
       ) : null}
       {isRestore && !isSuccess ? (
         <div className='mt-9 text-center text-base font-normal text-gray-a0'>
-          Already restored account from backup?{' '}
-          <Link to={ROUTES.LOGIN}>Login</Link>
+          {translate('alreadyRestoredAccountFromBackup')}{' '}
+          <Link to={ROUTES.LOGIN}>{translate('login')}</Link>
         </div>
       ) : null}
     </div>

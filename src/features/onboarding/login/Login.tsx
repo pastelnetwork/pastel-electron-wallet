@@ -1,4 +1,5 @@
 import React, { useState, FormEvent, useCallback } from 'react'
+import { toast } from 'react-toastify'
 
 import Input from 'common/components/Inputs/Input'
 import { Button } from 'common/components/Buttons'
@@ -10,7 +11,7 @@ import * as ROUTES from 'common/utils/constants/routes'
 import history from 'common/utils/history'
 import { readUsersInfo, setAutoSignIn } from 'common/utils/User'
 import { verifyPastelIdPassword } from 'api/pastel-rpc'
-import { toast } from 'react-toastify'
+import { translate } from 'features/app/translations'
 
 export default function Login(): JSX.Element {
   const [isLoading, setLoading] = useState(false)
@@ -25,7 +26,7 @@ export default function Login(): JSX.Element {
     setErrorMessage('')
     const users = await readUsersInfo()
     if (!users.length) {
-      setErrorMessage('Please restore your account from backup')
+      setErrorMessage(translate('pleaseRestoreYourAccountFromBackup'))
       setLoading(false)
       setRestore(true)
     } else {
@@ -46,14 +47,14 @@ export default function Login(): JSX.Element {
             setLoading(false)
             history.push(ROUTES.DASHBOARD)
           } else {
-            setErrorMessage('Username or password is incorrect')
+            setErrorMessage(translate('usernameOrPasswordIsIncorrect'))
           }
         } catch (error) {
           toast(error.message, { type: 'error' })
           setLoading(false)
         }
       } else {
-        setErrorMessage('Username or password is incorrect')
+        setErrorMessage(translate('usernameOrPasswordIsIncorrect'))
         setLoading(false)
       }
     }
@@ -78,10 +79,10 @@ export default function Login(): JSX.Element {
   const renderRestoreAccountButton = () => {
     return (
       <div className='text-gray-71 text-h6 my-5'>
-        Forgot your password?
+        {translate('forgotYourPassword')}
         <Link className='text-link' to={ROUTES.PASSWORD_RECOVERY}>
           {' '}
-          Restore access now
+          {translate('restoreAccessNow')}
         </Link>
       </div>
     )
@@ -91,11 +92,11 @@ export default function Login(): JSX.Element {
     if (isRestore) {
       return (
         <div className='link mb-2'>
-          Please&nbsp;
+          {translate('please')}&nbsp;
           <Link to={`${ROUTES.PASSWORD_RECOVERY}?isRestore=true`}>
-            restore account from backup
+            {translate('restoreAccountFromBackup').toLowerCase()}
           </Link>
-          &nbsp; before login.
+          &nbsp; {translate('beforeLogin')}.
         </div>
       )
     }
@@ -110,13 +111,15 @@ export default function Login(): JSX.Element {
   return (
     <div className='w-[398px] my-9 mx-60px'>
       <CloseButton gotoUrl={ROUTES.WELCOME_PAGE} />
-      <div className='text-h1-heavy text-gray-2d mb-3'>Login</div>
+      <div className='text-h1-heavy text-gray-2d mb-3'>
+        {translate('login')}
+      </div>
       <form className='flex flex-col mt-30px'>
         {renderErrorMessage()}
         <Input
           name='username'
-          label='Username'
-          placeholder='i.e banksy168'
+          label={translate('username')}
+          placeholder={translate('usernamePlaceholder')}
           className='mt-4 mb-6'
           onChange={onUsernameChanged}
           value={username}
@@ -124,7 +127,7 @@ export default function Login(): JSX.Element {
         <Input
           type='password'
           name='password'
-          label='Password'
+          label={translate('password')}
           onChange={onPasswordChanged}
           value={password}
         />
@@ -135,13 +138,13 @@ export default function Login(): JSX.Element {
           onClick={onSubmit}
           disabled={isLoading || inValid}
         >
-          Login
+          {translate('login')}
         </Button>
       </form>
       <div className='flex justify-center text-gray-a0 font-medium text-h6 mt-30px'>
-        <span className='mr-1'>Don{"'"}t have an account?</span>
+        <span className='mr-1'>{translate('dontHaveAnAccount')}</span>
         <Link className='text-link' to={ROUTES.SIGN_UP}>
-          Register on Pastel
+          {translate('registerOnPastel')}
         </Link>
       </div>
     </div>

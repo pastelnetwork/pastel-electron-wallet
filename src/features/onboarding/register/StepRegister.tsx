@@ -16,6 +16,7 @@ import { Info } from 'common/components/Icons'
 import { useRegisterStore } from './Register.store'
 import { checkPastelIdUsername } from 'api/pastel-rpc'
 import { readUsersInfo } from 'common/utils/User'
+import { translate } from 'features/app/translations'
 
 function validateUserName(val: string): boolean {
   const validationRe = /^[0-9a-z_]{3,}$/i
@@ -70,7 +71,7 @@ export default function StepRegister(): JSX.Element {
     }
 
     if (passwordStrength === PasswordStrengths.Excellent) {
-      return 'Super secure password'
+      return translate('superSecurePassword')
     }
 
     if (
@@ -78,10 +79,10 @@ export default function StepRegister(): JSX.Element {
       passwordStrength === PasswordStrengths.Moderate ||
       passwordStrength === PasswordStrengths.Weak
     ) {
-      return 'Not strong enough'
+      return translate('notStrongEnough')
     }
 
-    return 'At least 8 characters and at least 2 numbers'
+    return translate('atLeast8CharactersAndAtLeast2numbers')
   }
 
   const nextActive =
@@ -104,7 +105,7 @@ export default function StepRegister(): JSX.Element {
     const users = await readUsersInfo()
     const user = users.find(u => u.username === store.username)
     if (user) {
-      setErrorMsg('Username already in use')
+      setErrorMsg(translate('usernameAlreadyInUse'))
       setUsernameInvalid(true)
       return
     }
@@ -116,10 +117,10 @@ export default function StepRegister(): JSX.Element {
       className='w-full'
       label={
         <div className='flex items-center'>
-          <span className='mr-2'>Set your wallet password</span>
+          <span className='mr-2'>{translate('setYourWalletPassword')}</span>
           <Tooltip
             classnames='font-medium py-2'
-            content='This password is to the secure container that stores your PSL coins and NFTs on your own machine and is never sent over the network. Please keep this password secure and be sure to backup your secret data in the next step.'
+            content={translate('setYourWalletPasswordTooltip')}
             type='top'
             width={260}
             vPosPercent={100}
@@ -147,13 +148,13 @@ export default function StepRegister(): JSX.Element {
         className='items-start'
       >
         <span className='text-14px text-gray-a0'>
-          I certify that I’m 18 years of age or older, and agree to the{' '}
+          {translate('iCertifyThatIm18YearsOfAge')}{' '}
           <Link
             onClick={handleOpenPrivacyPolicy}
             className='link'
             type='button'
           >
-            User Agreement and Privacy Policy
+            {translate('userAgreementAndPrivacyPolicy')}
           </Link>
         </span>
       </Checkbox>
@@ -166,17 +167,17 @@ export default function StepRegister(): JSX.Element {
         <Input
           className='w-full'
           type='text'
-          label='Choose your username to use on the Pastel Network'
+          label={translate('chooseYourUsernameToUseOnThePastelNetwork')}
           value={store.username}
           onChange={onUsernameChanged}
           ref={null}
           isValid={usernameIsValid}
           errorMessage={
             usernameInvalid && store.username
-              ? errorMsg || 'Please enter a valid username'
+              ? errorMsg || translate('pleaseEnterAValidUserName')
               : null
           }
-          hint='Only Latin Characters and Numbers Allowed'
+          hint={translate('onlyLatinCharactersAndNumbersAllowed')}
           hintAsTooltip
           appliedStyleValid={false}
         />
@@ -187,11 +188,10 @@ export default function StepRegister(): JSX.Element {
         {!store.username && (
           <div className='mt-6'>
             <p className='mb-0 text-sm font-normal text-gray-71'>
-              Note: Your Pastel username is a user-friendly way to identify you
-              to other users on Pastel Network, similar to a Twitter handle.
+              {translate('stepRegisterNote')}
             </p>
             <p className='mb-0 mt-1 text-h6 leading-6 font-normal text-gray-71 italic'>
-              Example: Banksy82
+              {translate('example')}: Banksy82
             </p>
           </div>
         )}
@@ -200,7 +200,7 @@ export default function StepRegister(): JSX.Element {
       <div className='mt-7 flex justify-end'>
         <NextButton
           onClick={hanleNextStep}
-          text='Next step'
+          text={translate('nextStep')}
           disabled={!nextActive}
         />
       </div>

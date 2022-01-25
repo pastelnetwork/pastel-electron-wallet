@@ -10,6 +10,9 @@
 
 <div align=center>
   
+  [![Docs](https://img.shields.io/badge/doc-reference-%233F9AF7)](https://docs.pastel.network/introduction/pastel-overview)
+  [![License](https://img.shields.io/github/license/pastelnetwork/pastel-electron-wallet)](https://github.com/pastelnetwork/pastel-electron-wallet/blob/master/LICENCE)
+  [![Language](https://img.shields.io/badge/language-Typescript-%232b7489)](https://github.com/pastelnetwork/pastel-electron-wallet/search?q=typescript)
   [![CircleCI](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master.svg?style=svg)](https://circleci.com/gh/pastelnetwork/pastel-electron-wallet/tree/master)
   
 </div>

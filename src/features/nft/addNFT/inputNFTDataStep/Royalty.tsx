@@ -4,6 +4,7 @@ import Tooltip from 'common/components/Tooltip'
 import { CrownInHexagon, Info } from 'common/components/Icons'
 import StepSlider from './StepSlider'
 import ErrorMessage from 'common/components/Form/ErrorMessage'
+import { translate } from 'features/app/translations'
 
 export default function Royalty({ form }: { form: TForm }): JSX.Element {
   const roundValue = useCallback(
@@ -13,7 +14,11 @@ export default function Royalty({ form }: { form: TForm }): JSX.Element {
 
   const renderPerpetualRoyaltyTooltip = () => (
     <div className='ml-2'>
-      <Tooltip type='top' content='info' width={50}>
+      <Tooltip
+        type='top'
+        content={translate('perpetualRoyaltyTooltipContent')}
+        width={50}
+      >
         <Info className='text-gray-8e cursor-pointer' size={18} />
       </Tooltip>
     </div>
@@ -23,7 +28,7 @@ export default function Royalty({ form }: { form: TForm }): JSX.Element {
     <div className='text-gray-4a font-medium text-base mb-2'>
       <CrownInHexagon size={16} className='mr-1.5 text-yellow-c3' />
       <div className='flex items-center mt-1.5'>
-        <span>Perpetual Royalty</span>
+        <span>{translate('perpetualRoyalty')}</span>
         {renderPerpetualRoyaltyTooltip()}
       </div>
     </div>

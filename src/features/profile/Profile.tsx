@@ -13,6 +13,7 @@ import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 import { Button } from 'common/components/Buttons'
 import { getUserData, TGetResponse } from 'api/walletNode/userData'
 import { getCurrentAccount } from 'common/utils/User'
+import { translate } from 'features/app/translations'
 
 import { useCurrencyName } from '../../common/hooks/appInfo'
 
@@ -30,17 +31,17 @@ export default function Profile(): JSX.Element {
   const [user, setUser] = useState<TGetResponse>()
 
   const tabs = [
-    { label: 'General', count: 1122 },
+    { label: translate('general'), count: 1122 },
     {
-      label: 'Message Board',
+      label: translate('messageBoard'),
       count: 12,
     },
-    { label: 'My Security', count: 12 },
+    { label: translate('mySecurity'), count: 12 },
   ]
 
   const breadcrumbs: TBreadcrumb[] = [
     {
-      label: 'My Account',
+      label: translate('myAccount'),
       route: '#',
     },
     {
@@ -100,7 +101,7 @@ export default function Profile(): JSX.Element {
     <div className='mx-auto w-full bg-gray-f8 text-gray-23 h-auto overflow-hidden'>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
       <PageHeader
-        title='My Account'
+        title={translate('myAccount')}
         routes={{
           data: tabs,
           activeIndex: tab,
@@ -110,9 +111,9 @@ export default function Profile(): JSX.Element {
         {tab === Tabs.security ? (
           <div className='flex items-center'>
             <div className='mr-20px font-normal text-sm text-gray-4a text-right'>
-              <p className='mb-2px'>Already have a PastelID?</p>
+              <p className='mb-2px'>{translate('alreadyHaveAPastelID')}</p>
               <p className='mb-0'>
-                Restore your account and {currencyName} addresses from a backup
+                {translate('restoreYourAccount', { currencyName })}
               </p>
             </div>
             <div className='w-120px'>
@@ -121,7 +122,7 @@ export default function Profile(): JSX.Element {
                 className='w-full'
                 onClick={() => setModalIsOpen(true)}
               >
-                Restore
+                {translate('restore')}
               </Button>
             </div>
           </div>

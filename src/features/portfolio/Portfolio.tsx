@@ -13,6 +13,7 @@ import NFTCard, {
 import Slider from 'common/components/Slider/Slider'
 import * as ROUTES from 'common/utils/constants/routes'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
 
 import styles from './Portfolio.module.css'
 
@@ -30,45 +31,45 @@ import {
 
 const portfolios = [portfolio1, portfolio2, portfolio3, portfolio4]
 
-const mockOptions: TOption[] = [
-  { value: 'Likes', label: 'Likes' },
-  { value: 'Categories', label: 'Categories' },
-]
-
-const mockCategories: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'illustration', label: 'Illustration' },
-]
-
-const mockStatus: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'auctions', label: 'Auction' },
-  { value: 'makeAnOffers', label: 'Make-an-Offer' },
-  { value: 'fixedPrice', label: 'Fixed-Price' },
-]
-
-const mockTime: TOption[] = [
-  { value: 'Future', label: 'Future' },
-  { value: 'Present', label: 'Present' },
-  { value: 'Past', label: 'Past' },
-]
-
-const mockBreadcrumbs: TBreadcrumb[] = [
-  {
-    label: 'Portfolio',
-    route: '#',
-  },
-  {
-    label: 'My NFT Portfolio',
-    route: '#',
-  },
-  {
-    label: '',
-  },
-]
-
 export default function Portfolio(): JSX.Element {
   const currencyName = useCurrencyName()
+
+  const mockOptions: TOption[] = [
+    { value: 'Likes', label: translate('likes') },
+    { value: 'Categories', label: translate('categories') },
+  ]
+
+  const mockCategories: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'illustration', label: translate('illustration') },
+  ]
+
+  const mockStatus: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'auctions', label: translate('auction') },
+    { value: 'makeAnOffers', label: translate('makeAnOffer') },
+    { value: 'fixedPrice', label: translate('fixedPrice') },
+  ]
+
+  const mockTime: TOption[] = [
+    { value: 'Future', label: translate('future') },
+    { value: 'Present', label: translate('present') },
+    { value: 'Past', label: translate('past') },
+  ]
+
+  const mockBreadcrumbs: TBreadcrumb[] = [
+    {
+      label: translate('portfolio'),
+      route: '#',
+    },
+    {
+      label: translate('myNFTPortfolio'),
+      route: '#',
+    },
+    {
+      label: '',
+    },
+  ]
 
   const mockupPortfolio: TNFTCard[] = []
   Array.from({ length: 26 }).map((_, index) => {
@@ -84,7 +85,7 @@ export default function Portfolio(): JSX.Element {
       title: mockDataImagesList[index].title,
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
-      copies: `${index + 1} of 26`,
+      copies: translate('copiesValue', { number: index + 1, total: 26 }),
       diamond: `${Math.floor(Math.random() * 100)}%`,
       leftTime: dayjs().add(3, 'day').valueOf(),
       copiesAvailable: 15,
@@ -107,7 +108,7 @@ export default function Portfolio(): JSX.Element {
       title: 'Cosmic Perspective longname test',
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
-      copies: '1 of 260',
+      copies: translate('copiesValue', { number: 1, total: 260 }),
       leftTime: dayjs().add(3, 'day').valueOf(),
       copiesAvailable: 15,
       isAuctionBid: true,
@@ -122,7 +123,7 @@ export default function Portfolio(): JSX.Element {
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      copies: '1 of 260',
+      copies: translate('copiesValue', { number: 1, total: 260 }),
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
       leftTime: dayjs().add(3, 'day').valueOf(),
@@ -142,7 +143,7 @@ export default function Portfolio(): JSX.Element {
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      copies: '1 of 260',
+      copies: translate('copiesValue', { number: 1, total: 260 }),
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
       leftTime: dayjs().add(5, 'day').valueOf(),
@@ -159,7 +160,7 @@ export default function Portfolio(): JSX.Element {
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      copies: '1 of 260',
+      copies: translate('copiesValue', { number: 1, total: 260 }),
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
       leftTime: dayjs().add(1, 'day').valueOf(),
@@ -181,7 +182,7 @@ export default function Portfolio(): JSX.Element {
       followers: 10,
       currencyName,
       title: 'Cosmic Perspective longname test',
-      copies: '1 of 260',
+      copies: translate('copiesValue', { number: 1, total: 260 }),
       detailUrl: ROUTES.PORTFOLIO_DETAIL,
       nsfw: { porn: 0, hentai: 0 },
       leftTime: dayjs().add(2, 'day').valueOf(),
@@ -200,7 +201,7 @@ export default function Portfolio(): JSX.Element {
 
   const pageHeaderSortByOptions: TPageHeaderSortByOptions[] = [
     {
-      placeholder: 'In review (87)',
+      placeholder: `${translate('inReview')} (87)`,
       selected: filter,
       onOptionChange: setFilter,
       options: mockOptions,
@@ -208,7 +209,7 @@ export default function Portfolio(): JSX.Element {
   ]
 
   const sortByOptions: TPageHeaderSortByOptions = {
-    placeholder: 'Likes',
+    placeholder: translate('likes'),
     selected: likes,
     onOptionChange: setLikes,
     options: mockOptions,
@@ -221,21 +222,21 @@ export default function Portfolio(): JSX.Element {
 
   const filterOptions = [
     {
-      label: 'Categories',
+      label: translate('categories'),
       selected: category,
       onChange: setCategory,
       options: mockCategories,
       selectClassName: 'bg-white min-w-171px',
     },
     {
-      label: 'Type',
+      label: translate('type'),
       selected: type,
       onChange: settType,
       options: mockStatus,
       selectClassName: 'bg-white min-w-171px',
     },
     {
-      label: 'Time',
+      label: translate('time'),
       selected: time,
       onChange: setTime,
       options: mockTime,
@@ -246,19 +247,19 @@ export default function Portfolio(): JSX.Element {
   const routes = {
     data: [
       {
-        label: 'Creator',
+        label: translate('creator'),
         count: mockupPortfolio.length,
       },
       {
-        label: 'Sold',
+        label: translate('sold'),
         count: mockupPortfolioSold.length,
       },
       {
-        label: 'Owned',
+        label: translate('owned'),
         count: mockupPortfolioOwned.length,
       },
       {
-        label: 'Liked',
+        label: translate('liked'),
         count: mockupPortfolioLiked.length,
       },
     ],
@@ -325,7 +326,7 @@ export default function Portfolio(): JSX.Element {
 
   const renderSort = () => (
     <div className='flex items-center mr-6'>
-      <p className='pr-4 text-h5'>Sort by</p>
+      <p className='pr-4 text-h5'>{translate('sortBy')}</p>
       <div className='flex space-x-6'>
         <Select
           placeholder={sortByOptions.placeholder}
@@ -341,7 +342,7 @@ export default function Portfolio(): JSX.Element {
   const renderPriceFilter = () => (
     <div className='flex items-center xl:justify-between mt-30px xl:mt-0 w-full xl:w-auto'>
       <div className='flex h-full items-center justify-end max-w-278px mr-6'>
-        <p className='text-h6 pr-3 text-gray-2d'>Rareness</p>
+        <p className='text-h6 pr-3 text-gray-2d'>{translate('rareness')}</p>
         <Slider
           min={0}
           max={1}
@@ -355,7 +356,7 @@ export default function Portfolio(): JSX.Element {
       </div>
       {renderSort()}
       <div className='flex h-full items-center justify-end max-w-278px'>
-        <p className='text-h6 pr-3 text-gray-2d'>Price:</p>
+        <p className='text-h6 pr-3 text-gray-2d'>{translate('price')}:</p>
         <Slider
           min={0}
           max={999}
@@ -374,11 +375,11 @@ export default function Portfolio(): JSX.Element {
     <div className='flex flex-col w-full min-h-full'>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PageHeader
-        title='My NFT Portfolio'
+        title={translate('myNFTPortfolio')}
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
         variant='portfolio'
-        sortByText='Filter by'
+        sortByText={translate('filterBy')}
         sortByTextClassName='font-medium text-gray-2d leading-4'
       />
       {cards?.length ? (
@@ -398,11 +399,10 @@ export default function Portfolio(): JSX.Element {
       ) : (
         <div className='flex flex-grow flex-col items-center justify-center my-40vh'>
           <span className='mb-1.5 text-gray-4a text-lg font-black'>
-            You have not created any NFTs
+            {translate('youHaveNotCreatedAnyNFTs')}
           </span>
           <p className='text-center text-gray-71 text-sm font-normal'>
-            To create a new NFT, click the {'"'}new NFT{'"'} <br /> button at
-            the top of the screen
+            {translate('toCreateANewNFTDescription')}
           </p>
         </div>
       )}

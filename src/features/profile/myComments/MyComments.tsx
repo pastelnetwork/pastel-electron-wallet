@@ -9,6 +9,7 @@ import Checkbox from 'common/components/Checkbox'
 import { TComment } from '../components/CommentCard'
 import * as ROUTES from 'common/utils/constants/routes'
 import { TGetResponse } from 'api/walletNode/userData'
+import { translate } from 'features/app/translations'
 
 import avatar1 from 'common/assets/images/avatars/oval-1.svg'
 import avatar2 from 'common/assets/images/avatars/oval-2.svg'
@@ -157,33 +158,6 @@ const commentsData: TComment[] = [
   },
 ]
 
-const filters = [
-  {
-    id: uuidv4(),
-    name: 'All',
-    isChecked: false,
-    value: '',
-  },
-  {
-    id: uuidv4(),
-    name: 'Friends',
-    isChecked: true,
-    value: 'friends',
-  },
-  {
-    id: uuidv4(),
-    name: 'Followers',
-    isChecked: true,
-    value: 'followers',
-  },
-  {
-    id: uuidv4(),
-    name: 'Others',
-    isChecked: false,
-    value: 'others',
-  },
-]
-
 const ProfileCommentList = memo(function ProfileCommentList({
   handleOnReply,
   handleOnLikeClick,
@@ -241,6 +215,32 @@ function MyComments({
   user?: TGetResponse
   updateUserData: () => void
 }): JSX.Element {
+  const filters = [
+    {
+      id: uuidv4(),
+      name: translate('all'),
+      isChecked: false,
+      value: '',
+    },
+    {
+      id: uuidv4(),
+      name: translate('friends'),
+      isChecked: true,
+      value: 'friends',
+    },
+    {
+      id: uuidv4(),
+      name: translate('followers'),
+      isChecked: true,
+      value: 'followers',
+    },
+    {
+      id: uuidv4(),
+      name: translate('others'),
+      isChecked: false,
+      value: 'others',
+    },
+  ]
   const [editMode, setEditMode] = useState(false)
   const [nativeCurrency, setNativeCurrency] = useState<TOption | null>(
     nativeCurrencyOptions[0],
@@ -267,7 +267,9 @@ function MyComments({
 
   const renderFilter = () => (
     <div className='lg:ml-72px w-full lg:w-137px mb-10 lg:mb-0'>
-      <p className='mb-0 text-base font-medium text-gray-42'>Filter by:</p>
+      <p className='mb-0 text-base font-medium text-gray-42'>
+        {translate('filterBy')}:
+      </p>
       <ul className='mt-4 flex lg:block'>
         {filters.map(filter => (
           <li className='lg:mb-3 mr-3 lg:mr-0' key={filter.id}>

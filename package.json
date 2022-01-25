@@ -81,6 +81,7 @@
     "html-react-parser": "1.4.0",
     "html-to-image": "1.6.2",
     "http": "0.0.1-security",
+    "i18next": "21.6.6",
     "image-js": "0.31.4",
     "ini": "2.0.0",
     "javascript-terminal": "1.1.1",

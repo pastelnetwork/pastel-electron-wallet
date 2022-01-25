@@ -20,6 +20,7 @@ import { walletWebSocketURL } from 'common/constants/urls'
 import { Button } from 'common/components/Buttons'
 import { artworkGetTaskDetail } from 'api/walletNode/artwork-api/artwork'
 import { getNFTDataStore, removeNFTData } from './AddNFT.store'
+import { translate } from 'features/app/translations'
 
 export type TAddNFTProps = { open: boolean } & TUseAddNFTProps
 
@@ -223,10 +224,10 @@ export default function AddNFT({
   const renderConfirmModalControls = () => (
     <div className='flex relative z-10 space-x-5 pt-5 mx-auto min-w-xs'>
       <Button secondary className='w-1/2' onClick={handleCloseConfirmModal}>
-        No
+        {translate('no')}
       </Button>
       <Button className='w-1/2' onClick={handleRemoveNftData}>
-        Yes
+        {translate('yes')}
       </Button>
     </div>
   )
@@ -236,7 +237,7 @@ export default function AddNFT({
       <div className='paper p-5 w-[350px]'>
         <div className='pt-5'>
           <div className='text-lg font-medium text-center mt-5'>
-            Are you sure you want to leave?
+            {translate('areYouSureYouWantToLeave')}
           </div>
           {renderConfirmModalControls()}
         </div>

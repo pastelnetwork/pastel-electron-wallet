@@ -5,9 +5,11 @@ import { useWatch } from 'react-hook-form'
 import Input from 'common/components/Form/Input'
 import { TForm } from './InputNFTDataStep'
 import Toggle from 'common/components/Toggle'
+import { translate } from 'features/app/translations'
+
 import TimesIcon from 'common/assets/icons/ico-times.svg'
 
-function ToggleableInput({
+function ToogleableInput({
   form,
   name,
   label,
@@ -93,8 +95,16 @@ export default function WebsiteAndVideo({
 }): JSX.Element {
   return (
     <div className='flex space-x-7'>
-      <ToggleableInput form={form} name='website' label="Creator's website" />
-      <ToggleableInput form={form} name='video' label='Creation video' />
+      <ToogleableInput
+        form={form}
+        name='website'
+        label={translate('creatorsWebsite')}
+      />
+      <ToogleableInput
+        form={form}
+        name='video'
+        label={translate('creationVideo')}
+      />
     </div>
   )
 }

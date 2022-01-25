@@ -17,6 +17,7 @@ import {
   PaymentMethods,
   TPromoCode,
 } from './Register.store'
+import { translate } from 'features/app/translations'
 
 const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
   const paymentMethod = useRegisterStore(state => state.paymentMethod)
@@ -34,16 +35,19 @@ const useImportPromoCode = (): UseMutationResult<TPromoCode, Error, string> => {
     if (!isValidTPrivateKey(promoCode)) {
       throw new Error(
         isPastelPromoCode
-          ? 'Promo Code is invalid. Support only transparent address for now.'
-          : `${currencyName} Address Private Key is invalid. Support only transparent address for now.`,
+          ? translate('promoCodeIsInvalidSupportOnlyTransparentAddressForNow')
+          : translate(
+              'pslAddressPrivateKeyIsInvalidSupportOnlyTransparentAddressForNow',
+              { currencyName },
+            ),
       )
     }
     const address = await importPastelPromoCode(promoCode, !!isPastelPromoCode)
     if (!address) {
       throw new Error(
         isPastelPromoCode
-          ? 'Promo Code is invalid.'
-          : `${currencyName} Address Private Key is invalid.`,
+          ? translate('promoCodeIsInvalid')
+          : translate('pslAddressPrivateKeyIsInvalid', { currencyName }),
       )
     }
 
@@ -148,8 +152,8 @@ export default function PromoCode(): JSX.Element {
           type='text'
           placeholder={
             isPastelPromoCode
-              ? 'Paste your promo code here'
-              : `${currencyName} Address Private Key here`
+              ? translate('pasteYourPromoCodeHere')
+              : translate('pslAddressPrivateKeyHere', { currencyName })
           }
           onChange={handleInputChange}
           isValid={promoCodeIsValid}
@@ -213,26 +217,29 @@ export default function PromoCode(): JSX.Element {
       <div className='flex-grow pt-28'>
         <h1 className='text-gray-23 text-xl font-black'>
           {isPastelPromoCode
-            ? 'Pastel Promo Code'
-            : `${currencyName} Address Private Key Import`}
+            ? translate('pastelPromoCodeTitle')
+            : translate('pslAddressPrivateKeyImport', { currencyName })}
         </h1>
         {renderPromoCodeInput()}
         {promoCodeQuery.isSuccess && !store.selectedPSLAddress ? (
           <div className='mt-6 text-gray-71 text-base font-normal'>
-            Congratulations, your{' '}
             {isPastelPromoCode
-              ? 'personalized promotional code'
-              : `${currencyName} Address Private Key`}{' '}
-            has been accepted! You now have {formatNumber(addressBalance)}{' '}
-            {currencyName} in your wallet.{' '}
+              ? translate('congratulationsImportPastelPromoCode', {
+                  addressBalance: formatNumber(addressBalance),
+                  currencyName,
+                })
+              : translate('congratulationsImportPastelPSLPrivateKey', {
+                  addressBalance: formatNumber(addressBalance),
+                  currencyName,
+                })}{' '}
             <button
               type='button'
               className='link'
               onClick={handleAddNewPrivateKey}
             >
               {isPastelPromoCode
-                ? 'Add new pastel promo code.'
-                : `Add new ${currencyName} Address Private Key.`}
+                ? translate('addNewPastelPromoCode')
+                : translate('addNewPSLAddressPrivateKey', { currencyName })}
             </button>
           </div>
         ) : null}
@@ -245,14 +252,15 @@ export default function PromoCode(): JSX.Element {
           onClick={handleNextClick}
           text={
             isLoading
-              ? 'Applying'
+              ? translate('applying')
               : (promoCodeQuery.isSuccess && !isAddNew) ||
                 (store.selectedPSLAddress &&
                   store.selectedPSLAddress.balance > targetBalance)
-              ? `Proceed to ${formatNumber(
-                  targetBalance,
-                )} ${currencyName} Payment`
-              : 'Apply'
+              ? translate('proceedPayment', {
+                  targetBalance: formatNumber(targetBalance),
+                  currencyName,
+                })
+              : translate('apply')
           }
           disabled={isValid()}
         />

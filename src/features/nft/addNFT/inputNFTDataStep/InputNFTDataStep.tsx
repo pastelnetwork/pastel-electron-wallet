@@ -25,6 +25,7 @@ import {
   royaltyMin,
   titleMinLength,
 } from '../AddNft.constants'
+import { translate } from 'features/app/translations'
 
 type TFormData = Omit<TNFTData, 'hashtags'> & {
   hashtags: TOption[]
@@ -42,26 +43,6 @@ export const hashtags = [
   '#paintworks_art',
 ].map(value => ({ value, label: value }))
 
-const schema = yup.object().shape({
-  title: yup.string().label('Title').min(titleMinLength).required(),
-  hashtags: yup
-    .array()
-    .label('Keyword Hashtags')
-    .of(yup.object({ value: yup.string().required() }))
-    .required(),
-  series: yup.string().label('Series Name'),
-  copies: yup.number().label('Copies').min(copiesMin).max(copiesMax).required(),
-  royalty: yup
-    .number()
-    .label('Royalty')
-    .min(royaltyMin, 'No Royalty Applied')
-    .max(royaltyMax)
-    .required(),
-  externalProfile: yup.string().label('External profile').url(),
-  green: yup.boolean().label('Green').required(),
-  description: yup.string().label('Description'),
-})
-
 type TInputNFTDataStepProps = {
   state: TAddNFTState
 }
@@ -69,6 +50,35 @@ type TInputNFTDataStepProps = {
 export default function InputNFTDataStep({
   state: { nftData, setNftData, goToNextStep },
 }: TInputNFTDataStepProps): JSX.Element {
+  const schema = yup.object().shape({
+    title: yup
+      .string()
+      .label(translate('title'))
+      .min(titleMinLength)
+      .required(),
+    hashtags: yup
+      .array()
+      .label(translate('keywordHashtags'))
+      .of(yup.object({ value: yup.string().required() }))
+      .required(),
+    series: yup.string().label(translate('seriesName')),
+    copies: yup
+      .number()
+      .label(translate('copies'))
+      .min(copiesMin)
+      .max(copiesMax)
+      .required(),
+    royalty: yup
+      .number()
+      .label(translate('royalty'))
+      .min(royaltyMin, translate('noRoyaltyApplied'))
+      .max(royaltyMax)
+      .required(),
+    externalProfile: yup.string().label(translate('externalProfile')).url(),
+    green: yup.boolean().label(translate('green')).required(),
+    description: yup.string().label(translate('description')),
+  })
+
   const getTooltip = (description: string) => (
     <div className='px-2 py-6px'>
       <p className='text-xs text-left leading-4 text-gray-a6 whitespace-normal'>
@@ -96,14 +106,14 @@ export default function InputNFTDataStep({
     if (values.website && !validURL(values.website)) {
       form.setError('website', {
         type: 'required',
-        message: 'Not a valid URL format.',
+        message: translate('notAValidURLFormat'),
       })
       isValid = false
     }
     if (values.video && !validURL(values.video)) {
       form.setError('video', {
         type: 'required',
-        message: 'Not a valid URL format.',
+        message: translate('notAValidURLFormat'),
       })
       isValid = false
     }
@@ -121,12 +131,12 @@ export default function InputNFTDataStep({
   const renderGreenNFT = () => (
     <div className='flex-center h-10 mt-30px'>
       <Toggle form={form} name='green' />
-      <div className='text-gray-71 font-medium mx-3'>GreenNFT</div>
+      <div className='text-gray-71 font-medium mx-3'>
+        {translate('greenNFT')}
+      </div>
       <Tooltip
         type='top'
-        content={getTooltip(
-          'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
-        )}
+        content={getTooltip(translate('greenNFTToolTipContent'))}
         width={285}
       >
         <Info size={18} className='cursor-pointer' />
@@ -142,8 +152,8 @@ export default function InputNFTDataStep({
             form={form}
             labelClass='text-gray-71 font-medium text-base mb-1.5'
             name='title'
-            label='Title'
-            placeholder={`The name of your NFT. Must be at least ${titleMinLength} characters long.`}
+            label={translate('title')}
+            placeholder={translate('placeholderTitleField', { titleMinLength })}
             className='w-full text-sm'
             inputClassName={cn(
               'input pr-[40px]',
@@ -163,20 +173,20 @@ export default function InputNFTDataStep({
       <div className='flex space-x-8'>
         <SelectMultiple
           form={form}
-          label='Keyword Hashtags'
+          label={translate('keywordHashtags')}
           labelClass='text-gray-71 font-medium text-base mb-1.5'
           name='hashtags'
           options={hashtags}
           className='w-1/2 text-sm'
-          placeholder='#MotionGraphics, #Abstract'
+          placeholder={translate('placeholderKeywordHashtagsField')}
           canCustomInput
         />
         <Input
           form={form}
           name='series'
           labelClass='text-gray-71 font-medium text-base mb-1.5'
-          label='Series Name'
-          placeholder='(if the NFT is part of a series)'
+          label={translate('seriesName')}
+          placeholder={translate('placeholderSeriesNameField')}
           className='w-1/2 text-sm'
         />
       </div>
@@ -186,10 +196,10 @@ export default function InputNFTDataStep({
       <TextArea
         form={form}
         name='description'
-        label='Description'
+        label={translate('description')}
         labelClass='text-gray-71 text-base font-medium mb-1.5'
         textAreaClassName='input text-sm resize-none py-2 overflow-hidden h-[60px]'
-        placeholder='Description of the NFT or artist’s statement.'
+        placeholder={translate('placeholderDescriptionField')}
       />
     </div>
   )
@@ -198,10 +208,10 @@ export default function InputNFTDataStep({
     <div className='flex'>
       <div className='mr-7'>
         <div className='text-gray-800 text-2xl font-extrabold mb-0.5'>
-          Input NFT Data
+          {translate('inputNFTData')}
         </div>
         <div className='font-medium text-sm text-gray-33 opacity-50'>
-          The Metadata Fields for your NFT
+          {translate('theMetadataFieldsForYourNFT')}
         </div>
       </div>
       <CircleSteper
@@ -220,7 +230,7 @@ export default function InputNFTDataStep({
       {renderHeader()}
       {renderNFTForm()}
       <button className='btn btn-primary w-full' type='submit'>
-        Go to preview
+        {translate('goToPreviewButton')}
       </button>
     </form>
   )

@@ -11,9 +11,11 @@ import NSFWControls from './NSFWControls'
 import { formatPrice } from 'common/utils/format'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import Select, { TOption } from 'common/components/Select'
-import { DEFAULT_LANGUAGE, LANGUAGES } from 'common/constants/languages'
+import { DEFAULT_LANGUAGE } from 'common/constants/languages'
 import { useSuggestLocations } from 'api/locations'
 import { TGetResponse } from 'api/walletNode/userData'
+import { translate } from 'features/app/translations'
+import LANGUAGES from '_locales/index.json'
 
 export type TCurrency =
   | 'EUR'
@@ -33,6 +35,28 @@ export type TProfileGeneral = {
   setUserData: (data?: TGetResponse) => void
 }
 
+const generateLang = () => {
+  const langFilter = LANGUAGES.filter(lang => lang.active)
+  const langs = []
+  for (const lang of langFilter) {
+    langs.push({
+      value: lang.code,
+      label: lang.name,
+    })
+  }
+  return langs.sort((a, b) => {
+    const labelA = a.label.toUpperCase() // ignore upper and lowercase
+    const labelB = b.label.toUpperCase() // ignore upper and lowercase
+    if (labelA < labelB) {
+      return -1
+    }
+    if (labelA > labelB) {
+      return 1
+    }
+    return 0
+  })
+}
+
 export default function ProfileGeneral({
   editMode,
   nativeCurrency,
@@ -41,19 +65,21 @@ export default function ProfileGeneral({
   setUserData,
 }: TProfileGeneral): JSX.Element {
   let defaultLanguage = DEFAULT_LANGUAGE
+  const languagesOption = generateLang()
   if (user?.primary_language) {
     defaultLanguage =
-      LANGUAGES.find(l => l.value === user.primary_language) || DEFAULT_LANGUAGE
+      languagesOption.find(l => l.value === user.primary_language) ||
+      DEFAULT_LANGUAGE
   }
   const data = {
-    location: user?.location || 'None',
+    location: user?.location || translate('none'),
     language: defaultLanguage.label,
     categories: user?.categories || [],
     reputation: 0,
     highestFeeRecieved: { value: 0, comment: 0 },
     totalSalesAmount: { value: 0, comment: 0 },
-    totalItemsSold: '0 Copies across 0 NFTs',
-    bio: user?.biography || 'None',
+    totalItemsSold: translate('totalNFTsSoldCopies', { copies: 0, total: 0 }),
+    bio: user?.biography || translate('none'),
   }
 
   const price = 15
@@ -150,7 +176,7 @@ export default function ProfileGeneral({
   const renderBioAndEditButton = () => (
     <div className='w-full mt-20 1200px:mb-0'>
       <div className='flex'>
-        <div className='w-190px text-gray-71'>Bio</div>
+        <div className='w-190px text-gray-71'>{translate('bio')}</div>
       </div>
       <div className='flex pt-3'>
         <div className='flex-grow text-gray-4a font-medium text-base leading-5'>
@@ -172,13 +198,13 @@ export default function ProfileGeneral({
 
   const renderTopInfo = () => (
     <div className='w-full space-y-4'>
-      <ProfileGeneralRow title='Location'>
+      <ProfileGeneralRow title={translate('location')}>
         {editMode ? (
           <Select
             className='text-gray-4a flex-grow shadow-4px'
             onInputChange={setLocationsQuery}
             debounce={200}
-            noOptionsText='No locations found'
+            noOptionsText={translate('noLocationsFound')}
             selected={location}
             options={locations.map(location => ({
               value: location,
@@ -195,24 +221,26 @@ export default function ProfileGeneral({
           </div>
         )}
       </ProfileGeneralRow>
-      <ProfileGeneralRow title='Language'>
+      <ProfileGeneralRow title={translate('language')}>
         {editMode ? (
           <Select
             className='text-gray-4a flex-grow shadow-4px'
             selected={language}
-            options={LANGUAGES}
+            options={languagesOption}
             onChange={handleLanguageChange}
             autocomplete
             highlight
           />
         ) : (
-          <div className='flex flex-grow text-gray-4a'>English</div>
+          <div className='flex flex-grow text-gray-4a'>
+            {language?.label || defaultLanguage.label}
+          </div>
         )}
       </ProfileGeneralRow>
-      <ProfileGeneralRow title='Categories'>
+      <ProfileGeneralRow title={translate('categories')}>
         {!categories.length && !editMode ? (
           <span className='text-gray-4a font-medium text-base leading-5'>
-            None
+            {translate('none')}
           </span>
         ) : editMode ? (
           <Categories value={categories} onChange={handleCategoriesChange} />
@@ -222,7 +250,7 @@ export default function ProfileGeneral({
           </div>
         )}
       </ProfileGeneralRow>
-      <ProfileGeneralRow title='Pastel Reputation Score'>
+      <ProfileGeneralRow title={translate('pastelReputationScore')}>
         <StarRate rate={data.reputation} />
         <div className='pl-2 text-gray-500'>{data.reputation.toFixed(2)}</div>
       </ProfileGeneralRow>
@@ -230,7 +258,7 @@ export default function ProfileGeneral({
   )
 
   const renderHighestSalePriceReceived = () => (
-    <ProfileGeneralRow title='Highest Sale Price Received'>
+    <ProfileGeneralRow title={translate('highestSalePriceReceived')}>
       <div className='flex items-center'>
         {!data.highestFeeRecieved.value ? (
           <span className='cursor-pointer text-gray-4a text-base leading-5'>
@@ -246,7 +274,7 @@ export default function ProfileGeneral({
                   ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
                   {currentPrice}{' '}
                   <span className='italic font-normal'>
-                    based on current {currencyName} price
+                    {translate('basedOnCurrentPSLPrice', { currencyName })}
                   </span>
                 </p>
               }
@@ -257,7 +285,7 @@ export default function ProfileGeneral({
             </Tooltip>
             {data.highestFeeRecieved.comment && (
               <span className='ml-15px bg-gray-e6 text-gray-4a rounded px-5px font-black text-sm leading-6'>
-                Top #{data.highestFeeRecieved.comment}
+                {translate('top')} #{data.highestFeeRecieved.comment}
               </span>
             )}
           </>
@@ -275,7 +303,7 @@ export default function ProfileGeneral({
           ~{nativeCurrency && getSymbolFromCurrency(nativeCurrency)}
           {currentPrice}{' '}
           <span className='italic font-normal'>
-            based on current {currencyName} price
+            {translate('basedOnCurrentPSLPrice', { currencyName })}
           </span>
         </p>
       }
@@ -287,7 +315,7 @@ export default function ProfileGeneral({
   )
 
   const renderTotalCombinedSales = () => (
-    <ProfileGeneralRow title='Total Combined Sales'>
+    <ProfileGeneralRow title={translate('totalCombinedSales')}>
       <div className='flex items-center'>
         {!data.totalSalesAmount.comment ? (
           <span className='cursor-pointer text-gray-4a text-base leading-5'>
@@ -298,7 +326,7 @@ export default function ProfileGeneral({
             {renderTotalCombinedSalesTooltip()}
             {data.totalSalesAmount.comment && (
               <span className='ml-15px bg-gray-e6 text-gray-4a rounded px-5px font-black text-sm leading-6'>
-                Top #{data.totalSalesAmount.comment}
+                {translate('top')} #{data.totalSalesAmount.comment}
               </span>
             )}
           </>
@@ -308,7 +336,7 @@ export default function ProfileGeneral({
   )
 
   const renderTotalNFTsSold = () => (
-    <ProfileGeneralRow title='Total NFTs Sold'>
+    <ProfileGeneralRow title={translate('totalNFTsSold')}>
       <span className='text-base leading-5'>{data.totalItemsSold}</span>
     </ProfileGeneralRow>
   )

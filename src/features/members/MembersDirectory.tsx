@@ -7,42 +7,43 @@ import Slider from '../../common/components/Slider/Slider'
 import Breadcrumbs, { TBreadcrumb } from '../../common/components/Breadcrumbs'
 import PageHeader from '../../common/components/PageHeader'
 import { TPageHeaderSortByOptions } from '../../common/components/PageHeader/PageHeader'
+import { translate } from 'features/app/translations'
 
 import styles from './MembersDirectory.module.css'
 import Scrollbar from '../../common/components/Scrollbar'
 import { mockDataImagesList, mockAvatarImagesList } from './data'
 
-const mockSold: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'sold', label: 'Sold' },
-]
-
-const mockRanking: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'ranking', label: 'Ranking' },
-]
-
-const mockFollowers: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'followers', label: 'Followers' },
-]
-
-const mockCategories: TOption[] = [
-  { value: 'all', label: 'All' },
-  { value: 'illustration', label: 'Illustration' },
-]
-
-const mockBreadcrumbs: TBreadcrumb[] = [
-  {
-    label: 'Members',
-    route: '#',
-  },
-  {
-    label: '',
-  },
-]
-
 function MembersDirectory(): JSX.Element {
+  const mockSold: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'sold', label: translate('sold') },
+  ]
+
+  const mockRanking: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'ranking', label: translate('ranking') },
+  ]
+
+  const mockFollowers: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'followers', label: translate('followers') },
+  ]
+
+  const mockCategories: TOption[] = [
+    { value: 'all', label: translate('all') },
+    { value: 'illustration', label: translate('illustration') },
+  ]
+
+  const mockBreadcrumbs: TBreadcrumb[] = [
+    {
+      label: translate('members'),
+      route: '#',
+    },
+    {
+      label: '',
+    },
+  ]
+
   const mockMemberStrips: TMemberStripProps[] = [
     {
       id: uuidv4(),
@@ -107,7 +108,7 @@ function MembersDirectory(): JSX.Element {
   ])
 
   const filterOptions = {
-    label: 'Categories',
+    label: translate('categories'),
     selected: category,
     onChange: setCategory,
     options: mockCategories,
@@ -121,19 +122,19 @@ function MembersDirectory(): JSX.Element {
 
   const pageHeaderSortByOptions: TPageHeaderSortByOptions[] = [
     {
-      placeholder: 'Ranking',
+      placeholder: translate('ranking'),
       selected: ranking,
       onOptionChange: setRanking,
       options: mockRanking,
     },
     {
-      placeholder: 'Sold',
+      placeholder: translate('sold'),
       selected: sold,
       onOptionChange: setSold,
       options: mockSold,
     },
     {
-      placeholder: 'Followers',
+      placeholder: translate('followers'),
       selected: followers,
       onOptionChange: setFollowers,
       options: mockFollowers,
@@ -141,9 +142,9 @@ function MembersDirectory(): JSX.Element {
   ]
 
   const data = [
-    { label: 'Creators' },
-    { label: 'Sellers' },
-    { label: 'Buyers' },
+    { label: translate('creators') },
+    { label: translate('sellers') },
+    { label: translate('buyers') },
   ]
 
   const routes = {
@@ -169,7 +170,7 @@ function MembersDirectory(): JSX.Element {
 
   const renderTotalSalesFilter = () => (
     <div className='flex h-full items-center justify-end'>
-      <p className='text-h6 px-22px text-gray-2d'>Total Sales</p>
+      <p className='text-h6 px-22px text-gray-2d'>{translate('totalSales')}</p>
       <Slider
         min={0}
         max={999}
@@ -206,7 +207,7 @@ function MembersDirectory(): JSX.Element {
     <div>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PageHeader
-        title='Members'
+        title={translate('members')}
         routes={routes}
         sortByOptions={pageHeaderSortByOptions}
       />

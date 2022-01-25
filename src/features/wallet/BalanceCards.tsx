@@ -11,6 +11,7 @@ import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatPrice } from 'common/utils/format'
 import RectangleLoader from 'common/components/Loader'
 import { useWalletScreenContext } from './walletScreen.context'
+import { translate } from 'features/app/translations'
 
 type TBalanceCard = {
   style: {
@@ -47,7 +48,7 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
         psl: totalBalances.data?.total,
         activeIcon: <TotalBalance />,
         inactiveIcon: <TotalBalance variant='inactive' />,
-        info: 'Total Balance',
+        info: translate('totalBalance'),
       },
       {
         style: {
@@ -57,7 +58,7 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
         psl: totalBalances.data?.transparent,
         activeIcon: <TransparencyBalance />,
         inactiveIcon: <TransparencyBalance variant='inactive' />,
-        info: 'Transparent Information',
+        info: translate('transparentInformation'),
       },
       {
         style: {
@@ -67,7 +68,7 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
         psl: totalBalances.data?.private,
         activeIcon: <ShieldedBalance />,
         inactiveIcon: <ShieldedBalance variant='inactive' />,
-        info: 'Shielded Information',
+        info: translate('shieldedInformation'),
       },
     ],
     [totalBalances],
@@ -96,7 +97,7 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
             isActive ? 'text-gray-71' : 'text-gray-a0',
           )}
         >
-          Total balance
+          {translate('totalBalance')}
         </div>
       ) : card.style.type === 'transparent' ? (
         <div
@@ -105,7 +106,7 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
             isActive ? 'text-gray-71' : 'text-gray-a0',
           )}
         >
-          Transparent
+          {translate('transparent')}
         </div>
       ) : (
         <div
@@ -114,7 +115,7 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
             isActive ? 'text-gray-71' : 'text-gray-a0',
           )}
         >
-          Shielded
+          {translate('shielded')}
         </div>
       )}
     </div>

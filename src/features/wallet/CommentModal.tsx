@@ -3,6 +3,7 @@ import cx from 'classnames'
 
 import Tooltip from 'common/components/Tooltip'
 import { EliminationIcon } from 'common/components/Icons'
+import { translate } from 'features/app/translations'
 import styles from './CommentModal.module.css'
 
 export type TNote = {
@@ -81,7 +82,7 @@ export default function CommentModal({
       type='button'
     >
       <div className='text-blue-3f hover:text-blue-600 text-h6-leading-20'>
-        Save
+        {translate('save')}
       </div>
     </button>
   )
@@ -92,8 +93,8 @@ export default function CommentModal({
       wrapperClassNames='absolute top-0 right-0'
       content={
         tab === Tabs.NoteToRecipient
-          ? 'You can include a short message to the recipient if the recipient’s address is a shielded PSL address; this message will only be visible to the recipient.'
-          : 'This is a short note that is only visible to you; it can be used to record a short note to yourself reminding you of the purpose of the transaction. For example “Sent PSL to brother for cat NFT”'
+          ? translate('commentNoteToRecipientToolTipContent')
+          : translate('commentPrivateNoteToolTipContent')
       }
       width={220}
       type='left'
@@ -125,7 +126,7 @@ export default function CommentModal({
               : 'text-gray-71 text-h6-leading-20-medium',
           )}
         >
-          Note to Recipient
+          {translate('noteToRecipient')}
         </div>
       </div>
       <div
@@ -146,7 +147,7 @@ export default function CommentModal({
               : 'text-gray-71 text-h6-leading-20-medium',
           )}
         >
-          Private Note
+          {translate('privateNote')}
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import Circle, {
 import { UploadFile, Checkmark } from 'common/components/Icons'
 import backgroundImage from 'common/assets/images/add-nft-upload-background.png'
 import { TImageFile } from './SelectImageStep'
+import { translate } from 'features/app/translations'
 
 type TUploadingCircleProps = {
   file?: TImageFile
@@ -84,7 +85,8 @@ export default function UploadingCircle({
         {file?.name}
       </div>
       <div className='text-sm'>
-        <span ref={displayPercentRef}>{initialPercent}%</span> ready
+        <span ref={displayPercentRef}>{initialPercent}%</span>{' '}
+        {translate('ready')}
       </div>
     </div>
   )
@@ -119,7 +121,7 @@ export default function UploadingCircle({
           className='text-gray-71 text-sm transition duration-200 hover:text-gray-a0'
           onClick={onCancel}
         >
-          Cancel
+          {translate('cancel')}
         </button>
       )}
     </div>

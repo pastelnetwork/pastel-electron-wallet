@@ -25,6 +25,10 @@ module.exports = [
         from: 'node_modules/ffmpegwasm-create-video/production',
         to: 'static/ffmpeg',
       },
+      {
+        from: 'src/_locales',
+        to: 'static/locales',
+      },
     ],
   }),
   new Dotenv({

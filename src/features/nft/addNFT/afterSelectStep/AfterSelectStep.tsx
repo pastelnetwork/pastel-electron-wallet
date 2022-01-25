@@ -8,6 +8,7 @@ import Tooltip from 'common/components/Tooltip'
 import { useImageZoom } from 'common/utils/imageZoom'
 import ImageShadow from '../common/ImageShadow'
 import { useSelectImageService } from '../selectImageStep/SelectImageStep.service'
+import { translate } from 'features/app/translations'
 
 type TAfterSelectStepProps = {
   state: TAddNFTState
@@ -150,9 +151,9 @@ export default function UploadStep({
 
   return (
     <ModalLayout
-      title='Select Image'
+      title={translate('selectImage')}
       titleClass='mb-3'
-      subtitle='The Image File for your NFT'
+      subtitle={translate('afterSelectStepDescription')}
       step={2}
       fixedHeight
       leftColumnWidth={image.maxWidth}
@@ -169,10 +170,10 @@ export default function UploadStep({
         <div className='h-full flex justify-between flex-col'>
           <div>
             <div className='text-gray-4a text-lg leading-6 font-medium pt-1'>
-              File uploaded successfully!
+              {translate('fileUploadedSuccessfully')}
             </div>
             <div className='text-gray-71 text-base font-medium pt-1'>
-              You can continue to configure your NFT.
+              {translate('youCanContinueToConfigureYourNFT')}
             </div>
           </div>
           <div className='flex-between'>
@@ -182,7 +183,7 @@ export default function UploadStep({
               className='btn btn-primary px-[30px]'
               onClick={goToNextStep}
             >
-              Go to Image Optimization
+              {translate('goToImageOptimization')}
             </button>
           </div>
         </div>

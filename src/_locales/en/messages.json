@@ -1,0 +1,1922 @@
+{
+  "welcomeTitle": {
+    "message": "Welcome to Pastel NFT",
+    "description": "Used for the welcome screen"
+  },
+  "welcomeSubTitle": {
+    "message": "Let’s start!",
+    "description": "Used for the welcome screen"
+  },
+  "registerAccountButton": {
+    "message": "Register Account",
+    "description": "Used for the welcome screen"
+  },
+  "takeATourFirstButton": {
+    "message": "Take a Tour First",
+    "description": "Used for the welcome screen"
+  },
+  "alreadyHaveAnAccount": {
+    "message": "Already have an account?",
+    "description": "Used for the welcome screen"
+  },
+  "restoreAccountFromBackup": {
+    "message": "Restore account from backup",
+    "description": "Used for the welcome screen, the login screen"
+  },
+  "myAccount": {
+    "message": "My Account",
+    "description": "Used for my profile screen"
+  },
+  "general": {
+    "message": "General",
+    "description": "Used for my profile screen, the members screen"
+  },
+  "messageBoard": {
+    "message": "Message Board",
+    "description": "Used for my profile screen"
+  },
+  "mySecurity": {
+    "message": "My Security",
+    "description": "Used for my profile screen"
+  },
+  "nativeCurrency": {
+    "message": "Native Currency",
+    "description": "Used for my profile screen"
+  },
+  "activeDisplayCurrency": {
+    "message": "Active display currency",
+    "description": "Used for my profile screen"
+  },
+  "editProfile": {
+    "message": "Edit Profile",
+    "description": "Used for my profile screen"
+  },
+  "pastelIDIdentifier": {
+    "message": "PastelID Identifier",
+    "description": "Used for my profile screen"
+  },
+  "max": {
+    "message": "max",
+    "description": "Used for my profile screen"
+  },
+  "min": {
+    "message": "min",
+    "description": "Used for my profile screen"
+  },
+  "name": {
+    "message": "Name",
+    "description": "Used for my profile screen"
+  },
+  "facebook": {
+    "message": "Facebook",
+    "description": "Used for my profile screen"
+  },
+  "twitter": {
+    "message": "Twitter",
+    "description": "Used for my profile screen"
+  },
+  "notAValidURLFormat": {
+    "message": "Not a valid URL format.",
+    "description": "Used for my profile screen, the add new NFT modal"
+  },
+  "location": {
+    "message": "Location",
+    "description": "Used for my profile screen, them members page"
+  },
+  "language": {
+    "message": "Language",
+    "description": "Used for my profile screen, them members page"
+  },
+  "categories": {
+    "message": "Categories",
+    "description": "Used for my profile screen, the Portfolio screen, the members page"
+  },
+  "pastelReputationScore": {
+    "message": "Pastel Reputation Score",
+    "description": "Used for my profile screen, the members page"
+  },
+  "none": {
+    "message": "None",
+    "description": "Used for my profile screen, the register screen"
+  },
+  "highestSalePriceReceived": {
+    "message": "Highest Sale Price Received",
+    "description": "Used for my profile screen, the members page"
+  },
+  "totalCombinedSales": {
+    "message": "Total Combined Sales",
+    "description": "Used for my profile screen, the members page"
+  },
+  "totalNFTsSold": {
+    "message": "Total NFTs Sold",
+    "description": "Used for my profile screen, the members page"
+  },
+  "totalNFTsSoldCopies": {
+    "message": "{{copies}} Copies across {{total}} NFTs",
+    "description": "Used for my profile screen"
+  },
+  "bio": {
+    "message": "Bio",
+    "description": "Used for my profile screen, the members screen"
+  },
+  "hideNotSafeForWorkNFTs": {
+    "message": "Hide Not Safe For Work NFTs",
+    "description": "Used for my profile screen"
+  },
+  "showAdvancedFeatures": {
+    "message": "Show Advanced Features",
+    "description": "Used for my profile screen"
+  },
+  "hentaiProbability": {
+    "message": "Hentai probability",
+    "description": "Used for my profile screen"
+  },
+  "pornProbability": {
+    "message": "Porn probability",
+    "description": "Used for my profile screen"
+  },
+  "noLocationsFound": {
+    "message": "No locations found",
+    "description": "Used for my profile screen"
+  },
+  "basedOnCurrentPSLPrice": {
+    "message": "based on current {{currencyName}} price",
+    "description": "Used for my profile screen"
+  },
+  "top": {
+    "message": "Top",
+    "description": "Used for my profile screen"
+  },
+  "saveChanges": {
+    "message": "Save Changes",
+    "description": "Used for my profile screen"
+  },
+  "errorLimitFileSize": {
+    "message": "File size exceeds {{size}} mb",
+    "description": "Used for my profile screen"
+  },
+  "errorLimitDimensions": {
+    "message": "At least you can upload a {{width}}x{{height}} photo size",
+    "description": "Used for my profile screen"
+  },
+  "english": {
+    "message": "English",
+    "description": "Used for my profile screen"
+  },
+  "followers": {
+    "message": "Followers",
+    "description": "Used for my profile screen, the members screen"
+  },
+  "friends": {
+    "message": "Friends",
+    "description": "Used for my profile screen"
+  },
+  "following": {
+    "message": "Following",
+    "description": "Used for my profile screen"
+  },
+  "youHaveNoFollowers": {
+    "message": "You have no followers",
+    "description": "Used for my profile screen, the dashboard screen"
+  },
+  "placeholderForFriendsView": {
+    "message": "This is placeholder for friends View.",
+    "description": "Used for my profile screen"
+  },
+  "placeholderForFollowingView": {
+    "message": "This is placeholder for Following View.",
+    "description": "Used for my profile screen"
+  },
+  "NoOneHasSubscribed": {
+    "message": "No one has subscribed to you yet but you can",
+    "description": "Used for my profile screen"
+  },
+  "unfollow": {
+    "message": "Unfollow",
+    "description": "Used for my profile screen, the members screen"
+  },
+  "follow": {
+    "message": "Follow",
+    "description": "Used for my profile screen, the members screen"
+  },
+  "alreadyHaveAPastelID": {
+    "message": "Already have a PastelID?",
+    "description": "Used for my profile screen"
+  },
+  "restoreYourAccount": {
+    "message": "Restore your account and {{currencyName}} addresses from a backup",
+    "description": "Used for my profile screen"
+  },
+  "restore": {
+    "message": "Restore",
+    "description": "Used for my profile screen"
+  },
+  "all": {
+    "message": "All",
+    "description": "Used for my profile screen, the wallet screen, the Portfolio screen, the members screen, the dashboard screen"
+  },
+  "others": {
+    "message": "Others",
+    "description": "Used for my profile screen"
+  },
+  "filterBy": {
+    "message": "Filter by",
+    "description": "Used for my profile screen, the Portfolio screen"
+  },
+  "reply": {
+    "message": "Reply",
+    "description": "Used for my profile screen, the members screen"
+  },
+  "post": {
+    "message": "Post",
+    "description": "Used for my profile screen"
+  },
+  "commentedOn": {
+    "message": "Commented on",
+    "description": "Used for my profile screen, the members screen"
+  },
+  "restoreYourAccountButton": {
+    "message": "Restore your account",
+    "description": "Used for my profile screen"
+  },
+  "chooseYourRestoreMethod": {
+    "message": "Choose your restore method",
+    "description": "Used for my profile screen"
+  },
+  "cryptoKeys": {
+    "message": "Crypto Keys",
+    "description": "Used for my profile screen, the password recovery screen, the register screen"
+  },
+  "qrCode": {
+    "message": "QR-Code",
+    "description": "Used for my profile screen, the password recovery screen, the register screen"
+  },
+  "qrCodeVideo": {
+    "message": "QR Code Video",
+    "description": "Used for my profile screen, the password recovery screen"
+  },
+  "pleaseSelectYourCryptoKeys": {
+    "message": "Please select your crypto keys.",
+    "description": "Used for my profile screen"
+  },
+  "selectYourCryptoKeys": {
+    "message": "Select your crypto keys.",
+    "description": "Used for my profile screen"
+  },
+  "restoreYourKeys": {
+    "message": "Restore your keys.",
+    "description": "Used for my profile screen"
+  },
+  "pleaseSelectYourQRCodeVideo": {
+    "message": "Please select your QR code video.",
+    "description": "Used for my profile screen"
+  },
+  "selectYourQRCodeVideo": {
+    "message": "Select your QR code video.",
+    "description": "Used for my profile screen"
+  },
+  "restoring": {
+    "message": "Restoring",
+    "description": "Used for my profile screen"
+  },
+  "holdingYourPhoneUpToYourComputersWebcam": {
+    "message": "Holding your phone up to your computer's webcam.",
+    "description": "Used for my profile screen"
+  },
+  "restoreFailed": {
+    "message": "Restore failed",
+    "description": "Used for my profile screen"
+  },
+  "congratulations": {
+    "message": "Congratulations",
+    "description": "Used for my profile screen, the wallet screen"
+  },
+  "yourKeysHaveBeenRestored": {
+    "message": "Your keys have been restored",
+    "description": "Used for my profile screen"
+  },
+  "label": {
+    "message": "Label",
+    "description": "Used for my profile screen"
+  },
+  "address": {
+    "message": "Address",
+    "description": "Used for my profile screen, the wallet screen"
+  },
+  "pastelID": {
+    "message": "PastelID",
+    "description": "Used for my profile screen"
+  },
+  "privateKey": {
+    "message": "Private Key",
+    "description": "Used for my profile screen, the wallet screen"
+  },
+  "sapling": {
+    "message": "Sapling",
+    "description": "Used for my profile screen"
+  },
+  "downloadPDFWithAllYourKeys": {
+    "message": "Download PDF with All Your Keys",
+    "description": "Used for my profile screen"
+  },
+  "backupYourCryptoKeys": {
+    "message": "Backup Your Crypto Keys",
+    "description": "Used for my profile screen"
+  },
+  "note": {
+    "message": "Note",
+    "description": "Used for my profile screen"
+  },
+  "makeSureYouKeepThisFileSafe": {
+    "message": "Make sure you keep this file safe, since anyone with access to this file will be able to control your Pastel account and take your {{currencyName}} coins.",
+    "description": "Used for my profile screen"
+  },
+  "clickingTheButtonBelowWillGenerateAPDFPaperWallet": {
+    "message": "Clicking the button below will generate a PDF “paper wallet,” which is a single file that contains all your Pastel secret information that gives control over your PastelID (idenity on the Pastel Network) and your {{currencyName}} coins stored in this wallet. This file can be used to restore your account information on a new computer.",
+    "description": "Used for my profile screen"
+  },
+  "passwordIsIncorrect": {
+    "message": "Password is incorrect",
+    "description": "Used for my profile screen"
+  },
+  "WeStronglySuggestThatYouSaveYourPassword": {
+    "message": "We strongly suggest that you save your password in a password manager such as",
+    "description": "Used for my profile screen"
+  },
+  "lastPass": {
+    "message": "LastPass",
+    "description": "Used for my profile screen"
+  },
+  "or": {
+    "message": "or",
+    "description": "Used for my profile screen"
+  },
+  "1Password": {
+    "message": "1Password",
+    "description": "Used for my profile screen"
+  },
+  "passwordsMustMatch": {
+    "message": "Passwords must match",
+    "description": "Used for my profile screen"
+  },
+  "submitNewPassword": {
+    "message": "Submit New Password",
+    "description": "Used for my profile screen"
+  },
+  "changePassword": {
+    "message": "Change Password",
+    "description": "Used for my profile screen"
+  },
+  "changePasswordDescription": {
+    "message": "Password must contain at least 1 letter, 1 number, and 1 symbol. Minimum length is 12 characters.",
+    "description": "Used for my profile screen"
+  },
+  "yourPasswordHasBeenChanged": {
+    "message": "Your password has been changed",
+    "description": "Used for my profile screen"
+  },
+  "youCanDownloadTheNewBackupOfYourCryptoKeys": {
+    "message": "You can download the new backup of your crypto keys included the new password and make sure you keep this file safe, since anyone with access to this file will be able to control your Pastel account and take your PSL coins.",
+    "description": "Used for my profile screen"
+  },
+  "reEnterYourPassword": {
+    "message": "Re-enter your password",
+    "description": "Used for my profile screen"
+  },
+  "toGetAccessToSecuritySettings": {
+    "message": "To get access to security settings",
+    "description": "Used for my profile screen"
+  },
+  "yourPassword": {
+    "message": "Your Password",
+    "description": "Used for my profile screen"
+  },
+  "confirm": {
+    "message": "Confirm",
+    "description": "Used for my profile screen, the new password screen"
+  },
+  "asAMoreConvenientWayToBackupYourSecrets": {
+    "message": "As a more convenient way to backup your secrets, you can either click the button below to download a QR Code video, or make a video of the code on your smartphone camera. Then to restore, you can play the video on your phone and hold the phone screen up to your webcam. You can test that it worked by clicking here.",
+    "description": "Used for my profile screen"
+  },
+  "creatingQRCodeVideo": {
+    "message": "Creating QR Code Video",
+    "description": "Used for my profile screen"
+  },
+  "downloadQRCodeVideo": {
+    "message": "Download QR Code Video",
+    "description": "Used for my profile screen, the register screen"
+  },
+  "generateAQRCodeVideo": {
+    "message": "Generate a QR Code Video",
+    "description": "Used for my profile screen"
+  },
+  "newpassword": {
+    "message": "New password",
+    "description": "Used for my profile screen"
+  },
+  "confirmPassword": {
+    "message": "Confirm password",
+    "description": "Used for my profile screen"
+  },
+  "generateANewSecure12DigitPassword": {
+    "message": "Generate a new secure 12-digit password",
+    "description": "Used for my profile screen"
+  },
+  "submitUsernameChangeRequest": {
+    "message": "Submit Username Change Request",
+    "description": "Used for my profile screen"
+  },
+  "yourCurrentPSLBalance": {
+    "message": "Your Current {{currencyName}} Balance",
+    "description": "Used for my profile screen"
+  },
+  "usernameChangeFee": {
+    "message": "Username Change Fee (burned)",
+    "description": "Used for my profile screen"
+  },
+  "remainingBalanceAfterChange": {
+    "message": "Remaining Balance after Change",
+    "description": "Used for my profile screen"
+  },
+  "newUsername": {
+    "message": "New Username",
+    "description": "Used for my profile screen"
+  },
+  "onlyLatinCharactersAndNumbersAllowed": {
+    "message": "Only Latin Characters and Numbers Allowed",
+    "description": "Used for my profile screen, the register screen"
+  },
+  "pleaseEnterAValidUserName": {
+    "message": "Please enter a valid username",
+    "description": "Used for my profile screen, the register screen"
+  },
+  "currentUsername": {
+    "message": "Current Username",
+    "description": "Used for my profile screen"
+  },
+  "changeYourPastelUsername": {
+    "message": "Change your Pastel Username",
+    "description": "Used for my profile screen"
+  },
+  "yourPastelIDIdentifierWillAlwaysStayTheSame": {
+    "message": "Your PastelID Identifier will always stay the same, but you are allowed to change your Pastel username. The network charges a fee for this to prevent abuse.",
+    "description": "Used for my profile screen"
+  },
+  "dashboard": {
+    "message": "Dashboard",
+    "description": "Used for header"
+  },
+  "NFTs": {
+    "message": "NFTs",
+    "description": "Used for header, SearchBar, the dashboard screen"
+  },
+  "members": {
+    "message": "Members",
+    "description": "Used for header, them members screen"
+  },
+  "wallet": {
+    "message": "Wallet",
+    "description": "Used for header, the wallet page, the dashboard screen"
+  },
+  "portfolio": {
+    "message": "Portfolio",
+    "description": "Used for header, the Portfolio screen, the dashboard screen, the member page"
+  },
+  "newNFT": {
+    "message": "new NFT",
+    "description": "Used for header"
+  },
+  "keywords": {
+    "message": "Keywords",
+    "description": "Used for SearchBar"
+  },
+  "creators": {
+    "message": "Creators",
+    "description": "Used for SearchBar, the members screen, the dashboard screen"
+  },
+  "users": {
+    "message": "Users",
+    "description": "Used for SearchBar"
+  },
+  "forumPost": {
+    "message": "Forum Post",
+    "description": "Used for SearchBar"
+  },
+  "searchNFTCreatorUser": {
+    "message": "Search NFT, Creator, User, etc",
+    "description": "Used for SearchBar"
+  },
+  "searchCreatorOrNFT": {
+    "message": "Search creator or NFT",
+    "description": "Used for SearchBar"
+  },
+  "imLookingFor": {
+    "message": "I'm looking for",
+    "description": "Used for SearchBar"
+  },
+  "recentSearches": {
+    "message": "Recent searches",
+    "description": "Used for SearchBar"
+  },
+  "searchCreators": {
+    "message": "Search Creators",
+    "description": "Used for SearchBar"
+  },
+  "pleaseRestoreYourAccountFromBackup": {
+    "message": "Please restore your account from backup",
+    "description": "Used for the login screen"
+  },
+  "usernameOrPasswordIsIncorrect": {
+    "message": "Username or password is incorrect",
+    "description": "Used for the login screen"
+  },
+  "forgotYourPassword": {
+    "message": "Forgot your password?",
+    "description": "Used for the login screen"
+  },
+  "restoreAccessNow": {
+    "message": "Restore access now",
+    "description": "Used for the login screen"
+  },
+  "please": {
+    "message": "Please",
+    "description": "Used for the login screen"
+  },
+  "beforeLogin": {
+    "message": "before login",
+    "description": "Used for the login screen"
+  },
+  "login": {
+    "message": "Login",
+    "description": "Used for the login screen, the new password screen, the password recovery screen"
+  },
+  "username": {
+    "message": "Username",
+    "description": "Used for the login screen"
+  },
+  "password": {
+    "message": "Password",
+    "description": "Used for the login screen"
+  },
+  "dontHaveAnAccount": {
+    "message": "Don't have an account?",
+    "description": "Used for the login screen"
+  },
+  "registerOnPastel": {
+    "message": "Register on Pastel",
+    "description": "Used for the login screen"
+  },
+  "usernamePlaceholder": {
+    "message": "i.e banksy168",
+    "description": "Used for the login screen"
+  },
+  "superSecurePassword": {
+    "message": "Super secure password",
+    "description": "Used for the new password screen, the register screen"
+  },
+  "atLeast8CharactersAndAtLeast2numbers": {
+    "message": "At least 8 characters and at least 2 numbers",
+    "description": "Used for the new password screen, the register screen"
+  },
+  "thePasswordsDontMatch": {
+    "message": "The passwords don't match",
+    "description": "Used for the new password screen"
+  },
+  "generateASecurePasswordForMe": {
+    "message": "Generate a Secure Password for Me (recommended!)",
+    "description": "Used for the new password screen"
+  },
+  "setNewPassword": {
+    "message": "Set New Password",
+    "description": "Used for the new password screen"
+  },
+  "yourPasswordHasBeenResetSuccessfully": {
+    "message": "Your password has been reset successfully.",
+    "description": "Used for the new password screen"
+  },
+  "makeSureToSaveYourPasswordInAPasswordManager": {
+    "message": "Make sure to save your password in a password manager!",
+    "description": "Used for the new password screen"
+  },
+  "newPassword": {
+    "message": "New Password",
+    "description": "Used for the new password screen"
+  },
+  "pleaseEnterAValidPassword": {
+    "message": "Please enter a valid password",
+    "description": "Used for the new password screen"
+  },
+  "repeatNewPassword": {
+    "message": "Repeat New Password",
+    "description": "Used for the new password screen"
+  },
+  "chooseYourRecoveryMethod": {
+    "message": "Choose your recovery method",
+    "description": "Used for the password recovery screen"
+  },
+  "alreadyRestoredAccountFromBackup": {
+    "message": "Already restored account from backup?",
+    "description": "Used for the password recovery screen"
+  },
+  "notStrongEnough": {
+    "message": "Not strong enough",
+    "description": "Used for the register screen"
+  },
+  "usernameAlreadyInUse": {
+    "message": "Username already in use",
+    "description": "Used for the register screen"
+  },
+  "setYourWalletPassword": {
+    "message": "Set your wallet password",
+    "description": "Used for the register screen"
+  },
+  "setYourWalletPasswordTooltip": {
+    "message": "This password is to the secure container that stores your PSL coins and NFTs on your own machine and is never sent over the network. Please keep this password secure and be sure to backup your secret data in the next step.",
+    "description": "Used for the register screen"
+  },
+  "iCertifyThatIm18YearsOfAge": {
+    "message": "I certify that I’m 18 years of age or older, and agree to the",
+    "description": "Used for the register screen"
+  },
+  "userAgreementAndPrivacyPolicy": {
+    "message": "User Agreement and Privacy Policy",
+    "description": "Used for the register screen"
+  },
+  "chooseYourUsernameToUseOnThePastelNetwork": {
+    "message": "Choose your username to use on the Pastel Network",
+    "description": "Used for the register screen"
+  },
+  "stepRegisterNote": {
+    "message": "Note: Your Pastel username is a user-friendly way to identify you to other users on Pastel Network, similar to a Twitter handle.",
+    "description": "Used for the register screen"
+  },
+  "example": {
+    "message": "Example",
+    "description": "Used for the register screen"
+  },
+  "nextStep": {
+    "message": "Next step",
+    "description": "Used for the register screen"
+  },
+  "failedToLoadPastelId": {
+    "message": "Failed to load PastelId",
+    "description": "Used for the register screen"
+  },
+  "loading": {
+    "message": "Loading",
+    "description": "Used for the register screen"
+  },
+  "primaryLogin": {
+    "message": "Primary login",
+    "description": "Used for the register screen"
+  },
+  "primaryLoginToolTip": {
+    "message": "Primary login",
+    "description": "Used for the register screen"
+  },
+  "primaryLoginStep": {
+    "message": "primary login step",
+    "description": "Used for the register screen"
+  },
+  "paymentMethod": {
+    "message": "Payment method",
+    "description": "Used for the register screen"
+  },
+  "paymentMethodTooltip": {
+    "message": "Payment method",
+    "description": "Used for the register screen"
+  },
+  "paymentMethodStep": {
+    "message": "Payment method step",
+    "description": "Used for the register screen"
+  },
+  "registrationFee": {
+    "message": "Registration fee",
+    "description": "Used for the register screen"
+  },
+  "registrationFeeTooltip": {
+    "message": "Registration fee",
+    "description": "Used for the register screen"
+  },
+  "registrationFeeStep": {
+    "message": "Registration fee step",
+    "description": "Used for the register screen"
+  },
+  "backupAccessMethod": {
+    "message": "Backup access method",
+    "description": "Used for the register screen"
+  },
+  "backupAccessMethodTooltip": {
+    "message": "Backup access method",
+    "description": "Used for the register screen"
+  },
+  "backupAccessMethodStep": {
+    "message": "Backup access method step",
+    "description": "Used for the register screen"
+  },
+  "onboarding": {
+    "message": "Onboarding",
+    "description": "Used for the register screen"
+  },
+  "gettingStartedOnPastelNetwork": {
+    "message": "Getting Started on Pastel Network",
+    "description": "Used for the register screen"
+  },
+  "areYouSureYouWantToCloseTheOnboarding": {
+    "message": "Are you sure you want to close the onboarding<br />and return to the home screen?",
+    "description": "Used for the register screen"
+  },
+  "close": {
+    "message": "Close",
+    "description": "Used for the register screen, the wallet screen"
+  },
+  "back": {
+    "message": "Back",
+    "description": "Used for the register screen"
+  },
+  "centralizedExchange": {
+    "message": "Centralized Exchange (Gemini, Binance, etc.)",
+    "description": "Used for the register screen"
+  },
+  "decentralizedExchange": {
+    "message": "Decentralized Exchange (Uniwap)",
+    "description": "Used for the register screen"
+  },
+  "pslAddressPrivateKeyImport": {
+    "message": "{{currencyName}} Address Private Key Import",
+    "description": "Used for the register screen"
+  },
+  "airdropPromoCode": {
+    "message": "Airdrop “Promo Code”",
+    "description": "Used for the register screen"
+  },
+  "pastelPromoCode": {
+    "message": "Pastel “Promo Code”",
+    "description": "Used for the register screen"
+  },
+  "pslCoinsAreRequiredToCreateAPastelIdentity": {
+    "message": "{{currencyName}} coins are required to create a Pastel identity (these coins are burned",
+    "description": "Used for the register screen"
+  },
+  "andToRegisterOrPurchaseNFTsOnPastel": {
+    "message": "and to register or purchase NFTs on Pastel",
+    "description": "Used for the register screen"
+  },
+  "choosePaymentMethod": {
+    "message": "Choose Payment Method",
+    "description": "Used for the register screen"
+  },
+  "proceedToThePaymentMethod": {
+    "message": "Proceed to the Payment Method",
+    "description": "Used for the register screen"
+  },
+  "comingSoon": {
+    "message": "Coming Soon",
+    "description": "Used for the register screen"
+  },
+  "downloadPDF": {
+    "message": "Download PDF",
+    "description": "Used for the register screen"
+  },
+  "cryptoKeysBackupMethod": {
+    "message": "Crypto Keys Backup Method",
+    "description": "Used for the register screen"
+  },
+  "downloadAPDFPaperWalletFileWithKeysForYourPastelID": {
+    "message": "Download a PDF “paper wallet” file with keys for your PastelID",
+    "description": "Used for the register screen"
+  },
+  "qrCodeBackupMethod": {
+    "message": "QR-Code Backup Method",
+    "description": "Used for the register screen"
+  },
+  "saveQRCodeVideoToASecurePlace": {
+    "message": "Save QR Code Video to a Secure Place, or Take a Video <br /> of Changing Code with your Smartphone:",
+    "description": "Used for the register screen"
+  },
+  "downloadingQRCodeVideo": {
+    "message": "Downloading QR Code Video",
+    "description": "Used for the register screen"
+  },
+  "finish": {
+    "message": "Finish",
+    "description": "Used for the register screen"
+  },
+  "registrationFeePending": {
+    "message": "Registration Fee Pending",
+    "description": "Used for the register screen"
+  },
+  "registrationFeePendingDescription": {
+    "message": "It can take up to 10 minutes after you've made <br /> the payment for this process to be completed",
+    "description": "Used for the register screen"
+  },
+  "checkPaymentStatusManually": {
+    "message": "Check payment status manually",
+    "description": "Used for the register screen"
+  },
+  "promoCodeIsInvalidSupportOnlyTransparentAddressForNow": {
+    "message": "Promo Code is invalid. Support only transparent address for now.",
+    "description": "Used for the register screen"
+  },
+  "pslAddressPrivateKeyIsInvalidSupportOnlyTransparentAddressForNow": {
+    "message": "{{currencyName}} Address Private Key is invalid. Support only transparent address for now.",
+    "description": "Used for the register screen"
+  },
+  "promoCodeIsInvalid": {
+    "message": "Promo Code is invalid.",
+    "description": "Used for the register screen, the wallet screen"
+  },
+  "pslAddressPrivateKeyIsInvalid": {
+    "message": "{{currencyName}} Address Private Key is invalid.",
+    "description": "Used for the register screen"
+  },
+  "pasteYourPromoCodeHere": {
+    "message": "Paste your promo code here",
+    "description": "Used for the register screen, the wallet screen"
+  },
+  "pslAddressPrivateKeyHere": {
+    "message": "{{currencyName}} Address Private Key here",
+    "description": "Used for the register screen"
+  },
+  "pastelPromoCodeTitle": {
+    "message": "Pastel Promo Code",
+    "description": "Used for the register screen"
+  },
+  "congratulationsImportPastelPromoCode": {
+    "message": "Congratulations, your personalized promotional code has been accepted! You now have {{addressBalance}} {{currencyName}} in your wallet.",
+    "description": "Used for the register screen"
+  },
+  "congratulationsImportPastelPSLPrivateKey": {
+    "message": "Congratulations, your {{currencyName}} Address Private Key has been accepted! You now have {{addressBalance}} {{currencyName}} in your wallet.",
+    "description": "Used for the register screen"
+  },
+  "addNewPastelPromoCode": {
+    "message": "Add new pastel promo code.",
+    "description": "Used for the register screen"
+  },
+  "addNewPSLAddressPrivateKey": {
+    "message": "Add new {{currencyName}} Address Private Key.",
+    "description": "Used for the register screen"
+  },
+  "applying": {
+    "message": "Applying",
+    "description": "Used for the register screen, the wallet screen"
+  },
+  "apply": {
+    "message": "Apply",
+    "description": "Used for the register screen, the wallet screen"
+  },
+  "proceedPayment": {
+    "message": "Proceed to {{targetBalance}} {{currencyName}} Payment",
+    "description": "Used for the register screen"
+  },
+  "no": {
+    "message": "No",
+    "description": "Used for the new NFT screen"
+  },
+  "yes": {
+    "message": "Yes",
+    "description": "Used for the new NFT screen"
+  },
+  "areYouSureYouWantToLeave": {
+    "message": "Are you sure you want to leave?",
+    "description": "Used for the new NFT screen"
+  },
+  "submitAndProceedToFeePayment": {
+    "message": "Submit and proceed to fee payment",
+    "description": "Used for the new NFT screen"
+  },
+  "imageSize": {
+    "message": "Image size",
+    "description": "Used for the new NFT screen"
+  },
+  "estimatedRegistrationFee": {
+    "message": "Estimated registration fee",
+    "description": "Used for the new NFT screen"
+  },
+  "thumbnailPreview": {
+    "message": "Thumbnail preview",
+    "description": "Used for the new NFT screen"
+  },
+  "previewHowItWillLook": {
+    "message": "Preview how it will look",
+    "description": "Used for the new NFT screen"
+  },
+  "greenNFT": {
+    "message": "GreenNFT",
+    "description": "Used for the new NFT screen"
+  },
+  "title": {
+    "message": "Title",
+    "description": "Used for the new NFT screen"
+  },
+  "keywordHashtags": {
+    "message": "Keyword Hashtags",
+    "description": "Used for the new NFT screen"
+  },
+  "copies": {
+    "message": "Copies",
+    "description": "Used for the new NFT screen"
+  },
+  "series": {
+    "message": "Series",
+    "description": "Used for the new NFT screen"
+  },
+  "copiesValue": {
+    "message": "{{number}} of {{total}}",
+    "description": "Used for the new NFT screen, the NFTs screen"
+  },
+  "perpetualRoyalty": {
+    "message": "Perpetual Royalty",
+    "description": "Used for the new NFT screen"
+  },
+  "creatorsWebsite": {
+    "message": "Creator's website",
+    "description": "Used for the new NFT screen"
+  },
+  "creationVideo": {
+    "message": "Creation video",
+    "description": "Used for the new NFT screen"
+  },
+  "submitNFT": {
+    "message": "Submit NFT",
+    "description": "Used for the new NFT screen"
+  },
+  "submitNFTDescription": {
+    "message": "Description",
+    "description": "Used for the new NFT screen"
+  },
+  "description": {
+    "message": "Description",
+    "description": "Used for the new NFT screen"
+  },
+  "errorAccessingOptimizedImage": {
+    "message": "Error accessing optimized image",
+    "description": "Used for the new NFT screen"
+  },
+  "registerNewNFTIsFailed": {
+    "message": "Register new NFT is failed",
+    "description": "Used for the new NFT screen"
+  },
+  "pastelIDIsNotExists": {
+    "message": "PastelID isn't exists",
+    "description": "Used for the new NFT screen"
+  },
+  "theAddressIsNotExists": {
+    "message": "The address isn't exists",
+    "description": "Used for the new NFT screen"
+  },
+  "ready": {
+    "message": "ready",
+    "description": "Used for the new NFT screen"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Used for the new NFT screen, the wallet screen"
+  },
+  "goToImageOptimization": {
+    "message": "Go to Image Optimization",
+    "description": "Used for the new NFT screen"
+  },
+  "uploadImageFileLimit": {
+    "message": "Upload Image File (max 100 mb)",
+    "description": "Used for the new NFT screen"
+  },
+  "uploadImageFileTooltip": {
+    "message": "info",
+    "description": "Used for the new NFT screen"
+  },
+  "selectImage": {
+    "message": "Select Image",
+    "description": "Used for the new NFT screen"
+  },
+  "theImageFileForYourNFT": {
+    "message": "The Image File for your NFT",
+    "description": "Used for the new NFT screen"
+  },
+  "max100Mb": {
+    "message": "Max 100Mb.",
+    "description": "Used for the new NFT screen"
+  },
+  "dragOrChooseYourFileToUpload": {
+    "message": "Drag or choose your file to upload",
+    "description": "Used for the new NFT screen"
+  },
+  "noteTheImageFileSizeAndTheRegistrationFee": {
+    "message": "Please take into consideration that the image file size impacts the registration fee.",
+    "description": "Used for the new NFT screen"
+  },
+  "noteTheImageFileSizeAndTheRegistrationFeeExample": {
+    "message": "For example, 0,5 mb costs 1,000 {{currencyName}}, 5 mb - 10,000 {{currencyName}}",
+    "description": "Used for the new NFT screen"
+  },
+  "onlyJpgOrPngImageFilesAreSupported": {
+    "message": "Sorry! Only jpg or png image files are supported.",
+    "description": "Used for the new NFT screen"
+  },
+  "animationsAreCurrentlyNotSupported": {
+    "message": "Animations are currently not supported, but image can be converted to static image.",
+    "description": "Used for the new NFT screen"
+  },
+  "wouldYouLikeToConvertYourImage": {
+    "message": "Would you like to convert your image?",
+    "description": "Used for the new NFT screen"
+  },
+  "convertToPNG": {
+    "message": "Convert to PNG",
+    "description": "Used for the new NFT screen"
+  },
+  "convertToJPG": {
+    "message": "Convert to JPG",
+    "description": "Used for the new NFT screen"
+  },
+  "selectedFileExceedsLimit": {
+    "message": "Selected file exceeds 100 MB limit: {{size}} MB",
+    "description": "Used for the new NFT screen"
+  },
+  "checkImageSizeWidth": {
+    "message": "Image width should not be less than {{minImageWidth}}px, got {{width}}px",
+    "description": "Used for the new NFT screen"
+  },
+  "checkImageSizeHeight": {
+    "message": "Image height should not be less than {{minImageHeight}}px, got {{height}}px",
+    "description": "Used for the new NFT screen"
+  },
+  "processingErrorMessage": {
+    "message": "Can not process selected file, it is possibly corrupted",
+    "description": "Used for the new NFT screen"
+  },
+  "checkFileType": {
+    "message": "Selected file has unsupported format: {{type}}",
+    "description": "Used for the new NFT screen"
+  },
+  "canNotConvertImage": {
+    "message": "Can not convert image",
+    "description": "Used for the new NFT screen"
+  },
+  "cropping": {
+    "message": "Cropping",
+    "description": "Used for the new NFT screen"
+  },
+  "accept": {
+    "message": "Accept",
+    "description": "Used for the new NFT screen"
+  },
+  "after": {
+    "message": "After",
+    "description": "Used for the new NFT screen"
+  },
+  "before": {
+    "message": "Before",
+    "description": "Used for the new NFT screen"
+  },
+  "loadingOptimizedImages": {
+    "message": "Loading optimized images",
+    "description": "Used for the new NFT screen"
+  },
+  "pleaseSelectMoreColorfulImageRegion": {
+    "message": "Please select more colorful image region",
+    "description": "Used for the new NFT screen"
+  },
+  "imageSizePercentOfAvg": {
+    "message": "{{imageSizePercentOfAvg}}% of average Pastel NFT size",
+    "description": "Used for the new NFT screen"
+  },
+  "goToOverview": {
+    "message": "Go to Overview",
+    "description": "Used for the new NFT screen"
+  },
+  "imagePreview": {
+    "message": "Image Preview",
+    "description": "Used for the new NFT screen"
+  },
+  "cropThumbnail": {
+    "message": "Crop thumbnail",
+    "description": "Used for the new NFT screen"
+  },
+  "previewStepModalDescription": {
+    "message": "Description",
+    "description": "Used for the new NFT screen"
+  },
+  "unknown": {
+    "message": "unknown",
+    "description": "Used for the new NFT screen"
+  },
+  "imageSizeAndFeeOptimization": {
+    "message": "Image Size and Fee Optimization",
+    "description": "Used for the new NFT screen"
+  },
+  "losslessImageQuality": {
+    "message": "Lossless Image Quality",
+    "description": "Used for the new NFT screen"
+  },
+  "copiesWarning": {
+    "message": "Warning: the higher the number of copies you create, the less valuable each copy is likely to be!",
+    "description": "Used for the new NFT screen"
+  },
+  "copiesTooltip": {
+    "message": "info",
+    "description": "Used for the new NFT screen"
+  },
+  "seriesName": {
+    "message": "Series Name",
+    "description": "Used for the new NFT screen"
+  },
+  "royalty": {
+    "message": "Royalty",
+    "description": "Used for the new NFT screen"
+  },
+  "noRoyaltyApplied": {
+    "message": "No Royalty Applied",
+    "description": "Used for the new NFT screen"
+  },
+  "externalProfile": {
+    "message": "External profile",
+    "description": "Used for the new NFT screen"
+  },
+  "green": {
+    "message": "Green",
+    "description": "Used for the new NFT screen"
+  },
+  "greenNFTToolTipContent": {
+    "message": "This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.",
+    "description": "Used for the new NFT screen"
+  },
+  "placeholderTitleField": {
+    "message": "The name of your NFT. Must be at least {{titleMinLength}} characters long.",
+    "description": "Used for the new NFT screen"
+  },
+  "placeholderKeywordHashtagsField": {
+    "message": "#MotionGraphics, #Abstract",
+    "description": "Used for the new NFT screen"
+  },
+  "placeholderSeriesNameField": {
+    "message": "(if the NFT is part of a series)",
+    "description": "Used for the new NFT screen"
+  },
+  "placeholderDescriptionField": {
+    "message": "Description of the NFT or artist’s statement.",
+    "description": "Used for the new NFT screen"
+  },
+  "inputNFTData": {
+    "message": "Input NFT Data",
+    "description": "Used for the new NFT screen"
+  },
+  "theMetadataFieldsForYourNFT": {
+    "message": "The Metadata Fields for your NFT",
+    "description": "Used for the new NFT screen"
+  },
+  "goToPreviewButton": {
+    "message": "Go to preview",
+    "description": "Used for the new NFT screen"
+  },
+  "perpetualRoyaltyTooltipContent": {
+    "message": "info",
+    "description": "Used for the new NFT screen"
+  },
+  "cancelled": {
+    "message": "Cancelled",
+    "description": "Used for the new NFT screen"
+  },
+  "errorOptimizingImage": {
+    "message": "Error optimizing image",
+    "description": "Used for the new NFT screen"
+  },
+  "viewFullImage": {
+    "message": "View Full Image",
+    "description": "Used for the new NFT screen"
+  },
+  "NFTApprovedTitle": {
+    "message": "NFT approved: “{{nftTitle}}”",
+    "description": "Used for the new NFT screen"
+  },
+  "selectPSLAddressToPayment": {
+    "message": "Select {{currencyName}} Address to Payment",
+    "description": "Used for the new NFT screen"
+  },
+  "finalRegistrationFee": {
+    "message": "Final registration fee",
+    "description": "Used for the new NFT screen"
+  },
+  "proceedToFinalRegistrationFeePayment": {
+    "message": "Proceed to final registration fee payment",
+    "description": "Used for the new NFT screen"
+  },
+  "pastelRarenessScore": {
+    "message": "Pastel rareness score",
+    "description": "Used for the new NFT screen"
+  },
+  "internetRarenessScore": {
+    "message": "Internet rareness score",
+    "description": "Used for the new NFT screen"
+  },
+  "NSFW": {
+    "message": "NSFW",
+    "description": "Used for the new NFT screen"
+  },
+  "fileUploadedSuccessfully": {
+    "message": "File uploaded successfully!",
+    "description": "Used for the new NFT screen"
+  },
+  "youCanContinueToConfigureYourNFT": {
+    "message": "You can continue to configure your NFT.",
+    "description": "Used for the new NFT screen"
+  },
+  "afterUploadStepDescription": {
+    "message": "Description",
+    "description": "Used for the new NFT screen"
+  },
+  "afterSelectStepDescription": {
+    "message": "The Image File for your NFT",
+    "description": "Used for the new NFT screen"
+  },
+  "addPastelPromoCode": {
+    "message": "Add Pastel Promo Code",
+    "description": "Used for the wallet screen"
+  },
+  "addPastelPromoCodeSuccessMessage": {
+    "message": "Your personalized promotional code has been accepted! You now have {{message}} {{currencyName}} in your wallet",
+    "description": "Used for the wallet screen"
+  },
+  "addressName": {
+    "message": "Address name",
+    "description": "Used for the wallet screen"
+  },
+  "balance": {
+    "message": "Balance",
+    "description": "Used for the wallet screen"
+  },
+  "addPaymentSource": {
+    "message": "Add Payment Source",
+    "description": "Used for the wallet screen"
+  },
+  "openPrivateKey": {
+    "message": "Open Private Key",
+    "description": "Used for the wallet screen"
+  },
+  "openAddressQR": {
+    "message": "Open Address QR",
+    "description": "Used for the wallet screen"
+  },
+  "lastActivity": {
+    "message": "Last Activity",
+    "description": "Used for the wallet screen"
+  },
+  "addressQR": {
+    "message": "Address QR",
+    "description": "Used for the wallet screen"
+  },
+  "keys": {
+    "message": "Keys",
+    "description": "Used for the wallet screen"
+  },
+  "showRecipientAddress": {
+    "message": "Show Recipient Address",
+    "description": "Used for the wallet screen"
+  },
+  "hideRecipientAddress": {
+    "message": "Hide Recipient Address",
+    "description": "Used for the wallet screen"
+  },
+  "saveLabel": {
+    "message": "Save Label",
+    "description": "Used for the wallet screen"
+  },
+  "copied": {
+    "message": "Copied",
+    "description": "Used for the wallet screen"
+  },
+  "copyAddressToClipboard": {
+    "message": "Copy address to clipboard",
+    "description": "Used for the wallet screen"
+  },
+  "editLabel": {
+    "message": "Edit Label",
+    "description": "Used for the wallet screen"
+  },
+  "totalBalance": {
+    "message": "Total Balance",
+    "description": "Used for the wallet screen"
+  },
+  "transparentInformation": {
+    "message": "Transparent Information",
+    "description": "Used for the wallet screen"
+  },
+  "shieldedInformation": {
+    "message": "Shielded Information",
+    "description": "Used for the wallet screen"
+  },
+  "transparent": {
+    "message": "Transparent",
+    "description": "Used for the wallet screen"
+  },
+  "shielded": {
+    "message": "Shielded",
+    "description": "Used for the wallet screen"
+  },
+  "save": {
+    "message": "Save",
+    "description": "Used for the wallet screen"
+  },
+  "commentNoteToRecipientToolTipContent": {
+    "message": "You can include a short message to the recipient if the recipient’s address is a shielded PSL address; this message will only be visible to the recipient.",
+    "description": "Used for the wallet screen"
+  },
+  "commentPrivateNoteToolTipContent": {
+    "message": "This is a short note that is only visible to you; it can be used to record a short note to yourself reminding you of the purpose of the transaction. For example “Sent PSL to brother for cat NFT”",
+    "description": "Used for the wallet screen"
+  },
+  "noteToRecipient": {
+    "message": "Note to Recipient",
+    "description": "Used for the wallet screen"
+  },
+  "privateNote": {
+    "message": "Private Note",
+    "description": "Used for the wallet screen"
+  },
+  "downloadPaperWalletPDF": {
+    "message": "Download Paper Wallet (PDF)",
+    "description": "Used for the wallet screen"
+  },
+  "generatePaperWalletForAddress": {
+    "message": "Generate Paper Wallet for Address",
+    "description": "Used for the wallet screen"
+  },
+  "newPastelAddress": {
+    "message": "New Pastel Address",
+    "description": "Used for the wallet screen"
+  },
+  "privateKeyForAddress": {
+    "message": "Private Key for Address",
+    "description": "Used for the wallet screen"
+  },
+  "viewTXID": {
+    "message": "View TXID",
+    "description": "Used for the wallet screen"
+  },
+  "failed": {
+    "message": "Failed",
+    "description": "Used for the wallet screen"
+  },
+  "success": {
+    "message": "Success",
+    "description": "Used for the wallet screen"
+  },
+  "recipientAddressIsRequired": {
+    "message": "Recipient address is required",
+    "description": "Used for the wallet screen"
+  },
+  "recipientAddressIsInvalid": {
+    "message": "Recipient address is invalid",
+    "description": "Used for the wallet screen"
+  },
+  "validateAmountOfAddress": {
+    "message": "Address: {{address}} failed. Insufficient shielded funds, have {{amount}}, need {{requiredAmount}}",
+    "description": "Used for the wallet screen"
+  },
+  "theAmountExceedsTheSelectedBalance": {
+    "message": "The amount exceeds the selected balance",
+    "description": "Used for the wallet screen"
+  },
+  "confirmPaymentButton": {
+    "message": "Confirm Payment of {{price}}",
+    "description": "Used for the wallet screen"
+  },
+  "addPaymentSourceTooltipContent": {
+    "message": "The {{currencyName}} address or addresses in your Pastel Wallet that you want to send the {{currencyName}} from. This can include one or more transparent OR shielded addresses. In order for your transaction to be completely shielded, all source addresses and the address of the recipient must be shielded addresses.",
+    "description": "Used for the wallet screen"
+  },
+  "inputRecipientAddress": {
+    "message": "Input recipient address",
+    "description": "Used for the wallet screen"
+  },
+  "taxFeeTooltipContent": {
+    "message": "The transaction fee you will pay for this {{currencyName}} transaction. Most users should stick with the default transaction fee of {{fee} {{currencyName}}. The transaction fee is required as an incentive for miners to include your transaction in the next Pastel block; a transaction with a low fee may take longer to be confirmed by the network.",
+    "description": "Used for the wallet screen"
+  },
+  "addressRecipientTooltipContent": {
+    "message": "The {{currencyName}} address you want to send {{currencyName}} coins to. This can either be a transparent address, where anyone can see the transaction in the Pastel Explorer (transparent addresses begin with the letters “Pt”), or it can be a shielded address, where no one will be able to see the amount or the address of the recipient (shielded addresses begin with the letters “ps”).",
+    "description": "Used for the wallet screen"
+  },
+  "fee": {
+    "message": "fee",
+    "description": "Used for the wallet screen"
+  },
+  "pslTransactionFee": {
+    "message": "{{currencyName}} transaction fee",
+    "description": "Used for the wallet screen"
+  },
+  "ofYourBalance": {
+    "message": "of your balance",
+    "description": "Used for the wallet screen"
+  },
+  "transactionStatus": {
+    "message": "Transaction Status",
+    "description": "Used for the wallet screen"
+  },
+  "TXID": {
+    "message": "TXID",
+    "description": "Used for the wallet screen"
+  },
+  "errorTransactionMessage": {
+    "message": "Opid {{txId}} Failed. {{message}}",
+    "description": "Used for the wallet screen"
+  },
+  "payment": {
+    "message": "Payment",
+    "description": "Used for the wallet screen"
+  },
+  "paymentResult": {
+    "message": "Payment Result",
+    "description": "Used for the wallet screen"
+  },
+  "paymentLoadingMessage": {
+    "message": "Please wait...This could take a while",
+    "description": "Used for the wallet screen"
+  },
+  "balanceRemainingAfterPayment": {
+    "message": "{{price}} balance remaining after payment",
+    "description": "Used for the wallet screen"
+  },
+  "addressOfRecipient": {
+    "message": "Address of Recipient",
+    "description": "Used for the wallet screen"
+  },
+  "paymentSource": {
+    "message": "Payment Source",
+    "description": "Used for the wallet screen"
+  },
+  "date": {
+    "message": "Date",
+    "description": "Used for the wallet screen"
+  },
+  "recipientAddress": {
+    "message": "Recipient address",
+    "description": "Used for the wallet screen"
+  },
+  "sourceType": {
+    "message": "Source type",
+    "description": "Used for the wallet screen"
+  },
+  "status": {
+    "message": "Status",
+    "description": "Used for the wallet screen"
+  },
+  "confirmed": {
+    "message": "Confirmed",
+    "description": "Used for the wallet screen"
+  },
+  "unConfirmed": {
+    "message": "Unconfirmed",
+    "description": "Used for the wallet screen"
+  },
+  "id": {
+    "message": "ID",
+    "description": "Used for the wallet screen"
+  },
+  "privateNotes": {
+    "message": "Private Notes",
+    "description": "Used for the wallet screen"
+  },
+  "amount": {
+    "message": "Amount",
+    "description": "Used for the wallet screen"
+  },
+  "timeRange": {
+    "message": "Time range",
+    "description": "Used for the wallet screen, the dashboard screen"
+  },
+  "sourceAddress": {
+    "message": "Source address",
+    "description": "Used for the wallet screen"
+  },
+  "recipients": {
+    "message": "Recipients",
+    "description": "Used for the wallet screen"
+  },
+  "received": {
+    "message": "Received",
+    "description": "Used for the wallet screen"
+  },
+  "sent": {
+    "message": "Sent",
+    "description": "Used for the wallet screen"
+  },
+  "transactionHistory": {
+    "message": "Transaction history",
+    "description": "Used for the wallet screen"
+  },
+  "addNewAddressButton": {
+    "message": "Generate a new {{currencyName}} Address",
+    "description": "Used for the wallet screen"
+  },
+  "selectedTotal": {
+    "message": "Selected total",
+    "description": "Used for the wallet screen"
+  },
+  "hideEmptyAddresses": {
+    "message": "Hide empty addresses",
+    "description": "Used for the wallet screen"
+  },
+  "youHaveNoAddresses": {
+    "message": "You have no Addresses",
+    "description": "Used for the wallet screen"
+  },
+  "createAPaymentButton": {
+    "message": "Create a payment",
+    "description": "Used for the wallet screen"
+  },
+  "pslWallet": {
+    "message": "{{currencyName}} Wallet",
+    "description": "Used for the wallet screen"
+  },
+  "week": {
+    "message": "Week",
+    "description": "Used for the wallet screen"
+  },
+  "month": {
+    "message": "Month",
+    "description": "Used for the wallet screen"
+  },
+  "year": {
+    "message": "Year",
+    "description": "Used for the wallet screen"
+  },
+  "warning": {
+    "message": "Warning",
+    "description": "Used for the wallet screen"
+  },
+  "yourTotalBalanceIsEmptyNow": {
+    "message": "Your total balance is empty now.",
+    "description": "Used for the wallet screen"
+  },
+  "illustration": {
+    "message": "Illustration",
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
+  },
+  "auction": {
+    "message": "Auction",
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
+  },
+  "makeAnOffer": {
+    "message": "Make-an-Offer",
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
+  },
+  "fixedPrice": {
+    "message": "Fixed-Price",
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
+  },
+  "future": {
+    "message": "Future",
+    "description": "Used for the NFTs screen, the Portfolio screen"
+  },
+  "present": {
+    "message": "Present",
+    "description": "Used for the NFTs screen, the Portfolio screen"
+  },
+  "past": {
+    "message": "Past",
+    "description": "Used for the NFTs screen, the Portfolio screen"
+  },
+  "high": {
+    "message": "High",
+    "description": "Used for the NFTs screen"
+  },
+  "medium": {
+    "message": "Medium",
+    "description": "Used for the NFTs screen"
+  },
+  "low": {
+    "message": "Low",
+    "description": "Used for the NFTs screen"
+  },
+  "time": {
+    "message": "Time",
+    "description": "Used for the NFTs screen, the Portfolio screen"
+  },
+  "rareness": {
+    "message": "Rareness",
+    "description": "Used for the NFTs screen"
+  },
+  "feed": {
+    "message": "Feed",
+    "description": "Used for the NFTs screen"
+  },
+  "statistics": {
+    "message": "Statistics",
+    "description": "Used for the NFTs screen"
+  },
+  "market": {
+    "message": "Market",
+    "description": "Used for the NFTs screen"
+  },
+  "priceRange": {
+    "message": "Price range",
+    "description": "Used for the NFTs screen"
+  },
+  "buyItNowButton": {
+    "message": "Buy it Now",
+    "description": "Used for the NFTs screen"
+  },
+  "nftFixedPrice": {
+    "message": "Fixed price",
+    "description": "Used for the NFTs screen"
+  },
+  "copiesAvailable": {
+    "message": "{{copiesAvailable}} Copies Available",
+    "description": "Used for the NFTs screen"
+  },
+  "makeAnOfferButton": {
+    "message": "Make an Offer",
+    "description": "Used for the NFTs screen"
+  },
+  "notForSale": {
+    "message": "Not for sale",
+    "description": "Used for the NFTs screen"
+  },
+  "placeABid": {
+    "message": "Place a Bid",
+    "description": "Used for the NFTs screen"
+  },
+  "leftTime": {
+    "message": "left",
+    "description": "Used for the NFTs screen"
+  },
+  "lastAuctionBid": {
+    "message": "Last Auction Bid",
+    "description": "Used for the NFTs screen"
+  },
+  "copiesNFTCardTooltip": {
+    "message": "This is the number of \"limited edition digital prints\" that exist for this NFT.  No additional copies can ever be created of this NFT, even by the creator (and if the creator uses a similar image for a new NFT, the new NFT will have a lower Rareness Score",
+    "description": "Used for the NFTs screen"
+  },
+  "rarenessScore": {
+    "message": "Rareness Score",
+    "description": "Used for the NFTs screen"
+  },
+  "rarenessScoreNFTCardTooltip": {
+    "message": "This number measures how \"rare\" the NFT is relative to all the NFTS that were previously registered on Pastel. It is based on the pixel patterns of the underlying image, and can see through superficial modifications to an original image, such as cropping, color changes, noise, etc.",
+    "description": "Used for the NFTs screen"
+  },
+  "greenNFTNFTCardTooltip": {
+    "message": "2% of sale proceeds go to plant trees",
+    "description": "Used for the NFTs screen"
+  },
+  "perpetualRoyaltyNFTCardTooltip": {
+    "message": "{{royalty}}% of all resale proceeds are paid to the creator forever",
+    "description": "Used for the NFTs screen"
+  },
+  "certifiedRareOnPastel": {
+    "message": "Certified Rare on Pastel",
+    "description": "Used for the NFTs screen"
+  },
+  "certifiedRareOnPastelNFTCardTooltip": {
+    "message": "NFT is sufficiently different from all previously registered NFTs on Pastel at the time of registration",
+    "description": "Used for the NFTs screen"
+  },
+  "directFromArtist": {
+    "message": "Direct from Artist",
+    "description": "Used for the NFTs screen"
+  },
+  "directFromArtistNFTCardTooltip": {
+    "message": "the NFT copy is being sold by the creator, rather than another buyer of the NFT who is reselling it",
+    "description": "Used for the NFTs screen"
+  },
+  "likes": {
+    "message": "Likes",
+    "description": "Used for the Portfolio screen, the members screen"
+  },
+  "myNFTPortfolio": {
+    "message": "My NFT Portfolio",
+    "description": "Used for the Portfolio screen"
+  },
+  "inReview": {
+    "message": "In review",
+    "description": "Used for the Portfolio screen, the dashboard screen"
+  },
+  "type": {
+    "message": "Type",
+    "description": "Used for the Portfolio screen, the members screen"
+  },
+  "creator": {
+    "message": "Creator",
+    "description": "Used for the Portfolio screen"
+  },
+  "sold": {
+    "message": "Sold",
+    "description": "Used for the Portfolio screen, the members screen"
+  },
+  "owned": {
+    "message": "Owned",
+    "description": "Used for the Portfolio screen"
+  },
+  "liked": {
+    "message": "Liked",
+    "description": "Used for the Portfolio screen"
+  },
+  "price": {
+    "message": "Price",
+    "description": "Used for the Portfolio screen"
+  },
+  "youHaveNotCreatedAnyNFTs": {
+    "message": "You have not created any NFTs",
+    "description": "Used for the Portfolio screen"
+  },
+  "toCreateANewNFTDescription": {
+    "message": "To create a new NFT, click the \"new NFT\" <br /> button at the top of the screen",
+    "description": "Used for the Portfolio screen"
+  },
+  "sortBy": {
+    "message": "Sort by",
+    "description": "Used for the Portfolio screen, the PageHeader component"
+  },
+  "ranking": {
+    "message": "Ranking",
+    "description": "Used for the Members screen"
+  },
+  "sellers": {
+    "message": "Sellers",
+    "description": "Used for the Members screen"
+  },
+  "buyers": {
+    "message": "Buyers",
+    "description": "Used for the Members screen"
+  },
+  "totalSales": {
+    "message": "Total Sales",
+    "description": "Used for the Members screen"
+  },
+  "highestSold": {
+    "message": "Highest sold",
+    "description": "Used for the Members screen"
+  },
+  "totalSold": {
+    "message": "Total sold",
+    "description": "Used for the Members screen"
+  },
+  "walletBalance": {
+    "message": "Wallet balance",
+    "description": "Used for the dashboard screen"
+  },
+  "youHaveNoPSL": {
+    "message": "You have no {{currencyName}}",
+    "description": "Used for the dashboard screen"
+  },
+  "walletDetails": {
+    "message": "Wallet Details",
+    "description": "Used for the dashboard screen"
+  },
+  "lastReceived": {
+    "message": "Last Received",
+    "description": "Used for the dashboard screen"
+  },
+  "lastSent": {
+    "message": "Last Sent",
+    "description": "Used for the dashboard screen"
+  },
+  "notificationNewListing": {
+    "message": "{{number}} new listing",
+    "description": "Used for the dashboard screen"
+  },
+  "notificationNewSale": {
+    "message": "{{number}} new sale",
+    "description": "Used for the dashboard screen"
+  },
+  "notificationNewTransfer": {
+    "message": "{{number}} new transfer",
+    "description": "Used for the dashboard screen"
+  },
+  "latestNotifications": {
+    "message": "Latest Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "unread": {
+    "message": "unread",
+    "description": "Used for the dashboard screen"
+  },
+  "youHaveNoNotifications": {
+    "message": "You have no Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "checkAllNotifications": {
+    "message": "Check All Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "trendingNFTs": {
+    "message": "Trending NFTs",
+    "description": "Used for the dashboard screen"
+  },
+  "listed": {
+    "message": "listed",
+    "description": "Used for the dashboard screen"
+  },
+  "youHaveNoNFTs": {
+    "message": "You have no NFTs",
+    "description": "Used for the dashboard screen"
+  },
+  "showMore": {
+    "message": "Show more",
+    "description": "Used for the dashboard screen"
+  },
+  "items": {
+    "message": "items",
+    "description": "Used for the dashboard screen"
+  },
+  "salesInProgress": {
+    "message": "Sales in progress",
+    "description": "Used for the dashboard screen"
+  },
+  "onSale": {
+    "message": "On Sale",
+    "description": "Used for the dashboard screen"
+  },
+  "bidding": {
+    "message": "Bidding",
+    "description": "Used for the dashboard screen"
+  },
+  "system": {
+    "message": "System",
+    "description": "Used for the dashboard screen"
+  },
+  "today": {
+    "message": "Today",
+    "description": "Used for the dashboard screen"
+  },
+  "yesterday": {
+    "message": "Yesterday",
+    "description": "Used for the dashboard screen"
+  },
+  "lastOfDays": {
+    "message": "Last {{days}} days",
+    "description": "Used for the dashboard screen"
+  },
+  "lastOfMonth": {
+    "message": "Last 3 month",
+    "description": "Used for the dashboard screen"
+  },
+  "types": {
+    "message": "Types",
+    "description": "Used for the dashboard screen"
+  },
+  "notifications": {
+    "message": "Notifications",
+    "description": "Used for the dashboard screen"
+  },
+  "info": {
+    "message": "Info",
+    "description": "Used for the members screen"
+  },
+  "board": {
+    "message": "Board",
+    "description": "Used for the members screen"
+  },
+  "bid": {
+    "message": "Bid",
+    "description": "Used for the members screen"
+  },
+  "comments": {
+    "message": "Comments",
+    "description": "Used for the members screen"
+  },
+  "mention": {
+    "message": "Mention",
+    "description": "Used for the members screen"
+  },
+  "totalItemsSold": {
+    "message": "{{copies}} Copies across {{nfts}} NFTs",
+    "description": "Used for the members screen"
+  },
+  "ago": {
+    "message": "ago",
+    "description": "Used for the members screen"
+  },
+  "sortyBy": {
+    "message": "Sorty by",
+    "description": "Used for the members screen"
+  },
+  "memberProfile": {
+    "message": "Member Profile",
+    "description": "Used for the members screen"
+  },
+  "reputationScore": {
+    "message": "Reputation Score",
+    "description": "Used for the members screen"
+  },
+  "copyToClipboard": {
+    "message": "Copy to clipboard",
+    "description": "Used for the members screen"
+  },
+  "message": {
+    "message": "Message",
+    "description": "Used for the members screen"
+  },
+  "report": {
+    "message": "report",
+    "description": "Used for the members screen"
+  },
+  "memberSince": {
+    "message": "Member since",
+    "description": "Used for the members screen"
+  }
+}

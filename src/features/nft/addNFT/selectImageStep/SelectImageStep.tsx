@@ -11,6 +11,7 @@ import Tooltip from 'common/components/Tooltip'
 import ProgressCircle from 'common/components/ProgressCircle'
 import { copyFile } from 'common/utils/file'
 import { setSelectedFile, setFileUploaded } from '../AddNFT.store'
+import { translate } from 'features/app/translations'
 
 export type TSelectStepProps = {
   state: TAddNFTState
@@ -95,7 +96,8 @@ function UploadProgress({
           {state.image?.name || imageFile?.name}
         </div>
         <div className='text-gray-77 text-sm font-normal'>
-          {state.percentage !== 100 ? progressPoint : state.percentage}% ready
+          {state.percentage !== 100 ? progressPoint : state.percentage}%{' '}
+          {translate('ready')}
         </div>
       </div>
     </ProgressCircle>
@@ -219,15 +221,21 @@ export default function SelectImageStep({
         disabled={!imageForPreview || state.percentage !== 100}
         type='button'
       >
-        Go to Image Optimization
+        {translate('goToImageOptimization')}
       </button>
     </div>
   )
 
   const renderSelectImageFile = () => (
     <div className='flex items-center text-gray-71 font-medium mb-3'>
-      <span className='mr-3 text-base'>Upload Image File (max 100 mb)</span>
-      <Tooltip type='top' content='info' width={50}>
+      <span className='mr-3 text-base'>
+        {translate('uploadImageFileLimit')}
+      </span>
+      <Tooltip
+        type='top'
+        content={translate('uploadImageFileTooltip')}
+        width={50}
+      >
         <Info size={14} className='cursor-pointer' />
       </Tooltip>
     </div>
@@ -235,9 +243,9 @@ export default function SelectImageStep({
 
   return (
     <ModalLayout
-      title='Select Image'
+      title={translate('selectImage')}
       titleClass='mb-3'
-      subtitle='The Image File for your NFT'
+      subtitle={translate('theImageFileForYourNFT')}
       step={2}
       fixedHeight
       contentClass='pt-2'
@@ -258,7 +266,7 @@ export default function SelectImageStep({
                     onClick={handleCancelUpload}
                     className='cursor-pointer text-sm font-medium text-gray-71'
                   >
-                    Cancel
+                    {translate('cancel')}
                   </button>
                 </div>
               </div>
@@ -266,10 +274,10 @@ export default function SelectImageStep({
               <div className='flex-center flex-col bg-gray-f4 rounded-md h-full w-full cursor-pointer'>
                 <UploadFile size={26} className='mb-3' />
                 <div className='mb-2'>
-                  {allowedTypeNames.join(', ')} Max 100Mb.
+                  {allowedTypeNames.join(', ')} {translate('max100Mb')}
                 </div>
                 <div className='text-gray-a0'>
-                  Drag or choose your file to upload
+                  {translate('dragOrChooseYourFileToUpload')}
                 </div>
               </div>
             )}
@@ -282,24 +290,21 @@ export default function SelectImageStep({
           <div className='text-sm'>
             {renderSelectImageFile()}
             <div className='text-gray-71 mb-2'>
-              Please take into consideration that the image file size impacts
-              the registration fee.
+              {translate('noteTheImageFileSizeAndTheRegistrationFee')}
             </div>
             <div className='text-gray-71 mb-4'>
-              For example, 0,5 mb costs 1,000 {currencyName}, 5 mb - 10,000{' '}
-              {currencyName}
+              {translate('noteTheImageFileSizeAndTheRegistrationFeeExample', {
+                currencyName,
+              })}
             </div>
             {imageToConvert && (
               <>
                 <div className='mb-3 text-gray-4a space-y-2'>
-                  <div>Sorry! Only jpg or png image files are supported.</div>
+                  <div>{translate('onlyJpgOrPngImageFilesAreSupported')}</div>
                   {isAnimated && (
-                    <div>
-                      Animations are currently not supported, but image can be
-                      converted to static image.
-                    </div>
+                    <div>{translate('animationsAreCurrentlyNotSupported')}</div>
                   )}
-                  <div>Would you like to convert your image?</div>
+                  <div>{translate('wouldYouLikeToConvertYourImage')}</div>
                 </div>
                 <div className='flex'>
                   <button
@@ -307,14 +312,14 @@ export default function SelectImageStep({
                     className='btn btn-primary px-4 mr-2'
                     onClick={handleConvertToPNG}
                   >
-                    Convert to PNG
+                    {translate('convertToPNG')}
                   </button>
                   <button
                     type='button'
                     className='btn btn-primary px-4'
                     onClick={handleConvertToJPG}
                   >
-                    Convert to JPG
+                    {translate('convertToJPG')}
                   </button>
                 </div>
               </>

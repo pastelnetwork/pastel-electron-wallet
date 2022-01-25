@@ -37,6 +37,7 @@ import { ROUTES } from '../../common/constants/routes'
 import Modals from './Modals'
 import { useReadPastelPromoCode } from 'common/utils/PastelPromoCode'
 import dayjs from 'common/utils/initDayjs'
+import { translate } from 'features/app/translations'
 
 export type TSelectionPslProps = {
   address: string
@@ -62,7 +63,9 @@ function CreatePaymentButton({
     >
       <div className='flex items-center ml-5'>
         <div className='text-white text-h4-leading-28-heavy'>+</div>{' '}
-        <div className='ml-2 text-white text-h5-heavy'>Create a payment</div>
+        <div className='ml-2 text-white text-h5-heavy'>
+          {translate('createAPaymentButton')}
+        </div>
       </div>
     </Button>
   )
@@ -87,7 +90,7 @@ function PastelPromoCodeButton({
       <div className='flex items-center ml-5'>
         <div className='text-blue-3f text-h5-medium'>+</div>{' '}
         <div className='ml-2 text-blue-3f text-h5-medium'>
-          Add Pastel Promo Code
+          {translate('addPastelPromoCode')}
         </div>
       </div>
     </Button>
@@ -118,7 +121,7 @@ function AddNewAddressButton({
       <div className='flex items-center ml-[19px]'>
         <ElectricityIcon size={11} className='text-blue-3f py-3' />
         <div className='ml-11px text-blue-3f text-h5-medium'>
-          Generate a new {currencyName} Address
+          {translate('addNewAddressButton', { currencyName })}
         </div>
       </div>
     </Button>
@@ -248,13 +251,13 @@ const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
       <>
         <div className='font-extrabold text-h1 text-gray-1a flex items-center'>
           <div className='mr-8 text-gray-1a text-h1-heavy'>
-            {currencyName} Wallet
+            {translate('pslWallet', { currencyName })}
           </div>
           <MultiToggleSwitch
             data={[
-              { label: 'Week', count: filterTransactions.week },
-              { label: 'Month', count: filterTransactions.month },
-              { label: 'Year', count: filterTransactions.year },
+              { label: translate('week'), count: filterTransactions.week },
+              { label: translate('month'), count: filterTransactions.month },
+              { label: translate('year'), count: filterTransactions.year },
             ]}
             activeIndex={activePeriod}
             onToggle={onTabToggle}
@@ -272,7 +275,7 @@ const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
         >
           <Clock size={18} className='text-blue-3f' />
           <div className='ml-3.5 text-blue-3f text-h4-leading-22'>
-            Transaction history
+            {translate('transactionHistory')}
           </div>
         </div>
       </>
@@ -282,9 +285,9 @@ const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
   const renderEmptyContentBlock = () => {
     return totalBalances.data?.total && totalBalances.data?.total <= 0 ? (
       <Alert variant='warning' className='mt-7 relative' showClose onShowing>
-        <strong className='font-bold'>Warning! </strong>
+        <strong className='font-bold'>{translate('warning')}! </strong>
         <span className='block sm:inline'>
-          Your total balance is empty now.
+          {translate('yourTotalBalanceIsEmptyNow')}
         </span>
       </Alert>
     ) : null
@@ -315,11 +318,11 @@ const WalletScreenContent = memo(function WalletScreenContent(): JSX.Element {
       <Breadcrumbs
         breadcrumbs={[
           {
-            label: 'Wallet',
+            label: translate('wallet'),
             route: ROUTES.WALLET,
           },
           {
-            label: 'Transparent',
+            label: translate('transparent'),
           },
         ]}
       />

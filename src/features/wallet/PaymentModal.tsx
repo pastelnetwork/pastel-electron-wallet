@@ -28,6 +28,7 @@ import Input from 'common/components/Inputs/Input'
 import AddPaymentSourceModal from './AddPaymentSourceModal'
 import { TNote } from './CommentModal'
 import { isZaddr, isTransparent } from 'common/utils/wallet'
+import { translate } from 'features/app/translations'
 
 const selectListClassName =
   'absolute top-full min-w-full mt-[3px] py-3 rounded-md bg-white border-gray-e6 shadow-16px text-gray-35 font-medium max-h-[200px] overflow-y-auto z-100 whitespace-normal'
@@ -57,7 +58,7 @@ function ViewTxIDButton({ txId }: { txId: string }): JSX.Element {
       onClick={handleClick}
     >
       <div className='flex items-center justify-center px-3 text-white text-h5-heavy'>
-        View TXID &nbsp;
+        {translate('viewTXID')}&nbsp;
         <i className='ml-[5px] fas fa-external-link-square-alt' />
       </div>
     </Button>
@@ -183,7 +184,7 @@ export default function PaymentModal(): JSX.Element {
       if (item.status === 'failed') {
         paymentStatus.push({
           txId: item.id,
-          status: 'Failed',
+          status: translate('failed'),
           message: item.error?.message,
           id: idx,
         })
@@ -193,7 +194,7 @@ export default function PaymentModal(): JSX.Element {
         )
         paymentStatus.push({
           txId: item?.result?.txid,
-          status: 'Success',
+          status: translate('success'),
           message: '',
           id: idx,
         })
@@ -243,13 +244,13 @@ export default function PaymentModal(): JSX.Element {
     setRecipientAddressMessage('')
     if (!recipientAddress) {
       setValidRecipientAddress(false)
-      setRecipientAddressMessage('Recipient address is required')
+      setRecipientAddressMessage(translate('recipientAddressIsRequired'))
       return
     }
 
     if (!isZaddr(recipientAddress) && !isTransparent(recipientAddress)) {
       setValidRecipientAddress(false)
-      setRecipientAddressMessage('Recipient address is invalid')
+      setRecipientAddressMessage(translate('recipientAddressIsInvalid'))
       return
     }
 
@@ -266,11 +267,11 @@ export default function PaymentModal(): JSX.Element {
           psl > allAddressAmounts.data?.[address]
         ) {
           errors.push(
-            `Address: ${address} failed. Insufficient shielded funds, have ${formatPrice(
-              allAddressAmounts.data?.[address],
-              '',
-              4,
-            )}, need ${formatPrice(amount + parseFloat(fee), '', 4)}`,
+            translate('validateAmountOfAddress', {
+              address,
+              amount: formatPrice(allAddressAmounts.data?.[address], '', 4),
+              requiredAmount: formatPrice(amount + parseFloat(fee), '', 4),
+            }),
           )
         }
         total += amount
@@ -283,7 +284,7 @@ export default function PaymentModal(): JSX.Element {
     }
 
     if (total < psl) {
-      setMessages(['The amount exceeds the selected balance'])
+      setMessages([translate('theAmountExceedsTheSelectedBalance')])
       return
     }
     setLoading(true)
@@ -347,10 +348,10 @@ export default function PaymentModal(): JSX.Element {
     setRecipientAddressMessage('')
     if (!recipientAddress) {
       setValidRecipientAddress(false)
-      setRecipientAddressMessage('Recipient address is required')
+      setRecipientAddressMessage(translate('recipientAddressIsRequired'))
     } else if (!isZaddr(recipientAddress) && !isTransparent(recipientAddress)) {
       setValidRecipientAddress(false)
-      setRecipientAddressMessage('Recipient address is invalid')
+      setRecipientAddressMessage(translate('recipientAddressIsInvalid'))
     }
   }, [recipientAddress])
 
@@ -428,7 +429,9 @@ export default function PaymentModal(): JSX.Element {
         <div className='flex items-center px-5 text-white text-h5-heavy'>
           <img src={checkIcon} className='py-3.5' alt='Check' />
           <span className='ml-[9px]'>
-            Confirm Payment of {formatPrice(psl, currencyName, 4)}
+            {translate('confirmPaymentButton', {
+              price: formatPrice(psl, currencyName, 4),
+            })}
           </span>
         </div>
       </Button>
@@ -444,7 +447,7 @@ export default function PaymentModal(): JSX.Element {
         disabled={isLoading}
       >
         <div className='flex items-center px-5 text-blue-3f text-h5-medium'>
-          <span className='text-sm '>Cancel</span>
+          <span className='text-sm '>{translate('cancel')}</span>
         </div>
       </Button>
     )
@@ -479,7 +482,7 @@ export default function PaymentModal(): JSX.Element {
       >
         <Tooltip
           classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-          content='Add Payment Source'
+          content={translate('addPaymentSource')}
           width={150}
           type='top'
         >
@@ -497,7 +500,9 @@ export default function PaymentModal(): JSX.Element {
       <span className='flex items-center ml-9px'>
         <Tooltip
           classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-          content={`The ${currencyName} address or addresses in your Pastel Wallet that you want to send the ${currencyName} from. This can include one or more transparent OR shielded addresses. In order for your transaction to be completely shielded, all source addresses and the address of the recipient must be shielded addresses.`}
+          content={translate('addPaymentSourceTooltipContent', {
+            currencyName,
+          })}
           width={250}
           type='top'
         >
@@ -515,7 +520,7 @@ export default function PaymentModal(): JSX.Element {
   ) => (
     <div className='mt-[19px] w-[390px]'>
       <Input
-        placeholder='Input recipient address'
+        placeholder={translate('inputRecipientAddress')}
         type='text'
         value={recipientAddress}
         onChange={handleRecipientAddressChange}
@@ -536,9 +541,10 @@ export default function PaymentModal(): JSX.Element {
     <div className='ml-1'>
       <Tooltip
         classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs top-[-62px]'
-        content={`The transaction fee you will pay for this ${currencyName} transaction. Most users should stick with the default transaction fee of ${
-          paytxfee || relayfee
-        } ${currencyName}. The transaction fee is required as an incentive for miners to include your transaction in the next Pastel block; a transaction with a low fee may take longer to be confirmed by the network.`}
+        content={translate('taxFeeTooltipContent', {
+          currencyName,
+          fee: paytxfee || relayfee,
+        })}
         width={250}
         type='left'
       >
@@ -554,7 +560,7 @@ export default function PaymentModal(): JSX.Element {
     <div className='ml-9px'>
       <Tooltip
         classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-        content={`The ${currencyName} address you want to send ${currencyName} coins to. This can either be a transparent address, where anyone can see the transaction in the Pastel Explorer (transparent addresses begin with the letters “Pt”), or it can be a shielded address, where no one will be able to see the amount or the address of the recipient (shielded addresses begin with the letters “ps”).`}
+        content={translate('addressRecipientTooltipContent', { currencyName })}
         width={250}
         type='top'
       >
@@ -570,7 +576,7 @@ export default function PaymentModal(): JSX.Element {
     <div className='w-1/3 h-10 flex items-center text-gray-2d'>
       <div className='text-gray-4a text-h5-heavy w-[75px]'>
         <Input
-          placeholder='fee'
+          placeholder={translate('fee')}
           type='number'
           pattern='[0-9.]*'
           value={fee}
@@ -581,7 +587,7 @@ export default function PaymentModal(): JSX.Element {
       </div>{' '}
       &nbsp;
       <div className='text-gray-71 text-h5-medium'>
-        {currencyName} transaction fee
+        {translate('pslTransactionFee', { currencyName })}
       </div>
       {renderTaxFeeIntroIcon()}
     </div>
@@ -604,7 +610,7 @@ export default function PaymentModal(): JSX.Element {
       <div className='flex w-1/3 pl-3 mr-5'>
         <Select
           append='%'
-          label='of your balance'
+          label={translate('ofYourBalance')}
           labelClasses='text-base font-normal text-gray-4a mr-2 absolute left-16'
           className='text-gray-2d w-264px'
           inputClassName='text-base font-normal text-gray-4a pl-0'
@@ -624,7 +630,7 @@ export default function PaymentModal(): JSX.Element {
 
   const renderTransactionStatusTitle = () => (
     <th className='text-left sticky bg-white z-30 top-0 whitespace-nowrap pr-3'>
-      <div className='ml-15px'>Transaction Status</div>
+      <div className='ml-15px'>{translate('transactionStatus')}</div>
     </th>
   )
 
@@ -632,7 +638,9 @@ export default function PaymentModal(): JSX.Element {
     <thead>
       <tr className='text-gray-4a font-extrabold font-base border-b border-opacity-50 pb-4 border-gray-a6 h-12 text-sm md:text-base'>
         {renderTransactionStatusTitle()}
-        <th className='text-left sticky bg-white z-30 top-0 px-2'>TXID</th>
+        <th className='text-left sticky bg-white z-30 top-0 px-2'>
+          {translate('TXID')}
+        </th>
         <th className='w-[170px] text-left sticky bg-white z-30 top-0'></th>
       </tr>
     </thead>
@@ -654,15 +662,17 @@ export default function PaymentModal(): JSX.Element {
             <td
               className={cn(
                 'py-1 pl-2 text-left px-2',
-                result.status === 'Success' ? 'break-all' : 'break-words',
+                result.status === translate('success')
+                  ? 'break-all'
+                  : 'break-words',
               )}
             >
-              {result.status === 'Success'
+              {result.status === translate('success')
                 ? result.txId
-                : `Opid ${txId} Failed. ${message}`}
+                : translate('errorTransactionMessage', { txId, message })}
             </td>
             <td className='py-1 text-right'>
-              {result.status === 'Success' ? (
+              {result.status === translate('success') ? (
                 <ViewTxIDButton txId={txId} />
               ) : null}
             </td>
@@ -679,9 +689,9 @@ export default function PaymentModal(): JSX.Element {
         handleClose={handleCloseModal}
         title={
           !isComplete && !isLoading
-            ? 'Payment'
+            ? translate('payment')
             : isComplete
-            ? 'Payment Result'
+            ? translate('paymentResult')
             : ''
         }
         classNames={cn('max-w-4xl', isLoading && 'w-[520px]')}
@@ -696,29 +706,30 @@ export default function PaymentModal(): JSX.Element {
           </div>
         ) : isLoading ? (
           <div className='text-gray-800 text-2xl font-extrabold text-center pb-5px pr-8'>
-            Please wait...This could take a while
+            {translate('paymentLoadingMessage')}
           </div>
         ) : (
           <>
             {renderPaymentHeader()}
             <div className='pt-6px text-gray-a0 text-h6-leading-20'>
-              {formatPrice(
-                totalBalance - psl < 0 ? 0 : totalBalance - psl,
-                currencyName,
-                4,
-              )}{' '}
-              balance remaining after payment
+              {translate('balanceRemainingAfterPayment', {
+                price: formatPrice(
+                  totalBalance - psl < 0 ? 0 : totalBalance - psl,
+                  currencyName,
+                  4,
+                ),
+              })}
             </div>
             <div>
               <div className='pt-[23px] flex items-center text-gray-4a text-h5-heavy'>
-                Address of Recipient
+                {translate('addressOfRecipient')}
                 {renderAddressRecipientIntroIcon()}
               </div>
               {renderInputRecipientAddress(recipientAddressIsValid)}
             </div>
             <div className='mt-9'>
               <div className='flex border-b-[1px] border-gray-ec pb-[13px] text-gray-4a text-h5-heavy'>
-                Payment Source
+                {translate('paymentSource')}
                 {renderPaymentSourceIntroIcon()}
                 {renderAddPaymentSourceIcon()}
               </div>

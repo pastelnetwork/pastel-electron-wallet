@@ -11,6 +11,7 @@ import { useWalletScreenContext } from './walletScreen.context'
 import SelectPaymentSourceAmount from './SelectPaymentSourceAmount'
 import { formatPrice, timeAgo } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
+import { translate } from 'features/app/translations'
 
 const loadingCell = <RectangleLoader className='h-2.5 mr-3' />
 
@@ -39,7 +40,7 @@ function PDFIcon({
         type='top'
         width={130}
         padding={5}
-        content='Open Private Key'
+        content={translate('openPrivateKey')}
         classnames='py-2 text-gray-a0'
       >
         <FilePDFIcon size={20} className='text-gray-88 cursor-pointer' />
@@ -73,7 +74,7 @@ function QRCodeIcon({
         type='top'
         width={130}
         padding={5}
-        content='Open Address QR'
+        content={translate('openAddressQR')}
         classnames='py-2 text-gray-a0'
       >
         <QRCode size={20} />
@@ -172,7 +173,7 @@ export default function AddressesTable({
     {
       key: 'address',
       colClasses: 'w-[35%] text-h6 leading-5 font-normal',
-      name: 'Address name',
+      name: translate('addressName'),
       headerColClasses: 'mx-30px',
       custom: (address: string, row: TRow) => (
         <div className='flex items-center mx-30px'>
@@ -207,7 +208,7 @@ export default function AddressesTable({
     },
     {
       key: 'time',
-      name: 'Last Activity',
+      name: translate('lastActivity'),
       colClasses: 'w-190px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (time: number) =>
         isLoadingAddresses || lastActivityTimes.isLoading ? (
@@ -220,7 +221,7 @@ export default function AddressesTable({
     },
     {
       key: 'address',
-      name: 'Address QR',
+      name: translate('addressQR'),
       colClasses:
         'min-w-80px w-132px 1500px:w-244px text-h6 leading-5 font-normal text-center',
       custom: (_: void, row: TRow) =>
@@ -238,7 +239,7 @@ export default function AddressesTable({
     },
     {
       key: 'address',
-      name: 'Keys',
+      name: translate('keys'),
       colClasses:
         'min-w-130px w-176px 1500px:w-244px flex-grow-0 text-h6 leading-5 font-normal',
       custom: (value: string) =>
@@ -246,7 +247,9 @@ export default function AddressesTable({
           loadingCell
         ) : (
           <div className='flex items-center'>
-            <div className='text-gray-71 text-h5-medium'>private key</div>
+            <div className='text-gray-71 text-h5-medium'>
+              {translate('privateKey').toLowerCase()}
+            </div>
             <PDFIcon
               value={value}
               setCurrentAddress={setCurrentAddress}
@@ -257,7 +260,7 @@ export default function AddressesTable({
     },
     {
       key: 'amount',
-      name: 'Balance',
+      name: translate('balance'),
       colClasses: 'w-131px 1500px:w-244px text-h6 leading-5 font-normal',
       custom: (amount?: number) =>
         isLoadingAddresses || isLoadingAmounts ? (

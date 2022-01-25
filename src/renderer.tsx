@@ -15,8 +15,19 @@ import { rendererSetup, RendererSetupHooks } from './features/app/rendererSetup'
 import { QueryClientProvider } from 'react-query'
 import { queryClient } from './common/utils/queryClient'
 import Routes from 'common/routes/Routes'
+import { initTranslation } from 'features/app/translations'
 
 rendererSetup()
+initTranslation()
+  .then(() => {
+    // noop
+  })
+  .catch(() => {
+    // noop
+  })
+  .finally(() => {
+    // noop
+  })
 
 function App() {
   return (

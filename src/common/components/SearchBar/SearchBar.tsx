@@ -10,6 +10,7 @@ import Banksy82 from '../../assets/images/banksy82_avatar.png'
 import Banksyyyy from '../../assets/images/banksyyyy_avatar.png'
 import ResultSearchRow from './ResultSearchRow'
 import * as ROUTES from 'common/utils/constants/routes'
+import { translate } from 'features/app/translations'
 
 export default function SearchBar(): JSX.Element {
   const history = useHistory()
@@ -34,27 +35,27 @@ export default function SearchBar(): JSX.Element {
   const categories: Array<TSearchTagProps> = [
     {
       id: uuidv4(),
-      label: 'NFTs',
+      label: translate('NFTs'),
       type: 'nfts',
     },
     {
       id: uuidv4(),
-      label: 'Keywords',
+      label: translate('keywords'),
       type: 'keyword',
     },
     {
       id: uuidv4(),
-      label: 'Creators',
+      label: translate('creators'),
       type: 'creators',
     },
     {
       id: uuidv4(),
-      label: 'Users',
+      label: translate('users'),
       type: 'users',
     },
     {
       id: uuidv4(),
-      label: 'Forum Post',
+      label: translate('forumPost'),
       type: 'forum',
     },
   ]
@@ -155,8 +156,8 @@ export default function SearchBar(): JSX.Element {
           onKeyDown={onKey}
           placeholder={
             inputFocused
-              ? 'Search NFT, Creator, User, etc'
-              : 'Search creator or NFT'
+              ? translate('searchNFTCreatorUser')
+              : translate('searchCreatorOrNFT')
           }
           onFocus={() => {
             setInputFocused(true)
@@ -196,7 +197,7 @@ export default function SearchBar(): JSX.Element {
           <div className='z-50 bg-white border border-line rounded-b-10px shadow-xl'>
             {selectedCategory === undefined ? (
               <div className='px-6 pt-4 pb-[46px]'>
-                <div className='text-base'>I{"'"}m looking for</div>
+                <div className='text-base'>{translate('imLookingFor')}</div>
                 <div className='flex text-gray-4a text-medium mt-2'>
                   {categories.map(category => {
                     const label: string = category.label || ''
@@ -214,7 +215,9 @@ export default function SearchBar(): JSX.Element {
                   })}
                 </div>
                 <div className='mt-6'>
-                  <div className='text-gray-71 text-base'>Recent searches</div>
+                  <div className='text-gray-71 text-base'>
+                    {translate('recentSearches')}
+                  </div>
                   <div className='mt-3'>
                     {recent_searchs.map(item => (
                       <RecentSearchItem
@@ -232,7 +235,7 @@ export default function SearchBar(): JSX.Element {
                 <div className='flex py-[9px] bg-gray-33 rounded px-6 items-center'>
                   <Search className='text-white mr-2.5' size={16} />
                   <div className='text-base font-medium text-gray-f8'>
-                    Bans — Search Creators
+                    Bans — {translate('searchCreators')}
                   </div>
                 </div>
                 <div className='px-6 pt-[13px] pb-[29px] h-[292px] overflow-y-auto'>

@@ -64,9 +64,7 @@ export default function SelectList({
     <ul {...getMenuProps()} className={cn(customListClassName, listClassName)}>
       {filteredOptions.map((item, index) => {
         const isSelected = selectedItem === item || highlightedIndex === index
-
         const { label } = item
-
         let pos = 0
 
         const content =
@@ -83,7 +81,9 @@ export default function SelectList({
                   pos += part.length + inputValue.length
 
                   return (
-                    <React.Fragment key={`${item.value}${item.value}`}>
+                    <React.Fragment
+                      key={`highlight-${text}-${item.label}${item.value}`}
+                    >
                       {matched && (
                         <span className={highlightClassName}>{matched}</span>
                       )}
@@ -99,7 +99,7 @@ export default function SelectList({
               index,
               item,
             })}
-            key={item.value}
+            key={`selectList-${item.value}${item.label}`}
             className={cn(
               'w-full py-2 px-4 text-gray-71 cursor-pointer',
               isSelected && 'bg-gray-f7',

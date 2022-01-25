@@ -12,6 +12,7 @@ import { encode } from 'common/utils/encryption'
 import { calcPasswordStrength, randomPassword } from 'common/utils/passwords'
 import { readUsersInfo, writeUsersInfo } from 'common/utils/User'
 import { changePastelIdPassword } from 'api/pastel-rpc'
+import { translate } from 'features/app/translations'
 
 interface NewPasswordFormInput {
   value: string
@@ -52,10 +53,10 @@ export default function NewPassword(): JSX.Element {
       pwdStrength === PasswordStrengths.Good ||
       pwdStrength === PasswordStrengths.Excellent
     ) {
-      return 'Super secure password'
+      return translate('superSecurePassword')
     }
 
-    return 'At least 8 characters and at least 2 numbers'
+    return translate('atLeast8CharactersAndAtLeast2numbers')
   }
 
   const handleGeneratePassword = useCallback(() => {
@@ -75,7 +76,7 @@ export default function NewPassword(): JSX.Element {
   const handleChangePassword = useCallback(async () => {
     setErrorMessage('')
     if (newPassword.value !== repeatPassword.value) {
-      setErrorMessage("The passwords don't match.")
+      setErrorMessage(translate('thePasswordsDontMatch'))
       return
     }
     setLoading(true)
@@ -133,7 +134,7 @@ export default function NewPassword(): JSX.Element {
           className='text-link font-medium text-base bg-transparent border-none'
           onClick={handleGeneratePassword}
         >
-          Generate a Secure Password for Me (recommended!)
+          {translate('generateASecurePasswordForMe')}
         </button>
       </div>
     )
@@ -143,7 +144,7 @@ export default function NewPassword(): JSX.Element {
     return (
       <div className='mt-6'>
         <Link className='text-link' to={ROUTES.LOGIN}>
-          <Button className='w-full'>Login</Button>
+          <Button className='w-full'>{translate('login')}</Button>
         </Link>
       </div>
     )
@@ -152,11 +153,13 @@ export default function NewPassword(): JSX.Element {
   return (
     <div className='my-9 mx-60px'>
       {isSuccess ? <CloseButton gotoUrl={ROUTES.LOGIN} /> : null}
-      <div className='text-h1-heavy text-gray-2d'>Set New Password</div>
+      <div className='text-h1-heavy text-gray-2d'>
+        {translate('setNewPassword')}
+      </div>
       {isSuccess ? (
         <div className='mt-8'>
           <div className='text-text-77 text-h4'>
-            Your password has been reset successfully.
+            {translate('yourPasswordHasBeenResetSuccessfully')}
           </div>
           {renderLoginButton()}
         </div>
@@ -164,7 +167,7 @@ export default function NewPassword(): JSX.Element {
         <>
           <div className='mt-1'>
             <div className='text-text-77 text-h4'>
-              Make sure to save your password in a password manager!
+              {translate('makeSureToSaveYourPasswordInAPasswordManager')}
             </div>
           </div>
           <form className='mt-7' onSubmit={onSubmit}>
@@ -173,14 +176,16 @@ export default function NewPassword(): JSX.Element {
             ) : null}
             <InputPassword
               type='password'
-              label='New Password'
+              label={translate('newPassword')}
               labelClassName='text-lg font-medium text-gray-71 pb-1.5'
               value={newPassword.value}
               onChange={handleNewPasswordChange}
               showPassword={showPassword}
               ref={null}
               errorMessage={
-                newPassword.hasError ? 'Please enter a valid password' : null
+                newPassword.hasError
+                  ? translate('pleaseEnterAValidPassword')
+                  : null
               }
               hintClassName='mt-3 text-sm font-medium'
               hint={getPasswordHint()}
@@ -188,13 +193,15 @@ export default function NewPassword(): JSX.Element {
             <PasswordStrength strength={pwdStrength} />
             <InputPassword
               type='password'
-              label='Repeat New Password'
+              label={translate('repeatNewPassword')}
               labelClassName='text-lg font-medium text-gray-71 pb-1.5 mt-[25px]'
               value={repeatPassword.value}
               onChange={handleRepeatNewPasswordChange}
               ref={null}
               errorMessage={
-                repeatPassword.hasError ? 'Please enter a valid password' : null
+                repeatPassword.hasError
+                  ? translate('pleaseEnterAValidPassword')
+                  : null
               }
             />
             <Button
@@ -208,7 +215,7 @@ export default function NewPassword(): JSX.Element {
                 isLoading
               }
             >
-              Confirm
+              {translate('Confirm')}
             </Button>
             {renderGenerateSecurePasswordButton()}
           </form>

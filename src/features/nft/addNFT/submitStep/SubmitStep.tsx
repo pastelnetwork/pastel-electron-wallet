@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
+import { useToggle } from 'react-use'
+
 import { TNFTData, TAddNFTState, TImage } from '../AddNFT.state'
 import ModalLayout from '../common/ModalLayout'
 import { useImagePreview } from '../previewStep/PreviewStep.service'
 import { ArrowSlim } from 'common/components/Icons/ArrowSlim'
-import { useToggle } from 'react-use'
 import FullScreenImage from 'common/components/FullScreenImage/FullScreenImage'
 import FullScreenButton from '../common/fullScreenButton/FullScreenButton'
 import Toggle from 'common/components/Toggle'
@@ -11,6 +12,7 @@ import { formatFileSize, formatNumber } from 'common/utils/format'
 import ImageShadow from '../common/ImageShadow'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { PreviewIco } from 'common/components/Icons'
+import { translate } from 'features/app/translations'
 
 function InfoPair({ title, value }: { title: string; value: string }) {
   return (
@@ -80,7 +82,7 @@ export default function SubmitStep({
         <ArrowSlim to='left' size={14} />
       </button>
       <button type='button' className='btn btn-primary px-3' onClick={onSubmit}>
-        Submit and proceed to fee payment
+        {translate('submitAndProceedToFeePayment')}
       </button>
     </div>
   )
@@ -88,8 +90,10 @@ export default function SubmitStep({
   const renderImageSize = () => (
     <div className='bg-gray-f8 rounded-lg py-4 mt-3'>
       <div className='flex text-gray-71 font-medium text-base'>
-        <div className='pl-5 w-36 text-gray-71'>Image size</div>
-        <div className='text-gray-71'>Estimated registration fee</div>
+        <div className='pl-5 w-36 text-gray-71'>{translate('imageSize')}</div>
+        <div className='text-gray-71'>
+          {translate('estimatedRegistrationFee')}
+        </div>
       </div>
       <div className='flex text-gray-2d font-extrabold mt-3'>
         <div className='pl-5 w-36 text-gray-4a'>
@@ -108,7 +112,9 @@ export default function SubmitStep({
 
   const renderThumbnailPreview = () => (
     <div className='mt-5'>
-      <div className='font-medium text-gray-71 mb-3'>Thumbnail preview</div>
+      <div className='font-medium text-gray-71 mb-3'>
+        {translate('thumbnailPreview')}
+      </div>
       <div className='w-48 h-48 relative'>
         {croppedImage && (
           <>
@@ -116,14 +122,14 @@ export default function SubmitStep({
             <img
               src={state.thumbnail || croppedImage.src}
               className='rounded w-full h-full relative'
-              alt='Pastel Network'
+              alt={translate('thumbnailPreview')}
             />
           </>
         )}
       </div>
       {croppedImage?.error && (
         <div className='text-sm text-error font-medium mt-3'>
-          Error text error text
+          {croppedImage?.error}
         </div>
       )}
     </div>
@@ -146,7 +152,7 @@ export default function SubmitStep({
       >
         <PreviewIco size={20} className='inline-block mr-4 text-white' />
         <span className='text-white text-xs font-medium inline-block whitespace-nowrap'>
-          Preview how it will look
+          {translate('previewHowItWillLook')}
         </span>
       </button>
     </div>
@@ -154,28 +160,39 @@ export default function SubmitStep({
 
   const renderGreenNFT = () => (
     <div className='flex items-center'>
-      <div className='text-gray-71 mr-3'>GreenNFT</div>
+      <div className='text-gray-71 mr-3'>{translate('greenNFT')}</div>
       <Toggle selected={nftData.green} toggleHandler={handleGreenNFTChange} />
     </div>
   )
 
   const renderSubmitStepBody = () => (
     <div className='space-y-14px'>
-      <InfoPair title='Title' value={nftData.title} />
+      <InfoPair title={translate('title')} value={nftData.title} />
       {nftData.hashtags.length > 0 && (
         <InfoPair
-          title='Keyword Hashtags'
+          title={translate('keywordHashtags')}
           value={nftData.hashtags.join(', ')}
         />
       )}
-      {nftData.series && <InfoPair title='Series' value={nftData.series} />}
-      <InfoPair title='Copies' value={`1 of ${nftData.copies}`} />
-      <InfoPair title='Perpetual Royalty' value={`${nftData.royalty}%`} />
+      {nftData.series && (
+        <InfoPair title={translate('series')} value={nftData.series} />
+      )}
+      <InfoPair
+        title={translate('copies')}
+        value={translate('copiesValue', { number: 1, total: nftData.copies })}
+      />
+      <InfoPair
+        title={translate('perpetualRoyalty')}
+        value={`${nftData.royalty}%`}
+      />
       {nftData.website && (
-        <InfoPair title="Creator's website" value={nftData.website} />
+        <InfoPair
+          title={translate('creatorsWebsite')}
+          value={nftData.website}
+        />
       )}
       {nftData.video && (
-        <InfoPair title='Creation video' value={nftData.video} />
+        <InfoPair title={translate('creationVideo')} value={nftData.video} />
       )}
       {renderGreenNFT()}
     </div>
@@ -183,9 +200,9 @@ export default function SubmitStep({
 
   return (
     <ModalLayout
-      title='Submit NFT'
+      title={translate('submitNFT')}
       titleClass='mb-3 text-gray-71'
-      subtitle='Description'
+      subtitle={translate('submitNFTDescription')}
       step={4}
       leftColumnWidth={image.maxWidth}
       leftColumnContent={
@@ -199,7 +216,7 @@ export default function SubmitStep({
             {nftData.description && (
               <div>
                 <div className='text-gray-71 font-normal text-sm mt-4'>
-                  Description
+                  {translate('description')}
                 </div>
                 <div className='text-gray-4a font-medium text-sm overflow-auto max-h-[60px]'>
                   {nftData.description}

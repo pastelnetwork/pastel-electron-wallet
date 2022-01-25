@@ -4,6 +4,7 @@ import { LongArrow } from 'common/components/Icons'
 import { formatNumber } from '../../common/utils/format'
 import { TTransactionType } from 'types/rpc'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
 
 export type TTransactionItemProps = {
   type: TTransactionType
@@ -21,7 +22,9 @@ export default function TransactionItem({
   const renderTransactionInfo = () => (
     <div className='mt-0.5 w-full'>
       <div className='text-gray-4a text-sm font-medium mb-1'>
-        {type !== TTransactionType.SEND ? 'Last Received' : 'Last Sent'}
+        {type !== TTransactionType.SEND
+          ? translate('lastReceived')
+          : translate('lastSent')}
       </div>
       <div className='flex justify-between'>
         <div className='text-gray-a0 text-sm'>{date}</div>

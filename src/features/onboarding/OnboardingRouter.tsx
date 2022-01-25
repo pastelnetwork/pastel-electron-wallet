@@ -15,6 +15,7 @@ import { useFirstPastelIdWithTxIdAndConfirmed } from '../../api/pastel-rpc'
 import history from '../../common/utils/history'
 import OnboardingStoreProvider from './OnboardingStoreProvider'
 import { getAutoSignIn } from 'common/utils/User'
+import { translate } from 'features/app/translations'
 
 export default function OnboardingRouter(): JSX.Element {
   const {
@@ -36,11 +37,15 @@ export default function OnboardingRouter(): JSX.Element {
     },
   })
   if (isLoading) {
-    return <LoadingScreen message='Loading...' />
+    return <LoadingScreen message={`${translate('loading')}...`} />
   }
 
   if (error) {
-    return <p>Failed to load PastelId: ${error.message}</p>
+    return (
+      <p>
+        {translate('failedToLoadPastelId')}: {error.message}
+      </p>
+    )
   }
 
   const renderRoutes = () => {

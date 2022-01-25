@@ -1,10 +1,11 @@
-import * as React from 'react'
+import React from 'react'
 
 import playIco from 'common/assets/icons/ico-arrow.svg'
 import image from 'common/assets/images/video-placeholder.jpeg'
 import { Button } from 'common/components/Buttons'
 import Link from 'common/components/Link'
 import * as ROUTES from 'common/utils/constants/routes'
+import { translate } from 'features/app/translations'
 
 export default function OnboardingWelcome(): JSX.Element {
   const renderRegisterAccountButton = () => {
@@ -12,7 +13,7 @@ export default function OnboardingWelcome(): JSX.Element {
       <div className='mt-10 flex flex-col items-center'>
         <Link to={ROUTES.SIGN_UP}>
           <Button className='w-96 font-extrabold text-base'>
-            Register Account
+            {translate('registerAccountButton')}
           </Button>
         </Link>
       </div>
@@ -26,7 +27,7 @@ export default function OnboardingWelcome(): JSX.Element {
           variant='transparent'
           className='w-96 bg-white border border-link text-link font-medium text-base'
         >
-          Take a Tour First
+          {translate('takeATourFirstButton')}
         </Button>
       </div>
     )
@@ -35,9 +36,9 @@ export default function OnboardingWelcome(): JSX.Element {
   const renderRestoreAccountButton = () => {
     return (
       <div className='mt-4 text-center text-base font-normal text-gray-a0'>
-        Already have an account?{' '}
+        {translate('alreadyHaveAnAccount')}{' '}
         <Link to={`${ROUTES.PASSWORD_RECOVERY}?isRestore=true`}>
-          Restore account from backup
+          {translate('restoreAccountFromBackup')}
         </Link>
       </div>
     )
@@ -56,10 +57,10 @@ export default function OnboardingWelcome(): JSX.Element {
   return (
     <div className='w-649px mx-14 my-11'>
       <div className='text-gray-2d text-h1 font-extrabold leading-10 text-center'>
-        Welcome to Pastel NFT
+        {translate('welcomeTitle')}
       </div>
       <div className='font-medium text-2xl text-gray-77 mt-2 text-center'>
-        Let’s start!
+        {translate('welcomeSubTitle')}
       </div>
       <div className='relative mt-8'>
         <img

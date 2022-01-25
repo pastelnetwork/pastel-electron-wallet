@@ -13,6 +13,7 @@ import {
   mockAvatarImagesList,
   mockNamesList,
 } from 'features/members/data'
+import { translate } from 'features/app/translations'
 
 import styles from './NFTMarketFeed.module.css'
 
@@ -40,27 +41,27 @@ export default function NFTMarketFeed(): JSX.Element {
   const [selectedItem, setSelectedItem] = useState(Tabs.feed)
 
   const mockCategories: TOption[] = [
-    { value: 'all', label: 'All' },
-    { value: 'illustration', label: 'Illustration' },
+    { value: 'all', label: translate('all') },
+    { value: 'illustration', label: translate('illustration') },
   ]
 
   const mockStatus: TOption[] = [
-    { value: 'all', label: 'All' },
-    { value: 'auctions', label: 'Auction' },
-    { value: 'makeAnOffers', label: 'Make-an-Offer' },
-    { value: 'fixedPrice', label: 'Fixed-Price' },
+    { value: 'all', label: translate('all') },
+    { value: 'auctions', label: translate('auction') },
+    { value: 'makeAnOffers', label: translate('makeAnOffer') },
+    { value: 'fixedPrice', label: translate('fixedPrice') },
   ]
 
   const mockTime: TOption[] = [
-    { value: 'Future', label: 'Future' },
-    { value: 'Present', label: 'Present' },
-    { value: 'Past', label: 'Past' },
+    { value: 'Future', label: translate('future') },
+    { value: 'Present', label: translate('present') },
+    { value: 'Past', label: translate('past') },
   ]
 
   const mockRareness: TOption[] = [
-    { value: 'High', label: 'High' },
-    { value: 'Medium', label: 'Medium' },
-    { value: 'Low', label: 'Low' },
+    { value: 'High', label: translate('high') },
+    { value: 'Medium', label: translate('medium') },
+    { value: 'Low', label: translate('low') },
   ]
 
   const mockNFTs: TNFTCard[] = Array.from({ length: 6 }).map((_, i) => {
@@ -73,7 +74,7 @@ export default function NFTMarketFeed(): JSX.Element {
       imageSrc: mockDataImagesList[i].url,
       avatarSrc: mockAvatarImagesList[i],
       author: mockNamesList[i],
-      copies: `${i + 1} of 6`,
+      copies: translate('copiesValue', { number: i + 1, total: 7 }),
       diamond: `${Math.floor(Math.random() * 100)}%`,
       title: mockDataImagesList[i].title,
       leftTime: dayjs().add(3, 'day').valueOf(),
@@ -92,25 +93,25 @@ export default function NFTMarketFeed(): JSX.Element {
 
   const filterOptions = [
     {
-      label: 'Categories',
+      label: translate('categories'),
       selected: category,
       onChange: setCategory,
       options: mockCategories,
     },
     {
-      label: 'Status',
+      label: translate('Status'),
       selected: status,
       onChange: setStatus,
       options: mockStatus,
     },
     {
-      label: 'Time',
+      label: translate('time'),
       selected: time,
       onChange: setTime,
       options: mockTime,
     },
     {
-      label: 'Rareness',
+      label: translate('rareness'),
       selected: rareness,
       onChange: setRareness,
       options: mockRareness,
@@ -122,11 +123,14 @@ export default function NFTMarketFeed(): JSX.Element {
     range,
   ])
 
-  const data = [{ label: 'Feed' }, { label: 'Statistics' }]
+  const data = [
+    { label: translate('feed') },
+    { label: translate('statistics') },
+  ]
 
   const breadcrumbs: TBreadcrumb[] = [
     {
-      label: 'Market',
+      label: translate('market'),
       route: '#',
     },
     {
@@ -156,7 +160,7 @@ export default function NFTMarketFeed(): JSX.Element {
     <div className='flex'>
       <div className='flex h-full items-center justify-end'>
         <p className='text-base font-medium px-22px text-gray-4a'>
-          Price range:
+          {translate('priceRange')}:
         </p>
         <Slider
           min={0}
@@ -183,7 +187,7 @@ export default function NFTMarketFeed(): JSX.Element {
   return (
     <div className=''>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
-      <PageHeader title='Market' routes={routes} />
+      <PageHeader title={translate('market')} routes={routes} />
       <div className='wrapper px-33px py-30px'>
         {/* Filters */}
         <div className='flex justify-between px-27px pb-26px'>

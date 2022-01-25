@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react'
 import Select, { TOption } from '../Select/Select'
 import MultiToggleSwitch, { TMultiToggle } from '../MultiToggleSwitch'
 
+import { translate } from 'features/app/translations'
+
 export type TPageHeaderSortByOptions = {
   placeholder: string
   onOptionChange: (option: TOption | null) => void
@@ -59,7 +61,7 @@ function PageHeader({
           {sortByOptions?.length && (
             <div className='flex items-center'>
               <p className={`pr-4 text-h5 ${sortByTextClassName}`}>
-                {sortByText || 'Sort by'}
+                {sortByText || translate('sortBy')}
               </p>
               <div className='flex space-x-6'>
                 {sortByOptions.map(
