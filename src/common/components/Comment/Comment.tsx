@@ -1,8 +1,10 @@
 import React from 'react'
+import cn from 'classnames'
+
 import Avatar from '../Avatar'
 import { Input } from '../Inputs'
 import Like from '../Like'
-import cn from 'classnames'
+import { translate } from 'features/app/translations'
 
 export type TComment = {
   avatar: string
@@ -32,7 +34,8 @@ function Comment({
         <Like count={likes} />
       </div>
       <p className='text-14px text-gray-71 font-medium mb-3'>
-        Commented on <span className='text-link'>{commentedOn}</span> {when}
+        {translate('commentedOn')}{' '}
+        <span className='text-link'>{commentedOn}</span> {when}
       </p>
       <p className='font-medium mb-6'>{comment}</p>
       <Input placeholder='Reply' className='w-full' />

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { mockNFTs, typesData, rarenessesData } from './mockData'
+
+import { mockNFTs } from './mockData'
 import Select, { TOption } from 'common/components/Select/Select'
 import NFTCard, { NFTCardVariantSize } from 'common/components/NFTCard'
+import { translate } from 'features/app/translations'
 
 export type TKeywordResultProps = {
   searchKey: string
@@ -11,6 +13,16 @@ export type TKeywordResultProps = {
 export default function KeywordResult({
   searchKey,
 }: TKeywordResultProps): JSX.Element {
+  const typesData = [
+    { value: 'ALL', label: translate('all') },
+    { value: 'Auctions', label: translate('auction') },
+  ]
+
+  const rarenessesData = [
+    { value: 'ALL', label: translate('all') },
+    { value: 'High', label: translate('high') },
+  ]
+
   const keywords = [
     {
       id: uuidv4(),
@@ -70,14 +82,14 @@ export default function KeywordResult({
         <Select
           options={typesData}
           selected={types}
-          label='Type:'
+          label={`${translate('type')}:`}
           className='bg-white w-[171px] mr-4'
           onChange={setTypes}
         />
         <Select
           options={rarenessesData}
           selected={rareness}
-          label='Rareness:'
+          label={`${translate('rareness')}:`}
           className='bg-white w-[171px] mr-[19px]'
           onChange={setRareness}
         />

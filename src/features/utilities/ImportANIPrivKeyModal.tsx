@@ -7,12 +7,14 @@ import React, {
 } from 'react'
 import cn from 'classnames'
 import { toast } from 'react-toastify'
+import parse from 'html-react-parser'
 
 import { walletRPC } from 'api/pastel-rpc'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
 import { closeImportANIPrivKeyModal } from './index'
 import { Button } from 'common/components/Buttons'
+import { translate } from 'features/app/translations'
 
 import congratulations from 'common/assets/icons/ico-congratulations.svg'
 
@@ -34,7 +36,7 @@ const ImportButton = memo(function ImportButton({
       childrenClassName='w-full'
     >
       <div className='flex items-center justify-center'>
-        <div className='text-white text-h5-heavy'>Import</div>
+        <div className='text-white text-h5-heavy'>{translate('import')}</div>
       </div>
     </Button>
   )
@@ -55,7 +57,7 @@ function CancelButton(): JSX.Element {
       onClick={onClick}
     >
       <div className='flex items-center justify-center'>
-        <div className='text-blue-3f text-h5-medium'>Cancel</div>
+        <div className='text-blue-3f text-h5-medium'>{translate('cancel')}</div>
       </div>
     </Button>
   )
@@ -76,7 +78,7 @@ const InputControl = memo(function InputControl({
 
   return (
     <textarea
-      placeholder='ANI Private Keys'
+      placeholder={translate('ANIPrivateKeys')}
       className={cn(
         'w-full rounded shadow-2px py-2 px-4 outline-none h-10 resize-none text-base text-gray-4a font-normal leading-6 transition duration-300 focus:border focus:border-blue-3f active:border-blue-3f min-h-[120px]',
         message && 'border border-red-fe',
@@ -111,13 +113,13 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
     setComplete(false)
 
     if (!key) {
-      setMessage('ANI Private Keys is required.')
+      setMessage(translate('ANIPrivateKeysIsRequired'))
       return
     }
 
     let keys = key.replace(/\n/g, ' ').split(' ')
     if (!keys || keys.length === 0) {
-      setMessage('No ANI keys were specified, so none were imported')
+      setMessage(translate('noANIKeysWereSpecified'))
       return
     }
 
@@ -152,11 +154,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
           />
         </div>
         <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
-          The import process for the private keys has started.
-          <br />
-          This will take a long time, up to 1 hour!
-          <br />
-          Please be patient!
+          {parse(translate('importPrivateKeySuccessMessage'))}
         </div>
       </div>
     )
@@ -167,7 +165,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
       isOpen={importANIPrivKeyModalIsOpen}
       handleClose={handleCloseModal}
       classNames='max-w-[700px]'
-      title={!isComplete ? 'Import ANI (Animecoin) Private Keys' : ''}
+      title={!isComplete ? translate('importANIAnimecoinPrivateKeys') : ''}
     >
       <div className='pr-8'>
         {isComplete ? (
@@ -175,9 +173,7 @@ export default function ImportANIPrivKeyModal(): JSX.Element | null {
         ) : (
           <>
             <div className='mt-6'>
-              Please paste your ANI private keys here, one line per key. <br />{' '}
-              (NOTE: Don&apos;t use this unless you participated in the original
-              fork of Animecoin!)
+              {parse(translate('importANIPrivateKeysDescription'))}
             </div>
             <div className='mt-3'>
               <InputControl

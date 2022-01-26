@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
 import { closeExportPrivKeyModal } from './index'
 import { walletRPC } from 'api/pastel-rpc'
+import { translate } from 'features/app/translations'
 
 const TextareaControl = memo(function TextareaControl({
   exportedPrivKeys,
@@ -80,13 +81,10 @@ export default function ExportPrivKeyModal(): JSX.Element | null {
       isOpen={exportPrivKeyModalIsOpen}
       handleClose={handleCloseModal}
       classNames='max-w-[700px]'
-      title='Your Wallet Private Keys'
+      title={translate('yourWalletPrivateKeys')}
     >
       <div className='pr-8 pb-2'>
-        <div className='mt-6'>
-          These are all the private keys in your wallet. Please store them
-          carefully!
-        </div>
+        <div className='mt-6'>{translate('exportPrivateKeyDescription')}</div>
         <TextareaControl
           exportedPrivKeys={exportedPrivKeys}
           setExportedPrivKeys={setExportedPrivKeys}

@@ -91,4 +91,5 @@ CroppingStep.defaultProps = {
   fixedHeight: false,
   contentClass: '',
   rightColumnClass: '',
+  titleWidth: undefined,
 }

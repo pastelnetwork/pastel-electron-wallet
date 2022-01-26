@@ -75,6 +75,16 @@ function ProfileCard({
     </div>
   )
 
+  const renderCopyButton = () => (
+    <button type='button' onClick={handleCopy} className='cursor-pointer'>
+      <img
+        src={svg_copy}
+        className='pl-2.5 filter hover:contrast-200'
+        alt='Copy'
+      />
+    </button>
+  )
+
   const renderPastelIDIdentifier = () => (
     <div className='px-1 pt-0.5 text-gray-71 flex text-sm'>
       <Tooltip
@@ -97,13 +107,7 @@ function ProfileCard({
           </p>
         }
       >
-        <button type='button' onClick={handleCopy} className='cursor-pointer'>
-          <img
-            src={svg_copy}
-            className='pl-2.5 filter hover:contrast-200'
-            alt='Copy'
-          />
-        </button>
+        {renderCopyButton()}
       </Tooltip>
     </div>
   )

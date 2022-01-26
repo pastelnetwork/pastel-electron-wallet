@@ -4,6 +4,7 @@ import cn from 'classnames'
 import { Modal } from 'common/components/Modal'
 import Scrollbar from 'common/components/Scrollbar'
 import Bid from 'common/components/Bid'
+import { translate } from 'features/app/translations'
 
 type THistoryItem = {
   id: string | number
@@ -26,7 +27,7 @@ function BidHistoryModal({
 }: TBidHistoryModal): JSX.Element {
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
-      <h2 className='mb-6 text-gray-2d'>Bid History</h2>
+      <h2 className='mb-6 text-gray-2d'>{translate('bidHistory')}</h2>
       <Scrollbar maxHeight='400'>
         {history.map(({ id, avatar, bid, date, name }, idx) => (
           <div key={id} className={cn(idx !== history.length - 1 && 'mb-6')}>

@@ -1,7 +1,9 @@
 import React from 'react'
-import { TNFT } from '../../Nft.types'
 import { useToggle } from 'react-use'
 import cn from 'classnames'
+
+import { translate } from 'features/app/translations'
+import { TNFT } from '../../Nft.types'
 import style from './Description.module.css'
 
 type TDescriptionProps = {
@@ -13,7 +15,9 @@ export default function Description({ nft }: TDescriptionProps): JSX.Element {
 
   return (
     <div>
-      <div className='font-extrabold text-sm text-gray-1a'>Description</div>
+      <div className='font-extrabold text-sm text-gray-1a'>
+        {translate('description')}
+      </div>
       <div
         className={cn(
           'my-3 font-medium text-sm text-gray-4a',
@@ -27,7 +31,7 @@ export default function Description({ nft }: TDescriptionProps): JSX.Element {
         className='block link text-sm font-medium'
         onClick={toggleFullText}
       >
-        {showFullText ? 'Show Less' : 'Read More'}
+        {showFullText ? translate('showLess') : translate('readMore')}
       </button>
     </div>
   )

@@ -1,11 +1,13 @@
 import React, { useCallback } from 'react'
+import dayjs from 'dayjs'
+
 import Modal from '../nftModals/modal'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 import avatar2 from 'common/assets/images/mock/avatar-2.png'
 import avatar3 from 'common/assets/images/mock/avatar-3.png'
-import dayjs from 'dayjs'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { formatPrice } from 'common/utils/format'
+import { translate } from 'features/app/translations'
 
 export type TBidsModal = {
   isOpen: boolean
@@ -91,7 +93,7 @@ function BidsModal({ isOpen, handleClose }: TBidsModal): JSX.Element {
 
       <div className='flex text-sm space-x-18px'>
         <div className='text-gray-71 leading-5'>
-          make a bid{' '}
+          {translate('makeABid')}{' '}
           {dayjs(comment.publishedAt).format('MMM DD, YYYY [at] HH:mm a')}
         </div>
       </div>
@@ -111,9 +113,11 @@ function BidsModal({ isOpen, handleClose }: TBidsModal): JSX.Element {
       size='564px'
       title={
         <div>
-          <div className='text-h2 tracking-0.01'>Bids activity (8 bids)</div>
+          <div className='text-h2 tracking-0.01'>
+            {translate('bidsActivity')} (8 {translate('bids')})
+          </div>
           <div className='text-base text-gray-71 font-medium'>
-            NFT ID 230456346
+            {translate('NFTID')} 230456346
           </div>
         </div>
       }

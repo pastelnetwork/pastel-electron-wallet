@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import { toast } from 'react-toastify'
 import cn from 'classnames'
+import parse from 'html-react-parser'
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
@@ -14,6 +15,8 @@ import { closeImportPrivKeyModal } from './index'
 import { Button } from 'common/components/Buttons'
 import { walletRPC } from 'api/pastel-rpc'
 import { isValidSaplingPrivateKey } from 'common/utils/wallet'
+import { translate } from 'features/app/translations'
+
 import congratulations from 'common/assets/icons/ico-congratulations.svg'
 
 function CancelButton(): JSX.Element {
@@ -31,7 +34,7 @@ function CancelButton(): JSX.Element {
       onClick={onClick}
     >
       <div className='flex items-center justify-center'>
-        <div className='text-blue-3f text-h5-medium'>Cancel</div>
+        <div className='text-blue-3f text-h5-medium'>{translate('cancel')}</div>
       </div>
     </Button>
   )
@@ -55,7 +58,7 @@ const ImportButton = memo(function ImportButton({
       childrenClassName='w-full'
     >
       <div className='flex items-center justify-center'>
-        <div className='text-white text-h5-heavy'>Import</div>
+        <div className='text-white text-h5-heavy'>{translate('import')}</div>
       </div>
     </Button>
   )
@@ -76,7 +79,7 @@ const InputControl = memo(function InputControl({
 
   return (
     <textarea
-      placeholder='Private Keys'
+      placeholder={translate('privateKeys')}
       className={cn(
         'w-full rounded shadow-2px py-2 px-4 outline-none h-10 resize-none text-base text-gray-4a font-normal leading-6 transition duration-300 focus:border focus:border-blue-3f active:border-blue-3f min-h-[120px]',
         message && 'border border-red-fe',
@@ -109,12 +112,12 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
     setMessage('')
     setComplete(false)
     if (!key) {
-      setMessage('Private Keys is required.')
+      setMessage(translate('privateKeysIsRequired'))
       return
     }
     let keys = key.replace(/\n/g, ' ').split(' ')
     if (!keys || keys.length === 0) {
-      setMessage('No keys were specified, so none were imported')
+      setMessage(translate('noKeysWereSpecified'))
       return
     }
 
@@ -153,11 +156,7 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
           />
         </div>
         <div className='text-gray-800 text-2xl font-extrabold mt-26px'>
-          The import process for the private keys has started.
-          <br />
-          This will take a long time, up to 1 hour!
-          <br />
-          Please be patient!
+          {parse(translate('importPrivateKeySuccessMessage'))}
         </div>
       </div>
     )
@@ -168,17 +167,14 @@ export default function ImportPrivKeyModal(): JSX.Element | null {
       isOpen={importPrivKeyModalIsOpen}
       handleClose={handleCloseModal}
       classNames='max-w-[700px]'
-      title={!isComplete ? 'Import Private Keys' : ''}
+      title={!isComplete ? translate('importPrivateKeys') : ''}
     >
       <div className='pr-8'>
         {isComplete ? (
           <>{renderSuccessContent()}</>
         ) : (
           <>
-            <div className='mt-6'>
-              Please paste your private or viewing keys here (transparent
-              address or shielded address), one line per key.
-            </div>
+            <div className='mt-6'>{translate('importPrivateKeysIntro')}</div>
             <div className='mt-3'>
               <InputControl
                 message={message}

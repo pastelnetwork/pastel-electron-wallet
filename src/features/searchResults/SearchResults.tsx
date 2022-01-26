@@ -8,6 +8,7 @@ import NFTsResult from './NFTsResult'
 import KeywordResult from './KeywordResult'
 import CreatorsResult from './CreatorsResult'
 import ForumPost from './ForumPost'
+import { translate } from 'features/app/translations'
 
 type TSearchOptionsProps = {
   keyword: string
@@ -25,23 +26,23 @@ export default function SearchResults(): JSX.Element {
   const [artworks, setArtworks] = useState<TArtworksDetailProps[]>([])
   const data = [
     {
-      label: 'NFTs',
+      label: translate('NFTs'),
       no_search: 5,
     },
     {
-      label: 'Keyword',
+      label: translate('keyword'),
       no_search: 23,
     },
     {
-      label: 'Creators',
+      label: translate('creators'),
       no_search: 5,
     },
     {
-      label: 'Users',
+      label: translate('users'),
       no_search: 2,
     },
     {
-      label: 'Forum Posts',
+      label: translate('forumPosts'),
       no_search: 5,
     },
   ]
@@ -93,7 +94,7 @@ export default function SearchResults(): JSX.Element {
   return (
     <div className='pt-[29px] px-[60px] min-h-98vh'>
       <div className='font-extrabold text-2xl'>
-        Search result {'"'}
+        ${translate('searchResult')} {'"'}
         {searchOptions.keyword}
         {'"'}
       </div>

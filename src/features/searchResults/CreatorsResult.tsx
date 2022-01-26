@@ -1,12 +1,9 @@
 import React, { useState } from 'react'
+
 import Select, { TOption } from 'common/components/Select/Select'
-import {
-  followersData,
-  rankingData,
-  soldData,
-  mockMemberStrips,
-} from './mockData'
+import { mockMemberStrips } from './mockData'
 import MemberStrip from '../members/MemberStrip'
+import { translate } from 'features/app/translations'
 
 export type TCreatorResultProps = {
   searchKey: string
@@ -15,6 +12,10 @@ export type TCreatorResultProps = {
 export default function CreatorsResult({
   searchKey,
 }: TCreatorResultProps): JSX.Element {
+  const rankingData = [{ value: 'Ranking', label: translate('ranking') }]
+  const followersData = [{ value: 'Followers', label: translate('followers') }]
+  const soldData = [{ value: 'Sold', label: translate('sold') }]
+
   const [ranking, setRanking] = useState<TOption | null>(rankingData[0])
   const [sold, setSold] = useState<TOption | null>(soldData[0])
   const [followers, setFollowers] = useState<TOption | null>(followersData[0])
@@ -26,21 +27,21 @@ export default function CreatorsResult({
           className='bg-white w-[118px] mr-6'
           selected={ranking}
           onChange={setRanking}
-          placeholder='Ranking'
+          placeholder={translate('ranking')}
         />
         <Select
           options={soldData}
           className='bg-white w-[118px] mr-6'
           onChange={setSold}
           selected={sold}
-          placeholder='Sold'
+          placeholder={translate('sold')}
         />
         <Select
           options={followersData}
           className='bg-white w-[118px]'
           onChange={setFollowers}
           selected={followers}
-          placeholder='Followers'
+          placeholder={translate('followers')}
         />
       </div>
       <div className='mt-5'>

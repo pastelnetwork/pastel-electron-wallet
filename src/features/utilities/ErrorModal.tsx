@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { TitleModal } from 'common/components/Modal'
+import { translate } from 'features/app/translations'
 import error from 'common/assets/icons/ico-error.svg'
 
 type TErrorModal = {
@@ -40,7 +41,7 @@ export default function ErrorModal({
       classNames='max-w-[700px]'
     >
       <div className='mt-2 text-center text-gray-800 text-2xl font-extrabold mb-0.5'>
-        Error Exporting Transactions
+        {translate('errorExportingTransactions')}
       </div>
       {renderMessageContent()}
     </TitleModal>

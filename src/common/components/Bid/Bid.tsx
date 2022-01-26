@@ -1,7 +1,9 @@
 import React from 'react'
 import cn from 'classnames'
-import Avatar from '../Avatar'
 import dayjs from 'dayjs'
+
+import { translate } from 'features/app/translations'
+import Avatar from '../Avatar'
 
 export type TBid = {
   avatar: string
@@ -15,7 +17,7 @@ function Bid({ avatar, name, bid, date, className }: TBid): JSX.Element {
   const classes = cn('flex flex-wrap', className)
   const renderBidNumber = () => (
     <span className='text-sm text-gray-71'>
-      Bid <span className='text-link font-normal'>{bid}</span>
+      {translate('bid')} <span className='text-link font-normal'>{bid}</span>
     </span>
   )
 

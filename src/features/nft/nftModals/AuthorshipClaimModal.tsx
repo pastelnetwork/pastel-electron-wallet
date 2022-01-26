@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react'
+
 import Modal from './modal'
 import Button from 'common/components/Buttons/Button'
+import { translate } from 'features/app/translations'
 
 export type TAuthorshipClaimModal = {
   isOpen: boolean
@@ -24,7 +26,7 @@ function AuthorshipClaimModal({
   const renderOkButton = () => (
     <Button variant='default' className='w-full mt-[30px] mb-2'>
       <div className='flex items-center justify-center ml-6'>
-        <span className='font-bold'>Ok</span>
+        <span className='font-bold'>{translate('ok')}</span>
       </div>
     </Button>
   )
@@ -39,7 +41,7 @@ function AuthorshipClaimModal({
   const renderClaimDetailsForm = () => (
     <div>
       <div className='mt-30px text-gray-71 leading-tight text-base font-medium'>
-        Claim Details
+        {translate('claimDetails')}
       </div>
       <div className='mt-[9px] h-[173px] border rounded border-gray-e7 flex items-center relative'>
         <div className='absolute bottom-2 right-2 text-gray-a0 text-sm'>
@@ -58,12 +60,14 @@ function AuthorshipClaimModal({
   const renderNFT = () => (
     <div className='flex space-x-50px text-base font-medium'>
       <div className='w-1/2'>
-        <div className='mt-[6px] text-gray-71 leading-tight'>NFT name</div>
+        <div className='mt-[6px] text-gray-71 leading-tight'>
+          {translate('nftName')}
+        </div>
         <div className='mt-2'>{data.nftName}</div>
       </div>
       <div className='w-1/2'>
         <div className='mt-[6px] text-gray-71 leading-tight'>
-          Current author’s PastelID
+          {translate('currentAuthorPastelID')}
         </div>
         <div className='mt-2'>{data.pastelId}</div>
       </div>
@@ -75,7 +79,7 @@ function AuthorshipClaimModal({
       isOpen={isOpen}
       handleClose={onCloseModal}
       size='690px'
-      title={'Claim Petition'}
+      title={translate('claimPetition')}
       titleClassName='font-extrabold text-3xl text-gray-2d'
       infoIcon
     >

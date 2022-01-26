@@ -1,9 +1,11 @@
 import React from 'react'
+import { useToggle } from 'react-use'
+
 import style from './Image.module.css'
 import { Expand, Flag, Trash } from 'common/components/Icons'
 import { TNFT } from '../../Nft.types'
-import { useToggle } from 'react-use'
 import PictureModal from 'features/nft/nftModals/PictureModal'
+import { translate } from 'features/app/translations'
 
 type TImageProps = {
   nft: TNFT
@@ -49,7 +51,7 @@ export default function Image({ nft }: TImageProps): JSX.Element {
   const renderNFTId = () => (
     <div className='w-full flex-between mt-6 font-medium text-gray-71'>
       <div>
-        NFT ID {nft.id}
+        {translate('NFTID')} {nft.id}
         {renderFlagButtonIcon()}
       </div>
     </div>

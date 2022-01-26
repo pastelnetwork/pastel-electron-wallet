@@ -30,6 +30,7 @@ import ImportANIPrivKeyModal from './ImportANIPrivKeyModal'
 import ImportPrivKeyModal from './ImportPrivKeyModal'
 import ErrorModal from './ErrorModal'
 import PasteldModal from './PasteldModal'
+import { translate } from 'features/app/translations'
 
 export default function Utilities(): JSX.Element {
   const dispatch = useAppDispatch()
@@ -126,7 +127,13 @@ export default function Utilities(): JSX.Element {
           const escapedMemo: string = transaction.escapedMemo || ''
           return `${time},"${normaldate}","${txid}","${type}",${amount},"${address}","${escapedMemo}"`
         })
-        const header = ['UnixTime, Date, Txid, Type, Amount, Address, Memo']
+        const header = [
+          `${translate('unixTime')}, ${translate('date')}, ${translate(
+            'txIdExportModal',
+          )}, ${translate('type')}, ${translate('amount')}, ${translate(
+            'address',
+          )}, ${translate('memo')}`,
+        ]
         try {
           await fs.promises.writeFile(
             save.filePath,

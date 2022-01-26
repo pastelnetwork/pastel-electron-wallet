@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react'
 import { useWindowSize } from 'react-use'
+
 import { TNFT } from '../../Nft.types'
 import {
   FirTreeInHexagon,
@@ -11,6 +12,7 @@ import RarenessScore from '../RarenessScore'
 import { formatToTitleCase } from 'common/utils/format'
 import style from './Header.module.css'
 import Tooltip from 'common/components/Tooltip'
+import { translate } from 'features/app/translations'
 
 type HeaderProps = {
   nft: TNFT
@@ -68,13 +70,13 @@ export default function Header({ nft }: HeaderProps): JSX.Element {
       className='flex-grow flex-center px-5 space-x-5 lg:space-x-10'
     >
       <RarenessScore
-        title='Pastel Rareness:'
+        title={`${translate('pastelRareness')}:`}
         color='text-primary'
         titleClass='mr-17px'
         percent={65}
       />
       <RarenessScore
-        title='Internet Rareness:'
+        title={`${translate('internetRareness')}:`}
         color='text-orange-75'
         titleClass='mr-11px'
         percent={45}
@@ -91,7 +93,10 @@ export default function Header({ nft }: HeaderProps): JSX.Element {
       <Tooltip
         type='bottom'
         content={getTooltip(
-          'This NFT is a Pastel GreenNFT, which means that each time a copy is sold, 2% of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every $1.00 received.',
+          translate('firTreeInHexagonTooltipContent', {
+            percent: '2%',
+            price: '$1.00',
+          }),
         )}
         width={295}
         vPosPercent={110}

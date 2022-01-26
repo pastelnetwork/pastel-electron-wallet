@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react'
+import parse from 'html-react-parser'
 // Components
 import { Modal } from 'common/components/Modal'
 import { Button } from 'common/components/Buttons'
 import { InputNumberFormat } from 'common/components/Inputs'
 import { Fire } from 'common/components/Icons'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
 
 type TBidAutionType = 'MakeOffer' | 'Buy' | 'Bid'
 
@@ -39,25 +41,29 @@ function BidAuctionModal({
     <div className='text-sm mb-[26px]'>
       <div className='flex justify-between'>
         <p className='font-normal text-gray-4a'>
-          Your Current {currencyName} Balance
+          {translate('yourCurrentPSLBalance', { currencyName })}
         </p>
         <p className='text-right font-extrabold text-h6 text-gray-2d'>
           21,000 {currencyName}
         </p>
       </div>
       <div className='flex justify-between mt-2.5'>
-        <p className='font-normal text-gray-4a'>Transaction Fee(burned)</p>
+        <p className='font-normal text-gray-4a'>
+          {translate('transactionFeeBurned')}
+        </p>
         {renderTransactionFeeContent()}
       </div>
       <div className='flex justify-between mt-2.5'>
-        <p className='font-normal text-gray-4a'>Total NFT Offer with Fee</p>
+        <p className='font-normal text-gray-4a'>
+          {translate('totalNFTOfferWithFee')}
+        </p>
         <p className='text-right font-extrabold text-h6 text-gray-2d'>
           13,450 {currencyName}
         </p>
       </div>
       <div className='flex justify-between mt-2.5'>
         <p className='font-normal text-gray-4a'>
-          Remaining Balance if Accepted
+          {translate('remainingBalanceIfAccepted')}
         </p>
         <p className='text-right font-extrabold text-h6 text-gray-2d'>
           7,550 {currencyName}
@@ -74,34 +80,37 @@ function BidAuctionModal({
     >
       <h2 className={`${type === 'MakeOffer' ? 'mb-6' : 'mb-2.5'}`}>
         {type === 'MakeOffer'
-          ? 'Make an offer'
+          ? translate('makeAnOfferButton')
           : type === 'Buy'
-          ? 'Buy It Now'
-          : 'Place an Auction Bid'}
+          ? translate('buyItNowButton')
+          : translate('placeAnAuctionBid')}
       </h2>
       {type === 'MakeOffer' ? (
         <p className='mb-6 text-base'>
-          You are making an offer for{' '}
+          {translate('youAreMakingAnOffer')}{' '}
           <span className='font-extrabold text-blue-3f'>
             Super Nfty Floating Head Professional
           </span>{' '}
-          by <span className='font-extrabold text-blue-3f'>{username}</span>
+          {translate('by')}{' '}
+          <span className='font-extrabold text-blue-3f'>{username}</span>
         </p>
       ) : type === 'Bid' ? (
         <p className='mb-6 text-base'>
-          You are buying{' '}
+          {translate('youAreBuying')}{' '}
           <span className='font-extrabold text-blue-3f'>
             Super Nfty Floating Head Professional
           </span>{' '}
-          from <span className='font-extrabold text-blue-3f'>{username}</span>
+          {translate('from')}{' '}
+          <span className='font-extrabold text-blue-3f'>{username}</span>
         </p>
       ) : (
         <p className='mb-6 text-base'>
-          You are placing a bid for{' '}
+          {translate('youArePlacingABid')}{' '}
           <span className='font-extrabold text-blue-3f'>
             Super Nfty Floating Head Professional
           </span>{' '}
-          from <span className='font-extrabold text-blue-3f'>{username}</span>
+          {translate('from')}{' '}
+          <span className='font-extrabold text-blue-3f'>{username}</span>
         </p>
       )}
 
@@ -110,29 +119,32 @@ function BidAuctionModal({
           hint={
             type === 'MakeOffer' ? (
               <div className='font-medium'>
-                Note: Your offer must be higher then the current asking price{' '}
-                <br />
-                (if any), and might not be accepted by the seller
+                {parse(translate('makeOfferNote'))}
               </div>
             ) : type === 'Buy' ? (
               <div className='font-medium'>
-                3 copies available at the price listed below
+                {translate('numberCopiesAvailable', { number: 3 })}
               </div>
             ) : (
               <div className='font-medium'>
-                Your bid must be higher than the current high bid.
+                {translate('yourBidMustBeHigherThanTheCurrentHighBid')}
               </div>
             )
           }
           type='text'
           label={
             type === 'MakeOffer' ? (
-              'Your Offered Price'
+              translate('yourOfferedPrice')
             ) : type === 'Buy' ? (
-              'Enter Desired Quantity'
+              translate('enterDesiredQuantity')
             ) : (
               <div className='text-base'>
-                Current bid 12,000 {currencyName}. Enter 12,100 or more:
+                {translate('currentBidAndEnter', {
+                  currencyName,
+                  bid: '12,000',
+                  enter: '12,100',
+                })}
+                :
               </div>
             )
           }
@@ -144,7 +156,9 @@ function BidAuctionModal({
       </div>
       {type === 'Buy' && (
         <div className='mb-[18px]'>
-          <p className='text-lg text-gray-71 font-medium'>Price</p>
+          <p className='text-lg text-gray-71 font-medium'>
+            {translate('price')}
+          </p>
           <p className='text-gray-2d font-extrabold text-h3 mt-1.5'>
             12,000 {currencyName}
           </p>
@@ -153,21 +167,21 @@ function BidAuctionModal({
       {renderCurrentBalance()}
       {type === 'MakeOffer' ? (
         <Button variant='default' className='w-full'>
-          Bid now
+          {translate('bidNow')}
         </Button>
       ) : type === 'Buy' ? (
         <div>
           <Button variant='default' className='w-full'>
-            Proceed to Payment
+            {translate('proceedToPayment')}
           </Button>
           <Button variant='secondary' className='w-full mt-4'>
-            Cancel
+            {translate('cancel')}
           </Button>
         </div>
       ) : (
         <div>
           <Button variant='default' className='w-full'>
-            Submit Bid
+            {translate('submitBid')}
           </Button>
         </div>
       )}

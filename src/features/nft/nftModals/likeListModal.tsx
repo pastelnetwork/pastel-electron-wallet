@@ -4,54 +4,56 @@ import Table from './table'
 import dayjs from 'common/utils/initDayjs'
 import NumberFormat from 'react-number-format'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
 
 export type TLikeListModal = {
   isOpen: boolean
   handleClose: () => void
 }
 
-const Columns = [
-  {
-    name: 'Time',
-    key: 'time',
-    className: 'pl-10 w-[250px]',
-    sortable: true,
-    custom: (value: string) => (
-      <div className='flex items-center'>{dayjs(value).fromNow(true)} ago</div>
-    ),
-  },
-  {
-    name: 'Member',
-    key: 'member',
-    className: 'pl-4 w-[200px]',
-    sortable: true,
-  },
-  {
-    name: 'Sold',
-    key: 'sold',
-    className: 'pl-4 w-[200px]',
-    sortable: true,
-  },
-  {
-    name: 'Followers',
-    key: 'followers',
-    className: 'pl-4 w-[200px]',
-    sortable: true,
-    custom: (value: string) => (
-      <div>
-        <NumberFormat
-          value={parseInt(value) / 1000}
-          decimalScale={2}
-          displayType='text'
-          thousandSeparator
-        />
-        k{' '}
-      </div>
-    ),
-  },
-]
-
 function LikeListModal({ isOpen, handleClose }: TLikeListModal): JSX.Element {
+  const Columns = [
+    {
+      name: translate('time'),
+      key: 'time',
+      className: 'pl-10 w-[250px]',
+      sortable: true,
+      custom: (value: string) => (
+        <div className='flex items-center'>
+          {dayjs(value).fromNow(true)} ago
+        </div>
+      ),
+    },
+    {
+      name: translate('member'),
+      key: 'member',
+      className: 'pl-4 w-[200px]',
+      sortable: true,
+    },
+    {
+      name: translate('sold'),
+      key: 'sold',
+      className: 'pl-4 w-[200px]',
+      sortable: true,
+    },
+    {
+      name: translate('followers'),
+      key: 'followers',
+      className: 'pl-4 w-[200px]',
+      sortable: true,
+      custom: (value: string) => (
+        <div>
+          <NumberFormat
+            value={parseInt(value) / 1000}
+            decimalScale={2}
+            displayType='text'
+            thousandSeparator
+          />
+          k{' '}
+        </div>
+      ),
+    },
+  ]
   const currencyName = useCurrencyName()
   const tableData = [
     {
@@ -114,7 +116,7 @@ function LikeListModal({ isOpen, handleClose }: TLikeListModal): JSX.Element {
       isOpen={isOpen}
       handleClose={onCloseModal}
       size='874px'
-      title={'"Diamonds in the sky" Likes'}
+      title={`"Diamonds in the sky" ${translate('likes')}`}
       titleClassName='text-2xl font-black text-gray-2d'
       bodyClassName='px-0'
     >
