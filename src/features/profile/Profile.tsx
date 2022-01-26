@@ -97,6 +97,10 @@ export default function Profile(): JSX.Element {
     setTab(index)
   }
 
+  const handleOpenRestoreModal = useCallback(() => {
+    setModalIsOpen(true)
+  }, [])
+
   return (
     <div className='mx-auto w-full bg-gray-f8 text-gray-23 h-auto overflow-hidden'>
       <Breadcrumbs className='h-35px items-center' breadcrumbs={breadcrumbs} />
@@ -120,7 +124,7 @@ export default function Profile(): JSX.Element {
               <Button
                 variant='default'
                 className='w-full'
-                onClick={() => setModalIsOpen(true)}
+                onClick={handleOpenRestoreModal}
               >
                 {translate('restore')}
               </Button>

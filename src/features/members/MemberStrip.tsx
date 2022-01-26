@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 
 import * as ROUTES from 'common/utils/constants/routes'
@@ -30,9 +30,11 @@ function MemberStrip({
   searchText,
 }: TMemberStripProps): JSX.Element {
   const history = useHistory()
-  const toMemberProfile = () => {
+
+  const toMemberProfile = useCallback(() => {
     history.replace(ROUTES.MEMBERS_PROFILE)
-  }
+  }, [])
+
   const currency = useCurrencyName()
 
   const renderTotalSold = () => (

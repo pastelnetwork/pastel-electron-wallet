@@ -59,9 +59,9 @@ export default function PreviewStepModal({
     }
   }
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     state.goBack()
-  }
+  }, [])
 
   const strImageSizePercentOfAvg: string = imageSizePercentOfAvg?.toString()
 

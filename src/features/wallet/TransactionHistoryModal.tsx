@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback } from 'react'
 import cn from 'classnames'
 import { shell } from 'electron'
 import dayjs from 'dayjs'
@@ -30,6 +30,24 @@ import { translate } from 'features/app/translations'
 
 const BLOCK_CONFIRMED_NUMBER = 6
 
+function TransactionId({ value }: { value: string | number }): JSX.Element {
+  const onClick = useCallback(() => {
+    shell.openExternal(`https://explorer.pastel.network/tx/${value}`)
+  }, [value])
+
+  return (
+    <span
+      className='cursor-pointer text-blue-3f'
+      onClick={onClick}
+      role='button'
+      aria-hidden
+      tabIndex={0}
+    >
+      {value}
+    </span>
+  )
+}
+
 export default function TransactionHistoryModal(): JSX.Element {
   const {
     setTransactionHistoryModalOpen: setIsOpen,
@@ -37,7 +55,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     selectedDate,
   } = useWalletScreenContext()
 
-  const handleClose = () => setIsOpen(false)
+  const handleClose = useCallback(() => setIsOpen(false), [])
 
   const [selectedOption, setSelectedOption] = useState<
     'all' | 'received' | 'sent'
@@ -95,10 +113,10 @@ export default function TransactionHistoryModal(): JSX.Element {
     setTransactions(filterTransactions)
   }
 
-  const onSelectDateRange = (dates: TDateRangeProp) => {
+  const onSelectDateRange = useCallback((dates: TDateRangeProp) => {
     setDates(dates)
     filterTransactionByDate(dates, originTransactions)
-  }
+  }, [])
 
   const getFilterAddresses = (trans: TTransaction[], isSource: boolean) => {
     const filtered = trans
@@ -332,19 +350,7 @@ export default function TransactionHistoryModal(): JSX.Element {
           type='top'
         >
           <div className='w-[103px] overflow-ellipsis overflow-hidden'>
-            <span
-              className='cursor-pointer text-blue-3f'
-              onClick={() =>
-                shell.openExternal(
-                  `https://explorer.pastel.network/tx/${value}`,
-                )
-              }
-              role='button'
-              aria-hidden
-              tabIndex={0}
-            >
-              {value}
-            </span>
+            <TransactionId value={value} />
           </div>
         </Tooltip>
       ),
@@ -387,6 +393,21 @@ export default function TransactionHistoryModal(): JSX.Element {
       name: translate('amount'),
     },
   ]
+
+  const handleTransactionTypeAllChange = useCallback(() => {
+    filterTransactionByType(TTransactionType.ALL)
+    setSelectedOption('all')
+  }, [])
+
+  const handleTransactionTypeReceivedChange = useCallback(() => {
+    filterTransactionByType(TTransactionType.RECEIVE)
+    setSelectedOption('received')
+  }, [])
+
+  const handleTransactionTypeSentChange = useCallback(() => {
+    filterTransactionByType(TTransactionType.SEND)
+    setSelectedOption('sent')
+  }, [])
 
   const renderDateFilter = () => (
     <div className='w-[264px] pr-6'>
@@ -457,10 +478,7 @@ export default function TransactionHistoryModal(): JSX.Element {
     <div className='w-1/3 flex justify-end items-center space-x-4 pt-6'>
       <Radio
         checked={selectedOption === 'all'}
-        onChange={() => {
-          filterTransactionByType(TTransactionType.ALL)
-          setSelectedOption('all')
-        }}
+        onChange={handleTransactionTypeAllChange}
       >
         <div
           className={cn(
@@ -474,10 +492,7 @@ export default function TransactionHistoryModal(): JSX.Element {
       </Radio>
       <Radio
         checked={selectedOption === 'received'}
-        onChange={() => {
-          filterTransactionByType(TTransactionType.RECEIVE)
-          setSelectedOption('received')
-        }}
+        onChange={handleTransactionTypeReceivedChange}
       >
         <div
           className={cn(
@@ -491,10 +506,7 @@ export default function TransactionHistoryModal(): JSX.Element {
       </Radio>
       <Radio
         checked={selectedOption === 'sent'}
-        onChange={() => {
-          filterTransactionByType(TTransactionType.SEND)
-          setSelectedOption('sent')
-        }}
+        onChange={handleTransactionTypeSentChange}
       >
         <div
           className={

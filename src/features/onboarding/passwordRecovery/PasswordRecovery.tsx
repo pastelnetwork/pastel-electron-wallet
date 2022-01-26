@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import shallow from 'zustand/shallow'
 
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
@@ -38,21 +38,21 @@ export default function PasswordRecovery(): JSX.Element {
   const [tab, setTab] = useState(Tabs.selectPDF)
   const isRestore = history.location.search.indexOf('isRestore=true') !== -1
 
-  const onTabToggle = (index: number) => {
+  const onTabToggle = useCallback((index: number) => {
     setTurnOffCamera(false)
     setTab(index)
     if (index !== Tabs.scanQRCodeVideo) {
       setTurnOffCamera(true)
     }
-  }
+  }, [])
 
-  const handleRedirect = () => {
+  const handleRedirect = useCallback(() => {
     if (isRestore) {
       setSuccess(true)
     } else {
       history.push(ROUTES.NEW_PASSWORD)
     }
-  }
+  }, [isRestore])
 
   return (
     <div className='mx-60px my-11 w-517px'>
