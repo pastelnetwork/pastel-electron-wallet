@@ -1,7 +1,9 @@
-import { Congratulation } from 'common/components/Icons/Congratulation'
 import React from 'react'
+import parse from 'html-react-parser'
 // Components
+import { Congratulation } from 'common/components/Icons/Congratulation'
 import { Modal } from 'common/components/Modal'
+import { translate } from 'features/app/translations'
 
 export type TDealApprovedModal = {
   content?: string
@@ -16,7 +18,7 @@ function DealApprovedModal({
 }: TDealApprovedModal): JSX.Element {
   const renderCongratulationsContent = () => (
     <h2 className='mb-2 text-gray-2d'>
-      Congratulations! <br /> Your NFT Trade was Finalized!
+      {parse(translate('dealApprovedModalCongratulationsMessage'))}
     </h2>
   )
 

@@ -7,6 +7,7 @@ import MultiSelect, {
 import { CircleAddButton, Button } from '../../../common/components/Buttons'
 import Dropdown from '../../../common/components/Dropdown'
 import CreateTag from '../../../common/components/CreateTag'
+import { translate } from 'features/app/translations'
 
 export type TReassignTagModal = {
   isOpen: boolean
@@ -17,7 +18,7 @@ export type TReassignTagModal = {
 
 function ReassignTagModal({
   title,
-  placeholder = 'No tag chosen',
+  placeholder = translate('noTagChosen'),
   isOpen,
   handleClose,
 }: TReassignTagModal): JSX.Element {
@@ -60,7 +61,9 @@ function ReassignTagModal({
 
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-xl'>
-      <h2 className='mb-6'>Change tag of “{title}”</h2>
+      <h2 className='mb-6'>
+        {translate('changeTagOf')} “{title}”
+      </h2>
       <div className='flex items-center mb-6'>
         <MultiSelect
           value={selectedTags}
@@ -77,7 +80,7 @@ function ReassignTagModal({
         onClick={handleClose}
         className='w-full'
       >
-        Submit
+        {translate('submit')}
       </Button>
     </Modal>
   )

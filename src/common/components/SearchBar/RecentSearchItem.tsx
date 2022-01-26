@@ -1,7 +1,9 @@
 import React from 'react'
+import cn from 'classnames'
+
+import { translate } from 'features/app/translations'
 import { Clock } from '../Icons'
 import SearchTag from './SearchTag'
-import cn from 'classnames'
 
 export type TRecentSearchItem = {
   tagType?: 'nfts' | 'keyword' | 'creators' | 'users' | 'forum' | undefined
@@ -20,13 +22,13 @@ export default function RecentSearchItem({
     <div className={cn('flex items-center mt-18px', className)}>
       <Clock className='text-gray-71 mr-2' />
       {!!tagType && tagType === 'nfts' && (
-        <SearchTag type='nfts' label='NFTs' id={id} />
+        <SearchTag type='nfts' label={translate('NFTs')} id={id} />
       )}
       {!!tagType && tagType === 'keyword' && (
-        <SearchTag type='keyword' label='Keywords' id={id} />
+        <SearchTag type='keyword' label={translate('keywords')} id={id} />
       )}
       {!!tagType && tagType === 'creators' && (
-        <SearchTag type='creators' label='Creators' id={id} />
+        <SearchTag type='creators' label={translate('creators')} id={id} />
       )}
       <div className='font-medium text-base'>{label}</div>
     </div>

@@ -1,11 +1,13 @@
 import React from 'react'
+import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
+
+import { translate } from 'features/app/translations'
 import { TComment } from './Comment.types'
 import Comment from './Comment'
-import { Link } from 'react-router-dom'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 import avatar2 from 'common/assets/images/mock/avatar-2.png'
 import avatar3 from 'common/assets/images/mock/avatar-3.png'
-import dayjs from 'dayjs'
 
 const commentsPerPageCount = 3
 const commentsCount = 121
@@ -45,9 +47,13 @@ export default function Comments(): JSX.Element {
   return (
     <div className='flex-grow flex flex-col'>
       <div className='font-extrabold text-sm text-gray-a1 mb-18px'>
-        Latest comments{' '}
+        {translate('latestComments')}{' '}
         <span className='text-gray-71'>
-          ({commentsPerPageCount} of {commentsCount})
+          (
+          {translate('commentsCount', {
+            number: commentsPerPageCount,
+            total: commentsCount,
+          })}{' '}
         </span>
       </div>
       <div className='space-y-3.5'>
@@ -58,7 +64,7 @@ export default function Comments(): JSX.Element {
       <div className='flex-grow' />
       <div className='py-6 text-center'>
         <Link to='#' className='link font-extrabold text-xs leading-3'>
-          All Comments
+          {translate('allComments')}
         </Link>
       </div>
     </div>

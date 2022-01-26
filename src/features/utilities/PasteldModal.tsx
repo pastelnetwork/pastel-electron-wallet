@@ -3,6 +3,7 @@ import React, { useCallback } from 'react'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { TitleModal } from 'common/components/Modal'
 import { closePasteldModal } from './index'
+import { translate } from 'features/app/translations'
 
 export default function PasteldModal(): JSX.Element | null {
   const dispatch = useAppDispatch()
@@ -30,35 +31,35 @@ export default function PasteldModal(): JSX.Element | null {
       isOpen={pasteldModalIsOpen}
       handleClose={onCloseModal}
       classNames='max-w-[700px]'
-      title='Pasteld Info'
+      title={translate('pasteldInfo')}
     >
       {!info || !info.version ? (
         <div className='pr-8 text-center'>
           <div>
             <i className='fas fa-times-circle text-8xl text-red-600' />
           </div>
-          <div className='mt-9 text-2xl'>Not Connected</div>
+          <div className='mt-9 text-2xl'>{translate('notConnected')}</div>
         </div>
       ) : (
         <div className='pr-8'>
           <div className='mt-2 flex justify-between'>
-            <div>Version:</div>
+            <div>{translate('version')}:</div>
             <div>{info.version}</div>
           </div>
           <div className='flex justify-between'>
-            <div>Network:</div>
+            <div>{translate('network')}:</div>
             <div>{info.testnet ? 'Testnet' : 'Mainnet'}</div>
           </div>
           <div className='flex justify-between'>
-            <div>Block Height:</div>
+            <div>{translate('blockHeight')}:</div>
             <div>{height}</div>
           </div>
           <div className='flex justify-between'>
-            <div>Connections:</div>
+            <div>{translate('connections')}:</div>
             <div>{info.connections}</div>
           </div>
           <div className='flex justify-between'>
-            <div>Network Solution Rate:</div>
+            <div>{translate('networkSolutionRate')}:</div>
             <div>{`${solps} Sol/s`}</div>
           </div>
         </div>

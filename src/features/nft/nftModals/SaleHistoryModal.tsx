@@ -3,7 +3,9 @@ import React, { useCallback } from 'react'
 import Modal from './modal'
 import Table from './table'
 import NumberFormat from 'react-number-format'
+
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
 
 export type TSaleHistoryModal = {
   isOpen: boolean
@@ -71,31 +73,31 @@ export function SaleHistoryModal({
   const currencyName = useCurrencyName()
   const Columns = [
     {
-      name: '# Copy',
+      name: translate('nCopy'),
       key: 'copy',
       sortable: true,
       className: 'pl-10 w-[153px]',
     },
     {
-      name: 'Date',
+      name: translate('date'),
       key: 'date',
       sortable: true,
       className: 'w-[185px]',
     },
     {
-      name: 'Owner',
+      name: translate('owner'),
       key: 'owner',
       sortable: true,
       className: 'w-[170px]',
     },
     {
-      name: 'Current Owner',
+      name: translate('currentOwner'),
       key: 'current_owner',
       sortable: true,
       className: 'w-[213px]',
     },
     {
-      name: 'Price paid',
+      name: translate('pricePaid'),
       key: 'price_paid',
       sortable: true,
       custom: (value: string) => (
@@ -114,7 +116,7 @@ export function SaleHistoryModal({
             USD
           </div>
           <div className='ml-[50px]'>
-            <Link>price history</Link>
+            <Link>{translate('priceHistory')}</Link>
           </div>
         </div>
       ),
@@ -130,13 +132,13 @@ export function SaleHistoryModal({
       isOpen={isOpen}
       handleClose={onCloseModal}
       size='1142px'
-      title={'"Diamonds in the sky" Sale History'}
+      title={`"Diamonds in the sky" ${translate('saleHistory')}`}
       titleClassName='text-2xl font-black text-gray-2d'
       infoIcon
       bodyClassName='px-0'
       append={
         <span className='font-medium text-base text-gray-71 mb-1 ml-[13px]'>
-          NFT ID 230456346
+          ${translate('NFTID')} 230456346
         </span>
       }
     >

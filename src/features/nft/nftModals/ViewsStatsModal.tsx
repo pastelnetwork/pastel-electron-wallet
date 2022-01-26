@@ -3,6 +3,7 @@ import Modal from './modal'
 import LineChart, { TLineChartRow } from 'common/components/LineChart'
 import Select, { TOption } from 'common/components/Select/Select'
 import MultiToggleSwitch from 'common/components/MultiToggleSwitch'
+import { translate } from 'features/app/translations'
 
 export type TViewsStatsModal = {
   isOpen: boolean
@@ -29,8 +30,8 @@ function ViewsStatsModal({
   data1,
   data2,
   title,
-  data2Label = 'Total Views',
-  data1Label = 'Likes',
+  data2Label = translate('totalViews'),
+  data1Label = translate('likes'),
   type = 'week',
   label1className = 'bg-blue-37',
   label2className = 'bg-red-ff',
@@ -74,7 +75,11 @@ function ViewsStatsModal({
       </div>
       <div className='mr-[23px]'>
         <MultiToggleSwitch
-          data={[{ label: 'Week' }, { label: 'Month' }, { label: 'Year' }]}
+          data={[
+            { label: translate('week') },
+            { label: translate('month') },
+            { label: translate('year') },
+          ]}
           activeIndex={active}
           onToggle={onTabToggle}
           itemActiveClassName='bg-gray-4a rounded-full text-white'
@@ -86,8 +91,8 @@ function ViewsStatsModal({
 
   const renderTitle = () => (
     <div className='flex font-medium text-base ml-[15px]'>
-      <p className='text-gray-33 mr-8'>Social Security</p>
-      <p className='text-gray-a6'>Sales data</p>
+      <p className='text-gray-33 mr-8'>{translate('socialSecurity')}</p>
+      <p className='text-gray-a6'>{translate('salesData')}</p>
     </div>
   )
 

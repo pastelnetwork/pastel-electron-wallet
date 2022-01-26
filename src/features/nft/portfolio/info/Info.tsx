@@ -18,6 +18,7 @@ import Row from './Row'
 import { Button } from 'common/components/Buttons'
 import BidsModal from '../BidsModal'
 import Tooltip from 'common/components/Tooltip'
+import { translate } from 'features/app/translations'
 
 type TInfoProps = {
   nft: TNFT
@@ -45,13 +46,13 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
 
   const renderCollectionCategoryTagAndClaimButton = () => (
     <div className='space-y-3'>
-      <Row title='Collection' link='#'>
+      <Row title={translate('collection')} link='#'>
         {nft.collection}
       </Row>
-      <Row title='Category' link='#'>
+      <Row title={translate('category')} link='#'>
         {nft.category}
       </Row>
-      <Row title='Tag' link='#'>
+      <Row title={translate('tag')} link='#'>
         {nft.tags.join(', ')}
       </Row>
       {!isOwner && (
@@ -61,7 +62,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
           disabled
           prepend={<Warning size={14} />}
         >
-          Claim
+          {translate('claim')}
         </Button>
       )}
     </div>
@@ -74,11 +75,11 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
         onClick={toggleLiked}
       >
         <HeartFilled size={18} className='mr-2 lg:mr-3' />
-        {nft.likes} likes
+        {nft.likes} {translate('likes').toLowerCase()}
       </OutlineButton>
       <OutlineButton className={grayButtonClass}>
         <Eye size={20} className='mr-2 lg:mr-3 text-gray-8e' />
-        {nft.views} views
+        {nft.views} {translate('views').toLowerCase()}
       </OutlineButton>
     </div>
   )
@@ -90,7 +91,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
   )
 
   const renderCreator = () => (
-    <Row title='Creator' link='#'>
+    <Row title={translate('creator')} link='#'>
       <div className='flex-center'>
         {renderCreatorAvatar()}
         {nft.author.name}
@@ -99,7 +100,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
   )
 
   const renderCopiesRow = () => (
-    <Row title='Copies' link='#'>
+    <Row title={translate('copies')} link='#'>
       <div className='flex-center'>
         {nft.owner}
         <ChatDots size={13} className='text-blue-3f ml-2 relative -top-0.5' />
@@ -109,25 +110,29 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
 
   const renderCopiesRoyalty = () => (
     <>
-      <Row title='Copies' link='#'>
+      <Row title={translate('copies')} link='#'>
         {nft.copies === 1 ? 'One-of-a-Kind (1 of 1)' : nft.copies}
       </Row>
       {renderCopiesRow()}
-      <Row title='Royalty' link='#'>
-        {nft.royalty ? nft.royalty : 'None'}
+      <Row title={translate('royalty')} link='#'>
+        {nft.royalty ? nft.royalty : translate('none')}
       </Row>
     </>
   )
 
   const renderMinimumPriceMeetTooltip = () => (
-    <Tooltip type='top' content={getTooltip('Minimum Price Meet')} width={142}>
+    <Tooltip
+      type='top'
+      content={getTooltip(translate('minimumPriceMeetTooltipContent'))}
+      width={142}
+    >
       <Checkmark size={14} className='text-green-6d' />
     </Tooltip>
   )
 
   const renderSaleTypeRow = () => (
-    <Row title='Sale Type' link='#'>
-      {nft.type ? nft.type : 'None'}
+    <Row title={translate('saleType')} link='#'>
+      {nft.type ? nft.type : translate('none')}
     </Row>
   )
 
@@ -139,24 +144,26 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
           {renderSaleTypeRow()}
           {nft.type ? (
             <>
-              <Row title='Status' link='#'>
-                <span className='text-black-12 mr-1'>Currently Listed</span>
+              <Row title={translate('status')} link='#'>
+                <span className='text-black-12 mr-1'>
+                  {translate('currentlyListed')}
+                </span>
                 <span
                   onClick={toggleBidsModal}
                   role='button'
                   aria-hidden
                   tabIndex={0}
                 >
-                  ({nft.status} bids)
+                  ({nft.status} {translate('bids')})
                 </span>
               </Row>
-              <Row title='Remaining'>
+              <Row title={translate('remaining')}>
                 {formatDatesDistance(dayjs(), nft.time)} left
               </Row>
-              <Row title='Min. Price' link='#'>
+              <Row title={translate('minPrice')} link='#'>
                 {formatNumber(nft.price)} {currencyName}
               </Row>
-              <Row title='Last bid' link='#'>
+              <Row title={translate('lastBid')} link='#'>
                 <span className='flex mr-3 text-gradient'>
                   {formatNumber(nft.bids)} {currencyName}
                 </span>
@@ -165,23 +172,29 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
             </>
           ) : (
             <>
-              <Row title='Price'>
-                <span className='text-gradient'>NA</span>
+              <Row title={translate('price')}>
+                <span className='text-gradient'>{translate('NA')}</span>
               </Row>
               {isOwner ? (
                 <div className='flex item-center gap-3'>
-                  <Button className='w-full font-extrabold'>Buy it Now</Button>
                   <Button className='w-full font-extrabold'>
-                    Live Auction
+                    {translate('buyItNowButton')}
+                  </Button>
+                  <Button className='w-full font-extrabold'>
+                    {translate('liveAuction')}
                   </Button>
                 </div>
               ) : (
-                <Button className='w-full font-extrabold'>Make an Offer</Button>
+                <Button className='w-full font-extrabold'>
+                  {translate('makeAnOfferButton')}
+                </Button>
               )}
             </>
           )}
           {!isOwner && (
-            <Button className='w-full font-extrabold'>Bid now</Button>
+            <Button className='w-full font-extrabold'>
+              {translate('bidNow')}
+            </Button>
           )}
         </div>
         <hr />
@@ -194,7 +207,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
               variant='transparent'
               prepend={<Key size={24} />}
             >
-              Transfer Ownership
+              {translate('transferOwnership')}
             </Button>
           )}
           {isOwner && nft.royalty && (
@@ -203,7 +216,7 @@ export default function Info({ nft, currencyName }: TInfoProps): JSX.Element {
               variant='transparent'
               prepend={<Crown size={14} />}
             >
-              Transfer Perpetual Royalty
+              {translate('transferPerpetualRoyalty')}
             </Button>
           )}
         </div>

@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react'
+
 import Modal from './modal'
+import { translate } from 'features/app/translations'
 
 export type TClaimTicketModal = {
   isOpen: boolean
@@ -51,7 +53,7 @@ function ClaimTicketModal({
   const renderReplyForm = () => (
     <div>
       <div className='mt-[26px] text-gray-71 leading-tight'>
-        Submit your reply
+        {translate('submitYourReply')}
       </div>
       <div className='mt-10px h-180px border rounded border-gray-e7 flex items-center relative'>
         <textarea
@@ -67,7 +69,7 @@ function ClaimTicketModal({
   const renderClaimDetail = () => (
     <div>
       <div className='font-extrabold text-lg pb-2 pt-30px text-gray-4a'>
-        Make a photo of Claim details
+        {translate('makeAPhotoOfClaimDetails')}
       </div>
       <div className='text-lg text-gray-4a leading-[26px]'>{data.detail}</div>
     </div>
@@ -75,10 +77,10 @@ function ClaimTicketModal({
 
   const renderSegment = () => (
     <div className='flex space-x-50px'>
-      <Segment title='NFT' value={data.NFT} />
-      <Segment title='Claimer' value={data.Claimer} />
-      <Segment title='Recipient' value={data.Recipient} />
-      <Segment title='Date' value={data.Date} />
+      <Segment title={translate('NFT')} value={data.NFT} />
+      <Segment title={translate('claimer')} value={data.Claimer} />
+      <Segment title={translate('recipient')} value={data.Recipient} />
+      <Segment title={translate('date')} value={data.Date} />
     </div>
   )
 
@@ -87,7 +89,7 @@ function ClaimTicketModal({
       isOpen={isOpen}
       handleClose={onCloseModal}
       size='874px'
-      title={'Authorship Claim Ticket'}
+      title={translate('authorshipClaimTicket')}
       infoIcon
       titleClassName='font-black text-2xl text-gray-2d'
     >

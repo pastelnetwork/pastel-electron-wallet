@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, memo } from 'react'
+import React, { ReactNode, useMemo, memo, useCallback } from 'react'
 import {
   EliminationIcon,
   ShieldedBalance,
@@ -22,6 +22,67 @@ type TBalanceCard = {
   activeIcon: ReactNode
   inactiveIcon: ReactNode
   info: string
+}
+
+function BalanceCardItem({
+  card,
+  index,
+  setActiveTab,
+  balanceCards,
+  isActive,
+  children,
+}: {
+  card: TBalanceCard
+  index: number
+  setActiveTab: (val: number) => void
+  balanceCards: TBalanceCard[]
+  isActive: boolean
+  children: React.ReactNode
+}): JSX.Element {
+  const handleBalanceCardActive = useCallback(() => {
+    setActiveTab(index)
+  }, [index])
+
+  return (
+    <div
+      key={card.info}
+      onClick={handleBalanceCardActive}
+      className={cn(
+        'relative cursor-pointer w-1/3',
+        index < balanceCards.length - 1 && 'mr-17px',
+      )}
+      role='button'
+      aria-hidden
+      tabIndex={0}
+    >
+      <div className='absolute top-15px right-15px'>
+        {card.style.info ? (
+          <Tooltip
+            classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
+            content={card.info}
+            width={108}
+            type='top'
+          >
+            <EliminationIcon
+              size={20}
+              className='text-gray-8e hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
+            />
+          </Tooltip>
+        ) : null}
+      </div>
+      <div
+        className={cn(
+          'font-extrabold flex h-124px border-gray-e7 border rounded-lg',
+          isActive && 'bg-white',
+        )}
+      >
+        <div className='pl-4 md:pl-4 lg:pl-4 xl:pl-39px flex items-center'>
+          {isActive ? card.activeIcon : card.inactiveIcon}
+        </div>
+        {children}
+      </div>
+    </div>
+  )
 }
 
 const BalanceCards = memo(function BalanceCards(): JSX.Element {
@@ -127,46 +188,16 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
         const isActive = activeTab === index
 
         return (
-          <div
+          <BalanceCardItem
+            isActive={isActive}
+            index={index}
+            card={card}
+            balanceCards={balanceCards}
+            setActiveTab={setActiveTab}
             key={card.info}
-            onClick={() => {
-              setActiveTab(index)
-            }}
-            className={cn(
-              'relative cursor-pointer w-1/3',
-              index < balanceCards.length - 1 && 'mr-17px',
-            )}
-            role='button'
-            aria-hidden
-            tabIndex={0}
           >
-            <div className='absolute top-15px right-15px'>
-              {card.style.info ? (
-                <Tooltip
-                  classnames='pt-5px pl-9px pr-2.5 pb-1 text-xs'
-                  content={card.info}
-                  width={108}
-                  type='top'
-                >
-                  <EliminationIcon
-                    size={20}
-                    className='text-gray-8e hover:rounded-full hover:bg-gray-f6 active:bg-gray-ec transition duration-300'
-                  />
-                </Tooltip>
-              ) : null}
-            </div>
-            <div
-              className={cn(
-                'font-extrabold flex h-124px border-gray-e7 border rounded-lg',
-                isActive && 'bg-white',
-              )}
-            >
-              <div className='pl-4 md:pl-4 lg:pl-4 xl:pl-39px flex items-center'>
-                {isActive ? card.activeIcon : card.inactiveIcon}
-              </div>
-              {renderBalanceTab(index, card, isActive)}
-            </div>
-          </div>
+            {renderBalanceTab(index, card, isActive)}
+          </BalanceCardItem>
         )
       })}
     </div>

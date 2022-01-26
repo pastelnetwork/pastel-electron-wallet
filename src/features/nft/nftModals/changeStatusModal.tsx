@@ -6,6 +6,7 @@ import Select, { TOption } from '../../../common/components/Select/Select'
 import { Input } from '../../../common/components/Inputs'
 import DatePicker from '../../../common/components/DatePicker'
 import Link from '../../../common/components/Link'
+import { translate } from 'features/app/translations'
 
 export type TChangeStatusModal = {
   title?: string
@@ -32,11 +33,11 @@ function ChangeStatusModal({
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
       <h2 className='mb-6'>
-        Change status of <br />“{title}”
+        {translate('changeStatusOf')} <br />“{title}”
       </h2>
       <div className='mb-6'>
         <Select
-          placeholder='Select'
+          placeholder={translate('select')}
           onChange={setListed}
           selected={listed}
           options={listedOptions}
@@ -52,13 +53,13 @@ function ChangeStatusModal({
           type='text'
           placeholder={
             status?.value === 'buy-it-now'
-              ? 'Fixed asking price'
-              : 'Minimum aution price'
+              ? translate('fixedAskingPrice')
+              : translate('minimumAutionPrice')
           }
           className='w-full mb-6'
         />
         {status?.value === 'buy-it-now' && (
-          <Link>Change copies pricing plan</Link>
+          <Link>{translate('changeCopiesPricingPlan')}</Link>
         )}
         {status?.value === 'auction' && (
           <div className='grid grid-cols-2 gap-7 items-center'>
@@ -66,13 +67,13 @@ function ChangeStatusModal({
               <DatePicker
                 selected={date}
                 onChange={setDate}
-                label='Time range'
+                label={translate('timeRange')}
                 variant='separated'
                 placeholder='  /    /  '
               />
             </div>
             <div className='flex items-center'>
-              <h6 className='mr-2'>Duration</h6>
+              <h6 className='mr-2'>{translate('duration')}</h6>
               <Select
                 selected={duration}
                 onChange={setDuration}
@@ -84,7 +85,7 @@ function ChangeStatusModal({
         )}
       </div>
       <Button variant='default' onClick={handleClose} className='w-full'>
-        Submit
+        {translate('submit')}
       </Button>
     </Modal>
   )

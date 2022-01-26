@@ -14,6 +14,8 @@ import { CloseButton } from 'common/components/Buttons'
 import { ChatItem, TChatItemProps } from './ChatItem'
 import { ChatMessage } from './ChatMessage'
 import { UserAvatar } from './components/UserAvatar'
+import { translate } from 'features/app/translations'
+
 import editIcon from 'common/assets/icons/ico-edit.svg'
 import chatMenuIcon from 'common/assets/icons/ico-chat-menu.svg'
 import msgEmojiIcon from 'common/assets/icons/ico-chatmsg-emoji.svg'
@@ -127,7 +129,7 @@ function Chat(): JSX.Element {
       <div className='flex-grow mr-4 h-full relative'>
         {newMsgPlaceholder && (
           <span className='absolute top-0 left-0 right-0 bottom-0 flex items-center z-0 font-medium text-base text-gray-300'>
-            Write your message here...
+            {translate('writeYourMessageHere')}...
           </span>
         )}
         <textarea
@@ -207,7 +209,7 @@ function Chat(): JSX.Element {
   const renderBody = () => (
     <div className='flex flex-grow flex-col'>
       {renderChatControl()}
-      <div className='flex-grow px-5 overflow-auto'>
+      <div className='flex-grow px-5 pt-5 overflow-auto'>
         {activeChat &&
           activeChat.messages.map((msg, i) => {
             const props = {
@@ -245,7 +247,7 @@ function Chat(): JSX.Element {
   const renderChatItems = () => (
     <div className='mr-2 flex flex-col py-5 min-w-20rem w-1/3'>
       <div className='px-5 flex justify-between'>
-        <h1>Chat</h1>
+        <h1>{translate('chat')}</h1>
         {renderChatEditIcon()}
       </div>
       <div className='px-5 flex-grow overflow-auto'>

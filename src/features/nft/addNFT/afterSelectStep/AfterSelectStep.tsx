@@ -108,6 +108,16 @@ export default function UploadStep({
     <div className='absolute top-1/2 left-0 right-0 block h-1 z-10 -translate-y-1/2 rounded-[20px] bg-rgba-white-[0.33]'></div>
   )
 
+  const renderTrashButtonContent = () => (
+    <button
+      className=' w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
+      onClick={handleDeleteImage}
+      type='button'
+    >
+      <Trash size={15} />
+    </button>
+  )
+
   const renderTrashButton = () => (
     <div className='absolute z-10 top-3 right-3 w-10 h-10'>
       <Tooltip
@@ -115,13 +125,7 @@ export default function UploadStep({
         content={<div className='py-1'>Delete image</div>}
         width={100}
       >
-        <button
-          className=' w-10 h-10 rounded-full flex-center text-white bg-gray-2d bg-opacity-30 hover:bg-opacity-50'
-          onClick={handleDeleteImage}
-          type='button'
-        >
-          <Trash size={15} />
-        </button>
+        {renderTrashButtonContent()}
       </Tooltip>
     </div>
   )

@@ -9,15 +9,16 @@ import Info from './info/Info'
 import Description from './description/Description'
 import Comments from './comments/Comments'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
+
 import nftImage from 'common/assets/images/mock/nft-big-image.png'
 import avatar1 from 'common/assets/images/mock/avatar-1.png'
 
-const breadcrumbs = [
-  { label: 'My NFT Portfolio', route: '#' },
-  { label: '“Super Nfty Floating Head”' },
-]
-
 export default function PortfolioPage(): JSX.Element {
+  const breadcrumbs = [
+    { label: translate('myNFTPortfolio'), route: '#' },
+    { label: '“Super Nfty Floating Head”' },
+  ]
   const currencyName = useCurrencyName()
 
   const nft: TNFT = {
@@ -40,11 +41,11 @@ export default function PortfolioPage(): JSX.Element {
       name: 'banksy86',
     },
     copies: 1,
-    royalty: '10% Perpetual Royalty',
+    royalty: `10% ${translate('perpetualRoyalty')}`,
     owner: 'banksy86',
     collection: 'Angel in the sky',
     category: 'Illustration',
-    tags: ['Add your tag'],
+    tags: [translate('addYourTag')],
     description:
       'There is something magical about space and astronauts. Who wouldn’t want to see the earth from space, or run around on the moon? Space is the final frontier for mankind and essentialy to the future of our species. This piece is an hommage to the brave men and women who represent mankind in this most ambitious of endeavors, who strive to push',
   }

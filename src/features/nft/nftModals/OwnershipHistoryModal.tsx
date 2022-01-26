@@ -5,6 +5,7 @@ import Table from './table'
 import NumberFormat from 'react-number-format'
 import { Quit } from 'common/components/Icons'
 import { useCurrencyName } from 'common/hooks/appInfo'
+import { translate } from 'features/app/translations'
 
 const rate = 0.004
 
@@ -107,32 +108,32 @@ function OwnershipHistoryModal({
   const currencyName = useCurrencyName()
   const Columns = [
     {
-      name: 'Deal',
+      name: translate('deal'),
       key: 'Deal',
       className: 'pl-8',
       tdClassName: 'text-gray-71 font-medium w-[155px]',
       sortable: true,
     },
     {
-      name: 'Date',
+      name: translate('date'),
       key: 'Date',
       tdClassName: 'text-gray-a0 font-medium w-[190px]',
       sortable: true,
     },
     {
-      name: 'Buyer',
+      name: translate('buyer'),
       key: 'buyer',
       tdClassName: 'text-gray-4a text-base font-medium w-[166px]',
       sortable: true,
     },
     {
-      name: 'Seller',
+      name: translate('seller'),
       key: 'seller',
       tdClassName: 'text-gray-4a font-medium',
       sortable: true,
     },
     {
-      name: 'Fee paid',
+      name: translate('feePaid'),
       key: 'fee_paid',
       tdClassName: 'text-gray-4a font-medium',
       custom: (value: string) => (
@@ -155,7 +156,7 @@ function OwnershipHistoryModal({
       sortable: true,
     },
     {
-      name: 'Transaction ID',
+      name: translate('transactionID'),
       key: 'transaction_id',
       tdClassName: 'text-gray-4a font-medium',
       align: 'center',
@@ -176,7 +177,9 @@ function OwnershipHistoryModal({
       isOpen={isOpen}
       handleClose={onCloseModal}
       size='1224px'
-      title={'“Diamonds in the sky”: copy #1 ownership history'}
+      title={`“Diamonds in the sky”: ${translate('copyRankOwnershipHistory', {
+        rank: '#1',
+      })}`}
       infoIcon
       bodyClassName='pr-5 pl-10'
       titleClassName='font-black text-2xl text-gray-2d'

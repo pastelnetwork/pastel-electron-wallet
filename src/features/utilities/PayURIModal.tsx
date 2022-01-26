@@ -14,6 +14,7 @@ import Input from 'common/components/Inputs/Input'
 import { Button } from 'common/components/Buttons'
 import { parsePastelURI } from 'common/utils/uris'
 import * as ROUTES from 'common/utils/constants/routes'
+import { translate } from 'features/app/translations'
 
 const InputControl = memo(function InputControl({
   uriIsValid,
@@ -33,7 +34,7 @@ const InputControl = memo(function InputControl({
   return (
     <div className='mt-6'>
       <Input
-        placeholder='URI'
+        placeholder={translate('URI')}
         type='text'
         value={uri}
         onChange={onChange}
@@ -61,7 +62,7 @@ function CancelButton(): JSX.Element {
       onClick={onClick}
     >
       <div className='flex items-center justify-center'>
-        <div className='text-blue-3f text-h5-medium'>Cancel</div>
+        <div className='text-blue-3f text-h5-medium'>{translate('cancel')}</div>
       </div>
     </Button>
   )
@@ -85,7 +86,7 @@ const PayURIButton = memo(function PayURIButton({
       childrenClassName='w-full'
     >
       <div className='flex items-center justify-center'>
-        <div className='text-white text-h5-heavy'>Pay URI</div>
+        <div className='text-white text-h5-heavy'>{translate('payURI')}</div>
       </div>
     </Button>
   )
@@ -110,7 +111,7 @@ export default function PayURIModal(): JSX.Element | null {
     setMessage('')
     if (!strUri) {
       setValid(false)
-      setMessage('URI was not found or invalid')
+      setMessage(translate('uriWasNotFoundOrInvalid'))
       return
     }
 
@@ -153,7 +154,7 @@ export default function PayURIModal(): JSX.Element | null {
       isOpen={payURIModalIsOpen}
       handleClose={onClose}
       classNames='max-w-[700px]'
-      title='Pay URI'
+      title={translate('payURI')}
     >
       <div className='pr-8'>
         <InputControl

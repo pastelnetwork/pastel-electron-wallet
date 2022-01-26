@@ -1,9 +1,12 @@
 import React, { useCallback, useState } from 'react'
+import { useToggle } from 'react-use'
+
 import Modal from './modal'
 import Button from 'common/components/Buttons/Button'
 import Checkbox from 'common/components/Checkbox/Checkbox'
-import { useToggle } from 'react-use'
 import TransferHistoryModal from 'features/nft/nftModals/TransferHistoryModal'
+import { translate } from 'features/app/translations'
+
 import iconInfo from 'common/assets/icons/ico-info.svg'
 
 export type TTransferAuthorshipModal = {
@@ -41,9 +44,9 @@ function TransferAuthorshipModal({
 
   const renderModalTitle = () => (
     <div className='text-gray-2d'>
-      <div>Transfer Royalty</div>
+      <div>{translate('transferRoyalty')}</div>
       <div className='flex items-center'>
-        Compensation Rights{' '}
+        {translate('compensationRights')}{' '}
         <img src={iconInfo} className='ml-2' alt='Pastel Network' />
       </div>
     </div>
@@ -52,7 +55,7 @@ function TransferAuthorshipModal({
   const renderTransferAuthorshipContent = () => (
     <div>
       <div className='mt-22px text-gray-71 leading-tight font-medium text-base'>
-        Pastel ID of Recipient
+        {translate('pastelIDOfRecipient')}
       </div>
       <div className='mt-1.5 h-40px border rounded border-gray-e7 flex items-center'>
         <input
@@ -63,9 +66,7 @@ function TransferAuthorshipModal({
       </div>
       <div className='mt-5 mb-5 flex text-gray-a0 text-sm leading-tight'>
         <Checkbox isChecked={isChecked} clickHandler={onCheckboxChange} />
-        <span className='ml-1 mt-px'>
-          Yes, I confirm the transfer of royalty compensation rights
-        </span>
+        <span className='ml-1 mt-px'>{translate('confirmTransferButton')}</span>
       </div>
     </div>
   )
@@ -75,7 +76,7 @@ function TransferAuthorshipModal({
       variant='default'
       className='flex items-center justify-center w-full mb-2'
     >
-      <span className='font-medium'>Submit</span>
+      <span className='font-medium'>{translate('submit')}</span>
     </Button>
   )
 
@@ -86,7 +87,7 @@ function TransferAuthorshipModal({
         className='block link text-base font-medium'
         onClick={toggleShowTransferHistory}
       >
-        Transfer History
+        {translate('transferHistory')}
       </button>
     </div>
   )

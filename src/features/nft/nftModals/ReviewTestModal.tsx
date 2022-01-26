@@ -1,7 +1,9 @@
 import React from 'react'
+import parse from 'html-react-parser'
 
 import { Modal } from 'common/components/Modal'
 import Progressbar from 'common/components/Progressbar'
+import { translate } from 'features/app/translations'
 
 export type TReviewTestModal = {
   content?: string
@@ -20,11 +22,13 @@ function ReviewTestModal({
       className='w-[416px] px-10'
     >
       <div className='text-gray-2d text-22px font-extrabold mr-8 mb-[26px]'>
-        Your NFT {'"'}Diamonds in the sky{'"'} is being processed by the Network
+        {parse(
+          translate('reviewTestContent', { title: 'Diamonds in the sky' }),
+        )}
       </div>
       <Progressbar width={336} percent={59} />
       <div className='text-center text-gray-71 font-normal text-sm mt-[14px]'>
-        Please wait. Usually this takes 5 to 15 minutes
+        {translate('waitReview')}
       </div>
     </Modal>
   )

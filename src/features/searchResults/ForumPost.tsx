@@ -1,17 +1,20 @@
 import React, { useState } from 'react'
+import cn from 'classnames'
+
 import Select, { TOption } from 'common/components/Select/Select'
-import { rankingData } from './mockData'
 import Table, { TRow } from 'common/components/Table'
 import { Arrow, Star } from 'common/components/Icons'
 import Avatar from 'common/assets/images/avatar-placeholder.png'
 import AvatarGroup from 'common/components/AvatarGroup'
-import cn from 'classnames'
+import { translate } from 'features/app/translations'
 
 export type TForumPostProps = {
   searchKey: string
 }
 
 export default function ForumPost(): JSX.Element {
+  const rankingData = [{ value: 'Ranking', label: translate('ranking') }]
+
   const kFormatter = (num: number) => {
     const value: string =
       Math.sign(num).toString() + (Math.abs(num) / 1000).toFixed(1)
@@ -21,7 +24,7 @@ export default function ForumPost(): JSX.Element {
   const columns = [
     {
       key: 'topic',
-      name: 'Topic',
+      name: translate('topic'),
       custom: (value: string | number, row: TRow | undefined) => (
         <div className='flex items-center justify-between pr-[68px] pl-[18px]'>
           <div>{value}</div>
@@ -44,7 +47,7 @@ export default function ForumPost(): JSX.Element {
     },
     {
       key: 'replies',
-      name: 'Replies',
+      name: translate('replies'),
       colClasses: 'w-[146px]',
       custom: (value: string | number, row: TRow | undefined) => (
         <div className='text-gray-a0 flex'>
@@ -67,7 +70,7 @@ export default function ForumPost(): JSX.Element {
     },
     {
       key: 'views',
-      name: 'Views',
+      name: translate('views'),
       colClasses: 'w-[137px]',
       custom: (value: string | number, row: TRow | undefined) => (
         <div className='text-gray-a0 flex'>
@@ -92,7 +95,7 @@ export default function ForumPost(): JSX.Element {
     },
     {
       key: 'activity',
-      name: 'Activity',
+      name: translate('activity'),
       custom: (value: string | number) => (
         <div className='text-gray-a0'>{value}m</div>
       ),
@@ -152,7 +155,7 @@ export default function ForumPost(): JSX.Element {
           selected={ranking}
           className='bg-white w-[160px] mr-6'
           onChange={setRanking}
-          placeholder='All categories'
+          placeholder={translate('allCategories')}
         />
       </div>
       <div className='mt-5 bg-white py-[26px] pl-[38px] pr-[35px]'>

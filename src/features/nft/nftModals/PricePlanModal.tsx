@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import cn from 'classnames'
+
 import Modal from './modal'
 import Table, { TRow } from './table'
 import Slider from 'common/components/Slider/Slider'
@@ -6,56 +8,56 @@ import pencilIcon from 'common/assets/icons/ico-pencil.svg'
 import astronautIcon from 'common/assets/icons/ico-astronaut.png'
 import Button from 'common/components/Buttons/Button'
 import { useCurrencyName } from 'common/hooks/appInfo'
-import cn from 'classnames'
+import { translate } from 'features/app/translations'
 
 const tableData = [
   {
-    Copies: [1, 5],
-    'Auto-listing price': 1000,
+    copies: [1, 5],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [2, 10],
-    'Auto-listing price': 1200,
+    copies: [2, 10],
+    autoListingPrice: 1200,
   },
   {
-    Copies: [3, 30],
-    'Auto-listing price': 1000,
+    copies: [3, 30],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [40, 100],
-    'Auto-listing price': 1200,
+    copies: [40, 100],
+    autoListingPrice: 1200,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
   {
-    Copies: [1, 1],
-    'Auto-listing price': 1000,
+    copies: [1, 1],
+    autoListingPrice: 1000,
   },
 ]
 
@@ -96,8 +98,8 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
   }
   const Columns = [
     {
-      name: 'Copies',
-      key: 'Copies',
+      name: translate('copies'),
+      key: 'copies',
       custom: (value: Array<number>, row: TRow) => (
         <div className='flex leading-tight'>
           <img src={astronautIcon} alt='Pastel Network' />
@@ -120,8 +122,8 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
       className: 'pl-30px',
     },
     {
-      name: 'Auto-listing price',
-      key: 'Auto-listing price',
+      name: translate('autoListingPrice'),
+      key: 'autoListingPrice',
       custom: (value: number, row: TRow) => (
         <div className='flex leading-tight space-x-4'>
           <div className='text-gray-71'>
@@ -140,8 +142,8 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
 
   const Columns_edit = [
     {
-      name: 'Copies',
-      key: 'Copies',
+      name: translate('copies'),
+      key: 'copies',
       custom: (value: Array<number>, row: TRow) => (
         <SliderComponent
           range={value as [number, number]}
@@ -151,8 +153,8 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
       className: 'pl-30px w-478px',
     },
     {
-      name: 'Auto-listing price',
-      key: 'Auto-listing price',
+      name: translate('autoListingPrice'),
+      key: 'autoListingPrice',
       custom: (value: number) => (
         <div className='text-gray-a0 flex justify-between rounded shadow-2px h-40px text-lg py-1 px-4 w-200px'>
           <input
@@ -186,7 +188,7 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
       isOpen={isOpen}
       handleClose={onClose}
       size='874px'
-      title={'“Diamonds in the sky”: copies buy-it-now price plan:'}
+      title={`“Diamonds in the sky”: ${translate('copiesBuyItNoPricePlan')}:`}
       infoIcon
       titleClassName='font-black text-2xl text-gray-2d'
       headerClassName='px-10'
@@ -194,8 +196,7 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
     >
       <div className='sm:w-[794px] mt-3'>
         <div className='text-lg text-gray-77 pb-3'>
-          For every additional copy sold, the price will be changed according to
-          your desired settings.
+          {translate('pricePlanDescription')}
         </div>
         {renderPricePlanTable()}
 
@@ -206,10 +207,10 @@ function PricePlanModal({ isOpen, handleClose }: TPricePlanModal): JSX.Element {
               className='w-380px'
               variant='transparent'
             >
-              Decline
+              {translate('decline')}
             </Button>
             <Button onClick={() => setCellEdit(null)} className='w-380px'>
-              Accept
+              {translate('accept')}
             </Button>
           </div>
         )}

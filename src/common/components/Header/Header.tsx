@@ -86,6 +86,10 @@ function Header(): JSX.Element | null {
     setOpenNotificationModal(true)
   }, [])
 
+  const handleCloseNotificationModal = useCallback(() => {
+    setOpenNotificationModal(false)
+  }, [])
+
   const location = useLocation()
   if (location.pathname === ROUTES.CHAT) {
     return null
@@ -193,7 +197,7 @@ function Header(): JSX.Element | null {
       <NotificationModal
         isOpen={openNotificationModal}
         notifications={notificationData}
-        handleClose={() => setOpenNotificationModal(false)}
+        handleClose={handleCloseNotificationModal}
       />
     </div>
   )

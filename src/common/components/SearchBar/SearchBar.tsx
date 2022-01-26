@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent } from 'react'
+import React, { useState, KeyboardEvent, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import { CloseButton } from '../../components/Buttons'
 import { Search } from '../Icons'
@@ -19,18 +19,21 @@ export default function SearchBar(): JSX.Element {
     'nfts' | 'keyword' | 'creators' | 'users' | 'forum' | undefined
   >(undefined)
   const [inputText, setInputText] = useState<string>('')
-  const onKey = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (['Enter', 'NumpadEnter'].includes(e.key)) {
-      if (inputText) {
-        setSelectedCategory(undefined)
-        setInputFocused(false)
-        history.push(ROUTES.SEARCH_RESULT, {
-          keyword: inputText,
-          selectedCategory,
-        })
+  const onKey = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (['Enter', 'NumpadEnter'].includes(e.key)) {
+        if (inputText) {
+          setSelectedCategory(undefined)
+          setInputFocused(false)
+          history.push(ROUTES.SEARCH_RESULT, {
+            keyword: inputText,
+            selectedCategory,
+          })
+        }
       }
-    }
-  }
+    },
+    [inputText, selectedCategory],
+  )
 
   const categories: Array<TSearchTagProps> = [
     {
@@ -122,11 +125,36 @@ export default function SearchBar(): JSX.Element {
     },
   ]
 
-  const clickedCategory = (
-    param: 'nfts' | 'keyword' | 'creators' | 'users' | 'forum' | undefined,
-  ) => {
-    setSelectedCategory(param)
-  }
+  const handleCloseButtonClick = useCallback(() => {
+    setInputFocused(false)
+    setSelectedCategory(undefined)
+  }, [])
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputText(e.target.value)
+    },
+    [],
+  )
+
+  const handleInputFocus = useCallback(() => {
+    setInputFocused(true)
+  }, [])
+
+  const clickedCategory = useCallback(
+    (
+      param: 'nfts' | 'keyword' | 'creators' | 'users' | 'forum' | undefined,
+    ) => {
+      setSelectedCategory(param)
+    },
+    [],
+  )
+
+  const handleResultSearchRowClick = useCallback((param: string) => {
+    setInputText(param)
+    setInputFocused(false)
+    setSelectedCategory(undefined)
+  }, [])
 
   return (
     <div
@@ -159,11 +187,9 @@ export default function SearchBar(): JSX.Element {
               ? translate('searchNFTCreatorUser')
               : translate('searchCreatorOrNFT')
           }
-          onFocus={() => {
-            setInputFocused(true)
-          }}
+          onFocus={handleInputFocus}
           value={inputText}
-          onChange={e => setInputText(e.target.value)}
+          onChange={handleInputChange}
         />
         {selectedCategory &&
           categories
@@ -186,10 +212,7 @@ export default function SearchBar(): JSX.Element {
         />
         {inputFocused && (
           <CloseButton
-            onClick={() => {
-              setInputFocused(false)
-              setSelectedCategory(undefined)
-            }}
+            onClick={handleCloseButtonClick}
             className='absolute md:right-5 right-3 top-[6px] w-7 h-7'
           />
         )}
@@ -208,7 +231,7 @@ export default function SearchBar(): JSX.Element {
                         key={`${label}${type}${id}`}
                         type={category.type}
                         label={category.label}
-                        clickHandle={param => clickedCategory(param)}
+                        clickHandle={clickedCategory}
                         id={category.id}
                       />
                     )
@@ -247,11 +270,7 @@ export default function SearchBar(): JSX.Element {
                         name={item.name}
                         image={item.img}
                         followers={item.followers}
-                        handleClick={param => {
-                          setInputText(param)
-                          setInputFocused(false)
-                          setSelectedCategory(undefined)
-                        }}
+                        handleClick={handleResultSearchRowClick}
                       />
                     ))}
                 </div>

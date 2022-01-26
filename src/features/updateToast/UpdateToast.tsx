@@ -6,6 +6,7 @@ import { CloseButton, Button } from '../../common/components/Buttons'
 import { useAppDispatch, useAppSelector } from '../../redux/hooks'
 import { closeUpdateToast } from './UpdateToastSlice'
 import { sendEventToMain } from '../app/rendererEvents'
+import { translate } from 'features/app/translations'
 
 export default function UpdateToast(): JSX.Element | null {
   const { opened } = useAppSelector(state => state.updateToast)
@@ -35,14 +36,14 @@ export default function UpdateToast(): JSX.Element | null {
     >
       <CloseButton className='absolute right-4 top-4' onClick={onClose} />
       <div className='text-base font-medium text-gray-4a mb-25px mt-6'>
-        Would you like to update to the new version of Wallet? Recommended!
+        {translate('updateToastContent')}
       </div>
       <div className='flex justify-center items-center'>
         <Button onClick={handleUpdate} className='mr-4 w-2/5'>
-          OK
+          {translate('ok')}
         </Button>
         <Button onClick={openLearnMore} variant='secondary' className='w-2/5'>
-          Learn more
+          {translate('learnMore')}
         </Button>
       </div>
     </div>

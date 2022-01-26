@@ -1,4 +1,6 @@
 import React from 'react'
+
+import { translate } from 'features/app/translations'
 import { TComment } from './Comment.types'
 
 type TCommentProps = {
@@ -20,7 +22,7 @@ export default function Comment({ comment }: TCommentProps): JSX.Element {
           type='button'
           className='text-gray-a6 hover:text-gray-b0 leading-5 font-extrabold'
         >
-          Reply
+          {translate('reply')}
         </button>
       </div>
     </div>

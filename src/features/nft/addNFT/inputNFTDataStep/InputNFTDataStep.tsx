@@ -144,30 +144,34 @@ export default function InputNFTDataStep({
     </div>
   )
 
+  const renderTitleField = () => (
+    <div className='relative w-full'>
+      <Input
+        form={form}
+        labelClass='text-gray-71 font-medium text-base mb-1.5'
+        name='title'
+        label={translate('title')}
+        placeholder={translate('placeholderTitleField', { titleMinLength })}
+        className='w-full text-sm'
+        inputClassName={cn(
+          'input pr-[40px]',
+          form.formState.errors.title?.message && 'border border-red-fe',
+        )}
+      />
+      {form.formState.errors.title?.message ? (
+        <img
+          src={TimesIcon}
+          className='w-3 absolute top-[45px] right-3'
+          alt='Times Icon'
+        />
+      ) : null}
+    </div>
+  )
+
   const renderNFTForm = () => (
     <div className='mt-2.5 mb-22px space-y-6'>
       <div className='flex items-start space-x-5'>
-        <div className='relative w-full'>
-          <Input
-            form={form}
-            labelClass='text-gray-71 font-medium text-base mb-1.5'
-            name='title'
-            label={translate('title')}
-            placeholder={translate('placeholderTitleField', { titleMinLength })}
-            className='w-full text-sm'
-            inputClassName={cn(
-              'input pr-[40px]',
-              form.formState.errors.title?.message && 'border border-red-fe',
-            )}
-          />
-          {form.formState.errors.title?.message ? (
-            <img
-              src={TimesIcon}
-              className='w-3 absolute top-[45px] right-3'
-              alt='Times Icon'
-            />
-          ) : null}
-        </div>
+        {renderTitleField()}
         {renderGreenNFT()}
       </div>
       <div className='flex space-x-8'>

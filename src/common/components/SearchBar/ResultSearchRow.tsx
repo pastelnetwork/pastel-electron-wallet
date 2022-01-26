@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react'
 
+import { translate } from 'features/app/translations'
+
 export type TResultShearchProps = {
   name: string
   image?: string
@@ -36,7 +38,7 @@ function ResultSearchRow({
         <div className='text-base font-black text-gray-23'>{name}</div>
       </div>
       <div className='text-gray-a0 text-sm font-medium pr-[42px]'>
-        {followers} followers
+        {followers} {translate('followers')}followers
       </div>
     </button>
   )

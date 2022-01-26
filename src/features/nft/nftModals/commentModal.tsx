@@ -4,6 +4,7 @@ import cn from 'classnames'
 import { Modal } from '../../../common/components/Modal'
 import Comment from '../../../common/components/Comment'
 import Scrollbar from '../../../common/components/Scrollbar'
+import { translate } from 'features/app/translations'
 
 type TComment = {
   id: number
@@ -29,7 +30,9 @@ export default function CommentModal({
 }: TCommentModal): JSX.Element {
   return (
     <Modal isOpen={isOpen} handleClose={handleClose} className='max-w-lg'>
-      <h2 className='mb-6'>Comments ({comments?.length})</h2>
+      <h2 className='mb-6'>
+        {translate('comments')} ({comments?.length})
+      </h2>
       <Scrollbar maxHeight='425'>
         {comments.map(
           ({ id, avatar, name, when, comment, commentedOn, likes }, idx) => (

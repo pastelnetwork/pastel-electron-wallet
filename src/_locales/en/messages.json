@@ -89,7 +89,7 @@
   },
   "categories": {
     "message": "Categories",
-    "description": "Used for my profile screen, the Portfolio screen, the members page"
+    "description": "Used for my profile screen, the Portfolio screen, the members page, the search result screen"
   },
   "pastelReputationScore": {
     "message": "Pastel Reputation Score",
@@ -97,7 +97,7 @@
   },
   "none": {
     "message": "None",
-    "description": "Used for my profile screen, the register screen"
+    "description": "Used for my profile screen, the register screen, the NFT screen"
   },
   "highestSalePriceReceived": {
     "message": "Highest Sale Price Received",
@@ -109,7 +109,7 @@
   },
   "totalNFTsSold": {
     "message": "Total NFTs Sold",
-    "description": "Used for my profile screen, the members page"
+    "description": "Used for my profile screen, the members page, the NFT like modal"
   },
   "totalNFTsSoldCopies": {
     "message": "{{copies}} Copies across {{total}} NFTs",
@@ -145,7 +145,7 @@
   },
   "top": {
     "message": "Top",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the forum screen"
   },
   "saveChanges": {
     "message": "Save Changes",
@@ -165,7 +165,7 @@
   },
   "followers": {
     "message": "Followers",
-    "description": "Used for my profile screen, the members screen"
+    "description": "Used for my profile screen, the members screen, the ResultSearchRow screen, the search result page, the NFT like modal"
   },
   "friends": {
     "message": "Friends",
@@ -233,7 +233,7 @@
   },
   "commentedOn": {
     "message": "Commented on",
-    "description": "Used for my profile screen, the members screen"
+    "description": "Used for my profile screen, the members screen, the NFT comment modal"
   },
   "restoreYourAccountButton": {
     "message": "Restore your account",
@@ -429,7 +429,7 @@
   },
   "yourCurrentPSLBalance": {
     "message": "Your Current {{currencyName}} Balance",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the NFT modal"
   },
   "usernameChangeFee": {
     "message": "Username Change Fee (burned)",
@@ -469,7 +469,7 @@
   },
   "NFTs": {
     "message": "NFTs",
-    "description": "Used for header, SearchBar, the dashboard screen"
+    "description": "Used for header, SearchBar, the dashboard screen, the search result screen"
   },
   "members": {
     "message": "Members",
@@ -493,11 +493,11 @@
   },
   "creators": {
     "message": "Creators",
-    "description": "Used for SearchBar, the members screen, the dashboard screen"
+    "description": "Used for SearchBar, the members screen, the dashboard screen, the search result screen"
   },
   "users": {
     "message": "Users",
-    "description": "Used for SearchBar"
+    "description": "Used for SearchBar, the search result screen"
   },
   "forumPost": {
     "message": "Forum Post",
@@ -917,7 +917,7 @@
   },
   "copies": {
     "message": "Copies",
-    "description": "Used for the new NFT screen"
+    "description": "Used for the new NFT screen, the NFT Price Plan modal"
   },
   "series": {
     "message": "Series",
@@ -929,7 +929,7 @@
   },
   "perpetualRoyalty": {
     "message": "Perpetual Royalty",
-    "description": "Used for the new NFT screen"
+    "description": "Used for the new NFT screen, the NFT screen"
   },
   "creatorsWebsite": {
     "message": "Creator's website",
@@ -973,7 +973,7 @@
   },
   "cancel": {
     "message": "Cancel",
-    "description": "Used for the new NFT screen, the wallet screen"
+    "description": "Used for the new NFT screen, the wallet screen, the NFT modal"
   },
   "goToImageOptimization": {
     "message": "Go to Image Optimization",
@@ -1449,7 +1449,7 @@
   },
   "date": {
     "message": "Date",
-    "description": "Used for the wallet screen"
+    "description": "Used for the wallet screen, the NFT modal"
   },
   "recipientAddress": {
     "message": "Recipient address",
@@ -1461,7 +1461,7 @@
   },
   "status": {
     "message": "Status",
-    "description": "Used for the wallet screen"
+    "description": "Used for the wallet screen, the NFT screen"
   },
   "confirmed": {
     "message": "Confirmed",
@@ -1485,7 +1485,7 @@
   },
   "timeRange": {
     "message": "Time range",
-    "description": "Used for the wallet screen, the dashboard screen"
+    "description": "Used for the wallet screen, the dashboard screen, the NFT change status modal"
   },
   "sourceAddress": {
     "message": "Source address",
@@ -1533,15 +1533,15 @@
   },
   "week": {
     "message": "Week",
-    "description": "Used for the wallet screen"
+    "description": "Used for the wallet screen, the NFT View Stats modal"
   },
   "month": {
     "message": "Month",
-    "description": "Used for the wallet screen"
+    "description": "Used for the wallet screen, the NFT View Stats modal"
   },
   "year": {
     "message": "Year",
-    "description": "Used for the wallet screen"
+    "description": "Used for the wallet screen, the NFT View Stats modal"
   },
   "warning": {
     "message": "Warning",
@@ -1557,7 +1557,7 @@
   },
   "auction": {
     "message": "Auction",
-    "description": "Used for the NFTs screen, the Portfolio screen, the member screen"
+    "description": "Used for the NFTs screen, the Portfolio screen, the member screen, the search result screen"
   },
   "makeAnOffer": {
     "message": "Make-an-Offer",
@@ -1569,7 +1569,7 @@
   },
   "future": {
     "message": "Future",
-    "description": "Used for the NFTs screen, the Portfolio screen"
+    "description": "Used for the NFTs screen, the Portfolio screen, the search result screen"
   },
   "present": {
     "message": "Present",
@@ -1581,7 +1581,7 @@
   },
   "high": {
     "message": "High",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the search result screen"
   },
   "medium": {
     "message": "Medium",
@@ -1593,11 +1593,11 @@
   },
   "time": {
     "message": "Time",
-    "description": "Used for the NFTs screen, the Portfolio screen"
+    "description": "Used for the NFTs screen, the Portfolio screen, the NFT like modal"
   },
   "rareness": {
     "message": "Rareness",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the search result screen"
   },
   "feed": {
     "message": "Feed",
@@ -1617,7 +1617,7 @@
   },
   "buyItNowButton": {
     "message": "Buy it Now",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the NFT screen"
   },
   "nftFixedPrice": {
     "message": "Fixed price",
@@ -1629,7 +1629,7 @@
   },
   "makeAnOfferButton": {
     "message": "Make an Offer",
-    "description": "Used for the NFTs screen"
+    "description": "Used for the NFTs screen, the NFT screen"
   },
   "notForSale": {
     "message": "Not for sale",
@@ -1685,11 +1685,11 @@
   },
   "likes": {
     "message": "Likes",
-    "description": "Used for the Portfolio screen, the members screen"
+    "description": "Used for the Portfolio screen, the members screen, the NFT screen"
   },
   "myNFTPortfolio": {
     "message": "My NFT Portfolio",
-    "description": "Used for the Portfolio screen"
+    "description": "Used for the Portfolio screen, the NFT screen"
   },
   "inReview": {
     "message": "In review",
@@ -1697,15 +1697,15 @@
   },
   "type": {
     "message": "Type",
-    "description": "Used for the Portfolio screen, the members screen"
+    "description": "Used for the Portfolio screen, the members screen, the search result screen"
   },
   "creator": {
     "message": "Creator",
-    "description": "Used for the Portfolio screen"
+    "description": "Used for the Portfolio screen, the NFT screen"
   },
   "sold": {
     "message": "Sold",
-    "description": "Used for the Portfolio screen, the members screen"
+    "description": "Used for the Portfolio screen, the members screen, the search result page"
   },
   "owned": {
     "message": "Owned",
@@ -1717,7 +1717,7 @@
   },
   "price": {
     "message": "Price",
-    "description": "Used for the Portfolio screen"
+    "description": "Used for the Portfolio screen, the NFT screen"
   },
   "youHaveNotCreatedAnyNFTs": {
     "message": "You have not created any NFTs",
@@ -1733,7 +1733,7 @@
   },
   "ranking": {
     "message": "Ranking",
-    "description": "Used for the Members screen"
+    "description": "Used for the Members screen, the search result page"
   },
   "sellers": {
     "message": "Sellers",
@@ -1873,11 +1873,11 @@
   },
   "bid": {
     "message": "Bid",
-    "description": "Used for the members screen"
+    "description": "Used for the members screen, the NFT Bid History modal"
   },
   "comments": {
     "message": "Comments",
-    "description": "Used for the members screen"
+    "description": "Used for the members screen, the NFT modal"
   },
   "mention": {
     "message": "Mention",
@@ -1918,5 +1918,649 @@
   "memberSince": {
     "message": "Member since",
     "description": "Used for the members screen"
+  },
+  "writeYourMessageHere": {
+    "message": "Write your message here",
+    "description": "Used for the chat screen"
+  },
+  "chat": {
+    "message": "Chat",
+    "description": "Used for the chat screen"
+  },
+  "keyword": {
+    "message": "Keyword",
+    "description": "Used for the search result screen"
+  },
+  "forumPosts": {
+    "message": "Forum Posts",
+    "description": "Used for the search result screen"
+  },
+  "searchResult": {
+    "message": "Search result",
+    "description": "Used for the search result screen"
+  },
+  "topic": {
+    "message": "Topic",
+    "description": "Used for the search result screen, the forum screen"
+  },
+  "replies": {
+    "message": "Replies",
+    "description": "Used for the search result screen, the forum screen"
+  },
+  "views": {
+    "message": "Views",
+    "description": "Used for the search result screen, the NFT screen, the forum screen"
+  },
+  "activity": {
+    "message": "Activity",
+    "description": "Used for the search result screen, the forum screen"
+  },
+  "allCategories": {
+    "message": "All categories",
+    "description": "Used for the search result screen"
+  },
+  "AI": {
+    "message": "AI",
+    "description": "Used for the search result screen"
+  },
+  "addYourTag": {
+    "message": "Add your tag",
+    "description": "Used for the NFT screen"
+  },
+  "pastelRareness": {
+    "message": "Pastel Rareness",
+    "description": "Used for the NFT screen"
+  },
+  "internetRareness": {
+    "message": "Internet Rareness",
+    "description": "Used for the NFT screen"
+  },
+  "firTreeInHexagonTooltipContent": {
+    "message": "This NFT is a Pastel GreenNFT, which means that each time a copy is sold, {{percent}} of the sale price will be donated to a non-profit organization that will send the proceeds to TeamTrees, which will plant a tree for every {{price}} received.",
+    "description": "Used for the NFT screen"
+  },
+  "makeABid": {
+    "message": "make a bid",
+    "description": "Used for the NFT screen"
+  },
+  "bidsActivity": {
+    "message": "Bids activity",
+    "description": "Used for the NFT screen"
+  },
+  "bids": {
+    "message": "bids",
+    "description": "Used for the NFT screen"
+  },
+  "NFTID": {
+    "message": "NFT ID",
+    "description": "Used for the NFT screen"
+  },
+  "collection": {
+    "message": "Collection",
+    "description": "Used for the NFT screen"
+  },
+  "category": {
+    "message": "Category",
+    "description": "Used for the NFT screen"
+  },
+  "tag": {
+    "message": "Tag",
+    "description": "Used for the NFT screen"
+  },
+  "claim": {
+    "message": "Claim",
+    "description": "Used for the NFT screen"
+  },
+  "minimumPriceMeetTooltipContent": {
+    "message": "Minimum Price Meet",
+    "description": "Used for the NFT screen"
+  },
+  "saleType": {
+    "message": "Sale Type",
+    "description": "Used for the NFT screen"
+  },
+  "currentlyListed": {
+    "message": "Currently Listed",
+    "description": "Used for the NFT screen"
+  },
+  "remaining": {
+    "message": "Remaining",
+    "description": "Used for the NFT screen"
+  },
+  "minPrice": {
+    "message": "Min. Price",
+    "description": "Used for the NFT screen"
+  },
+  "lastBid": {
+    "message": "Last bid",
+    "description": "Used for the NFT screen"
+  },
+  "NA": {
+    "message": "NA",
+    "description": "Used for the NFT screen"
+  },
+  "liveAuction": {
+    "message": "Live Auction",
+    "description": "Used for the NFT screen"
+  },
+  "bidNow": {
+    "message": "Bid now",
+    "description": "Used for the NFT screen"
+  },
+  "transferOwnership": {
+    "message": "Transfer Ownership",
+    "description": "Used for the NFT screen"
+  },
+  "transferPerpetualRoyalty": {
+    "message": "Transfer Perpetual Royalty",
+    "description": "Used for the NFT screen"
+  },
+  "showLess": {
+    "message": "Show Less",
+    "description": "Used for the NFT screen"
+  },
+  "readMore": {
+    "message": "Read More",
+    "description": "Used for the NFT screen"
+  },
+  "latestComments": {
+    "message": "Latest comments",
+    "description": "Used for the NFT screen"
+  },
+  "allComments": {
+    "message": "All Comments",
+    "description": "Used for the NFT screen"
+  },
+  "commentsCount": {
+    "message": "{{number}} of {{total}}",
+    "description": "Used for the NFT screen"
+  },
+  "claimPetition": {
+    "message": "Claim Petition",
+    "description": "Used for the NFT modal"
+  },
+  "ok": {
+    "message": "Ok",
+    "description": "Used for the NFT modal, the Update Toast modal"
+  },
+  "claimDetails": {
+    "message": "Claim Details",
+    "description": "Used for the NFT modal"
+  },
+  "nftName": {
+    "message": "NFT name",
+    "description": "Used for the NFT modal"
+  },
+  "currentAuthorPastelID": {
+    "message": "Current author’s PastelID",
+    "description": "Used for the NFT modal"
+  },
+  "transactionFeeBurned": {
+    "message": "Transaction Fee(burned)",
+    "description": "Used for the NFT modal"
+  },
+  "totalNFTOfferWithFee": {
+    "message": "Total NFT Offer with Fee",
+    "description": "Used for the NFT modal"
+  },
+  "remainingBalanceIfAccepted": {
+    "message": "Remaining Balance if Accepted",
+    "description": "Used for the NFT modal"
+  },
+  "placeAnAuctionBid": {
+    "message": "Place an Auction Bid",
+    "description": "Used for the NFT modal"
+  },
+  "youAreMakingAnOffer": {
+    "message": "You are making an offer for",
+    "description": "Used for the NFT modal"
+  },
+  "by": {
+    "message": "by",
+    "description": "Used for the NFT modal"
+  },
+  "youAreBuying": {
+    "message": "You are buying",
+    "description": "Used for the NFT modal"
+  },
+  "from": {
+    "message": "from",
+    "description": "Used for the NFT modal"
+  },
+  "youArePlacingABid": {
+    "message": "You are placing a bid for",
+    "description": "Used for the NFT modal"
+  },
+  "makeOfferNote": {
+    "message": "Note: Your offer must be higher then the current asking price <br /> (if any), and might not be accepted by the seller",
+    "description": "Used for the NFT modal"
+  },
+  "numberCopiesAvailable": {
+    "message": "{{number}} copies available at the price listed below",
+    "description": "Used for the NFT modal"
+  },
+  "yourBidMustBeHigherThanTheCurrentHighBid": {
+    "message": "Your bid must be higher than the current high bid.",
+    "description": "Used for the NFT modal"
+  },
+  "yourOfferedPrice": {
+    "message": "Your Offered Price",
+    "description": "Used for the NFT modal"
+  },
+  "enterDesiredQuantity": {
+    "message": "Enter Desired Quantity",
+    "description": "Used for the NFT modal"
+  },
+  "currentBidAndEnter": {
+    "message": "Current bid {{bid}} {{currencyName}}. Enter {{enter}} or more",
+    "description": "Used for the NFT modal"
+  },
+  "proceedToPayment": {
+    "message": "Proceed to Payment",
+    "description": "Used for the NFT modal"
+  },
+  "submitBid": {
+    "message": "Submit Bid",
+    "description": "Used for the NFT modal"
+  },
+  "buyNow": {
+    "message": "Buy now",
+    "description": "Used for the NFT modal"
+  },
+  "youAreBuy": {
+    "message": "You are buy",
+    "description": "Used for the NFT modal"
+  },
+  "enterQuantity": {
+    "message": "Enter quantity",
+    "description": "Used for the NFT modal"
+  },
+  "quantityAvailable": {
+    "message": "{{quantity}} available",
+    "description": "Used for the NFT modal"
+  },
+  "number": {
+    "message": "Number",
+    "description": "Used for the NFT modal"
+  },
+  "yourBalance": {
+    "message": "Your balance",
+    "description": "Used for the NFT modal"
+  },
+  "serviceFee": {
+    "message": "Service fee",
+    "description": "Used for the NFT modal"
+  },
+  "youWillPay": {
+    "message": "You will pay",
+    "description": "Used for the NFT modal"
+  },
+  "bidHistory": {
+    "message": "Bid History",
+    "description": "Used for the NFT modal"
+  },
+  "changeStatusOf": {
+    "message": "Change status of",
+    "description": "Used for the NFT modal"
+  },
+  "select": {
+    "message": "Select",
+    "description": "Used for the NFT modal"
+  },
+  "fixedAskingPrice": {
+    "message": "Fixed asking price",
+    "description": "Used for the NFT modal"
+  },
+  "minimumAutionPrice": {
+    "message": "Minimum aution price",
+    "description": "Used for the NFT modal"
+  },
+  "changeCopiesPricingPlan": {
+    "message": "Change copies pricing plan",
+    "description": "Used for the NFT modal"
+  },
+  "duration": {
+    "message": "Duration",
+    "description": "Used for the NFT modal"
+  },
+  "submit": {
+    "message": "Submit",
+    "description": "Used for the NFT modal"
+  },
+  "submitYourReply": {
+    "message": "Submit your reply",
+    "description": "Used for the NFT modal"
+  },
+  "makeAPhotoOfClaimDetails": {
+    "message": "Make a photo of Claim details",
+    "description": "Used for the NFT modal"
+  },
+  "NFT": {
+    "message": "NFT",
+    "description": "Used for the NFT modal"
+  },
+  "claimer": {
+    "message": "Claimer",
+    "description": "Used for the NFT modal"
+  },
+  "recipient": {
+    "message": "Recipient",
+    "description": "Used for the NFT modal"
+  },
+  "authorshipClaimTicket": {
+    "message": "Authorship Claim Ticket",
+    "description": "Used for the NFT modal"
+  },
+  "copyID": {
+    "message": "Copy ID",
+    "description": "Used for the NFT modal"
+  },
+  "owner": {
+    "message": "Owner",
+    "description": "Used for the NFT modal"
+  },
+  "listFfNFTCopies": {
+    "message": "List of NFT copies",
+    "description": "Used for the NFT modal"
+  },
+  "dealApprovedModalCongratulationsMessage": {
+    "message": "Congratulations! <br /> Your NFT Trade was Finalized!",
+    "description": "Used for the NFT modal"
+  },
+  "member": {
+    "message": "Member",
+    "description": "Used for the NFT modal"
+  },
+  "deal": {
+    "message": "Deal",
+    "description": "Used for the NFT modal"
+  },
+  "buyer": {
+    "message": "Buyer",
+    "description": "Used for the NFT modal"
+  },
+  "seller": {
+    "message": "Seller",
+    "description": "Used for the NFT modal"
+  },
+  "feePaid": {
+    "message": "Fee paid",
+    "description": "Used for the NFT modal"
+  },
+  "transactionID": {
+    "message": "Transaction ID",
+    "description": "Used for the NFT modal"
+  },
+  "copyRankOwnershipHistory": {
+    "message": "copy {{rank}} ownership history",
+    "description": "Used for the NFT modal"
+  },
+  "autoListingPrice": {
+    "message": "Auto-listing price",
+    "description": "Used for the NFT modal"
+  },
+  "copiesBuyItNoPricePlan": {
+    "message": "copies buy-it-now price plan",
+    "description": "Used for the NFT modal"
+  },
+  "pricePlanDescription": {
+    "message": "For every additional copy sold, the price will be changed according to your desired settings.",
+    "description": "Used for the NFT modal"
+  },
+  "decline": {
+    "message": "Decline",
+    "description": "Used for the NFT modal"
+  },
+  "noTagChosen": {
+    "message": "No tag chosen",
+    "description": "Used for the NFT modal"
+  },
+  "changeTagOf": {
+    "message": "Change tag of",
+    "description": "Used for the NFT modal"
+  },
+  "isInReview": {
+    "message": "is in review",
+    "description": "Used for the NFT modal"
+  },
+  "wasOfferedBy": {
+    "message": "was offered by",
+    "description": "Used for the NFT modal"
+  },
+  "reviewAnOfferFor": {
+    "message": "Review an offer for",
+    "description": "Used for the NFT modal"
+  },
+  "previousSalesPriceComparison": {
+    "message": "Previous sales price comparison",
+    "description": "Used for the NFT modal"
+  },
+  "waitReview": {
+    "message": "Please wait. Usually this takes 5 to 15 minutes",
+    "description": "Used for the NFT modal"
+  },
+  "reviewTestContent": {
+    "message": "Your NFT \"{{title}}\" is being processed by the Network",
+    "description": "Used for the NFT modal"
+  },
+  "nCopy": {
+    "message": "# Copy",
+    "description": "Used for the NFT modal"
+  },
+  "currentOwner": {
+    "message": "Current Owner",
+    "description": "Used for the NFT modal"
+  },
+  "pricePaid": {
+    "message": "Price paid",
+    "description": "Used for the NFT modal"
+  },
+  "priceHistory": {
+    "message": "price history",
+    "description": "Used for the NFT modal"
+  },
+  "saleHistory": {
+    "message": "Sale History",
+    "description": "Used for the NFT modal"
+  },
+  "transferRoyalty": {
+    "message": "Transfer Royalty",
+    "description": "Used for the NFT modal"
+  },
+  "compensationRights": {
+    "message": "Compensation Rights",
+    "description": "Used for the NFT modal"
+  },
+  "pastelIDOfRecipient": {
+    "message": "Pastel ID of Recipient",
+    "description": "Used for the NFT modal"
+  },
+  "confirmTransferButton": {
+    "message": "Yes, I confirm the transfer of royalty compensation rights",
+    "description": "Used for the NFT modal"
+  },
+  "transferHistory": {
+    "message": "Transfer History",
+    "description": "Used for the NFT modal"
+  },
+  "pastelExplorer": {
+    "message": "pastelExplorer",
+    "description": "Used for the NFT modal"
+  },
+  "linkToTheBlockchainTransaction": {
+    "message": "Link to the blockchain transaction",
+    "description": "Used for the NFT modal"
+  },
+  "sender": {
+    "message": "Sender",
+    "description": "Used for the NFT modal"
+  },
+  "royaltyRightsTransferHistory": {
+    "message": "Royalty rights transfer history",
+    "description": "Used for the NFT modal"
+  },
+  "totalViews": {
+    "message": "Total Views",
+    "description": "Used for the NFT modal"
+  },
+  "socialSecurity": {
+    "message": "Social Security",
+    "description": "Used for the NFT modal"
+  },
+  "salesData": {
+    "message": "Sales data",
+    "description": "Used for the NFT modal"
+  },
+  "unixTime": {
+    "message": "UnixTime",
+    "description": "Used for the export all Tx modal"
+  },
+  "txIdExportModal": {
+    "message": "Txid",
+    "description": "Used for the export all Tx modal"
+  },
+  "memo": {
+    "message": "Memo",
+    "description": "Used for the export all Tx modal"
+  },
+  "URI": {
+    "message": "URI",
+    "description": "Used for the Pay URI modal"
+  },
+  "payURI": {
+    "message": "Pay URI",
+    "description": "Used for the Pay URI modal"
+  },
+  "uriWasNotFoundOrInvalid": {
+    "message": "URI was not found or invalid",
+    "description": "Used for the Pay URI modal"
+  },
+  "pasteldInfo": {
+    "message": "Pasteld Info",
+    "description": "Used for the Pastel modal"
+  },
+  "notConnected": {
+    "message": "Not Connected",
+    "description": "Used for the Pastel modal"
+  },
+  "version": {
+    "message": "Version",
+    "description": "Used for the Pastel modal"
+  },
+  "network": {
+    "message": "Network",
+    "description": "Used for the Pastel modal"
+  },
+  "blockHeight": {
+    "message": "Block Height",
+    "description": "Used for the Pastel modal"
+  },
+  "connections": {
+    "message": "Connections",
+    "description": "Used for the Pastel modal"
+  },
+  "networkSolutionRate": {
+    "message": "Network Solution Rate",
+    "description": "Used for the Pastel modal"
+  },
+  "import": {
+    "message": "Import",
+    "description": "Used for the Import Private Key modal, the Import ANI Private Key modal"
+  },
+  "privateKeys": {
+    "message": "Private Keys",
+    "description": "Used for the Import Private Key modal"
+  },
+  "privateKeysIsRequired": {
+    "message": "Private Keys is required.",
+    "description": "Used for the Import Private Key modal"
+  },
+  "noKeysWereSpecified": {
+    "message": "No keys were specified, so none were imported",
+    "description": "Used for the Import Private Key modal"
+  },
+  "importPrivateKeySuccessMessage": {
+    "message": "The import process for the private keys has started.<br />This will take a long time, up to 1 hour!<br />Please be patient!",
+    "description": "Used for the Import Private Key modal, the Import ANI Private Keys modal"
+  },
+  "importPrivateKeys": {
+    "message": "Import Private Keys",
+    "description": "Used for the Import Private Key modal"
+  },
+  "importPrivateKeysIntro": {
+    "message": "Please paste your private or viewing keys here (transparent address or shielded address), one line per key.",
+    "description": "Used for the Import Private Key modal"
+  },
+  "ANIPrivateKeys": {
+    "message": "ANI Private Keys",
+    "description": "Used for the Import ANI Private Keys modal"
+  },
+  "ANIPrivateKeysIsRequired": {
+    "message": "ANI Private Keys is required",
+    "description": "Used for the Import ANI Private Keys modal"
+  },
+  "noANIKeysWereSpecified": {
+    "message": "No ANI keys were specified, so none were imported",
+    "description": "Used for the Pastel modal"
+  },
+  "importANIAnimecoinPrivateKeys": {
+    "message": "Import ANI (Animecoin) Private Keys",
+    "description": "Used for the Import ANI Private Keys modal"
+  },
+  "importANIPrivateKeysDescription": {
+    "message": "Please paste your ANI private keys here, one line per key. <br /> (NOTE: Don&apos;t use this unless you participated in the original fork of Animecoin!)",
+    "description": "Used for the Import ANI Private Keys modal"
+  },
+  "yourWalletPrivateKeys": {
+    "message": "Your Wallet Private Keys",
+    "description": "Used for the Export Private Key modal"
+  },
+  "exportPrivateKeyDescription": {
+    "message": "These are all the private keys in your wallet. Please store them carefully!",
+    "description": "Used for the Export Private Key modal"
+  },
+  "errorExportingTransactions": {
+    "message": "Error Exporting Transactions",
+    "description": "Used for the Error modal"
+  },
+  "updateToastContent": {
+    "message": "Would you like to update to the new version of Wallet? Recommended!",
+    "description": "Used for the Update Toast modal"
+  },
+  "learnMore": {
+    "message": "Learn more",
+    "description": "Used for the Update Toast modal"
+  },
+  "bitcoinTalks": {
+    "message": "Bitcoin Talks",
+    "description": "Used for the forum screen"
+  },
+  "ethereum": {
+    "message": "Ethereum",
+    "description": "Used for the forum screen"
+  },
+  "xrpRipple": {
+    "message": "XRP (Ripple)",
+    "description": "Used for the forum screen"
+  },
+  "coinbase": {
+    "message": "Coinbase",
+    "description": "Used for the forum screen"
+  },
+  "cryptocurrency": {
+    "message": "Cryptocurrency",
+    "description": "Used for the forum screen"
+  },
+  "instablockchain": {
+    "message": "Instablockchain",
+    "description": "Used for the forum screen"
+  },
+  "tags": {
+    "message": "Tags",
+    "description": "Used for the forum screen"
+  },
+  "latest": {
+    "message": "Latest",
+    "description": "Used for the forum screen"
   }
 }
