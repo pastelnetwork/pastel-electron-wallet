@@ -194,6 +194,7 @@ const BalanceCards = memo(function BalanceCards(): JSX.Element {
             card={card}
             balanceCards={balanceCards}
             setActiveTab={setActiveTab}
+            key={card.info}
           >
             {renderBalanceTab(index, card, isActive)}
           </BalanceCardItem>
