@@ -10,20 +10,21 @@ import ForumMembers, { TForumMember } from './ForumMembers'
 import ForumUpdatedNumber, {
   TForumUpdatedNumberProps,
 } from './ForumUpdatedNumber'
+import { translate } from 'features/app/translations'
 
 export function Forum(): JSX.Element {
   const mockCategories: TOption[] = [
-    { value: '', label: 'All' },
-    { value: 'Bitcoin Talks', label: 'Bitcoin Talks' },
-    { value: 'Ethereum', label: 'Ethereum' },
-    { value: 'XRP (Ripple)', label: 'XRP (Ripple)' },
+    { value: '', label: translate('all') },
+    { value: 'bitcoinTalks', label: translate('bitcoinTalks') },
+    { value: 'ethereum', label: translate('ethereum') },
+    { value: 'xrpRipple', label: translate('xrpRipple') },
   ]
 
   const mockTags: TOption[] = [
-    { value: '', label: 'All' },
-    { value: 'Coinbase', label: 'Coinbase' },
-    { value: 'Cryptocurrency', label: 'Cryptocurrency' },
-    { value: 'Instablockchain', label: 'Instablockchain' },
+    { value: '', label: translate('all') },
+    { value: 'coinbase', label: translate('coinbase') },
+    { value: 'cryptocurrency', label: translate('cryptocurrency') },
+    { value: 'instablockchain', label: translate('instablockchain') },
   ]
 
   // Filters
@@ -33,13 +34,13 @@ export function Forum(): JSX.Element {
 
   const filterOptions = [
     {
-      label: 'Categories',
+      label: translate('categories'),
       selected: category,
       onChange: setCategory,
       options: mockCategories,
     },
     {
-      label: 'Tags',
+      label: translate('tags'),
       selected: tag,
       onChange: setTag,
       options: mockTags,
@@ -47,9 +48,9 @@ export function Forum(): JSX.Element {
   ]
 
   const routeData = [
-    { label: 'Latest' },
-    { label: 'Top' },
-    { label: 'Categories' },
+    { label: translate('latest') },
+    { label: translate('top') },
+    { label: translate('categories') },
   ]
 
   const routes = {
@@ -61,7 +62,7 @@ export function Forum(): JSX.Element {
   const columns = [
     {
       key: 'topic',
-      name: 'Topic',
+      name: translate('topic'),
     },
     {
       key: 'favorite',
@@ -77,21 +78,21 @@ export function Forum(): JSX.Element {
     },
     {
       key: 'replies',
-      name: 'Replies',
+      name: translate('replies'),
       custom: (replies: TForumUpdatedNumberProps) => (
         <ForumUpdatedNumber {...replies} />
       ),
     },
     {
       key: 'views',
-      name: 'Views',
+      name: translate('views'),
       custom: (views: TForumUpdatedNumberProps) => (
         <ForumUpdatedNumber {...views} />
       ),
     },
     {
       key: 'activity',
-      name: 'Activity',
+      name: translate('activity'),
       custom: (activity: string) => (
         <span className='text-gray-600'>{activity}</span>
       ),

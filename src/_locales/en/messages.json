@@ -145,7 +145,7 @@
   },
   "top": {
     "message": "Top",
-    "description": "Used for my profile screen"
+    "description": "Used for my profile screen, the forum screen"
   },
   "saveChanges": {
     "message": "Save Changes",
@@ -1941,19 +1941,19 @@
   },
   "topic": {
     "message": "Topic",
-    "description": "Used for the search result screen"
+    "description": "Used for the search result screen, the forum screen"
   },
   "replies": {
     "message": "Replies",
-    "description": "Used for the search result screen"
+    "description": "Used for the search result screen, the forum screen"
   },
   "views": {
     "message": "Views",
-    "description": "Used for the search result screen, the NFT screen"
+    "description": "Used for the search result screen, the NFT screen, the forum screen"
   },
   "activity": {
     "message": "Activity",
-    "description": "Used for the search result screen"
+    "description": "Used for the search result screen, the forum screen"
   },
   "allCategories": {
     "message": "All categories",
@@ -2530,5 +2530,37 @@
   "learnMore": {
     "message": "Learn more",
     "description": "Used for the Update Toast modal"
+  },
+  "bitcoinTalks": {
+    "message": "Bitcoin Talks",
+    "description": "Used for the forum screen"
+  },
+  "ethereum": {
+    "message": "Ethereum",
+    "description": "Used for the forum screen"
+  },
+  "xrpRipple": {
+    "message": "XRP (Ripple)",
+    "description": "Used for the forum screen"
+  },
+  "coinbase": {
+    "message": "Coinbase",
+    "description": "Used for the forum screen"
+  },
+  "cryptocurrency": {
+    "message": "Cryptocurrency",
+    "description": "Used for the forum screen"
+  },
+  "instablockchain": {
+    "message": "Instablockchain",
+    "description": "Used for the forum screen"
+  },
+  "tags": {
+    "message": "Tags",
+    "description": "Used for the forum screen"
+  },
+  "latest": {
+    "message": "Latest",
+    "description": "Used for the forum screen"
   }
 }
