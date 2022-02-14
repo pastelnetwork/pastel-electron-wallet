@@ -11,6 +11,9 @@ import AddNFT from 'features/nft/addNFT'
 import { getUserData } from 'api/walletNode/userData'
 import { getCurrentAccount } from 'common/utils/User'
 import { translate } from 'features/app/translations'
+import { setUserProfile } from 'features/profile/ProfileSlice'
+import store from '../../../redux/store'
+import { useAppSelector } from '../../../redux/hooks'
 
 import NotificationModal from 'features/dashboard/dashboardModals/notificationModal'
 import notificationData from 'features/dashboard/dashboardModals/notificationModal.data'
@@ -58,12 +61,16 @@ function Header(): JSX.Element | null {
   const [openNotificationModal, setOpenNotificationModal] = useState(false)
   const [openAddNFT, toggleAddNFT] = useToggle(false)
   const [avatar, setAvatar] = useState('')
+  const { user } = useAppSelector(state => state.user)
 
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = getCurrentAccount()
       if (currentUser) {
         const userDetail = await getUserData({ pastelId: currentUser.pastelId })
+        if (userDetail) {
+          store.dispatch(setUserProfile({ user: userDetail }))
+        }
         if (userDetail && userDetail.avatar_image?.content) {
           setAvatar(userDetail.avatar_image.content)
         }
@@ -81,6 +88,12 @@ function Header(): JSX.Element | null {
         // noop
       })
   }, [])
+
+  useEffect(() => {
+    if (user && user.avatar_image?.content) {
+      setAvatar(user.avatar_image.content)
+    }
+  }, [user])
 
   const handleOpenNotificationModal = useCallback(() => {
     setOpenNotificationModal(true)

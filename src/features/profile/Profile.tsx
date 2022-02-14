@@ -15,6 +15,9 @@ import { getUserData, TGetResponse } from 'api/walletNode/userData'
 import { getCurrentAccount } from 'common/utils/User'
 import { translate } from 'features/app/translations'
 
+import { setUserProfile } from './ProfileSlice'
+import { useAppSelector } from '../../redux/hooks'
+import store from '../../redux/store'
 import { useCurrencyName } from '../../common/hooks/appInfo'
 
 enum Tabs {
@@ -49,13 +52,24 @@ export default function Profile(): JSX.Element {
     },
   ]
 
-  const fetchUserData = useCallback(async () => {
-    const currentUser = getCurrentAccount()
-    if (currentUser) {
-      const userDetail = await getUserData({ pastelId: currentUser.pastelId })
-      if (userDetail) {
-        setUser(userDetail)
+  const getUserProfileData = () =>
+    useCallback(async () => {
+      const currentUser = getCurrentAccount()
+      if (currentUser) {
+        const userDetail = await getUserData({ pastelId: currentUser.pastelId })
+        if (userDetail) {
+          setUser(userDetail)
+          store.dispatch(setUserProfile({ user: userDetail }))
+        }
       }
+    }, [])
+
+  const fetchUserData = useCallback(async () => {
+    const userInfo = useAppSelector(state => state.user)
+    if (userInfo) {
+      setUser(userInfo.user)
+    } else {
+      getUserProfileData()
     }
   }, [])
 
@@ -133,10 +147,10 @@ export default function Profile(): JSX.Element {
         ) : null}
       </PageHeader>
       {tab === Tabs.general && (
-        <ProfileGeneral user={user} updateUserData={fetchUserData} />
+        <ProfileGeneral user={user} updateUserData={getUserProfileData} />
       )}
       {tab === Tabs.board && (
-        <MyComments user={user} updateUserData={fetchUserData} />
+        <MyComments user={user} updateUserData={getUserProfileData} />
       )}
       {tab === Tabs.security && (
         <MySecurity currencyName={currencyName} qrcodeData={qrcodeData} />
