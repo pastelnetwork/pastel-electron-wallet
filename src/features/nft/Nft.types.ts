@@ -1,7 +1,7 @@
 import { Dayjs } from 'dayjs'
 
 export type TNFT = {
-  id: number
+  id: string
   title: string
   image: string
   pastelRareness: number

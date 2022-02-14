@@ -96,7 +96,7 @@ function ProfileCardFrame({
   )
 
   return (
-    <div className='bg-gray-21 h-139px rounded-t-lg relative'>
+    <div className='bg-gray-21 h-139px rounded-t-lg relative overflow-hidden'>
       {user?.cover_photo?.filename || coverPhoto?.path ? (
         <img
           src={user?.cover_photo?.filename || coverPhoto?.path}

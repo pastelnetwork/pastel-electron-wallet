@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import SVG from 'react-inlinesvg'
 import { toast } from 'react-toastify'
+import { clipboard } from 'electron'
 
 import LineEdit from './LineEdit'
 import ProfileCardFrame from './ProfileCardFrame'
@@ -67,6 +68,7 @@ function ProfileCard({
   )
   const [errorMsg, setErrorMsg] = useState<TErrorMessageProps[]>([])
   const [isLoading, setLoading] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   const edits = [
     {
@@ -154,6 +156,14 @@ function ProfileCard({
     setOpenEditUsernameModal(false)
   }, [])
 
+  const handleCopy = useCallback(() => {
+    clipboard.writeText(data.walletId)
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 2000)
+  }, [data.walletId])
+
   const renderPastelIDIdentifierAndCopyButton = () => (
     <div className='pt-2 pb-4 text-gray-71 flex flex-center'>
       <Tooltip
@@ -226,7 +236,11 @@ function ProfileCard({
   )
 
   const renderCopyButton = () => (
-    <button className='ml-10px' type='button'>
+    <button
+      className='ml-10px cursor-pointer'
+      onClick={handleCopy}
+      type='button'
+    >
       <Clipboard size={12} className='text-gray-88' />
     </button>
   )
@@ -239,20 +253,30 @@ function ProfileCard({
       <div className='font-extrabold text-26px leading-9 text-center text-gray-2d'>
         {name}
       </div>
-      <Tooltip
-        type='top'
-        width={140}
-        content={
-          <p className='mb-0 px-2 py-6px text-white text-sm'>
-            {translate('pastelIDIdentifier')}
-          </p>
-        }
-      >
-        <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
+      <div className='pt-2px text-gray-71 flex flex-center justify-center text-sm'>
+        <Tooltip
+          type='top'
+          width={140}
+          content={
+            <p className='mb-0 px-2 py-6px text-white text-sm'>
+              {translate('pastelIDIdentifier')}
+            </p>
+          }
+        >
           {truncateMiddle(data.walletId, 8, 4, '...')}
+        </Tooltip>
+        <Tooltip
+          type='top'
+          width={160}
+          content={
+            <p className='mb-0 px-2 py-6px text-white text-sm'>
+              {copied ? translate('copied') : translate('copyToClipboard')}
+            </p>
+          }
+        >
           {renderCopyButton()}
-        </div>
-      </Tooltip>
+        </Tooltip>
+      </div>
       <div className='py-4 flex justify-center space-x-2'>
         <button type='button'>
           {facebook.length ? (

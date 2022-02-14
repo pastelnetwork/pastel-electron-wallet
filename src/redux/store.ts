@@ -12,6 +12,7 @@ import { updateToastReducer } from '../features/updateToast'
 import { glitchImageModalReducer } from '../features/glitchImage'
 import { appInfoReducer } from '../features/app/AppInfoSlice'
 import { utilitiesReducer } from '../features/utilities/UtilitiesSlice'
+import { profileReducer } from '../features/profile/ProfileSlice'
 
 const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ const store = configureStore({
     glitchImageModal: glitchImageModalReducer,
     appInfo: appInfoReducer,
     utilities: utilitiesReducer,
+    user: profileReducer,
   },
 })
 

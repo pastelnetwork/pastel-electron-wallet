@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import { v4 as uuidv4 } from 'uuid'
+import parse from 'html-react-parser'
 
 import PageHeader from 'common/components/PageHeader'
 import Breadcrumbs, { TBreadcrumb } from 'common/components/Breadcrumbs'
@@ -14,25 +14,87 @@ import Slider from 'common/components/Slider/Slider'
 import * as ROUTES from 'common/utils/constants/routes'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { translate } from 'features/app/translations'
+import { walletNodeApi } from 'api/walletNode/walletNode.api'
+import { IArtworkCollectionItem } from 'api/walletNode/artwork-api/interfaces'
 
 import styles from './Portfolio.module.css'
 
-import avatar from 'common/assets/images/avatar-placeholder.png'
-import portfolio1 from 'common/assets/images/mock/portfolio-1.jpg'
-import portfolio2 from 'common/assets/images/mock/portfolio-2.jpg'
-import portfolio3 from 'common/assets/images/mock/portfolio-3.jpg'
-import portfolio4 from 'common/assets/images/mock/portfolio-4.jpg'
+import { mockDataImagesList, mockAvatarImagesList } from 'features/members/data'
 
-import {
-  mockDataImagesList,
-  mockAvatarImagesList,
-  mockNamesList,
-} from 'features/members/data'
-
-const portfolios = [portfolio1, portfolio2, portfolio3, portfolio4]
+type TArtworkProps = {
+  creator: TNFTCard[]
+  sold: TNFTCard[]
+  owned: TNFTCard[]
+  liked: TNFTCard[]
+}
 
 export default function Portfolio(): JSX.Element {
+  const [originalArtwork, setOriginalArtwork] = useState<
+    IArtworkCollectionItem[]
+  >([])
+  const [artworks, setArtwork] = useState<TArtworkProps>({
+    creator: [],
+    sold: [],
+    owned: [],
+    liked: [],
+  })
   const currencyName = useCurrencyName()
+
+  useEffect(() => {
+    const fetchArtworks = async () => {
+      const results = await walletNodeApi.artwork.artworkGetList()
+      if (results) {
+        setOriginalArtwork(results)
+        const data: TNFTCard[] = []
+        for (const art of originalArtwork) {
+          data.push({
+            id: art.id,
+            author: art.ticket.artist_name,
+            title: art.ticket.name,
+            detailUrl: `${ROUTES.PORTFOLIO_DETAIL}?id=${art.id}`,
+            hideGreenNF: !art.ticket.green,
+            royalty: art.ticket.royalty,
+            currencyName,
+            copies: translate('copiesValue', {
+              number: 1,
+              total: art.ticket.issued_copies,
+            }),
+            // mockup
+            copiesAvailable: art.ticket.issued_copies,
+            avatarSrc: mockAvatarImagesList[0],
+            imageSrc: mockDataImagesList[0].url,
+            likes: 23,
+            price: 12000,
+            followers: 10,
+            nsfw: { porn: 0, hentai: 0 },
+            diamond: `${Math.floor(Math.random() * 100)}%`,
+            leftTime: dayjs().add(3, 'day').valueOf(),
+            isAuctionBid: true,
+            isFixedPrice: false,
+            isNotForSale: false,
+          })
+        }
+        // TODO: filter by type
+        setArtwork({
+          creator: data,
+          sold: data,
+          owned: data,
+          liked: data,
+        })
+      }
+    }
+
+    fetchArtworks()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  }, [])
 
   const mockOptions: TOption[] = [
     { value: 'Likes', label: translate('likes') },
@@ -70,128 +132,6 @@ export default function Portfolio(): JSX.Element {
       label: '',
     },
   ]
-
-  const mockupPortfolio: TNFTCard[] = []
-  Array.from({ length: 26 }).map((_, index) => {
-    mockupPortfolio.push({
-      id: index.toString(),
-      author: mockNamesList[index],
-      avatarSrc: mockAvatarImagesList[index],
-      imageSrc: mockDataImagesList[index].url,
-      likes: 23,
-      price: 12000,
-      followers: 10,
-      currencyName,
-      title: mockDataImagesList[index].title,
-      detailUrl: ROUTES.PORTFOLIO_DETAIL,
-      nsfw: { porn: 0, hentai: 0 },
-      copies: translate('copiesValue', { number: index + 1, total: 26 }),
-      diamond: `${Math.floor(Math.random() * 100)}%`,
-      leftTime: dayjs().add(3, 'day').valueOf(),
-      copiesAvailable: 15,
-      isAuctionBid: (index + 1) % 2 === 0,
-      isFixedPrice: (index + 1) % 3 === 0 && (index + 1) % 2 !== 0,
-      isNotForSale: (index + 1) % 2 !== 0 && (index + 1) % 3 !== 0,
-    })
-  })
-
-  const mockupPortfolioOwned: TNFTCard[] = [
-    {
-      id: uuidv4(),
-      author: 'zndrson',
-      avatarSrc: avatar,
-      imageSrc: portfolio1,
-      likes: 23,
-      price: 12000,
-      followers: 10,
-      currencyName,
-      title: 'Cosmic Perspective longname test',
-      detailUrl: ROUTES.PORTFOLIO_DETAIL,
-      nsfw: { porn: 0, hentai: 0 },
-      copies: translate('copiesValue', { number: 1, total: 260 }),
-      leftTime: dayjs().add(3, 'day').valueOf(),
-      copiesAvailable: 15,
-      isAuctionBid: true,
-    },
-    {
-      id: uuidv4(),
-      author: 'zndrson',
-      avatarSrc: avatar,
-      imageSrc: portfolio2,
-      likes: 23,
-      price: 12000,
-      followers: 10,
-      currencyName,
-      title: 'Cosmic Perspective longname test',
-      copies: translate('copiesValue', { number: 1, total: 260 }),
-      detailUrl: ROUTES.PORTFOLIO_DETAIL,
-      nsfw: { porn: 0, hentai: 0 },
-      leftTime: dayjs().add(3, 'day').valueOf(),
-      copiesAvailable: 15,
-      isNotForSale: true,
-    },
-  ]
-
-  const mockupPortfolioSold: TNFTCard[] = [
-    {
-      id: uuidv4(),
-      author: 'zndrson',
-      avatarSrc: avatar,
-      imageSrc: portfolio3,
-      likes: 23,
-      price: 12000,
-      followers: 10,
-      currencyName,
-      title: 'Cosmic Perspective longname test',
-      copies: translate('copiesValue', { number: 1, total: 260 }),
-      detailUrl: ROUTES.PORTFOLIO_DETAIL,
-      nsfw: { porn: 0, hentai: 0 },
-      leftTime: dayjs().add(5, 'day').valueOf(),
-      copiesAvailable: 15,
-      isFixedPrice: true,
-    },
-    {
-      id: uuidv4(),
-      author: 'zndrson',
-      avatarSrc: avatar,
-      imageSrc: portfolio4,
-      likes: 23,
-      price: 12000,
-      followers: 10,
-      currencyName,
-      title: 'Cosmic Perspective longname test',
-      copies: translate('copiesValue', { number: 1, total: 260 }),
-      detailUrl: ROUTES.PORTFOLIO_DETAIL,
-      nsfw: { porn: 0, hentai: 0 },
-      leftTime: dayjs().add(1, 'day').valueOf(),
-      copiesAvailable: 15,
-      isNotForSale: true,
-    },
-  ]
-
-  const mockupPortfolioLiked: TNFTCard[] = []
-  Array.from({ length: 32 }).map((_, index) => {
-    const randomPortfolioIndex = Math.floor(Math.random() * 4)
-    mockupPortfolioLiked.push({
-      id: uuidv4(),
-      author: 'zndrson',
-      avatarSrc: avatar,
-      imageSrc: portfolios[randomPortfolioIndex],
-      likes: 23,
-      price: 12000,
-      followers: 10,
-      currencyName,
-      title: 'Cosmic Perspective longname test',
-      copies: translate('copiesValue', { number: 1, total: 260 }),
-      detailUrl: ROUTES.PORTFOLIO_DETAIL,
-      nsfw: { porn: 0, hentai: 0 },
-      leftTime: dayjs().add(2, 'day').valueOf(),
-      copiesAvailable: 15,
-      isAuctionBid: (index + 1) % 2 === 0,
-      isFixedPrice: (index + 1) % 3 === 0 && (index + 1) % 2 !== 0,
-      isNotForSale: (index + 1) % 2 !== 0 && (index + 1) % 3 !== 0,
-    })
-  })
 
   const [selectedItem, setSelectedItem] = useState(0)
   const [filter, setFilter] = useState<TOption | null>(null)
@@ -248,19 +188,19 @@ export default function Portfolio(): JSX.Element {
     data: [
       {
         label: translate('creator'),
-        count: mockupPortfolio.length,
+        count: artworks.creator.length,
       },
       {
         label: translate('sold'),
-        count: mockupPortfolioSold.length,
+        count: artworks.sold.length,
       },
       {
         label: translate('owned'),
-        count: mockupPortfolioOwned.length,
+        count: artworks.owned.length,
       },
       {
         label: translate('liked'),
-        count: mockupPortfolioLiked.length,
+        count: artworks.liked.length,
       },
     ],
     activeIndex: selectedItem,
@@ -268,22 +208,22 @@ export default function Portfolio(): JSX.Element {
   }
 
   useEffect(() => {
-    const updatedbreadcrumbs = [...breadcrumbs]
-    updatedbreadcrumbs[2].label = routes.data[selectedItem].label
-    setBreadcrumbs(updatedbreadcrumbs)
+    const updatedBreadcrumbs = [...breadcrumbs]
+    updatedBreadcrumbs[2].label = routes.data[selectedItem].label
+    setBreadcrumbs(updatedBreadcrumbs)
 
     switch (selectedItem) {
       case 1:
-        setCards(mockupPortfolioOwned)
+        setCards(artworks.sold)
         break
       case 2:
-        setCards(mockupPortfolioSold)
+        setCards(artworks.owned)
         break
       case 3:
-        setCards(mockupPortfolioLiked)
+        setCards(artworks.liked)
         break
       default:
-        setCards(mockupPortfolio)
+        setCards(artworks.creator)
     }
   }, [selectedItem])
 
@@ -402,7 +342,7 @@ export default function Portfolio(): JSX.Element {
             {translate('youHaveNotCreatedAnyNFTs')}
           </span>
           <p className='text-center text-gray-71 text-sm font-normal'>
-            {translate('toCreateANewNFTDescription')}
+            {parse(translate('toCreateANewNFTDescription'))}
           </p>
         </div>
       )}

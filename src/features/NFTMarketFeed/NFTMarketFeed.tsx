@@ -99,7 +99,7 @@ export default function NFTMarketFeed(): JSX.Element {
       options: mockCategories,
     },
     {
-      label: translate('Status'),
+      label: translate('status'),
       selected: status,
       onChange: setStatus,
       options: mockStatus,
