@@ -32,6 +32,7 @@ export default function Profile(): JSX.Element {
   const [qrcodeData, setQRcodeData] = useState<string[]>([])
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [user, setUser] = useState<TGetResponse>()
+  const userInfo = useAppSelector(state => state.user)
 
   const tabs = [
     { label: translate('general'), count: 1122 },
@@ -52,20 +53,18 @@ export default function Profile(): JSX.Element {
     },
   ]
 
-  const getUserProfileData = () =>
-    useCallback(async () => {
-      const currentUser = getCurrentAccount()
-      if (currentUser) {
-        const userDetail = await getUserData({ pastelId: currentUser.pastelId })
-        if (userDetail) {
-          setUser(userDetail)
-          store.dispatch(setUserProfile({ user: userDetail }))
-        }
+  const getUserProfileData = useCallback(async () => {
+    const currentUser = getCurrentAccount()
+    if (currentUser) {
+      const userDetail = await getUserData({ pastelId: currentUser.pastelId })
+      if (userDetail) {
+        setUser(userDetail)
+        store.dispatch(setUserProfile({ user: userDetail }))
       }
-    }, [])
+    }
+  }, [])
 
-  const fetchUserData = useCallback(async () => {
-    const userInfo = useAppSelector(state => state.user)
+  const fetchUserData = useCallback(() => {
     if (userInfo) {
       setUser(userInfo.user)
     } else {
@@ -96,15 +95,6 @@ export default function Profile(): JSX.Element {
     }
 
     fetchUserData()
-      .then(() => {
-        // noop
-      })
-      .catch(() => {
-        // noop
-      })
-      .finally(() => {
-        // noop
-      })
   }, [])
 
   const onTabToggle = (index: number) => {

@@ -22,7 +22,7 @@ export default function PortfolioPage(): JSX.Element {
   const currencyName = useCurrencyName()
 
   const nft: TNFT = {
-    id: 230456346,
+    id: '230456346',
     title: 'Super nfty floating head professional',
     image: nftImage,
     pastelRareness: 65,
