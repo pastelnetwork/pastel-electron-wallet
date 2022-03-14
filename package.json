@@ -1,7 +1,7 @@
 {
   "name": "pastelwallet",
   "productName": "Pastel Wallet Fullnode",
-  "version": "1.0-rc8.1",
+  "version": "1.0.8",
   "description": "Pastel Fullnode Wallet (Electron version)",
   "keywords": [
     "Pastel",
