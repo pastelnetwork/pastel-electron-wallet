@@ -149,7 +149,15 @@ export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
       [],
       props.rpcConfig,
     )
-    insertMiningInfoToDB(props.pastelDB, result)
+    const { result: mempoolinfo } = await rpc<types.TGetmempoolinfo>(
+      'getmempoolinfo',
+      [],
+      props.rpcConfig,
+    )
+    insertMiningInfoToDB(props.pastelDB, {
+      ...result,
+      pooledtx: mempoolinfo.size || 0,
+    })
   } catch (error) {
     throw new Error(`pastelDBThread fetchMiningInfo error: ${error.message}`)
   }

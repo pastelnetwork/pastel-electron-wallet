@@ -15,6 +15,7 @@ import { AddressBookEntry } from './AppState'
 import ScrollPane from './ScrollPane'
 import routes from '../constants/routes.json' // Internal because we're using withRouter just below
 import PastelAddressBookForm from '../../features/pastelAddressBookForm'
+import { PastelURITarget } from '../utils/uris'
 
 const AddressBookItemInteral = ({
   item,

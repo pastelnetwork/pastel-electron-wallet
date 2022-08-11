@@ -725,7 +725,7 @@ export function insertBlockInfoToDB(
       $anchor: blockInfo.anchor ?? '',
       $valuePools: valuePools ?? '',
       $previousblockhash: blockInfo.previousblockhash ?? '',
-      $nextblockhash: blockInfo.nextblockhash ?? '',
+      $nextblockhash: '',
       $createTimestamp: createTimestamp,
     }
     pastelDB.exec(insertBlockinfoQuery, values)
@@ -745,7 +745,7 @@ export function insertRawtransaction(
     : ''
   const vin = JSON.stringify(rawtransaction.vin)
   const vout = JSON.stringify(rawtransaction.vout)
-  const vjoinsplit = JSON.stringify(rawtransaction.vjoinsplit)
+  // const vjoinsplit = JSON.stringify(rawtransaction.vjoinsplit)
 
   const values = {
     $newId: newId,
@@ -758,7 +758,7 @@ export function insertRawtransaction(
     $expiryheight: rawtransaction.expiryheight,
     $vin: vin,
     $vout: vout,
-    $vjoinsplit: vjoinsplit,
+    $vjoinsplit: '',
     $blockhash: rawtransaction.blockhash,
     $confirmations: rawtransaction.confirmations,
     $time: rawtransaction.time,
@@ -861,7 +861,7 @@ export function insertBlocksubsidy(
       $newId: newId,
       $miner: blocksubsidy.miner,
       $masternode: blocksubsidy.masternode,
-      $governance: blocksubsidy.governance,
+      $governance: blocksubsidy?.governance || 0,
       $createTimestamp: createTimestamp,
     }
 

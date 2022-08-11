@@ -13,6 +13,7 @@ import { Transaction, Info } from './AppState'
 import ScrollPane from './ScrollPane'
 import Utils from '../utils/utils'
 import AddressBook from './Addressbook'
+import { PastelURITarget } from '../utils/uris'
 import routes from '../constants/routes.json'
 
 import ReceiveIcon from '../assets/img/transaction_received_icon_dark.svg'
