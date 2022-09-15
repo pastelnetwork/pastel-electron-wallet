@@ -15,7 +15,13 @@ export const spawnProcess = (
         crlfDelay: Infinity,
       })
 
-      lineReader.on('line', onStdoutLine)
+      lineReader.on('line', (line: string) => {
+        onStdoutLine(line)
+        if (line.includes('Y/N')) {
+          process.stdin.write('Y')
+          process.stdin.end()
+        }
+      })
     }
 
     const errorChunks: Buffer[] = []

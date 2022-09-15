@@ -1,8 +1,9 @@
 import { spawnProcess } from '../../common/utils/process'
-import { pastelUtilityBinPath } from './paths'
+import { pastelUtilityBinPath, pastelConfigFilePath } from './paths'
 import { sendEventToRenderer } from './mainEvents'
 import log from 'electron-log'
 import { app } from 'electron'
+import fs from 'fs'
 
 const filterLogKeywords = [
   'Installing',
@@ -43,7 +44,7 @@ const startProcess = async () => {
 const installProcess = async () => {
   await spawnProcess(
     pastelUtilityBinPath,
-    ['install', 'walletnode', '--force'],
+    ['install', 'walletnode', '-f', '-r', 'latest', 'Y'],
     {
       onStdoutLine: handleProcessLogging,
     },
@@ -55,7 +56,9 @@ export const startWalletNode = async (): Promise<void> => {
     await startProcess()
   } catch (error) {
     // stop is needed in case if some services started and some failed
-    await stopWalletNode()
+    if (fs.existsSync(pastelConfigFilePath)) {
+      await stopWalletNode()
+    }
     await installProcess()
     await startProcess()
   }
