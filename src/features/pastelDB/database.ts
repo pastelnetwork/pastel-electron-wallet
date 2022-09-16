@@ -19,9 +19,9 @@ class PastelDB {
         // noop
       })
   }
-  static getDatabaseInstance(): Promise<Database> {
-    if (!this.getDatabasePromise) {
-      this.getDatabasePromise = this.setDatabase()
+  static getDatabaseInstance(forceCreateDb = false): Promise<Database> {
+    if (!this.getDatabasePromise || forceCreateDb) {
+      this.getDatabasePromise = this.setDatabase(forceCreateDb)
     }
     return this.getDatabasePromise
   }
@@ -38,8 +38,8 @@ class PastelDB {
 
     return new Promise(resolve => this.onValidCallbacks.push(resolve))
   }
-  private static async setDatabase() {
-    if (!this.database) {
+  private static async setDatabase(forceCreateDb = false) {
+    if (!this.database || forceCreateDb) {
       this.database = await createDatabase()
       this.setIsValid(true)
     }

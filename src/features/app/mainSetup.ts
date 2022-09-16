@@ -194,6 +194,18 @@ export const retriableAppSetup = async (): Promise<void> => {
     sendEventToRenderer('setRpcConfig', {
       rpcConfig,
     })
+    sendEventToRenderer('setAppInfo', {
+      isPackaged: app.isPackaged,
+      appVersion: app.getVersion(),
+      sentTxStorePath,
+      debugLogPath,
+      pastelWalletDirPath,
+      sqliteFilePath,
+      migrationsPath,
+      pastelKeysPath,
+      pastelKeysWithoutAppDataPath,
+      tempPath,
+    })
     redirectDeepLinkingUrl()
   } catch (error) {
     sendEventToRenderer('appLoadingFailed', { error: error.message })
