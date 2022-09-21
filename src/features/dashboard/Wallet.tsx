@@ -84,7 +84,7 @@ export default function Wallet(): JSX.Element {
         {!isTransactionsLoading && transactions.length === 0 && (
           <div className='flex justify-center mt-[111px]'>
             <span className='text-base text-gray-a0'>
-              {translate('youHaveNoPSL', currencyName)}
+              {translate('youHaveNoPSL', { currencyName })}
             </span>
           </div>
         )}
