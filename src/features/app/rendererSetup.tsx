@@ -1,7 +1,10 @@
+import { useEffect, useState } from 'react'
+import log from 'electron-log'
+
 import store from '../../redux/store'
 import { fetchPastelPrice } from '../pastelPrice'
 import PastelDB from '../pastelDB/database'
-import log from 'electron-log'
+
 import {
   onRendererEvent,
   sendEventToMain,
@@ -18,7 +21,6 @@ import { PastelDBThread } from '../pastelDB'
 import history from '../../common/utils/history'
 import * as ROUTES from '../../common/utils/constants/routes'
 import { ignorePromiseError, retryPromise } from '../../common/utils/promises'
-import { useEffect, useState } from 'react'
 import { useZListUnspent, useTListUnspent } from '../../api/pastel-rpc'
 
 // workaround for Hot Module Replacement behavior to not start the same intervals twice
@@ -45,7 +47,6 @@ export const rendererSetup = (): void => {
     if (info.isPackaged) {
       log.transports.console.level = false
     }
-
     store.dispatch(setIsPackagedAndPaths(info))
     PastelDB.init()
   })

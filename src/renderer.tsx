@@ -2,7 +2,7 @@ import './index.css'
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
@@ -18,18 +18,21 @@ import Routes from 'common/routes/Routes'
 import { initTranslation } from 'features/app/translations'
 
 rendererSetup()
-initTranslation()
-  .then(() => {
-    // noop
-  })
-  .catch(() => {
-    // noop
-  })
-  .finally(() => {
-    // noop
-  })
 
 function App() {
+  useEffect(() => {
+    initTranslation()
+      .then(() => {
+        // noop
+      })
+      .catch(() => {
+        // noop
+      })
+      .finally(() => {
+        // noop
+      })
+  }, [])
+
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>

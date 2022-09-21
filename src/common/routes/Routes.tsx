@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Router } from 'react-router'
+import fs from 'fs'
 import { Route, Switch } from 'react-router-dom'
 import * as ROUTES from '../utils/constants/routes'
 import LoadingScreen from 'features/loading'
@@ -11,6 +12,7 @@ import { pageRoutes } from './index'
 import { useAppSelector } from '../../redux/hooks'
 import { OnboardingRouter } from '../../features/onboarding'
 import Utilities from '../../features/utilities'
+import { onRendererEvent } from 'features/app/rendererEvents'
 
 type TRouteType = {
   path: string
@@ -41,6 +43,21 @@ const childRoutes = (routes: Array<TRouteType>) =>
 export default function Routes(): JSX.Element {
   const [db, setDb] = useState<Database>()
   const sqliteFilePath = useAppSelector(state => state.appInfo.sqliteFilePath)
+
+  onRendererEvent('setAppInfo', info => {
+    if (info.sqliteFilePath && !db && !fs.existsSync(info.sqliteFilePath)) {
+      setTimeout(() => {
+        PastelDB.getDatabaseInstance(true)
+          .then(setDb)
+          .catch(() => {
+            // noop
+          })
+          .finally(() => {
+            // noop
+          })
+      }, 500)
+    }
+  })
 
   useEffect(() => {
     if (sqliteFilePath) {

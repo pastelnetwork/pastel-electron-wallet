@@ -11,9 +11,13 @@ const checkExistLang = (url: string) => {
   return http.status !== 404
 }
 
-const fetchLang = async (url: string) => {
-  const res = await fetch(url)
-  return await res.text()
+const fetchLang = async (code: string) => {
+  try {
+    const rawData = require(`_locales/${code}/messages.json`)
+    return rawData
+  } catch (error) {
+    return null
+  }
 }
 
 const getResources = async () => {
@@ -22,12 +26,14 @@ const getResources = async () => {
   for (const lang of langs) {
     const code = lang.code
     try {
-      const result = await fetchLang(`/static/locales/${code}/messages.json`)
-      resources = {
-        ...resources,
-        [code]: {
-          translation: JSON.parse(result),
-        },
+      const translation = await fetchLang(code)
+      if (translation) {
+        resources = {
+          ...resources,
+          [code]: {
+            translation,
+          },
+        }
       }
     } catch (error) {
       log.error(error.message)

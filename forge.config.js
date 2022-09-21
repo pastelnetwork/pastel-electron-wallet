@@ -13,21 +13,21 @@ function getExtraResource() {
   switch (platform) {
     case 'darwin':
       resources.push(
-        './static/bin/pastel-utility-darwin-amd64',
+        './static/bin/pastelup-darwin-amd64',
         './static/bin/pngquant-mac',
         './static/bin/mozjpeg-mac',
       )
       break
     case 'linux':
       resources.push(
-        './static/bin/pastel-utility-linux-amd64',
+        './static/bin/pastelup-linux-amd64',
         './static/bin/pngquant-linux',
         './static/bin/mozjpeg-linux',
       )
       break
     case 'win32':
       resources.push(
-        './static/bin/pastel-utility-windows-amd64.exe',
+        './static/bin/pastelup-win-amd64.exe',
         './static/bin/pngquant-win.exe',
         './static/bin/mozjpeg-win.exe',
       )

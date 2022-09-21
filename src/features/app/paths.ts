@@ -76,9 +76,9 @@ export const mozjpegBinPath = getBinPath({
 })
 
 export const pastelUtilityBinPath = getBinPath({
-  linux: 'pastel-utility-linux-amd64',
-  darwin: 'pastel-utility-darwin-amd64',
-  windows: 'pastel-utility-windows-amd64.exe',
+  linux: 'pastelup-linux-amd64',
+  darwin: 'pastelup-darwin-amd64',
+  windows: 'pastelup-win-amd64.exe',
 })
 
 export const pastelKeysPath = path.join(configDirPath, 'pastelkeys')
