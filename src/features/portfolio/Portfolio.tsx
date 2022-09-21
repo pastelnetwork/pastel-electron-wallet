@@ -11,7 +11,7 @@ import NFTCard, {
   NFTCardVariantSize,
 } from 'common/components/NFTCard'
 import Slider from 'common/components/Slider/Slider'
-import * as ROUTES from 'common/utils/constants/routes'
+import { PORTFOLIO_DETAIL } from 'common/utils/constants/routes'
 import { useCurrencyName } from 'common/hooks/appInfo'
 import { translate } from 'features/app/translations'
 import { walletNodeApi } from 'api/walletNode/walletNode.api'
@@ -51,7 +51,7 @@ export default function Portfolio(): JSX.Element {
             id: art.id,
             author: art.ticket.artist_name,
             title: art.ticket.name,
-            detailUrl: `${ROUTES.PORTFOLIO_DETAIL}?id=${art.id}`,
+            detailUrl: `${PORTFOLIO_DETAIL}?id=${art.id}`,
             hideGreenNF: !art.ticket.green,
             royalty: art.ticket.royalty,
             currencyName,

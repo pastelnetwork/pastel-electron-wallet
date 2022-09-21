@@ -4,7 +4,15 @@ import { useToggle } from 'react-use'
 
 import SearchBar from '../SearchBar'
 import ButtonTag from '../Link'
-import * as ROUTES from 'common/utils/constants/routes'
+import {
+  CHAT,
+  MY_PROFILE,
+  DASHBOARD,
+  MARKET,
+  MEMBERS,
+  WALLET,
+  PORTFOLIO,
+} from 'common/utils/constants/routes'
 import img_avatar_empty from 'common/assets/images/avatar-placeholder.svg'
 import cn from 'classnames'
 import AddNFT from 'features/nft/addNFT'
@@ -104,7 +112,7 @@ function Header(): JSX.Element | null {
   }, [])
 
   const location = useLocation()
-  if (location.pathname === ROUTES.CHAT) {
+  if (location.pathname === CHAT) {
     return null
   }
 
@@ -118,17 +126,17 @@ function Header(): JSX.Element | null {
           className='text-gray-33 ml-4 md:ml-6 lg:ml-27px w-4'
         />
       </ButtonTag>
-      <Link to={ROUTES.CHAT}>
+      <Link to={CHAT}>
         <MessageIcon
           size={18}
           hasNotification
           className='text-gray-33 ml-4 md:ml-6 lg:ml-30px w-4'
         />
       </Link>
-      <Link to={ROUTES.MY_PROFILE}>
+      <Link to={MY_PROFILE}>
         <SettingIcon size={18} className='ml-4 md:ml-6 lg:ml-27px w-18px' />
       </Link>
-      <Link to={ROUTES.MY_PROFILE}>
+      <Link to={MY_PROFILE}>
         {!avatar ? (
           <div className='rounded-full border-4 border-white bg-gray-e6 w-9 h-9 shadow-avatar flex flex-col items-center justify-center overflow-hidden relative ml-4 md:ml-6 lg:ml-22px'>
             <img
@@ -150,37 +158,28 @@ function Header(): JSX.Element | null {
 
   const renderLinks = () => (
     <div className='flex items-center h-full w-[80%]'>
-      <Link to={ROUTES.DASHBOARD} className='w-9 h-9'>
+      <Link to={DASHBOARD} className='w-9 h-9'>
         <QuestionLogo />
       </Link>
       <MenuItem
         classes='ml-4 1200px:ml-8 xl:ml-9 lg:w-[74px]'
         exact
-        to={ROUTES.DASHBOARD}
+        to={DASHBOARD}
       >
         {translate('dashboard')}
       </MenuItem>
-      <MenuItem
-        classes='ml-4 1200px:ml-7 xl:ml-9 xl:w-[32px]'
-        to={ROUTES.MARKET}
-      >
+      <MenuItem classes='ml-4 1200px:ml-7 xl:ml-9 xl:w-[32px]' to={MARKET}>
         {translate('NFTs')}
       </MenuItem>
-      <MenuItem
-        classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[62px]'
-        to={ROUTES.MEMBERS}
-      >
+      <MenuItem classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[62px]' to={MEMBERS}>
         {translate('members')}
       </MenuItem>
-      <MenuItem
-        classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[42px]'
-        to={ROUTES.WALLET}
-      >
+      <MenuItem classes='ml-4 1200px:ml-7 xl:ml-37px xl:w-[42px]' to={WALLET}>
         {translate('wallet')}
       </MenuItem>
       <MenuItem
         classes='ml-4 1200px:ml-7 xl:ml-35px xl:w-[58px]'
-        to={ROUTES.PORTFOLIO}
+        to={PORTFOLIO}
       >
         {translate('portfolio')}
       </MenuItem>

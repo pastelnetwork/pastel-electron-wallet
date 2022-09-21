@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react'
 import dayjs from 'dayjs'
 
-import * as ROUTES from 'common/utils/constants/routes'
+import { PORTFOLIO_DETAIL } from 'common/utils/constants/routes'
 import NFTCard, { TNFTCard } from 'common/components/NFTCard'
 import Select, { TOption } from 'common/components/Select/Select'
 import Slider from 'common/components/Slider/Slider'
@@ -34,7 +34,7 @@ export default function NFTMarketFeed(): JSX.Element {
     currencyName,
     title: 'Cosmic Perspective longname test',
     followers: 256,
-    detailUrl: ROUTES.PORTFOLIO_DETAIL,
+    detailUrl: PORTFOLIO_DETAIL,
     nsfw: { porn: 0, hentai: 0 },
   }
 

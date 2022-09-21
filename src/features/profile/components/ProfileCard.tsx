@@ -23,10 +23,6 @@ export type TProfileCard = {
   name: string
   description: string
   address: string
-  social: {
-    facebook: string
-    twitter: string
-  }
 }
 
 function truncateMiddle(

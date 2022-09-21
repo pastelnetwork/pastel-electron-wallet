@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { formatPrice } from '../../common/utils/format'
 import TransactionItem, { TTransactionItemProps } from './TransactionItem'
 import LinkSection from './LinkSection'
-import * as ROUTES from '../../common/utils/constants/routes'
+import { WALLET } from '../../common/utils/constants/routes'
 import { useTAndZTransactions, useTotalBalance } from '../../api/pastel-rpc'
 import { useCurrencyName } from '../../common/hooks/appInfo'
 import { TTransactionType } from '../../types/rpc'
@@ -89,7 +89,7 @@ export default function Wallet(): JSX.Element {
           </div>
         )}
       </div>
-      <LinkSection to={ROUTES.WALLET} absolute gradient>
+      <LinkSection to={WALLET} absolute gradient>
         {translate('walletDetails')}
       </LinkSection>
     </div>
