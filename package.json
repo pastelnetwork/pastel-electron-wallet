@@ -1,7 +1,7 @@
 {
   "name": "pastelwallet",
   "productName": "Pastel Wallet Fullnode",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Pastel Fullnode Wallet (Electron version)",
   "keywords": [
     "Pastel",
@@ -72,8 +72,8 @@
     "qrcode.react": "1.0.0",
     "react": "17.0.1",
     "react-accessible-accordion": "3.3.4",
-    "react-csv": "2.0.3",
     "react-circular-progressbar": "2.0.4",
+    "react-csv": "2.0.3",
     "react-dom": "17.0.1",
     "react-hot-loader": "4.13.0",
     "react-modal": "3.11.1",
