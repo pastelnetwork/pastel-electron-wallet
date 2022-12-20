@@ -19,7 +19,7 @@
 
 ---
 
-Pastel Fullnode Wallet is a z-Addr first, Sapling compatible wallet and full node for pasteld that runs on Linux, Windows and MacOS. This wallet runs `pasteld`, pastel gonode(`walletnode`), `rqservice` managed by [pastel-utility](https://pastel.wiki/en/Architecture/pastel-utility).
+Pastel Fullnode Wallet is a z-Addr first, Sapling compatible wallet and full node for pasteld that runs on Linux, Windows and MacOS. This wallet runs `pasteld`, pastel gonode(`walletnode`), `rqservice` managed by [pastelup](https://github.com/pastelnetwork/pastelup).
 
 ## Installation
 
