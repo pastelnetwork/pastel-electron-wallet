@@ -76,7 +76,7 @@ export default function ProfileGeneral({
     language: defaultLanguage.label,
     categories: user?.categories || [],
     reputation: 0,
-    highestFeeRecieved: { value: 0, comment: 0 },
+    highestFeeReceived: { value: 0, comment: 0 },
     totalSalesAmount: { value: 0, comment: 0 },
     totalItemsSold: translate('totalNFTsSoldCopies', { copies: 0, total: 0 }),
     bio: user?.biography || translate('none'),
@@ -260,7 +260,7 @@ export default function ProfileGeneral({
   const renderHighestSalePriceReceived = () => (
     <ProfileGeneralRow title={translate('highestSalePriceReceived')}>
       <div className='flex items-center'>
-        {!data.highestFeeRecieved.value ? (
+        {!data.highestFeeReceived.value ? (
           <span className='cursor-pointer text-gray-4a text-base leading-5'>
             0 {currencyName}
           </span>
@@ -280,12 +280,12 @@ export default function ProfileGeneral({
               }
             >
               <span className='cursor-pointer font-medium text-gray-4a text-base leading-5'>
-                {formatPrice(data.highestFeeRecieved.value, currencyName)}
+                {formatPrice(data.highestFeeReceived.value, currencyName)}
               </span>
             </Tooltip>
-            {data.highestFeeRecieved.comment && (
+            {data.highestFeeReceived.comment && (
               <span className='ml-15px bg-gray-e6 text-gray-4a rounded px-5px font-black text-sm leading-6'>
-                {translate('top')} #{data.highestFeeRecieved.comment}
+                {translate('top')} #{data.highestFeeReceived.comment}
               </span>
             )}
           </>

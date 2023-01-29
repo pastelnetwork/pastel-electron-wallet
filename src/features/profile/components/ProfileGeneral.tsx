@@ -10,7 +10,7 @@ export type TProfileGeneral = {
   categories: string
   reputation: number
   buyerBans: number
-  highestFeeRecieved: string
+  highestFeeReceived: string
   totalSalesAmount: string
   totalItemsSold: string
   topCategoryPercentage: string
@@ -22,7 +22,7 @@ function ProfileGeneral({
   language,
   categories,
   reputation,
-  highestFeeRecieved,
+  highestFeeReceived,
   totalSalesAmount,
   totalItemsSold,
   bio,
@@ -61,7 +61,7 @@ function ProfileGeneral({
       {renderTopContent()}
       <div className='w-full pb-10 pt-10 space-y-4'>
         <ProfileGeneralRow title={translate('highestSalePriceReceived')}>
-          {highestFeeRecieved}
+          {highestFeeReceived}
         </ProfileGeneralRow>
         <ProfileGeneralRow title={translate('totalCombinedSales')}>
           {totalSalesAmount}

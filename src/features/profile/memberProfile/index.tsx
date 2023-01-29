@@ -55,7 +55,7 @@ function Profile(): JSX.Element {
     categories: 'Motion Graphics, Illustration, Abstract',
     reputation: 3.89,
     buyerBans: 3,
-    highestFeeRecieved: `136,200,000k ${currencyName} (#632)`,
+    highestFeeReceived: `136,200,000k ${currencyName} (#632)`,
     totalSalesAmount: `560,600,00k ${currencyName} (#211)`,
     totalItemsSold: '124 Copies across 5 NFTs',
     topCategoryPercentage: 'motion graphics 30%',

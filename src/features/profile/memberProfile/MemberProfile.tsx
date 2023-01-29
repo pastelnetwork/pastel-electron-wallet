@@ -89,7 +89,7 @@ export default function MemberProfile(): JSX.Element {
     categories: 'motion graphics, illustration, \nabstract',
     reputation: 4.89,
     buyerBans: 3,
-    highestFeeRecieved: `136,200 ${currencyName}`,
+    highestFeeReceived: `136,200 ${currencyName}`,
     totalSalesAmount: `560,600 ${currencyName}`,
     totalItemsSold: translate('totalItemsSold', { copies: 124, nfts: 5 }),
     topCategoryPercentage: 'motion graphics 30%',
