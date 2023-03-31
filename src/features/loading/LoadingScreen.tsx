@@ -10,7 +10,7 @@ import process from 'process'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 
-import pasteldlogo from '../../legacy/assets/img/pastel-logo2.png'
+import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
 import { RPCConfig } from '../../legacy/components/AppState'
 import cstyles from '../../legacy/components/Common.module.css'
 import routes from '../../legacy/constants/routes.json'
@@ -325,6 +325,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     setTimeout(() => this.getInfo(), 1000)
   }
 
+  handleResetPastel() {
+    ipcRenderer.send('reset_pastel_app')
+  }
+
   async getInfo() {
     const { rpcConfig, pasteldSpawned, getInfoRetryCount } = this.state // Try getting the info.
 
@@ -364,7 +368,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         // Give up
         this.setState({
           currentStatus: (
-            <span>
+            <div>
               Failed to start pasteld. Giving up! Please look at the debug.log
               file.
               <br />
@@ -373,7 +377,16 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
               >{`${locatePastelConfDir()}/debug.log`}</span>
               <br />
               Please file an issue with Pastel Wallet
-            </span>
+              <div className={cstyles.buttoncontainer}>
+                <button
+                  type='button'
+                  className={cstyles.primarybutton}
+                  onClick={this.handleResetPastel}
+                >
+                  Restart Pastel
+                </button>
+              </div>
+            </div>
           ),
         })
       }

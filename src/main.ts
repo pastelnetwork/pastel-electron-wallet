@@ -13,6 +13,7 @@ import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
 import path from 'path'
 import os from 'os'
+import kill from 'kill-port'
 
 import pkg from '../package.json'
 import {
@@ -226,6 +227,15 @@ ipcMain.on('app-ready', () => {
 
 ipcMain.on('restart_app', () => {
   autoUpdater.quitAndInstall()
+})
+
+ipcMain.on('reset_pastel_app', async () => {
+  await kill(9933)
+  await kill(9932)
+  await kill(19932)
+  await kill(19933)
+  app.relaunch()
+  app.exit(0)
 })
 
 autoUpdater.on(
