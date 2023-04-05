@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { clipboard } from 'electron'
 
 import StarRate from './StarRate'
@@ -23,10 +23,6 @@ export type TProfileCard = {
   name: string
   description: string
   address: string
-  social: {
-    facebook: string
-    twitter: string
-  }
 }
 
 function truncateMiddle(
@@ -60,8 +56,14 @@ function ProfileCard({
   description,
   address,
 }: TProfileCard): JSX.Element {
+  const [copied, setCopied] = useState(false)
+
   const handleCopy = useCallback(() => {
     clipboard.writeText(walletId)
+    setCopied(true)
+    setTimeout(() => {
+      setCopied(false)
+    }, 2000)
   }, [walletId])
 
   const renderStarRate = () => (
@@ -103,7 +105,7 @@ function ProfileCard({
         width={160}
         content={
           <p className='mb-0 px-2 py-6px text-white text-sm'>
-            {translate('copyToClipboard')}
+            {copied ? translate('copied') : translate('copyToClipboard')}
           </p>
         }
       >
