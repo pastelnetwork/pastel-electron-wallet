@@ -63,7 +63,7 @@ export default function ProfileGeneral({
     language: 'English',
     categories: ['Motion Graphics', 'Illustration', 'Abstract'],
     reputation: 4.89,
-    highestFeeRecieved: { value: '136200', comment: 632 },
+    highestFeeReceived: { value: '136200', comment: 632 },
     totalSalesAmount: { value: '560600', comment: 211 },
     totalItemsSold: '124 Copies across 5 NFTs',
     bio:
@@ -74,7 +74,7 @@ export default function ProfileGeneral({
     Object.assign(data, {
       categories: [],
       reputation: 0,
-      highestFeeRecieved: { value: 0 },
+      highestFeeReceived: { value: 0 },
       totalSalesAmount: { value: 0 },
       totalItemsSold: 0,
     })
@@ -192,7 +192,7 @@ export default function ProfileGeneral({
     >
       <span className='cursor-pointer font-medium text-gray-4a text-base leading-5'>
         <NumberFormat
-          value={data.highestFeeRecieved.value}
+          value={data.highestFeeReceived.value}
           displayType='text'
           thousandSeparator
         />{' '}
@@ -211,9 +211,9 @@ export default function ProfileGeneral({
         ) : (
           <>
             {renderHighestSalePriceReceivedTooltip()}
-            {data.highestFeeRecieved.comment && (
+            {data.highestFeeReceived.comment && (
               <span className='ml-15px bg-gray-e6 text-gray-4a rounded px-5px font-black text-sm leading-6'>
-                Top #{data.highestFeeRecieved.comment}
+                Top #{data.highestFeeReceived.comment}
               </span>
             )}
           </>
