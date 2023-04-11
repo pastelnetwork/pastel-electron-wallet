@@ -6,7 +6,7 @@ import dateformat from 'dateformat'
 import Modal from 'react-modal'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
 import TextareaAutosize from 'react-textarea-autosize'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'
@@ -15,9 +15,9 @@ import styles from './Sidebar.module.css'
 import cstyles from './Common.module.css'
 import routes from '../constants/routes.json'
 import Logo from '../assets/img/pastel-logo.png'
-import { Info, Transaction } from './AppState'
 import Utils from '../utils/utils'
 import { parsePastelURI, PastelURITarget } from '../utils/uris'
+import store from '../../redux/store'
 
 const ExportPrivKeyModal = ({
   modalIsOpen,
@@ -355,19 +355,19 @@ class Sidebar extends PureComponent<any, any> {
     }) // Export All Transactions
 
     ipcRenderer.on('exportalltx', async () => {
-      const save = await remote.dialog.showSaveDialog({
-        title: 'Save Transactions As CSV',
-        defaultPath: 'pastelwallet_transactions.csv',
-        filters: [
+      const save = await window.pastelWallet.showSaveDialog(
+        'Save Transactions As CSV',
+        'pastelwallet_transactions.csv',
+        [
           {
             name: 'CSV File',
             extensions: ['csv'],
           },
         ],
-        properties: ['showOverwriteConfirmation'],
-      })
+        ['showOverwriteConfirmation'],
+      )
 
-      if (save.filePath) {
+      if (save?.filePath) {
         // Construct a CSV
         const { transactions } = this.props
         const rows = transactions.flatMap((t: any) => {
@@ -392,7 +392,7 @@ class Sidebar extends PureComponent<any, any> {
 
         try {
           await fs.promises.writeFile(
-            save.filePath,
+            save?.filePath,
             header.concat(rows).join('\n'),
           )
         } catch (err) {

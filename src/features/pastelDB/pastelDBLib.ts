@@ -1,4 +1,3 @@
-import { remote } from 'electron'
 import log from 'electron-log'
 import fs from 'fs'
 import { open } from 'fs/promises'
@@ -78,17 +77,20 @@ import {
   TValidateFields,
   TWalletInfo,
 } from './type'
+import store from '../../redux/store'
 
 export const readSqliteDBFile = async (): Promise<Buffer | null> => {
+  const { locatePastelConfDir } = store.getState().appInfo
+
   try {
     const file = await open(
-      path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+      path.join(locatePastelConfDir, 'pasteldb.sqlite'),
       'r',
     )
     const stat = await file.stat()
     if (stat.birthtimeMs > +new Date('2021-06-10')) {
       return await fs.promises.readFile(
-        path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+        path.join(locatePastelConfDir, 'pasteldb.sqlite'),
       )
     }
   } catch (e) {
@@ -98,25 +100,26 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
 }
 
 export const RemoveSqliteDBFile = async (): Promise<void> => {
+  const { locatePastelConfDir } = store.getState().appInfo
   try {
-    await fs.promises.unlink(
-      path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
-    )
+    await fs.promises.unlink(path.join(locatePastelConfDir, 'pasteldb.sqlite'))
   } catch (e) {
     log.error('File not found')
   }
 }
 
 export const writeSqliteDBFile = async (buffer: Buffer): Promise<void> => {
+  const { locatePastelConfDir } = store.getState().appInfo
   await fs.promises.writeFile(
-    path.join(remote.app.getPath('appData'), 'Pastel', 'pasteldb.sqlite'),
+    path.join(locatePastelConfDir, 'pasteldb.sqlite'),
     buffer,
     { flag: 'w+' },
   )
 }
 
 async function initSqlJS(): Promise<SqlJsStatic> {
-  if (remote.app.isPackaged) {
+  const { isPackaged } = store.getState().appInfo
+  if (isPackaged) {
     return await initSqlJs({
       locateFile: (file: string) => {
         return path.join(

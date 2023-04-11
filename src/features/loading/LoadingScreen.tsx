@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
 import clx from 'classnames'
-import { ipcRenderer, remote } from 'electron'
+import { ipcRenderer } from 'electron'
 import fs from 'fs'
 import ini from 'ini'
-import os from 'os'
-import path from 'path'
-import process from 'process'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 
+import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
 import { RPCConfig } from '../../legacy/components/AppState'
 import cstyles from '../../legacy/components/Common.module.css'
@@ -20,62 +18,7 @@ import { NO_CONNECTION } from '../../legacy/utils/utils'
 import styles from './LoadingScreen.module.css'
 import { checkHashAndDownloadParams } from './utils'
 import PastelDB from '../../features/pastelDB/database'
-
-const locatePastelConfDir = () => {
-  if (os.platform() === 'darwin') {
-    return path.join(remote.app.getPath('appData'), 'Pastel')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(remote.app.getPath('home'), '.pastel')
-  }
-
-  return path.join(remote.app.getPath('appData'), 'Pastel')
-}
-
-const locatePastelConf = () => {
-  if (os.platform() === 'darwin') {
-    return path.join(remote.app.getPath('appData'), 'Pastel', 'pastel.conf')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(remote.app.getPath('home'), '.pastel', 'pastel.conf')
-  }
-
-  return path.join(remote.app.getPath('appData'), 'Pastel', 'pastel.conf')
-}
-
-const pasteldBasePath = () => {
-  if (remote.app.isPackaged) {
-    return process.resourcesPath
-  }
-
-  return path.join(remote.app.getAppPath(), 'static', 'bin')
-}
-
-const locatePasteld = () => {
-  if (os.platform() === 'darwin') {
-    return path.join(pasteldBasePath(), 'pasteld-mac')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(pasteldBasePath(), 'pasteld-linux')
-  }
-
-  return path.join(pasteldBasePath(), 'pasteld-win.exe')
-}
-
-const locatePastelParamsDir = () => {
-  if (os.platform() === 'darwin') {
-    return path.join(remote.app.getPath('appData'), 'PastelParams')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(remote.app.getPath('home'), '.pastel-params')
-  }
-
-  return path.join(remote.app.getPath('appData'), 'PastelParams')
-}
+import { createPastelKeysFolder } from '../../features/pastelID'
 
 interface TLoadingState {
   currentStatus: string | JSX.Element
@@ -116,7 +59,17 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   componentDidMount() {
-    this.loadingConfigs()
+    this.handleStartLoading()
+  }
+
+  handleStartLoading() {
+    if (!store.getState().appInfo.locatePastelParamsDir) {
+      setTimeout(() => {
+        this.handleStartLoading()
+      }, 2000)
+    } else {
+      this.loadingConfigs()
+    }
   }
 
   loadingConfigs = async () => {
@@ -165,11 +118,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       },
     ]
     this.setState({ errorEnsurePastelParams: false })
-
     try {
       await checkHashAndDownloadParams({
         params,
-        outputDir: locatePastelParamsDir(),
+        outputDir: store.getState().appInfo.locatePastelParamsDir,
         onProgress: (currentStatus: string) => this.setState({ currentStatus }),
       })
       return true
@@ -184,7 +136,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 
   loadPastelConf = async (createIfMissing: boolean) => {
     // Load the RPC config from pastel.conf file
-    const pastelLocation = locatePastelConf()
+    const pastelLocation = store.getState().appInfo.locatePastelConf
     let confValues
 
     try {
@@ -241,13 +193,13 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 
   createPastelConf = async () => {
     const { connectOverTor, enableFastSync } = this.state
-    const dir = locatePastelConfDir()
+    const dir = store.getState().appInfo.locatePastelConfDir
 
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir)
     }
 
-    const pastelConfPath = await locatePastelConf()
+    const pastelConfPath = store.getState().appInfo.locatePastelConf
     let confContent = ''
     confContent += 'server=1\n'
     confContent += 'rpcuser=pastelwallet\n'
@@ -267,6 +219,13 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     this.setState({
       creatingPastelConf: false,
     })
+    createPastelKeysFolder(dir)
+    try {
+      PastelDB.getDatabaseInstance()
+    } catch (error) {
+      // TODO log errors to a central logger so we can address them later.
+      console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
+    }
     this.loadPastelConf(false)
   }
 
@@ -306,7 +265,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       return
     }
 
-    const program = locatePasteld()
+    const program = store.getState().appInfo.locatePasteld
     this.pasteld = spawn(program)
     this.setState({
       pasteldSpawned: 1,
@@ -372,9 +331,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
               Failed to start pasteld. Giving up! Please look at the debug.log
               file.
               <br />
-              <span
-                className={cstyles.highlight}
-              >{`${locatePastelConfDir()}/debug.log`}</span>
+              <span className={cstyles.highlight}>{`${
+                store.getState().appInfo.locatePastelConfDir
+              }/debug.log`}</span>
               <br />
               Please file an issue with Pastel Wallet
               <div className={cstyles.buttoncontainer}>

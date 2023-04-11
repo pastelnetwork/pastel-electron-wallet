@@ -37,9 +37,8 @@ import { Provider } from 'react-redux'
 import log from 'electron-log'
 import { ipcRenderer } from 'electron'
 
-import PastelDB from './features/pastelDB/database'
 import { fetchPastelPrice } from './features/pastelPrice'
-import { createPastelKeysFolder } from './features/pastelID'
+import { setAppInfo, IAppInfoState } from './features/app/AppInfoSlice'
 import Root from './legacy/containers/Root'
 import store from './redux/store'
 
@@ -59,28 +58,37 @@ setInterval(() => {
   store.dispatch<any>(fetchPastelPrice())
 }, oneHour)
 
-try {
-  PastelDB.getDatabaseInstance()
-} catch (error) {
-  // TODO log errors to a central logger so we can address them later.
-  console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
-}
-
-ipcRenderer.on(
-  'app-info',
-  (
-    event,
-    {
+ipcRenderer.on('app-info', (event, data) => {
+  if (data) {
+    const {
       isPackaged,
       locatePastelConfDir,
-    }: { isPackaged: string; locatePastelConfDir: string },
-  ) => {
+      appVersion,
+      locatePastelConf,
+      pasteldBasePath,
+      locatePasteld,
+      locatePastelParamsDir,
+      locatePastelWalletDir,
+      locateSentTxStore,
+    } = JSON.parse(data) as IAppInfoState
     if (isPackaged) {
       log.transports.console.level = false
     }
-    createPastelKeysFolder(locatePastelConfDir)
-  },
-)
+    store.dispatch(
+      setAppInfo({
+        isPackaged,
+        locatePastelConfDir,
+        appVersion,
+        locatePastelConf,
+        pasteldBasePath,
+        locatePasteld,
+        locatePastelParamsDir,
+        locatePastelWalletDir,
+        locateSentTxStore,
+      }),
+    )
+  }
+})
 
 const application = (
   <Provider store={store}>

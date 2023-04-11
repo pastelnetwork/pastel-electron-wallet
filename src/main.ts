@@ -3,7 +3,14 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 
-import { app, autoUpdater, BrowserWindow, ipcMain, shell } from 'electron'
+import {
+  app,
+  autoUpdater,
+  BrowserWindow,
+  ipcMain,
+  shell,
+  dialog,
+} from 'electron'
 import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -75,12 +82,10 @@ const createWindow = async () => {
     minHeight: 500,
     minWidth: 1100,
     webPreferences: {
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       // Allow node integration because we're only loading local content here.
+      preload: path.join('./preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
-      enableRemoteModule: true,
-      webSecurity: false,
     },
   })
   mainWindow = w
@@ -105,11 +110,20 @@ const createWindow = async () => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
-
-    w.webContents.send('app-info', {
-      isPackaged: app.isPackaged,
-      locatePastelConfDir: locatePastelConfDir(),
-    })
+    w.webContents.send(
+      'app-info',
+      JSON.stringify({
+        isPackaged: app.isPackaged,
+        locatePastelConfDir: locatePastelConfDir(),
+        appVersion: app.getVersion(),
+        locatePastelConf: locatePastelConf(),
+        pasteldBasePath: pasteldBasePath(),
+        locatePasteld: locatePasteld(),
+        locatePastelParamsDir: locatePastelParamsDir(),
+        locatePastelWalletDir: locatePastelWalletDir(),
+        locateSentTxStore: locateSentTxStore(),
+      }),
+    )
   })
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
@@ -268,3 +282,85 @@ const locatePastelConfDir = () => {
 
   return path.join(app.getPath('appData'), 'Pastel')
 }
+
+const locatePastelConf = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel', 'pastel.conf')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), '.pastel', 'pastel.conf')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel', 'pastel.conf')
+}
+
+const pasteldBasePath = () => {
+  if (app.isPackaged) {
+    return process.resourcesPath
+  }
+
+  return path.join(app.getAppPath(), 'static', 'bin')
+}
+
+const locatePasteld = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(pasteldBasePath(), 'pasteld-mac')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(pasteldBasePath(), 'pasteld-linux')
+  }
+
+  return path.join(pasteldBasePath(), 'pasteld-win.exe')
+}
+
+const locatePastelParamsDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'PastelParams')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), '.pastel-params')
+  }
+
+  return path.join(app.getPath('appData'), 'PastelParams')
+}
+
+const locatePastelWalletDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'pastelwallet')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), 'pastelwallet')
+  }
+
+  return path.join(app.getPath('appData'), 'pastelwallet')
+}
+
+const locateSentTxStore = (): string => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(
+      app.getPath('home'),
+      '.local',
+      'share',
+      'psl-qt-wallet-org',
+      'psl-qt-wallet',
+      'senttxstore.dat',
+    )
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
+}
+
+ipcMain.handle(
+  'showSaveDialog_IPC',
+  async (_, title, defaultPath, filters, properties) => {
+    return dialog.showSaveDialog({ title, defaultPath, filters, properties })
+  },
+)

@@ -1,7 +1,4 @@
-import { remote } from 'electron'
 import fs from 'fs'
-import os from 'os'
-import path from 'path'
 
 import {
   TDetailedTxns,
@@ -9,30 +6,14 @@ import {
   TSentTxStore,
   TVjoinsplit,
 } from '../pastelDB/type'
-
-const locateSentTxStore = (): string => {
-  if (os.platform() === 'darwin') {
-    return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(
-      remote.app.getPath('home'),
-      '.local',
-      'share',
-      'psl-qt-wallet-org',
-      'psl-qt-wallet',
-      'senttxstore.dat',
-    )
-  }
-
-  return path.join(remote.app.getPath('appData'), 'Pastel', 'senttxstore.dat')
-}
+import store from '../../redux/store'
 
 export const loadSentTxns = async (): Promise<TListTransactions | []> => {
+  const { locateSentTxStore } = store.getState().appInfo
+
   try {
     const sentTx = JSON.parse(
-      (await fs.promises.readFile(locateSentTxStore())).toString(),
+      (await fs.promises.readFile(locateSentTxStore)).toString(),
     )
     return sentTx.map((s: TSentTxStore) => {
       const transction: TListTransactions = {
