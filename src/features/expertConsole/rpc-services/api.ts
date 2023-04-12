@@ -1,4 +1,5 @@
 import axios, { CancelTokenSource } from 'axios'
+import { RPCClient } from 'rpc-bitcoin'
 
 import store from '../../../redux/store'
 import { METHODS } from './utils'
@@ -43,20 +44,19 @@ METHODS.forEach((method: string) => {
 
         apiRequests.push(source)
 
-        axios(url, {
-          method: 'POST',
-          auth: { username, password },
-          data: {
-            jsonrpc: '2.0',
-            id: method,
-            method,
-            params,
-          },
-          cancelToken: source.token,
+        const newUrl = url.split(':')
+        const client = new RPCClient({
+          url: `${newUrl[0]}:${newUrl[1]}`,
+          port: Number(newUrl[2]),
+          timeout: 10000,
+          user: username,
+          pass: password,
         })
-          .then(data => {
-            console.log('[RPC CALL SUCCESS] -', method, data?.data?.result)
-            resolve(data?.data?.result)
+        client
+          .batch({ method, params })
+          .then(response => {
+            console.log('[RPC CALL SUCCESS] -', method, response?.result)
+            resolve(response?.result)
           })
           .catch(error => {
             console.log('[RPC CALL ERROR] - ', { ...error })

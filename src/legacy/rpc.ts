@@ -4,6 +4,7 @@ import axios from 'axios'
 import _ from 'underscore'
 import hex from 'hex-string'
 import log from 'electron-log'
+import { RPCClient } from 'rpc-bitcoin'
 import {
   TotalBalance,
   AddressBalance,
@@ -73,36 +74,31 @@ export default class RPC {
   static async doRPC(method: any, params: any, rpcConfig: any) {
     const { url, username, password } = rpcConfig
     const response = await new Promise((resolve, reject) => {
-      axios(url, {
-        data: {
-          jsonrpc: '2.0',
-          id: method,
-          method,
-          params,
-        },
-        method: 'POST',
-        auth: {
-          username,
-          password,
-        },
+      const newUrl = url.split(':')
+      const client = new RPCClient({
+        url: `${newUrl[0]}:${newUrl[1]}`,
+        port: Number(newUrl[2]),
+        timeout: 10000,
+        user: username,
+        pass: password,
       })
-        .then(r => resolve(r.data))
+      client
+        .batch({ method, params })
+        .then(response => resolve(response))
         .catch(err => {
           const e = { ...err }
           console.log(e)
 
-          if (e.response && e.response.data) {
+          if (e?.error?.code !== 'ECONNREFUSED') {
             log.error(
-              `legacy/rpc response error. Response: ${JSON.stringify(
-                e.response?.data,
-              )}. Status code: ${JSON.stringify(e.response?.status)}`,
+              `legacy/rpc error. Error: ${JSON.stringify(
+                e.message,
+              )}. Status code: ${JSON.stringify(e.error?.errno)}`,
             )
-            reject(e.response.data.error.message)
+            reject(e.message)
           } else {
             log.error(
-              `legacy/rpc no connection. Error: ${JSON.stringify(
-                e?.config?.data,
-              )}`,
+              `legacy/rpc no connection. Error: ${JSON.stringify(e?.message)}`,
             )
             reject(NO_CONNECTION)
           }

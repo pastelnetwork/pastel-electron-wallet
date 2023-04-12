@@ -26,7 +26,14 @@ export default class AddressbookImpl {
     const fileName = await this.getFileName()
 
     try {
-      return JSON.parse((await fs.promises.readFile(fileName)) as any)
+      if (!fs.existsSync(fileName)) {
+        return ''
+      }
+      const content = await fs.promises.readFile(fileName)
+      if (content.toString()) {
+        return JSON.parse(content as any)
+      }
+      return ''
     } catch (err) {
       // File probably doesn't exist, so return nothing
       console.log(err)

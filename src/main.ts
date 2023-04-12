@@ -15,7 +15,7 @@ import electronDebug from 'electron-debug'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
-} from 'electron-devtools-installer'
+} from 'electron-devtools-assembler'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
 import path from 'path'
@@ -42,15 +42,6 @@ if (gotTheLock) {
   })
 } else {
   app.quit()
-}
-
-// Enable dev tools
-if (!app.isPackaged) {
-  app.whenReady().then(() => {
-    installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-      .then((name: string) => console.warn(`Added Extension:  ${name}`))
-      .catch((err: Error) => console.warn('An error occurred: ', err))
-  })
 }
 
 export default class AppUpdater {
@@ -82,10 +73,9 @@ const createWindow = async () => {
     minHeight: 500,
     minWidth: 1100,
     webPreferences: {
-      // Allow node integration because we're only loading local content here.
-      preload: path.join('./preload.js'),
       nodeIntegration: true,
       contextIsolation: false,
+      webviewTag: true,
     },
   })
   mainWindow = w
@@ -93,9 +83,17 @@ const createWindow = async () => {
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
   w.webContents.on('did-frame-finish-load', () => {
-    // Open the DevTools.
+    // Enable dev tools
     if (!app.isPackaged) {
-      w.webContents.openDevTools()
+      app.whenReady().then(() => {
+        installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS], true)
+          .then((name: string) => console.warn(`Added Extension:  ${name}`))
+          .catch((err: Error) => console.warn('An error occurred: ', err))
+          .finally(() => {
+            // Open the DevTools.
+            w.webContents.openDevTools()
+          })
+      })
     }
   })
 
@@ -110,20 +108,6 @@ const createWindow = async () => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
-    w.webContents.send(
-      'app-info',
-      JSON.stringify({
-        isPackaged: app.isPackaged,
-        locatePastelConfDir: locatePastelConfDir(),
-        appVersion: app.getVersion(),
-        locatePastelConf: locatePastelConf(),
-        pasteldBasePath: pasteldBasePath(),
-        locatePasteld: locatePasteld(),
-        locatePastelParamsDir: locatePastelParamsDir(),
-        locatePastelWalletDir: locatePastelWalletDir(),
-        locateSentTxStore: locateSentTxStore(),
-      }),
-    )
   })
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
@@ -237,6 +221,25 @@ ipcMain.on('app-ready', () => {
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
   initServeStatic(app.isPackaged)
+})
+
+ipcMain.on('start_app', () => {
+  if (mainWindow) {
+    mainWindow.webContents.send(
+      'app-info',
+      JSON.stringify({
+        isPackaged: app.isPackaged,
+        locatePastelConfDir: locatePastelConfDir(),
+        appVersion: app.getVersion(),
+        locatePastelConf: locatePastelConf(),
+        pasteldBasePath: pasteldBasePath(),
+        locatePasteld: locatePasteld(),
+        locatePastelParamsDir: locatePastelParamsDir(),
+        locatePastelWalletDir: locatePastelWalletDir(),
+        locateSentTxStore: locateSentTxStore(),
+      }),
+    )
+  }
 })
 
 ipcMain.on('restart_app', () => {

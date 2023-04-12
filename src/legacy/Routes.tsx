@@ -62,6 +62,7 @@ import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
 import Nft from '../features/nft'
+import store from '../redux/store'
 
 export type TWalletInfo = {
   connections: number
@@ -129,10 +130,7 @@ class RouteApp extends React.Component<any, any> {
       }
     }, 10000)
 
-    const addressBook = await AddressbookImpl.readAddressBook()
-    if (addressBook) {
-      this.setState({ addressBook })
-    }
+    this.readAddressBook()
 
     this.companionAppListener = new CompanionAppListener(
       this.getFullState,
@@ -146,6 +144,20 @@ class RouteApp extends React.Component<any, any> {
     window.clearInterval(this.rpcRefreshIntervalId)
     window.clearInterval(this.pastelDBThreadIntervalID)
     window.clearInterval(this.exportSqliteDBIntervalID)
+  }
+
+  readAddressBook = async () => {
+    const dir = store.getState().appInfo.locatePastelWalletDir
+    if (!dir) {
+      setTimeout(() => {
+        this.readAddressBook()
+      }, 2000)
+    } else {
+      const addressBook = await AddressbookImpl.readAddressBook()
+      if (addressBook) {
+        this.setState({ addressBook })
+      }
+    }
   }
 
   getFullState = () => {

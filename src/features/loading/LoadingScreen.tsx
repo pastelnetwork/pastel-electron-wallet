@@ -59,6 +59,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   componentDidMount() {
+    ipcRenderer.send('start_app')
     this.handleStartLoading()
   }
 
@@ -219,7 +220,12 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     this.setState({
       creatingPastelConf: false,
     })
-    createPastelKeysFolder(dir)
+
+    try {
+      createPastelKeysFolder(dir)
+    } catch (error) {
+      console.error(`createPastelKeysFolder error: ${error.message}`)
+    }
     try {
       PastelDB.getDatabaseInstance()
     } catch (error) {

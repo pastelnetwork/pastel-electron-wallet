@@ -30,7 +30,7 @@ export default function glitchImageModal(): JSX.Element | null {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src={`http://localhost:${glitch.staticPort}/`} />
+          <webview src={`http://localhost:${glitch.staticPort}/`} />
         </div>
       </div>
     </Modal>

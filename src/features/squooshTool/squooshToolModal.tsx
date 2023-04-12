@@ -30,7 +30,7 @@ export default function squooshToolModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe src={`http://localhost:${squoosh.staticPort}/`} />
+          <webview src={`http://localhost:${squoosh.staticPort}/`} />
         </div>
       </div>
     </Modal>

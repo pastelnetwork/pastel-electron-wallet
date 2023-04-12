@@ -25,7 +25,7 @@ export default function PastelPhotopeaModal(): JSX.Element {
           X
         </button>
         <div className={styles.iframe}>
-          <iframe id='photopea' src='https://www.photopea.com' />
+          <webview src='https://www.photopea.com' />
         </div>
       </div>
     </Modal>

@@ -355,7 +355,8 @@ class Sidebar extends PureComponent<any, any> {
     }) // Export All Transactions
 
     ipcRenderer.on('exportalltx', async () => {
-      const save = await window.pastelWallet.showSaveDialog(
+      const save = await ipcRenderer.invoke(
+        'showSaveDialog_IPC',
         'Save Transactions As CSV',
         'pastelwallet_transactions.csv',
         [
