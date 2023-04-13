@@ -94,3 +94,9 @@ release
 
 # Storybook build
 storybook-static
+
+# .husky
+.husky/post-checkout
+.husky/post-commit
+.husky/post-merge
+.husky/pre-push

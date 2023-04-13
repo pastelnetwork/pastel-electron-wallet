@@ -97,21 +97,12 @@ export default class RPC {
         .catch(err => {
           console.log(err)
           if (err?.error?.code !== 'ECONNREFUSED') {
-            if (err?.statusCode === 500) {
-              log.error(
-                `legacy/rpc no connection. Error: ${JSON.stringify(
-                  err.error.error.message,
-                )}`,
-              )
-              reject(NO_CONNECTION)
-            } else {
-              log.error(
-                `legacy/rpc response error. Response: ${JSON.stringify(
-                  err.error.error.message,
-                )}. Status code: ${err.statusCode}`,
-              )
-              reject(err.error.error.message)
-            }
+            log.error(
+              `legacy/rpc response error. Response: ${JSON.stringify(
+                err.error.error.message,
+              )}. Status code: ${err.statusCode}`,
+            )
+            reject(err.error.error.message)
           } else {
             log.error(
               `legacy/rpc no connection. Error: ${JSON.stringify(err.message)}`,
