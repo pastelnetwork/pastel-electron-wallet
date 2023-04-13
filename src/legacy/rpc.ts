@@ -449,7 +449,7 @@ export default class RPC {
             reject(err)
           })
       })
-      const pslData = response.data
+      const pslData = response
 
       if (pslData) {
         // TODO: Get Real PSL price!!!
