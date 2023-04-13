@@ -56,5 +56,5 @@ export async function rpc<T>(
     throw new Error('api/pastel-rpc error: Cannot connect to Pasteld')
   }
 
-  return response as T
+  return response.data as T
 }
