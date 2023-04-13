@@ -74,31 +74,36 @@ export default class RPC {
   static async doRPC(method: any, params: any, rpcConfig: any) {
     const { url, username, password } = rpcConfig
     const response = await new Promise((resolve, reject) => {
-      const newUrl = url.split(':')
-      const client = new RPCClient({
-        url: `${newUrl[0]}:${newUrl[1]}`,
-        port: Number(newUrl[2]),
-        timeout: 10000,
-        user: username,
-        pass: password,
+      axios(url, {
+        data: {
+          jsonrpc: '2.0',
+          id: method,
+          method,
+          params,
+        },
+        method: 'POST',
+        auth: {
+          username,
+          password,
+        },
       })
-      client
-        .batch({ method, params })
-        .then(response => resolve(response))
+        .then(r => resolve(r.data))
         .catch(err => {
           const e = { ...err }
           console.log(e)
 
-          if (e?.error?.code !== 'ECONNREFUSED') {
+          if (e.response && e.response.data) {
             log.error(
-              `legacy/rpc error. Error: ${JSON.stringify(
-                e.message,
-              )}. Status code: ${JSON.stringify(e.error?.errno)}`,
+              `legacy/rpc response error. Response: ${JSON.stringify(
+                e.response?.data,
+              )}. Status code: ${JSON.stringify(e.response?.status)}`,
             )
-            reject(e.message)
+            reject(e.response.data.error.message)
           } else {
             log.error(
-              `legacy/rpc no connection. Error: ${JSON.stringify(e?.message)}`,
+              `legacy/rpc no connection. Error: ${JSON.stringify(
+                e?.config?.data,
+              )}`,
             )
             reject(NO_CONNECTION)
           }

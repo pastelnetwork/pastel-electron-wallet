@@ -1,5 +1,5 @@
 import log from 'electron-log'
-import { RPCClient } from 'rpc-bitcoin'
+import axios, { AxiosResponse } from 'axios'
 
 export type TRPCConfig = {
   url: string
@@ -13,29 +13,46 @@ export async function rpc<T>(
   rpcConfig: TRPCConfig,
 ): Promise<T> {
   const { url, username, password } = rpcConfig
-  let response: T
+  let response: AxiosResponse
   try {
-    const newUrl = url.split(':')
-    const client = new RPCClient({
-      url: `${newUrl[0]}:${newUrl[1]}`,
-      port: Number(newUrl[2]),
-      timeout: 10000,
-      user: username,
-      pass: password,
+    response = await axios(url, {
+      data: {
+        jsonrpc: '2.0',
+        id: method,
+        method,
+        params,
+      },
+      method: 'POST',
+      auth: {
+        username,
+        password,
+      },
     })
-    response = await client.batch({ method, params })
   } catch (err) {
-    if (err?.error?.code !== 'ECONNREFUSED') {
+    if (err.response) {
       log.error(
-        `legacy/rpc error. Error: ${JSON.stringify(
-          err.message,
-        )}. Status code: ${JSON.stringify(err.error?.errno)}`,
+        `api/pastel-rpc server error. Response: ${JSON.stringify(
+          err.response?.data,
+        )}. Status code: ${JSON.stringify(err.response?.status)}`,
       )
-    } else {
-      log.error(
-        `legacy/rpc no connection. Error: ${JSON.stringify(err?.message)}`,
-      )
+      throw new Error(`api/pastel-rpc server error: ${err.message}`)
     }
+
+    if (err.request) {
+      // The request was made but no response was received
+      log.error(
+        `api/pastel-rpc no response error. Request: ${JSON.stringify(
+          err.request,
+        )}.`,
+      )
+      throw new Error(`api/pastel-rpc no response error: ${err.request}`)
+    }
+
+    log.error(
+      `api/pastel-rpc error: Cannot connect to Pasteld. Error: ${JSON.stringify(
+        err,
+      )}`,
+    )
     throw new Error('api/pastel-rpc error: Cannot connect to Pasteld')
   }
 
