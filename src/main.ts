@@ -2,6 +2,7 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
+import ElectronStore from 'electron-store'
 
 import {
   app,
@@ -10,6 +11,7 @@ import {
   ipcMain,
   shell,
   dialog,
+  protocol,
 } from 'electron'
 import electronDebug from 'electron-debug'
 import installExtension, {
@@ -30,6 +32,39 @@ import {
 } from './features/deepLinking'
 import initServeStatic, { closeServeStatic } from './features/serveStatic'
 import MenuBuilder from './menu'
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'http',
+    privileges: {
+      standard: true,
+      bypassCSP: true,
+      allowServiceWorkers: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      stream: true,
+    },
+  },
+  {
+    scheme: 'https',
+    privileges: {
+      standard: true,
+      bypassCSP: true,
+      allowServiceWorkers: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      stream: true,
+    },
+  },
+  {
+    scheme: 'mailto',
+    privileges: {
+      standard: true,
+    },
+  },
+])
+
+ElectronStore.initRenderer()
 
 // Deep linked url
 let deepLinkingUrl: string[] | string
@@ -76,6 +111,7 @@ const createWindow = async () => {
       nodeIntegration: true,
       contextIsolation: false,
       webviewTag: true,
+      webSecurity: false,
     },
   })
   mainWindow = w
