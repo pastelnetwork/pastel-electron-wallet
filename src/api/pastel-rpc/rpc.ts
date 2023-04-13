@@ -1,5 +1,5 @@
 import log from 'electron-log'
-import axios, { AxiosResponse } from 'axios'
+import { RPC as RPCRequest } from 'rpc-request'
 
 export type TRPCConfig = {
   url: string
@@ -13,48 +13,38 @@ export async function rpc<T>(
   rpcConfig: TRPCConfig,
 ): Promise<T> {
   const { url, username, password } = rpcConfig
-  let response: AxiosResponse
+  let response: T
   try {
-    response = await axios(url, {
-      data: {
-        jsonrpc: '2.0',
-        id: method,
-        method,
-        params,
-      },
-      method: 'POST',
+    const client = new RPCRequest({
+      baseUrl: url,
+      timeout: 10000,
+      json: true,
       auth: {
-        username,
-        password,
+        user: username,
+        pass: password,
       },
     })
+    response = await client.post({
+      body: {
+        method,
+        params,
+        jsonrpc: '2.0',
+        id: method,
+      },
+      uri: '/',
+    })
   } catch (err) {
-    if (err.response) {
+    if (err?.error?.code !== 'ECONNREFUSED') {
       log.error(
-        `api/pastel-rpc server error. Response: ${JSON.stringify(
-          err.response?.data,
-        )}. Status code: ${JSON.stringify(err.response?.status)}`,
-      )
-      throw new Error(`api/pastel-rpc server error: ${err.message}`)
-    }
-
-    if (err.request) {
-      // The request was made but no response was received
-      log.error(
-        `api/pastel-rpc no response error. Request: ${JSON.stringify(
-          err.request,
-        )}.`,
+        `legacy/rpc response error. Response: ${JSON.stringify(
+          err.error?.error?.message,
+        )}. Status code: ${err.statusCode}`,
       )
       throw new Error(`api/pastel-rpc no response error: ${err.request}`)
     }
-
-    log.error(
-      `api/pastel-rpc error: Cannot connect to Pasteld. Error: ${JSON.stringify(
-        err,
-      )}`,
-    )
+    log.error(`legacy/rpc no connection. Error: ${JSON.stringify(err.message)}`)
     throw new Error('api/pastel-rpc error: Cannot connect to Pasteld')
   }
 
-  return response.data as T
+  return response as T
 }

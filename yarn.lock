@@ -12958,7 +12958,7 @@ request-promise-core@1.1.4:
   dependencies:
     lodash "^4.17.19"
 
-request-promise-native@^1.0.9:
+request-promise-native@^1.0.8:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/request-promise-native/-/request-promise-native-1.0.9.tgz#e407120526a5efdc9a39b28a5679bf47b9d9dc28"
   integrity sha512-wcW+sIUiWnKgNY0dqCpOZkUbF/I+YPi+f09JZIDa39Ec+q82CpSYniDp+ISgTTbKmnpJWASeJBPZmoxH84wt3g==
@@ -13142,21 +13142,14 @@ roarr@^2.15.3:
     semver-compare "^1.0.0"
     sprintf-js "^1.1.2"
 
-rpc-bitcoin@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/rpc-bitcoin/-/rpc-bitcoin-2.0.0.tgz#eabed262621636ac255787102787a5c7aec48d88"
-  integrity sha512-o+DJHCuuuTJIJgWD1De3fGWd/ulpHb/Nn87qSh0Zn6+ur1pvyJU6TzvIlYAW6EWtCCyZdwbEXL3+Jpmh3/7EvQ==
-  dependencies:
-    rpc-request "^4.0.9"
-
-rpc-request@^4.0.9:
-  version "4.0.10"
-  resolved "https://registry.yarnpkg.com/rpc-request/-/rpc-request-4.0.10.tgz#6b873472868d0e737e24151162a5868ddd7a301a"
-  integrity sha512-VQIogs0wYpRBxmliXxOK6sDj+BCS/AFwPjroffwg7l5Dxur0l1YkljtB/pdYj0p31U0seEiwKeYr0j7xTY0Clg==
+rpc-request@4.0.9:
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/rpc-request/-/rpc-request-4.0.9.tgz#f493f9114d710d9913e90c79974b0aae1aa14360"
+  integrity sha512-rGAE7UUdhSxFInWBSIAI+4CNxKiovB9ziOEKGids7Mve+QBOX4JlbcH5jNcDYXf+FqWIZMcAzY9jx96+/fS/cg==
   dependencies:
     "@types/request-promise-native" "^1.0.17"
     request "^2.88.2"
-    request-promise-native "^1.0.9"
+    request-promise-native "^1.0.8"
 
 rsvp@^4.8.4:
   version "4.8.5"

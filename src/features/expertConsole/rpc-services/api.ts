@@ -1,4 +1,5 @@
 import axios, { CancelTokenSource } from 'axios'
+import { RPC as RPCRequest } from 'rpc-request'
 
 import store from '../../../redux/store'
 import { METHODS } from './utils'
@@ -43,32 +44,38 @@ METHODS.forEach((method: string) => {
 
         apiRequests.push(source)
 
-        axios(url, {
-          method: 'POST',
-          auth: { username, password },
-          data: {
-            jsonrpc: '2.0',
-            id: method,
-            method,
-            params,
+        const client = new RPCRequest({
+          baseUrl: url,
+          timeout: 10000,
+          json: true,
+          auth: {
+            user: username,
+            pass: password,
           },
-          cancelToken: source.token,
         })
-          .then(data => {
-            console.log('[RPC CALL SUCCESS] -', method, data?.data?.result)
-            resolve(data?.data?.result)
+        client
+          .post({
+            body: {
+              method,
+              params,
+              jsonrpc: '2.0',
+              id: method,
+            },
+            uri: '/',
           })
+          .then(r => resolve(r?.result))
           .catch(error => {
             console.log('[RPC CALL ERROR] - ', { ...error })
-            const { response = {}, status: statusCode = 500 } = { ...error }
-            const { message: msg } = response.data?.error || {}
+            const msg = error.error?.error?.message
             const message =
               msg ||
-              getMessage(statusCode, (msg || '').indexOf('ECONNREFUSED') !== -1)
-
+              getMessage(
+                error.statusCode,
+                (error?.error?.code || '').indexOf('ECONNREFUSED') !== -1,
+              )
             reject({
               message,
-              statusCode: statusCode,
+              statusCode: error.statusCode,
             })
           })
       })
