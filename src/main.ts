@@ -140,7 +140,7 @@ const createWindow = async () => {
   }
 
   app.on('web-contents-created', (event, contents) => {
-    contents.on('new-window', async (eventInner, navigationUrl) => {
+    contents.on('will-navigate', async (eventInner, navigationUrl) => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })

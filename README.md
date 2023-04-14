@@ -36,7 +36,7 @@ The resulting binaries would be located at `out` folder. Please note that `yarn 
 
 You need to have the following software installed before you can build Pastelwallet Fullnode
 
-- Nodejs v16.14.0 - https://nodejs.org
+- Nodejs v16.14.x - https://nodejs.org
 - Yarn - https://yarnpkg.com
 
 To start in development mode, run
