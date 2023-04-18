@@ -3,6 +3,8 @@ import m from 'hex-string'
 import { rpc, TRPCConfig } from '../../api/pastel-rpc/rpc'
 import * as types from '../pastelDB/type'
 import { loadSentTxns } from './sent-tx-store'
+import { readFileName, writeFileContent } from '../../common/utils/file'
+import store from '../../redux/store'
 
 const parseMemo = (memoHex: string) => {
   if (!memoHex || memoHex.length < 2) {
@@ -106,6 +108,39 @@ export async function fetchTandZTransactions(
           })
           transaction.inputAddresses = inputAddresses
         } catch (err) {
+          try {
+            const dir = store.getState().appInfo.locatePastelConfDir
+            const content = await readFileName(dir, 'mempool-log.txt')
+            let isExistTx = false
+            if (content) {
+              isExistTx = content.indexOf(tx.txid) !== -1
+            }
+            if (
+              err?.message?.indexOf('mempool transaction') !== -1 &&
+              err?.message?.indexOf('-txindex') !== -1 &&
+              !isExistTx
+            ) {
+              const { result } = await rpc<types.TGettransaction>(
+                'gettransaction',
+                [tx.txid],
+                config,
+              )
+              if (result?.hex) {
+                await writeFileContent(
+                  `${content},${tx.txid}`,
+                  dir,
+                  'mempool-log.txt',
+                )
+                await rpc<types.TGettransaction>(
+                  'sendrawtransaction',
+                  [result?.hex],
+                  config,
+                )
+              }
+            }
+          } catch (err) {
+            transaction.inputAddresses = []
+          }
           transaction.inputAddresses = []
         }
       } else {
