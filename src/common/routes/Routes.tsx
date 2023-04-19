@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Router } from 'react-router'
 import fs from 'fs'
 import { Route, Switch } from 'react-router-dom'
@@ -9,7 +9,6 @@ import { Database } from 'better-sqlite3'
 import PastelDB from '../../features/pastelDB/database'
 import { AppContext } from '../../features/app/AppContext'
 import { pageRoutes } from './index'
-import { useAppSelector } from '../../redux/hooks'
 import { OnboardingRouter } from '../../features/onboarding'
 import Utilities from '../../features/utilities'
 import { onRendererEvent } from 'features/app/rendererEvents'
@@ -42,7 +41,6 @@ const childRoutes = (routes: Array<TRouteType>) =>
 
 export default function Routes(): JSX.Element {
   const [db, setDb] = useState<Database>()
-  const sqliteFilePath = useAppSelector(state => state.appInfo.sqliteFilePath)
 
   onRendererEvent('setAppInfo', info => {
     if (info.sqliteFilePath && !db && !fs.existsSync(info.sqliteFilePath)) {
@@ -56,11 +54,7 @@ export default function Routes(): JSX.Element {
             // noop
           })
       }, 500)
-    }
-  })
-
-  useEffect(() => {
-    if (sqliteFilePath) {
+    } else if (!db && fs.existsSync(info.sqliteFilePath)) {
       PastelDB.getDatabaseInstance()
         .then(setDb)
         .catch(() => {
@@ -70,7 +64,7 @@ export default function Routes(): JSX.Element {
           // noop
         })
     }
-  }, [sqliteFilePath])
+  })
 
   const renderRoutesControls = () => {
     return (

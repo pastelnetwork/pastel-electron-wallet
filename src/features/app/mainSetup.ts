@@ -5,11 +5,11 @@ import {
   onMainEvent,
   sendEventToRenderer,
 } from './mainEvents'
-import { app, dialog, shell } from 'electron'
+import { app, dialog, shell, protocol } from 'electron'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
-} from 'electron-devtools-installer'
+} from 'electron-devtools-assembler'
 import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
 import electronDebug from 'electron-debug'
@@ -23,7 +23,6 @@ import {
   sentTxStorePath,
   sqliteFilePath,
   pastelKeysPath,
-  pastelKeysWithoutAppDataPath,
   tempPath,
 } from './paths'
 import initServeStatic, { closeServeStatic } from '../serveStatic'
@@ -35,6 +34,48 @@ import { TRPCConfig } from '../../api/pastel-rpc'
 
 let waitingForClose = false
 let proceedToClose = false
+
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: 'http',
+    privileges: {
+      standard: true,
+      bypassCSP: true,
+      allowServiceWorkers: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      stream: true,
+    },
+  },
+  {
+    scheme: 'https',
+    privileges: {
+      standard: true,
+      bypassCSP: true,
+      allowServiceWorkers: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      stream: true,
+    },
+  },
+  {
+    scheme: 'file',
+    privileges: {
+      standard: true,
+      bypassCSP: true,
+      allowServiceWorkers: true,
+      supportFetchAPI: true,
+      corsEnabled: true,
+      stream: true,
+    },
+  },
+  {
+    scheme: 'mailto',
+    privileges: {
+      standard: true,
+    },
+  },
+])
 
 export const onWindowClose = async (event: Event): Promise<void> => {
   // If we are clear to close, then return and allow everything to close
@@ -102,7 +143,7 @@ const setupEventListeners = () => {
   app.on('window-all-closed', () => app.quit())
 
   app.on('web-contents-created', (event, webContents) => {
-    webContents.on('new-window', async (eventInner, navigationUrl) => {
+    webContents.on('will-navigate', async (eventInner, navigationUrl) => {
       eventInner.preventDefault()
       await shell.openExternal(navigationUrl)
     })
@@ -203,7 +244,6 @@ export const retriableAppSetup = async (): Promise<void> => {
       sqliteFilePath,
       migrationsPath,
       pastelKeysPath,
-      pastelKeysWithoutAppDataPath,
       tempPath,
     })
     redirectDeepLinkingUrl()
@@ -224,7 +264,6 @@ onMainEvent('rendererStarted', () => {
     sqliteFilePath,
     migrationsPath,
     pastelKeysPath,
-    pastelKeysWithoutAppDataPath,
     tempPath,
   })
 

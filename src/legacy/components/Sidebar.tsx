@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react'
 import fs from 'fs'
-import dateformat from 'dateformat'
+import dayjs from 'dayjs'
 import Modal from 'react-modal'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -366,11 +366,9 @@ class Sidebar extends PureComponent<any, any> {
         const rows = transactions.flatMap((t: any) => {
           if (t.detailedTxns) {
             return t.detailedTxns.map((dt: any) => {
-              const normaldate = dateformat(
-                t.time * 1000,
-                'mmm dd yyyy hh::MM tt',
-              ) // Add a single quote "'" into the memo field to force interpretation as a string, rather than as a
-              // formula from a rogue memo
+              const normaldate = dayjs(t.time * 1000).format(
+                'MMM DD YYYY hh:mm a',
+              )
 
               const escapedMemo = dt.memo
                 ? `'${dt.memo.replace(/"/g, '""')}'`

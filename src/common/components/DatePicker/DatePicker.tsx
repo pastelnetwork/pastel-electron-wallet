@@ -144,7 +144,7 @@ function DatePicker({
             <Caret
               to={isOpened ? 'top' : 'bottom'}
               size={10}
-              className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400 transition transition-transform duration-300'
+              className='text-gray-1b text-opacity-40 hover:text-blue-400 active:text-red-400 transition-transform duration-300'
             />
           }
         />
@@ -179,12 +179,16 @@ function DatePicker({
       onChange={onChange}
       placeholderText={placeholder}
       shouldCloseOnSelect={closeOnSelect || !selectsRange}
-      popperModifiers={{
-        preventOverflow: {
-          enabled: true,
-          boundariesElement: 'viewport',
+      popperModifiers={[
+        {
+          name: 'preventOverflow',
+          options: {
+            rootBoundary: 'viewport',
+            tether: false,
+            altAxis: true,
+          },
         },
-      }}
+      ]}
       popperProps={{
         positionFixed,
       }}

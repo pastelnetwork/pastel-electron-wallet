@@ -70,6 +70,7 @@ export type TPrivateKey = {
 
 type TPastelWithContentID = {
   pastelId: string
+  PastelID?: string
   content: string
 }
 
@@ -379,24 +380,21 @@ async function importAddressBook(addresses: TAddressBook[]) {
 
 async function importPastelId(pastelIds: TPastelWithContentID[]) {
   const pastelKeysPath = store.getState().appInfo.pastelKeysPath
-  const pastelKeysWithoutAppDataPath = store.getState().appInfo
-    .pastelKeysWithoutAppDataPath
   if (pastelKeysPath) {
     for (let i = 0; i < pastelIds.length; i++) {
       const pastelId = pastelIds[i]
-      const content = JSON.parse(
-        LZUTF8.decompress(decodeURIComponent(pastelId.content), {
-          inputEncoding: 'Base64',
-        }),
+      const content = pastelId.content
+        ? JSON.parse(
+            LZUTF8.decompress(decodeURIComponent(pastelId.content), {
+              inputEncoding: 'Base64',
+            }),
+          )
+        : ''
+      await writeFileContent(
+        content,
+        pastelKeysPath,
+        pastelId.pastelId || pastelId.PastelID || '',
       )
-      await writeFileContent(content, pastelKeysPath, pastelId.pastelId)
-      if (pastelKeysWithoutAppDataPath) {
-        await writeFileContent(
-          content,
-          pastelKeysWithoutAppDataPath,
-          pastelId.pastelId,
-        )
-      }
     }
   }
 }
@@ -468,12 +466,12 @@ export async function doImportPrivKeys(
       }
 
       const addressBook = keys.addressBook
-      if (addressBook.length) {
+      if (addressBook?.length) {
         await importAddressBook(addressBook)
       }
 
       const userInfo = keys.userInfo
-      if (userInfo.length) {
+      if (userInfo?.length) {
         const currentUsers = await readUsersInfo()
         const ids = new Set(currentUsers.map(u => u.username))
         const newUsers = [
@@ -487,7 +485,7 @@ export async function doImportPrivKeys(
       }
 
       const pastelIds = keys.pastelIDs
-      if (pastelIds.length) {
+      if (pastelIds?.length) {
         await importPastelId(pastelIds)
       }
 

@@ -27,13 +27,11 @@ export const createWindow = (onWindowClose: (event: Event) => void): void => {
     minHeight: 500,
     minWidth: 900,
     webPreferences: {
-      preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       // Allow node integration because we're only loading local content here.
       nodeIntegration: true,
       contextIsolation: false,
+      webviewTag: true,
       webSecurity: false,
-      // enable remote module is needed for better-sqlite3 package
-      enableRemoteModule: true,
     },
   })
   browserWindow.current = w

@@ -2,7 +2,7 @@
 
 import React, { PureComponent } from 'react'
 import QRCode from 'qrcode.react'
-import dateformat from 'dateformat'
+import dayjs from 'dayjs'
 import cstyles from './Common.module.css'
 import styles from './WormholeConnection.module.css'
 import CompanionAppListener from '../companion'
@@ -51,8 +51,8 @@ export default class WormholeConnection extends PureComponent<any, any> {
 
     if (lastSeen) {
       const txDate = new Date(lastSeen)
-      datePart = dateformat(txDate, 'mmm dd, yyyy')
-      timePart = dateformat(txDate, 'hh:MM tt')
+      datePart = dayjs(txDate).format('MMM DD, YYYY')
+      timePart = dayjs(txDate).format('hh:mm a')
     }
 
     const connStr = `ws://127.0.0.1:7070,${tempKeyHex},1`

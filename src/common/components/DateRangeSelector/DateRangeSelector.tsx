@@ -96,16 +96,18 @@ export default function DateRangeSelector({
     defaultSelected ? dateButtons[0] : null,
   )
 
-  const handleOnChange = (dates: [Date, Date] | null): void => {
+  const handleOnChange = (dates: [Date | null, Date | null] | null): void => {
     if (dates) {
       const [start, end] = dates
-      setStartDate(start)
-      setEndDate(end)
+      if (start) {
+        setStartDate(start)
+        setEndDate(end || new Date())
 
-      onSelect({
-        start,
-        end,
-      })
+        onSelect({
+          start,
+          end: end || new Date(),
+        })
+      }
       if (end) {
         setOpenCalendar(false)
       }

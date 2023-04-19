@@ -42,6 +42,20 @@ import { insertTransactionTbl } from './wallet/transactionTbl.repo'
 import { insertListUnspent } from './wallet/listUnspent.repo'
 import { insertTotalBalance } from './wallet/totalBalance.repo'
 
+type TFilterFromDb = {
+  date: string
+  averageSize: number
+}
+
+type TFilterTransactionsFromDb = {
+  date: string
+  count: number
+}
+
+type TMigrations = {
+  version: string
+}
+
 const getSqliteFilePath = () => {
   const path = store.getState().appInfo.sqliteFilePath
   if (!path) {
@@ -84,10 +98,9 @@ export const createDatabase = async (
     db.prepare('CREATE TABLE migrations ( version int )').run()
   }
 
-  const migratedVersions = db
+  const migratedVersions = (db
     .prepare('SELECT version FROM migrations')
-    .all()
-    .map(row => row.version)
+    .all() as TMigrations[]).map(row => row.version)
 
   const migrationFiles = await fs.promises.readdir(migrationsPath)
   for (const file of migrationFiles) {
@@ -97,7 +110,7 @@ export const createDatabase = async (
       throw new Error(`Incorrect migration file name: ${vFIle}`)
     }
 
-    if (migratedVersions.includes(version)) {
+    if (migratedVersions.includes(version.toString())) {
       continue
     }
 
@@ -213,7 +226,9 @@ export function getLastRowFromDB<T = unknown>(
     )
   }
 
-  return pastelDB.prepare(selectAllQuery + tableName + orderByIDQuery).get()
+  return pastelDB
+    .prepare(selectAllQuery + tableName + orderByIDQuery)
+    .get() as T
 }
 
 export function validateDuplicatedBlockchainInfo(
@@ -381,7 +396,7 @@ export function getDatasFromDB<T extends unknown>(
   }
 
   const sqlText = selectAllQuery + tableName
-  return pastelDB.prepare(sqlText).all(sqlText)
+  return pastelDB.prepare(sqlText).all(sqlText) as T[]
 }
 
 export function getFilteredDataFromDBByPeriod(
@@ -389,7 +404,7 @@ export function getFilteredDataFromDBByPeriod(
   tableName: string,
   granularity: string,
   period: string,
-): { date: string; averageSize: number }[] {
+): TFilterFromDb[] {
   if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB getFilteredDataFromDBByPeriod error: ${tableName} is invalid table name`,
@@ -427,14 +442,14 @@ export function getFilteredDataFromDBByPeriod(
       sqlText = selectAllQuery + tableName
       break
   }
-  return pastelDB.prepare(sqlText).all()
+  return pastelDB.prepare(sqlText).all() as TFilterFromDb[]
 }
 
 export function getTransactionsDataFromDBByPeriod(
   pastelDB: Database,
   tableName: string,
   period: string,
-): { date: string; count: number }[] {
+): TFilterTransactionsFromDb[] {
   if (!tableNames[tableName]) {
     throw new Error(
       `pastelDB getTransactionsDataFromDBByPeriod error: ${tableName} is invalid table name`,
@@ -458,7 +473,7 @@ export function getTransactionsDataFromDBByPeriod(
   }
   sqlText = countIdByDailyPeriodQuery + tableName + whereSqlText + groupbyDaily
 
-  return pastelDB.prepare(sqlText).all()
+  return pastelDB.prepare(sqlText).all() as TFilterTransactionsFromDb[]
 }
 
 export function insertRawMempoolinfoToDB(

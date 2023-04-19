@@ -1,4 +1,4 @@
-CREATE TABLE listTransactions (
+CREATE TABLE IF NOT EXISTS listTransactions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   account VARCHAR(255),
   address VARCHAR(255),

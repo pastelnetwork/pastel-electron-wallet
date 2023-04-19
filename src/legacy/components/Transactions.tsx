@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import Modal from 'react-modal'
-import dateformat from 'dateformat'
+import dayjs from 'dayjs'
 import { shell } from 'electron'
 import clx from 'classnames'
 import { withRouter } from 'react-router'
@@ -50,8 +50,8 @@ const TxModalInternal = ({
       typeColor = 'red'
     }
 
-    datePart = dateformat(tx.time * 1000, 'mmm dd, yyyy')
-    timePart = dateformat(tx.time * 1000, 'hh:MM tt')
+    datePart = dayjs(tx.time * 1000).format('MMM DD, YYYY')
+    timePart = dayjs(tx.time * 1000).format('hh:mm a')
     confirmations = tx.confirmations
     detailedTxns = tx.detailedTxns
     amount = Math.abs(tx.amount)
@@ -232,8 +232,8 @@ const TxItemBlock = ({
   addressBookMap,
 }: any) => {
   const txDate = new Date(transaction.time * 1000)
-  const datePart = dateformat(txDate, 'mmm dd, yyyy')
-  const timePart = dateformat(txDate, 'hh:MM tt')
+  const datePart = dayjs(txDate).format('MMM DD, YYYY')
+  const timePart = dayjs(txDate).format('hh:mm a')
   const isReceive = transaction.type === 'receive'
 
   return (

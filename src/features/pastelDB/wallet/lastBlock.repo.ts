@@ -5,7 +5,9 @@ export type TDbLastBlock = {
 }
 
 export const getLastBlock = (db: Database): string | null => {
-  return db.prepare('SELECT lastBlock FROM lastBlock LIMIT 1').get().lastBlock
+  return (db
+    .prepare('SELECT lastBlock FROM lastBlock LIMIT 1')
+    .get() as TDbLastBlock).lastBlock
 }
 
 export const updateLastBlock = (db: Database, lastBlock: string): void => {

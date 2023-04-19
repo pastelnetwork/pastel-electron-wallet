@@ -1,4 +1,4 @@
-CREATE TABLE lastBlock (
+CREATE TABLE IF NOT EXISTS lastBlock (
   lastBlock text
 );
 

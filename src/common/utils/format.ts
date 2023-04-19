@@ -1,5 +1,4 @@
-import dateformat from 'dateformat'
-import { Dayjs } from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 // taken from here: https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
 export const formatNumber = (x: number, delimiter = ','): string =>
@@ -48,7 +47,7 @@ export const formatPrice = (
 ): string => `${formatAbbreviatedNumber(price, digits)} ${currencyName}`
 
 export const formatTime = (val: Date): string => {
-  return dateformat(val, 'hh:MM') // TODO: change if another format required
+  return dayjs(val).format('HH:mm') // TODO: change if another format required
 }
 
 const distanceUnits = [

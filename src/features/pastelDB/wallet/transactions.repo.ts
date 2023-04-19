@@ -77,6 +77,11 @@ const insertQuery = `INSERT OR IGNORE INTO transactions(
 
 type TAddressesLastActivityTime = Record<TAddress, number>
 
+type TTransactions = {
+  address: string
+  time: number
+}
+
 export function insertTransaction(
   db: Database,
   transaction: TRpcTransaction,
@@ -121,7 +126,7 @@ export const getAddressesLastActivityTime = (
       GROUP BY address
     `,
     )
-    .all()
+    .all() as TTransactions[]
   return Object.fromEntries(result.map(row => [row.address, row.time]))
 }
 

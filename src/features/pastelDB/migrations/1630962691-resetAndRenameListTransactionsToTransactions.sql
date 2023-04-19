@@ -2,7 +2,7 @@
 DROP TABLE listTransactions;
 
 -- containts results from listtransactions and listsinceblock
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   account text,
   address text,
@@ -25,7 +25,7 @@ CREATE TABLE transactions (
 );
 
 -- txid and vout combination should be unique
-CREATE UNIQUE INDEX idx_transactions_txid_and_vout ON transactions(txid, vout);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_txid_and_vout ON transactions(txid, vout);
 
 -- index address for faster last activity time query
-CREATE UNIQUE INDEX idx_transactions_address ON transactions(address);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_transactions_address ON transactions(address);
