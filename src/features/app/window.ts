@@ -35,6 +35,15 @@ export const createWindow = (onWindowClose: (event: Event) => void): void => {
     },
   })
   browserWindow.current = w
+  // Enable SharedArrayBuffer
+  // eslint-disable-next-line
+  w.webContents.session.webRequest.onHeadersReceived(
+    (details: any, callback: any) => {
+      details.responseHeaders['Cross-Origin-Opener-Policy'] = ['same-origin']
+      details.responseHeaders['Cross-Origin-Embedder-Policy'] = ['require-corp']
+      callback({ responseHeaders: details.responseHeaders })
+    },
+  )
 
   w.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 

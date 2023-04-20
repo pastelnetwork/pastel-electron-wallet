@@ -130,7 +130,7 @@ export default function StepBackupMethod(): JSX.Element {
     if (imagesData.length && !videoUrl) {
       try {
         const iframe = document.getElementById(
-          'createVideoIframe',
+          'createBackupVideoIframe',
         ) as HTMLIFrameElement
         if (iframe) {
           iframe?.contentWindow?.postMessage(
@@ -361,8 +361,8 @@ export default function StepBackupMethod(): JSX.Element {
       </div>
       {allKeys ? (
         <div className='hidden'>
-          <iframe
-            id='createVideoIframe'
+          <webview
+            id='createBackupVideoIframe'
             src={ffmpegwasm.videoHostURL}
             className='h-1.5px w-1.5px'
             title='Ffmpegwasm tool'

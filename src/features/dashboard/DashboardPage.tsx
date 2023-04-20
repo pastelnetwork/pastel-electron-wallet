@@ -23,6 +23,10 @@ import {
 import Wallet from './Wallet'
 import { translate } from 'features/app/translations'
 
+import nft1 from 'common/assets/images/mock/nfts/nft1.png'
+import nft2 from 'common/assets/images/mock/nfts/nft2.png'
+import nft3 from 'common/assets/images/mock/nfts/nft3.png'
+
 const date = dayjs('2021-04-04')
 
 enum Tabs {
@@ -37,11 +41,7 @@ type TNotification = {
   read: boolean
 }
 
-const mockNFTImagesList = [
-  'https://lh3.googleusercontent.com/Y7jfdFlKEjQ2PfuGb9vFAgzvXqyynJjx2RbetMBfrHDiRg8cSPhWOf9JQOkkZzTkA86rkHpeNmfQoT5zLhqYlWj3izIfgxMWqOk3Oz4=w526',
-  'https://lh3.googleusercontent.com/7QfQI8BYm_8_VMyCsBQo8vl7m4YwcAS66IpsGVtzy-hLp0Zej0vYca4eospy7HDVUbxJS-Hh2e4K_Mi91fpTUqaPT1I5-UspbtDKEw=w526',
-  'https://lh3.googleusercontent.com/bXQB1peyRGOkWqjucQg_2Q-j90EoNv_aFq0raZRo-ooZ012dwrfa-J10XDKnVI57at1Py92LwRydAieb3PuIlvej3SDDHUox6v0y=w461',
-]
+const mockNFTImagesList = [nft1, nft2, nft3]
 
 export default function DashboardPage(): JSX.Element {
   const notifications: Array<TNotification> = [

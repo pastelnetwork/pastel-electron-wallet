@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Router } from 'react-router'
 import fs from 'fs'
+import log from 'electron-log'
 import { Route, Switch } from 'react-router-dom'
 import * as ROUTES from '../utils/constants/routes'
 import LoadingScreen from 'features/loading'
@@ -47,7 +48,8 @@ export default function Routes(): JSX.Element {
       setTimeout(() => {
         PastelDB.getDatabaseInstance(true)
           .then(setDb)
-          .catch(() => {
+          .catch(error => {
+            log.error(error)
             // noop
           })
           .finally(() => {
@@ -57,7 +59,8 @@ export default function Routes(): JSX.Element {
     } else if (!db && fs.existsSync(info.sqliteFilePath)) {
       PastelDB.getDatabaseInstance()
         .then(setDb)
-        .catch(() => {
+        .catch(error => {
+          log.error(error)
           // noop
         })
         .finally(() => {

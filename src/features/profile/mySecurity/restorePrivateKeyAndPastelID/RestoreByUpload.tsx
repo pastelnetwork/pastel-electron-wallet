@@ -100,7 +100,6 @@ export default function RestoreByUpload({
     if (fileSelected) {
       try {
         setCurrentStatus('restoring')
-        const qrCode: string[] = []
         const videoPath: string = path.join(fileSelected.path).toString()
         VideoToImages.getFrames(
           'file://' + videoPath,
@@ -109,6 +108,7 @@ export default function RestoreByUpload({
         )
           .then(frames => {
             let totalQRCode = 0
+            const qrCode: string[] = []
             for (let i = 0; i < frames.length; i++) {
               const frame = frames[i]
               const result = jsQR(frame?.data, frame.width, frame.height)
@@ -120,7 +120,6 @@ export default function RestoreByUpload({
                 }
               }
             }
-
             if (qrCode.length === totalQRCode) {
               setQRCodeData(qrCode)
             } else {
