@@ -51,7 +51,7 @@ type TAllAddressesAndPastelID = {
   userInfo: TUserInfo[]
 }
 
-type TQRCode = {
+export type TQRCode = {
   qrCode: string
   total: number
   index: number

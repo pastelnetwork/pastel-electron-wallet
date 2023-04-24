@@ -6,7 +6,11 @@ import cn from 'classnames'
 import RestoreSuccess from './RestoreSuccess'
 import RestoreError from './RestoreError'
 import VideoToImages, { VideoToFramesMethod } from '../common/VideoToImages'
-import { doImportPrivKeys, parseQRCodeFromString } from '../common/utils'
+import {
+  doImportPrivKeys,
+  parseQRCodeFromString,
+  TQRCode,
+} from '../common/utils'
 import { Video, Refresh } from 'common/components/Icons'
 import { formatFileSize } from 'common/utils/format'
 import Tooltip from 'common/components/Tooltip'
@@ -103,25 +107,28 @@ export default function RestoreByUpload({
         const videoPath: string = path.join(fileSelected.path).toString()
         VideoToImages.getFrames(
           'file://' + videoPath,
-          12,
-          VideoToFramesMethod.totalFrames,
+          1,
+          VideoToFramesMethod.fps,
         )
           .then(frames => {
             let totalQRCode = 0
-            const qrCode: string[] = []
+            const qrCode: TQRCode[] = []
             for (let i = 0; i < frames.length; i++) {
               const frame = frames[i]
               const result = jsQR(frame?.data, frame.width, frame.height)
               if (result?.data) {
                 const qr = parseQRCodeFromString(result?.data)
-                if (qr && qr?.qrCode && !qrCode.includes(qr.qrCode)) {
-                  qrCode.push(qr.qrCode)
+                const item = qrCode.find(t => t.index === qr?.index)
+                if (!item && qr) {
+                  qrCode.push(qr)
                   totalQRCode = qr.total
                 }
               }
             }
             if (qrCode.length === totalQRCode) {
-              setQRCodeData(qrCode)
+              setQRCodeData(
+                qrCode.sort((a, b) => a.index - b.index).map(rq => rq.qrCode),
+              )
             } else {
               setCurrentStatus('error')
               if (onHideHeader) {
