@@ -91,7 +91,7 @@
     "libsodium-wrappers-sumo": "0.7.6",
     "lzutf8": "0.6.0",
     "pdfjs-dist": "2.2.228",
-    "postcss": "8.3.6",
+    "postcss": "8.4.31",
     "postcss-cli": "8.3.1",
     "postcss-loader": "4.2.0",
     "progress-stream": "2.0.0",
