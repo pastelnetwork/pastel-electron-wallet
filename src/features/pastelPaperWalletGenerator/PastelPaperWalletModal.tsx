@@ -196,7 +196,7 @@ export default function PastelPaperWalletModal({
   }
 
   const DownloadButton = () => (
-    <button className={styles.btn_download} id='PDFDownloadBtn'>
+    <button className={styles.btnDownload} id='PDFDownloadBtn'>
       <PDFDownloadLink
         document={
           <PDFDocument
@@ -215,12 +215,12 @@ export default function PastelPaperWalletModal({
     <Modal
       isOpen={modalIsOpen}
       onRequestClose={() => dispatch(closePastelPaperWalletModal())}
-      className={styles.modal_content_wrapper}
+      className={styles.modalContentWrapper}
     >
-      <div className={styles.modal_content}>
+      <div className={styles.modalContent}>
         <button
           type='button'
-          className={styles.btn_close}
+          className={styles.btnClose}
           onClick={() => dispatch(closePastelPaperWalletModal())}
         >
           X

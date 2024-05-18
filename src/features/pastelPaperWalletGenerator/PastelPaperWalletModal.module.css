@@ -1,4 +1,4 @@
-.modal_content_wrapper {
+.modalContentWrapper {
   position: absolute;
   padding: 20px;
   inset: 40px;
@@ -8,14 +8,14 @@
   outline: none;
 }
 
-.modal_content {
+.modalContent {
   position: relative;
   width: 100%;
   height: 100%;
   color: #000;
 }
 
-.btn_close {
+.btnClose {
   position: absolute;
   top: -40px;
   right: -40px;
@@ -35,7 +35,7 @@
   outline: none;
 }
 
-.btn_download {
+.btnDownload {
   position: absolute;
   top: 12px;
   right: 94px;
@@ -47,18 +47,18 @@
   background-color: transparent;
 }
 
-.btn_download:hover {
+.btnDownload:hover {
   background-color: rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
 
-.btn_download:focus {
+.btnDownload:focus {
   outline: none;
   border: none;
   box-shadow: none;
 }
 
-.btn_download a {
+.btnDownload a {
   display: block;
   width: 100%;
   height: 100%;

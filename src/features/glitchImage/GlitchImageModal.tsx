@@ -24,7 +24,7 @@ export default function glitchImageModal(): JSX.Element | null {
       <div className={styles.modalContent}>
         <button
           type='button'
-          className={styles.btn_close}
+          className={styles.btnClose}
           onClick={() => dispatch(closeGlitchImageModal())}
         >
           X

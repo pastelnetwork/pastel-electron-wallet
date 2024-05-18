@@ -19,7 +19,7 @@ export default function PastelPhotopeaModal(): JSX.Element {
       <div className={styles.modalContent}>
         <button
           type='button'
-          className={styles.btn_close}
+          className={styles.btnClose}
           onClick={() => dispatch(closePastelPhotopeaModal())}
         >
           X
