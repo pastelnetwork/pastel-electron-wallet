@@ -156,6 +156,7 @@ export async function fetchMiningInfo(props: fetchFuncConfig): Promise<void> {
     )
     insertMiningInfoToDB(props.pastelDB, {
       ...result,
+      testnet: result?.testnet || 0,
       pooledtx: mempoolinfo.size || 0,
     })
   } catch (error) {
