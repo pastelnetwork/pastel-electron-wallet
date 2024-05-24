@@ -7,6 +7,7 @@
 .contentcontainer {
   width: calc(100% - 220px);
   float: right;
+  height: 100%;
 }
 
 .well {
@@ -202,6 +203,7 @@
   right: 0;
   bottom: 0;
   background-color: rgba(100, 100, 100, 0.5);
+  z-index: 100;
 }
 
 .accordionHeader:hover {

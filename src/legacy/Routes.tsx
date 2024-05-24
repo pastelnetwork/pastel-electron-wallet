@@ -34,6 +34,7 @@ import { connect } from 'react-redux'
 import { setPastelConf } from '../features/pastelConf'
 import { PastelDBThread, saveSqliteDB } from '../features/pastelDB'
 import { openPastelPaperWalletModal } from '../features/pastelPaperWalletGenerator'
+import InferenceClient from '../features/inferenceClient'
 import PastelSpriteEditorToolModal, {
   openPastelSpriteEditorToolModal,
 } from '../features/pastelSpriteEditorTool'
@@ -502,7 +503,6 @@ class RouteApp extends React.Component<any, any> {
       setSendTo: this.setSendTo,
       info,
     }
-
     return (
       <App>
         <ErrorModal
@@ -634,6 +634,11 @@ class RouteApp extends React.Component<any, any> {
                     info={info}
                   />
                 )}
+              />
+
+              <Route
+                path={routes.INFERENCE_CLIENT}
+                render={() => <InferenceClient />}
               />
 
               <Route

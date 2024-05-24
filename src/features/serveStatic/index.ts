@@ -1,5 +1,13 @@
-import initServeStatic, { closeServeStatic } from './ServeStatic'
+import initServeStatic, {
+  closeServeStatic,
+  checkAndStartInitialInference,
+  setupInitialInference,
+} from './ServeStatic'
 
-export { closeServeStatic }
+export {
+  closeServeStatic,
+  checkAndStartInitialInference,
+  setupInitialInference,
+}
 
 export default initServeStatic

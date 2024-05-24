@@ -3,7 +3,6 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
-
 import {
   app,
   autoUpdater,
@@ -30,7 +29,16 @@ import {
   redirectDeepLinkingUrl,
   registerCustomProtocol,
 } from './features/deepLinking'
-import initServeStatic, { closeServeStatic } from './features/serveStatic'
+import {
+  glitch,
+  squoosh,
+  inferenceClient,
+} from './features/constants/ServeStatic'
+import initServeStatic, {
+  closeServeStatic,
+  checkAndStartInitialInference,
+  setupInitialInference,
+} from './features/serveStatic'
 import MenuBuilder from './menu'
 
 protocol.registerSchemesAsPrivileged([
@@ -208,6 +216,11 @@ const createWindow = async () => {
   menuBuilder.buildMenu()
   // Remove this if your app does not use auto updates
   new AppUpdater()
+
+  setupInitialInference(app.isPackaged, {
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+  })
 }
 
 /**
@@ -235,7 +248,6 @@ app.on('will-finish-launching', function () {
     redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   })
 })
-
 ipcMain.on('app-ready', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
@@ -287,6 +299,10 @@ ipcMain.on('reset_pastel_app', async () => {
   await kill(9932)
   await kill(19932)
   await kill(19933)
+  await kill(glitch.staticPort)
+  await kill(squoosh.staticPort)
+  await kill(inferenceClient.staticPort)
+  await kill(inferenceClient.socketPort)
   app.relaunch()
   app.exit(0)
 })
@@ -403,3 +419,12 @@ ipcMain.handle(
     return dialog.showSaveDialog({ title, defaultPath, filters, properties })
   },
 )
+ipcMain.on('start_initial_inference', () => {
+  if (mainWindow) {
+    checkAndStartInitialInference(
+      app.isPackaged,
+      locatePastelConfDir(),
+      mainWindow,
+    )
+  }
+})

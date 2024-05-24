@@ -204,6 +204,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     confContent += `rpcpassword=${Math.random()
       .toString(36)
       .substring(2, 15)}\n`
+    confContent += 'rpcport=9932\n'
 
     if (connectOverTor) {
       confContent += 'proxy=127.0.0.1:9050\n'

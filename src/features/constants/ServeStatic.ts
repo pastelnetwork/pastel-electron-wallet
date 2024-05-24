@@ -5,3 +5,8 @@ export const glitch = {
 export const squoosh = {
   staticPort: 5200,
 }
+
+export const inferenceClient = {
+  staticPort: 5400,
+  socketPort: 5401,
+}

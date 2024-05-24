@@ -170,3 +170,6 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  z-index: 100;
+}

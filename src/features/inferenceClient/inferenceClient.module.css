@@ -1,0 +1,22 @@
+.iframe {
+  position: relative;
+  z-index: 3;
+}
+
+.iframe,
+.iframe webview {
+  width: 100%;
+  height: 100%;
+}
+
+.iframe webview {
+  border: 0;
+}
+
+.textWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}

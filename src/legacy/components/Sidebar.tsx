@@ -738,6 +738,12 @@ class Sidebar extends PureComponent<any, any> {
             iconname='fa-chart-bar'
           />
           <SidebarMenuItem
+            name='Inference Client'
+            routeName={routes.INFERENCE_CLIENT}
+            currentRoute={location.pathname}
+            iconname='fa-file-code'
+          />
+          <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}
             currentRoute={location.pathname}

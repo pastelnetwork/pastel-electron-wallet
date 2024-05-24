@@ -21,5 +21,6 @@
   "TRANSACTIONSINBLOCKOVERTIME": "/statistics/transactionsinblockovertime",
   "CREATOR": "/creator",
   "COLLECTOR": "/collector",
-  "NFT": "/nft"
+  "NFT": "/nft",
+  "INFERENCE_CLIENT": "/inference-client"
 }
