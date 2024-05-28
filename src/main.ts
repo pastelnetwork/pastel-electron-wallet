@@ -216,11 +216,6 @@ const createWindow = async () => {
   menuBuilder.buildMenu()
   // Remove this if your app does not use auto updates
   new AppUpdater()
-
-  setupInitialInference(app.isPackaged, {
-    locatePastelConf: locatePastelConf(),
-    locatePastelConfDir: locatePastelConfDir(),
-  })
 }
 
 /**
@@ -267,6 +262,12 @@ ipcMain.on('app-ready', () => {
   }
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+
+  setupInitialInference(app.isPackaged, {
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+  })
 
   initServeStatic(app.isPackaged)
 })
@@ -420,11 +421,9 @@ ipcMain.handle(
   },
 )
 ipcMain.on('start_initial_inference', () => {
-  if (mainWindow) {
-    checkAndStartInitialInference(
-      app.isPackaged,
-      locatePastelConfDir(),
-      mainWindow,
-    )
-  }
+  checkAndStartInitialInference(
+    app.isPackaged,
+    locatePastelConfDir(),
+    mainWindow,
+  )
 })
