@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
+import getFolderSize from 'get-folder-size'
 
 import {
   app,
@@ -22,6 +23,7 @@ import log from 'electron-log'
 import sourceMapSupport from 'source-map-support'
 import path from 'path'
 import os from 'os'
+import fs from 'fs'
 import kill from 'kill-port'
 
 import pkg from '../package.json'
@@ -236,6 +238,29 @@ app.on('will-finish-launching', function () {
   })
 })
 
+const getPastelFolderSize = async () => {
+  const info = await getFolderSize(locatePastelConfDir())
+  if (!info.errors) {
+    const totalSize = info.size / 1073741824 // ~ GB
+    const file = path.join(
+      locatePastelConfDir(),
+      'snapshot-690894-mainnet.tar.gz',
+    )
+    if (totalSize < 2 && mainWindow) {
+      if (fs.existsSync(file)) {
+        fs.unlinkSync(file)
+      }
+      mainWindow.webContents.send('download_snapshot')
+    } else if (fs.existsSync(file)) {
+      try {
+        fs.unlinkSync(file)
+      } catch {
+        // noop
+      }
+    }
+  }
+}
+
 ipcMain.on('app-ready', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
@@ -257,6 +282,8 @@ ipcMain.on('app-ready', () => {
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
   initServeStatic(app.isPackaged)
+
+  getPastelFolderSize()
 })
 
 ipcMain.on('start_app', () => {

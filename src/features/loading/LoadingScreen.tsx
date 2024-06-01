@@ -40,6 +40,8 @@ interface TLoadingProps {
   setInfo: (data: TWalletInfo) => void
 }
 
+let infoTimer: NodeJS.Timeout | null = null
+
 class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   pasteld: ChildProcessWithoutNullStreams | null = null
 
@@ -284,7 +286,13 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   setupNextGetInfo() {
-    setTimeout(() => this.getInfo(), 1000)
+    const isDownloadSnapshot = store.getState().downloadSnapshot
+      .isDownloadSnapshot
+    if (!isDownloadSnapshot) {
+      infoTimer = setTimeout(() => this.getInfo(), 1000)
+    } else if (infoTimer) {
+      clearTimeout(infoTimer)
+    }
   }
 
   handleResetPastel() {
