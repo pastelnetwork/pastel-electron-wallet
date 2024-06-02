@@ -59,6 +59,7 @@ import {
   TransactionsInBlockOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
+import { openDownloadSnapshot } from '../features/downloadSnapshot'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
@@ -539,9 +540,13 @@ class RouteApp extends React.Component<any, any> {
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
                 openAboutModal={this.props.openAboutModal}
                 openUpdateToast={this.props.openUpdateToast}
+                openDownloadSnapshot={this.props.openDownloadSnapshot}
                 openSquooshToolModal={this.props.openSquooshToolModal}
                 openGlitchImageModal={this.props.openGlitchImageModal}
                 createNewAddress={this.createNewAddress}
+                isDownloadSnapshot={
+                  store.getState().downloadSnapshot.isDownloadSnapshot
+                }
               />
             </div>
           )}
@@ -751,5 +756,6 @@ export default connect(null, {
   openAboutModal,
   openSquooshToolModal,
   openUpdateToast,
+  openDownloadSnapshot,
   openGlitchImageModal,
 })(RouteApp)
