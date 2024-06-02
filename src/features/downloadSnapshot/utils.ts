@@ -84,7 +84,7 @@ export const downloadSnapshotFile = async ({
               fs.writeFileSync(pastelConfFile, newConfig.join('\n'))
             }
           }
-          ipcRenderer.send('reset_pastel_app')
+          ipcRenderer.send('force_reload_pastel_app')
         } catch (error) {
           onProgress(`Error: ${error.message}`)
         }

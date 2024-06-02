@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime'
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
 import getFolderSize from 'get-folder-size'
+import cp from 'child_process'
 
 import {
   app,
@@ -25,6 +26,7 @@ import path from 'path'
 import os from 'os'
 import fs from 'fs'
 import kill from 'kill-port'
+import fixPath from 'fix-path'
 
 import pkg from '../package.json'
 import {
@@ -41,8 +43,13 @@ import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
+  getDownloadUrl,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
+
+if (os.platform() === 'darwin') {
+  fixPath()
+}
 
 protocol.registerSchemesAsPrivileged([
   {
@@ -358,13 +365,6 @@ ipcMain.on('reset_pastel_app', async () => {
     log.error(error)
   }
   try {
-    try {
-      if (fs.existsSync(snapshotFile)) {
-        fs.unlinkSync(snapshotFile)
-      }
-    } catch (error) {
-      log.error(error)
-    }
     if (os.platform() === 'linux') {
       app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
     } else {
@@ -373,6 +373,19 @@ ipcMain.on('reset_pastel_app', async () => {
     app.exit(0)
   } catch (error) {
     log.error(error)
+  }
+})
+
+ipcMain.on('force_reload_pastel_app', async () => {
+  try {
+    if (fs.existsSync(snapshotFile)) {
+      fs.unlinkSync(snapshotFile)
+    }
+  } catch (error) {
+    log.error(error)
+  }
+  if (mainWindow) {
+    mainWindow.webContents.reloadIgnoringCache()
   }
 })
 
@@ -488,4 +501,18 @@ ipcMain.on('start_initial_inference', () => {
       pasteldBasePath: pasteldBasePath(),
     },
   )
+})
+
+ipcMain.on('check_nodejs', () => {
+  cp.exec('node -v', function (error, stdout) {
+    if (stdout.indexOf('v22') === -1 && mainWindow?.webContents) {
+      mainWindow.webContents.send(
+        'install_required',
+        JSON.stringify({
+          name: 'Nodejs 22',
+          link: getDownloadUrl().nodejs,
+        }),
+      )
+    }
+  })
 })

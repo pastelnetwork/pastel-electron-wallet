@@ -57,6 +57,7 @@
     "electron-squirrel-startup": "1.0.0",
     "electron-store": "8.1.0",
     "file-saver": "2.0.5",
+    "fix-path": "4.0.0",
     "get-folder-size": "4.0.0",
     "hex-string": "1.0.3",
     "history": "4.10.1",

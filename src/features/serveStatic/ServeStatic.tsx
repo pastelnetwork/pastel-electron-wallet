@@ -6,13 +6,18 @@ import os from 'os'
 import cp from 'child_process'
 import tcpPortUsed from 'tcp-port-used'
 import log from 'electron-log'
-import { BrowserWindow, ipcMain } from 'electron'
+import { BrowserWindow } from 'electron'
 import request from 'request'
 import progress from 'progress-stream'
 import AdmZip from 'adm-zip'
 import kill from 'kill-port'
+import fixPath from 'fix-path'
 
 import { glitch, squoosh, inferenceClient } from '../constants/ServeStatic'
+
+if (os.platform() === 'darwin') {
+  fixPath()
+}
 
 const servers: Server[] = []
 
@@ -22,33 +27,44 @@ interface IPastelConfProps {
   pasteldBasePath: string
 }
 
+const replaceSpaceInPath = (path: string) => {
+  if (os.platform() === 'darwin' || os.platform() === 'linux') {
+    // eslint-disable-next-line no-useless-escape
+    return path.replace(/ /g, '\\ ')
+  }
+  return path
+}
+
 const startInitialInference = (
   pastelInferencePath: string,
   mainWindow: BrowserWindow | null,
 ) => {
-  cp.exec(`cd ${pastelInferencePath} && npm run start`, function (error) {
-    if (error) {
-      mainWindow?.webContents?.send('start_inference_error', error?.message)
-      log.error('Start Initial Inference error:', error)
-      try {
-        tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
-          function (inUse) {
-            if (inUse) {
-              kill(inferenceClient.staticPort)
-            }
-          },
-          function (err) {
-            log.error('Kill port:', err.message)
-          },
-        )
-      } catch (error) {
-        log.error('Kill port:', error.message)
+  cp.exec(
+    `cd ${replaceSpaceInPath(pastelInferencePath)} && npm run start`,
+    function (error) {
+      if (error) {
+        mainWindow?.webContents?.send('start_inference_error', error?.message)
+        log.error('Start Initial Inference error:', error)
+        try {
+          tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
+            function (inUse) {
+              if (inUse) {
+                kill(inferenceClient.staticPort)
+              }
+            },
+            function (err) {
+              log.error('Kill port:', err.message)
+            },
+          )
+        } catch (error) {
+          log.error('Kill port:', error.message)
+        }
+        setTimeout(() => {
+          startInitialInference(pastelInferencePath, mainWindow)
+        }, 20000)
       }
-      setTimeout(() => {
-        startInitialInference(pastelInferencePath, mainWindow)
-      }, 20000)
-    }
-  })
+    },
+  )
 }
 
 export const getDownloadUrl = (): { nodejs: string } => {
@@ -99,7 +115,7 @@ export const checkAndStartInitialInference = (
       },
     )
   }
-  cp.exec(`cd ${locatePastelConfDir} && node -v`, function (error, stdout) {
+  cp.exec('node -v', function (error, stdout) {
     if (stdout.indexOf('v22') === -1) {
       log.error('Required Nodejs 22')
       if (mainWindow && mainWindow?.webContents) {
@@ -227,9 +243,7 @@ const downloadPastelInferenceJsClient = async (
   })
 
   await promise
-  // Tạo đối tượng zip
   const zip = new AdmZip(absPath)
-  // Giải nén toàn bộ nội dung đến thư mục đích
   zip.extractAllTo(pastelConf.locatePastelConfDir, true)
   updateConfigForInitialInference(pastelConf, pastelInferencePath)
   try {
@@ -239,11 +253,14 @@ const downloadPastelInferenceJsClient = async (
       'utils downloadPastelInferenceJsClient request.get error: error deleting file',
     )
   }
-  cp.exec(`cd ${pastelInferencePath} && npm install`, function (error) {
-    if (error) {
-      log.error('npm install error', error)
-    }
-  })
+  cp.exec(
+    `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+    function (error) {
+      if (error) {
+        log.error('npm install error', error)
+      }
+    },
+  )
 }
 
 export const setupInitialInference = (
@@ -252,42 +269,28 @@ export const setupInitialInference = (
   mainWindow: BrowserWindow | null,
 ): void => {
   try {
-    ipcMain.on('check_nodejs', () => {
-      cp.exec('node -v', function (error, stdout) {
-        if (stdout.indexOf('v22') === -1 && mainWindow?.webContents) {
-          mainWindow.webContents.send(
-            'install_required',
-            JSON.stringify({
-              name: 'Nodejs 22',
-              link: getDownloadUrl().nodejs,
-            }),
-          )
-        }
-      })
-    })
-
-    cp.exec(
-      `cd ${pastelConf.locatePastelConfDir} && node -v`,
-      function (error, stdout) {
-        if (stdout.indexOf('v22') !== -1) {
-          const pastelInferencePath = path.join(
-            pastelConf.locatePastelConfDir,
-            'pastel_inference_js_client-master',
-          )
-          if (!fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {
-            downloadPastelInferenceJsClient(pastelConf, pastelInferencePath)
-          } else {
-            cp.exec(`cd ${pastelInferencePath} && npm install`, function () {
-              updateConfigForInitialInference(pastelConf, pastelInferencePath)
-            })
-          }
+    cp.exec('node -v', function (error, stdout) {
+      if (stdout.indexOf('v22') !== -1) {
+        const pastelInferencePath = path.join(
+          pastelConf.locatePastelConfDir,
+          'pastel_inference_js_client-master',
+        )
+        if (!fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {
+          downloadPastelInferenceJsClient(pastelConf, pastelInferencePath)
         } else {
-          setTimeout(() => {
-            setupInitialInference(isPackaged, pastelConf, mainWindow)
-          }, 20000)
+          cp.exec(
+            `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+            function () {
+              updateConfigForInitialInference(pastelConf, pastelInferencePath)
+            },
+          )
         }
-      },
-    )
+      } else {
+        setTimeout(() => {
+          setupInitialInference(isPackaged, pastelConf, mainWindow)
+        }, 20000)
+      }
+    })
   } catch (error) {
     log.error('Setup Initial Inference error:', error.message)
   }
