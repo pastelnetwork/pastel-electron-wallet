@@ -505,7 +505,7 @@ ipcMain.on('start_initial_inference', () => {
 
 ipcMain.on('check_nodejs', () => {
   cp.exec('node -v', function (error, stdout) {
-    if (stdout.indexOf('v22') === -1 && mainWindow?.webContents) {
+    if (stdout.indexOf('22.2') === -1 && mainWindow?.webContents) {
       mainWindow.webContents.send(
         'install_required',
         JSON.stringify({
