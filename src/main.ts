@@ -310,12 +310,21 @@ ipcMain.on('restart_app', () => {
 })
 
 ipcMain.on('reset_pastel_app', async () => {
-  await kill(9933)
-  await kill(9932)
-  await kill(19932)
-  await kill(19933)
-  app.relaunch()
-  app.exit(0)
+  try {
+    await Promise.all([kill(9933), kill(9932), kill(19932), kill(19933)])
+  } catch (error) {
+    log.error(error)
+  }
+  try {
+    if (os.platform() === 'darwin') {
+      app.relaunch()
+    } else {
+      app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+    }
+    app.exit(0)
+  } catch (error) {
+    log.error(error)
+  }
 })
 
 autoUpdater.on(
