@@ -1,5 +1,5 @@
 import React from 'react'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import tcpPortUsed from 'tcp-port-used'
 import cx from 'classnames'
 
@@ -31,6 +31,8 @@ export default function InferenceClient(): JSX.Element {
           }, 5000)
         } else {
           setStatus('success')
+          setInstallRequired('')
+          setInstallUrl('')
         }
       },
       function (err) {
@@ -79,6 +81,12 @@ export default function InferenceClient(): JSX.Element {
     })
   }, [])
 
+  const handleOpenLink = (url: string) => {
+    if (url) {
+      shell.openExternal(url)
+    }
+  }
+
   if (status !== 'success') {
     return (
       <div className={styles.textWrap}>
@@ -92,14 +100,13 @@ export default function InferenceClient(): JSX.Element {
             <p className={cx(dstyles.content, cstyles.large)}>
               To run Inference Client, you'll need Node.js version 22.2.0
               installed on your system. We recommend clicking{' '}
-              <a href={installUrl} target='_blank' className={styles.link}>
-                here
-              </a>{' '}
-              to download and install the Node.js version 22.2.0.
-              <br />
-              <a href={installUrl} target='_blank' className={styles.link}>
+              <span
+                onClick={() => handleOpenLink(installUrl)}
+                className={styles.link}
+              >
                 {installUrl}
-              </a>
+              </span>{' '}
+              to download and install the Node.js version 22.2.0.
             </p>
           </div>
         ) : null}

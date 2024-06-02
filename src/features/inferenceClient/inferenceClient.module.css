@@ -75,7 +75,7 @@
 
 .downloadModal {
   top: 50%;
-  left: 50%;
+  left: 60%;
   transform: translate(-50%, -50%);
   height: 120px;
 }
@@ -83,4 +83,5 @@
 .link {
   color: #c3921f;
   text-decoration: underline;
+  cursor: pointer;
 }

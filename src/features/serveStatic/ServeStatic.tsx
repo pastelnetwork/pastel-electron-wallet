@@ -81,6 +81,7 @@ export const checkAndStartInitialInference = (
     )
   }
   cp.exec('node -v', function (error, stdout) {
+    log.log('node version', stdout)
     if (stdout.indexOf('v22') === -1) {
       if (mainWindow && mainWindow?.webContents) {
         mainWindow.webContents.send(
@@ -218,17 +219,12 @@ export const setupInitialInference = (
 ): void => {
   try {
     cp.exec('node -v', function (error, stdout) {
+      log.log('node version', stdout)
       if (stdout.indexOf('v22') !== -1) {
-        let pastelInferencePath = path.join(
-          process.cwd(),
-          'static/bin/pastel_inference_js_client-master',
+        const pastelInferencePath = path.join(
+          pastelConf.locatePastelConfDir,
+          'pastel_inference_js_client-master',
         )
-        if (isPackaged) {
-          pastelInferencePath = path.join(
-            pastelConf.locatePastelConfDir,
-            'pastel_inference_js_client-master',
-          )
-        }
         if (!fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {
           downloadPastelInferenceJsClient(pastelConf, pastelInferencePath)
         } else {

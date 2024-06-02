@@ -356,17 +356,17 @@ ipcMain.on('reset_pastel_app', async () => {
     log.error(error)
   }
   try {
-    if (os.platform() === 'linux') {
-      app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
-    } else {
-      app.relaunch()
-    }
     try {
       if (fs.existsSync(snapshotFile)) {
         fs.unlinkSync(snapshotFile)
       }
-    } catch {
-      // noop
+    } catch (error) {
+      log.error(error)
+    }
+    if (os.platform() === 'linux') {
+      app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+    } else {
+      app.relaunch()
     }
     app.exit(0)
   } catch (error) {
@@ -475,27 +475,16 @@ ipcMain.handle(
   },
 )
 ipcMain.on('start_initial_inference', () => {
-  cp.exec('node -v', function (error, stdout) {
-    if (stdout.indexOf('v22') !== -1) {
-      checkAndStartInitialInference(
-        app.isPackaged,
-        locatePastelConfDir(),
-        mainWindow,
-      )
-    } else if (mainWindow && mainWindow?.webContents) {
-      mainWindow.webContents.send(
-        'install_required',
-        JSON.stringify({
-          name: 'Nodejs 22',
-          link: getDownloadUrl().nodejs,
-        }),
-      )
-    }
-  })
+  checkAndStartInitialInference(
+    app.isPackaged,
+    locatePastelConfDir(),
+    mainWindow,
+  )
 })
 
 ipcMain.on('check_nodejs', () => {
   cp.exec('node -v', function (error, stdout) {
+    log.log('node version', stdout)
     if (stdout.indexOf('v22') === -1 && mainWindow && mainWindow?.webContents) {
       mainWindow.webContents.send(
         'install_required',
