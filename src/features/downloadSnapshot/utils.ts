@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import progress from 'progress-stream'
 import request from 'request'
-import tar from 'tar'
+import * as tar from 'tar'
 import zlib from 'zlib'
 import { ipcRenderer } from 'electron'
 
@@ -36,10 +36,10 @@ export const downloadSnapshotFile = async ({
     resp.pipe(str).pipe(writer)
   })
 
-  const promise = new Promise<void>((resolve, reject) => {
+  const promise = new Promise<boolean>((resolve, reject) => {
     writer.on('finish', async () => {
       writer.close()
-      resolve()
+      resolve(true)
     })
 
     writer.on('error', async e => {
@@ -51,41 +51,39 @@ export const downloadSnapshotFile = async ({
           'utils downloadSnapshotFile request.get error: error deleting file',
         )
       }
+      onProgress('Download Snapshot file error. Please try again.')
       reject(`utils downloadSnapshotFile error: ${e.message}`)
     })
   })
 
-  await promise
-  onProgress('Extracting...')
-  fs.createReadStream(absPath)
-    .pipe(zlib.createGunzip())
-    .pipe(tar.extract({ cwd: outputDir }))
-    .on('error', err => {
-      console.error('An error occurred:', err)
-      onProgress(`An error occurred: ${err?.message}`)
-    })
-    .on('end', () => {
-      try {
-        const pastelConfFile = path.join(outputDir, 'pastel.conf')
-        if (fs.existsSync(pastelConfFile)) {
-          const config = fs
-            .readFileSync(path.join(outputDir, 'pastel.conf'))
-            .toString()
-          if (config.indexOf('-txindex=1') === -1) {
-            const newConfig = config.split('\n')
-            newConfig.push('-txindex=1')
-            fs.writeFileSync(pastelConfFile, newConfig.join('\n'))
+  const status = await promise
+  if (status) {
+    onProgress('Extracting...')
+    fs.createReadStream(absPath)
+      .pipe(zlib.createGunzip())
+      .pipe(tar.extract({ cwd: outputDir }))
+      .on('error', err => {
+        console.error('An error occurred:', err)
+        onProgress(`An error occurred: ${err?.message}`)
+      })
+      .on('end', () => {
+        try {
+          const pastelConfFile = path.join(outputDir, 'pastel.conf')
+          if (fs.existsSync(pastelConfFile)) {
+            const config = fs
+              .readFileSync(path.join(outputDir, 'pastel.conf'))
+              .toString()
+            if (config.indexOf('-txindex=1') === -1) {
+              const newConfig = config.split('\n')
+              newConfig.push('-txindex=1')
+              fs.writeFileSync(pastelConfFile, newConfig.join('\n'))
+            }
           }
+          onProgress('Restarting....')
+          ipcRenderer.send('reset_pastel_app')
+        } catch (error) {
+          onProgress(`Error: ${error.message}`)
         }
-        onProgress('Restarting....')
-        // try {
-        //   fs.unlinkSync(absPath)
-        // } catch (error) {
-        //   console.error('unlinkSync downloadSnapshotFile error: ', error)
-        // }
-        ipcRenderer.send('reset_pastel_app')
-      } catch (error) {
-        onProgress(`Error: ${error.message}`)
-      }
-    })
+      })
+  }
 }
