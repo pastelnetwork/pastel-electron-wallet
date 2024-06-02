@@ -77,7 +77,8 @@
   top: 50%;
   left: 60%;
   transform: translate(-50%, -50%);
-  height: 120px;
+  max-height: 112px;
+  padding: 16px 20px;
 }
 
 .link {

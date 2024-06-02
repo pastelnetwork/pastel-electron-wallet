@@ -4,7 +4,6 @@ import 'regenerator-runtime/runtime'
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
 import getFolderSize from 'get-folder-size'
-import cp from 'child_process'
 
 import {
   app,
@@ -42,7 +41,6 @@ import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
-  getDownloadUrl,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
 
@@ -306,11 +304,15 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
-  setupInitialInference(app.isPackaged, {
-    locatePastelConf: locatePastelConf(),
-    locatePastelConfDir: locatePastelConfDir(),
-    pasteldBasePath: pasteldBasePath(),
-  })
+  setupInitialInference(
+    app.isPackaged,
+    {
+      locatePastelConf: locatePastelConf(),
+      locatePastelConfDir: locatePastelConfDir(),
+      pasteldBasePath: pasteldBasePath(),
+    },
+    mainWindow,
+  )
 
   initServeStatic(app.isPackaged)
 
@@ -474,25 +476,16 @@ ipcMain.handle(
     return dialog.showSaveDialog({ title, defaultPath, filters, properties })
   },
 )
+
 ipcMain.on('start_initial_inference', () => {
   checkAndStartInitialInference(
     app.isPackaged,
     locatePastelConfDir(),
     mainWindow,
+    {
+      locatePastelConf: locatePastelConf(),
+      locatePastelConfDir: locatePastelConfDir(),
+      pasteldBasePath: pasteldBasePath(),
+    },
   )
-})
-
-ipcMain.on('check_nodejs', () => {
-  cp.exec('node -v', function (error, stdout) {
-    log.log('node version', stdout)
-    if (stdout.indexOf('v22') === -1 && mainWindow && mainWindow?.webContents) {
-      mainWindow.webContents.send(
-        'install_required',
-        JSON.stringify({
-          name: 'Nodejs 22',
-          link: getDownloadUrl().nodejs,
-        }),
-      )
-    }
-  })
 })

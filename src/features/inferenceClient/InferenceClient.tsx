@@ -48,7 +48,7 @@ export default function InferenceClient(): JSX.Element {
         ['status'],
         pastelConf,
       )
-      setStatus(result?.AssetName || '')
+      setStatus(`Loading ${result?.AssetName || ''}`)
       if (result?.AssetName !== 'Finished') {
         setTimeout(() => {
           checkMasterNodeStatus()
@@ -56,7 +56,7 @@ export default function InferenceClient(): JSX.Element {
       } else {
         ipcRenderer.send('start_initial_inference')
         checkStartInitialInference()
-        setStatus('Waiting')
+        setStatus('Loading Waiting')
       }
     } catch (error) {
       console.error('checkMasterNodeStatus', error)
@@ -74,9 +74,14 @@ export default function InferenceClient(): JSX.Element {
     ipcRenderer.on('install_required', (event, data) => {
       if (data) {
         const parseData = JSON.parse(data)
-        setStatus('Waiting')
         setInstallRequired(parseData.name)
         setInstallUrl(parseData.link)
+      }
+    })
+
+    ipcRenderer.on('start_inference_error', (event, data) => {
+      if (data) {
+        setStatus('Start Inference Client error. Please try again.')
       }
     })
   }, [])
@@ -90,7 +95,7 @@ export default function InferenceClient(): JSX.Element {
   if (status !== 'success') {
     return (
       <div className={styles.textWrap}>
-        <div className={styles.textWrap}>Loading {status} ...</div>
+        <div className={styles.textWrap}>{status} ...</div>
 
         {installRequired !== '' ? (
           <div
