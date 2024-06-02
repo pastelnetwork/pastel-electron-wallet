@@ -9719,9 +9719,9 @@ multicast-dns@^7.2.5:
     fmix "^0.1.0"
     imul "^1.0.0"
 
-nan@^2.4.0:
-  version "2.14.2"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
+nan@^2.4.0, "nan@github:ajgassner/nan#electron-29-workaround":
+  version "2.18.0"
+  resolved "https://codeload.github.com/ajgassner/nan/tar.gz/f4933dedce0fb160927ffe5d7896b33ef461f17c"
 
 nanoid@^3.1.12:
   version "3.3.6"
