@@ -475,23 +475,34 @@ ipcMain.handle(
   },
 )
 ipcMain.on('start_initial_inference', () => {
-  if (mainWindow && mainWindow?.webContents) {
-    mainWindow.webContents.send(
-      'install_required',
-      JSON.stringify({
-        name: 'Nodejs 22',
-        link: getDownloadUrl().nodejs,
-      }),
-    )
-  }
-})
-ipcMain.on('check_nodejs', () => {
   cp.exec('node -v', function (error, stdout) {
     if (stdout.indexOf('v22') !== -1) {
       checkAndStartInitialInference(
         app.isPackaged,
         locatePastelConfDir(),
         mainWindow,
+      )
+    } else if (mainWindow && mainWindow?.webContents) {
+      mainWindow.webContents.send(
+        'install_required',
+        JSON.stringify({
+          name: 'Nodejs 22',
+          link: getDownloadUrl().nodejs,
+        }),
+      )
+    }
+  })
+})
+
+ipcMain.on('check_nodejs', () => {
+  cp.exec('node -v', function (error, stdout) {
+    if (stdout.indexOf('v22') === -1 && mainWindow && mainWindow?.webContents) {
+      mainWindow.webContents.send(
+        'install_required',
+        JSON.stringify({
+          name: 'Nodejs 22',
+          link: getDownloadUrl().nodejs,
+        }),
       )
     }
   })
