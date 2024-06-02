@@ -6,16 +6,20 @@ import * as tar from 'tar'
 import zlib from 'zlib'
 import { ipcRenderer } from 'electron'
 
+import { rpc, TRPCConfig } from '../../api/pastel-rpc/rpc'
+
 export const downloadSnapshotFile = async ({
   outputDir,
   url,
   fileName,
   onProgress,
+  pastelConf,
 }: {
   outputDir: string
   url: string
   fileName: string
   onProgress: (process: string) => void
+  pastelConf: TRPCConfig
 }): Promise<void> => {
   const absPath = path.join(outputDir, fileName)
   const writer = fs.createWriteStream(absPath)
@@ -59,6 +63,7 @@ export const downloadSnapshotFile = async ({
   const status = await promise
   if (status) {
     onProgress('Extracting...')
+    await rpc('stop', [], pastelConf)
     fs.createReadStream(absPath)
       .pipe(zlib.createGunzip())
       .pipe(tar.extract({ cwd: outputDir }))

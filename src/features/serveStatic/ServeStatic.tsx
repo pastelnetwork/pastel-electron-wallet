@@ -32,24 +32,21 @@ const startInitialInference = (pastelInferencePath: string) => {
   })
 }
 
-const getDownloadUrl = () => {
+export const getDownloadUrl = (): { nodejs: string } => {
   if (os.platform() === 'darwin') {
     return {
       nodejs: 'https://nodejs.org/en/download/prebuilt-installer',
-      git: 'https://git-scm.com/download/mac',
     }
   }
 
   if (os.platform() === 'linux') {
     return {
       nodejs: 'https://nodejs.org/en/download/package-manager',
-      git: 'https://git-scm.com/download/linux',
     }
   }
 
   return {
     nodejs: 'https://nodejs.org/en/download/prebuilt-installer',
-    git: 'https://git-scm.com/download/win',
   }
 }
 
@@ -64,12 +61,12 @@ export const checkAndStartInitialInference = (
         if (!inUse) {
           let pastelInferencePath = path.join(
             process.cwd(),
-            'static/bin/pastel_inference_js_client',
+            'static/bin/pastel_inference_js_client-master',
           )
           if (isPackaged) {
             pastelInferencePath = path.join(
               locatePastelConfDir,
-              'pastel_inference_js_client',
+              'pastel_inference_js_client-master',
             )
           }
           if (fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {
@@ -94,6 +91,14 @@ export const checkAndStartInitialInference = (
           }),
         )
       }
+
+      setTimeout(() => {
+        checkAndStartInitialInference(
+          isPackaged,
+          locatePastelConfDir,
+          mainWindow,
+        )
+      }, 20000)
     } else {
       checkPortAndStartApp()
     }
@@ -151,7 +156,7 @@ const downloadPastelInferenceJsClient = async (
 ) => {
   const absPath = path.join(
     pastelConf.locatePastelConfDir,
-    'pastel_inference_js_client.zip',
+    'pastel_inference_js_client-master.zip',
   )
   const writer = fs.createWriteStream(absPath)
   const r = request.get(
@@ -168,7 +173,7 @@ const downloadPastelInferenceJsClient = async (
     const total = parseInt(resp.headers['content-length'] || '0', 10)
     const str = progress({ time: 100 }, pgrs => {
       const percentage = Math.round((pgrs.transferred * 100) / total)
-      console.log(`Downloading ${percentage}% ...`)
+      console.log(`Downloading pastel_inference_js_client ${percentage}% ...`)
     })
 
     resp.pipe(str).pipe(writer)
@@ -216,12 +221,12 @@ export const setupInitialInference = (
       if (stdout.indexOf('v22') !== -1) {
         let pastelInferencePath = path.join(
           process.cwd(),
-          'static/bin/pastel_inference_js_client',
+          'static/bin/pastel_inference_js_client-master',
         )
         if (isPackaged) {
           pastelInferencePath = path.join(
             pastelConf.locatePastelConfDir,
-            'pastel_inference_js_client',
+            'pastel_inference_js_client-master',
           )
         }
         if (!fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {

@@ -14,6 +14,7 @@ export default function DownloadSnapshot(): JSX.Element | null {
   const [status, setStatus] = React.useState('')
   const { opened } = useAppSelector(state => state.downloadSnapshot)
   const { locatePastelConfDir } = useAppSelector(state => state.appInfo)
+  const { pastelConf } = useAppSelector(state => state)
   const dispatch = useAppDispatch()
 
   const handleYesButtonClick = () => {
@@ -23,6 +24,7 @@ export default function DownloadSnapshot(): JSX.Element | null {
         'https://download.pastel.network/snapshots/mainnet/snapshot-690894-mainnet.tar.gz',
       fileName: 'snapshot-690894-mainnet.tar.gz',
       onProgress: (currentStatus: string) => setStatus(currentStatus),
+      pastelConf,
     })
     dispatch(setDownloadSnapshot())
   }
@@ -56,7 +58,7 @@ export default function DownloadSnapshot(): JSX.Element | null {
               className={cx(styles.btn, cstyles.primaryButton)}
               onClick={handleYesButtonClick}
             >
-              OK
+              Yes
             </button>
             <button
               type='button'

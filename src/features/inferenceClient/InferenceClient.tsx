@@ -1,11 +1,13 @@
 import React from 'react'
 import { ipcRenderer } from 'electron'
 import tcpPortUsed from 'tcp-port-used'
-import Modal from 'react-modal'
+import cx from 'classnames'
 
 import { rpc } from '../../api/pastel-rpc/rpc'
 import store from '../../redux/store'
 import { inferenceClient } from '../constants/ServeStatic'
+import cstyles from '../../common/utils/Styles.module.css'
+import dstyles from '../downloadSnapshot/DownloadSnapshot.module.css'
 
 import styles from './inferenceClient.module.css'
 
@@ -24,7 +26,6 @@ export default function InferenceClient(): JSX.Element {
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
-          setStatus('Waiting')
           setTimeout(() => {
             checkStartInitialInference()
           }, 5000)
@@ -53,14 +54,20 @@ export default function InferenceClient(): JSX.Element {
       } else {
         ipcRenderer.send('start_initial_inference')
         checkStartInitialInference()
+        setStatus('Waiting')
       }
     } catch (error) {
       console.error('checkMasterNodeStatus', error)
     }
   }
 
+  const checkNodejs = () => {
+    ipcRenderer.send('check_nodejs')
+  }
+
   React.useEffect(() => {
     checkMasterNodeStatus()
+    checkNodejs()
 
     ipcRenderer.on('install_required', (event, data) => {
       if (data) {
@@ -75,27 +82,27 @@ export default function InferenceClient(): JSX.Element {
   if (status !== 'success') {
     return (
       <div className={styles.textWrap}>
-        <div className={styles.textWrap}>{status} ...</div>
-        <Modal
-          isOpen={installRequired !== ''}
-          onRequestClose={() => setInstallRequired('')}
-          className={styles.modalWrapper}
-        >
-          <div className={styles.modalContent}>
-            <button
-              type='button'
-              className={styles.btnClose}
-              onClick={() => setInstallRequired('')}
-            >
-              X
-            </button>
-            <div className={styles.modalMainContent}>
-              Please download and install {installRequired} on your system.
+        <div className={styles.textWrap}>Loading {status} ...</div>
+
+        {installRequired !== '' ? (
+          <div
+            id='downloadNode'
+            className={cx(dstyles.wrapper, styles.downloadModal)}
+          >
+            <p className={cx(dstyles.content, cstyles.large)}>
+              To run Inference Client, you'll need Node.js version 22.2.0
+              installed on your system. We recommend clicking{' '}
+              <a href={installUrl} target='_blank' className={styles.link}>
+                here
+              </a>{' '}
+              to download and install the Node.js version 22.2.0.
               <br />
-              Visit: {installUrl}
-            </div>
+              <a href={installUrl} target='_blank' className={styles.link}>
+                {installUrl}
+              </a>
+            </p>
           </div>
-        </Modal>
+        ) : null}
       </div>
     )
   }

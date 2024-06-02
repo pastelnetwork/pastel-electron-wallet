@@ -4,6 +4,7 @@ import 'regenerator-runtime/runtime'
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
 import getFolderSize from 'get-folder-size'
+import cp from 'child_process'
 
 import {
   app,
@@ -41,6 +42,7 @@ import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
+  getDownloadUrl,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
 
@@ -110,6 +112,23 @@ if (
 
 let waitingForClose = false
 let proceedToClose = false
+
+const locatePastelConfDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), '.pastel')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel')
+}
+
+const snapshotFile = path.join(
+  locatePastelConfDir(),
+  'snapshot-690894-mainnet.tar.gz',
+)
 
 const createWindow = async () => {
   const w = new BrowserWindow({
@@ -219,6 +238,14 @@ const createWindow = async () => {
   menuBuilder.buildMenu()
   // Remove this if your app does not use auto updates
   new AppUpdater()
+
+  try {
+    if (fs.existsSync(snapshotFile)) {
+      fs.unlinkSync(snapshotFile)
+    }
+  } catch {
+    // noop
+  }
 }
 
 /**
@@ -250,21 +277,11 @@ const getPastelFolderSize = async () => {
   const info = await getFolderSize(locatePastelConfDir())
   if (!info.errors) {
     const totalSize = info.size / 1073741824 // ~ GB
-    const file = path.join(
-      locatePastelConfDir(),
-      'snapshot-690894-mainnet.tar.gz',
-    )
     if (totalSize < 2 && mainWindow) {
-      if (fs.existsSync(file)) {
-        fs.unlinkSync(file)
+      if (fs.existsSync(snapshotFile)) {
+        fs.unlinkSync(snapshotFile)
       }
       mainWindow.webContents.send('download_snapshot')
-    } else if (fs.existsSync(file)) {
-      try {
-        fs.unlinkSync(file)
-      } catch {
-        // noop
-      }
     }
   }
 }
@@ -339,10 +356,17 @@ ipcMain.on('reset_pastel_app', async () => {
     log.error(error)
   }
   try {
-    if (os.platform() === 'darwin') {
-      app.relaunch()
-    } else {
+    if (os.platform() === 'linux') {
       app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+    } else {
+      app.relaunch()
+    }
+    try {
+      if (fs.existsSync(snapshotFile)) {
+        fs.unlinkSync(snapshotFile)
+      }
+    } catch {
+      // noop
     }
     app.exit(0)
   } catch (error) {
@@ -368,18 +392,6 @@ autoUpdater.on(
 autoUpdater.on('error', err => {
   console.warn(`autoUpdater error: ${err.message}`, err)
 })
-
-const locatePastelConfDir = () => {
-  if (os.platform() === 'darwin') {
-    return path.join(app.getPath('appData'), 'Pastel')
-  }
-
-  if (os.platform() === 'linux') {
-    return path.join(app.getPath('home'), '.pastel')
-  }
-
-  return path.join(app.getPath('appData'), 'Pastel')
-}
 
 const locatePastelConf = () => {
   if (os.platform() === 'darwin') {
@@ -463,9 +475,24 @@ ipcMain.handle(
   },
 )
 ipcMain.on('start_initial_inference', () => {
-  checkAndStartInitialInference(
-    app.isPackaged,
-    locatePastelConfDir(),
-    mainWindow,
-  )
+  if (mainWindow && mainWindow?.webContents) {
+    mainWindow.webContents.send(
+      'install_required',
+      JSON.stringify({
+        name: 'Nodejs 22',
+        link: getDownloadUrl().nodejs,
+      }),
+    )
+  }
+})
+ipcMain.on('check_nodejs', () => {
+  cp.exec('node -v', function (error, stdout) {
+    if (stdout.indexOf('v22') !== -1) {
+      checkAndStartInitialInference(
+        app.isPackaged,
+        locatePastelConfDir(),
+        mainWindow,
+      )
+    }
+  })
 })
