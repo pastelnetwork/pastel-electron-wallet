@@ -47,7 +47,7 @@ import initServeStatic, {
 } from './features/serveStatic'
 import MenuBuilder from './menu'
 
-if (os.platform() === 'darwin') {
+if (['darwin', 'linux'].includes(os.platform())) {
   fixPath()
 }
 
@@ -130,10 +130,19 @@ const locatePastelConfDir = () => {
   return path.join(app.getPath('appData'), 'Pastel')
 }
 
-const snapshotFile = path.join(
-  locatePastelConfDir(),
-  'snapshot-690894-mainnet.tar.gz',
-)
+const locateAppDir = () => {
+  if (os.platform() === 'darwin') {
+    return app.getPath('appData')
+  }
+
+  if (os.platform() === 'linux') {
+    return app.getPath('home')
+  }
+
+  return app.getPath('appData')
+}
+
+const snapshotFile = path.join(locateAppDir(), 'snapshot-690894-mainnet.tar.gz')
 
 const createWindow = async () => {
   const w = new BrowserWindow({
@@ -317,6 +326,7 @@ ipcMain.on('app-ready', () => {
       locatePastelConf: locatePastelConf(),
       locatePastelConfDir: locatePastelConfDir(),
       pasteldBasePath: pasteldBasePath(),
+      locateAppDir: locateAppDir(),
     },
     mainWindow,
   )
@@ -499,6 +509,7 @@ ipcMain.on('start_initial_inference', () => {
       locatePastelConf: locatePastelConf(),
       locatePastelConfDir: locatePastelConfDir(),
       pasteldBasePath: pasteldBasePath(),
+      locateAppDir: locateAppDir(),
     },
   )
 })

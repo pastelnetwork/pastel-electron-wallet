@@ -15,7 +15,7 @@ import fixPath from 'fix-path'
 
 import { glitch, squoosh, inferenceClient } from '../constants/ServeStatic'
 
-if (os.platform() === 'darwin') {
+if (['darwin', 'linux'].includes(os.platform())) {
   fixPath()
 }
 
@@ -25,11 +25,11 @@ interface IPastelConfProps {
   locatePastelConf: string
   locatePastelConfDir: string
   pasteldBasePath: string
+  locateAppDir: string
 }
 
 const replaceSpaceInPath = (path: string) => {
   if (os.platform() === 'darwin' || os.platform() === 'linux') {
-    // eslint-disable-next-line no-useless-escape
     return path.replace(/ /g, '\\ ')
   }
   return path
@@ -42,8 +42,15 @@ const startInitialInference = (
   cp.exec(
     `cd ${replaceSpaceInPath(pastelInferencePath)} && npm run start`,
     function (error) {
+      log.log(
+        'startInitialInference - ',
+        `cd ${replaceSpaceInPath(pastelInferencePath)} && npm run start`,
+      )
       if (error) {
-        mainWindow?.webContents?.send('start_inference_error', error?.message)
+        mainWindow?.webContents?.send(
+          'start_inference_error',
+          JSON.stringify(error?.message),
+        )
         log.error('Start Initial Inference error:', error)
         try {
           tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
@@ -101,7 +108,7 @@ export const checkAndStartInitialInference = (
           )
           if (isPackaged) {
             pastelInferencePath = path.join(
-              locatePastelConfDir,
+              pastelConf.locateAppDir,
               'pastel_inference_js_client-master',
             )
           }
@@ -116,6 +123,7 @@ export const checkAndStartInitialInference = (
     )
   }
   cp.exec('node -v', function (error, stdout) {
+    log.log('checkAndStartInitialInference - ', stdout)
     if (stdout.indexOf('v22') === -1) {
       log.error('Required Nodejs 22')
       if (mainWindow && mainWindow?.webContents) {
@@ -138,7 +146,7 @@ export const checkAndStartInitialInference = (
       }, 20000)
     } else {
       const pastelInferencePath = path.join(
-        locatePastelConfDir,
+        pastelConf.locateAppDir,
         'pastel_inference_js_client-master',
       )
       if (!fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {
@@ -200,7 +208,7 @@ const downloadPastelInferenceJsClient = async (
   pastelInferencePath: string,
 ) => {
   const absPath = path.join(
-    pastelConf.locatePastelConfDir,
+    pastelConf.locateAppDir,
     'pastel_inference_js_client-master.zip',
   )
   const writer = fs.createWriteStream(absPath)
@@ -244,7 +252,7 @@ const downloadPastelInferenceJsClient = async (
 
   await promise
   const zip = new AdmZip(absPath)
-  zip.extractAllTo(pastelConf.locatePastelConfDir, true)
+  zip.extractAllTo(pastelConf.locateAppDir, true)
   updateConfigForInitialInference(pastelConf, pastelInferencePath)
   try {
     await fs.promises.unlink(absPath)
@@ -270,9 +278,10 @@ export const setupInitialInference = (
 ): void => {
   try {
     cp.exec('node -v', function (error, stdout) {
+      log.log('setupInitialInference - ', stdout)
       if (stdout.indexOf('v22') !== -1) {
         const pastelInferencePath = path.join(
-          pastelConf.locatePastelConfDir,
+          pastelConf.locateAppDir,
           'pastel_inference_js_client-master',
         )
         if (!fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {
@@ -281,6 +290,10 @@ export const setupInitialInference = (
           cp.exec(
             `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
             function () {
+              log.log(
+                'setupInitialInference - ',
+                `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+              )
               updateConfigForInitialInference(pastelConf, pastelInferencePath)
             },
           )

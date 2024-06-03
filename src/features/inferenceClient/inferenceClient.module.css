@@ -86,3 +86,7 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.textWrapPadding {
+  padding: 0 20px;
+}

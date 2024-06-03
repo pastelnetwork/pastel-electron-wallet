@@ -81,7 +81,7 @@ export default function InferenceClient(): JSX.Element {
 
     ipcRenderer.on('start_inference_error', (event, data) => {
       if (data) {
-        setStatus('Start Inference Client error. Please try again.')
+        setStatus(JSON.parse(data))
       }
     })
   }, [])
@@ -95,7 +95,9 @@ export default function InferenceClient(): JSX.Element {
   if (status !== 'success') {
     return (
       <div className={styles.textWrap}>
-        <div className={styles.textWrap}>{status} ...</div>
+        <div className={cx(styles.textWrap, styles.textWrapPadding)}>
+          {status} ...
+        </div>
 
         {installRequired !== '' ? (
           <div
