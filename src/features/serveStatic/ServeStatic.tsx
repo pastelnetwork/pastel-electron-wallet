@@ -12,6 +12,7 @@ import progress from 'progress-stream'
 import AdmZip from 'adm-zip'
 import kill from 'kill-port'
 import fixPath from 'fix-path'
+import dayjs from 'dayjs'
 
 import { glitch, squoosh, inferenceClient } from '../constants/ServeStatic'
 
@@ -271,6 +272,22 @@ const downloadPastelInferenceJsClient = async (
   )
 }
 
+const checkUpdatePastelInferenceJsClient = async (
+  pastelInferencePath: string,
+) => {
+  try {
+    const stats = fs.statSync(pastelInferencePath)
+    const now = dayjs()
+    const target = dayjs(stats.birthtime)
+    const days = now.diff(target, 'day')
+    if (days >= 5) {
+      fs.rmSync(pastelInferencePath, { recursive: true, force: true })
+    }
+  } catch (error) {
+    log.error('checkUpdatePastelInferenceJsClient - ', error)
+  }
+}
+
 export const setupInitialInference = (
   isPackaged: boolean,
   pastelConf: IPastelConfProps,
@@ -284,6 +301,7 @@ export const setupInitialInference = (
           pastelConf.locateAppDir,
           'pastel_inference_js_client-master',
         )
+        checkUpdatePastelInferenceJsClient(pastelInferencePath)
         if (!fs.existsSync(path.join(pastelInferencePath, 'server.js'))) {
           downloadPastelInferenceJsClient(pastelConf, pastelInferencePath)
         } else {
