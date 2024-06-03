@@ -276,12 +276,14 @@ const checkUpdatePastelInferenceJsClient = async (
   pastelInferencePath: string,
 ) => {
   try {
-    const stats = fs.statSync(pastelInferencePath)
-    const now = dayjs()
-    const target = dayjs(stats.birthtime)
-    const days = now.diff(target, 'day')
-    if (days >= 5) {
-      fs.rmSync(pastelInferencePath, { recursive: true, force: true })
+    if (fs.existsSync(pastelInferencePath)) {
+      const stats = fs.statSync(pastelInferencePath)
+      const now = dayjs()
+      const target = dayjs(stats.birthtime)
+      const days = now.diff(target, 'day')
+      if (days >= 5) {
+        fs.rmSync(pastelInferencePath, { recursive: true, force: true })
+      }
     }
   } catch (error) {
     log.error('checkUpdatePastelInferenceJsClient - ', error)
