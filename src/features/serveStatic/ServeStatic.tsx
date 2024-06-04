@@ -29,6 +29,24 @@ interface IPastelConfProps {
   locateAppDir: string
 }
 
+export const openNodejsFile = (pasteldBasePath: string): void => {
+  try {
+    if (os.platform() === 'linux') {
+      cp.exec(
+        'curl -fsSL https://fnm.vercel.app/install | bash && fnm use --install-if-missing 22',
+      )
+      return
+    }
+    if (os.platform() === 'darwin') {
+      cp.exec(`${path.join(pasteldBasePath, 'node-mac.pkg')}`)
+      return
+    }
+    cp.exec(`${path.join(pasteldBasePath, 'node-win.msi')}`)
+  } catch (error) {
+    log.error('Open Nodejs file error:', error)
+  }
+}
+
 const replaceSpaceInPath = (path: string) => {
   if (os.platform() === 'darwin' || os.platform() === 'linux') {
     return path.replace(/ /g, '\\ ')
@@ -127,14 +145,18 @@ export const checkAndStartInitialInference = (
     log.log('checkAndStartInitialInference - ', stdout)
     if (stdout.indexOf('v22') === -1) {
       log.error('Required Nodejs 22')
-      if (mainWindow && mainWindow?.webContents) {
-        mainWindow.webContents.send(
-          'install_required',
-          JSON.stringify({
-            name: 'Nodejs 22',
-            link: getDownloadUrl().nodejs,
-          }),
-        )
+      if (os.platform() === 'linux') {
+        if (mainWindow && mainWindow?.webContents) {
+          mainWindow.webContents.send(
+            'install_required',
+            JSON.stringify({
+              name: 'Nodejs 22',
+              link: getDownloadUrl().nodejs,
+            }),
+          )
+        }
+      } else {
+        openNodejsFile(pastelConf.pasteldBasePath)
       }
 
       setTimeout(() => {
@@ -319,6 +341,9 @@ export const setupInitialInference = (
           )
         }
       } else {
+        if (os.platform() !== 'linux') {
+          openNodejsFile(pastelConf.pasteldBasePath)
+        }
         setTimeout(() => {
           setupInitialInference(isPackaged, pastelConf, mainWindow)
         }, 20000)

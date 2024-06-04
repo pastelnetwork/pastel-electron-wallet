@@ -44,6 +44,7 @@ import initServeStatic, {
   checkAndStartInitialInference,
   setupInitialInference,
   getDownloadUrl,
+  openNodejsFile,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
 
@@ -299,7 +300,6 @@ const getPastelFolderSize = async () => {
     }
   }
 }
-
 ipcMain.on('app-ready', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
@@ -516,14 +516,19 @@ ipcMain.on('start_initial_inference', () => {
 
 ipcMain.on('check_nodejs', () => {
   cp.exec('node -v', function (error, stdout) {
-    if (stdout.indexOf('v22') === -1 && mainWindow?.webContents) {
-      mainWindow.webContents.send(
-        'install_required',
-        JSON.stringify({
-          name: 'Nodejs 22',
-          link: getDownloadUrl().nodejs,
-        }),
-      )
+    if (stdout.indexOf('v22') === -1) {
+      if (os.platform() !== 'linux') {
+        openNodejsFile(pasteldBasePath())
+      }
+      if (mainWindow?.webContents) {
+        mainWindow.webContents.send(
+          'install_required',
+          JSON.stringify({
+            name: 'Nodejs 22',
+            link: getDownloadUrl().nodejs,
+          }),
+        )
+      }
     }
   })
 })

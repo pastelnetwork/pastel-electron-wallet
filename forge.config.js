@@ -6,14 +6,14 @@ function getExtraResource() {
   const p = os.platform()
   switch (p) {
     case 'darwin':
-      return ['./static/bin/pasteld-mac']
+      return ['./static/bin/pasteld-mac', './static/bin/node-mac.pkg']
     case 'linux':
       if (process.argv[3] === 'win32') {
-        return ['./static/bin/pasteld-win.exe']
+        return ['./static/bin/pasteld-win.exe', './static/bin/node-win.msi']
       }
       return ['./static/bin/pasteld-linux']
     case 'win32':
-      return ['./static/bin/pasteld-win.exe']
+      return ['./static/bin/pasteld-win.exe', './static/bin/node-win.msi']
     default:
       throw new Error(
         'forge.config.js error: your OS is not supported. Supported OS are: darwin, linux, win32',

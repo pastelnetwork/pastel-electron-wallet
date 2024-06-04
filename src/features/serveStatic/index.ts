@@ -3,6 +3,7 @@ import initServeStatic, {
   checkAndStartInitialInference,
   setupInitialInference,
   getDownloadUrl,
+  openNodejsFile,
 } from './ServeStatic'
 
 export {
@@ -10,6 +11,7 @@ export {
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
+  openNodejsFile,
 }
 
 export default initServeStatic
