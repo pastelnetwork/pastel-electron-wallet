@@ -105,14 +105,12 @@ export const checkAndStartInitialInference = (
   tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
     function (inUse) {
       if (!inUse) {
-        const { wrapperScriptPath } = getNodeBinaryPath(
+        const { npmPath, wrapperScriptPath } = getNodeBinaryPath(
           pastelConf.pasteldBasePath,
         )
-        cp.execFile(
-          wrapperScriptPath,
-          ['start'],
-          { cwd: replaceSpaceInPath(pastelInferencePath) },
-          (error, stdout, stderr) => {
+
+        if (os.platform() === 'darwin') {
+          cp.exec(`cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} start`, function (error, stdout, stderr) {
             if (error) {
               log.error(`npm start failed: ${error}`)
               mainWindow?.webContents?.send(
@@ -122,11 +120,46 @@ export const checkAndStartInitialInference = (
               return
             }
             log.log(`npm start output: ${stdout}`)
+            let pastelInferenceOutput = JSON.stringify(stdout)
+
             if (stderr) {
               log.error(`npm start errors: ${stderr}`)
+              pastelInferenceOutput = JSON.stringify(stderr)
             }
-          },
-        )
+
+            mainWindow?.webContents?.send(
+              'start_inference_error',
+              pastelInferenceOutput,
+            )
+          })
+        } else {
+          cp.execFile(
+            wrapperScriptPath,
+            ['start'],
+            { cwd: replaceSpaceInPath(pastelInferencePath) },
+            (error, stdout, stderr) => {
+              if (error) {
+                log.error(`npm start failed: ${error}`)
+                mainWindow?.webContents?.send(
+                  'start_inference_error',
+                  JSON.stringify(error?.message),
+                )
+                return
+              }
+              log.log(`npm start output: ${stdout}`)
+              let pastelInferenceOutput = JSON.stringify(stdout)
+              if (stderr) {
+                log.error(`npm start errors: ${stderr}`)
+                pastelInferenceOutput = JSON.stringify(stderr)
+              }
+
+              mainWindow?.webContents?.send(
+                'start_inference_error',
+                pastelInferenceOutput,
+              )
+            },
+          )
+        }
       }
     },
     function (err) {
@@ -271,21 +304,11 @@ export const setupInitialInference = async (
 
     const { nodePath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
     try {
-      cp.execFile(nodePath, ['-v'], (err, stdout) => {
-        if (err) {
-          log.error('Error checking Node.js version: ', err)
-          return
-        }
-        log.log(`Node.js version: ${stdout.trim()}`)
-      })
-      const { wrapperScriptPath } = getNodeBinaryPath(
+      const { npmPath, wrapperScriptPath } = getNodeBinaryPath(
         pastelConf.pasteldBasePath,
       )
-      cp.execFile(
-        wrapperScriptPath,
-        ['install'],
-        { cwd: replaceSpaceInPath(pastelInferencePath) },
-        (error, stdout, stderr) => {
+      if (os.platform() === 'darwin') {
+        cp.exec(`cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} install`, function (error, stdout, stderr) {
           if (error) {
             log.error('npm install failed:', error)
             return
@@ -294,8 +317,24 @@ export const setupInitialInference = async (
           if (stderr) {
             log.error('npm install errors: ', stderr)
           }
-        },
-      )
+        })
+      } else {
+        cp.execFile(
+          wrapperScriptPath,
+          ['install'],
+          { cwd: replaceSpaceInPath(pastelInferencePath) },
+          (error, stdout, stderr) => {
+            if (error) {
+              log.error('npm install failed:', error)
+              return
+            }
+            log.log('npm install output:', stdout)
+            if (stderr) {
+              log.error('npm install errors: ', stderr)
+            }
+          },
+        )
+      }
     } catch (error) {
       log.error('npm install errors:', error)
     }

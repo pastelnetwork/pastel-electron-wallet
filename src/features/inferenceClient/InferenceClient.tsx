@@ -56,7 +56,7 @@ export default function InferenceClient(): JSX.Element {
       } else {
         ipcRenderer.send('start_initial_inference')
         checkStartInitialInference()
-        setStatus('Loading Starting')
+        setStatus('Loading Pastel Inference Client')
       }
     } catch (error) {
       console.error('checkMasterNodeStatus', error)
