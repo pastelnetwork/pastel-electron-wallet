@@ -1,2 +1,1 @@
-#!/usr/lib/pastelwallet/resources/node-linux/bin/node
-require('../lib/cli.js')(process)
+../lib/node_modules/npm/bin/npm-cli.js
