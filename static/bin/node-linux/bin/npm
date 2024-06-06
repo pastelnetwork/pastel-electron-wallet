@@ -1,2 +1,2 @@
-#!/usr/bin/env node
+#!/usr/lib/pastelwallet/resources/node-linux/bin/node
 require('../lib/cli.js')(process)

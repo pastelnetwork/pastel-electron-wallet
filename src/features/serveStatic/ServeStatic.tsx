@@ -64,7 +64,7 @@ const getNodeBinaryPath = (pasteldBasePath: string) => {
   return {
     nodePath: path.join(pasteldBasePath, 'node-win', 'node.exe'),
     npmPath: path.join(pasteldBasePath, 'node-win', 'npm.cmd'),
-    wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-win.sh'),
+    wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-win.bat'),
   }
 }
 

@@ -4,4 +4,4 @@
 export PATH=/Applications/Pastel\ Wallet\ Fullnode.app/Contents/Resources/node-mac/bin:$PATH
 
 # Run npm command
-/Applications/Pastel\ Wallet\ Fullnode.app/Contents/Resources/node-mac/binnode /Applications/Pastel\ Wallet\ Fullnode.app/Contents/Resources/node-mac/binnpm "$@"
+/Applications/Pastel\ Wallet\ Fullnode.app/Contents/Resources/node-mac/bin/node /Applications/Pastel\ Wallet\ Fullnode.app/Contents/Resources/node-mac/bin/npm "$@"

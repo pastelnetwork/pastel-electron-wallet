@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/Applications/Pastel\ Wallet\ Fullnode.app/Contents/Resources/node-mac/bin/node
 
 const cli = require('../lib/cli.js')
 
