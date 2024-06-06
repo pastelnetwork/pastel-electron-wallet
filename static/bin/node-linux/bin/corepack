@@ -1,3 +1,1 @@
-#!/usr/lib/pastelwallet/resources/node-linux/bin/node
-process.env.COREPACK_ENABLE_DOWNLOAD_PROMPT??='0';
-require('./lib/corepack.cjs').runMain(process.argv.slice(2));
+../lib/node_modules/corepack/dist/corepack.js
