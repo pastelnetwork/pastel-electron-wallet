@@ -114,20 +114,19 @@ export const checkAndStartInitialInference = (
           { cwd: replaceSpaceInPath(pastelInferencePath) },
           (error, stdout, stderr) => {
             if (error) {
-              log.error(`npm install failed: ${error}`)
+              log.error(`npm start failed: ${error}`)
               mainWindow?.webContents?.send(
                 'start_inference_error',
                 JSON.stringify(error?.message),
               )
               return
             }
-            log.log(`npm install output: ${stdout}`)
+            log.log(`npm start output: ${stdout}`)
             if (stderr) {
-              log.error(`npm install errors: ${stderr}`)
+              log.error(`npm start errors: ${stderr}`)
             }
           },
         )
-        log.log('npm start success')
       }
     },
     function (err) {
@@ -140,17 +139,20 @@ const updateConfigForInitialInference = (
   pastelConf: IPastelConfProps,
   pastelInferencePath: string,
 ) => {
-  const pastelInferenceClientConfigPath = path.join(
-    pastelConf.locatePastelConfDir,
-    '.pastel',
-  )
-  if (!fs.existsSync(pastelInferenceClientConfigPath)) {
-    fs.mkdirSync(pastelInferenceClientConfigPath)
-    const config = fs.readFileSync(pastelConf.locatePastelConf)
-    fs.writeFileSync(
-      path.join(pastelInferenceClientConfigPath, 'pastel.conf'),
-      config.toString(),
+  if (os.platform() === 'win32') {
+    const pastelInferenceClientConfigPath = path.join(
+      pastelConf.locateAppDir,
+      '../../',
+      '.pastel',
     )
+    if (!fs.existsSync(pastelInferenceClientConfigPath)) {
+      fs.mkdirSync(pastelInferenceClientConfigPath)
+      const config = fs.readFileSync(pastelConf.locatePastelConf)
+      fs.writeFileSync(
+        path.join(pastelInferenceClientConfigPath, 'pastel.conf'),
+        config.toString(),
+      )
+    }
   }
   if (fs.existsSync(path.join(pastelInferencePath, '.env'))) {
     const config = fs
@@ -158,21 +160,14 @@ const updateConfigForInitialInference = (
       .toString()
       .split('\n')
     const newConfig = []
-    let isHasHomeConfig = false
     for (const item of config) {
-      if (item.indexOf('HOME=') !== -1) {
-        newConfig.push(`HOME=${pastelConf.locatePastelConfDir}`)
-        isHasHomeConfig = true
-      } else if (item.indexOf('CLIENT_PORT=') !== -1) {
+      if (item.indexOf('CLIENT_PORT=') !== -1) {
         newConfig.push(`CLIENT_PORT=${inferenceClient.staticPort}`)
       } else if (item.indexOf('CLIENT_WEBSOCKET_PORT=') !== -1) {
         newConfig.push(`CLIENT_WEBSOCKET_PORT=${inferenceClient.socketPort}`)
       } else {
         newConfig.push(item.replace(/\r/g, ''))
       }
-    }
-    if (!isHasHomeConfig) {
-      newConfig.push(`HOME=${pastelConf.locatePastelConfDir}`)
     }
     fs.writeFileSync(
       path.join(pastelInferencePath, '.env'),
