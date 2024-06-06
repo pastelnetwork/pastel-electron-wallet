@@ -110,28 +110,31 @@ export const checkAndStartInitialInference = (
         )
 
         if (os.platform() === 'darwin') {
-          cp.exec(`cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} start`, function (error, stdout, stderr) {
-            if (error) {
-              log.error(`npm start failed: ${error}`)
+          cp.exec(
+            `cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} start`,
+            function (error, stdout, stderr) {
+              if (error) {
+                log.error(`npm start failed: ${error}`)
+                mainWindow?.webContents?.send(
+                  'start_inference_error',
+                  JSON.stringify(error?.message),
+                )
+                return
+              }
+              log.log(`npm start output: ${stdout}`)
+              let pastelInferenceOutput = JSON.stringify(stdout)
+
+              if (stderr) {
+                log.error(`npm start errors: ${stderr}`)
+                pastelInferenceOutput = JSON.stringify(stderr)
+              }
+
               mainWindow?.webContents?.send(
                 'start_inference_error',
-                JSON.stringify(error?.message),
+                pastelInferenceOutput,
               )
-              return
-            }
-            log.log(`npm start output: ${stdout}`)
-            let pastelInferenceOutput = JSON.stringify(stdout)
-
-            if (stderr) {
-              log.error(`npm start errors: ${stderr}`)
-              pastelInferenceOutput = JSON.stringify(stderr)
-            }
-
-            mainWindow?.webContents?.send(
-              'start_inference_error',
-              pastelInferenceOutput,
-            )
-          })
+            },
+          )
         } else {
           cp.execFile(
             wrapperScriptPath,
@@ -164,6 +167,10 @@ export const checkAndStartInitialInference = (
     },
     function (err) {
       log.error('checkAndStartInitialInference error: ', err.message)
+      mainWindow?.webContents?.send(
+        'start_inference_error',
+        JSON.stringify(err.message),
+      )
     },
   )
 }
@@ -302,22 +309,24 @@ export const setupInitialInference = async (
       )
     }
 
-    const { nodePath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
     try {
       const { npmPath, wrapperScriptPath } = getNodeBinaryPath(
         pastelConf.pasteldBasePath,
       )
       if (os.platform() === 'darwin') {
-        cp.exec(`cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} install`, function (error, stdout, stderr) {
-          if (error) {
-            log.error('npm install failed:', error)
-            return
-          }
-          log.log('npm install output:', stdout)
-          if (stderr) {
-            log.error('npm install errors: ', stderr)
-          }
-        })
+        cp.exec(
+          `cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} install`,
+          function (error, stdout, stderr) {
+            if (error) {
+              log.error('npm install failed:', error)
+              return
+            }
+            log.log('npm install output:', stdout)
+            if (stderr) {
+              log.error('npm install errors: ', stderr)
+            }
+          },
+        )
       } else {
         cp.execFile(
           wrapperScriptPath,
