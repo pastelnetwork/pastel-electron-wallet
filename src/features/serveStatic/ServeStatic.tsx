@@ -10,7 +10,6 @@ import { BrowserWindow } from 'electron'
 import request from 'request'
 import progress from 'progress-stream'
 import AdmZip from 'adm-zip'
-import kill from 'kill-port'
 import fixPath from 'fix-path'
 import dayjs from 'dayjs'
 
@@ -52,17 +51,20 @@ const getNodeBinaryPath = (pasteldBasePath: string) => {
     return {
       nodePath: path.join(pasteldBasePath, 'node-linux', 'bin', 'node'),
       npmPath: path.join(pasteldBasePath, 'node-linux', 'bin', 'npm'),
+      wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-linux.sh'),
     }
   }
   if (os.platform() === 'darwin') {
     return {
       nodePath: path.join(pasteldBasePath, 'node-mac', 'bin', 'node'),
       npmPath: path.join(pasteldBasePath, 'node-mac', 'bin', 'npm'),
+      wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-mac.sh'),
     }
   }
   return {
     nodePath: path.join(pasteldBasePath, 'node-win', 'node.exe'),
     npmPath: path.join(pasteldBasePath, 'node-win', 'npm.cmd'),
+    wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-win.sh'),
   }
 }
 
@@ -71,45 +73,6 @@ const replaceSpaceInPath = (path: string) => {
     return path.replace(/ /g, '\\ ')
   }
   return path
-}
-
-const startInitialInference = (
-  pastelInferencePath: string,
-  mainWindow: BrowserWindow | null,
-) => {
-  cp.exec(
-    `cd ${replaceSpaceInPath(pastelInferencePath)} && npm run start`,
-    function (error) {
-      log.log(
-        'startInitialInference - ',
-        `cd ${replaceSpaceInPath(pastelInferencePath)} && npm run start`,
-      )
-      if (error) {
-        mainWindow?.webContents?.send(
-          'start_inference_error',
-          JSON.stringify(error?.message),
-        )
-        log.error('Start Initial Inference error:', error)
-        try {
-          tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
-            function (inUse) {
-              if (inUse) {
-                kill(inferenceClient.staticPort)
-              }
-            },
-            function (err) {
-              log.error('Kill port:', err.message)
-            },
-          )
-        } catch (error) {
-          log.error('Kill port:', error.message)
-        }
-        setTimeout(() => {
-          startInitialInference(pastelInferencePath, mainWindow)
-        }, 20000)
-      }
-    },
-  )
 }
 
 export const getDownloadUrl = (): { nodejs: string } => {
@@ -138,36 +101,33 @@ export const checkAndStartInitialInference = (
     pastelConf.locateAppDir,
     'pastel_inference_js_client-master',
   )
-  if (!fs.existsSync(pastelInferencePath)) {
-    setupInitialInference(pastelConf)
-    return
-  }
+
   tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
     function (inUse) {
       if (!inUse) {
-        cp.exec('node -v', function (error, stdout) {
-          log.log('checkAndStartInitialInference - ', stdout)
-          if (stdout.indexOf('v22') === -1) {
-            const { npmPath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
-            cp.execFile(
-              npmPath,
-              ['run start'],
-              { cwd: pastelInferencePath },
-              (error, stdout, stderr) => {
-                if (error) {
-                  log.error(`npm start failed: ${error}`)
-                  return
-                }
-                log.log(`npm start output: ${stdout}`)
-                if (stderr) {
-                  log.error(`npm start errors: ${stderr}`)
-                }
-              },
-            )
-          } else {
-            startInitialInference(pastelInferencePath, mainWindow)
-          }
-        })
+        const { wrapperScriptPath } = getNodeBinaryPath(
+          pastelConf.pasteldBasePath,
+        )
+        cp.execFile(
+          wrapperScriptPath,
+          ['start'],
+          { cwd: replaceSpaceInPath(pastelInferencePath) },
+          (error, stdout, stderr) => {
+            if (error) {
+              log.error(`npm install failed: ${error}`)
+              mainWindow?.webContents?.send(
+                'start_inference_error',
+                JSON.stringify(error?.message),
+              )
+              return
+            }
+            log.log(`npm install output: ${stdout}`)
+            if (stderr) {
+              log.error(`npm install errors: ${stderr}`)
+            }
+          },
+        )
+        log.log('npm start success')
       }
     },
     function (err) {
@@ -314,38 +274,36 @@ export const setupInitialInference = async (
       )
     }
 
-    cp.exec('node -v', function (error, stdout) {
-      log.log('setupInitialInference - ', stdout)
-      if (stdout.indexOf('v22') === -1) {
-        const { npmPath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
-        log.log('npmPath', npmPath)
-        log.log('pastelInferencePath', pastelInferencePath)
-        cp.execFile(
-          npmPath,
-          ['install'],
-          { cwd: pastelInferencePath },
-          (error, stdout, stderr) => {
-            if (error) {
-              log.error(`npm install failed: ${error}`)
-              return
-            }
-            log.log(`npm install output: ${stdout}`)
-            if (stderr) {
-              log.error(`npm install errors: ${stderr}`)
-            }
-          },
-        )
-      } else {
-        cp.exec(
-          `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
-          function (error) {
-            if (error) {
-              log.error('npm install error', error)
-            }
-          },
-        )
-      }
-    })
+    const { nodePath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
+    try {
+      cp.execFile(nodePath, ['-v'], (err, stdout) => {
+        if (err) {
+          log.error('Error checking Node.js version: ', err)
+          return
+        }
+        log.log(`Node.js version: ${stdout.trim()}`)
+      })
+      const { wrapperScriptPath } = getNodeBinaryPath(
+        pastelConf.pasteldBasePath,
+      )
+      cp.execFile(
+        wrapperScriptPath,
+        ['install'],
+        { cwd: replaceSpaceInPath(pastelInferencePath) },
+        (error, stdout, stderr) => {
+          if (error) {
+            log.error('npm install failed:', error)
+            return
+          }
+          log.log('npm install output:', stdout)
+          if (stderr) {
+            log.error('npm install errors: ', stderr)
+          }
+        },
+      )
+    } catch (error) {
+      log.error('npm install errors:', error)
+    }
   } catch (error) {
     log.error('setupInitialInference error: ', error)
   }

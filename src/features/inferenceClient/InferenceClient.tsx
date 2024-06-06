@@ -48,15 +48,15 @@ export default function InferenceClient(): JSX.Element {
         ['status'],
         pastelConf,
       )
-      setStatus(`Loading ${result?.AssetName || ''}`)
+      setStatus(`Master Node ${result?.AssetName || ''}`)
       if (result?.AssetName !== 'Finished') {
         setTimeout(() => {
           checkMasterNodeStatus()
-        }, 1000)
+        }, 3000)
       } else {
         ipcRenderer.send('start_initial_inference')
         checkStartInitialInference()
-        setStatus('Loading Waiting')
+        setStatus('Loading Starting')
       }
     } catch (error) {
       console.error('checkMasterNodeStatus', error)
