@@ -46,19 +46,38 @@ export const openNodejsFile = (pasteldBasePath: string): void => {
   }
 }
 
+const replaceSpaceInPath = (path: string) => {
+  if (os.platform() === 'darwin' || os.platform() === 'linux') {
+    return path.replace(/ /g, '\\ ')
+  }
+  return path
+}
+
 const getNodeBinaryPath = (pasteldBasePath: string) => {
   if (os.platform() === 'linux') {
     return {
-      nodePath: path.join(pasteldBasePath, 'node-linux', 'bin', 'node'),
-      npmPath: path.join(pasteldBasePath, 'node-linux', 'bin', 'npm'),
-      wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-linux.sh'),
+      nodePath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'node-linux', 'bin', 'node'),
+      ),
+      npmPath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'node-linux', 'bin', 'npm'),
+      ),
+      wrapperScriptPath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'run-npm-linux.sh'),
+      ),
     }
   }
   if (os.platform() === 'darwin') {
     return {
-      nodePath: path.join(pasteldBasePath, 'node-mac', 'bin', 'node'),
-      npmPath: path.join(pasteldBasePath, 'node-mac', 'bin', 'npm'),
-      wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-mac.sh'),
+      nodePath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'node-mac', 'bin', 'node'),
+      ),
+      npmPath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'node-mac', 'bin', 'npm'),
+      ),
+      wrapperScriptPath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'run-npm-mac.sh'),
+      ),
     }
   }
   return {
@@ -66,13 +85,6 @@ const getNodeBinaryPath = (pasteldBasePath: string) => {
     npmPath: path.join(pasteldBasePath, 'node-win', 'npm.cmd'),
     wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-win.bat'),
   }
-}
-
-const replaceSpaceInPath = (path: string) => {
-  if (os.platform() === 'darwin' || os.platform() === 'linux') {
-    return path.replace(/ /g, '\\ ')
-  }
-  return path
 }
 
 export const getDownloadUrl = (): { nodejs: string } => {
