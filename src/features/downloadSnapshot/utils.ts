@@ -84,6 +84,13 @@ export const downloadSnapshotFile = async ({
               fs.writeFileSync(pastelConfFile, newConfig.join('\n'))
             }
           }
+          try {
+            fs.unlinkSync(absPath)
+          } catch (error) {
+            throw new Error(
+              'utils downloadSnapshotFile request.get error: error deleting file',
+            )
+          }
           ipcRenderer.send('force_reload_pastel_app')
         } catch (error) {
           onProgress(`Error: ${error.message}`)

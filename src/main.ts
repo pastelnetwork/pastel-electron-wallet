@@ -4,7 +4,6 @@ import 'regenerator-runtime/runtime'
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
 import getFolderSize from 'get-folder-size'
-import cp from 'child_process'
 
 import {
   app,
@@ -43,8 +42,6 @@ import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
-  getDownloadUrl,
-  openNodejsFile,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
 
@@ -320,16 +317,12 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
-  setupInitialInference(
-    app.isPackaged,
-    {
-      locatePastelConf: locatePastelConf(),
-      locatePastelConfDir: locatePastelConfDir(),
-      pasteldBasePath: pasteldBasePath(),
-      locateAppDir: locateAppDir(),
-    },
-    mainWindow,
-  )
+  setupInitialInference({
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
+  })
 
   initServeStatic(app.isPackaged)
 
@@ -501,34 +494,10 @@ ipcMain.handle(
 )
 
 ipcMain.on('start_initial_inference', () => {
-  checkAndStartInitialInference(
-    app.isPackaged,
-    locatePastelConfDir(),
-    mainWindow,
-    {
-      locatePastelConf: locatePastelConf(),
-      locatePastelConfDir: locatePastelConfDir(),
-      pasteldBasePath: pasteldBasePath(),
-      locateAppDir: locateAppDir(),
-    },
-  )
-})
-
-ipcMain.on('check_nodejs', () => {
-  cp.exec('node -v', function (error, stdout) {
-    if (stdout.indexOf('v22') === -1) {
-      if (os.platform() !== 'linux') {
-        openNodejsFile(pasteldBasePath())
-      }
-      if (mainWindow?.webContents) {
-        mainWindow.webContents.send(
-          'install_required',
-          JSON.stringify({
-            name: 'Nodejs 22',
-            link: getDownloadUrl().nodejs,
-          }),
-        )
-      }
-    }
+  checkAndStartInitialInference(mainWindow, {
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
   })
 })

@@ -63,13 +63,8 @@ export default function InferenceClient(): JSX.Element {
     }
   }
 
-  const checkNodejs = () => {
-    ipcRenderer.send('check_nodejs')
-  }
-
   React.useEffect(() => {
     checkMasterNodeStatus()
-    checkNodejs()
 
     ipcRenderer.on('install_required', (event, data) => {
       if (data) {

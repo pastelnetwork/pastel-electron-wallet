@@ -8,5 +8,5 @@ export const squoosh = {
 
 export const inferenceClient = {
   staticPort: 5400,
-  socketPort: 5401,
+  socketPort: 3101,
 }
