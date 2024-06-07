@@ -10,6 +10,7 @@ import { ipcRenderer } from 'electron'
 import TextareaAutosize from 'react-textarea-autosize'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'
+import os from 'os'
 import PropTypes from 'prop-types'
 import styles from './Sidebar.module.css'
 import cstyles from './Common.module.css'
@@ -741,12 +742,14 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-chart-bar'
           />
-          <SidebarMenuItem
-            name='Inference Client'
-            routeName={routes.INFERENCE_CLIENT}
-            currentRoute={location.pathname}
-            iconname='fa-file-code'
-          />
+          {os.platform() !== 'darwin' ? (
+            <SidebarMenuItem
+              name='Inference Client'
+              routeName={routes.INFERENCE_CLIENT}
+              currentRoute={location.pathname}
+              iconname='fa-file-code'
+            />
+          ) : null}
           <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}
