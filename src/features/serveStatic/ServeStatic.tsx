@@ -273,39 +273,7 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
   if (os.platform() !== 'darwin') {
     return
   }
-  const extractNodeBinary = () => {
-    log.log('extractNodeBinary')
-    const nodeMacPath = path.join(pastelConf.pasteldBasePath, 'node-mac')
-    if (fs.existsSync(nodeMacPath)) {
-      log.log(nodeMacPath + ' is existed.')
-      return
-    }
-
-    const absPath = path.join(pastelConf.pasteldBasePath, 'node-mac.zip')
-    if (fs.existsSync(absPath)) {
-      log.log('Extracting node-mac to' + pastelConf.pasteldBasePath)
-      fs.createReadStream(absPath)
-        .pipe(
-          unzipper.Extract({
-            path: replaceSpaceInPath(pastelConf.pasteldBasePath),
-          }),
-        )
-        .on('close', () => {
-          log.log('Extractedx node-mac to' + pastelConf.pasteldBasePath)
-          copyNodeBinaryFolderForMac(pastelConf)
-          try {
-            fs.unlinkSync(absPath)
-          } catch (error) {
-            log.error('unlinkSync nodeMacPath', error)
-          }
-        })
-        .on('error', err => {
-          log.error(`Error extracting zip file: ${err}`)
-        })
-    }
-  }
   try {
-
     const output = cp.execSync('node -v').toString()
     if (output.trim().indexOf('v22') == -1) {
       copyNodeBinaryFolderForMac(pastelConf)
