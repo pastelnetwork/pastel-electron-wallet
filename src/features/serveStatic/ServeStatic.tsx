@@ -259,56 +259,11 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
   if (os.platform() !== 'darwin') {
     return
   }
-  const copyFiles = () => {
-    const { npmPath, nodePath, npxPath } = getNodeBinaryPath(
-      pastelConf.pasteldBasePath,
-    )
-    const copyNodeBinary = () => {
-      try {
-        fs.copyFileSync(nodePath, '/usr/local/bin')
-      } catch (error) {
-        log.error('copy Node Binary error', error)
-      }
-    }
-    const copyNpmAndNpxBinary = () => {
-      try {
-        fs.copyFileSync(npmPath, '/usr/local/bin')
-      } catch (error) {
-        log.error('copy Npm ninary error', error)
-      }
-      try {
-        fs.copyFileSync(npxPath, '/usr/local/bin')
-      } catch (error) {
-        log.error('copy Npx Binary error', error)
-      }
-    }
-    try {
-      try {
-        const output = cp.execSync(`${nodePath} -v`).toString()
-        if (output.trim().indexOf('v22') == -1) {
-          copyNodeBinary()
-        }
-      } catch (error) {
-        copyNodeBinary()
-      }
-      try {
-        const output = cp.execSync(`${npmPath} -v`).toString()
-        if (!output) {
-          copyNpmAndNpxBinary()
-        }
-      } catch (error) {
-        copyNpmAndNpxBinary()
-      }
-    } catch (error) {
-      log.error('checkAndFixNodeBinaryForMac error: ', error)
-    }
-  }
-  try {
-    const nodeMacPath = path.join(pastelConf.pasteldBasePath, 'node-mac')
+  const extractNodeBinary = () => {
     const absPath = path.join(pastelConf.pasteldBasePath, 'node-mac.zip')
-    if (!fs.existsSync(nodeMacPath) && fs.existsSync(absPath)) {
+    if (fs.existsSync(absPath)) {
       fs.createReadStream(absPath)
-        .pipe(unzipper.Extract({ path: pastelConf.pasteldBasePath }))
+        .pipe(unzipper.Extract({ path: '/usr/local/' }))
         .on('close', () => {
           log.log('Extraction nodeMacPath complete')
           try {
@@ -316,16 +271,21 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
           } catch (error) {
             log.error('unlinkSync nodeMacPath', error)
           }
-          copyFiles()
         })
         .on('error', err => {
           log.error(`Error extracting zip file: ${err}`)
         })
-    } else {
-      copyFiles()
+    }
+  }
+  try {
+    const { nodePath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
+    const output = cp.execSync(`${nodePath} -v`).toString()
+    if (output.trim().indexOf('v22') == -1) {
+      extractNodeBinary()
     }
   } catch (error) {
-    log.error('unzip nodeMacPath', error)
+    extractNodeBinary()
+    log.error('Check Node.js version error: ', error)
   }
 }
 
