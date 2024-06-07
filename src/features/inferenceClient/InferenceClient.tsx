@@ -21,6 +21,7 @@ export default function InferenceClient(): JSX.Element {
   const [status, setStatus] = React.useState('')
   const [installRequired, setInstallRequired] = React.useState('')
   const [installUrl, setInstallUrl] = React.useState('')
+  const [isError, setError] = React.useState(false)
 
   const checkStartInitialInference = () => {
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
@@ -33,6 +34,7 @@ export default function InferenceClient(): JSX.Element {
           setStatus('success')
           setInstallRequired('')
           setInstallUrl('')
+          setError(false)
         }
       },
       function (err) {
@@ -77,6 +79,7 @@ export default function InferenceClient(): JSX.Element {
     ipcRenderer.on('start_inference_error', (event, data) => {
       if (data) {
         setStatus(JSON.parse(data))
+        setError(true)
       }
     })
   }, [])
@@ -87,9 +90,14 @@ export default function InferenceClient(): JSX.Element {
     }
   }
 
+  const handleReloadInferenceClient = () => {
+    setError(false)
+    ipcRenderer.send('reload_inference_client')
+  }
+
   if (status !== 'success') {
     return (
-      <div className={styles.textWrap}>
+      <div className={styles.wrapper}>
         <div className={cx(styles.textWrap, styles.textWrapPadding)}>
           {status} ...
         </div>
@@ -110,6 +118,18 @@ export default function InferenceClient(): JSX.Element {
               </span>{' '}
               to download and install the Node.js version 22.2.0.
             </p>
+          </div>
+        ) : null}
+
+        {isError ? (
+          <div className={styles.reloadInferenceClientWrapper}>
+            <button
+              type='button'
+              className={cx(dstyles.btn, cstyles.primaryButton, styles.btn)}
+              onClick={handleReloadInferenceClient}
+            >
+              Reload Inference Client
+            </button>
           </div>
         ) : null}
       </div>

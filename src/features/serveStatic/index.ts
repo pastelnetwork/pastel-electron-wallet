@@ -4,6 +4,7 @@ import initServeStatic, {
   setupInitialInference,
   getDownloadUrl,
   openNodejsFile,
+  handleReloadInferenceClient,
 } from './ServeStatic'
 
 export {
@@ -12,6 +13,7 @@ export {
   checkAndStartInitialInference,
   setupInitialInference,
   openNodejsFile,
+  handleReloadInferenceClient,
 }
 
 export default initServeStatic

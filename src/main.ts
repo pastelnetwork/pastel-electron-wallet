@@ -42,6 +42,7 @@ import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
+  handleReloadInferenceClient,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
 
@@ -495,6 +496,15 @@ ipcMain.handle(
 
 ipcMain.on('start_initial_inference', () => {
   checkAndStartInitialInference(mainWindow, {
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
+  })
+})
+
+ipcMain.on('reload_inference_client', () => {
+  handleReloadInferenceClient(mainWindow, {
     locatePastelConf: locatePastelConf(),
     locatePastelConfDir: locatePastelConfDir(),
     pasteldBasePath: pasteldBasePath(),

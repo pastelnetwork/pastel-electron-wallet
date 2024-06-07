@@ -1,2 +1,0 @@
-#!/Applications/Pastel\ Wallet\ Fullnode.app/Contents/Resources/node-mac/bin/node
-require('../lib/cli.js')(process)
