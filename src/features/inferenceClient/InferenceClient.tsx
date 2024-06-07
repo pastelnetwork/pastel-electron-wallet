@@ -93,6 +93,7 @@ export default function InferenceClient(): JSX.Element {
   const handleReloadInferenceClient = () => {
     setError(false)
     ipcRenderer.send('reload_inference_client')
+    setStatus('Loading Inference Client')
   }
 
   if (status !== 'success') {

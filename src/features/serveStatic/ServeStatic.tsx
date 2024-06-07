@@ -30,24 +30,6 @@ interface IPastelConfProps {
   locateAppDir: string
 }
 
-export const openNodejsFile = (pasteldBasePath: string): void => {
-  try {
-    if (os.platform() === 'linux') {
-      cp.exec(
-        'curl -fsSL https://fnm.vercel.app/install | bash && fnm use --install-if-missing 22',
-      )
-      return
-    }
-    if (os.platform() === 'darwin') {
-      cp.exec(`${path.join(pasteldBasePath, 'node-mac.pkg')}`)
-      return
-    }
-    cp.exec(`${path.join(pasteldBasePath, 'node-win.msi')}`)
-  } catch (error) {
-    log.error('Open Nodejs file error:', error)
-  }
-}
-
 const replaceSpaceInPath = (path: string) => {
   if (os.platform() === 'darwin' || os.platform() === 'linux') {
     return path.replace(/ /g, '\\ ')
@@ -58,12 +40,6 @@ const replaceSpaceInPath = (path: string) => {
 const getNodeBinaryPath = (pasteldBasePath: string) => {
   if (os.platform() === 'linux') {
     return {
-      nodePath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-linux', 'bin', 'node'),
-      ),
-      npxPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-linux', 'bin', 'npx'),
-      ),
       npmPath: replaceSpaceInPath(
         path.join(pasteldBasePath, 'node-linux', 'bin', 'npm'),
       ),
@@ -74,12 +50,6 @@ const getNodeBinaryPath = (pasteldBasePath: string) => {
   }
   if (os.platform() === 'darwin') {
     return {
-      nodePath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-mac', 'bin', 'node'),
-      ),
-      npxPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-mac', 'bin', 'npx'),
-      ),
       npmPath: replaceSpaceInPath(
         path.join(pasteldBasePath, 'node-mac', 'bin', 'npm'),
       ),
@@ -89,28 +59,8 @@ const getNodeBinaryPath = (pasteldBasePath: string) => {
     }
   }
   return {
-    nodePath: path.join(pasteldBasePath, 'node-win', 'node.exe'),
-    npxPath: path.join(pasteldBasePath, 'node-win', 'npx.cmd'),
     npmPath: path.join(pasteldBasePath, 'node-win', 'npm.cmd'),
     wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-win.bat'),
-  }
-}
-
-export const getDownloadUrl = (): { nodejs: string } => {
-  if (os.platform() === 'darwin') {
-    return {
-      nodejs: 'https://nodejs.org/en/download/prebuilt-installer',
-    }
-  }
-
-  if (os.platform() === 'linux') {
-    return {
-      nodejs: 'https://nodejs.org/en/download/package-manager',
-    }
-  }
-
-  return {
-    nodejs: 'https://nodejs.org/en/download/prebuilt-installer',
   }
 }
 
@@ -322,7 +272,7 @@ export const setupInitialInference = async (
     r.on('response', resp => {
       if (resp.statusCode !== 200) {
         throw new Error(
-          'utils checkHashAndDownloadParams request.get error: can not download file',
+          'utils pastel_inference_js_client request.get error: can not download file',
         )
       }
 
@@ -346,10 +296,10 @@ export const setupInitialInference = async (
           await fs.promises.unlink(absPath)
         } catch (error) {
           throw new Error(
-            'utils downloadPastelInferenceJsClient request.get error: error deleting file',
+            'utils pastel_inference_js_client request.get error: error deleting file',
           )
         }
-        reject(`utils downloadPastelInferenceJsClient error: ${e.message}`)
+        reject(`utils pastel_inference_js_client error: ${e.message}`)
       })
     })
 
