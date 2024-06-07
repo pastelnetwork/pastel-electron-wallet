@@ -6,7 +6,7 @@ function getExtraResource() {
   const p = os.platform()
   switch (p) {
     case 'darwin':
-      return ['./static/bin/pasteld-mac', './static/bin/node-mac.zip']
+      return ['./static/bin/pasteld-mac', './static/bin/node-mac']
     case 'linux':
       if (process.argv[3] === 'win32') {
         return [
