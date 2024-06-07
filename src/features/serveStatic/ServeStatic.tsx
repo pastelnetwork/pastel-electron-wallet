@@ -278,8 +278,7 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
     }
   }
   try {
-    const { nodePath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
-    const output = cp.execSync(`${nodePath} -v`).toString()
+    const output = cp.execSync('node -v').toString()
     if (output.trim().indexOf('v22') == -1) {
       extractNodeBinary()
     }
