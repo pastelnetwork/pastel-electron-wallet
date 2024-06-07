@@ -205,6 +205,70 @@ const checkUpdatePastelInferenceJsClient = async (
   }
 }
 
+const copyNodeBinaryFolderForMac = (pastelConf: IPastelConfProps) => {
+  try {
+    const sourceFolder = replaceSpaceInPath(
+      path.join(pastelConf.pasteldBasePath, 'node-mac'),
+    )
+    if (fs.existsSync(sourceFolder)) {
+      const destinationFolder = 'usr/local'
+      const binChild = cp.spawn(
+        'sh',
+        ['-c', `sudo -S cp ${sourceFolder}/bin ${destinationFolder}`],
+        { stdio: 'inherit' },
+      )
+      binChild.on('exit', code => {
+        if (code === 0) {
+          log.log('bin folder copied successfully.')
+        } else {
+          log.error('Error copying bin folder:', code)
+        }
+      })
+
+      const includeChild = cp.spawn(
+        'sh',
+        ['-c', `sudo -S cp ${sourceFolder}/include ${destinationFolder}`],
+        { stdio: 'inherit' },
+      )
+      includeChild.on('exit', code => {
+        if (code === 0) {
+          log.log('include folder copied successfully.')
+        } else {
+          log.error('Error copying include folder:', code)
+        }
+      })
+
+      const libChild = cp.spawn(
+        'sh',
+        ['-c', `sudo -S cp ${sourceFolder}/lib ${destinationFolder}`],
+        { stdio: 'inherit' },
+      )
+      libChild.on('exit', code => {
+        if (code === 0) {
+          log.log('lib folder copied successfully.')
+        } else {
+          log.error('Error copying lib folder:', code)
+        }
+      })
+
+      const shareChild = cp.spawn(
+        'sh',
+        ['-c', `sudo -S cp ${sourceFolder}/share ${destinationFolder}`],
+        { stdio: 'inherit' },
+      )
+      shareChild.on('exit', code => {
+        if (code === 0) {
+          log.log('share folder copied successfully.')
+        } else {
+          log.error('Error copying share folder:', code)
+        }
+      })
+    }
+  } catch (error) {
+    log.error('Copy Node.js files error', error)
+  }
+}
+
 const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
   if (os.platform() !== 'darwin') {
     return
@@ -213,9 +277,14 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
     const absPath = path.join(pastelConf.pasteldBasePath, 'node-mac.zip')
     if (fs.existsSync(absPath)) {
       fs.createReadStream(absPath)
-        .pipe(unzipper.Extract({ path: '/usr/local/' }))
+        .pipe(
+          unzipper.Extract({
+            path: replaceSpaceInPath(pastelConf.pasteldBasePath),
+          }),
+        )
         .on('close', () => {
           log.log('Extraction nodeMacPath complete')
+          copyNodeBinaryFolderForMac(pastelConf)
           try {
             fs.unlinkSync(absPath)
           } catch (error) {
@@ -252,7 +321,7 @@ export const setupInitialInference = async (
     if (fs.existsSync(pastelInferencePath)) {
       if (!fs.existsSync(path.join(pastelInferencePath, 'node_modules'))) {
         try {
-          fs.rmSync(pastelInferencePath, { recursive: true, force: true })
+          rimrafSync(pastelInferencePath)
         } catch (error) {
           log.error('Delete pastelInferencePath error - ', error)
         }
