@@ -211,7 +211,7 @@ const copyNodeBinaryFolderForMac = (pastelConf: IPastelConfProps) => {
       path.join(pastelConf.pasteldBasePath, 'node-mac'),
     )
     if (fs.existsSync(sourceFolder)) {
-      const destinationFolder = 'usr/local'
+      const destinationFolder = '/usr/local'
       const binChild = cp.spawn(
         'sh',
         ['-c', `sudo -S cp ${sourceFolder}/bin ${destinationFolder}`],
@@ -274,8 +274,16 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
     return
   }
   const extractNodeBinary = () => {
+    log.log('extractNodeBinary')
+    const nodeMacPath = path.join(pastelConf.pasteldBasePath, 'node-mac')
+    if (fs.existsSync(nodeMacPath)) {
+      log.log(nodeMacPath + ' is existed.')
+      return
+    }
+
     const absPath = path.join(pastelConf.pasteldBasePath, 'node-mac.zip')
     if (fs.existsSync(absPath)) {
+      log.log('Extracting node-mac to' + pastelConf.pasteldBasePath)
       fs.createReadStream(absPath)
         .pipe(
           unzipper.Extract({
@@ -283,7 +291,7 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
           }),
         )
         .on('close', () => {
-          log.log('Extraction nodeMacPath complete')
+          log.log('Extractedx node-mac to' + pastelConf.pasteldBasePath)
           copyNodeBinaryFolderForMac(pastelConf)
           try {
             fs.unlinkSync(absPath)
@@ -297,12 +305,14 @@ const checkAndFixNodeBinaryForMac = (pastelConf: IPastelConfProps) => {
     }
   }
   try {
+    extractNodeBinary()
+
     const output = cp.execSync('node -v').toString()
     if (output.trim().indexOf('v22') == -1) {
-      extractNodeBinary()
+      copyNodeBinaryFolderForMac(pastelConf)
     }
   } catch (error) {
-    extractNodeBinary()
+    copyNodeBinaryFolderForMac(pastelConf)
     log.error('Check Node.js version error: ', error)
   }
 }
