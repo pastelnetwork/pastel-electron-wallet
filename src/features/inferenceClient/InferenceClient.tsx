@@ -82,6 +82,12 @@ export default function InferenceClient(): JSX.Element {
         setError(true)
       }
     })
+
+    ipcRenderer.on('start_inference_status', (event, data) => {
+      if (data) {
+        setStatus(JSON.parse(data))
+      }
+    })
   }, [])
 
   const handleOpenLink = (url: string) => {

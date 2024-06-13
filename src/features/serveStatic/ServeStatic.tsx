@@ -14,6 +14,7 @@ import dayjs from 'dayjs'
 import kill from 'kill-port'
 import { rimrafSync } from 'rimraf'
 import unzipper from 'unzipper'
+import sudo from 'sudo-prompt'
 
 import { glitch, squoosh, inferenceClient } from '../constants/ServeStatic'
 
@@ -28,6 +29,10 @@ interface IPastelConfProps {
   locatePastelConfDir: string
   pasteldBasePath: string
   locateAppDir: string
+}
+
+const options = {
+  name: 'Pastel Network',
 }
 
 const replaceSpaceInPath = (path: string) => {
@@ -69,35 +74,81 @@ const startInferenceClientOnMac = (
   pastelInferencePath: string,
   mainWindow: BrowserWindow | null,
 ) => {
-  const { npmPath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
+  mainWindow?.webContents?.send(
+    'start_inference_status',
+    JSON.stringify('Checking the environment to start the inference client'),
+  )
   cp.exec('node -v', function (error, stdout) {
     if (error || stdout.indexOf('v22') === -1) {
-      cp.exec(
-        `cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} start`,
-        function (error, stdout, stderr) {
+      mainWindow?.webContents?.send(
+        'start_inference_status',
+        JSON.stringify('Installing dependencies for the inference client'),
+      )
+      sudo.exec(
+        `cp -r ${replaceSpaceInPath(
+          path.join(pastelConf.pasteldBasePath, 'node-mac/'),
+        )} /usr/local`,
+        options,
+        function (error, stdout) {
           if (error) {
-            log.error(`npm start failed: ${error}`)
+            log.error('Install Nodejs error: ', error)
             mainWindow?.webContents?.send(
               'start_inference_error',
               JSON.stringify(error?.message),
             )
             return
           }
-          log.log(`npm start output: ${stdout}`)
-          let pastelInferenceOutput = JSON.stringify(stdout)
+          cp.exec(
+            `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+            function (error, stdout) {
+              if (error) {
+                log.error('npm install failed:', error)
+                mainWindow?.webContents?.send(
+                  'start_inference_error',
+                  JSON.stringify(error?.message),
+                )
+                return
+              }
+              log.log('npm install output:', stdout)
+              mainWindow?.webContents?.send(
+                'start_inference_status',
+                JSON.stringify('Loading Pastel Inference Client'),
+              )
+              cp.exec(
+                `cd ${replaceSpaceInPath(pastelInferencePath)} && npm start`,
+                function (error, stdout, stderr) {
+                  if (error) {
+                    log.error(`npm start failed: ${error}`)
+                    mainWindow?.webContents?.send(
+                      'start_inference_error',
+                      JSON.stringify(error?.message),
+                    )
+                    return
+                  }
+                  log.log(`npm start output: ${stdout}`)
+                  let pastelInferenceOutput = JSON.stringify(stdout)
 
-          if (stderr) {
-            log.error(`npm start errors: ${stderr}`)
-            pastelInferenceOutput = JSON.stringify(stderr)
-          }
+                  if (stderr) {
+                    log.error(`npm start errors: ${stderr}`)
+                    pastelInferenceOutput = JSON.stringify(stderr)
+                  }
 
-          mainWindow?.webContents?.send(
-            'start_inference_error',
-            pastelInferenceOutput,
+                  mainWindow?.webContents?.send(
+                    'start_inference_error',
+                    pastelInferenceOutput,
+                  )
+                },
+              )
+            },
           )
+          log.log('stdout: ' + stdout)
         },
       )
     } else {
+      mainWindow?.webContents?.send(
+        'start_inference_status',
+        JSON.stringify('Loading Pastel Inference Client'),
+      )
       cp.exec(
         `cd ${replaceSpaceInPath(pastelInferencePath)} && npm start`,
         function (error, stdout, stderr) {
@@ -227,8 +278,8 @@ const checkUpdatePastelInferenceJsClient = async (
   pastelInferencePath: string,
 ) => {
   try {
-    if (fs.existsSync(pastelInferencePath)) {
-      const stats = fs.statSync(pastelInferencePath)
+    if (fs.existsSync(path.join(pastelInferencePath, ' package.json'))) {
+      const stats = fs.statSync(path.join(pastelInferencePath, ' package.json'))
       const now = dayjs()
       const target = dayjs(stats.birthtime)
       const days = now.diff(target, 'day')
@@ -246,24 +297,36 @@ const installNodeModuleForInferenceClientOnMac = (
   pastelInferencePath: string,
   callBack?: () => void,
 ) => {
-  const { npmPath } = getNodeBinaryPath(pastelConf.pasteldBasePath)
   cp.exec('node -v', function (error, stdout) {
     if (error || stdout.indexOf('v22') === -1) {
-      cp.exec(
-        `cd ${replaceSpaceInPath(pastelInferencePath)} && ${npmPath} install`,
-        function (error, stdout, stderr) {
+      sudo.exec(
+        `cp -r ${replaceSpaceInPath(
+          path.join(pastelConf.pasteldBasePath, 'node-mac/'),
+        )} /usr/local`,
+        options,
+        function (error, stdout) {
           if (error) {
-            log.error('npm install failed:', error)
+            log.error('Install Nodejs error: ', error)
             return
           }
-          log.log('npm install output:', stdout)
-          if (callBack) {
-            callBack()
-          }
-          if (stderr) {
-            log.error('npm install errors: ', stderr)
-            return
-          }
+          cp.exec(
+            `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+            function (error, stdout, stderr) {
+              if (error) {
+                log.error('npm install failed:', error)
+                return
+              }
+              log.log('npm install output:', stdout)
+              if (callBack) {
+                callBack()
+              }
+              if (stderr) {
+                log.error('npm install errors: ', stderr)
+                return
+              }
+            },
+          )
+          log.log('stdout: ' + stdout)
         },
       )
     } else {

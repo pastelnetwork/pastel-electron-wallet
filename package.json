@@ -99,6 +99,7 @@
     "sql.js": "pastelnetwork/sql.js#230351f",
     "squoosh": "pastelnetwork/squoosh#b9388e1",
     "styled-components": "5.3.0",
+    "sudo-prompt": "9.2.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@2.0.4",
     "tar": "7.2.0",
     "tcp-port-used": "1.0.2",
