@@ -89,7 +89,7 @@ const startInferenceClientOnMac = (
           path.join(pastelConf.pasteldBasePath, 'node-mac/'),
         )} /usr/local`,
         options,
-        function (error, stdout) {
+        function (error) {
           if (error) {
             log.error('Install Nodejs error: ', error)
             mainWindow?.webContents?.send(
@@ -98,50 +98,7 @@ const startInferenceClientOnMac = (
             )
             return
           }
-          cp.exec(
-            `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
-            function (error, stdout) {
-              if (error) {
-                log.error('npm install failed:', error)
-                mainWindow?.webContents?.send(
-                  'start_inference_error',
-                  JSON.stringify(error?.message),
-                )
-                return
-              }
-              log.log('npm install output:', stdout)
-              mainWindow?.webContents?.send(
-                'start_inference_status',
-                JSON.stringify('Loading Pastel Inference Client'),
-              )
-              cp.exec(
-                `cd ${replaceSpaceInPath(pastelInferencePath)} && npm start`,
-                function (error, stdout, stderr) {
-                  if (error) {
-                    log.error(`npm start failed: ${error}`)
-                    mainWindow?.webContents?.send(
-                      'start_inference_error',
-                      JSON.stringify(error?.message),
-                    )
-                    return
-                  }
-                  log.log(`npm start output: ${stdout}`)
-                  let pastelInferenceOutput = JSON.stringify(stdout)
-
-                  if (stderr) {
-                    log.error(`npm start errors: ${stderr}`)
-                    pastelInferenceOutput = JSON.stringify(stderr)
-                  }
-
-                  mainWindow?.webContents?.send(
-                    'start_inference_error',
-                    pastelInferenceOutput,
-                  )
-                },
-              )
-            },
-          )
-          log.log('stdout: ' + stdout)
+          handleReloadInferenceClient(mainWindow, pastelConf)
         },
       )
     } else {
