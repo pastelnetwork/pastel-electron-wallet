@@ -85,7 +85,7 @@ const startInferenceClientOnMac = (
         JSON.stringify('Installing dependencies for the inference client'),
       )
       sudo.exec(
-        `cp -r ${replaceSpaceInPath(
+        `rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'node-mac/'),
         )} /usr/local`,
         options,
@@ -300,7 +300,7 @@ const installNodeModuleForInferenceClientOnMac = (
   cp.exec('node -v', function (error, stdout) {
     if (error || stdout.indexOf('v22') === -1) {
       sudo.exec(
-        `cp -r ${replaceSpaceInPath(
+        `rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'node-mac/'),
         )} /usr/local`,
         options,

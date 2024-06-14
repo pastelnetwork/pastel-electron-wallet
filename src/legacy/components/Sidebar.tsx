@@ -742,14 +742,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-chart-bar'
           />
-          {os.platform() !== 'darwin' ? (
-            <SidebarMenuItem
-              name='Inference Client'
-              routeName={routes.INFERENCE_CLIENT}
-              currentRoute={location.pathname}
-              iconname='fa-file-code'
-            />
-          ) : null}
+          <SidebarMenuItem
+            name='Inference Client'
+            routeName={routes.INFERENCE_CLIENT}
+            currentRoute={location.pathname}
+            iconname='fa-file-code'
+          />
           <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}
