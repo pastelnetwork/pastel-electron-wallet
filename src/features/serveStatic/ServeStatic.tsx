@@ -89,16 +89,58 @@ const startInferenceClientOnMac = (
           path.join(pastelConf.pasteldBasePath, 'node-mac/'),
         )} /usr/local`,
         options,
-        function (error) {
+        function (error, stdout) {
           if (error) {
             log.error('Install Nodejs error: ', error)
-            mainWindow?.webContents?.send(
-              'start_inference_error',
-              JSON.stringify(error?.message),
-            )
-            return
           }
-          handleReloadInferenceClient(mainWindow, pastelConf)
+
+          setTimeout(function() {
+            cp.exec(
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+              function (error, stdout) {
+                if (error) {
+                  log.error('npm install failed:', error)
+                  mainWindow?.webContents?.send(
+                    'start_inference_error',
+                    JSON.stringify(error?.message),
+                  )
+                  return
+                }
+                log.log('npm install output:', stdout)
+                mainWindow?.webContents?.send(
+                  'start_inference_status',
+                  JSON.stringify('Loading Pastel Inference Client'),
+                )
+                cp.exec(
+                  `cd ${replaceSpaceInPath(pastelInferencePath)} && npm start`,
+                  function (error, stdout, stderr) {
+                    if (error) {
+                      log.error(`npm start failed: ${error}`)
+                      mainWindow?.webContents?.send(
+                        'start_inference_error',
+                        JSON.stringify(error?.message),
+                      )
+                      return
+                    }
+                    log.log(`npm start output: ${stdout}`)
+                    let pastelInferenceOutput = JSON.stringify(stdout)
+  
+                    if (stderr) {
+                      log.error(`npm start errors: ${stderr}`)
+                      pastelInferenceOutput = JSON.stringify(stderr)
+                    }
+  
+                    mainWindow?.webContents?.send(
+                      'start_inference_error',
+                      pastelInferenceOutput,
+                    )
+                  },
+                )
+              },
+            )
+          }, 5000);
+
+          log.log('stdout: ' + stdout)
         },
       )
     } else {
@@ -264,25 +306,28 @@ const installNodeModuleForInferenceClientOnMac = (
         function (error, stdout) {
           if (error) {
             log.error('Install Nodejs error: ', error)
-            return
           }
-          cp.exec(
-            `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
-            function (error, stdout, stderr) {
-              if (error) {
-                log.error('npm install failed:', error)
-                return
-              }
-              log.log('npm install output:', stdout)
-              if (callBack) {
-                callBack()
-              }
-              if (stderr) {
-                log.error('npm install errors: ', stderr)
-                return
-              }
-            },
-          )
+
+          setTimeout(function(){
+            cp.exec(
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+              function (error, stdout, stderr) {
+                if (error) {
+                  log.error('npm install failed:', error)
+                  return
+                }
+                log.log('npm install output:', stdout)
+                if (callBack) {
+                  callBack()
+                }
+                if (stderr) {
+                  log.error('npm install errors: ', stderr)
+                  return
+                }
+              },
+            )
+          }, 5000);
+          
           log.log('stdout: ' + stdout)
         },
       )
