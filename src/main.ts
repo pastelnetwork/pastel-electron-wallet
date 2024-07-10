@@ -41,7 +41,7 @@ import {
 import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
-  setupInitialInference,
+  // setupInitialInference,
   handleReloadInferenceClient,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
@@ -141,7 +141,10 @@ const locateAppDir = () => {
   return app.getPath('appData')
 }
 
-const snapshotFile = path.join(locateAppDir(), 'snapshot-690894-mainnet.tar.gz')
+const snapshotFile = path.join(
+  locateAppDir(),
+  'snapshot-707220-with-txindex.tar.gz',
+)
 
 const createWindow = async () => {
   const w = new BrowserWindow({
@@ -318,12 +321,12 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
-  setupInitialInference({
-    locatePastelConf: locatePastelConf(),
-    locatePastelConfDir: locatePastelConfDir(),
-    pasteldBasePath: pasteldBasePath(),
-    locateAppDir: locateAppDir(),
-  })
+  // setupInitialInference({
+  //   locatePastelConf: locatePastelConf(),
+  //   locatePastelConfDir: locatePastelConfDir(),
+  //   pasteldBasePath: pasteldBasePath(),
+  //   locateAppDir: locateAppDir(),
+  // })
 
   initServeStatic(app.isPackaged)
 
