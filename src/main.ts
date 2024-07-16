@@ -41,7 +41,7 @@ import {
 import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
-  // setupInitialInference,
+  setupInitialInference,
   handleReloadInferenceClient,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
@@ -318,12 +318,12 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
-  // setupInitialInference({
-  //   locatePastelConf: locatePastelConf(),
-  //   locatePastelConfDir: locatePastelConfDir(),
-  //   pasteldBasePath: pasteldBasePath(),
-  //   locateAppDir: locateAppDir(),
-  // })
+  setupInitialInference({
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
+  })
 
   initServeStatic(app.isPackaged)
 
