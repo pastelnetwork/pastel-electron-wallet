@@ -88,6 +88,9 @@ Allow using native addons when using the permission model.
 .It Fl -allow-child-process
 Allow spawning process when using the permission model.
 .
+.It Fl -allow-wasi
+Allow execution of WASI when using the permission model.
+.
 .It Fl -allow-worker
 Allow creating worker threads when using the permission model.
 .
@@ -185,11 +188,23 @@ Use this flag to enable ShadowRealm support.
 .It Fl -experimental-test-coverage
 Enable code coverage in the test runner.
 .
+.It Fl -experimental-test-module-mocks
+Enable module mocking in the test runner.
+.
+.It Fl -experimental-test-snapshots
+Enable snapshot testing in the test runner.
+.
+.It Fl -experimental-eventsource
+Enable experimental support for the EventSource Web API.
+.
 .It Fl -no-experimental-fetch
 Disable experimental support for the Fetch API.
 .
 .It Fl -no-experimental-websocket
 Disable experimental support for the WebSocket API.
+.
+.It Fl -experimental-webstorage
+Enable experimental support for the Web Storage API.
 .
 .It Fl -no-experimental-global-customevent
 Disable exposition of the CustomEvent on the global scope.
@@ -309,6 +324,9 @@ other platforms, but the performance impact may be severe.
 .Pp
 This flag is inherited from V8 and is subject to change upstream. It may
 disappear in a non-semver-major release.
+.
+.It Fl -localstorage-file Ns = Ns Ar file
+The file used to store localStorage data.
 .
 .It Fl -max-http-header-size Ns = Ns Ar size
 Specify the maximum size of HTTP headers in bytes. Defaults to 16 KiB.
@@ -453,6 +471,9 @@ whose name matches the provided pattern.
 .
 .It Fl -test-timeout
 A number of milliseconds the test execution will fail after.
+.
+.It Fl -test-update-snapshots
+Regenerates the snapshot file used by the test runner for snapshot testing.
 .
 .It Fl -throw-deprecation
 Throw errors for deprecations.
@@ -797,8 +818,3 @@ Documentation:
 .Pp
 GitHub repository and issue tracker:
 .Sy https://github.com/nodejs/node
-.
-.Pp
-IRC (general questions):
-.Sy "libera.chat #node.js"
-(unofficial)

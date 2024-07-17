@@ -180,6 +180,8 @@ For information about the governance of the Node.js project, see
   **Joyee Cheung** <<joyeec9h3@gmail.com>> (she/her)
 * [legendecas](https://github.com/legendecas) -
   **Chengzhong Wu** <<legendecas@gmail.com>> (he/him)
+* [marco-ippolito](https://github.com/marco-ippolito) -
+  **Marco Ippolito** <<marcoippolito54@gmail.com>> (he/him)
 * [mcollina](https://github.com/mcollina) -
   **Matteo Collina** <<matteo.collina@gmail.com>> (he/him)
 * [mhdawson](https://github.com/mhdawson) -
@@ -431,6 +433,8 @@ For information about the governance of the Node.js project, see
   **Paolo Insogna** <<paolo@cowtech.it>> (he/him)
 * [srl295](https://github.com/srl295) -
   **Steven R Loomis** <<srl295@gmail.com>>
+* [StefanStojanovic](https://github.com/StefanStojanovic) -
+  **Stefan Stojanovic** <<stefan.stojanovic@janeasystems.com>> (he/him)
 * [sxa](https://github.com/sxa) -
   **Stewart X Addison** <<sxa@redhat.com>> (he/him)
 * [targos](https://github.com/targos) -
@@ -451,10 +455,6 @@ For information about the governance of the Node.js project, see
   **Mohammed Keyvanzadeh** <<mohammadkeyvanzade94@gmail.com>> (he/him)
 * [watilde](https://github.com/watilde) -
   **Daijiro Wachi** <<daijiro.wachi@gmail.com>> (he/him)
-* [XadillaX](https://github.com/XadillaX) -
-  **Khaidi Chu** <<i@2333.moe>> (he/him)
-* [yashLadha](https://github.com/yashLadha) -
-  **Yash Ladha** <<yash@yashladha.in>> (he/him)
 * [zcbenz](https://github.com/zcbenz) -
   **Cheng Zhao** <<zcbenz@gmail.com>> (he/him)
 * [ZYSzys](https://github.com/ZYSzys) -
@@ -703,6 +703,10 @@ For information about the governance of the Node.js project, see
   **Thomas Watson** <<w@tson.dk>>
 * [whitlockjc](https://github.com/whitlockjc) -
   **Jeremy Whitlock** <<jwhitlock@apache.org>>
+* [XadillaX](https://github.com/XadillaX) -
+  **Khaidi Chu** <<i@2333.moe>> (he/him)
+* [yashLadha](https://github.com/yashLadha) -
+  **Yash Ladha** <<yash@yashladha.in>> (he/him)
 * [yhwang](https://github.com/yhwang) -
   **Yihong Wang** <<yh.wang@ibm.com>>
 * [yorkie](https://github.com/yorkie) -
