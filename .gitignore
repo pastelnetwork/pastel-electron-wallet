@@ -100,3 +100,5 @@ storybook-static
 .husky/post-commit
 .husky/post-merge
 .husky/pre-push
+
+!static/bin/**/*

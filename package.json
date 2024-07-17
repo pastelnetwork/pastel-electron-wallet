@@ -189,10 +189,10 @@
     "nan": "github:ajgassner/nan#electron-29-workaround"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "*.{ts,tsx},!public/dist/": [
       "eslint --max-warnings=0 --fix",
       "prettier --write"
     ],
-    "*.{js,html,css,scss,json,md}": "prettier --write"
+    "*.{js,html,css,scss,json,md},!public/dist/": "prettier --write"
   }
 }
