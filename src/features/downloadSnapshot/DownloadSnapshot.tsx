@@ -21,8 +21,8 @@ export default function DownloadSnapshot(): JSX.Element | null {
     downloadSnapshotFile({
       outputDir: locatePastelConfDir,
       url:
-        'https://download.pastel.network/snapshots/mainnet/snapshot-latest-mainnet.tar.gz',
-      fileName: 'snapshot-latest-mainnet.tar.gz',
+        'https://download.pastel.network/snapshots/mainnet/snapshot-latest-mainnet-txind.tar.gz',
+      fileName: 'snapshot-latest-mainnet-txind.tar.gz',
       onProgress: (currentStatus: string) => setStatus(currentStatus),
       pastelConf,
     })

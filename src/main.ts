@@ -141,7 +141,7 @@ const locateAppDir = () => {
   return app.getPath('appData')
 }
 
-const snapshotFile = path.join(locateAppDir(), 'snapshot-latest-mainnet.tar.gz')
+const snapshotFile = path.join(locateAppDir(), 'snapshot-latest-mainnet-txind.tar.gz')
 
 const createWindow = async () => {
   const w = new BrowserWindow({
