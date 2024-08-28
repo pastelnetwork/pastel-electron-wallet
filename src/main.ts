@@ -318,12 +318,12 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
-  setupInitialInference({
-    locatePastelConf: locatePastelConf(),
-    locatePastelConfDir: locatePastelConfDir(),
-    pasteldBasePath: pasteldBasePath(),
-    locateAppDir: locateAppDir(),
-  })
+  // setupInitialInference({
+  //   locatePastelConf: locatePastelConf(),
+  //   locatePastelConfDir: locatePastelConfDir(),
+  //   pasteldBasePath: pasteldBasePath(),
+  //   locateAppDir: locateAppDir(),
+  // })
 
   initServeStatic(app.isPackaged)
 
@@ -495,12 +495,12 @@ ipcMain.handle(
 )
 
 ipcMain.on('start_initial_inference', () => {
-  checkAndStartInitialInference(mainWindow, {
-    locatePastelConf: locatePastelConf(),
-    locatePastelConfDir: locatePastelConfDir(),
-    pasteldBasePath: pasteldBasePath(),
-    locateAppDir: locateAppDir(),
-  })
+  // checkAndStartInitialInference(mainWindow, {
+  //   locatePastelConf: locatePastelConf(),
+  //   locatePastelConfDir: locatePastelConfDir(),
+  //   pasteldBasePath: pasteldBasePath(),
+  //   locateAppDir: locateAppDir(),
+  // })
 })
 
 ipcMain.on('reload_inference_client', () => {
