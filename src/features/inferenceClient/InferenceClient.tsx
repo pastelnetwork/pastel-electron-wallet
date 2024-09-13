@@ -3,6 +3,7 @@ import { ipcRenderer, shell } from 'electron'
 import tcpPortUsed from 'tcp-port-used'
 import cx from 'classnames'
 
+import { useAppSelector } from '../../redux/hooks'
 import { rpc } from '../../api/pastel-rpc/rpc'
 import store from '../../redux/store'
 import { inferenceClient } from '../constants/ServeStatic'
@@ -22,6 +23,7 @@ export default function InferenceClient(): JSX.Element {
   const [installRequired, setInstallRequired] = React.useState('')
   const [installUrl, setInstallUrl] = React.useState('')
   const [isError, setError] = React.useState(false)
+  const { isConnected } = useAppSelector(state => state.downloadSnapshot)
 
   const checkStartInitialInference = () => {
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
@@ -66,8 +68,6 @@ export default function InferenceClient(): JSX.Element {
   }
 
   React.useEffect(() => {
-    checkMasterNodeStatus()
-
     ipcRenderer.on('install_required', (event, data) => {
       if (data) {
         const parseData = JSON.parse(data)
@@ -88,7 +88,15 @@ export default function InferenceClient(): JSX.Element {
         setStatus(JSON.parse(data))
       }
     })
-  }, [])
+  }, []);
+
+  React.useEffect(() => {
+    if (isConnected) {
+      checkMasterNodeStatus()
+    } else {
+      setStatus("Waiting for node to sync to 100% before Inference Client can be displayed...")
+    }
+  }, [isConnected])
 
   const handleOpenLink = (url: string) => {
     if (url) {
