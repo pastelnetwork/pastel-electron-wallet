@@ -94,7 +94,7 @@ export default function InferenceClient(): JSX.Element {
     if (isConnected) {
       checkMasterNodeStatus()
     } else {
-      setStatus("Waiting for node to sync to 100% before Inference Client can be displayed...")
+      setStatus("Waiting for node to sync to 100% before Inference Client can be displayed")
     }
   }, [isConnected])
 
