@@ -634,7 +634,7 @@ class Sidebar extends PureComponent<any, any> {
   }
 
   render() {
-    const { location, info, isDownloadSnapshot } = this.props
+    const { location, info, isDownloadSnapshot, openDownloadSnapshot, opened, setConnected, isClose } = this.props
     const {
       uriModalIsOpen,
       uriModalInputValue,
@@ -654,6 +654,11 @@ class Sidebar extends PureComponent<any, any> {
         progress = (info.verificationProgress * 100).toFixed(1)
       } else {
         state = 'CONNECTED'
+        setConnected();
+      }
+
+      if (info.verificationProgress < 0.9 && !opened && !isClose) {
+        openDownloadSnapshot();
       }
     }
 
@@ -742,12 +747,12 @@ class Sidebar extends PureComponent<any, any> {
             currentRoute={location.pathname}
             iconname='fa-chart-bar'
           />
-          {/* <SidebarMenuItem
+          <SidebarMenuItem
             name='Inference Client'
             routeName={routes.INFERENCE_CLIENT}
             currentRoute={location.pathname}
             iconname='fa-file-code'
-          /> */}
+          />
           <SidebarMenuItem
             name='Expert Console'
             routeName={routes.EXPERT_CONSOLE}

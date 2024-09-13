@@ -59,7 +59,7 @@ import {
   TransactionsInBlockOvertime,
 } from '../features/pastelStatistics'
 import { openUpdateToast } from '../features/updateToast'
-import { openDownloadSnapshot } from '../features/downloadSnapshot'
+import { openDownloadSnapshot, setConnected } from '../features/downloadSnapshot'
 import PastelUtils from '../common/utils/utils'
 import Creator from '../features/creator'
 import Collector from '../features/collector'
@@ -547,6 +547,13 @@ class RouteApp extends React.Component<any, any> {
                 isDownloadSnapshot={
                   store.getState().downloadSnapshot.isDownloadSnapshot
                 }
+                opened={
+                  store.getState().downloadSnapshot.opened
+                }
+                isClose={
+                  store.getState().downloadSnapshot.isClose
+                }
+                setConnected={this.props.setConnected}
               />
             </div>
           )}
@@ -757,5 +764,6 @@ export default connect(null, {
   openSquooshToolModal,
   openUpdateToast,
   openDownloadSnapshot,
+  setConnected,
   openGlitchImageModal,
 })(RouteApp)

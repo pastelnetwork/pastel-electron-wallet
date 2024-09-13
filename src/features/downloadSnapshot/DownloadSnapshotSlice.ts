@@ -3,11 +3,15 @@ import { createSlice } from '@reduxjs/toolkit'
 export interface IDownloadSnapshotState {
   opened: boolean
   isDownloadSnapshot: boolean
+  isConnected: boolean
+  isClose: boolean
 }
 
 const initialState: IDownloadSnapshotState = {
   opened: false,
   isDownloadSnapshot: false,
+  isConnected: false,
+  isClose: false,
 }
 
 export const downloadSnapshotSlice = createSlice({
@@ -23,6 +27,10 @@ export const downloadSnapshotSlice = createSlice({
     },
     closeDownloadSnapshot(state: IDownloadSnapshotState) {
       state.opened = false
+      state.isClose = true
+    },
+    setConnected(state: IDownloadSnapshotState) {
+      state.isConnected = true
     },
   },
 })
@@ -33,4 +41,5 @@ export const {
   openDownloadSnapshot,
   closeDownloadSnapshot,
   setDownloadSnapshot,
+  setConnected,
 } = downloadSnapshotSlice.actions

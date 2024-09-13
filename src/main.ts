@@ -290,7 +290,7 @@ const getPastelFolderSize = async () => {
   const info = await getFolderSize(locatePastelConfDir())
   if (!info.errors) {
     const totalSize = info.size / 1073741824 // ~ GB
-    if (totalSize < 2 && mainWindow) {
+    if (totalSize < 4 && mainWindow) {
       if (fs.existsSync(snapshotFile)) {
         fs.unlinkSync(snapshotFile)
       }
@@ -318,12 +318,12 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
 
-  // setupInitialInference({
-  //   locatePastelConf: locatePastelConf(),
-  //   locatePastelConfDir: locatePastelConfDir(),
-  //   pasteldBasePath: pasteldBasePath(),
-  //   locateAppDir: locateAppDir(),
-  // })
+  setupInitialInference({
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
+  })
 
   initServeStatic(app.isPackaged)
 
@@ -495,12 +495,12 @@ ipcMain.handle(
 )
 
 ipcMain.on('start_initial_inference', () => {
-  // checkAndStartInitialInference(mainWindow, {
-  //   locatePastelConf: locatePastelConf(),
-  //   locatePastelConfDir: locatePastelConfDir(),
-  //   pasteldBasePath: pasteldBasePath(),
-  //   locateAppDir: locateAppDir(),
-  // })
+  checkAndStartInitialInference(mainWindow, {
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
+  })
 })
 
 ipcMain.on('reload_inference_client', () => {

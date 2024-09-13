@@ -4,6 +4,7 @@ export type { IDownloadSnapshotState } from './DownloadSnapshotSlice'
 export {
   closeDownloadSnapshot,
   openDownloadSnapshot,
+  setConnected,
   setDownloadSnapshot,
   downloadSnapshotReducer,
 } from './DownloadSnapshotSlice'
