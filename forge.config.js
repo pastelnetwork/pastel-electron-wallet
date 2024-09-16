@@ -6,23 +6,23 @@ function getExtraResource() {
   const p = os.platform()
   switch (p) {
     case 'darwin':
-      return ['./static/bin/pasteld-mac', './static/bin/node-mac']
+      return ['./static/bin/node-mac', './static/bin/pastelup-mac']
     case 'linux':
       if (process.argv[3] === 'win32') {
         return [
-          './static/bin/pasteld-win.exe',
+          './static/bin/pastelup-win.exe',
           './static/bin/node-win',
           './static/bin/run-npm-win.bat',
         ]
       }
       return [
-        './static/bin/pasteld-linux',
+        './static/bin/pastelup-linux',
         './static/bin/node-linux',
         './static/bin/run-npm-linux.sh',
       ]
     case 'win32':
       return [
-        './static/bin/pasteld-win.exe',
+        './static/bin/pastelup-win.exe',
         './static/bin/node-win',
         './static/bin/run-npm-win.bat',
       ]

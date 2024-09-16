@@ -6,7 +6,6 @@ import fs from 'fs'
 import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
-import log from 'electron-log'
 
 import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
@@ -279,12 +278,11 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       creatingPastelConf: false,
     })
     const { locatePastelConf, locatePasteld } = store.getState().appInfo;
-    log.info(`locatePasteld: ${locatePasteld}`)
+     // stop is needed in case if some services started and some failed
+    if (fs.existsSync(locatePastelConf)) {
+      await this.stopWalletNode()
+    }
     if (!fs.existsSync(locatePasteld)) {
-      // stop is needed in case if some services started and some failed
-      if (fs.existsSync(locatePastelConf)) {
-        await this.stopWalletNode()
-      }
       await this.installProcess()
     }
     try {
