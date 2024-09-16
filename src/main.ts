@@ -330,8 +330,39 @@ ipcMain.on('app-ready', () => {
   getPastelFolderSize()
 })
 
+let platform = os.platform() as string
+if (platform === 'win32') {
+  platform = 'windows'
+}
+
+const getBinPath = (fileNames: {
+  linux: string
+  darwin: string
+  windows: string
+}): string => {
+  let binPath = ''
+  if (app.isPackaged) {
+    binPath = process.resourcesPath
+  } else {
+    binPath = path.join(app.getAppPath(), 'static', 'bin')
+  }
+
+  const fileName = fileNames[platform as keyof typeof fileNames]
+  if (!fileName) {
+    throw new Error(`Can't find executable for ${platform} platform`)
+  }
+  binPath = path.join(binPath, fileName)
+
+  return binPath
+}
+
 ipcMain.on('start_app', () => {
   if (mainWindow) {
+    const pastelUtilityBinPath = getBinPath({
+      linux: 'pastelup-linux',
+      darwin: 'pastelup-mac',
+      windows: 'pastelup-win.exe',
+    })
     mainWindow.webContents.send(
       'app-info',
       JSON.stringify({
@@ -341,6 +372,7 @@ ipcMain.on('start_app', () => {
         locatePastelConf: locatePastelConf(),
         pasteldBasePath: pasteldBasePath(),
         locatePasteld: locatePasteld(),
+        pastelUtilityBinPath,
         locatePastelParamsDir: locatePastelParamsDir(),
         locatePastelWalletDir: locatePastelWalletDir(),
         locateSentTxStore: locateSentTxStore(),
@@ -434,14 +466,14 @@ const pasteldBasePath = () => {
 
 const locatePasteld = () => {
   if (os.platform() === 'darwin') {
-    return path.join(pasteldBasePath(), 'pasteld-mac')
+    return path.join(locatePastelWalletDir(), 'pasteld')
   }
 
   if (os.platform() === 'linux') {
-    return path.join(pasteldBasePath(), 'pasteld-linux')
+    return path.join(locatePastelWalletDir(), 'pasteld')
   }
 
-  return path.join(pasteldBasePath(), 'pasteld-win.exe')
+  return path.join(locatePastelWalletDir(), 'pasteld.exe')
 }
 
 const locatePastelParamsDir = () => {

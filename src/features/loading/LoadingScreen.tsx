@@ -6,6 +6,7 @@ import fs from 'fs'
 import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import log from 'electron-log'
 
 import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
@@ -16,7 +17,7 @@ import { TWalletInfo } from '../../legacy/Routes'
 import RPC from '../../legacy/rpc'
 import { NO_CONNECTION } from '../../legacy/utils/utils'
 import styles from './LoadingScreen.module.css'
-import { checkHashAndDownloadParams } from './utils'
+import { checkHashAndDownloadParams, spawnProcess, filterLogKeywords } from './utils'
 import PastelDB from '../../features/pastelDB/database'
 import { createPastelKeysFolder } from '../../features/pastelID'
 
@@ -76,11 +77,8 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   loadingConfigs = async () => {
-    const success = await this.ensurePastelParams()
-    if (success) {
-      await this.loadPastelConf(true)
-      this.setupExitHandler()
-    }
+    await this.loadPastelConf(true)
+    this.setupExitHandler()
   }
 
   ensurePastelParams = async () => {
@@ -135,6 +133,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   loadPastelConf = async (createIfMissing: boolean) => {
+    await this.startPastelUp();
     // Load the RPC config from pastel.conf file
     const pastelLocation = store.getState().appInfo.locatePastelConf
     let confValues
@@ -192,31 +191,14 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   createPastelConf = async () => {
-    const { connectOverTor, enableFastSync } = this.state
+    // const { connectOverTor, enableFastSync } = this.state
     const dir = store.getState().appInfo.locatePastelConfDir
 
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir)
     }
 
-    const pastelConfPath = store.getState().appInfo.locatePastelConf
-    let confContent = ''
-    confContent += 'server=1\n'
-    confContent += 'rpcuser=pastelwallet\n'
-    confContent += `rpcpassword=${Math.random()
-      .toString(36)
-      .substring(2, 15)}\n`
-    confContent += 'rpcport=9932\n'
-
-    if (connectOverTor) {
-      confContent += 'proxy=127.0.0.1:9050\n'
-    }
-
-    if (enableFastSync) {
-      confContent += 'ibdskiptxverification=1\n'
-    }
-
-    await fs.promises.writeFile(pastelConfPath, confContent)
+    await this.startPastelUp();
     this.setState({
       creatingPastelConf: false,
     })
@@ -238,31 +220,54 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
-      if (this.pasteld) {
-        const { history } = this.props
-        const { rpcConfig } = this.state
-        history.push(routes.LOADING)
-        while (!PastelDB.isValidDB()) {
-          // wait if database is reading or writing status
-          new Promise(resolve => setTimeout(resolve, 100))
-        }
-        this.pasteld.on('close', () => {
-          ipcRenderer.send('appquitdone')
-        })
-        this.pasteld.on('exit', () => {
-          ipcRenderer.send('appquitdone')
-        })
-        console.log('Sending stop')
-        setTimeout(() => {
-          RPC.doRPC('stop', [], rpcConfig)
-        })
-      } else {
-        // And reply that we're all done.
-        ipcRenderer.send('appquitdone')
+      const { history } = this.props
+      history.push(routes.LOADING)
+      while (!PastelDB.isValidDB()) {
+        // wait if database is reading or writing status
+        new Promise(resolve => setTimeout(resolve, 100))
       }
+      try {
+        const { rpcConfig } = this.state
+        await RPC.doRPC('stop', [], rpcConfig)
+        await this.stopWalletNode();
+      } catch (error) {
+        console.error(error)
+      }
+      ipcRenderer.send('appquitdone')
     })
   }
-  startPasteld = async () => {
+  handleProcessLogging = (line: string) => {
+    if (filterLogKeywords.some(word => line.includes(word))) {
+      this.setState({
+        pasteldSpawned: 1,
+        currentStatus: line.split(' INFO ')[1] || line,
+      })
+    }
+  }
+  startProcess = async () => {
+    const { isPackaged, pastelUtilityBinPath } = store.getState().appInfo;
+    const args = ['start', 'walletnode']
+    if (!isPackaged) {
+      args.push('--development-mode')
+    }
+
+    return spawnProcess(pastelUtilityBinPath, args)
+  }
+  stopWalletNode = async () => {
+    const { pastelUtilityBinPath } = store.getState().appInfo;
+    spawnProcess(pastelUtilityBinPath, ['stop', 'walletnode'])
+  }
+  installProcess = async () => {
+    const { pastelUtilityBinPath } = store.getState().appInfo;
+    await spawnProcess(
+      pastelUtilityBinPath,
+      ['install', 'walletnode', '-n', 'mainnet', '-f'],
+      {
+        onStdoutLine: this.handleProcessLogging,
+      },
+    )
+  }
+  startPastelUp = async () => {
     const { pasteldSpawned } = this.state
     if (pasteldSpawned) {
       this.setState({
@@ -270,20 +275,41 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       })
       return
     }
-
-    const program = store.getState().appInfo.locatePasteld
-    this.pasteld = spawn(program)
     this.setState({
-      pasteldSpawned: 1,
-      currentStatus: 'pasteld starting...',
+      creatingPastelConf: false,
     })
-    this.pasteld.on('error', (err: string) => {
-      console.log(`pasteld start error, giving up. Error: ${err}`) // Set that we tried to start pasteld, and failed
+    const { locatePastelConf, locatePasteld } = store.getState().appInfo;
+    log.info(`locatePasteld: ${locatePasteld}`)
+    if (!fs.existsSync(locatePasteld)) {
+      // stop is needed in case if some services started and some failed
+      if (fs.existsSync(locatePastelConf)) {
+        await this.stopWalletNode()
+      }
+      await this.installProcess()
+    }
+    try {
       this.setState({
         pasteldSpawned: 1,
-        getInfoRetryCount: 10,
-      }) // No point retrying.
-    })
+        currentStatus: 'pasteld starting...',
+      })
+      await this.startProcess();
+      this.setState({
+        creatingPastelConf: true,
+      })
+    } catch (error) {
+      await this.startProcess()
+      this.setState({
+        creatingPastelConf: true,
+      })
+      this.loadPastelConf(false)
+    }
+    try {
+      await PastelDB.getDatabaseInstance()
+    } catch (error) {
+      // TODO log errors to a central logger so we can address them later.
+      console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
+    }
+    this.loadPastelConf(false)
   }
 
   setupNextGetInfo() {
@@ -302,7 +328,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 
   async getInfo() {
     const { rpcConfig, pasteldSpawned, getInfoRetryCount } = this.state // Try getting the info.
-
     try {
       const info = await RPC.getInfoObject(rpcConfig)
       const { setRPCConfig, setInfo } = this.props
@@ -320,7 +345,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 
       if (err === NO_CONNECTION && !pasteldSpawned) {
         // Try to start pasteld
-        this.startPasteld()
+        await this.startProcess()
         this.setupNextGetInfo()
       }
 

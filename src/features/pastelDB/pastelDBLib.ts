@@ -83,15 +83,18 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
   const { locatePastelConfDir } = store.getState().appInfo
 
   try {
-    const file = await open(
-      path.join(locatePastelConfDir, 'pasteldb.sqlite'),
-      'r',
-    )
-    const stat = await file.stat()
-    if (stat.birthtimeMs > +new Date('2021-06-10')) {
-      return await fs.promises.readFile(
+    const dbFile = path.join(locatePastelConfDir, 'pasteldb.sqlite');
+    if (fs.existsSync(dbFile)) {
+      const file = await open(
         path.join(locatePastelConfDir, 'pasteldb.sqlite'),
+        'r',
       )
+      const stat = await file.stat()
+      if (stat.birthtimeMs > +new Date('2021-06-10')) {
+        return await fs.promises.readFile(
+          path.join(locatePastelConfDir, 'pasteldb.sqlite'),
+        )
+      }
     }
   } catch (e) {
     log.error(`pastelDB readSqliteDBFile error: ${e}`)

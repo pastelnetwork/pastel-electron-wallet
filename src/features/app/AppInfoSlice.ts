@@ -7,6 +7,7 @@ export interface IAppInfoState {
   locatePastelConf: string
   pasteldBasePath: string
   locatePasteld: string
+  pastelUtilityBinPath: string
   locatePastelParamsDir: string
   locatePastelWalletDir: string
   locateSentTxStore: string
@@ -19,6 +20,7 @@ const initialState: IAppInfoState = {
   locatePastelConf: '',
   pasteldBasePath: '',
   locatePasteld: '',
+  pastelUtilityBinPath: '',
   locatePastelParamsDir: '',
   locatePastelWalletDir: '',
   locateSentTxStore: '',
@@ -31,6 +33,7 @@ type TOpenAction = {
   locatePastelConf: string
   pasteldBasePath: string
   locatePasteld: string
+  pastelUtilityBinPath: string
   locatePastelParamsDir: string
   locatePastelWalletDir: string
   locateSentTxStore: string
@@ -47,6 +50,7 @@ export const appInfoSlice = createSlice({
       state.locatePastelConf = payload.locatePastelConf
       state.pasteldBasePath = payload.pasteldBasePath
       state.locatePasteld = payload.locatePasteld
+      state.pastelUtilityBinPath = payload.pastelUtilityBinPath
       state.locatePastelParamsDir = payload.locatePastelParamsDir
       state.locatePastelWalletDir = payload.locatePastelWalletDir
       state.locateSentTxStore = payload.locateSentTxStore
