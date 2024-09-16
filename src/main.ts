@@ -173,7 +173,6 @@ const createWindow = async () => {
           })
       })
     }
-    w.webContents.openDevTools()
   })
 
   // Protocol handler for win32
