@@ -543,3 +543,4 @@ ipcMain.on('reload_inference_client', () => {
     locateAppDir: locateAppDir(),
   })
 })
+

@@ -249,18 +249,17 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     if (!isPackaged) {
       args.push('--development-mode')
     }
-
     return spawnProcess(pastelUtilityBinPath, args)
   }
   stopWalletNode = async () => {
     const { pastelUtilityBinPath } = store.getState().appInfo;
-    spawnProcess(pastelUtilityBinPath, ['stop', 'walletnode'])
+    await spawnProcess(pastelUtilityBinPath, ['stop', 'walletnode'])
   }
   installProcess = async () => {
     const { pastelUtilityBinPath } = store.getState().appInfo;
     await spawnProcess(
       pastelUtilityBinPath,
-      ['install', 'walletnode', '-n', 'mainnet', '-f'],
+      ['install', 'walletnode', '-n', 'mainnet', '-f', 'use-snapshot', 'true'],
       {
         onStdoutLine: this.handleProcessLogging,
       },
@@ -485,3 +484,4 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 }
 
 export default LoadingScreen
+
