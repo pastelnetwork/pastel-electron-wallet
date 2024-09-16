@@ -3,7 +3,6 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
-import getFolderSize from 'get-folder-size'
 
 import {
   app,
@@ -174,6 +173,7 @@ const createWindow = async () => {
           })
       })
     }
+    w.webContents.openDevTools()
   })
 
   // Protocol handler for win32
@@ -286,18 +286,6 @@ app.on('will-finish-launching', function () {
     redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   })
 })
-const getPastelFolderSize = async () => {
-  const info = await getFolderSize(locatePastelConfDir())
-  if (!info.errors) {
-    const totalSize = info.size / 1073741824 // ~ GB
-    if (totalSize < 4 && mainWindow) {
-      if (fs.existsSync(snapshotFile)) {
-        fs.unlinkSync(snapshotFile)
-      }
-      mainWindow.webContents.send('download_snapshot')
-    }
-  }
-}
 ipcMain.on('app-ready', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
@@ -326,8 +314,6 @@ ipcMain.on('app-ready', () => {
   })
 
   initServeStatic(app.isPackaged)
-
-  getPastelFolderSize()
 })
 
 let platform = os.platform() as string

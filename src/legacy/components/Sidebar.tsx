@@ -336,7 +336,6 @@ class Sidebar extends PureComponent<any, any> {
       openPastelPhotopeaModal,
       openAboutModal,
       openUpdateToast,
-      openDownloadSnapshot,
       openSquooshToolModal,
       openGlitchImageModal,
       setSendTo,
@@ -462,9 +461,6 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.send('app-ready')
     ipcRenderer.on('update_downloaded', () => {
       openUpdateToast()
-    })
-    ipcRenderer.on('download_snapshot', () => {
-      openDownloadSnapshot()
     })
     ipcRenderer.on(
       'deepLink',
@@ -634,7 +630,7 @@ class Sidebar extends PureComponent<any, any> {
   }
 
   render() {
-    const { location, info, isDownloadSnapshot, openDownloadSnapshot, opened, setConnected, isClose } = this.props
+    const { location, info, isDownloadSnapshot, setConnected } = this.props
     const {
       uriModalIsOpen,
       uriModalInputValue,
@@ -655,10 +651,6 @@ class Sidebar extends PureComponent<any, any> {
       } else {
         state = 'CONNECTED'
         setConnected();
-      }
-
-      if (info.verificationProgress < 0.9 && !opened && !isClose) {
-        openDownloadSnapshot();
       }
     }
 
