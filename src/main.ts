@@ -3,6 +3,7 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
+import getFolderSize from 'get-folder-size'
 
 import {
   app,
@@ -285,6 +286,18 @@ app.on('will-finish-launching', function () {
     redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   })
 })
+const checkDownloadSnapshot = async () => {
+  const info = await getFolderSize(locatePastelConfDir())
+  if (!info.errors) {
+    const totalSize = info.size / 1073741824 // ~ GB
+    if (totalSize < 4 && mainWindow) {
+      if (fs.existsSync(snapshotFile)) {
+        fs.unlinkSync(snapshotFile)
+      }
+      mainWindow.webContents.send('download_snapshot')
+    }
+  }
+}
 ipcMain.on('app-ready', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
@@ -313,6 +326,7 @@ ipcMain.on('app-ready', () => {
   })
 
   initServeStatic(app.isPackaged)
+  // checkDownloadSnapshot()
 })
 
 let platform = os.platform() as string
@@ -361,6 +375,7 @@ ipcMain.on('start_app', () => {
         locatePastelParamsDir: locatePastelParamsDir(),
         locatePastelWalletDir: locatePastelWalletDir(),
         locateSentTxStore: locateSentTxStore(),
+        pastelReinstallPath: locatePastelReinstallConf(),
       }),
     )
   }
@@ -439,6 +454,18 @@ const locatePastelConf = () => {
   }
 
   return path.join(app.getPath('appData'), 'Pastel', 'pastel.conf')
+}
+
+const locatePastelReinstallConf = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'Pastel', 'pastel.reinstall')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), '.pastel', 'pastel.reinstall')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel', 'pastel.reinstall')
 }
 
 const pasteldBasePath = () => {

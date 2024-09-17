@@ -75,6 +75,7 @@ ipcRenderer.on('app-info', (event, data) => {
       locatePastelWalletDir,
       locateSentTxStore,
       pastelUtilityBinPath,
+      pastelReinstallPath,
     } = JSON.parse(data) as IAppInfoState
     if (isPackaged) {
       log.transports.console.level = false
@@ -91,6 +92,7 @@ ipcRenderer.on('app-info', (event, data) => {
         locatePastelWalletDir,
         locateSentTxStore,
         pastelUtilityBinPath,
+        pastelReinstallPath,
       }),
     )
   }

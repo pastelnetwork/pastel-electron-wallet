@@ -6,6 +6,7 @@ import fs from 'fs'
 import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import log from 'electron-log'
 
 import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
@@ -414,8 +415,16 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       if (fs.existsSync(locatePastelConf)) {
         await this.stopWalletNode()
       }
-      await this.installProcess()
+      try {
+        await this.installProcess()
+      } catch (error) {
+        log.error('pasteld install error: ', error)
+      }
       await this.updatePastelConf()
+      this.setState({
+        pasteldSpawned: 1,
+        currentStatus: 'pasteld starting...',
+      })
       await this.startProcess()
       this.setState({
         creatingPastelConf: true,
@@ -426,7 +435,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       await PastelDB.getDatabaseInstance()
     } catch (error) {
       // TODO log errors to a central logger so we can address them later.
-      console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
+      console.error(`startPastelUp error: ${error.message}`)
     }
     this.loadPastelConf(false)
   }
