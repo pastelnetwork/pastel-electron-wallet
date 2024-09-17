@@ -290,7 +290,7 @@ const checkDownloadSnapshot = async () => {
   const info = await getFolderSize(locatePastelConfDir())
   if (!info.errors) {
     const totalSize = info.size / 1073741824 // ~ GB
-    if (totalSize < 4 && mainWindow) {
+    if (totalSize < 3.5 && mainWindow) {
       if (fs.existsSync(snapshotFile)) {
         fs.unlinkSync(snapshotFile)
       }
@@ -326,7 +326,7 @@ ipcMain.on('app-ready', () => {
   })
 
   initServeStatic(app.isPackaged)
-  // checkDownloadSnapshot()
+  checkDownloadSnapshot()
 })
 
 let platform = os.platform() as string
@@ -406,7 +406,7 @@ ipcMain.on('reset_pastel_app', async () => {
     } else {
       app.relaunch()
     }
-    app.exit(0)
+    app.exit()
   } catch (error) {
     log.error(error)
   }

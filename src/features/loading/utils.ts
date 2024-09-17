@@ -152,3 +152,24 @@ export const spawnProcess = (
     })
   })
 }
+
+export const startProcess = async (pastelUtilityBinPath: string, handleProcessLogging: (line: string) => void) => {
+  const args = ['start', 'walletnode']
+  return spawnProcess(pastelUtilityBinPath, args, {
+    onStdoutLine: handleProcessLogging,
+  },)
+}
+export const stopWalletNode = async (pastelUtilityBinPath: string, handleProcessLogging: (line: string) => void) => {
+  await spawnProcess(pastelUtilityBinPath, ['stop', 'walletnode'], {
+    onStdoutLine: handleProcessLogging,
+  },)
+}
+export const installProcess = async (pastelUtilityBinPath: string, handleProcessLogging: (line: string) => void) => {
+  await spawnProcess(
+    pastelUtilityBinPath,
+    ['install', 'walletnode', '--network', 'mainnet', '--force', '--use-snapshot', 'true'],
+    {
+      onStdoutLine: handleProcessLogging,
+    },
+  )
+}
