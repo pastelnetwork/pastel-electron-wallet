@@ -418,11 +418,11 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         this.setState({
           currentStatus: 'pasteld start ...',
         })
+        await this.updatePastelConf()
         await startProcess(pastelUtilityBinPath, this.handleProcessLogging);
         this.setState({
           creatingPastelConf: true,
         })
-        await this.updatePastelConf()
       } catch (error) {
         await installWalletNode();
       }
