@@ -19,7 +19,7 @@ interface IMasterNodeProps {
 }
 
 export default function InferenceClient(): JSX.Element {
-  const [status, setStatus] = React.useState('')
+  const [status, setStatus] = React.useState('Loading')
   const [installRequired, setInstallRequired] = React.useState('')
   const [installUrl, setInstallUrl] = React.useState('')
   const [isError, setError] = React.useState(false)
@@ -54,6 +54,13 @@ export default function InferenceClient(): JSX.Element {
       )
       setStatus(`Master Node ${result?.AssetName || ''}`)
       if (result?.AssetName !== 'Finished') {
+        if (result?.AssetName === 'Initial') {
+          await rpc<IMasterNodeProps>(
+            'mnsync',
+            ['reset'],
+            pastelConf,
+          )
+        }
         setTimeout(() => {
           checkMasterNodeStatus()
         }, 3000)
