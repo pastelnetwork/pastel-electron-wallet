@@ -238,7 +238,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   handleInstallProcessLogging = (line: string) => {
     const getMessage = (message: string) => {
       return (
-        <p>Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.<br />{message}</p>
+        <div>Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.<br />{message}</div>
       )
     }
     if (filterLogKeywords.some(word => line.includes(word))) {
