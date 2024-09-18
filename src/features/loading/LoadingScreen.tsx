@@ -198,23 +198,25 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       fs.mkdirSync(dir)
     }
 
-    await this.startPastelUp();
-    this.setState({
-      creatingPastelConf: false,
-    })
-
-    try {
-      createPastelKeysFolder(dir)
-    } catch (error) {
-      console.error(`createPastelKeysFolder error: ${error.message}`)
+    const status = await this.startPastelUp();
+    if (status) {
+      this.setState({
+        creatingPastelConf: false,
+      })
+  
+      try {
+        createPastelKeysFolder(dir)
+      } catch (error) {
+        console.error(`createPastelKeysFolder error: ${error.message}`)
+      }
+      try {
+        PastelDB.getDatabaseInstance()
+      } catch (error) {
+        // TODO log errors to a central logger so we can address them later.
+        console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
+      }
+      this.loadPastelConf(false)
     }
-    try {
-      PastelDB.getDatabaseInstance()
-    } catch (error) {
-      // TODO log errors to a central logger so we can address them later.
-      console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
-    }
-    this.loadPastelConf(false)
   }
 
   setupExitHandler = () => {
@@ -236,20 +238,20 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     })
   }
   handleInstallProcessLogging = (line: string) => {
-    const getMessage = (message: string) => {
+    const getMessage = (process: string) => {
       return (
-        <div>Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.<br />{message}</div>
+        <div>Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.<br />Downloading... {process}</div>
       )
     }
     if (filterLogKeywords.some(word => line.includes(word))) {
       const message = line.split(' INFO ')[1] || line;
       log.info(message)
-      let _currentStatus: string | JSX.Element = 'Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.';
+      let process = '';
       if (message.indexOf('Downloading...') !== -1 && message.indexOf('complete') !== -1) {
-        _currentStatus = getMessage(message);
+        process = message.split('Downloading...')[1]?.trim();
       }
       this.setState({
-        currentStatus: _currentStatus,
+        currentStatus: getMessage(process),
       })
     }
   }
@@ -257,9 +259,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     if (filterLogKeywords.some(word => line.includes(word))) {
       log.info(line.split(' INFO ')[1] || line)
     }
-    this.setState({
-      currentStatus: 'Waiting the pasteld to start...',
-    })
   }
   handleStopProcessLogging = (line: string) => {
     if (filterLogKeywords.some(word => line.includes(word))) {
@@ -419,12 +418,16 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
         await this.updatePastelConf()
+        this.setState({
+          currentStatus: 'Waiting the pasteld to start...',
+        })
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
         this.setState({
           creatingPastelConf: true,
         })
         this.loadPastelConf(false)
-      } catch {
+      } catch (error) {
+        log.error(error)
         if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1) {
           ipcRenderer.send('reset_pastel_app')
         }
@@ -436,30 +439,60 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         const parseContent = JSON.parse(content.toString());
         if (parseContent?.reinstall) {
           await installWalletNode();
+          try {
+            fs.unlinkSync(pastelReinstallPath)
+          } catch (error) {
+            log.error(error)
+          }
+          ipcRenderer.send('reset_pastel_app')
         }
       }
-      fs.unlinkSync(pastelReinstallPath)
+      return true;
     } else {
       try {
         this.setState({
-          currentStatus: 'pasteld start ...',
+          currentStatus: 'Waiting the pasteld to start...',
         })
         await this.updatePastelConf()
-        await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
+        const result = await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
+        log.info('result', result)
         this.setState({
           creatingPastelConf: true,
         })
+        try {
+          await PastelDB.getDatabaseInstance()
+        } catch (error) {
+          // TODO log errors to a central logger so we can address them later.
+          log.error(`startPastelUp error: ${error.message}`)
+        }
+        this.loadPastelConf(false)
+        return true;
       } catch (error) {
-        await installWalletNode();
+        this.setState({
+          currentStatus: (
+            <div>
+              Failed to start pasteld. Giving up! Please look at the debug.log
+              file.
+              <br />
+              <span className={cstyles.highlight}>{store.getState().appInfo.locatePastelLog}</span>
+              <br />
+              Please file an issue with Pastel Wallet
+              <div className={cstyles.buttoncontainer}>
+                <button
+                  type='button'
+                  className={cstyles.primarybutton}
+                  onClick={this.handleResetPastel}
+                >
+                  Restart Pastel
+                </button>
+              </div>
+            </div>
+          ),
+        })
+        log.error('startProcess', error)
       }
     }
-    try {
-      await PastelDB.getDatabaseInstance()
-    } catch (error) {
-      // TODO log errors to a central logger so we can address them later.
-      console.error(`startPastelUp error: ${error.message}`)
-    }
-    this.loadPastelConf(false)
+    return false;
   }
 
   setupNextGetInfo() {
@@ -472,7 +505,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     }
   }
 
-  handleResetPastel() {
+  async handleResetPastel() {
+    const pastelReinstallPath = store.getState().appInfo.pastelReinstallPath
+    await fs.promises.writeFile(pastelReinstallPath, JSON.stringify({ reinstall: true }))
     ipcRenderer.send('reset_pastel_app')
   }
 
@@ -496,6 +531,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       if (err === NO_CONNECTION && !pasteldSpawned) {
         // Try to start pasteld
         const { pastelUtilityBinPath } = store.getState().appInfo;
+        this.setState({
+          currentStatus: 'Waiting the pasteld to start...',
+        })
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
         this.setupNextGetInfo()
       }
@@ -520,7 +558,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
               file.
               <br />
               <span className={cstyles.highlight}>{`${
-                store.getState().appInfo.locatePastelConfDir
+                store.getState().appInfo.locatePastelLog
               }/debug.log`}</span>
               <br />
               Please file an issue with Pastel Wallet
