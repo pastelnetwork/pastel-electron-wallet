@@ -12,6 +12,7 @@ export interface IAppInfoState {
   locatePastelWalletDir: string
   locateSentTxStore: string
   pastelReinstallPath: string
+  locatePastelLog: string
 }
 
 const initialState: IAppInfoState = {
@@ -26,6 +27,7 @@ const initialState: IAppInfoState = {
   locatePastelWalletDir: '',
   locateSentTxStore: '',
   pastelReinstallPath: '',
+  locatePastelLog: '',
 }
 
 type TOpenAction = {
@@ -40,6 +42,7 @@ type TOpenAction = {
   locatePastelWalletDir: string
   locateSentTxStore: string
   pastelReinstallPath: string
+  locatePastelLog: string
 }
 
 export const appInfoSlice = createSlice({
@@ -58,6 +61,7 @@ export const appInfoSlice = createSlice({
       state.locatePastelWalletDir = payload.locatePastelWalletDir
       state.locateSentTxStore = payload.locateSentTxStore
       state.pastelReinstallPath = payload.pastelReinstallPath
+      state.locatePastelLog = payload.locatePastelLog
     },
   },
 })

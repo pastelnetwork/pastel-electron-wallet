@@ -235,12 +235,30 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       ipcRenderer.send('appquitdone')
     })
   }
-  handleProcessLogging = (line: string) => {
+  handleInstallProcessLogging = (line: string) => {
+    const getMessage = (message: string) => {
+      return (
+        <p>Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.<br />{message}</p>
+      )
+    }
+    if (filterLogKeywords.some(word => line.includes(word))) {
+      const message = line.split(' INFO ')[1] || line;
+      log.info(message)
+      let _currentStatus: string | JSX.Element = 'Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.';
+      if (message.indexOf('Downloading...') !== -1 && message.indexOf('complete') !== -1) {
+        _currentStatus = getMessage(message);
+      }
+      this.setState({
+        currentStatus: _currentStatus,
+      })
+    }
+  }
+  handleStartProcessLogging = (line: string) => {
     if (filterLogKeywords.some(word => line.includes(word))) {
       log.info(line.split(' INFO ')[1] || line)
     }
     this.setState({
-      currentStatus: 'Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.',
+      currentStatus: 'Waiting the pasteld to start...',
     })
   }
   handleStopProcessLogging = (line: string) => {
@@ -399,9 +417,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         if (fs.existsSync(locatePastelConf)) {
           await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
-        await installProcess(pastelUtilityBinPath, this.handleProcessLogging)
+        await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
         await this.updatePastelConf()
-        await startProcess(pastelUtilityBinPath, this.handleProcessLogging)
+        await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
         this.setState({
           creatingPastelConf: true,
         })
@@ -427,7 +445,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           currentStatus: 'pasteld start ...',
         })
         await this.updatePastelConf()
-        await startProcess(pastelUtilityBinPath, this.handleProcessLogging);
+        await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
         this.setState({
           creatingPastelConf: true,
         })
@@ -478,7 +496,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       if (err === NO_CONNECTION && !pasteldSpawned) {
         // Try to start pasteld
         const { pastelUtilityBinPath } = store.getState().appInfo;
-        await startProcess(pastelUtilityBinPath, this.handleProcessLogging)
+        await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
         this.setupNextGetInfo()
       }
 

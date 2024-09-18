@@ -377,6 +377,7 @@ ipcMain.on('start_app', () => {
         locatePastelWalletDir: locatePastelWalletDir(),
         locateSentTxStore: locateSentTxStore(),
         pastelReinstallPath: locatePastelReinstallConf(),
+        locatePastelLog: locatePastelLog(),
       }),
     )
   }
@@ -456,6 +457,18 @@ const locatePastelConf = () => {
   }
 
   return path.join(app.getPath('appData'), 'Pastel', 'pastel.conf')
+}
+
+const locatePastelLog = () => {
+  if (os.platform() === 'darwin') {
+    return path.join('Library', 'Logs', 'Pastel Wallet Fullnode', 'renderer.log')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join('.config', 'Pastel Wallet Fullnode', 'logs', 'renderer.log')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel Wallet Fullnode', 'logs', 'renderer.log')
 }
 
 const locatePastelReinstallConf = () => {

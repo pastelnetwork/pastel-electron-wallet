@@ -20,7 +20,7 @@ interface IMasterNodeProps {
 }
 
 export default function InferenceClient(): JSX.Element {
-  const [status, setStatus] = React.useState('Loading')
+  const [status, setStatus] = React.useState('Loading Inference Client... Please Wait.')
   const [installRequired, setInstallRequired] = React.useState('')
   const [installUrl, setInstallUrl] = React.useState('')
   const [isError, setError] = React.useState(false)
@@ -116,9 +116,11 @@ export default function InferenceClient(): JSX.Element {
   if (status !== 'success') {
     return (
       <div className={styles.wrapper}>
-        <div className={cx(styles.textWrap, styles.textWrapPadding)}>
-          {status}
-        </div>
+        {!isError ?
+          <div className={cx(styles.textWrap, styles.textWrapPadding)}>
+            {status}
+          </div> : null
+        }
 
         {installRequired !== '' ? (
           <div
@@ -140,15 +142,23 @@ export default function InferenceClient(): JSX.Element {
         ) : null}
 
         {isError ? (
-          <div className={styles.reloadInferenceClientWrapper}>
-            <button
-              type='button'
-              className={cx(dstyles.btn, cstyles.primaryButton, styles.btn)}
-              onClick={handleReloadInferenceClient}
-            >
-              Reload Inference Client
-            </button>
-          </div>
+          <>
+            <div className={cx(styles.textWrap, styles.textWrapPadding)}>
+              Failed to load Inference Client. Please look at the log file.
+            </div>
+            <div className={cx(styles.textWrap, styles.textWrapPadding)}>
+              <span className={cstyles.highlight}>{store.getState().appInfo.locatePastelLog}</span>
+            </div>
+            <div className={styles.reloadInferenceClientWrapper}>
+              <button
+                type='button'
+                className={cx(dstyles.btn, cstyles.primaryButton, styles.btn)}
+                onClick={handleReloadInferenceClient}
+              >
+                Reload Inference Client
+              </button>
+            </div>
+          </>
         ) : null}
       </div>
     )
