@@ -106,7 +106,7 @@ const startInferenceClientOnMac = (
                   )
                   return
                 }
-                log.log('npm install output:', stdout)
+                log.info('npm install output:', stdout)
                 mainWindow?.webContents?.send(
                   'start_inference_status',
                   JSON.stringify('Loading Pastel Inference Client'),
@@ -122,14 +122,14 @@ const startInferenceClientOnMac = (
                       )
                       return
                     }
-                    log.log(`npm start output: ${stdout}`)
+                    log.info(`npm start output: ${stdout}`)
                     let pastelInferenceOutput = JSON.stringify(stdout)
-  
+
                     if (stderr) {
                       log.error(`npm start errors: ${stderr}`)
                       pastelInferenceOutput = JSON.stringify(stderr)
                     }
-  
+
                     mainWindow?.webContents?.send(
                       'start_inference_error',
                       pastelInferenceOutput,
@@ -140,7 +140,7 @@ const startInferenceClientOnMac = (
             )
           }, 5000);
 
-          log.log('stdout: ' + stdout)
+          log.info('stdout: ' + stdout)
         },
       )
     } else {
@@ -206,7 +206,7 @@ export const checkAndStartInitialInference = (
                 )
                 return
               }
-              log.log(`npm start output: ${stdout}`)
+              log.info(`npm start output: ${stdout}`)
               let pastelInferenceOutput = JSON.stringify(stdout)
               if (stderr) {
                 log.error(`npm start errors: ${stderr}`)
@@ -316,7 +316,7 @@ const installNodeModuleForInferenceClientOnMac = (
                   log.error('npm install failed:', error)
                   return
                 }
-                log.log('npm install output:', stdout)
+                log.info('npm install output:', stdout)
                 if (callBack) {
                   callBack()
                 }
@@ -327,8 +327,8 @@ const installNodeModuleForInferenceClientOnMac = (
               },
             )
           }, 5000);
-          
-          log.log('stdout: ' + stdout)
+
+          log.info('stdout: ' + stdout)
         },
       )
     } else {
@@ -339,7 +339,7 @@ const installNodeModuleForInferenceClientOnMac = (
             log.error('npm install failed:', error)
             return
           }
-          log.log('npm install output:', stdout)
+          log.info('npm install output:', stdout)
           if (callBack) {
             callBack()
           }
@@ -393,7 +393,7 @@ export const setupInitialInference = async (
       const total = parseInt(resp.headers['content-length'] || '0', 10)
       const str = progress({ time: 100 }, pgrs => {
         const percentage = Math.round((pgrs.transferred * 100) / total)
-        console.log(`Downloading pastel_inference_js_client ${percentage}% ...`)
+        log.info(`Downloading pastel_inference_js_client ${percentage}% ...`)
       })
 
       resp.pipe(str).pipe(writer)
@@ -409,10 +409,12 @@ export const setupInitialInference = async (
         try {
           await fs.promises.unlink(absPath)
         } catch (error) {
+          log.error('utils pastel_inference_js_client request.get error: error deleting file')
           throw new Error(
             'utils pastel_inference_js_client request.get error: error deleting file',
           )
         }
+        log.error(`utils pastel_inference_js_client error: ${e.message}`)
         reject(`utils pastel_inference_js_client error: ${e.message}`)
       })
     })
@@ -421,7 +423,7 @@ export const setupInitialInference = async (
     fs.createReadStream(absPath)
       .pipe(unzipper.Extract({ path: pastelConf.locateAppDir }))
       .on('close', async () => {
-        log.log('Extraction PastelInferenceJsClient complete')
+        log.info('Extraction PastelInferenceJsClient complete')
         updateConfigForInitialInference(pastelConf, pastelInferencePath)
         try {
           fs.unlinkSync(absPath)
@@ -449,7 +451,7 @@ export const setupInitialInference = async (
                   log.error('npm install failed:', error)
                   return
                 }
-                log.log('npm install output:', stdout)
+                log.info('npm install output:', stdout)
                 if (callBack) {
                   callBack()
                 }
@@ -511,7 +513,7 @@ export default function initServeStatic(isPackaged: boolean): void {
       }
     },
     function (err) {
-      console.error('Error on check:', err.message)
+      log.error('Error on check:', err.message)
     },
   )
 
@@ -522,7 +524,7 @@ export default function initServeStatic(isPackaged: boolean): void {
       }
     },
     function (err) {
-      console.error('Error on check:', err.message)
+      log.error('Error on check:', err.message)
     },
   )
 }
@@ -535,13 +537,14 @@ function setupServeStatic(staticPath: string, port: number) {
     // Create server
     const server = http.createServer(function onRequest(req, res) {
       serve(req, res, () => {
-        console.log('Created server')
+        log.info('Created server')
       })
     })
     // Listen
     server.listen(port)
     servers.push(server)
   } catch (error) {
+    log.error(`serveStatic setupServeStatic error: ${error.message}`)
     throw new Error(`serveStatic setupServeStatic error: ${error.message}`)
   }
 }
@@ -551,6 +554,7 @@ export function closeServeStatic(): void {
     servers.map(server => {
       server.close(error => {
         if (error) {
+          log.error(`serveStatic closeServeStatic error: ${error.message}`)
           throw new Error(
             `serveStatic closeServeStatic error: ${error.message}`,
           )

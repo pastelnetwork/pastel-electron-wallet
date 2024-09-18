@@ -69,7 +69,6 @@ export default function InferenceClient(): JSX.Element {
         }, 1000)
       } else {
         setStatus('Loading Inference Client... Please Wait.')
-        ipcRenderer.send('start_initial_inference')
         checkStartInitialInference()
       }
     } catch (error) {

@@ -12,6 +12,9 @@ import querystring from 'querystring'
 import { Base64 } from 'js-base64'
 import os from 'os'
 import PropTypes from 'prop-types'
+import log from 'electron-log'
+
+import { rpc } from '../../api/pastel-rpc/rpc'
 import styles from './Sidebar.module.css'
 import cstyles from './Common.module.css'
 import routes from '../constants/routes.json'
@@ -19,6 +22,12 @@ import Logo from '../assets/img/pastel-logo.png'
 import Utils from '../utils/utils'
 import { parsePastelURI, PastelURITarget } from '../utils/uris'
 import store from '../../redux/store'
+
+interface IMasterNodeProps {
+  result: {
+    AssetName: string
+  }
+}
 
 const ExportPrivKeyModal = ({
   modalIsOpen,
@@ -496,6 +505,36 @@ class Sidebar extends PureComponent<any, any> {
         })
       },
     )
+
+    const checkMasterNodeStatus = async () => {
+      try {
+        const { pastelConf } = store.getState()
+        const { result } = await rpc<IMasterNodeProps>(
+          'mnsync',
+          ['status'],
+          pastelConf,
+        )
+        log.info(`Supernode status: ${result?.AssetName}`)
+        if (result?.AssetName !== 'Finished') {
+          if (result?.AssetName === 'Initial') {
+            await rpc<IMasterNodeProps>(
+              'mnsync',
+              ['reset'],
+              pastelConf,
+            )
+          }
+          setTimeout(() => {
+            checkMasterNodeStatus()
+          }, 1000)
+        } else {
+          ipcRenderer.send('start_initial_inference')
+        }
+      } catch (error) {
+        log.error(error)
+      }
+    }
+
+    checkMasterNodeStatus();
   }
   closeExportPrivKeysModal = () => {
     this.setState({
