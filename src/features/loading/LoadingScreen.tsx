@@ -133,7 +133,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   loadPastelConf = async (createIfMissing: boolean) => {
-    await this.startPastelUp();
     // Load the RPC config from pastel.conf file
     const pastelLocation = store.getState().appInfo.locatePastelConf
     let confValues
@@ -153,41 +152,43 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       })
       return
     } // Get the username and password
-
-    const rpcConfig = new RPCConfig()
-    rpcConfig.username = confValues.rpcuser
-    rpcConfig.password = confValues.rpcpassword
-
-    if (!rpcConfig.username || !rpcConfig.password) {
+    const status = await this.startPastelUp();
+    if (status) {
+      const rpcConfig = new RPCConfig()
+      rpcConfig.username = confValues.rpcuser
+      rpcConfig.password = confValues.rpcpassword
+  
+      if (!rpcConfig.username || !rpcConfig.password) {
+        this.setState({
+          currentStatus: (
+            <div>
+              <p>
+                Your pastel.conf is missing a &quot;rpcuser&quot; or
+                &quot;rpcpassword&quot;.
+              </p>
+              <p>
+                Please add a &quot;rpcuser=some_username&quot; and
+                &quot;rpcpassword=some_password&quot; to your pastel.conf to
+                enable RPC access
+              </p>
+              <p>Your pastel.conf is located at {pastelLocation}</p>
+            </div>
+          ),
+        })
+        return
+      }
+  
+      const isTestnet =
+        (confValues.testnet && confValues.testnet === '1') || false
+      const server = confValues.rpcbind || '127.0.0.1'
+      const port = confValues.rpcport || (isTestnet ? '19932' : '9932')
+      rpcConfig.url = `http://${server}:${port}`
       this.setState({
-        currentStatus: (
-          <div>
-            <p>
-              Your pastel.conf is missing a &quot;rpcuser&quot; or
-              &quot;rpcpassword&quot;.
-            </p>
-            <p>
-              Please add a &quot;rpcuser=some_username&quot; and
-              &quot;rpcpassword=some_password&quot; to your pastel.conf to
-              enable RPC access
-            </p>
-            <p>Your pastel.conf is located at {pastelLocation}</p>
-          </div>
-        ),
-      })
-      return
+        rpcConfig,
+      }) // And setup the next getinfo
+  
+      this.setupNextGetInfo()
     }
-
-    const isTestnet =
-      (confValues.testnet && confValues.testnet === '1') || false
-    const server = confValues.rpcbind || '127.0.0.1'
-    const port = confValues.rpcport || (isTestnet ? '19932' : '9932')
-    rpcConfig.url = `http://${server}:${port}`
-    this.setState({
-      rpcConfig,
-    }) // And setup the next getinfo
-
-    this.setupNextGetInfo()
   }
 
   createPastelConf = async () => {
@@ -203,7 +204,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       this.setState({
         creatingPastelConf: false,
       })
-  
       try {
         createPastelKeysFolder(dir)
       } catch (error) {
@@ -433,7 +433,11 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
       }
     }
-    if (fs.existsSync(pastelReinstallPath)) {
+    if (!fs.existsSync(locatePastelConf)) {
+      await installWalletNode();
+      ipcRenderer.send('reset_pastel_app')
+      return true;
+    } else if (fs.existsSync(pastelReinstallPath)) {
       const content = fs.readFileSync(pastelReinstallPath);
       if (content) {
         const parseContent = JSON.parse(content.toString());
@@ -454,8 +458,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           currentStatus: 'Waiting the pasteld to start...',
         })
         await this.updatePastelConf()
-        const result = await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
-        log.info('result', result)
+        await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
         this.setState({
           creatingPastelConf: true,
         })
