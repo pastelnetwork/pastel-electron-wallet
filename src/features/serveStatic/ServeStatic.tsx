@@ -559,3 +559,42 @@ export function closeServeStatic(): void {
     })
   }
 }
+
+export const stopInference = (
+  locateAppDir: string,
+  pasteldBasePath: string,
+): void => {
+  const pastelInferencePath = path.join(
+    locateAppDir,
+    'pastel_inference_js_client-master',
+  )
+
+  tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
+    function (inUse) {
+      if (inUse) {
+        const { wrapperScriptPath } = getNodeBinaryPath(
+          pasteldBasePath,
+        )
+        if (os.platform() === 'darwin') {
+          cp.exec(
+            `cd ${replaceSpaceInPath(pastelInferencePath)} && npm stop`,
+            function (error) {
+              if (error) {
+                log.error(`npm stop failed: ${error}`)
+              }
+            },
+          )
+        } else {
+          cp.execFile(
+            wrapperScriptPath,
+            ['stop'],
+            { cwd: replaceSpaceInPath(pastelInferencePath) }
+          )
+        }
+      }
+    },
+    function (err) {
+      log.error('checkAndStartInitialInference error: ', err.message)
+    },
+  )
+}

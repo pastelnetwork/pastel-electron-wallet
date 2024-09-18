@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
+import { ChildProcessWithoutNullStreams } from 'child_process'
 import clx from 'classnames'
 import { ipcRenderer } from 'electron'
 import fs from 'fs'
 import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
+import log from 'electron-log'
 
 import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
@@ -227,7 +228,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       }
       try {
         const { pastelUtilityBinPath } = store.getState().appInfo;
-        await stopWalletNode(pastelUtilityBinPath, this.handleProcessLogging);
+        await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging);
       } catch (error) {
         console.error(error)
       }
@@ -236,8 +237,15 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
   handleProcessLogging = (line: string) => {
     if (filterLogKeywords.some(word => line.includes(word))) {
+      log.info(line.split(' INFO ')[1] || line)
+    }
+    this.setState({
+      currentStatus: 'Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.',
+    })
+  }
+  handleStopProcessLogging = (line: string) => {
+    if (filterLogKeywords.some(word => line.includes(word))) {
       this.setState({
-        pasteldSpawned: 1,
         currentStatus: line.split(' INFO ')[1] || line,
       })
     }
@@ -389,7 +397,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       try {
         // stop is needed in case if some services started and some failed
         if (fs.existsSync(locatePastelConf)) {
-          await stopWalletNode(pastelUtilityBinPath, this.handleProcessLogging)
+          await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
         await installProcess(pastelUtilityBinPath, this.handleProcessLogging)
         await this.updatePastelConf()

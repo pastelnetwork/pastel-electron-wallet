@@ -43,6 +43,7 @@ import initServeStatic, {
   checkAndStartInitialInference,
   setupInitialInference,
   handleReloadInferenceClient,
+  stopInference,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
 
@@ -400,6 +401,7 @@ ipcMain.on('reset_pastel_app', async () => {
   } catch (error) {
     log.error(error)
   }
+  await stopInference(locateAppDir(), pasteldBasePath())
   try {
     if (os.platform() === 'linux') {
       app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })

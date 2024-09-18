@@ -2,6 +2,7 @@ import React from 'react'
 import { ipcRenderer, shell } from 'electron'
 import tcpPortUsed from 'tcp-port-used'
 import cx from 'classnames'
+import log from 'electron-log'
 
 import { useAppSelector } from '../../redux/hooks'
 import { rpc } from '../../api/pastel-rpc/rpc'
@@ -31,7 +32,7 @@ export default function InferenceClient(): JSX.Element {
         if (!inUse) {
           setTimeout(() => {
             checkStartInitialInference()
-          }, 5000)
+          }, 1000)
         } else {
           setStatus('success')
           setInstallRequired('')
@@ -44,6 +45,7 @@ export default function InferenceClient(): JSX.Element {
       },
     )
   }
+
   const checkMasterNodeStatus = async () => {
     try {
       const { pastelConf } = store.getState()
@@ -52,8 +54,9 @@ export default function InferenceClient(): JSX.Element {
         ['status'],
         pastelConf,
       )
-      setStatus(`Master Node ${result?.AssetName || ''}`)
+      log.info(`Supernode status: ${result?.AssetName}`)
       if (result?.AssetName !== 'Finished') {
+        setStatus(`Waiting for supernode before Inference Client can be displayed. (Status: ${result?.AssetName})`)
         if (result?.AssetName === 'Initial') {
           await rpc<IMasterNodeProps>(
             'mnsync',
@@ -63,11 +66,11 @@ export default function InferenceClient(): JSX.Element {
         }
         setTimeout(() => {
           checkMasterNodeStatus()
-        }, 3000)
+        }, 1000)
       } else {
+        setStatus('Loading Inference Client... Please Wait.')
         ipcRenderer.send('start_initial_inference')
         checkStartInitialInference()
-        setStatus('Loading Pastel Inference Client')
       }
     } catch (error) {
       console.error('checkMasterNodeStatus', error)
@@ -77,9 +80,8 @@ export default function InferenceClient(): JSX.Element {
   React.useEffect(() => {
     ipcRenderer.on('install_required', (event, data) => {
       if (data) {
-        const parseData = JSON.parse(data)
-        setInstallRequired(parseData.name)
-        setInstallUrl(parseData.link)
+        ipcRenderer.send('reload_inference_client')
+        log.error(JSON.stringify(data))
       }
     })
 
@@ -87,12 +89,7 @@ export default function InferenceClient(): JSX.Element {
       if (data) {
         setStatus(JSON.parse(data))
         setError(true)
-      }
-    })
-
-    ipcRenderer.on('start_inference_status', (event, data) => {
-      if (data) {
-        setStatus(JSON.parse(data))
+        log.error(JSON.stringify(data))
       }
     })
   }, []);
@@ -101,7 +98,7 @@ export default function InferenceClient(): JSX.Element {
     if (isConnected) {
       checkMasterNodeStatus()
     } else {
-      setStatus("Waiting for node to sync to 100% before Inference Client can be displayed")
+      setStatus("Waiting for node to sync to 100% before Inference Client can be displayed.")
     }
   }, [isConnected])
 
@@ -114,14 +111,14 @@ export default function InferenceClient(): JSX.Element {
   const handleReloadInferenceClient = () => {
     setError(false)
     ipcRenderer.send('reload_inference_client')
-    setStatus('Loading Inference Client')
+    setStatus('Loading Inference Client... Please Wait.')
   }
 
   if (status !== 'success') {
     return (
       <div className={styles.wrapper}>
         <div className={cx(styles.textWrap, styles.textWrapPadding)}>
-          {status} ...
+          {status}
         </div>
 
         {installRequired !== '' ? (

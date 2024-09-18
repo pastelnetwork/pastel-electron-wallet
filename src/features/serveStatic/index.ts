@@ -2,18 +2,16 @@ import initServeStatic, {
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
-  getDownloadUrl,
-  openNodejsFile,
+  stopInference,
   handleReloadInferenceClient,
 } from './ServeStatic'
 
 export {
-  getDownloadUrl,
   closeServeStatic,
   checkAndStartInitialInference,
   setupInitialInference,
-  openNodejsFile,
   handleReloadInferenceClient,
+  stopInference,
 }
 
 export default initServeStatic
