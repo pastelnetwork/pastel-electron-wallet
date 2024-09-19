@@ -95,7 +95,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   loadingConfigs = async () => {
-    await this.loadPastelConf(true)
+    await this.loadPastelConf()
     this.setupExitHandler()
   }
 
@@ -150,9 +150,15 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     }
   }
 
-  loadPastelConf = async (createIfMissing: boolean) => {
+  loadPastelConf = async () => {
     // Load the RPC config from pastel.conf file
     const pastelLocation = store.getState().appInfo.locatePastelConf
+    if (fs.existsSync(pastelLocation)) {
+      await this.startPastelUp();
+    } else {
+      this.setState({ creatingPastelConf: true })
+      return
+    }
     let confValues
 
     try {
@@ -160,53 +166,43 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         await fs.promises.readFile(pastelLocation, { encoding: 'utf-8' }),
       )
     } catch (err) {
-      if (createIfMissing) {
-        this.setState({ creatingPastelConf: true })
-        return
-      }
-
-      this.setState({
-        currentStatus: `Could not create pastel.conf at ${pastelLocation}. This is a bug, please file an issue with Pastel Wallet`,
-      })
+      log.error(err)
       return
     } // Get the username and password
-    const status = await this.startPastelUp();
-    if (status) {
-      const rpcConfig = new RPCConfig()
-      rpcConfig.username = confValues.rpcuser
-      rpcConfig.password = confValues.rpcpassword
-  
-      if (!rpcConfig.username || !rpcConfig.password) {
-        this.setState({
-          currentStatus: (
-            <div>
-              <p>
-                Your pastel.conf is missing a &quot;rpcuser&quot; or
-                &quot;rpcpassword&quot;.
-              </p>
-              <p>
-                Please add a &quot;rpcuser=some_username&quot; and
-                &quot;rpcpassword=some_password&quot; to your pastel.conf to
-                enable RPC access
-              </p>
-              <p>Your pastel.conf is located at {pastelLocation}</p>
-            </div>
-          ),
-        })
-        return
-      }
-  
-      const isTestnet =
-        (confValues.testnet && confValues.testnet === '1') || false
-      const server = confValues.rpcbind || '127.0.0.1'
-      const port = confValues.rpcport || (isTestnet ? '19932' : '9932')
-      rpcConfig.url = `http://${server}:${port}`
+    const rpcConfig = new RPCConfig()
+    rpcConfig.username = confValues.rpcuser
+    rpcConfig.password = confValues.rpcpassword
+
+    if (!rpcConfig.username || !rpcConfig.password) {
       this.setState({
-        rpcConfig,
-      }) // And setup the next getinfo
-  
-      this.setupNextGetInfo()
+        currentStatus: (
+          <div>
+            <p>
+              Your pastel.conf is missing a &quot;rpcuser&quot; or
+              &quot;rpcpassword&quot;.
+            </p>
+            <p>
+              Please add a &quot;rpcuser=some_username&quot; and
+              &quot;rpcpassword=some_password&quot; to your pastel.conf to
+              enable RPC access
+            </p>
+            <p>Your pastel.conf is located at {pastelLocation}</p>
+          </div>
+        ),
+      })
+      return
     }
+
+    const isTestnet =
+      (confValues.testnet && confValues.testnet === '1') || false
+    const server = confValues.rpcbind || '127.0.0.1'
+    const port = confValues.rpcport || (isTestnet ? '19932' : '9932')
+    rpcConfig.url = `http://${server}:${port}`
+    this.setState({
+      rpcConfig,
+    }) // And setup the next getinfo
+
+    this.setupNextGetInfo()
   }
 
   createPastelConf = async () => {
@@ -217,24 +213,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       fs.mkdirSync(dir)
     }
 
-    const status = await this.startPastelUp();
-    if (status) {
-      this.setState({
-        creatingPastelConf: false,
-      })
-      try {
-        createPastelKeysFolder(dir)
-      } catch (error) {
-        console.error(`createPastelKeysFolder error: ${error.message}`)
-      }
-      try {
-        PastelDB.getDatabaseInstance()
-      } catch (error) {
-        // TODO log errors to a central logger so we can address them later.
-        console.error(`PastelDB.getDatabaseInstance error: ${error.message}`)
-      }
-      this.loadPastelConf(false)
-    }
+    await this.startPastelUp();
   }
 
   setupExitHandler = () => {
@@ -416,11 +395,26 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       locatePastelConfDir,
     } = store.getState().appInfo;
     try {
-      fs.rmSync(path.join(locatePastelConfDir, 'blocks'), { recursive: true, force: true })
-      fs.rmSync(path.join(locatePastelConfDir, 'chainstate'), { recursive: true, force: true })
-      fs.rmSync(path.join(locatePastelConfDir, 'tickets'), { recursive: true, force: true })
-      fs.unlinkSync(path.join(locatePastelConfDir, 'mncache.dat'))
-      fs.unlinkSync(path.join(locatePastelConfDir, 'mnpayments.dat'))
+      const blocksDir = path.join(locatePastelConfDir, 'blocks')
+      const chainstateDir = path.join(locatePastelConfDir, 'chainstate')
+      const ticketsDir = path.join(locatePastelConfDir, 'tickets')
+      const mncacheFile = path.join(locatePastelConfDir, 'mncache.dat')
+      const mnpaymentsFile = path.join(locatePastelConfDir, 'mnpayments.dat')
+      if (fs.existsSync(blocksDir)) {
+        fs.rmSync(blocksDir, { recursive: true, force: true })
+      }
+      if (fs.existsSync(chainstateDir)) {
+        fs.rmSync(chainstateDir, { recursive: true, force: true })
+      }
+      if (fs.existsSync(ticketsDir)) {
+        fs.rmSync(ticketsDir, { recursive: true, force: true })
+      }
+      if (fs.existsSync(mncacheFile)) {
+        fs.unlinkSync(mncacheFile)
+      }
+      if (fs.existsSync(mnpaymentsFile)) {
+        fs.unlinkSync(mnpaymentsFile)
+      }
     } catch (error) {
       log.error(error)
       await new Promise(resolve =>
@@ -430,13 +424,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     }
   }
   startPastelUp = async () => {
-    const { pasteldSpawned } = this.state
-    if (pasteldSpawned) {
-      this.setState({
-        currentStatus: 'pasteld start failed',
-      })
-      return
-    }
     this.setState({
       creatingPastelConf: false,
     })
@@ -452,7 +439,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
         await this.updatePastelConf()
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
-        this.loadPastelConf(false)
       } catch (error) {
         log.error(error)
         if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1) {
@@ -493,7 +479,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           // TODO log errors to a central logger so we can address them later.
           log.error(`startPastelUp error: ${error.message}`)
         }
-        this.loadPastelConf(false)
         return true;
       } catch (error) {
         this.setState({
@@ -532,13 +517,16 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       clearTimeout(infoTimer)
     }
   }
-
   async handleResetPastel() {
     // const pastelReinstallPath = store.getState().appInfo.pastelReinstallPath
     // await fs.promises.writeFile(pastelReinstallPath, JSON.stringify({ reinstall: true }))
     const { locatePastelConf, pastelUtilityBinPath } = store.getState().appInfo;
     if (fs.existsSync(locatePastelConf)) {
-      await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
+      await stopWalletNode(pastelUtilityBinPath, (line: string) => {
+        if (filterLogKeywords.some(word => line.includes(word))) {
+          log.info(line.split(' INFO ')[1] || line)
+        }
+      })
     }
     ipcRenderer.send('reset_pastel_app')
   }
