@@ -534,8 +534,12 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
 
   async handleResetPastel() {
-    const pastelReinstallPath = store.getState().appInfo.pastelReinstallPath
-    await fs.promises.writeFile(pastelReinstallPath, JSON.stringify({ reinstall: true }))
+    // const pastelReinstallPath = store.getState().appInfo.pastelReinstallPath
+    // await fs.promises.writeFile(pastelReinstallPath, JSON.stringify({ reinstall: true }))
+    const { locatePastelConf, pastelUtilityBinPath } = store.getState().appInfo;
+    if (fs.existsSync(locatePastelConf)) {
+      await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
+    }
     ipcRenderer.send('reset_pastel_app')
   }
 

@@ -746,7 +746,7 @@ class Sidebar extends PureComponent<any, any> {
       }
 
       if (info.verificationProgress < 0.95 && !opened && !isClose) {
-        openDownloadSnapshot();
+        // openDownloadSnapshot();
       }
     }
 
