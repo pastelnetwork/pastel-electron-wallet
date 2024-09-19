@@ -410,6 +410,28 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       await fs.promises.writeFile(pastelConfPath, confContent)
     }
   }
+  removeAllBlockchainRelatedFilesAndFolders = async () => {
+    const {
+      locatePastelConfDir,
+      locatePastelParamsDir,
+      locatePastelWalletDir,
+      locatePastelWalletFullnodeDir,
+      locatePastelDDir,
+    } = store.getState().appInfo;
+    try {
+      fs.rmSync(locatePastelConfDir, { recursive: true, force: true });
+      fs.rmSync(locatePastelParamsDir, { recursive: true, force: true });
+      fs.rmSync(locatePastelWalletDir, { recursive: true, force: true });
+      fs.rmSync(locatePastelWalletFullnodeDir, { recursive: true, force: true });
+      fs.rmSync(locatePastelDDir, { recursive: true, force: true });
+    } catch (error) {
+      log.error(error)
+      await new Promise(resolve =>
+        setTimeout(resolve, 2000)
+      );
+      this.removeAllBlockchainRelatedFilesAndFolders()
+    }
+  }
   startPastelUp = async () => {
     const { pasteldSpawned } = this.state
     if (pasteldSpawned) {
@@ -429,6 +451,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         if (fs.existsSync(locatePastelConf)) {
           await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
+        await this.removeAllBlockchainRelatedFilesAndFolders();
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
         await this.updatePastelConf()
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)

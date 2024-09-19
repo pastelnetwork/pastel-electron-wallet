@@ -545,7 +545,7 @@ class Sidebar extends PureComponent<any, any> {
         if (!inUse) {
           setTimeout(() => {
             self.checkStartInitialInference()
-          }, 1000)
+          }, 2000)
         } else {
           self.setState({
             isShowCheckInferenceModal: false

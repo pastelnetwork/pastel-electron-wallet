@@ -287,18 +287,7 @@ app.on('will-finish-launching', function () {
     redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   })
 })
-const checkDownloadSnapshot = async () => {
-  const info = await getFolderSize(locatePastelConfDir())
-  if (!info.errors) {
-    const totalSize = info.size / 1073741824 // ~ GB
-    if (totalSize < 3.5 && mainWindow) {
-      if (fs.existsSync(snapshotFile)) {
-        fs.unlinkSync(snapshotFile)
-      }
-      mainWindow.webContents.send('download_snapshot')
-    }
-  }
-}
+
 ipcMain.on('app-ready', () => {
   if (app.isPackaged) {
     const feedURL = `${pkg.hostUrl}/${pkg.repoName}/${process.platform}-${
@@ -319,7 +308,6 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   initServeStatic(app.isPackaged)
-  checkDownloadSnapshot()
   setupInitialInference({
     locatePastelConf: locatePastelConf(),
     locatePastelConfDir: locatePastelConfDir(),
@@ -376,6 +364,8 @@ ipcMain.on('start_app', () => {
         locateSentTxStore: locateSentTxStore(),
         pastelReinstallPath: locatePastelReinstallConf(),
         locatePastelLog: locatePastelLog(),
+        locatePastelWalletFullnodeDir: locatePastelWalletFullnodeDir(),
+        locatePastelDDir: locatePastelDDir(),
       }),
     )
   }
@@ -404,10 +394,11 @@ ipcMain.on('reset_pastel_app', async () => {
   try {
     if (os.platform() === 'linux') {
       app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+      app.exit(0)
     } else {
       app.relaunch()
+      app.exit()
     }
-    app.exit()
   } catch (error) {
     log.error(error)
   }
@@ -544,6 +535,18 @@ const locateSentTxStore = (): string => {
   return path.join(app.getPath('appData'), 'Pastel', 'senttxstore.dat')
 }
 
+const locatePastelWalletFullnodeDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join('Library', 'Logs', 'Pastel Wallet Fullnode')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join('.config', 'Pastel Wallet Fullnode', 'logs')
+  }
+
+  return path.join(app.getPath('appData'), 'Pastel Wallet Fullnode', 'logs')
+}
+
 ipcMain.handle(
   'showSaveDialog_IPC',
   async (_, title, defaultPath, filters, properties) => {
@@ -569,3 +572,14 @@ ipcMain.on('reload_inference_client', () => {
   })
 })
 
+const locatePastelDDir = () => {
+  if (os.platform() === 'darwin') {
+    return path.join(app.getPath('appData'), 'pastelwallet')
+  }
+
+  if (os.platform() === 'linux') {
+    return path.join(app.getPath('home'), 'pastel')
+  }
+
+  return path.join(app.getPath('appData'), 'pastelwallet')
+}
