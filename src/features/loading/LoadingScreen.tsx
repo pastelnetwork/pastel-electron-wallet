@@ -7,7 +7,9 @@ import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import log from 'electron-log'
+import tcpPortUsed from 'tcp-port-used'
 
+import { rpc } from '../../api/pastel-rpc/rpc'
 import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
 import { RPCConfig } from '../../legacy/components/AppState'
@@ -17,9 +19,17 @@ import { TWalletInfo } from '../../legacy/Routes'
 import RPC from '../../legacy/rpc'
 import { NO_CONNECTION } from '../../legacy/utils/utils'
 import styles from './LoadingScreen.module.css'
-import { checkHashAndDownloadParams, filterLogKeywords, startProcess, stopWalletNode, installProcess } from './utils'
+import {
+  checkHashAndDownloadParams,
+  filterLogKeywords,
+  startProcess,
+  stopWalletNode,
+  installProcess,
+  delay,
+} from './utils'
 import PastelDB from '../../features/pastelDB/database'
 import { createPastelKeysFolder } from '../../features/pastelID'
+import { inferenceClient } from '../constants/ServeStatic'
 
 interface TLoadingState {
   currentStatus: string | JSX.Element
@@ -33,15 +43,26 @@ interface TLoadingState {
   rpcConfig: RPCConfig | null
 }
 
+interface IMasterNodeProps {
+  result: {
+    AssetName: string
+  }
+}
+
 interface TLoadingProps {
   history: {
-    push: (route: string) => void
+    push: ({pathname, search}: {pathname: string; search: string}) => void
+  }
+  location: {
+    search: string
   }
   setRPCConfig: (data: RPCConfig | null) => void
   setInfo: (data: TWalletInfo) => void
 }
 
 let infoTimer: NodeJS.Timeout | null = null
+
+let process = '';
 
 class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   pasteld: ChildProcessWithoutNullStreams | null = null
@@ -223,7 +244,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
       const { history } = this.props
-      history.push(routes.LOADING)
+      history.push({
+        pathname: routes.LOADING,
+        search: '?quit=true'
+      })
       while (!PastelDB.isValidDB()) {
         // wait if database is reading or writing status
         new Promise(resolve => setTimeout(resolve, 100))
@@ -246,7 +270,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     if (filterLogKeywords.some(word => line.includes(word))) {
       const message = line.split(' INFO ')[1] || line;
       log.info(message)
-      let process = '';
       if (message.indexOf('Downloading...') !== -1 && message.indexOf('complete') !== -1) {
         process = message.split('Downloading...')[1]?.trim();
       }
@@ -262,9 +285,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
   handleStopProcessLogging = (line: string) => {
     if (filterLogKeywords.some(word => line.includes(word))) {
-      this.setState({
-        currentStatus: line.split(' INFO ')[1] || line,
-      })
+      log.info(line.split(' INFO ')[1] || line)
     }
   }
   updatePastelConf = async () => {
@@ -399,6 +420,14 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     }
   }
   startPastelUp = async () => {
+    if (this.state.loadingDone || this.props.location.search?.indexOf('quit=true') !== -1) {
+      if (this.props.location.search?.indexOf('quit=true') !== -1) {
+        this.setState({
+          currentStatus: "Waiting for close... Timeout in 10s",
+        })
+      }
+      return;
+    }
     const { pasteldSpawned } = this.state
     if (pasteldSpawned) {
       this.setState({
@@ -412,19 +441,15 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     const { locatePastelConf, pastelUtilityBinPath, pastelReinstallPath } = store.getState().appInfo;
     const installWalletNode = async () => {
       try {
+        process = '';
+        ipcRenderer.send('setup_inference_client')
         // stop is needed in case if some services started and some failed
         if (fs.existsSync(locatePastelConf)) {
           await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
         await this.updatePastelConf()
-        this.setState({
-          currentStatus: 'Waiting the pasteld to start...',
-        })
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
-        this.setState({
-          creatingPastelConf: true,
-        })
         this.loadPastelConf(false)
       } catch (error) {
         log.error(error)
@@ -459,9 +484,60 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         })
         await this.updatePastelConf()
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
-        this.setState({
-          creatingPastelConf: true,
-        })
+
+        const checkSupernodeAndStartInferenceClient = async () => {
+          const pastelLocation = store.getState().appInfo.locatePastelConf
+          const confContent = await fs.promises.readFile(pastelLocation, { encoding: 'utf-8' })
+          const confValues = ini.parse(confContent.replace(/ /g, ''))
+          const server = confValues.rpcbind || '127.0.0.1'
+          const port = confValues.rpcport
+          const pastelConf = {
+            url: `http://${server}:${port}`,
+            username: confValues.rpcuser,
+            password: confValues.rpcpassword,
+          }
+          let isSuprernodeSyncing = true
+          do {
+            const { result } = await rpc<IMasterNodeProps>(
+              'mnsync',
+              ['status'],
+              pastelConf,
+            )
+            log.info(`Supernode status: ${result?.AssetName}`)
+            if (result?.AssetName !== 'Finished') {
+              if (result?.AssetName === 'Initial') {
+                await rpc<IMasterNodeProps>(
+                  'mnsync',
+                  ['reset'],
+                  pastelConf,
+                )
+              }
+            } else {
+              log.info('Start initial inference...')
+              ipcRenderer.send('start_initial_inference')
+              ipcRenderer.on('start_inference_error', (event, data) => {
+                if (data) {
+                  log.error('Start inference error: ', JSON.stringify(data))
+                  ipcRenderer.send('reload_inference_client')
+                }
+              })
+              tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
+                function (inUse) {
+                  if (inUse) {
+                    isSuprernodeSyncing = false
+                  }
+                },
+                function (err) {
+                  log.error('tcpPortUsed check error:', err.message)
+                  ipcRenderer.send('reload_inference_client')
+                },
+              )
+            }
+            await delay(1000);
+          } while (isSuprernodeSyncing)
+        }
+
+        await checkSupernodeAndStartInferenceClient()
         try {
           await PastelDB.getDatabaseInstance()
         } catch (error) {

@@ -318,16 +318,17 @@ ipcMain.on('app-ready', () => {
   }
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
+  initServeStatic(app.isPackaged)
+  checkDownloadSnapshot()
+})
 
-  setupInitialInference({
+ipcMain.on('setup_inference_client', async () => {
+  await setupInitialInference({
     locatePastelConf: locatePastelConf(),
     locatePastelConfDir: locatePastelConfDir(),
     pasteldBasePath: pasteldBasePath(),
     locateAppDir: locateAppDir(),
   })
-
-  initServeStatic(app.isPackaged)
-  checkDownloadSnapshot()
 })
 
 let platform = os.platform() as string
