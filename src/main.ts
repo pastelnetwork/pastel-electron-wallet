@@ -320,10 +320,7 @@ ipcMain.on('app-ready', () => {
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   initServeStatic(app.isPackaged)
   checkDownloadSnapshot()
-})
-
-ipcMain.on('setup_inference_client', async () => {
-  await setupInitialInference({
+  setupInitialInference({
     locatePastelConf: locatePastelConf(),
     locatePastelConfDir: locatePastelConfDir(),
     pasteldBasePath: pasteldBasePath(),

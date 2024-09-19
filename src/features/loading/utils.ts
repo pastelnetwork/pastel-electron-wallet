@@ -173,7 +173,3 @@ export const installProcess = async (pastelUtilityBinPath: string, handleProcess
     },
   )
 }
-
-export const delay = (time: number) => {
-  return new Promise((resolve) => setTimeout(resolve, time));
-};

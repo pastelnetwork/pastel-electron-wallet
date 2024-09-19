@@ -10,10 +10,11 @@ import { ipcRenderer } from 'electron'
 import TextareaAutosize from 'react-textarea-autosize'
 import querystring from 'querystring'
 import { Base64 } from 'js-base64'
-import os from 'os'
-import PropTypes from 'prop-types'
 import log from 'electron-log'
+import tcpPortUsed from 'tcp-port-used'
+import clx from 'classnames'
 
+import { inferenceClient } from '../../features/constants/ServeStatic'
 import { rpc } from '../../api/pastel-rpc/rpc'
 import styles from './Sidebar.module.css'
 import cstyles from './Common.module.css'
@@ -22,6 +23,7 @@ import Logo from '../assets/img/pastel-logo.png'
 import Utils from '../utils/utils'
 import { parsePastelURI, PastelURITarget } from '../utils/uris'
 import store from '../../redux/store'
+import loadingStyles from '../../features/loading/LoadingScreen.module.css'
 
 interface IMasterNodeProps {
   result: {
@@ -289,6 +291,31 @@ const PayURIModal = ({
   )
 }
 
+const InferenceClientModal = ({ isOpen }: { isOpen: boolean }) => {
+  if (!isOpen) {
+    return null;
+  }
+
+  return (
+    <div className={cstyles.fixedModal}>
+      <div className={clx(cstyles.center, styles.loadingcontainer)}>
+        <div className={styles.viewContent}>
+          <div className={cstyles.verticalflex}>
+            <div className={loadingStyles.viewInner}>
+              <div className={loadingStyles.loaderWrapper}>
+                <div className={loadingStyles.loader} />
+              </div>
+            </div>
+            <div className={loadingStyles.textWrap}>
+              Waiting the pasteld to start...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
   let isActive = false
 
@@ -332,9 +359,14 @@ class Sidebar extends PureComponent<any, any> {
       exportPrivKeysModalIsOpen: false,
       exportedPrivKeys: null,
       privKeyInputValue: null,
+      isShowCheckInferenceModal: true,
     }
     this.setupMenuHandlers()
   } // Handle menu items
+
+  componentDidMount() {
+    this.handleSetupInferenceClient()
+  }
 
   setupMenuHandlers = async () => {
     const {
@@ -505,36 +537,53 @@ class Sidebar extends PureComponent<any, any> {
         })
       },
     )
-
-    const checkMasterNodeStatus = async () => {
-      try {
-        const { pastelConf } = store.getState()
-        const { result } = await rpc<IMasterNodeProps>(
-          'mnsync',
-          ['status'],
-          pastelConf,
-        )
-        log.info(`Supernode status: ${result?.AssetName}`)
-        if (result?.AssetName !== 'Finished') {
-          if (result?.AssetName === 'Initial') {
-            await rpc<IMasterNodeProps>(
-              'mnsync',
-              ['reset'],
-              pastelConf,
-            )
-          }
+  }
+  checkStartInitialInference = () => {
+    const self = this
+    tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
+      function (inUse) {
+        if (!inUse) {
           setTimeout(() => {
-            checkMasterNodeStatus()
+            self.checkStartInitialInference()
           }, 1000)
         } else {
-          ipcRenderer.send('start_initial_inference')
+          self.setState({
+            isShowCheckInferenceModal: false
+          })
         }
-      } catch (error) {
-        log.error(error)
+      },
+      function (err) {
+        log.error('Error on check:', err.message)
+      },
+    )
+  }
+  handleSetupInferenceClient = async () => {
+    try {
+      const { pastelConf } = store.getState()
+      const { result } = await rpc<IMasterNodeProps>(
+        'mnsync',
+        ['status'],
+        pastelConf,
+      )
+      log.info(`Supernode status: ${result?.AssetName}`)
+      if (result?.AssetName !== 'Finished') {
+        if (result?.AssetName === 'Initial') {
+          await rpc<IMasterNodeProps>(
+            'mnsync',
+            ['reset'],
+            pastelConf,
+          )
+        }
+        setTimeout(() => {
+          this.handleSetupInferenceClient()
+        }, 1000)
+      } else {
+        ipcRenderer.send('start_initial_inference')
+        this.checkStartInitialInference()
       }
+    } catch (error) {
+      log.error(error)
     }
-
-    checkMasterNodeStatus();
   }
   closeExportPrivKeysModal = () => {
     this.setState({
@@ -703,6 +752,7 @@ class Sidebar extends PureComponent<any, any> {
 
     return (
       <div>
+        <InferenceClientModal isOpen={this.state.isShowCheckInferenceModal} />
         {/* Payment URI Modal */}
         <PayURIModal
           modalInput={uriModalInputValue}
