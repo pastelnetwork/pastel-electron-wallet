@@ -3,6 +3,7 @@ import { ChildProcessWithoutNullStreams } from 'child_process'
 import clx from 'classnames'
 import { ipcRenderer } from 'electron'
 import fs from 'fs'
+import path from 'path'
 import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
@@ -413,17 +414,13 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   removeAllBlockchainRelatedFilesAndFolders = async () => {
     const {
       locatePastelConfDir,
-      locatePastelParamsDir,
-      locatePastelWalletDir,
-      locatePastelWalletFullnodeDir,
-      locatePastelDDir,
     } = store.getState().appInfo;
     try {
-      fs.rmSync(locatePastelConfDir, { recursive: true, force: true });
-      fs.rmSync(locatePastelParamsDir, { recursive: true, force: true });
-      fs.rmSync(locatePastelWalletDir, { recursive: true, force: true });
-      fs.rmSync(locatePastelWalletFullnodeDir, { recursive: true, force: true });
-      fs.rmSync(locatePastelDDir, { recursive: true, force: true });
+      fs.rmSync(path.join(locatePastelConfDir, 'blocks'), { recursive: true, force: true })
+      fs.rmSync(path.join(locatePastelConfDir, 'chainstate'), { recursive: true, force: true })
+      fs.rmSync(path.join(locatePastelConfDir, 'tickets'), { recursive: true, force: true })
+      fs.unlinkSync(path.join(locatePastelConfDir, 'mncache.dat'))
+      fs.unlinkSync(path.join(locatePastelConfDir, 'mnpayments.dat'))
     } catch (error) {
       log.error(error)
       await new Promise(resolve =>
