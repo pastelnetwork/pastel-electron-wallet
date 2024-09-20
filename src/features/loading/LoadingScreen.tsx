@@ -390,39 +390,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       await fs.promises.writeFile(pastelConfPath, confContent)
     }
   }
-  removeAllBlockchainRelatedFilesAndFolders = async () => {
-    const {
-      locatePastelConfDir,
-    } = store.getState().appInfo;
-    try {
-      const blocksDir = path.join(locatePastelConfDir, 'blocks')
-      const chainstateDir = path.join(locatePastelConfDir, 'chainstate')
-      const ticketsDir = path.join(locatePastelConfDir, 'tickets')
-      const mncacheFile = path.join(locatePastelConfDir, 'mncache.dat')
-      const mnpaymentsFile = path.join(locatePastelConfDir, 'mnpayments.dat')
-      if (fs.existsSync(blocksDir)) {
-        fs.rmSync(blocksDir, { recursive: true, force: true })
-      }
-      if (fs.existsSync(chainstateDir)) {
-        fs.rmSync(chainstateDir, { recursive: true, force: true })
-      }
-      if (fs.existsSync(ticketsDir)) {
-        fs.rmSync(ticketsDir, { recursive: true, force: true })
-      }
-      if (fs.existsSync(mncacheFile)) {
-        fs.unlinkSync(mncacheFile)
-      }
-      if (fs.existsSync(mnpaymentsFile)) {
-        fs.unlinkSync(mnpaymentsFile)
-      }
-    } catch (error) {
-      log.error(error)
-      await new Promise(resolve =>
-        setTimeout(resolve, 2000)
-      );
-      this.removeAllBlockchainRelatedFilesAndFolders()
-    }
-  }
   startPastelUp = async () => {
     this.setState({
       creatingPastelConf: false,
@@ -435,12 +402,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         if (fs.existsSync(locatePastelConf)) {
           await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
-        await this.removeAllBlockchainRelatedFilesAndFolders();
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
         await this.updatePastelConf()
-        await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
       } catch (error) {
-        log.error(error)
+        log.error('installWalletNode error: ', error)
         if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1) {
           ipcRenderer.send('reset_pastel_app')
         }

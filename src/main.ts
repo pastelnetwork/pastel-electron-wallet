@@ -3,7 +3,6 @@ import 'regenerator-runtime/runtime'
 // install shortcuts on windows
 import 'electron-squirrel-startup'
 import ElectronStore from 'electron-store'
-import getFolderSize from 'get-folder-size'
 
 import {
   app,

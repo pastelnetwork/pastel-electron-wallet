@@ -154,20 +154,20 @@ export const spawnProcess = (
 }
 
 export const startProcess = async (pastelUtilityBinPath: string, handleProcessLogging: (line: string) => void) => {
-  const args = ['start', 'walletnode']
+  const args = ['start', 'node']
   return spawnProcess(pastelUtilityBinPath, args, {
     onStdoutLine: handleProcessLogging,
   },)
 }
 export const stopWalletNode = async (pastelUtilityBinPath: string, handleProcessLogging: (line: string) => void) => {
-  await spawnProcess(pastelUtilityBinPath, ['stop', 'walletnode'], {
+  await spawnProcess(pastelUtilityBinPath, ['stop', 'node'], {
     onStdoutLine: handleProcessLogging,
   },)
 }
 export const installProcess = async (pastelUtilityBinPath: string, handleProcessLogging: (line: string) => void) => {
   await spawnProcess(
     pastelUtilityBinPath,
-    ['install', 'walletnode', '--network', 'mainnet', '--force', '--use-snapshot', 'true', '--snapshot-name', 'snapshot-latest-mainnet.tar.gz'],
+    ['install', 'node', '--network', 'mainnet', '--force', '--use-snapshot', 'true', '--snapshot-name', 'snapshot-latest-mainnet.tar.gz'],
     {
       onStdoutLine: handleProcessLogging,
     },

@@ -6,7 +6,6 @@ import { ThemeProvider } from 'styled-components/macro'
 
 import { PastelModal } from '../../features/pastelModal'
 import UpdateToast from '../../features/updateToast'
-import DownloadSnapshot from '../../features/downloadSnapshot'
 import Routes from '../Routes'
 import OnboardingRoutes from '../../common/routes/Routes'
 import { theme } from '../../common/theme'
@@ -40,7 +39,6 @@ const Root = (): JSX.Element => {
       </MemoryRouter>
       <PastelModal />
       <UpdateToast />
-      <DownloadSnapshot />
     </ThemeProvider>
   )
 }

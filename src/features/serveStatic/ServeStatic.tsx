@@ -390,7 +390,7 @@ export const setupInitialInference = async (
         )
       }
 
-      const total = parseInt(resp.headers['content-length'] || '0', 10)
+      const total = parseInt(resp.headers['content-length'] || '1', 10)
       const str = progress({ time: 100 }, pgrs => {
         const percentage = Math.round((pgrs.transferred * 100) / total)
         log.info(`Downloading pastel_inference_js_client ${percentage}% ...`)

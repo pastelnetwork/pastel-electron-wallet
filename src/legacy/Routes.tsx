@@ -540,19 +540,9 @@ class RouteApp extends React.Component<any, any> {
                 openPastelPhotopeaModal={this.props.openPastelPhotopeaModal}
                 openAboutModal={this.props.openAboutModal}
                 openUpdateToast={this.props.openUpdateToast}
-                openDownloadSnapshot={this.props.openDownloadSnapshot}
                 openSquooshToolModal={this.props.openSquooshToolModal}
                 openGlitchImageModal={this.props.openGlitchImageModal}
                 createNewAddress={this.createNewAddress}
-                isDownloadSnapshot={
-                  store.getState().downloadSnapshot.isDownloadSnapshot
-                }
-                opened={
-                  store.getState().downloadSnapshot.opened
-                }
-                isClose={
-                  store.getState().downloadSnapshot.isClose
-                }
                 setConnected={this.props.setConnected}
               />
             </div>
