@@ -394,7 +394,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     this.setState({
       creatingPastelConf: false,
     })
-    const { locatePastelConf, pastelUtilityBinPath, pastelReinstallPath } = store.getState().appInfo;
+    const { locatePastelConf, pastelUtilityBinPath, pastelReinstallPath, isPackaged } = store.getState().appInfo;
     const installWalletNode = async () => {
       try {
         process = '';
@@ -406,14 +406,16 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         await this.updatePastelConf()
       } catch (error) {
         log.error('installWalletNode error: ', error)
-        if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1) {
+        if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1 && isPackaged) {
           ipcRenderer.send('reset_pastel_app')
         }
       }
     }
     if (!fs.existsSync(locatePastelConf)) {
       await installWalletNode();
-      ipcRenderer.send('reset_pastel_app')
+      if (isPackaged) {
+        ipcRenderer.send('reset_pastel_app')
+      }
       return true;
     } else if (fs.existsSync(pastelReinstallPath)) {
       const content = fs.readFileSync(pastelReinstallPath);
@@ -426,7 +428,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           } catch (error) {
             log.error(error)
           }
-          ipcRenderer.send('reset_pastel_app')
+          if (isPackaged) {
+            ipcRenderer.send('reset_pastel_app')
+          }
         }
       }
       return true;
@@ -485,7 +489,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   async handleResetPastel() {
     // const pastelReinstallPath = store.getState().appInfo.pastelReinstallPath
     // await fs.promises.writeFile(pastelReinstallPath, JSON.stringify({ reinstall: true }))
-    const { locatePastelConf, pastelUtilityBinPath } = store.getState().appInfo;
+    const { locatePastelConf, pastelUtilityBinPath, isPackaged } = store.getState().appInfo;
     if (fs.existsSync(locatePastelConf)) {
       await stopWalletNode(pastelUtilityBinPath, (line: string) => {
         if (filterLogKeywords.some(word => line.includes(word))) {
@@ -493,7 +497,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
       })
     }
-    ipcRenderer.send('reset_pastel_app')
+    if (isPackaged) {
+      ipcRenderer.send('reset_pastel_app')
+    }
   }
 
   async getInfo() {
