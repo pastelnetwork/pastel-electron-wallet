@@ -26,6 +26,7 @@ import {
 } from './utils'
 import PastelDB from '../../features/pastelDB/database'
 import { createPastelKeysFolder } from '../../features/pastelID'
+import { showClosingPastelWalletModal } from '../downloadSnapshot'
 
 interface TLoadingState {
   currentStatus: string | JSX.Element
@@ -223,6 +224,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
+      store.dispatch<any>(showClosingPastelWalletModal())
       while (!PastelDB.isValidDB()) {
         // wait if database is reading or writing status
         new Promise(resolve => setTimeout(resolve, 100))

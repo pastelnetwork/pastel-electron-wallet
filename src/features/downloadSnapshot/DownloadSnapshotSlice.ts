@@ -5,6 +5,7 @@ export interface IDownloadSnapshotState {
   isDownloadSnapshot: boolean
   isConnected: boolean
   isClose: boolean
+  isShowClosingPastelWalletModal: boolean
 }
 
 const initialState: IDownloadSnapshotState = {
@@ -12,6 +13,7 @@ const initialState: IDownloadSnapshotState = {
   isDownloadSnapshot: false,
   isConnected: false,
   isClose: false,
+  isShowClosingPastelWalletModal: false,
 }
 
 export const downloadSnapshotSlice = createSlice({
@@ -32,6 +34,9 @@ export const downloadSnapshotSlice = createSlice({
     setConnected(state: IDownloadSnapshotState) {
       state.isConnected = true
     },
+    showClosingPastelWalletModal(state: IDownloadSnapshotState) {
+      state.isShowClosingPastelWalletModal = true
+    },
   },
 })
 
@@ -42,4 +47,5 @@ export const {
   closeDownloadSnapshot,
   setDownloadSnapshot,
   setConnected,
+  showClosingPastelWalletModal,
 } = downloadSnapshotSlice.actions

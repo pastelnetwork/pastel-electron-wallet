@@ -6,6 +6,7 @@ export {
   openDownloadSnapshot,
   setConnected,
   setDownloadSnapshot,
+  showClosingPastelWalletModal,
   downloadSnapshotReducer,
 } from './DownloadSnapshotSlice'
 

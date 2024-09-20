@@ -24,11 +24,37 @@ import Utils from '../utils/utils'
 import { parsePastelURI } from '../utils/uris'
 import store from '../../redux/store'
 import loadingStyles from '../../features/loading/LoadingScreen.module.css'
+import { useAppSelector } from '../../redux/hooks'
 
 interface IMasterNodeProps {
   result: {
     AssetName: string
   }
+}
+
+const ClosingPastelWalletModal = () => {
+  const { isShowClosingPastelWalletModal } = useAppSelector(state => state.downloadSnapshot)
+  if (!isShowClosingPastelWalletModal) {
+    return null
+  }
+  return (
+    <div className={cstyles.fixedModal}>
+      <div className={clx(cstyles.center, styles.loadingcontainer)}>
+        <div className={styles.viewContent}>
+          <div className={cstyles.verticalflex}>
+            <div className={loadingStyles.viewInner}>
+              <div className={loadingStyles.loaderWrapper}>
+                <div className={loadingStyles.loader} />
+              </div>
+            </div>
+            <div className={loadingStyles.textWrap}>
+              Closing Pastel Wallet...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const ExportPrivKeyModal = ({
@@ -767,6 +793,9 @@ class Sidebar extends PureComponent<any, any> {
 
     return (
       <div>
+        {/* Closing Pastel Wallet Modal  */}
+        <ClosingPastelWalletModal />
+
         {/* Payment URI Modal */}
         <PayURIModal
           modalInput={uriModalInputValue}
