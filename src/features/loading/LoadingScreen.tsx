@@ -268,16 +268,12 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   updatePastelConf = async () => {
     const pastelConfPath = store.getState().appInfo.locatePastelConf
     let confContent = ''
-    let isUpdateData = false;
     if (fs.existsSync(pastelConfPath)) {
       const pastelConfigContent = fs.readFileSync(pastelConfPath);
       confContent = pastelConfigContent.toString();
     }
-    if (confContent.indexOf('-txindex=1') === -1) {
-      confContent += '-txindex=1\n'
-      isUpdateData = true
-    }
     if (confContent.indexOf('addnode') === -1) {
+      confContent += 'txindex=1\n'
       confContent += 'testnet=0\n'
       confContent += 'minrelaytxfee=0.00001\n'
       confContent += 'rpcthreads=20\n'
@@ -397,10 +393,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       confContent += 'addnode=89.117.79.24\n'
       confContent += 'addnode=89.117.79.25\n'
       confContent += 'addnode=89.117.79.2\n'
-      isUpdateData = true
-
-    }
-    if (isUpdateData) {
       await fs.promises.writeFile(pastelConfPath, confContent)
     }
   }

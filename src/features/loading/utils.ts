@@ -167,7 +167,7 @@ export const stopWalletNode = async (pastelUtilityBinPath: string, handleProcess
 export const installProcess = async (pastelUtilityBinPath: string, handleProcessLogging: (line: string) => void) => {
   await spawnProcess(
     pastelUtilityBinPath,
-    ['install', 'node', '--network', 'mainnet', '--force', '--use-snapshot', 'true', '--snapshot-name', 'snapshot-latest-mainnet.tar.gz'],
+    ['install', 'node', '--network', 'mainnet', '--force', '--use-snapshot', 'true', '--snapshot-name', 'snapshot-latest-mainnet-txind.tar.zst'],
     {
       onStdoutLine: handleProcessLogging,
     },
