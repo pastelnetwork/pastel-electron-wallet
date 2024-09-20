@@ -57,7 +57,7 @@ export default function InferenceClient(): JSX.Element {
         ['status'],
         pastelConf,
       )
-      log.info(`Supernode status: ${result?.AssetName}`)
+      log.info(`mnsync: ${JSON.stringify(result)}`)
       if (result?.AssetName !== 'Finished') {
         setStatus(`The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying. (Status: ${result?.AssetName})`)
         if (result?.AssetName === 'Initial') {

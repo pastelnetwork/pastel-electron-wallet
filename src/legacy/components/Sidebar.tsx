@@ -603,7 +603,7 @@ class Sidebar extends PureComponent<any, any> {
         ['status'],
         pastelConf,
       )
-      log.info(`Supernode status: ${result?.AssetName}`)
+      log.info(`mnsync: ${JSON.stringify(result)}`)
       if (result?.AssetName !== 'Finished') {
         if (result?.AssetName === 'Initial') {
           await rpc<IMasterNodeProps>(
