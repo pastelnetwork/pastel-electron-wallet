@@ -266,6 +266,9 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       const pastelConfigContent = fs.readFileSync(pastelConfPath);
       confContent = pastelConfigContent.toString();
     }
+    if (confContent.indexOf('-txindex=1') === -1) {
+      confContent += '-txindex=1\n'
+    }
     if (confContent.indexOf('addnode') === -1) {
       confContent += 'testnet=0\n'
       confContent += 'minrelaytxfee=0.00001\n'

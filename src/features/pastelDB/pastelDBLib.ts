@@ -105,9 +105,12 @@ export const readSqliteDBFile = async (): Promise<Buffer | null> => {
 export const RemoveSqliteDBFile = async (): Promise<void> => {
   const { locatePastelConfDir } = store.getState().appInfo
   try {
-    await fs.promises.unlink(path.join(locatePastelConfDir, 'pasteldb.sqlite'))
+    const dbFile = path.join(locatePastelConfDir, 'pasteldb.sqlite')
+    if (fs.existsSync(dbFile)) {
+      await fs.promises.unlink(path.join(locatePastelConfDir, 'pasteldb.sqlite'))
+    }
   } catch (e) {
-    log.error('File not found')
+    log.error('File not found - Created new pasteldb.sqlite')
   }
 }
 
