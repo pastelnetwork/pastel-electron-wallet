@@ -3,7 +3,6 @@ import { ChildProcessWithoutNullStreams } from 'child_process'
 import clx from 'classnames'
 import { ipcRenderer } from 'electron'
 import fs from 'fs'
-import path from 'path'
 import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
@@ -213,6 +212,11 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       fs.mkdirSync(dir)
     }
 
+    try {
+      createPastelKeysFolder(dir)
+    } catch (error) {
+      log.error(`createPastelKeysFolder error: ${error.message}`)
+    }
     await this.startPastelUp();
   }
 
@@ -262,12 +266,14 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   updatePastelConf = async () => {
     const pastelConfPath = store.getState().appInfo.locatePastelConf
     let confContent = ''
+    let isUpdateData = false;
     if (fs.existsSync(pastelConfPath)) {
       const pastelConfigContent = fs.readFileSync(pastelConfPath);
       confContent = pastelConfigContent.toString();
     }
     if (confContent.indexOf('-txindex=1') === -1) {
       confContent += '-txindex=1\n'
+      isUpdateData = true
     }
     if (confContent.indexOf('addnode') === -1) {
       confContent += 'testnet=0\n'
@@ -389,7 +395,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       confContent += 'addnode=89.117.79.24\n'
       confContent += 'addnode=89.117.79.25\n'
       confContent += 'addnode=89.117.79.2\n'
+      isUpdateData = true
 
+    }
+    if (isUpdateData) {
       await fs.promises.writeFile(pastelConfPath, confContent)
     }
   }
@@ -439,10 +448,10 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       return true;
     } else {
       try {
+        await this.updatePastelConf()
         this.setState({
           currentStatus: 'Waiting the pasteld to start...',
         })
-        await this.updatePastelConf()
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
 
         try {

@@ -291,31 +291,6 @@ const PayURIModal = ({
   )
 }
 
-const InferenceClientModal = ({ isOpen }: { isOpen: boolean }) => {
-  if (!isOpen) {
-    return null;
-  }
-
-  return (
-    <div className={cstyles.fixedModal}>
-      <div className={clx(cstyles.center, styles.loadingcontainer)}>
-        <div className={styles.viewContent}>
-          <div className={cstyles.verticalflex}>
-            <div className={loadingStyles.viewInner}>
-              <div className={loadingStyles.loaderWrapper}>
-                <div className={loadingStyles.loader} />
-              </div>
-            </div>
-            <div className={loadingStyles.textWrap}>
-              Waiting the pasteld to start...
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 const SidebarMenuItem = ({ name, routeName, currentRoute, iconname }: any) => {
   let isActive = false
 
@@ -359,7 +334,6 @@ class Sidebar extends PureComponent<any, any> {
       exportPrivKeysModalIsOpen: false,
       exportedPrivKeys: null,
       privKeyInputValue: null,
-      isShowCheckInferenceModal: true,
     }
     this.setupMenuHandlers()
   } // Handle menu items
@@ -536,6 +510,7 @@ class Sidebar extends PureComponent<any, any> {
   }
   checkStartInitialInference = () => {
     const self = this
+    log.info('Start Inference')
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -543,15 +518,56 @@ class Sidebar extends PureComponent<any, any> {
             self.checkStartInitialInference()
           }, 2000)
         } else {
-          self.setState({
-            isShowCheckInferenceModal: false
-          })
+          log.info('Inference started successfully')
         }
       },
       function (err) {
         log.error('Error on check:', err.message)
       },
     )
+  }
+  getSupernodeData = async () => {
+    try {
+      const { pastelConf } = store.getState()
+      const { result } = await rpc<IMasterNodeProps>(
+        'masternodelist',
+        ['full'],
+        pastelConf,
+      )
+      const [
+        masternodeListFull,
+        masternodeListRank,
+        masternodeListPubkey,
+        masternodeListExtra,
+      ] = await Promise.all([
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['full'],
+          pastelConf,
+        ),
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['rank'],
+          pastelConf,
+        ),
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['pubkey'],
+          pastelConf,
+        ),
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['extra'],
+          pastelConf,
+        ),
+      ]);
+      log.info('masternodeListFull: ', JSON.stringify(masternodeListFull))
+      log.info('masternodeListRank: ', JSON.stringify(masternodeListRank))
+      log.info('masternodeListPubkey: ', JSON.stringify(masternodeListPubkey))
+      log.info('masternodeListExtra: ', JSON.stringify(masternodeListExtra))
+    } catch (error) {
+      log.error('getSupernodeData error: ', error)
+    }
   }
   handleSetupInferenceClient = async () => {
     try {
@@ -576,6 +592,13 @@ class Sidebar extends PureComponent<any, any> {
       } else {
         ipcRenderer.send('start_initial_inference')
         this.checkStartInitialInference()
+        this.getSupernodeData()
+        ipcRenderer.on('start_inference_error', (event, data) => {
+          if (data) {
+            log.error('Start Inference error: ', JSON.stringify(data))
+            ipcRenderer.send('reload_inference_client')
+          }
+        })
       }
     } catch (error) {
       log.error(error)
@@ -744,7 +767,6 @@ class Sidebar extends PureComponent<any, any> {
 
     return (
       <div>
-        <InferenceClientModal isOpen={this.state.isShowCheckInferenceModal} />
         {/* Payment URI Modal */}
         <PayURIModal
           modalInput={uriModalInputValue}

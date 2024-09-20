@@ -27,6 +27,7 @@ export default function InferenceClient(): JSX.Element {
   const { isConnected } = useAppSelector(state => state.downloadSnapshot)
 
   const checkStartInitialInference = () => {
+    log.info('Start Inference')
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -34,6 +35,7 @@ export default function InferenceClient(): JSX.Element {
             checkStartInitialInference()
           }, 1000)
         } else {
+          log.info('Inference started successfully')
           setStatus('success')
           setInstallRequired('')
           setInstallUrl('')
