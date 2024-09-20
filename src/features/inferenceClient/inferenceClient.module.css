@@ -106,3 +106,8 @@
 .btn {
   padding: 10px 16px;
 }
+
+.loadingWrapper {
+  position: relative;
+  padding: 0 20px;
+}

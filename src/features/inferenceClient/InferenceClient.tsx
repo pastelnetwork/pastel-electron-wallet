@@ -9,6 +9,7 @@ import { rpc } from '../../api/pastel-rpc/rpc'
 import store from '../../redux/store'
 import { inferenceClient } from '../constants/ServeStatic'
 import cstyles from '../../common/utils/Styles.module.css'
+import loadingStyles from '../loading/LoadingScreen.module.css'
 import dstyles from '../downloadSnapshot/DownloadSnapshot.module.css'
 
 import styles from './inferenceClient.module.css'
@@ -58,7 +59,7 @@ export default function InferenceClient(): JSX.Element {
       )
       log.info(`Supernode status: ${result?.AssetName}`)
       if (result?.AssetName !== 'Finished') {
-        setStatus(`Waiting for supernode before Inference Client can be displayed. (Status: ${result?.AssetName})`)
+        setStatus(`The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying. (Status: ${result?.AssetName})`)
         if (result?.AssetName === 'Initial') {
           await rpc<IMasterNodeProps>(
             'mnsync',
@@ -119,8 +120,15 @@ export default function InferenceClient(): JSX.Element {
     return (
       <div className={styles.wrapper}>
         {!isError ?
-          <div className={cx(styles.textWrap, styles.textWrapPadding)}>
-            {status}
+          <div className={styles.loadingWrapper}>
+            <div className={loadingStyles.viewInner}>
+              <div className={loadingStyles.loaderWrapper}>
+                <div className={loadingStyles.loader} />
+              </div>
+            </div>
+            <div className={loadingStyles.textWrap}>
+              {status}
+            </div>
           </div> : null
         }
 
