@@ -53,20 +53,13 @@ export default function InferenceClient(): JSX.Element {
     try {
       const { pastelConf } = store.getState()
       const { result } = await rpc<IMasterNodeProps>(
-        'mnsync',
-        ['status'],
+        'masternode',
+        ['top'],
         pastelConf,
       )
-      log.info(`mnsync: ${JSON.stringify(result)}`)
-      if (result?.AssetName !== 'Finished') {
+      log.info(`masternode top: ${JSON.stringify(result)}`)
+      if (!Object.keys(result).length) {
         setStatus(`The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying. (Status: ${result?.AssetName})`)
-        if (result?.AssetName === 'Initial') {
-          await rpc<IMasterNodeProps>(
-            'mnsync',
-            ['reset'],
-            pastelConf,
-          )
-        }
         setTimeout(() => {
           checkMasterNodeStatus()
         }, 1000)

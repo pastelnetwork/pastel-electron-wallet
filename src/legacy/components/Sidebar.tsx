@@ -503,6 +503,9 @@ class Sidebar extends PureComponent<any, any> {
     ipcRenderer.on('update_downloaded', () => {
       openUpdateToast()
     })
+    ipcRenderer.on('setup_inference_success', () => {
+      openUpdateToast()
+    })
     ipcRenderer.on(
       'deepLink',
       async (event, { view, param }: { view: string; param: string }) => {
@@ -555,11 +558,6 @@ class Sidebar extends PureComponent<any, any> {
   getSupernodeData = async () => {
     try {
       const { pastelConf } = store.getState()
-      const { result } = await rpc<IMasterNodeProps>(
-        'masternodelist',
-        ['full'],
-        pastelConf,
-      )
       const [
         masternodeListFull,
         masternodeListRank,
@@ -599,19 +597,12 @@ class Sidebar extends PureComponent<any, any> {
     try {
       const { pastelConf } = store.getState()
       const { result } = await rpc<IMasterNodeProps>(
-        'mnsync',
-        ['status'],
+        'masternode',
+        ['top'],
         pastelConf,
       )
-      log.info(`mnsync: ${JSON.stringify(result)}`)
-      if (result?.AssetName !== 'Finished') {
-        if (result?.AssetName === 'Initial') {
-          await rpc<IMasterNodeProps>(
-            'mnsync',
-            ['reset'],
-            pastelConf,
-          )
-        }
+      log.info(`masternode top: ${JSON.stringify(result)}`)
+      if (!Object.keys(result).length) {
         setTimeout(() => {
           this.handleSetupInferenceClient()
         }, 1000)

@@ -273,7 +273,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       confContent = pastelConfigContent.toString();
     }
     if (confContent.indexOf('addnode') === -1) {
-      confContent += 'txindex=1\n'
       confContent += 'testnet=0\n'
       confContent += 'minrelaytxfee=0.00001\n'
       confContent += 'rpcthreads=20\n'

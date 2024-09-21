@@ -259,6 +259,12 @@ const createWindow = async () => {
   } catch {
     // noop
   }
+  setupInitialInference({
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
+  })
 }
 
 /**
@@ -307,12 +313,6 @@ ipcMain.on('app-ready', () => {
 
   redirectDeepLinkingUrl(deepLinkingUrl, mainWindow)
   initServeStatic(app.isPackaged)
-  setupInitialInference({
-    locatePastelConf: locatePastelConf(),
-    locatePastelConfDir: locatePastelConfDir(),
-    pasteldBasePath: pasteldBasePath(),
-    locateAppDir: locateAppDir(),
-  })
 })
 
 let platform = os.platform() as string
