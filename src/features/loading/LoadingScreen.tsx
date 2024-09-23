@@ -412,8 +412,16 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         await this.updatePastelConf()
       } catch (error) {
         log.error('installWalletNode error: ', error)
-        if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1 && isPackaged) {
-          ipcRenderer.send('reset_pastel_app')
+        if (this.state.currentStatus.toString().indexOf('Install node: Finished') !== -1) {
+          if (os.platform() === 'linux') {
+            // stop is needed in case if some services started and some failed
+            if (fs.existsSync(locatePastelConf)) {
+              await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
+            }
+            this.loadPastelConf()
+          } else if (isPackaged) {
+            ipcRenderer.send('reset_pastel_app')
+          }
         }
       }
     }

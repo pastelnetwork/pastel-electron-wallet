@@ -600,13 +600,14 @@ class Sidebar extends PureComponent<any, any> {
   handleSetupInferenceClient = async () => {
     try {
       const { pastelConf } = store.getState()
+      const { isConnected } = store.getState().downloadSnapshot
       const { result } = await rpc<IMasterNodeProps>(
         'masternode',
         ['top'],
         pastelConf,
       )
       log.info(`masternode top: ${JSON.stringify(result)}`)
-      if (!Object.keys(result).length) {
+      if (!Object.keys(result).length || !isConnected) {
         setTimeout(() => {
           this.handleSetupInferenceClient()
         }, 1000)

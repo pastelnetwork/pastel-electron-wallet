@@ -28,7 +28,6 @@ export default function InferenceClient(): JSX.Element {
   const { isConnected } = useAppSelector(state => state.downloadSnapshot)
 
   const checkStartInitialInference = () => {
-    log.info('Start Inference')
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -36,7 +35,6 @@ export default function InferenceClient(): JSX.Element {
             checkStartInitialInference()
           }, 1000)
         } else {
-          log.info('Inference started successfully')
           setStatus('success')
           setInstallRequired('')
           setInstallUrl('')
@@ -57,7 +55,6 @@ export default function InferenceClient(): JSX.Element {
         ['top'],
         pastelConf,
       )
-      log.info(`masternode top: ${JSON.stringify(result)}`)
       if (!Object.keys(result).length) {
         setStatus(`The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying. (Status: ${result?.AssetName})`)
         setTimeout(() => {
@@ -76,7 +73,6 @@ export default function InferenceClient(): JSX.Element {
     ipcRenderer.on('install_required', (event, data) => {
       if (data) {
         ipcRenderer.send('reload_inference_client')
-        log.error(JSON.stringify(data))
       }
     })
 

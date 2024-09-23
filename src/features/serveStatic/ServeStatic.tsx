@@ -42,30 +42,23 @@ const replaceSpaceInPath = (path: string) => {
   return path
 }
 
-const getNodeBinaryPath = (pasteldBasePath: string) => {
+const getBunBinaryPath = (pasteldBasePath: string) => {
   if (os.platform() === 'linux') {
     return {
-      npmPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-linux', 'bin', 'npm'),
-      ),
-      wrapperScriptPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'run-npm-linux.sh'),
+      bunPath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'bun-linux'),
       ),
     }
   }
   if (os.platform() === 'darwin') {
     return {
-      npmPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-mac', 'bin', 'npm'),
-      ),
-      wrapperScriptPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'run-npm-mac.sh'),
+      bunPath: replaceSpaceInPath(
+        path.join(pasteldBasePath, 'bun-mac', 'bin', 'npm'),
       ),
     }
   }
   return {
-    npmPath: path.join(pasteldBasePath, 'node-win', 'npm.cmd'),
-    wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-win.bat'),
+    bunPath: path.join(pasteldBasePath, 'bun-win'),
   }
 }
 
@@ -187,14 +180,14 @@ export const checkAndStartInitialInference = (
   tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
     function (inUse) {
       if (!inUse) {
-        const { wrapperScriptPath } = getNodeBinaryPath(
+        const { bunPath } = getBunBinaryPath(
           pastelConf.pasteldBasePath,
         )
         if (os.platform() === 'darwin') {
           startInferenceClientOnMac(pastelConf, pastelInferencePath, mainWindow)
         } else {
           cp.execFile(
-            wrapperScriptPath,
+            bunPath,
             ['start'],
             { cwd: replaceSpaceInPath(pastelInferencePath) },
             (error, stdout, stderr) => {
@@ -385,6 +378,7 @@ export const setupInitialInference = async (
 
     r.on('response', resp => {
       if (resp.statusCode !== 200) {
+        log.error('utils pastel_inference_js_client request.get error: can not download file')
         throw new Error(
           'utils pastel_inference_js_client request.get error: can not download file',
         )
@@ -432,7 +426,7 @@ export const setupInitialInference = async (
         }
 
         try {
-          const { wrapperScriptPath } = getNodeBinaryPath(
+          const { bunPath } = getBunBinaryPath(
             pastelConf.pasteldBasePath,
           )
           if (os.platform() === 'darwin') {
@@ -443,7 +437,7 @@ export const setupInitialInference = async (
             )
           } else {
             cp.execFile(
-              wrapperScriptPath,
+              bunPath,
               ['install'],
               { cwd: replaceSpaceInPath(pastelInferencePath) },
               (error, stdout, stderr) => {
@@ -576,7 +570,7 @@ export const stopInference = (
   tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
     function (inUse) {
       if (inUse) {
-        const { wrapperScriptPath } = getNodeBinaryPath(
+        const { bunPath } = getBunBinaryPath(
           pasteldBasePath,
         )
         if (os.platform() === 'darwin') {
@@ -590,7 +584,7 @@ export const stopInference = (
           )
         } else {
           cp.execFile(
-            wrapperScriptPath,
+            bunPath,
             ['stop'],
             { cwd: replaceSpaceInPath(pastelInferencePath) }
           )
