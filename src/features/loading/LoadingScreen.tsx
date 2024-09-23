@@ -7,6 +7,7 @@ import ini from 'ini'
 import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import log from 'electron-log'
+import os from 'os'
 
 import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
@@ -418,7 +419,13 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     }
     if (!fs.existsSync(locatePastelConf)) {
       await installWalletNode();
-      if (isPackaged) {
+      if (os.platform() === 'linux') {
+        // stop is needed in case if some services started and some failed
+        if (fs.existsSync(locatePastelConf)) {
+          await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
+        }
+        this.loadPastelConf()
+      } else if (isPackaged) {
         ipcRenderer.send('reset_pastel_app')
       }
       return true;
@@ -433,7 +440,13 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           } catch (error) {
             log.error(error)
           }
-          if (isPackaged) {
+          if (os.platform() === 'linux') {
+            // stop is needed in case if some services started and some failed
+            if (fs.existsSync(locatePastelConf)) {
+              await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
+            }
+            this.loadPastelConf()
+          } else if (isPackaged) {
             ipcRenderer.send('reset_pastel_app')
           }
         }
@@ -492,8 +505,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     }
   }
   async handleResetPastel() {
-    // const pastelReinstallPath = store.getState().appInfo.pastelReinstallPath
-    // await fs.promises.writeFile(pastelReinstallPath, JSON.stringify({ reinstall: true }))
     const { locatePastelConf, pastelUtilityBinPath, isPackaged } = store.getState().appInfo;
     if (fs.existsSync(locatePastelConf)) {
       await stopWalletNode(pastelUtilityBinPath, (line: string) => {

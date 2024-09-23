@@ -220,6 +220,12 @@ export default class MenuBuilder {
             this.mainWindow.toggleDevTools()
           },
         },
+        {
+          label: 'Show Debug Log',
+          click: () => {
+            this.mainWindow.webContents.send('show_debug_log')
+          },
+        },
       ],
     }
     const subMenuViewProd = {
@@ -229,6 +235,12 @@ export default class MenuBuilder {
           label: 'pasteld info',
           click: () => {
             this.mainWindow.webContents.send('pasteld')
+          },
+        },
+        {
+          label: 'Show Debug Log',
+          click: () => {
+            this.mainWindow.webContents.send('show_debug_log')
           },
         },
       ],
@@ -438,6 +450,12 @@ export default class MenuBuilder {
             label: 'pasteld info',
             click: () => {
               this.mainWindow.webContents.send('pasteld')
+            },
+          },
+          {
+            label: 'Show Debug Log',
+            click: () => {
+              mainWindow.webContents.send('show_debug_log')
             },
           },
         ],

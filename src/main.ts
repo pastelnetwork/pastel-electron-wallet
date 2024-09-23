@@ -582,3 +582,7 @@ const locatePastelDDir = () => {
 
   return path.join(app.getPath('appData'), 'pastelwallet')
 }
+
+ipcMain.on('show_debug_log', () => {
+  shell.openPath(locatePastelWalletFullnodeDir())
+})

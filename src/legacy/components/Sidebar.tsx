@@ -536,6 +536,10 @@ class Sidebar extends PureComponent<any, any> {
         })
       },
     )
+
+    ipcRenderer.on('show_debug_log', () => {
+      ipcRenderer.send('show_debug_log')
+    })
   }
   checkStartInitialInference = () => {
     const self = this
