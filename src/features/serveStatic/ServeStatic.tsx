@@ -42,31 +42,11 @@ const replaceSpaceInPath = (path: string) => {
   return path
 }
 
-const getNodeBinaryPath = (pasteldBasePath: string) => {
-  if (os.platform() === 'linux') {
-    return {
-      npmPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-linux', 'bin', 'npm'),
-      ),
-      wrapperScriptPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'run-npm-linux.sh'),
-      ),
-    }
+const getBunInstallCommand = () => {
+  if (os.platform() === 'win32') {
+    return 'powershell -c "irm bun.sh/install.ps1|iex"'
   }
-  if (os.platform() === 'darwin') {
-    return {
-      npmPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'node-mac', 'bin', 'npm'),
-      ),
-      wrapperScriptPath: replaceSpaceInPath(
-        path.join(pasteldBasePath, 'run-npm-mac.sh'),
-      ),
-    }
-  }
-  return {
-    npmPath: path.join(pasteldBasePath, 'node-win', 'npm.cmd'),
-    wrapperScriptPath: path.join(pasteldBasePath, 'run-npm-win.bat'),
-  }
+  return 'curl -fsSL https://bun.sh/install | bash'
 }
 
 const startInferenceClientOnMac = (
@@ -78,55 +58,53 @@ const startInferenceClientOnMac = (
     'start_inference_status',
     JSON.stringify('Checking the environment to start the inference client'),
   )
-  cp.exec('node -v', function (error, stdout) {
-    if (error || stdout.indexOf('v22') === -1) {
+  cp.exec('bun -v', function (error) {
+    if (error) {
       mainWindow?.webContents?.send(
         'start_inference_status',
-        JSON.stringify('Installing dependencies for the inference client'),
+        JSON.stringify('Installing Bun and dependencies for the inference client'),
       )
       sudo.exec(
-        `rsync -avE ${replaceSpaceInPath(
-          path.join(pastelConf.pasteldBasePath, 'node-mac/'),
-        )} /usr/local`,
+        getBunInstallCommand(),
         options,
         function (error, stdout) {
           if (error) {
-            log.error('Install Nodejs error: ', error)
+            log.error('Install Bun error: ', error)
           }
 
           setTimeout(function() {
             cp.exec(
-              `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && bun install`,
               function (error, stdout) {
                 if (error) {
-                  log.error('npm install failed:', error)
+                  log.error('bun install failed:', error)
                   mainWindow?.webContents?.send(
                     'start_inference_error',
                     JSON.stringify(error?.message),
                   )
                   return
                 }
-                log.info('npm install output:', stdout)
+                log.info('bun install output:', stdout)
                 mainWindow?.webContents?.send(
                   'start_inference_status',
                   JSON.stringify('Loading Pastel Inference Client'),
                 )
                 cp.exec(
-                  `cd ${replaceSpaceInPath(pastelInferencePath)} && npm start`,
+                  `cd ${replaceSpaceInPath(pastelInferencePath)} && bun start`,
                   function (error, stdout, stderr) {
                     if (error) {
-                      log.error(`npm start failed: ${error}`)
+                      log.error(`bun start failed: ${error}`)
                       mainWindow?.webContents?.send(
                         'start_inference_error',
                         JSON.stringify(error?.message),
                       )
                       return
                     }
-                    log.info(`npm start output: ${stdout}`)
+                    log.info(`bun start output: ${stdout}`)
                     let pastelInferenceOutput = JSON.stringify(stdout)
 
                     if (stderr) {
-                      log.error(`npm start errors: ${stderr}`)
+                      log.error(`bun start errors: ${stderr}`)
                       pastelInferenceOutput = JSON.stringify(stderr)
                     }
 
@@ -138,7 +116,7 @@ const startInferenceClientOnMac = (
                 )
               },
             )
-          }, 5000);
+          }, 5000)
 
           log.info('stdout: ' + stdout)
         },
@@ -149,10 +127,10 @@ const startInferenceClientOnMac = (
         JSON.stringify('Loading Pastel Inference Client'),
       )
       cp.exec(
-        `cd ${replaceSpaceInPath(pastelInferencePath)} && npm start`,
+        `cd ${replaceSpaceInPath(pastelInferencePath)} && bun start`,
         function (error, stdout, stderr) {
           if (error) {
-            log.error('npm start failed:', error)
+            log.error('bun start failed:', error)
             mainWindow?.webContents?.send(
               'start_inference_error',
               JSON.stringify(error?.message),
@@ -160,9 +138,9 @@ const startInferenceClientOnMac = (
             return
           }
           let pastelInferenceOutput = JSON.stringify(stdout)
-          log.log('npm start output:', stdout)
+          log.log('bun start output:', stdout)
           if (stderr) {
-            log.error('npm start errors: ', stderr)
+            log.error('bun start errors: ', stderr)
             pastelInferenceOutput = JSON.stringify(stderr)
           }
           mainWindow?.webContents?.send(
@@ -187,29 +165,24 @@ export const checkAndStartInitialInference = (
   tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
     function (inUse) {
       if (!inUse) {
-        const { wrapperScriptPath } = getNodeBinaryPath(
-          pastelConf.pasteldBasePath,
-        )
-        if (os.platform() === 'darwin') {
+        if (os.platform() === 'darwin' || os.platform() === 'linux') {
           startInferenceClientOnMac(pastelConf, pastelInferencePath, mainWindow)
         } else {
-          cp.execFile(
-            wrapperScriptPath,
-            ['start'],
-            { cwd: replaceSpaceInPath(pastelInferencePath) },
+          cp.exec(
+            `cd ${replaceSpaceInPath(pastelInferencePath)} && bun start`,
             (error, stdout, stderr) => {
               if (error) {
-                log.error(`npm start failed: ${error}`)
+                log.error(`bun start failed: ${error}`)
                 mainWindow?.webContents?.send(
                   'start_inference_error',
                   JSON.stringify(error?.message),
                 )
                 return
               }
-              log.info(`npm start output: ${stdout}`)
+              log.info(`bun start output: ${stdout}`)
               let pastelInferenceOutput = JSON.stringify(stdout)
               if (stderr) {
-                log.error(`npm start errors: ${stderr}`)
+                log.error(`bun start errors: ${stderr}`)
                 pastelInferenceOutput = JSON.stringify(stderr)
               }
 
@@ -277,8 +250,8 @@ const checkUpdatePastelInferenceJsClient = async (
   pastelInferencePath: string,
 ) => {
   try {
-    if (fs.existsSync(path.join(pastelInferencePath, ' package.json'))) {
-      const stats = fs.statSync(path.join(pastelInferencePath, ' package.json'))
+    if (fs.existsSync(path.join(pastelInferencePath, 'package.json'))) {
+      const stats = fs.statSync(path.join(pastelInferencePath, 'package.json'))
       const now = dayjs()
       const target = dayjs(stats.birthtime)
       const days = now.diff(target, 'day')
@@ -291,60 +264,58 @@ const checkUpdatePastelInferenceJsClient = async (
   }
 }
 
-const installNodeModuleForInferenceClientOnMac = (
+const installBunForInferenceClient = (
   pastelConf: IPastelConfProps,
   pastelInferencePath: string,
   callBack?: () => void,
 ) => {
-  cp.exec('node -v', function (error, stdout) {
-    if (error || stdout.indexOf('v22') === -1) {
+  cp.exec('bun -v', function (error) {
+    if (error) {
       sudo.exec(
-        `rsync -avE ${replaceSpaceInPath(
-          path.join(pastelConf.pasteldBasePath, 'node-mac/'),
-        )} /usr/local`,
+        getBunInstallCommand(),
         options,
         function (error, stdout) {
           if (error) {
-            log.error('Install Nodejs error: ', error)
+            log.error('Install Bun error: ', error)
           }
 
           setTimeout(function(){
             cp.exec(
-              `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && bun install`,
               function (error, stdout, stderr) {
                 if (error) {
-                  log.error('npm install failed:', error)
+                  log.error('bun install failed:', error)
                   return
                 }
-                log.info('npm install output:', stdout)
+                log.info('bun install output:', stdout)
                 if (callBack) {
                   callBack()
                 }
                 if (stderr) {
-                  log.error('npm install errors: ', stderr)
+                  log.error('bun install errors: ', stderr)
                   return
                 }
               },
             )
-          }, 5000);
+          }, 5000)
 
           log.info('stdout: ' + stdout)
         },
       )
     } else {
       cp.exec(
-        `cd ${replaceSpaceInPath(pastelInferencePath)} && npm install`,
+        `cd ${replaceSpaceInPath(pastelInferencePath)} && bun install`,
         function (error, stdout, stderr) {
           if (error) {
-            log.error('npm install failed:', error)
+            log.error('bun install failed:', error)
             return
           }
-          log.info('npm install output:', stdout)
+          log.info('bun install output:', stdout)
           if (callBack) {
             callBack()
           }
           if (stderr) {
-            log.error('npm install errors: ', stderr)
+            log.error('bun install errors: ', stderr)
             return
           }
         },
@@ -440,37 +411,13 @@ export const setupInitialInference = async (
         }
 
         try {
-          const { wrapperScriptPath } = getNodeBinaryPath(
-            pastelConf.pasteldBasePath,
+          installBunForInferenceClient(
+            pastelConf,
+            pastelInferencePath,
+            callBack,
           )
-          if (os.platform() === 'darwin') {
-            installNodeModuleForInferenceClientOnMac(
-              pastelConf,
-              pastelInferencePath,
-              callBack,
-            )
-          } else {
-            cp.execFile(
-              wrapperScriptPath,
-              ['install'],
-              { cwd: replaceSpaceInPath(pastelInferencePath) },
-              (error, stdout, stderr) => {
-                if (error) {
-                  log.error('npm install failed:', error)
-                  return
-                }
-                log.info('npm install output:', stdout)
-                if (callBack) {
-                  callBack()
-                }
-                if (stderr) {
-                  log.error('npm install errors: ', stderr)
-                }
-              },
-            )
-          }
         } catch (error) {
-          log.error('npm install errors:', error)
+          log.error('bun install errors:', error)
         }
       })
       .on('error', err => {
@@ -557,8 +504,8 @@ function setupServeStatic(staticPath: string, port: number) {
     server.listen(port)
     servers.push(server)
   } catch (error) {
-    log.error(`serveStatic setupServeStatic error: ${error.message}`)
-    throw new Error(`serveStatic setupServeStatic error: ${error.message}`)
+    log.error(`serveStatic setupServeStatic error: ${(error as Error).message}`)
+    throw new Error(`serveStatic setupServeStatic error: ${(error as Error).message}`)
   }
 }
 
@@ -567,9 +514,9 @@ export function closeServeStatic(): void {
     servers.map(server => {
       server.close(error => {
         if (error) {
-          log.error(`serveStatic closeServeStatic error: ${error.message}`)
+          log.error(`serveStatic closeServeStatic error: ${(error as Error).message}`)
           throw new Error(
-            `serveStatic closeServeStatic error: ${error.message}`,
+            `serveStatic closeServeStatic error: ${(error as Error).message}`,
           )
         }
       })
@@ -579,7 +526,6 @@ export function closeServeStatic(): void {
 
 export const stopInference = (
   locateAppDir: string,
-  pasteldBasePath: string,
 ): void => {
   const pastelInferencePath = path.join(
     locateAppDir,
@@ -589,25 +535,14 @@ export const stopInference = (
   tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
     function (inUse) {
       if (inUse) {
-        const { wrapperScriptPath } = getNodeBinaryPath(
-          pasteldBasePath,
+        cp.exec(
+          `cd ${replaceSpaceInPath(pastelInferencePath)} && bun stop`,
+          function (error) {
+            if (error) {
+              log.error(`bun stop failed: ${(error as Error).message}`)
+            }
+          },
         )
-        if (os.platform() === 'darwin') {
-          cp.exec(
-            `cd ${replaceSpaceInPath(pastelInferencePath)} && npm stop`,
-            function (error) {
-              if (error) {
-                log.error(`npm stop failed: ${error}`)
-              }
-            },
-          )
-        } else {
-          cp.execFile(
-            wrapperScriptPath,
-            ['stop'],
-            { cwd: replaceSpaceInPath(pastelInferencePath) }
-          )
-        }
       }
     },
     function (err) {
