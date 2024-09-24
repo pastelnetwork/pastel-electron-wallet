@@ -265,137 +265,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       log.info(line.split(' INFO ')[1] || line)
     }
   }
-  updatePastelConf = async () => {
-    const pastelConfPath = store.getState().appInfo.locatePastelConf
-    let confContent = ''
-    if (fs.existsSync(pastelConfPath)) {
-      const pastelConfigContent = fs.readFileSync(pastelConfPath);
-      confContent = pastelConfigContent.toString();
-    }
-    if (confContent.indexOf('addnode') === -1) {
-      confContent += 'txindex=1\n'
-      confContent += 'testnet=0\n'
-      confContent += 'minrelaytxfee=0.00001\n'
-      confContent += 'rpcthreads=20\n'
-      confContent += 'gen=0\n'
-      confContent += 'addnode=137.184.118.147\n'
-      confContent += 'addnode=143.198.58.140\n'
-      confContent += 'addnode=146.190.175.119\n'
-      confContent += 'addnode=154.12.230.224\n'
-      confContent += 'addnode=154.12.240.59\n'
-      confContent += 'addnode=154.12.241.117\n'
-      confContent += 'addnode=154.12.241.128\n'
-      confContent += 'addnode=154.12.244.163\n'
-      confContent += 'addnode=154.12.253.219\n'
-      confContent += 'addnode=154.12.253.220\n'
-      confContent += 'addnode=154.12.253.225\n'
-      confContent += 'addnode=154.12.254.248\n'
-      confContent += 'addnode=154.12.254.251\n'
-      confContent += 'addnode=154.12.255.11\n'
-      confContent += 'addnode=154.12.255.24\n'
-      confContent += 'addnode=154.12.255.9\n'
-      confContent += 'addnode=154.38.162.90\n'
-      confContent += 'addnode=154.38.166.116\n'
-      confContent += 'addnode=154.38.166.118\n'
-      confContent += 'addnode=154.38.166.119\n'
-      confContent += 'addnode=154.38.166.120\n'
-      confContent += 'addnode=154.38.177.234\n'
-      confContent += 'addnode=154.53.32.125\n'
-      confContent += 'addnode=154.53.32.126\n'
-      confContent += 'addnode=154.53.32.146\n'
-      confContent += 'addnode=154.53.32.48\n'
-      confContent += 'addnode=154.53.60.47\n'
-      confContent += 'addnode=154.53.61.221\n'
-      confContent += 'addnode=154.53.61.222\n'
-      confContent += 'addnode=154.53.63.109\n'
-      confContent += 'addnode=154.53.63.115\n'
-      confContent += 'addnode=157.173.193.198\n'
-      confContent += 'addnode=157.173.193.199\n'
-      confContent += 'addnode=157.173.193.200\n'
-      confContent += 'addnode=157.173.193.201\n'
-      confContent += 'addnode=157.173.193.202\n'
-      confContent += 'addnode=157.230.115.155\n'
-      confContent += 'addnode=159.65.114.136\n'
-      confContent += 'addnode=159.65.149.140\n'
-      confContent += 'addnode=159.89.164.214\n'
-      confContent += 'addnode=165.227.130.203\n'
-      confContent += 'addnode=165.227.161.206\n'
-      confContent += 'addnode=165.227.169.213\n'
-      confContent += 'addnode=167.86.100.60\n'
-      confContent += 'addnode=167.86.107.194\n'
-      confContent += 'addnode=167.86.107.225\n'
-      confContent += 'addnode=167.86.108.177\n'
-      confContent += 'addnode=167.86.109.139\n'
-      confContent += 'addnode=167.86.110.108\n'
-      confContent += 'addnode=167.86.113.250\n'
-      confContent += 'addnode=167.86.66.254\n'
-      confContent += 'addnode=167.86.67.143\n'
-      confContent += 'addnode=167.86.68.124\n'
-      confContent += 'addnode=167.86.68.179\n'
-      confContent += 'addnode=167.86.69.188\n'
-      confContent += 'addnode=167.86.77.216\n'
-      confContent += 'addnode=18.116.179.95\n'
-      confContent += 'addnode=18.218.28.57\n'
-      confContent += 'addnode=18.220.120.83\n'
-      confContent += 'addnode=188.166.160.37\n'
-      confContent += 'addnode=207.180.250.195\n'
-      confContent += 'addnode=207.180.250.197\n'
-      confContent += 'addnode=207.180.250.245\n'
-      confContent += 'addnode=207.180.252.205\n'
-      confContent += 'addnode=207.180.253.124\n'
-      confContent += 'addnode=207.180.253.218\n'
-      confContent += 'addnode=207.180.255.57\n'
-      confContent += 'addnode=207.244.235.138\n'
-      confContent += 'addnode=3.12.66.189\n'
-      confContent += 'addnode=3.128.23.169\n'
-      confContent += 'addnode=3.132.60.47\n'
-      confContent += 'addnode=3.135.47.3\n'
-      confContent += 'addnode=3.136.75.28\n'
-      confContent += 'addnode=3.141.226.93\n'
-      confContent += 'addnode=3.18.200.136\n'
-      confContent += 'addnode=31.220.99.58\n'
-      confContent += 'addnode=31.220.99.59\n'
-      confContent += 'addnode=31.220.99.60\n'
-      confContent += 'addnode=31.220.99.61\n'
-      confContent += 'addnode=31.220.99.62\n'
-      confContent += 'addnode=38.242.137.199\n'
-      confContent += 'addnode=38.242.137.201\n'
-      confContent += 'addnode=38.242.158.208\n'
-      confContent += 'addnode=38.242.159.6\n'
-      confContent += 'addnode=38.242.159.85\n'
-      confContent += 'addnode=38.242.159.95\n'
-      confContent += 'addnode=45.137.194.13\n'
-      confContent += 'addnode=45.137.194.19\n'
-      confContent += 'addnode=45.137.194.22\n'
-      confContent += 'addnode=52.14.134.207\n'
-      confContent += 'addnode=64.227.110.96\n'
-      confContent += 'addnode=66.94.114.198\n'
-      confContent += 'addnode=66.94.115.17\n'
-      confContent += 'addnode=66.94.125.53\n'
-      confContent += 'addnode=75.119.152.80\n'
-      confContent += 'addnode=84.54.23.106\n'
-      confContent += 'addnode=84.54.23.108\n'
-      confContent += 'addnode=84.54.23.113\n'
-      confContent += 'addnode=84.54.23.121\n'
-      confContent += 'addnode=84.54.23.129\n'
-      confContent += 'addnode=84.54.23.133\n'
-      confContent += 'addnode=84.54.23.136\n'
-      confContent += 'addnode=84.54.23.143\n'
-      confContent += 'addnode=86.48.1.252\n'
-      confContent += 'addnode=86.48.3.8\n'
-      confContent += 'addnode=89.117.78.88\n'
-      confContent += 'addnode=89.117.78.89\n'
-      confContent += 'addnode=89.117.78.90\n'
-      confContent += 'addnode=89.117.78.91\n'
-      confContent += 'addnode=89.117.78.92\n'
-      confContent += 'addnode=89.117.79.22\n'
-      confContent += 'addnode=89.117.79.23\n'
-      confContent += 'addnode=89.117.79.24\n'
-      confContent += 'addnode=89.117.79.25\n'
-      confContent += 'addnode=89.117.79.2\n'
-      await fs.promises.writeFile(pastelConfPath, confContent)
-    }
-  }
   startPastelUp = async () => {
     this.setState({
       creatingPastelConf: false,
@@ -409,7 +278,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
-        await this.updatePastelConf()
       } catch (error) {
         log.error('installWalletNode error: ', error)
         if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1 && isPackaged) {
@@ -442,7 +310,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       return true;
     } else {
       try {
-        await this.updatePastelConf()
         this.setState({
           currentStatus: 'Waiting the pasteld to start...',
         })
