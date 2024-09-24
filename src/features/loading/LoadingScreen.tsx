@@ -281,6 +281,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       } catch (error) {
         log.error('installWalletNode error: ', error)
         if (this.state.currentStatus.toString().indexOf('Walletnode: Finished successfully!') !== -1 && isPackaged) {
+          log.info('Restart pastel wallet after installed')
           ipcRenderer.send('reset_pastel_app')
         }
       }
@@ -288,6 +289,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     if (!fs.existsSync(locatePastelConf)) {
       await installWalletNode();
       if (isPackaged) {
+        log.info('Restart pastel wallet after installed')
         ipcRenderer.send('reset_pastel_app')
       }
       return true;
@@ -303,6 +305,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
             log.error(error)
           }
           if (isPackaged) {
+            log.info('Restart pastel wallet after installed')
             ipcRenderer.send('reset_pastel_app')
           }
         }

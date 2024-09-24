@@ -356,14 +356,21 @@ const installNodeModuleForInferenceClientOnMac = (
 export const setupInitialInference = async (
   pastelConf: IPastelConfProps,
   callBack?: () => void,
+  forceInstall = false,
 ): Promise<void> => {
   try {
     const pastelInferencePath = path.join(
       pastelConf.locateAppDir,
       'pastel_inference_js_client-master',
     )
-    checkUpdatePastelInferenceJsClient(pastelInferencePath)
-    if (fs.existsSync(pastelInferencePath)) {
+    await checkUpdatePastelInferenceJsClient(pastelInferencePath)
+    if (forceInstall) {
+      try {
+        rimrafSync(pastelInferencePath)
+      } catch (error) {
+        log.error('Delete pastelInferencePath error - ', error)
+      }
+    } else if (fs.existsSync(pastelInferencePath)) {
       if (!fs.existsSync(path.join(pastelInferencePath, 'node_modules'))) {
         try {
           rimrafSync(pastelInferencePath)
@@ -378,6 +385,7 @@ export const setupInitialInference = async (
       pastelConf.locateAppDir,
       'pastel_inference_js_client-master.zip',
     )
+    log.info('Starting download inference')
     const writer = fs.createWriteStream(absPath)
     const r = request.get(
       'https://github.com/pastelnetwork/pastel_inference_js_client/archive/refs/heads/master.zip',
@@ -482,12 +490,17 @@ export const handleReloadInferenceClient = async (
       pastelConf.locateAppDir,
       'pastel_inference_js_client-master',
     )
-    kill(inferenceClient.staticPort)
-    kill(inferenceClient.socketPort)
-    rimrafSync(pastelInferencePath)
+    try {
+      kill(inferenceClient.staticPort)
+      kill(inferenceClient.socketPort)
+      fs.rmSync(pastelInferencePath, { recursive: true, force: true })
+    } catch (error) {
+      log.error('rimrafSync pastel_inference_js_client-master error: ', error)
+    }
     await setupInitialInference(pastelConf, () => {
+      log.info('Start Inference')
       checkAndStartInitialInference(mainWindow, pastelConf)
-    })
+    }, true)
   } catch (error) {
     log.error('handleReloadInferenceClient error: ', error)
   }

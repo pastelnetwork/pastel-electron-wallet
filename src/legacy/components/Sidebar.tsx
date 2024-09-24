@@ -32,7 +32,7 @@ interface IMasterNodeProps {
   }
 }
 
-const ClosingPastelWalletModal = () => {
+export const ClosingPastelWalletModal = () => {
   const { isShowClosingPastelWalletModal } = useAppSelector(state => state.downloadSnapshot)
   if (!isShowClosingPastelWalletModal) {
     return null
@@ -360,6 +360,7 @@ class Sidebar extends PureComponent<any, any> {
       exportPrivKeysModalIsOpen: false,
       exportedPrivKeys: null,
       privKeyInputValue: null,
+      isSynced: false,
     }
     this.setupMenuHandlers()
   } // Handle menu items
@@ -539,7 +540,7 @@ class Sidebar extends PureComponent<any, any> {
   }
   checkStartInitialInference = () => {
     const self = this
-    log.info('Start Inference')
+    log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort})  before display…`)
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -551,7 +552,7 @@ class Sidebar extends PureComponent<any, any> {
         }
       },
       function (err) {
-        log.error('Error on check:', err.message)
+        log.error('Check status of Inference Client:', err.message)
       },
     )
   }
@@ -593,23 +594,44 @@ class Sidebar extends PureComponent<any, any> {
       log.error('getSupernodeData error: ', error)
     }
   }
-  handleSetupInferenceClient = async () => {
+  getMasternodeStatus = async () => {
     try {
       const { pastelConf } = store.getState()
       const { result } = await rpc<IMasterNodeProps>(
-        'masternode',
-        ['top'],
+        'mnsync',
+        ['status'],
         pastelConf,
       )
-      log.info(`masternode top: ${JSON.stringify(result)}`)
+      log.info(`mnsync: ${JSON.stringify(result)}`)
+    } catch (error) {
+      log.error('mnsync error: ', error)
+    }
+  }
+  handleSetupInferenceClient = async () => {
+    if (!this.state.isSynced) {
+      setTimeout(() => {
+        this.handleSetupInferenceClient()
+      }, 1000)
+      return
+    }
+    try {
+      const { pastelConf } = store.getState()
+      const { result } = await rpc<IMasterNodeProps>(
+        'masternodelist',
+        ['full'],
+        pastelConf,
+      )
+      log.info(`masternodelist full: ${JSON.stringify(result)}`)
       if (!Object.keys(result).length) {
         setTimeout(() => {
           this.handleSetupInferenceClient()
         }, 1000)
       } else {
+        log.info('Start Inference')
         ipcRenderer.send('start_initial_inference')
+        await this.getMasternodeStatus()
+        await this.getSupernodeData()
         this.checkStartInitialInference()
-        this.getSupernodeData()
         ipcRenderer.on('start_inference_error', (event, data) => {
           if (data) {
             log.error('Start Inference error: ', JSON.stringify(data))
@@ -776,9 +798,15 @@ class Sidebar extends PureComponent<any, any> {
       if (info.verificationProgress < 0.99) {
         state = 'SYNCING'
         progress = (info.verificationProgress * 100).toFixed(1)
+        this.setState({
+          isSynced: false
+        })
       } else {
         state = 'CONNECTED'
         setConnected();
+        this.setState({
+          isSynced: true
+        })
       }
     }
 
