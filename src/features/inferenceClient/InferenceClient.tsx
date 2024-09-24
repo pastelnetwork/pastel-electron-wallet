@@ -25,9 +25,13 @@ export default function InferenceClient(): JSX.Element {
   const [installRequired, setInstallRequired] = React.useState('')
   const [installUrl, setInstallUrl] = React.useState('')
   const [isError, setError] = React.useState(false)
+  const [isReloadInference, setReloadInference] = React.useState(false)
   const { isConnected } = useAppSelector(state => state.downloadSnapshot)
 
   const checkStartInitialInference = () => {
+    if (isReloadInference) {
+      log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort})  before display…`)
+    }
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -39,6 +43,10 @@ export default function InferenceClient(): JSX.Element {
           setInstallRequired('')
           setInstallUrl('')
           setError(false)
+          if (isReloadInference) {
+            log.info('Inference started successfully')
+          }
+          setReloadInference(false)
         }
       },
       function (err) {
@@ -47,22 +55,82 @@ export default function InferenceClient(): JSX.Element {
     )
   }
 
+  const getSupernodeData = async () => {
+    try {
+      const { pastelConf } = store.getState()
+      const [
+        masternodeListFull,
+        masternodeListRank,
+        masternodeListPubkey,
+        masternodeListExtra,
+      ] = await Promise.all([
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['full'],
+          pastelConf,
+        ),
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['rank'],
+          pastelConf,
+        ),
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['pubkey'],
+          pastelConf,
+        ),
+        rpc<IMasterNodeProps>(
+          'masternodelist',
+          ['extra'],
+          pastelConf,
+        ),
+      ]);
+      log.info('masternodeListFull: ', JSON.stringify(masternodeListFull))
+      log.info('masternodeListRank: ', JSON.stringify(masternodeListRank))
+      log.info('masternodeListPubkey: ', JSON.stringify(masternodeListPubkey))
+      log.info('masternodeListExtra: ', JSON.stringify(masternodeListExtra))
+    } catch (error) {
+      log.error('getSupernodeData error: ', error)
+    }
+  }
+
+  const getMasternodeStatus = async () => {
+    try {
+      const { pastelConf } = store.getState()
+      const { result } = await rpc<IMasterNodeProps>(
+        'mnsync',
+        ['status'],
+        pastelConf,
+      )
+      log.info(`mnsync: ${JSON.stringify(result)}`)
+    } catch (error) {
+      log.error('mnsync error: ', error)
+    }
+  }
+
   const checkMasterNodeStatus = async () => {
     try {
       const { pastelConf } = store.getState()
       const { result } = await rpc<IMasterNodeProps>(
-        'masternode',
-        ['top'],
+        'masternodelist',
+        ['full'],
         pastelConf,
       )
+      if (isReloadInference) {
+        log.info(`masternodelist full: ${JSON.stringify(result)}`)
+      }
       if (!Object.keys(result).length) {
-        setStatus(`The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying. (Status: ${result?.AssetName})`)
+        setStatus('The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying.')
         setTimeout(() => {
           checkMasterNodeStatus()
         }, 1000)
       } else {
         setStatus('Loading Inference Client... Please Wait.')
         checkStartInitialInference()
+        if (isReloadInference) {
+          await getSupernodeData()
+          await getMasternodeStatus()
+        }
       }
     } catch (error) {
       console.error('checkMasterNodeStatus', error)
@@ -80,7 +148,6 @@ export default function InferenceClient(): JSX.Element {
       if (data) {
         setStatus(JSON.parse(data))
         setError(true)
-        log.error(JSON.stringify(data))
       }
     })
   }, []);
@@ -101,8 +168,10 @@ export default function InferenceClient(): JSX.Element {
 
   const handleReloadInferenceClient = () => {
     setError(false)
+    log.info('Reload Inference Client')
     ipcRenderer.send('reload_inference_client')
     setStatus('Loading Inference Client... Please Wait.')
+    setReloadInference(true)
   }
 
   if (status !== 'success') {

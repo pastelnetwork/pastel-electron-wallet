@@ -32,7 +32,7 @@ interface IMasterNodeProps {
   }
 }
 
-const ClosingPastelWalletModal = () => {
+export const ClosingPastelWalletModal = () => {
   const { isShowClosingPastelWalletModal } = useAppSelector(state => state.downloadSnapshot)
   if (!isShowClosingPastelWalletModal) {
     return null
@@ -543,7 +543,7 @@ class Sidebar extends PureComponent<any, any> {
   }
   checkStartInitialInference = () => {
     const self = this
-    log.info('Start Inference')
+    log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort})  before display…`)
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -555,7 +555,7 @@ class Sidebar extends PureComponent<any, any> {
         }
       },
       function (err) {
-        log.error('Error on check:', err.message)
+        log.error('Check status of Inference Client:', err.message)
       },
     )
   }
@@ -597,24 +597,39 @@ class Sidebar extends PureComponent<any, any> {
       log.error('getSupernodeData error: ', error)
     }
   }
+  getMasternodeStatus = async () => {
+    try {
+      const { pastelConf } = store.getState()
+      const { result } = await rpc<IMasterNodeProps>(
+        'mnsync',
+        ['status'],
+        pastelConf,
+      )
+      log.info(`mnsync: ${JSON.stringify(result)}`)
+    } catch (error) {
+      log.error('mnsync error: ', error)
+    }
+  }
   handleSetupInferenceClient = async () => {
     try {
       const { pastelConf } = store.getState()
       const { isConnected } = store.getState().downloadSnapshot
       const { result } = await rpc<IMasterNodeProps>(
-        'masternode',
-        ['top'],
+        'masternodelist',
+        ['full'],
         pastelConf,
       )
-      log.info(`masternode top: ${JSON.stringify(result)}`)
+      log.info(`masternodelist full: ${JSON.stringify(result)}`)
       if (!Object.keys(result).length || !isConnected) {
         setTimeout(() => {
           this.handleSetupInferenceClient()
         }, 1000)
       } else {
+        log.info('Start Inference')
         ipcRenderer.send('start_initial_inference')
+        await this.getMasternodeStatus()
+        await this.getSupernodeData()
         this.checkStartInitialInference()
-        this.getSupernodeData()
         ipcRenderer.on('start_inference_error', (event, data) => {
           if (data) {
             log.error('Start Inference error: ', JSON.stringify(data))
