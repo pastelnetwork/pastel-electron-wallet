@@ -264,7 +264,7 @@ const createWindow = async () => {
     locatePastelConfDir: locatePastelConfDir(),
     pasteldBasePath: pasteldBasePath(),
     locateAppDir: locateAppDir(),
-  })
+  }, mainWindow)
 }
 
 /**
