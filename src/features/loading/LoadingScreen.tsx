@@ -336,7 +336,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     } else {
       try {
         this.setState({
-          currentStatus: 'Waiting the pasteld to start...',
+          currentStatus: 'Waiting for the Pastel Service to start...',
         })
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging);
 
@@ -419,7 +419,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         // Try to start pasteld
         const { pastelUtilityBinPath } = store.getState().appInfo;
         this.setState({
-          currentStatus: 'Waiting the pasteld to start...',
+          currentStatus: 'Waiting for the Pastel Service to start...',
         })
         await startProcess(pastelUtilityBinPath, this.handleStartProcessLogging)
         this.setupNextGetInfo()
@@ -427,7 +427,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
 
       if (err === NO_CONNECTION && pasteldSpawned && getInfoRetryCount < 10) {
         this.setState({
-          currentStatus: 'Waiting for pasteld to start...',
+          currentStatus: 'Waiting for the Pastel Service to start...',
         })
         const inc = getInfoRetryCount + 1
         this.setState({

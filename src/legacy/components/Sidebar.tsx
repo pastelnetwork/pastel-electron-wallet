@@ -552,6 +552,7 @@ class Sidebar extends PureComponent<any, any> {
           }, 2000)
         } else {
           log.info('Inference started successfully')
+          self.getMasternodeStatus()
         }
       },
       function (err) {
