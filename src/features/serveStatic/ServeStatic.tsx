@@ -227,44 +227,65 @@ const checkUpdatePastelInferenceJsClient = async (
   }
 }
 
-const installNodeModuleForInferenceClientOnMac = (
+const installBunModuleForInferenceClientOnMac = (
   pastelConf: IPastelConfProps,
   pastelInferencePath: string,
   callBack?: () => void,
 ) => {
-  sudo.exec(
-    `rsync -avE ${replaceSpaceInPath(
-      path.join(pastelConf.pasteldBasePath, 'bun-mac/'),
-    )} /usr/local`,
-    options,
-    function (error, stdout) {
-      if (error) {
-        log.error('Install Bun error: ', error)
-      }
-
-      setTimeout(function(){
-        cp.exec(
-          `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac install`,
-          function (error, stdout, stderr) {
-            if (error) {
-              log.error('bun-mac install failed:', error)
-              return
-            }
-            log.info('bun-mac install output:', stdout)
-            if (callBack) {
-              callBack()
-            }
-            if (stderr) {
-              log.error('bun-mac install errors: ', stderr)
-              return
-            }
-          },
-        )
-      }, 5000);
-
-      log.info('stdout: ' + stdout)
-    },
-  )
+  cp.exec('bun-mac --version', function (error, stdout) {
+    if (error || !fs.existsSync(path.join('/usr/local', 'bun-mac'))) {
+      sudo.exec(
+        `rsync -avE ${replaceSpaceInPath(
+          path.join(pastelConf.pasteldBasePath, 'bun-mac'),
+        )} /usr/local`,
+        options,
+        function (error, stdout) {
+          if (error) {
+            log.error('Install Bun error: ', error)
+          }
+          setTimeout(function(){
+            cp.exec(
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac install`,
+              function (error, stdout, stderr) {
+                if (error) {
+                  log.error('bun-mac install failed:', error)
+                  return
+                }
+                log.info('bun-mac install output:', stdout)
+                if (callBack) {
+                  callBack()
+                }
+                if (stderr) {
+                  log.error('bun-mac install errors: ', stderr)
+                  return
+                }
+              },
+            )
+          }, 5000);
+    
+          log.info('stdout: ' + stdout)
+        },
+      )
+    } else {
+      cp.exec(
+        `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac install`,
+        function (error, stdout, stderr) {
+          if (error) {
+            log.error('bun-mac install failed:', error)
+            return
+          }
+          log.info('bun-mac install output:', stdout)
+          if (callBack) {
+            callBack()
+          }
+          if (stderr) {
+            log.error('bun-mac install errors: ', stderr)
+            return
+          }
+        },
+      )
+    }
+  })
 }
 
 export const setupInitialInference = async (
@@ -359,7 +380,7 @@ export const setupInitialInference = async (
             pastelConf.pasteldBasePath,
           )
           if (os.platform() === 'darwin') {
-            installNodeModuleForInferenceClientOnMac(
+            installBunModuleForInferenceClientOnMac(
               pastelConf,
               pastelInferencePath,
               callBack,
