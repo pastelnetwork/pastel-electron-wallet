@@ -83,17 +83,17 @@ export const checkAndStartInitialInference = (
           { cwd: replaceSpaceInPath(pastelInferencePath) },
           (error, stdout, stderr) => {
             if (error) {
-              log.error(`npm start failed: ${error}`)
+              log.error(`bun start failed: ${error}`)
               mainWindow?.webContents?.send(
                 'start_inference_error',
                 JSON.stringify(error?.message),
               )
               return
             }
-            log.info(`npm start output: ${stdout}`)
+            log.info(`bun start output: ${stdout}`)
             let pastelInferenceOutput = JSON.stringify(stdout)
             if (stderr) {
-              log.error(`npm start errors: ${stderr}`)
+              log.error(`bun start errors: ${stderr}`)
               pastelInferenceOutput = JSON.stringify(stderr)
             }
 
@@ -271,20 +271,20 @@ export const setupInitialInference = async (
             { cwd: replaceSpaceInPath(pastelInferencePath) },
             (error, stdout, stderr) => {
               if (error) {
-                log.error('npm install failed:', error)
+                log.error('bun install failed:', error)
                 return
               }
-              log.info('npm install output:', stdout)
+              log.info('bun install output:', stdout)
               if (callBack) {
                 callBack()
               }
               if (stderr) {
-                log.error('npm install errors: ', stderr)
+                log.error('bun install errors: ', stderr)
               }
             },
           )
         } catch (error) {
-          log.error('npm install errors:', error)
+          log.error('bun install errors:', error)
         }
       })
       .on('error', err => {
