@@ -202,7 +202,23 @@ const createWindow = async () => {
       w.focus()
     }
   })
-  w.on('close', (event: Event) => {
+  w.on('close', async (event: Event) => {
+    try {
+      await Promise.all([
+        kill(9933),
+        kill(9932),
+        kill(19932),
+        kill(19933),
+        kill(glitch.staticPort),
+        kill(squoosh.staticPort),
+        kill(inferenceClient.staticPort),
+        kill(inferenceClient.socketPort),
+      ])
+    } catch (error) {
+      log.error(error)
+    }
+    await stopInference(locateAppDir(), pasteldBasePath())
+
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
       console.warn('proceed to close, so closing')
