@@ -543,9 +543,6 @@ class Sidebar extends PureComponent<any, any> {
   }
   checkStartInitialInference = async () => {
     const self = this
-    log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort}) before display...`)
-    await this.getMasternodeStatus()
-    await this.getSupernodeData()
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -622,7 +619,7 @@ class Sidebar extends PureComponent<any, any> {
         ['full'],
         pastelConf,
       )
-      log.info(`masternodelist full: ${JSON.stringify(result)}`)
+      
       if (!Object.keys(result).length || !isConnected) {
         setTimeout(() => {
           this.handleSetupInferenceClient()

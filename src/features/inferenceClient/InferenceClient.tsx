@@ -29,11 +29,6 @@ export default function InferenceClient(): JSX.Element {
   const { isConnected } = useAppSelector(state => state.downloadSnapshot)
 
   const checkStartInitialInference = async () => {
-    if (isReloadInference) {
-      log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort}) before display...`)
-      await getSupernodeData()
-      await getMasternodeStatus()
-    }
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
@@ -118,9 +113,7 @@ export default function InferenceClient(): JSX.Element {
         ['full'],
         pastelConf,
       )
-      if (isReloadInference) {
-        log.info(`masternodelist full: ${JSON.stringify(result)}`)
-      }
+     
       if (!Object.keys(result).length) {
         setStatus('The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying.')
         setTimeout(() => {
@@ -129,10 +122,6 @@ export default function InferenceClient(): JSX.Element {
       } else {
         setStatus('Loading Inference Client... Please Wait.')
         checkStartInitialInference()
-        if (isReloadInference) {
-          await getSupernodeData()
-          await getMasternodeStatus()
-        }
       }
     } catch (error) {
       console.error('checkMasterNodeStatus', error)
