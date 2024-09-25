@@ -233,11 +233,11 @@ const installBunModuleForInferenceClientOnMac = (
   callBack?: () => void,
 ) => {
   cp.exec('bun-mac --version', function (error, stdout) {
-    if (error || !fs.existsSync(path.join('/usr/local', 'bun-mac'))) {
+    if (error || !fs.existsSync(path.join('/usr/local/bin', 'bun-mac'))) {
       sudo.exec(
         `rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'bun-mac'),
-        )} /usr/local`,
+        )} /usr/local/bin`,
         options,
         function (error, stdout) {
           if (error) {
