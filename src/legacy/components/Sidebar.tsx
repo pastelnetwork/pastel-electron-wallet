@@ -638,7 +638,7 @@ class Sidebar extends PureComponent<any, any> {
             log.error('Start Inference error: ', JSON.stringify(data))
             await this.getMasternodeStatus()
             await this.getSupernodeData()
-            if (JSON.stringify(data).indexOf('validMasternodeListFullDF') !== -1 && JSON.stringify(data).indexOf('as it is undefined') !== -1) {
+            if (JSON.stringify(data).indexOf('Cannot destructure property') !== -1 && JSON.stringify(data).indexOf('validMasternodeListFullDF') !== -1 && JSON.stringify(data).indexOf('as it is undefined') !== -1) {
               log.info('Start Inference')
               ipcRenderer.send('start_initial_inference')
             } else {
