@@ -30,7 +30,7 @@ export default function InferenceClient(): JSX.Element {
 
   const checkStartInitialInference = () => {
     if (isReloadInference) {
-      log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort})  before display…`)
+      log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort}) before display…`)
     }
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
