@@ -634,9 +634,15 @@ class Sidebar extends PureComponent<any, any> {
         ipcRenderer.on('start_inference_error', async (event, data) => {
           if (data) {
             log.error('Start Inference error: ', JSON.stringify(data))
-            ipcRenderer.send('reload_inference_client')
             await this.getMasternodeStatus()
             await this.getSupernodeData()
+            if (JSON.stringify(data).indexOf('validMasternodeListFullDF') !== -1 && JSON.stringify(data).indexOf('as it is undefined') !== -1) {
+              log.info('Start Inference')
+              ipcRenderer.send('start_initial_inference')
+            } else {
+              log.info('Reload Inference Client')
+              ipcRenderer.send('reload_inference_client')
+            }
           }
         })
       }
