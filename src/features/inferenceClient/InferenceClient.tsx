@@ -28,16 +28,18 @@ export default function InferenceClient(): JSX.Element {
   const [isReloadInference, setReloadInference] = React.useState(false)
   const { isConnected } = useAppSelector(state => state.downloadSnapshot)
 
-  const checkStartInitialInference = () => {
+  const checkStartInitialInference = async () => {
     if (isReloadInference) {
-      log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort}) before display…`)
+      log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort}) before display...`)
+      await getSupernodeData()
+      await getMasternodeStatus()
     }
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
           setTimeout(() => {
             checkStartInitialInference()
-          }, 1000)
+          }, 3000)
         } else {
           setStatus('success')
           setInstallRequired('')
@@ -166,9 +168,11 @@ export default function InferenceClient(): JSX.Element {
     }
   }
 
-  const handleReloadInferenceClient = () => {
+  const handleReloadInferenceClient = async () => {
     setError(false)
     log.info('Reload Inference Client')
+    await getMasternodeStatus()
+    await getSupernodeData()
     ipcRenderer.send('reload_inference_client')
     setStatus('Loading Inference Client... Please Wait.')
     setReloadInference(true)

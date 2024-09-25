@@ -541,15 +541,17 @@ class Sidebar extends PureComponent<any, any> {
       ipcRenderer.send('show_debug_log')
     })
   }
-  checkStartInitialInference = () => {
+  checkStartInitialInference = async () => {
     const self = this
-    log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort})  before display…`)
+    log.info(`Checking status of Inference Client(localhost:${inferenceClient.staticPort}) before display...`)
+    await this.getMasternodeStatus()
+    await this.getSupernodeData()
     tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
       function (inUse) {
         if (!inUse) {
           setTimeout(() => {
             self.checkStartInitialInference()
-          }, 2000)
+          }, 3000)
         } else {
           log.info('Inference started successfully')
           self.getMasternodeStatus()
