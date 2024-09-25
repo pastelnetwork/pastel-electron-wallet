@@ -22,8 +22,6 @@ interface IMasterNodeProps {
 
 export default function InferenceClient(): JSX.Element {
   const [status, setStatus] = React.useState('Loading Inference Client... Please Wait.')
-  const [installRequired, setInstallRequired] = React.useState('')
-  const [installUrl, setInstallUrl] = React.useState('')
   const [isError, setError] = React.useState(false)
   const [isReloadInference, setReloadInference] = React.useState(false)
   const { isConnected } = useAppSelector(state => state.downloadSnapshot)
@@ -37,8 +35,6 @@ export default function InferenceClient(): JSX.Element {
           }, 3000)
         } else {
           setStatus('success')
-          setInstallRequired('')
-          setInstallUrl('')
           setError(false)
           if (isReloadInference) {
             log.info('Inference started successfully')
@@ -113,7 +109,7 @@ export default function InferenceClient(): JSX.Element {
         ['full'],
         pastelConf,
       )
-     
+
       if (!Object.keys(result).length) {
         setStatus('The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying.')
         setTimeout(() => {
@@ -129,33 +125,12 @@ export default function InferenceClient(): JSX.Element {
   }
 
   React.useEffect(() => {
-    ipcRenderer.on('install_required', (event, data) => {
-      if (data) {
-        ipcRenderer.send('reload_inference_client')
-      }
-    })
-
-    ipcRenderer.on('start_inference_error', (event, data) => {
-      if (data) {
-        setStatus(JSON.parse(data))
-        setError(true)
-      }
-    })
-  }, []);
-
-  React.useEffect(() => {
     if (isConnected) {
       checkMasterNodeStatus()
     } else {
       setStatus("Waiting for node to sync to 100% before Inference Client can be displayed.")
     }
   }, [isConnected])
-
-  const handleOpenLink = (url: string) => {
-    if (url) {
-      shell.openExternal(url)
-    }
-  }
 
   const handleReloadInferenceClient = async () => {
     setError(false)
@@ -182,25 +157,6 @@ export default function InferenceClient(): JSX.Element {
             </div>
           </div> : null
         }
-
-        {installRequired !== '' ? (
-          <div
-            id='downloadNode'
-            className={cx(dstyles.wrapper, styles.downloadModal)}
-          >
-            <p className={cx(dstyles.content, cstyles.large)}>
-              To run Inference Client, you'll need Node.js version 22.2.0
-              installed on your system. We recommend clicking{' '}
-              <span
-                onClick={() => handleOpenLink(installUrl)}
-                className={styles.link}
-              >
-                {installUrl}
-              </span>{' '}
-              to download and install the Node.js version 22.2.0.
-            </p>
-          </div>
-        ) : null}
 
         {isError ? (
           <>

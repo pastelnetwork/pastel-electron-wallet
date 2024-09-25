@@ -351,7 +351,9 @@ export const setupInitialInference = async (
       writer.on('error', async e => {
         writer.close()
         try {
-          await fs.promises.unlink(absPath)
+          if (fs.existsSync(absPath)) {
+            await fs.promises.unlink(absPath)
+          }
         } catch (error) {
           log.error('utils pastel_inference_js_client request.get error: error deleting file')
           throw new Error(
@@ -370,7 +372,9 @@ export const setupInitialInference = async (
         log.info('Extraction PastelInferenceJsClient complete')
         updateConfigForInitialInference(pastelConf, pastelInferencePath)
         try {
-          fs.unlinkSync(absPath)
+          if (fs.existsSync(absPath)) {
+            await fs.promises.unlink(absPath)
+          }
         } catch (error) {
           log.error('unlinkSync PastelInferenceJsClient error', error)
         }
@@ -433,7 +437,7 @@ export const handleReloadInferenceClient = async (
     } catch (error) {
       log.error('rimrafSync pastel_inference_js_client-master error: ', error)
     }
-    await setupInitialInference(pastelConf, mainWindow, () => {
+    await setupInitialInference(pastelConf, () => {
       log.info('Start Inference')
       checkAndStartInitialInference(mainWindow, pastelConf)
     }, true)
