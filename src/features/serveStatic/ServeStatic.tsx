@@ -210,6 +210,7 @@ const updateConfigForInitialInference = (
   }
 }
 
+let latestCommitHashContent = ''
 const checkUpdatePastelInferenceJsClient = async (
   pastelConf: IPastelConfProps,
   pastelInferencePath: string
@@ -234,6 +235,7 @@ const checkUpdatePastelInferenceJsClient = async (
           const content = fs.readFileSync(inferenceLatestHashFile).toString()
           if (content && content !== latestCommitHash) {
             fs.rmSync(pastelInferencePath, { force: true, recursive: true })
+            latestCommitHashContent = latestCommitHash
           }
         }
         if (fs.existsSync(localPath)) {
@@ -246,23 +248,11 @@ const checkUpdatePastelInferenceJsClient = async (
   }
 }
 
-const writeLatestCommitHashOfInference = async (pastelConf: IPastelConfProps,  pastelInferencePath: string) => {
+const writeLatestCommitHashOfInference = async (pastelInferencePath: string) => {
   try {
-    const localPath = path.join(pastelConf.locatePastelConfDir, 'pastel_inference_js_client')
     const inferenceLatestHashFile = path.join(pastelInferencePath, 'inference.hash')
-    if (fs.existsSync(localPath)) {
-      fs.rmSync(localPath, { force: true, recursive: true })
-    }
-    const git = simpleGit();
-    await git.clone('https://github.com/pastelnetwork/pastel_inference_js_client.git', localPath);
-    const git2 = simpleGit(localPath);
-    const gitLog = await git2.log();
-    const latestCommitHash = gitLog.latest?.hash;
-    if (latestCommitHash) {
-      fs.writeFileSync(inferenceLatestHashFile, latestCommitHash)
-    }
-    if (fs.existsSync(localPath)) {
-      fs.rmSync(localPath, { force: true, recursive: true })
+    if (latestCommitHashContent) {
+      fs.writeFileSync(inferenceLatestHashFile, latestCommitHashContent)
     }
   } catch (error) {
     log.error('write Inference latest commit hash error: ', error)
@@ -425,7 +415,7 @@ export const setupInitialInference = async (
         }
 
         try {
-          writeLatestCommitHashOfInference(pastelConf, pastelInferencePath)
+          writeLatestCommitHashOfInference(pastelInferencePath)
           const { bunPath } = getBunBinaryPath(
             pastelConf.pasteldBasePath,
           )
