@@ -219,24 +219,23 @@ const checkUpdatePastelInferenceJsClient = async (
     if (fs.existsSync(pastelInferencePath)) {
       const localPath = path.join(pastelConf.locatePastelConfDir, 'pastel_inference_js_client')
       const inferenceLatestHashFile = path.join(pastelInferencePath, 'inference.hash')
+      if (fs.existsSync(localPath)) {
+        fs.rmSync(localPath, { force: true, recursive: true })
+      }
+      const git = simpleGit();
+      await git.clone('https://github.com/pastelnetwork/pastel_inference_js_client.git', localPath);
+      const git2 = simpleGit(localPath);
+      const gitLog = await git2.log();
+      const latestCommitHash = gitLog.latest?.hash;
+
       if (!fs.existsSync(inferenceLatestHashFile)) {
         fs.rmSync(pastelInferencePath, { force: true, recursive: true })
-      } else {
-        if (fs.existsSync(localPath)) {
-          fs.rmSync(localPath, { force: true, recursive: true })
-        }
-        const git = simpleGit();
-        await git.clone('https://github.com/pastelnetwork/pastel_inference_js_client.git', localPath);
-        const git2 = simpleGit(localPath);
-        const gitLog = await git2.log();
-        const latestCommitHash = gitLog.latest?.hash;
-
-        if (latestCommitHash) {
-          const content = fs.readFileSync(inferenceLatestHashFile).toString()
-          if (content && content !== latestCommitHash) {
-            fs.rmSync(pastelInferencePath, { force: true, recursive: true })
-            latestCommitHashContent = latestCommitHash
-          }
+        latestCommitHashContent = latestCommitHash || ''
+      } else if (latestCommitHash) {
+        const content = fs.readFileSync(inferenceLatestHashFile).toString()
+        if (content && content !== latestCommitHash) {
+          fs.rmSync(pastelInferencePath, { force: true, recursive: true })
+          latestCommitHashContent = latestCommitHash
         }
         if (fs.existsSync(localPath)) {
           fs.rmSync(localPath, { force: true, recursive: true })
