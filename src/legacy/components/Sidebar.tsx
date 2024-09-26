@@ -610,17 +610,38 @@ class Sidebar extends PureComponent<any, any> {
       log.error('mnsync error: ', error)
     }
   }
+  resetMasternode = async () => {
+    const { pastelConf } = store.getState()
+    const { result } = await rpc<IMasterNodeProps>(
+      'mnsync',
+      ['status'],
+      pastelConf,
+    )
+    if (result?.AssetName === 'Initial') {
+      await rpc<IMasterNodeProps>(
+        'mnsync',
+        ['reset'],
+        pastelConf,
+      )
+    }
+  }
   handleSetupInferenceClient = async () => {
     try {
       const { pastelConf } = store.getState()
       const { isConnected } = store.getState().downloadSnapshot
+      if (!isConnected) {
+        setTimeout(() => {
+          this.handleSetupInferenceClient()
+        }, 2000)
+        return
+      }
+      await this.resetMasternode()
       const { result } = await rpc<IMasterNodeProps>(
         'masternodelist',
         ['full'],
         pastelConf,
       )
-      
-      if (!Object.keys(result).length || !isConnected) {
+      if (!Object.keys(result).length) {
         setTimeout(() => {
           this.handleSetupInferenceClient()
         }, 1000)
