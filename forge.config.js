@@ -6,6 +6,9 @@ function getExtraResource() {
   const p = os.platform()
   switch (p) {
     case 'darwin':
+      if (process.argv[2] === 'aarch') {
+        return ['./static/bin/pastelup-mac', './static/bin/bun-mac-aarch']
+      }
       return ['./static/bin/pastelup-mac', './static/bin/bun-mac']
     case 'linux':
       if (process.argv[3] === 'win32') {
