@@ -532,14 +532,15 @@ function setupServeStatic(staticPath: string, port: number) {
 export function closeServeStatic(): void {
   if (servers && servers.length > 0) {
     servers.map(server => {
-      server.close(error => {
-        if (error) {
-          log.error(`serveStatic closeServeStatic error: ${error.message}`)
-          throw new Error(
-            `serveStatic closeServeStatic error: ${error.message}`,
-          )
-        }
-      })
+      try {
+        server.close(error => {
+          if (error) {
+            throw new Error(error.message)
+          }
+        })
+      } catch (error) {
+        log.error(`serveStatic closeServeStatic error: ${error.message}`)
+      }
     })
   }
 }
@@ -548,37 +549,41 @@ export const stopInference = (
   locateAppDir: string,
   pasteldBasePath: string,
 ): void => {
-  const pastelInferencePath = path.join(
-    locateAppDir,
-    'pastel_inference_js_client-master',
-  )
+  try {
+    const pastelInferencePath = path.join(
+      locateAppDir,
+      'pastel_inference_js_client-master',
+    )
 
-  tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
-    function (inUse) {
-      if (inUse) {
-        const { bunPath } = getBunBinaryPath(
-          pasteldBasePath,
-        )
-        if (os.platform() === 'darwin') {
-          cp.exec(
-            `cd ${replaceSpaceInPath(pastelInferencePath)} && bun stop`,
-            function (error) {
-              if (error) {
-                log.error(`bun stop failed: ${error}`)
-              }
-            },
+    tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
+      function (inUse) {
+        if (inUse) {
+          const { bunPath } = getBunBinaryPath(
+            pasteldBasePath,
           )
-        } else {
-          cp.execFile(
-            bunPath,
-            ['stop'],
-            { cwd: replaceSpaceInPath(pastelInferencePath) }
-          )
+          if (os.platform() === 'darwin') {
+            cp.exec(
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && bun stop`,
+              function (error) {
+                if (error) {
+                  log.error(`bun stop failed: ${error}`)
+                }
+              },
+            )
+          } else {
+            cp.execFile(
+              bunPath,
+              ['stop'],
+              { cwd: replaceSpaceInPath(pastelInferencePath) }
+            )
+          }
         }
-      }
-    },
-    function (err) {
-      log.error('checkAndStartInitialInference error: ', err.message)
-    },
-  )
+      },
+      function (err) {
+        log.error('checkAndStartInitialInference error: ', err.message)
+      },
+    )
+  } catch (error) {
+    log.error('checkAndStartInitialInference error: ', error.message)
+  }
 }

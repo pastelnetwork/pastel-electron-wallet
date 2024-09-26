@@ -225,16 +225,20 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
-      store.dispatch<any>(showClosingPastelWalletModal())
-      while (!PastelDB.isValidDB()) {
-        // wait if database is reading or writing status
-        new Promise(resolve => setTimeout(resolve, 100))
+      try {
+        store.dispatch<any>(showClosingPastelWalletModal())
+        while (!PastelDB.isValidDB()) {
+          // wait if database is reading or writing status
+          new Promise(resolve => setTimeout(resolve, 100))
+        }
+      } catch (error) {
+        log.error(error)
       }
       try {
         const { pastelUtilityBinPath } = store.getState().appInfo;
         await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging);
       } catch (error) {
-        console.error(error)
+        log.error(error)
       }
       ipcRenderer.send('appquitdone')
     })

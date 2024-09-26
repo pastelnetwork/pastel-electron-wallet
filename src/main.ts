@@ -204,11 +204,8 @@ const createWindow = async () => {
   })
   w.on('close', async (event: Event) => {
     try {
+      await stopInference(locateAppDir(), pasteldBasePath())
       await Promise.all([
-        kill(9933),
-        kill(9932),
-        kill(19932),
-        kill(19933),
         kill(glitch.staticPort),
         kill(squoosh.staticPort),
         kill(inferenceClient.staticPort),
@@ -217,7 +214,6 @@ const createWindow = async () => {
     } catch (error) {
       log.error(error)
     }
-    await stopInference(locateAppDir(), pasteldBasePath())
 
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
