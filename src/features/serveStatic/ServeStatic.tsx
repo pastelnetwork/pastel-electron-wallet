@@ -240,6 +240,7 @@ const checkUpdatePastelInferenceJsClient = async (
         }
         if (fs.existsSync(localPath)) {
           fs.rmSync(localPath, { force: true, recursive: true })
+          latestCommitHashContent = latestCommitHash || ''
         }
       }
     }
