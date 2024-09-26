@@ -237,9 +237,9 @@ const checkUpdatePastelInferenceJsClient = async (
           fs.rmSync(pastelInferencePath, { force: true, recursive: true })
           latestCommitHashContent = latestCommitHash
         }
-        if (fs.existsSync(localPath)) {
-          fs.rmSync(localPath, { force: true, recursive: true })
-        }
+      }
+      if (fs.existsSync(localPath)) {
+        fs.rmSync(localPath, { force: true, recursive: true })
       }
     }
   } catch (error) {
