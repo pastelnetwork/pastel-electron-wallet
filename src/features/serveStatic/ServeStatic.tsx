@@ -572,7 +572,7 @@ export const stopInference = (
           )
           if (os.platform() === 'darwin') {
             cp.exec(
-              `cd ${replaceSpaceInPath(pastelInferencePath)} && bun stop`,
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac stop`,
               function (error) {
                 if (error) {
                   log.error(`bun stop failed: ${error}`)
