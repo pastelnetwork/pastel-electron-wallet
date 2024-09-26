@@ -186,9 +186,6 @@
     "webpack": "5.78.0",
     "webpack-cli": "5.0.1"
   },
-  "resolutions": {
-    "nan": "github:ajgassner/nan#electron-29-workaround"
-  },
   "lint-staged": {
     "*.{ts,tsx},!public/dist/": [
       "eslint --max-warnings=0 --fix",
