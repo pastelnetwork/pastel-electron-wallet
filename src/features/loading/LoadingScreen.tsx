@@ -286,7 +286,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       } catch (error) {
         log.error('installWalletNode error: ', error)
         if (this.state.currentStatus.toString().indexOf('Install node: Finished') !== -1) {
-          if (os.platform() === 'linux') {
+          if (os.platform() === 'linux' || !isPackaged) {
             // stop is needed in case if some services started and some failed
             if (fs.existsSync(locatePastelConf)) {
               await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
@@ -302,11 +302,12 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     }
     if (!fs.existsSync(locatePastelConf)) {
       await installWalletNode();
-      if (os.platform() === 'linux') {
+      if (os.platform() === 'linux' || !isPackaged) {
         // stop is needed in case if some services started and some failed
         if (fs.existsSync(locatePastelConf)) {
           await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
+        log.info('Start pastel wallet after installed')
         this.loadPastelConf()
       } else if (isPackaged) {
         log.info('Restart pastel wallet after installed')
@@ -324,11 +325,12 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
           } catch (error) {
             log.error(error)
           }
-          if (os.platform() === 'linux') {
+          if (os.platform() === 'linux' || !isPackaged) {
             // stop is needed in case if some services started and some failed
             if (fs.existsSync(locatePastelConf)) {
               await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
             }
+            log.info('Start pastel wallet after installed')
             this.loadPastelConf()
           } else if (isPackaged) {
             log.info('Restart pastel wallet after installed')
