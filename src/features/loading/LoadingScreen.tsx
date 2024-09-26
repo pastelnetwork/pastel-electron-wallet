@@ -246,14 +246,17 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   handleInstallProcessLogging = (line: string) => {
     const getMessage = (process: string) => {
       return (
-        <div>Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.<br />Downloading... {process}</div>
+        <div>Now downloading Snapshot of the blockchain to speed up the syncing process... Please Wait.<br />{process}</div>
       )
     }
     if (filterLogKeywords.some(word => line.includes(word))) {
       const message = line.split(' INFO ')[1] || line;
       log.info(message)
       if (message.indexOf('Downloading...') !== -1 && message.indexOf('complete') !== -1) {
-        process = message.split('Downloading...')[1]?.trim();
+        process = `Downloading... ${message.split('Downloading...')[1]?.trim()}`;
+      }
+      if (line.indexOf('snapshot downloaded successfully') !== -1) {
+        process = 'Installing Pastel Service...'
       }
       this.setState({
         currentStatus: getMessage(process),
