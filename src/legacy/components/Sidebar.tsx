@@ -618,11 +618,14 @@ class Sidebar extends PureComponent<any, any> {
       pastelConf,
     )
     if (result?.AssetName === 'Initial') {
+      log.info(`mnsync: ${JSON.stringify(result)}`)
+      log.info('Calling mnsync reset')
       await rpc<IMasterNodeProps>(
         'mnsync',
         ['reset'],
         pastelConf,
       )
+      log.info('Finished mnsync reset')
     }
   }
   handleSetupInferenceClient = async () => {

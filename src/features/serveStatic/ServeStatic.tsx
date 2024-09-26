@@ -15,6 +15,7 @@ import kill from 'kill-port'
 import { rimrafSync } from 'rimraf'
 import unzipper from 'unzipper'
 import sudo from 'sudo-prompt'
+import simpleGit from 'simple-git'
 
 import { glitch, squoosh, inferenceClient } from '../constants/ServeStatic'
 
@@ -210,20 +211,43 @@ const updateConfigForInitialInference = (
 }
 
 const checkUpdatePastelInferenceJsClient = async (
-  pastelInferencePath: string,
+  pastelConf: IPastelConfProps,
+  pastelInferencePath: string
 ) => {
   try {
-    if (fs.existsSync(path.join(pastelInferencePath, ' package.json'))) {
-      const stats = fs.statSync(path.join(pastelInferencePath, ' package.json'))
-      const now = dayjs()
-      const target = dayjs(stats.birthtime)
-      const days = now.diff(target, 'day')
-      if (days >= 5) {
-        rimrafSync(pastelInferencePath)
+    const localPath = path.join(pastelConf.locatePastelConfDir, 'pastel_inference_js_client')
+    const inferenceLatestHashFile = path.join(pastelConf.locatePastelConfDir, 'inference.hash')
+    if (fs.existsSync(localPath)) {
+      fs.rmSync(localPath, { force: true, recursive: true })
+    }
+    const git = simpleGit();
+    await git.clone('https://github.com/pastelnetwork/pastel_inference_js_client.git', localPath);
+    const git2 = simpleGit(localPath);
+    const gitLog = await git2.log();
+    const latestCommitHash = gitLog.latest?.hash;
+    if (fs.existsSync(pastelInferencePath)) {
+      if (latestCommitHash) {
+        if (fs.existsSync(inferenceLatestHashFile)) {
+          const content = fs.readFileSync(inferenceLatestHashFile).toString()
+          if (content && content !== latestCommitHash) {
+            fs.writeFileSync(inferenceLatestHashFile, latestCommitHash)
+            fs.rmSync(pastelInferencePath, { force: true, recursive: true })
+          } else if (!content) {
+            fs.writeFileSync(inferenceLatestHashFile, latestCommitHash)
+          }
+        } else {
+          fs.writeFileSync(inferenceLatestHashFile, latestCommitHash)
+          fs.rmSync(pastelInferencePath, { force: true, recursive: true })
+        }
       }
+    } else if (!fs.existsSync(inferenceLatestHashFile) && latestCommitHash) {
+      fs.writeFileSync(inferenceLatestHashFile, latestCommitHash)
+    }
+    if (fs.existsSync(localPath)) {
+      fs.rmSync(localPath, { force: true, recursive: true })
     }
   } catch (error) {
-    log.error('checkUpdatePastelInferenceJsClient - ', error)
+    log.error('Check update Pastel InferenceJs Client error: ', error)
   }
 }
 
@@ -301,7 +325,7 @@ export const setupInitialInference = async (
       pastelConf.locateAppDir,
       'pastel_inference_js_client-master',
     )
-    await checkUpdatePastelInferenceJsClient(pastelInferencePath)
+    await checkUpdatePastelInferenceJsClient(pastelConf, pastelInferencePath)
     if (forceInstall) {
       try {
         rimrafSync(pastelInferencePath)
