@@ -548,7 +548,7 @@ const locateSentTxStore = (): string => {
 
 const locatePastelWalletFullnodeDir = () => {
   if (os.platform() === 'darwin') {
-    return path.join(app.getPath('appData'), 'Library', 'Logs', 'Pastel Wallet Fullnode')
+    return app.getPath('logs')
   }
 
   if (os.platform() === 'linux') {

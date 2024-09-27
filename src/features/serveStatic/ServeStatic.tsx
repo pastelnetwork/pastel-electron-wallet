@@ -267,6 +267,13 @@ const installBunModuleForInferenceClientOnMac = (
   cp.exec('bun-mac --version', function (error, stdout) {
     if (error || !fs.existsSync(path.join('/usr/local/bin', 'bun-mac'))) {
       if (fs.existsSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'))) {
+        if (fs.existsSync(path.join(pastelConf.pasteldBasePath, 'bun-mac'))) {
+          try {
+            fs.rmSync(path.join(pastelConf.pasteldBasePath, 'bun-mac'))
+          } catch (error) {
+            log.error(error)
+          }
+        }
         fs.renameSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'), path.join(pastelConf.pasteldBasePath, 'bun-mac'))
       }
       sudo.exec(
