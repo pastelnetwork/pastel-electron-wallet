@@ -355,6 +355,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     })
     const { locatePastelConf, pastelUtilityBinPath, pastelReinstallPath, isPackaged, locatePastelWalletDir } = store.getState().appInfo;
     const installWalletNode = async () => {
+      const pastelVersionFile = path.join(locatePastelWalletDir, 'pastel.version')
       try {
         process = '';
         // stop is needed in case if some services started and some failed
@@ -363,7 +364,6 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
         await this.removePastelResource()
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
-        const pastelVersionFile = path.join(locatePastelWalletDir, 'pastel.version')
         if (fs.existsSync(pastelVersionFile)) {
           const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
           fs.writeFileSync(pastelVersionFile, JSON.stringify({
@@ -373,6 +373,12 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       } catch (error) {
         log.error('installWalletNode error: ', error)
         if (this.state.currentStatus.toString().indexOf('Install node: Finished') !== -1) {
+          if (fs.existsSync(pastelVersionFile)) {
+            const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
+            fs.writeFileSync(pastelVersionFile, JSON.stringify({
+              wallet: currentAppVersion
+            }))
+          }
           if (os.platform() === 'linux' || !isPackaged) {
             // stop is needed in case if some services started and some failed
             if (fs.existsSync(locatePastelConf)) {
