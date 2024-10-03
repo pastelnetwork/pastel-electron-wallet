@@ -1,5 +1,5 @@
 import React from 'react'
-import { ipcRenderer, shell } from 'electron'
+import { ipcRenderer } from 'electron'
 import tcpPortUsed from 'tcp-port-used'
 import cx from 'classnames'
 import log from 'electron-log'
@@ -21,9 +21,10 @@ interface IMasterNodeProps {
 }
 
 export default function InferenceClient(): JSX.Element {
+  const processingTimeStart = Date.now();
+  let isReload = false
   const [status, setStatus] = React.useState('Loading Inference Client... Please Wait.')
   const [isError, setError] = React.useState(false)
-  const [isReloadInference, setReloadInference] = React.useState(false)
   const { isConnected } = useAppSelector(state => state.downloadSnapshot)
 
   const checkStartInitialInference = async () => {
@@ -36,10 +37,8 @@ export default function InferenceClient(): JSX.Element {
         } else {
           setStatus('success')
           setError(false)
-          if (isReloadInference) {
-            log.info('Inference started successfully')
-          }
-          setReloadInference(false)
+          log.info('Inference started successfully')
+          isReload = false
         }
       },
       function (err) {
@@ -109,14 +108,15 @@ export default function InferenceClient(): JSX.Element {
         ['full'],
         pastelConf,
       )
-
       if (!Object.keys(result).length) {
         setStatus('The supernode information commands are not returning complete information. Inference Client is waiting for complete information before displaying.')
         setTimeout(() => {
           checkMasterNodeStatus()
         }, 1000)
       } else {
-        setStatus('Loading Inference Client... Please Wait.')
+        if (isReload) {
+          setStatus('Loading Inference Client... Please Wait.')
+        }
         checkStartInitialInference()
       }
     } catch (error) {
@@ -124,9 +124,31 @@ export default function InferenceClient(): JSX.Element {
     }
   }
 
+  const handleRestartInference = () => {
+    try {
+      if (status !== 'success') {
+        const time = (Date.now() - processingTimeStart) / 1000;
+        if (time >= 180 && !isReload) {
+          setStatus("Inference Client is getting slow to load... Trying to restart Pastel Service to speed up the Inference Client.")
+          ipcRenderer.send('force_start_wallet')
+          log.info('Restart Wallet App')
+          checkStartInitialInference()
+          isReload = true
+        } else {
+          setTimeout(() => {
+            handleRestartInference()
+          }, 1000)
+        }
+      }
+    } catch (error) {
+      log.error(error)
+    }
+  }
+
   React.useEffect(() => {
     if (isConnected) {
       checkMasterNodeStatus()
+      handleRestartInference()
     } else {
       setStatus("Waiting for node to sync to 100% before Inference Client can be displayed.")
     }
@@ -139,7 +161,6 @@ export default function InferenceClient(): JSX.Element {
     await getSupernodeData()
     ipcRenderer.send('reload_inference_client')
     setStatus('Loading Inference Client... Please Wait.')
-    setReloadInference(true)
   }
 
   if (status !== 'success') {

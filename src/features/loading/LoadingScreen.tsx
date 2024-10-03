@@ -331,22 +331,16 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   }
   isInstall = () => {
     try {
-      const { locatePastelConfDir } = store.getState().appInfo;
-      const pastelVersionFile = path.join(locatePastelConfDir, 'pastel.version')
+      const { locatePastelWalletDir } = store.getState().appInfo;
+      const pastelVersionFile = path.join(locatePastelWalletDir, 'pastel.version')
       const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
       if (!fs.existsSync(pastelVersionFile)) {
-        fs.writeFileSync(pastelVersionFile, JSON.stringify({
-          wallet: currentAppVersion
-        }))
         return true;
       }
 
       const content = fs.readFileSync(pastelVersionFile).toString();
       const parseContent = JSON.parse(content);
       if (Number(parseContent.wallet) < currentAppVersion) {
-        fs.writeFileSync(pastelVersionFile, JSON.stringify({
-          wallet: currentAppVersion
-        }))
         return true;
       }
     } catch (error) {
@@ -359,7 +353,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     this.setState({
       creatingPastelConf: false,
     })
-    const { locatePastelConf, pastelUtilityBinPath, pastelReinstallPath, isPackaged } = store.getState().appInfo;
+    const { locatePastelConf, pastelUtilityBinPath, pastelReinstallPath, isPackaged, locatePastelWalletDir } = store.getState().appInfo;
     const installWalletNode = async () => {
       try {
         process = '';
@@ -369,6 +363,13 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
         await this.removePastelResource()
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
+        const pastelVersionFile = path.join(locatePastelWalletDir, 'pastel.version')
+        if (fs.existsSync(pastelVersionFile)) {
+          const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
+          fs.writeFileSync(pastelVersionFile, JSON.stringify({
+            wallet: currentAppVersion
+          }))
+        }
       } catch (error) {
         log.error('installWalletNode error: ', error)
         if (this.state.currentStatus.toString().indexOf('Install node: Finished') !== -1) {

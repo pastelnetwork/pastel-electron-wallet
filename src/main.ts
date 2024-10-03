@@ -48,6 +48,7 @@ import MenuBuilder from './menu'
 import {
   filterLogKeywords,
   stopWalletNode,
+  startProcess,
 } from './features/loading/utils'
 
 if (['darwin', 'linux'].includes(os.platform())) {
@@ -147,6 +148,12 @@ const locateAppDir = () => {
 
 const snapshotFile = path.join(locateAppDir(), 'snapshot-latest-mainnet.tar.gz')
 
+const  handleProcessLogging = (line: string) => {
+  if (filterLogKeywords.some(word => line.includes(word))) {
+    log.info(line.split(' INFO ')[1] || line)
+  }
+}
+
 const createWindow = async () => {
   const w = new BrowserWindow({
     show: false,
@@ -227,12 +234,7 @@ const createWindow = async () => {
           darwin: 'pastelup-mac',
           windows: 'pastelup-win.exe',
         })
-        const  handleStopProcessLogging = (line: string) => {
-          if (filterLogKeywords.some(word => line.includes(word))) {
-            log.info(line.split(' INFO ')[1] || line)
-          }
-        }
-        await stopWalletNode(pastelUtilityBinPath, handleStopProcessLogging);
+        await stopWalletNode(pastelUtilityBinPath, handleProcessLogging);
       } catch (error) {
         log.error(error)
       }
@@ -598,6 +600,32 @@ ipcMain.on('start_initial_inference', () => {
 
 ipcMain.on('reload_inference_client', () => {
   handleReloadInferenceClient(mainWindow, {
+    locatePastelConf: locatePastelConf(),
+    locatePastelConfDir: locatePastelConfDir(),
+    pasteldBasePath: pasteldBasePath(),
+    locateAppDir: locateAppDir(),
+  })
+})
+
+ipcMain.on('force_start_wallet', async () => {
+  if (fs.existsSync(locatePastelConf())) {
+    const pastelUtilityBinPath = getBinPath({
+      linux: 'pastelup-linux',
+      darwin: 'pastelup-mac',
+      windows: 'pastelup-win.exe',
+    })
+    await stopWalletNode(pastelUtilityBinPath, handleProcessLogging);
+    const locateMnCacheFile = path.join(locatePastelConfDir(), 'mncache.dat')
+    const locateMnPaymentsFile = path.join(locatePastelConfDir(), 'mnpayments.dat')
+    if (fs.existsSync(locateMnCacheFile)) {
+      fs.unlinkSync(locateMnCacheFile)
+    }
+    if (fs.existsSync(locateMnPaymentsFile)) {
+      fs.unlinkSync(locateMnPaymentsFile)
+    }
+    await startProcess(pastelUtilityBinPath, handleProcessLogging);
+  }
+  checkAndStartInitialInference(mainWindow, {
     locatePastelConf: locatePastelConf(),
     locatePastelConfDir: locatePastelConfDir(),
     pasteldBasePath: pasteldBasePath(),
