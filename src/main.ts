@@ -45,6 +45,10 @@ import initServeStatic, {
   stopInference,
 } from './features/serveStatic'
 import MenuBuilder from './menu'
+import {
+  filterLogKeywords,
+  stopWalletNode,
+} from './features/loading/utils'
 
 if (['darwin', 'linux'].includes(os.platform())) {
   fixPath()
@@ -203,18 +207,6 @@ const createWindow = async () => {
     }
   })
   w.on('close', async (event: Event) => {
-    try {
-      await stopInference(locateAppDir(), pasteldBasePath())
-      await Promise.all([
-        kill(glitch.staticPort),
-        kill(squoosh.staticPort),
-        kill(inferenceClient.staticPort),
-        kill(inferenceClient.socketPort),
-      ])
-    } catch (error) {
-      log.error(error)
-    }
-
     // If we are clear to close, then return and allow everything to close
     if (proceedToClose) {
       console.warn('proceed to close, so closing')
@@ -228,6 +220,25 @@ const createWindow = async () => {
       return
     }
 
+    const handleStopWalletNode = async () => {
+      try {
+        const pastelUtilityBinPath = getBinPath({
+          linux: 'pastelup-linux',
+          darwin: 'pastelup-mac',
+          windows: 'pastelup-win.exe',
+        })
+        const  handleStopProcessLogging = (line: string) => {
+          if (filterLogKeywords.some(word => line.includes(word))) {
+            log.info(line.split(' INFO ')[1] || line)
+          }
+        }
+        await stopWalletNode(pastelUtilityBinPath, handleStopProcessLogging);
+      } catch (error) {
+        log.error(error)
+      }
+      app.quit()
+    }
+
     waitingForClose = true
     event.preventDefault()
 
@@ -235,7 +246,7 @@ const createWindow = async () => {
     ipcMain.on('terminaldone', () => {
       waitingForClose = false
       proceedToClose = true
-      app.quit()
+      handleStopWalletNode()
     })
 
     ipcMain.on('appquitdone', () => {
@@ -253,8 +264,19 @@ const createWindow = async () => {
       waitingForClose = false
       proceedToClose = true
       console.warn('Timeout, quitting')
-      app.quit()
+      handleStopWalletNode();
     }, 10 * 1000)
+    try {
+      await stopInference(locateAppDir(), pasteldBasePath())
+      await Promise.all([
+        kill(glitch.staticPort),
+        kill(squoosh.staticPort),
+        kill(inferenceClient.staticPort),
+        kill(inferenceClient.socketPort),
+      ])
+    } catch (error) {
+      log.error(error)
+    }
   })
   w.on('closed', () => {
     mainWindow = null

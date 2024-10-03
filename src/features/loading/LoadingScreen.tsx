@@ -8,6 +8,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router'
 import log from 'electron-log'
 import os from 'os'
+import path from 'path'
 
 import store from '../../redux/store'
 import pasteldlogo from '../../legacy/assets/img/pastel-logo-white.png'
@@ -28,6 +29,7 @@ import {
 import PastelDB from '../../features/pastelDB/database'
 import { createPastelKeysFolder } from '../../features/pastelID'
 import { showClosingPastelWalletModal } from '../downloadSnapshot'
+import pjson from '../../../package.json'
 
 interface TLoadingState {
   currentStatus: string | JSX.Element
@@ -225,15 +227,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
   setupExitHandler = () => {
     // App is quitting, exit pasteld as well
     ipcRenderer.on('appquitting', async () => {
-      try {
-        store.dispatch<any>(showClosingPastelWalletModal())
-        while (!PastelDB.isValidDB()) {
-          // wait if database is reading or writing status
-          new Promise(resolve => setTimeout(resolve, 100))
-        }
-      } catch (error) {
-        log.error(error)
-      }
+      store.dispatch<any>(showClosingPastelWalletModal())
       try {
         const { pastelUtilityBinPath } = store.getState().appInfo;
         await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging);
@@ -273,6 +267,94 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       log.info(line.split(' INFO ')[1] || line)
     }
   }
+  removePastelResource = async () => {
+    try {
+      const { locatePastelConfDir, locatePastelConf } = store.getState().appInfo;
+      const locateBlocksDir = path.join(locatePastelConfDir, 'blocks')
+      const locateChainStateDir = path.join(locatePastelConfDir, 'chainstate')
+      const locateOldLogsDir = path.join(locatePastelConfDir, 'old_logs')
+      const locateTicketsDir = path.join(locatePastelConfDir, 'tickets')
+      const locateDatabaseDir = path.join(locatePastelConfDir, 'database')
+      const locateFeeEstimatesFile = path.join(locatePastelConfDir, 'fee_estimates.dat')
+      const locateMasternodeConfFile = path.join(locatePastelConfDir, 'masternode.conf-sample')
+      const locateMessagesFile = path.join(locatePastelConfDir, 'messages.dat')
+      const locateMnCacheFile = path.join(locatePastelConfDir, 'mncache.dat')
+      const locateMnPaymentsFile = path.join(locatePastelConfDir, 'mnpayments.dat')
+      const locateNetfulfilledFile = path.join(locatePastelConfDir, 'netfulfilled.dat')
+      const locatePeersFile = path.join(locatePastelConfDir, 'peers.dat')
+      const locateLockFile = path.join(locatePastelConfDir, '.lock')
+      if (fs.existsSync(locateBlocksDir)) {
+        fs.rmSync(locateBlocksDir, { force: true, recursive: true })
+      }
+      if (fs.existsSync(locateChainStateDir)) {
+        fs.rmSync(locateChainStateDir, { force: true, recursive: true })
+      }
+      if (fs.existsSync(locateOldLogsDir)) {
+        fs.rmSync(locateOldLogsDir, { force: true, recursive: true })
+      }
+      if (fs.existsSync(locateTicketsDir)) {
+        fs.rmSync(locateTicketsDir, { force: true, recursive: true })
+      }
+      if (fs.existsSync(locateDatabaseDir)) {
+        fs.rmSync(locateDatabaseDir, { force: true, recursive: true })
+      }
+      if (fs.existsSync(locateFeeEstimatesFile)) {
+        fs.unlinkSync(locateFeeEstimatesFile)
+      }
+      if (fs.existsSync(locateMasternodeConfFile)) {
+        fs.unlinkSync(locateMasternodeConfFile)
+      }
+      if (fs.existsSync(locateMessagesFile)) {
+        fs.unlinkSync(locateMessagesFile)
+      }
+      if (fs.existsSync(locateMnCacheFile)) {
+        fs.unlinkSync(locateMnCacheFile)
+      }
+      if (fs.existsSync(locateMnPaymentsFile)) {
+        fs.unlinkSync(locateMnPaymentsFile)
+      }
+      if (fs.existsSync(locateNetfulfilledFile)) {
+        fs.unlinkSync(locateNetfulfilledFile)
+      }
+      if (fs.existsSync(locatePeersFile)) {
+        fs.unlinkSync(locatePeersFile)
+      }
+      if (fs.existsSync(locatePastelConf)) {
+        fs.unlinkSync(locatePastelConf)
+      }
+      if (fs.existsSync(locateLockFile)) {
+        fs.unlinkSync(locateLockFile)
+      }
+    } catch (error) {
+      log.error('Remove Pastel resource error', JSON.stringify(error))
+    }
+  }
+  isInstall = () => {
+    try {
+      const { locatePastelConfDir } = store.getState().appInfo;
+      const pastelVersionFile = path.join(locatePastelConfDir, 'pastel.version')
+      const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
+      if (!fs.existsSync(pastelVersionFile)) {
+        fs.writeFileSync(pastelVersionFile, JSON.stringify({
+          wallet: currentAppVersion
+        }))
+        return true;
+      }
+
+      const content = fs.readFileSync(pastelVersionFile).toString();
+      const parseContent = JSON.parse(content);
+      if (Number(parseContent.wallet) < currentAppVersion) {
+        fs.writeFileSync(pastelVersionFile, JSON.stringify({
+          wallet: currentAppVersion
+        }))
+        return true;
+      }
+    } catch (error) {
+      log.error('Check wallet version error: ', JSON.stringify(error))
+    }
+
+    return false;
+  }
   startPastelUp = async () => {
     this.setState({
       creatingPastelConf: false,
@@ -285,6 +367,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         if (fs.existsSync(locatePastelConf)) {
           await stopWalletNode(pastelUtilityBinPath, this.handleStopProcessLogging)
         }
+        await this.removePastelResource()
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
       } catch (error) {
         log.error('installWalletNode error: ', error)
@@ -303,7 +386,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
       }
     }
-    if (!fs.existsSync(locatePastelConf)) {
+    if (!fs.existsSync(locatePastelConf) || this.isInstall()) {
       await installWalletNode();
       if (os.platform() === 'linux' || !isPackaged) {
         // stop is needed in case if some services started and some failed
