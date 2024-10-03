@@ -21,7 +21,6 @@ interface IMasterNodeProps {
 }
 
 export default function InferenceClient(): JSX.Element {
-  const processingTimeStart = Date.now();
   let isReload = false
   const [status, setStatus] = React.useState('Loading Inference Client... Please Wait.')
   const [isError, setError] = React.useState(false)
@@ -38,7 +37,6 @@ export default function InferenceClient(): JSX.Element {
           setStatus('success')
           setError(false)
           log.info('Inference started successfully')
-          isReload = false
         }
       },
       function (err) {
@@ -114,7 +112,7 @@ export default function InferenceClient(): JSX.Element {
           checkMasterNodeStatus()
         }, 1000)
       } else {
-        if (isReload) {
+        if (!isReload) {
           setStatus('Loading Inference Client... Please Wait.')
         }
         checkStartInitialInference()
@@ -125,30 +123,27 @@ export default function InferenceClient(): JSX.Element {
   }
 
   const handleRestartInference = () => {
-    try {
-      if (status !== 'success') {
-        const time = (Date.now() - processingTimeStart) / 1000;
-        if (time >= 180 && !isReload) {
+    tcpPortUsed.check(inferenceClient.staticPort, '127.0.0.1').then(
+      function (inUse) {
+        if (!inUse) {
           setStatus("Inference Client is getting slow to load... Trying to restart Pastel Service to speed up the Inference Client.")
           ipcRenderer.send('force_start_wallet')
           log.info('Restart Wallet App')
-          checkStartInitialInference()
           isReload = true
-        } else {
-          setTimeout(() => {
-            handleRestartInference()
-          }, 1000)
         }
-      }
-    } catch (error) {
-      log.error(error)
-    }
+      },
+      function (err) {
+        console.error('Error on check:', err.message)
+      },
+    )
   }
 
   React.useEffect(() => {
     if (isConnected) {
       checkMasterNodeStatus()
-      handleRestartInference()
+      setTimeout(() => {
+        handleRestartInference()
+      }, 180000) // ~ 180s
     } else {
       setStatus("Waiting for node to sync to 100% before Inference Client can be displayed.")
     }
