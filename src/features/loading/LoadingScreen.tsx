@@ -364,21 +364,17 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
         await this.removePastelResource()
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
-        if (fs.existsSync(pastelVersionFile)) {
+        const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
+        fs.writeFileSync(pastelVersionFile, JSON.stringify({
+          wallet: currentAppVersion
+        }))
+      } catch (error) {
+        log.error('installWalletNode error: ', error)
+        if (this.state.currentStatus.toString().indexOf('Install node: Finished') !== -1) {
           const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
           fs.writeFileSync(pastelVersionFile, JSON.stringify({
             wallet: currentAppVersion
           }))
-        }
-      } catch (error) {
-        log.error('installWalletNode error: ', error)
-        if (this.state.currentStatus.toString().indexOf('Install node: Finished') !== -1) {
-          if (fs.existsSync(pastelVersionFile)) {
-            const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
-            fs.writeFileSync(pastelVersionFile, JSON.stringify({
-              wallet: currentAppVersion
-            }))
-          }
           if (os.platform() === 'linux' || !isPackaged) {
             // stop is needed in case if some services started and some failed
             if (fs.existsSync(locatePastelConf)) {
