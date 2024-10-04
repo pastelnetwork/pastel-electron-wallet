@@ -199,7 +199,7 @@ export default function InferenceClient(): JSX.Element {
 
   return (
     <div className={styles.iframe}>
-      <webview src={`http://localhost:${inferenceClient.staticPort}/`} />
+      <webview src={`http://localhost:${inferenceClient.staticPort}/#wallet`} />
     </div>
   )
 }

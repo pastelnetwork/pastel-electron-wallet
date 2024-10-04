@@ -257,9 +257,22 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
       })
     }
   }
+  getStartNodeMessage = (process: string) => {
+    return (
+      <div>Waiting for the Pastel Service to start...<br />{process}</div>
+    )
+  }
   handleStartProcessLogging = (line: string) => {
     if (filterLogKeywords.some(word => line.includes(word))) {
       log.info(line.split(' INFO ')[1] || line)
+      if (line.indexOf('map[code:-28 message:') !== -1) {
+        const message = line.split('map[code:-28 message:')[1]?.split('] server_ip=')[0]
+        if (message) {
+          this.setState({
+            currentStatus: this.getStartNodeMessage(`(Current Status: ${message})`),
+          })
+        }
+      }
     }
   }
   handleStopProcessLogging = (line: string) => {
@@ -356,6 +369,7 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
     const { locatePastelConf, pastelUtilityBinPath, pastelReinstallPath, isPackaged, locatePastelWalletDir } = store.getState().appInfo;
     const installWalletNode = async () => {
       const pastelVersionFile = path.join(locatePastelWalletDir, 'pastel.version')
+      const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
       try {
         process = '';
         // stop is needed in case if some services started and some failed
@@ -364,14 +378,12 @@ class LoadingScreen extends Component<TLoadingProps, TLoadingState> {
         }
         await this.removePastelResource()
         await installProcess(pastelUtilityBinPath, this.handleInstallProcessLogging)
-        const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
         fs.writeFileSync(pastelVersionFile, JSON.stringify({
           wallet: currentAppVersion
         }))
       } catch (error) {
         log.error('installWalletNode error: ', error)
         if (this.state.currentStatus.toString().indexOf('Install node: Finished') !== -1) {
-          const currentAppVersion = Number(pjson.version.replaceAll('.', ''))
           fs.writeFileSync(pastelVersionFile, JSON.stringify({
             wallet: currentAppVersion
           }))

@@ -114,6 +114,7 @@ export const filterLogKeywords = [
   'successfully',
   'Finished',
   'Install',
+  'Start',
 ]
 
 export const spawnProcess = (
