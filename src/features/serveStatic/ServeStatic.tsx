@@ -10,7 +10,6 @@ import { BrowserWindow } from 'electron'
 import request from 'request'
 import progress from 'progress-stream'
 import fixPath from 'fix-path'
-import dayjs from 'dayjs'
 import kill from 'kill-port'
 import { rimrafSync } from 'rimraf'
 import unzipper from 'unzipper'
@@ -276,8 +275,12 @@ const installBunModuleForInferenceClientOnMac = (
         }
         fs.renameSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'), path.join(pastelConf.pasteldBasePath, 'bun-mac'))
       }
+      let createBinFolderCommand = ''
+      if (!fs.existsSync(path.join('/usr/local/bin'))) {
+        createBinFolderCommand = 'mkdir /usr/local/bin && '
+      }
       sudo.exec(
-        `rsync -avE ${replaceSpaceInPath(
+        `${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'bun-mac'),
         )} /usr/local/bin`,
         options,
@@ -304,7 +307,6 @@ const installBunModuleForInferenceClientOnMac = (
               },
             )
           }, 5000);
-    
           log.info('stdout: ' + stdout)
         },
       )
