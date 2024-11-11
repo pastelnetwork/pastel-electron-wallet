@@ -62,53 +62,139 @@ const getBunBinaryPath = (pasteldBasePath: string) => {
   }
 }
 
-const startInferenceClientOnMac = (
+const startInferenceClientOnMac = async (
   pastelInferencePath: string,
+  pastelConf: IPastelConfProps,
   mainWindow: BrowserWindow | null,
 ) => {
-  cp.exec(
-    `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac install`,
-    function (error, stdout) {
-      if (error) {
-        log.error('bun install failed:', error)
-        mainWindow?.webContents?.send(
-          'start_inference_error',
-          JSON.stringify(error?.message),
-        )
-        return
+  // Check bun
+  cp.exec('bun-mac --version', function (error, stdout) {
+    if (error || !fs.existsSync(path.join('/usr/local/bin', 'bun-mac'))) {
+      if (fs.existsSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'))) {
+        if (fs.existsSync(path.join(pastelConf.pasteldBasePath, 'bun-mac'))) {
+          try {
+            fs.rmSync(path.join(pastelConf.pasteldBasePath, 'bun-mac'))
+          } catch (error) {
+            log.error(error)
+          }
+        }
+        fs.renameSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'), path.join(pastelConf.pasteldBasePath, 'bun-mac'))
       }
-      log.info('bun install output:', stdout)
-      mainWindow?.webContents?.send(
-        'start_inference_status',
-        JSON.stringify('Loading Pastel Inference Client'),
-      )
-      cp.exec(
-        `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac start`,
-        function (error, stdout, stderr) {
+      let createBinFolderCommand = ''
+      if (!fs.existsSync(path.join('/usr/local/bin'))) {
+        createBinFolderCommand = 'mkdir /usr/local/bin && '
+      }
+      // Copy bun file into /usr/local/bin
+      sudo.exec(
+        `${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
+          path.join(pastelConf.pasteldBasePath, 'bun-mac'),
+        )} /usr/local/bin`,
+        options,
+        function (error, stdout) {
           if (error) {
-            log.error(`bun start failed: ${error}`)
+            log.error('Install Bun error: ', error)
+          }
+          setTimeout(function(){
+            // Install node module
+            cp.exec(
+              `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac install`,
+              function (error, stdout) {
+                if (error) {
+                  log.error('bun install failed:', error)
+                  mainWindow?.webContents?.send(
+                    'start_inference_error',
+                    JSON.stringify(error?.message),
+                  )
+                  return
+                }
+                log.info('bun install output:', stdout)
+                mainWindow?.webContents?.send(
+                  'start_inference_status',
+                  JSON.stringify('Loading Pastel Inference Client'),
+                )
+                // Start Inference Web
+                cp.exec(
+                  `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac start`,
+                  function (error, stdout, stderr) {
+                    if (error) {
+                      log.error(`bun start failed: ${error}`)
+                      mainWindow?.webContents?.send(
+                        'start_inference_error',
+                        JSON.stringify(error?.message),
+                      )
+                      return
+                    }
+                    log.info(`bun start output: ${stdout}`)
+                    let pastelInferenceOutput = JSON.stringify(stdout)
+
+                    if (stderr) {
+                      log.error(`bun start errors: ${stderr}`)
+                      pastelInferenceOutput = JSON.stringify(stderr)
+                    }
+
+                    mainWindow?.webContents?.send(
+                      'start_inference_error',
+                      pastelInferenceOutput,
+                    )
+                  },
+                )
+              },
+            )
+          }, 5000);
+          log.info('stdout: ' + stdout)
+        },
+      )
+    } else {
+      // Install node module
+      cp.exec(
+        `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac install`,
+        function (error, stdout) {
+          if (error) {
+            log.error('bun install failed:', error)
             mainWindow?.webContents?.send(
               'start_inference_error',
               JSON.stringify(error?.message),
             )
             return
           }
-          log.info(`bun start output: ${stdout}`)
-          let pastelInferenceOutput = JSON.stringify(stdout)
-
-          if (stderr) {
-            log.error(`bun start errors: ${stderr}`)
-            pastelInferenceOutput = JSON.stringify(stderr)
-          }
-
+          log.info('bun install output:', stdout)
           mainWindow?.webContents?.send(
-            'start_inference_error',
-            pastelInferenceOutput,
+            'start_inference_status',
+            JSON.stringify('Loading Pastel Inference Client'),
+          )
+          // Start Inference Web
+          cp.exec(
+            `cd ${replaceSpaceInPath(pastelInferencePath)} && bun-mac start`,
+            function (error, stdout, stderr) {
+              if (error) {
+                log.error(`bun start failed: ${error}`)
+                mainWindow?.webContents?.send(
+                  'start_inference_error',
+                  JSON.stringify(error?.message),
+                )
+                return
+              }
+              log.info(`bun start output: ${stdout}`)
+              let pastelInferenceOutput = JSON.stringify(stdout)
+
+              if (stderr) {
+                log.error(`bun start errors: ${stderr}`)
+                pastelInferenceOutput = JSON.stringify(stderr)
+              }
+    
+              mainWindow?.webContents?.send(
+                'start_inference_error',
+                pastelInferenceOutput,
+              )
+            },
           )
         },
       )
-    },
-  )
+    }
+  })
+
+
+  
 }
 
 export const checkAndStartInitialInference = (
@@ -127,7 +213,7 @@ export const checkAndStartInitialInference = (
           pastelConf.pasteldBasePath,
         )
         if (os.platform() === 'darwin') {
-          startInferenceClientOnMac(pastelInferencePath, mainWindow)
+          startInferenceClientOnMac(pastelInferencePath, pastelConf, mainWindow)
         } else {
           cp.execFile(
             bunPath,
