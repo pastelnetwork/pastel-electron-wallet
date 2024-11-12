@@ -80,24 +80,21 @@ const startInferenceClientOnMac = async (
         }
         fs.renameSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'), path.join(pastelConf.pasteldBasePath, 'bun-mac'))
       }
-      const binFolderPath = '/usr/local/bin/'
-      const binFilePath = '/usr/local/bin'
-      let deleteBinFileCommand = ''
+      const binPath = '/usr/local/bin'
       let createBinFolderCommand = ''
-      if (!fs.existsSync(binFolderPath)) {
-        if (fs.existsSync(binFilePath)) {
-          const stats = fs.lstatSync(binFilePath);
-          if (stats.isFile()) {
-            deleteBinFileCommand = `rm -rf ${binFilePath} && `
-          }
+      if (!fs.existsSync(binPath)) {
+        createBinFolderCommand = `mkdir ${binPath}/ && `
+      } else {
+        const stats = fs.lstatSync(binPath);
+        if (stats.isFile()) {
+          createBinFolderCommand = `rm -rf ${binPath} && mkdir ${binPath}/ && `
         }
-        createBinFolderCommand = `mkdir ${binFolderPath} && `
       }
       // Copy bun file into /usr/local/bin
       sudo.exec(
-        `${deleteBinFileCommand}${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
+        `${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'bun-mac'),
-        )} ${binFolderPath}`,
+        )} ${binPath}`,
         options,
         function (error, stdout) {
           if (error) {
@@ -370,23 +367,20 @@ const installBunModuleForInferenceClientOnMac = (
         }
         fs.renameSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'), path.join(pastelConf.pasteldBasePath, 'bun-mac'))
       }
-      const binFolderPath = '/usr/local/bin/'
-      const binFilePath = '/usr/local/bin'
-      let deleteBinFileCommand = ''
+      const binPath = '/usr/local/bin'
       let createBinFolderCommand = ''
-      if (!fs.existsSync(binFolderPath)) {
-        if (fs.existsSync(binFilePath)) {
-          const stats = fs.lstatSync(binFilePath);
-          if (stats.isFile()) {
-            deleteBinFileCommand = `rm -rf ${binFilePath} && `
-          }
+      if (!fs.existsSync(binPath)) {
+        createBinFolderCommand = `mkdir ${binPath}/ && `
+      } else {
+        const stats = fs.lstatSync(binPath);
+        if (stats.isFile()) {
+          createBinFolderCommand = `rm -rf ${binPath} && mkdir ${binPath}/ && `
         }
-        createBinFolderCommand = `mkdir ${binFolderPath} && `
       }
       sudo.exec(
-        `${deleteBinFileCommand}${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
+        `${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'bun-mac'),
-        )} ${binFolderPath}`,
+        )} ${binPath}`,
         options,
         function (error, stdout) {
           if (error) {
