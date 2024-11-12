@@ -80,15 +80,21 @@ const startInferenceClientOnMac = async (
         }
         fs.renameSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'), path.join(pastelConf.pasteldBasePath, 'bun-mac'))
       }
+      const binPath = '/usr/local/bin'
+      let deleteBinFileCommand = ''
+      const stats = fs.lstatSync(binPath);
+      if (stats.isFile()) {
+        deleteBinFileCommand = `rm -rf ${binPath} && `
+      }
       let createBinFolderCommand = ''
-      if (!fs.existsSync(path.join('/usr/local/bin'))) {
-        createBinFolderCommand = 'mkdir /usr/local/bin && '
+      if (!fs.existsSync(binPath)) {
+        createBinFolderCommand = `mkdir ${binPath} && `
       }
       // Copy bun file into /usr/local/bin
       sudo.exec(
-        `${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
+        `${deleteBinFileCommand}${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'bun-mac'),
-        )} /usr/local/bin`,
+        )} ${binPath}`,
         options,
         function (error, stdout) {
           if (error) {
@@ -361,14 +367,20 @@ const installBunModuleForInferenceClientOnMac = (
         }
         fs.renameSync(path.join(pastelConf.pasteldBasePath, 'bun-mac-aarch'), path.join(pastelConf.pasteldBasePath, 'bun-mac'))
       }
+      const binPath = '/usr/local/bin'
+      let deleteBinFileCommand = ''
+      const stats = fs.lstatSync(binPath);
+      if (stats.isFile()) {
+        deleteBinFileCommand = `rm -rf ${binPath} && `
+      }
       let createBinFolderCommand = ''
-      if (!fs.existsSync(path.join('/usr/local/bin'))) {
-        createBinFolderCommand = 'mkdir /usr/local/bin && '
+      if (!fs.existsSync(binPath)) {
+        createBinFolderCommand = `mkdir ${binPath} && `
       }
       sudo.exec(
-        `${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
+        `${deleteBinFileCommand}${createBinFolderCommand}rsync -avE ${replaceSpaceInPath(
           path.join(pastelConf.pasteldBasePath, 'bun-mac'),
-        )} /usr/local/bin`,
+        )} ${binPath}`,
         options,
         function (error, stdout) {
           if (error) {
